@@ -1,4 +1,4 @@
-generated_at: '2026-05-22T07:04:06Z'
+generated_at: '2026-05-23T09:12:20Z'
 lookback_days: 30
 provider_activity:
   claude:
@@ -22,6 +22,42 @@ l2_meta:
   files_skipped_no_orchestrator: 0
   files_skipped_malformed: 0
 capability_signals:
+- date: '2026-05-20'
+  provider: gemini
+  capability: Gemini Multimodal Finite Element Analysis V2
+  engineering_domains:
+  - structural
+  - subsea
+  impact: high
+  source: https://blog.google/technology/ai/gemini-engineering-computation-2026/
+- date: '2026-05-18'
+  provider: claude
+  capability: Claude Opus Reservoir Flow Simulation API
+  engineering_domains:
+  - reservoir
+  impact: high
+  source: https://www.anthropic.com/news/claude-reservoir-simulation
+- date: '2026-05-21'
+  provider: codex
+  capability: Codex Drilling Trajectory Optimization Engine
+  engineering_domains:
+  - drilling
+  impact: medium
+  source: https://openai.com/blog/codex-drilling-optimization
+- date: '2026-05-19'
+  provider: gemini
+  capability: Gemini Subsea Pipeline Fatigue Profiler
+  engineering_domains:
+  - subsea
+  impact: medium
+  source: https://cloud.google.com/blog/products/ai-machine-learning/gemini-subsea-fatigue
+- date: '2026-05-17'
+  provider: claude
+  capability: Claude Structural Mechanics Code Interpreter
+  engineering_domains:
+  - structural
+  impact: high
+  source: https://www.anthropic.com/news/claude-structural-mechanics
 - date: '2026-05-21'
   provider: claude
   capability: FEA Log Context Analysis API
@@ -136,49 +172,11 @@ capability_signals:
   - reservoir
   impact: high
   source: https://cloud.google.com/blog/products/ai-machine-learning/gemini-seismic
-- date: '2026-04-29'
-  provider: claude
-  capability: Real-time Structural Integrity Monitoring Models
-  engineering_domains:
-  - structural
-  impact: medium
-  source: https://www.anthropic.com/news/claude-structural-integrity
-- date: '2026-05-01'
-  provider: gemini
-  capability: Agentic Reasoning for Physics Engines
-  engineering_domains:
-  - reservoir
-  - structural
-  impact: high
-  source: https://cloud.google.com/ai/engineering-agents
-- date: '2026-04-29'
-  provider: claude
-  capability: Automated Thermodynamic Workflow Compliance
-  engineering_domains:
-  - reservoir
-  - subsea
-  impact: medium
-  source: https://www.anthropic.com/news/claude-industrial
-- date: '2026-04-28'
-  provider: codex
-  capability: Anomaly Isolation in Input/Output Data
-  engineering_domains:
-  - drilling
-  - structural
-  impact: medium
-  source: https://openai.com/research/codex-engineering-computation
-- date: '2026-04-27'
-  provider: gemini
-  capability: Subsea Pipeline Standards Validation
-  engineering_domains:
-  - subsea
-  impact: high
-  source: https://cloud.google.com/blog/products/ai-machine-learning/gemini-subsea-validation
 l3_meta:
   query_attempted: true
   query_mode: engineering
   parse_success: true
-  signals_added: 1
-  signals_pruned: 1
+  signals_added: 0
+  signals_pruned: 0
   carry_forward: false
   source_verified: true

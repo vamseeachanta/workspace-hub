@@ -3,8 +3,8 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-05-22T07:03:20Z"
-  source_hash: "122bfbb3ff11a299cc5c2376714d708a"
+  generated: "2026-05-23T09:10:20Z"
+  source_hash: "4492fcb99ac3f992deff6fd554405192"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
@@ -12,7 +12,7 @@ metadata:
       entry_count: 5
     claude:
       project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
-      memory_file_count: 193
+      memory_file_count: 196
 
 hermes_insights:
   environment_facts:
@@ -23,7 +23,7 @@ hermes_insights:
   project_knowledge:
     []
   user_preferences:
-    - "User requires zero-waste AI spend and throughput-first workstation planning. Repo placement/interactions, memory, skills, artifacts, output formats, and file structure are canonical infrastructure. User prefers tier-1 repo placement decided machine-by-machine via GitHub issues in explicit sequence (ace-linux-1, ace-linux-2, then licensed Windows hosts); keep repo placement independent from delegation/dispatch strategy. In marine/offshore force reviews, user expects component/resultant comparisons side-by-side using existing basecase assumptions and GitHub issue comments as the correction surface."
+    - "User requires zero-waste AI spend and throughput-first workstation planning. Repo placement/interactions, memory, skills, tools, artifacts, output formats, and file structure are canonical infrastructure; workspace-hub memory/skills/tools are SSoT for sibling repos rather than local-only duplicates. User prefers tier-1 repo placement decided machine-by-machine via GitHub issues in explicit sequence (ace-linux-1, ace-linux-2, then licensed Windows hosts), independent from delegation/dispatch strategy. In marine/offshore force reviews, user expects component/resultant comparisons side-by-side using existing basecase assumptions and GitHub issue comments as the correction surface."
     - "User wants private llm-wiki maintained weekly as code-development leverage: store client/project data with key-information abstractions while public repos/docs remain redacted/public-safe; review LLM concepts, assess repo architecture/content gaps, and open actionable GitHub issues. User expects active post-session learning after non-trivial sessions: patch loaded/governing class-level skills first, prefer concise references under umbrellas over one-off skills, and treat “nothing to save” as rare. User expects repo-ecosystem claims about native Claude usage / Hermes Agent routing to be verified against Claude logs and concrete evidence before answering."
 
 claude_memory_index:
@@ -110,6 +110,8 @@ claude_memory_index:
       topic: "runtime base64 blocks binary roundtrip"
     - file: "feedback_credential_issuer_copy_paste_leak.md"
       topic: "credential issuer copy paste leak"
+    - file: "reference_ocimf_meg4_citation_style.md"
+      topic: "ocimf meg4 citation style"
     - file: "project_llm_wiki_privacy_flip.md"
       topic: "llm wiki privacy flip"
     - file: "feedback_subagent_write_phantom.md"
@@ -124,6 +126,8 @@ claude_memory_index:
       topic: "parallel branch checkout working dir"
     - file: "feedback_dispatch_local_marker_rationalization.md"
       topic: "dispatch local marker rationalization"
+    - file: "project_wiki_sibling_naming_locked.md"
+      topic: "wiki sibling naming locked"
     - file: "reference_gmail_mcp_scope.md"
       topic: "gmail mcp scope"
     - file: "project_krishna_typing_tools.md"
@@ -378,6 +382,8 @@ claude_memory_index:
       topic: "google cli paid"
     - file: "feedback_local_venv_pytest_import_hang.md"
       topic: "local venv pytest import hang"
+    - file: "reference_ocimf_annex_a_graphic_style.md"
+      topic: "ocimf annex a graphic style"
     - file: "feedback_github_addcomment_submitted_too_quickly.md"
       topic: "github addcomment submitted too quickly"
     - file: "project_issue_2460_approval_binding.md"

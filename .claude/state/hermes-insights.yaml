@@ -3,8 +3,8 @@
 # Source: Hermes MEMORY.md + USER.md
 
 metadata:
-  generated: "2026-05-22T07:03:20Z"
-  source_hash: "122bfbb3ff11a299cc5c2376714d708a"
+  generated: "2026-05-23T09:10:20Z"
+  source_hash: "4492fcb99ac3f992deff6fd554405192"
   hermes_memory: "/home/vamsee/.hermes/memories/MEMORY.md"
   hermes_user: "/home/vamsee/.hermes/memories/USER.md"
   entry_count: 5
@@ -20,5 +20,5 @@ project_knowledge:
   []
 
 user_preferences:
-  - "User requires zero-waste AI spend and throughput-first workstation planning. Repo placement/interactions, memory, skills, artifacts, output formats, and file structure are canonical infrastructure. User prefers tier-1 repo placement decided machine-by-machine via GitHub issues in explicit sequence (ace-linux-1, ace-linux-2, then licensed Windows hosts); keep repo placement independent from delegation/dispatch strategy. In marine/offshore force reviews, user expects component/resultant comparisons side-by-side using existing basecase assumptions and GitHub issue comments as the correction surface."
+  - "User requires zero-waste AI spend and throughput-first workstation planning. Repo placement/interactions, memory, skills, tools, artifacts, output formats, and file structure are canonical infrastructure; workspace-hub memory/skills/tools are SSoT for sibling repos rather than local-only duplicates. User prefers tier-1 repo placement decided machine-by-machine via GitHub issues in explicit sequence (ace-linux-1, ace-linux-2, then licensed Windows hosts), independent from delegation/dispatch strategy. In marine/offshore force reviews, user expects component/resultant comparisons side-by-side using existing basecase assumptions and GitHub issue comments as the correction surface."
   - "User wants private llm-wiki maintained weekly as code-development leverage: store client/project data with key-information abstractions while public repos/docs remain redacted/public-safe; review LLM concepts, assess repo architecture/content gaps, and open actionable GitHub issues. User expects active post-session learning after non-trivial sessions: patch loaded/governing class-level skills first, prefer concise references under umbrellas over one-off skills, and treat “nothing to save” as rare. User expects repo-ecosystem claims about native Claude usage / Hermes Agent routing to be verified against Claude logs and concrete evidence before answering."

@@ -53156,6 +53156,72 @@
       ],
       "native_session_file": "/home/vamsee/.codex/sessions/2026/05/21/rollout-2026-05-21T20-41-01-019e4d57-d042-76c3-9277-8de012474c66.jsonl",
       "session_id": "019e4d57-d042-76c3-9277-8de012474c66"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T04-41-29-019e4f0f-b14c-7b60-a047-4f5a2431730e.jsonl": {
+      "exported_tool_call_ids": [
+        "call_cHwpKfuR69JehJSouWiYxGuk",
+        "call_n5KT70qfDWDsrNNT5ubPtOiS"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T04-41-29-019e4f0f-b14c-7b60-a047-4f5a2431730e.jsonl",
+      "session_id": "019e4f0f-b14c-7b60-a047-4f5a2431730e"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T05-33-16-019e4f3f-1b0a-7a51-8f15-7bb80047b4f9.jsonl": {
+      "exported_tool_call_ids": [
+        "call_LCvnZnSu0SEPyav7XkUNryUc"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T05-33-16-019e4f3f-1b0a-7a51-8f15-7bb80047b4f9.jsonl",
+      "session_id": "019e4f3f-1b0a-7a51-8f15-7bb80047b4f9"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T06-06-05-019e4f5d-280c-7bf1-9938-bd50af4cb495.jsonl": {
+      "exported_tool_call_ids": [
+        "call_KkLBEKMyOiaygzylBTtHWpJD"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T06-06-05-019e4f5d-280c-7bf1-9938-bd50af4cb495.jsonl",
+      "session_id": "019e4f5d-280c-7bf1-9938-bd50af4cb495"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T06-15-48-019e4f66-0c88-7fd0-beb5-3390ee4cb286.jsonl": {
+      "exported_tool_call_ids": [
+        "call_KvYImqZto5ATRE1QMwb0ez1M"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T06-15-48-019e4f66-0c88-7fd0-beb5-3390ee4cb286.jsonl",
+      "session_id": "019e4f66-0c88-7fd0-beb5-3390ee4cb286"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T06-18-28-019e4f68-7dd4-7782-8cd4-c5a4474c398b.jsonl": {
+      "exported_tool_call_ids": [
+        "call_JhBKMNB4RbbN6iXD1dbyybs5"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T06-18-28-019e4f68-7dd4-7782-8cd4-c5a4474c398b.jsonl",
+      "session_id": "019e4f68-7dd4-7782-8cd4-c5a4474c398b"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T06-22-46-019e4f6c-6dc8-73f2-a249-e9cc44a3316b.jsonl": {
+      "exported_tool_call_ids": [
+        "call_LZKRKQ34FqYsyhsyyClbfVck"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T06-22-46-019e4f6c-6dc8-73f2-a249-e9cc44a3316b.jsonl",
+      "session_id": "019e4f6c-6dc8-73f2-a249-e9cc44a3316b"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T06-28-32-019e4f71-b5ec-7221-aa49-4f1cb6b258ed.jsonl": {
+      "exported_tool_call_ids": [
+        "call_IpPYtB8Q010nLot5DnsxeaDc",
+        "call_izbAn7Mb1kkZUzMbpK0FpwIl",
+        "call_o2XP4WGhf6kESjF84xTVCddO"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T06-28-32-019e4f71-b5ec-7221-aa49-4f1cb6b258ed.jsonl",
+      "session_id": "019e4f71-b5ec-7221-aa49-4f1cb6b258ed"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T13-40-30-019e50fd-2ed7-7083-930b-f71bd39b8cf1.jsonl": {
+      "exported_tool_call_ids": [
+        "call_srBbUR2hSvS5ljW1qKLv5Zrl"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T13-40-30-019e50fd-2ed7-7083-930b-f71bd39b8cf1.jsonl",
+      "session_id": "019e50fd-2ed7-7083-930b-f71bd39b8cf1"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T13-45-04-019e5101-5e82-7091-a4b8-f3dec093d80c.jsonl": {
+      "exported_tool_call_ids": [
+        "call_mDONnYWdgDH2ddu2UJ4zPKs0"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/22/rollout-2026-05-22T13-45-04-019e5101-5e82-7091-a4b8-f3dec093d80c.jsonl",
+      "session_id": "019e5101-5e82-7091-a4b8-f3dec093d80c"
     }
   }
 }
