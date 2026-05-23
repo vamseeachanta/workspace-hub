@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-22T21:20:09.173086Z",
+  "generated_at": "2026-05-23T06:16:58.846462Z",
   "current_week": "2026-W21",
-  "scorecard_generated_at": "2026-05-22T21:20:07.374951Z",
+  "scorecard_generated_at": "2026-05-23T06:16:55.423960Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 24,
+      "execution_ready_count": 25,
       "total_candidates": 175,
       "top_issues": [
         {
@@ -568,6 +568,32 @@
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2778,
+          "title": "feat(architecture): codify retrieval-time wiki-sibling routing rule + planning/citation/frontmatter plumbing",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2778",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:harness",
+            "domain:knowledge",
+            "domain:repo-organization",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-23T05:23:28Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -1564,7 +1590,7 @@
             "domain:knowledge",
             "domain:repo-organization"
           ],
-          "updatedAt": "2026-05-22T10:11:39Z",
+          "updatedAt": "2026-05-22T22:33:59Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1723,32 +1749,6 @@
             "machine:licensed-win-2"
           ],
           "updatedAt": "2026-05-21T01:43:10Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2778,
-          "title": "feat(architecture): lock data/knowledge/result search routing across llm-wiki + llm-wiki-<client> siblings",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2778",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "cat:harness",
-            "domain:knowledge",
-            "domain:repo-organization",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-05-22T10:11:18Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -4946,7 +4946,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-22T04:01:08Z",
+          "updatedAt": "2026-05-23T05:30:23Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5033,7 +5033,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-22T04:01:08Z",
+          "updatedAt": "2026-05-23T05:30:23Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
