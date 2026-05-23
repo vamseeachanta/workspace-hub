@@ -75,6 +75,12 @@ docs/plans/_template-issue-plan.md  -->  docs/plans/YYYY-MM-DD-issue-NNN-slug.md
 
 Required sections: Resource Intelligence Summary, Artifact Map, Deliverable, Pseudocode (T2/T3), Files to Change, TDD Test List, Acceptance Criteria, Risks.
 
+**Required header fields** (per [`.claude/rules/wiki-sibling-routing.md`](../../rules/wiki-sibling-routing.md) Layer 3, [#2778](https://github.com/vamseeachanta/workspace-hub/issues/2778)):
+- `Client:` — required for any plan touching wiki content (`llm-wiki` or `llm-wiki-<client>` repos). Use `N/A` for plans that don't touch wiki content (most operational, infra, or pure-workspace-hub work).
+- `Project:` — optional. Populate when the plan scopes to a single project under a client (e.g., `Project: sirocco` for B1528 SIROCCO work under client `acma`). Consumed by `check-wiki-sibling-frontmatter.py` Rule E to validate `project:` frontmatter on staged content.
+
+When `Client:` is a real client slug (not `N/A`), verify it matches a `short_name` in [`config/client-wikis.yml`](../../../config/client-wikis.yml). When `Project:` is set, verify it's enumerated in that client's `projects:` list (or the list is absent/empty — warn-only forward-compat).
+
 For engineering-calculation or parametric chart plans, also run the checks in `references/engineering-parametric-chart-plan-review.md`: freeze local vs reported coordinate frames before formulas, explicitly classify off-grid UI defaults versus engineering sweep rows, ensure representative chart traces do not hide requested sweep coverage, and require tests for frame transforms/sign conventions.
 
 When review finds unresolved domain decisions, use `references/domain-decision-blocked-plan-review.md` to keep the plan blocked-draft/needs-decision, post a concise decision checklist, and avoid prematurely applying approval-ready labels.
