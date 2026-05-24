@@ -8033,7 +8033,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-05-24T13:24:02Z",
+  "generated_at": "2026-05-24T17:20:39Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -16055,16 +16055,16 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-24T13:23:58.843193Z",
+  "scorecard_generated_at": "2026-05-24T17:20:36.393260Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-24T13:23:58.614689Z",
+  "utilization_generated_at": "2026-05-24T17:20:36.165278Z",
   "warning_summary": {
     "approved_no_marker": 12,
     "approved_no_plan": 4,
     "empty_review": 3,
     "legacy_review_no_sha": 32,
     "major_review": 24,
-    "marker_without_open_approved_issue": 136,
+    "marker_without_open_approved_issue": 137,
     "missing_review": 34,
     "unavailable_review": 14,
     "unknown_review": 2
