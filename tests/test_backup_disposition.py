@@ -251,7 +251,7 @@ def test_write_disposition_report_creates_redacted_markdown(tmp_path: Path, monk
         disk_usage_fn=lambda p: module.DiskUsageTriple(total=100, used=40, free=60),
     )
 
-    assert written == output
+    assert written == (tmp_path / output).resolve()
     rendered = output.read_text(encoding="utf-8")
     assert "metadata-only" in rendered
     assert "Confidential" not in rendered
@@ -284,6 +284,53 @@ def test_write_disposition_report_rejects_mnt_ace_output_target(tmp_path: Path) 
             active_root=active,
             mount_path=tmp_path,
             output_path=Path("/mnt/ace/issue-2769-report.md"),
+            disk_usage_fn=lambda p: module.DiskUsageTriple(total=100, used=40, free=60),
+        )
+
+
+def test_write_disposition_report_rejects_relative_output_escaping_repo(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Regression for #2769 cross-review MAJOR: a relative path that resolves
+    # outside the repo/worktree must be blocked, not just absolute paths.
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    backup, active = _backup_and_active(tmp_path)
+    _write(backup / "f.txt", "x")
+    _write(active / "f.txt", "x")
+    monkeypatch.chdir(repo)
+
+    with pytest.raises(module.OutputResidencyBlocked):
+        module.write_disposition_report(
+            backup_root=backup,
+            active_root=active,
+            mount_path=tmp_path,
+            output_path=Path("..") / "escape" / "report.md",
+            disk_usage_fn=lambda p: module.DiskUsageTriple(total=100, used=40, free=60),
+        )
+
+
+def test_write_disposition_report_rejects_symlinked_output_dir(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Regression for #2769 cross-review MAJOR: a symlink inside the repo that
+    # points outside it must not be a write-through escape (TOCTOU/symlink).
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (repo / "link").symlink_to(outside, target_is_directory=True)
+    backup, active = _backup_and_active(tmp_path)
+    _write(backup / "f.txt", "x")
+    _write(active / "f.txt", "x")
+    monkeypatch.chdir(repo)
+
+    with pytest.raises(module.OutputResidencyBlocked):
+        module.write_disposition_report(
+            backup_root=backup,
+            active_root=active,
+            mount_path=tmp_path,
+            output_path=Path("link") / "report.md",
             disk_usage_fn=lambda p: module.DiskUsageTriple(total=100, used=40, free=60),
         )
 

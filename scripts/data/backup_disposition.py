@@ -296,16 +296,22 @@ def write_disposition_report(
 
 def _validated_output_path(output_path: Path | str) -> Path:
     output = Path(output_path)
+    # Resolve symlinks and relative components to the real target before any
+    # residency check, then write to that resolved path. Validating one path and
+    # returning another (the un-resolved input) is a TOCTOU/symlink-escape hole.
     resolved = output.expanduser().resolve(strict=False)
     mnt_ace = Path("/mnt/ace").resolve(strict=False)
     if resolved == mnt_ace or mnt_ace in resolved.parents:
         raise OutputResidencyBlocked("Phase A reports must not be written to data roots.")
+    # Containment is enforced for every input — absolute, relative, or symlinked.
+    # A relative path resolves against cwd; a symlink component resolves to its
+    # real target; either way the final target must live inside the repo/worktree.
     repo_root = Path.cwd().resolve(strict=False)
-    if output.is_absolute() and resolved != repo_root and repo_root not in resolved.parents:
+    if resolved != repo_root and repo_root not in resolved.parents:
         raise OutputResidencyBlocked(
             "Phase A reports must be written inside the current repo/worktree."
         )
-    return output
+    return resolved
 
 
 def execute_disposition_recommendation(
