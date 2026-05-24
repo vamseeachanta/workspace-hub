@@ -7,6 +7,8 @@
 - [All-provider memory should flow through Hermes](feedback_memory_aspire_to_hermes_level.md) — Hermes is the canonical memory backend; per-provider stores (Claude auto-memory, Codex state, Gemini session) should consolidate to Hermes rather than evolve in parallel. Collapse cross-provider silos (Claude/Codex/Gemini learnings unified, not siloed); aim for Hermes-bar on capture / retrieval / cross-machine + cross-provider sync (2026-05-17)
 - [No local task IDs](feedback_no_reserved_wrk_ids.md) — GitHub issues only
 - [Check parallel work](feedback_check_parallel_work.md) — scan in-flight sessions first
+- [Third-party skill-pack screening](feedback_third_party_skill_pack_screening.md) — screen each skill vs ecosystem conflicts before importing; reject push-blocking hooks, JS-toolchain pre-commit, GSD-duplicating process skills
+- [Fetch remote before resolving issue](feedback_fetch_remote_before_resolving_issue.md) — `git fetch` + grep `--all` for #NNNN before coding; another machine may have already pushed the fix (re-solved #2775 blind, 6 behind)
 - [Hermes session grep: journal vs active](feedback_hermes_session_grep_journal_vs_active.md) — `grep -R <path> ~/.hermes/sessions` hits ≠ active use; discriminator is session_id ∩ running pgrep workers, not file existence
 - [Pre-completion cleanup audit gate](feedback_pre_completion_cleanup_audit_gate.md) — run audit skill before "all done"; CLEAN/EXPECTED/UNEXPECTED bucket verdict; never relay completion with UNEXPECTED residue. Hermes flow-through tracked at [#2750](https://github.com/vamseeachanta/workspace-hub/issues/2750)
 - [Discovery-first on stale plan-approved](feedback_discovery_first_on_stale_plan_approved.md) — inventory codebase before writing; prior commits may have completed scope. llm-wiki #41/#42 both validated
@@ -100,6 +102,12 @@
 - [codex-cli stdin-detection hang REOPENED 2026-05-16](feedback_codex_cli_0_124_upstream_regression.md) — 0.130.0 hangs non-deterministically; `</dev/null` works sometimes not always; downgrade doesn't help; #2715
 - [Regression test broader than issue scope](feedback_regression_test_broader_than_issue_scope.md) — scope test glob to defect class, not just named file; catches sibling regressions for free (caught HTML_REPORTING_STANDARDS.md while fixing AI_AGENT_ORCHESTRATION.md per aceengineer-website#14)
 - [Post-commit autosync defeats test gate](feedback_post_commit_autosync_defeats_test_gate.md) — push-after-test plans MUST use `SKIP_PUSH=1 git commit`; bare `git commit` triggers WRK-1141 post-commit hook which pushes immediately and bypasses the empirical-test gate. Companion to [[feedback_autosync_silent_pusher]]
+- [Hermes --triage is pipeline entry not park](feedback_hermes_triage_is_pipeline_entry.md) — `--triage` puts cards INTO the gateway specifier+decomposer auto-pipeline; 134 triage cards spawned 532 children + 260 workers in 10min. NOT a safe parking spot
+- [Hermes --initial-status blocked also auto-unblocks](feedback_hermes_blocked_status_auto_unblocked.md) — blocked-without-reason cards are auto-unblocked to ready by gateway within minutes; only blocked-with-reason survives. For true park use `archive` or set `blocked_reason`
+- [Autostash lock-race on workspace-hub](feedback_autostash_lock_race_workspace_hub.md) — Claude statusline.sh `git status` loop races with `--autostash` lock-acquisition; fatal: Cannot autostash. Push via feature-branch instead
+- [Worktree materialization variance on workspace-hub](feedback_worktree_materialization_variance.md) — 19455-file worktree: 17min one run, 1h+ stalled another under parallel-agent I/O. Sanity-poll at 5min; if dir absent, kill+pivot
+- [git commit -- path ignores staged deletion](feedback_git_commit_pathspec_ignores_staged_deletion.md) — pathspec-mode commit re-derives from working tree; silently drops a `git rm --cached` deletion when the file still exists on disk. Commit the index (no pathspec), guarded to the one path
+- [Chained git op under heavy load](feedback_chained_git_op_under_heavy_load.md) — under heavy parallel-git load (kanban fleet + multi-session, >20 git procs), chained `git add && git commit && ...` is hazardous; one stuck step kills the chain. Use atomic per-file calls separated by `;`. 19-min D-state hang on llm-wiki 2026-05-23.
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -118,6 +126,7 @@
 - [Harness evals](project_ai_harness_evaluations.md) — #1466-1470
 - [Hermes](project_hermes_installation.md) — v0.4.0, shebang reverts (3x)
 - [Hermes Codex quota](project_hermes_codex_quota.md) — #6551, follow-ups #6564-6567
+- [Hermes kanban ecosystem manifest](project_hermes_kanban_ecosystem.md) — 45 boards × 1536 cards at workspace-hub/.claude/memory/kanban/; loader idempotent via gh:owner/repo#N; local commits `d6f4fcf79`+`908247944` pending push (2026-05-23 handoff)
 - [/today tips](project_workflow_tips_today.md) — tip-of-the-day, YAML catalog
 - [Solver queue](project_solver_queue_architecture.md) — PRODUCTION, batch+retry+dashboard
 - [Overnight batch](project_overnight_batch_runs.md) — 5 parallel terminals nightly
@@ -140,6 +149,7 @@
 - [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — SUPERSEDED 2026-05-20 by privacy flip; historical context only
 - [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — partial supersede; "public + legally-sanitized" replaced by "private + full-fidelity"
 - [Codes/standards data in private llm-wiki](feedback_codes_standards_data_in_private_wiki.md) — OCIMF/API/DNV/ABS/IACS/ASCE/ASME → private llm-wiki; verbatim+tables allowed; raw PDFs stay `/mnt/ace/acma-codes/`
+- [Wiki sibling naming + factory IMPLEMENTED](project_wiki_sibling_naming_locked.md) — suffix `llm-wiki-<client>` decided #2731 D4, factory + registry + acma instance landed via #2746 (closed); one-per-CLIENT (SIROCCO→`llm-wiki-acma/projects/sirocco/`); retrieval-time rule pending #2778
 - [Cross-review finds what self-review misses](feedback_cross_review_finds_what_self_review_misses.md) — code-stage adversarial cross-review consistently surfaces public-repo leaks, LICENSE-detection bugs, duplicated-resolver drift, asymmetric error handling, OR-disjunction test fences. Single-provider multi-angle dispatch works as fallback. 2026-05-21 verdict: 4 MAJOR + multiple MINOR on #617+#429 close-out.
 - [llm-wiki external-post ingest workflow](project_llm_wiki_external_post_ingest_workflow.md) — 8-step LinkedIn/blog → wiki ingest; first-run 2026-05-07 (Sherwood, Rötzer); 14-URL 2026-05-18 batch added 2 domains + AskUserQuestion-pivot pattern
 - [llm-wiki geotechnical-engineering founded](project_llm_wiki_geotechnical_engineering_founded.md) — 13th domain 2026-05-18; soil constitutive models, foundations, earthquake-geotech; founding source Xu SoilModelsPy

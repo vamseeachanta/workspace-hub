@@ -62,13 +62,13 @@ Context parity = compute parity. Zero waste everywhere.
 ## GSD Workflow
 
 GSD is the sole workflow system since 2026-03-25.
-- Plans live in `.planning/` within each repo
+- Plans live in `.planning/` within each repo *verified: 2026-05-24*
 - Long-duration plans live in `docs/plans/`
 - Use `/gsd:*` commands for task management
 
 ## Skill System (Hermes)
 
-Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1.
+Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1. *stale: 2026-05-24*
 On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures.
 
 

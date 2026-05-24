@@ -18,11 +18,11 @@
 ## Workspace Layout (Linux)
 
 - `/mnt/local-analysis/workspace-hub/` — the real git repo mount
-- `~/workspace-hub` — **sparse overlay** on ace-linux-1; writes may fail silently
+- `~/workspace-hub` — **sparse overlay** on ace-linux-1; writes may fail silently *stale: 2026-05-24*
   - If a write via tool fails: write to `/tmp/` first, then `mv` via terminal to the real mount
 - `digitalmodel/` — **separate git repo** (vamseeachanta/digitalmodel.git), gitignored by parent
   - Commits MUST be made from inside `digitalmodel/` — not from workspace-hub root
-- `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent
+- `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent *stale: 2026-05-24*
 - `worldenergydata/` — energy data sub-repo
 
 ## Windows Path Conventions

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-23T06:16:58.846462Z",
+  "generated_at": "2026-05-24T13:24:00.767381Z",
   "current_week": "2026-W21",
-  "scorecard_generated_at": "2026-05-23T06:16:55.423960Z",
+  "scorecard_generated_at": "2026-05-24T13:23:58.843193Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -705,7 +705,7 @@
             "cat:harness",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-18T19:35:29Z",
+          "updatedAt": "2026-05-24T10:14:34Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -987,56 +987,9 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-05-22T11:45:06Z",
+          "updatedAt": "2026-05-24T11:45:16Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2370,
-          "title": "feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2370",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "domain:knowledge-management"
-          ],
-          "updatedAt": "2026-05-18T19:42:56Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2374,
-          "title": "feat(knowledge): build transient-promotion candidate queue from handoffs and review artifacts",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2374",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "cat:harness",
-            "domain:knowledge-management"
-          ],
-          "updatedAt": "2026-05-18T19:42:53Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1685,31 +1638,6 @@
           ]
         },
         {
-          "number": 2769,
-          "title": "chore(data-disposition): plan disposition of /mnt/ace/acma-projects.preexisting-* 1.8 TB pre-move backup",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2769",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "cat:operations",
-            "domain:repo-organization",
-            "status:working",
-            "agent:claude"
-          ],
-          "updatedAt": "2026-05-21T11:10:40Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "existing claude agent label",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "strategy"
-          ]
-        },
-        {
           "number": 2772,
           "title": "decision(workstations): choose tier-1 repo placement for licensed-win-1",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2772",
@@ -1762,72 +1690,86 @@
           ]
         },
         {
-          "number": 2376,
-          "title": "feat(harness): provider assessment \u2014 corpus-honest subset (descoped from #43)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2376",
+          "number": 2779,
+          "title": "Security: shell=True + f-string injection in git_manager.py (4 repos)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2779",
           "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "domain:session",
-            "agent:claude"
+            "bug",
+            "priority:high"
           ],
-          "updatedAt": "2026-05-18T19:42:50Z",
+          "updatedAt": "2026-05-23T09:51:52Z",
           "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "existing claude agent label",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2377,
-          "title": "feat(harness): add missing session-signal event emitters to unblock deferred provider-assessment dimensions",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2377",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "domain:session",
-            "agent:claude"
-          ],
-          "updatedAt": "2026-05-18T19:42:47Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "existing claude agent label",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2379,
-          "title": "feat(knowledge): generate task and asset explorer views from the intelligence accessibility registry",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2379",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "domain:document-intelligence"
-          ],
-          "updatedAt": "2026-05-18T19:42:44Z",
-          "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2780,
+          "title": "Bug: gate_pass_review.sh subshell counter always REJECTS (2 repos)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2780",
+          "labels": [
+            "bug",
+            "priority:high"
+          ],
+          "updatedAt": "2026-05-23T09:51:53Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2781,
+          "title": "Security: workspace-wide yaml.Loader/pickle/eval/exec + SQLi sweep",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2781",
+          "labels": [
+            "bug",
+            "priority:high"
+          ],
+          "updatedAt": "2026-05-23T09:51:55Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2783,
+          "title": "Review remediation: workspace-hub repo-specific findings (2026-05-23)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2783",
+          "labels": [
+            "bug",
+            "priority:high"
+          ],
+          "updatedAt": "2026-05-23T09:51:58Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
             "strategy"
           ]
         },
@@ -2233,7 +2175,7 @@
             "priority:medium",
             "cat:infrastructure"
           ],
-          "updatedAt": "2026-05-21T12:06:37Z",
+          "updatedAt": "2026-05-23T12:08:19Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2924,7 +2866,7 @@
             "cat:infrastructure",
             "maintenance"
           ],
-          "updatedAt": "2026-05-22T12:17:37Z",
+          "updatedAt": "2026-05-24T12:07:30Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3855,6 +3797,47 @@
           ]
         },
         {
+          "number": 2782,
+          "title": "Bug: hardcoded /mnt/github paths silently no-op (env-var refactor)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2782",
+          "labels": [
+            "bug",
+            "priority:medium"
+          ],
+          "updatedAt": "2026-05-23T09:51:56Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2784,
+          "title": "Confirm and delete acma-projects-freeze-work snapshot",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2784",
+          "labels": [
+            "priority:medium"
+          ],
+          "updatedAt": "2026-05-23T09:51:59Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2386,
           "title": "chore(tests): move session-analysis fixtures out of gitignored logs/ to tests/*/fixtures/",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2386",
@@ -4115,7 +4098,7 @@
           "labels": [
             "repo-readiness"
           ],
-          "updatedAt": "2026-05-22T11:06:23Z",
+          "updatedAt": "2026-05-24T11:06:17Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4876,7 +4859,7 @@
           "title": "Routine: /repo-sync + /mnt/local-analysis cleanup audit (every 2 days)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2572",
           "labels": [],
-          "updatedAt": "2026-05-21T10:14:21Z",
+          "updatedAt": "2026-05-23T10:13:45Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4946,7 +4929,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-23T05:30:23Z",
+          "updatedAt": "2026-05-24T04:08:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5033,7 +5016,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-23T05:30:23Z",
+          "updatedAt": "2026-05-24T04:08:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",

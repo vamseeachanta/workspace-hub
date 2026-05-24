@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-23T06:17:01Z
+Generated: 2026-05-24T13:24:02Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,12 +43,17 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2784 | Confirm and delete acma-projects-freeze-work snapshot | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2783 | Review remediation: workspace-hub repo-specific findings (2026-05-23) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2782 | Bug: hardcoded /mnt/github paths silently no-op (env-var refactor) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2781 | Security: workspace-wide yaml.Loader/pickle/eval/exec + SQLi sweep | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2780 | Bug: gate_pass_review.sh subshell counter always REJECTS (2 repos) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2779 | Security: shell=True + f-string injection in git_manager.py (4 repos) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2778 | feat(architecture): codify retrieval-time wiki-sibling routing rule + planning/citation/frontmatter plumbing | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2776 | Cross-wiki linking discipline — supersede stale governance + add enforcement script | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2774 | Private llm-wiki corpus-ingest program (post-2026-05-20 privacy flip) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2773 | decision(workstations): choose tier-1 repo placement for licensed-win-2 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2772 | decision(workstations): choose tier-1 repo placement for licensed-win-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2769 | chore(data-disposition): plan disposition of /mnt/ace/acma-projects.preexisting-* 1.8 TB pre-move backup | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2768 | epic(ocimf): close out MEG3/MEG4 coefficient ingestion and reference gaps | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2765 | feat(operations): add scheduler parity report for system cron and Hermes Gateway cron | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2764 | fix(operations): harden Hermes session exporter for undated session files | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
@@ -238,11 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2383 | feat(conformance): implement GUARD-1 invented-layer detector for intelligence/governance docs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2382 | feat(conformance): add promotion audit-trail checker for L5/L6→L3 wiki promotions | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2381 | chore(governance): add computable expiration metadata to session handoffs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2379 | feat(knowledge): generate task and asset explorer views from the intelligence accessibility registry | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2377 | feat(harness): add missing session-signal event emitters to unblock deferred provider-assessment dimensions | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2376 | feat(harness): provider assessment — corpus-honest subset (descoped from #43) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2374 | feat(knowledge): build transient-promotion candidate queue from handoffs and review artifacts | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2370 | feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 
 ## Lane: blocked (0)
 

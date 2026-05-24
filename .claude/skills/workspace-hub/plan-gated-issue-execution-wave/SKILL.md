@@ -59,6 +59,18 @@ Recommended architecture order used successfully:
 7. retrieval contract
 8. conformance checks
 
+## Weekly picklist / catalog-gated wave pattern
+
+For `/goal` catalog or weekly-picklist-driven waves, do not treat `status:plan-approved` alone as sufficient. Confirm all three gates before any repo-changing work:
+
+1. the catalog entry exists in the durable catalog issue body;
+2. the latest/current weekly picklist explicitly allocates that exact entry to this runner/provider;
+3. a fresh Phase 0 preflight passes after the allocation comment, including worker-collision and git-cleanliness checks.
+
+If the picklist is missing, post a governance-clean issue comment allocating the entry or documenting the hard stop, preferably via `gh issue comment --body-file` to avoid shell-quoting drift. After posting allocation, re-read the latest issue comment and rerun Phase 0; the allocation comment is not permission to skip collision checks.
+
+See `references/2026-05-23-deepening-sweep-picklist-gate.md` for the session-specific pattern.
+
 ## Approval transition pattern
 
 When the user wants to execute an approved plan:

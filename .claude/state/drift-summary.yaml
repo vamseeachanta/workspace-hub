@@ -11058,3 +11058,13 @@
     git_non_conventional: 5
     git_missing_wrk_ref: 13
     git_exempt_type: 13
+- scanned_at: "2026-05-24T08:48:58Z"
+  log: "/mnt/local-analysis/workspace-hub/logs/orchestrator/claude/session_20260523.jsonl"
+  provider: "claude"
+  violations:
+    python_runtime: 10
+    file_placement: 0
+    git_workflow: 6
+    git_non_conventional: 2
+    git_missing_wrk_ref: 4
+    git_exempt_type: 4

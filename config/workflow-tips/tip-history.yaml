@@ -99,3 +99,5 @@ shown:
     tips: [bp-compact-50pct, gsd-thread]
   - date: 2026-05-22
     tips: [gsd-fast, cc-compact-focus]
+  - date: 2026-05-24
+    tips: [bp-shell-dynamic, cc-bare]
