@@ -1,0 +1,174 @@
+board:
+  slug: repo-sabithaandkrishnaestates-tax-1099
+  display_name: sabithaandkrishnaestates | tax-1099
+  tier: domain
+  repo: vamseeachanta/sabithaandkrishnaestates
+  domain: tax-1099
+  parent_slug: repo-sabithaandkrishnaestates
+  workspace_path: /mnt/local-analysis/sabithaandkrishnaestates
+  description: 'Form 1120 / 7004, TX Franchise / PIR, 1099-MISC reconciliation, tenant
+    tax/insurance reimbursements, entity structure review, e-filing decisions.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#31
+  title: 'Evaluate e-filing options for Form 1120: TaxAct vs paper vs other'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/31
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    Same filing decision as AceEngineer (aceengineer-admin#23). SK Estates Inc needs
+    to determine the best filing method for Form 1120.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#30
+  title: 'Reconcile September rent: $10,141.67 on 1099 but not in bank'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/30
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Issue
+
+    The 1099-MISC reports $50,085.60 from Family Dollar, which includes September
+    full-month rent of $10,141.67. However, only 3 months of rent deposits (Oct/Nov/Dec)
+    appear on the Novo bank statements, totaling $30,425.01 + $9,518.92 insurance
+    = $39,943.93.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#24
+  title: File Texas No Tax Due Report + PIR by May 15, 2026
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/24
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Deadline: May 15, 2026
+
+    File via Webfile XT036957. NOT affected by federal extension.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#23
+  title: File Form 7004 or Form 1120 by April 15, 2026
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/23
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Deadline: April 15, 2026
+
+
+    ### Decision Required'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#21
+  title: 'Annual Recurring: SKEstates Tax Calendar (Template)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/21
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Annual Timeline (Repeat Every Year)
+
+
+    | Date | Task |'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#20
+  title: '2026 Annual: Review Entity Structure (C-Corp vs S-Corp vs LLC)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/20
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Evaluate if C-Corp remains optimal or S-Corp/LLC would save taxes post-NOL.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#18
+  title: '2026 Annual: File Form 1120 + TX Franchise Tax by April/May 2027'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/18
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Annual 2026 tax filing for SKEstates Inc (EIN: 39-2384131). Deadline: April 15,
+    2027 / May 15, 2027.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#13
+  title: '2026 Annual: Send 2026 Property Tax Reimbursement Request to FD'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/13
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Send 2026 property tax reimbursement request to Family Dollar for Store #30150.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#10
+  title: Send 2025 Tax/Insurance Reimbursement Request to Family Dollar (9,330.50)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/10
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Send the 2025 tax and insurance reimbursement request to Family Dollar for Store
+    #30150.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#9
+  title: File 2025 Form 1120 (Federal) + TX Franchise Tax by April 15, 2026
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/9
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    SKEstates Inc must file its **first** corporate tax return: Form 1120 (federal)
+    by April 15, 2026 and Texas Franchise Tax report by May 15, 2026.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#5
+  title: Track 2025 Tenant Tax Reimbursement ($29,194.58) - Paid to SKEI Feb 2026
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/5
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Track the 2025 property tax reimbursement from Family Dollar for Store #30150.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#3
+  title: '1099-MISC Reconciliation: $50,085.60 RESOLVED -- pass-through property tax
+    proration explains gap'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/3
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Family Dollar (Dollar Tree) issued a 2025 Form 1099-MISC reporting **\$50,085.60**
+    in Box 1 (Rents) to SKEstates Inc. (EIN: 39-2384131) for Store #30150.'

@@ -1,0 +1,210 @@
+board:
+  slug: repo-worldenergydata-gtm
+  display_name: worldenergydata · gtm
+  tier: domain
+  repo: vamseeachanta/worldenergydata
+  domain: gtm
+  parent_slug: repo-worldenergydata
+  workspace_path: /mnt/local-analysis/worldenergydata
+  description: 'Go-to-market — capability matrix, marketing infographics, customer-facing
+    engineering analytics epic + children, calc-citation provenance.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/worldenergydata#427
+  title: 'feat(analysis): seasonal intervention risk windows — hurricane × WAR × ops
+    (#423 child, sibling of #403)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/427
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - cat:data
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+
+    Child of marketing-pipeline umbrella **#423**. Combines [#403](https://github.com/vamseeachanta/worldenergydata/issues/403)
+    hurricane-mooring infrastructure with BSEE WAR intervention timing. Operational
+    decision-support framing: when to schedule interventions to minimize storm + currents
+    + crew-fatigue risk overlap.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#426
+  title: 'feat(analysis): drilling HSE patterns (#423 child, sibling of #416)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/426
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - cat:data
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+
+    Child of marketing-pipeline umbrella **#423**. Sibling of [#416](https://github.com/vamseeachanta/worldenergydata/issues/416)
+    intervention HSE. Reuses the same data + classifier + WAR infrastructure but cuts
+    on DRILL.drilling / DRILL.completion subactivities instead of DRILL.workover /
+    DRILL.well_control.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#425
+  title: 'feat(analysis): operator-aggregate HSE benchmarking (#423 child)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/425
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - cat:data
+  - cat:business
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+
+    Child of marketing-pipeline umbrella **#423**. Most differentiated portfolio piece
+    — directly markets the "peer benchmarking from public data" value proposition.
+    Highest reputational risk (operators recognizing themselves), so requires the
+    strictest aggregation discipline.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#424
+  title: 'feat(analysis): decommissioning market outlook — 5-yr GoM forecast (#423
+    child)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/424
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:data
+  - cat:business
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+
+    Child of marketing-pipeline umbrella **#423**. Market-intelligence framing, lighter
+    on HSE. Forward-looking given the GoM decommissioning wave (many fields reaching
+    end-of-life). Strong commercial relevance — operators, contractors, and capital
+    allocators all care about decom volumes and timing.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#423
+  title: 'epic(marketing): Engineering Analytics from Public Regulatory Data — long-term
+    marketing pipeline'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/423
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - cat:business
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Umbrella for A&CE''s public-regulatory-data marketing pipeline
+
+
+    A&CE''s distinctive position: engineering analytics built on public regulatory
+    data (BSEE, EPA, OSHA, PHMSA, USCG, IMO). Operators and engineering firms can
+    verify the data source — every pattern A&CE surfaces gains credibility-by-source.
+    This issue tracks the long-term pipeline of analytical artifacts that exercise
+    that capability.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#403
+  title: 'feat(marketing): hurricane mooring risk-avoidance infographic from incident
+    data'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/403
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:data
+  - cat:business
+  - status:working
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Revise the hurricane planning/mooring infographic using `worldenergydata` marine
+    safety incident data and the reviewed document `Hurricane Planning and Mooring
+    R0-4revisions.docx` so the artifact clearly positions hurricane mooring analysis
+    as a risk-avoidance decision tool.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#364
+  title: 'docs(gtm): publish capability matrix — production-ready vs sample-only vs
+    roadmap'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/364
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:high
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Goal
+
+
+    Publish a buyer-facing capability matrix that tells the truth about every module''s
+    state. Implements the user-visible side of #349 (capability inventory) and #354
+    (manifest reconciliation) findings.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#363
+  title: 'feat(api): public Python query API for HSE module — parity with marine_safety
+    surface'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/363
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Problem
+
+
+    `marine_safety` exposes a clean public API: `wed.marine_safety_api.incidents.query(source=''maib'',
+    year=2022, incident_type=''collision'')`. The `hse` module has importers + DB
+    models but no equivalent query surface. Without it, prospects cannot run \"show
+    me operator X''s BSEE-INC trend\" or \"rank gas-distribution incidents by state\"
+    without direct DB access — which forces every demo to be hand-curated marketing
+    rather than a runnable artifact.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#361
+  title: 'feat(provenance): adopt calc-citation-contract for worldenergydata calc
+    outputs'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/361
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:engineering
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Goal
+
+
+    Adopt the workspace-hub `calc-citation-contract` (`.claude/rules/calc-citation-contract.md`)
+    for every standards-derived constant or formula in worldenergydata calc modules.
+    Emit `Citation` instances as sidecars to numeric outputs so engineering results
+    are defensible to reviewers, regulators, and buyers.'

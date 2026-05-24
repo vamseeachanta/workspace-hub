@@ -1,0 +1,12 @@
+board:
+  slug: repo-assethold
+  display_name: assethold
+  tier: repo
+  repo: vamseeachanta/assethold
+  workspace_path: /mnt/local-analysis/assethold
+  description: 'Financial / portfolio analysis library. Ownership transferred samdansk2
+    -> vamseeachanta; local origin may be stale. Tier-2 sub-boards: models, reports,
+    infra.
+
+    '
+cards: []

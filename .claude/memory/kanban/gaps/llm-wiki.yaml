@@ -1,0 +1,62 @@
+gaps:
+- idempotency_key: gap:repo-llm-wiki:001
+  title: Privacy-flip residue audit — ensure no public-only paths still claim public
+    URLs
+  source: detected_gap
+  detection_basis: 'memory: llm-wiki PRIVACY FLIP 2026-05-20; #117 spinout-public
+    thesis superseded'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Sweep wiki/ for hardcoded github.com/vamseeachanta/llm-wiki public-tree
+    links, codes/standards verbatim guards, and update README badges.
+- idempotency_key: gap:repo-llm-wiki:002
+  title: Sibling naming enforcement — llm-wiki-<client> suffix lint
+  source: detected_gap
+  detection_basis: 'memory: wiki_sibling_naming_locked 2026-05-22; #2778; #2744 rename
+    pending'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Pre-commit rejecting any new sibling directory not matching llm-wiki-<client>/
+    pattern.
+- idempotency_key: gap:repo-llm-wiki:003
+  title: Corpus-ingest batch overlap — cross-discipline duplicate detection
+  source: detected_gap
+  detection_basis: 'Issues #103-#117 span 14+ corpora; no dedup index across overlapping
+    standards (e.g., API + ASME)'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Build a per-document SHA + title index across all corpus-ingest lanes.
+- idempotency_key: gap:repo-llm-wiki:004
+  title: Validator hardening epic landing zone (#102) — child issues missing
+  source: detected_gap
+  detection_basis: '#102 says ''address cross-review findings before closing #77''
+    but children not catalogued'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Enumerate the cross-review findings into discrete sub-issues with
+    status field.
+- idempotency_key: gap:repo-llm-wiki:005
+  title: Standards verbatim/table guardrail — confirm private repo allows full fidelity
+  source: detected_gap
+  detection_basis: 'memory: codes_standards_data_in_private_wiki — verbatim allowed
+    but enforcement not coded'
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Linter rule: standards/<code-id>.md MUST cite section+edition (per
+    silent verdict-flip defect class).'
+- idempotency_key: gap:repo-llm-wiki:006
+  title: 'Cross-link manifest staleness — #21 regenerate cross-links across 8 wikis'
+  source: detected_gap
+  detection_basis: Plan-approved but no scheduled regeneration job; drift risk after
+    each ingest batch
+  needs_issue: true
+  priority: 1
+  body_excerpt: Nightly job to regenerate cross-links.md and fail CI on drift > N
+    edges.
+- idempotency_key: gap:repo-llm-wiki:007
+  title: CLI/MCP query surface — design vs implementation gap (#80)
+  source: detected_gap
+  detection_basis: Plan-approved but no exec lane; agent-access path remains brittle
+  needs_issue: true
+  priority: 1
+  body_excerpt: Spawn a tier-2 epic with concrete CLI commands and MCP tool registrations.

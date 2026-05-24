@@ -1,0 +1,395 @@
+board:
+  slug: repo-aceengineer-strategy
+  display_name: aceengineer-strategy
+  tier: repo
+  repo: vamseeachanta/aceengineer-strategy
+  workspace_path: /mnt/local-analysis/aceengineer-strategy
+  description: 'AceEngineer strategy and content planning — canonical source for live-site
+    content alongside the website repo.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#22
+  title: 'Prepare Shell interventions outreach: Lou Daigle'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/22
+  gh_state: open
+  gh_labels:
+  - priority:P1
+  - strategy
+  - status:scoping
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Prepare a future Shell interventions outreach touchpoint for Lou Daigle using
+    user-provided contact route.
+
+    ## Contact'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#21
+  title: 'Prepare Shell interventions outreach: Chris Gerace'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/21
+  gh_state: open
+  gh_labels:
+  - priority:P1
+  - strategy
+  - status:scoping
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Prepare a future Shell interventions outreach touchpoint for Chris Gerace using
+    user-provided contact route.
+
+    ## Contact'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#20
+  title: 'Plan Shell interventions outreach cluster: Mike Blackwell, Chris Gerace,
+    Lou Daigle'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/20
+  gh_state: open
+  gh_labels:
+  - priority:P1
+  - strategy
+  - status:scoping
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Add Mike Blackwell, Chris Gerace, and Lou Daigle as a Shell-side interventions
+    prospect cluster and prepare a squeaky-ready outreach/collateral packet before
+    any contact.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#18
+  title: Plan Scott Sanantonio offshore intervention and riser automation outreach
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/18
+  gh_state: open
+  gh_labels:
+  - priority:P1
+  - strategy
+  - status:scoping
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Prepare a user-approved outreach email and minimum credible collateral packet
+    for Scott Sanantonio around offshore intervention, abandonment, HSE inputs, and
+    riser-analysis automation.
+
+    ## Planning artifact'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#17
+  title: Prepare GTM outreach pack for smaller installation vessel owners
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/17
+  gh_state: open
+  gh_labels:
+  - priority:P1
+  - strategy
+  - status:scoping
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Background
+
+    We have an existing digitalmodel vessel-suitability GTM pack with jumper installation,
+    mudmat installation, and shallow pipelay capability examples. The next GTM wedge
+    is smaller installation vessel owners/operators: regional CSV/MPSV/ROV-support
+    fleets, subsea construction contractors, mooring/IMR/decommissioning contractors,
+    and commercial teams that need to prove vessel capability in tenders.
+
+    Strategy draft:'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#15
+  title: 'governance(ace-drive): standardize external-drive ingest and /mnt/ace data
+    placement policy'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/15
+  gh_state: open
+  gh_labels:
+  - strategy
+  - status:scoping
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Create a long-term governance standard for ingesting external drives into `/mnt/ace`
+    and organizing data under repo-aligned buckets.
+
+    This is a strategy/governance issue, not the execution tracker for the current
+    Elements drive copy. The current Elements ingest execution is tracked in workspace-hub
+    and must follow the mandatory issue-planning workflow before any rsync or merge.'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#14
+  title: '[P4] Replication harness: riser + field-development verticals (post-mooring)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/14
+  gh_state: open
+  gh_labels:
+  - priority:P4
+  - flywheel
+  - status:scoping
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Replication Harness: Riser + Field-Development Verticals (Post-Mooring)
+
+    **Priority:** P4 — Post-wedge. Locked behind C9, C10, C11 success.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#13
+  title: '[P3] Feedback-loop pipeline + public loop-closure log'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/13
+  gh_state: open
+  gh_labels:
+  - priority:P3
+  - flywheel
+  - status:scoping
+  - layer:feedback
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Feedback-Loop Pipeline + Public Loop-Closure Log
+
+    **Priority:** P3 — The actual moat. Layer 7.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#12
+  title: '[P3] Real-time mooring monitoring copilot — pilot scope'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/12
+  gh_state: open
+  gh_labels:
+  - priority:P3
+  - flywheel
+  - status:scoping
+  - layer:realtime
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Real-Time Mooring Monitoring Copilot — Pilot Scope
+
+    **Priority:** P3 — Loop closure. Layer 6.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#11
+  title: '[P3] Anchor pilot client + telemetry-sharing agreement (default-publish,
+    opt-out clause)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/11
+  gh_state: open
+  gh_labels:
+  - priority:P3
+  - flywheel
+  - status:scoping
+  - layer:client-data
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Anchor Pilot Client + Telemetry-Sharing Agreement (Default-Publish,
+    Opt-Out Clause)
+
+    **Priority:** P3 — Loop closure. Without this, layers 6+7 cannot exist.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#10
+  title: '[P2] Flywheel portfolio management — cadence, dashboards, governance'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/10
+  gh_state: open
+  gh_labels:
+  - priority:P2
+  - flywheel
+  - strategy
+  - status:scoping
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Flywheel Portfolio Management — Cadence, Dashboards, Governance
+
+    **Priority:** P2 — Cross-cutting management surface (per user 2026-04-25: "remember
+    to add features to manage").
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#9
+  title: '[P2] Pricing & licensing model: open-core, client-opt-out, freemium-eligible'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/9
+  gh_state: open
+  gh_labels:
+  - priority:P2
+  - flywheel
+  - strategy
+  - status:scoping
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Pricing & Licensing Model — Open-Core, Client-Opt-Out, Freemium-Eligible
+
+    **Priority:** P2 — Commercial substrate. Blocks #7, #8 from going live.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#8
+  title: '[P2] Mooring parametric atlas API — institutional integration tier'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/8
+  gh_state: open
+  gh_labels:
+  - priority:P2
+  - flywheel
+  - status:scoping
+  - layer:parametric
+  - layer:client-data
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Mooring Parametric Atlas API — Institutional Integration Tier
+
+    **Priority:** P2 — Paid integration tier.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#7
+  title: '[P2] Mooring failure intelligence integration product (premium API + integration,
+    NOT data exclusivity)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/7
+  gh_state: open
+  gh_labels:
+  - priority:P2
+  - flywheel
+  - status:scoping
+  - layer:public-data
+  - layer:client-data
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Mooring Failure Intelligence Integration Product — Premium API
+    + Integration (NOT Data Exclusivity)
+
+    **Priority:** P2 — Paid integration tier (open-core revenue layer).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#6
+  title: '[P1] Public failure-case browser — full corpus, default-public, client-opt-out
+    only'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/6
+  gh_state: open
+  gh_labels:
+  - priority:P1
+  - flywheel
+  - status:scoping
+  - layer:public-data
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Public Failure-Case Browser — Full Corpus, Default-Public, Client-Opt-Out
+    Only
+
+    **Priority:** P1 — Public layer / lead magnet.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#5
+  title: '[P1] Public mooring quick-screen calculator'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/5
+  gh_state: open
+  gh_labels:
+  - priority:P1
+  - flywheel
+  - status:plan-approved
+  - layer:public-data
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Public Mooring Quick-Screen Calculator
+
+    **Priority:** P1 — Open layer / lead magnet.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#4
+  title: '[P0] Standards LLM-wiki industrialization (decide canonical home + populate
+    DNV-OS-E301, API RP 2SK)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/4
+  gh_state: open
+  gh_labels:
+  - priority:P0
+  - flywheel
+  - status:plan-approved
+  - layer:standards
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Standards LLM-Wiki Industrialization — Decide Canonical Home +
+    Populate DNV-OS-E301 + API RP 2SK
+
+    **Priority:** P0 — Substrate. Blocks #5, #6, #7, #9 (everything that cites standards).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#3
+  title: '[P0] ICP confirmation: primary buyer segment for paid integration tier'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/3
+  gh_state: open
+  gh_labels:
+  - priority:P0
+  - flywheel
+  - strategy
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# ICP Confirmation: Primary Buyer Segment for Closed Datasets
+
+    **Priority:** P0 — Sales target lock. Blocks C6, C7, C8, C9.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#2
+  title: '[P0] Wedge confirmation: Approach C + mooring as first vertical'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/2
+  gh_state: open
+  gh_labels:
+  - priority:P0
+  - flywheel
+  - strategy
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Wedge Confirmation: Approach C + Mooring as First Vertical
+
+    **Priority:** P0 — Foundational decision. Blocks C3, C4, C5, C6, C7, C9, C10,
+    C11.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-strategy#1
+  title: '[Epic] Cradle-to-Grave Engineering Flywheel — Strategic Initiative'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/1
+  gh_state: open
+  gh_labels:
+  - epic
+  - flywheel
+  - strategy
+  - status:scoping
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Cradle-to-Grave Engineering Flywheel — Strategic Initiative
+
+    ## Vision
+
+    Build the offshore/marine engineering equivalent of an integrated operating system
+    across the full design → construction → maintenance lifecycle. Modeled in part
+    on SemiAnalysis (open-data lead magnet → closed-data subscription → bespoke advisory)
+    but **extended structurally**: SemiAnalysis only observes chip manufacturing;
+    we participate in offshore engineering, which lets us close a feedback loop they
+    cannot.'

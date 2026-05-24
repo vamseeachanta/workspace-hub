@@ -1,0 +1,168 @@
+board:
+  slug: repo-achantas-data-finance
+  display_name: achantas-data · finance
+  tier: domain
+  repo: vamseeachanta/achantas-data
+  domain: finance
+  parent_slug: repo-achantas-data
+  workspace_path: /mnt/local-analysis/achantas-data
+  description: Personal tax filings, quarterly estimates, electricity plan renewals,
+    stock portfolio framework, household financial decisions.
+cards:
+- idempotency_key: gh:vamseeachanta/achantas-data#40
+  title: Evaluate electricity plan renewal — 10.054¢/kWh × 36 months
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/40
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Current electricity provider is offering a renewal at **10.054¢/kWh fixed for
+    36 months**. Capture the offer, validate against the Texas retail market, and
+    decide whether to accept, counter-shop, or take a shorter term.
+
+    ## Offer'
+- idempotency_key: gh:vamseeachanta/achantas-data#34
+  title: Download FreeTaxUSA 2025 tax return PDFs for archival
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/34
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    FreeTaxUSA session paused at Final Steps. The following PDFs are available for
+    download from the **Federal Tax Summary** page but could not be auto-downloaded
+    (popup-based PDF viewer).
+
+    ## Forms Available on Summary Page'
+- idempotency_key: gh:vamseeachanta/achantas-data#33
+  title: Complete FreeTaxUSA final steps and submit 2025 return
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/33
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    FreeTaxUSA session paused at "Phone Number Sent to IRS" page (Final Steps, step
+    2 of 3). All income, deductions, credits, and payment method have been entered.
+
+    ## Remaining Steps'
+- idempotency_key: gh:vamseeachanta/achantas-data#31
+  title: Pay 2025 federal taxes via IRS Direct Pay — $13,635 by April 15
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/31
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Context
+
+    FreeTaxUSA return (issue #22) selected **IRS Direct Pay** as payment method. After
+    e-filing, pay the balance due through the IRS Direct Pay portal.
+
+    ## Action'
+- idempotency_key: gh:vamseeachanta/achantas-data#30
+  title: Review 2026 year-end tax strategy to reduce underpayment risk
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/30
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Review 2026 personal tax cash-flow strategy before year-end to reduce or eliminate
+    future underpayment penalties.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/achantas-data#29
+  title: Archive 2025 filed return, payment confirmations, and close tax issues
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/29
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    After the 2025 personal federal return is filed and paid, archive the filed return
+    PDF, e-file acceptance evidence, and payment confirmations in the repo, then close
+    the active filing/payment issues.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/achantas-data#28
+  title: Set up and track 2026 quarterly estimated federal tax payments
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/28
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Track and execute 2026 quarterly estimated federal tax payments for the 2025 personal-return
+    follow-up.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/achantas-data#27
+  title: 'Stock Portfolio: Performance Assessment & Daily Guidance Framework'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/27
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Assess personal stock portfolio performance on Fidelity, review past buy/sell
+    actions and strategy, and establish a structured daily guidance framework for
+    long-term investment with selective position trimming.
+
+    **Related repos:**'
+- idempotency_key: gh:vamseeachanta/achantas-data#23
+  title: Pay 2025 Federal Tax Balance Due (~$13,091) by April 15, 2026
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/23
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Deadline: April 15, 2026
+
+    Payment is due same day as filing — even if you file an extension, the payment
+    is still due April 15.
+
+    ### Amount'
+- idempotency_key: gh:vamseeachanta/achantas-data#22
+  title: File 2025 Personal Federal Tax Return (Form 1040 MFJ) by April 15, 2026
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/22
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Deadline: April 15, 2026
+
+    ### Entity
+
+    - Taxpayers: Vamsee Achanta & Sabitha Deepthimahanti (Married Filing Jointly)'

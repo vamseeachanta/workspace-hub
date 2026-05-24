@@ -1,0 +1,178 @@
+board:
+  slug: repo-kaggle-rogii-2026
+  display_name: kaggle-rogii-2026
+  tier: repo
+  repo: vamseeachanta/kaggle-rogii-2026
+  workspace_path: /mnt/local-analysis/kaggle-rogii-2026
+  description: 'Kaggle ROGII 2026 competition — oil & gas data competition. Per memory:
+    ~250 datasets surveyed; top 12 curated in SOURCES_kaggle.md.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/kaggle-rogii-2026#9
+  title: 'BUG: Baseline notebook hangs on Kaggle (path-detection infinite loop when
+    /kaggle/input not visible)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/kaggle-rogii-2026/issues/9
+  gh_state: open
+  gh_labels:
+  - bug
+  - phase-0
+  - leaderboard
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Symptom
+
+    Kernel `aceengineer/rogii-baseline-carry-forward-tvt-input` was pushed 2026-05-05
+    and ran for 12 hours before Kaggle force-killed it with `CellTimeoutError: A cell
+    timed out while it was being executed, after 43200 seconds.`
+
+    The first cell (paths setup) was the one that timed out — not modelling, not I/O,
+    just `Path.exists()` and a while loop.'
+- idempotency_key: gh:vamseeachanta/kaggle-rogii-2026#7
+  title: Phase 4 — Sequence model with regime auxiliary head
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/kaggle-rogii-2026/issues/7
+  gh_state: open
+  gh_labels:
+  - phase-4
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Per-MD sequence model conditioned on lateral logs + typewell + offset-well
+    prior.
+
+    ## Architectures (increasing complexity)
+
+    1. 1D-CNN encoder over \`GR, dGR/dMD, dZ/dMD, TVT_input\`; regression head + auxiliary
+    regime-classification head.'
+- idempotency_key: gh:vamseeachanta/kaggle-rogii-2026#8
+  title: Phase 5 — Ensembling + submission packaging
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/kaggle-rogii-2026/issues/8
+  gh_state: open
+  gh_labels:
+  - phase-5
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Final two weeks. Combine models and harden the Kaggle submission.
+
+    ## Ensemble
+
+    Weighted blend of (DTW alignment from Phase 1) + (GBDT from Phase 3) + (sequence
+    model from Phase 4). Likely sequence dominates; GBDT corrects residuals; DTW anchors
+    stability.'
+- idempotency_key: gh:vamseeachanta/kaggle-rogii-2026#6
+  title: Submit carry-forward baseline kernel to Kaggle leaderboard
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/kaggle-rogii-2026/issues/6
+  gh_state: open
+  gh_labels:
+  - phase-0
+  - leaderboard
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Track the leaderboard-floor submission. The kernel is uploaded; a
+    kernel run is currently in progress on Kaggle''s infrastructure.
+
+    ## Kernel
+
+    - ID: \`aceengineer/rogii-baseline-carry-forward-tvt-input\`'
+- idempotency_key: gh:vamseeachanta/kaggle-rogii-2026#5
+  title: 'Research: public datasets and prior art for wellbore geology'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/kaggle-rogii-2026/issues/5
+  gh_state: open
+  gh_labels:
+  - research
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'User ask 2026-05-06: get more public data to understand the work.
+
+    ## Goals
+
+    1. Ground our modeling in real-world expert practice (geosteering workflows, fault
+    patterns, formation behavior).'
+- idempotency_key: gh:vamseeachanta/kaggle-rogii-2026#4
+  title: Phase 3 — GBDT regressor over combined features
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/kaggle-rogii-2026/issues/4
+  gh_state: open
+  gh_labels:
+  - phase-3
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Row-level regression that consumes outputs from Phases 1 and 2.
+
+    ## Features
+
+    - DTW outputs from Phase 1 v2: best-match TVT (heel-DTW), best-match TVT (typewell-DTW),
+    correlation strengths, regime label.'
+- idempotency_key: gh:vamseeachanta/kaggle-rogii-2026#3
+  title: Phase 0.5 — Linear extrapolation baseline
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/kaggle-rogii-2026/issues/3
+  gh_state: open
+  gh_labels:
+  - phase-0
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Carry-forward (Phase 0) measured at **11.53 ft RMSE** on a 10-well
+    train sample. The floor is much higher than expected — Phase 1 v1 typewell-correlation
+    lost on every well (297 ft RMSE).
+
+    ## Hypothesis
+
+    Wells continue their heel-exit dip into the toe more often than they stay flat.
+    Linear extrapolation from the last ~200 heel rows (\`slope = polyfit(heel_md,
+    heel_tvt, 1)\`) should beat carry-forward on the drift-y wells without losing
+    on the flat ones.'
+- idempotency_key: gh:vamseeachanta/kaggle-rogii-2026#2
+  title: Phase 2 — Offset-well features and pad-aware CV
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/kaggle-rogii-2026/issues/2
+  gh_state: open
+  gh_labels:
+  - phase-2
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Task-brief Slides 12–13 promote neighboring wells from "stretch goal"
+    to primary signal: geology dip behaves similarly across pad-mates, so an offset
+    well''s TVT trajectory is a usable prior for the current well.
+
+    ## What to do
+
+    1. **Spatial index** over (X, Y) of all train wells (\`src/rogii/util/spatial.py\`).
+    Use lateral midpoint or full-path KDTree.'
+- idempotency_key: gh:vamseeachanta/kaggle-rogii-2026#1
+  title: Phase 1 v2 — Heel-as-reference DTW with advancing anchor
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/kaggle-rogii-2026/issues/1
+  gh_state: open
+  gh_labels:
+  - phase-1
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Phase 1 v1 (\`src/rogii/features/correlation.py\` first cut) scored
+    297 ft RMSE vs the 11.53 ft carry-forward floor — see \`docs/decisions.md\` 2026-05-05
+    entry. v2 fixes the structural problems.
+
+    ## Three fixes
+
+    1. **Advancing anchor.** v1 pinned the search prior at heel-exit TVT with a per-row
+    drift bound, so by mid-toe the search radius spanned the whole typewell. v2 must
+    update the anchor to the last predicted TVT after each row.'

@@ -1,0 +1,775 @@
+board:
+  slug: repo-digitalmodel-hydro
+  display_name: digitalmodel · hydro
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'Hydrodynamics, naval architecture, mooring, fatigue and structural — RAOs, QTFs, seakeeping, vessel stability, mooring analysis, SN curves.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/digitalmodel#596
+  title: 'chore(repo-structure): normalize digitalmodel folder/file structure'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/596
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Repo-specific planning issue for normalizing `digitalmodel` folder/file structure as the first repo in the tier-1 repo-by-repo refactor wave.
+
+    This child issue is anchored to:'
+- idempotency_key: gh:vamseeachanta/digitalmodel#483
+  title: 'sub: curves.py decomposition -- break up 29,666-line monolith'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/483
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - priority:high
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Scope
+
+    **Parent:** #1962 (Tier-1 Repo Ecosystem Refactoring) -- Phase 2
+
+    **Status:** Ready for adversarial plan review'
+- idempotency_key: gh:vamseeachanta/digitalmodel#283
+  title: 'WRK-131: Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/283
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-131: Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response
+
+    **Status:** blocked | **Priority:** high | **Category:** engineering/marine
+
+    **Complexity:** complex | **Machine:** orcaflex-license-machine'
+- idempotency_key: gh:vamseeachanta/digitalmodel#282
+  title: 'WRK-130: Standardize analysis reporting for each OrcaWave structure type'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/282
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-130: Standardize analysis reporting for each OrcaWave structure type
+
+    **Status:** blocked | **Priority:** high | **Category:** engineering/marine
+
+    **Complexity:** complex | **Machine:** acma-ansys05'
+- idempotency_key: gh:vamseeachanta/digitalmodel#270
+  title: 'WRK-630: feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/270
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-630: feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''TBD-client2-repo''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#269
+  title: 'WRK-629: feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal system prompts + knowledge base'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/269
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-629: feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal system prompts + knowledge base
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''TBD-client2-repo''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#206
+  title: 'WRK-5065: Structural analysis study — literature, methods and implementation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/206
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-5065: Structural analysis study — literature, methods and implementation
+
+    **Status:** pending | **Priority:** high | **Category:** engineering | **Subcategory:** structural
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#203
+  title: 'WRK-5062: Mooring analysis study — literature, methods and implementation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/203
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-5062: Mooring analysis study — literature, methods and implementation
+
+    **Status:** pending | **Priority:** high | **Category:** engineering | **Subcategory:** mooring
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#170
+  title: 'WRK-311: improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/170
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-311: improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** unset'
+- idempotency_key: gh:vamseeachanta/digitalmodel#161
+  title: 'WRK-1281: Extract numerical test vectors from all naval architecture literature and document intelligence'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/161
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-1281: Extract numerical test vectors from all naval architecture literature and document intelligence
+
+    **Status:** pending | **Priority:** high | **Category:** engineering | **Subcategory:** naval-architecture
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#595
+  title: Assess client PDF packaging for vessel capability GTM material
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/595
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - cat:website
+  - status:pending
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Assess how to package the vessel capability GTM material into client-ready PDFs and offline deliverables for same-day outreach.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/digitalmodel#593
+  title: Assess vessel data provenance, confidence, and capability scoring gaps for GTM
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/593
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - cat:website
+  - status:pending
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Assess gaps in vessel data provenance and scoring so GTM vessel capability claims remain defensible for client/prospect review.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/digitalmodel#592
+  title: Assess client-ready vessel capability GTM narrative and chart lineup
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/592
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - cat:website
+  - status:pending
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Assess how the current vessel-capability GTM material can be sharpened for client-facing use today and for the next iteration of #591.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/digitalmodel#577
+  title: Safety Case / MAH ALARP framework module (NORSOK Z-013, UK HSE SCR-2015)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/577
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Background
+
+    Recon of [Mark Prentice LinkedIn post (2026-05-04)](https://www.linkedin.com/posts/mark-prentice-185722115_floatingoffshorewind-fowt-offshorewind-share-7455555454048452609-vusy). Mapping doc: [`docs/field-development/2026-05-04-fowt-oilgas-crossover-mapping.md`](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/field-development/2026-05-04-fowt-oilgas-crossover-mapping.md)
+    (commit `de69ddab5`).
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/digitalmodel#470
+  title: Seakeeping analysis using OpenFOAM — CFD-based ship motion simulation
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/470
+  gh_state: open
+  gh_labels:
+  - feature
+  - cat:engineering
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+    LinkedIn post by Belal Sherif on seakeeping simulation using OpenFOAM:
+
+    https://www.linkedin.com/posts/belal-sherif-5a1980243_a-new-seakeeping-simulation-whats-special-share-7442515370885685248-heR3'
+- idempotency_key: gh:vamseeachanta/digitalmodel#464
+  title: Add hydrodynamic BEM analysis module (Capytaine)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/464
+  gh_state: open
+  gh_labels:
+  - feature
+  - priority:medium
+  - cat:engineering-calculations
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Add wave-body interaction analysis to digitalmodel using Capytaine BEM solver — diffraction, radiation, added mass, damping coefficients, and RAOs for floating/submerged bodies.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/digitalmodel#265
+  title: 'WRK-622: feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/265
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-622: feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** [''dev-primary'', ''dev-secondary'']'
+- idempotency_key: gh:vamseeachanta/digitalmodel#207
+  title: 'WRK-5067: Hydrodynamics and wave mechanics study — literature, methods and implementation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/207
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-5067: Hydrodynamics and wave mechanics study — literature, methods and implementation
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** hydrodynamics
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#199
+  title: 'WRK-5056: feat(digitalmodel): integrate theoretical naval architecture into ecosystem models'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/199
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:engineering-models
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-5056: feat(digitalmodel): integrate theoretical naval architecture into ecosystem models
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering-models | **Subcategory:** naval-architecture
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#178
+  title: 'WRK-480: feat(worldenergydata): integrate CMEMS Wave Multi-Year Product'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/178
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-480: feat(worldenergydata): integrate CMEMS Wave Multi-Year Product
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''worldenergydata''] | **Complexity:** moderate | **Machine:** unset'
+- idempotency_key: gh:vamseeachanta/digitalmodel#173
+  title: 'WRK-473: feat(hydrodynamics): integrate wavespectra library for spectral processing'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/173
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-473: feat(hydrodynamics): integrate wavespectra library for spectral processing
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** simple | **Machine:** unset'
+- idempotency_key: gh:vamseeachanta/digitalmodel#612
+  title: 'OrcaWave: add batch mesh convergence and grid sensitivity workflow'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/612
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    Running diffraction from arbitrary meshes requires engineering confidence, not just a single solve. Users need a repeatable workflow for mesh convergence and frequency/heading sensitivity studies.
+
+    ## Required work'
+- idempotency_key: gh:vamseeachanta/digitalmodel#609
+  title: 'OrcaWave: normalize auxiliary mesh handling for control surfaces and QTF inputs'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/609
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    Auxiliary mesh handling is inconsistent across the schema, backend, and runner. In particular, the schema supports control surfaces at both `VesselSpec.control_surface` and `BodySpec.control_surface`,
+    while the OrcaWave backend and runner currently read the vessel-level location. This can silently ignore body-level control surface definitions in multi-body specs.
+
+    The same packaging/preflight path should also cover damping lid meshes and free-surface panelled-zone meshes used for QTF workflows.'
+- idempotency_key: gh:vamseeachanta/digitalmodel#608
+  title: 'OrcaWave: add mesh quality gates before diffraction solve'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/608
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    For arbitrary user-supplied meshes, file existence is not enough. Diffraction solves need mesh quality checks before invoking OrcaWave, otherwise users will hit solver failures or poor hydrodynamic
+    results late in the workflow.
+
+    ## Required work'
+- idempotency_key: gh:vamseeachanta/digitalmodel#607
+  title: 'OrcaWave: add given-mesh CLI workflow for diffraction setup'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/607
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    A user with a mesh file should be able to start a diffraction analysis without manually authoring a complete `spec.yml` from scratch. The current path assumes the canonical spec already exists.
+
+    ## Required work'
+- idempotency_key: gh:vamseeachanta/digitalmodel#588
+  title: 'fix(marine_ops): test_find_chain_with_safety_factor needs chain entry ≥78mm R4'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/588
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Surfaced during execution of #555 (PR #587). The diameter-slice expansion to `[:24]` fixed `test_get_chain_by_specification` but not this test, which has an orthogonal root cause.
+
+    ## Root cause'
+- idempotency_key: gh:vamseeachanta/digitalmodel#564
+  title: 'fix(marine_ops): test_ocimf_mooring_integration.py::test_environmental_forces_to_mooring_tension — needs investigation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/564
+  gh_state: open
+  gh_labels:
+  - bug
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R6 (heterogeneous OCIMF/RAO/integration). Individual-test issue per user
+    direction to maintain visibility ("9 individual issues to help keep gap").
+
+    ## Test nodeid
+
+    `tests/marine_ops/marine_engineering/integration/test_ocimf_mooring_integration.py::TestOCIMFMooringIntegration::test_environmental_forces_to_mooring_tension`'
+- idempotency_key: gh:vamseeachanta/digitalmodel#561
+  title: 'fix(marine_ops): test_ocimf_mooring_integration.py::test_combined_environmental_forces — wrong test premise (current dominates)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/561
+  gh_state: open
+  gh_labels:
+  - bug
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R6 (heterogeneous OCIMF/RAO/integration). Individual-test issue per user
+    direction to maintain visibility ("9 individual issues to help keep gap").
+
+    ## Test nodeid
+
+    `tests/marine_ops/marine_engineering/integration/test_ocimf_mooring_integration.py::TestOCIMFMooringIntegration::test_combined_environmental_forces`'
+- idempotency_key: gh:vamseeachanta/digitalmodel#560
+  title: 'fix(marine_ops): test_hydro_rao_integration.py::test_coupling_terms_affect_response — needs investigation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/560
+  gh_state: open
+  gh_labels:
+  - bug
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R6 (heterogeneous OCIMF/RAO/integration). Individual-test issue per user
+    direction to maintain visibility ("9 individual issues to help keep gap").
+
+    ## Test nodeid
+
+    `tests/marine_ops/marine_engineering/integration/test_hydro_rao_integration.py::TestHydroRAOIntegration::test_coupling_terms_affect_response`'
+- idempotency_key: gh:vamseeachanta/digitalmodel#559
+  title: 'fix(marine_ops): test_hydro_rao_integration.py::test_full_matrix_interpolation — strict-greater on equal floats (use >=)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/559
+  gh_state: open
+  gh_labels:
+  - bug
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R6 (heterogeneous OCIMF/RAO/integration). Individual-test issue per user
+    direction to maintain visibility ("9 individual issues to help keep gap").
+
+    ## Test nodeid
+
+    `tests/marine_ops/marine_engineering/integration/test_hydro_rao_integration.py::TestHydroRAOIntegration::test_full_matrix_interpolation`'
+- idempotency_key: gh:vamseeachanta/digitalmodel#558
+  title: 'fix(marine_ops): test_hydro_rao_integration.py::test_damping_affects_phase — phase 138° not near -90° (sign convention)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/558
+  gh_state: open
+  gh_labels:
+  - bug
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R6 (heterogeneous OCIMF/RAO/integration). Individual-test issue per user
+    direction to maintain visibility ("9 individual issues to help keep gap").
+
+    ## Test nodeid
+
+    `tests/marine_ops/marine_engineering/integration/test_hydro_rao_integration.py::TestHydroRAOIntegration::test_damping_affects_phase`'
+- idempotency_key: gh:vamseeachanta/digitalmodel#501
+  title: 'OrcaWave: expand QTF config + field points + irregular frequency method'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/501
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Machine: ace-linux-1
+
+    ## Problem
+
+    OrcaWave spec schema has three feature gaps that limit accuracy for advanced analyses:'
+- idempotency_key: gh:vamseeachanta/digitalmodel#467
+  title: Subsea structure installation analysis — vessel performance and real-time motion feedback
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/467
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Enable rapid assessment of subsea structure installation feasibility across varying structure dimensions, water depths, and installation vessels — then extend to real-time operational decision support.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/digitalmodel#466
+  title: Parametric hull analysis — steady speed, passing ship, narrow water environments
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/466
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Extend the hydrodynamics module with parametric hull analysis capabilities for real-world operational scenarios in restricted waterways.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/digitalmodel#465
+  title: Capytaine ship hull benchmarking — OC4 semi-sub + WAMIT validation
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/465
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The Capytaine BEM module (#464) is implemented with a sphere analytical benchmark (Hulme 1982). Ship hull validation is the logical next step to establish confidence for production use.
+
+    ## Available data in repo'
+- idempotency_key: gh:vamseeachanta/digitalmodel#463
+  title: Populate ship-dimensions dataset from ship plans (manual curation follow-on)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/463
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Track the remaining manual-curation work after the ship-dimensions template + loader code was completed in `#457`.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/digitalmodel#457
+  title: Ship dimensions template + loader (WRK-1380)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/457
+  gh_state: open
+  gh_labels:
+  - feature
+  - domain:naval-architecture
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1380: Ship dimensions manual data entry from 110 ship plans
+
+    **Status:** Stage 6: Cross-Review (in_progress) | **Priority:** low | **Category:** document-intelligence | **Subcategory:** manual-curation
+
+    **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#253
+  title: 'WRK-587: research: evaluate Code_Aster for large-scale topside structural FEA'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/253
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  - cat:engineering
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-587: research: evaluate Code_Aster for large-scale topside structural FEA
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** structural
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** [''dev-primary'', ''dev-secondary'']'
+- idempotency_key: gh:vamseeachanta/digitalmodel#136
+  title: 'WRK-043: Parametric hull form analysis with RAO generation and client-facing lookup'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/136
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  - cat:engineering
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-043: Parametric hull form analysis with RAO generation and client-facing lookup
+
+    **Status:** pending | **Priority:** low | **Category:** engineering/marine
+
+    **Complexity:** complex | **Machine:** ace-linux-1'
+- idempotency_key: gh:vamseeachanta/digitalmodel#134
+  title: 'WRK-036: OrcaFlex structure deployment analysis - supply boat side deployment with structural'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/134
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  - cat:engineering
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-036: OrcaFlex structure deployment analysis - supply boat side deployment with structural
+
+    **Status:** pending | **Priority:** low | **Category:** engineering/structural
+
+    **Complexity:** complex | **Machine:** acma-ansys05'
+- idempotency_key: gh:vamseeachanta/digitalmodel#64
+  title: engg debt | CAD
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/64
+  gh_state: open
+  gh_labels:
+  - feature
+  - package
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: '- [ ] freeCAD
+
+    - [ ] Progress this work for hull shapes etc.
+
+    - [ ] Autocad 3D'
+- idempotency_key: gh:vamseeachanta/digitalmodel#36
+  title: engg debt | RAOs Analysis feature
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/36
+  gh_state: open
+  gh_labels:
+  - feature
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Follow module specific ai guidelines\n  - [ ] code repo module and main function: src\\digitalmodel\\modules\\rao_analysis\\rao_analysis.py\n- [ ] Read Displacement RAO data:"
+- idempotency_key: gh:vamseeachanta/digitalmodel#29
+  title: engg debt | fatigue | SN Curve module
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/29
+  gh_state: open
+  gh_labels:
+  - feature
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  - samdansk2
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-099: Run 3-way benchmark on Unit Box hull
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#28
+  title: engg debt | Fatigue | ship design | spectral-based fatigue analysis
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/28
+  gh_state: open
+  gh_labels:
+  - feature
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-075: OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** licensed-win-1'

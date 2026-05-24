@@ -1,0 +1,135 @@
+board:
+  slug: repo-assethold-infra
+  display_name: assethold | infra
+  tier: domain
+  repo: vamseeachanta/assethold
+  domain: infra
+  parent_slug: repo-assethold
+  workspace_path: /mnt/local-analysis/assethold
+  description: 'CI/quality gates, packaging, docs build, repo guidelines, git origin
+    housekeeping, running task lists.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/assethold#46
+  title: 'follow-up(ci): reconcile duplicate non-package reporting path_utils helper'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/46
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    The repo currently contains a second non-package copy of the reporting path helper
+    at:
+
+    - `modules/reporting/utils/path_utils.py`'
+- idempotency_key: gh:vamseeachanta/assethold#45
+  title: 'follow-up(ci): clean or retire auxiliary agent-os Python files excluded
+    from package lint gate'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/45
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    The post-smoke CI hardening tranche for the main package workflow is expected
+    to narrow the strict flake8 gate away from root-level auxiliary scaffolding paths,
+    but two concrete Python failures remain in-tree and should not be forgotten:
+
+    - `.agent-os/modules/prompt_enhancement.py` — unterminated triple-quoted string
+    (`E999`)'
+- idempotency_key: gh:vamseeachanta/assethold#37
+  title: 'chore: update git origin to vamseeachanta/assethold canonical URL'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/37
+  gh_state: open
+  gh_labels:
+  - priority:low
+  - cat:maintenance
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    Discovered during the 2026-04-16 follow-ups session. Every push from a local clone
+    currently shows:'
+- idempotency_key: gh:vamseeachanta/assethold#33
+  title: Architecture documentation — module diagram, MkDocs build, data format specs
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/33
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:low
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+
+    The codebase has good inline docstrings but lacks high-level documentation:'
+- idempotency_key: gh:vamseeachanta/assethold#31
+  title: Enforce quality gates — test coverage, mypy, loguru initialization
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/31
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Problem
+
+
+    The repo has quality infrastructure configured but not enforced:'
+- idempotency_key: gh:vamseeachanta/assethold#12
+  title: Running Task List
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/12
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '- [x] Open virtual portfolio in Google or Yahoo Finance
+
+    - [ ]  Buy favorite stock. ?
+
+    - [x] Utilize existing libraries as much as possible'
+- idempotency_key: gh:vamseeachanta/assethold#11
+  title: repo | guidelines
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/11
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees:
+  - samdansk2
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Following is the list:
+
+    - [x] tests are not part of src
+
+    - [ ] Migrate to gitbash from powershell and command prompt'

@@ -1,0 +1,39 @@
+### Verdict: MAJOR
+
+### Summary
+The plan correctly distinguishes the four scheduler/runtime surfaces and bounds itself to a read-only contract+validator, but it leaves several load-bearing mechanics underspecified (logical_job_id derivation, exception mechanism, validator CLI modes, CI integration, conditional YAML schema). The TDD list is happy-path heavy and misses fail-soft and command-detection edge cases that the plan itself names as primary risks.
+
+### Issues Found
+- [P1] `logical_job_id` is the basis of duplicate-plane detection (Pseudocode + test_duplicate_logical_job_across_planes_warns) but the plan never defines how it is derived from a YAML row vs. a `hermes cron list` row vs. a free-form `crontab -l` command line. Without a derivation rule, the duplicate test is unconstrained and the contract is unimplementable.
+- [P1] The native-provider-ai exception mechanism is the operational pressure-release valve (`unless a documented exception exists`) but the plan does not specify where exceptions live (YAML field? contract-doc table? sidecar file?), their schema, or who/what reviews them. Per the workspace-hub rule against blanket exempts, this is a backdoor hazard.
+- [P1] `gsd-researcher` status during the gap between this contract landing and #2763 executing is ambiguous. The plan calls it a `warning` linking #2763 in `test_flags_native_provider_ai_work`, but Acceptance Criteria say native-provider AI without documented exception is `warning/violation`. Is gsd-researcher an explicit exception, a warning that must not fail the validator, or a violation that blocks? CLI exit semantics are correspondingly undefined.
+- [P2] Validator CLI modes are referenced (`exit non-zero only for contract violations selected by CLI mode`) but the mode set is not enumerated. Without modes specified, callers (CI, manual, hooks) cannot bind to a stable contract and reviewers cannot test exit-code behavior.
+- [P2] No CI/cron/hook integration is specified. The plan creates a validator but leaves it as a manual artifact, which means contract drift (the named top risk) will accumulate undetected. A T2 contract that is never executed by automation is a documentation exercise.
+- [P2] YAML schema changes are conditional (`Add explicit metadata only if tests require it`). This is hand-wavy; either commit to the schema delta in this issue or defer it explicitly to a follow-on. The tests as written (`is_claude_task: true`) already presuppose existing fields, so the conditional language is dishonest about scope.
+- [P2] Native-provider-ai detection appears to be substring matching on `claude|codex|gemini` (per Contract Model `Runtime examples` column). This will produce false negatives for wrapper invocations (`uv run claude`, `bash some-script.sh` where the script calls a provider internally, container/entrypoint indirection). No edge-case test covers this — yet it is the core defect class the contract is designed to catch.
+- [P2] TDD list omits the fail-soft behavior for malformed `hermes cron list` output, which the Risks section explicitly names as a primary failure mode. `test_unavailable_surface_is_recorded_not_invented` covers absent input, not malformed input.
+- [P3] `Adversarial Review Summary` claims round 1 MAJOR findings were addressed but does not enumerate the specific findings or the mapping to plan changes. A reviewer cannot verify closure without reading 4 separate review artifacts. Inline the disposition table.
+- [P3] The plane set is treated as closed (system-cron / hermes-gateway-cron / native-provider-ai / bridge-export-audit) with no extensibility note for systemd timers, GitHub Actions cron, Hermes worker daemons, or future scheduler surfaces. Contract should state the closed-set assumption or the addition procedure.
+- [P3] Cross-reference to #2763 is unverified in this review payload (no attestation block); plan assumes the issue exists and owns migration scope. If #2763 is not yet created or is CLOSED, the warning-link in the validator points nowhere.
+- [P3] `tests/cron/test_scheduler_routing_audit.py` and `scripts/cron/scheduler-routing-audit.py` paths are claimed-new; the plan does not state whether `tests/cron/` already exists or whether `scripts/cron/` has a conventional package layout. Minor but unverified in this review payload.
+
+### Suggestions
+- Add a `Logical Job Identity` subsection defining the derivation: e.g., YAML `task_name` → canonical id; Hermes cron `name` → canonical id; crontab line → regex-extracted script basename or explicit `# logical_job_id: foo` sentinel comment. Make the derivation testable.
+- Specify the exception mechanism concretely: e.g., a `scheduler_routing_exceptions:` block in `schedule-tasks.yaml` with required fields (`logical_job_id`, `reason`, `expires_or_tracked_issue`, `approved_by`). Per-file blanket exempts are forbidden by repo precedent — codify that here.
+- Pick one: either explicitly mark `gsd-researcher` as a tracked exception with `migration_issue: 2763` until #2763 closes, or accept it as a non-fatal `warning` in the default CLI mode and document that decision in the contract. The acceptance criteria should reflect the chosen path.
+- Enumerate validator CLI modes (e.g., `--mode=report` exit 0 always; `--mode=enforce` exit non-zero on unexcepted violations; `--mode=pre-commit` exit non-zero on net-new violations). Bind each mode to a test.
+- Specify the automation surface in this plan: pre-commit hook entry, nightly cron entry in `schedule-tasks.yaml`, or CI workflow file. Without it, the contract has no enforcement teeth.
+- Commit one way on the YAML schema: either add the required metadata fields now (with a tested migration) or explicitly defer with a TODO issue link. Remove `only if tests require it` language.
+- Add tests for: wrapper-script invocation of providers (`uv run claude`, `bash wrap-claude.sh`), malformed `hermes cron list` output, ambiguous commands where multiple planes plausibly match, and exception-block parsing (positive + missing-field negative).
+- Inline a 5–10 row disposition table in `Adversarial Review Summary`: `Finding | Reviewer | Severity | Resolution | Location in revised plan`. This lets the next-round reviewer verify closure without leaving the plan.
+- State the closed-set plane assumption explicitly and add a `Adding a new plane` subsection (1–2 sentences on procedure) so future schedulers don't silently get classified as `bridge-export-audit` by default.
+- Verify #2763 exists and is in an appropriate state before merging this plan; if it doesn't, gate the warning text on a sentinel like `<MIGRATION_ISSUE_TBD>` rather than hardcoding the number.
+
+### Questions for Author
+- How is `logical_job_id` derived across the three source surfaces (YAML row, Hermes cron row, free-form crontab command)? Without this, the duplicate-plane test has no implementable contract.
+- Where do native-provider-ai exceptions live, and what is the schema? Is `gsd-researcher` an exception (until #2763) or a tolerated warning, and which CLI mode would exit non-zero on it?
+- What enforcement surface runs the validator (pre-commit, CI, nightly cron, manual-only)? A contract validator with no caller will silently rot.
+- Does #2763 exist and is its scope (migrate gsd-researcher) confirmed? If not, what is the fallback link target for the warning emitted on native-provider-ai jobs?
+- Should the YAML schema change in this issue (commit) or in a follow-on (defer)? The conditional `if tests require it` language conflates the two.
+- How does command-string detection handle wrapper invocations like `uv run claude` or `bash wrap.sh` where the provider name is one level removed? This appears to be a primary defect class the contract is designed to catch.
+- Round 1 MAJOR findings — can the disposition be inlined as a table so the next-round reviewer can verify closure without reading 4 separate artifacts?

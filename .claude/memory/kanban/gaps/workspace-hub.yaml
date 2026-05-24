@@ -1,0 +1,73 @@
+board_slug: repo-workspace-hub
+note: Detected gap cards awaiting promotion to real GH issues. Loader skips these.
+cards:
+- idempotency_key: gap:repo-workspace-hub-harness:001
+  title: Loader has no schema-version field check
+  source: detected_gap
+  detection_basis: .claude/memory/kanban/SCHEMA.yaml has no schema_version key; loader at .claude/memory/kanban/scripts/load.py cannot warn on drift
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Add schema_version: <int> to SCHEMA.yaml and have load.py reject YAMLs whose schema_version does not match.'
+- idempotency_key: gap:repo-workspace-hub-harness:002
+  title: TODO in scripts/ai/review_routing_gate.py needs ticket
+  source: detected_gap
+  detection_basis: TODO marker in scripts/ai/review_routing_gate.py (cat:ai-orchestration territory) — not tracked in any open issue
+  needs_issue: true
+  priority: 0
+  body_excerpt: Promote the inline TODO in scripts/ai/review_routing_gate.py into an explicit GH issue with cat:ai-orchestration label.
+- idempotency_key: gap:repo-workspace-hub-data:003
+  title: TODOs in scripts/data/doc_intelligence/* lack tracking issues
+  source: detected_gap
+  detection_basis: TODO/FIXME markers in scripts/data/doc_intelligence/run_poc_extraction.py, worked_example_parser.py, test_generator_v2.py, loop_collapse_generator.py, promoters/worked_examples.py
+  needs_issue: true
+  priority: 1
+  body_excerpt: Doc-intelligence POC scripts carry inline TODOs but no umbrella tracking issue. File an issue tagged cat:document-intelligence with the list of file:line refs.
+- idempotency_key: gap:repo-workspace-hub-data:004
+  title: TODOs in scripts/data/orcaflex/enrich-and-clean.py
+  source: detected_gap
+  detection_basis: TODO marker in scripts/data/orcaflex/enrich-and-clean.py — engineering-data pipeline gap not in tracker
+  needs_issue: true
+  priority: 0
+  body_excerpt: Track the OrcaFlex enrich-and-clean TODOs as cat:data-pipeline + domain:marine work item.
+- idempotency_key: gap:repo-workspace-hub-ops:005
+  title: Stray root-level .md artifacts pollute repo root
+  source: detected_gap
+  detection_basis: ls /mnt/local-analysis/workspace-hub/ shows >30 top-level .md/.txt/.diff artifacts (issue-1839-impl.diff, transcript_raw.json, terminal-2-impl.diff, draft_*, sendready_*, final_*). No cleanup ticket open.
+  needs_issue: true
+  priority: 1
+  body_excerpt: Workspace-hub root is cluttered with one-off operator artifacts. File an issue cat:operations + domain:cleanup to relocate to docs/sessions/ or _archive/.
+- idempotency_key: gap:repo-workspace-hub-ops:006
+  title: Repo root has unmatched bold markdown header fragments leaking as filenames
+  source: detected_gap
+  detection_basis: Files literally named **Complexity:**, **Date:**, **Issue:**, **Review, **Status:** present at repo root — markdown rendering artifacts
+  needs_issue: true
+  priority: 1
+  body_excerpt: Strange filenames at repo root suggest a markdown-extraction script wrote bold-header text as filenames. Investigate origin and clean up.
+- idempotency_key: gap:repo-workspace-hub-harness:007
+  title: kanban/scripts/load.py lacks regression test
+  source: detected_gap
+  detection_basis: .claude/memory/kanban/scripts/load.py has no test coverage in tests/ directory
+  needs_issue: true
+  priority: 1
+  body_excerpt: Add a dry-run regression test that exercises load.py against the YAMLs in boards/ to catch schema drift before push.
+- idempotency_key: gap:repo-workspace-hub-business:008
+  title: Daily gmail/triage artifacts not git-managed
+  source: detected_gap
+  detection_basis: Files like daily_gmail_action_digest_2026-04-09.md, ace_gmail_triage_2026-04-09.txt at repo root — date-stamped operator output with no rotation policy
+  needs_issue: true
+  priority: 0
+  body_excerpt: Establish retention/rotation policy for date-stamped gmail-triage outputs; move to docs/sessions/<date>/ and add to .gitignore where appropriate.
+- idempotency_key: gap:repo-workspace-hub-ops:009
+  title: nohup.out + claude_smoke.log untracked at root
+  source: detected_gap
+  detection_basis: nohup.out and claude_smoke.log present at workspace-hub root — should be in .gitignore
+  needs_issue: true
+  priority: 0
+  body_excerpt: Ad-hoc log files at repo root; add nohup.out and claude_smoke*.log to .gitignore.
+- idempotency_key: gap:repo-workspace-hub-engineering:010
+  title: acma-projects sparse overlay status undocumented
+  source: detected_gap
+  detection_basis: acma-projects/ is a sparse-checkout overlay (per memory feedback_sparse_checkout_add_not_disable) but no top-level README documents which subdirs are materialized vs sparse
+  needs_issue: true
+  priority: 0
+  body_excerpt: 'Document the acma-projects sparse-checkout policy: which subdirs are materialized by default, the add (not disable) workflow, and gotchas.'

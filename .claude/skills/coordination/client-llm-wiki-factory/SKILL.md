@@ -1,13 +1,18 @@
 ---
 name: client-llm-wiki-factory
-description: Operator checklist for instantiating a new per-client private llm-wiki repo under workspace-hub [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) + [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4 (amended) naming convention `llm-wiki-<client>`.
+description: Operator checklist for instantiating a new per-client private llm-wiki
+  repo under workspace-hub [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746)
+  + [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4 (amended)
+  naming convention `llm-wiki-<client>`.
 version: 1.0.0
 category: coordination
-tags: [client-wiki, factory, instantiation, privacy-firewall, llm-wiki, governance]
-related_skills:
-  - coordination/legal-sanity-scan
-  - coordination/llm-wiki-roadmap-integration
-  - coordination/pre-completion-cleanup-audit
+tags:
+- client-wiki
+- factory
+- instantiation
+- privacy-firewall
+- llm-wiki
+- governance
 ---
 
 # Client LLM-Wiki Factory — Operator Checklist

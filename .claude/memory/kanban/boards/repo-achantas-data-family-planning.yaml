@@ -1,0 +1,129 @@
+board:
+  slug: repo-achantas-data-family-planning
+  display_name: achantas-data · family-planning
+  tier: domain
+  repo: vamseeachanta/achantas-data
+  domain: family-planning
+  parent_slug: repo-achantas-data
+  workspace_path: /mnt/local-analysis/achantas-data
+  description: Family long-horizon planning — estates (wills, SNT, LOI), insurance
+    audit, Medicaid waitlist, risk-mitigation matrix, Sabitha health workstreams.
+cards:
+- idempotency_key: gh:vamseeachanta/achantas-data#79
+  title: 'Family — Tooling: NW glidepath calculator (`scripts/family/glidepath.py`)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/79
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Parent:** #73 · **Status:** AWAITING USER REVIEW (no execution
+    until approved)
+
+    ## Goal
+
+    Parameterized Python tool that takes (baseline NW, annual savings, return rate,
+    target year, target amount) and outputs the year-by-year glidepath table. Replaces
+    hand-computed numbers in #73 with reproducible math.'
+- idempotency_key: gh:vamseeachanta/achantas-data#77
+  title: 'Family — Fidelity 2025 year-end NW lookup → #73 glidepath baseline'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/77
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Parent:** #73 · **Horizon:** This week / 5-minute action
+
+    **Why:** The $3MM-by-2040 glidepath in #73 currently uses a **$1MM placeholder**.
+    Replace with the actual 2025 year-end NW so the curve calibrates to reality and
+    the sensitivity table reflects your true required-savings number.
+
+    ## Action'
+- idempotency_key: gh:vamseeachanta/achantas-data#76
+  title: Family — Term-life + disability insurance audit (Vamsee 46 / Sabitha 40)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/76
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Parent:** #73 · **Horizon:** 90-day immediate action
+
+    **Why:** At 46/40, both Vamsee and Sabitha are at the cheapest underwriting point
+    of their lives. Gap-fill before next renewal cycle. Coverage must be sized to
+    fund SNT corpus if either parent dies early (Plan A) or support surviving spouse
+    + dependents (either plan).
+
+    ## Action'
+- idempotency_key: gh:vamseeachanta/achantas-data#39
+  title: 'Sabitha: compare short- and long-term effects of hair-fall treatments'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/39
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Compare short-term and long-term effects of major hair-fall treatment categories
+    relevant to Sabitha Deepthimahanti.
+
+    ## Treatment categories to compare'
+- idempotency_key: gh:vamseeachanta/achantas-data#38
+  title: 'Sabitha: assess nutrient and supplement approaches for hair fall'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/38
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Assess nutrients, deficiencies, and supplement-related approaches for hair fall
+    in Sabitha Deepthimahanti.
+
+    ## Research focus'
+- idempotency_key: gh:vamseeachanta/achantas-data#37
+  title: 'Sabitha: assess PRP treatment for hair fall'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/37
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Assess platelet-rich plasma (PRP) as a potential hair-fall treatment option for
+    Sabitha Deepthimahanti.
+
+    ## Questions to answer'
+- idempotency_key: gh:vamseeachanta/achantas-data#36
+  title: 'Sabitha: evaluate hair-fall treatment options'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/36
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Build a structured hair-fall treatment options brief for Sabitha Deepthimahanti.
+
+    ## Scope'

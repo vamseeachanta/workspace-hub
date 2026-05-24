@@ -1,0 +1,743 @@
+board:
+  slug: repo-digitalmodel-solver
+  display_name: digitalmodel · solver
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'Numerical solver subsystem — OrcaFlex / OrcaWave / AQWA bridges, catenary solvers, time-domain integrators.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/digitalmodel#554
+  title: 'fix(marine_ops): catenary solver bracketing + sinh overflow — clears 21 of 77 marine_ops failures'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/554
+  gh_state: open
+  gh_labels:
+  - bug
+  - cat:engineering
+  - priority:high
+  - domain:naval-architecture
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R2. Source patch will clear ~21 of 77 marine_ops test failures.
+
+    ## Symptom
+
+    Top errors observed at digitalmodel HEAD `2dfa61e6` (live repro 2026-05-02):'
+- idempotency_key: gh:vamseeachanta/digitalmodel#518
+  title: Add model-library regression tests for strict-vs-generated OrcaFlex semantic diffs
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/518
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - status:pending
+  - route:B
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Parent
+
+    Part of #515
+
+    ## Summary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#284
+  title: 'WRK-133: Update OrcaFlex license agreement with addresses and 3rd-party terms'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/284
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-133: Update OrcaFlex license agreement with addresses and 3rd-party terms
+
+    **Status:** blocked | **Priority:** high | **Category:** engineering/marine
+
+    **Complexity:** medium | **Machine:** acma-ansys05'
+- idempotency_key: gh:vamseeachanta/digitalmodel#281
+  title: 'WRK-121: Extract & Catalog OrcaFlex Models from rock-oil-field/s7'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/281
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-121: Extract & Catalog OrcaFlex Models from rock-oil-field/s7
+
+    **Status:** blocked | **Priority:** high | **Category:** engineering/marine
+
+    **Complexity:** medium | **Machine:** orcaflex-license-machine'
+- idempotency_key: gh:vamseeachanta/digitalmodel#157
+  title: 'WRK-126: Benchmark all example models across time domain and frequency domain with seed equivalence'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/157
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-126: Benchmark all example models across time domain and frequency domain with seed equivalence
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#156
+  title: 'WRK-125: OrcaFlex module roadmap \u2014 evolving coordination and progress tracking'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/156
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-125: OrcaFlex module roadmap — evolving coordination and progress tracking
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** licensed-win-1'
+- idempotency_key: gh:vamseeachanta/digitalmodel#280
+  title: 'WRK-064: ''OrcaFlex format converter: license-required validation and backward-compat'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/280
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-064: ''OrcaFlex format converter: license-required validation and backward-compat
+
+    **Status:** blocked | **Priority:** medium | **Category:** engineering/marine
+
+    **Complexity:** medium | **Machine:** acma-ansys05'
+- idempotency_key: gh:vamseeachanta/digitalmodel#194
+  title: 'WRK-5016: OrcaFlex demo version input-file troubleshooting workflow'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/194
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-5016: OrcaFlex demo version input-file troubleshooting workflow
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** orcaflex
+
+    **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** licensed-win-1'
+- idempotency_key: gh:vamseeachanta/digitalmodel#192
+  title: 'WRK-5000: OrcaFlex scripting workflows — automation foundation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/192
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-5000: OrcaFlex scripting workflows — automation foundation
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** offshore
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** licensed-win-1'
+- idempotency_key: gh:vamseeachanta/digitalmodel#169
+  title: 'WRK-256: Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/169
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-256: Unified parametric study coordinator — orchestrate OrcaFlex, wall thickness, and fatigue sweeps
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#141
+  title: 'WRK-099: Run 3-way benchmark on Unit Box hull'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/141
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-099: Run 3-way benchmark on Unit Box hull
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering/marine
+
+    **Complexity:** medium | **Machine:** ace-linux-1'
+- idempotency_key: gh:vamseeachanta/digitalmodel#135
+  title: 'WRK-039: SPM project benchmarking - AQWA vs OrcaFlex'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/135
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-039: SPM project benchmarking - AQWA vs OrcaFlex
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering/marine
+
+    **Complexity:** complex | **Machine:** acma-ansys05'
+- idempotency_key: gh:vamseeachanta/digitalmodel#614
+  title: 'OrcaWave: update docs for canonical spec-to-run workflow'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/614
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    Some OrcaWave documentation and examples still reference older command paths and scripts. The canonical workflow should be clear for users starting from either a `spec.yml` or a mesh-driven workflow.
+
+    ## Required work'
+- idempotency_key: gh:vamseeachanta/digitalmodel#613
+  title: 'OrcaWave: add environment and license doctor command'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/613
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    Users need a quick way to know whether the local machine can actually run OrcaWave diffraction before preparing a large solve. Current behavior can silently fall back to dry-run when OrcFxAPI and OrcaWave
+    executable paths are unavailable.
+
+    ## Required work'
+- idempotency_key: gh:vamseeachanta/digitalmodel#611
+  title: 'OrcaWave: define result export and postprocess contract for diffraction runs'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/611
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    The OrcaWave runner can save `.owr` and a data file through OrcFxAPI, and separate utilities can read `.xlsx` sidecars or `.owr` results. The workflow needs a clear output contract so downstream OrcaFlex
+    handoff, reports, benchmarks, and QA can consume a run consistently.
+
+    ## Required work'
+- idempotency_key: gh:vamseeachanta/digitalmodel#606
+  title: 'OrcaWave: integrate MeshPipeline into spec conversion and runner'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/606
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    The diffraction module has a `MeshPipeline` that can load, validate, and prepare meshes for solvers, but the OrcaWave spec conversion and runner paths do not yet use it to prepare arbitrary mesh inputs.
+
+    Without this integration, a user must already know which mesh formats are solver-ready and manually convert or arrange files before running diffraction.'
+- idempotency_key: gh:vamseeachanta/digitalmodel#605
+  title: 'OrcaWave: produce self-contained solver packages from spec conversion'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/605
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    `diffraction convert-spec --solver orcawave` generates OrcaWave YAML, but it does not yet guarantee the output directory is self-contained and runnable. The backend writes mesh references as basenames,
+    while referenced mesh files and auxiliary meshes may still live beside the source `spec.yml`.
+
+    This overlaps with, but is broader than, #500. #500 covers mesh pre-flight validation and runner auto-copy; this issue is specifically about the conversion/package artifact created by `convert-spec`.'
+- idempotency_key: gh:vamseeachanta/digitalmodel#604
+  title: 'chore(orcaflex): validate generated Ballymore jumper model on licensed OrcaFlex runner'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/604
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
+
+    Linux can validate `ProjectInputSpec` and generate OrcaFlex YAML, but final `.dat`/`.sim` load-run proof requires an OrcaFlex license. Workspace-hub has a related operational smoke issue for generic
+    OrcaFlex queue validation, but the Ballymore jumper generated model still needs a domain-specific licensed proof once #602/#603 land.'
+- idempotency_key: gh:vamseeachanta/digitalmodel#537
+  title: 'OrcaFlex: manifest.yml not written when all runs skipped — clarify docstring + behavior'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/537
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Code-review follow-up from #511 (PR #533). Defect ID **m7**.
+
+    \`CampaignGenerator.generate(spec_only=True)\` at \`src/digitalmodel/solvers/orcaflex/modular_generator/schema/campaign.py\` writes \`manifest.yml\` only when at least one run succeeded:'
+- idempotency_key: gh:vamseeachanta/digitalmodel#536
+  title: 'OrcaFlex: per-iteration model_validate perf for large sweep matrices'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/536
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Code-review follow-up from #511 (PR #533). Defect ID **m5**. Matches Phase-2 architecture blueprint risk #6.
+
+    \`_apply_overrides\` sweep loop at \`src/digitalmodel/solvers/orcaflex/modular_generator/schema/campaign.py:437-439\`:'
+- idempotency_key: gh:vamseeachanta/digitalmodel#535
+  title: 'OrcaFlex: apply_dotted_override should chain ValidationError with dotted-path context'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/535
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Code-review follow-up from #511 (PR #533). Defect ID **m3**.
+
+    \`apply_dotted_override(spec, dotted, value)\` at \`src/digitalmodel/solvers/orcaflex/modular_generator/schema/_overrides.py\` does:'
+- idempotency_key: gh:vamseeachanta/digitalmodel#534
+  title: 'OrcaFlex: _apply_overrides direct-call StopIteration guard'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/534
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Code-review follow-up from #511 (PR #533). Defect ID **m2**.
+
+    `_apply_overrides(spec, combo, matrix)` at \`src/digitalmodel/solvers/orcaflex/modular_generator/schema/campaign.py:419-431\` uses bare \`next(...)\` to find the matching environment/soil variation:'
+- idempotency_key: gh:vamseeachanta/digitalmodel#531
+  title: 'OrcaFlex: follow-up — 9 pre-existing test failures across 5 files not covered by #510 plan scope'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/531
+  gh_state: open
+  gh_labels:
+  - bug
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Umbrella tracking issue for 9 pre-existing test failures in the orcaflex test subtree that were outside the file-scope of #510. Adversarial review of plan-510 pre-flagged this gap in defect D1: the
+    plan only covered 5 files for rename / path-drift / cwd-anchor repairs. These 9 failures live in files the plan never touched.
+
+    ## Failing tests (grouped by file)'
+- idempotency_key: gh:vamseeachanta/digitalmodel#529
+  title: 'OrcaFlex: convert_batch() parallel path doesn''t aggregate success counts into self.stats'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/529
+  gh_state: open
+  gh_labels:
+  - bug
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    `OrcaFlexConverterEnhanced.convert_batch()` with `parallel=True` does not update `self.stats[''successful'']`, `self.stats[''failed'']`, `self.stats[''validation_failed'']`, or `self.stats[''errors'']`
+    as worker futures complete. The progress bar shows `✓` for each converted file, but `stats[''successful'']` remains `0` after batch completion.
+
+    ## Evidence'
+- idempotency_key: gh:vamseeachanta/digitalmodel#509
+  title: 'OrcaFlex: add pre-commit hook for YAML-strict validation on spec changes'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/509
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Machine: ace-linux-1
+
+    ## Context
+
+    The YAML-strict validator and post-validator are now in place (yaml_validator.py, post_validator.py). To prevent regression, add a pre-commit hook that validates any changed spec.yml files.'
+- idempotency_key: gh:vamseeachanta/digitalmodel#507
+  title: 'OrcaFlex reference: complete Orcina help ingestion — environment, waves, current pages'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/507
+  gh_state: open
+  gh_labels:
+  - documentation
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Machine: ace-linux-1 (or acma-ansys05 for Windows extraction)
+
+    ## Context
+
+    22 reference pages were ingested from Orcina WebHelp, but key sections are missing because the webhelp uses JavaScript-rendered frames that can''t be fetched directly. The downloaded ZIPs contain Windows
+    .exe (compiled CHM), not raw HTML.'
+- idempotency_key: gh:vamseeachanta/digitalmodel#504
+  title: 'OrcaFlex buoys builder refactor: split 611-line mega-builder into focused builders'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/504
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:working
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Machine: ace-linux-1
+
+    ## Problem
+
+    `buoys_builder.py` is 611 lines handling 4 distinct responsibilities: tugs, rollers, buoyancy modules, and end buoys. This violates SRP and makes testing difficult.'
+- idempotency_key: gh:vamseeachanta/digitalmodel#503
+  title: Ingest OrcaFlex/OrcaWave online help into LLM-accessible format
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/503
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Machine: ace-linux-1
+
+    ## Context
+
+    Orcina publishes comprehensive online help for all products:'
+- idempotency_key: gh:vamseeachanta/digitalmodel#500
+  title: 'OrcaWave: mesh file pre-flight validation + auto-copy in runner'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/500
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Machine: ace-linux-1
+
+    ## Problem
+
+    OrcaWave runner expects mesh files to exist in the output directory but:'
+- idempotency_key: gh:vamseeachanta/digitalmodel#487
+  title: Implement towing and marine operations analysis module
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/487
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Background
+
+    Installation operations (river towing, barge transport, current-induced loss of control) represent a real field development risk. Currently we have passing_ship interaction code, but no dedicated towing
+    analysis module.
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/digitalmodel#140
+  title: 'WRK-075: OFFPIPE Integration Module \u2014 pipelay cross-validation against OrcaFlex'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/140
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  - cat:engineering
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-075: OFFPIPE Integration Module \u2014 pipelay cross-validation against OrcaFlex
+
+    **Status:** pending | **Priority:** low | **Category:** engineering/marine
+
+    **Complexity:** complex | **Machine:** acma-ansys05'
+- idempotency_key: gh:vamseeachanta/digitalmodel#139
+  title: 'WRK-047: OpenFOAM CFD analysis capability for digitalmodel'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/139
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  - cat:engineering
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-047: OpenFOAM CFD analysis capability for digitalmodel
+
+    **Status:** pending | **Priority:** low | **Category:** engineering/pipeline
+
+    **Complexity:** complex | **Machine:** ace-linux-2'
+- idempotency_key: gh:vamseeachanta/digitalmodel#96
+  title: OrcaFlex | Iterate to achieve targets
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/96
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Ensure to achieve target quantities. Case study examples
+
+    - Mooring tension for WLNG mooring analysis
+
+    - Iterate to achieve target bottom tension for a pipeline during installation?'
+- idempotency_key: gh:vamseeachanta/digitalmodel#88
+  title: engg debt | AI strategy in Engineering firms
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/88
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  - getsivakumar
+  initial_status: triage
+  priority: 0
+  body_excerpt: "As a engineering manager, I want to have a\n- [ ]  presentation. \n- [ ] Address life cycle of engineering firm (pre-sales, sales, proposal, project - design, project - engineering, project\
+    \ - reporting, project - management)"
+- idempotency_key: gh:vamseeachanta/digitalmodel#82
+  title: OrcaFlex | Postprocess enhancements
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/82
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - package
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Should each file contain only object names in columns?\n  - [ ] Helps to keep the values relevant and easier postprocessing.\n  - [ ] Also helps keep spreadsheets consistent. Distinguishing\
+    \ will happen only by csv filenames"
+- idempotency_key: gh:vamseeachanta/digitalmodel#79
+  title: Project WLNG | Tasks
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/79
+  gh_state: open
+  gh_labels:
+  - project
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: "See project Ongoing Tasks below and completed tasks in Comments below.\n- [ ] Diffraction analysis\n  - [x] FSTs"
+- idempotency_key: gh:vamseeachanta/digitalmodel#62
+  title: engg debt | OrcaWave
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/62
+  gh_state: open
+  gh_labels:
+  - feature
+  - package
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Develop ecosystem and documentation\n- [ ] perform BASIC orcawave analysis\n  - [ ] Orcina documentation example"
+- idempotency_key: gh:vamseeachanta/digitalmodel#41
+  title: OrcaFlex | Installation | Implement catenary equations
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/41
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] For given start and end and length of catenary,:\n  - [ ] determine Static configuration \n    - [ ] pinned boundary conditions "
+- idempotency_key: gh:vamseeachanta/digitalmodel#40
+  title: 'OrcaFlex | Installation | Batch Files | Reiterate runs and save positions do not fail silently  '
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/40
+  gh_state: open
+  gh_labels:
+  - bug
+  - package
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Ensure batch files do not fail silently\n  - [ ] when running installation steps"
+- idempotency_key: gh:vamseeachanta/digitalmodel#19
+  title: OrcaFlex | Postprocess | Visualizations | For a/ QA and b/ Report
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/19
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - package
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-032: Modular OrcaFlex pipeline installation input with parametric campaign support
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** licensed-win-1'
+- idempotency_key: gh:vamseeachanta/digitalmodel#18
+  title: OrcaFlex | SeastateRAOs | Filtering for analysis
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/18
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - package
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-023: Property GIS development timeline with future projection and Google Earth animation
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** pipeline
+
+    **Repo:** [''assethold''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#16
+  title: OrcaFlex | SeastateRAOs | Visualizations
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/16
+  gh_state: open
+  gh_labels:
+  - feature
+  - package
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Plot seastateRAOs for understanding the shielding effects. '
+- idempotency_key: gh:vamseeachanta/digitalmodel#13
+  title: 'OrcaFlex | Installation | Modal Analysis '
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/13
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - package
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1149: Method assessment and selection — propeller-rudder interaction models
+
+    **Status:** done | **Priority:** medium | **Category:** engineering | **Subcategory:** hydrodynamics
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#9
+  title: OrcaFlex | Installation | Rigging module
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/9
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - package
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Rigging Module\n  - [ ] Add components: slings, shackles etc.\n  - [ ] Prepare basic model"

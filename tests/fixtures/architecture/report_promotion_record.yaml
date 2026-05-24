@@ -1,0 +1,7 @@
+record_id: report-promotion-record-fixture
+issue: '#2748'
+decision: client-private-report-only
+reviewer: architecture-contract-test
+reviewed_at: '2026-05-21T00:00:00Z'
+allowed_output_residency: registered_client_private_corpus
+notes: Generic fixture proving source-level promotion records are durable artifacts, not self-attested booleans.

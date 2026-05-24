@@ -42,6 +42,7 @@ Your job description says "route, don't execute." The rules that enforce that:
 |---|---|
 | Subagent planning wave exceeds requested cap after retrying timed-out lanes | Treat the user-requested subagent cap as a total-attempt budget, not only completed results. If a lane times out, report the timeout and ask before replacement attempts unless the user explicitly authorized retries beyond the cap. |
 | `delegate_task` children time out before first LLM request when launched with an empty toolset | Do not pass `toolsets: []` for no-tool planning. Use a minimal toolset such as `['terminal']` and explicitly instruct the child not to call tools, or omit toolsets only when inherited tool access is acceptable. |
+| Codex planning/implementation launched with `-C <worktree>` cannot write logs/artifacts to the orchestrator root because the sandbox is scoped to the worktree | Put prompt files, logs, and expected outputs inside the same worktree or use `/tmp` for transient logs, then copy verified artifacts back deliberately. Do not expect a Codex sandboxed worker to write directly into the parent/orchestrator checkout. |
 | `researcher` | Reads sources, gathers facts, writes findings | `scratch` |
 | `analyst` | Synthesizes, ranks, de-dupes. Consumes multiple `researcher` outputs | `scratch` |
 | `writer` | Drafts prose in the user's voice | `scratch` or `dir:` into their Obsidian vault |

@@ -1,0 +1,573 @@
+board:
+  slug: repo-llm-wiki-ingest
+  display_name: llm-wiki · ingest
+  tier: domain
+  repo: vamseeachanta/llm-wiki
+  domain: ingest
+  parent_slug: repo-llm-wiki
+  workspace_path: /mnt/local-analysis/llm-wiki
+  description: 'Corpus ingestion lanes — PDF/OCR pipelines, per-discipline corpus-ingest
+    batches (marine-engineering, drilling, production, electrical, materials, regulatory,
+    specialist OSS).
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/llm-wiki#117
+  title: '[corpus-ingest] marine-engineering/sigtto — 14-document ingest (Phase 1
+    pattern-validation)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/117
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:medium
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Parent epic**: [llm-wiki#103](https://github.com/vamseeachanta/llm-wiki/issues/103)
+    — marine-engineering corpus ingest, Phase 1
+
+    **Umbrella**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#116
+  title: '[corpus-ingest] marine-engineering/dnv — OS-E301 citation-pilot verification
+    + corpus expansion (Phase 1)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/116
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:medium
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Parent epic**: [llm-wiki#103](https://github.com/vamseeachanta/llm-wiki/issues/103)
+    — marine-engineering corpus ingest, Phase 1
+
+    **Umbrella**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#115
+  title: '[specialist-corpus] vendor-contractor pdfs — 2H, saipem, doris, frontierdeepwater,
+    OGManufacturing, umbilical, seanation, rock-oil-field'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/115
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:low
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Target wiki domain**: `wikis/marine-engineering/wiki/`
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#113
+  title: '[specialist-corpus] offshore renewables — openfast, WEC-Sim'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/113
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:low
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Target wiki domain**: `wikis/marine-engineering/wiki/`
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#112
+  title: '[specialist-corpus] BEM hydrodynamics — capytaine'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/112
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:low
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Target wiki domain**: `wikis/marine-engineering/wiki/`
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#111
+  title: '[specialist-corpus] hydrodynamic-mooring OSS — HAMS, MoorDyn, MoorPy'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/111
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:low
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Target wiki domain**: `wikis/marine-engineering/wiki/`
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#110
+  title: '[corpus-ingest] specialty-and-international — AMSA, ADCI, IAATO, ILO, JSP,
+    NAVSEA, Matthews Daniel, Noble Denton, PIANC, SAWE, USACE'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/110
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:medium
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Domain target**: `wikis/engineering/wiki/` (private llm-wiki).
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#109
+  title: '[corpus-ingest] materials-and-mechanical — ASTM, SAE, ANSI mechanical'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/109
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:medium
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Domain target**: `wikis/engineering-standards/wiki/` (private llm-wiki).
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#108
+  title: '[corpus-ingest] electrical-instrumentation — IEC, IEEE'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/108
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:medium
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Domain target**: `wikis/engineering/wiki/` (private llm-wiki).
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#107
+  title: '[corpus-ingest] maritime-regulatory — USCG, BSEE, EPA, OSHA, CBP/Jones Act,
+    Canal authorities, ColRegs'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/107
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:medium
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Domain target**: `wikis/maritime-law/wiki/` (private llm-wiki).
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#106
+  title: '[corpus-ingest] production-engineering — API production specs + SPE technical
+    papers'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/106
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:medium
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Domain target**: `wikis/production-engineering/wiki/` (private
+    llm-wiki).
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#105
+  title: '[corpus-ingest] drilling-engineering — API drilling spec family (4F, 7K,
+    8C, etc.)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/105
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:medium
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Domain target**: `wikis/drilling-engineering/wiki/` (private llm-wiki).
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#104
+  title: '[corpus-ingest] civil-structural-engineering — AISC, ASCE, ASME, AWS, NFPA,
+    ANSI structural'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/104
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:medium
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Domain target**: `wikis/engineering/wiki/` (private llm-wiki).
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#103
+  title: '[corpus-ingest] marine-engineering — class societies + IMO regulatory'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/103
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:medium
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Domain target**: `wikis/marine-engineering/wiki/` (private llm-wiki).
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#101
+  title: '[meta] Follow-on substance work from 2026-05-18 14-URL ingest batch (2 domain
+    foundings + COLREG family + ~25 named tasks)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/101
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'On 2026-05-18 a 14-URL LinkedIn batch landed (commits `aa7a8ec4..fa13ceb9`
+    fast-forwarded to `main` after rebase over 5 parallel reservoir-engineering commits).
+    The batch surfaced two **domain-founding events** plus a **COLREG family bootstrap**
+    and a number of substance gaps that were explicitly seeded for follow-on work
+    in log entries and source-page "Follow-on work" sections. This issue is the discoverable
+    index of those follow-on tasks — without it they fossilize inside per-source-page
+    bullets nobody re-reads.
+
+
+    ## Domain foundings (this batch)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#72
+  title: 'feat(execution): dry-tree Lower Tertiary corpus ingestion — child execution
+    lane under #19 (Frontier source family)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/72
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent + clearance
+
+    - **Parent (canonical plan)**: #19 — names Frontier Deepwater as one of three
+    offshore raw-source families pending execution
+
+    - **Clearance checklist**: #46 (CLOSED) — defines public-safe handling for Frontier/offshore-operations
+    material'
+- idempotency_key: gh:vamseeachanta/llm-wiki#34
+  title: 'feat: engineering wiki — ingest remaining high-value sources (skills metadata,
+    closed issues)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/34
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+
+    Expand the engineering wiki with pages from the remaining high-value source classes
+    identified but not yet ingested during the initial seed (#2034).'
+- idempotency_key: gh:vamseeachanta/llm-wiki#30
+  title: 'feat(knowledge): backfill promotion provenance on pre-existing wiki pages'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/30
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:documentation
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Backfill promotion provenance on pre-existing wiki pages so older LLM-wiki content
+    can answer what source artifact, issue, seed, or registry record it was promoted
+    from.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#29
+  title: 'feat(knowledge): add canonical source-title aliasing for wiki source pages'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/29
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - status:plan-approved
+  - cat:documentation
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Add canonical source-title aliasing for wiki source pages so filename-only and
+    numeric source pages become discoverable by human-readable titles, citation aliases,
+    and stable search labels.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#26
+  title: 'feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/26
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - status:plan-approved
+  - status:blocked
+  - cat:data-pipeline
+  - domain:knowledge-management
+  - agent:codex
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Execute Batch Pack 4 as a narrowly scoped, summary-backed promotion wave for non-ACMA
+    standards knowledge in cathodic-protection, pipeline, and structural domains.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#14
+  title: 'feat(llm-wiki): plan curated SESA LNG corpus extraction from Elements'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/14
+  gh_state: open
+  gh_labels:
+  - priority:medium
+  - status:plan-approved
+  - status:blocked
+  - cat:data-pipeline
+  - domain:knowledge-management
+  - domain:marine
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Plan a bounded curated extraction pass for the SESA FLNG Terminal / DORIS `62092_sesa`
+    corpus now represented metadata-first in the LLM-wikis.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#12
+  title: 'WRK-280: ABS standards acquisition: create folder + download CP Guidance
+    Notes'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/12
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  - priority:high
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-280: ABS standards acquisition: create folder + download CP
+    Guidance Notes
+
+
+    **Status:** blocked | **Priority:** high | **Category:** data/standards'
+- idempotency_key: gh:vamseeachanta/llm-wiki#11
+  title: 'WRK-1299: OCR pipeline — ace-linux-1 scanned PDFs (53K docs)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/11
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  - priority:medium
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1299: OCR pipeline — dev-primary scanned PDFs (53K docs)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#10
+  title: 'WRK-1298: OCR pipeline — ace-linux-2 scanned PDFs (39K docs, GPU-accelerated)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/10
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  - priority:medium
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1298: OCR pipeline — dev-secondary scanned PDFs (39K docs,
+    GPU-accelerated)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#9
+  title: 'WRK-1297: Batch deep extraction — ace-linux-2 machine-readable PDFs (125K
+    docs, local NTFS)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/9
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  - priority:high
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-1297: Batch deep extraction — dev-secondary machine-readable
+    PDFs (125K docs, local NTFS)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#8
+  title: 'WRK-1296: Batch deep extraction — ace-linux-1 machine-readable PDFs (154K
+    docs, local disk)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/8
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  - priority:high
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-1296: Batch deep extraction — dev-primary machine-readable
+    PDFs (154K docs, local disk)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#7
+  title: 'WRK-1295: Batch LLM summaries — ace_standards + workspace_spec (4,685 docs,
+    Phase 1 of WRK-1245)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/7
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  - priority:high
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-1295: Batch LLM summaries — ace_standards + workspace_spec
+    (4,685 docs, Phase 1 of WRK-1245)
+
+
+    **Status:** pending | **Priority:** high | **Category:** engineering/data-extraction'
+- idempotency_key: gh:vamseeachanta/llm-wiki#6
+  title: 'WRK-1292: Enrich research briefs with key equations and worked examples
+    from downloaded PDFs'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/6
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  - priority:medium
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1292: Enrich research briefs with key equations and worked
+    examples from downloaded PDFs'
+- idempotency_key: gh:vamseeachanta/llm-wiki#5
+  title: 'WRK-1257: Chart image extraction — extract actual images from PDFs, not
+    just metadata'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/5
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  - priority:medium
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1257: Chart image extraction — extract actual images from
+    PDFs, not just metadata'
+- idempotency_key: gh:vamseeachanta/llm-wiki#4
+  title: 'WRK-1255: Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/4
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  - priority:high
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-1255: Batch deep extraction — large standards PDFs >1MB (1,500
+    machine-readable)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#3
+  title: 'WRK-1253: Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table
+    yield)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/3
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  - priority:low
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1253: Batch deep extraction — XLS/XLSX files (11,741 docs,
+    93% table yield)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#2
+  title: 'WRK-1246: Assess deep extraction yield across text-extractable corpus —
+    tables, charts, equations'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/2
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  - priority:high
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-1246: Assess deep extraction yield across text-extractable
+    corpus — tables, charts, equations'
+- idempotency_key: gh:vamseeachanta/llm-wiki#1
+  title: 'WRK-1245: Full corpus intelligence extraction — summaries, data, methodologies,
+    test cases from 426K documents'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/1
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  - priority:high
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-1245: Full corpus intelligence extraction — summaries, data,
+    methodologies, test cases from 426K documents'

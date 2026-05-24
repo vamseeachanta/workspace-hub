@@ -1,0 +1,11 @@
+board:
+  slug: repo-llm-wiki
+  display_name: llm-wiki
+  tier: repo
+  repo: vamseeachanta/llm-wiki
+  workspace_path: /mnt/local-analysis/llm-wiki
+  description: 'Private (flipped 2026-05-20) codes/standards corpus + client knowledge
+    wiki. Parent board; cards live in sub-boards (ingest, tooling, content, governance).
+
+    '
+cards: []

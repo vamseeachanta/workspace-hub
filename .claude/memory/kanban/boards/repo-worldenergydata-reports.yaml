@@ -1,0 +1,146 @@
+board:
+  slug: repo-worldenergydata-reports
+  display_name: worldenergydata · reports
+  tier: domain
+  repo: vamseeachanta/worldenergydata
+  domain: reports
+  parent_slug: repo-worldenergydata
+  workspace_path: /mnt/local-analysis/worldenergydata
+  description: 'Report and analysis generation — operator cost benchmarking, HSE patterns,
+    intervention-activity analysis, hurricane risk, notebook + HTML outputs.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/worldenergydata#419
+  title: 'feat(analysis): intervention HSE — Phase 1B operator-aggregate patterns
+    (#416 child)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/419
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+
+    Child of [#416](https://github.com/vamseeachanta/worldenergydata/issues/416).
+    Per plan resolution 2026-05-18, Phase 1 was decomposed into:'
+- idempotency_key: gh:vamseeachanta/worldenergydata#416
+  title: 'feat(analysis): intervention-activity HSE patterns + day-to-day operational
+    recommendations'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/416
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context — the gap
+
+
+    worldenergydata currently has TWO mature thread that don''t yet intersect:'
+- idempotency_key: gh:vamseeachanta/worldenergydata#362
+  title: 'feat(report): operator cost benchmarking from annual disclosures (HTML +
+    notebook)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/362
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:engineering
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Goal
+
+
+    Build a buyer-facing benchmarking report (notebook + HTML export) that surfaces
+    project-cost distributions across major operators by field/region/year, sourced
+    from the annual-disclosure dataset shipped via #334/#335/#337/#338.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#344
+  title: 'feat(cost): add restatement/version lineage for annual disclosure records'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/344
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Add restatement and version-lineage support for annual disclosure records so year-over-year
+    tracking can distinguish original disclosures from later revised statements.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#343
+  title: 'feat(cost): build major-operator annual statement source registry and yearly
+    coverage tracker'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/343
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:engineering
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Create a major-operator annual statement source registry and year-over-year coverage
+    tracker for disclosure cost collection.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#336
+  title: 'feat(cost): add currency normalization and comparability policy for annual
+    disclosures'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/336
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Parent
+
+    - Parent: #334'
+- idempotency_key: gh:vamseeachanta/worldenergydata#334
+  title: 'feat(cost): annual operator disclosures dataset for year-over-year project
+    cost tracking'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/334
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:engineering
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Create a foundation-only v1 disclosure data layer for annual project/operator
+    cost disclosures.'

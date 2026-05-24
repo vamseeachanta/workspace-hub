@@ -124,19 +124,23 @@ class TestRegistryStructure:
         assert machine.get("tier1_repo_root") == "/mnt/local-analysis"
         assert machine.get("repo_layout") == "sibling"
         assert machine["tier1_repo_root"] != machine["workspace_root"]
+        baseline = machine["tier1_baseline"]
+        expected_repos = (
+            baseline["required"]
+            + baseline["optional"]
+            + baseline["non_tier1_machine_access_current"]
+        )
         repo_paths = {
             repo: f"{machine['tier1_repo_root']}/{repo}"
             for repo in machine["repos"]
         }
+        assert machine["repos"] == expected_repos
         assert repo_paths == {
-            "worldenergydata": "/mnt/local-analysis/worldenergydata",
-            "digitalmodel": "/mnt/local-analysis/digitalmodel",
-            "assetutilities": "/mnt/local-analysis/assetutilities",
-            "assethold": "/mnt/local-analysis/assethold",
-            "workspace-hub": "/mnt/local-analysis/workspace-hub",
-            "OGManufacturing": "/mnt/local-analysis/OGManufacturing",
+            repo: f"/mnt/local-analysis/{repo}"
+            for repo in expected_repos
         }
         assert repo_paths["workspace-hub"] == machine["workspace_root"]
+        assert "OGManufacturing" not in repo_paths
 
 
 # ---------------------------------------------------------------------------

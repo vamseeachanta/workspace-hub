@@ -6,7 +6,7 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-05-21)
+## Synced from Hermes Memory (2026-05-22)
 
 ### Environment Facts
 
@@ -16,9 +16,8 @@
 
 ### User Profile
 
-- User requires zero-waste AI spend: consume provider credits on useful approved work and optimize throughput across machines/providers. Workstation planning should focus on execution throughput; repo placement/interactions, memory, skills, artifacts, output formats, and file structure are canonical infrastructure. Delegation strategy is independent from tier-1 repo placement. In marine/offshore force reviews, user expects component/resultant comparisons side-by-side using existing basecase assumptions and GitHub issue comments as the correction surface.
-- User wants private llm-wiki maintained weekly as code-development leverage: store client/project data there more fully with key-information abstractions, while public repos/docs remain redacted/public-safe; review current LLM concepts, assess repo architecture/content gaps, and open actionable GitHub issues. User expects active post-session learning after non-trivial sessions: patch loaded/governing skills first and treat “nothing to save” as rare.
-- User expects repo-ecosystem claims about native Claude usage and whether work flows through Hermes Agent to be verified against Claude session logs and concrete evidence before answering.
+- User requires zero-waste AI spend and throughput-first workstation planning. Repo placement/interactions, memory, skills, artifacts, output formats, and file structure are canonical infrastructure. User prefers tier-1 repo placement decided machine-by-machine via GitHub issues in explicit sequence (ace-linux-1, ace-linux-2, then licensed Windows hosts); keep repo placement independent from delegation/dispatch strategy. In marine/offshore force reviews, user expects component/resultant comparisons side-by-side using existing basecase assumptions and GitHub issue comments as the correction surface.
+- User wants private llm-wiki maintained weekly as code-development leverage: store client/project data with key-information abstractions while public repos/docs remain redacted/public-safe; review LLM concepts, assess repo architecture/content gaps, and open actionable GitHub issues. User expects active post-session learning after non-trivial sessions: patch loaded/governing class-level skills first, prefer concise references under umbrellas over one-off skills, and treat “nothing to save” as rare. User expects repo-ecosystem claims about native Claude usage / Hermes Agent routing to be verified against Claude logs and concrete evidence before answering.
 
 
 <!-- BRIDGE:END -->

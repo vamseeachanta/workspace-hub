@@ -59,6 +59,7 @@ Do not use this instead of the canonical route when scope, delegation, policy, o
 - Run the specific tests/validators that prove the issue is done.
 - Add broader validation only where risk or repo policy requires it.
 - Capture exact evidence for GitHub and commit messaging.
+- If validation changes a test fixture from a metadata stub to a real tool-backed object, update teardown/removal semantics in the same pass. Example: when code now runs real `git status`, test fixtures must use `git init` instead of empty `.git` directories, and tests that simulate absence must remove `.git` recursively rather than using `Path.rmdir()`.
 - If validation is incomplete or ambiguous, do not advance.
 
 6. Adversarial review gate
@@ -76,10 +77,15 @@ Do not use this instead of the canonical route when scope, delegation, policy, o
 - Post the landed summary and verification evidence to GitHub.
 
 7a. Interruption / tool-budget handoff gate
-- If execution is interrupted before validation, commit/push, or closeout, do not write a completion-style summary.
+- If execution is interrupted by context compaction, tool-call budget limits, user stop, or before validation, commit/push, or closeout, do not write a completion-style summary.
 - Write a resumption handoff instead: live issue state, labels, plan/approval status, exact dirty paths, tests already run and their result, first unmet acceptance criterion, and explicit `not completed` statements.
+- If the interruption happens after local code edits but before final tests/review, name the edited files and the validation gap separately. Do not imply that helper insertions, lint-on-write, or partial diagnostics equal a completed review.
+- Include the first resume commands/checkpoints when tool calls are exhausted: `git status --short`, targeted `git diff`, and the narrowest relevant test/validator from the issue plan.
 - Preserve RED-state evidence truthfully. A failing TDD test plus no implementation is progress, not completion.
+- Call out suspicious unrelated dirty files as session residue candidates; do not silently absorb them into the issue commit.
 - On resume, re-run live checks rather than trusting the handoff narrative: issue labels/state, `git status`, relevant diffs, and the targeted test/validator.
+- If an interruption happens immediately after a failed verification command, preserve the exact failing command and parser/output error as the first resume target; do not continue to review/commit until the verifier contract is corrected or the command is adjusted to the actual CLI interface.
+- Use `references/interrupted-approved-issue-execution-handoff.md` for the required handoff shape when execution stops mid-gate.
 
 8. Closeout
 - Close only when the issue is landed, or proven already satisfied/invalid with evidence.
@@ -93,5 +99,7 @@ Do not use this instead of the canonical route when scope, delegation, policy, o
 When in doubt, stop using the checklist as a shortcut and return to `gh-work-execution` for the full decision framework, delegation rules, GitHub posting cadence, blocker handling, and closeout requirements.
 
 Reference: `references/interrupted-approved-issue-execution-handoff.md` captures the interruption handoff pattern for approved issue work that reaches RED tests or reconnaissance but stops before implementation/closeout.
+
+Reference: `references/sso-verification-interruption.md` captures the pattern for interrupted approved-issue verification where a live checker/repair CLI contract fails and must be resumed before review/commit.
 
 Reference: `references/cli-orchestrator-safety-gates.md` captures the TDD safety-gate pattern for cron/label/Telegram-Hermes-style CLI orchestrators: dry-run default, explicit execute opt-in, host-local readiness evidence, canonical registry machine labels, real git cleanliness checks, no-overlap locks, and recursive output redaction.

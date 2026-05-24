@@ -1,0 +1,257 @@
+board:
+  slug: repo-workspace-hub
+  display_name: workspace-hub
+  tier: repo
+  repo: vamseeachanta/workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Workspace-hub master board — the multi-domain ops/governance repo. Cards here are unclassified overflow; classified work lives on tier-2 domain sub-boards.
+
+    '
+  children:
+  - repo-workspace-hub-harness
+  - repo-workspace-hub-engineering
+  - repo-workspace-hub-ai-orchestration
+  - repo-workspace-hub-data
+  - repo-workspace-hub-ops
+  - repo-workspace-hub-business
+cards:
+- idempotency_key: gh:vamseeachanta/workspace-hub#2761
+  title: Explore 3-night Broken Bow-style family getaway alternatives near west Houston
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2761
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Goal
+
+    Explore 3-night, family-friendly alternatives to the Broken Bow / Lookout cabin feel within about 4 hours of west Houston.
+
+    ## Traveler profile'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2077
+  title: 'fix(governance): narrow tests/* safe-path pattern in plan-approval-gate'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2077
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Narrow the `*/tests/*|*/test_*` glob in `is_safe_path()` — currently allows any nested tests/ directory to bypass plan approval. Should be scoped to known test dirs. Adversarial finding from #2056 commit 58dfd9298. See that commit''s issue comment for full detail.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1663
+  title: Quality score trend dashboard — track maturity trajectory over time
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1663
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The module status matrix now produces JSON snapshots with `quality_score`, `test_source_ratio`, and `loc` per package (#1629). Trend comparison (↑↓→) works by diffing current vs previous JSON.
+
+    ### Proposed feature'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1661
+  title: 'Architecture scanner: dependency cycle detection and layering violations'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1661
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The architecture scanner (#1604) now has:
+
+    - Package discovery (31 packages)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1659
+  title: Promote data_models from SKELETON to DEVELOPMENT — add tests for curves.py
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1659
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    data_models is the only remaining SKELETON package (1 of 31). It has:
+
+    - 2 files: `__init__.py` (added in #1626) + `curves.py`'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1581
+  title: Post-update display/VNC recovery on ace-linux-2
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1581
+  gh_state: open
+  gh_labels:
+  - machine:dev-secondary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    After OS update on ace-linux-2, the KVM display (NVIDIA T400 + EDID drop) and VNC access likely need re-validation and re-application of the fix.
+
+    ## Root Cause (WRK-307)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1499
+  title: Composite/multi-material section analysis PoC with sectionproperties
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1499
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    sectionproperties #1452 evaluation covered homogeneous steel only. Offshore structures frequently use composite sections: concrete-filled tubulars (CFT), grouted connections, steel-concrete composite beams.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1497
+  title: Add AISC shapes database lookup for sectionproperties
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1497
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    sectionproperties (#1452 evaluation) has no built-in AISC shapes database — users must supply dimensions manually via `i_section(d, b, t_f, t_w, r, n_r)`. This is error-prone and tedious for standard shapes.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1432
+  title: 'WRK-1432: Settings cleanup: auto mode, deduplicate config across levels'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1432
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+- idempotency_key: gh:vamseeachanta/workspace-hub#1408
+  title: 'WRK-1408: Wire notification consumer — surface logs/notifications to /today or desktop'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1408
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+- idempotency_key: gh:vamseeachanta/workspace-hub#1393
+  title: 'WRK-1393: Add Equinor ASA Databricks marketplace as oil and gas data source'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1393
+  gh_state: open
+  gh_labels:
+  - machine:dev-secondary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+- idempotency_key: gh:vamseeachanta/workspace-hub#1327
+  title: 'WRK-1327: Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1327
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+- idempotency_key: gh:vamseeachanta/workspace-hub#1319
+  title: 'WRK-1377: Hull form parametric design — coefficients and Series 60'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1319
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: Auto-created by backfill-github-refs.sh
+- idempotency_key: gh:vamseeachanta/workspace-hub#1318
+  title: 'WRK-1376: Resistance prediction — Holtrop-Mennen method implementation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1318
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: Auto-created by backfill-github-refs.sh
+- idempotency_key: gh:vamseeachanta/workspace-hub#1317
+  title: 'WRK-1375: Maneuverability module — rudder forces and turning circle'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1317
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: Auto-created by backfill-github-refs.sh
+- idempotency_key: gh:vamseeachanta/workspace-hub#1316
+  title: 'WRK-1374: Advanced stability — damage stability and IMO compliance'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1316
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: Auto-created by backfill-github-refs.sh
+- idempotency_key: gh:vamseeachanta/workspace-hub#1314
+  title: 'WRK-1372: Ship-specific hydrostatic data tables (DDG-51, FFG-7)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1314
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: Auto-created by backfill-github-refs.sh
+- idempotency_key: gh:vamseeachanta/workspace-hub#1006
+  title: 'TEST-FINAL3: delete me'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1006
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: test
+- idempotency_key: gh:vamseeachanta/workspace-hub#720
+  title: 'TEST-RATELIMIT7: delete me'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/720
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: test

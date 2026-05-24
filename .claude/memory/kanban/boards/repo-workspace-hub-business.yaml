@@ -1,0 +1,1068 @@
+board:
+  slug: repo-workspace-hub-business
+  display_name: workspace-hub · business
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Business / GTM / personal-finance / family / documentation and career artifacts shepherded through workspace-hub.
+
+    '
+  domain: business
+  parent_slug: repo-workspace-hub
+cards:
+- idempotency_key: gh:vamseeachanta/workspace-hub#2626
+  title: 'fix(security): narrow #2552 external-contributor runbook tests + scenario 3 — drop privacy-leaking test, define ingestion vector, resolve interaction-limit contradiction'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2626
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - domain:security
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Source:** #2552 plan-review queue audit 2026-05-03. Per [#2552 approval marker](https://github.com/vamseeachanta/workspace-hub/blob/main/.planning/plan-approved/2552.md), the runbook content was approved despite a 4+ day Tier-D persistent-MAJOR pattern (claude/codex/gemini all MAJOR across 4+ rounds). The architectural defects under those MAJORs are deferred here for a focused fresh plan.
+
+    ## Defects to address (from latest reviews)
+
+    ### 1. Privacy-leaking test (Gemini, repeat)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2557
+  title: 'chore(productivity): weekly work-pattern review and flow hacks'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2557
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:business
+  - domain:gtm
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Weekly Business Brain issue: review the owner''s full work pattern and recommend productivity hacks that make work flow faster.
+
+    ## Business Brain target'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2553
+  title: 'docs(repo-portfolio): reconcile repository overview docs after mission review'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2553
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - documentation
+  - domain:repo-organization
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Reconcile the remaining portfolio/context documentation after the mission-document review wave and Business Brain update.
+
+    The mission review updated multiple per-repo mission documents and `docs/BUSINESS_BRAIN.md`. The remaining portfolio docs should be reviewed next so they do not preserve stale repo counts, stale tiering, or legacy `.agent-os/product/*` authority language.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2552
+  title: 'docs(security): external contributor and unsolicited paid-help response runbook'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2552
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - documentation
+  - domain:security
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Create a concise policy/runbook for handling non-collaborator comments, unsolicited paid-help offers, and external contributor requests on public repos.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2549
+  title: 'chore(business-brain): periodically assess repo work and refresh ecosystem context'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2549
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Business Brain is the ecosystem''s single-file onboarding source, but substantial work is happening across repositories. We need a recurring/readable assessment workflow that reviews completed repo work and updates Business Brain so repo classifications, provider accounts, machine inventory, and archive/retirement candidates do not go stale.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2547
+  title: 'chore(seanation): extract useful client information and archive repo'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2547
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    `seanation` belongs to another client and should be treated as a client-specific extraction/archive repository. The objective is to review the repo, extract any useful data or information, preserve context/provenance, migrate reusable artifacts to the appropriate durable destination if needed, and then archive the repo.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2545
+  title: 'chore(saipem): extract useful installation-project information and archive or retire repo'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2545
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    `saipem` should be treated as a temporary engineering-installation contractor project repository, similar to Rock Oil Field, ACMA, and Doris client/project repositories. The objective is to extract useful Saipem installation-project information, migrate durable code/data/analysis to the appropriate Tier-1 repositories, and archive or retire the repo over time.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2539
+  title: 'chore(rock-oil-field): sanity-check and migrate useful code/data/analysis to Tier-1 repos'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2539
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    `rock-oil-field` should be treated as a temporary triage/archive repository, not a durable execution home. Sanity-check all code, data, engineering methods, and analysis, then migrate useful artifacts to the appropriate Tier-1 repositories.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2537
+  title: 'chore(investments): sanity-check and migrate files to assethold or achantasdata'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2537
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Review the private `investments` repository, sanity check all files, and migrate durable artifacts to the correct long-term home:
+
+    - analysis/code/model/reporting artifacts -> `assethold`'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2533
+  title: 'feat(repo-portfolio): review and revise mission/objective statements across active repos'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2533
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - domain:repo-organization
+  - enhancement
+  - priority:high
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Review and revise the mission/objective statements across all active workspace repos so future GitHub issue work can quickly answer:
+
+    1. what is this repo for?'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2512
+  title: 'feat(career): build semiconductor CAD/FEM portfolio and job-application packet'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2512
+  gh_state: open
+  gh_labels:
+  - cat:career
+  - cat:documentation
+  - domain:chip-design
+  - domain:semiconductor
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Parent: #2507
+
+    Roadmap: `docs/roadmaps/chip-design-cad-fem-career-roadmap.md`'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2497
+  title: 'chore(memory): handoff-doc cross-row SHA transcription hazard'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2497
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The 2026-04-26 morning handoff (`/tmp/handoff-prompt.md`) recorded:
+
+    ```'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2483
+  title: 'chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2483
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Split from #2105 (Lane I scope-split, user-approved 2026-04-24 Option A).
+
+    ## Dependency'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2379
+  title: 'feat(knowledge): generate task and asset explorer views from the intelligence accessibility registry'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2379
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Generate task and asset explorer views from the intelligence accessibility registry so humans and agents can navigate the intelligence ecosystem by question, task, and access path instead of reading raw YAML or scattered docs.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2351
+  title: 'feat(gtm): Day-7/14/21/30 checkpoint dashboard — surface plan metrics for weekly review'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2351
+  gh_state: open
+  gh_labels:
+  - claude:design
+  - domain:gtm
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    The 30-day GTM plan contains checkpoint tables at Day 7/14/21/30 and a Success Metrics table. Nothing surfaces progress against them; no tripwire for "No paid engagement by Day 30".
+
+    ## Evidence'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2350
+  title: 'verify: #2043 mooring animation render outputs — confirm published or reopen'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2350
+  gh_state: open
+  gh_labels:
+  - domain:gtm
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    #2043 closed with Manim scene script but acceptance also required rendered GIF + MP4 and README update. Script exists; render and publish status are unverified.
+
+    ## Evidence'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2349
+  title: 'docs(gtm): refresh 30-day plan — #1809 closed, update dependency table + Day-7 checkpoint'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2349
+  gh_state: open
+  gh_labels:
+  - domain:gtm
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    `docs/gtm/gtm-plan-30day.md` lists #1809 as a Week-1 dependency. #1809 closed 2026-04-15 and workflow GIFs (#2288) landed. Plan doc still stale.
+
+    ## Evidence'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2347
+  title: 'chore(gtm): reconcile stale tracker bodies for #2016, #1669, #117, #191 to shipped reality'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2347
+  gh_state: open
+  gh_labels:
+  - domain:gtm
+  - priority:medium
+  - review-backlog
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Four umbrella / strategy issues have bodies that predate the 2026-04-10 and 2026-04-15 shipping waves. Reviewers can''t tell what''s open vs. shipped.
+
+    ## Evidence'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2296
+  title: 'WRK: 2026 tax projections — SKEstates and AceEngineer income tax planning'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2296
+  gh_state: open
+  gh_labels:
+  - cat:personal-finance
+  - domain:tax-preparation
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Project 2026 federal income tax for both C-Corps to enable advance planning (estimated tax payments, NOL utilization, depreciation schedules).
+
+    ## Entities'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2295
+  title: 'WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2295
+  gh_state: open
+  gh_labels:
+  - cat:personal-finance
+  - domain:tax-preparation
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    File Texas franchise tax No Tax Due Reports + Public Information Reports (PIR) for both C-Corps via Texas Comptroller Webfile.
+
+    ## Entities'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2286
+  title: 'feat(wiki): promote SIGTTO LNG and mooring publications as batch'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2286
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Follow-on issue split from #2244 triage artifact to handle a bounded slice of ACMA breadth discovered outside the approved #2227 scope.
+
+    ## Why this is split'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2285
+  title: 'feat(wiki): promote API RP 2SK 3rd ed. to mooring wiki domain'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2285
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Follow-on issue split from #2244 triage artifact to handle a bounded slice of ACMA breadth discovered outside the approved #2227 scope.
+
+    ## Why this is split'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2284
+  title: 'feat(wiki): promote OCIMF MEG3 and MEG4 to mooring wiki domain'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2284
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Follow-on issue split from #2244 triage artifact to handle a bounded slice of ACMA breadth discovered outside the approved #2227 scope.
+
+    ## Why this is split'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2283
+  title: 'feat(wiki): promote CSA Z276.2-19 to LNG wiki domain'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2283
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Follow-on issue split from #2244 triage artifact to handle a bounded slice of ACMA breadth discovered outside the approved #2227 scope.
+
+    ## Why this is split'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2214
+  title: 'docs(ai): split current architecture guidance from legacy wrapper redirects'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2214
+  gh_state: open
+  gh_labels:
+  - cat:documentation
+  - domain:ai-orchestration
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Summary
+
+    Reduce the remaining legacy exception surface by redesigning docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md. It is currently allowlisted because it intentionally documents deleted scripts/agents/* wrapper paths. Split or rewrite it so the current architecture is cleanly separated from historical redirect/reference content.
+
+    Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2117
+  title: 'feat(gtm): resume + cover letter generator for Rigzone applications (#1993)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2117
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - domain:gtm
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Purpose
+
+    Automate resume tailoring for offshore engineering job applications. Vamsee applies to Rigzone positions not to get hired but to generate consulting conversations.
+
+    ## Deliverable'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2038
+  title: 'feat(gtm): manim installation sequence / operability envelope animation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2038
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - domain:gtm
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Build the third Manim engineering explainer: offshore installation sequence with vessel operability envelope.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2037
+  title: 'feat(gtm): manim mooring layout / force explainer animation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2037
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - domain:gtm
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Build the second Manim engineering explainer: mooring layout with force/excursion visualization.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2035
+  title: 'feat(gtm): manim-based engineering explainer pipeline'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2035
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - domain:gtm
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Build a Manim-based engineering explainer pipeline that turns key engineering analyses into reusable animated assets for GTM, demos, and public-facing technical content.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2016
+  title: 'feat(gtm): client conversion pipeline -- turn repo capability into paying clients'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2016
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - cat:strategy
+  - domain:gtm
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: "     1|## Mission: Convert engineering capability to paying clients\n     2|\n     3|> \"All of this is paper work until I get some clients.\""
+- idempotency_key: gh:vamseeachanta/workspace-hub#1994
+  title: '[WRK] Register for GLG, AlphaSights, Guidepoint expert networks'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1994
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - cat:strategy
+  - domain:gtm
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Expert networks are the HIGHEST ROI ad-hoc income channel. Zero application hassle vs. full job applications. 1-hour phone consultations with hedge funds, PE firms, law firms about offshore/marine engineering topics. Your 23yr PE + OrcaFlex + Chevron + BP background is exactly what they seek.
+
+    ## Platforms to Register'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1993
+  title: '[WRK] Rigzone job application pipeline — resume tailoring and submission'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1993
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - cat:strategy
+  - domain:gtm
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Scraped and scored 13 Rigzone job postings against Vamsee''s profile (23yr PE, offshore/subsea, Chevron 16yr, Python/digital transformation). Chevron Project Manager III (R000065929) was the best fit at 9/10 but confirmed EXPIRED on careers.chevron.com.
+
+    ## Top Candidates to Track'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1669
+  title: '[WRK] GTM: Vessel Installation Contractor Email Outreach Campaign'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1669
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - cat:strategy
+  - domain:gtm
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Prepare and execute a go-to-market (GTM) email outreach campaign targeting **vessel installation contractors** as the first client segment for ACE Engineer consulting and AI-powered engineering services.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1610
+  title: Add opm-common to open-source-engineering-catalog.yaml (reservoir simulation domain)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1610
+  gh_state: open
+  gh_labels:
+  - cat:resources
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The /mnt/ace audit (#1579) found that `opm-common` is the only cloned repo at `/mnt/ace/` NOT present in `.planning/archive/catalog/open-source-engineering-catalog.yaml`.
+
+    ## Details'
+- idempotency_key: gh:vamseeachanta/workspace-hub#207
+  title: 'WRK-006: Upload videos from iPhone to YouTube'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/207
+  gh_state: open
+  gh_labels:
+  - cat:personal
+  - domain:uncategorised
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-006: Upload videos from iPhone to YouTube
+
+    **Status:** blocked | **Priority:** low | **Category:** personal/uncategorised
+
+    **Complexity:** simple | **Machine:** ace-linux-1'
+- idempotency_key: gh:vamseeachanta/workspace-hub#206
+  title: 'WRK-5093: 2025 SKEstates Inc tax preparation — C-Corp (Form 1120)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/206
+  gh_state: open
+  gh_labels:
+  - cat:personal-finance
+  - domain:tax-preparation
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-5093: 2025 SKEstates Inc tax preparation — C-Corp (Form 1120)
+
+    **Status:** working | **Priority:** high | **Category:** personal-finance | **Subcategory:** tax-preparation
+
+    **Repo:** [''sabithaandkrishnaestates''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#205
+  title: 'WRK-5084: 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/205
+  gh_state: open
+  gh_labels:
+  - cat:personal-finance
+  - domain:tax-preparation
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-5084: 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ)
+
+    **Status:** working | **Priority:** high | **Category:** personal-finance | **Subcategory:** tax-preparation
+
+    **Repo:** [''achantas-data''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#204
+  title: 'WRK-1318: 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/204
+  gh_state: open
+  gh_labels:
+  - cat:personal-finance
+  - domain:tax-preparation
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1318: 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120)
+
+    **Status:** working | **Priority:** high | **Category:** personal-finance | **Subcategory:** tax-preparation
+
+    **Repo:** [''aceengineer-admin''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#203
+  title: 'WRK-TEST-ENSEMBLE: Smoke test for ensemble planning'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/203
+  gh_state: open
+  gh_labels:
+  - cat:uncategorised
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-TEST-ENSEMBLE: Smoke test for ensemble planning
+
+    **Status:** pending | **Priority:** low | **Category:** uncategorised/uncategorised
+
+    **Complexity:** simple | **Machine:** ace-linux-1'
+- idempotency_key: gh:vamseeachanta/workspace-hub#197
+  title: 'WRK-665: docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/197
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - domain:gtm
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-665: docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** business | **Subcategory:** gtm
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#191
+  title: 'WRK-632: feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/191
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - domain:gtm
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-632: feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients)
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** business | **Subcategory:** gtm
+
+    **Repo:** [''frontierdeepwater'', ''TBD-client2-repo''] | **Complexity:** simple | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#190
+  title: 'WRK-626: feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/190
+  gh_state: open
+  gh_labels:
+  - cat:personal
+  - domain:home
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-626: feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3)
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** personal | **Subcategory:** home
+
+    **Repo:** [''frontierdeepwater''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#184
+  title: 'WRK-581: feat(worldenergydata): evaluate IEA Methane Tracker for ESG module'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/184
+  gh_state: open
+  gh_labels:
+  - cat:uncategorised
+  - domain:uncategorised
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-581: feat(worldenergydata): evaluate IEA Methane Tracker for ESG module
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** uncategorised | **Subcategory:** uncategorised
+
+    **Repo:** [''worldenergydata''] | **Complexity:** simple | **Machine:** [''dev-primary'', ''dev-secondary'']'
+- idempotency_key: gh:vamseeachanta/workspace-hub#183
+  title: 'WRK-580: feat(worldenergydata): map open-access journal portfolio for engineering'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/183
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - domain:website
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-580: feat(worldenergydata): map open-access journal portfolio for engineering
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** business | **Subcategory:** website
+
+    **Repo:** [''worldenergydata'', ''workspace-hub''] | **Complexity:** simple | **Machine:** [''dev-primary'', ''dev-secondary'']'
+- idempotency_key: gh:vamseeachanta/workspace-hub#167
+  title: 'WRK-5094: Real estate tax skill — CRE tax preparation, depreciation, and tenant reimbursement'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/167
+  gh_state: open
+  gh_labels:
+  - cat:personal-finance
+  - domain:skills
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-5094: Real estate tax skill — CRE tax preparation, depreciation, and tenant reimbursement
+
+    **Status:** pending | **Priority:** medium | **Category:** personal-finance | **Subcategory:** skills
+
+    **Repo:** [''workspace-hub'', ''sabithaandkrishnaestates''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#166
+  title: 'WRK-5092: sabithaandkrishnaestates repo — document indexing and structure enhancement'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/166
+  gh_state: open
+  gh_labels:
+  - cat:personal-finance
+  - domain:infrastructure
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-5092: sabithaandkrishnaestates repo — document indexing and structure enhancement
+
+    **Status:** pending | **Priority:** medium | **Category:** personal-finance | **Subcategory:** infrastructure
+
+    **Repo:** [''sabithaandkrishnaestates''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#119
+  title: 'WRK-476: feat(worldenergydata): create ESG/Carbon Emissions module'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/119
+  gh_state: open
+  gh_labels:
+  - cat:uncategorised
+  - domain:uncategorised
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-476: feat(worldenergydata): create ESG/Carbon Emissions module
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** uncategorised | **Subcategory:** uncategorised
+
+    **Repo:** [''worldenergydata''] | **Complexity:** moderate | **Machine:** unset'
+- idempotency_key: gh:vamseeachanta/workspace-hub#118
+  title: 'WRK-475: feat(marine_ops): wire Open-Meteo Marine API into weather-window module'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/118
+  gh_state: open
+  gh_labels:
+  - cat:uncategorised
+  - domain:uncategorised
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-475: feat(marine_ops): wire Open-Meteo Marine API into weather-window module
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** uncategorised | **Subcategory:** uncategorised
+
+    **Repo:** [''digitalmodel''] | **Complexity:** simple | **Machine:** unset'
+- idempotency_key: gh:vamseeachanta/workspace-hub#117
+  title: 'WRK-470: feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/117
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - domain:gtm
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-470: feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** business | **Subcategory:** gtm
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#108
+  title: 'WRK-148: ACE-GTM: A&CE Go-to-Market strategy stream'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/108
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - domain:gtm
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-148: ACE-GTM: A&CE Go-to-Market strategy stream
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** business | **Subcategory:** gtm
+
+    **Repo:** [''aceengineer-website'', ''aceengineer-strategy'', ''workspace-hub''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#98
+  title: 'WRK-1319: Self-prepared cost segregation study — 15645 Westpark (Family Dollar)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/98
+  gh_state: open
+  gh_labels:
+  - cat:personal-finance
+  - domain:tax-preparation
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1319: Self-prepared cost segregation study — 15645 Westpark (Family Dollar)
+
+    **Status:** pending | **Priority:** high | **Category:** personal-finance | **Subcategory:** tax-preparation
+
+    **Repo:** [''sabithaandkrishnaestates''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#70
+  title: 'WRK-1184: Establish ecosystem theme — tethering timeless engineering to single source of truth'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/70
+  gh_state: open
+  gh_labels:
+  - cat:strategy
+  - domain:branding
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1184: Establish ecosystem theme — tethering timeless engineering to single source of truth
+
+    **Status:** pending | **Priority:** high | **Category:** strategy | **Subcategory:** branding
+
+    **Repo:** [''aceengineer-website'', ''digitalmodel'', ''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#62
+  title: 'WRK-1166: Generator fuel system CP design'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/62
+  gh_state: open
+  gh_labels:
+  - cat:career
+  - domain:cv-strategy
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1166: Generator fuel system CP design
+
+    **Status:** pending | **Priority:** medium | **Category:** career | **Subcategory:** cv-strategy
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#61
+  title: 'WRK-1165: Droop control simulator'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/61
+  gh_state: open
+  gh_labels:
+  - cat:career
+  - domain:cv-strategy
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1165: Droop control simulator
+
+    **Status:** pending | **Priority:** medium | **Category:** career | **Subcategory:** cv-strategy
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#60
+  title: 'WRK-1164: Power flow / load flow calculator'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/60
+  gh_state: open
+  gh_labels:
+  - cat:career
+  - domain:cv-strategy
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1164: Power flow / load flow calculator
+
+    **Status:** pending | **Priority:** medium | **Category:** career | **Subcategory:** cv-strategy
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#59
+  title: 'WRK-1163: IEC 61850 GOOSE messaging model'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/59
+  gh_state: open
+  gh_labels:
+  - cat:career
+  - domain:cv-strategy
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1163: IEC 61850 GOOSE messaging model
+
+    **Status:** pending | **Priority:** high | **Category:** career | **Subcategory:** cv-strategy
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#58
+  title: 'WRK-1162: Protection relay coordination module'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/58
+  gh_state: open
+  gh_labels:
+  - cat:career
+  - domain:cv-strategy
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1162: Protection relay coordination module
+
+    **Status:** pending | **Priority:** high | **Category:** career | **Subcategory:** cv-strategy
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#41
+  title: 'WRK-1096: Add HydroComp NavCad electric-motor resources to workspace library'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/41
+  gh_state: open
+  gh_labels:
+  - cat:resources
+  - domain:naval-architecture
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1096: Add HydroComp NavCad electric-motor resources to workspace library
+
+    **Status:** pending | **Priority:** medium | **Category:** resources | **Subcategory:** naval-architecture
+
+    **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#35
+  title: 'WRK-1048: CV gap analysis + repo project alignment for Power Generation Controls Engineer role'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/35
+  gh_state: open
+  gh_labels:
+  - domain:cv-strategy
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1048: CV gap analysis + repo project alignment for Power Generation Controls Engineer role
+
+    **Status:** pending | **Priority:** high | **Category:** career | **Subcategory:** cv-strategy
+
+    **Repo:** [''workspace-hub'', ''digitalmodel'', ''worldenergydata''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#17
+  title: 'WRK-021: Stock analysis for drastic trend changes, technical indicators, and insider'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/17
+  gh_state: open
+  gh_labels:
+  - cat:business
+  - domain:cre-finance
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-021: Stock analysis for drastic trend changes, technical indicators, and insider trading benchmarks
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** business | **Subcategory:** cre-finance
+
+    **Repo:** [''assethold''] | **Complexity:** complex | **Machine:** dev-primary'

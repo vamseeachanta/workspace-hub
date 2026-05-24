@@ -1,6 +1,6 @@
 # Provider routing scorecard
 
-Generated: 2026-05-20T05:20:09.264796Z
+Generated: 2026-05-23T06:16:55.423960Z
 Current week: 2026-W21
 Recommended provider order: gemini, codex, claude
 
@@ -8,15 +8,15 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 ## claude
 
-- Status: underused
+- Status: needs_cleanup
 - Priority: high
-- Current-week reported utilization: 3.0%
+- Current-week reported utilization: 10.9%
 - Quota basis: unavailable (unavailable)
-- Current-week sessions / post records: 39 / 1214
-- Audit post records: 110989
-- Missing repo reads: 8609
-- Python3 per 1k records: 9.46
-- Migration debt per 1k records: 15.53
+- Current-week sessions / post records: 103 / 4426
+- Audit post records: 114225
+- Missing repo reads: 8615
+- Python3 per 1k records: 9.36
+- Migration debt per 1k records: 15.09
 
 ### Preferred work
 - adversarial plan review
@@ -41,11 +41,11 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 - Priority: highest
 - Current-week reported utilization: 1.1%
 - Quota basis: quota (history.jsonl)
-- Current-week sessions / post records: 40 / 618
-- Audit post records: 40631
-- Missing repo reads: 1206
-- Python3 per 1k records: 9.18
-- Migration debt per 1k records: 0.47
+- Current-week sessions / post records: 120 / 2100
+- Audit post records: 42187
+- Missing repo reads: 1280
+- Python3 per 1k records: 8.84
+- Migration debt per 1k records: 0.45
 
 ### Preferred work
 - bounded implementation
@@ -66,13 +66,13 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 - Status: underused
 - Priority: highest
-- Current-week reported utilization: 0.0%
+- Current-week reported utilization: 0.1%
 - Quota basis: estimated_daily_quota (estimated)
-- Current-week sessions / post records: 1 / 1
-- Audit post records: 6198
-- Missing repo reads: 602
-- Python3 per 1k records: 46.95
-- Migration debt per 1k records: 13.88
+- Current-week sessions / post records: 2 / 2
+- Audit post records: 6200
+- Missing repo reads: 611
+- Python3 per 1k records: 46.94
+- Migration debt per 1k records: 13.87
 
 ### Preferred work
 - batched research/recon

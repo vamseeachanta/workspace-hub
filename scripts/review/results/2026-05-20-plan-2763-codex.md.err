@@ -1,0 +1,351 @@
+Reading additional input from stdin...
+OpenAI Codex v0.132.0
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019e4632-f6cc-7621-956a-6ecddec30152
+--------
+user
+# Adversarial plan review
+
+You are an **adversarial reviewer**. Your job is to find what is wrong, missing, false, or risky in the plan you are about to read. Assume the plan has defects until you have evidence otherwise.
+
+## Stance — six non-negotiable rules
+
+1. **Opening framing.** You are an adversarial reviewer. Default to assuming the plan is wrong and prove otherwise. A review that ends in APPROVE is the exception, not the rule.
+
+2. **Anti-flatter.** Do not restate the plan. Do not praise. Do not note what the plan does well. Focus exclusively on what is wrong, missing, or risky.
+
+3. **Default to non-approve.** Return APPROVE only if you have affirmatively verified each correctness-critical claim AND can find no gap. When in doubt, return MINOR or MAJOR — being wrong about MINOR is cheap; missing a MAJOR is expensive.
+
+4. **Evidence over opinion.** Each finding must cite a specific file path, plan section, or quoted claim. Statements without citations are not findings and will be stripped.
+
+5. **Retrieval skepticism.** Treat the plan's cited sources as assertions to verify, not facts. If a file path is named, assume it may not exist until checked. If a claim about behavior is made, assume it may be outdated. If a tool or CLI is named, assume the invocation may be wrong.
+
+6. **Silence is failure.** If you have no concrete finding, explicitly say the plan was reviewed against [list checks] and none found — do not return an empty review. An empty review is a failure, not an implicit APPROVE.
+
+## Output shape
+
+Return exactly these sections:
+
+```
+## Verdict
+APPROVE | MINOR | MAJOR
+
+## Retrieval
+[Bullet list of every file/section you actually read or grep'd to verify the plan's claims. Be specific. "Read docs/plans/foo.md lines 40-60" beats "Read the plan".]
+
+## Findings
+[Numbered list. Each finding = one defect. Each finding MUST cite a file path, plan section, or quoted claim. No praise. No restatement. Only what is wrong, missing, or risky.]
+
+## Blockers
+[Subset of findings that must be resolved before the plan can be implemented. Empty list allowed only if every finding is MINOR.]
+```
+
+## What counts as a finding
+
+Good findings (keep):
+- "Plan §Pseudocode line 103 invokes `codex exec "$plan_file"` — passing a path. Codex CLI falls back to GitHub MCP on path args, returning false MAJOR. Verify empirically or fix."
+- "Acceptance criterion #8 is circular: weak-fixture + adversarial-stance → non-APPROVE regardless of wrapper correctness. This tests the fixture, not the code."
+- "Plan references `scripts/foo.sh` — no such file exists at HEAD. Grep returns zero matches."
+
+Bad findings (strip):
+- "The plan is well-structured and covers the main cases." → praise, not a finding.
+- "Consider adding more tests." → no citation, no specific gap.
+- "Looks good to me." → silence-is-failure violation.
+
+## If context is truncated
+
+If the plan is passed to you inline (prompt body) and appears truncated, say so explicitly as your verdict: `UNAVAILABLE (context truncation — plan body appears cut at line N)`. Do not return APPROVE/MINOR/MAJOR against a truncated plan.
+
+--- PLAN (docs/plans/2026-05-20-issue-2763-gsd-researcher-hermes-agent-migration.md) ---
+# Issue #2763 Plan — plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent
+
+- **Issue**: https://github.com/vamseeachanta/workspace-hub/issues/2763
+- **Status**: draft — revised after fresh MAJOR re-review; blocked on #2762 landing and not approval-ready until a clean re-review wave lands
+- **Date**: 2026-05-20
+- **Complexity**: T2
+- **Execution mode**: single-lane implementation after approval; planning/review may be parallel-readonly.
+
+## Resource Intelligence Summary
+
+### Evidence
+- **GitHub issue #2763** — Live issue verified open with `status:needs-plan`; child of #2762 focused on `gsd-researcher`.
+- **`config/scheduled-tasks/schedule-tasks.yaml`** — `gsd-researcher` is currently installed by system cron at `35 1 * * *`, requires `claude`, and is marked `is_claude_task: true`.
+- **`scripts/cron/setup-cron.sh --dry-run` + live crontab** — both show `gsd-researcher` as a system-cron entry invoking `scripts/cron/gsd-researcher-nightly.sh` on ace-linux-1.
+- **`scripts/cron/gsd-researcher-nightly.sh`** — assembles weekday research prompts, reads live context from `.planning/PROJECT.md`, `.planning/ROADMAP.md`, and recent `.planning/research/*.md`, writes `logs/research/*.log`, writes `.planning/research/*`, commits/pushes/prunes via helper functions, calls `scripts/notify.sh`, and invokes native `claude -p` in `run_claude()`. Migration must preserve or explicitly redesign every side effect.
+- **`scripts/cron/tests/test_gsd_researcher_nightly.sh`** — existing shell tests are the right RED/GREEN surface for script behavior and command stubbing.
+- **`hermes cron list`** — proves Hermes Gateway cron exists as a separate scheduler plane; no current `gsd-researcher` Hermes job is visible in sampled output.
+- **#2762 dependency** — this migration consumes the scheduler routing contract from #2762. This plan is blocked until #2762 is approved and implemented; it does not define independent routing semantics or hardcode unlanded CLI flags beyond checking for the landed contract/audit interfaces.
+- **Round 1 reviews** — Claude/Codex/Gemini found the original plan under-specified the target, setup-cron handling, Hermes prompt artifact, exception governance, and duplicate prevention.
+
+### Reproduction proofs
+- **Runtime failure reproduction**: N/A — migration/governance plan; current behavior is known native-provider execution rather than a single failing command.
+- **Current native path proof**: `schedule-tasks.yaml` + `setup-cron.sh --dry-run` + crontab evidence show system cron runs `scripts/cron/gsd-researcher-nightly.sh`; script evidence shows that path calls `claude -p`.
+
+### Gaps / assumptions
+- Migration is blocked behind #2762 contract approval/implementation. No runtime-changing tranche proceeds before that dependency is landed.
+- Hermes cron prompts must be self-contained because future Hermes cron sessions run without current chat context and cannot ask questions.
+- Raw research/provider logs stay local-only unless summarized in tracked docs.
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| Plan | `docs/plans/2026-05-20-issue-2763-gsd-researcher-hermes-agent-migration.md` |
+| Review artifacts | `scripts/review/results/2026-05-20-plan-2763-*.md` |
+| Script under migration | `scripts/cron/gsd-researcher-nightly.sh` |
+| Schedule source | `config/scheduled-tasks/schedule-tasks.yaml` |
+| Existing tests | `scripts/cron/tests/test_gsd_researcher_nightly.sh` |
+| Proposed runbook | `docs/ops/gsd-researcher-scheduler.md` |
+| GitHub issue | `https://github.com/vamseeachanta/workspace-hub/issues/2763` |
+
+## Deliverable
+
+A tested migration of `gsd-researcher` from native system-cron Claude execution to a Hermes-managed scheduled job. Native-provider exception handling is not part of this implementation; if migration is rejected, a separate exception-governance issue must be opened under the #2762 contract.
+
+## Dependency Gate
+
+- **Hard dependency**: #2762 must define and land the final scheduler routing contract and audit CLI. This plan consumes the artifact names/flags documented by the landed #2762 implementation rather than hardcoding pre-landing command details; if the names differ, update this plan before execution instead of inventing local flags.
+- **Deterministic transition**: the approved target is Hermes-managed migration. Implementation must:
+  1. create and merge/deploy the repo-tracked Hermes prompt/context artifact and tests first;
+  2. add or update script support so `gsd-researcher` can prepare context for Hermes without invoking native `claude -p`; this mode must bypass the current `command -v claude` precondition entirely;
+  3. preserve or explicitly redesign all current side effects: live context reads, `.planning/research/` output, `logs/research/` logging, git pull/commit/push, pruning, validation, and notification;
+  4. create or update the live Hermes cron job only after the deployed wrapper/prompt exists, then verify `hermes cron list` contains active logical job `gsd-researcher` at the target cadence;
+  5. remove the already-installed system-cron entry on every eligible machine by applying the parser-supported `scheduler: hermes` YAML state and running the documented `setup-cron.sh --replace`/equivalent removal path on each machine where the old row could be installed (`dev-primary`/`ace-linux-1` aliases included);
+  6. verify through the landed #2762 validator and direct `crontab -l` evidence per eligible machine that there is no duplicate active `gsd-researcher` in both scheduler planes.
+- If #2762 artifacts are absent at implementation start, fail the issue execution immediately and return it to blocked planning; do not prompt interactively or invent local routing rules.
+
+## Scope Boundaries
+
+### In scope
+- Convert `gsd-researcher` into a Hermes cron prompt plus script-invoked wrapper that loads the same live repo context at run time; do not replace dynamic context assembly with a static-only prompt.
+- Update schedule metadata so `setup-cron.sh` stops installing a live native Claude duplicate when Hermes owns the job.
+- Add tests proving native Claude is not invoked in Hermes-managed mode and duplicate schedules are detected via the #2762 validator fixtures.
+- Add runbook documenting cadence, output paths, logs, retry/failure behavior, rollback, exact `hermes cron create/update` command, live verification commands, and the order: create/verify Hermes job before disabling system cron.
+
+### Out of scope
+- Migrating unrelated Claude/provider tasks.
+- Mutating live Hermes Gateway cron during planning.
+- Applying `status:plan-approved` without user approval.
+- Defining a native-provider exception path inside this issue.
+- Changing research domain rotation/content semantics except as required to make the prompt self-contained.
+
+## Target Runtime Design
+
+| Component | Target |
+|---|---|
+| Scheduler authority | Hermes Gateway cron for `gsd-researcher` after migration |
+| Prompt/context source | Repo-tracked static instruction artifact `config/hermes/prompts/gsd-researcher-nightly.md` plus a named wrapper mode in `scripts/cron/gsd-researcher-nightly.sh`, e.g. `--hermes-agent-run`, that reads `.planning/PROJECT.md`, `.planning/ROADMAP.md`, and recent `.planning/research/*.md` at run time before invoking Hermes-managed agent execution. |
+| Hermes runtime entrypoint | Hermes cron owns the schedule in agent mode using an explicit operator command such as `hermes cron create '0 6 * * *' --name gsd-researcher --workdir /mnt/local-analysis/workspace-hub --profile default --deliver local "$(cat config/hermes/prompts/gsd-researcher-nightly.md)"` (or `hermes cron edit` for an existing job). The prompt instructs Hermes Agent to run the repo wrapper/context collector through tools; it must not call native `claude -p`. If a supporting script is used, deployment must copy/symlink the repo-tracked script into `~/.hermes/scripts/` because Hermes CLI requires `--script` paths there. |
+| System-cron behavior | YAML entry is retained only as a non-installing record using parser-tested `scheduler: hermes`; implementation must not remove the row. Existing installed crontab entries must still be removed via `setup-cron.sh --replace` or a documented equivalent on every eligible host after Hermes is verified. |
+| Output continuity | Preserve `.planning/research/`, `logs/research/`, git pull/commit/push, pruning, validation, and `scripts/notify.sh` behavior unless a reviewed replacement is named in the runbook and covered by tests. |
+| Duplicate guard | Parity report/validator flags same logical job in both system and Hermes planes |
+| Rollback | Re-enable system-cron YAML entry only after Hermes job pause/removal is verified |
+
+## Pseudocode
+
+```text
+if #2762 landed contract/audit artifacts are absent or their documented CLI differs from this plan:
+    fail execution as dependency-blocked; do not prompt interactively or invent flags
+write RED shell tests that stub claude and hermes/hermes cron surfaces
+write RED validator fixture proving dual system+Hermes gsd-researcher entries fail closeout
+split static Hermes instructions from dynamic context loader; wrapper reads PROJECT/ROADMAP/recent research at run time
+add script mode/helper used by Hermes-managed execution that bypasses command -v claude guard and never calls native claude -p
+preserve or redesign git pull/commit/push, pruning, validation, logging, and notify side effects with tests
+after wrapper/prompt is deployed, create/update live Hermes cron job with documented `hermes cron create/edit ... --workdir ... --profile ...` command and verify hermes cron list shows active gsd-researcher
+mark YAML with parser-tested scheduler: hermes non-installing representation only after Hermes job exists
+run setup-cron.sh --replace or documented equivalent on every eligible host and verify crontab -l no longer contains scripts/cron/gsd-researcher-nightly.sh
+add/update fixture showing Hermes cron owns gsd-researcher and system-cron no longer does
+run targeted shell tests plus landed #2762 scheduler-routing audit in CI mode
+run setup-cron dry-run and hermes cron list/report verification for closeout evidence
+write runbook with logs, cadence, rollback, failure handling, and exact Hermes cron operator command
+```
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| update | `scripts/cron/gsd-researcher-nightly.sh` | Add the named Hermes-managed wrapper mode, e.g. `--hermes-agent-run`, that never calls native `claude -p`, reads live context files at run time, and preserves git/log/prune/notify closeout behavior unless tests/runbook explicitly replace it. |
+| create/update | `scripts/cron/tests/test_gsd_researcher_nightly.sh` | Create if absent; add command-stub RED tests for Hermes path, native bypass prevention, dependency-blocked behavior, stale-crontab removal, and rollback safety. |
+| update | `config/scheduled-tasks/schedule-tasks.yaml` | Retain `gsd-researcher` as a non-installing record with parser-tested `scheduler: hermes` only after live Hermes job verification; no row deletion and no native-exception metadata in this issue. |
+| create | `config/hermes/prompts/gsd-researcher-nightly.md` | Self-contained Hermes cron instructions for the wrapper mode; static instructions must reference dynamic context loading rather than freezing weekly context. |
+| create | `docs/ops/gsd-researcher-scheduler.md` | Operator runbook: cadence, evidence, logs, retries, rollback, duplicate checks. |
+| create/update | `tests/fixtures/cron/scheduler-routing-audit/` | Add/update #2762-compatible fixtures showing Hermes cron owns `gsd-researcher`, system cron no longer installs it, and dual-plane duplicates fail. Only touch these if the landed #2762 contract places extension fixtures here. |
+| create/update | `tests/cron/test_scheduler_routing_audit.py` | Add/update duplicate and migration-state tests only if the landed #2762 validator contract makes those tests part of this issue; otherwise keep #2762 tests unchanged and prove behavior through the public audit CLI. |
+| update | `docs/plans/README.md` | Keep plan index synchronized. |
+
+## TDD Test List
+
+| Test | Verification | Input | Expected Output |
+|---|---|---|---|
+| `test_hermes_mode_does_not_call_claude_binary_or_require_claude` | Remove/stub `claude` and capture Hermes-managed path | Hermes-managed env/config | Hermes path succeeds past preflight; Claude stub untouched; no `command -v claude` failure |
+| `test_setup_cron_does_not_install_native_duplicate_when_hermes_managed` | Render schedule dry-run from fixture | `scheduler: hermes` metadata | no live `gsd-researcher` system-cron command emitted |
+| `test_self_contained_prompt_contains_required_context_loader` | Inspect prompt + wrapper artifact | prompt file and wrapper fixture | includes domain rotation, output expectations, live PROJECT/ROADMAP/recent-research loading, no current-chat dependency |
+| `test_dependency_missing_fails_before_runtime_change` | #2762 contract/audit missing | temp repo fixture | non-zero dependency-blocked result; no interactive prompt |
+| `test_duplicate_system_and_hermes_entries_reported` | Same logical ID in crontab and Hermes fixtures | combined fixtures | duplicate warning blocks closeout |
+| `test_output_paths_preserved_or_mapped` | Script dry-run/report fixture | expected output paths | `.planning/research`/log path preserved or documented mapping emitted |
+| `test_side_effects_preserved_or_explicitly_redesigned` | Stub git/notify/prune helpers | Hermes-managed mode | git pull/commit/push, prune, validate, and notify calls are preserved or disabled only with documented/tested replacement |
+| `test_live_hermes_job_required_before_system_cron_disable` | Stub `hermes cron list` and schedule edit guard | missing Hermes job | non-zero; system-cron disable is blocked |
+| `test_setup_cron_replace_removes_stale_installed_entry` | Existing crontab contains old native entry and YAML marks `scheduler: hermes` | crontab + YAML fixture | replacement plan removes old native entry; `crontab -l` verification required |
+| `test_each_eligible_machine_requires_removal_evidence` | schedule lists `dev-primary`/`ace-linux-1` aliases | workstation registry fixture | closeout fails until each eligible machine has Hermes and crontab evidence |
+| `test_hermes_profile_has_required_tools` | Hermes job/profile config fixture | prompt needs read/web search/git shell | missing equivalent capabilities fails plan closeout |
+
+## Acceptance Criteria
+
+- [ ] #2762 routing contract dependency is satisfied before runtime changes.
+- [ ] Selected decision is explicit: Hermes-managed migration; native exception is out of scope and requires a separate issue if needed.
+- [ ] Hermes prompt/context is repo-tracked, self-contained, and includes a dynamic context loader for PROJECT/ROADMAP/recent research rather than relying on frozen prompt text.
+- [ ] Live Hermes cron job exists and is verified via `hermes cron list` after deployed wrapper/prompt availability, before system-cron disablement.
+- [ ] Existing system crontab entries are removed on every eligible machine via `setup-cron.sh --replace` or documented equivalent, and direct `crontab -l` evidence proves `scripts/cron/gsd-researcher-nightly.sh` is absent after migration.
+- [ ] Tests prove selected runtime path, parser-supported `scheduler: hermes` skip semantics, duplicate prevention, output continuity, side-effect continuity or explicit redesign, dependency-blocked fail-closed behavior, and no native Claude bypass in Hermes-managed mode.
+- [ ] Operator runbook names cadence, log/evidence paths, retries, failure behavior, live Hermes creation/update verification, duplicate-check closeout, and rollback that pauses/removes Hermes before re-enabling system cron.
+- [ ] Fresh adversarial plan review artifacts are saved under `scripts/review/results/` after this revision.
+- [ ] Issue is moved to `status:plan-review` only after re-review evidence is posted; implementation remains blocked until user applies `status:plan-approved`.
+
+## Adversarial Review Summary
+
+Fresh reviews returned MAJOR. The current draft has been patched again to separate deployment from live cron creation, define concrete Hermes cron operator commands, bypass the existing native `claude` preflight in Hermes mode, require profile/tool parity, remove stale installed system cron entries with per-machine evidence, avoid inventing #2762 CLI details before the dependency lands, and make duplicate-plane closeout evidence mandatory.
+
+**Current draft state:** PENDING RE-REVIEW. Fresh re-review is required before user approval.
+
+Review artifacts:
+- `scripts/review/results/2026-05-20-plan-2763-claude.md`
+- `scripts/review/results/2026-05-20-plan-2763-codex.md`
+- `scripts/review/results/2026-05-20-plan-2763-gemini.md`
+- `scripts/review/results/2026-05-20-plan-2763-disagreement.md`
+
+## Risks and Open Questions
+
+- Hermes-managed execution may not reproduce native Claude output exactly; tests/runbook must define acceptable output continuity.
+- Dual-running would waste credits and duplicate research artifacts; duplicate guard is closeout-critical.
+- If #2762 is delayed, this issue should not silently implement routing rules in parallel.
+
+## Implementation Notes for Future Approved Work
+
+- Write tests first and confirm RED where applicable.
+- Use `uv run --no-project` for Python commands in this repository.
+- Use `--body-file` for GitHub comments containing Markdown.
+- Do not commit raw provider/research logs.
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+codex
+Using the `artifact-inline-plan-rereview` skill for an adversarial pass on the inline plan, then I’ll verify the cited files and commands against the repo before returning the required verdict format.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+codex
+Local shell is blocked in this session (`bwrap: loopback: Failed RTM_NEWADDR`). I’m falling back to the GitHub connector for retrieval, and I’ll treat connector evidence skeptically in the findings where local verification was not possible.
+hook: PreToolUse
+hook: PreToolUse Completed
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PreToolUse
+hook: PreToolUse Completed
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PreToolUse
+hook: PreToolUse Completed
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PreToolUse
+hook: PreToolUse Completed
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+hook: PostToolUse
+hook: PostToolUse Completed
+codex
+The checked-in plan on `main` is older than the inline plan, so the review has to target the inline body while using repository files as evidence. I’m checking the scheduler implementation and #2762-related surfaces now, because the inline plan depends on them heavily.
+hook: PreToolUse
+hook: PreToolUse Completed
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PreToolUse
+hook: PreToolUse Completed
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PreToolUse
+hook: PreToolUse Completed
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PreToolUse
+hook: PreToolUse Completed
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PreToolUse
+hook: PreToolUse Completed
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PreToolUse
+hook: PreToolUse Completed
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PreToolUse
+hook: PreToolUse Completed
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PreToolUse
+hook: PreToolUse Completed
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (failed)

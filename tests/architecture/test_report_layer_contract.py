@@ -13,6 +13,7 @@ EVIDENCE_DOC_PATH = ARCH / "report-evidence-bundle-schema.md"
 SCHEMA_PATH = ARCH / "report-evidence-bundle.schema.yaml"
 ROUTING_DOC_PATH = ARCH / "report-derived-learning-routing.md"
 FOLLOW_UP_BACKLOG_PATH = ARCH / "report-follow-up-issue-backlog.md"
+IMPLEMENTATION_NOTES_PATH = ROOT / "docs/reports/2026-05-21-issue-2748-implementation-notes.html"
 CONTENT_PIPELINE_PATH = ROOT / "docs/content-pipeline/README.md"
 EVIDENCE_FIXTURE_PATH = ROOT / "tests/fixtures/architecture/report_evidence_bundle.yaml"
 RESIDENCY_CASES_PATH = ROOT / "tests/fixtures/architecture/report_residency_cases.yaml"
@@ -100,6 +101,8 @@ def test_report_evidence_bundle_fails_closed_for_public_claim_without_full_gates
     public["output_residency"] = "public_llm_wiki"
     public["published_claims"][0]["output_residency"] = "public_llm_wiki"
     public["published_claims"][0]["promotion_gates"] = ["legal"]
+    public["sources"][0]["output_residency"] = "public_llm_wiki"
+    public["sources"][0]["promotion"]["gates"]["public_release_clearance"] = True
     assert list(validator.iter_errors(public)), "public claims must require the full promotion gate set"
 
     top_public = deepcopy(bundle)
@@ -185,6 +188,20 @@ def test_evidence_bundle_claim_binding():
     assert set(claim_schema["properties"]["promotion_gates"]["items"]["enum"]) == REQUIRED_PUBLIC_PROMOTION_GATES
     for value in OUTPUT_RESIDENCY_ENUM:
         assert value in schema["registry_backing"]
+    required_bundle_fields = {
+        "corpus_scope",
+        "audience_classification",
+        "source_class_mix",
+        "freshness",
+        "execution_metadata",
+        "artifact_derivation_chain",
+        "sources",
+    }
+    assert required_bundle_fields <= set(schema["required"])
+    source_schema = schema["properties"]["sources"]["items"]
+    assert source_schema["additionalProperties"] is False
+    for field in ["source_id", "source_doc_key", "source_class", "input_residency", "output_residency", "confidence", "promotion"]:
+        assert field in source_schema["required"]
     for claim in bundle["published_claims"]:
         assert claim["output_residency"] in OUTPUT_RESIDENCY_ENUM
         assert PUBLISHED_CLAIM_BINDINGS <= set(claim["bindings"])
@@ -192,6 +209,78 @@ def test_evidence_bundle_claim_binding():
         assert claim["promotion_decision"]
         if claim["output_residency"] == "public_llm_wiki":
             assert REQUIRED_PUBLIC_PROMOTION_GATES <= set(claim["promotion_gates"])
+
+
+def test_evidence_bundle_rejects_unscored_or_uncleared_private_sources():
+    schema = load_yaml(SCHEMA_PATH)
+    validator = Draft202012Validator(schema)
+    bundle = load_yaml(EVIDENCE_FIXTURE_PATH)
+
+    unscored = deepcopy(bundle)
+    unscored["sources"][0]["confidence"].pop("overall")
+    assert list(validator.iter_errors(unscored)), "sources without overall confidence must fail closed"
+
+    zero_readiness = deepcopy(bundle)
+    zero_readiness["sources"][0]["confidence"]["report_readiness"] = 0.0
+    assert list(validator.iter_errors(zero_readiness)), "client-facing outputs must reject unready sources"
+
+    uncleared = deepcopy(bundle)
+    uncleared["sources"][0]["promotion"]["gates"]["private_release_clearance"] = False
+    assert list(validator.iter_errors(uncleared)), "client-private report output requires private release clearance"
+
+    public_from_private = deepcopy(bundle)
+    public_from_private["output_residency"] = "public_llm_wiki"
+    public_from_private["audience_classification"] = "public-safe"
+    public_from_private["source_class_mix"] = ["public_llm_wiki"]
+    public_from_private["published_claims"][0]["output_residency"] = "public_llm_wiki"
+    public_from_private["published_claims"][0]["legal_scan"]["result"] = "pass"
+    public_from_private["published_claims"][0]["review_verdict"] = "approved"
+    public_from_private["published_claims"][0]["sanitization_gate"] = "pass"
+    public_from_private["legal_scan"]["result"] = "pass"
+    public_from_private["sources"][0]["output_residency"] = "registered_client_private_corpus"
+    public_from_private["sources"][0]["promotion"]["gates"]["public_release_clearance"] = True
+    assert list(validator.iter_errors(public_from_private)), "public output cannot consume client-private source residency"
+
+    public_private_audience = deepcopy(public_from_private)
+    public_private_audience["sources"][0]["input_residency"] = "public_llm_wiki"
+    public_private_audience["sources"][0]["output_residency"] = "public_llm_wiki"
+    public_private_audience["audience_classification"] = "client-private"
+    assert list(validator.iter_errors(public_private_audience)), "public output must use public-safe audience classification"
+
+    relabeled_internal_source = deepcopy(public_private_audience)
+    relabeled_internal_source["audience_classification"] = "public-safe"
+    relabeled_internal_source["sources"][0]["source_class"] = "internal-note"
+    relabeled_internal_source["sources"][0]["input_residency"] = "ignored_internal_run_artifact"
+    assert list(validator.iter_errors(relabeled_internal_source)), "public output cannot relabel internal sources as public"
+
+    raw_source_doc_key = deepcopy(bundle)
+    raw_source_doc_key["sources"][0]["source_doc_key"] = "/home/user/client/raw/secret.docx"
+    assert list(validator.iter_errors(raw_source_doc_key)), "source_doc_key must not accept raw paths or sensitive filenames"
+
+    filename_source_doc_key = deepcopy(bundle)
+    filename_source_doc_key["sources"][0]["source_doc_key"] = "source-doc-key:example-client:secret.docx"
+    assert list(validator.iter_errors(filename_source_doc_key)), "source_doc_key must not accept filename-like opaque IDs"
+
+    weak_promotion_record = deepcopy(bundle)
+    weak_promotion_record["sources"][0]["promotion"]["promotion_record"] = "docs/architecture/report-evidence-bundle-schema.md"
+    assert list(validator.iter_errors(weak_promotion_record)), "promotion records must point to a promotion ledger/record artifact"
+
+    client_private_internal_note = deepcopy(bundle)
+    client_private_internal_note["sources"][0]["source_class"] = "internal-note"
+    assert list(validator.iter_errors(client_private_internal_note)), "client-private outputs cannot cite internal notes as source evidence"
+
+    client_private_ignored_artifact = deepcopy(bundle)
+    client_private_ignored_artifact["sources"][0]["input_residency"] = "ignored_internal_run_artifact"
+    assert list(validator.iter_errors(client_private_ignored_artifact)), "client-private outputs cannot cite ignored internal run artifacts"
+
+    client_private_no_preserve = deepcopy(bundle)
+    client_private_no_preserve["sources"][0]["input_residency"] = "no_preserve"
+    assert list(validator.iter_errors(client_private_no_preserve)), "client-private outputs cannot cite no-preserve sources"
+
+    missing_promotion_record = deepcopy(bundle)
+    missing_promotion_record["sources"][0]["promotion"].pop("promotion_record")
+    assert list(validator.iter_errors(missing_promotion_record)), "promotion decisions require durable promotion-record evidence"
+
 
 
 def test_publication_gates_use_canonical_legal_scan():
@@ -207,6 +296,19 @@ def test_content_pipeline_has_bounded_report_crosslink():
     text = CONTENT_PIPELINE_PATH.read_text(encoding="utf-8")
     assert "docs/architecture/report-publication-gates.md" in text
     assert "report-derived learning" in text
+
+
+def test_issue_2748_implementation_notes_capture_decisions():
+    text = IMPLEMENTATION_NOTES_PATH.read_text(encoding="utf-8")
+    for phrase in [
+        "Design decisions",
+        "Deviations / interpretations",
+        "Tradeoffs",
+        "Open questions",
+        "source_doc_key",
+        "No private client data",
+    ]:
+        assert phrase in text
 
 
 def test_follow_up_issue_backlog_present():

@@ -1,0 +1,91 @@
+gaps:
+- idempotency_key: gap:repo-digitalmodel-codes:001
+  title: BS7910 crack-face pressure for pressurized components unimplemented
+  source: detected_gap
+  detection_basis: TODO at src/digitalmodel/asset_integrity/common/BS7910_critical_flaw_limits.py:133 — "implement crack face pressure for pressurized components"
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'BS7910 critical-flaw-limits module skips crack-face pressure contribution for pressurized components. Add the term per BS7910 Annex M and validate against published cases.
+
+    '
+- idempotency_key: gap:repo-digitalmodel-codes:002
+  title: BS7910 J-Integral method (Section 7.1.4.6) unimplemented
+  source: detected_gap
+  detection_basis: TODO at src/digitalmodel/asset_integrity/common/BS7910_critical_flaw_limits.py:795 — "implement J-Integral method using section 7.1.4.6"
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Add the J-Integral assessment route per BS7910 §7.1.4.6 alongside existing FAD approach. Required for ductile-fracture-dominated cases.
+
+    '
+- idempotency_key: gap:repo-digitalmodel-codes:003
+  title: BS7910 Annex M Table M.4 and M.7 not digitized into machine-readable form
+  source: detected_gap
+  detection_basis: TODO at src/digitalmodel/asset_integrity/common/BS7910_critical_flaw_limits.py:408,433 — "Convert Table M.4 / Table M.7 into a xlsx"
+  needs_issue: true
+  priority: 0
+  body_excerpt: 'Two BS7910 Annex M tables are still hard-coded inline or missing. Digitize to CSV under llm-wiki datasets and wire through citation contract.
+
+    '
+- idempotency_key: gap:repo-digitalmodel-codes:004
+  title: API 579 contour-plot helper should move to visualization library
+  source: detected_gap
+  detection_basis: TODO at src/digitalmodel/asset_integrity/common/API579_components.py:121 — "Move contour plot to vizualization library"
+  needs_issue: true
+  priority: 0
+  body_excerpt: 'API579 module embeds visualization code; relocate to digitalmodel.visualization and have API579 call into it. Keeps the codes module pure-physics.
+
+    '
+- idempotency_key: gap:repo-digitalmodel-subsea:001
+  title: PipeCapacity longitudinal/equivalent stress checks not finished
+  source: detected_gap
+  detection_basis: TODOs at src/digitalmodel/asset_integrity/custom/PipeCapacity.py:386,438 — "Calculation to be completed" and "LogitudinalStress, EquivalentStress"
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'PipeCapacity custom module leaves longitudinal-stress and equivalent (von Mises) stress checks incomplete. Required for API RP 1111 / DNV-ST-F101 compliance.
+
+    '
+- idempotency_key: gap:repo-digitalmodel-subsea:002
+  title: PipeCapacity iteration for d/t criterion missing
+  source: detected_gap
+  detection_basis: TODO at src/digitalmodel/asset_integrity/custom/PipeCapacity.py:326 — "Need iteration to ensure new d_over_t still satisfies the criteria"
+  needs_issue: true
+  priority: 0
+  body_excerpt: 'Wall-thickness sizing loop in PipeCapacity exits without re-checking d/t. Add fixed-point iteration with tolerance and max-iter guard.
+
+    '
+- idempotency_key: gap:repo-digitalmodel-subsea:003
+  title: Catenary-riser refactor pending in PipeSizing
+  source: detected_gap
+  detection_basis: TODO at src/digitalmodel/asset_integrity/custom/PipeSizing.py:104 — "Refactor following functions for Catenary Riser Stuff and integrate them"
+  needs_issue: true
+  priority: 0
+  body_excerpt: 'Catenary-riser sizing helpers in PipeSizing are unintegrated. Refactor into a shared module that mooring/riser callers reuse.
+
+    '
+- idempotency_key: gap:repo-digitalmodel-qa:001
+  title: 'asset_integrity.common.data: type-coercion path coverage missing'
+  source: detected_gap
+  detection_basis: TODOs at src/digitalmodel/asset_integrity/common/data.py:650,678 — untested attribute-dictionary method and missing ascending/descending interpolation handling
+  needs_issue: true
+  priority: 0
+  body_excerpt: 'data.py helpers used across asset-integrity have unverified branches and no test coverage. Add unit tests covering attr-dict and order-aware interpolation.
+
+    '
+- idempotency_key: gap:repo-digitalmodel-codes:005
+  title: BS7910 approximate vs actual flaw-growth functions duplicated
+  source: detected_gap
+  detection_basis: TODO at src/digitalmodel/asset_integrity/common/BS7910_critical_flaw_limits.py:873 — "combine approximate and actual flaw growth functions"
+  needs_issue: true
+  priority: 0
+  body_excerpt: 'Two flaw-growth functions (approximate vs actual histogram-driven) share most logic. Consolidate to single function with a mode flag and add regression tests.
+
+    '
+- idempotency_key: gap:repo-digitalmodel-qa:002
+  title: asset_integrity PipeCapacity DB result emission not implemented
+  source: detected_gap
+  detection_basis: TODO at src/digitalmodel/asset_integrity/custom/PipeCapacity.py:786 — "send results to DB"
+  needs_issue: true
+  priority: 0
+  body_excerpt: 'PipeCapacity drops results in-memory only. Wire a results-emitter that targets the digitalmodel.data_systems DB layer for retrieval and audit.
+
+    '

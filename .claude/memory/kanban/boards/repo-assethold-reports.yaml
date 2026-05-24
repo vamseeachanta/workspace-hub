@@ -1,0 +1,113 @@
+board:
+  slug: repo-assethold-reports
+  display_name: assethold | reports
+  tier: domain
+  repo: vamseeachanta/assethold
+  domain: reports
+  parent_slug: repo-assethold
+  workspace_path: /mnt/local-analysis/assethold
+  description: 'Dashboards, PDF/email reports, WhatsApp/cron alerts, market-disruption
+    monitors, --render-charts CLI.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/assethold#44
+  title: Decide --render-charts default dir (fail-loud vs ./dashboard-charts/)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/44
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:low
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    `WatchlistRunner` (landed #39, commit `fd0bc33`) currently requires `--charts-dir
+    PATH` when `--render-charts` is passed — the CLI exits 2 with a helpful stderr
+    message if not. This is deliberate fail-loud discipline matching Phase 1''s pattern.'
+- idempotency_key: gh:vamseeachanta/assethold#24
+  title: Market disruption monitor — 30-min cron during volatile sessions
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/24
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Run a lightweight portfolio monitor every 30 minutes during market hours that
+    activates enhanced alerting when markets are experiencing disruption (high VIX,
+    large intraday swings, circuit breakers).'
+- idempotency_key: gh:vamseeachanta/assethold#23
+  title: WhatsApp trade signals at market open and close
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/23
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Send automated WhatsApp messages with the best trade recommendation at two fixed
+    times each trading day:'
+- idempotency_key: gh:vamseeachanta/assethold#22
+  title: Daily portfolio report as PDF emailed to inbox
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/22
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Generate the daily portfolio report (from #21 Phase 5) as a styled PDF and email
+    it automatically each morning before market open.'
+- idempotency_key: gh:vamseeachanta/assethold#21
+  title: 'Portfolio Dashboard: Automated Allocation Tracking & Daily Review'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/21
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Build automated scripts/dashboard for daily portfolio allocation tracking, DCA
+    scheduling, trim signal detection, and performance benchmarking. This is the **algorithm/tooling**
+    companion to [achantas-data#27](https://github.com/vamseeachanta/achantas-data/issues/27)
+    which holds the data and framework.'
+- idempotency_key: gh:vamseeachanta/assethold#7
+  title: 'Portfolio value '
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/7
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees:
+  - vamseeachanta
+  - samdansk2
+  initial_status: triage
+  priority: 0
+  body_excerpt: "This should be a separate module of portfolio\n- [x] Track, Cash\
+    \ and Stock  i.e. total portfolio (preliminary DONE). See improvements below\n\
+    \ - [x] Almost every one earns money (monthly) and then invests (i.e. in stocks).\
+    \ To simulate this, we will add fixed amount USD 1000 monthly to cash. Add frequency\
+    \ (monthly - program) and amount to configuration."

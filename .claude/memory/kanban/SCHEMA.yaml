@@ -1,0 +1,91 @@
+# Hermes Kanban — board manifest schema
+# Source-of-truth: this directory (workspace-hub/.claude/memory/kanban/).
+# Loader (scripts/load.py) translates each board YAML into `hermes kanban` CLI calls
+# against the local ~/.hermes/kanban.db on whichever machine runs it.
+
+# ---------------------------------------------------------------------------
+# Three-tier model
+# ---------------------------------------------------------------------------
+# tier 0  ecosystem      — one master board (slug: ecosystem)
+# tier 1  repo           — one board per active repo (slug: repo-<reponame>)
+# tier 2  domain         — sub-boards inside big repos (slug: repo-<reponame>-<domain>)
+#
+# Slug rules:
+#   - lowercase kebab-case, ASCII only
+#   - prefix `repo-` for tier 1+2
+#   - domain suffix is the repo-internal subsystem name (solver, codes, io, ...)
+
+# ---------------------------------------------------------------------------
+# board YAML (file: boards/<slug>.yaml)
+# ---------------------------------------------------------------------------
+board:
+  slug: repo-digitalmodel-solver        # required, matches filename stem
+  display_name: digitalmodel · solver   # human-readable
+  tier: domain                          # ecosystem | repo | domain
+  repo: vamseeachanta/digitalmodel      # required for tier 1+2; omit for tier 0
+  domain: solver                        # required for tier 2
+  parent_slug: repo-digitalmodel        # required for tier 2 (link upward)
+  workspace_path: /mnt/local-analysis/digitalmodel   # default --workspace dir:<path>
+  description: |
+    Numerical solver subsystem — OrcaWave/AQWA bridges, time-domain integrators.
+
+# ---------------------------------------------------------------------------
+# cards (one entry per mirrored GH issue OR detected gap)
+# ---------------------------------------------------------------------------
+cards:
+  # --- mirrored GitHub issue ---
+  - idempotency_key: gh:vamseeachanta/digitalmodel#2289   # REQUIRED, drives upsert
+    title: "fix(solver): AQWA dt-collapse on stiff mooring"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/2289
+    gh_state: open
+    gh_labels: [bug, p1, solver]
+    gh_assignees: []
+    initial_status: triage                # ALWAYS triage on first load (safety)
+    priority: 2                            # 0 default; higher = more urgent
+    body_excerpt: |
+      First 20 lines of the issue body, trimmed.
+    detected_dependencies:                 # cross-card refs we noticed
+      - gh:vamseeachanta/digitalmodel#2045
+    notes: ""                              # loader-relevant notes only
+
+  # --- detected gap (NOT loaded into Hermes; awaits GH-issue promotion) ---
+  - idempotency_key: gap:repo-digitalmodel-solver:001    # `gap:` prefix flags YAML-only
+    title: "Solver heartbeat missing for long-running runs"
+    source: detected_gap
+    detection_basis: "TODO in src/digitalmodel/solver/runner.py:128 + no heartbeat event in task_runs"
+    needs_issue: true                       # loader skips; surface to user for issue creation
+    priority: 1
+    body_excerpt: |
+      Suggested issue body sketch.
+
+# ---------------------------------------------------------------------------
+# manifest.yaml (one file, at kanban/manifest.yaml — top-level index)
+# ---------------------------------------------------------------------------
+manifest:
+  generated_at: 2026-05-22
+  source_machine: ace-linux-1                # informational
+  boards:
+    - slug: ecosystem
+      tier: ecosystem
+      file: boards/ecosystem.yaml
+    - slug: repo-digitalmodel
+      tier: repo
+      file: boards/repo-digitalmodel.yaml
+      children: [repo-digitalmodel-solver, repo-digitalmodel-codes, repo-digitalmodel-io]
+    # ... etc
+
+# ---------------------------------------------------------------------------
+# Loader rules (enforced by scripts/load.py)
+# ---------------------------------------------------------------------------
+# 1. Boards are created via `hermes kanban boards create <slug> --name "<display_name>"`.
+#    `boards create` is idempotent in our wrapper — if slug exists, no-op.
+# 2. Each `source: github_issue` card → `hermes kanban --board <slug> create --triage \
+#       --idempotency-key <key> --workspace dir:<workspace_path> \
+#       --priority <priority> --created-by kanban-loader \
+#       --body <body_excerpt + source_url> <title>`
+# 3. `source: detected_gap` cards are SKIPPED by the loader. They live in YAML and
+#    in gaps/<repo>.yaml until promoted to a real GH issue, then converted to source:github_issue.
+# 4. `--triage` ensures workers cannot auto-claim. User promotes via
+#    `hermes kanban specify <task-id>` or manual `hermes kanban edit`.
+# 5. Re-running the loader is safe: idempotency_key dedups; existing tasks are returned.

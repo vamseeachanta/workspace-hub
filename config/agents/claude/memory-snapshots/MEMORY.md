@@ -136,8 +136,11 @@
 - [Gmail MCP scope bump](project_gmail_mcp_scope_bump_decision.md) — #2423 mutation path is OAuth `gmail.modify` on claude_ai_Gmail MCP; browser only for UI tasks
 - [Issue #2460 approval binding](project_issue_2460_approval_binding.md) — CLOSED 2026-04-23; approval markers must be revision-bound (SHA + review paths), not mutable file-path refs
 - [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — `wiki/standards/<code-id>.md` routing across eng/marine/naval; #2471 is CSA-Z276-only (verified 2026-04-25)
-- [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — 2026-05-05 user override of #2398; vamseeachanta/llm-wiki MIT+CC-BY-4.0; pipeline stays in workspace-hub
-- [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — trunk for code, client work, chatbots; improve via public + legally-sanitized private sources; gaps = defects
+- [llm-wiki PRIVACY FLIP 2026-05-20](project_llm_wiki_privacy_flip.md) — **vamseeachanta/llm-wiki PRIVATE as of 2026-05-20 21:30 CT**; supersedes spinout-public thesis; codes/standards data + client work land at full fidelity
+- [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — SUPERSEDED 2026-05-20 by privacy flip; historical context only
+- [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — partial supersede; "public + legally-sanitized" replaced by "private + full-fidelity"
+- [Codes/standards data in private llm-wiki](feedback_codes_standards_data_in_private_wiki.md) — OCIMF/API/DNV/ABS/IACS/ASCE/ASME → private llm-wiki; verbatim+tables allowed; raw PDFs stay `/mnt/ace/acma-codes/`
+- [Cross-review finds what self-review misses](feedback_cross_review_finds_what_self_review_misses.md) — code-stage adversarial cross-review consistently surfaces public-repo leaks, LICENSE-detection bugs, duplicated-resolver drift, asymmetric error handling, OR-disjunction test fences. Single-provider multi-angle dispatch works as fallback. 2026-05-21 verdict: 4 MAJOR + multiple MINOR on #617+#429 close-out.
 - [llm-wiki external-post ingest workflow](project_llm_wiki_external_post_ingest_workflow.md) — 8-step LinkedIn/blog → wiki ingest; first-run 2026-05-07 (Sherwood, Rötzer); 14-URL 2026-05-18 batch added 2 domains + AskUserQuestion-pivot pattern
 - [llm-wiki geotechnical-engineering founded](project_llm_wiki_geotechnical_engineering_founded.md) — 13th domain 2026-05-18; soil constitutive models, foundations, earthquake-geotech; founding source Xu SoilModelsPy
 - [llm-wiki trends-and-strategies founded](project_llm_wiki_trends_and_strategies_founded.md) — 14th domain 2026-05-18; first non-technical wiki; workforce / forecast / strategy framing; founding source Nagar petroleum workforce crisis

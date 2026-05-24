@@ -1,0 +1,4077 @@
+board:
+  slug: repo-workspace-hub-engineering
+  display_name: workspace-hub · engineering
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Engineering calculations, marine/naval, document intelligence, codes & standards, OrcaFlex/AQWA pipelines.
+
+    '
+  domain: engineering
+  parent_slug: repo-workspace-hub
+cards:
+- idempotency_key: gh:vamseeachanta/workspace-hub#2774
+  title: Private llm-wiki corpus-ingest program (post-2026-05-20 privacy flip)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2774
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Goal
+
+    Following the 2026-05-20 visibility flip of \`vamseeachanta/llm-wiki\` from public to private (see [project_llm_wiki_privacy_flip](../../.claude/memory) + [.claude/rules/codes-standards-data-routing.md](../../.claude/rules/codes-standards-data-routing.md)), bulk-ingest the vendor-licensed engineering codes/standards corpora and specialist non-codes corpora from \`/mnt/ace/\` into the private llm-wiki at full fidelity. Pilot complete: OCIMF MEG3/MEG4 Annex A digitized corpus landed 2026-05-20 (llm-wiki \`707af307\`).
+
+    ## Source inventory'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2768
+  title: 'epic(ocimf): close out MEG3/MEG4 coefficient ingestion and reference gaps'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2768
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Umbrella tracking issue to close out the OCIMF MEG3/MEG4 coefficient ingestion gaps surfaced by the 2026-05-20 audit. The audit located the real corpus, generated reference artifacts, and produced wiki citation targets; remaining work is the structural changes in `digitalmodel` and the cross-link wiring with [#2284](https://github.com/vamseeachanta/workspace-hub/issues/2284). All sub-items can land independently; this issue exists to keep the bigger picture coherent and prevent re-discovery.
+
+    ## What''s already in place (2026-05-20)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2760
+  title: 'revise(naval-arch): B1528 SIROCCO force calculation review updates'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2760
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - domain:hydrodynamics
+  - domain:naval-architecture
+  - domain:visualization
+  - enhancement
+  - priority:high
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Purpose
+
+    Capture and execute revisions to the B1528 SIROCCO moored-current ship/rudder force calculation package through an interactive, force-by-force engineering review.
+
+    ## Parent / source issue'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2736
+  title: 'design: migration plan from per-provider memory stores (Claude / Codex / Gemini local state) into Hermes canonical memory'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2736
+  gh_state: open
+  gh_labels:
+  - cat:engineering-methodology
+  - domain:knowledge-management
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Parent epic: filed immediately before this — ''make Hermes agent memory canonical across all AI providers''.
+
+    ## Goal
+
+    Design the migration path from existing per-provider memory stores into Hermes canonical memory, without losing existing learnings.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2735
+  title: 'design: memory write/read API for non-Hermes providers (Claude / Codex / Gemini) → Hermes canonical memory'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2735
+  gh_state: open
+  gh_labels:
+  - cat:engineering-methodology
+  - domain:knowledge-management
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Parent epic: filed immediately before this — ''make Hermes agent memory canonical across all AI providers''.
+
+    ## Goal
+
+    Design the interface contract for non-Hermes AI providers (Claude Code, Codex, Gemini) to:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2717
+  title: 'infra: live AQWA env access on licensed Windows host — prerequisite for #2709'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2717
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - machine:licensed-win-1
+  - machine:licensed-win-2
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Why
+
+    [#2709](https://github.com/vamseeachanta/workspace-hub/issues/2709) (AQWA runner adapter) has been adversarially reviewed twice (r1 Codex MAJOR / 7 blockers, r2 Claude MAJOR / 13 findings, 8 blockers). The reviewer''s closing diagnosis on r2:
+
+    > "Until the live smoke validation actually runs once and is captured, the probe and scrape logic is speculation."'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2711
+  title: 'feat(provider-data): service-provider data library — Helix 15k IRS pilot'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2711
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Why
+
+    User goal 2026-05-14: "also add data from service providers such as helix: example brochure: https://helixesg.com/downloads/Helix_Well_Ops-_IRS_7_15k-_LTR_11-28-23_FINAL.pdf"
+
+    This expands the solver-submission story from "submit a model file" to "build a model from real service-provider equipment data, then submit." Service-provider brochures contain engineering-grade parameters (working pressures, water-depth ratings, bore diameters, design temperature ranges) that should feed directly into OrcaFlex/AQWA riser, vessel, and mooring models.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2709
+  title: 'feat(solver-queue): add AQWA runner adapter and schema extension'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2709
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - machine:licensed-win-1
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Why
+
+    Current solver queue supports `orcawave | orcaflex` only. AQWA is referenced in `docs/ops/2026-05-04-multimachine-baseline-inventory.md` §5 as "Run only on licensed Windows hosts" and is in scope for #2641''s broader multi-machine inbox vision, but no runner adapter exists. User goal stated 2026-05-14: "run aqwa and orcaflex analyses as needed from any machine with a prompt and submission of files."
+
+    Related: #2641 (multi-machine inbox parent — broader), #2708 (OrcaFlex validation — proves the pattern for AQWA to mirror).'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2694
+  title: 'Epic: Cross-domain duplicate-implementation cleanup (catenary, PipeCapacity, cathodic protection, natural-period, hydro-matrix, on-bottom stability)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2694
+  gh_state: open
+  gh_labels:
+  - cat:bugfix
+  - cat:engineering
+  - enhancement
+  - priority:high
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Discovered by
+
+    R5 preliminary code audits across 3 domain sweeps:
+
+    - [#2673](https://github.com/vamseeachanta/workspace-hub/issues/2673) — Hydrodynamics R5'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2693
+  title: 'R6 — Subsea Pipelines: Coverage map synthesis + gap subissue spawning'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2693
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2687](https://github.com/vamseeachanta/workspace-hub/issues/2687).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2692
+  title: 'R5 — Subsea Pipelines: Comprehensive code coverage audit (digitalmodel subsea/geotechnical/cathodic_protection/orcaflex)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2692
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2687](https://github.com/vamseeachanta/workspace-hub/issues/2687).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2690
+  title: 'R3 — Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/Saipem, OrcaFlex/SAGE Profile)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2690
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2687](https://github.com/vamseeachanta/workspace-hub/issues/2687).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2689
+  title: 'R2 — Subsea Pipelines: Academic sources sweep (Bai & Bai, Palmer & King, Kyriakides & Corona, Guo)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2689
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2687](https://github.com/vamseeachanta/workspace-hub/issues/2687).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2688
+  title: 'R1 — Subsea Pipelines: Standards & Codes inventory (DNV-OS-F101, F105, F109, F110, API RP 1111, ASME B31.4/.8)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2688
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2687](https://github.com/vamseeachanta/workspace-hub/issues/2687) (Domain Sweep: Subsea Pipelines) → [#2667](https://github.com/vamseeachanta/workspace-hub/issues/2667) (Domain Knowledge Sweep feature).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2687
+  title: 'Domain Sweep: Subsea Pipelines (design, installation, integrity, on-bottom stability)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2687
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:knowledge-domain
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent Feature
+
+    Subissue of [#2667](https://github.com/vamseeachanta/workspace-hub/issues/2667) — Domain Knowledge Sweep framework.
+
+    ## Domain Charter'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2686
+  title: 'Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2686
+  gh_state: open
+  gh_labels:
+  - bug
+  - cat:bugfix
+  - cat:engineering
+  - priority:high
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Discovered by
+
+    [#2681](https://github.com/vamseeachanta/workspace-hub/issues/2681) — R5 Mooring code audit + follow-up catenary canonicalization investigation.
+
+    Full investigation: `docs/field-development/catenary-canonicalization-investigation.md` (in commit 7c2a46710).'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2682
+  title: 'R6 — Mooring: Coverage map synthesis + gap subissue spawning'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2682
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2676](https://github.com/vamseeachanta/workspace-hub/issues/2676).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2681
+  title: 'R5 — Mooring: Code coverage audit (digitalmodel + citation pilot)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2681
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2676](https://github.com/vamseeachanta/workspace-hub/issues/2676).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2679
+  title: 'R3 — Mooring: Industry practice (Vryhof, Bridon, MIRP, OMAE sessions)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2679
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2676](https://github.com/vamseeachanta/workspace-hub/issues/2676).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2678
+  title: 'R2 — Mooring: Academic sources (Vryhof, OSIG, Aubeny, anchor pile mechanics)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2678
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2676](https://github.com/vamseeachanta/workspace-hub/issues/2676).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2677
+  title: 'R1 — Mooring: Standards & Codes inventory (DNV-OS-E301, API RP 2SK, ISO 19901-7)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2677
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2676](https://github.com/vamseeachanta/workspace-hub/issues/2676) (Domain Sweep: Mooring Design) → [#2667](https://github.com/vamseeachanta/workspace-hub/issues/2667).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2676
+  title: 'Domain Sweep: Mooring Design (catenary, taut, DP-assist, station-keeping, fatigue)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2676
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:knowledge-domain
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent Feature
+
+    Subissue of [#2667](https://github.com/vamseeachanta/workspace-hub/issues/2667) — Domain Knowledge Sweep framework.
+
+    ## Domain Charter'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2674
+  title: 'R6 — Hydrodynamics: Coverage map synthesis + gap subissue spawning'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2674
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2668](https://github.com/vamseeachanta/workspace-hub/issues/2668).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2673
+  title: 'R5 — Hydrodynamics: Comprehensive code coverage audit (digitalmodel + related repos)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2673
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2668](https://github.com/vamseeachanta/workspace-hub/issues/2668).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2671
+  title: 'R3 — Hydrodynamics: Industry practice (conferences, journals, vendor docs)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2671
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2668](https://github.com/vamseeachanta/workspace-hub/issues/2668).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2670
+  title: 'R2 — Hydrodynamics: Academic sources sweep (Journée, Faltinsen, Newman, PNA)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2670
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2668](https://github.com/vamseeachanta/workspace-hub/issues/2668).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2669
+  title: 'R1 — Hydrodynamics: Standards & Codes inventory (API, DNV, ISO, ABS)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2669
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2668](https://github.com/vamseeachanta/workspace-hub/issues/2668) (Domain Sweep: Offshore Hydrodynamics) → [#2667](https://github.com/vamseeachanta/workspace-hub/issues/2667) (Domain Knowledge Sweep feature).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2668
+  title: 'Domain Sweep: Offshore Hydrodynamics (RAOs, motion analysis, wave-structure interaction)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2668
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:knowledge-domain
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent Feature
+
+    Subissue of [#2667](https://github.com/vamseeachanta/workspace-hub/issues/2667) — Domain Knowledge Sweep framework.
+
+    ## Domain Charter'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2641
+  title: 'feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2641
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - machine:multi
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Add a hands-off multi-machine solver batch pipeline so a user can drop manifests/input files into a known inbox, have Linux hosts ingest/queue them, and have Windows licensed hosts run OrcaWave, OrcaFlex, and AQWA/ANSYS jobs via periodic polling without manually touching the machines.
+
+    ## Current evidence'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2640
+  title: 'feat(gtm): worldenergydata production decline forecast — shareable Jupyter notebook for GTM demo'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2640
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:gtm
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+    Issue [#117](https://github.com/vamseeachanta/workspace-hub/issues/117) acceptance criteria includes:
+
+    > Build shareable Jupyter notebook: production decline forecast (worldenergydata)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2625
+  title: 'investigate(digitalmodel-tests): Cluster E — marine-engineering domain regressions (~60 failures across catenary/wave/ocimf/RAO)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2625
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - domain:mooring
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Surfaced during [#2616](https://github.com/vamseeachanta/workspace-hub/issues/2616). ~60 failures concentrated in \`tests/marine_ops/marine_engineering/\` and adjacent. Without per-test detail (the maxfail=200 probe used \`--tb=line\` only), root causes can''t be characterized inline.
+
+    ## Affected (by file, partial — full list at \`/tmp/qg-failures-clean.txt\`)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2624
+  title: 'policy(digitalmodel-tests): Cluster D — decide whether redis/psycopg2/motor belong in QG suite (51 errors)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2624
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:testing
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Surfaced during [#2616](https://github.com/vamseeachanta/workspace-hub/issues/2616). 51 errors in \`tests/infrastructure/core/\` are environmental — pure dep-wall, not feature defects.
+
+    ## Affected'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2623
+  title: 'fix(digitalmodel-tests): Cluster A — sys.modules pollution leaking MagicMock into tests/contracts/ (2 failures)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2623
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:testing
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Surfaced during [#2616](https://github.com/vamseeachanta/workspace-hub/issues/2616). Two tests in \`tests/contracts/\` fail in the full suite but pass in isolation — classic test-pollution Heisenbug, made deterministic by \`-p no:randomly\`.
+
+    ## Defect'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2609
+  title: 'tracker(digitalmodel-tests): post-#543 main has 244+ broken tests, not 20 as Quality Gates reports'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2609
+  gh_state: open
+  gh_labels:
+  - domain:digitalmodel
+  - domain:testing
+  - tracker
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Headline
+
+    Quality Gates'' "20 failed, 3000 passed" report on digitalmodel main `60d59565` is the `pytest --maxfail=20` short-circuit ceiling, **NOT the true count**. A local repro on `60d59565` (without `--maxfail`) captured **184 unique FAILED + 60 unique ERROR = 244 broken tests** before the run was killed mid-collection. True count is likely higher — pytest never emitted its `=== short test summary ===` block.
+
+    The real number is **~12x larger** than CI reported.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2585
+  title: 'tracker(digitalmodel-tests): 26 collect_ignore entries from 2026-03-24 slim-down need real fixes'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2585
+  gh_state: open
+  gh_labels:
+  - domain:digitalmodel
+  - domain:testing
+  - status:needs-plan
+  - tracker
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Commit [`2c185d2d`](https://github.com/vamseeachanta/digitalmodel/commit/2c185d2d) (2026-03-24, "fresh repo after slimming") added 26 entries to `digitalmodel/tests/conftest.py:collect_ignore` without filing follow-up issues. A subsequent commit `4515cd01` (2026-05-01, via [#2574](https://github.com/vamseeachanta/workspace-hub/issues/2574)) added 3 more entries — those 3 ARE tracked in [#2580](https://github.com/vamseeachanta/workspace-hub/issues/2580). The other 26 are documented-but-unowned: comments say *why* they''re skipped, but no owner, no exit criteria, no link to a fix plan.
+
+    Audit reference: [`docs/sessions/2026-05-02-collect-ignore-cumulative-audit.md`](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/sessions/2026-05-02-collect-ignore-cumulative-audit.md)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2558
+  title: 'data(field-dev): primary-source GoM equipment/cost source pack for #2112/#2055'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2558
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:engineering
+  - enhancement
+  - priority:high
+  - status:needs-data
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Create the next #2112 source-quality pass: a primary/public-source evidence pack for #2055''s GoM field-development cost benchmarking gate.
+
+    This is a follow-up to the provisional artifact committed in `624c87f12`, which intentionally kept #2055 blocked because the candidate dataset failed source/semantic review.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2516
+  title: 'feat(digitalmodel): flexible pipe and dynamic riser cross-section mechanics follow-up'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2516
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - domain:pipeline
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Plan a deeper flexible pipe and dynamic riser cross-section mechanics module after the basic cable/umbilical/pipeline schema exists.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2513
+  title: 'feat(knowledge): catalogue offshore wind and oil gas subsea cross-section sources'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2513
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - domain:marine
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Build a source-backed catalogue for offshore wind and oil and gas subsea cross-section families: inter-array/export cables, electro-hydraulic umbilicals, power/optical umbilicals, rigid pipelines/flowlines, and flexible pipe/riser follow-ups.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2510
+  title: 'feat(cad): build Python layout/CAD automation demo for chip/package geometries'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2510
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:tooling
+  - domain:chip-design
+  - domain:semiconductor
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Parent: #2507
+
+    Roadmap: `docs/roadmaps/chip-design-cad-fem-career-roadmap.md`'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2509
+  title: 'feat(eda): create reproducible OpenLane/OpenROAD RTL-to-GDS demo report'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2509
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - cat:tooling
+  - domain:chip-design
+  - domain:semiconductor
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+    Parent: #2507
+
+    Roadmap: `docs/roadmaps/chip-design-cad-fem-career-roadmap.md`'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2507
+  title: 'Feature: semiconductor chip-design CAD/FEM career lane'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2507
+  gh_state: open
+  gh_labels:
+  - cat:career
+  - cat:engineering
+  - cat:research
+  - domain:chip-design
+  - domain:semiconductor
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Create a focused semiconductor / chip-design CAD + FEM career lane in workspace-hub, using ACE Engineer strengths in CAD automation, FEM, document intelligence, and job-market scanning.
+
+    ## Roadmap'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2491
+  title: Extend pyramid-conformance-check.py DT1_REQUIRED_FIELDS to include standards-page fields (code_id, publisher, revision)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2491
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - tech-debt
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Issue #2471 (plan `docs/plans/2026-04-23-issue-2471-standards-wiki-path-sanction.md`) sanctioned `wiki/standards/` as a first-class wiki page type and defined a frontmatter contract requiring three new fields:
+
+    | Field | Description |'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2474
+  title: 'feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2474
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - machine:dev-primary
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Add stronger OrcaFlex native YAML -> canonical semantic extraction/equivalence proof so OrcaFlex reaches parity with the OrcaWave roundtrip proof added in PR #528.
+
+    ## Why now'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2473
+  title: 'feat(canonical-spec): prove OrcaWave-to-OrcaFlex hydrodynamic handoff semantics'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2473
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - machine:dev-primary
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Add an end-to-end semantic proof for OrcaWave hydrodynamic outputs flowing into OrcaFlex vessel/hydrodynamic native inputs without losing units, headings, frequencies, phase/sign, body axes, damping, or added-mass provenance.
+
+    ## Why now'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2472
+  title: 'feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2472
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - machine:dev-primary
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Add a canonical `spec.yml -> ProjectInputSpec -> ModularModelGenerator -> native OrcaFlex YAML` semantic proof for CALM/SPM buoy systems.
+
+    ## Why now'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2454
+  title: 'feat(canonical-spec): validate flagship generic-track OrcaFlex mooring case via turret-moored FPSO semantic proof'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2454
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - machine:dev-primary
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Validate a flagship generic-track OrcaFlex mooring case — preferably turret-moored FPSO — for semantic equivalence from canonical `spec.yml` to generated native OrcaFlex inputs.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2355
+  title: 'chore(website): pin Node engines in aceengineer-website package.json + vercel.json'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2355
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:gtm
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    The `aceengineer-website/package.json` has no `engines` field and `vercel.json` does not pin a Node runtime version. This leaves the build environment implicit and susceptible to silent drift when Vercel''s default Node image changes.
+
+    ## Why accepted as debt (not blocker)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2329
+  title: 'Engineering methodology: code-first vs GUI CAD for offshore parametric hardware families'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2329
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:engineering-methodology
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Status
+
+    **Blocked by #2327 and #2328.** This issue must not start until both siblings produce empirical evidence.
+
+    > **Revised 2026-04-17 per [adversarial review](https://github.com/vamseeachanta/workspace-hub/issues/2329#issuecomment-4269067993)**: blocked on siblings; reframed to find threshold empirically; enforcement tier committed (Level 1 or 2, not Level 0 prose); decay plan added; inventory scoped out.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2328
+  title: 'CAD-DEVELOPMENTS: comparison — CadQuery vs build123d vs ReplicAD vs FluidCAD'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2328
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - cat:research
+  - cat:tooling
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The HN CadQuery thread (2026-04-17) surfaces adjacent code-first CAD libraries that all reach parametric B-rep → STEP via different ergonomics. Before committing `CAD-DEVELOPMENTS/` tooling, a structured comparison is needed.
+
+    > **Revised 2026-04-17 per [adversarial review](https://github.com/vamseeachanta/workspace-hub/issues/2328#issuecomment-4269066629)**: scope locked to code-first tools only; N=3 parts replace N=1; FluidCAD dropped (wrong category); LLM-codegen protocol specified; decision-maker named.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2327
+  title: 'digitalmodel: CadQuery spike for parametric offshore geometry generation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2327
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering
+  - cat:research
+  - priority:low
+  - status:plan-approved
+  - status:working
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    CadQuery is a Python library for parametric 3D CAD on the OpenCASCADE B-rep kernel. STEP export is high-fidelity, so downstream meshers (gmsh, Salome) can control density without being trapped by authoring-time facets — a good shape for offshore component geometry that feeds AQWA.
+
+    Discovered via HN discussion 2026-04-17 (180 points, 47 comments): https://news.ycombinator.com/item?id=47772725'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2325
+  title: 'Design conference-corpus enrichment (successor to #2305 deferral)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2325
+  gh_state: open
+  gh_labels:
+  - cat:document-intelligence
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Successor to #2305. See \`docs/reports/2026-04-17-issue-2305-conference-batch-baseline.md\` for the full baseline and why #2305 deferred.
+
+    ## Problem
+
+    The conference corpus (22,069 + 27,735 records across \`conference-index-batch.jsonl\` and \`conference-index.jsonl\`, plus 14,180 Phase-A extraction results in \`conference-phase-a-results.jsonl\`) has **0% coverage** of the post-#1878 enrichment fields (\`content_type\`, \`summary_done\`). The #1878 enrichment pipeline cannot run unchanged because:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2287
+  title: 'feat(architecture): assess LR and Noble Denton corpus for downstream repo routing'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2287
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Follow-on issue split from #2244 triage artifact to handle a bounded slice of ACMA breadth discovered outside the approved #2227 scope.
+
+    ## Why this is split'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2267
+  title: 'chore(sync): add regression coverage for stale gitlink and missing .gitmodules recovery'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2267
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    A repo sync/recovery session found a stale gitlink path (`heavyequipemnt-rag`) present in the root tree/index without a matching `.gitmodules` entry, causing:
+
+    `fatal: no submodule mapping found in .gitmodules for path ''heavyequipemnt-rag''`'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2265
+  title: 'chore(rebase): audit skipped hardening commits from backup/pre-rebase-20260413-152018'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2265
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    After rebasing local `main` onto `origin/main` and pushing successfully, two local operational commits were intentionally skipped because they conflicted heavily with upstream structure and generated-file churn:
+
+    - `6d5a711f9` — `chore: harden provider health and ecosystem tooling`'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2220
+  title: 'chore(repos): clean up dirty repo state — gitignore fixes + selective commits'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2220
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    10 repos have uncommitted changes. Triage completed 2026-04-11 — most are generated artifacts or symlink churn.
+
+    ## Action Plan'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2219
+  title: 'chore(sync): resolve main branch divergence — 9 local vs 134 origin commits'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2219
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+    workspace-hub main has diverged significantly:
+
+    - **9 local commits** (llm-wiki ingestion, GTM demos, ecosystem hardening) since merge-base `35e4d68` (2026-03-31)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2114
+  title: 'feat(gtm): VIV demo notebook — freespan walkthrough for pipeline engineers (#1792)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2114
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:gtm
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Purpose
+
+    Create a Jupyter notebook walkthrough of Demo 1 (freespan/VIV) for pipeline engineers. Like the S-N notebook but focused on span assessment workflow.
+
+    ## Content'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2112
+  title: 'data(field-dev): backfill SubseaIQ equipment counts to unblock cost benchmarking'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2112
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - enhancement
+  - priority:high
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Backfill the minimum SubseaIQ equipment-count fields required to unblock #2055 subsea cost benchmarking.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2085
+  title: 'fix(field-dev): timeline._stats() type annotation and empty-set percentile sentinel'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2085
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    From adversarial review of commit \`a66363f2\` (#2060, Terminal 4, 2026-04-10).
+
+    Two MINOR/IMPORTANT robustness issues in \`src/digitalmodel/field_development/timeline.py\`.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2084
+  title: 'feat(field-dev): add regional segmentation to architecture pattern analytics'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2084
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Follow-up to #2058. `tieback_stats_segmented` and `equipment_stats_by_concept` currently
+
+    segment by depth band and fluid type. Adding a `by_region` dimension would enable'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2082
+  title: 'test(field-dev): add sparse/edge-case coverage to architecture_patterns tests'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2082
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Follow-up to #2058. Adversarial review identified MINOR gaps in test coverage for `architecture_patterns.py`.
+
+    ## Missing test scenarios'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2081
+  title: 'feat(field-dev): add decline_sensitivity() sweep — NPV vs decline rate'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2081
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    `economics.py` already has `carbon_sensitivity()` for NPV-vs-carbon-price sweeps.  A parallel function for decline rate sensitivity would complete the sensitivity analysis toolkit and support investment screening decisions under geological uncertainty.
+
+    ## Requested Change'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2079
+  title: 'feat(field-dev): make recovery_factor configurable on EconomicsInput for EUR derivation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2079
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    `_derive_decline_rate_from_eur()` hard-codes `recovery_factor=0.15` (15% of OOIP).  This is a common GoM deepwater rule-of-thumb but is wrong for many reservoir types (e.g. water-flood: 30–40%, tight oil: 5–8%).
+
+    ## Requested Change'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2076
+  title: 'bug(field-dev): string decline_type bypasses EUR auto-derive in EconomicsInput'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2076
+  gh_state: open
+  gh_labels:
+  - bug
+  - cat:engineering
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    `EconomicsInput.__post_init__` coerces `decline_type` from string to `DeclineType` enum **after** the EUR auto-derive block.  If a caller passes `decline_type="linear"` (a string, not the enum), the guard `self.decline_type == DeclineType.LINEAR` evaluates to `False` and EUR auto-derivation is silently skipped.
+
+    ```python'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2055
+  title: 'feat(field-dev): subsea cost benchmarking from SubseaIQ equipment counts'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2055
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - agent:codex
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:high
+  - scope:v1
+  - status:blocked
+  - status:needs-data
+  - status:plan-approved
+  - wip:ace-linux-1
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Build cost-per-equipment-unit benchmark curves (cost/tree, cost/km-flowline, cost/manifold) by water-depth band, correlating SubseaIQ equipment counts against sanctioned project costs.
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2041
+  title: 'chore: add LaTeX to manim-env for MathTex rendering'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2041
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Install LaTeX into the `manim-env` conda environment to enable `MathTex` rendering in Manim animations.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2032
+  title: 'TASK: Write HLV and pipelay vessel spec JSON files from research data'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2032
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Web research subagents have collected vessel specifications for two datasets:
+
+    ### HLV Vessels (#1798)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2029
+  title: 'TASK: Run YML + Excel inventory script locally to produce catalog JSON'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2029
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Subagent scan completed the discovery phase. The inventory structure is known. What''s needed now is an executable script that runs locally and produces the definitive catalog.
+
+    ## What We Know'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2006
+  title: 'audit(worldenergydata): 14000+ orphan modules — triage for archival vs active use (#1962 Phase 3)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2006
+  gh_state: open
+  gh_labels:
+  - agent:gemini
+  - cat:engineering
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Tier-1 Repo Audit (#1962) identified **10+ orphan modules** in worldenergydata (files with 0 imports).
+
+    ## Orphan Detection Method'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2005
+  title: 'audit(digitalmodel): worldenergydata test collection timeout + 14K bytecode files — investigate and resolve'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2005
+  gh_state: open
+  gh_labels:
+  - agent:gemini
+  - cat:engineering
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Tier-1 Repo Audit (#1962) found critical infrastructure issues in worldenergydata:
+
+    ### Test Collection Timeout'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2003
+  title: Fix 5 failing tests in worldenergydata — test suite cleanup (#1962 Phase 3)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2003
+  gh_state: open
+  gh_labels:
+  - agent:gemini
+  - cat:engineering
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context\n\nAs part of the Tier-1 Repo Ecosystem Refactoring (#1962), the audit found worldenergydata has 5 failing tests that must be resolved before any refactoring can proceed safely.\n\n## Current State\n\n- Total tests: 431 (5 errors detected during collection)\n- Command: `cd assetutilities && uv run python -m pytest ../worldenergydata/tests/ --noconftest` (or run from worldenergydata root)\n\n## Failing Tests\n\nRun `cd /mnt/local-analysis/workspace-hub/worldenergydata && uv run python -m pytest tests/ -v 2>&1 | grep FAILED` to identify exact failures.\n\n## Acceptance Criteria\n- [ ] All 431 tests pass with 0 errors\n- [ ] No test regressions\n- [ ] Commits follow TDD convention'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1972
+  title: 'Test coverage uplift: integration tests for overnight modules (#1843, #1850, #1851, #1861)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1972
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Tonight''s overnight session added 4 new modules with 151 passing tests:
+
+    - concept_selection.py (94 tests) — concept selection framework for field development'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1960
+  title: Implement seakeeping module — 6-DOF motion analysis
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1960
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Issue #1315 identified the need for a seakeeping module. The digitalmodel repo has existing vessel motion modules but no dedicated seakeeping analysis.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1959
+  title: Implement OpenTURNS fatigue reliability analysis module
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1959
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:structural
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Research in #187 evaluated OpenTURNS for fatigue reliability integration. Conclusion: strong candidate.
+
+    ## Key Findings'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1958
+  title: Build slim-hole well engineering module — casing program comparison + economics
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1958
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - dark-intelligence
+  - domain:drilling
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Research in #1 completed the Slim Hole vs. Standard Hole vs. Big Hole comparison. Key findings:
+
+    - Slim hole saves 30-50% drilling cost but limits production rates'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1957
+  title: Implement DWG/DXF parser for CAD text extraction (ezdxf + ODA File Converter)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1957
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:document-intelligence
+  - dark-intelligence
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Research in #1618 identified the DWG/DXF parsing approach. 474K unextractable docs include CAD formats. The research is complete — now needs implementation.
+
+    ## Research Findings'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1955
+  title: 'Phase B: Summarize 27,735 extracted conference documents at scale'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1955
+  gh_state: open
+  gh_labels:
+  - cat:document-intelligence
+  - dark-intelligence
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    After full text extraction (parent issue), the 27,735 conference documents need summarization for the document-index pipeline. This is the Phase B summarization step previously referenced in #1896 and #1437.
+
+    ## Scale'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1954
+  title: Full text extraction of 27,735 conference files using fixed extract-document.py pipeline
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1954
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:document-intelligence
+  - dark-intelligence
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+    The conference indexing lightweight catalog (#1608) completed Phase A — 27,735 files across 30 collections cataloged with metadata only (no full text extraction).
+
+    The full text extraction via `extract-document.py` was blocked by a DocumentManifest schema bug in pdf.py (early-return path missing version/tool/domain args). This bug is now fixed (commit: 75985abd).'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1953
+  title: 'Batch 2: Convert FDAS Riser Engineering workbooks via Windows cowork'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1953
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Machine: ws014 (Windows - Claude cowork)
+
+    ## Scope
+
+    Convert 20+ FDAS riser engineering workbooks via Windows Claude cowork.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1940
+  title: 'Batch 6: Shell Perdido + VMCast + Production Eng Library — 71 workbooks'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1940
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Batch 6: Shell Perdido Manifold + VMCast + Production Engineering
+
+    **Source**: `engineering_workbooks/shell_perdido_south/`, `engineering_workbooks/BP_MD2_FJR_vmcast/`, `client_projects/energy_engineering/`
+
+    **Machine**: ws014 (Windows)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1939
+  title: 'Batch 5: Talos Venice Umbilical Installation — 31 workbooks'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1939
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Batch 5: Talos Venice Umbilical Installation
+
+    **Source**: `engineering_workbooks/talos_venice/` (31 workbooks)
+
+    **Machine**: ws014 (Windows)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1938
+  title: 'Batch 4: SCR Design DNV F201 + Wall Thickness — 18 workbooks'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1938
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Batch 4: SCR Design (DNV OS F201) + Wall Thickness
+
+    **Source**: `engineering_workbooks/training/`
+
+    **Machine**: ws014 (Windows)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1937
+  title: 'Batch 3: Installation Engineering References — 18 workbooks'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1937
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Batch 3: Installation Engineering References
+
+    **Source**: `engineering_workbooks/references/` + `energy_engineering/` plate buckling
+
+    **Machine**: ws014 (Windows)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1936
+  title: 'Batch 2: FDAS Riser Engineering — 20+ workbooks'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1936
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Batch 2: FDAS Riser Engineering
+
+    **Source**: `engineering_workbooks/0163-FDAS/` (already tracked) + `engineering_workbooks/references/`
+
+    **Machine**: ws014 (Windows)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1935
+  title: 'Batch 1: Ballymore Jumper Lift + Mudmat Analysis — 10 workbooks'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1935
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Batch 1: Ballymore Jumper Lift + Mudmat Analysis
+
+    **Source**: `engineering_workbooks/ballymore/` (10 workbooks)
+
+    **Machine**: ws014 (Windows)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1934
+  title: 'FEATURE: Excel-to-Code Conversion Pipeline — 100 workbooks via ws014 Claude-in-Excel'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1934
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:engineering
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Excel-to-Code Conversion Pipeline — 100 workbooks via ws014 Claude-in-Excel
+
+    > **Execution Machine**: ws014 (Windows, Claude in Excel add-in)
+
+    > **Round Trip**: Workbooks here -> analyze in Claude-in-Excel -> convert to Python -> PR back to digitalmodel/assetutilities repos'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1933
+  title: 'INVENTORY: Excel Workbook Conversion Registry — 50 workbooks to Python code'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1933
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:engineering
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Excel Workbook Conversion: Engineering Calculations to Python
+
+    ## Objective
+
+    Systematically convert productive engineering Excel workbooks to Python code in our repo ecosystem. This enables:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1932
+  title: 'INVENTORY: Complete OrcaFlex/OrcaWave model catalog (3,524 YML + legacy)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1932
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:data-pipeline
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Scope
+
+    Build complete inventory of all OrcaFlex models and OrcaWave models across all data mounts.
+
+    ## Current State (discovered in workspace-hub audit)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1929
+  title: 'PHASE 2: Deep scan 3,879 .xls workbooks with xlrd library'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1929
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:engineering
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Scope
+
+    Install xlrd library and run deep scan of all 3,879 .xls binary workbooks discovered in Phase 1 (#1910).
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1913
+  title: 'Codex: test coverage + bounded implementation sprint — 4 priority batches'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1913
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering-calculations
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Codex handles 30+ bounded tasks across 4 batches:
+
+    Priority 1 Harness: #1868 Google AI Studio, #1867 provider config, #1870 deepseek fix, #1869 free providers, #1802 batch-at-stop, #1801 config-protection hook
+
+    Priority 2 Tests: #1824 coverage uplift 2.95%->20%, #1827 .sim metadata, #1828 RAODatabase, #1829 RAO plots, #1691 fatigue TDD, #1689 ANSYS maturity, #1632 field dev tests, #1630 web tests'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1912
+  title: 'Claude: implementation sprint — field dev, naval arch, dark-intel, governance'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1912
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'After Gemini planning completes, Claude executes across 4 domains:
+
+    Field Dev (#1897): #1843 concept selection, #1844 CAPEX/OPEX, #1845 production profile, #1846 facility sizing, #1847 subsea arch, #1848 integrated FDP, #1858 worldenergydata FDAS, #1866 production client
+
+    Naval Arch (#1898): #1853 curves_of_form, #1851 gyradius, #1850 floating platform, #1852 trim/ballast, #1854 tonnage, #1859 worldenergydata integration'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1908
+  title: 'Codex: test coverage + bounded implementation sprint (#1824+#1830+#1802+#1801+#1748+#1749)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1908
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering-calculations
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Codex Test Coverage & Bounded Implementation Batch
+
+    All 30 `agent:codex` issues are bounded, self-contained tasks perfect for Codex sessions.
+
+    ### Priority 1: Test Writing (highest leverage)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1905
+  title: 'DATA: Rigid jumper OrcaFlex model + input workbook for model generation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1905
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - gtm
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Scope
+
+    Locate, catalog, and prepare the rigid jumper OrcaFlex model and associated Excel workbook for GTM Demo 5 and general reuse.
+
+    ## Confirmed Reference Models (per user)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1904
+  title: 'INVENTORY: Complete OrcaFlex/OrcaWave model and Excel workbook catalog across all data mounts'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1904
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - gtm
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Status: Research completed — data extraction in progress
+
+    A subagent scanned both data mounts and catalogued the model inventory. The detailed JSON output was generated in an isolated session.
+
+    ### What Exists'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1898
+  title: 'Claude: naval architecture expansion sprint (#1850+#1851+#1852+#1853+#1854+#1859)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1898
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Naval Architecture Expansion — Implementation Sprint
+
+    ### Claude tasks (implementation)
+
+    1. #1849 Epic: naval architecture expansion'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1897
+  title: 'Claude: field development system implementation sprint (#1843+#1844+#1845+#1846+#1847+#1848)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1897
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Field Development Analysis System — Implementation Sprint
+
+    ### Claude tasks (implementation)
+
+    1. #1843 Concept selection framework — hub vs standalone, wet vs dry tree'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1891
+  title: 'data: index 5,655 migrated DDE literature PDFs — Phase A extraction'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1891
+  gh_state: open
+  gh_labels:
+  - cat:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Run doc-intelligence Phase A extraction on the 14.6 GB DDE literature archive migrated from overnight #1863.
+
+    ## Context
+
+    - 5,655 files (14.6 GB) migrated to /mnt/ace/docs/literature/dde/'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1889
+  title: 'dark-intel: uplift digitalmodel test coverage 20% -> 50% — domains remaining after #1824'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1889
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - dark-intelligence
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'Second wave of test coverage uplift, targeting 20% -> 50%.
+
+    ## Context
+
+    - Overnight run #1824 added +744 passing tests (structural, naval arch, cathodic protection)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1888
+  title: 'data: run doc-intelligence Phase B — summarize OTC/OMAE/DOT conference papers (14,180 PDFs)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1888
+  gh_state: open
+  gh_labels:
+  - cat:document-intelligence
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'Run Phase B (summarization + domain classification) on the 14,180 OTC/OMAE/DOT papers whose metadata was extracted overnight.
+
+    ## Context
+
+    - Phase A metadata extracted: 14,180 PDFs across OTC, OMAE, DOT'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1887
+  title: 'data: Phase A conference indexing — ISOPE, SPE, and remaining 27 conferences (24,346 papers)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1887
+  gh_state: open
+  gh_labels:
+  - cat:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Continue Phase A metadata extraction for the remaining 27 conferences that show indexing_status: not_indexed.
+
+    ## Context
+
+    - Overnight run (#1862) completed OTC, OMAE, DOT: 14,180 PDFs extracted'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1877
+  title: Back-test engineering commits for workflow compliance
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1877
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Parent: #1839
+
+    Audit the last 2 weeks of engineering commits to establish workflow compliance baseline.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1866
+  title: 'feat(field-dev): worldenergydata unified production client as field development data backbone'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1866
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Unified Production Client → Field Development Data Backbone
+
+    ### Context
+
+    worldenergydata has a unified production client wrapping 8 regional sources'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1861
+  title: 'data: build SubseaIQ-to-field-development bridge — concept screening benchmarks from real projects'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1861
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## SubseaIQ → Field Development Benchmark Bridge
+
+    ### What
+
+    Once SubseaIQ data is scraped, build the bridge to use it as benchmark'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1859
+  title: 'feat(naval-arch): integrate worldenergydata vessel fleet + hull models into naval architecture'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1859
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - domain:code-promotion
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Integrate worldenergydata Vessel Data into Naval Architecture
+
+    ### Context
+
+    worldenergydata has rich vessel/hull data NOT connected to digitalmodel naval_architecture/:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1854
+  title: 'feat(naval-arch): tonnage and regulatory calculations — GT/NT, load line, MARPOL'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1854
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Tonnage and Regulatory Calculations
+
+    ### What
+
+    compliance.py has simplified ICLL freeboard but no tonnage calculations'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1853
+  title: 'feat(naval-arch): complete curves_of_form.py — hydrostatic tables from hull geometry'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1853
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Complete Curves of Form Implementation
+
+    ### What
+
+    curves_of_form.py exists as a stub (displacement_at_draft raises'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1852
+  title: 'feat(naval-arch): trim and ballast optimization — minimize fuel, maximize stability'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1852
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Trim and Ballast Optimization
+
+    ### What
+
+    No trim optimization or ballast management code exists. These are'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1851
+  title: 'feat(naval-arch): gyradius calculator — mass distribution, roll/pitch/yaw inertia from geometry'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1851
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Gyradius (Radius of Gyration) Calculator
+
+    ### What
+
+    Seakeeping.py uses hardcoded k_xx=0.40*B, k_yy=0.25*L which is a rough'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1850
+  title: 'feat(naval-arch): floating platform stability — FPSO, semi-sub, spar, TLP, barge'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1850
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Floating Platform Stability Calculations
+
+    ### What
+
+    Generic stability code exists (GZ curves, IMO criteria) but no platform-'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1849
+  title: 'epic: naval architecture expansion — floating platforms, classification, gyradius, trim optimization'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1849
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Epic: Naval Architecture Module Expansion
+
+    ### Current State (Strong Foundation)
+
+    17 Python modules, 1,814+ LOC in naval_architecture/:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1848
+  title: 'feat(field-dev): wire existing scattered modules into integrated FDP workflow'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1848
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Integrate Scattered Field Development Modules
+
+    ### What
+
+    11 existing code areas are scattered across 4 repos. Create an integration'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1847
+  title: 'feat(field-dev): subsea architecture optimizer — tieback distance, manifold layout, flow assurance'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1847
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Subsea Architecture Optimizer
+
+    ### Current State
+
+    subsea/ has 70+ files covering pipe sizing, buckling, VIV, mooring,'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1846
+  title: 'feat(field-dev): facility sizing — separator, compressor, water injection, power generation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1846
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Facility Sizing Calculations
+
+    ### What
+
+    Process equipment sizing for topsides weight and cost estimation.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1845
+  title: 'feat(field-dev): production profile generator — decline curves, plateau optimization, reserves'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1845
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Production Profile Generator
+
+    ### Current State
+
+    Basic Arps decline exists (marine_ops/reservoir/):'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1844
+  title: 'feat(field-dev): CAPEX/OPEX estimation models — parametric cost curves for offshore facilities'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1844
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## CAPEX/OPEX Estimation Models
+
+    ### What
+
+    Parametric cost estimation for offshore field development screening.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1843
+  title: 'feat(field-dev): concept selection framework — hub vs standalone, wet vs dry tree, host type'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1843
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - domain:code-promotion
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Field Development Concept Selection
+
+    ### What
+
+    Decision-support tool for offshore field development concept screening.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1842
+  title: 'epic: field development analysis system — concept selection, economics, facility sizing, FDP'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1842
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Epic: Field Development Analysis System
+
+    ### Current State
+
+    11 implemented areas exist but are scattered and not integrated:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1841
+  title: 'feat(geotechnical): offshore gaps — lateral piles, mudmats, spudcans, torpedo piles, suction install'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1841
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - domain:code-promotion
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Offshore Geotechnical Gaps
+
+    ### Context
+
+    Existing offshore geotechnical covers axial pile capacity, anchors, scour,'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1840
+  title: 'feat(geotechnical): onshore foundations — shallow foundations, bored piles, settlement, slope stability'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1840
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - domain:code-promotion
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Onshore Geotechnical Foundations Module
+
+    ### Context
+
+    ALL existing geotechnical code (4 modules, 768 LOC) is OFFSHORE-focused.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1836
+  title: 'MODULE: Shore approach analysis (HDD, trenching, pull-in)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1836
+  gh_state: open
+  gh_labels:
+  - gtm
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Purpose
+
+    Implement shore approach analysis for subsea pipeline landfalls.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1835
+  title: 'MODULE: On-bottom stability analysis (DNV-RP-F109)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1835
+  gh_state: open
+  gh_labels:
+  - gtm
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Purpose
+
+    Implement on-bottom stability analysis per DNV-RP-F109 for subsea pipelines.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1834
+  title: 'SKILL: Field Development Pipeline Engineering -- pipe sizing through installation to operations'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1834
+  gh_state: open
+  gh_labels:
+  - gtm
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Vision
+
+    Build a field development pipeline engineering skill that connects the full decision chain from reservoir to operations. For a given field, the engineer must choose between close pipe sizes (e.g. 10" vs 12" vs 14") where the decision depends on the interplay of:
+
+    ### The Decision Chain'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1830
+  title: 'review and close solver queue bug fixes #1703-#1706'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1830
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Four solver queue bug fix issues are open from the April 2 review:
+
+    - #1703 align manifest schema between submit-batch.sh and validate_manifest.py'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1829
+  title: RAO comparison plots for L02 OC4 semi-sub (multi-column geometry)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1829
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering
+  - enhancement
+  - machine:dev-primary
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    generate_rao_comparison_plots.py currently produces plots for test01_unit_box only.
+
+    The L02 OC4 semi-sub is a more realistic multi-column geometry with 32 frequencies and 9 headings.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1828
+  title: populate RAODatabase from all existing .xlsx fixtures (5 geometries)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1828
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering
+  - enhancement
+  - machine:dev-primary
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The RAODatabase at data/rao_database.parquet currently has 2 entries (test01, ellipsoid) populated via post-process-hook.py. We have 5 .xlsx fixtures total.
+
+    ## Deliverables'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1827
+  title: 'licensed-win-1: extract .sim model metadata to JSON for snapshot testing'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1827
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering
+  - enhancement
+  - machine:licensed-win-1
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    #1652 and #1788 require OrcaFlex model data extraction from .sim files.
+
+    Both minimal_test.sim and mooring_with_raos.sim are binary — cannot parse on dev-primary.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1826
+  title: 'dark-intel: rebuild stale specs/module-registry.yaml as canonical calculation index'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1826
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - dark-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Rebuild Module Registry
+
+    ### What
+
+    specs/module-registry.yaml is referenced in ROADMAP.md as the canonical module'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1824
+  title: 'dark-intel: uplift digitalmodel test coverage 2.95% → 20% using extraction test generators'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1824
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering-calculations
+  - dark-intelligence
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Test Coverage Uplift via Dark Intelligence
+
+    ### What
+
+    digitalmodel is at 2.95% test coverage. The dark-intelligence pipeline generates'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1818
+  title: 'dark-intel: extract riser engineering priority files from /mnt/ace/ (3837-CAL series)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1818
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - dark-intelligence
+  - domain:extraction-pipeline
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Extract Riser Engineering Priority Calculations
+
+    ### What
+
+    The /mnt/ace/ riser-eng-job archive has 3,550 .xls + 43 .xlsx files.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1815
+  title: 'dark-intel: promote flowback calculator extraction → digitalmodel/production_engineering/'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1815
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - domain:code-promotion
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Promote Flowback Calculator to digitalmodel
+
+    ### What
+
+    Wire the flowback calculator extraction (647,447 formulas, 2.5x compression) into'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1814
+  title: 'dark-intel: promote API RP 2GEO alpha method archive → digitalmodel/geotechnical/ (offshore pile capacity)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1814
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - domain:code-promotion
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Promote Geotechnical Pile Capacity to digitalmodel (OFFSHORE)
+
+    ### Context
+
+    This issue covers OFFSHORE geotechnical pile capacity only.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1813
+  title: 'dark-intel: promote surface wellhead SITP calculation → digitalmodel/well/sitp.py'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1813
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - domain:code-promotion
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Promote Wellhead SITP Calculation to digitalmodel
+
+    ### What
+
+    Wire the surface wellhead shut-in tubing pressure (SITP) calculation into digitalmodel.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1812
+  title: 'dark-intel: promote conductor length assessment → digitalmodel/structural/conductor.py'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1812
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - domain:code-promotion
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Promote Conductor Length Assessment to digitalmodel
+
+    ### What
+
+    Wire the conductor length assessment extraction into digitalmodel structural module.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1811
+  title: 'dark-intel: promote SN curve POC v2 output → digitalmodel/fatigue/sn_curves.py'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1811
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - dark-intelligence
+  - domain:code-promotion
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Promote SN Curve Extraction to digitalmodel
+
+    ### What
+
+    Wire the dark-intelligence POC v2 extraction of SN curve definitions into'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1810
+  title: 'epic: dark intelligence Excel-to-code promotion — extract 3,600 Excel calcs into digitalmodel'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1810
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering-calculations
+  - dark-intelligence
+  - domain:code-promotion
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Epic: Dark Intelligence Excel-to-Code Promotion
+
+    ### Context
+
+    The workspace-hub ecosystem contains ~3,600 Excel calculation files across mounted'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1799
+  title: 'DATA: Collect public pipelay barge/vessel specs for shallow water GTM demo'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1799
+  gh_state: open
+  gh_labels:
+  - gtm
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Purpose
+
+    Collect publicly available vessel specifications for pipelay barges and vessels (shallow water capable) to use in GTM demo 4: shallow water pipeline installation analysis.
+
+    ## Required Data (per vessel, 2 size classes)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1798
+  title: 'DATA: Collect public construction/heavy-lift vessel specs for GTM demos'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1798
+  gh_state: open
+  gh_labels:
+  - gtm
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Status: Web research completed — subagent collected HLV vessel specs
+
+    A subagent researched heavy-lift vessels across multiple operators (Heerema, Subsea7, Allseas, Boskalis, etc.) and gathered specifications including crane capacities, DP classes, deck areas, and more.
+
+    ### What Was Gathered'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1797
+  title: 'feat(freespan): link to OrcaFlex rigid jumper VIV workflow (#23)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1797
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - domain:pipeline
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Issue #23 (WRK-045) has been open since project inception:
+
+    > OrcaFlex rigid jumper analysis - stress and VIV for various configurations'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1796
+  title: 'feat(freespan): strake and SCF corrections for VIV fatigue damage'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1796
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The MATLAB code includes two corrections to VIV fatigue damage that are
+
+    not yet in the Python implementation:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1795
+  title: 'feat(freespan): trench depth correction for CF onset velocity'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1795
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    DNV-RP-F105 and the MATLAB code include a trench depth correction factor
+
+    for the cross-flow onset velocity:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1794
+  title: 'feat(freespan): turbulence intensity and wave spreading reduction factors'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1794
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    DNV-RP-F105 Section 4.3.6 defines two reduction factors that reduce the
+
+    effective VIV response:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1793
+  title: 'feat(freespan): wire wave_velocity into facade — auto-compute Uw from Hs/Tp'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1793
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    `wave_velocity.py` (#1790, closed) computes Uw from Hs/Tp/depth but is not yet
+
+    wired into the `FreespanVIVFatigue` facade. Currently the user must call'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1792
+  title: 'feat(freespan): GTM demo notebook — free-span VIV assessment walkthrough'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1792
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:gtm
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The DNV-RP-F105 free-span VIV module is now complete with 93 passing tests.
+
+    A Jupyter notebook demonstrating the full workflow would serve as:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1789
+  title: 'licensed-win-1: retry hemisphere.owr fixture generation (missing .gdf)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1789
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:licensed-win-1
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The hemisphere.owr fixture failed during licensed-win-1 prompt execution because HemisphereAndLid0814.gdf mesh file was not found at the expected path.
+
+    ## Error'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1788
+  title: 'OrcaFlex .sim snapshot testing: HTML report from minimal_test.sim fixture'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1788
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-primary
+  - machine:licensed-win-1
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    #1652 requested integration tests with real .sim fixtures and HTML snapshot testing. The minimal_test.sim fixture is now committed. The next step is building the snapshot test.
+
+    ## Deliverables'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1702
+  title: 'cathodic_protection: consolidate marine_cp.py and marine_structure_cp.py into single module'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1702
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The CP package now has two overlapping marine CP modules:
+
+    - `marine_structure_cp.py` (original) — zone-based design with ClimateRegion enum, anode distribution, retrofit assessment'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1701
+  title: 'ANSYS package: Calculation examples — pressure vessel, flange, nozzle worked examples'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1701
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:calculation-examples
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+    After #1676, the ansys package has complete ASME VIII pressure vessel analysis capability (thickness calcs, MAWP, nozzle reinforcement, hydrotest, APDL generation, batch management, results extraction). These should be documented as worked calculation examples.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1700
+  title: 'cathodic_protection: ICCP vs SACP comparison tool and cost optimization'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1700
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    CP package has both SACP (sacrificial anode) and ICCP modules but no comparison/optimization tool. Market signal: 131 CP jobs, clients need cost-benefit analysis between ICCP and SACP systems. Parent: #1676.
+
+    ## Tasks'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1699
+  title: 'cathodic_protection: cross-module integration tests and edge case hardening'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1699
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    CP package has 198 tests across 17 test files, but each module is tested in isolation. Missing: cross-module integration tests and edge case hardening. Parent: #1676.
+
+    ## Tasks'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1698
+  title: 'ANSYS package: Solver queue integration — dispatch FEA jobs to licensed-win-1'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1698
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:engineering
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The ansys package generates APDL scripts and batch launchers but has no integration with the solver queue infrastructure at `scripts/solver/` that dispatches jobs to licensed-win-1 (the machine with ANSYS licenses).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1696
+  title: 'cathodic_protection: integration examples and YAML-driven CP design workflow'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1696
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Cathodic protection package now has 17 modules and 198 tests covering DNV-RP-B401, API RP 1169, ISO 15589, NACE SP0169, and multi-zone marine CP. Parent: #1676.
+
+    ## Objective'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1695
+  title: 'ANSYS package: YAML-based pipeline spec — define full FEA workflow in a single YAML file'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1695
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The ansys package now has mature components for geometry, material, loading, meshing, solving, and post-processing (after #1676). The next evolution is a single YAML spec file that defines an entire FEA workflow, similar to the OrcaWave DiffractionSpec pattern.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1694
+  title: 'Fatigue post-processor: OrcaFlex time-history → rainflow → S-N damage report'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1694
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Build an end-to-end fatigue assessment pipeline connecting OrcaFlex output (stress time histories) to the fatigue package (rainflow counting, S-N evaluation, damage summation).
+
+    ## Workflow'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1691
+  title: 'Fatigue TDD Phase 2: test coverage for plotting, multiaxial, environmental modules'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1691
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Continue TDD expansion from #1676. Phase 1 (overnight 2026-04-02) added 79 tests across 3 new test files. Phase 2 targets the remaining untested or lightly-tested modules.
+
+    ## Current State (post Phase 1)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1689
+  title: 'ANSYS package: Promote to PRODUCTION maturity — docstring audit + models.py test coverage'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1689
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The ansys package has strong test coverage (324 tests, 13/14 modules tested) after #1676 expansion. To reach PRODUCTION status per the module status matrix (#1662), it needs:
+
+    1. **models.py test file** — only source module without a dedicated test file. Pure dataclasses, but needs construction/serialization tests.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1687
+  title: Docstring uplift wave 3 — complete infrastructure/ coverage (24 files remaining) (#1645 follow-up)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1687
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Terminal 4 overnight (2026-04-02) completed docstring wave 2 for web/, reservoir/, infrastructure/, marine_ops/. However, infrastructure/ had 43 files initially identified as lacking docstrings and only 19 were completed before the subagent reached its iteration limit.
+
+    ## Remaining Work (24 files)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1686
+  title: 'ANSYS package: Integration test suite — end-to-end pressure vessel workflow'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1686
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Following #1676 P0 ansys expansion, the package now has 324 unit tests across 13 test files covering all 14 source modules. However, there is no integration test that exercises a complete workflow end-to-end.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1667
+  title: 'Reservoir package: add well correlation and facies analysis functions (#1633 follow-up)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1667
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context\n#1633 refactored `stratigraphic.py` from a raw script to an importable module with 5 public functions. The reservoir package now has a clean base for expansion.\n\n## Next steps\n1. Add `well_correlation.py` — compute and plot formation correlations between wells\n2. Add `facies_analysis.py` — statistical analysis of facies distributions per well/zone\n3. Add petrophysical cutoff functions (net-to-gross, pay zone identification)\n4. Expand test suite from 8 to 20+ tests\n5. Move reservoir package from SKELETON toward DEVELOPMENT maturity\n\n## Dependencies\n- Requires #1633 (done — module refactored)\n- Related: #1645 (docstring uplift wave 2 includes reservoir)\n'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1662
+  title: 'Module status matrix: PRODUCTION promotion campaign — 16 DEVELOPMENT packages'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1662
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Current maturity breakdown (2026-04-02):
+
+    - 14 PRODUCTION, 16 DEVELOPMENT, 1 SKELETON, 0 GAP'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1657
+  title: Resolve 179 cross-package API name collisions — top 20 worst offenders
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1657
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The collision detection feature (#1627) revealed **179 public symbols** exported by 2+ packages.
+
+    ### Top 10 worst offenders'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1652
+  title: 'OrcaFlex reporting: integration test with real .sim fixture + HTML snapshot testing'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1652
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - machine:licensed-win-1
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    OrcaFlex test coverage went from 1 → 6 test files (89 tests, digitalmodel repo).
+
+    All tests use mocked OrcFxAPI. No integration test runs against a real .sim file.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1646
+  title: Docstring uplift wave 3 — solvers, hydrodynamics, specialized, signal_processing, remaining stragglers
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1646
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Follow-up to wave 1 (#1587) and wave 2 (#1645). These packages are 73-97% covered — small effort to reach 100%.
+
+    ## Packages Requiring Uplift'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1645
+  title: Docstring uplift wave 2 — web, reservoir, infrastructure, marine_ops packages
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1645
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Terminal 2 (2026-04-02) completed wave 1 docstring uplift, bringing 7 packages to 100% module-level docstring coverage (#1587, #1602). This issue tracks the remaining packages that are below 80%.
+
+    ## Packages Requiring Uplift'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1637
+  title: 'Parametric spec generator: multi-dimensional sweep combinations and CLI interface'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1637
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context\nOvernight run 2026-04-01 (#1596) delivered a parametric spec.yml generator at `digitalmodel/src/digitalmodel/solvers/parametric_spec_generator.py` with frequency, heading, and hull parameter sweeps. Current limitations:\n- Cross-product of sweeps produces N*M specs (can explode)\n- No CLI interface for batch generation\n- No spec naming convention based on sweep parameters\n\n## What to do\n1. Add a `max_specs` guard to prevent accidental generation of >1000 specs\n2. Add a CLI entry point: `uv run python -m digitalmodel.solvers.parametric_spec_generator --base spec.yml --freq-sweep 0.1:2.0:5 --output-dir output/`\n3. Add naming convention: `spec_{vessel}_{sweep_dim}_{value}.yml`\n4. Add combined sweep mode (frequency x heading = cartesian product)\n5. Tests for each new feature\n6. Update docstrings\n\n## Acceptance criteria\n- CLI works: `uv run python -m digitalmodel.solvers.parametric_spec_generator --help`\n- max_specs guard raises ValueError when exceeded\n-
+    Naming convention applied to output files\n- All existing 14 tests + new tests pass\n\n## Parent\nFollows from #1596'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1636
+  title: 'OrcaWave reporting: section-level unit tests for all 7 section builders'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1636
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context\nOvernight run 2026-04-01 (#1585) added 96 tests for the orcawave reporting package covering config models, builder init, and spec validation. However, the 7 individual section builders (, , , , , , ) have no unit-level tests yet — they require a mocked Diffraction object with numpy arrays.\n\n## What to do\n1. Create \n2. Build a mock Diffraction fixture with realistic numpy arrays (frequencies, headings, RAOs, added mass, damping, drift, panel geometry, QTF)\n3. Write tests for each section''s  function:\n   - test_model_summary_returns_html_table\n   - test_rao_plots_returns_tabbed_html (requires plotly)\n   - test_hydro_matrices_returns_card (requires plotly)\n   - test_mean_drift_returns_card (requires plotly)\n   - test_panel_pressures_returns_table\n   - test_multi_body_single_body_no_coupling\n   - test_multi_body_two_bodies_has_heatmap\n   - test_qtf_heatmap_skips_when_no_qtf\n   - test_qa_summary_all_checks_pass\n4. At least 12 test functions total\n5.
+    All tests use mocked data — no OrcaWave license needed\n\n## Acceptance criteria\n- At least 12 test functions covering all 7 section builders\n- Tests run without plotly installed (skip with pytest.importorskip)\n- All pass\n\n## Parent\nFollows from #1585'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1620
+  title: Clone and pip-install BEMRosetta, pyHAMS, OCEANLYZ, wavespectra — critical marine OSS tools
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1620
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'Identified in: docs/reports/orcawave-orcaflex-research-gaps.md (#1575)
+
+    ## Problem
+
+    Of 41 marine/hydro OSS tools in the catalog, only 7 are cloned (17%) and 0 are pip-installed. Four critical tools for the OrcaWave/OrcaFlex pipeline are missing:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1613
+  title: Cross-reference resource registry with standards transfer ledger
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1613
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - machine:dev-primary
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Cross-reference online resource registry with standards transfer ledger\n\n**Parent:** #1563 (Data & Resource Intelligence)\n**Depends on:** #1576 (closed), #1577 (closed)\n\n### Context\nTwo data assets now exist side by side but are not formally linked:\n-  — 247 online resources\n-  — 425 standards (235 gaps)\n\nMany standard portals in the registry correspond to standards in the ledger (e.g., DNV rules, API standards).\nThe domain view pages show them in parallel but don''t cross-reference.\n\n### Scope\n1. Build  that:\n   - For each standard with status=gap, search registry for matching portals\n   - Generate a mapping: standard_id → [registry_entry_ids] showing where to find each standard\n   - Identify standards with NO matching registry entry (truly unreachable)\n   - Identify registry entries that don''t match any standard (pure research resources)\n\n2. Output: \n3. Update domain view pages to show cross-reference links\n4. TDD\n\n### Acceptance Criteria\n-
+    [ ] Cross-reference YAML mapping standards ↔ registry entries\n- [ ] At least 50 standards linked to registry portals\n- [ ] Domain views updated with cross-reference section\n'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1611
+  title: Fill domain gaps in resource registry — orcawave, fatigue, subsea, geotechnical
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1611
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - machine:dev-primary
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Fill domain gaps in online resource registry — orcawave, fatigue, subsea, geotechnical\n\n**Parent:** #1563 (Data & Resource Intelligence)\n**Depends on:** #1576 (closed), #1577 (closed)\n\n### Context\nDomain resource views revealed several domains with thin coverage:\n- **orcawave**: 0 resources (skipped in view generation)\n- **fatigue**: 0 direct entries (17 fatigue standards exist under structural)\n- **subsea**: 1 resource only\n- **geotechnical**: 0 resources\n- **electrical**: 0 resources (issue #57 already tracks this)\n\n### Scope\n1. Research and add at least 10 resources per thin domain:\n   - **orcawave**: Orcina OrcaWave docs, validation papers, BEM theory refs\n   - **fatigue**: S-N curve databases, crack growth tools (NASGRO, AFGROW), DNV-RP-C203 portal, BS 7608\n   - **subsea**: subsea engineering tools, ROV/AUV resources, flexible pipe refs\n   - **geotechnical**: pile design tools (OPILE, PLAXIS), DNV-RP-C212, ISO 19901-4\n\n2. Re-run `scripts/data/build-online-resource-registry.py`
+    to rebuild registry\n3. Re-run `scripts/data/generate-domain-resource-views.py` to update domain pages\n4. New domain pages should appear for orcawave, fatigue (if separated from structural)\n\n### Acceptance Criteria\n- [ ] At least 30 new entries across thin domains\n- [ ] Domain views generated for previously-skipped domains\n- [ ] No domain has fewer than 3 resources\n'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1609
+  title: Automated resource download pipeline — execute top-priority downloads from registry
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1609
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - machine:dev-primary
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Automated resource download pipeline — execute top-priority downloads\n\n**Parent:** #1563 (Data & Resource Intelligence)\n**Depends on:** #1576 (closed), #1580 (closed)\n\n### Context\nThe unified online-resource-registry.yaml now has 247 entries, 230 with download_status=not_started.\nThe registry includes local_backup_path targets and relevance_scores for prioritization.\n\n### Scope\n1. Build `scripts/data/download-registry-resources.py` that:\n   - Reads `data/document-index/online-resource-registry.yaml`\n   - For each entry with download_status=not_started, ordered by relevance_score desc:\n     - GitHub repos: `git clone --depth 1` to local_backup_path\n     - PDFs: `wget`/`curl` to local_backup_path\n     - Standard portals: skip (require manual/browser interaction)\n     - Data APIs: basic metadata fetch\n   - Updates download_status in registry after each download\n   - Respects rate limits, retries on failure\n   - Writes download log to `data/document-index/download-log.yaml`\n\n2.
+    Priority targets (all relevance_score=5):\n   - The Well (Polymathic AI) — GitHub repo + paper\n   - DNV Standards Explorer (reference, skip download)\n   - API Standards (reference, skip download)\n   - BSEE/EIA/SODIR data APIs\n   - Copernicus CDS API\n   - NDBC ocean observations\n\n3. TDD — tests first\n\n### Acceptance Criteria\n- [ ] Download script with --dry-run mode\n- [ ] At least 20 resources downloaded in first batch\n- [ ] Registry updated with download_status=downloaded for completed items\n- [ ] Download log with timestamps and error tracking\n'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1607
+  title: Capytaine BEM end-to-end integration with parametric hull sweep pipeline
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1607
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-secondary
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'Identified in docs/assessments/hull-library-audit.md (§5.2) and docs/roadmaps/orcawave-orcaflex-capability-roadmap.md (Gap §4.1).
+
+    ## Problem
+
+    Capytaine is installed on dev-secondary (#1440) and `sweep.py` imports from it, but no end-to-end test has been run through the full pipeline: HullParametricSpace -> mesh generation -> GDF export -> Capytaine BEM solve -> RAO computation -> RAODatabase storage. The integration is untested in production.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1602
+  title: Promote DEVELOPMENT packages toward PRODUCTION maturity — docstring + test uplift
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1602
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The module status matrix (#1570, now closed) identified **13 DEVELOPMENT-tier packages** in digitalmodel. These have some tests but don''t meet PRODUCTION criteria (>5 test files AND >3 source files AND >50% docstrings).
+
+    ### Packages to uplift (sorted by file count, highest ROI first)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1601
+  title: 'Add tests for parametric_hull_analysis: forward_speed, shallow_water, passing_ship, charts'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1601
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Identified in docs/assessments/hull-library-audit.md (gap: Missing tests for parametric_hull_analysis). Four implemented modules have zero test coverage:
+
+    | Module | Lines | Functions | Standard |'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1600
+  title: Cross-tool structural comparison framework — 2D solver vs OrcaFlex vs CalculiX
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1600
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-primary
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Identified in docs/roadmaps/orcawave-orcaflex-capability-roadmap.md (Gap §4.1) and docs/plans/2026-04-01-orcawave-orcaflex-intensive-plan.md (Wave 3 Task 3.4).\n\n## Problem\nThe parachute frame analysis exists in three solver contexts: 2D direct stiffness (frame_solver.py, working), OrcaFlex (planned #1264), and CalculiX FEM (potential). There''s no framework to compare results across solvers for validation.\n\n## Deliverables\n1. \n2. \n   -  class: add_result(), compare_reactions(), compare_deflections(), compare_member_forces(), compare_dynamic_amplification(), generate_report()\n3. \n\n## Context\n- 2D frame solver exists:  (working, tested)\n- 3D frame geometry exists: \n- OrcaFlex frame builder planned (#1264 static, #1292 dynamic)\n- Needed to validate that OrcaFlex frame results match 2D solver within tolerance\n\n## Dependencies\nDepends on: #1264 (OrcaFlex frame analysis)\nRelated: #1292 (dynamic snap load), #1242 (parent parachute issue)\nParent: #1567'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1594
+  title: Design Load Case (DLC) matrix generator for OrcaFlex mooring/riser analysis
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1594
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Identified in docs/roadmaps/orcawave-orcaflex-capability-roadmap.md (cross-domain gap #3). Individual OrcaFlex analyses work, but no systematic Design Load Case (DLC) matrix generation exists for standard compliance (DNV-OS-E301 mooring, API RP 2SK, etc.).
+
+    ## Deliverables'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1593
+  title: Automated WAMIT validation runner for L00 test cases
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1593
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Identified in docs/roadmaps/orcawave-orcaflex-capability-roadmap.md (OrcaWave gap #4). Ten L00 spec.yml validation cases exist (2.1–3.3) comparing OrcaWave against WAMIT reference data, but no automated runner compares results.
+
+    ## Deliverables'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1591
+  title: Seed hull registry with standard hull forms (barge, tanker, semi-sub, spar, FPSO)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1591
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Identified in docs/assessments/hull-library-audit.md (gap #5). The hull_library infrastructure is fully implemented (25 modules, 8,100 LOC, 34 tests) but only 1 real hull form exists (SkandiNeptune — an OrcaFlex vessel type, not a hull line definition).
+
+    ## Deliverables'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1587
+  title: 'Promote near-PRODUCTION packages: add docstrings to asset_integrity, structural, data_systems'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1587
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The module status matrix (#1570) identified several large DEVELOPMENT packages that are close to PRODUCTION status. They have sufficient tests and source files but lack module-level docstrings in >50% of files.
+
+    ### Packages Ready for Promotion'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1586
+  title: 'Harden solver queue: batch submission, result watcher, auto post-processing'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1586
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - machine:licensed-win-1
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+    Identified in docs/roadmaps/orcawave-orcaflex-capability-roadmap.md (gap analysis) and docs/plans/2026-04-01-orcawave-orcaflex-intensive-plan.md (Wave 1).
+
+    Current state: 1 successful OrcaWave run (test01.owd, 7.8s), 1 failed run (bad path). No batch submission, no result watching, no auto post-processing.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1579
+  title: Audit /mnt/ace for undiscovered resources not in any index
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1579
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - machine:dev-primary
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Child of holistic doc-intel feature. Scan /mnt/ace/ for resources not tracked in any registry: (1) 8 cloned GitHub repos (WEC-Sim, openfast, gmsh, capytaine, HAMS, MoorDyn, MoorPy, opm-common) — are they in the OSS catalog? (2) 30 conference paper collections in docs/conferences/ — are they indexed? (3) 38 GB O&G-Standards/ — cross-check against standards-transfer-ledger.yaml. (4) docs/engineering-refs/ subdirs. Script: scripts/data/ace-resource-audit.py. Output: docs/reports/ace-undiscovered-resources.md. TDD. Use uv run.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1572
+  title: Domain-specific capability roadmaps — OrcaWave/OrcaFlex, structural, hydrodynamics, pipeline
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1572
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-primary
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'Child of #1567. Create 4 domain roadmap docs mapping: implemented modules → test status → open GH issues → gaps. (1) docs/roadmaps/orcawave-orcaflex-capability-roadmap.md, (2) structural-capability-roadmap.md, (3) hydrodynamics-capability-roadmap.md, (4) pipeline-capability-roadmap.md. Cross-ref with GH issues. Related: docs/plans/2026-04-01-orcawave-orcaflex-intensive-plan.md'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1567
+  title: 'Feature: Continuous Repo Architecture Intelligence — automated discovery, staleness detection, and domain capability roadmap'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1567
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Feature: Continuous Repo Architecture Intelligence
+
+    ### Problem
+
+    The workspace-hub ecosystem has extensive architecture documentation (25 repos mapped, 110 domain directories, 1,594 source files, 830 test files across digitalmodel alone). However:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1509
+  title: 'Verify Claude Desktop install: licensed-win-1'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1509
+  gh_state: open
+  gh_labels:
+  - machine:licensed-win-1
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Parent: #1504
+
+    ## Machine: licensed-win-1 (Windows, OrcaFlex license machine)
+
+    ### Install Method'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1478
+  title: FFmpeg skill for simulation output and media processing
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1478
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    From Chase AI video review (March 2026): FFmpeg provides multimedia processing from terminal — video, audio, subtitles, animations.
+
+    **Timeline: ~2 months out (May 2026)**'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1465
+  title: '[Template] Prospect - [Company Name] - [Contact Name]'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1465
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  - pipeline:contacted
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Prospect Details
+
+    **Company:** [Company name]
+
+    **Contact:** [Contact name and title]'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1464
+  title: Capytaine BEM available for hull mesh wave load analysis
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1464
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-secondary
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Capytaine 2.3.1 BEM solver is now installed on dev-secondary. Once backlog 999.1 (Ship Plan CAD Pipeline) produces reconstructed hull meshes, Capytaine can compute wave loads on them.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1460
+  title: Integrate WEIS floating wind co-design framework
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1460
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-secondary
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Multi-fidelity co-design for floating wind. Apache-2.0.
+
+    **Library**: [WEIS](https://github.com/WISDEM/WEIS)
+
+    **Why priority**: Couples OpenFAST + WISDEM + ROSCO for controls co-design optimization. DOE WETO Software Stack.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1453
+  title: Integrate ANYstructure DNV steel design tool
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1453
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-secondary
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'DNV standards-based plate/cylinder design. MIT, Python.
+
+    **Library**: [ANYstructure](https://github.com/audunarn/ANYstructure)
+
+    **Why priority**: Buckling, fatigue, plate design checks per DNV-OS/RP standards. Directly relevant to offshore steel structures.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1445
+  title: Integrate WISDEM wind plant system design
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1445
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-secondary
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'Integrated wind plant cost-of-energy model. Python, Apache-2.0, 172 stars.
+
+    **Library**: [WISDEM](https://github.com/WISDEM/WISDEM)
+
+    **Why priority**: Full wind plant design optimization — rotor, drivetrain, tower, financials. OpenMDAO-based. NREL-maintained.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1444
+  title: Integrate RAFT floating wind turbine dynamics
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1444
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-secondary
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'Frequency-domain dynamics for floating turbines. Pure Python, Apache-2.0.
+
+    **Library**: [RAFT](https://github.com/WISDEM/RAFT)
+
+    **Why priority**: Couples pyHAMS (hydro) + MoorPy (mooring) + CCBlade (aero). Level 1 model in WEIS. Integrates tools already cloned at ACE.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1443
+  title: Integrate FLORIS wind farm wake modelling
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1443
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-secondary
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'NREL controls-focused wind farm simulation. Pure Python, Apache-2.0, 260 stars.
+
+    **Library**: [FLORIS](https://github.com/NREL/floris)
+
+    **Why priority**: Steady-state wake models for power prediction and layout/yaw optimization. Vectorized for rapid design iteration.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1442
+  title: Integrate FEniCSx PDE solver into ACE ecosystem
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1442
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-secondary
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'First-class Python FEM solver for custom PDE problems. pip-installable, LGPL-3.0, 1088 stars.
+
+    **Library**: [FEniCSx/DOLFINx](https://github.com/FEniCS/dolfinx)
+
+    **Why priority**: Core PDE solving capability with automatic code generation from variational forms. Enables bespoke structural/thermal analyses.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1441
+  title: Integrate OpenDrift ocean trajectory modelling into ACE ecosystem
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1441
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-secondary
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'Pure Python oil spill tracking and marine drift modelling. pip-installable, GPL-2.0.
+
+    **Library**: [OpenDrift](https://github.com/OpenDrift/opendrift) (300 stars)
+
+    **Why priority**: Direct O&G relevance — oil spill, SAR drift, environmental compliance. Pure Python, pip-installable.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1440
+  title: Install Capytaine BEM solver into ACE ecosystem
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1440
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - machine:dev-secondary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Install and configure Capytaine — open-source Python BEM solver for wave-body interaction — as the first OSS integration from the engineering software catalog (#1397).
+
+    ## Rationale'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1400
+  title: 'WRK-1400: Spot-check va-hdd-2 classification accuracy for engineering domains'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1400
+  gh_state: open
+  gh_labels:
+  - machine:dev-secondary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+- idempotency_key: gh:vamseeachanta/workspace-hub#1399
+  title: 'WRK-1399: Phase B batch summaries for va-hdd-2 engineering files (15,990 gap docs)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1399
+  gh_state: open
+  gh_labels:
+  - machine:dev-secondary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+- idempotency_key: gh:vamseeachanta/workspace-hub#1360
+  title: 'WRK: extract algorithms and methods from riser-eng-job archives'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1360
+  gh_state: open
+  gh_labels:
+  - machine:dev-secondary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '94 GB of riser engineering jobs now in digitalmodel/docs/domain/subsea-risers/riser-eng-job/. Contains analysis scripts (.py, .m, .vbs), FEA models, calc spreadsheets. Identify reusable algorithms for digitalmodel source (riser analysis, mooring, SLOR design). Parent: WRK-1355'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1326
+  title: 'WRK-5138: Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1326
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - machine:dev-primary
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-5138: Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON
+
+    **Status:** Stage 1: Capture (in_progress) | **Priority:** medium | **Category:** engineering | **Subcategory:** infrastructure
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1322
+  title: 'WRK-1392: 3D interactive frame viewer (HTML/three.js)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1322
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - machine:dev-primary
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1392: 3D interactive frame viewer (HTML/three.js)
+
+    **Status:** All stages done | **Priority:** medium | **Category:** engineering-calculations | **Subcategory:** visualization
+
+    **Repo:** [''workspace-hub'', ''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1320
+  title: 'WRK-1378: Regulatory compliance engine — IMO/ABS/DNV automated checks'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1320
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: Auto-created by backfill-github-refs.sh
+- idempotency_key: gh:vamseeachanta/workspace-hub#1310
+  title: 'WRK-5121: FEM visualization skill — automate ccx results to PNG pipeline'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1310
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-5121: FEM visualization skill — automate ccx results to PNG pipeline
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering-calculations
+
+    **Repo:** - workspace-hub | **Complexity:** medium | **Machine:** unset'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1308
+  title: 'WRK-5115: Custom GitHub CLI bash tools for session-cycle efficiency'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1308
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - enhancement
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-5115: Custom GitHub CLI bash tools for session-cycle efficiency
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** tooling
+
+    **Repo:** - workspace-hub | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1300
+  title: 'WRK-1392: 3D interactive frame viewer (HTML/three.js)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1300
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1392: 3D interactive frame viewer (HTML/three.js)
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering-calculations | **Subcategory:** visualization
+
+    **Repo:** [workspace-hub, digitalmodel] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1292
+  title: 'WRK-1342: OrcaFlex parachute deployment template — time-domain snap load analysis'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1292
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - machine:licensed-win-1
+  - priority:low
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1342: OrcaFlex parachute deployment template — time-domain snap load analysis
+
+    **Status:** pending | **Priority:** low | **Category:** engineering-calculations | **Subcategory:** dynamics
+
+    **Repo:** [digitalmodel] | **Complexity:** medium | **Machine:** licensed-win-1'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1282
+  title: 'WRK-5124: INP writer: validate beam element/section compatibility and auto-reorder B32 connectivity'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1282
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-5124: INP writer: validate beam element/section compatibility and auto-reorder B32 connectivity
+
+    **Status:** Stage 1: Capture (in_progress) | **Priority:** medium | **Category:** engineering-calculations | **Subcategory:** calculix-solver
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1279
+  title: 'WRK-5123: CalculiX plate-with-hole test fix — 2 pre-existing failures'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1279
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-5123: CalculiX plate-with-hole test fix — 2 pre-existing failures
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering-calculations
+
+    **Repo:** digitalmodel'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1278
+  title: 'WRK-5122: Calc report generator — auto-embed images as base64'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1278
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-5122: Calc report generator — auto-embed images as base64
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering-calculations
+
+    **Repo:** workspace-hub'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1276
+  title: 'WRK-5120: Calc report generator — chart JS validation tests'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1276
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-5120: Calc report generator — chart JS validation tests
+
+    **Status:** pending | **Priority:** high | **Category:** engineering-calculations
+
+    **Repo:** workspace-hub'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1275
+  title: 'WRK-5119: CalculiX beam cross-section tests — CIRC and PIPE sections'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1275
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-5119: CalculiX beam cross-section tests — CIRC and PIPE sections
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering-calculations
+
+    **Repo:** digitalmodel | **Parent:** WRK-5082'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1274
+  title: 'WRK-5118: CalculiX B32 quadratic beam integration test with ccx'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1274
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-5118: CalculiX B32 quadratic beam integration test with ccx
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering-calculations
+
+    **Repo:** digitalmodel | **Parent:** WRK-5082'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1267
+  title: 'WRK-1368: Pipeline and engineering report'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1267
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1368: Pipeline and engineering report
+
+    **Status:** pending | **Priority:** high | **Category:** engineering-calculations | **Subcategory:** structural-dynamics
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1266
+  title: 'WRK-1367: Member and connection checks'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1266
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1367: Member and connection checks
+
+    **Status:** pending | **Priority:** high | **Category:** engineering-calculations | **Subcategory:** structural-dynamics
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1265
+  title: 'WRK-1366: 2D vs 3D comparison'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1265
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1366: 2D vs 3D comparison
+
+    **Status:** pending | **Priority:** high | **Category:** engineering-calculations | **Subcategory:** structural-dynamics
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1264
+  title: 'WRK-1365: OrcaFlex frame analysis'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1264
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:engineering-calculations
+  - enhancement
+  - machine:licensed-win-1
+  - priority:high
+  - status:plan-approved
+  - status:working
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1365: OrcaFlex frame analysis
+
+    **Status:** pending | **Priority:** high | **Category:** engineering-calculations | **Subcategory:** structural-dynamics
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1262
+  title: 'WRK-1363: 2D frame analysis'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1262
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1363: 2D frame analysis
+
+    **Status:** pending | **Priority:** high | **Category:** engineering-calculations | **Subcategory:** structural-dynamics
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1260
+  title: 'WRK-1361: 2D engineering drawing'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1260
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - enhancement
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1361: 2D engineering drawing
+
+    **Status:** pending | **Priority:** high | **Category:** engineering-calculations | **Subcategory:** structural-dynamics
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1242
+  title: 'WRK-5082: Parachute frame force calculation — drag car parachute deployment'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1242
+  gh_state: open
+  gh_labels:
+  - cat:engineering-calculations
+  - discrepancy
+  - discrepancy:dims
+  - discrepancy:load
+  - domain:structural-dynamics
+  - enhancement
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-5082: Parachute frame force calculation — drag car parachute deployment
+
+    **Status:** Stage 8: Claim (in_progress) | **Priority:** medium | **Category:** engineering-calculations | **Subcategory:** structural-dynamics
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#604
+  title: 'WRK-560: docs(digitalmodel): add calc_examples mapping — pipeline domain'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/604
+  gh_state: open
+  gh_labels:
+  - archived
+  - domain:calculation-examples
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-560: docs(digitalmodel): add calc_examples mapping — pipeline domain
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** calculation-examples
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#601
+  title: 'WRK-460: feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of...'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/601
+  gh_state: open
+  gh_labels:
+  - archived
+  - domain:standards
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-460: feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of...
+
+    | Field | Value |
+
+    |-------|-------|'
+- idempotency_key: gh:vamseeachanta/workspace-hub#569
+  title: 'WRK-444: feat(assetutilities/calculations): implement Vandiver, J.K., et al, 1987 - Hydrody... — Vandiver, J.K., et al, 1987   Hydrodynamic Damp...'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/569
+  gh_state: open
+  gh_labels:
+  - archived
+  - domain:hydrodynamics
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-444: feat(assetutilities/calculations): implement Vandiver, J.K., et al, 1987 - Hydrody... — Vandiver, J.K., et al, 1987   Hydrodynamic Damp...
+
+    | Field | Value |
+
+    |-------|-------|'
+- idempotency_key: gh:vamseeachanta/workspace-hub#192
+  title: 'WRK-634: feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/192
+  gh_state: open
+  gh_labels:
+  - domain:structural
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-634: feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** structural
+
+    **Repo:** [''workspace-hub'', ''frontierdeepwater'', ''TBD-client2-repo''] | **Complexity:** simple | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#91
+  title: 'WRK-1287: Document extraction pipeline — index repo ecosystem files and extract key info via doc/excel skills'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/91
+  gh_state: open
+  gh_labels:
+  - domain:document-index
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1287: Document extraction pipeline — index repo ecosystem files and extract key info via doc/excel skills
+
+    **Status:** pending | **Priority:** medium | **Category:** document-intelligence | **Subcategory:** document-index
+
+    **Repo:** [''workspace-hub''] | **Complexity:** complex | **Machine:** unset'
+- idempotency_key: gh:vamseeachanta/workspace-hub#33
+  title: 'WRK-1027: DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/33
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:cathodic-protection
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1027: DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** cathodic-protection
+
+    **Repo:** [''digitalmodel''] | **Complexity:** simple | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#29
+  title: 'WRK-099: Run 3-way benchmark on Unit Box hull'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/29
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-099: Run 3-way benchmark on Unit Box hull
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#28
+  title: 'WRK-075: OFFPIPE Integration Module \u2014 pipelay cross-validation against OrcaFlex'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/28
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-075: OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** licensed-win-1'
+- idempotency_key: gh:vamseeachanta/workspace-hub#27
+  title: 'WRK-050: Hardware consolidation \u2014 inventory, assess, repurpose devices + dev environment\'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/27
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:ai-tools
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-050: Hardware consolidation — inventory, assess, repurpose devices + dev environment readiness
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** platform | **Subcategory:** ai-tools
+
+    **Repo:** [''workspace-hub''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#24
+  title: 'WRK-046: OrcaFlex drilling and completion riser parametric analysis'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/24
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-046: OrcaFlex drilling and completion riser parametric analysis
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** licensed-win-1'
+- idempotency_key: gh:vamseeachanta/workspace-hub#23
+  title: 'WRK-045: OrcaFlex rigid jumper analysis - stress and VIV for various configurations'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/23
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:pipeline
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-045: OrcaFlex rigid jumper analysis - stress and VIV for various configurations
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** licensed-win-1'
+- idempotency_key: gh:vamseeachanta/workspace-hub#22
+  title: 'WRK-043: Parametric hull form analysis with RAO generation and client-facing lookup'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/22
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-043: Parametric hull form analysis with RAO generation and client-facing lookup graphs
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#21
+  title: 'WRK-039: SPM project benchmarking - AQWA vs OrcaFlex'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/21
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:marine
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-039: SPM project benchmarking - AQWA vs OrcaFlex
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** licensed-win-1'
+- idempotency_key: gh:vamseeachanta/workspace-hub#20
+  title: 'WRK-036: OrcaFlex structure deployment analysis - supply boat side deployment with structural'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/20
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:structural
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-036: OrcaFlex structure deployment analysis - supply boat side deployment with structural loads
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** structural
+
+    **Repo:** [''acma-projects''] | **Complexity:** complex | **Machine:** licensed-win-1'
+- idempotency_key: gh:vamseeachanta/workspace-hub#19
+  title: 'WRK-032: Modular OrcaFlex pipeline installation input with parametric campaign support'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/19
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:pipeline
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-032: Modular OrcaFlex pipeline installation input with parametric campaign support
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+    **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** licensed-win-1'
+- idempotency_key: gh:vamseeachanta/workspace-hub#18
+  title: 'WRK-023: Property GIS development timeline with future projection and Google Earth animation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/18
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:pipeline
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-023: Property GIS development timeline with future projection and Google Earth animation
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** pipeline
+
+    **Repo:** [''assethold''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#14
+  title: 'WRK-1251: FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/14
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:pipeline
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1251: FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies
+
+    **Status:** All stages done | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+    **Repo:** [''digitalmodel'', ''workspace-hub''] | **Complexity:** complex | **Machine:** dev-secondary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#13
+  title: 'WRK-1149: Method assessment and selection — propeller-rudder interaction models'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/13
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - domain:hydrodynamics
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1149: Method assessment and selection — propeller-rudder interaction models
+
+    **Status:** done | **Priority:** medium | **Category:** engineering | **Subcategory:** hydrodynamics
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'

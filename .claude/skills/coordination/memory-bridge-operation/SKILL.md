@@ -82,7 +82,19 @@ This ticks once and exits — no persistent gateway needed.
 
 1. write_file/patch to ~/.hermes/ paths may hit overlay issues — use terminal to cp/mv
 2. Bridge git pull --rebase fails with dirty submodules — script handles via stash/restore, but heavyequipemnt-rag may still cause issues
-3. Gateway crashes — check `journalctl -u hermes-gateway --no-pager -n 30` and `~/.hermes/logs/gateway.log`
-4. Existing compact-memory.py and curate-memory.py have bugs (wrong default paths) — use manual compaction instead
-5. Cron output file may not exist after gateway restart
-6. `hermes cron tick` works as manual fallback when gateway won't stay alive
+3. `pre-bridge-quality.sh --fix` calls `bridge-hermes-claude.sh --commit` internally, and both can fail in dirty worktrees because the bridge runs `git add .claude/memory/` and then `git stash push`, which stashes the staged memory changes before `git commit`, yielding “nothing added to commit.” Recovery: restore only memory files from the generated `pre-bridge-stash`, commit/push only `.claude/memory/`, leave unrelated untracked files untouched, then verify both drift and remote HEAD:
+   ```bash
+   git stash show --name-status stash@{0} | sed -n '1,160p'
+   git checkout stash@{0} -- .claude/memory
+   git add .claude/memory
+   git commit -m "Sync Hermes memory bridge"
+   git push
+   bash scripts/memory/check-memory-drift.sh
+   git rev-parse --short HEAD && git rev-parse --short origin/main
+   ```
+   If the stash contains non-memory paths, do not restore them during the bridge recovery unless they are explicitly part of the memory deliverable; keep the stash as backup.
+4. Memory topic snapshots can contain literal merge-conflict markers for forensic lessons; pre-commit blocks those unless each marker line carries `CONFLICT_MARKER_FORENSIC_OK` or the upstream auto-memory source is cleaned/exempted before bridging.
+5. Gateway crashes — check `journalctl -u hermes-gateway --no-pager -n 30` and `~/.hermes/logs/gateway.log`
+6. Existing compact-memory.py and curate-memory.py have bugs (wrong default paths) — use manual compaction instead
+7. Cron output file may not exist after gateway restart
+8. `hermes cron tick` works as manual fallback when gateway won't stay alive

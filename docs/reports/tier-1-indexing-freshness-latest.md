@@ -2,7 +2,7 @@
 
 Action required: 4 tier-1 repo(s) have missing required surfaces or legacy references. See per-repo findings below.
 
-Generated: 2026-05-20T11:30:01Z
+Generated: 2026-05-22T11:30:02Z
 Scope: workspace-hub, digitalmodel, assetutilities, aceengineer-website
 Source baseline: `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`
 

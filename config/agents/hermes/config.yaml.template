@@ -33,13 +33,12 @@ file_read_max_chars: 100000
 compression:
   enabled: true
 # Skills: wire workspace-hub ecosystem skills into Hermes as read-only external dirs.
-# __WS_HUB_PATH__ is resolved per-machine by sync-agent-configs.sh using harness-config.yaml.
-# Includes workspace-hub root + nested repos with their own skill libraries.
+# Machine roots are resolved from config/workstations/registry.yaml by sync-agent-configs.sh.
+# __WS_HUB_PATH__ is the canonical workspace-hub checkout.
+# __TIER1_REPO_ROOT__ is the sibling root containing tier-1 checkouts.
+# The sync resolver filters sibling roots to registry-listed repos that exist and contain SKILL.md.
 skills:
   external_dirs:
     - __WS_HUB_PATH__/.claude/skills
-    - __WS_HUB_PATH__/CAD-DEVELOPMENTS/.claude/skills
-    - __WS_HUB_PATH__/worldenergydata/.claude/skills
-    - __WS_HUB_PATH__/achantas-data/.claude/skills
-    - __WS_HUB_PATH__/assetutilities/.claude/skills
-    - __WS_HUB_PATH__/digitalmodel/.claude/skills
+    # Registry-derived sibling repo skill dirs are inserted by sync-agent-configs.sh.
+    __REGISTRY_REPO_SKILL_DIRS__

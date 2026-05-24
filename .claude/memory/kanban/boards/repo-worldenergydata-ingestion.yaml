@@ -1,0 +1,431 @@
+board:
+  slug: repo-worldenergydata-ingestion
+  display_name: worldenergydata · ingestion
+  tier: domain
+  repo: vamseeachanta/worldenergydata
+  domain: ingestion
+  parent_slug: repo-worldenergydata
+  workspace_path: /mnt/local-analysis/worldenergydata
+  description: 'Data ingestion lanes — BSEE/NOAA/Kaggle source registries, vessel-fleet
+    curation, dedup pipelines, binary tier decompression, FDAS forward-lay migrations.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/worldenergydata#420
+  title: 'policy(legal): operator-aggregation deny-list for public-repo HSE analysis
+    (#416 supporting)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/420
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:data
+  - cat:operations
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+
+    Supports the [#416](https://github.com/vamseeachanta/worldenergydata/issues/416)
+    Operator Aggregation Contract. Currently the contract references "deny-list union
+    (workspace-hub .legal-deny-list.yaml ∪ common GoM operator names)" but the "common
+    GoM operator names" half doesn''t exist as a committed list.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#418
+  title: 'feat(code): intervention HSE — Phase 2 reusable module extraction (worldenergydata.bsee.analysis.intervention_hse)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/418
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+
+    Child of [#416](https://github.com/vamseeachanta/worldenergydata/issues/416).
+    Phase 1 (1A + 1B) produces ad-hoc analysis scripts and memos. Phase 2 extracts
+    the reusable queries into a committed module so future intervention-HSE questions
+    are answerable in minutes, not hours.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#407
+  title: 'research+plan(vessel_fleet): dry-run findings + Noble/Seadrill vendor→curated
+    merge readiness assessment'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/407
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Goal
+
+
+    Dry-run assessment of the `data/modules/vessel_fleet/` vendor→curated merge pipeline,
+    conducted 2026-05-13/14 from the llm-wiki drilling-engineering corpus build-out
+    side ([llm-wiki#49](https://github.com/vamseeachanta/llm-wiki/issues/49) Phase
+    1 + [#55](https://github.com/vamseeachanta/llm-wiki/issues/55) Phase 2 + [#67](https://github.com/vamseeachanta/llm-wiki/issues/67)
+    Phase 3). Findings preserved here as a durable planning artifact; related to parent
+    [#127 WRK-1204](https://github.com/vamseeachanta/worldenergydata/issues/127) (rig
+    metadata ingest from state RRCs and industry sources).'
+- idempotency_key: gh:vamseeachanta/worldenergydata#392
+  title: 'feat(data): public well-log datasets for wellbore geology — Kaggle ROGII
+    companion ingest'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/392
+  gh_state: open
+  gh_labels:
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Goal
+
+
+    Ingest the public well-log / wellbore-geology datasets needed to support the [Kaggle
+    ROGII Wellbore Geology Prediction](https://www.kaggle.com/competitions/rogii-wellbore-geology-prediction)
+    competition (deadline 2026-08-05) into worldenergydata''s data-collection layer,
+    under a redistribution-clean license posture.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#387
+  title: 'WRK-688: eval(worldenergydata): evaluate pyWAsP for wind resource assessment
+    integration'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/387
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-688: eval(worldenergydata): evaluate pyWAsP for wind resource
+    assessment integration'
+- idempotency_key: gh:vamseeachanta/worldenergydata#367
+  title: 'refactor(bsee): migrate ProductionAPI12 NPV from legacy path to FDAS forward
+    layer (#357 follow-up)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/367
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Background
+
+
+    Issue #357 (closed 2026-04-29) restored the ProductionAPI12 NPV calculation contract
+    for backward compatibility, unblocking PR #356. The restoration was tactical —
+    it rewires `ProductionAPI12Analysis` to the legacy `NPVCalculator` class (~400
+    LOC at `bsee/analysis/legacy/api12_economics.py`) which carries pre-2019 Excel-benchmark
+    assumptions and hardcoded prices. This is not the long-term forward path.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#366
+  title: 'feat(data): HSE bulk deduplication + ingest pipeline (unlocks 6.8 GB at
+    /mnt/ace)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/366
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Goal
+
+
+    Validate, deduplicate, and ingest the 6.8 GB of HSE raw data at `/mnt/ace/worldenergydata/data/modules/hse/raw/`
+    so it becomes queryable through the HSE API surface.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#365
+  title: 'feat(data): BSEE binary tier decompression + ingest pipeline (unlocks 2.7
+    GB)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/365
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Goal
+
+
+    Build a decompression / ingest pipeline that turns the 2.7 GB BSEE binary tier
+    at `/mnt/ace/worldenergydata/data/modules/bsee/{bin,zip}/` into queryable data.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#278
+  title: Restore broken modules.* compatibility shims after bsee and marine_safety
+    consolidation
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/278
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Summary
+
+    The recent consolidation of `modules/bsee` and `modules/marine_safety` claims
+    backward-compatible re-exports, but the current package surface is broken.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#275
+  title: 'fix(scripts): make migrate_print_to_logging.py AST-aware to avoid mid-import
+    injection'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/275
+  gh_state: open
+  gh_labels:
+  - bug
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Problem
+
+
+    `scripts/migrate_print_to_logging.py` inserts `get_logger` at a fixed line offset
+    without checking whether that position is inside an unclosed `(` block. This broke
+    **19 files** in Phase 2B.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#269
+  title: Implement SODIR, Brazil ANP, and UKCS adapters
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/269
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+
+    Replace the remaining 3 stub adapters with working implementations.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#268
+  title: Implement metocean adapter — connect Open-Meteo API
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/268
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+
+    Replace the `metocean_refresh` stub with real API calls to Open-Meteo (or similar
+    free metocean data source).'
+- idempotency_key: gh:vamseeachanta/worldenergydata#153
+  title: 'WRK-069: Acquire USCG MISLE bulk dataset'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/153
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:data
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-069: Acquire USCG MISLE bulk dataset
+
+
+    **Status:** blocked | **Priority:** high | **Category:** data/uncategorised'
+- idempotency_key: gh:vamseeachanta/worldenergydata#151
+  title: 'WRK-584: feat(worldenergydata): index NSTA UK National Data Repository datasets'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/151
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  - cat:data
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-584: feat(worldenergydata): index NSTA UK National Data Repository
+    datasets'
+- idempotency_key: gh:vamseeachanta/worldenergydata#143
+  title: 'WRK-261: BSEE field economics case study — rebuild on calibrated cost data
+    (WRK-019 + WRK-171)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/143
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:data
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-261: BSEE field economics case study — rebuild on calibrated
+    cost data (WRK-019 + WRK-171)
+
+
+    **Status:** pending | **Priority:** medium | **Category:** data/production'
+- idempotency_key: gh:vamseeachanta/worldenergydata#136
+  title: 'WRK-1291: Expand standards transfer ledger domain coverage for 9 unmapped
+    domains'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/136
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:data
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1291: Expand standards transfer ledger domain coverage for
+    9 unmapped domains'
+- idempotency_key: gh:vamseeachanta/worldenergydata#129
+  title: 'WRK-1234: BOEM/BSEE data refresh CLI script'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/129
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1234: BOEM/BSEE data refresh CLI script'
+- idempotency_key: gh:vamseeachanta/worldenergydata#128
+  title: 'WRK-1231: Implement CompanyLoader for BOEM company/operator hierarchy'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/128
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:engineering
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-1231: Implement CompanyLoader for BOEM company/operator hierarchy'
+- idempotency_key: gh:vamseeachanta/worldenergydata#127
+  title: 'WRK-1204: Ingest rig metadata from state railroad commissions and industry
+    sources'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/127
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1204: Ingest rig metadata from state railroad commissions
+    and industry sources'
+- idempotency_key: gh:vamseeachanta/worldenergydata#126
+  title: 'WRK-1192: Ingest CMEMS ocean physics'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/126
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1192: Ingest CMEMS ocean physics'
+- idempotency_key: gh:vamseeachanta/worldenergydata#125
+  title: 'WRK-1191: Ingest ERA5 reanalysis metocean'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/125
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1191: Ingest ERA5 reanalysis metocean'
+- idempotency_key: gh:vamseeachanta/worldenergydata#124
+  title: 'WRK-1189: Ingest BOEM lease data'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/124
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:engineering
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-1189: Ingest BOEM lease data'
+- idempotency_key: gh:vamseeachanta/worldenergydata#29
+  title: BSEE | APM Data
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/29
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Objective: Assess the apm (Applications for Permit to Modify) data
+    and get the type of maintenance operation and actual duration of operation.
+
+
+    **SME''s feedback on preliminary data:**'
+- idempotency_key: gh:vamseeachanta/worldenergydata#13
+  title: 'engg debt | Structures Data '
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/13
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: Get pipeline data with OD, WT, design Pressure, operating pressure,
+    test pressure etc.

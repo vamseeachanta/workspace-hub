@@ -1,0 +1,83 @@
+board:
+  slug: repo-sabithaandkrishnaestates-admin-comms
+  display_name: sabithaandkrishnaestates | admin-comms
+  tier: domain
+  repo: vamseeachanta/sabithaandkrishnaestates
+  domain: admin-comms
+  parent_slug: repo-sabithaandkrishnaestates
+  workspace_path: /mnt/local-analysis/sabithaandkrishnaestates
+  description: 'Security (plaintext credentials), loan agreements, insurance renewals,
+    tenant-reimbursement tracking, repo housekeeping.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#33
+  title: Verify $340 FSR transfer fee not duplicated at 2025-09-22 closing
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/33
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    The 2026-04-28 ClickPay payment of \$1,145.66 to Clayton Park POA included a \$340
+    \"Transfer Fee FSR\" (`XFRF`) charge in addition to the \$802.66 annual assessment.
+    This transfer fee is FirstService Residential''s ownership-change administrative
+    fee.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#29
+  title: 'Security: remove plaintext credentials from admin/admin.md'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/29
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Issue
+
+    `admin/admin.md` contains plaintext passwords, PINs, and full account numbers
+    in a git-tracked file. This is a security risk even in a private repo.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#28
+  title: 'Update loan agreement: AceEngineer → Sabitha as lender'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/28
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Background
+
+    The loan agreement in `investments/cre/fd_15645_westpark/loans/ace_loan_agreement.md`
+    shows AceEngineer Inc. as lender. The actual arrangement is a direct loan from
+    Sabitha Deepthimahanti (sole shareholder) to SKEI.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#19
+  title: '2026 Annual: Renew Property Insurance (Crown ABOP-TX-1000851-00)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/19
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Renew property insurance for 15645 Westpark Drive before Sept 29, 2026.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#4
+  title: Send 2025 Tenant Reimbursement Request to Family Dollar ($39,330.50)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/4
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Invoice Family Dollar for the tenants pro-rata share of 2025 operating expenses:
+    property taxes, insurance, and HOA fees. The reimbursement letter is drafted and
+    ready to send.'

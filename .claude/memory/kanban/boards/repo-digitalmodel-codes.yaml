@@ -1,0 +1,533 @@
+board:
+  slug: repo-digitalmodel-codes
+  display_name: digitalmodel · codes
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: codes
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'Engineering codes and standards (API, DNV, ABS, OCIMF, IACS, ASCE, ASME) — code-checks, citations, methodology.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/digitalmodel#584
+  title: 'WRK-558: feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design,'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/584
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:data
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-558: feat(digitalmodel/marine): Implement API RP 2SM — API RP 2SM 1st Ed & Addendum (2001 & 2007) Design,
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** data | **Subcategory:** standards
+
+    **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#583
+  title: 'WRK-557: feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/583
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:data
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-557: feat(digitalmodel/marine): Implement API RP 572 — API RP 572 2nd Ed (2001) Inspection of Pressure Ve
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** data | **Subcategory:** standards
+
+    **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#582
+  title: 'WRK-556: feat(digitalmodel/marine): Implement API RP 2I — API RP 2I 3rd Ed (2008) In-service Inspection of M'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/582
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:data
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-556: feat(digitalmodel/marine): Implement API RP 2I — API RP 2I 3rd Ed (2008) In-service Inspection of M
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** data | **Subcategory:** standards
+
+    **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#581
+  title: 'WRK-539: feat(digitalmodel/structural): Implement API RP 2A — API RP 2A WSD'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/581
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:data
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-539: feat(digitalmodel/structural): Implement API RP 2A — API RP 2A WSD
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** data | **Subcategory:** standards
+
+    **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#579
+  title: 'WRK-494: feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/579
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:data
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-494: feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** data | **Subcategory:** standards
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#574
+  title: Wiki standards-page family for FOWT (IEC 61400-3-2, DNV-ST-0119, DNV-RP-0286, DNV-ST-0126, DNV-ST-0358, DNV-RP-0360, API RP 2SIM)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/574
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Background
+
+    Recon of [Mark Prentice LinkedIn post (2026-05-04)](https://www.linkedin.com/posts/mark-prentice-185722115_floatingoffshorewind-fowt-offshorewind-share-7455555454048452609-vusy) on FOW adopting deepwater
+    O&G knowledge. Mapping doc: [`docs/field-development/2026-05-04-fowt-oilgas-crossover-mapping.md`](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/field-development/2026-05-04-fowt-oilgas-crossover-mapping.md)
+    (commit `de69ddab5`).
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/digitalmodel#249
+  title: 'WRK-559: feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/249
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-559: feat(digitalmodel/marine): Implement API RP 2P — API RP 2P 2nd Ed (1987) Analysis of Spread Mooring
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#248
+  title: 'WRK-555: feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/248
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-555: feat(digitalmodel/marine): Implement DNV E301 — DNV OS E301 (2010) Position Mooring
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#188
+  title: 'WRK-492: feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/188
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-492: feat(digitalmodel/cathodic_protection): Implement ISO 11846 — ISO 11846 1st Ed (1995) Corrosion of metals and al
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** uncategorised
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#187
+  title: 'WRK-490: feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/187
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-490: feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 Corrigendum 1 (1999) Corrosion of metals
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** uncategorised
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#186
+  title: 'WRK-489: feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/186
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-489: feat(digitalmodel/cathodic_protection): Implement ISO 11881 — ISO 11881 1st Ed (1999) Corrosion of metals and al
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** uncategorised
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#185
+  title: 'WRK-488: feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/185
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-488: feat(digitalmodel/cathodic_protection): Implement ISO 15156 — ISO 15156 Pt 3 1st Ed (2003) Cracking-resistant CR
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** uncategorised
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#576
+  title: FOWT watch-circle envelope check vs dynamic-cable curvature (DNV-RP-0360)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/576
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Background
+
+    Recon of [Mark Prentice LinkedIn post (2026-05-04)](https://www.linkedin.com/posts/mark-prentice-185722115_floatingoffshorewind-fowt-offshorewind-share-7455555454048452609-vusy). Mapping doc: [`docs/field-development/2026-05-04-fowt-oilgas-crossover-mapping.md`](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/field-development/2026-05-04-fowt-oilgas-crossover-mapping.md)
+    (commit `de69ddab5`).
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/digitalmodel#575
+  title: FOWT coupled aero-hydro response Python facade (IEC 61400-3-2, DNV-RP-0286)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/575
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Background
+
+    Recon of [Mark Prentice LinkedIn post (2026-05-04)](https://www.linkedin.com/posts/mark-prentice-185722115_floatingoffshorewind-fowt-offshorewind-share-7455555454048452609-vusy). Mapping doc: [`docs/field-development/2026-05-04-fowt-oilgas-crossover-mapping.md`](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/field-development/2026-05-04-fowt-oilgas-crossover-mapping.md)
+    (commit `de69ddab5`).
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/digitalmodel#272
+  title: 'WRK-662: analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/272
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-662: analysis(digitalmodel): engineering standards citation audit — version + clause consistency via Gemini
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#162
+  title: 'WRK-1282: Drive-off research and analysis methodologies'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/162
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1282: Drive-off research and analysis methodologies
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** hydrodynamics
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#147
+  title: 'WRK-1193: Geotechnical anchor holding capacity'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/147
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1193: Geotechnical anchor holding capacity
+
+    **Status:** Stage 19: Close (in_progress) | **Priority:** medium | **Category:** engineering | **Subcategory:** geotechnical
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#142
+  title: 'WRK-1027: DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/142
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1027: DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering/cathodic-protection
+
+    **Complexity:** simple | **Machine:** ace-linux-1'
+- idempotency_key: gh:vamseeachanta/digitalmodel#618
+  title: Citation-resolver hardening follow-ons (symlink hygiene, log-path leak, license-aware tooling)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/618
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Parent**: [#617](https://github.com/vamseeachanta/digitalmodel/issues/617) (CLOSED 2026-05-20, MAJOR cross-review findings remediated in commit \`212dfd26\` 2026-05-21).
+
+    Follow-on findings from code-stage adversarial review of #617 that weren''t critical enough to block close-out but warrant a second pass. Review artifacts at \`workspace-hub:scripts/review/results/2026-05-21-code-617-*.md\`.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/digitalmodel#578
+  title: W2W motion-compensated gangway operability module (DNV-ST-0358)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/578
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Background
+
+    Recon of [Mark Prentice LinkedIn post (2026-05-04)](https://www.linkedin.com/posts/mark-prentice-185722115_floatingoffshorewind-fowt-offshorewind-share-7455555454048452609-vusy). Mapping doc: [`docs/field-development/2026-05-04-fowt-oilgas-crossover-mapping.md`](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/field-development/2026-05-04-fowt-oilgas-crossover-mapping.md)
+    (commit `de69ddab5`).
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/digitalmodel#573
+  title: 'fix(marine_ops): DNV-RP-F103 calibration drift in test_cathodic_protection_dnv.py — clears 16 of 77 marine_ops failures'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/573
+  gh_state: open
+  gh_labels:
+  - bug
+  - cat:engineering
+  - domain:naval-architecture
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R3. Wiki citation surface for DNV-RP-F103 has now landed on workspace-hub main via
+    [vamseeachanta/workspace-hub#2636](https://github.com/vamseeachanta/workspace-hub/pull/2636), unblocking this sub-issue per `.claude/rules/calc-citation-contract.md`.
+
+    ## Affected tests (16)'
+- idempotency_key: gh:vamseeachanta/digitalmodel#566
+  title: 'fix(marine_ops): batched residue clusters R1+R5+R7+R8 — clears ~10 of 77 marine_ops failures'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/566
+  gh_state: open
+  gh_labels:
+  - bug
+  - domain:naval-architecture
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) covering 4 small heterogeneous clusters per user direction to batch (vs. R6 which
+    was filed 1-issue-per-test for visibility). Sister sub-issues: R2 = [vamseeachanta/digitalmodel#554](https://github.com/vamseeachanta/digitalmodel/issues/554), R4 = [vamseeachanta/digitalmodel#555](https://github.com/vamseeachanta/digitalmodel/issues/555),
+    R6 = [#556](https://github.com/vamseeachanta/digitalmodel/issues/556)–[#565](https://github.com/vamseeachanta/digitalmodel/issues/565). R3 ([vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609)
+    cluster) is blocked separately on DNV-RP-B401 standards reconciliation.
+
+    All test paths verified at digitalmodel HEAD `08e9c333`. Total covered: **11 failures across 4 clusters**.
+
+    ---'
+- idempotency_key: gh:vamseeachanta/digitalmodel#565
+  title: 'fix(marine_ops): test_hydro_coefficients.py::TestIntegration::test_csv_to_visualization_workflow — needs investigation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/565
+  gh_state: open
+  gh_labels:
+  - bug
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R6 (heterogeneous OCIMF/RAO/integration). Individual-test issue per user
+    direction to maintain visibility ("9 individual issues to help keep gap").
+
+    ## Test nodeid
+
+    `tests/marine_ops/marine_engineering/test_hydro_coefficients.py::TestIntegration::test_csv_to_visualization_workflow`'
+- idempotency_key: gh:vamseeachanta/digitalmodel#563
+  title: 'fix(marine_ops): test_marine_eng_performance.py::test_ocimf_database_performance — needs investigation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/563
+  gh_state: open
+  gh_labels:
+  - bug
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R6 (heterogeneous OCIMF/RAO/integration). Individual-test issue per user
+    direction to maintain visibility ("9 individual issues to help keep gap").
+
+    ## Test nodeid
+
+    `tests/marine_ops/marine_engineering/integration/test_marine_eng_performance.py::TestPerformanceBenchmarks::test_ocimf_database_performance`'
+- idempotency_key: gh:vamseeachanta/digitalmodel#557
+  title: 'fix(marine_ops): test_ocimf.py::TestOCIMFDatabase::test_boundary_warnings — DID NOT WARN on out-of-range query'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/557
+  gh_state: open
+  gh_labels:
+  - bug
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R6 (heterogeneous OCIMF/RAO/integration). Individual-test issue per user
+    direction to maintain visibility ("9 individual issues to help keep gap").
+
+    ## Test nodeid
+
+    `tests/marine_ops/marine_engineering/environmental_loading/test_ocimf.py::TestOCIMFDatabase::test_boundary_warnings`'
+- idempotency_key: gh:vamseeachanta/digitalmodel#556
+  title: 'fix(marine_ops): test_ocimf.py::TestOCIMFDatabase::test_get_coefficients_interpolation — CYw=-3.56 not in [0,1.5]'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/556
+  gh_state: open
+  gh_labels:
+  - bug
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R6 (heterogeneous OCIMF/RAO/integration). Individual-test issue per user
+    direction to maintain visibility ("9 individual issues to help keep gap").
+
+    ## Test nodeid
+
+    `tests/marine_ops/marine_engineering/environmental_loading/test_ocimf.py::TestOCIMFDatabase::test_get_coefficients_interpolation`'
+- idempotency_key: gh:vamseeachanta/digitalmodel#266
+  title: 'WRK-623: feat(geotechnical): scour prediction per DNV-RP-F107'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/266
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  - cat:engineering
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-623: feat(geotechnical): scour prediction per DNV-RP-F107
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** pipeline
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** [''dev-primary'', ''dev-secondary'']'
+- idempotency_key: gh:vamseeachanta/digitalmodel#20
+  title: code_dnvrph103 | If CoV is same as CoG, leave it null
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/20
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-036: OrcaFlex structure deployment analysis - supply boat side deployment with structural loads
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** structural
+
+    **Repo:** [''acma-projects''] | **Complexity:** complex | **Machine:** licensed-win-1'
+- idempotency_key: gh:vamseeachanta/digitalmodel#17
+  title: code_dnvrph103 | discretized model at an angle
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/17
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: ''

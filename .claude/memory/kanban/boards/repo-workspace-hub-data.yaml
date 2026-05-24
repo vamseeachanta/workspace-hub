@@ -1,0 +1,1095 @@
+board:
+  slug: repo-workspace-hub-data
+  display_name: workspace-hub · data
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Data pipelines, research artifacts, knowledge ingestion, dark-intelligence Excel, datasets, llm-wiki content flow.
+
+    '
+  domain: data
+  parent_slug: repo-workspace-hub
+cards:
+- idempotency_key: gh:vamseeachanta/workspace-hub#2778
+  title: 'feat(architecture): lock data/knowledge/result search routing across llm-wiki + llm-wiki-<client> siblings'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2778
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:harness
+  - domain:knowledge
+  - domain:repo-organization
+  - enhancement
+  - priority:high
+  - status:needs-plan
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Formalize a workspace-hub-enforced **data / knowledge / result search routing** convention across sibling repos:
+
+    - **Generic, sanitized data, knowledge, and search results** flow through the sibling [`vamseeachanta/llm-wiki`](https://github.com/vamseeachanta/llm-wiki) repo (private since 2026-05-20).'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2744
+  title: 'epic(acma): client project data-cycle readiness and private llm-wiki launch'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2744
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:document-intelligence
+  - domain:knowledge
+  - domain:repo-organization
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Launch-readiness epic for using ACMA project data in near-term client work without continuing the current mixed-data pattern.
+
+    Current direction captured from user:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2732
+  title: 'feat(data-governance): canonical first/second-level mount and folder taxonomy for repo ecosystem'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2732
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - domain:knowledge
+  - domain:repo-organization
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Parent / context
+
+    Parent: #2731 — inventory and normalize canonical data/repo locations for llm-wiki promotion.
+
+    Related architecture umbrella: #2726.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2731
+  title: 'feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2731
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:document-intelligence
+  - domain:knowledge
+  - enhancement
+  - priority:high
+  - status:needs-plan
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Parent / context
+
+    Parent: #2727 — define data layer boundary and llm-wiki data promotion model.
+
+    Related broader layer issue: #2726.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2714
+  title: 'research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2714
+  gh_state: open
+  gh_labels:
+  - cat:knowledge-domain
+  - cat:research
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Goal
+
+    Produce a **data-grounded** analysis of (1) the trajectory of Gulf of Mexico ("Gulf of America" in 2025+ federal nomenclature) crude oil and natural gas production over the last 25 years, (2) the technical and economic role of the **Lower Tertiary / Wilcox / Paleogene** play within that trajectory, and (3) whether Lower Tertiary is in fact strategically important for US energy security — or not.
+
+    The conclusion must follow from the data. **The analysis is NOT to be written toward a predetermined conclusion** — neither pro nor con the FDAS / Frontier Deepwater thesis. If the EIA / BSEE / BOEM / USGS / IEA data supports the thesis, say so and show why. If it contradicts the thesis or qualifies it heavily, say that and show why.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2691
+  title: 'R4 — Subsea Pipelines: LinkedIn expert mapping (marketing surface)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2691
+  gh_state: open
+  gh_labels:
+  - cat:marketing
+  - cat:research
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2687](https://github.com/vamseeachanta/workspace-hub/issues/2687).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2680
+  title: 'R4 — Mooring: LinkedIn expert mapping (marketing surface)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2680
+  gh_state: open
+  gh_labels:
+  - cat:marketing
+  - cat:research
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2676](https://github.com/vamseeachanta/workspace-hub/issues/2676).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2672
+  title: 'R4 — Hydrodynamics: LinkedIn expert mapping (marketing surface)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2672
+  gh_state: open
+  gh_labels:
+  - cat:marketing
+  - cat:research
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    Subissue of [#2668](https://github.com/vamseeachanta/workspace-hub/issues/2668).
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2667
+  title: 'Feature: Domain Knowledge Sweep — systematic multi-source research → coverage map → implementation issues'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2667
+  gh_state: open
+  gh_labels:
+  - cat:knowledge-domain
+  - cat:research
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Build a systematic workflow that audits a single engineering domain across **all relevant knowledge surfaces** (academic, standards, industry practice, social/marketing, codebase) and emits a coverage map + a tree of subissues capturing every implementation gap.
+
+    This formalizes the ad-hoc LinkedIn-extraction pattern (`field-dev-code-recon` skill) into a defensible knowledge-acquisition system. Per memory feedback (`feedback_llm_wiki_concept_pages_need_public_references`), LinkedIn-only sourcing fails day-one lint — comprehensive sourcing is required for engineering defensibility.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2651
+  title: Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2651
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Working on the [ROGII Wellbore Geology Prediction](https://www.kaggle.com/competitions/rogii-wellbore-geology-prediction) Kaggle competition (sibling repo at `/mnt/local-analysis/kaggle-rogii-2026/` on ace-linux-1, deadline 2026-08-05).
+
+    The competition''s task brief is shipped as a 27.5 MB PPTX with 14 slides and 19 diagrams (well-trajectory views, GR-correlation figures, map and 3D views). Text content has been extracted via \`python-pptx\` to \`docs/task-brief.md\` already, but the diagrams need a proper PDF render.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2538
+  title: 'ace2: generate lifetime property imagery timelapse for 11511 Piping Rock'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2538
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - domain:gis
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Prepare the tooling and execution workflow on **ace-linux-2** to generate a property/neighborhood historical imagery timelapse GIF/MP4 for:
+
+    - Address: `11511 Piping Rock Dr., Houston, TX 77077`'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2534
+  title: 'chore(ace-drive): retention-gated cleanup for Elements staging and source drive'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2534
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - cat:operations
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Retention-gated cleanup follow-up for the completed Elements external-drive ingest tracked by #2526.
+
+    The ingest execution is complete: all approved staged buckets were copied, merged into parent targets using hardlink-preserving materialization, verified, and documented. This issue exists to prevent premature deletion and to provide a controlled future cleanup gate for `_from_elements/` staging and the physical/source `Elements` drive.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2470
+  title: 'feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2470
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:documentation
+  - domain:knowledge-management
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Create a source-grounded, readable-summary unblocker for the ACMA wiki-promotion targets currently blocking #2227.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2402
+  title: 'feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2402
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:data-pipeline
+  - domain:document-intelligence
+  - enhancement
+  - priority:high
+  - status:blocked
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+    Split from vamseeachanta/workspace-hub#2393 (v1 closed after MAJOR×2 cross-provider review flagged scope creep + storage-authority ambiguity + AC-vs-test gaps).
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2403
+  title: 'feat(doc-intel): embeddings model-selection spike — BGE-M3 / Voyage / text-embedding-3-large'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2403
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:data-pipeline
+  - cat:research
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  - status:plan-approved
+  - status:working
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Split from #2393 (v1 closed after MAJOR×2 cross-provider review flagged scope creep: model-selection spike bundled with implementation). This issue isolates the spike.
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2392
+  title: 'feat(knowledge): wiki coverage-gap detector — inventory × wiki diff per discipline'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2392
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:documentation
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    The LLM-wiki portfolio has no coverage-gap detector. We cannot currently answer the question *"which authoritative sources on `/mnt/ace/**`, in `docs/reports/**`, or in `data/document-index/**.yaml` have no corresponding L3 wiki page in `knowledge/wikis/**`?"* without a manual sweep.
+
+    Existing related work:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2382
+  title: 'feat(conformance): add promotion audit-trail checker for L5/L6→L3 wiki promotions'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2382
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:harness
+  - domain:knowledge-management
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Implement a conformance check that verifies promoted wiki pages expose at least one auditable promotion trail, so the repo can enforce the “no silent promotion” rule for L5/L6 → L3 knowledge promotion.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2374
+  title: 'feat(knowledge): build transient-promotion candidate queue from handoffs and review artifacts'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2374
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:harness
+  - domain:knowledge-management
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Build a transient-promotion candidate queue that extracts durable knowledge candidates from handoffs, review artifacts, and recurring-run outputs, then routes them into wiki/document-intelligence promotion work.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2370
+  title: 'feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2370
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - domain:knowledge-management
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Build a closed-issue promotion ledger and ranking for engineering/calculation issues so the repo can systematically convert the best completed work into durable wiki knowledge.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2363
+  title: 'feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2363
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - domain:document-intelligence
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Materialize the `wiki_refs` reverse-lookup contract that is already defined in the provenance architecture, so a registry entry or `doc_key` can answer: which LLM-wiki pages cite this source?
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2362
+  title: 'feat(data): Phase E back-population — populate doc_key on pre-existing standards-transfer-ledger.yaml entries'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2362
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    #2207 revision (2026-04-19) requires every registry entry to reference a canonical `doc_key` per parent #2205 Section 3. Pre-existing entries in `data/document-index/standards-transfer-ledger.yaml` were grandfathered in the revised contract — they retain their original identity until back-populated.
+
+    The grandfather policy is documented but is intentionally open-ended. This issue closes it by filing the concrete back-population work.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2361
+  title: 'refactor(data): rename discovered → merged_at in scripts/data/document-index/provenance.py and propagate'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2361
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Parent #2205 operating model Section 3 (amendment 2026-04-19, [comment](https://github.com/vamseeachanta/workspace-hub/issues/2205#issuecomment-4277238819)) renamed the `discovered` field to `merged_at` to honor its actual semantics.
+
+    Verified evidence (2026-04-19):'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2336
+  title: 'chore(cron): cadence-report retention policy — auto-archive old reports'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2336
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The 8 cadence crons (#2313-#2319 + wed#309) each write one report per period. Without retention, `docs/reports/` will accumulate:
+
+    - 52 weekly reports/year (memory-health, scheduler-health)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2279
+  title: 'chore(acma-codes): codify support-artifact defer/reject policy for metadata-only sweep waves'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2279
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:documentation
+  - domain:naval-architecture
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Define a repeatable policy for handling non-standard supporting artifacts encountered during ACMA metadata-only sweeps: catalogs, screenshots, newsletters, access notes, shortcuts, temp files, and other non-promotable support materials.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2278
+  title: 'chore(acma-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2278
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:documentation
+  - domain:naval-architecture
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Reconcile the two OCIMF MEG (2008) fragment PDFs discovered under the `Noble Denton Guidelines/` directory during Wave 2 so Wave 1 and Wave 2 metadata-only outputs do not maintain conflicting family ownership.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2277
+  title: 'feat(doc-intel): add summary-aware bounded classification writeback mode'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2277
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:documentation
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Extend the bounded Phase C classification writeback path so target classification runs can optionally consult existing Phase B summaries during classification, improving accuracy for target records whose best domain signal comes from summary discipline rather than path/doc-number heuristics alone.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2276
+  title: 'chore(doc-intel): reconcile legacy Phase B summary artifacts to canonical content-hash filenames'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2276
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:documentation
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Migrate or reconcile legacy Phase B summary artifacts written under the old `sha256(content_hash)[:16].json` filename contract so downstream consumers can reliably find historical summaries after #2246 standardized canonical summary identity to `{content_hash}.json`.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2133
+  title: 'fix(today): research-highlights extraction returns empty for synthesis files'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2133
+  gh_state: open
+  gh_labels:
+  - bug
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    The `/today` daily report''s Research Highlights section shows "(could not extract findings)" for 2026-04-10-synthesis, making the report 5KB instead of the typical 10-15KB.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2125
+  title: 'feat(llm-wiki): auto-refresh ingestion on new Orcina releases'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2125
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:data-pipeline
+  - domain:knowledge-management
+  - domain:marine
+  - enhancement
+  - priority:medium
+  - status:plan-approved
+  - status:working
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Add version detection and incremental refresh to the llm-wiki ingestion pipeline so new OrcaFlex releases are automatically captured.
+
+    ## Current state'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2124
+  title: 'feat(llm-wiki): extend ingestion to Orcina resources, examples, and training materials'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2124
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:data-pipeline
+  - domain:knowledge-management
+  - domain:marine
+  - enhancement
+  - priority:medium
+  - status:plan-approved
+  - status:working
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Extend llm-wiki coverage to remaining Orcina web content beyond the help system.
+
+    ## Sources not yet ingested'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2103
+  title: 'feat(llm-wiki): extend ingestion to AQWA and BEMRosetta documentation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2103
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:data-pipeline
+  - domain:knowledge-management
+  - domain:marine
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Extend the llm-wiki pattern to cover AQWA (ANSYS) and BEMRosetta documentation, completing the diffraction/radiation tool coverage alongside OrcaWave.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2086
+  title: 'feat(subseaiq): normalize year field validation — reject non-integer year strings'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2086
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Follow-up to #2058. The `_safe_int` helper in `worldenergydata/subseaiq/analytics/normalize.py`
+
+    uses `int(float(val))` which silently truncates floating-point year strings:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2024
+  title: 'build: gmail-extract-and-act pipeline — rewrite gmail-archive-extract.py for extract-first, delete-later queue model'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2024
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Parent: #2017 — Email-as-Queue Workflow
+
+    ## Objective
+
+    Rewrite `scripts/email/gmail-archive-extract.py` to follow the new queue model: extract structured data, commit to repos, track thread state, and delete emails when topics complete. The current script archives entire raw email bodies to repos, which is the wrong approach.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1988
+  title: 'feat: Map Google Drive data to git repos — O&G public, personal/proprietary private'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1988
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent: #1963 — Multi-account Gmail Management
+
+    ## Objective
+
+    Audit all 3 Google Drive accounts, classify data by sensitivity/domain, and migrate to appropriate git repos. Oil & gas technical data goes public; personal/proprietary stays private.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1956
+  title: 'Phase 2: Deep scan 3,879 .xls binary workbooks with xlrd library'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1956
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - cat:engineering
+  - domain:data-pipeline
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The Excel inventory scan (#1910, #1909) cataloged 4,125 workbooks but only fully scanned the 193 .xlsx files. The 3,879 .xls files (94% of inventory) are in legacy BIFF binary format and require the `xlrd` library to read sheet contents.
+
+    ## Inventory'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1928
+  title: Extract 419 marine Excel calculation references → digitalmodel mapping
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1928
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - priority:medium
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    419 marine Excel calculation references identified in `data/catalog.yaml`. These contain recurring calculation templates that should be mapped to digitalmodel modules or extracted as reusable code.
+
+    ## Plan Reference'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1927
+  title: Extract SNAME naval architecture knowledge into digitalmodel modules
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1927
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    SNAME (Society of Naval Architects & Marine Engineers) documents contain foundational naval architecture knowledge — hull forms, resistance, propulsion, stability, structural design — that should populate `digitalmodel/naval_architecture/`.
+
+    ## Plan Reference'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1926
+  title: Classify remaining 10K marine docs via PDF content extraction and title parsing
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1926
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    After marine taxonomy V2 classifier (#1653), 10,530 marine documents remain unclassified. These are:
+
+    1. **DNV/Classification standards** (~6K) — filenames like `DNV_OS_304_Risk_Based_Verification.pdf`'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1925
+  title: Curate 3,683 extracted CSVs into TDD test fixtures for digitalmodel
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1925
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Create pytest fixtures from the 3,683 extracted CSV worked examples already in the document intelligence pipeline.
+
+    ## Plan Reference'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1924
+  title: Execute Phase B summarization — batch process 394K unsummarized documents to 90%
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1924
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Current summarization: 61.9% (639,585 of 1,033,933 docs)
+
+    Target: 90%+ summarization'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1923
+  title: Build CAD metadata extraction pipeline for 195K marine DWG/DXF files
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1923
+  gh_state: open
+  gh_labels:
+  - cat:data-pipeline
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Problem
+
+    The marine taxonomy classification (#1653) revealed that 195,687 of 217,117 marine documents (90.1%) are DWG/DXF CAD drawings. These cannot be classified by filename/path keywords and require CAD metadata extraction.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1666
+  title: 'Test health dashboard: add historical trend tracking and coverage delta detection'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1666
+  gh_state: open
+  gh_labels:
+  - cat:analysis
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context\nThe test health dashboard (#1573) generates a point-in-time snapshot. For tracking improvement over time, we need historical data and trend detection.\n\n## Acceptance criteria\n1. Write tests first in `tests/quality/test_test_health_dashboard.py` (extend existing)\n2. After each run, append summary to `docs/dashboards/test-health-history.json`\n   - Fields: timestamp, total, passed, failed, errors, skipped, pass_rate\n3. Add trend section to markdown dashboard showing last 8 runs\n4. Add delta detection: if pass_rate drops >5% from previous run, add warning banner\n5. Tests pass\n\n## Parent\n- Follow-up to #1573\n'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1604
+  title: 'Architecture scanner: detect API surface and import dependency graph'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1604
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The architecture scanner (#1569) discovers packages, counts classes/functions, and detects entry points. The next evolution is to also discover the **API surface** (public functions/classes per package) and the **internal import graph** (which packages import which).
+
+    ### Deliverables'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1578
+  title: Automated download-and-catalog pipeline — discover, download to /mnt/ace, catalog, link
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1578
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - machine:dev-primary
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Child of holistic doc-intel feature. Extend scripts/data/research-literature/download-template.sh into a reusable pipeline: (1) reads online-resource-registry.yaml for entries with download_status=pending, (2) downloads to /mnt/ace/<repo-name>/<domain-name>/, (3) updates registry with local_backup_path and download_status=completed, (4) adds to document-index if PDF/doc. Uses scripts/lib/download-helpers.sh. TDD. Use uv run.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1498
+  title: Production sectionproperties module in digitalmodel
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1498
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    sectionproperties PoC (#1452) validated accuracy (<2% geometric, <0.4% CHS). Ready to graduate from `scripts/integrations/` to a production module.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1485
+  title: Retrofit existing calculation module to use Pint units
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1485
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - machine:dev-primary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Follow-up from Pint evaluation (#1459).
+
+    Pick one existing calculation module that does manual unit conversions and retrofit it to use Pint. This validates the integration pattern on real code before broader adoption.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1395
+  title: 'WRK-1395: Add Equinor Northern Lights dataset as curated data'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1395
+  gh_state: open
+  gh_labels:
+  - machine:dev-secondary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+- idempotency_key: gh:vamseeachanta/workspace-hub#1394
+  title: 'WRK-1394: Add Equinor/Norce U7 reference data as curated dataset'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1394
+  gh_state: open
+  gh_labels:
+  - machine:dev-secondary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+- idempotency_key: gh:vamseeachanta/workspace-hub#1353
+  title: 'WRK-1353: Deep extraction & table promotion for ace_standards + workspace_spec (deferred from WRK-1288)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1353
+  gh_state: open
+  gh_labels:
+  - machine:dev-secondary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+- idempotency_key: gh:vamseeachanta/workspace-hub#1301
+  title: 'WRK-261: BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1301
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - enhancement
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-261: BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171)
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** production
+
+    **Repo:** - aceengineer-website | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#179
+  title: 'WRK-554: feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/179
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-554: feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+    **Repo:** [''OGManufacturing''] | **Complexity:** low | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#178
+  title: 'WRK-553: feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/178
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-553: feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+    **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#177
+  title: 'WRK-552: feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/177
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-552: feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+    **Repo:** [''OGManufacturing''] | **Complexity:** low | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#176
+  title: 'WRK-551: feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/176
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-551: feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+    **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#175
+  title: 'WRK-550: feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/175
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-550: feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+    **Repo:** [''OGManufacturing''] | **Complexity:** low | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#174
+  title: 'WRK-549: feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/174
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-549: feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+    **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#173
+  title: 'WRK-548: feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/173
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - domain:document-intelligence
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-548: feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** data | **Subcategory:** document-intelligence
+
+    **Repo:** [''OGManufacturing''] | **Complexity:** low | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#172
+  title: 'WRK-547: feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/172
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - domain:document-intelligence
+  - enhancement
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-547: feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** data | **Subcategory:** document-intelligence
+
+    **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#171
+  title: 'WRK-546: feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/171
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-546: feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+    **Repo:** [''OGManufacturing''] | **Complexity:** low | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#170
+  title: 'WRK-545: feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/170
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-545: feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+    **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#169
+  title: 'WRK-542: feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural '
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/169
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "## WRK-542: feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural \n**Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence\n**Repo:** ['OGManufacturing'] | **Complexity:** low | **Machine:** dev-primary"
+- idempotency_key: gh:vamseeachanta/workspace-hub#168
+  title: 'WRK-541: feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural '
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/168
+  gh_state: open
+  gh_labels:
+  - cat:data
+  - domain:document-intelligence
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "## WRK-541: feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural \n**Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence\n**Repo:** ['digitalmodel'] | **Complexity:** low | **Machine:** dev-primary"
+- idempotency_key: gh:vamseeachanta/workspace-hub#57
+  title: 'WRK-1152: Collect and download electrical engineering resources to document-intelligence'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/57
+  gh_state: open
+  gh_labels:
+  - cat:research
+  - domain:electrical-engineering
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1152: Collect and download electrical engineering resources to document-intelligence
+
+    **Status:** pending | **Priority:** medium | **Category:** research | **Subcategory:** electrical-engineering
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'

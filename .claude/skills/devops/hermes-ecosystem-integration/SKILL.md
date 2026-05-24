@@ -37,6 +37,8 @@ workspace-hub/
 
 ## Data Flow (bidirectional)
 
+**Topology-sensitive:** if tier-1 repos are siblings under the same parent as `workspace-hub`, do not render repo skill paths as `workspace-hub/<repo>/.claude/skills`. See `references/sibling-repo-sso-topology.md` for the required verification checklist covering Hermes `external_dirs`, Codex/Gemini symlinks, AGENTS pointers, and memory drift. Before closeout, use `references/sibling-sso-validation-closeout.md` for the validation bundle, post-fix adversarial review focus, and interruption/resume handoff shape. During implementation/code-review hardening, use `references/sibling-sso-implementation-review.md` for the stale-vs-valid provider finding split, portable script guards, and final closeout checklist additions. If adversarial review still returns MAJOR after green targeted tests, use `references/sibling-sso-review-remediation.md` for the full-registry PASS gate, prose-style `AGENTS.md` contract rewrite edge case, PyYAML fallback guard, and closeout checklist. If live `--apply` aborts because repairable skill-symlink actions are grouped with unresolved `AGENTS.md` blockers, use `references/sibling-sso-partial-apply-blockers.md` to split safe repairs from residual blockers without falsely closing the issue. After a core SSoT issue closes with residual sibling contract failures, use `references/sibling-sso-post-landing-followup.md` to verify live state, identify the existing follow-up issue, and avoid implementing from a dirty/diverged control-plane checkout.
+
 ```
 INBOUND (Hermes consumes):
   6 repos .claude/skills/ ──→ external_dirs ──→ 973+ active skills in system prompt
@@ -64,19 +66,22 @@ Location: `~/.hermes/config.yaml`
 ```yaml
 skills:
   external_dirs:
-    - /mnt/local-analysis/workspace-hub/.claude/skills        # 387 active
-    - /mnt/local-analysis/workspace-hub/CAD-DEVELOPMENTS/.claude/skills  # 182
-    - /mnt/local-analysis/workspace-hub/worldenergydata/.claude/skills   # 20
-    - /mnt/local-analysis/workspace-hub/achantas-data/.claude/skills     # 13
-    - /mnt/local-analysis/workspace-hub/assetutilities/.claude/skills    # 3
-    - /mnt/local-analysis/workspace-hub/digitalmodel/.claude/skills     # 31
+    # workspace-hub root
+    - /mnt/local-analysis/workspace-hub/.claude/skills
+    # sibling repo topology: repos are peers of workspace-hub, not children
+    - /mnt/local-analysis/CAD-DEVELOPMENTS/.claude/skills
+    - /mnt/local-analysis/worldenergydata/.claude/skills
+    - /mnt/local-analysis/achantas-data/.claude/skills
+    - /mnt/local-analysis/assetutilities/.claude/skills
+    - /mnt/local-analysis/digitalmodel/.claude/skills
 ```
 
 - Read-only scan — Hermes never writes to external dirs
 - Local `~/.hermes/skills/` takes precedence on name collisions
 - Appears in system prompt, skill_view, skills_list, slash commands
-- Non-existent paths silently skipped (safe for machines without all repos)
+- Non-existent paths are silently skipped by Hermes but should be treated as a harness health failure after topology changes
 - To add a new repo: add its `.claude/skills` path to both template and live config
+- If tier-1 repos are siblings, render external dirs from the parent of `workspace-hub`, not from `workspace-hub/<repo>`
 
 **Finding new repos with skills:**
 ```bash
@@ -102,14 +107,17 @@ EXCLUDED_SKILL_DIRS = frozenset((
 Patch saved to: `config/agents/hermes/patches/exclude-archive-skill-dirs.patch`
 Auto-applied by harness-update.sh after every `hermes update`.
 
-### 3. Config Template with Path Substitution
+3. **Config Template with Path Substitution**
 
 Template: `config/agents/hermes/config.yaml.template`
 
-Uses `__WS_HUB_PATH__` placeholder resolved per-machine by `resolve_ws_hub_path()`:
-- Reads `harness-config.yaml` workstations section
-- Matches hostname to workstation entry
-- Falls back to current workspace-hub path
+Uses machine-aware placeholders resolved by `sync-agent-configs.sh`:
+- `__WS_HUB_PATH__` = canonical workspace-hub checkout for the selected machine
+- `__REGISTRY_REPO_SKILL_DIRS__` = sibling repo `.claude/skills` roots derived from `config/workstations/registry.yaml` for the selected machine, filtered to real paths containing `SKILL.md`
+- Reads `config/workstations/registry.yaml` and cross-checks `scripts/readiness/harness-config.yaml`
+- Matches hostname/workstation entry, with explicit `--machine <name>` support for dry-runs and target rendering
+- Never hardcode individual sibling repo skill dirs in the Hermes template; registry is the SSoT for sibling repo inclusion
+- Reject unresolved template tokens and stale nested `workspace-hub/<repo>/.claude/skills` paths at render time
 
 ### 4. Smart YAML Merge
 
@@ -349,10 +357,11 @@ Claude Code see everything written there. No dual-write, no sync drift.
   - Gemini CLI: .gemini/skills → symlink → ../.claude/skills
   - Hermes: external_dirs (6 paths in config.yaml, reads all repos)
 
-**Per-repo .codex/.gemini symlink pattern:**
-  - workspace-hub: `.codex/skills -> ../.claude/skills`
-  - sub-repos (CAD-DEVELOPMENTS, etc.): `.codex/skills -> ../../.claude/skills`
-  - If symlink broken (real directory with stale files): delete real dir, create symlink
+**Per-repo .codex/.gemini skill access:**
+  - workspace-hub: `.codex/skills -> ../.claude/skills` when using workspace-hub as its own canonical root
+  - sibling repos: verify symlinks with `test -e` and `readlink -f`; the older nested-repo pattern `.codex/skills -> ../../.claude/skills` is usually broken after moving repos to `/mnt/local-analysis/<repo>` because it resolves toward `/mnt/local-analysis/.claude/skills`
+  - choose one explicit topology per repo: link to that repo's own `.claude/skills` if it is autonomous, or link to the intended central workspace-hub skill root if workspace-hub is the single source of truth
+  - If symlink broken (or real directory with stale files): delete/replace only after confirming the intended canonical skill root and preserving any non-duplicated files
 
 ### Rule 1: Skills Go to .claude/skills/ Directly
 When creating a new skill, write SKILL.md to
@@ -437,3 +446,17 @@ find /mnt/local-analysis/workspace-hub/{.claude,CAD-DEVELOPMENTS/.claude,\
     `claude plugin update superpowers@claude-plugins-official --scope project`.
     For automation, treat `claude plugin list --json` as the source of truth for
     plugin id + scope + enabled state, and summarize installed scopes in dry-run output.
+12. **Sibling repo migrations invalidate nested path assumptions** — after moving tier-1 repos to `/mnt/local-analysis/<repo>`, audit all of: Hermes `external_dirs`, `config/agents/hermes/config.yaml.template`, `.codex/skills` and `.gemini/skills` symlink targets, AGENTS.md inheritance pointers, and memory bridge drift. Do not confirm single-source-of-truth flow from the existence of sibling repos alone; verify every path resolves. See `references/sibling-repo-sso-topology.md`.
+13. **Memory bridge churn can masquerade as SSoT implementation** — during sibling SSoT work, inspect `.claude/memory/**` diffs separately from config/script/test changes. Treat memory files that rewrite canonical source paths to an agent-worktree path, revert privacy/scope language, or otherwise look like bridge-generated drift as suspect. Do not stage them with SSoT fixes unless the approved issue explicitly requires memory content changes and `scripts/memory/check-memory-drift.sh` passes afterward. See `references/sibling-sso-memory-drift-staging.md`.
+14. **Answer SSoT questions by separating skills, memory, and tools** — do not collapse the repo ecosystem into one blanket “workspace-hub is SSoT” claim. Verify and report each channel separately: (a) Hermes live `skills.external_dirs` coverage, (b) Codex/Gemini symlink resolution per sibling repo, (c) memory bridge drift state, (d) AGENTS inheritance pointers, and (e) whether tools/scripts/commands are actually centralized or repo-local. It is valid for workspace-hub to be the harness/control-plane while tools remain repo-local and skills are only partially wired.
+14. **Template text can lag the intended architecture** — when the skill says registry-rendered sibling paths are required, still inspect the live `config/agents/hermes/config.yaml.template`. If it contains stale `__WS_HUB_PATH__/<repo>/.claude/skills` entries, report the SSoT state as incomplete even when some live `~/.hermes/config.yaml` external dirs resolve.
+15. **Registry must drive sibling Hermes skill dirs** — do not solve sibling topology by hardcoding `/mnt/local-analysis/<repo>/.claude/skills` entries in `config.yaml.template`. Use a registry-rendered placeholder such as `__REGISTRY_REPO_SKILL_DIRS__` and assert rendered `external_dirs` equals the real, registry-listed repos with skills.
+14. **Remote machine checks must actually run remotely** — `--machine dev-secondary` must not reuse the local checkout’s memory/check scripts and then report a false pass. For non-local hosts, run memory/readiness probes through SSH or mark the section `not_present`/`fail` with evidence.
+15. **Never rewrite AGENTS.md through symlinks** — before emitting a rewrite action for stale `../AGENTS.md` pointers, block symlinked, missing, or non-regular `AGENTS.md` files. Treat symlinked AGENTS.md as a safety blocker; otherwise apply can overwrite an unintended target.
+16. **Adversarial review after green tests is still mandatory** — a local `pytest` pass can miss SSoT invariant failures. Re-review specifically for registry authority, target-machine truthfulness, symlink overwrite safety, repair-manifest completeness, rollback scope, and stale nested paths before commit/push/closeout.
+17. **Do not throw away a review because one finding is stale** — verify the cited file/content, explicitly mark stale findings with evidence, then still extract and fix valid blockers from the same review. See `references/sibling-sso-implementation-review.md`.
+18. **Portable SSoT scripts need explicit dependency/tool guards** — Bash stdin Python fallbacks that import YAML must use `uv run --with pyyaml --no-project python`, and Python helpers that call platform utilities such as `findmnt` must guard missing binaries/errors and return structured fallback state instead of crashing. See `references/sibling-sso-implementation-review.md`.
+19. **Green targeted tests do not override full-registry AC** — if the checker/repair helper iterates `machine.repos`, live acceptance is the full registry, not starter fixtures. After a MAJOR review, prove `check-sibling-sso-flow.py --machine <machine> --json` passes for the named machine or explicitly keep closeout blocked. Include the exact newly modified tests in the rerun bundle.
+20. **Recognize contract prose without rewriting arbitrary prose** — sibling `AGENTS.md` files can express inheritance as `This repository inherits the canonical contract from:` followed by a bare `../AGENTS.md` line. Treat that two-line pattern as a safe contract pointer rewrite, but keep unrelated prose mentions blocked/unchanged. Use the TDD pattern in `references/sibling-sso-review-remediation.md`.
+21. **Partial apply must separate safe repairs from residual blockers** — if a repo has repairable skill symlink rewrites plus a blocked/missing `AGENTS.md`, do not let a coarse per-repo blocker prevent all safe repairs unless the approved plan explicitly requires all-or-nothing behavior. Model `repairable_actions` and `blocked_actions` separately, apply allowlisted reversible repairs, then keep checker/closeout red until residual blockers are resolved or refiled. See `references/sibling-sso-partial-apply-blockers.md`.
+22. **Post-landing next steps should become follow-up issue intake, not scope creep** — after a sibling SSoT issue closes, residual checker failures are usually the next plan's evidence. Verify the closed issue, inspect existing open issues, call out dirty/diverged workspace state, and recommend a clean-worktree plan path rather than silently widening the completed issue. See `references/sibling-sso-post-landing-followup.md`. 

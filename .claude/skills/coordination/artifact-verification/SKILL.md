@@ -95,6 +95,19 @@ When a worker claims to have moved, removed, or preserved a nested Git checkout 
 
 Reference: `references/nested-checkout-relocation-verification.md`.
 
+### 4D. Machine-Readable Evidence Sidecars and Redaction Safety
+
+When a readiness script, dashboard, or generated report accepts machine-readable evidence sidecars from local or remote hosts:
+
+- [ ] Validate evidence shape fail-closed before trusting nested data: required top-level keys, `checks` object type, expected check keys, and required per-check fields such as `status`, `message`, and `details`.
+- [ ] Treat missing evidence and malformed evidence as distinct blockers; both should block remote readiness, but use separate codes/messages so tests and operators can diagnose the cause.
+- [ ] Add tests for both missing evidence and malformed/partial evidence; do not stop at the happy path where the sidecar exists.
+- [ ] Run output through the production redaction path in tests when blocker codes are part of the emitted artifact; redactors can mutate seemingly harmless machine codes.
+- [ ] Keep machine-readable blocker/status codes redaction-safe: avoid substrings like `token`, `secret`, `api_key`, `password`, `credential`, and ambiguous words that may match broad secret scanners. Prefer neutral codes like `repo_placement_missing` and `repo_placement_malformed` over `repo_placement_evidence_*`.
+- [ ] Do not weaken secret redaction just to preserve a diagnostic code. Rename the code or split human-readable detail from machine-readable status.
+
+Reference: `references/evidence-sidecar-redaction-safety.md`.
+
 ### 5. No Unplanned Side Effects
 
 - [ ] No unrelated files were modified (check `git diff --stat`)
@@ -174,6 +187,7 @@ For overnight batch runs with multiple terminals:
 - Generated artifact schema drift recovery: `references/generated-artifact-schema-drift.md`
 - Historical HTML/report location recovery: `references/historical-html-report-location.md`
 - Nested checkout relocation / duplicate removal verification: `references/nested-checkout-relocation-verification.md`
+- Machine-readable evidence sidecars and redaction safety: `references/evidence-sidecar-redaction-safety.md`
 - Orchestrator-worker methodology: `docs/methodology/orchestrator-worker.md`
 - Plan approval gate: `.claude/hooks/plan-approval-gate.sh`
 - Cross-review policy: `.claude/skills/coordination/cross-review-policy/SKILL.md`

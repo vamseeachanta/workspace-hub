@@ -141,10 +141,24 @@ This pattern was validated while reviewing plan drafts in `worldenergydata` wher
 
 ## Minimum artifact set
 
-- `.planning/quick/review-<issue>-compact-prompt.md`
-- `.planning/quick/review-<issue>-<provider>-compact.out`
-- `scripts/review/results/YYYY-MM-DD-plan-<issue>-<provider>.md`
+Use durable, round-suffixed artifacts so iterative reviews do not overwrite prior evidence:
+
+- `.planning/quick/review-<issue>-rN-compact-prompt.md`
+- `scripts/review/results/YYYY-MM-DD-plan-<issue>-rN-<provider>-compact.md`
+- `scripts/review/results/YYYY-MM-DD-plan-<issue>-rN-<provider>-compact.err` when stderr is non-empty or diagnostically useful
+- if a fanout runner also writes unsuffixed files, immediately copy them to `rN-*` filenames before rerunning
+
+Before moving a plan to `status:plan-review`, update the plan Artifact Map / Acceptance Criteria to name the final no-MAJOR review round artifacts or use wording like "through the final no-MAJOR review round". Stale references to older rounds are an operator-risk even when the latest review is MINOR/no-blockers.
+
+## Label-time checklist for GitHub issue plans
+
+For gated GitHub issue plans, do not apply `status:plan-review` until:
+
+1. the current plan, prompt, and final review artifacts are committed and pushed
+2. `git rev-parse HEAD` equals `git ls-remote origin refs/heads/main` for the reviewed commit
+3. a GitHub issue comment records the reviewed SHA, plan path, review artifact paths, and final verdict
+4. the old gate label (for example `status:needs-plan`) is removed only after the evidence comment exists
 
 ## Decision rule
 
-If compact no-tools review still returns MAJOR, treat the plan as not approval-ready. The benefit of this pattern is review reliability, not leniency.
+If compact no-tools review still returns MAJOR, treat the plan as not approval-ready. If it returns MINOR/no blockers, fix cheap stale-text/operator-clarity issues before label transition, then preserve those final review artifacts and evidence in the plan index/issue comment.

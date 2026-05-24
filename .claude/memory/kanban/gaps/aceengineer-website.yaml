@@ -1,0 +1,25 @@
+board_slug: repo-aceengineer-website
+repo: vamseeachanta/aceengineer-website
+gaps:
+- idempotency_key: gap:repo-aceengineer-website:001
+  title: Deploy pipeline / hosting audit
+  source: detected_gap
+  detection_basis: No tracked issue covers current deploy pipeline state, hosting
+    cost, or DNS audit.
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Audit current deploy pipeline, hosting provider config, DNS records,
+    and SSL renewal automation.
+
+    '
+- idempotency_key: gap:repo-aceengineer-website:002
+  title: Content-sync contract with aceengineer-strategy
+  source: detected_gap
+  detection_basis: Memory says aceengineer-strategy + live site are canonical; sync
+    mechanism between strategy repo and website not codified.
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Define how content flows aceengineer-strategy -> aceengineer-website
+    -> live site; manual vs automated; ownership.
+
+    '

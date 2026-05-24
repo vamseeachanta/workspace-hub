@@ -5,6 +5,13 @@ required:
   - issue
   - artifact_type
   - output_residency
+  - corpus_scope
+  - audience_classification
+  - source_class_mix
+  - freshness
+  - execution_metadata
+  - artifact_derivation_chain
+  - sources
   - published_claims
   - legal_scan
 properties:
@@ -28,6 +35,124 @@ properties:
       - registered_client_private_corpus
       - ignored_internal_run_artifact
       - no_preserve
+  corpus_scope:
+    type: object
+    additionalProperties: false
+    required: [corpus_id, corpus_name, registry_ref, scope_statement]
+    properties:
+      corpus_id: {type: string, minLength: 1}
+      corpus_name: {type: string, minLength: 1}
+      registry_ref: {type: string, minLength: 1}
+      scope_statement: {type: string, minLength: 1}
+  audience_classification:
+    enum:
+      - internal-only
+      - client-private
+      - public-safe
+  source_class_mix:
+    type: array
+    minItems: 1
+    items:
+      enum:
+        - public_llm_wiki
+        - domain_private_corpus
+        - registered_client_private_corpus
+        - ignored_internal_run_artifact
+        - no_preserve
+  freshness:
+    type: object
+    additionalProperties: false
+    required: [as_of, disclosure]
+    properties:
+      as_of: {type: string, minLength: 1}
+      disclosure: {type: string, minLength: 1}
+  execution_metadata:
+    type: object
+    additionalProperties: false
+    required: [command, run_id, generated_at]
+    properties:
+      command: {type: string, minLength: 1}
+      run_id: {type: string, minLength: 1}
+      generated_at: {type: string, minLength: 1}
+  artifact_derivation_chain:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      required: [step, artifact, derivation]
+      properties:
+        step: {type: string, minLength: 1}
+        artifact: {type: string, minLength: 1}
+        derivation: {type: string, minLength: 1}
+  sources:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      required:
+        - source_id
+        - source_doc_key
+        - source_class
+        - input_residency
+        - output_residency
+        - confidence
+        - promotion
+      properties:
+        source_id: {type: string, minLength: 1}
+        source_doc_key:
+          type: string
+          minLength: 1
+          pattern: '^source-doc-key:[a-z0-9][a-z0-9-]*:[A-Za-z0-9_-]+(:[A-Za-z0-9_-]+)*$'
+        source_class:
+          enum:
+            - source-doc-key
+            - promotion-ledger-entry
+            - private-wiki-page
+            - execution-manifest
+            - internal-note
+        input_residency:
+          enum:
+            - public_llm_wiki
+            - domain_private_corpus
+            - registered_client_private_corpus
+            - ignored_internal_run_artifact
+            - no_preserve
+        output_residency:
+          enum:
+            - public_llm_wiki
+            - domain_private_corpus
+            - registered_client_private_corpus
+            - ignored_internal_run_artifact
+            - no_preserve
+        confidence:
+          type: object
+          additionalProperties: false
+          required: [overall, report_readiness, evidence_completeness]
+          properties:
+            overall: {type: number, minimum: 0, maximum: 1}
+            report_readiness: {type: number, minimum: 0.5, maximum: 1}
+            evidence_completeness: {type: number, minimum: 0.5, maximum: 1}
+        promotion:
+          type: object
+          additionalProperties: false
+          required: [decision, promotion_record, gates]
+          properties:
+            decision: {type: string, minLength: 1}
+            promotion_record:
+              type: string
+              minLength: 1
+              pattern: '^(gh-issue:#[0-9]+|docs/architecture/report-promotion-ledger[./A-Za-z0-9_-]*|tests/fixtures/architecture/report_promotion_record[./A-Za-z0-9_-]*)$'
+            gates:
+              type: object
+              additionalProperties: false
+              required: [private_release_clearance, public_release_clearance, sanitization_review, reviewer_clearance]
+              properties:
+                private_release_clearance: {type: boolean}
+                public_release_clearance: {type: boolean}
+                sanitization_review: {type: boolean}
+                reviewer_clearance: {type: boolean}
   published_claims:
     type: array
     minItems: 1
@@ -158,13 +283,78 @@ allOf:
   - if:
       properties:
         output_residency:
+          const: registered_client_private_corpus
+    then:
+      properties:
+        audience_classification:
+          const: client-private
+        source_class_mix:
+          items:
+            enum:
+              - registered_client_private_corpus
+              - domain_private_corpus
+        sources:
+          items:
+            properties:
+              source_class:
+                enum:
+                  - source-doc-key
+                  - promotion-ledger-entry
+                  - private-wiki-page
+                  - execution-manifest
+              input_residency:
+                enum:
+                  - registered_client_private_corpus
+                  - domain_private_corpus
+              output_residency:
+                const: registered_client_private_corpus
+              promotion:
+                properties:
+                  gates:
+                    properties:
+                      private_release_clearance:
+                        const: true
+                      sanitization_review:
+                        const: true
+                      reviewer_clearance:
+                        const: true
+  - if:
+      properties:
+        output_residency:
           const: public_llm_wiki
     then:
       properties:
+        audience_classification:
+          const: public-safe
+        source_class_mix:
+          items:
+            const: public_llm_wiki
         legal_scan:
           properties:
             result:
               const: pass
+        sources:
+          items:
+            properties:
+              input_residency:
+                const: public_llm_wiki
+              output_residency:
+                const: public_llm_wiki
+              source_class:
+                enum:
+                  - source-doc-key
+                  - promotion-ledger-entry
+                  - private-wiki-page
+              promotion:
+                properties:
+                  gates:
+                    properties:
+                      public_release_clearance:
+                        const: true
+                      sanitization_review:
+                        const: true
+                      reviewer_clearance:
+                        const: true
         published_claims:
           items:
             properties:

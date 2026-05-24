@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue #2747 — Promotion Ledger Implementation Notes</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+         max-width: 980px; margin: 2rem auto; padding: 0 1.2rem; color: #1a1a1a; line-height: 1.5; }
+  h1, h2, h3 { color: #0b3d91; }
+  h1 { border-bottom: 2px solid #0b3d91; padding-bottom: 0.3rem; }
+  h2 { margin-top: 2rem; border-bottom: 1px solid #ccc; padding-bottom: 0.2rem; }
+  code, pre { font-family: "SFMono-Regular", Menlo, Consolas, monospace; }
+  pre { background: #f5f7fb; padding: 0.8rem 1rem; border-radius: 4px; overflow-x: auto; }
+  code { background: #f0f2f7; padding: 0.05rem 0.3rem; border-radius: 3px; }
+  table { border-collapse: collapse; margin: 1rem 0; }
+  th, td { border: 1px solid #ccc; padding: 0.4rem 0.7rem; text-align: left; vertical-align: top; }
+  th { background: #eef2fb; }
+  .label { display: inline-block; padding: 0.05rem 0.4rem; border-radius: 3px;
+           font-size: 0.85em; background: #eef; color: #024; }
+  .red { color: #a52a2a; }
+  .green { color: #0a6c2a; }
+  .meta { color: #555; font-size: 0.9em; }
+</style>
+</head>
+<body>
+
+<h1>Issue #2747 — Promotion Ledger Implementation Notes</h1>
+<p class="meta">
+  Issue: <a href="https://github.com/vamseeachanta/workspace-hub/issues/2747">#2747</a> ·
+  Plan: <code>docs/plans/2026-05-21-issue-2747-acma-private-wiki-promotion-ledger.md</code> ·
+  Branch: <code>issue-2747-promotion-ledger</code> ·
+  Date: 2026-05-21
+</p>
+
+<h2>Scope delivered</h2>
+<ul>
+  <li>Hardened ledger schema in <code>templates/client-llm-wiki/ledgers/promotion-ledger.example.yml</code> (<code>ledger_version: 0.2</code>).</li>
+  <li>Importable validator and classifier at <code>scripts/client_llm_wiki/promotion_ledger.py</code>.</li>
+  <li>Test suite at <code>tests/client_llm_wiki/test_promotion_ledger.py</code> (76 tests after orchestrator + Codex re-review hardening, TDD-driven).</li>
+  <li>README + DATA-CYCLE updates documenting required fields, gates, and the derived readiness classifier.</li>
+</ul>
+
+<h2>Schema fields added beyond the v0.1 example</h2>
+<table>
+  <tr><th>Field</th><th>Why</th></tr>
+  <tr><td><code>source_doc_key</code></td><td>Join key to #2389 doc-intel surface; required by plan §Adversarial Review Hardening.</td></tr>
+  <tr><td><code>input_residency</code> / <code>output_residency</code></td><td>Explicit data-flow residency declaration. Public outputs gated programmatically.</td></tr>
+  <tr><td><code>extraction.version</code></td><td>Anchor for revision lineage; matched against <code>revision_lineage.current_extraction_version</code>.</td></tr>
+  <tr><td><code>score_metadata</code> (scored_by / scored_with / scored_at / rationale_bucket)</td><td>Audit trail for who/what produced the score, not just the score value.</td></tr>
+  <tr><td><code>promotion.gates</code></td><td>Five-clearance gate set: reviewer, legal, sanitization, public release, private release.</td></tr>
+  <tr><td><code>revision_lineage</code></td><td>Preserves prior extraction versions; supersession is explicit, never destructive.</td></tr>
+</table>
+
+<h2>Key design decisions</h2>
+
+<h3>1. Operator <code>overall</code> stays operator-set</h3>
+<p>
+  The plan adversarial review (§58) explicitly requires that derived classification targets a separate report-time
+  surface rather than mutating operator-judgment fields. <code>classify_readiness</code> reads <code>confidence.overall</code>
+  but never writes back to it. The README's "operator judgment, biased toward lowest two sub-fields" convention
+  is preserved verbatim.
+</p>
+
+<h3>2. Score ≠ approval, enforced programmatically</h3>
+<p>
+  A high <code>overall</code> score with no release clearance lands in <code>needs-human-review</code>, never <code>client-ready</code>.
+  This mirrors the workspace-hub must-fire rule <code>feedback_never_offer_to_self_label_plan_approved</code>: the
+  clearance gate is load-bearing and cannot be inferred from telemetry.
+</p>
+
+<h3>3. Single-dimension cap</h3>
+<p>
+  Any confidence sub-field below 0.3 forces <code>needs-human-review</code> regardless of <code>overall</code>. Implements
+  the README's "single weak dimension caps the whole" guidance as a hard ceiling, not advisory copy.
+</p>
+
+<h3>4. Public-output gate enforcement</h3>
+<p>
+  An entry declaring <code>output_residency: public-llm-wiki</code> OR <code>promotion.public_llm_wiki_allowed: true</code>
+  must carry <em>all four</em> public-clearance gates plus a non-empty rationale. Validation fails closed otherwise.
+  This is the programmatic backstop for the <code>DATA-CYCLE.md</code> rule "raw data never moves directly to public llm-wiki".
+</p>
+
+<h3>5. Structural vs semantic validation split</h3>
+<p>
+  <code>validate_structure</code> permits placeholder <code>null</code> values so the shipped example YAML stays a valid
+  schema reference. <code>validate</code> performs the full fail-closed pass for working ledgers. Tests exercise both
+  surfaces: the example YAML against <code>validate_structure</code>, and a fully-populated entry against <code>validate</code>.
+</p>
+
+<h2>Tradeoffs considered</h2>
+<ul>
+  <li>
+    <strong>Thresholds as constants vs config.</strong> Picked module-level constants
+    (<code>READY_OVERALL_MIN = 0.75</code>, etc.) for v0.2. If operators need per-client tuning, this becomes a
+    config knob in a follow-on issue. Not now — premature.
+  </li>
+  <li>
+    <strong>Validation depth.</strong> Did not import <code>jsonschema</code>. The validator is hand-rolled because the
+    rules are small (~150 lines), the error messages are domain-specific (mention <code>source_id</code> and the
+    failing field), and the project already ships custom validators in <code>scripts/</code>. <code>jsonschema</code> is
+    available if a later issue wants formal JSON-Schema generation.
+  </li>
+  <li>
+    <strong>Returning entries by reference vs deep-copying in <code>summarize</code>.</strong> The summary
+    decorates copies with the <code>readiness</code> label so callers can mutate the returned dict without leaking
+    label state back to the source document. Trade: slightly more allocation; gain: no spooky-action.
+  </li>
+</ul>
+
+<h2>Open questions / future work</h2>
+<ul>
+  <li>
+    <strong>#2389 doc-intel join.</strong> Plan dependency calls out <code>source_doc_key</code> consumption from #2389.
+    The validator enforces the field's presence but cannot verify the key exists in the doc-intel surface — that
+    cross-system check belongs in a downstream consumer once #2389 ships, plausibly as a fixture-side check.
+  </li>
+  <li>
+    <strong>#2748 unscored-output prevention.</strong> The plan flags #2748 as blocked-by this work. The natural
+    integration is for #2748 to consume <code>summarize()</code> and refuse to emit any client-facing artifact whose
+    source ledger entry is not in the <code>ready</code> bucket. No code in this PR commits to that integration shape.
+  </li>
+  <li>
+    <strong>CLI surface.</strong> No CLI entry point was added. If operators want a <code>validate-ledger</code>
+    command on PATH, a thin wrapper in <code>scripts/client_llm_wiki/</code> would be a small follow-on.
+  </li>
+  <li>
+    <strong>Threshold calibration.</strong> The 0.3/0.5/0.75 cutoffs are heuristic. A future audit using real
+    ledger data should validate whether <code>usable-with-caveats</code> width is right or wants splitting.
+  </li>
+</ul>
+
+<h2>Tests run</h2>
+
+<h3>RED (before implementation)</h3>
+<pre>$ uv run pytest tests/client_llm_wiki/test_promotion_ledger.py -q
+==================================== ERRORS ====================================
+_______ ERROR collecting tests/client_llm_wiki/test_promotion_ledger.py ________
+ImportError while importing test module
+  '/.../tests/client_llm_wiki/test_promotion_ledger.py'.
+...
+E   ModuleNotFoundError: No module named 'client_llm_wiki'
+=========================== short test summary info ============================
+ERROR tests/client_llm_wiki/test_promotion_ledger.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!
+1 error in 0.39s</pre>
+<p class="red">RED captured: collection failed because <code>scripts/client_llm_wiki/promotion_ledger.py</code> did not yet exist.</p>
+
+<h3>GREEN (after implementation)</h3>
+<pre>$ uv run pytest tests/client_llm_wiki/test_promotion_ledger.py -q
+............................................                             [100%]
+76 passed in 0.19s</pre>
+<p class="green">GREEN: 76/76 tests pass. Coverage spans validation (structural + fail-closed missing fields, null provenance, blank provenance, null/blank score metadata), gate enforcement (public + private + rationale), strict boolean allowance/gate handling, score-vs-approval separation, all five threshold labels, single-dimension cap, dashboard groups/counts, and revision lineage preservation.</p>
+
+<h2>Path-contract compliance</h2>
+<ul>
+  <li>All edits live within the prompt's owned-paths allowlist.</li>
+  <li>No <code>/mnt/ace</code> access. No secret material, no <code>.env</code>, no credentials written.</li>
+</ul>
+
+</body>
+</html>

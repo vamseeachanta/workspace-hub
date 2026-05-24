@@ -25,8 +25,10 @@ Use this when a user asks to review a family of GitHub issues around architectur
    - `git status --short`
    - expected plan/report/review artifacts exist
    - issue comments/labels were actually posted/applied if claimed
-6. **Recover from sandbox/write limits without losing the gate.** If a delegated agent cannot write into the orchestrator checkout, pull the useful reasoning into the orchestrator, create the canonical artifact directly, and then run/record adversarial review before changing live issue state.
-7. **Surface a concise approval checkpoint.** End by listing which plans are in `status:plan-review`, which issues are blocked by upstream approvals, and the recommended approval order. Never self-apply `status:plan-approved`.
+6. **Reconcile approval state from live issue labels before implementation.** A stale local `.planning/plan-approved/<issue>.md`, branch name, or README row is not enough to start execution. Check the live GitHub `status:*` label immediately before launching write-capable work; if the issue is not live `status:plan-approved`, stop at planning/review and remove or quarantine stale local approval markers rather than treating them as authority.
+7. **Recover from sandbox/write limits without losing the gate.** If a delegated agent cannot write into the orchestrator checkout, pull the useful reasoning into the orchestrator, create the canonical artifact directly, and then run/record adversarial review before changing live issue state.
+8. **Surface a concise approval checkpoint.** End by listing which plans are in `status:plan-review`, which issues are blocked by upstream approvals, and the recommended approval order. Never self-apply `status:plan-approved`.
+9. **After downstream work completes, reconcile the parent board/epic.** Re-check each child issue live state, close stale-open completed child issues only after evidence exists, then post a compact parent roll-up table with layer, issue, state, evidence, and remaining adjacent work. Keep unrelated residue (for example backup disposition or storage cleanup) as a separate lane instead of mixing it back into the completed data→execution→results flow.
 
 ## Kanban lane template
 
@@ -72,3 +74,7 @@ Do not implement these issues until the user approves the listed plans:
 - Do not treat a board/report as implementation approval. It is an orchestration artifact only.
 - Do not trust delegate self-reports for commits, labels, or comments; verify with local repo state or issue state before telling the user work is complete.
 - Do not let result-layer output work start before source/provenance and execution interface contracts are explicit.
+- Do not treat stale local approval markers, prompt artifacts, branch names, or README rows as approval. Re-check live GitHub labels before each write-capable delegation wave.
+- If a result/output issue is technically `status:plan-approved` but its own plan names upstream data/execution contracts as blockers, keep it parked until those upstream contracts land or the approved plan explicitly defines a mock/stub boundary.
+- Do not leave a parent board/epic stale after children close. Post a final layer-by-layer roll-up and explicitly name the next lane so the user is not left with an obsolete Kanban picture.
+- Do not blend adjacent cleanup/storage-disposition issues into a completed architectural flow. Preserve them as separate follow-on work with their own blocker/evidence surface.

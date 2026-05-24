@@ -37,6 +37,18 @@ ENV_POINTER_FIELDS = {"bot_token_env", "allowed_user_ids_env"}
 EXPECTED_EVIDENCE_TYPE = "telegram-hermes-host-local-readiness"
 EXPECTED_EVIDENCE_PRODUCER = "scripts/readiness/telegram_hermes_readiness.py"
 REQUIRED_HOST_LOCAL_CHECKS = {"env_gates", "tool_contract", "workspace_contract", "git_sync", "data_access"}
+REPO_PLACEMENT_CHECKER_SOURCE = "scripts/workstations/check-tier1-repo-baseline.py"
+
+
+def _load_repo_placement_checker():
+    """Load the hyphenated workstation checker module without requiring package install."""
+    checker_path = Path(__file__).resolve().parents[1] / "workstations" / "check-tier1-repo-baseline.py"
+    spec = importlib.util.spec_from_file_location("check_tier1_repo_baseline", checker_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("repo placement checker unavailable")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def _redact_output(value: Any) -> Any:
@@ -297,6 +309,108 @@ def _apply_host_local_evidence(entry: dict[str, Any], evidence: dict[str, Any]) 
         entry["failures"].append("host-local evidence is not clean/pass")
 
 
+def _repo_placement_items_are_valid(items: Any) -> bool:
+    """Return True when repo-placement evidence items have the expected minimum shape."""
+    return isinstance(items, list) and all(
+        isinstance(item, dict)
+        and isinstance(item.get("code"), str)
+        and bool(item.get("code"))
+        and isinstance(item.get("message"), str)
+        and bool(item.get("message"))
+        for item in items
+    )
+
+
+def _remote_repo_placement_is_valid(repo_placement: dict[str, Any]) -> bool:
+    """Return True when host-local repo placement evidence has the expected shape."""
+    if repo_placement.get("source") != REPO_PLACEMENT_CHECKER_SOURCE:
+        return False
+    if not isinstance(repo_placement.get("dispatchable"), bool):
+        return False
+    blockers = repo_placement.get("blockers")
+    warnings = repo_placement.get("warnings")
+    if not _repo_placement_items_are_valid(blockers):
+        return False
+    if not _repo_placement_items_are_valid(warnings):
+        return False
+    if not isinstance(repo_placement.get("inventory_timestamp_utc"), str) or not repo_placement.get("inventory_timestamp_utc"):
+        return False
+    if repo_placement.get("dispatchable") is False and not blockers:
+        return False
+    return True
+
+
+def _repo_placement_now(machine: dict[str, Any]) -> str:
+    """Return deterministic repo-placement timestamp source for readiness payloads."""
+    tg = machine.get("telegram_hermes") or {}
+    return str(tg.get("readiness_now") or datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z"))
+
+
+def _apply_repo_placement(
+    entry: dict[str, Any],
+    machines: dict[str, Any],
+    host_id: str,
+    *,
+    local_host: bool,
+    remote_evidence: dict[str, Any] | None = None,
+) -> None:
+    """Attach host-scoped tier-1 repo placement readiness for dev-primary."""
+    if host_id != "dev-primary":
+        return
+    machine = machines[host_id]
+    if not isinstance(machine.get("tier1_baseline"), dict):
+        return
+    if not local_host:
+        repo_placement = (remote_evidence or {}).get("repo_placement")
+        if not isinstance(repo_placement, dict) or not _remote_repo_placement_is_valid(repo_placement):
+            code = "repo_placement_malformed" if isinstance(repo_placement, dict) else "repo_placement_missing"
+            message = (
+                "host-local repo placement evidence malformed"
+                if isinstance(repo_placement, dict)
+                else "host-local repo placement evidence missing or malformed"
+            )
+            repo_placement = {
+                "source": REPO_PLACEMENT_CHECKER_SOURCE,
+                "dispatchable": False,
+                "blockers": [{"code": code, "message": message}],
+                "warnings": [],
+                "inventory_timestamp_utc": _repo_placement_now(machine),
+            }
+        entry["repo_placement"] = repo_placement
+        if repo_placement.get("blockers"):
+            entry["failures"].append(f"repo placement blockers: {len(repo_placement['blockers'])}")
+            entry["dispatchable"] = False
+        elif repo_placement.get("warnings"):
+            entry["warnings"].append(f"repo placement warnings: {len(repo_placement['warnings'])}")
+        return
+
+    now = _repo_placement_now(machine)
+    try:
+        checker = _load_repo_placement_checker()
+        report = checker.check_machine({"machines": machines}, host_id, now=now)
+        repo_placement = {
+            "source": REPO_PLACEMENT_CHECKER_SOURCE,
+            "dispatchable": bool(report.get("dispatchable")),
+            "blockers": list(report.get("blockers") or []),
+            "warnings": list(report.get("warnings") or []),
+            "inventory_timestamp_utc": report.get("inventory_timestamp_utc"),
+        }
+    except Exception as exc:  # noqa: BLE001 - readiness must fail closed
+        repo_placement = {
+            "source": REPO_PLACEMENT_CHECKER_SOURCE,
+            "dispatchable": False,
+            "blockers": [{"code": "repo_placement_unavailable", "message": f"repo placement checker unavailable: {exc.__class__.__name__}"}],
+            "warnings": [],
+            "inventory_timestamp_utc": now,
+        }
+    entry["repo_placement"] = repo_placement
+    if repo_placement["blockers"]:
+        entry["failures"].append(f"repo placement blockers: {len(repo_placement['blockers'])}")
+        entry["dispatchable"] = False
+    elif repo_placement["warnings"]:
+        entry["warnings"].append(f"repo placement warnings: {len(repo_placement['warnings'])}")
+
+
 def collect_readiness(registry_path: str | Path, *, host_id: str | None = None, evidence_dir: str | Path | None = None) -> dict[str, Any]:
     """Collect a secret-free readiness report from registry metadata.
 
@@ -404,6 +518,8 @@ def collect_readiness(registry_path: str | Path, *, host_id: str | None = None, 
             if key not in tg:
                 entry["failures"].append(f"telegram_hermes.{key} missing")
 
+        _apply_repo_placement(entry, machines, hid, local_host=local_host, remote_evidence=remote_evidence)
+
         if entry["failures"]:
             entry["status"] = "fail"
             entry["dispatchable"] = False
@@ -423,7 +539,7 @@ def collect_readiness(registry_path: str | Path, *, host_id: str | None = None, 
 def _build_host_local_evidence(host_id: str, host: dict[str, Any]) -> dict[str, Any]:
     """Build a host-local evidence snapshot for remote control surfaces."""
     failures = list(host.get("failures") or [])
-    return {
+    evidence = {
         "evidence_type": EXPECTED_EVIDENCE_TYPE,
         "schema_version": 1,
         "producer": EXPECTED_EVIDENCE_PRODUCER,
@@ -445,6 +561,9 @@ def _build_host_local_evidence(host_id: str, host: dict[str, Any]) -> dict[str, 
             "data_access": not bool(host.get("missing_data") or any("data_access_profile" in item for item in failures)),
         },
     }
+    if isinstance(host.get("repo_placement"), dict):
+        evidence["repo_placement"] = host["repo_placement"]
+    return evidence
 
 
 def _write_local_evidence_if_requested(

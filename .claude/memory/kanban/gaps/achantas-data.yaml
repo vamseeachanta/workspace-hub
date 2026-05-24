@@ -1,0 +1,76 @@
+gaps:
+- idempotency_key: gap:repo-achantas-data:001
+  title: 'Travel: collapse 50+ destination cards into curated by-region shortlists'
+  source: detected_gap
+  detection_basis: 'Open issues #41–#66 + #95–#106 are individual destination/cabin
+    cards (Arkansas, Louisiana, Florida, Kansas, OK/TX). Cards rarely close — need
+    a per-region curated shortlist that points to canonical pick and archives the
+    rest.'
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Travel-planning currently produces one issue per destination/cabin.
+    Propose: one shortlist issue per region with selected pick + 2 alternates; close
+    the rest as superseded.'
+- idempotency_key: gap:repo-achantas-data:002
+  title: 'devaKrishna: video-evidence analysis pipeline (uploads → frame-pick → annotated
+    review)'
+  source: detected_gap
+  detection_basis: 'Issues #84–#89 establish video-evidence umbrella + per-sport children,
+    but no scripted pipeline exists under da/ or scripts/. Manual review will not
+    scale across tennis/soccer/swimming/typing/reading.'
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Need a thin ingestion pipeline: drop videos under da/videos/, generate
+    keyframes, write annotated markdown alongside.'
+- idempotency_key: gap:repo-achantas-data:003
+  title: 'Family-planning: glidepath calculator scripts/family/glidepath.py not yet
+    implemented'
+  source: detected_gap
+  detection_basis: 'Issue #79 specifies scripts/family/glidepath.py. ls /mnt/local-analysis/achantas-data/scripts/family
+    shows no file.'
+  needs_issue: false
+  priority: 1
+  body_excerpt: 'Implementation of #79 — referenced by #73 (multi-decade goals) and
+    #77 (Fidelity NW baseline).'
+- idempotency_key: gap:repo-achantas-data:004
+  title: 'Finance: tax deadline issues (#22/#23/#31/#33/#34) need close-out audit'
+  source: detected_gap
+  detection_basis: April 15 2026 has passed (today 2026-05-22). Issues file/pay/archive
+    2025 federal return are still open — either work is done and tracking lapsed,
+    or there is a real overdue item.
+  needs_issue: false
+  priority: 2
+  body_excerpt: 'Audit each: confirm payment landed, confirm return PDF archived,
+    close as done OR escalate.'
+- idempotency_key: gap:repo-achantas-data:005
+  title: 'Household: 11511/RK/SD/ACH single-letter prefixed issues lack ownership
+    + age out'
+  source: detected_gap
+  detection_basis: 'Issues #8–#18 use cryptic prefixes (SD|, RK|, ACH|, DA|, SDEV|,
+    11511) with no labels, no body content, no assignee. Created before label discipline;
+    risk of indefinite open.'
+  needs_issue: false
+  priority: 0
+  body_excerpt: 'Triage pass: label, set priority, body-fill, or close as obsolete.'
+- idempotency_key: gap:repo-achantas-data:006
+  title: 'devaKrishna: Krishna typing tools rotation not tracked as issue (lives only
+    in MEMORY.md)'
+  source: detected_gap
+  detection_basis: workspace-hub MEMORY.md references project_krishna_typing_tools.md
+    (typing.com stall 2026-05-12, rotate TypingClub/Dance Mat/Keybr). No matching
+    achantas-data issue.
+  needs_issue: true
+  priority: 0
+  body_excerpt: 'Create issue: Krishna typing tools rotation — track each platform
+    trial outcome.'
+- idempotency_key: gap:repo-achantas-data:007
+  title: 'Repo: 2.7MB+ committed PDFs/DOCX at repo root (Achanta_*.pdf, Durga.docx,
+    Dakshana_Murthy_Print.docx)'
+  source: detected_gap
+  detection_basis: ls shows multiple large binaries at root (Achanta_Utility_2021_08_08.pdf
+    751KB, Durga.docx 908KB, Dakshana_Murthy_Print.docx 218KB). Should move to docs/archive/
+    or git-lfs.
+  needs_issue: true
+  priority: 0
+  body_excerpt: Audit root-level binaries, move to docs/archive/<year>/ or detach
+    via lfs.

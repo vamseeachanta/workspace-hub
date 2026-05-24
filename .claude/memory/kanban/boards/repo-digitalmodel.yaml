@@ -1,0 +1,269 @@
+board:
+  slug: repo-digitalmodel
+  display_name: digitalmodel
+  tier: repo
+  repo: vamseeachanta/digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel — engineering analysis library for offshore/marine systems. This tier-1 board holds unclassified overflow; classified work lives on tier-2 domain sub-boards.
+
+    '
+  children:
+  - repo-digitalmodel-solver
+  - repo-digitalmodel-codes
+  - repo-digitalmodel-subsea
+  - repo-digitalmodel-hydro
+  - repo-digitalmodel-qa
+cards:
+- idempotency_key: gh:vamseeachanta/digitalmodel#261
+  title: 'WRK-618: feat(geotechnical): soil profile models, CPT correlation, shared types'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/261
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-618: feat(geotechnical): soil profile models, CPT correlation, shared types
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** [''dev-primary'', ''dev-secondary'']'
+- idempotency_key: gh:vamseeachanta/digitalmodel#168
+  title: 'WRK-171: Cost data calibration — sanctioned project benchmarking & multivariate cost prediction'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/168
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-171: Cost data calibration — sanctioned project benchmarking & multivariate cost prediction
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''worldenergydata''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#522
+  title: Codify ultra-constrained Claude subprocess prompt patterns for issue-scope reviews
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/522
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent / context
+
+    Follow-up from #515 and the subprocess prompt-pack experiments executed for #517/#518/#519/#520.
+
+    ## Summary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#469
+  title: Assess AI agent session artifact dirs across machines (.codex, .gemini, .claude/skills)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/469
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Purpose
+
+    Track the per-machine assessment of how AI agent session artifact directories (`.codex/`, `.gemini/`, `.claude/skills/` symlink files) should be handled in the repo. This issue records decisions made
+    on each machine so they can be compared and a consistent policy confirmed.
+
+    ---'
+- idempotency_key: gh:vamseeachanta/digitalmodel#461
+  title: Recover ship-dimensions template artifact from WRK-1339 Child E
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/461
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Recover or deliberately replace the missing Child E deliverable from `WRK-1339` so downstream ship-dimensions work can proceed inside `workspace-hub` without guessing schema or output paths.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/digitalmodel#257
+  title: 'WRK-604: chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/257
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  - cat:engineering
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-604: chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records)
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** marine
+
+    **Repo:** [''workspace-hub''] | **Complexity:** low | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#127
+  title: 'TASK 1.5: Database Integration Layer'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/127
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Weeks 2-3)\n**Assigned to:** Infrastructure Lead  \n**Duration:** 1.5-2 weeks (40-45 hours)  "
+- idempotency_key: gh:vamseeachanta/digitalmodel#126
+  title: 'TASK 1.4: Shared Data Models Unification'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/126
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Weeks 1-2)\n**Assigned to:** Full-Stack Developer  \n**Duration:** 1.5 weeks (30-35 hours)  "
+- idempotency_key: gh:vamseeachanta/digitalmodel#95
+  title: Design Drawings
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/95
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: Please share design drawings [ Inventory ]
+- idempotency_key: gh:vamseeachanta/digitalmodel#92
+  title: engg debt | FreeCAD
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/92
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Freecad\n  - [ ] Send Geometry file + Macro. \n    - [x] Learn basic macro recording process"
+- idempotency_key: gh:vamseeachanta/digitalmodel#89
+  title: PB | Task List
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/89
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  gh_assignees:
+  - bakkiprasad5669
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] GrabCAD Inventory\n  - [ ] Create GrabCAD account \n  - [ ] add the CT reel and injector head drawings as part of your portfolio"
+- idempotency_key: gh:vamseeachanta/digitalmodel#80
+  title: Project DRS | Tasks
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/80
+  gh_state: open
+  gh_labels:
+  - project
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: '- [ ] Follow up for work
+
+    - [ ] Send email on autocad working script and close-out the work.'
+- idempotency_key: gh:vamseeachanta/digitalmodel#60
+  title: engg debt | Time Series | Filter in FFT and Get Timetrace Back
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/60
+  gh_state: open
+  gh_labels:
+  - feature
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '- [ ] Filter signal (using low, high, band pass filters)
+
+    - [ ] Get timetrace back
+
+    - [ ] Plot comparson charts'
+- idempotency_key: gh:vamseeachanta/digitalmodel#54
+  title: SS |  Task List
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/54
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  gh_assignees:
+  - samdansk2
+  initial_status: triage
+  priority: 0
+  body_excerpt: placeholder for SS assignments
+- idempotency_key: gh:vamseeachanta/digitalmodel#47
+  title: engg debt | Plate Buckling Calculations
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/47
+  gh_state: open
+  gh_labels:
+  - feature
+  - wrk-item
+  gh_assignees:
+  - samdansk2
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Prepare plate buckling calculations.
+
+    https://github.com/vamseeachanta/digitalmodel/tree/plate_buckling/docs/sub_plate_buckling'
+- idempotency_key: gh:vamseeachanta/digitalmodel#31
+  title: engg debt | Ship design | strength checks
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/31
+  gh_state: open
+  gh_labels:
+  - feature
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: Develop scripts
+- idempotency_key: gh:vamseeachanta/digitalmodel#30
+  title: engg debt | Ship design | min scantling calculations
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/30
+  gh_state: open
+  gh_labels:
+  - feature
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: Develop scripts
+- idempotency_key: gh:vamseeachanta/digitalmodel#12
+  title: engg debt | Padeye Calculations
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/12
+  gh_state: open
+  gh_labels:
+  - feature
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: Standard padeye calculations and associated checks

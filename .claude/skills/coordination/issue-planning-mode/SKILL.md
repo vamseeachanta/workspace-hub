@@ -83,6 +83,8 @@ For repo/data location contract plans, also run the checks in `references/repo-l
 
 For per-machine repo placement plans, also apply `references/per-machine-repo-placement-outcome-contract.md`: the first machine issue in a sequence must leave a reusable pattern for consistent tier-1 repo folder structure, primary/reference checkout decisions, and repo harness/file ecosystem handling through one repo-tracked authority rather than creating machine-specific duplicate conventions.
 
+For plans being revised after a source/provenance ambiguity is resolved, especially when licensed or private off-repo material is involved, apply `references/source-provenance-plan-revision.md`: patch the canonical plan narrowly, state the source/license boundary, add fail-closed citation/leakage tests, run focused re-review, and stop at user approval rather than self-approving.
+
 Update the index table in `docs/plans/README.md` with a new row.
 
 ### Layered architecture issue trees
@@ -97,6 +99,8 @@ Required shape:
 - For plan-review hardening, cite revision-stamped, non-empty review artifacts; do not rely on paths that can be truncated or overwritten by the same review run.
 
 Session-specific examples and checklists: `references/layered-architecture-issue-planning.md`.
+
+For GitHub issue portfolios that must flow from data layer → execution layer → result/output layer, use `references/data-execution-results-kanban.md`: inventory issues by architectural lane, create a repo-tracked Kanban/report artifact, delegate read-only planning/review waves by provider strengths, verify delegate claims in the orchestrator checkout, and stop at an explicit approval checkpoint before implementation.
 
 Execution discipline for delegated agents:
 - If using Claude/Codex/Gemini in parallel worktrees, explicitly anchor the repo/worktree path in the prompt/context and verify the plan file was written in the intended checkout. Do not assume the child agent stayed in the requested worktree.
@@ -133,9 +137,25 @@ Rationale: user feedback 2026-04-17 on #2323 — "Make all the reviews adversari
 
 ### Step 4: Post and Label
 
-1. Post the plan as a GitHub issue comment
-2. Apply label: `gh issue edit NNN --add-label "status:plan-review"`
-3. **STOP** — do NOT implement. Wait for user approval.
+1. Commit and push the current plan plus the final no-MAJOR review artifacts. Verify the reviewed local commit equals the remote head before label changes:
+   ```bash
+   git rev-parse HEAD
+   git ls-remote origin refs/heads/main | awk '{print $1}'
+   ```
+2. Post the plan as a GitHub issue comment, or post a label-time evidence comment that records:
+   - reviewed commit SHA
+   - plan path
+   - review artifact paths, including the final no-MAJOR round
+   - final provider verdicts
+   - confirmation that implementation remains blocked pending user approval
+3. Only after the evidence comment exists, move the issue to review state:
+   ```bash
+   gh issue edit NNN --remove-label "status:needs-plan" --add-label "status:plan-review"
+   ```
+   Adjust the removed lower-status label if the issue uses a different earlier gate label.
+4. **STOP** — do NOT implement. Wait for user approval.
+
+Operational pitfall: do not update `docs/plans/README.md` to `plan-review` and stop there. The live GitHub label must also be reconciled, but only after pushed artifact evidence exists.
 
 ### Step 6: User Approval
 

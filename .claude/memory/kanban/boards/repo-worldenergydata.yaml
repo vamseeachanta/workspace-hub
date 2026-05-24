@@ -1,0 +1,11 @@
+board:
+  slug: repo-worldenergydata
+  display_name: worldenergydata
+  tier: repo
+  repo: vamseeachanta/worldenergydata
+  workspace_path: /mnt/local-analysis/worldenergydata
+  description: 'GTM-ready oil/gas public-data product (BSEE/NOAA/USGS/MMS). Parent
+    board; cards live in domain sub-boards (ingestion, reports, gtm, quality).
+
+    '
+cards: []

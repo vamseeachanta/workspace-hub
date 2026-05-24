@@ -20,9 +20,15 @@ Do not let implementation pass by only removing old placeholder names or adding 
 4. Test license boundaries separately.
    - Repo-bound artifacts may contain pointer/provenance/citation metadata and issue-specific outputs.
    - They must not serialize a reusable licensed coefficient corpus unless explicit license approval exists.
-5. Keep report presentation tests as secondary checks.
-   - Report terms, headings, DOCX/PDF text extraction, SVG metadata, and chart labels verify packaging.
+5. Keep report presentation tests as secondary checks, but make them cross-surface.
+   - Report terms, headings, DOCX/PDF text extraction, SVG metadata, chart labels, manifests, generated Markdown/HTML/DOCX/PDF, and issue-closeout comments verify packaging.
    - They do not prove calculation correctness by themselves.
+   - Stale language in generated artifacts is a correctness risk for engineering deliverables: add negative tests for superseded defaults, placeholder phrases, resultants/heatmaps removed by the approved plan, and formula text that contradicts the source-gated model.
+   - Do not let a focused green unit test substitute for regenerated artifact inspection; verify every required output surface before commit/close.
+6. After context compaction or inherited dirty work, treat a targeted green test run as a checkpoint, not completion.
+   - Re-read the approved plan acceptance criteria and map each item to tests or deterministic inspection before committing.
+   - Explicitly classify gaps that current tests do not cover, such as durable citation sidecar files, DOCX/PDF output contracts, SVG metadata, manifest completeness, and no-corpus-leakage checks.
+   - Review changed/generated artifacts that were not part of the issue surface before staging; revert or justify them separately.
 
 ## Review checklist
 
