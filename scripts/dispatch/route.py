@@ -268,17 +268,20 @@ def ensure_labels(repo: str, names: set[str], dry: bool):
             "--description", desc])  # no --force: create-only
 
 
-def live_state(repo: str, number: str):
-    """Return (is_open, existing_label_names) at write time. Guards both the
-    3-day mirror staleness AND respects pre-existing domain: taxonomies."""
-    out = gh(["issue", "view", number, "--repo", repo, "--json", "state,labels"])
+def fetch_open_issues(repo: str):
+    """ONE GraphQL call: map {number -> set(label names)} for all OPEN issues.
+    Replaces per-issue lookups (which exhausted the 5000-pt GraphQL budget on
+    big repos). Returns None on API failure (e.g. rate limit) so the caller can
+    abort cleanly instead of miscounting failures as drift."""
+    out = gh(["issue", "list", "--repo", repo, "--state", "open",
+              "--limit", "2000", "--json", "number,labels"])
     if out.returncode != 0:
-        return False, set()
+        return None
     try:
-        d = json.loads(out.stdout)
-        return d.get("state", "").lower() == "open", {l["name"] for l in d.get("labels", [])}
+        return {str(it["number"]): {l["name"] for l in it["labels"]}
+                for it in json.loads(out.stdout)}
     except Exception:
-        return False, set()
+        return None
 
 
 def repo_has_domain_authority(repo: str) -> bool:
@@ -323,16 +326,21 @@ def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace
     print("  label namespaces to ensure:")
     ensure_labels(repo, used, dry=not do_write)
 
+    # one pre-fetch of live open issues (None => API/rate-limit failure)
+    live = None if not do_write else fetch_open_issues(repo)
+    if do_write and live is None:
+        sys.exit("ERR: could not fetch live issues (rate limit?). "
+                 "Check `gh api rate_limit`; re-run after reset (idempotent).")
+
     written = noop = err = drifted = 0
     for i, p in enumerate(proposals, 1):
         if not do_write:
             labs = labels_for(p, set(), skip_domain)  # optimistic preview
             print(f"    #{p['number']:<6} += {','.join(labs)}")
             continue
-        is_open, existing = live_state(repo, p["number"])
-        if not is_open:
-            drifted += 1
-            print(f"    #{p['number']:<6} \033[33mSKIP (not live-open)\033[0m")
+        existing = live.get(p["number"])
+        if existing is None:
+            drifted += 1  # genuinely not open (closed since snapshot) — not an API error
             continue
         labs = labels_for(p, existing, skip_domain)
         if not labs:
@@ -344,6 +352,10 @@ def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace
         else:
             err += 1
             print(f"    #{p['number']:<6} \033[31mERR\033[0m {r.stderr.strip()[:60]}")
+            if "rate limit" in r.stderr.lower():
+                print("    \033[31mrate limit hit — stopping; re-run after reset "
+                      "(idempotent).\033[0m")
+                break
         if i % batch == 0:
             time.sleep(pace)
     if do_write:
