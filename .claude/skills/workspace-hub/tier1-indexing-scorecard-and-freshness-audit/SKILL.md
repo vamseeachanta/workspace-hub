@@ -165,6 +165,7 @@ Latest evidence references:
 - `references/2026-05-15-freshness-audit-lessons.md` — latest status-level baseline, report readback/verification pattern, historical-scorecard-as-context guardrail, and current evidence snapshot.
 - `references/2026-05-20-freshness-audit-lessons.md` — dedupe generated broken-reference evidence before finalizing, verify file status/mtime/hash after all report patches, and preserve the corrected RED/YELLOW tier-1 status baseline.
 - `references/2026-05-21-freshness-audit-lessons.md` — compaction-resume closeout pattern, byte-identical dated/latest verification, status-level drift wording, and sibling-checkout generator path drift handling.
+- `references/2026-05-25-freshness-audit-lessons.md` — stale latest-report correction pattern, sibling-fallback evidence snapshot, latest-only verification shape, and current RED/YELLOW baseline.
 
 
 ## Daily freshness automation pattern

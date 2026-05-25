@@ -20,7 +20,7 @@
 - `/mnt/local-analysis/workspace-hub/` — the real git repo mount
 - `~/workspace-hub` — **sparse overlay** on ace-linux-1; writes may fail silently *stale: 2026-05-24*
   - If a write via tool fails: write to `/tmp/` first, then `mv` via terminal to the real mount
-- `digitalmodel/` — **separate git repo** (vamseeachanta/digitalmodel.git), gitignored by parent
+- `digitalmodel/` — **separate git repo** (vamseeachanta/digitalmodel.git), gitignored by parent *stale: 2026-05-25*
   - Commits MUST be made from inside `digitalmodel/` — not from workspace-hub root
 - `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent *stale: 2026-05-24*
 - `worldenergydata/` — energy data sub-repo
@@ -29,7 +29,7 @@
 
 - MINGW64 bash: paths use `/d/workspace-hub/` (not `D:\workspace-hub`)
 - `core.symlinks=false` — git treats junctions as dirs; never commit symlinks cross-platform
-- Shell scripts: `#!/usr/bin/env bash`, LF line endings
+- Shell scripts: `#!/usr/bin/env bash`, LF line endings *stale: 2026-05-25*
 
 ## Memory Sync Model
 
