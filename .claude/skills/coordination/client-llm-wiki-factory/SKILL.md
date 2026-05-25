@@ -118,6 +118,32 @@ cp -a /mnt/local-analysis/workspace-hub/templates/client-llm-wiki/. \
 
 **Critical**: use the trailing-dot form (`SRC/.`), NOT `SRC/*`. Plain `cp -r SRC/* DEST/` SKIPS dotfiles, omitting `.gitignore` and `.claude/CLAUDE.md` from the new repo — a **privacy-firewall failure**. The `-a` flag also preserves attributes and is recursive.
 
+The template tree as of #2778 includes the project-folder skeleton at `templates/client-llm-wiki/projects/_template-project/` (`README.md` + `raw/` + `extracted/` + `methodology/` + `results/`). Step 5b below instantiates per-project copies of this skeleton.
+
+### 5b. Instantiate per-project folders (per #2778)
+
+For each project currently active under this client, copy the `_template-project/` skeleton into a project-named folder and substitute the project placeholder:
+
+```bash
+# Per-project loop — repeat for each PROJECT in this client's roster:
+PROJECT="sirocco"   # example project slug; substitute per actual engagement
+
+cp -a /mnt/local-analysis/workspace-hub/templates/client-llm-wiki/projects/_template-project/. \
+      /mnt/local-analysis/llm-wiki-$SHORT/projects/$PROJECT/
+
+# Substitute project placeholder in the new project tree:
+find /mnt/local-analysis/llm-wiki-$SHORT/projects/$PROJECT -type f -exec sed -i \
+  -e "s|<PROJECT_SHORT_NAME>|$PROJECT|g" \
+  {} +
+
+# Verify no placeholder remains:
+grep -rE '<PROJECT_SHORT_NAME>' /mnt/local-analysis/llm-wiki-$SHORT/projects/$PROJECT \
+  && { echo "ABORT: PROJECT_SHORT_NAME placeholder not substituted"; exit 1; } \
+  || true
+```
+
+After instantiating, **add the project slug to the client's `projects:` list in `config/client-wikis.yml`** (workspace-hub) so the `check-wiki-sibling-frontmatter.py` enforcement script's Rule E recognizes the project as registered. If the `projects:` list is absent, Rule E degrades to warn-only (forward-compatible), but explicit listing is strongly recommended.
+
 ### 6. Substitute all 4 placeholders
 
 Variables `SHORT` / `UPPER` / `PRIV` / `RAW` were set in Step 0 — re-shown here for context. Run the multi-expression sed:

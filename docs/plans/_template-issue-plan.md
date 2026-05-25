@@ -4,11 +4,19 @@
 > **Complexity:** T1 | T2 | T3
 > **Date:** YYYY-MM-DD
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/NNN
+> **Client:** N/A | <client-slug>     <!-- required per .claude/rules/wiki-sibling-routing.md (#2778); N/A when plan does not touch wiki content -->
+> **Project:** (optional — populate when plan scopes to a single project under the client; consumed by check-wiki-sibling-frontmatter.py Rule E)
 > **Review artifacts:** scripts/review/results/YYYY-MM-DD-plan-NNN-claude.md | ...-codex.md | ...-gemini.md
 
 ---
 
 ## Resource Intelligence Summary
+
+<!-- For plans touching wiki content (Client: != N/A), the work routes per
+     .claude/rules/wiki-sibling-routing.md. Verify Client: matches a
+     `short_name` in config/client-wikis.yml; verify Project: (if set) is
+     enumerated in that client's `projects:` list (Rule E). -->
+
 
 <!-- RETRIEVAL CONTRACT (per #2208):
      This section is an evidence contract, not a free-form narrative.
