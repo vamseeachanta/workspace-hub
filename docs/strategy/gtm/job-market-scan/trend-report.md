@@ -1,7 +1,7 @@
 # GTM Trend Report — Week-over-Week Hiring Momentum
 
-> Generated: 2026-05-18
-> Total scans to date: 7
+> Generated: 2026-05-25
+> Total scans to date: 8
 
 ## Scan History
 
@@ -14,6 +14,7 @@
 | 2026-05-04 | 664 | 622 | 42 | 333 |
 | 2026-05-11 | 638 | 594 | 44 | 347 |
 | 2026-05-18 | 826 | 754 | 72 | 381 |
+| 2026-05-25 | 1170 | 1138 | 32 | 561 |
 
 ## 📈 Trending UP — Companies Hiring MORE This Week
 
@@ -22,46 +23,46 @@ These companies have MORE open roles than last scan — they are getting busier.
 
 | Company | This Week | Last Week | Change | Priority? |
 |---------|-----------|-----------|--------|-----------|
-| **WSP in the U.S.** | 26 | 10 | +16 |  |
-| **Tata Consultancy Services** | 14 | 1 | +13 |  |
+| **EY** | 116 | 60 | +56 |  |
+| **Lockheed Martin Corporation** | 19 | 1 | +18 |  |
+| **Northrop Grumman** | 18 | 2 | +16 |  |
 | **Deloitte** | 49 | 36 | +13 |  |
-| **Jacobs** | 17 | 5 | +12 |  |
+| **General Dynamics Mission Systems, Inc** | 13 | 1 | +12 |  |
 | **Jobs via Dice** | 16 | 5 | +11 |  |
-| **BrandSafway** | 10 | 1 | +9 |  |
-| **SpaceX** | 11 | 3 | +8 |  |
+| **Kinder Morgan, Inc.** | 12 | 1 | +11 |  |
+| **Raytheon** | 11 | 3 | +8 |  |
+| **Global Connect Technologies** | 10 | 2 | +8 |  |
+| **Tesla** | 9 | 1 | +8 |  |
 | **ABS Group** | 12 | 4 | +8 | ✅ |
 | **Intermoor** | 8 | 1 | +7 | ✅ |
+| **Boeing** | 9 | 2 | +7 |  |
 | **McDermott International, Ltd** | 10 | 4 | +6 | ✅ |
-| **Blue Origin** | 11 | 6 | +5 |  |
+| **Vestas** | 7 | 1 | +6 |  |
+| **Leidos** | 8 | 2 | +6 |  |
+| **KBR** | 6 | 1 | +5 |  |
+| **Everllence** | 6 | 1 | +5 |  |
 | **Manson Construction Co.** | 6 | 1 | +5 |  |
-| **Sargent & Lundy** | 7 | 2 | +5 |  |
-| **Hermeus** | 7 | 2 | +5 |  |
-| **Panthalassa** | 9 | 4 | +5 |  |
-| **SEGULA Technologies** | 6 | 1 | +5 |  |
-| **Worley** | 9 | 5 | +4 | ✅ |
-| **Subsea7** | 10 | 6 | +4 | ✅ |
-| **Körber Supply Chain** | 6 | 2 | +4 |  |
-| **First Search Inc.** | 5 | 1 | +4 |  |
+| **Acteon Group** | 7 | 2 | +5 |  |
 
 ## ➡️ Consistently Busy — Stable High Hiring
 
 | Company | Roles (stable) | Priority? |
 |---------|---------------|-----------|
 | ABS | 13 | ✅ |
-| Seatrium | 7 |  |
 | Orsted | 6 | ✅ |
 | Gilead Sciences | 6 |  |
 | Zachry Group | 5 |  |
 | Honeywell | 5 |  |
+| Resource Innovations | 5 |  |
 | Mammoet | 4 |  |
 | HDR | 4 |  |
-| Helix Energy Solutions Group | 4 |  |
 | Energy Sciences | 4 |  |
 | Altrad Sparrows – Americas | 4 |  |
-| Arup | 3 |  |
-| Re:Build Manufacturing | 3 |  |
+| TechnipFMC | 3 | ✅ |
 | NTT DATA North America | 3 |  |
-| Slalom | 3 |  |
+| SEPHORA | 3 |  |
+| Upbound Group | 3 |  |
+| Goken America | 3 |  |
 
 ## 🔥 Persistent Openings — Hard to Fill = Consulting Gold
 
@@ -70,38 +71,38 @@ They are the most likely to accept a consulting alternative.
 
 | Weeks Seen | Title | Company | Score | First Seen |
 |------------|-------|---------|-------|------------|
-| 6 | Engineering | TechnipFMC | 100 | 2026-04-02 |
-| 6 | Subsea Operations | TechnipFMC | 100 | 2026-04-02 |
-| 6 | Analyst Coverage & Consensus | SBM Offshore | 100 | 2026-04-02 |
-| 6 | Engineering Reviews | ABS | 100 | 2026-04-02 |
-| 6 | Engineering Applications | ABS | 100 | 2026-04-02 |
-| 6 | Marine Engineering Applications | ABS | 100 | 2026-04-02 |
-| 6 | Offshore Engineering Applications | ABS | 100 | 2026-04-02 |
-| 6 | Subsea Solutions | ABS | 100 | 2026-04-02 |
-| 6 | Subsea Mining | ABS | 100 | 2026-04-02 |
-| 6 | Rules and Guides for Naval Ships | ABS | 100 | 2026-04-02 |
-| 6 | Subsea Processing Systems | ABS | 100 | 2026-04-02 |
-| 6 | Engineering Software | ABS | 100 | 2026-04-02 |
-| 6 | Analysts coverage | Bureau Veritas | 100 | 2026-04-02 |
-| 6 | Subsea services | DOF Subsea | 100 | 2026-04-02 |
-| 6 | Digital - Engineering Suite | Chart Industries | 100 | 2026-04-02 |
-| 6 | Analyst Coverage | Chart Industries | 100 | 2026-04-02 |
-| 6 | Engineering &
+| 7 | Engineering | TechnipFMC | 100 | 2026-04-02 |
+| 7 | Subsea Operations | TechnipFMC | 100 | 2026-04-02 |
+| 7 | Analyst Coverage & Consensus | SBM Offshore | 100 | 2026-04-02 |
+| 7 | Engineering Reviews | ABS | 100 | 2026-04-02 |
+| 7 | Engineering Applications | ABS | 100 | 2026-04-02 |
+| 7 | Marine Engineering Applications | ABS | 100 | 2026-04-02 |
+| 7 | Offshore Engineering Applications | ABS | 100 | 2026-04-02 |
+| 7 | Subsea Solutions | ABS | 100 | 2026-04-02 |
+| 7 | Subsea Mining | ABS | 100 | 2026-04-02 |
+| 7 | Rules and Guides for Naval Ships | ABS | 100 | 2026-04-02 |
+| 7 | Subsea Processing Systems | ABS | 100 | 2026-04-02 |
+| 7 | Engineering Software | ABS | 100 | 2026-04-02 |
+| 7 | Analysts coverage | Bureau Veritas | 100 | 2026-04-02 |
+| 7 | Subsea services | DOF Subsea | 100 | 2026-04-02 |
+| 7 | Digital - Engineering Suite | Chart Industries | 100 | 2026-04-02 |
+| 7 | Analyst Coverage | Chart Industries | 100 | 2026-04-02 |
+| 7 | Engineering &
                             Technolo | GE Vernova | 100 | 2026-04-02 |
-| 6 | Engineering & Technology | GE Vernova | 100 | 2026-04-02 |
-| 5 | Engineering Reviews | ABS | 100 | 2026-04-13 |
-| 5 | Engineering Applications | ABS | 100 | 2026-04-13 |
-| 5 | Engineering Reviews | ABS | 100 | 2026-04-13 |
-| 5 | Subsea Solutions | ABS | 100 | 2026-04-13 |
-| 4 | Corpus Christi Pipeline | Cheniere Energy | 100 | 2026-04-20 |
-| 4 | Creole Trail Pipeline | Cheniere Energy | 100 | 2026-04-20 |
+| 7 | Engineering & Technology | GE Vernova | 100 | 2026-04-02 |
+| 6 | Engineering Reviews | ABS | 100 | 2026-04-13 |
+| 6 | Engineering Applications | ABS | 100 | 2026-04-13 |
+| 6 | Engineering Reviews | ABS | 100 | 2026-04-13 |
+| 6 | Subsea Solutions | ABS | 100 | 2026-04-13 |
+| 5 | Corpus Christi Pipeline | Cheniere Energy | 100 | 2026-04-20 |
+| 5 | Creole Trail Pipeline | Cheniere Energy | 100 | 2026-04-20 |
 | 3 | CareersEngineering ·  3 min readEngineering succes | Worley | 115 | 2026-04-02 |
 
 ## Cumulative Statistics
 
-- **3841** unique job postings tracked all-time
-- **1398** unique companies seen
-- **7** scans completed
+- **4979** unique job postings tracked all-time
+- **1694** unique companies seen
+- **8** scans completed
 
 ---
 
