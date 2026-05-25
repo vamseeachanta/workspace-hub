@@ -89,6 +89,16 @@ When the user asks for "all candidates", "all N", "one by one", or otherwise wan
 6. If there is a parent/portfolio issue, post one sequencing comment that lists recommended order and states that implementation remains blocked until each issue completes plan review and user approval.
 7. Write a temp TSV or markdown index of created issue numbers/titles/URLs for restart-safe handoff; keep it outside repos unless the user asks for a tracked artifact.
 
+### 2B. If the issue set becomes a staged plan wave
+
+When architecture candidates expand into dependent GitHub issues, preserve the plan gate instead of treating patched drafts as approval. See `references/ecosystem-plan-wave-review-gates.md` for the detailed checklist.
+
+- Use subagents for bounded patching, focused re-QA, and repo-batch inspection, but centrally verify every written plan/index change before advancing status.
+- After workers patch upstream plans, run focused re-QA against the exact prior MAJOR findings and record the result in the plan artifact/index.
+- Focused re-QA can clear substantive content blockers, but it does **not** replace formal provider-review artifacts.
+- If required Claude/Codex/Gemini review artifacts, or explicit `UNAVAILABLE` artifacts, are missing, mark the plans `draft-provider-review-pending`, keep GitHub issues at `status:needs-plan`, and do not resume downstream planning.
+- Never self-apply `status:plan-approved`; that transition remains user-only.
+
 ### 3. Grilling loop
 
 Once the user picks a candidate, drop into a grilling conversation. Walk the design tree with them — constraints, dependencies, the shape of the deepened module, what sits behind the seam, what tests survive.
