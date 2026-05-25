@@ -1,0 +1,84 @@
+machine: multi
+generated_by: dispatch.py
+cards:
+- gh: vamseeachanta/workspace-hub#1504
+  repo: vamseeachanta/workspace-hub
+  domain: ai-orchestration
+  provider: claude
+  title: Install Claude Desktop on all ecosystem machines
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1504
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1378
+  repo: vamseeachanta/workspace-hub
+  domain: ai-orchestration
+  provider: claude
+  title: 'WRK-PENDING: Review local-analysis folders for relocation to'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1378
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2641
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: 'feat(solver-queue): hands-off multi-machine inbox ingestion '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2641
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2089
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: 'feat(harness): weekly Hermes + AI provider settings review f'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2089
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1782
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: "epic: zero-loss agent learnings \u2014 git-track ALL AI agent mem"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1782
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1678
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: Deploy harness-update-windows.sh to licensed-win-1 and licen
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1678
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1583
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: Hermes config parity via repo ecosystem templates
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1583
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1462
+  repo: vamseeachanta/workspace-hub
+  domain: ops
+  provider: claude
+  title: Install and configure tmux (or chosen multiplexer) across al
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1462
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1354
+  repo: vamseeachanta/workspace-hub
+  domain: ops
+  provider: claude
+  title: 'WRK-1354: frontierdeepwater: sync missing files from remote '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1354
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual

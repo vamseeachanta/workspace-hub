@@ -158,6 +158,8 @@ data/document-index/*.jsonl.backup-*
 !.claude/memory/
 # Work queue - tracked for cross-machine/user portability
 !.claude/work-queue/
+# Dispatch queues - per-machine work files; tracked so each machine pulls via git
+!.claude/dispatch/
 # State directory — un-ignore parent so child exceptions work (see below)
 !.claude/state/
 

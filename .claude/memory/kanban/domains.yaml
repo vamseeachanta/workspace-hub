@@ -29,10 +29,10 @@ repos:
     # RESOLVED 2026-05-25: keep 'quality' as a 6th domain (28 real cards);
     # rename 'ingestion' -> 'ingest'; add 'bsee' + 'hse'.
     domains:
-      - {name: ingest,  status: rename, from: ingestion}   # board rename in Phase B
+      - {name: ingest,  status: existing}  # renamed from ingestion 2026-05-25 (board + 22 issue labels)
       - {name: gtm,     status: existing}
-      - {name: bsee,    status: new}      # Bureau of Safety & Environmental Enforcement data
-      - {name: hse,     status: new}      # health, safety, environment
+      - {name: bsee,    status: existing}  # board def created; awaiting card categorization
+      - {name: hse,     status: existing}  # board def created; awaiting card categorization
       - {name: reports, status: existing}
       - {name: quality, status: existing, cards: 28}        # kept per user 2026-05-25
 

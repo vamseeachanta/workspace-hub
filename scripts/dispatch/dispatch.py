@@ -36,11 +36,12 @@ def get_proposals(repo=None):
 
 
 def build_queues(proposals):
-    """Group active-eligible cards into per-machine queue payloads."""
+    """Full per-machine BACKLOG: every assigned card goes into its machine's
+    queue. `wip_eligible` flags the cards a session may claim NOW (within the
+    WIP cap); the rest wait in the same file. WIP is enforced at claim time by
+    the consuming session, not by truncating the queue."""
     queues = defaultdict(list)
     for p in proposals:
-        if p["slot"] != "active-eligible":
-            continue  # queued-by-WIP cards are not yet placed into a machine queue
         queues[p["machine"]].append({
             "gh": p["key"].replace("gh:", ""),
             "repo": p["repo"],
@@ -49,6 +50,7 @@ def build_queues(proposals):
             "title": p["title"],
             "url": p["url"],
             "dispatch_status": "ready",
+            "wip_eligible": p["slot"] == "active-eligible",
             "routed_by": p["routed_by"],
         })
     return queues
@@ -61,7 +63,8 @@ def cmd_build(write: bool):
           f"-> {DISPATCH_DIR.relative_to(ROOT)}/")
     for machine in sorted(queues):
         cards = queues[machine]
-        print(f"  {machine:<16} {len(cards):>3} ready card(s)")
+        elig = sum(1 for c in cards if c["wip_eligible"])
+        print(f"  {machine:<16} {len(cards):>4} backlog  ({elig} wip-eligible now)")
         if write:
             DISPATCH_DIR.mkdir(parents=True, exist_ok=True)
             payload = {"machine": machine, "generated_by": "dispatch.py",
