@@ -1,0 +1,105 @@
+# domains.yaml — authoritative per-repo domain taxonomy
+# Source of truth for the `domain:<name>` label namespace and tier-2 board slugs.
+# Decided with user 2026-05-25. Subsystem-based (not card-count gated).
+#
+# status per domain:
+#   existing  — tier-2 board already present in boards/
+#   new       — to be created (board def + domain: label)
+#   rename    — existing board to be renamed (needs migration; see reconcile)
+#   review    — existing board NOT in the confirmed list; awaiting user decision
+#
+# Repos with no `domains:` key are intentionally FLAT (below the meaningful-
+# subsystem bar): aceengineer-admin, aceengineer-strategy, hobbies,
+# kaggle-rogii-2026, llm-wiki-acma. Issues there carry only repo/machine/ai
+# labels, no domain.
+
+repos:
+
+  vamseeachanta/digitalmodel:
+    board: repo-digitalmodel
+    domains:
+      - {name: hydro,  status: existing}   # hydrodynamics, naval arch, mooring, fatigue
+      - {name: solver, status: existing}   # OrcaWave/AQWA bridges, time-domain integrators
+      - {name: codes,  status: existing}   # codes & standards modules
+      - {name: subsea, status: existing}   # subsea / pipeline / riser
+      - {name: qa,     status: existing}   # test, CI, quality
+
+  vamseeachanta/worldenergydata:
+    board: repo-worldenergydata
+    # RESOLVED 2026-05-25: keep 'quality' as a 6th domain (28 real cards);
+    # rename 'ingestion' -> 'ingest'; add 'bsee' + 'hse'.
+    domains:
+      - {name: ingest,  status: rename, from: ingestion}   # board rename in Phase B
+      - {name: gtm,     status: existing}
+      - {name: bsee,    status: new}      # Bureau of Safety & Environmental Enforcement data
+      - {name: hse,     status: new}      # health, safety, environment
+      - {name: reports, status: existing}
+      - {name: quality, status: existing, cards: 28}        # kept per user 2026-05-25
+
+  vamseeachanta/llm-wiki:
+    board: repo-llm-wiki
+    domains:
+      - {name: content,    status: existing}
+      - {name: ingest,     status: existing}
+      - {name: governance, status: existing}
+      - {name: tooling,    status: existing}
+
+  vamseeachanta/workspace-hub:
+    board: repo-workspace-hub
+    domains:
+      - {name: ai-orchestration, status: existing}
+      - {name: business,         status: existing}
+      - {name: data,             status: existing}
+      - {name: engineering,      status: existing}
+      - {name: harness,          status: existing}
+      - {name: ops,              status: existing}
+
+  vamseeachanta/achantas-data:
+    board: repo-achantas-data
+    domains:
+      - {name: devakrishna,     status: existing}
+      - {name: family-planning, status: existing}
+      - {name: finance,         status: existing}
+      - {name: household,       status: existing}
+      - {name: travel,          status: existing}
+
+  vamseeachanta/assethold:
+    board: repo-assethold
+    domains:
+      - {name: infra,   status: existing}
+      - {name: models,  status: existing}
+      - {name: reports, status: existing}
+
+  vamseeachanta/sabithaandkrishnaestates:
+    board: repo-sabithaandkrishnaestates
+    domains:
+      - {name: admin-comms, status: existing}
+      - {name: hoa-vendors, status: existing}
+      - {name: tax-1099,    status: existing}
+
+  vamseeachanta/aceengineer-website:
+    board: repo-aceengineer-website
+    # minimal marketing-site domains, room to expand (user 2026-05-25)
+    domains:
+      - {name: seo,      status: new}     # search, metadata, performance
+      - {name: content,  status: new}     # pages, blog, copy
+      - {name: examples, status: new}     # demos, sample analyses, showcases
+
+  vamseeachanta/assetutilities:
+    board: repo-assetutilities
+    # minimal proposal (shared library) — CONFIRM at checkpoint
+    domains:
+      - {name: core,  status: new, note: "library code: YAML utils, plotting, engine registry"}
+      - {name: infra, status: new, note: "CI, packaging, release, consolidation tracking"}
+
+# ---------------------------------------------------------------------------
+# worldenergydata Phase-B board ops (decisions resolved 2026-05-25)
+# ---------------------------------------------------------------------------
+reconcile_worldenergydata:
+  rename:
+    - {from: repo-worldenergydata-ingestion, to: repo-worldenergydata-ingest}
+  create:
+    - repo-worldenergydata-bsee   # board def created Phase A
+    - repo-worldenergydata-hse    # board def created Phase A
+  keep:
+    - repo-worldenergydata-quality  # 28 cards; retained as 6th domain

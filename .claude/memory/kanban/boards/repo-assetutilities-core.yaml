@@ -1,0 +1,12 @@
+board:
+  slug: repo-assetutilities-core
+  display_name: assetutilities · core
+  tier: domain
+  repo: vamseeachanta/assetutilities
+  domain: core
+  parent_slug: repo-assetutilities
+  workspace_path: /mnt/local-analysis/assetutilities
+  description: |
+    Shared library code — YAML utils, plotting, engine registry, loguru
+    wrappers, common helpers consumed across asset projects.
+cards: []

@@ -1,0 +1,96 @@
+# routing-rules.yaml — capability map + provider capacity for issue dispatch
+# Read by scripts/dispatch/route.py. Decided with user 2026-05-25.
+# Assignment source of truth is GitHub labels; this file only drives the
+# rule engine's PROPOSALS (which you approve before any label is written).
+
+# ---------------------------------------------------------------------------
+# Machine roster  -> machine:<id> label values + dispatch/<id>.yaml queue files
+# Canonical scheme = the pre-existing in-the-wild vocabulary (user 2026-05-25,
+# "adopt existing scheme"): names encode capability, so 0 cards get relabeled.
+# `hostname:` lets a script self-identify which machine it is running on.
+# ---------------------------------------------------------------------------
+machines:
+  dev-primary:      {os: linux, role: primary,     hostname: ace-linux-1, notes: "this box; kanban manifest origin"}
+  dev-secondary:    {os: linux, role: secondary,   hostname: ace-linux-2}
+  licensed-win-1:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex]}
+  licensed-win-2:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex],
+                     aliases: [acma-ws014], notes: "same box as acma-ws014 (ACMA client workstation)"}
+  home-win:         {os: windows, role: aux,        notes: "home windows; statements/scans (e.g. Chase)"}
+  macbook-portable: {os: macos,   role: aux,        notes: "portable/mobile work"}
+  multi:            {os: any,     role: virtual,    notes: "spans machines / not pinned to one box"}
+
+# Alias map (label-in-the-wild -> canonical machine). route.py folds these so
+# machine:acma-ws014 counts as licensed-win-2 without relabeling existing cards.
+machine_aliases:
+  acma-ws014: licensed-win-2
+  ace-linux-1: dev-primary      # hostname-style stragglers -> canonical dispatch name
+  ace-linux-2: dev-secondary
+
+# ---------------------------------------------------------------------------
+# Provider capacity  -> ai:<provider> label values
+# CRITICAL: hermes runs VIA codex, so it draws from the codex quota. They share
+# ONE budget pool. WIP must be capped on the pool, not per-provider, or a naive
+# (codex:2 + hermes:2) silently permits 4 concurrent draws on one budget.
+# (user: "gemini has usage limit; hermes runs via codex; claude+codex highest")
+# ---------------------------------------------------------------------------
+providers:
+  claude: {tier: workhorse, auto_routable: true}
+  codex:  {tier: workhorse, auto_routable: true, budget_pool: codex_pool}
+  hermes: {tier: shared,    auto_routable: true, budget_pool: codex_pool}  # consumes codex quota
+  gemini: {tier: scarce,    auto_routable: false, note: "manual ai:gemini only; never auto-route backlog"}
+
+budget_pools:
+  codex_pool:
+    members: [codex, hermes]
+    max_concurrent: 3        # codex + hermes COMBINED, not each
+
+# ---------------------------------------------------------------------------
+# WIP caps — backpressure so a bulk assignment can't runaway (260-worker scar)
+# ---------------------------------------------------------------------------
+wip_caps:
+  per_machine:
+    dev-primary: 3
+    dev-secondary: 3
+    licensed-win-1: 2
+    licensed-win-2: 2
+  per_provider:
+    claude: 4
+    gemini: 1
+    # codex + hermes governed by budget_pools.codex_pool.max_concurrent
+  overflow: queue   # exceeding a cap -> card stays dispatch:ready in queue, never auto-spawned
+
+# ---------------------------------------------------------------------------
+# Capability rules — first match wins. Produce (machine, provider) proposal.
+# Matchers: domain (domain:<name>), any gh_label, repo. provider omitted ->
+# default_provider. A human-set ai:/machine: label on the issue always overrides.
+# ---------------------------------------------------------------------------
+rules:
+  # Windows-only engineering tooling (OrcaWave/AQWA/OrcaFlex) -> licensed boxes
+  - match: {repo: vamseeachanta/digitalmodel, domain: solver}
+    assign: {machine: licensed-win-1}
+    reason: "AQWA/OrcaWave bridges need a licensed Windows box"
+  - match: {repo: vamseeachanta/digitalmodel, domain: hydro}
+    assign: {machine: licensed-win-1}
+    reason: "RAO/QTF/seakeeping runs use OrcaWave/AQWA"
+
+  # CFD / OpenFOAM -> the box with the CFD storage (CONFIRM machine at checkpoint)
+  - match: {gh_label: "domain:cfd"}
+    assign: {machine: dev-secondary}
+    reason: "CFD/OpenFOAM storage; confirm target machine (project_cfd_openfoam_storage)"
+
+  # Cross-review work -> codex (finds non-overlapping defects)
+  - match: {gh_label: "needs:cross-review"}
+    assign: {provider: codex}
+    reason: "Codex strong on adversarial cross-review"
+
+  # Default catch-all
+  - match: {}
+    assign: {machine: dev-primary, provider: claude}
+    reason: "default workhorse"
+
+defaults:
+  provider: claude
+  machine: dev-primary
+  # Only open issues are routable; triage/draft and closed are skipped.
+  routable_states: [open]
+  skip_if_labeled: [wip, blocked, "status:plan-review"]   # don't auto-route in-flight work

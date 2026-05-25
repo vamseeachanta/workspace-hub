@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Domain-Categorized Boards + Machine/Provider Dispatch — Architecture Spec</title>
+<style>
+  :root { --fg:#1b1f24; --mut:#57606a; --line:#d0d7de; --accent:#0969da;
+          --ok:#1a7f37; --warn:#9a6700; --bg:#fff; --code:#f6f8fa; }
+  * { box-sizing:border-box; }
+  body { font:15px/1.6 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;
+         color:var(--fg); max-width:960px; margin:0 auto; padding:32px 24px; background:var(--bg); }
+  h1 { font-size:26px; border-bottom:2px solid var(--line); padding-bottom:8px; }
+  h2 { font-size:20px; margin-top:34px; border-bottom:1px solid var(--line); padding-bottom:5px; }
+  h3 { font-size:16px; margin-top:22px; }
+  code,kbd { background:var(--code); padding:1px 5px; border-radius:5px; font:13px ui-monospace,Menlo,monospace; }
+  pre { background:var(--code); padding:12px 14px; border-radius:8px; overflow:auto; font:12.5px/1.5 ui-monospace,monospace; }
+  table { border-collapse:collapse; width:100%; margin:12px 0; font-size:14px; }
+  th,td { border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top; }
+  th { background:var(--code); }
+  .mut { color:var(--mut); }
+  .pill { display:inline-block; padding:1px 8px; border-radius:11px; font-size:12px; font-weight:600; }
+  .done { background:#dafbe1; color:var(--ok); }
+  .todo { background:#fff8c5; color:var(--warn); }
+  .lead { color:var(--mut); font-size:15px; }
+  .grid { display:grid; grid-template-columns:140px 1fr; gap:6px 16px; margin:10px 0; }
+  .grid div:nth-child(odd){ color:var(--mut); }
+  blockquote { border-left:3px solid var(--accent); margin:12px 0; padding:4px 14px; color:var(--mut); background:#f6f8fa; }
+  .tag { font:12px ui-monospace,monospace; background:#ddf4ff; color:var(--accent); padding:1px 6px; border-radius:5px; }
+</style>
+</head>
+<body>
+
+<h1>Domain-Categorized Boards + Machine/Provider Dispatch</h1>
+<p class="lead">Architecture specification &middot; ecosystem kanban &middot; drafted 2026-05-25 &middot;
+status: <span class="pill todo">plan-review</span> (awaiting user <code>status:plan-approved</code>)</p>
+
+<blockquote>
+GitHub is the center of record. Every unit of work is a GitHub issue; progress, updates,
+code status (author / review / push), and TDD state all live on GitHub. The kanban boards
+and dispatch queues are <em>views and routers</em> over that truth, never a parallel store.
+</blockquote>
+
+<h2>1. Decisions (locked with user, 2026-05-25)</h2>
+<table>
+<tr><th>Dimension</th><th>Decision</th></tr>
+<tr><td>Assignment source of truth</td><td><strong>GitHub labels</strong> — any machine reads <code>gh issue list --label</code>; zero sync.</td></tr>
+<tr><td>Domain criterion</td><td><strong>Subsystem-based</strong>, names user-confirmed; small repos stay flat.</td></tr>
+<tr><td>Dispatch action</td><td><strong>Git-tracked queue files</strong> <code>.claude/dispatch/&lt;machine&gt;.yaml</code>; each machine drains its own. Pull-based, no auto-spawn.</td></tr>
+<tr><td>Routing logic</td><td><strong>Rule engine, then approve</strong> — capability map proposes; user approves before labels are written.</td></tr>
+<tr><td>Provider model</td><td>Per-issue <code>ai:</code> label; all four providers valid (claude, codex, hermes, gemini).</td></tr>
+<tr><td>Machine roster</td><td>Adopt the <strong>existing in-the-wild scheme</strong> (capability-encoding); 0 cards relabeled.</td></tr>
+<tr><td>Provider capacity</td><td>claude/codex = workhorse; <strong>hermes shares codex quota</strong> (one WIP pool); gemini scarce/manual-only.</td></tr>
+</table>
+
+<h2>2. Domain taxonomy</h2>
+<p class="mut">Authoritative list in <code>.claude/memory/kanban/domains.yaml</code>. Tier-2 boards already cover the active repos; this spec ratifies them and fills three gaps.</p>
+<table>
+<tr><th>Repo</th><th>Domains</th><th>Change</th></tr>
+<tr><td>digitalmodel</td><td>hydro, solver, codes, subsea, qa</td><td><span class="pill done">existing</span></td></tr>
+<tr><td>worldenergydata</td><td>ingest, gtm, bsee, hse, reports, quality</td><td>rename ingestion&rarr;ingest; +bsee +hse; keep quality (28c)</td></tr>
+<tr><td>llm-wiki</td><td>content, ingest, governance, tooling</td><td><span class="pill done">existing</span></td></tr>
+<tr><td>workspace-hub</td><td>ai-orchestration, business, data, engineering, harness, ops</td><td><span class="pill done">existing</span></td></tr>
+<tr><td>achantas-data</td><td>devakrishna, family-planning, finance, household, travel</td><td><span class="pill done">existing</span></td></tr>
+<tr><td>assethold</td><td>infra, models, reports</td><td><span class="pill done">existing</span></td></tr>
+<tr><td>sabithaandkrishnaestates</td><td>admin-comms, hoa-vendors, tax-1099</td><td><span class="pill done">existing</span></td></tr>
+<tr><td>aceengineer-website</td><td>seo, content, examples</td><td><span class="pill todo">new</span></td></tr>
+<tr><td>assetutilities</td><td>core, infra</td><td><span class="pill todo">new</span></td></tr>
+<tr><td colspan="3" class="mut">Flat (no domains): aceengineer-admin, aceengineer-strategy, hobbies, kaggle-rogii-2026, llm-wiki-acma</td></tr>
+</table>
+
+<h2>3. Label namespaces</h2>
+<p>Four new namespaces, orthogonal to the existing <code>status:</code> lifecycle. Created in every active repo.</p>
+<table>
+<tr><th>Namespace</th><th>Values</th><th>Set by</th></tr>
+<tr><td><span class="tag">domain:</span></td><td>repo subsystem (solver, hydro, ingest&hellip;)</td><td>rule engine / backfill</td></tr>
+<tr><td><span class="tag">machine:</span></td><td>dev-primary, dev-secondary, licensed-win-1, licensed-win-2, home-win, macbook-portable, multi</td><td>rule engine &rarr; approve</td></tr>
+<tr><td><span class="tag">ai:</span></td><td>claude, codex, hermes, gemini <span class="mut">(optional, per-issue)</span></td><td>rule engine &rarr; approve</td></tr>
+<tr><td><span class="tag">dispatch:</span></td><td>ready, active, done</td><td>dispatcher lifecycle</td></tr>
+</table>
+<p class="mut">Machine aliases (no relabeling): <code>acma-ws014 = licensed-win-2</code>, <code>ace-linux-1/2 = dev-primary/secondary</code>.</p>
+
+<h2>4. GitHub as the center — work lifecycle</h2>
+<p>Each stage of work is reflected in native GitHub state, so the issue/PR is the single dashboard. No stage is tracked only in the kanban.</p>
+<table>
+<tr><th>Stage</th><th>GitHub surface</th><th>Signal</th></tr>
+<tr><td>Triage / plan</td><td>Issue + <code>status:</code> labels</td><td><code>needs-plan &rarr; plan-review &rarr; plan-approved</code> (existing flow; user gates approval)</td></tr>
+<tr><td>Domain &amp; routing</td><td><code>domain:</code> / <code>machine:</code> / <code>ai:</code> labels</td><td>this spec's additions</td></tr>
+<tr><td>Dispatch</td><td><code>dispatch:ready &rarr; active &rarr; done</code> + queue file</td><td>machine claims from its queue</td></tr>
+<tr><td>Author (TDD)</td><td>Pull request + CI checks</td><td>tests-first; CI green = TDD gate met</td></tr>
+<tr><td>Review</td><td>PR reviewers + cross-review (Claude/Codex/Gemini)</td><td>adversarial review at plan AND code stage</td></tr>
+<tr><td>Push / merge</td><td>PR merge state, <code>Closes #NNNN</code></td><td>merge = done; <code>dispatch:done</code> mirrors <code>gh_state</code></td></tr>
+<tr><td>Progress / updates</td><td>Issue comments</td><td>summary comment on every implemented issue</td></tr>
+</table>
+
+<h2>5. Machine roster &amp; provider capacity</h2>
+<div class="grid">
+<div>dev-primary</div><div>linux, primary (hostname ace-linux-1, this box) — default catch-all</div>
+<div>dev-secondary</div><div>linux, secondary</div>
+<div>licensed-win-1/2</div><div>Windows, OrcaWave/AQWA/OrcaFlex licensed — solver &amp; hydro route here (licensed-win-2 = acma-ws014)</div>
+<div>home-win</div><div>Windows aux — statements/scans</div>
+<div>macbook-portable</div><div>macOS, mobile</div>
+<div>multi</div><div>virtual — spans machines</div>
+</div>
+<h3>Provider capacity (the load-bearing constraint)</h3>
+<table>
+<tr><th>Tier</th><th>Providers</th><th>Treatment</th></tr>
+<tr><td>Workhorse</td><td>claude, codex</td><td>highest availability, highest WIP caps, default auto-route</td></tr>
+<tr><td>Shared pool</td><td>hermes</td><td><strong>runs via codex &rarr; draws codex quota.</strong> WIP-capped together with codex as one budget pool (max_concurrent 3), never independently</td></tr>
+<tr><td>Scarce</td><td>gemini</td><td>usage-limited; manual <code>ai:gemini</code> only, never auto-routed for backlog</td></tr>
+</table>
+
+<h2>6. Dispatch mechanics &amp; safety</h2>
+<p>Tooling: <code>scripts/dispatch/route.py</code> (proposer), <code>scripts/dispatch/dispatch.py</code> (queue writer + capacity), config in <code>routing-rules.yaml</code>.</p>
+<pre>route.py            # dry-run summary (machine x provider)
+route.py --detail   # per-card listing
+route.py --apply    # write GH labels  (Phase B; disabled until approved)
+dispatch.py         # dry-run: queue files that would be written
+dispatch.py --write # materialize .claude/dispatch/&lt;machine&gt;.yaml  (Phase B)
+dispatch.py --capacity   # supply (live agents) vs demand (assigned cards)</pre>
+<blockquote><strong>Runaway-pipeline safeguards.</strong> route.py only ever moves a card to
+<code>dispatch:ready</code>; it never spawns a worker. Execution is pull-based — each machine
+drains its own queue. WIP caps + the shared codex/hermes budget pool provide backpressure.
+<code>initial_status: triage</code> stays the load-bearing valve so a freshly loaded card cannot
+be auto-claimed. Phase A (this spec's build) wrote only local files; Phase B's GitHub mutations
+are gated on user approval and individually reversible.</blockquote>
+
+<h2>7. Status</h2>
+<table>
+<tr><th>Phase A — local, no external effects</th><th></th></tr>
+<tr><td>SCHEMA.yaml dispatch contract</td><td><span class="pill done">done</span></td></tr>
+<tr><td>domains.yaml + routing-rules.yaml</td><td><span class="pill done">done</span></td></tr>
+<tr><td>7 new domain board defs</td><td><span class="pill done">done</span></td></tr>
+<tr><td>route.py + dispatch.py + capacity view</td><td><span class="pill done">done</span></td></tr>
+<tr><td>Dry-run: 1,489 open cards routed; rules verified</td><td><span class="pill done">done</span></td></tr>
+</table>
+<table>
+<tr><th>Phase B — GitHub mutations (gated on plan-approved)</th><th></th></tr>
+<tr><td>Create label namespaces across active repos</td><td><span class="pill todo">pending</span></td></tr>
+<tr><td>Backfill domain:/priority: on existing issues</td><td><span class="pill todo">pending</span></td></tr>
+<tr><td>Rename worldenergydata-ingestion board &rarr; ingest; populate bsee/hse/quality</td><td><span class="pill todo">pending</span></td></tr>
+<tr><td>route.py --apply (write machine:/ai:/dispatch: labels)</td><td><span class="pill todo">pending</span></td></tr>
+<tr><td>dispatch.py --write (first per-machine queues)</td><td><span class="pill todo">pending</span></td></tr>
+</table>
+
+<p class="mut">Tracking issue:
+<a href="https://github.com/vamseeachanta/workspace-hub/issues/2795">vamseeachanta/workspace-hub#2795</a>.
+Decisions captured in memory: <code>project_dispatch_provider_capacity</code>. This document is the canonical spec.</p>
+
+</body>
+</html>

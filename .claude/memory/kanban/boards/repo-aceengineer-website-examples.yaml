@@ -1,0 +1,12 @@
+board:
+  slug: repo-aceengineer-website-examples
+  display_name: aceengineer-website · examples
+  tier: domain
+  repo: vamseeachanta/aceengineer-website
+  domain: examples
+  parent_slug: repo-aceengineer-website
+  workspace_path: /mnt/local-analysis/aceengineer-website
+  description: |
+    Demos and showcases — sample analyses, worked examples, interactive
+    calculators, portfolio pieces that demonstrate capability.
+cards: []

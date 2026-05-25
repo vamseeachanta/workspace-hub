@@ -89,3 +89,51 @@ manifest:
 # 4. `--triage` ensures workers cannot auto-claim. User promotes via
 #    `hermes kanban specify <task-id>` or manual `hermes kanban edit`.
 # 5. Re-running the loader is safe: idempotency_key dedups; existing tasks are returned.
+
+# ===========================================================================
+# Dispatch layer — labels + routing  (added 2026-05-25, issue TBD)
+# ===========================================================================
+# Source of truth for assignment is GITHUB LABELS, not this YAML. The per-card
+# routing fields below are a local mirror the dispatcher writes; the label on
+# the GH issue always wins. Keeps assignment portable across machines with zero
+# sync logic (any machine reads `gh issue list --label`).
+#
+# Four label namespaces (created in every active repo by scripts/dispatch):
+#   domain:<name>      repo subsystem — e.g. domain:solver, domain:hydro.
+#                      Allowed values per repo come from domains.yaml.
+#   machine:<id>       canonical: dev-primary | dev-secondary | licensed-win-1 |
+#                      licensed-win-2 | home-win | macbook-portable | multi
+#                      (acma-ws014, ace-linux-1/2 are aliases — see routing-rules.yaml)
+#   ai:<provider>      OPTIONAL, per-issue: claude | codex | hermes | gemini
+#                      Absent = dispatcher picks per routing-rules.yaml default.
+#   dispatch:<state>   lifecycle: ready | active | done
+#                      ready  = assigned, sitting in a machine's queue
+#                      active = a session on that machine has claimed it
+#                      done   = closed/merged (mirrors gh_state)
+#
+# ---------------------------------------------------------------------------
+# Per-card routing fields (local mirror of the GH labels; all optional)
+# ---------------------------------------------------------------------------
+cards_routing_example:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#2289
+    domain: solver                 # mirrors domain:<name> label
+    assigned_machine: licensed-win-1  # mirrors machine:<id> label
+    assigned_provider: codex       # mirrors ai:<provider> label (optional)
+    dispatch_status: ready         # mirrors dispatch:<state> label
+    routed_by: rule                # rule | manual — provenance of the assignment
+    routed_at: 2026-05-25T00:00:00Z
+
+# ---------------------------------------------------------------------------
+# Companion files (this directory)
+# ---------------------------------------------------------------------------
+#   domains.yaml        authoritative per-repo domain taxonomy (board <-> domain)
+#   routing-rules.yaml  capability map (domain->machine), provider capacity pool,
+#                       WIP caps. Read by scripts/dispatch/route.py.
+#
+# Safety contract (mirrors the runaway-pipeline lesson):
+#   - route.py only ever moves a card to dispatch:ready and writes labels after
+#     an explicit --apply; it NEVER auto-spawns a worker.
+#   - Execution is pull-based: each machine drains its own
+#     .claude/dispatch/<machine>.yaml queue file.
+#   - initial_status stays `triage` so a freshly loaded card cannot be
+#     auto-claimed by a worker.
