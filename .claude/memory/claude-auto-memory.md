@@ -99,11 +99,11 @@
 - [importlib + @dataclass needs sys.modules](feedback_importlib_dataclass_sys_modules.md) — kebab-case scripts via spec_from_file_location must register in sys.modules BEFORE exec_module for @dataclass
 - [Dispatch local-marker rationalization](feedback_dispatch_local_marker_rationalization.md) — dispatch lanes can write `.planning/plan-approved/<n>.md` rationalizing user instruction; forbid markers AND label
 - [Service-provider data routing](feedback_service_provider_data_routing.md) — 6-row matrix: vendor brochures→off-repo, SEC/conf-papers/regulator→public wiki. Codified 2026-05-14; #2482
-- [Codex bootstrap untracked sed origin](feedback_codex_bootstrap_untracked_sed_origin.md) — broken `~/.codex/AGENTS.md` came from one-off `sed s/claude/Codex/g`, not committed script; symlink-to-runtime fix per #2719 Phase 4
+- [Codex bootstrap untracked sed origin](feedback_codex_bootstrap_untracked_sed_origin.md) — broken `~/.codex/AGENTS.md` came from one-off `sed s/claude/Codex/g`, not committed script; symlink-to-runtime fix per #2719 Phase 4 *stale: 2026-05-25*
 - [Reviewer dispatch refetch live body](feedback_reviewer_dispatch_refetch_live_body.md) — never reuse cached `/tmp/<prompt>.txt`; refetch live issue/plan body before each review dispatch (cost: Gemini MAJOR rediscovered already-fixed defects on stale input)
 - [RCA conflated SSH PATH vs subprocess PATH](feedback_rca_conflated_ssh_vs_subprocess_path.md) — for "executable not found" in daemon-spawned subprocesses, read `/proc/<pid>/environ` not `echo $PATH`; #2712 closed as can't-repro
 - [Runtime base64 blocks binary roundtrip](feedback_runtime_base64_blocks_binary_roundtrip.md) — canvas.toDataURL in JS tool results returns `[BLOCKED: Base64 encoded data]`; use download path, save_to_disk, or skip-to-written-description for binary capture
-- [codex-cli stdin-detection hang REOPENED 2026-05-16](feedback_codex_cli_0_124_upstream_regression.md) — 0.130.0 hangs non-deterministically; `</dev/null` works sometimes not always; downgrade doesn't help; #2715
+- [codex-cli stdin-detection hang REOPENED 2026-05-16](feedback_codex_cli_0_124_upstream_regression.md) — 0.130.0 hangs non-deterministically; `</dev/null` works sometimes not always; downgrade doesn't help; #2715 *stale: 2026-05-25*
 - [Regression test broader than issue scope](feedback_regression_test_broader_than_issue_scope.md) — scope test glob to defect class, not just named file; catches sibling regressions for free (caught HTML_REPORTING_STANDARDS.md while fixing AI_AGENT_ORCHESTRATION.md per aceengineer-website#14)
 - [Post-commit autosync defeats test gate](feedback_post_commit_autosync_defeats_test_gate.md) — push-after-test plans MUST use `SKIP_PUSH=1 git commit`; bare `git commit` triggers WRK-1141 post-commit hook which pushes immediately and bypasses the empirical-test gate. Companion to [[feedback_autosync_silent_pusher]]
 
@@ -167,7 +167,7 @@
 - [devaKrishna videos canonical source](reference_krishna_videos_youtube.md) — all progress videos on YouTube `achantav@gmail.com`; grounds skill-analysis evidence
 - [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json`
 - [achantas-data](reference_achantas_data.md) — personal data + travel as GitHub issues
-- [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06
+- [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06 *stale: 2026-05-25*
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access
 - [Gmail MCP scope](reference_gmail_mcp_scope.md) — read+compose only, no modify; archive/label/delete require browser or user UI
 - [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`

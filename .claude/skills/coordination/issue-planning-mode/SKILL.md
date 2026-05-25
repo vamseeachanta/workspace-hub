@@ -75,6 +75,12 @@ docs/plans/_template-issue-plan.md  -->  docs/plans/YYYY-MM-DD-issue-NNN-slug.md
 
 Required sections: Resource Intelligence Summary, Artifact Map, Deliverable, Pseudocode (T2/T3), Files to Change, TDD Test List, Acceptance Criteria, Risks.
 
+**Required header fields** (per [`.claude/rules/wiki-sibling-routing.md`](../../rules/wiki-sibling-routing.md) Layer 3, [#2778](https://github.com/vamseeachanta/workspace-hub/issues/2778)):
+- `Client:` — required for any plan touching wiki content (`llm-wiki` or `llm-wiki-<client>` repos). Use `N/A` for plans that don't touch wiki content (most operational, infra, or pure-workspace-hub work).
+- `Project:` — optional. Populate when the plan scopes to a single project under a client (e.g., `Project: sirocco` for B1528 SIROCCO work under client `acma`). Consumed by `check-wiki-sibling-frontmatter.py` Rule E to validate `project:` frontmatter on staged content.
+
+When `Client:` is a real client slug (not `N/A`), verify it matches a `short_name` in [`config/client-wikis.yml`](../../../config/client-wikis.yml). When `Project:` is set, verify it's enumerated in that client's `projects:` list (or the list is absent/empty — warn-only forward-compat). <!-- scanner-allow:path_traversal_deep scanner-allow:path_traversal — relative markdown doc-link to repo config, not a runtime path -->
+
 For engineering-calculation or parametric chart plans, also run the checks in `references/engineering-parametric-chart-plan-review.md`: freeze local vs reported coordinate frames before formulas, explicitly classify off-grid UI defaults versus engineering sweep rows, ensure representative chart traces do not hide requested sweep coverage, and require tests for frame transforms/sign conventions.
 
 When review finds unresolved domain decisions, use `references/domain-decision-blocked-plan-review.md` to keep the plan blocked-draft/needs-decision, post a concise decision checklist, and avoid prematurely applying approval-ready labels.
@@ -101,6 +107,8 @@ Required shape:
 Session-specific examples and checklists: `references/layered-architecture-issue-planning.md`.
 
 For GitHub issue portfolios that must flow from data layer → execution layer → result/output layer, use `references/data-execution-results-kanban.md`: inventory issues by architectural lane, create a repo-tracked Kanban/report artifact, delegate read-only planning/review waves by provider strengths, verify delegate claims in the orchestrator checkout, and stop at an explicit approval checkpoint before implementation.
+
+For sequential issue-tree planning where downstream plans depend on revised upstream architecture/boundary plans, use `references/focused-reqa-before-downstream-planning.md`: run focused re-QA against the exact revised local upstream artifacts before drafting downstream issues, post concise GitHub comments for MAJOR results with `--body-file`, keep labels conservative, and block downstream drafting until upstream MAJOR findings are patched or explicitly waived.
 
 Execution discipline for delegated agents:
 - If using Claude/Codex/Gemini in parallel worktrees, explicitly anchor the repo/worktree path in the prompt/context and verify the plan file was written in the intended checkout. Do not assume the child agent stayed in the requested worktree.

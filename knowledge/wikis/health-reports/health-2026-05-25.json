@@ -1,0 +1,257 @@
+{
+  "generated_at": "2026-05-25 15:00 UTC",
+  "wikis_checked": 5,
+  "total_pages": 10,
+  "total_issues": 13,
+  "domain_results": [
+    {
+      "domain": "acma-projects",
+      "status": "has_issues",
+      "page_count": 0,
+      "source_count": 0,
+      "entity_count": 0,
+      "concept_count": 0,
+      "link_density": 0.0,
+      "issues": [
+        {
+          "severity": "critical",
+          "category": "index",
+          "message": "index.md missing"
+        },
+        {
+          "severity": "critical",
+          "category": "log",
+          "message": "log.md missing"
+        }
+      ],
+      "issue_summary": {
+        "index": 1,
+        "log": 1
+      }
+    },
+    {
+      "domain": "asset-management",
+      "status": "has_issues",
+      "page_count": 0,
+      "source_count": 0,
+      "entity_count": 0,
+      "concept_count": 0,
+      "link_density": 0.0,
+      "issues": [
+        {
+          "severity": "critical",
+          "category": "index",
+          "message": "index.md missing"
+        },
+        {
+          "severity": "critical",
+          "category": "log",
+          "message": "log.md missing"
+        }
+      ],
+      "issue_summary": {
+        "index": 1,
+        "log": 1
+      }
+    },
+    {
+      "domain": "engineering",
+      "status": "has_issues",
+      "page_count": 0,
+      "source_count": 0,
+      "entity_count": 0,
+      "concept_count": 0,
+      "link_density": 2.0,
+      "issues": [
+        {
+          "severity": "critical",
+          "category": "index",
+          "message": "index.md missing"
+        },
+        {
+          "severity": "critical",
+          "category": "log",
+          "message": "log.md missing"
+        }
+      ],
+      "issue_summary": {
+        "index": 1,
+        "log": 1
+      }
+    },
+    {
+      "domain": "marine-engineering",
+      "status": "has_issues",
+      "page_count": 5,
+      "source_count": 2,
+      "entity_count": 2,
+      "concept_count": 1,
+      "link_density": 2.33,
+      "issues": [
+        {
+          "severity": "warning",
+          "category": "orphan",
+          "page": "/mnt/local-analysis/workspace-hub/knowledge/wikis/marine-engineering/wiki/entities/ai-dwop.md",
+          "message": "No inbound links to ai-dwop.md"
+        },
+        {
+          "severity": "warning",
+          "category": "orphan",
+          "page": "/mnt/local-analysis/workspace-hub/knowledge/wikis/marine-engineering/wiki/sources/mark-prentice-r5-mooring-chain-hardness-limit.md",
+          "message": "No inbound links to mark-prentice-r5-mooring-chain-hardness-limit.md"
+        },
+        {
+          "severity": "warning",
+          "category": "orphan",
+          "page": "/mnt/local-analysis/workspace-hub/knowledge/wikis/marine-engineering/wiki/comparisons/offshore-wind-oil-gas-cross-section-assessment.md",
+          "message": "No inbound links to offshore-wind-oil-gas-cross-section-assessment.md"
+        },
+        {
+          "severity": "critical",
+          "category": "index",
+          "message": "index.md missing"
+        },
+        {
+          "severity": "critical",
+          "category": "log",
+          "message": "log.md missing"
+        }
+      ],
+      "issue_summary": {
+        "orphan": 3,
+        "index": 1,
+        "log": 1
+      }
+    },
+    {
+      "domain": "personal",
+      "status": "has_issues",
+      "page_count": 5,
+      "source_count": 0,
+      "entity_count": 4,
+      "concept_count": 0,
+      "link_density": 0.8,
+      "issues": [
+        {
+          "severity": "critical",
+          "category": "log",
+          "message": "log.md missing"
+        },
+        {
+          "severity": "warning",
+          "category": "cross-refs",
+          "message": "Low link density (0.8 avg/page)"
+        }
+      ],
+      "issue_summary": {
+        "log": 1,
+        "cross-refs": 1
+      }
+    }
+  ],
+  "cross_link_suggestions": [
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/standards/dnv-os-e301.md",
+      "mentions": "knowledge",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/jsonl-knowledge-stores.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/standards/dnv-os-e301.md",
+      "mentions": "safety",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/python-type-safety.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/standards/dnv-os-e301.md",
+      "mentions": "analysis",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/real-estate-analysis.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/comparisons/offshore-wind-oil-gas-cross-section-assessment.md",
+      "mentions": "knowledge",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/jsonl-knowledge-stores.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/concepts/subsea-cable-umbilical-cross-sections.md",
+      "mentions": "knowledge",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/jsonl-knowledge-stores.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/concepts/subsea-cable-umbilical-cross-sections.md",
+      "mentions": "type",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/python-type-safety.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/concepts/subsea-cable-umbilical-cross-sections.md",
+      "mentions": "analysis",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/real-estate-analysis.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/entities/ai-dwop.md",
+      "mentions": "knowledge",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/jsonl-knowledge-stores.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/entities/ai-dwop.md",
+      "mentions": "real",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/real-estate-analysis.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/entities/ai-dwop.md",
+      "mentions": "patterns",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/shell-scripting-patterns.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/entities/cadquery.md",
+      "mentions": "python",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/python-type-safety.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/entities/cadquery.md",
+      "mentions": "analysis",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/real-estate-analysis.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/sources/offshore-cable-umbilical-cross-section-recon-2026-04-26.md",
+      "mentions": "knowledge",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/jsonl-knowledge-stores.md"
+    }
+  ],
+  "knowledge_gaps": [
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/mark-prentice-r5-mooring-chain-hardness-limit.md",
+      "missing_concept": "r5-mooring-chain-hardness-limit"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/mark-prentice-r5-mooring-chain-hardness-limit.md",
+      "missing_concept": "mooring-line-failure"
+    }
+  ]
+}

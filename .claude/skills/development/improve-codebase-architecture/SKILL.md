@@ -37,6 +37,8 @@ This skill is _informed_ by the project's domain model. The domain language give
 
 Read the project's domain glossary and any ADRs in the area you're touching first.
 
+For multi-repo or ecosystem-wide requests, start with a bounded inventory before spawning explorers: enumerate repos, read each repo's `AGENTS.md`/`CLAUDE.md`/`CONTEXT.md` when present, collect tracked-file/top-directory summaries with capped commands (prefer `git ls-files` over recursive filesystem walks), and split subagents into small repo batches with explicit read-only scope and output caps. If broad subagent batches time out, salvage the report from the bounded inventory and clearly mark partial evidence instead of rerunning the same unbounded scan.
+
 Then use the Agent tool with `subagent_type=Explore` to walk the codebase. Don't follow rigid heuristics — explore organically and note where you experience friction:
 
 - Where does understanding one concept require bouncing between many small modules?
@@ -71,6 +73,31 @@ End the report with a **Top recommendation** section: which candidate you'd tack
 See [HTML-REPORT.md](HTML-REPORT.md) for the full HTML scaffold, diagram patterns, and styling guidance.
 
 Do NOT propose interfaces yet. After the file is written, ask the user: "Which of these would you like to explore?"
+
+### 2A. If the user asks to turn candidates into issues
+
+When the user asks for "all candidates", "all N", "one by one", or otherwise wants the report converted into GitHub work, create planning issues rather than implementation tasks. See `references/ecosystem-candidate-issue-expansion.md` for the restart-safe body shape and closeout pattern:
+
+1. Verify the target GitHub repo/auth/branch before creating anything.
+2. Search for likely duplicates using broad key nouns from the candidate set and inspect near matches; do not depend on a brittle exact-title query alone.
+3. Create one issue per candidate, one at a time, with:
+   - title scoped to the repo/domain and architecture action;
+   - body containing summary, evidence basis, scope, out of scope, deliverables, acceptance criteria, plan-gate workflow, and related parent/report links;
+   - `status:needs-plan` plus priority/category/domain labels that already exist in the repo taxonomy.
+4. Keep the work explicitly planning-only. Do not start code changes from architecture-review issue creation.
+5. Verify every created issue after creation: `OPEN` state, title, URL, labels, and `status:needs-plan`.
+6. If there is a parent/portfolio issue, post one sequencing comment that lists recommended order and states that implementation remains blocked until each issue completes plan review and user approval.
+7. Write a temp TSV or markdown index of created issue numbers/titles/URLs for restart-safe handoff; keep it outside repos unless the user asks for a tracked artifact.
+
+### 2B. If the issue set becomes a staged plan wave
+
+When architecture candidates expand into dependent GitHub issues, preserve the plan gate instead of treating patched drafts as approval. See `references/ecosystem-plan-wave-review-gates.md` for the detailed checklist.
+
+- Use subagents for bounded patching, focused re-QA, and repo-batch inspection, but centrally verify every written plan/index change before advancing status.
+- After workers patch upstream plans, run focused re-QA against the exact prior MAJOR findings and record the result in the plan artifact/index.
+- Focused re-QA can clear substantive content blockers, but it does **not** replace formal provider-review artifacts.
+- If required Claude/Codex/Gemini review artifacts, or explicit `UNAVAILABLE` artifacts, are missing, mark the plans `draft-provider-review-pending`, keep GitHub issues at `status:needs-plan`, and do not resume downstream planning.
+- Never self-apply `status:plan-approved`; that transition remains user-only.
 
 ### 3. Grilling loop
 

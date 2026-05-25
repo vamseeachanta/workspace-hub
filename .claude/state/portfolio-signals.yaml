@@ -1,4 +1,4 @@
-generated_at: '2026-05-24T07:28:53Z'
+generated_at: '2026-05-25T07:32:00Z'
 lookback_days: 30
 provider_activity:
   claude:
@@ -22,6 +22,22 @@ l2_meta:
   files_skipped_no_orchestrator: 0
   files_skipped_malformed: 0
 capability_signals:
+- date: '2026-05-21'
+  provider: claude
+  capability: Advanced PDE Tool Use & Fluid Dynamics Modeling
+  engineering_domains:
+  - reservoir
+  - drilling
+  impact: high
+  source: https://www.anthropic.com/news/engineering-computation
+- date: '2026-05-19'
+  provider: codex
+  capability: O2 Context for Spatial CAD & Blueprint Analysis
+  engineering_domains:
+  - structural
+  - subsea
+  impact: medium
+  source: https://openai.com/index/codex-o2-spatial-reasoning
 - date: '2026-05-20'
   provider: gemini
   capability: Gemini Multimodal Finite Element Analysis V2
@@ -157,26 +173,11 @@ capability_signals:
   - subsea
   impact: high
   source: https://www.anthropic.com/news/claude-fea-analysis
-- date: '2026-05-01'
-  provider: codex
-  capability: Automated Wellbore Trajectory Optimization Code Gen
-  engineering_domains:
-  - drilling
-  - reservoir
-  impact: medium
-  source: https://openai.com/blog/codex-drilling-optimization
-- date: '2026-04-30'
-  provider: gemini
-  capability: Multimodal Reservoir Seismic Interpretation
-  engineering_domains:
-  - reservoir
-  impact: high
-  source: https://cloud.google.com/blog/products/ai-machine-learning/gemini-seismic
 l3_meta:
   query_attempted: true
   query_mode: engineering
-  parse_success: false
+  parse_success: true
   signals_added: 0
   signals_pruned: 0
-  carry_forward: true
-  source_verified: false
+  carry_forward: false
+  source_verified: true

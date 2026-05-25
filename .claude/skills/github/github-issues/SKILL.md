@@ -107,7 +107,15 @@ for i in json.load(sys.stdin)['items']:
 
 Before creating a new feature issue, do a quick grounding pass to avoid duplicates and align with repo taxonomy:
 
-1. Search existing issues by the key nouns/phrases in the request.
+1. Search existing issues by the key nouns/phrases in the request. Use broad searches first, then exact-title filtering if needed. `gh --jq` is not the standalone `jq` CLI and does not accept `--arg`; for exact title checks, pipe JSON to Python or `jq` yourself, for example:
+
+   ```bash
+   TITLE='feat(area): concise issue title'
+   gh issue list --state all --limit 200 --json number,title,url \
+     | python3 -c 'import json,os,sys; title=os.environ["TITLE"]; [print(f"#{i[\"number\"]}\t{i[\"url\"]}") for i in json.load(sys.stdin) if i["title"] == title]'
+   ```
+
+   If a duplicate-check command errors, stop and repair the check or verify by another broad search before creating issues; do not silently continue on a broken duplicate guard.
 2. Inspect existing labels in the repo and reuse the closest category/priority labels.
 3. If the feature touches an existing initiative, reference the parent/related issue numbers in the body.
 4. If an existing open issue already substantially covers the requested feature, prefer updating that issue instead of creating a duplicate. Add a clarifying comment to expand scope, adjust labels if needed, and link any companion cadence/governance issue rather than opening a second overlapping feature ticket.

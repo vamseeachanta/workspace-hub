@@ -86,9 +86,9 @@ Establish weekly GTM targets interactively with the owner, then turn them into b
 
 ## ACE Engineer GTM Context
 
-- `aceengineer-strategy/` — private nested repo with full GTM strategy
+- `aceengineer-strategy/` — private nested repo with full GTM strategy *stale: 2026-05-25*
 - 20+ prospects identified; ICP: offshore firms 10-50 engineers
-- Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`)
+- Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`) *stale: 2026-05-25*
 - Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron)
 - GTM control rule: continuous AI work should convert external signals, repo engineering work, and approved issue outputs into client-ready material, but keep engineering evidence boundaries explicit.
 - Public-promotion rule: raw data may feed internal code/wiki preparation, but public `llm-wiki` and artifacts must carry provenance plus data/code/standards/methodology separation and pass legal sanity checks.

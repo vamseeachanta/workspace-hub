@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Overnight 2026-05-23 — Workstream A only (llm-wiki standards)</title>
+<style>
+  body { font-family: -apple-system, system-ui, sans-serif; max-width: 1200px; margin: 2em auto; padding: 0 1.5em; color: #1a1a1a; line-height: 1.5; }
+  h1 { border-bottom: 3px solid #2a4a6a; padding-bottom: .3em; }
+  h2 { color: #2a4a6a; margin-top: 1.6em; border-bottom: 1px solid #ccc; padding-bottom: .2em; }
+  h3 { color: #4a6a8a; margin-top: 1.2em; }
+  table { border-collapse: collapse; margin: .8em 0; width: 100%; }
+  th, td { border: 1px solid #ccc; padding: .4em .7em; text-align: left; vertical-align: top; font-size: 0.92em; }
+  th { background: #eaf0f6; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  code { background: #f0f3f6; padding: 1px 4px; border-radius: 3px; font-size: .92em; }
+  pre { background: #f0f3f6; padding: .8em; border-radius: 4px; overflow-x: auto; font-size: .88em; }
+  .clean { color: #1f6e30; font-weight: 600; }
+  .expected { color: #946800; font-weight: 600; }
+  .unexpected { color: #a02020; font-weight: 600; }
+  .badge { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: .85em; font-weight: 600; }
+  .badge-ok { background: #d4edda; color: #155724; }
+  .badge-warn { background: #fff3cd; color: #856404; }
+  .badge-info { background: #d1ecf1; color: #0c5460; }
+  .meta { color: #555; font-size: .9em; margin-bottom: 1.2em; }
+  blockquote { border-left: 3px solid #2a4a6a; padding: .3em 1em; margin: .8em 0; background: #f4f7fa; }
+  .quota-bar { background: #e8edf2; border-radius: 4px; height: 22px; overflow: hidden; margin: .3em 0; }
+  .quota-bar-fill { background: linear-gradient(90deg, #2a8a4a, #d49d2a); height: 100%; padding-left: 8px; color: white; font-size: .82em; line-height: 22px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<h1>Overnight 2026-05-23 — Workstream A only (llm-wiki standards)</h1>
+
+<div class="meta">
+  Session start: 2026-05-22 23:50 CT &nbsp;|&nbsp;
+  Report time: 2026-05-23 01:30 CT &nbsp;|&nbsp;
+  Operator: Claude main session (single)<br>
+  Authorization: option-2 explicit waiver — Workstream A only, llm-wiki only, full per-page commits for morning review
+</div>
+
+<h2>TL;DR</h2>
+
+<ul>
+  <li><strong>10 of 10 standards pages landed in <code>vamseeachanta/llm-wiki</code></strong> as 10 atomic commits on <code>main</code> (range <code>aeb98f8d</code>..<code>5c94bd4e</code>). All unpushed — awaiting morning review.</li>
+  <li>Workstreams B, C, D <strong>NOT STARTED</strong> per option-2 scope decision.</li>
+  <li>Pipeline survived a 19-min stuck <code>git add</code> (kernel I/O hang from 65 concurrent git processes); recovered via PID kill + stale-lock removal + restart with per-file atomic commits (no chaining).</li>
+  <li><span class="expected">EXPECTED residue</span>: one parallel-session staged file preserved (b1528 SIROCCO); two untracked agent-config dirs (<code>.codex/</code>, <code>.gemini/</code>) noted for gitignore-follow-up.</li>
+  <li>Quota estimate (rough): <strong>~18–22%</strong> of weekly Max pool consumed this session. Plenty of headroom for Tue–Fri.</li>
+</ul>
+
+<h2>1. Standards landed (10/10)</h2>
+
+<table>
+<tr>
+  <th>#</th><th>code_id</th><th>Title</th><th>Edition</th><th>Domain</th><th>Lines</th><th>Commit</th><th>Source PDF</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>api-rp-2d</code></td>
+  <td>Operation and Maintenance of Offshore Cranes</td>
+  <td>6e, May 2007</td>
+  <td>engineering-standards</td>
+  <td>149</td>
+  <td><code>aeb98f8d</code></td>
+  <td><code>API/2007 May RP 2D Offshore Cranes Sixth Edition.pdf</code></td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>dnv-os-c301</code></td>
+  <td>Stability and Watertight Integrity</td>
+  <td>2001-01 amended 2007-04</td>
+  <td>engineering-standards</td>
+  <td>199</td>
+  <td><code>51aef4a5</code></td>
+  <td><code>DNV Rules/2001 OS-C301 Stability.pdf</code></td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>dnv-rp-e303</code></td>
+  <td>Suction Anchor Geotechnical Design in Clay</td>
+  <td>2005 first revision</td>
+  <td>engineering-standards</td>
+  <td>182</td>
+  <td><code>b55c25ba</code></td>
+  <td><code>DNV Rules/2005 RP-E303 Suction Anchors.pdf</code></td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>ocimf-sigtto-hmsf-mooring-lines</code></td>
+  <td>HMSF Mooring Lines Purchasing Guide</td>
+  <td>1e, Feb 2014</td>
+  <td>marine-engineering</td>
+  <td>158</td>
+  <td><code>183e3671</code></td>
+  <td><code>SIGTTO/guide-to-purchasing-high-modulus-synthetic-fibre-mooring-lines-february-2014.pdf</code></td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>dnvgl-st-n001</code></td>
+  <td>Marine Operations and Marine Warranty</td>
+  <td>Edition 2016-06</td>
+  <td>engineering-standards</td>
+  <td>358</td>
+  <td><code>ca2c6726</code></td>
+  <td><code>DNV Rules/DNVGL-ST-N001 2016.pdf</code></td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>noble-denton-0030</code></td>
+  <td>Guidelines for Marine Transportations (superseded predecessor)</td>
+  <td>Rev 6.1, 28 Jun 2016</td>
+  <td>marine-engineering</td>
+  <td>244</td>
+  <td><code>c13fde4d</code></td>
+  <td><code>Noble Denton Guidelines/0030-nd rev 6.1 28-jun-16 ...pdf</code></td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>api-bull-2int-met</code></td>
+  <td>Interim Guidance on Hurricane Conditions in GoM</td>
+  <td>Bulletin, May 2007</td>
+  <td>engineering-standards</td>
+  <td>154</td>
+  <td><code>992ee33c</code></td>
+  <td><code>API/2007 API.2int-met GOM Metocean.pdf</code></td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>api-rp-14f</code></td>
+  <td>Offshore Electrical Systems Class I Div 1/2</td>
+  <td>5e, July 2008</td>
+  <td>engineering-standards</td>
+  <td>234</td>
+  <td><code>4bb7098f</code></td>
+  <td><code>API/API RP 14 F 2008 Electrical Systems Offshore Petroleum Facitilies.pdf</code></td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>api-bull-2u</code></td>
+  <td>Stability Design of Cylindrical Shells</td>
+  <td>3e, June 2004</td>
+  <td>engineering-standards</td>
+  <td>207</td>
+  <td><code>4ffa51ce</code></td>
+  <td><code>API/2004 Jun BULL 2U bulletin ...pdf</code> (OCR fallback)</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>api-rp-500</code></td>
+  <td>Area Classification Class I Div 1/2</td>
+  <td>2e, Nov 1997 (on-disk; current 3e Nov 2012)</td>
+  <td>engineering-standards</td>
+  <td>206</td>
+  <td><code>5c94bd4e</code></td>
+  <td><code>API/1997 RP500 Electrical Classifications.pdf</code> (OCR fallback)</td>
+</tr>
+</table>
+
+<p><strong>Total content:</strong> 2,091 lines of structured wiki content across 10 commits. <strong>Two OCR-derived pages</strong> (api-bull-2u, api-rp-500) carry <code>ocr_note</code> frontmatter flagging PyMuPDF+tesseract provenance and instructing future readers to re-verify cited formulas/tables against publisher PDF before calc-binding use.</p>
+
+<h2>2. T1 review notes per page (self-audit)</h2>
+
+<p>Each page was written either by main session (page 1, validating template) or by a write-only subagent (pages 2–10). Main session verified each via <code>ls</code> + frontmatter spot-check before committing per <code>feedback_subagent_write_phantom</code>.</p>
+
+<h3>Frontmatter compliance — Rule A (visibility)</h3>
+<p>All 10 pages carry <code>visibility: private-llm-wiki</code> per the post-2026-05-20 <code>.claude/rules/wiki-sibling-routing.md</code> contract (which landed mid-session). No <code>client:</code> or <code>project:</code> fields required since target is the generic <code>vamseeachanta/llm-wiki</code> sibling. <span class="badge badge-ok">PASS</span></p>
+
+<h3>Section + edition tagging — per <code>feedback_silent_verdict_flip_defect_class</code></h3>
+<p>Every page includes:</p>
+<ul>
+  <li><code>edition:</code> frontmatter field with publisher-original edition string (e.g., "Sixth Edition, May 2007").</li>
+  <li><code>sections:</code> frontmatter list enumerating chapter/section structure.</li>
+  <li>In-body practitioner-application bullets that cite verbatim section IDs (Sec X.Y, Ch.A Sec.B A100, etc.) rather than generic descriptions.</li>
+</ul>
+<p><span class="badge badge-ok">PASS</span></p>
+
+<h3>Public-reference cross-checks — post-flip independence verification</h3>
+<p>Each page includes a "Public cross-reference" section identifying ≥1 independent public source confirming the standard's existence/content (publisher portal, government regulatory citation, peer textbook, etc.) per <code>feedback_llm_wiki_concept_pages_need_public_references</code> spirit (though strictly that rule was for concept pages — extended here as defense-in-depth).</p>
+<ul>
+  <li><strong>api-bull-2int-met</strong> — incorporated by reference in 30 CFR 250.901(a)(6) (publicly verifiable on ecfr.gov).</li>
+  <li><strong>api-rp-2d</strong> — referenced by OSHA 1926 Subpart CC + IADC OCO syllabus (both public).</li>
+  <li><strong>dnv-os-c301</strong> — DNV public portal + IMO MODU Code (public IMO document).</li>
+  <li><strong>dnv-rp-e303</strong> — NGI public publications on suction-anchor methodology + Andersen/Jostad academic papers.</li>
+  <li><strong>dnvgl-st-n001</strong> — DNV public download page (free) + IMCA M-series + IMO MODU Code.</li>
+  <li>Others: API standards portal abstracts; ABS public MODU rules; NFPA/IEC abstracts.</li>
+</ul>
+<p><span class="badge badge-ok">PASS</span></p>
+
+<h3>Companion-standards linkage</h3>
+<p>Cross-references wired to existing wiki pages where possible:</p>
+<ul>
+  <li>api-rp-2d → api-rp-2a-wsd, api-rp-2sk, api-rp-2sim, dnv-st-n001 (in-batch), noble-denton-0030 (in-batch)</li>
+  <li>dnv-os-c301 → dnv-os-e301, dnv-rp-c205, dnv-st-f101, dnv-os-f201</li>
+  <li>dnv-rp-e303 → dnv-os-e301 (calc-citation-pilot anchor #2685), api-rp-2sk, iso-19901-4, dnv-rp-c205</li>
+  <li>ocimf-sigtto-hmsf-mooring-lines → ocimf-meg3, ocimf-meg4 (existing), sigtto-mooring-equipment (cross-wiki to lng-projects)</li>
+  <li>dnvgl-st-n001 → dnv-os-e301, dnv-st-f101, api-rp-2sk, iso-19901-7, noble-denton-0030 (in-batch predecessor)</li>
+  <li>noble-denton-0030 → dnvgl-st-n001 (in-batch successor — heavy emphasis)</li>
+  <li>api-bull-2int-met → api-rp-2met, api-rp-2a-wsd, api-rp-2sk</li>
+  <li>api-rp-14f → api-rp-14c, api-rp-14e, api-rp-500 (in-batch)</li>
+  <li>api-bull-2u → api-rp-2a-wsd, api-rp-2sk</li>
+  <li>api-rp-500 → api-rp-14f (in-batch), api-rp-14c</li>
+</ul>
+<p><span class="badge badge-ok">PASS</span></p>
+
+<h3>OCR provenance flagging</h3>
+<p>Two pages (api-bull-2u, api-rp-500) carry an additional <code>ocr_note</code> frontmatter field explicitly disclosing PyMuPDF 300 DPI + tesseract OCR fallback chain provenance and gating re-verification of cited formulas/tables before calc-binding use. This is defensive against future calc citation modules pulling formula values from OCR-noise. Worth promoting to a structural frontmatter field for any future OCR-derived pages. <span class="badge badge-info">NEW PATTERN</span></p>
+
+<h2>3. Cleanup-audit bucket verdict</h2>
+
+<h3 class="clean">CLEAN</h3>
+<ul>
+  <li>llm-wiki working tree: no leftover writes in temp paths inside the repo.</li>
+  <li>No PDF copies committed (raw vendor-licensed PDFs remained at <code>/mnt/ace/acma-codes/</code> per <code>codes-standards-data-routing.md</code>).</li>
+  <li>No staged sweep-contamination: all 10 commits used <code>git commit -- &lt;pathspec&gt;</code> form per <code>feedback_multi_agent_commit_serialization</code>.</li>
+  <li>No legal-deny-list violations (no client identifiers introduced; OCIMF/SIGTTO + DNV + API + Noble Denton are all standards bodies, not client identifiers).</li>
+</ul>
+
+<h3 class="expected">EXPECTED residue (proceed with named residue)</h3>
+<ul>
+  <li><strong>llm-wiki staged file <code>wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md</code></strong> — pre-existing in index when this session started; identified as parallel SIROCCO session work (matches open issue #2760 "revise(naval-arch): B1528 SIROCCO force calculation review updates"). Preserved untouched throughout this session by using pathspec-form commits. This is OTHER agents' in-flight work; not mine to touch.</li>
+  <li><strong><code>/tmp/llm-wiki-extract/</code></strong> — 11 extracted PDF text files (~3.8 MB) + <code>ocr_fallback.py</code> helper. Useful if morning review wants to re-inspect extracted source content. Safe to <code>rm -rf /tmp/llm-wiki-extract/</code> when no longer needed (just /tmp).</li>
+  <li><strong>llm-wiki 10-ahead-of-origin state</strong> — by design per option-2 ("per-page commits for morning review"). User decides when to push.</li>
+</ul>
+
+<h3 class="unexpected">UNEXPECTED — surfaced for morning review</h3>
+<ul>
+  <li><strong>Two untracked dirs in llm-wiki root: <code>.codex/</code> and <code>.gemini/</code></strong> — initially logged as "unknown agent config." Late-arriving lock-contended <code>ls</code> revealed actual contents:
+    <pre>.codex/skills -> ../../workspace-hub/.claude/skills
+.gemini/skills -> ../../workspace-hub/.claude/skills</pre>
+    These are <strong>intentional cross-agent skill-symlink infrastructure</strong> — Codex CLI and Gemini CLI agents look for skills in their respective <code>.codex/skills</code> / <code>.gemini/skills</code> directories, and the symlinks point back to the workspace-hub canonical skills tree so all three agent runtimes share the same skill library. Dirs created 2026-05-22 10:55 by some earlier session as agent-runtime bootstrap. <strong>Recommendation</strong>: still worth adding both to llm-wiki <code>.gitignore</code> — they're convention infrastructure that shouldn't appear as untracked noise in <code>git status</code>, but they're NOT stale residue. (Initial UNEXPECTED-bucket framing in earlier draft was wrong; corrected here.)</li>
+  <li><strong>Stuck <code>git add</code> on dnv-os-c301 (PID 3108169, D state, 19 min) — already resolved this session</strong>. Root cause: chained <code>git add &amp;&amp; git commit &amp;&amp; ...</code> in single bash call competing for <code>.git/index.lock</code> against 65 concurrent git processes (kanban fleet + multiple Claude/Codex/Gemini sessions). Recovery: <code>kill -9</code> + <code>rm .git/index.lock</code> + restart with atomic per-file bash calls. <strong>Pattern to promote:</strong> see Open Questions Q4.</li>
+  <li><strong>Workspace-hub state confirmed UNCHANGED from preflight</strong> (late-arriving <code>git status</code> after lock contention eased): still <code>main...origin/main [ahead 7, behind 5]</code>, dashboard-output files modified. The earlier-observed parallel-session <code>git pull --rebase origin main</code> (PID 3103456) either didn't complete or didn't resolve the divergence. <strong>Action for morning</strong>: manual workspace-hub reconciliation needed — likely <code>git pull --rebase origin main</code> from a clean working state once Hermes fleet quiets, then inspect the 5 incoming commits before pushing the local 7.</li>
+</ul>
+
+<h2>4. Pipeline / process notes</h2>
+
+<h3>What worked</h3>
+<ul>
+  <li><strong>3 parallel write-only subagents per batch</strong> at the documented cap-3 concurrency. Each subagent self-contained, primed with: PDF text path, output path, frontmatter template, body-section template, hard rules (no fabrication, verbatim section IDs, no PDF copying). Total: 9 subagent dispatches, all succeeded first try, all writes verified landed via <code>ls</code> per <code>feedback_subagent_write_phantom</code>.</li>
+  <li><strong>Pathspec-form commits</strong> (<code>git commit -- &lt;file&gt;</code>) preserved the parallel SIROCCO session's staged b1528 file across 10 commits.</li>
+  <li><strong>OCR fallback chain</strong> (pdftotext → PyMuPDF 300 DPI → tesseract --psm 6) recovered 2 image-PDF sources cleanly enough to extract structured content; OCR provenance flagged in <code>ocr_note</code> frontmatter field as defensive measure.</li>
+  <li><strong>PDF→text extraction in 8-way parallel bash</strong> completed in ~30 seconds total wall-clock; subsequent subagents read from cheap text files rather than the 7.1 GB raw PDF corpus.</li>
+</ul>
+
+<h3>What didn't work — and the fix</h3>
+<ul>
+  <li><strong>Chained <code>git add &amp;&amp; git commit</code> across multiple files in a single bash call</strong> — first instance hung on a stuck <code>git add</code> after 19 min in <code>D</code> state. The remaining commits in the chain were never attempted because <code>&amp;&amp;</code> exits on first failure. <strong>Fix:</strong> atomic per-file bash calls (separated by <code>;</code> not <code>&amp;&amp;</code>) with explicit error tolerance per step.</li>
+  <li><strong>Background <code>git log</code> and <code>git status</code> kept hanging</strong> under heavy parallel-git load. <strong>Fix:</strong> when needed for verification, read <code>.git/HEAD</code> + <code>.git/refs/heads/main</code> + <code>.git/packed-refs</code> directly (no lock-dependent commands).</li>
+</ul>
+
+<h2>5. Quota estimate</h2>
+
+<div>
+  <strong>Estimated weekly Max pool consumed this session:</strong>
+  <div class="quota-bar"><div class="quota-bar-fill" style="width: 20%;">~18–22%</div></div>
+  <em>Rough estimate based on: 9 subagent dispatches × ~75–95K tokens each = ~750K subagent total; main-session reads/writes/commit operations roughly comparable. All on same subscription bucket. Target was ≤50%; well under.</em>
+</div>
+
+<p><strong>Headroom for Tue–Fri:</strong> ~78–82% of weekly pool remaining. Plenty of budget for full Workstream B+C+D execution across remaining weekdays if the morning review of these 10 pages goes well.</p>
+
+<h2>6. Open questions for morning review</h2>
+
+<ol>
+  <li><strong>Page quality acceptance.</strong> Read 1–2 pages of each page-type (long like dnvgl-st-n001 at 358 lines vs short like api-bull-2int-met at 154 lines) to confirm voice + structure + depth are right. If accepted, push <code>main</code> in llm-wiki (<code>git push origin main</code> from <code>/mnt/local-analysis/llm-wiki</code>).</li>
+  <li><strong>Legacy-page migration sweep.</strong> The existing ~276 wiki pages still carry <code>extraction_policy: metadata-only</code> + <code>raw_copy_allowed: false</code> frontmatter from the pre-2026-05-20 public era. Per <code>.claude/rules/codes-standards-data-routing.md</code> those fields are deprecated; new pages should drop them. Worth a follow-on sweep to migrate the legacy pages? Could file as <code>chore(wiki): migrate legacy pre-2026-05-20 frontmatter</code>.</li>
+  <li><strong><code>ocr_note</code> frontmatter field promotion.</strong> I added this defensively for the 2 OCR-derived pages (api-bull-2u, api-rp-500). Worth promoting to a documented frontmatter convention in <code>.claude/rules/codes-standards-data-routing.md</code> so future OCR-derived pages standardize on the field?</li>
+  <li><strong><code>feedback_chained_git_op_under_heavy_load</code> as a new memory.</strong> The 19-min stuck <code>git add</code> + 65-concurrent-git-process root cause is a generalizable pattern: under heavy parallel-git load (kanban fleet + multiple sessions), chained <code>git add &amp;&amp; git commit &amp;&amp; ...</code> single-bash-call patterns are hazardous — one stuck step kills the chain. Atomic per-file calls survive. Worth filing as a new feedback memory.</li>
+  <li><strong>Workstreams B, C, D scope decision.</strong> Pick which to schedule for Tue–Fri (and which to drop). Quota headroom is comfortable; constraint is mostly the wisdom of waiting on planning gates per the original push-back.</li>
+  <li><strong>Push timing for the 10 llm-wiki commits.</strong> Should I push tonight before exiting, or leave at 10-ahead for you to push after morning review? (Current state: unpushed — option-2 default.)</li>
+  <li><strong><code>.codex/</code> + <code>.gemini/</code> gitignore.</strong> Confirm those should go into llm-wiki <code>.gitignore</code>; I'll commit the gitignore update in the morning if you confirm.</li>
+</ol>
+
+<h2>7. Audit trail (commit list — newest first)</h2>
+
+<pre>5c94bd4e feat(standards): add API RP 500 — Class I Div 1/Div 2 Area Classification (2e 1997 on-disk)
+4ffa51ce feat(standards): add API Bulletin 2U — Stability Design of Cylindrical Shells (3e 2004-06)
+4bb7098f feat(standards): add API RP 14F — Offshore Electrical Systems Div 1/Div 2 (5e 2008-07)
+992ee33c feat(standards): add API Bulletin 2INT-MET — GoM Hurricane Conditions Interim Guidance (May 2007)
+c13fde4d feat(standards): add Noble Denton 0030/ND Rev 6.1 — Marine Transportations (last edition, superseded by N001)
+ca2c6726 feat(standards): add DNVGL-ST-N001 — Marine Operations and Marine Warranty (2016-06)
+183e3671 feat(standards): add OCIMF/SIGTTO HMSF Mooring Lines Purchasing Guide (1e 2014-02)
+b55c25ba feat(standards): add DNV-RP-E303 — Suction Anchor Geotechnical Design (2005)
+51aef4a5 feat(standards): add DNV-OS-C301 — Stability and Watertight Integrity (2001-01 amended 2007-04)
+aeb98f8d feat(standards): add API RP 2D — Operation and Maintenance of Offshore Cranes (6e 2007)</pre>
+
+<p>10 commits, all on <code>main</code>. Unpushed (10 ahead of <code>origin/main</code>). To inspect: <code>cd /mnt/local-analysis/llm-wiki &amp;&amp; git log --stat aeb98f8d^..HEAD</code></p>
+
+<h2>8. Why this report exists (not committed)</h2>
+
+<p>This file lives at <code>/mnt/local-analysis/workspace-hub/docs/sessions/overnight-2026-05-23-workstream-A-llm-wiki.html</code> — workspace-hub repo, uncommitted. Will be committed (or moved/archived per your preference) after morning review. Per <code>feedback_html_default_artifact</code> + <code>codes-standards-data-routing.md</code>, human-facing rich artifacts default to HTML.</p>
+
+</body>
+</html>
