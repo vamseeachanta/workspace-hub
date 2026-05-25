@@ -80,3 +80,7 @@
 {"ts":"2026-05-24T12:00:01Z","host":"ace-linux-2","mount":"/mnt/remote/dev-primary/local-analysis","status":"unreachable","detail":"remote dev-primary not reachable"}
 {"ts":"2026-05-24T12:00:01Z","host":"ace-linux-2","mount":"/mnt/remote/dev-primary/ace","status":"unreachable","detail":"remote dev-primary not reachable"}
 {"ts":"2026-05-24T12:00:01Z","host":"ace-linux-2","event":"summary",""ok":1,""recovered":0,""failed":2,""total":3""}
+{"ts":"2026-05-25T12:00:01Z","host":"ace-linux-2","mount":"/mnt/workspace-hub","status":"ok","detail":"accessible"}
+{"ts":"2026-05-25T12:00:01Z","host":"ace-linux-2","mount":"/mnt/remote/dev-primary/local-analysis","status":"unreachable","detail":"remote dev-primary not reachable"}
+{"ts":"2026-05-25T12:00:01Z","host":"ace-linux-2","mount":"/mnt/remote/dev-primary/ace","status":"unreachable","detail":"remote dev-primary not reachable"}
+{"ts":"2026-05-25T12:00:01Z","host":"ace-linux-2","event":"summary",""ok":1,""recovered":0,""failed":2,""total":3""}

@@ -52,6 +52,7 @@ Apply the appropriate fix per failure type:
 | Diverged branches | `git pull --no-rebase` (merge strategy) |
 | Uncommitted changes | `git stash && git pull --no-rebase && git stash pop` |
 | No upstream | Report only, no auto-fix |
+| Deterministic generated-file conflict | Regenerate from the documented generator, validate with a parser, then stage; do not hand-merge arbitrary conflict hunks. See `references/generated-file-conflict-regeneration.md` |
 | Large repo partial checkout / timed-out pull | Use no-untracked status probes, kill hung sync/status processes if needed, preserve recovery artifacts under `.git/recovery-backups/`, restore accidental tracked deletions; see `references/large-repo-partial-checkout-recovery.md` |
 | Archived/read-only remote | Do not force workaround; preserve/export local-only commits and open a follow-up issue |
 
@@ -188,6 +189,7 @@ When an issue number is part of the sync/commit request, include a clickable Git
 - Session-learning commits can generate a tracked skill ledger update after the primary commit (for example `logs/orchestrator/hermes/skill-patches.jsonl`). Treat that as intentional repo-ecosystem metadata: inspect it, commit it separately, and only then declare the worktree clean.
 - Before pushing after a merge/commit sequence, fetch and compare `HEAD` with `origin/<branch>`. Some workspace-hub hooks or concurrent syncs can leave the remote-tracking ref already equal to `HEAD`; if `HEAD == origin/<branch>` and ahead/behind is `0/0`, report "push not needed" instead of pushing blindly.
 - If direct push to the default branch is rejected by branch protection (for example required status checks / "changes must be made through a pull request"), do not retry, force, or bypass. Preserve the exact committed ahead range by pushing `HEAD` to a topic branch, open a PR against the protected branch, and report the PR URL plus the still-ahead local `main` state as a known exception until the PR merges.
+- If a merge conflict is in a deterministic generated artifact, prefer the documented generator plus format validation over manual conflict editing. Example: `config/ai_agents/ai-tools-status.yaml` can be regenerated with `bash scripts/maintenance/ai-tools-status.sh` and YAML-parsed before staging. See `references/generated-file-conflict-regeneration.md`.
 - New-branch pushes in workspace-hub may trigger expensive pre-push checks across tier-1 repos and can time out. If the user has approved sensible commands and the goal is repo hygiene/sync rather than validation, `git push --no-verify` may be necessary after verifying local/remote state.
 - Archived/read-only repos can still be committed locally for preservation, but push/merge to remote will fail; report them explicitly as blocked rather than retrying.
 - In huge repos, do not run broad `git status --porcelain -uall`, full `du`, or full checkout/pull loops as the first recovery move. Start with no-untracked status and ahead/behind probes, then follow `references/large-repo-partial-checkout-recovery.md`.
