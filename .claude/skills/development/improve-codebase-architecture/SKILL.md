@@ -37,6 +37,8 @@ This skill is _informed_ by the project's domain model. The domain language give
 
 Read the project's domain glossary and any ADRs in the area you're touching first.
 
+For multi-repo or ecosystem-wide requests, start with a bounded inventory before spawning explorers: enumerate repos, read each repo's `AGENTS.md`/`CLAUDE.md`/`CONTEXT.md` when present, collect tracked-file/top-directory summaries with capped commands (prefer `git ls-files` over recursive filesystem walks), and split subagents into small repo batches with explicit read-only scope and output caps. If broad subagent batches time out, salvage the report from the bounded inventory and clearly mark partial evidence instead of rerunning the same unbounded scan.
+
 Then use the Agent tool with `subagent_type=Explore` to walk the codebase. Don't follow rigid heuristics — explore organically and note where you experience friction:
 
 - Where does understanding one concept require bouncing between many small modules?
