@@ -39,6 +39,21 @@ _git_safe_log() {
 }
 
 # ============================================================================
+# Master disable switch (surgical sync pause)
+# ============================================================================
+# If the flag file exists, all mutating git_safe_* ops (pull/commit/push/sync)
+# no-op. Cron scripts still run their actual work; they just don't stash,
+# commit, or push to origin — eliminating main-branch contention and
+# auto-stash orphaning. Re-enable by removing the flag file:
+#   rm ~/.workspace-hub-git-safe-disabled
+GIT_SAFE_DISABLE_FLAG="${GIT_SAFE_DISABLE_FLAG:-${HOME}/.workspace-hub-git-safe-disabled}"
+_git_safe_disabled() {
+    [[ -f "$GIT_SAFE_DISABLE_FLAG" ]] || return 1
+    _git_safe_log "DISABLED via ${GIT_SAFE_DISABLE_FLAG} — skipping git sync op"
+    return 0
+}
+
+# ============================================================================
 # Initialization
 # ============================================================================
 git_safe_init() {
@@ -93,6 +108,7 @@ git_heal_index() {
 # Safe pull — lock + heal + stash + rebase
 # ============================================================================
 git_safe_pull() {
+    _git_safe_disabled && return 0
     local git_dir="${GIT_SAFE_REPO:-.}"
 
     _git_safe_lock_acquire || {
@@ -134,6 +150,7 @@ git_safe_pull() {
 # Safe commit — lock + heal + add + commit
 # ============================================================================
 git_safe_commit() {
+    _git_safe_disabled && return 0
     local msg="${1:?commit message required}"
     shift
     local files=("$@")
@@ -186,6 +203,7 @@ git_safe_commit() {
 # Safe push — lock + rebase + retry with exponential backoff
 # ============================================================================
 git_safe_push() {
+    _git_safe_disabled && return 0
     local git_dir="${GIT_SAFE_REPO:-.}"
     local retries="${GIT_SAFE_PUSH_RETRIES}"
     local backoff="${GIT_SAFE_PUSH_BACKOFF}"
@@ -235,6 +253,7 @@ git_safe_push() {
 # Safe sync — pull + commit + push in one operation
 # ============================================================================
 git_safe_sync() {
+    _git_safe_disabled && return 0
     local msg="${1:?commit message required}"
     shift
     local files=("$@")

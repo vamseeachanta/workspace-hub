@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adversarial Review — Hermes Kanban Ecosystem (2026-05-24/25)</title>
+<style>
+  :root{--bg:#0f1117;--card:#181b24;--ink:#e7e9ee;--mut:#9aa3b2;--line:#2a2f3a;
+        --red:#ff5c6c;--amber:#ffb454;--green:#48c78e;--blue:#5aa9ff;--purple:#b48cff}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1040px;margin:0 auto;padding:32px 24px 80px}
+  h1{font-size:27px;margin:0 0 4px;letter-spacing:-.02em}
+  h2{font-size:20px;margin:38px 0 10px;padding-top:14px;border-top:1px solid var(--line)}
+  h3{font-size:16px;margin:22px 0 6px}
+  .sub{color:var(--mut);margin:0 0 22px}
+  code{background:#222633;padding:1px 5px;border-radius:4px;font-size:13px;color:#d7e2ff}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:6px 9px;text-align:left}
+  th{background:#1d212b;color:var(--mut);font-weight:600}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase}
+  .t-crit{background:rgba(255,92,108,.16);color:var(--red);border:1px solid var(--red)}
+  .t-high{background:rgba(255,180,84,.14);color:var(--amber);border:1px solid var(--amber)}
+  .t-med{background:rgba(90,169,255,.14);color:var(--blue);border:1px solid var(--blue)}
+  .t-low{background:rgba(154,163,178,.14);color:var(--mut);border:1px solid var(--mut)}
+  .t-ok{background:rgba(72,199,142,.14);color:var(--green);border:1px solid var(--green)}
+  .kpi{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0}
+  .kpi div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;flex:1;min-width:150px}
+  .kpi b{display:block;font-size:26px;line-height:1.1}
+  .kpi span{color:var(--mut);font-size:12px}
+  .red{color:var(--red)}.amber{color:var(--amber)}.green{color:var(--green)}.blue{color:var(--blue)}.mut{color:var(--mut)}
+  ul{margin:6px 0 6px 0;padding-left:20px}li{margin:3px 0}
+  .rec{border-left:3px solid var(--purple);padding-left:14px;margin:14px 0}
+  .rec b{color:var(--purple)}
+  blockquote{margin:8px 0;padding:8px 14px;border-left:3px solid var(--mut);color:var(--mut);background:#161922;border-radius:0 6px 6px 0}
+  .small{font-size:12.5px;color:var(--mut)}
+  .done{color:var(--green);font-weight:700}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>Adversarial Review — Hermes Kanban Ecosystem</h1>
+<p class="sub">Reviewer: Claude (main session, <code>ace-linux-1</code>) · drafted 2026-05-24, revised 2026-05-25 · Source: <code>.claude/memory/kanban/</code> (45 YAML boards) reconciled against live <code>~/.hermes/kanban/boards/&lt;slug&gt;/kanban.db</code> + systemd runtime. Runtime root-cause confirmed by a parallel re-audit (log access).</p>
+
+<div class="card" style="border-color:var(--green)">
+<span class="tag t-ok">Status 2026-05-25 05:18 — Contained</span>
+<p style="margin:10px 0 0">The runaway is <b>stopped and verified</b>. <code>kanban.dispatch_in_gateway: false</code> was set and the gateway restarted (<code>sudo systemctl restart hermes-gateway.service</code>): worker processes <b>256 → 0</b>, gateway cgroup <b>21.2 GB → 138 MB</b>, Telegram reconnected, crons running, dispatcher confirmed off. A per-board <code>max_spawn/max_in_progress: 20</code> cap is staged for when dispatch is re-enabled. <b>Do not re-enable dispatch</b> until the worker skill-registry drift (below) is fixed.</p>
+</div>
+
+<div class="kpi">
+  <div><b>45</b><span>boards (all loaded live — 0 missing, 0 orphan)</span></div>
+  <div><b class="amber">2,064</b><span>live tasks (YAML claims 1,536)</span></div>
+  <div><b class="green">0</b><span>workers now (was 256)</span></div>
+  <div><b class="red">1613/1621</b><span>runs CRASHED over 7d · 0 done</span></div>
+  <div><b class="amber">528</b><span>tasks live-only, git-invisible</span></div>
+</div>
+
+<h2>Root cause (runtime) — <span class="tag t-crit">Critical</span> skill-registry drift drove a crash-respawn storm</h2>
+<p>The <code>--triage</code> "safety" model is defeated by config default <code>kanban.auto_decompose: true</code> (config.py:1566): the gateway dispatcher auto-decomposes triage every tick and spawns workers for any <code>ready</code> task with an assignee. Those workers then <b>crash instantly</b>:</p>
+<blockquote><code>Error: Unknown skill(s): kanban-worker</code> — every worker, in <code>boards/&lt;slug&gt;/logs/*.log</code></blockquote>
+<p>The <code>kanban-worker</code> skill <b>exists on disk</b> (<code>~/.hermes/skills/devops/kanban-worker/</code> and <code>~/.hermes/hermes-agent/skills/devops/kanban-worker</code>) but the <code>.venv/bin/hermes</code> runtime the workers execute under does <b>not register it</b> — a <b>two-venv skill-registry drift</b>. The result is a fast crash→respawn loop, not idle hangs:</p>
+<ul>
+<li><b>Real resource burn</b> (not model quota — workers die before any API call): systemd cgroup showed <b>18h55m CPU in ~4h wall (~969% ≈ 10 cores), 18.7 GB RAM, load avg 30</b> from the plugin-discovery storm on each respawn.</li>
+<li><b>Zero useful output over 7 days</b>: 37/37 task workspaces empty, <b>1613/1621 runs <code>crashed</code>, 0 <code>done</code></b>, zero commits attributable to the swarm.</li>
+<li><b>Stale config never reloaded:</b> the kill-switch was written to disk at 05:10 but the gateway (pid 1332383) had started 01:16 and held ~4h of stale in-memory config — dispatch stayed ON until the systemd restart.</li>
+</ul>
+<p class="small">Note: an earlier draft described the workers as "idle-wedged, 0% CPU, no quota burn." That was a snapshot artifact (sampled during a sleep window) — the parallel re-audit with log access established the crash-loop + real CPU burn above. No <em>model</em> quota was spent (workers never reach a model call); the cost was CPU/RAM/process churn.</p>
+
+<h2>Containment actions taken (2026-05-25) — <span class="tag t-ok">done</span></h2>
+<table>
+<tr><th>Action</th><th>Detail</th><th>Verified</th></tr>
+<tr><td><code>dispatch_in_gateway: false</code></td><td>Added <code>kanban:</code> section to <code>~/.hermes/config.yaml</code> — full stop at source (no decompose, no reclaim, no respawn)</td><td class="done">✓ config parses</td></tr>
+<tr><td><code>max_spawn / max_in_progress: 20</code></td><td>Per-board cap staged for re-enable (see global-cap caveat below)</td><td class="done">✓ staged</td></tr>
+<tr><td>Gateway restart</td><td><code>sudo systemctl restart hermes-gateway.service</code> — cgroup teardown reaps all workers atomically + reloads config</td><td class="done">✓ PID rolled, workers 0</td></tr>
+<tr><td>Memory free</td><td>21.2 GB → 138 MB</td><td class="done">✓</td></tr>
+<tr><td>Adapters</td><td>Telegram reconnected; crons running; Discord paused (pre-existing since 05-24)</td><td class="done">✓</td></tr>
+</table>
+
+<h2>Structural findings (the board review you asked for)</h2>
+
+<h3><span class="tag t-high">High</span> 1 — Source-of-truth inversion: 528 durable tasks exist only in per-machine SQLite</h3>
+<p>The gateway <code>auto-decomposer</code> minted real child tasks never written back to YAML. Nine boards diverged (+528 total): travel 58→175, aceengineer-strategy 20→114, ecosystem 20→105, devakrishna 17→84, aceengineer-admin 16→80, household 12→44, finance 10→37, family-planning 7→34, aceengineer-website 5→20. These children carry <code>idempotency_key=NULL</code> → git-invisible, absent on every other machine, and <b>duplicate on reload</b>. This directly contradicts the tier-0 #1 theme (<em>consolidate memory into Hermes as canonical store</em>) and the repo's "memory is in the repo" principle.</p>
+
+<h3><span class="tag t-high">High</span> 2 — Mission-inverted backlog: the tooling repo owns 57% of all cards</h3>
+<table>
+<tr><th>Repo</th><th>Tier</th><th class="n">Cards</th><th class="n">%</th></tr>
+<tr><td>workspace-hub (6 domains)</td><td>Meta / tooling</td><td class="n red">870</td><td class="n red">57%</td></tr>
+<tr><td>digitalmodel (5 domains)</td><td>Engineering product</td><td class="n">265</td><td class="n">17%</td></tr>
+<tr><td>achantas-data (5 domains)</td><td>Personal / family</td><td class="n">104</td><td class="n">7%</td></tr>
+<tr><td>worldenergydata (4 domains)</td><td>GTM product</td><td class="n">68</td><td class="n">4%</td></tr>
+<tr><td>everything else</td><td>mixed</td><td class="n">229</td><td class="n">15%</td></tr>
+</table>
+<p>The <code>harness</code> board alone (300) outweighs the entire engineering product (265). The 9 boards that actually spawned workers were all <b>personal/family + consulting-admin</b> — because only the decomposer-assigned children had an assignee; the product/meta cards sit inert in <code>ready</code> with <b>no assignee</b> (gateway/run.py:5421). That's a latent trap (anything that assigns them re-triggers fan-out), not a deliberate prioritization.</p>
+
+<h3><span class="tag t-med">Medium</span> 3 — Tier-0 strategic links are dead; two incompatible taxonomies</h3>
+<p>Seven <code>spans_boards</code> slugs exist in neither YAML nor live Hermes: <code>repo-workspace-hub-{hermes,governance,intel,cron}</code> (the real domains are <code>-ai-orchestration/-business/-data/-engineering/-harness/-ops</code>), <code>repo-digitalmodel-mooring</code>, <code>repo-achantas-data-krishna</code>, <code>repo-readiness</code>. workspace-hub was decomposed under two irreconcilable taxonomies; every workspace-hub strategic theme links to a board that was never created.</p>
+
+<h3><span class="tag t-med">Medium</span> 4 — Empty tier-1 parents; no product roll-up</h3>
+<p>Seven repo boards hold 0 cards (achantas-data, assethold, hobbies, llm-wiki, llm-wiki-acma, sabithaandkrishnaestates, worldenergydata). <b>worldenergydata is "GTM-ready" with zero strategic roll-up cards.</b> <code>hobbies</code> and <code>llm-wiki-acma</code> are empty shells — seed or delete.</p>
+
+<h3><span class="tag t-low">Low</span> 5 — No real prioritization; staleness otherwise clean</h3>
+<p>11/20 tier-0 themes sit at default priority 0; revenue infra is not ranked above personal development. Credit: 0 closed GH issues are mirrored (snapshot was fresh).</p>
+
+<h2>Recommendations (ranked)</h2>
+<div class="rec"><b>R1 — <span class="done">DONE</span>: contain.</b> Dispatch off + gateway restarted + workers reaped + 21 GB freed. Verified.</div>
+<div class="rec"><b>R2 — Fix the skill-registry drift BEFORE re-enabling dispatch.</b> Make <code>.venv/bin/hermes</code> register the on-disk <code>kanban-worker</code> skill (align the two venvs' skill dirs / <code>skills.external_dirs</code>). Until then, every dispatched worker crash-loops. This is the gate on turning dispatch back on.</div>
+<div class="rec"><b>R3 — Add a GLOBAL concurrency cap.</b> Hermes only has per-board caps (<code>gateway/run.py:_tick_once</code> applies <code>max_spawn</code> to each board independently → 20×N worst case). A shared semaphore across the per-board dispatch loop is needed for a true "≤20 trackable workers." The staged per-board 20 is a partial mitigation only.</div>
+<div class="rec"><b>R4 — Never bulk-load to <code>triage</code>.</b> It is a pipeline entry, not a parking spot (<code>auto_decompose: true</code>). Load to <code>blocked</code>-with-reason (survives auto-unblock) or with the decomposer disabled.</div>
+<div class="rec"><b>R5 — Fix the source-of-truth loop.</b> Add a <code>dump.py</code> that serializes live tasks (incl. decomposer children, minting stable idempotency keys) back to YAML; until then do not reload (duplicates 528 tasks).</div>
+<div class="rec"><b>R6 — Rebalance + repair.</b> Demote the 870 workspace-hub cards toward the product missions; rewrite the 7 dead tier-0 links + add a Level-2 <code>check-kanban-spans-boards.py</code>; seed/delete empty parents.</div>
+
+<p class="small" style="margin-top:34px">Evidence: live board DBs under <code>~/.hermes/kanban/boards/*/kanban.db</code>; <code>hermes gateway status</code> + <code>gateway.log</code>; <code>config.yaml</code>. Containment mutated runtime config + restarted the gateway (user-authorized, root via sudo). 260 stale <code>running</code> rows remain inert (dispatch off) — optional cleanup. Related memory: <code>project_kanban_ecosystem_runaway_state</code>, <code>feedback_hermes_triage_is_pipeline_entry</code>, <code>feedback_hermes_blocked_status_auto_unblocked</code>, <code>feedback_codex_cli_0_124_upstream_regression</code>, <code>feedback_parallel_branch_checkout_working_dir</code>.</p>
+
+</div></body></html>

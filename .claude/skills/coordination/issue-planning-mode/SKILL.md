@@ -108,6 +108,8 @@ Session-specific examples and checklists: `references/layered-architecture-issue
 
 For GitHub issue portfolios that must flow from data layer → execution layer → result/output layer, use `references/data-execution-results-kanban.md`: inventory issues by architectural lane, create a repo-tracked Kanban/report artifact, delegate read-only planning/review waves by provider strengths, verify delegate claims in the orchestrator checkout, and stop at an explicit approval checkpoint before implementation.
 
+For sequential issue-tree planning where downstream plans depend on revised upstream architecture/boundary plans, use `references/focused-reqa-before-downstream-planning.md`: run focused re-QA against the exact revised local upstream artifacts before drafting downstream issues, post concise GitHub comments for MAJOR results with `--body-file`, keep labels conservative, and block downstream drafting until upstream MAJOR findings are patched or explicitly waived.
+
 Execution discipline for delegated agents:
 - If using Claude/Codex/Gemini in parallel worktrees, explicitly anchor the repo/worktree path in the prompt/context and verify the plan file was written in the intended checkout. Do not assume the child agent stayed in the requested worktree.
 - After drafting, verify all expected artifacts exist where intended:
