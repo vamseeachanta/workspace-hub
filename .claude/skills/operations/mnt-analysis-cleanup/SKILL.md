@@ -76,6 +76,8 @@ Use this taxonomy (apply order matters — most-specific first):
 | **orphan worktree** | `.git` is a file (`gitdir:` pointing at a path that no longer exists) | `codex-burn-YYYYMMDD/<repo>-bundle/` after parent clone is gone |
 | **codex-burn run artifact** | dated dir matching `codex-burn-YYYYMMDD/` containing per-repo bundles, monitoring-evidence, logs, prompts | full Hermes codex-burn run output |
 | **agent log accumulation** | dir holding `provider-capacity-aware-YYYYMMDD-*` or `workspace-hub-{exit,closeout}-handoff-*.md` | `agent-logs/` |
+| **top-level reconstructible Python dependency dir** | dir contains `pyvenv.cfg`, no `.git`, mostly `lib/` and `bin/` | `marker-env/`, `capytaine-env/`, `raft-env/` |
+| **nested open-issue Python dependency dir** | dependency dir inside a workspace tied to an OPEN GitHub issue | `ace2-gis-timelapse/.venv/` |
 | **empty coordination meta-dir** | dir created for an agent run that left no artifacts | `agent-worktrees/`, `worktrees/` |
 
 ### 3. Derived-artifact classification (THREE buckets, not one)
@@ -117,6 +119,8 @@ Build-output dirs (`build/`, `dist/`, `target/`, `bin/`, `*.egg-info/`, `.eggs/`
 | orphan worktree | Read `.git` (file, contents = `gitdir: <path>`). If that path doesn't exist, orphan confirmed. Fetch the branch the orphan was tracking into a sibling clone, `git archive` it, `diff -rq` with bucket-A filter, build residue list, archive bucket-B/C, then delete. |
 | codex-burn run artifact | Cross-check with Hermes via the full coordination protocol in §6 below. **An old dated dir is a candidate, not vestigial-by-default.** |
 | agent log accumulation | Inspect timestamps; threshold for prune is the `mtime` policy below. |
+| top-level reconstructible Python dependency dir | Confirm no active process has cwd/open files inside it; identify package intent from `pyvenv.cfg` and a small import probe; delete only after user confirms it is not a long-lived environment they still use. Archive normally not required because dependencies are reconstructible. |
+| nested open-issue Python dependency dir | If parent workspace is tied to an OPEN GitHub issue, preserve `outputs/`, `reports/`, `scripts/`, logs, and other evidence-bearing artifacts; remove only the reconstructible dependency directory. |
 | empty coordination meta-dir | `find "$dir" -xdev -mindepth 1 -print -quit` returns empty AND no permission errors. Fail closed if errors. |
 
 ### 5. Risk-tier the proposal
@@ -286,4 +290,4 @@ When this skill completes a successful run, optionally update auto-memory at `~/
 - `feedback_mnt_analysis_cleanup_gotcha.md` — if a new gotcha surfaced (e.g., a check that should be in §6 but wasn't)
 - `project_mnt_analysis_state.md` — post-run state snapshot if useful for future sessions
 
-The case-study reference (`references/case-study-2026-05-12.md`) captures the worked example that produced this skill. The Hermes adversarial review at `references/hermes-adversarial-review-2026-05-12.md` produced the patch set that hardened it. The clean duplicate clone deletion pattern is illustrated in `references/clean-duplicate-clone-2026-05-18.md`.
+The case-study reference (`references/case-study-2026-05-12.md`) captures the worked example that produced this skill. The Hermes adversarial review at `references/hermes-adversarial-review-2026-05-12.md` produced the patch set that hardened it. The clean duplicate clone deletion pattern is illustrated in `references/clean-duplicate-clone-2026-05-18.md`. Top-level reconstructible Python dependency cleanup and open-issue workspace reduction are covered in `references/top-level-venv-and-open-issue-workspace-cleanup.md`.
