@@ -281,15 +281,24 @@ def live_state(repo: str, number: str):
         return False, set()
 
 
-def labels_for(p: dict, existing: set[str]) -> list[str]:
+def repo_has_domain_authority(repo: str) -> bool:
+    """True if the repo owns an authoritative fine-grained domain: taxonomy
+    (a domain-map-<name>.yaml exists). For those repos we NEVER write coarse
+    board-domain labels — doing so would create a mixed fine/coarse taxonomy.
+    The map governs board-grouping instead. (e.g. workspace-hub: 162 labels)"""
+    base = repo.split("/")[-1]
+    return (KANBAN / f"domain-map-{base}.yaml").exists()
+
+
+def labels_for(p: dict, existing: set[str], skip_domain: bool = False) -> list[str]:
     """Labels to ADD for one proposal, given the issue's current labels.
     - dispatch:ready always
-    - domain: only if the issue has NO domain: label yet (respect fine taxonomies)
+    - domain: only if issue has none AND repo lacks its own authoritative taxonomy
     - machine: only if none set (respect manual assignment)
     - ai: only when a rule/human chose a non-default provider"""
     out = ["dispatch:ready"]
     has_domain = any(n.startswith("domain:") for n in existing)
-    if p["domain"] and not has_domain:
+    if p["domain"] and not has_domain and not skip_domain:
         out.append(f"domain:{p['domain']}")
     if not any(n.startswith("machine:") for n in existing):
         out.append(f"machine:{p['machine']}")
@@ -304,19 +313,20 @@ def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace
     proposals = [p for p in proposals if p["repo"] == repo]
     if not proposals:
         sys.exit(f"no open cards for {repo}")
+    skip_domain = repo_has_domain_authority(repo)
     # universe of labels that could be added (empty-existing = max set) to ensure defs
     used = set()
     for p in proposals:
-        used.update(labels_for(p, set()))
+        used.update(labels_for(p, set(), skip_domain))
     print(f"\n\033[1m{'APPLY' if do_write else 'APPLY (dry-run)'} -> {repo}\033[0m  "
-          f"({len(proposals)} cards)")
+          f"({len(proposals)} cards)" + ("  [domain: skipped — repo has own taxonomy]" if skip_domain else ""))
     print("  label namespaces to ensure:")
     ensure_labels(repo, used, dry=not do_write)
 
     written = noop = err = drifted = 0
     for i, p in enumerate(proposals, 1):
         if not do_write:
-            labs = labels_for(p, set())  # optimistic preview (domain shown even if skipped live)
+            labs = labels_for(p, set(), skip_domain)  # optimistic preview
             print(f"    #{p['number']:<6} += {','.join(labs)}")
             continue
         is_open, existing = live_state(repo, p["number"])
@@ -324,7 +334,7 @@ def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace
             drifted += 1
             print(f"    #{p['number']:<6} \033[33mSKIP (not live-open)\033[0m")
             continue
-        labs = labels_for(p, existing)
+        labs = labels_for(p, existing, skip_domain)
         if not labs:
             noop += 1  # already fully labeled
             continue
