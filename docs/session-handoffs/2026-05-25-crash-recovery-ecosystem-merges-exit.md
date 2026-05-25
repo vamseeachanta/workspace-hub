@@ -27,7 +27,19 @@ Nothing was lost. Everything genuinely at risk was committed and pushed. One ite
   - aceengineer-website `codex/burn-20260427-issue-2357` (`8910c615`) — stale; config-migration divergence (skills relocated on main)
   - assethold `fix/50-settings-merge-conflict` (`fe84b89d`) — stale; main resolved settings.json differently (#50 closed)
 
-## OPEN ITEM — needs next-session action
+## RESOLVED — 2026-05-25 (follow-up session)
+
+The single open item below was completed: worldenergydata's reconciled merge is **verified and merged to `origin/main`**.
+
+- Verified via PR #433 (`verify/codex-burn-20260511-merge` → main): all CI green — Test Python 3.10/3.11/3.12, Type Check, Security, Lint.
+- The local `uv run pytest/black/isort` hang was bypassed using version-pin-matched standalone tools (`~/.local/bin/black 25.9.0`, `isort 8.0.1`, `uvx flake8`); two PR-introduced **formatting-only** lint nits (Black on `production_api12.py`, isort on the new smoke test) were fixed.
+- Landed via fast-forward push `5466b880..ecbba21b` (local `main == origin/main`, zero divergence for the active session). PR #433 MERGED.
+- `codex/burn-20260511-worldenergydata-bundle` deleted (merge now on main); temp `verify/...` branch auto-deleted on merge.
+- The 4 stale skipped branches were also deleted (with explicit confirmation): worldenergydata `docs/handoff-2026-05-03-lt-epic-closed`, `plan/411-bsee-war-bridge`; aceengineer-website `codex/burn-20260427-issue-2357`; assethold `fix/50-settings-merge-conflict`. SHAs recorded in the follow-up session log for gc-window recovery.
+
+---
+
+## OPEN ITEM — needs next-session action  (RESOLVED above; retained for history)
 
 ### worldenergydata `codex/burn-20260511` merge — reconciled locally, NOT pushed
 - **Local `main` = `5343dbee`** (0 behind / 5 ahead of `origin/main`). This is a clean reconciled merge of `origin/codex/burn-20260511-worldenergydata-bundle` + current main.
@@ -37,7 +49,7 @@ Nothing was lost. Everything genuinely at risk was committed and pushed. One ite
 - **Dirty exception:** `scripts/enforcement/` untracked (machine-local vendored hook — expected, do not commit).
 
 ### Remaining triage (low priority)
-- 4 stale skipped branches above are force-delete candidates (their issues are closed / content is divergence not work). Left in place pending explicit confirmation.
+- 4 stale skipped branches above were force-deleted 2026-05-25 after explicit confirmation (see RESOLVED block). ✓
 
 ## Repo states at exit
 - All repos `main == origin/main` EXCEPT worldenergydata (5 ahead, unpushed — above).
