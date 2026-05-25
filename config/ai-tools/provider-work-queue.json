@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-25T09:21:29.563413Z",
+  "generated_at": "2026-05-25T13:20:13.198029Z",
   "current_week": "2026-W22",
-  "scorecard_generated_at": "2026-05-25T09:21:25.054710Z",
+  "scorecard_generated_at": "2026-05-25T13:20:11.185091Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -1001,29 +1001,6 @@
           ]
         },
         {
-          "number": 2397,
-          "title": "epic(repo-organization): canonical folder structure and refactor contract across tier-1 repos",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2397",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:harness",
-            "domain:repo-organization"
-          ],
-          "updatedAt": "2026-05-18T19:42:15Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2399,
           "title": "feat(ai-orchestration): define next-model-release readiness contract for repo ecosystem",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2399",
@@ -1774,19 +1751,20 @@
           ]
         },
         {
-          "number": 2381,
-          "title": "chore(governance): add computable expiration metadata to session handoffs",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2381",
+          "number": 2785,
+          "title": "arch(ecosystem): deepen workspace-hub repo routing and sync module",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2785",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:documentation",
+            "priority:high",
             "cat:harness",
-            "domain:session"
+            "domain:refactor",
+            "domain:repo-organization",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-05-18T19:42:41Z",
+          "updatedAt": "2026-05-25T11:02:51Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1798,19 +1776,47 @@
           ]
         },
         {
-          "number": 2382,
-          "title": "feat(conformance): add promotion audit-trail checker for L5/L6\u2192L3 wiki promotions",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2382",
+          "number": 2786,
+          "title": "arch(ecosystem): put duplicated agent infrastructure behind one sync seam",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2786",
           "labels": [
             "enhancement",
-            "priority:medium",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:refactor",
+            "domain:agent-adapters",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-05-25T11:02:52Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2787,
+          "title": "arch(worldenergydata): deepen ingestion around source-specific adapters",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2787",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
             "cat:data-pipeline",
-            "cat:harness",
-            "domain:knowledge-management"
+            "domain:data-pipeline",
+            "domain:refactor",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-05-18T19:42:38Z",
+          "updatedAt": "2026-05-25T11:02:54Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1822,18 +1828,21 @@
           ]
         },
         {
-          "number": 2383,
-          "title": "feat(conformance): implement GUARD-1 invented-layer detector for intelligence/governance docs",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2383",
+          "number": 2789,
+          "title": "arch(digitalmodel): deepen engineering workflow modules around bounded seams",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2789",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "domain:knowledge-management"
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "domain:refactor",
+            "domain:orcaflex",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-05-18T19:42:35Z",
+          "updatedAt": "2026-05-25T09:50:03Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1845,65 +1854,22 @@
           ]
         },
         {
-          "number": 2384,
-          "title": "feat(governance): add promotion-aware recurring-run output pruner",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2384",
+          "number": 2792,
+          "title": "arch(llm-wiki): treat wiki repos as Knowledge Index modules",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2792",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "domain:knowledge-management"
-          ],
-          "updatedAt": "2026-05-18T19:42:32Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2385,
-          "title": "chore(harness): consolidate dual session-signals stores \u2014 .claude/state/ vs state/ divergence",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2385",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "domain:session"
-          ],
-          "updatedAt": "2026-05-18T19:42:29Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2392,
-          "title": "feat(knowledge): wiki coverage-gap detector \u2014 inventory \u00d7 wiki diff per discipline",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2392",
-          "labels": [
-            "enhancement",
-            "priority:medium",
+            "priority:high",
             "cat:data-pipeline",
             "cat:documentation",
-            "domain:document-intelligence"
+            "domain:knowledge",
+            "domain:refactor",
+            "domain:knowledge-management",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-05-18T19:42:17Z",
+          "updatedAt": "2026-05-25T09:50:10Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -2175,7 +2141,7 @@
             "priority:medium",
             "cat:infrastructure"
           ],
-          "updatedAt": "2026-05-23T12:08:19Z",
+          "updatedAt": "2026-05-25T12:14:07Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2866,7 +2832,7 @@
             "cat:infrastructure",
             "maintenance"
           ],
-          "updatedAt": "2026-05-24T12:07:30Z",
+          "updatedAt": "2026-05-25T12:08:40Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3838,37 +3804,74 @@
           ]
         },
         {
-          "number": 2386,
-          "title": "chore(tests): move session-analysis fixtures out of gitignored logs/ to tests/*/fixtures/",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2386",
+          "number": 2788,
+          "title": "arch(assetutilities): deepen shared calculation and config utility seams",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2788",
           "labels": [
             "enhancement",
-            "priority:low",
-            "cat:harness"
+            "priority:medium",
+            "cat:engineering",
+            "cat:development",
+            "domain:api-contracts",
+            "domain:refactor",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-05-18T19:42:26Z",
+          "updatedAt": "2026-05-25T09:50:01Z",
           "execution_ready": false,
-          "priority_rank": 3,
+          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
         },
         {
-          "number": 2387,
-          "title": "chore(governance): cross-ref cleanup for 4 predecessor issues closed without comment 2026-03-19",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2387",
+          "number": 2790,
+          "title": "arch(aceengineer-website): consolidate static-site delivery knowledge behind a seam",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2790",
           "labels": [
             "enhancement",
-            "priority:low"
+            "priority:medium",
+            "cat:documentation",
+            "cat:website",
+            "domain:refactor",
+            "domain:gtm",
+            "domain:website",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-05-18T19:42:24Z",
+          "updatedAt": "2026-05-25T09:50:05Z",
           "execution_ready": false,
-          "priority_rank": 3,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2791,
+          "title": "arch(ecosystem): split admin/document stores from executable modules",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2791",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:data-pipeline",
+            "cat:documentation",
+            "domain:refactor",
+            "domain:repo-organization",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-05-25T09:50:08Z",
+          "execution_ready": false,
+          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -3986,6 +3989,31 @@
           ]
         },
         {
+          "number": 2793,
+          "title": "arch(kaggle-rogii-2026): keep experiment repo shallow until seams repeat",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2793",
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:research",
+            "domain:refactor",
+            "domain:repo-organization",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-05-25T09:50:12Z",
+          "execution_ready": false,
+          "priority_rank": 3,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2449,
           "title": "chore(ci-health): audit .planning/templates/ orphan refs from WRK\u2192GSD migration",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2449",
@@ -4098,7 +4126,7 @@
           "labels": [
             "repo-readiness"
           ],
-          "updatedAt": "2026-05-24T11:06:17Z",
+          "updatedAt": "2026-05-25T11:11:23Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4859,7 +4887,7 @@
           "title": "Routine: /repo-sync + /mnt/local-analysis cleanup audit (every 2 days)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2572",
           "labels": [],
-          "updatedAt": "2026-05-23T10:13:45Z",
+          "updatedAt": "2026-05-25T10:06:54Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

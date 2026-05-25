@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-05-25T09:21:25.054710Z",
+  "generated_at": "2026-05-25T13:20:11.185091Z",
   "current_week": "2026-W22",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-05-25T09:21:23.173079Z",
-    "audit_generated_at": "2026-05-22T01:48:58Z"
+    "utilization_generated_at": "2026-05-25T13:20:11.060925Z",
+    "audit_generated_at": "2026-05-25T09:15:31Z"
   },
   "recommended_provider_order": [
     "gemini",
@@ -22,31 +22,31 @@
       "quota_source": "unavailable",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
-      "audit_post_records": 114225,
-      "missing_repo_reads": 8615,
-      "python3_per_1k_records": 9.36,
-      "migration_debt_per_1k_records": 15.09,
+      "audit_post_records": 115036,
+      "missing_repo_reads": 8624,
+      "python3_per_1k_records": 9.35,
+      "migration_debt_per_1k_records": 14.99,
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 63417
+          "count": 63879
         },
         {
           "tool": "Read",
-          "count": 21134
+          "count": 21279
         },
         {
           "tool": "Edit",
-          "count": 9380
+          "count": 9507
         },
         {
           "tool": "Write",
-          "count": 8387
+          "count": 8421
         },
         {
           "tool": "unknown",
-          "count": 3674
+          "count": 3710
         },
         {
           "tool": "Grep",
@@ -54,7 +54,7 @@
         },
         {
           "tool": "Agent",
-          "count": 1373
+          "count": 1380
         },
         {
           "tool": "ToolSearch",
@@ -88,15 +88,15 @@
       "quota_source": "history.jsonl",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
-      "audit_post_records": 42187,
-      "missing_repo_reads": 1280,
-      "python3_per_1k_records": 8.84,
+      "audit_post_records": 42243,
+      "missing_repo_reads": 1253,
+      "python3_per_1k_records": 8.83,
       "migration_debt_per_1k_records": 0.45,
       "top_migration_hint": "llm_wiki_spinout_path_drift",
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 31963
+          "count": 32019
         },
         {
           "tool": "Read",

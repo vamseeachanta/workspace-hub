@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-25T09:25:48Z
+Generated: 2026-05-25T13:20:14Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,15 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2793 | arch(kaggle-rogii-2026): keep experiment repo shallow until seams repeat | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2792 | arch(llm-wiki): treat wiki repos as Knowledge Index modules | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2791 | arch(ecosystem): split admin/document stores from executable modules | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2790 | arch(aceengineer-website): consolidate static-site delivery knowledge behind a seam | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2789 | arch(digitalmodel): deepen engineering workflow modules around bounded seams | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2788 | arch(assetutilities): deepen shared calculation and config utility seams | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2787 | arch(worldenergydata): deepen ingestion around source-specific adapters | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2786 | arch(ecosystem): put duplicated agent infrastructure behind one sync seam | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2785 | arch(ecosystem): deepen workspace-hub repo routing and sync module | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2784 | Confirm and delete acma-projects-freeze-work snapshot | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2783 | Review remediation: workspace-hub repo-specific findings (2026-05-23) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2782 | Bug: hardcoded /mnt/github paths silently no-op (env-var refactor) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -234,15 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2401 | feat(doc-intel): MCP server multi-agent registration — Claude / Gemini / Hermes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2400 | feat(doc-intel): MCP server core — doc_key_lookup, wiki_search, registry_query | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2399 | feat(ai-orchestration): define next-model-release readiness contract for repo ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2397 | epic(repo-organization): canonical folder structure and refactor contract across tier-1 repos | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2392 | feat(knowledge): wiki coverage-gap detector — inventory × wiki diff per discipline | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review,unknown_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2387 | chore(governance): cross-ref cleanup for 4 predecessor issues closed without comment 2026-03-19 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2386 | chore(tests): move session-analysis fixtures out of gitignored logs/ to tests/*/fixtures/ | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2385 | chore(harness): consolidate dual session-signals stores — .claude/state/ vs state/ divergence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2384 | feat(governance): add promotion-aware recurring-run output pruner | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2383 | feat(conformance): implement GUARD-1 invented-layer detector for intelligence/governance docs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2382 | feat(conformance): add promotion audit-trail checker for L5/L6→L3 wiki promotions | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2381 | chore(governance): add computable expiration metadata to session handoffs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
