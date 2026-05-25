@@ -85,3 +85,25 @@
 4. **Ongoing hygiene:** WS2 rebalance (close ghosts → demote → seed roll-ups → delete/seed parents).
 
 The 42 divergent skill collisions remain per-skill judgment work (not crash drivers — deferred).
+
+---
+
+## Re-enable gate status — 2026-05-25 update (codex-cli 0.133.0 reassessment)
+
+Triggered by the harness-flow-paths verification (`docs/reports/2026-05-25-harness-flow-paths.html`). codex-cli upgraded 0.130.0 → 0.133.0; the **worker-wedge (stdin-hang) that motivated the kill-switch is now cleared in testing** — foreground + non-TTY-subshell (`CLAUDECODE=1`, `</dev/null`) probes and two live `hermes -z` tool-using tasks all completed clean, no wedged subprocess.
+
+**Verdict: NO-GO to flip `dispatch_in_gateway:true`.** One hard gate remains open.
+
+| Gate | Status | Note |
+|---|---|---|
+| 1 · Global concurrency cap | 🔴 OPEN (hard) | No `max_global_concurrency` code knob. **Config stopgap applied this session** (see below) — durable code PR still owed. |
+| 2 · Skill-collision hygiene | 🔴 OPEN | Collisions still fire live (2026-05-25 Gemini probe); 42 divergent copies per WS4-B remain per-skill judgment. |
+| 3 · Worker-wedge (codex hang) | 🟢 CLOSED | codex 0.133.0 verified this session. Previously the blocker that needed a "worker-wedge fix". |
+| 4 · Routing policy | 🟡 PARTIAL | `feat/2795-domain-dispatch` Phase A landed; incomplete. |
+| (5) · `dump.py` reload loop (WS3) | 🔴 OPEN | Gate for any kanban *reload* (528 git-invisible children would duplicate). Independent of dispatch but on the same critical path. |
+
+**Live backlog if flipped now:** ~464 `ready` tasks across ~20 ready-bearing boards (subsea alone = 131); 39 boards total. Pre-stopgap worst case = 39 × 20 = up to 780 concurrent workers (prior runaway peak: 260).
+
+**Applied this session (safe, reversible, dispatch stays OFF):** WS4-A config stopgap `kanban.max_in_progress: 1` + `kanban.max_spawn: 1`. Drops worst-case global concurrency from ~780 → **≤39** (1 per board). Update-surviving per WS4-A. Takes effect only when dispatch is re-enabled AND the gateway restarted. **Revert:** `hermes config set kanban.max_in_progress 20 && hermes config set kanban.max_spawn 20`.
+
+**Path to GO (unchanged priority, gate 3 now retired):** (1) land WS4-A `kanban.max_global_concurrency` code PR for durable global enforcement; (2) WS4-B/skill-collision hygiene; (3) WS3 `dump.py` before any reload; (4) finish routing on `feat/2795`. Even at GO, stage the flip on one board first.
