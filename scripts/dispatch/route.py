@@ -111,20 +111,25 @@ def propose(args) -> list[dict]:
         assign = rule.get("assign", {})
 
         # human-set labels on the issue always override the rule
-        machine = (existing_label_value(labels, "machine:")
-                   or assign.get("machine") or defaults.get("machine"))
+        existing_machine = existing_label_value(labels, "machine:")
+        existing_ai = existing_label_value(labels, "ai:")
+        machine = existing_machine or assign.get("machine") or defaults.get("machine")
         machine = aliases.get(machine, machine)  # fold acma-ws014 -> licensed-win-2
-        provider = (existing_label_value(labels, "ai:")
-                    or assign.get("provider") or defaults.get("provider"))
-        routed_by = "manual" if existing_label_value(labels, "machine:") else "rule"
+        provider = existing_ai or assign.get("provider") or defaults.get("provider")
+        # provider is "explicit" only if a human or a rule chose it (not the default)
+        provider_explicit = bool(existing_ai or assign.get("provider"))
+        routed_by = "manual" if existing_machine else "rule"
 
         proposals.append({
             "key": card.get("idempotency_key"),
             "repo": repo,
+            "number": card.get("idempotency_key", "").rsplit("#", 1)[-1],
             "domain": domain,
             "title": (card.get("title") or "")[:60],
             "machine": machine,
+            "has_machine_label": bool(existing_machine),
             "provider": provider,
+            "provider_explicit": provider_explicit,
             "routed_by": routed_by,
             "reason": rule.get("reason", ""),
             "url": card.get("source_url"),
@@ -221,12 +226,133 @@ def print_summary(proposals: list[dict]):
           "`--apply` for Phase B (disabled).\033[0m")
 
 
+# ---------------------------------------------------------------------------
+# Phase B: apply labels to live GitHub issues (idempotent, live-verified, batched)
+# ---------------------------------------------------------------------------
+# Conventions adopted from the pre-existing in-the-wild label scheme so new
+# labels are visually consistent (machine:/domain: already established).
+LABEL_CONVENTION = {
+    "domain":   ("c5def5", "Domain: {v}"),       # matches workspace-hub's 162 labels
+    "machine":  ("e4e669", "Assigned to {v}"),   # matches existing machine: labels
+    "ai":       ("0e8a16", "AI provider: {v}"),
+    "dispatch": ("fbca04", "Dispatch: {v}"),
+}
+
+
+def gh(args: list[str], **kw):
+    return subprocess.run(["gh", *args], capture_output=True, text=True, **kw)
+
+
+def existing_labels(repo: str) -> set[str]:
+    out = gh(["label", "list", "--repo", repo, "--limit", "500", "--json", "name"])
+    if out.returncode != 0:
+        return set()
+    return {l["name"] for l in json.loads(out.stdout)}
+
+
+def ensure_labels(repo: str, names: set[str], dry: bool):
+    """Create ONLY missing labels (never overwrite an existing definition's
+    color/description — those may follow an established convention)."""
+    have = set() if dry else existing_labels(repo)
+    for name in sorted(names):
+        ns, _, val = name.partition(":")
+        color, desc_t = LABEL_CONVENTION.get(ns, ("ededed", "{v}"))
+        desc = desc_t.format(v=val)
+        if name in have:
+            print(f"    label: {name}  (exists — left as-is)")
+            continue
+        if dry:
+            print(f"    label: {name}  (would create #{color})")
+            continue
+        gh(["label", "create", name, "--repo", repo, "--color", color,
+            "--description", desc])  # no --force: create-only
+
+
+def live_state(repo: str, number: str):
+    """Return (is_open, existing_label_names) at write time. Guards both the
+    3-day mirror staleness AND respects pre-existing domain: taxonomies."""
+    out = gh(["issue", "view", number, "--repo", repo, "--json", "state,labels"])
+    if out.returncode != 0:
+        return False, set()
+    try:
+        d = json.loads(out.stdout)
+        return d.get("state", "").lower() == "open", {l["name"] for l in d.get("labels", [])}
+    except Exception:
+        return False, set()
+
+
+def labels_for(p: dict, existing: set[str]) -> list[str]:
+    """Labels to ADD for one proposal, given the issue's current labels.
+    - dispatch:ready always
+    - domain: only if the issue has NO domain: label yet (respect fine taxonomies)
+    - machine: only if none set (respect manual assignment)
+    - ai: only when a rule/human chose a non-default provider"""
+    out = ["dispatch:ready"]
+    has_domain = any(n.startswith("domain:") for n in existing)
+    if p["domain"] and not has_domain:
+        out.append(f"domain:{p['domain']}")
+    if not any(n.startswith("machine:") for n in existing):
+        out.append(f"machine:{p['machine']}")
+    if p["provider_explicit"] and not any(n.startswith("ai:") for n in existing):
+        out.append(f"ai:{p['provider']}")
+    # don't re-add labels already present
+    return [l for l in out if l not in existing]
+
+
+def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace: float):
+    import time
+    proposals = [p for p in proposals if p["repo"] == repo]
+    if not proposals:
+        sys.exit(f"no open cards for {repo}")
+    # universe of labels that could be added (empty-existing = max set) to ensure defs
+    used = set()
+    for p in proposals:
+        used.update(labels_for(p, set()))
+    print(f"\n\033[1m{'APPLY' if do_write else 'APPLY (dry-run)'} -> {repo}\033[0m  "
+          f"({len(proposals)} cards)")
+    print("  label namespaces to ensure:")
+    ensure_labels(repo, used, dry=not do_write)
+
+    written = noop = err = drifted = 0
+    for i, p in enumerate(proposals, 1):
+        if not do_write:
+            labs = labels_for(p, set())  # optimistic preview (domain shown even if skipped live)
+            print(f"    #{p['number']:<6} += {','.join(labs)}")
+            continue
+        is_open, existing = live_state(repo, p["number"])
+        if not is_open:
+            drifted += 1
+            print(f"    #{p['number']:<6} \033[33mSKIP (not live-open)\033[0m")
+            continue
+        labs = labels_for(p, existing)
+        if not labs:
+            noop += 1  # already fully labeled
+            continue
+        r = gh(["issue", "edit", p["number"], "--repo", repo, "--add-label", ",".join(labs)])
+        if r.returncode == 0:
+            written += 1
+        else:
+            err += 1
+            print(f"    #{p['number']:<6} \033[31mERR\033[0m {r.stderr.strip()[:60]}")
+        if i % batch == 0:
+            time.sleep(pace)
+    if do_write:
+        print(f"\n  \033[32mwritten={written}\033[0m  already-labeled={noop}  "
+              f"errors={err}  drift-skipped={drifted}")
+    else:
+        print("\n  \033[2mdry-run — re-run with --apply --yes to write "
+              "(domain: shown optimistically; skipped live where one exists).\033[0m")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--detail", action="store_true", help="per-card listing")
-    ap.add_argument("--apply", action="store_true")
+    ap.add_argument("--apply", action="store_true", help="write GH labels (Phase B)")
+    ap.add_argument("--yes", action="store_true", help="actually write (else apply dry-run)")
+    ap.add_argument("--batch", type=int, default=50, help="pace every N writes")
+    ap.add_argument("--pace", type=float, default=2.0, help="seconds to sleep per batch")
     args = ap.parse_args()
 
     proposals = propose(args)
@@ -234,8 +360,13 @@ def main():
         print(json.dumps(proposals, indent=2))
         return
     if args.apply:
-        sys.exit("--apply (Phase B label writing) is intentionally not enabled "
-                 "until the dry-run is approved. Aborting.")
+        # guardrail: --apply is per-repo so rollout stays incremental (canary first)
+        if not args.repo:
+            sys.exit("--apply requires --repo <owner/name> (incremental rollout; "
+                     "no all-repos bulk apply).")
+        cmd_apply(proposals, args.repo, do_write=args.yes,
+                  batch=args.batch, pace=args.pace)
+        return
     if args.detail or args.repo:
         print_detail(proposals)
     print_summary(proposals)

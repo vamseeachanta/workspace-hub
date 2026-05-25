@@ -83,9 +83,11 @@ rules:
     assign: {provider: codex}
     reason: "Codex strong on adversarial cross-review"
 
-  # Default catch-all
+  # Default catch-all — machine only; provider falls through to defaults.provider
+  # (claude) so the ai: label stays ABSENT for default work, written only when a
+  # rule or human chooses a non-default provider.
   - match: {}
-    assign: {machine: dev-primary, provider: claude}
+    assign: {machine: dev-primary}
     reason: "default workhorse"
 
 defaults:
