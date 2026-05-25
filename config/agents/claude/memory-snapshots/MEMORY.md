@@ -70,6 +70,7 @@
 - [push --no-verify for preservation](feedback_pre_push_hook_no_verify_for_preservation.md) — Iron Law bans `commit --no-verify` only; push --no-verify ok for codex-branch preservation
 - [Multi-session /whats-next swarm](feedback_multi_session_swarm.md) — 2 concurrent /whats-next on same machine produce non-colliding work; wip-label gates collisions; cross-validate before follow-ups
 - [Worktree isolation too slow on large repo](feedback_worktree_isolation_large_repo_cost.md) — `isolation: worktree` triggers 33K-file checkout, 60% timeout on workspace-hub; reserve for commit/push agents
+- [Temp-index snapshot of live repo](feedback_temp_index_snapshot_live_repo.md) — preserve uncommitted work on workspace-hub while fleet runs via GIT_INDEX_FILE read-tree/add/write-tree/commit-tree/update-ref (no HEAD/index/main disturbance); `git add -- A B C` aborts-all if any pathspec misses
 - [QG --maxfail undercounts](feedback_qg_maxfail_undercounts.md) — digitalmodel QG runs `pytest --maxfail=20`; "20 failed" was ceiling, true=244+; never trust QG count without local repro
 - [Desktop Agent-Mode embeds CLI](feedback_claude_desktop_agent_mode_embeds_cli.md) — Claude Desktop spawns child `claude` CLI from `~/.config/Claude/claude-code/<v>/`; upgrade via `apt upgrade claude-desktop`
 - [Cross-repo Closes at squash](feedback_cross_repo_closes_at_squash.md) — `Closes vamseeachanta/<repo>#NNNN` fires for ALL refs in a squash-merge body; multi-issue batches auto-close cleanly
@@ -85,6 +86,7 @@
 - [ChatGPT share DOM duplicates](feedback_chatgpt_share_dom_duplication.md) — `chatgpt.com/s/<id>` renders each turn twice (a11y + display); dedupe by innerText; user prompt often absent
 - [Local venv pytest import hang](feedback_local_venv_pytest_import_hang.md) — `import pytest` hangs >30s at digitalmodel/.venv; rely on CI; verify syntax via `py_compile` not pytest
 - [Git status lock storm](feedback_git_status_lock_storm.md) — long sessions accumulate 10+ zombie `git status -z -uall` blocking commits; `GIT_OPTIONAL_LOCKS=0 git commit` bypasses
+- [Orphan-lock doom-loop + monitor reap](feedback_orphan_lock_doom_loop_monitor_reap.md) — wedged session: detect live git via `pgrep -x git` (not `-f`); clear stale .git/index.lock (guarded) then reap scoped `<sid>/tasks` bash monitors; lets session self-resume
 - [HTML default for rich artifacts](feedback_html_default_artifact.md) — HTML for human-facing plans/specs/reports/PR-explainers; markdown for harness/skill/rule files. workspace-hub#2663 codifies
 - [PDF OCR fallback chain](feedback_pdf_ocr_fallback_chain.md) — pdftotext+PyMuPDF=0 chars → PDF is image-rendered; fall back PyMuPDF 300 DPI → tesseract --psm 6
 - [Parallel branch checkout reverts working dir](feedback_parallel_branch_checkout_working_dir.md) — parallel `git checkout`-ing feature branch reverts your dir; verify reflog + `git branch --show-current`
@@ -117,6 +119,7 @@
 - [worldenergydata GTM state](project_worldenergydata_gtm_state.md) — reports ready, BSEE fix landed, open issues
 - [GTM artifact layout inconsistency](project_gtm_artifact_layout_inconsistency.md) — 3 layout roots × 3 date conventions × 3 bundle formats; scan all 4 paths; #2662
 - [Kaggle oil-gas backlog](project_kaggle_oil_gas_backlog.md) — ~250 datasets surveyed 2026-05-05; top 12 curated in SOURCES_kaggle.md; gate on consumer
+- [Kanban ecosystem runaway](project_kanban_ecosystem_runaway_state.md) — bulk-load tripped triage auto-pipeline: 260 live workers on personal/admin boards, 528 tasks git-invisible, tier-0 has 7 dead links; review at docs/reports/2026-05-24-kanban-ecosystem-adversarial-review.html
 > project_cfd_openfoam_storage.md
 - [Doc-intel operating model](project_doc_intel_operating_model.md) — #2205 parent + #2206/#2207/#2209; follow-ons #2360/#2361/#2362
 - [GSD](project_gsd_migration.md) — sole workflow, v1.38.1, Node 24+

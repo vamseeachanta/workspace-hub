@@ -8033,7 +8033,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-05-24T17:20:39Z",
+  "generated_at": "2026-05-25T09:25:48Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -16055,9 +16055,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-24T17:20:36.393260Z",
+  "scorecard_generated_at": "2026-05-25T09:21:25.054710Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-24T17:20:36.165278Z",
+  "utilization_generated_at": "2026-05-25T09:21:23.173079Z",
   "warning_summary": {
     "approved_no_marker": 12,
     "approved_no_plan": 4,

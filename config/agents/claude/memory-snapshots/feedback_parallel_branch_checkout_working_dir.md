@@ -29,7 +29,14 @@ metadata:
 4. Per `feedback_reflog_as_ground_truth`: reflog is the authoritative record of *what HEAD did*, not what files look like.
 5. Per `feedback_check_parallel_work`: scan for parallel sessions before assuming malice; another session checking out a different branch is the most common explanation.
 
+**Committing/pushing from a shared checkout another session drives (2026-05-24, workspace-hub):**
+- A parallel Hermes session switched the shared tree to `overnight/deepening-...`; my commit landed on THAT branch, not `main`.
+- `git push origin main` pushes the local **`main` ref**, not HEAD. On a feature branch it reports a **false-positive "Everything up-to-date"** while your commit never reaches `main`. Verify with `git branch -r --contains HEAD` / `git merge-base --is-ancestor <sha> origin/main`, not the push message.
+- **Recovery (only while still a fast-forward):** `git push origin <sha>:main` — ref-only push, ignores the working tree, never switches HEAD. Confirm FF first: `git merge-base --is-ancestor origin/main <sha>`.
+- **Trap:** once `origin/main` advances past your commit, a new commit on your stale HEAD is **non-FF** → SHA-push rejected. With the tree locked + owned by another session, the only clean landing is a worktree off `origin/main` (slow on large repos). Do NOT use `commit-tree` plumbing to skip hooks (Iron Law). Defer the commit + record how to land it.
+
 **Do NOT:**
 - Re-apply your "missing" work without checking reflog first — you may double-commit
 - Force-checkout main while another session is using the working directory — disturbs their state
 - Trust file mtimes — they reflect the most recent checkout, not your commit
+- Trust `git push origin main`'s "up-to-date" when HEAD is on another branch — verify the ref actually contains your SHA
