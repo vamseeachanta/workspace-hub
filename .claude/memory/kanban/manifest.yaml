@@ -163,9 +163,11 @@ manifest:
     card_count: 0
     children:
     - repo-worldenergydata-gtm
-    - repo-worldenergydata-ingestion
+    - repo-worldenergydata-ingest
     - repo-worldenergydata-quality
     - repo-worldenergydata-reports
+    - repo-worldenergydata-bsee
+    - repo-worldenergydata-hse
   - slug: repo-achantas-data-devakrishna
     tier: domain
     repo: vamseeachanta/achantas-data
@@ -382,13 +384,13 @@ manifest:
     workspace_path: /mnt/local-analysis/worldenergydata
     file: boards/repo-worldenergydata-gtm.yaml
     card_count: 9
-  - slug: repo-worldenergydata-ingestion
+  - slug: repo-worldenergydata-ingest
     tier: domain
     repo: vamseeachanta/worldenergydata
-    domain: ingestion
+    domain: ingest
     parent_slug: repo-worldenergydata
     workspace_path: /mnt/local-analysis/worldenergydata
-    file: boards/repo-worldenergydata-ingestion.yaml
+    file: boards/repo-worldenergydata-ingest.yaml
     card_count: 24
   - slug: repo-worldenergydata-quality
     tier: domain
@@ -406,6 +408,22 @@ manifest:
     workspace_path: /mnt/local-analysis/worldenergydata
     file: boards/repo-worldenergydata-reports.yaml
     card_count: 7
+  - slug: repo-worldenergydata-bsee
+    tier: domain
+    repo: vamseeachanta/worldenergydata
+    domain: bsee
+    parent_slug: repo-worldenergydata
+    workspace_path: /mnt/local-analysis/worldenergydata
+    file: boards/repo-worldenergydata-bsee.yaml
+    card_count: 0
+  - slug: repo-worldenergydata-hse
+    tier: domain
+    repo: vamseeachanta/worldenergydata
+    domain: hse
+    parent_slug: repo-worldenergydata
+    workspace_path: /mnt/local-analysis/worldenergydata
+    file: boards/repo-worldenergydata-hse.yaml
+    card_count: 0
   gap_files:
   - file: gaps/aceengineer-admin.yaml
     repo_stem: aceengineer-admin

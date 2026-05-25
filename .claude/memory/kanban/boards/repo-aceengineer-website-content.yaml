@@ -1,0 +1,12 @@
+board:
+  slug: repo-aceengineer-website-content
+  display_name: aceengineer-website · content
+  tier: domain
+  repo: vamseeachanta/aceengineer-website
+  domain: content
+  parent_slug: repo-aceengineer-website
+  workspace_path: /mnt/local-analysis/aceengineer-website
+  description: |
+    Site content — pages, blog/articles, service descriptions, copy edits,
+    images and media.
+cards: []

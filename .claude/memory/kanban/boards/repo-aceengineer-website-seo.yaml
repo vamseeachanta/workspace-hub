@@ -1,0 +1,12 @@
+board:
+  slug: repo-aceengineer-website-seo
+  display_name: aceengineer-website · seo
+  tier: domain
+  repo: vamseeachanta/aceengineer-website
+  domain: seo
+  parent_slug: repo-aceengineer-website
+  workspace_path: /mnt/local-analysis/aceengineer-website
+  description: |
+    Search visibility — metadata, sitemaps, structured data, page performance,
+    Core Web Vitals, analytics.
+cards: []

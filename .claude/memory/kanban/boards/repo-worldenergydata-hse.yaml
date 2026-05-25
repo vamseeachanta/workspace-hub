@@ -1,0 +1,12 @@
+board:
+  slug: repo-worldenergydata-hse
+  display_name: worldenergydata · hse
+  tier: domain
+  repo: vamseeachanta/worldenergydata
+  domain: hse
+  parent_slug: repo-worldenergydata
+  workspace_path: /mnt/local-analysis/worldenergydata
+  description: |
+    Health, Safety and Environment — incident/spill/injury datasets, safety
+    metrics, and environmental-compliance reporting.
+cards: []

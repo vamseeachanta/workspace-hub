@@ -1,0 +1,840 @@
+machine: licensed-win-1
+generated_by: dispatch.py
+cards:
+- gh: vamseeachanta/digitalmodel#596
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'chore(repo-structure): normalize digitalmodel folder/file st'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/596
+  dispatch_status: ready
+  wip_eligible: true
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#483
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'sub: curves.py decomposition -- break up 29,666-line monolit'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/483
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#283
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "WRK-131: Passing ship analysis for moored vessels \u2014 AQWA-bas"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/283
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#282
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'WRK-130: Standardize analysis reporting for each OrcaWave st'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/282
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#270
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "WRK-630: feat(client2): engineering AI demo \u2014 diffraction + "
+  url: https://github.com/vamseeachanta/digitalmodel/issues/270
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#269
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "WRK-629: feat(client2): engineering AI demo \u2014 diffraction + "
+  url: https://github.com/vamseeachanta/digitalmodel/issues/269
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#206
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "WRK-5065: Structural analysis study \u2014 literature, methods an"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/206
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#203
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "WRK-5062: Mooring analysis study \u2014 literature, methods and i"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/203
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#170
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "WRK-311: improve: QTF benchmarking for case 3.1 \u2014 charts, co"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/170
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#161
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'WRK-1281: Extract numerical test vectors from all naval arch'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/161
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#595
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: Assess client PDF packaging for vessel capability GTM materi
+  url: https://github.com/vamseeachanta/digitalmodel/issues/595
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#593
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: Assess vessel data provenance, confidence, and capability sc
+  url: https://github.com/vamseeachanta/digitalmodel/issues/593
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#592
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: Assess client-ready vessel capability GTM narrative and char
+  url: https://github.com/vamseeachanta/digitalmodel/issues/592
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#577
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: Safety Case / MAH ALARP framework module (NORSOK Z-013, UK H
+  url: https://github.com/vamseeachanta/digitalmodel/issues/577
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#470
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "Seakeeping analysis using OpenFOAM \u2014 CFD-based ship motion s"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/470
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#464
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: Add hydrodynamic BEM analysis module (Capytaine)
+  url: https://github.com/vamseeachanta/digitalmodel/issues/464
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#265
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "WRK-622: feat(geotechnical): anchor capacity \u2014 drag, suction"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/265
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#207
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "WRK-5067: Hydrodynamics and wave mechanics study \u2014 literatur"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/207
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#199
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'WRK-5056: feat(digitalmodel): integrate theoretical naval ar'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/199
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#178
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'WRK-480: feat(worldenergydata): integrate CMEMS Wave Multi-Y'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/178
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#173
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'WRK-473: feat(hydrodynamics): integrate wavespectra library '
+  url: https://github.com/vamseeachanta/digitalmodel/issues/173
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#588
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'fix(marine_ops): test_find_chain_with_safety_factor needs ch'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/588
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#564
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'fix(marine_ops): test_ocimf_mooring_integration.py::test_env'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/564
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#561
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'fix(marine_ops): test_ocimf_mooring_integration.py::test_com'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/561
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#560
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'fix(marine_ops): test_hydro_rao_integration.py::test_couplin'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/560
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#559
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'fix(marine_ops): test_hydro_rao_integration.py::test_full_ma'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/559
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#558
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'fix(marine_ops): test_hydro_rao_integration.py::test_damping'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/558
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#501
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'OrcaWave: expand QTF config + field points + irregular frequ'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/501
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#467
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "Subsea structure installation analysis \u2014 vessel performance "
+  url: https://github.com/vamseeachanta/digitalmodel/issues/467
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#466
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "Parametric hull analysis \u2014 steady speed, passing ship, narro"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/466
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#465
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "Capytaine ship hull benchmarking \u2014 OC4 semi-sub + WAMIT vali"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/465
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#463
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: Populate ship-dimensions dataset from ship plans (manual cur
+  url: https://github.com/vamseeachanta/digitalmodel/issues/463
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#457
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: Ship dimensions template + loader (WRK-1380)
+  url: https://github.com/vamseeachanta/digitalmodel/issues/457
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#253
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'WRK-587: research: evaluate Code_Aster for large-scale topsi'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/253
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#136
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'WRK-043: Parametric hull form analysis with RAO generation a'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/136
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#134
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: 'WRK-036: OrcaFlex structure deployment analysis - supply boa'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/134
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#64
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: engg debt | CAD
+  url: https://github.com/vamseeachanta/digitalmodel/issues/64
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#36
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: engg debt | RAOs Analysis feature
+  url: https://github.com/vamseeachanta/digitalmodel/issues/36
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#29
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: engg debt | fatigue | SN Curve module
+  url: https://github.com/vamseeachanta/digitalmodel/issues/29
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#28
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: engg debt | Fatigue | ship design | spectral-based fatigue a
+  url: https://github.com/vamseeachanta/digitalmodel/issues/28
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#554
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'fix(marine_ops): catenary solver bracketing + sinh overflow '
+  url: https://github.com/vamseeachanta/digitalmodel/issues/554
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#518
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: Add model-library regression tests for strict-vs-generated O
+  url: https://github.com/vamseeachanta/digitalmodel/issues/518
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#284
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'WRK-133: Update OrcaFlex license agreement with addresses an'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/284
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#281
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'WRK-121: Extract & Catalog OrcaFlex Models from rock-oil-fie'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/281
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#157
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'WRK-126: Benchmark all example models across time domain and'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/157
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#156
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'WRK-125: OrcaFlex module roadmap \u2014 evolving coordinatio'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/156
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#280
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'WRK-064: ''OrcaFlex format converter: license-required valida'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/280
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#194
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'WRK-5016: OrcaFlex demo version input-file troubleshooting w'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/194
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#192
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: "WRK-5000: OrcaFlex scripting workflows \u2014 automation foundati"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/192
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#169
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: "WRK-256: Unified parametric study coordinator \u2014 orchestrate "
+  url: https://github.com/vamseeachanta/digitalmodel/issues/169
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#141
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'WRK-099: Run 3-way benchmark on Unit Box hull'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/141
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#135
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'WRK-039: SPM project benchmarking - AQWA vs OrcaFlex'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/135
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#537
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: "OrcaFlex: manifest.yml not written when all runs skipped \u2014 c"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/537
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#536
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'OrcaFlex: per-iteration model_validate perf for large sweep '
+  url: https://github.com/vamseeachanta/digitalmodel/issues/536
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#535
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'OrcaFlex: apply_dotted_override should chain ValidationError'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/535
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#534
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'OrcaFlex: _apply_overrides direct-call StopIteration guard'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/534
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#531
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: "OrcaFlex: follow-up \u2014 9 pre-existing test failures across 5 "
+  url: https://github.com/vamseeachanta/digitalmodel/issues/531
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#529
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'OrcaFlex: convert_batch() parallel path doesn''t aggregate su'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/529
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#509
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'OrcaFlex: add pre-commit hook for YAML-strict validation on '
+  url: https://github.com/vamseeachanta/digitalmodel/issues/509
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#507
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: "OrcaFlex reference: complete Orcina help ingestion \u2014 environ"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/507
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#504
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'OrcaFlex buoys builder refactor: split 611-line mega-builder'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/504
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#503
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: Ingest OrcaFlex/OrcaWave online help into LLM-accessible for
+  url: https://github.com/vamseeachanta/digitalmodel/issues/503
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#500
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'OrcaWave: mesh file pre-flight validation + auto-copy in run'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/500
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#487
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: Implement towing and marine operations analysis module
+  url: https://github.com/vamseeachanta/digitalmodel/issues/487
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#140
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'WRK-075: OFFPIPE Integration Module \u2014 pipelay cross-val'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/140
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#139
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'WRK-047: OpenFOAM CFD analysis capability for digitalmodel'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/139
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#96
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: OrcaFlex | Iterate to achieve targets
+  url: https://github.com/vamseeachanta/digitalmodel/issues/96
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#88
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: engg debt | AI strategy in Engineering firms
+  url: https://github.com/vamseeachanta/digitalmodel/issues/88
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#82
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: OrcaFlex | Postprocess enhancements
+  url: https://github.com/vamseeachanta/digitalmodel/issues/82
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#79
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: Project WLNG | Tasks
+  url: https://github.com/vamseeachanta/digitalmodel/issues/79
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#62
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: engg debt | OrcaWave
+  url: https://github.com/vamseeachanta/digitalmodel/issues/62
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#41
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: OrcaFlex | Installation | Implement catenary equations
+  url: https://github.com/vamseeachanta/digitalmodel/issues/41
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#40
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: OrcaFlex | Installation | Batch Files | Reiterate runs and s
+  url: https://github.com/vamseeachanta/digitalmodel/issues/40
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#19
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: OrcaFlex | Postprocess | Visualizations | For a/ QA and b/ R
+  url: https://github.com/vamseeachanta/digitalmodel/issues/19
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#18
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: OrcaFlex | SeastateRAOs | Filtering for analysis
+  url: https://github.com/vamseeachanta/digitalmodel/issues/18
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#16
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: OrcaFlex | SeastateRAOs | Visualizations
+  url: https://github.com/vamseeachanta/digitalmodel/issues/16
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#13
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: 'OrcaFlex | Installation | Modal Analysis '
+  url: https://github.com/vamseeachanta/digitalmodel/issues/13
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/digitalmodel#9
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: OrcaFlex | Installation | Rigging module
+  url: https://github.com/vamseeachanta/digitalmodel/issues/9
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: rule
+- gh: vamseeachanta/workspace-hub#2756
+  repo: vamseeachanta/workspace-hub
+  domain: ai-orchestration
+  provider: claude
+  title: 'throughput(workstations): activate licensed-win-1 provider/m'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2756
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2717
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: "infra: live AQWA env access on licensed Windows host \u2014 prere"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2717
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2709
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: 'feat(solver-queue): add AQWA runner adapter and schema exten'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2709
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1827
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: 'licensed-win-1: extract .sim model metadata to JSON for snap'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1827
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1789
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: 'licensed-win-1: retry hemisphere.owr fixture generation (mis'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1789
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1652
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: 'OrcaFlex reporting: integration test with real .sim fixture '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1652
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1586
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: 'Harden solver queue: batch submission, result watcher, auto '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1586
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1509
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: 'Verify Claude Desktop install: licensed-win-1'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1509
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1292
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: "WRK-1342: OrcaFlex parachute deployment template \u2014 time-doma"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1292
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1264
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: 'WRK-1365: OrcaFlex frame analysis'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1264
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2257
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: 'fix(windows-scheduler): align RepoSync cadence with schedule'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2257
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2229
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: 'feat(windows-parity): validate licensed-win-1 NightlyReadine'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2229
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1502
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: "[WRK] Maximize OpenAI Codex account utilization \u2014 dual 0 Plu"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1502
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1343
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: 'WRK-1343: ace-license-win-2 network drive sharing from ace-l'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1343
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2772
+  repo: vamseeachanta/workspace-hub
+  domain: ops
+  provider: claude
+  title: 'decision(workstations): choose tier-1 repo placement for lic'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2772
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual

@@ -1,0 +1,255 @@
+machine: dev-secondary
+generated_by: dispatch.py
+cards:
+- gh: vamseeachanta/workspace-hub#2755
+  repo: vamseeachanta/workspace-hub
+  domain: ai-orchestration
+  provider: claude
+  title: 'throughput(workstations): activate ace-linux-2 provider/mach'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2755
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1582
+  repo: vamseeachanta/workspace-hub
+  domain: ai-orchestration
+  provider: claude
+  title: Install and configure Hermes on ace-linux-2
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1582
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1565
+  repo: vamseeachanta/workspace-hub
+  domain: ai-orchestration
+  provider: claude
+  title: Verify cron-health-check.sh runs correctly on ace-linux-2
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1565
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1506
+  repo: vamseeachanta/workspace-hub
+  domain: ai-orchestration
+  provider: claude
+  title: 'Verify Claude Desktop install: ace-linux-2'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1506
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1395
+  repo: vamseeachanta/workspace-hub
+  domain: data
+  provider: claude
+  title: 'WRK-1395: Add Equinor Northern Lights dataset as curated dat'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1395
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1394
+  repo: vamseeachanta/workspace-hub
+  domain: data
+  provider: claude
+  title: 'WRK-1394: Add Equinor/Norce U7 reference data as curated dat'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1394
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1353
+  repo: vamseeachanta/workspace-hub
+  domain: data
+  provider: claude
+  title: 'WRK-1353: Deep extraction & table promotion for ace_standard'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1353
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1607
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: Capytaine BEM end-to-end integration with parametric hull sw
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1607
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1464
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: Capytaine BEM available for hull mesh wave load analysis
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1464
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1460
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: Integrate WEIS floating wind co-design framework
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1460
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1453
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: Integrate ANYstructure DNV steel design tool
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1453
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1445
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: Integrate WISDEM wind plant system design
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1445
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1444
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: Integrate RAFT floating wind turbine dynamics
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1444
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1443
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: Integrate FLORIS wind farm wake modelling
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1443
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1442
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: Integrate FEniCSx PDE solver into ACE ecosystem
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1442
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1441
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: Integrate OpenDrift ocean trajectory modelling into ACE ecos
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1441
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1440
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: Install Capytaine BEM solver into ACE ecosystem
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1440
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1400
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: 'WRK-1400: Spot-check va-hdd-2 classification accuracy for en'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1400
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1399
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: 'WRK-1399: Phase B batch summaries for va-hdd-2 engineering f'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1399
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1360
+  repo: vamseeachanta/workspace-hub
+  domain: engineering
+  provider: claude
+  title: 'WRK: extract algorithms and methods from riser-eng-job archi'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1360
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1677
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: Deploy harness-update lifecycle to ace-linux-2 (#1668 follow
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1677
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1564
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: Sync crontab on ace-linux-2 from schedule-tasks.yaml
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1564
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1362
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: 'WRK: fix broken README_MIGRATED.md pointers in /mnt/ace/docs'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1362
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1357
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: 'WRK: LLM-classify va-hdd-2 remaining content into digitalmod'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1357
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2739
+  repo: vamseeachanta/workspace-hub
+  domain: ops
+  provider: claude
+  title: 'feat(hermes): promote ace-linux-2 as first Telegram/Hermes d'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2739
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2645
+  repo: vamseeachanta/workspace-hub
+  domain: ops
+  provider: claude
+  title: 'fix(workstations): normalize ace-linux-2 repo, mount, and pa'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2645
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1581
+  repo: vamseeachanta/workspace-hub
+  domain: null
+  provider: claude
+  title: Post-update display/VNC recovery on ace-linux-2
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1581
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1393
+  repo: vamseeachanta/workspace-hub
+  domain: null
+  provider: claude
+  title: 'WRK-1393: Add Equinor ASA Databricks marketplace as oil and '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1393
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual

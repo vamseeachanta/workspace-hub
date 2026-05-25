@@ -1,0 +1,30 @@
+machine: licensed-win-2
+generated_by: dispatch.py
+cards:
+- gh: vamseeachanta/workspace-hub#2757
+  repo: vamseeachanta/workspace-hub
+  domain: ai-orchestration
+  provider: claude
+  title: 'throughput(workstations): activate licensed-win-2 provider/m'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2757
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1510
+  repo: vamseeachanta/workspace-hub
+  domain: ai-orchestration
+  provider: claude
+  title: 'Verify Claude Desktop install: ACMA-WS014'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1510
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2773
+  repo: vamseeachanta/workspace-hub
+  domain: ops
+  provider: claude
+  title: 'decision(workstations): choose tier-1 repo placement for lic'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2773
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual

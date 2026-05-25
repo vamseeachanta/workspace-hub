@@ -1,0 +1,12 @@
+board:
+  slug: repo-worldenergydata-bsee
+  display_name: worldenergydata · bsee
+  tier: domain
+  repo: vamseeachanta/worldenergydata
+  domain: bsee
+  parent_slug: repo-worldenergydata
+  workspace_path: /mnt/local-analysis/worldenergydata
+  description: |
+    Bureau of Safety and Environmental Enforcement (BSEE) data — production,
+    well, platform, and incident datasets from the federal public-domain source.
+cards: []

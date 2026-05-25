@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Harness Flow Paths — Live-Verified State (2026-05-25)</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2027; --panel2:#222b34; --ink:#e6edf3; --muted:#9aa7b2;
+    --line:#2d3742; --ok:#3fb950; --warn:#d29922; --bad:#f85149; --accent:#58a6ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 22px 80px}
+  h1{font-size:26px;margin:0 0 4px}
+  h2{font-size:19px;margin:34px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:6px}
+  code,kbd{background:#0b0f14;border:1px solid var(--line);border-radius:4px;padding:1px 6px;
+    font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#c9d6e0}
+  table{width:100%;border-collapse:collapse;margin:8px 0 4px;font-size:14px}
+  th,td{text-align:left;padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  th{background:var(--panel2);color:#cfdae3;font-weight:600}
+  tr:nth-child(even) td{background:#161d24}
+  .pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:600;white-space:nowrap}
+  .p-ok{background:rgba(63,185,80,.15);color:var(--ok);border:1px solid rgba(63,185,80,.4)}
+  .p-warn{background:rgba(210,153,34,.15);color:var(--warn);border:1px solid rgba(210,153,34,.4)}
+  .p-bad{background:rgba(248,81,73,.15);color:var(--bad);border:1px solid rgba(248,81,73,.4)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+  .role{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);font-weight:700}
+  ul{margin:6px 0 0;padding-left:20px}
+  li{margin:3px 0}
+  .muted{color:var(--muted)}
+  .evi{font:12.5px/1.5 ui-monospace,monospace;background:#0b0f14;border:1px solid var(--line);
+    border-radius:8px;padding:12px 14px;color:#b8c4cf;white-space:pre-wrap;overflow-x:auto}
+  .foot{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:14px}
+  .key{color:var(--muted);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>AI Harness Flow Paths</h1>
+  <div class="sub">Live-verified ecosystem state · machine <code>ace-linux-1</code> · 2026-05-25 · workspace-hub</div>
+  <div class="sub">Scope: auth → model → invocation → role for all four harnesses, with live-probe evidence. Companion to the model-provisioning architecture question (Claude = brain, codex-family = hands, Gemini = scarce third opinion).</div>
+
+  <h2>1 · Consolidated flow paths</h2>
+  <table>
+    <thead><tr><th>Harness</th><th>Auth surface</th><th>Work model</th><th>Invocation path</th><th>Live probe</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Claude</b><br><span class="muted">claude-code 2.1.150</span></td>
+        <td>Max subscription<br><code>~/.claude/.credentials.json</code></td>
+        <td>per-session (this session <code>claude-opus-4-7</code>); <span class="muted">no pinned model — chosen per session</span></td>
+        <td><code>claude -p</code> / main session / Desktop Agent-Mode</td>
+        <td><span class="pill p-ok">PASS</span> <span class="muted">(this session)</span></td>
+        <td><span class="role">Brain / orchestrator</span></td>
+      </tr>
+      <tr>
+        <td><b>Codex</b><br><span class="muted">codex-cli 0.133.0</span></td>
+        <td>OpenAI OAuth<br><code>~/.codex/auth.json</code></td>
+        <td><b>gpt-5.5</b><br><span class="muted">reasoning_effort=medium, sandbox=workspace-write</span></td>
+        <td><code>codex exec --skip-git-repo-check</code></td>
+        <td><span class="pill p-ok">PASS</span> <span class="muted">fg + non-TTY</span></td>
+        <td><span class="role">Worker / reviewer</span></td>
+      </tr>
+      <tr>
+        <td><b>Gemini</b><br><span class="muted">gemini-cli 0.43.0</span></td>
+        <td>Google OAuth (personal)<br><code>~/.gemini/oauth_creds.json</code></td>
+        <td><b>gemini-3.1-pro-preview</b> <span class="muted">(preview — kept by user choice)</span></td>
+        <td><code>gemini -p "…" -y</code></td>
+        <td><span class="pill p-ok">PASS</span> <span class="muted">(with warnings)</span></td>
+        <td><span class="role">Scarce 3rd opinion</span></td>
+      </tr>
+      <tr>
+        <td><b>Hermes</b><br><span class="muted">gateway PID 1878521</span></td>
+        <td>OAuth via Codex<br><code>~/.hermes/.env</code> + <code>auth.json</code></td>
+        <td><b>gpt-5.5 / openai-codex</b><br><span class="muted">(default, delegation, all quick_commands, smart_routing, all auxiliary.*)</span></td>
+        <td><code>hermes -z --yolo</code> / gateway → <code>codex exec</code></td>
+        <td><span class="pill p-ok">PASS</span> <span class="muted">ROUTE_OK</span></td>
+        <td><span class="role">Hands / execution router</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>2 · Architecture (brain / hands / muscle)</h2>
+  <div class="grid">
+    <div class="card"><div class="role">Brain</div><b>Claude</b><div class="muted" style="margin-top:6px">Primary on every tier in <code>routing-config.yaml</code>. Orchestrates planning, routing decisions, cross-review synthesis, memory writes. Anthropic Max budget.</div></div>
+    <div class="card"><div class="role">Hands</div><b>Hermes → Codex</b><div class="muted" style="margin-top:6px">Hermes routes execution to <code>codex exec</code> (gpt-5.5). Codex CLI + Hermes share one OAuth + quota pool — model the <code>{codex,hermes}</code> budget as a single pool.</div></div>
+    <div class="card"><div class="role">Muscle</div><b>Codex (direct)</b><div class="muted" style="margin-top:6px">Bounded implementation, test repair, adversarial code/plan review. Same gpt-5.5 model as the Hermes hands-layer.</div></div>
+    <div class="card"><div class="role">Scarce</div><b>Gemini</b><div class="muted" style="margin-top:6px">Usage-limited, manual-only (explicit <code>ai:gemini</code> label). Third cross-review opinion; never auto-routed for backlog.</div></div>
+  </div>
+
+  <h2>3 · Change record — Hermes locked to gpt-5.5, OpenRouter removed (2026-05-25)</h2>
+  <div class="card">
+    <ul>
+      <li>Removed <code>OPENROUTER_API_KEY</code> from <code>~/.hermes/.env</code> (backup <code>.env.bak.20260525T103014</code>).</li>
+      <li>Eliminated <b>every</b> <code>provider: auto</code> — that was the indirect route resolving to OpenRouter while the key existed.</li>
+      <li>Pinned to <code>gpt-5.5</code>/<code>openai-codex</code>: default, delegation, all 6 <code>quick_commands.*</code>, <code>smart_model_routing.cheap_model</code>, and all 10 <code>auxiliary.*</code> tasks.</li>
+      <li>Restarted the detached user-level gateway (PID 1703026 → 1878521); new process carries <b>0 OpenRouter env vars</b>; telegram reconnected.</li>
+      <li><b>Root cause of the prior 402 storm:</b> the OpenRouter key's spend cap ("can only afford 841 tokens") 402'd on <code>context_compressor</code>/<code>tool_executor</code>/<code>skills_tool</code>; main <code>gpt-5.5</code> execution (separate OAuth budget) never broke.</li>
+    </ul>
+  </div>
+  <div class="evi">hermes status → Model: gpt-5.5 · Provider: OpenAI Codex · OpenRouter ✗ (not set)
+post-restart API calls: 8× base_url=https://chatgpt.com/backend-api/codex · 0× openrouter.ai</div>
+
+  <h2>4 · Codex stdin-hang regression — status update (0.133.0)</h2>
+  <div class="card">
+    <p style="margin:0 0 8px">The 0.130.0 non-TTY/background hang (<a class="muted" href="https://github.com/vamseeachanta/workspace-hub/issues/2715">#2715</a>) appears <b>resolved on 0.133.0</b> — strong signal, not yet exhaustively confirmed.</p>
+    <table>
+      <thead><tr><th>Invocation context</th><th>0.130.0 (prior)</th><th>0.133.0 (today)</th></tr></thead>
+      <tbody>
+        <tr><td>Foreground Claude-Code-Bash, <code>&lt;/dev/null</code></td><td><span class="pill p-ok">worked</span></td><td><span class="pill p-ok">PASS</span></td></tr>
+        <tr><td><code>bash -c</code> subshell, <code>CLAUDECODE=1</code> inherited, <code>&lt;/dev/null</code></td><td><span class="pill p-bad">HUNG</span></td><td><span class="pill p-ok">PASS</span> ROUTE_OK exit 0</td></tr>
+        <tr><td>True Hermes-worker dispatch / <code>run_in_background=true</code></td><td><span class="pill p-bad">HUNG</span></td><td><span class="pill p-warn">untested</span></td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin:8px 0 0">The "Reading additional input from stdin…" banner still prints on 0.133.0 but is now cosmetic — execution proceeds to completion instead of wedging. <code>script -qc</code> / <code>env -u CLAUDECODE</code> workarounds are no longer required for the tested cases.</p>
+  </div>
+
+  <h2>5 · Open notes (non-blocking)</h2>
+  <div class="card">
+    <ul>
+      <li><span class="key">Gemini GSD agents</span> — <code>gsd-debugger.md</code> / <code>gsd-executor.md</code> fail to load under gemini-cli 0.43.0 (<code>Unrecognized key: 'permissionMode'</code>). <b>Expected / accepted:</b> GSD is not used via Gemini (user, 2026-05-25). No fix planned.</li>
+      <li><span class="key">Gemini model</span> — <code>gemini-3.1-pro-preview</code> retained by user choice; accept preview-channel change/deprecation risk.</li>
+      <li><span class="key">Gemini skills</span> — 3 skills duplicated across <code>.agents/skills/</code> and <code>.gemini/skills/</code>; override resolves cleanly. Ripgrep absent → GrepTool fallback (minor perf).</li>
+      <li><span class="key">Claude model</span> — no pin in <code>settings.json</code> by design; model selected per session. <code>Stop</code> hook runs <code>skill-extractor.py</code> via the Hermes venv python (cross-harness dependency worth noting).</li>
+      <li><span class="key">Gateway durability</span> — <code>Linger=no</code>; gateway is parented to <code>systemd --user</code>, survives this CLI session but stops on full logout. Daily update cron relaunches it.</li>
+    </ul>
+  </div>
+
+  <h2>6 · Verification commands (reproduce)</h2>
+  <div class="evi">hermes status | grep -iE 'model|provider|openrouter'
+codex exec --skip-git-repo-check "Reply with exactly: ROUTE_OK" &lt;/dev/null
+echo ping | gemini -p "Reply with exactly: ROUTE_OK" -y
+hermes -z "Reply with exactly the token ROUTE_OK and nothing else." --yolo</div>
+
+  <div class="foot">
+    Generated 2026-05-25 · workspace-hub/docs/reports · all four harnesses live-probed this session.
+    Related memory: feedback_hermes_no_openrouter_always_gpt55 · feedback_codex_cli_0_124_upstream_regression ·
+    project_dispatch_provider_capacity · feedback_cross_provider_agent_liveness.
+  </div>
+
+</div>
+</body>
+</html>

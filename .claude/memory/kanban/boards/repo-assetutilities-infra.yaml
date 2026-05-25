@@ -1,0 +1,12 @@
+board:
+  slug: repo-assetutilities-infra
+  display_name: assetutilities · infra
+  tier: domain
+  repo: vamseeachanta/assetutilities
+  domain: infra
+  parent_slug: repo-assetutilities
+  workspace_path: /mnt/local-analysis/assetutilities
+  description: |
+    Packaging, CI, release, dependency management, and productivity /
+    consolidation tracking issues.
+cards: []

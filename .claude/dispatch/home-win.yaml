@@ -1,0 +1,12 @@
+machine: home-win
+generated_by: dispatch.py
+cards:
+- gh: vamseeachanta/workspace-hub#1507
+  repo: vamseeachanta/workspace-hub
+  domain: ai-orchestration
+  provider: claude
+  title: 'Verify Claude Desktop install: home-win'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1507
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual

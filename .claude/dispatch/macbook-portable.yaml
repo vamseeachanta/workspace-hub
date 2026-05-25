@@ -1,0 +1,12 @@
+machine: macbook-portable
+generated_by: dispatch.py
+cards:
+- gh: vamseeachanta/workspace-hub#1508
+  repo: vamseeachanta/workspace-hub
+  domain: ai-orchestration
+  provider: claude
+  title: 'Verify Claude Desktop install: macbook-portable'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1508
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
