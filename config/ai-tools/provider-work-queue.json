@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-25T13:20:13.198029Z",
+  "generated_at": "2026-05-25T17:20:08.577688Z",
   "current_week": "2026-W22",
-  "scorecard_generated_at": "2026-05-25T13:20:11.185091Z",
+  "scorecard_generated_at": "2026-05-25T17:20:06.856308Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 25,
+      "execution_ready_count": 26,
       "total_candidates": 175,
       "top_issues": [
         {
@@ -836,6 +836,25 @@
           ]
         },
         {
+          "number": 2795,
+          "title": "Domain-categorized boards + machine/provider dispatch (GitHub-centered)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2795",
+          "labels": [
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-25T16:50:11Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2431,
           "title": "Compliance alert: W17 \u2014 20% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2431",
@@ -990,30 +1009,6 @@
           "updatedAt": "2026-05-24T11:45:16Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2399,
-          "title": "feat(ai-orchestration): define next-model-release readiness contract for repo ecosystem",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2399",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:release-management"
-          ],
-          "updatedAt": "2026-05-18T19:42:12Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1870,30 +1865,6 @@
           "updatedAt": "2026-05-25T09:50:10Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2400,
-          "title": "feat(doc-intel): MCP server core \u2014 doc_key_lookup, wiki_search, registry_query",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2400",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:document-intelligence"
-          ],
-          "updatedAt": "2026-05-18T19:42:09Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4270,6 +4241,24 @@
             "documentation"
           ],
           "updatedAt": "2026-05-21T09:52:57Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2797,
+          "title": "Refine dispatch assignments as machine capabilities + workload become clearer (sub of #2795)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2797",
+          "labels": [],
+          "updatedAt": "2026-05-25T16:50:01Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",

@@ -35,6 +35,81 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Refine dispatch assignments as machine capabilities + workload become clearer (sub of #2795)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2797,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Refine dispatch assignments as machine capabilities + workload become clearer (sub of #2795)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2797",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "already has status:plan-approved",
+        "no canonical plan file",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "status:plan-approved"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Domain-categorized boards + machine/provider dispatch (GitHub-centered)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2795,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Domain-categorized boards + machine/provider dispatch (GitHub-centered)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2795",
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
         "labels": [
           "enhancement",
           "priority:low",
@@ -7974,96 +8049,89 @@
       "title": "feat(doc-intel): MCP server multi-agent registration \u2014 Claude / Gemini / Hermes",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2401",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:ai-orchestration",
-          "cat:harness",
-          "domain:document-intelligence"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(doc-intel): MCP server core \u2014 doc_key_lookup, wiki_search, registry_query"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2400,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(doc-intel): MCP server core \u2014 doc_key_lookup, wiki_search, registry_query",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2400",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "reviews not clean: major_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:ai-orchestration",
-          "cat:harness",
-          "domain:release-management"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `docs/standards/CONTROL_PLANE_CONTRACT.md` \u2014 defines repo entry points, provider adapters, and convergence expectations across repos.",
-        "provider_route": "claude",
-        "risks": "**Risk:** the contract could become too abstract if it does not anchor to concrete workflow surfaces already known to drift. | **Risk:** provider-specific release quirks could be mistaken for repo defects, causing unnecessary repo churn. | **Open:** should the first readiness battery optimize for breadth across many workflows or depth on the highest-value workflows only?",
-        "tests": "TDD section present",
-        "title": "feat(ai-orchestration): define next-model-release readiness contract for repo ecosystem"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2399,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-04-20-issue-2399-next-model-release-readiness-contract.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(ai-orchestration): define next-model-release readiness contract for repo ecosystem",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2399",
-      "warnings": [
-        "legacy_review_no_sha",
-        "major_review"
-      ]
     }
   ],
-  "generated_at": "2026-05-25T13:20:14Z",
+  "generated_at": "2026-05-25T17:20:10Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Refine dispatch assignments as machine capabilities + workload become clearer (sub of #2795)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2797,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Refine dispatch assignments as machine capabilities + workload become clearer (sub of #2795)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2797",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
+          "no canonical plan file",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "status:plan-approved"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Domain-categorized boards + machine/provider dispatch (GitHub-centered)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2795,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Domain-categorized boards + machine/provider dispatch (GitHub-centered)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2795",
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16013,88 +16081,6 @@
         "title": "feat(doc-intel): MCP server multi-agent registration \u2014 Claude / Gemini / Hermes",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2401",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:document-intelligence"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(doc-intel): MCP server core \u2014 doc_key_lookup, wiki_search, registry_query"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2400,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(doc-intel): MCP server core \u2014 doc_key_lookup, wiki_search, registry_query",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2400",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "reviews not clean: major_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:release-management"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `docs/standards/CONTROL_PLANE_CONTRACT.md` \u2014 defines repo entry points, provider adapters, and convergence expectations across repos.",
-          "provider_route": "claude",
-          "risks": "**Risk:** the contract could become too abstract if it does not anchor to concrete workflow surfaces already known to drift. | **Risk:** provider-specific release quirks could be mistaken for repo defects, causing unnecessary repo churn. | **Open:** should the first readiness battery optimize for breadth across many workflows or depth on the highest-value workflows only?",
-          "tests": "TDD section present",
-          "title": "feat(ai-orchestration): define next-model-release readiness contract for repo ecosystem"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2399,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-04-20-issue-2399-next-model-release-readiness-contract.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(ai-orchestration): define next-model-release readiness contract for repo ecosystem",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2399",
-        "warnings": [
-          "legacy_review_no_sha",
-          "major_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -16105,17 +16091,17 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-25T13:20:11.185091Z",
+  "scorecard_generated_at": "2026-05-25T17:20:06.856308Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-25T13:20:11.060925Z",
+  "utilization_generated_at": "2026-05-25T17:20:06.730718Z",
   "warning_summary": {
-    "approved_no_marker": 12,
-    "approved_no_plan": 4,
+    "approved_no_marker": 13,
+    "approved_no_plan": 5,
     "empty_review": 3,
-    "legacy_review_no_sha": 30,
-    "major_review": 22,
+    "legacy_review_no_sha": 29,
+    "major_review": 21,
     "marker_without_open_approved_issue": 137,
-    "missing_review": 37,
+    "missing_review": 38,
     "unavailable_review": 14,
     "unknown_review": 1
   }

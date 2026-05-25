@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-25T13:20:14Z
+Generated: 2026-05-25T17:20:10Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2797 | Refine dispatch assignments as machine capabilities + workload become clearer (sub of #2795) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2795 | Domain-categorized boards + machine/provider dispatch (GitHub-centered) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2793 | arch(kaggle-rogii-2026): keep experiment repo shallow until seams repeat | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2792 | arch(llm-wiki): treat wiki repos as Knowledge Index modules | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2791 | arch(ecosystem): split admin/document stores from executable modules | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -241,8 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2402 | feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2403 | feat(doc-intel): embeddings model-selection spike — BGE-M3 / Voyage / text-embedding-3-large | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review,unknown_review |
 | #2401 | feat(doc-intel): MCP server multi-agent registration — Claude / Gemini / Hermes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2400 | feat(doc-intel): MCP server core — doc_key_lookup, wiki_search, registry_query | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2399 | feat(ai-orchestration): define next-model-release readiness contract for repo ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
 
 ## Lane: blocked (0)
 
