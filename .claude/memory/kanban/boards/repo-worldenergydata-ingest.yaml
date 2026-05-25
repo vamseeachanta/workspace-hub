@@ -1,9 +1,9 @@
 board:
-  slug: repo-worldenergydata-ingestion
-  display_name: worldenergydata · ingestion
+  slug: repo-worldenergydata-ingest
+  display_name: worldenergydata · ingest
   tier: domain
   repo: vamseeachanta/worldenergydata
-  domain: ingestion
+  domain: ingest
   parent_slug: repo-worldenergydata
   workspace_path: /mnt/local-analysis/worldenergydata
   description: 'Data ingestion lanes — BSEE/NOAA/Kaggle source registries, vessel-fleet
