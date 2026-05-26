@@ -157,6 +157,32 @@ if [[ -f "${KANBAN_READABILITY}" && -d "${HERMES_KANBAN_BUNDLED}" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
+# 2.8. Install kanban auto-load post-merge hook (opt-in)
+#      Replays .claude/memory/kanban/boards/*.yaml into this machine's local
+#      Hermes (~/.hermes/kanban.db) after each `git pull`, so board data
+#      populates without a manual load.py. No-op until you opt in per machine:
+#          touch ~/.hermes/kanban-autoload.enabled
+#      Enable ONLY on Manual-orchestration machines (auto-dispatch could claim
+#      loaded cards). Non-clobbering: skips a foreign post-merge hook.
+# ---------------------------------------------------------------------------
+KANBAN_AUTOLOAD="${REPO_ROOT}/scripts/memory/kanban-autoload.sh"
+KB_HOOK_MARKER="workspace-hub kanban-autoload"
+GIT_DIR="$(git -C "${REPO_ROOT}" rev-parse --absolute-git-dir 2>/dev/null || true)"
+if [[ -f "${KANBAN_AUTOLOAD}" && -n "${GIT_DIR}" ]]; then
+    mkdir -p "${GIT_DIR}/hooks"
+    POST_MERGE="${GIT_DIR}/hooks/post-merge"
+    if [[ ! -e "${POST_MERGE}" ]] || grep -q "${KB_HOOK_MARKER}" "${POST_MERGE}" 2>/dev/null; then
+        printf '#!/usr/bin/env bash\n# %s (auto-installed by bootstrap-machine.sh)\nexec "$(git rev-parse --show-toplevel)/scripts/memory/kanban-autoload.sh" --from-hook\n' "${KB_HOOK_MARKER}" > "${POST_MERGE}"
+        chmod +x "${POST_MERGE}"
+        echo -e "${CYAN}Installed kanban auto-load post-merge hook (opt-in: touch ~/.hermes/kanban-autoload.enabled).${NC}"
+    else
+        echo -e "${YELLOW}Existing .git/hooks/post-merge (not ours) \u2014 skipping kanban auto-load hook.${NC}"
+    fi
+    # Populate now if already opted in (idempotent; no-op without the marker).
+    bash "${KANBAN_AUTOLOAD}" || true
+fi
+
+# ---------------------------------------------------------------------------
 # 3. Remind about bridge script (Linux/Hermes machines only)
 # ---------------------------------------------------------------------------
 if [[ -d "${HOME}/.hermes" ]]; then
