@@ -55,6 +55,19 @@ Idempotent and self-locating. Honors `HERMES_HOME`, `HERMES_AGENT_REPO`, and
 `$HERMES_HOME/hermes-agent`, `$REPO/plugins`). After it runs, hard-refresh the
 Kanban tab (Ctrl+Shift+R). **Re-run after every `hermes update`.**
 
+## Verify
+
+Read-only check (run after install / bootstrap; safe anywhere):
+
+```bash
+bash .claude/skills/devops/hermes-kanban-readability/verify.sh
+```
+
+Exit 0 = PASS (or N/A on a non-Hermes machine — guard no-ops); exit 1 =
+Hermes present but override missing/incorrect (then run `install.sh`).
+On a machine with a live dashboard it also confirms the board is serving
+kanban from the `user` override, not the bundled plugin.
+
 ## Recovery / drift handling
 
 - The installer always rebuilds the override from the *current* bundled plugin,
@@ -72,6 +85,7 @@ Kanban tab (Ctrl+Shift+R). **Re-run after every `hermes update`.**
 | Path | Purpose |
 |---|---|
 | `install.sh` | Idempotent installer / recovery entrypoint |
+| `verify.sh` | Read-only check: PASS/FAIL that the override is installed + correct (N/A on non-Hermes machines) |
 | `patches/renderInline.original.js` | Exact clean `renderInline` block to match (provenance: hermes-agent `2c6bbaf35`) |
 | `patches/renderInline.patched.js` | Replacement block with bare-URL autolinking |
 | `patches/style.append.css` | CSS override appended to the copy's `style.css` |
