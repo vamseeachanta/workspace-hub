@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>#2822 Completeness Scorecard — Codex worktree/clone dispatch</title>
+<style>
+  body { font: 15px/1.55 -apple-system, Segoe UI, Roboto, sans-serif; max-width: 980px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+  h1 { font-size: 1.5rem; border-bottom: 2px solid #2563eb; padding-bottom: .4rem; }
+  h2 { font-size: 1.15rem; margin-top: 1.8rem; color: #1e3a8a; }
+  table { border-collapse: collapse; width: 100%; margin: .8rem 0; font-size: 14px; }
+  th, td { border: 1px solid #d1d5db; padding: .45rem .6rem; text-align: left; vertical-align: top; }
+  th { background: #eff6ff; }
+  .ok { color: #047857; font-weight: 600; }
+  .gap { color: #b45309; font-weight: 600; }
+  .score { font-size: 2.2rem; font-weight: 700; color: #047857; }
+  .meta { color: #555; font-size: 13px; }
+  code { background: #f3f4f6; padding: 1px 4px; border-radius: 3px; font-size: 13px; }
+  .bar { background: #e5e7eb; border-radius: 6px; height: 14px; overflow: hidden; max-width: 360px; }
+  .bar > span { display: block; height: 100%; background: #10b981; }
+</style>
+</head>
+<body>
+<h1>Completeness Scorecard — issue #2822</h1>
+<p class="meta">Document/automate worktree dispatch for the Codex-under-Claude route ·
+<a href="https://github.com/vamseeachanta/workspace-hub/issues/2822">#2822</a> ·
+2026-05-26 · branch <code>docs/2822-codex-dispatch-plan</code> · evidence: test run + e2e + review artifacts</p>
+
+<p><span class="score">97%</span></p>
+<div class="bar"><span style="width:97%"></span></div>
+<p class="meta">Test-based score against the approved plan's 10 acceptance criteria, discounted for two
+named coverage gaps (both non-blocking; see below).</p>
+
+<h2>Acceptance criteria (from the approved plan)</h2>
+<table>
+<tr><th>#</th><th>Criterion</th><th>Status</th><th>Evidence</th></tr>
+<tr><td>1</td><td>All new tests pass</td><td class="ok">MET</td><td><code>bash tests/setup/test_codex_dispatch_prep.sh</code> → 36 PASS, 0 FAIL</td></tr>
+<tr><td>2</td><td><code>--check</code>/<code>--dry-run</code> run without mutation or sudo</td><td class="ok">MET</td><td>smoke-tested; no clone dir created on dry-run</td></tr>
+<tr><td>3</td><td>Write dispatch defaults to <code>--no-hardlinks</code> (distinct object inodes, no alternates)</td><td class="ok">MET</td><td>integration test + e2e: src inode ≠ dest inode (362123 ≠ 362306); no <code>alternates</code></td></tr>
+<tr><td>4</td><td><code>--dry-run</code> prints exact <code>task/status/result --cwd</code> with absolute <code>--prompt-file</code></td><td class="ok">MET</td><td>e2e dry-run output; <code>prompt_file_absolute</code> test</td></tr>
+<tr><td>5</td><td>Cleanup fails closed unless all guards pass</td><td class="ok">MET</td><td>6 guard tests (sentinel, <code>-cxc-</code> name, dispatch-root, source repo, <code>/</code>, <code>$HOME</code>) + device/mount guard (Codex #3)</td></tr>
+<tr><td>6</td><td>Preflight fails on worktree, warns on hardlinked store</td><td class="ok">MET</td><td><code>preflight_rejects_worktree</code> + <code>preflight_warns_hardlinked</code> tests</td></tr>
+<tr><td>7</td><td>Route report "Isolated dispatch" section (clone + read-only opt-in + worktree 3-layer + #2804 base prereq + push-auth)</td><td class="ok">MET</td><td><code>docs/reports/2026-05-26-codex-under-claude-pilot.md</code> §Isolated dispatch</td></tr>
+<tr><td>8</td><td><code>shellcheck</code> clean on the helper</td><td class="ok">MET</td><td>shellcheck → clean</td></tr>
+<tr><td>9</td><td>README index row added; no unrelated rows touched</td><td class="ok">MET</td><td><code>docs/plans/README.md</code> single new row for #2822</td></tr>
+<tr><td>10</td><td>Review artifacts posted</td><td class="ok">MET</td><td>plan (Claude MINOR, Codex MAJOR) + code (Claude MINOR, Codex MAJOR) under <code>scripts/review/results/</code></td></tr>
+</table>
+
+<h2>Gates</h2>
+<table>
+<tr><th>Gate</th><th>Status</th></tr>
+<tr><td>Plan adversarial review (T2: Claude + Codex)</td><td class="ok">DONE — both, MAJOR resolved</td></tr>
+<tr><td>User approval (<code>status:plan-approved</code>)</td><td class="ok">DONE — user-applied</td></tr>
+<tr><td>TDD (tests before implementation)</td><td class="ok">DONE — RED → GREEN</td></tr>
+<tr><td>Code adversarial review (T2: Claude + Codex)</td><td class="ok">DONE — both, 3 MAJOR + findings resolved inline</td></tr>
+<tr><td>Legal/secrets scan (changed files)</td><td class="ok">CLEAN — 0 deny-pattern hits, no secrets (repo-wide FAIL is pre-existing logs/ baseline)</td></tr>
+</table>
+
+<h2>Named coverage gaps (the −3%)</h2>
+<table>
+<tr><th>Gap</th><th>Why not 100%</th><th>Disposition</th></tr>
+<tr><td>Bind-mount cleanup guard not unit-tested</td><td>Creating a bind mount requires root; the device-vs-parent guard logic is verified manually but has no automated regression test</td><td class="gap">Accepted — logic is simple + reviewed; valid same-device clones pass all tests</td></tr>
+<tr><td>No full-scale real prepare of workspace-hub (228 MB clone)</td><td>Validated via tiny real fixtures + dry-run on workspace-hub + SIGPIPE fix verified on the real <code>.git</code></td><td class="gap">Accepted — clone mechanics are git-native; cost not warranted in CI</td></tr>
+<tr><td>Linux/GNU-only (macOS/BSD tooling)</td><td>Scope decision, not a defect</td><td class="ok">By design — matches the Linux-only #2804 base route; declared in header</td></tr>
+</table>
+
+<p class="meta">Recommendation: ready to merge. Score reflects full AC coverage with two transparently
+named, non-blocking test-coverage gaps.</p>
+</body>
+</html>
