@@ -143,11 +143,16 @@ ${data_yaml}  harness:
     readiness_overall: ${readiness_overall:-missing}
   skills: {repo_skill_count: ${skills}}
   kanban: {dispatch_queues: "${queues}"}
-  memory: {hermes_home: ${hermes_home}, context_md_mtime: "${ctx_mtime}"}
+  memory:
+    hermes_home: ${hermes_home}
+    context_md_mtime: "${ctx_mtime}"
   behavior:
     enums: {b1: ${b1}, b2: ${b2}, b3: ${b3}, b4: ${b4}}
     hashes: {b5: ${b5}}
-  scheduler: {has_repo_sync: ${has_sync}, has_parity_review: ${has_parity}, job_count: ${job_count}}
+  scheduler:
+    has_repo_sync: ${has_sync}
+    has_parity_review: ${has_parity}
+    job_count: ${job_count}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 

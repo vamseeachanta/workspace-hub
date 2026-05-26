@@ -115,3 +115,17 @@ def test_collect_commit_on_change_idempotent(tmp_path):
     first_mtime = out.stat().st_mtime_ns
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     assert out.stat().st_mtime_ns == first_mtime         # unchanged content → not rewritten
+
+
+def test_collect_commit_on_change_detects_real_drift(tmp_path):
+    # DC4: a change to a MEANINGFUL (non-volatile) field MUST trigger a rewrite. Guards the
+    # canonical()-grep bug where a volatile field sharing a line masked its neighbors.
+    ws = _fixture(tmp_path)
+    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
+    subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
+    # tamper a meaningful field in the committed file; real collection differs → must rewrite
+    text = out.read_text().replace("hermes_home: absent", "hermes_home: present")
+    out.write_text(text)
+    subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
+    assert "hermes_home: absent" in out.read_text()      # rewritten back to the real value
