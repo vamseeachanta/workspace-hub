@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Completeness Scorecard — Cross-Provider Dream Bridge (#2833)</title>
+<style>
+  :root { --ok:#1a7f37; --warn:#9a6700; --no:#b42318; --bg:#0d1117; --fg:#e6edf3; --mut:#8b949e; --card:#161b22; --line:#30363d; }
+  body { background:var(--bg); color:var(--fg); font:15px/1.55 -apple-system,Segoe UI,Roboto,sans-serif; margin:0; padding:2rem; }
+  .wrap { max-width:960px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .sub { color:var(--mut); margin:0 0 1.5rem; }
+  .score { display:flex; align-items:baseline; gap:1rem; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1rem 1.25rem; margin-bottom:1.5rem; }
+  .score .big { font-size:2.6rem; font-weight:700; color:var(--warn); }
+  table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-bottom:1.5rem; }
+  th,td { text-align:left; padding:.6rem .8rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { background:#1f2630; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; color:var(--mut); }
+  tr:last-child td { border-bottom:none; }
+  .pill { font-size:.75rem; font-weight:600; padding:.1rem .5rem; border-radius:999px; white-space:nowrap; }
+  .p-ok { background:rgba(26,127,55,.18); color:#3fb950; }
+  .p-warn { background:rgba(154,103,0,.2); color:#d29922; }
+  .p-no { background:rgba(180,35,24,.18); color:#f85149; }
+  .pct { font-variant-numeric:tabular-nums; font-weight:600; }
+  code { background:#1f2630; padding:.1rem .35rem; border-radius:4px; font-size:.85em; }
+  h2 { font-size:1.1rem; margin:1.6rem 0 .6rem; border-bottom:1px solid var(--line); padding-bottom:.3rem; }
+  ul { margin:.3rem 0 1rem; padding-left:1.2rem; }
+  li { margin:.25rem 0; }
+  .mut { color:var(--mut); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Completeness Scorecard — Cross-Provider Dream Bridge</h1>
+  <p class="sub">Issue <a href="https://github.com/vamseeachanta/workspace-hub/issues/2833" style="color:#58a6ff">#2833</a>
+     · branch <code>feat/2833-crossprovider-dream-bridge</code> · 2026-05-26 · <span class="mut">review before <code>gh issue close</code></span></p>
+
+  <div class="score">
+    <span class="big">78%</span>
+    <div>
+      <strong>Test-based completeness</strong><br>
+      <span class="mut">Core pipeline built, adversarially reviewed, and verified. Held below 100% by two user/time-dependent steps: the consolidating <code>/dream</code> (not yet run) and cron/hook that are installed but have not yet fired live.</span>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>Component</th><th>Status</th><th>%</th><th>Test evidence</th></tr></thead>
+    <tbody>
+      <tr><td>Pre-filter (Codex <code>event_msg</code>; Gemini/Hermes <code>messages[]</code>)</td>
+          <td><span class="pill p-ok">VERIFIED</span></td><td class="pct">100</td>
+          <td>0/5 boilerplate leaks; synthetic B1 test drops tool/system, keeps user/assistant; N2 CoT-part drop confirmed; live extraction across all 3 providers.</td></tr>
+      <tr><td>Distill engine (<code>claude -p</code> via stdin, subscription)</td>
+          <td><span class="pill p-ok">VERIFIED</span></td><td class="pct">100</td>
+          <td>Live e2e per provider; full 20-session Hermes batch via stdin (ARG_MAX fix) returns valid learnings.</td></tr>
+      <tr><td>Watermark resumability + atomicity</td>
+          <td><span class="pill p-ok">VERIFIED</span></td><td class="pct">100</td>
+          <td>Failure-path test: failed batch holds watermark at 0, 0 files. Happy-path advances. Atomic tmp+<code>os.replace</code>; abort-on-corrupt.</td></tr>
+      <tr><td>Idempotent output (content-hash filenames)</td>
+          <td><span class="pill p-ok">VERIFIED</span></td><td class="pct">100</td>
+          <td>Re-runs overwrite identical files; B2 boundary reprocessing is safe by design.</td></tr>
+      <tr><td>Adversarial review gate</td>
+          <td><span class="pill p-ok">VERIFIED</span></td><td class="pct">100</td>
+          <td>R1 REJECT (2 BLOCKER+4 MAJOR) → all fixed (<code>0832837</code>) → R2 MINOR, no regressions. Evidence on #2833.</td></tr>
+      <tr><td>Backfill — Codex (696) + Hermes (1,950)</td>
+          <td><span class="pill p-ok">DONE</span></td><td class="pct">100</td>
+          <td>~100% coverage. <span class="mut">Carry minor N2 CoT noise (pre-fix); accepted by user — dream prunes.</span></td></tr>
+      <tr><td>Backfill — Gemini (re-run on fixed code)</td>
+          <td><span class="pill p-warn">IN&nbsp;PROGRESS</span></td><td class="pct">~10</td>
+          <td>Tainted pre-fix files deleted; regenerating clean. ~25 min ETA. Resumable + cron backstop.</td></tr>
+      <tr><td>Daily 04:00 cron (incremental)</td>
+          <td><span class="pill p-warn">INSTALLED</span></td><td class="pct">70</td>
+          <td>Crontab entry present (backed up). Not yet fired — first live run unverified.</td></tr>
+      <tr><td>SessionStart lock-reaper hook</td>
+          <td><span class="pill p-warn">INSTALLED</span></td><td class="pct">70</td>
+          <td>In <code>settings.json</code> (valid JSON); pipe-tested 3 ways (reap dead / preserve live / no-op). Not yet fired in a real session start.</td></tr>
+      <tr><td>Consolidating <code>/dream</code> over staged learnings</td>
+          <td><span class="pill p-no">NOT&nbsp;RUN</span></td><td class="pct">0</td>
+          <td>User-invoked only. The end-goal step; nothing has consolidated the staged learnings yet.</td></tr>
+      <tr><td>Durability — scripts committed + pushed</td>
+          <td><span class="pill p-ok">DONE</span></td><td class="pct">100</td>
+          <td>On <code>feat/2833</code>; <span class="mut">machine-config (cron/hook/settings) documented in #2833, not git-tracked by design.</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Blocking items before close</h2>
+  <ul>
+    <li><strong>Gemini regen completes</strong> (in progress, ~25 min) — then all 3 providers clean.</li>
+    <li><strong>Run <code>/dream</code></strong> (user) — consolidate the staged cross-provider learnings; this is the feature's payoff.</li>
+    <li><strong>Re-score to ~100%</strong> after the above + first live cron/hook fire, then <code>gh issue close</code>.</li>
+  </ul>
+
+  <h2>Accepted residuals (by user decision)</h2>
+  <ul>
+    <li><span class="mut">Codex/Hermes learnings carry minor pre-fix CoT noise (N2); not re-backfilled — the dream prunes.</span></li>
+    <li><span class="mut">Watermark has no cross-process lock; single daily cron deployment makes this acceptable (N1).</span></li>
+    <li><span class="mut">atexit temp-cwd cleanup doesn't fire on SIGKILL; dirs are empty + OS-reaped.</span></li>
+  </ul>
+</div>
+</body>
+</html>
