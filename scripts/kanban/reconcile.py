@@ -8,7 +8,9 @@ write board files.
 from __future__ import annotations
 
 import argparse
+import copy
 import difflib
+import io
 import json
 import subprocess
 import sys
@@ -16,7 +18,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
 
-import yaml
+from ruamel.yaml import YAML
 
 
 GH_LIMIT = 100000
@@ -52,11 +54,22 @@ def repo_root() -> Path:
 
 
 def load_yaml(path: Path) -> dict:
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    data = yaml_rt().load(path.read_text(encoding="utf-8"))
+    return data or {}
 
 
 def dump_yaml(data: dict) -> str:
-    return yaml.safe_dump(data, sort_keys=False, allow_unicode=False, width=1000)
+    out = io.StringIO()
+    yaml_rt().dump(data, out)
+    return out.getvalue()
+
+
+def yaml_rt() -> YAML:
+    yaml = YAML()
+    yaml.preserve_quotes = True
+    yaml.width = 1000
+    yaml.indent(mapping=2, sequence=4, offset=2)
+    return yaml
 
 
 def write_yaml(path: Path, data: dict) -> None:
@@ -217,6 +230,15 @@ def existing_cards(board_data: dict, files: list[Path]) -> dict[str, dict]:
     return found
 
 
+def existing_issue_counts_by_repo(existing: dict[str, dict]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for key, card in existing.items():
+        repo = key_repo(key)
+        if repo and card.get("source") == "github_issue":
+            counts[repo] = counts.get(repo, 0) + 1
+    return counts
+
+
 def unified_diff(before: dict[Path, str], after: dict[Path, str], root: Path) -> str:
     chunks = []
     diff_root = root.parents[2] if len(root.parents) >= 3 else root
@@ -241,10 +263,19 @@ def build_live_cards(
     repo_boards: dict[str, Path],
     domain_boards: dict[tuple[str, str], Path],
     existing: dict[str, dict],
+    existing_counts: dict[str, int],
+    allow_empty_repos: set[str],
 ) -> dict[str, tuple[Path, dict]]:
     live = {}
     for repo in repos:
-        for issue in issue_fetcher(repo):
+        issues = issue_fetcher(repo)
+        if not issues and existing_counts.get(repo, 0) > 0 and repo not in allow_empty_repos:
+            raise RuntimeError(
+                f"empty issue list for {repo} would remove "
+                f"{existing_counts[repo]} existing github_issue card(s); "
+                "use --allow-empty only after verifying the repo legitimately has zero issues"
+            )
+        for issue in issues:
             key = issue_key(repo, issue["number"])
             card = card_for_issue(repo, issue, existing.get(key))
             board = target_board(repo, card["gh_labels"], repo_boards, domain_boards)
@@ -261,7 +292,7 @@ def rebuild_boards(
     rebuilt = {}
     added = set()
     for path in files:
-        data = dict(board_data[path])
+        data = copy.deepcopy(board_data[path])
         cards = []
         for card in data.get("cards") or []:
             key = card.get("idempotency_key")
@@ -289,6 +320,7 @@ def reconcile_kanban(
     dry_run: bool = True,
     write_files: bool = True,
     repo_filter: str | None = None,
+    allow_empty_repos: set[str] | None = None,
 ) -> ReconcileResult:
     entries = load_manifest_entries(kanban_root)
     repos = active_repos(entries)
@@ -300,7 +332,15 @@ def reconcile_kanban(
     board_data = {path: load_yaml(path) for path in files}
     before = {path: path.read_text(encoding="utf-8") for path in files}
     existing = existing_cards(board_data, files)
-    live = build_live_cards(repos, issue_fetcher, repo_boards, domain_boards, existing)
+    live = build_live_cards(
+        repos,
+        issue_fetcher,
+        repo_boards,
+        domain_boards,
+        existing,
+        existing_issue_counts_by_repo(existing),
+        allow_empty_repos or set(),
+    )
     rebuilt = rebuild_boards(board_data, files, set(repos), live)
     after = {}
     for path in files:
@@ -322,6 +362,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--repo", help="limit reconciliation to one active owner/repo")
     parser.add_argument("--limit", type=int, default=GH_LIMIT)
     parser.add_argument("--kanban-root", type=Path)
+    parser.add_argument(
+        "--allow-empty",
+        action="append",
+        default=[],
+        metavar="OWNER/REPO",
+        help="allow an active repo with existing cards to reconcile to zero live issues",
+    )
     args = parser.parse_args(argv)
 
     root = args.kanban_root or repo_root() / ".claude/memory/kanban"
@@ -335,6 +382,7 @@ def main(argv: list[str] | None = None) -> int:
         dry_run=args.dry_run,
         write_files=not args.dry_run,
         repo_filter=args.repo,
+        allow_empty_repos=set(args.allow_empty),
     )
     if result.diff:
         print(result.diff, end="")

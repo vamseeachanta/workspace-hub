@@ -1,8 +1,13 @@
 name: Kanban Reconcile
 
 on:
-  schedule:
-    - cron: "*/20 * * * *"
+  # TODO(#2802 phase 2): re-enable the */20 schedule only after a GitHub App
+  # installation token is available for cross-repo issue reads. GITHUB_TOKEN is
+  # intentionally repo-scoped; running this as cron before App auth risks
+  # incomplete cross-repo visibility. workflow_dispatch remains available for
+  # supervised runs, and unreadable repos still fail closed through gh nonzero.
+  # schedule:
+  #   - cron: "*/20 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -31,41 +36,50 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@v5
 
-      - name: Reconcile kanban boards
+      - name: Reconcile, commit, and push one batched run
         env:
           GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           # TODO(#2802 phase 2): switch issue-read auth to a GitHub App
           # installation token for private sibling repos; keep GITHUB_TOKEN
           # for the workspace-hub contents write so bot pushes do not retrigger CI.
-          uv run python scripts/kanban/reconcile.py
-
-      - name: Commit and push one batched reconcile
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          if git diff --quiet -- .claude/memory/kanban/boards; then
-            echo "No kanban board changes."
-            exit 0
-          fi
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .claude/memory/kanban/boards
-          git commit -m "chore: reconcile kanban board"
 
           for attempt in 1 2 3; do
-            git pull --rebase origin "$GITHUB_REF_NAME"
+            # Start each attempt from the current remote branch, regenerate the
+            # board state, then create one fresh batched commit. This makes both
+            # rebase conflicts and push races retryable instead of wedging the run
+            # behind a stale generated commit.
+            git fetch origin "$GITHUB_REF_NAME"
+            git reset --hard "origin/$GITHUB_REF_NAME"
+
+            if ! git pull --rebase origin "$GITHUB_REF_NAME"; then
+              git rebase --abort || true
+              sleep $((attempt * 5))
+              continue
+            fi
+
+            uv run python scripts/kanban/reconcile.py
+
+            if git diff --quiet -- .claude/memory/kanban/boards; then
+              echo "No kanban board changes."
+              exit 0
+            fi
+
+            git add .claude/memory/kanban/boards
+            git commit -m "chore: reconcile kanban board"
+
             if git push origin "HEAD:$GITHUB_REF_NAME"; then
               exit 0
             fi
             sleep $((attempt * 5))
           done
 
-          git pull --rebase origin "$GITHUB_REF_NAME"
-          git push origin "HEAD:$GITHUB_REF_NAME"
+          echo "Failed to push kanban reconcile after bounded retries." >&2
+          exit 1
 
       # TODO(#2802 phase 2): add repository_dispatch nudge workflows.
       # Correctness must remain cron-reconciler-primary.
