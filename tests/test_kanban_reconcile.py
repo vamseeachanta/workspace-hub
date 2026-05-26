@@ -189,6 +189,77 @@ def test_reconcile_removes_missing_issue_and_updates_closed_state(tmp_path: Path
     assert cards[0]["gh_state"] == "closed"
 
 
+def test_reconcile_fails_closed_when_active_repo_fetch_returns_empty(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = kanban / "boards/repo-workspace-hub.yaml"
+    repo_data = read_yaml(repo_board)
+    repo_data["cards"] = [
+        {
+            "idempotency_key": "gh:vamseeachanta/workspace-hub#2802",
+            "title": "must not be wiped by empty fetch",
+            "source": "github_issue",
+            "source_url": "https://github.com/vamseeachanta/workspace-hub/issues/2802",
+            "gh_state": "open",
+            "gh_labels": [],
+            "initial_status": "triage",
+            "priority": 0,
+        }
+    ]
+    write_yaml(repo_board, repo_data)
+
+    with pytest.raises(RuntimeError, match="empty issue list"):
+        reconcile.reconcile_kanban(
+            kanban,
+            issue_fetcher=lambda repo: [],
+            dry_run=True,
+        )
+
+    cards = read_yaml(repo_board)["cards"]
+    assert [card["idempotency_key"] for card in cards] == [
+        "gh:vamseeachanta/workspace-hub#2802"
+    ]
+
+
+def test_reconcile_preserves_board_comments_and_wrapped_scalars(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = kanban / "boards/repo-workspace-hub.yaml"
+    repo_board.write_text(
+        """# board comment survives reconcile
+board:
+  slug: repo-workspace-hub
+  tier: repo
+  repo: vamseeachanta/workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: |
+    Wrapped line one.
+    Wrapped line two.
+cards:
+- idempotency_key: gh:vamseeachanta/workspace-hub#2802
+  title: stale title
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2802
+  gh_state: open
+  gh_labels: []
+  initial_status: triage
+  priority: 0
+""",
+        encoding="utf-8",
+    )
+
+    reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(2802, "fresh title")],
+        dry_run=True,
+    )
+
+    text = repo_board.read_text(encoding="utf-8")
+    assert "# board comment survives reconcile" in text
+    assert "description: |\n    Wrapped line one.\n    Wrapped line two.\n" in text
+    assert "title: fresh title" in text
+
+
 def test_fetch_repo_issues_aborts_when_gh_limit_is_reached():
     reconcile = load_reconcile()
     calls = []
