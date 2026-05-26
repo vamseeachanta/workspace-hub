@@ -720,7 +720,9 @@
           "cat:harness",
           "domain:knowledge",
           "domain:repo-organization",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -758,7 +760,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "documentation"
+          "documentation",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -794,7 +798,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "documentation"
+          "documentation",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -835,7 +841,8 @@
           "domain:workstations",
           "domain:repo-organization",
           "status:blocked",
-          "machine:licensed-win-2"
+          "machine:licensed-win-2",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -878,7 +885,8 @@
           "domain:workstations",
           "domain:repo-organization",
           "status:blocked",
-          "machine:licensed-win-1"
+          "machine:licensed-win-1",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -919,7 +927,9 @@
           "enhancement",
           "priority:medium",
           "cat:engineering",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -962,7 +972,9 @@
           "cat:ai-orchestration",
           "cat:operations",
           "cat:harness",
-          "status:needs-plan"
+          "machine:dev-primary",
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1004,7 +1016,9 @@
           "priority:high",
           "cat:operations",
           "cat:harness",
-          "status:needs-plan"
+          "machine:dev-primary",
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1047,7 +1061,9 @@
           "cat:ai-orchestration",
           "cat:operations",
           "cat:harness",
-          "status:needs-plan"
+          "machine:dev-primary",
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1090,7 +1106,9 @@
           "cat:ai-orchestration",
           "cat:operations",
           "cat:harness",
-          "status:needs-plan"
+          "machine:dev-primary",
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1128,7 +1146,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "machine:dev-primary",
+          "dispatch:ready"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -1169,7 +1190,9 @@
           "domain:hydrodynamics",
           "domain:visualization",
           "domain:naval-architecture",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1212,7 +1235,9 @@
           "priority:medium",
           "cat:developer-experience",
           "domain:agent-ux",
-          "domain:repo-organization"
+          "domain:repo-organization",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1259,7 +1284,8 @@
           "domain:workstations",
           "domain:agent-cost-tracking",
           "machine:licensed-win-2",
-          "status:needs-plan"
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1302,7 +1328,8 @@
           "domain:workstations",
           "domain:agent-cost-tracking",
           "machine:licensed-win-1",
-          "status:needs-plan"
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1349,7 +1376,8 @@
           "domain:agent-cost-tracking",
           "status:working",
           "machine:ace-linux-2",
-          "status:plan-approved"
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1397,7 +1425,8 @@
           "domain:workstations",
           "domain:agent-cost-tracking",
           "machine:ace-linux-1",
-          "status:plan-approved"
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1439,7 +1468,9 @@
         "labels": [
           "cat:operations",
           "domain:machine-setup",
-          "domain:cross-platform"
+          "domain:cross-platform",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1480,7 +1511,9 @@
           "cat:harness",
           "domain:machine-setup",
           "domain:cross-platform",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1522,7 +1555,9 @@
         "labels": [
           "priority:medium",
           "cat:harness",
-          "domain:cleanup"
+          "domain:cleanup",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1561,7 +1596,9 @@
           "priority:high",
           "priority:medium",
           "priority:critical",
-          "compliance-alert"
+          "machine:dev-primary",
+          "compliance-alert",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1602,7 +1639,9 @@
           "cat:data-pipeline",
           "cat:document-intelligence",
           "domain:knowledge",
-          "domain:repo-organization"
+          "domain:repo-organization",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1644,7 +1683,9 @@
           "cat:operations",
           "domain:machine-setup",
           "domain:cross-platform",
-          "status:needs-plan"
+          "machine:dev-primary",
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1686,7 +1727,9 @@
           "cat:harness",
           "domain:testing",
           "domain:notification",
-          "status:needs-plan"
+          "machine:dev-primary",
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1731,7 +1774,8 @@
           "domain:machine-setup",
           "machine:ace-linux-2",
           "agent:claude",
-          "status:plan-approved"
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1778,7 +1822,8 @@
           "domain:notification",
           "machine:ace-linux-1",
           "agent:claude",
-          "status:plan-approved"
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1822,7 +1867,9 @@
           "cat:operations",
           "domain:workstations",
           "domain:notification",
-          "status:needs-plan"
+          "machine:dev-primary",
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1863,7 +1910,9 @@
           "priority:medium",
           "cat:engineering-methodology",
           "domain:knowledge-management",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1907,7 +1956,9 @@
           "priority:medium",
           "cat:engineering-methodology",
           "domain:knowledge-management",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1951,10 +2002,12 @@
           "priority:high",
           "cat:ai-orchestration",
           "domain:knowledge-management",
+          "machine:dev-primary",
           "agent:gemini",
           "agent:claude",
           "agent:codex",
-          "status:plan-approved"
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1997,7 +2050,9 @@
           "priority:high",
           "cat:data-pipeline",
           "domain:knowledge",
-          "domain:repo-organization"
+          "domain:repo-organization",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2037,7 +2092,9 @@
           "cat:data-pipeline",
           "cat:document-intelligence",
           "domain:knowledge",
-          "status:needs-plan"
+          "machine:dev-primary",
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2080,7 +2137,9 @@
           "priority:medium",
           "cat:ai-orchestration",
           "domain:ai-config",
-          "domain:tooling"
+          "domain:tooling",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2118,7 +2177,9 @@
         "labels": [
           "priority:low",
           "cat:harness",
-          "domain:workflow"
+          "domain:workflow",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2157,7 +2218,9 @@
           "priority:high",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:agent-cost-tracking"
+          "domain:agent-cost-tracking",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2196,7 +2259,9 @@
           "priority:high",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:agent-cost-tracking"
+          "domain:agent-cost-tracking",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2237,7 +2302,8 @@
           "cat:engineering",
           "domain:marine",
           "machine:licensed-win-1",
-          "machine:licensed-win-2"
+          "machine:licensed-win-2",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2275,7 +2341,9 @@
         "labels": [
           "bug",
           "priority:medium",
-          "cat:infrastructure"
+          "cat:infrastructure",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2314,7 +2382,9 @@
           "bug",
           "priority:high",
           "cat:ai-orchestration",
-          "cat:infrastructure"
+          "cat:infrastructure",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2351,7 +2421,9 @@
       "hover": {
         "labels": [
           "cat:knowledge-domain",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2389,7 +2461,9 @@
         "labels": [
           "priority:medium",
           "cat:harness",
-          "domain:ai-orchestration"
+          "domain:ai-orchestration",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2429,7 +2503,9 @@
           "priority:medium",
           "cat:engineering",
           "domain:marine",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2474,7 +2550,9 @@
           "cat:ai-orchestration",
           "cat:harness",
           "domain:work-queue",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2519,7 +2597,8 @@
           "priority:high",
           "cat:engineering",
           "domain:marine",
-          "machine:licensed-win-1"
+          "machine:licensed-win-1",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2561,7 +2640,9 @@
       "hover": {
         "labels": [
           "enhancement",
-          "priority:medium"
+          "priority:medium",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2600,7 +2681,9 @@
           "enhancement",
           "priority:medium",
           "cat:engineering",
-          "cat:harness"
+          "cat:harness",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2639,7 +2722,9 @@
           "priority:medium",
           "cat:ai-orchestration",
           "cat:harness",
-          "cat:maintenance"
+          "cat:maintenance",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2677,7 +2762,9 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:ai-orchestration"
+          "cat:ai-orchestration",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2715,7 +2802,9 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:ai-orchestration"
+          "cat:ai-orchestration",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2753,7 +2842,9 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:ai-orchestration"
+          "cat:ai-orchestration",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2832,7 +2923,9 @@
           "priority:medium",
           "cat:ai-orchestration",
           "cat:harness",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2876,7 +2969,9 @@
           "priority:high",
           "cat:engineering",
           "cat:bugfix",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2917,7 +3012,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2955,7 +3052,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2993,7 +3092,9 @@
         "labels": [
           "priority:low",
           "cat:marketing",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3031,7 +3132,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3069,7 +3172,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3107,7 +3212,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3146,7 +3253,9 @@
           "enhancement",
           "priority:medium",
           "cat:engineering",
-          "cat:knowledge-domain"
+          "cat:knowledge-domain",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3187,7 +3296,9 @@
           "priority:high",
           "cat:engineering",
           "cat:bugfix",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3229,7 +3340,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3267,7 +3380,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3305,7 +3420,9 @@
         "labels": [
           "priority:low",
           "cat:marketing",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3343,7 +3460,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3381,7 +3500,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3419,7 +3540,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3458,7 +3581,9 @@
           "enhancement",
           "priority:medium",
           "cat:engineering",
-          "cat:knowledge-domain"
+          "cat:knowledge-domain",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3496,7 +3621,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3534,7 +3661,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3572,7 +3701,9 @@
         "labels": [
           "priority:low",
           "cat:marketing",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3610,7 +3741,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3648,7 +3781,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3686,7 +3821,9 @@
         "labels": [
           "priority:medium",
           "cat:engineering",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3725,7 +3862,9 @@
           "enhancement",
           "priority:medium",
           "cat:engineering",
-          "cat:knowledge-domain"
+          "cat:knowledge-domain",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3764,7 +3903,9 @@
           "enhancement",
           "priority:medium",
           "cat:knowledge-domain",
-          "cat:research"
+          "cat:research",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3801,7 +3942,9 @@
       "hover": {
         "labels": [
           "domain:repo-cleanup",
-          "status:needs-plan"
+          "machine:dev-primary",
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3843,7 +3986,9 @@
           "cat:ai-orchestration",
           "cat:harness",
           "domain:agent-cost-tracking",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3885,7 +4030,9 @@
           "enhancement",
           "priority:medium",
           "cat:harness",
-          "domain:workflow"
+          "domain:workflow",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3962,7 +4109,9 @@
       "hover": {
         "labels": [
           "domain:repo-cleanup",
-          "status:needs-plan"
+          "machine:dev-primary",
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4001,7 +4150,9 @@
           "priority:high",
           "priority:medium",
           "priority:critical",
-          "compliance-alert"
+          "machine:dev-primary",
+          "compliance-alert",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4041,7 +4192,9 @@
           "cat:data",
           "domain:standards-tooling",
           "domain:quality",
-          "llm-wiki"
+          "machine:dev-primary",
+          "llm-wiki",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4082,7 +4235,9 @@
           "priority:high",
           "cat:documentation",
           "cat:harness",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4127,7 +4282,9 @@
           "cat:engineering",
           "cat:harness",
           "domain:repo-organization",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4166,7 +4323,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "repo-readiness"
+          "machine:dev-primary",
+          "repo-readiness",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4201,7 +4360,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "machine:dev-primary",
+          "dispatch:ready"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -4236,7 +4398,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "priority:medium"
+          "priority:medium",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4272,7 +4436,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "priority:high"
+          "priority:high",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4313,7 +4479,8 @@
           "cat:operations",
           "domain:workstations",
           "machine:dev-secondary",
-          "agent:claude"
+          "agent:claude",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4352,7 +4519,8 @@
           "priority:high",
           "cat:engineering",
           "domain:marine",
-          "machine:multi"
+          "machine:multi",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4393,7 +4561,9 @@
           "enhancement",
           "priority:high",
           "cat:engineering",
-          "domain:gtm"
+          "domain:gtm",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4431,7 +4601,9 @@
         "labels": [
           "priority:high",
           "priority:critical",
-          "compliance-alert"
+          "machine:dev-primary",
+          "compliance-alert",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4472,7 +4644,9 @@
           "cat:engineering",
           "cat:harness",
           "domain:testing",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4514,7 +4688,9 @@
           "priority:medium",
           "cat:documentation",
           "domain:security",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4559,7 +4735,9 @@
           "priority:medium",
           "cat:engineering",
           "domain:marine",
-          "domain:mooring"
+          "domain:mooring",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4598,7 +4776,9 @@
           "enhancement",
           "priority:medium",
           "cat:engineering",
-          "domain:testing"
+          "domain:testing",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4637,7 +4817,9 @@
           "enhancement",
           "priority:medium",
           "cat:engineering",
-          "domain:testing"
+          "domain:testing",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4674,8 +4856,10 @@
       "hover": {
         "labels": [
           "domain:testing",
+          "machine:dev-primary",
           "tracker",
-          "domain:digitalmodel"
+          "domain:digitalmodel",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4712,9 +4896,11 @@
       "hover": {
         "labels": [
           "domain:testing",
+          "machine:dev-primary",
           "tracker",
           "domain:digitalmodel",
-          "status:needs-plan"
+          "status:needs-plan",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4749,7 +4935,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "machine:dev-primary",
+          "dispatch:ready"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -4791,7 +4980,9 @@
           "cat:operations",
           "domain:integrations",
           "domain:notification",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4835,7 +5026,9 @@
           "priority:high",
           "cat:engineering",
           "cat:data-pipeline",
-          "status:needs-data"
+          "machine:dev-primary",
+          "status:needs-data",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4873,7 +5066,9 @@
           "priority:high",
           "cat:ai-orchestration",
           "cat:business",
-          "domain:gtm"
+          "domain:gtm",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4914,7 +5109,9 @@
           "documentation",
           "priority:medium",
           "cat:documentation",
-          "domain:repo-organization"
+          "domain:repo-organization",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4954,7 +5151,9 @@
           "priority:medium",
           "cat:documentation",
           "domain:security",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5000,7 +5199,9 @@
           "cat:operations",
           "domain:security",
           "domain:repo-health",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5043,7 +5244,9 @@
           "cat:operations",
           "domain:automation",
           "domain:security",
-          "agent:codex"
+          "machine:dev-primary",
+          "agent:codex",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5084,7 +5287,9 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:documentation"
+          "cat:documentation",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5122,7 +5327,9 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:documentation"
+          "cat:documentation",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5160,7 +5367,9 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:documentation"
+          "cat:documentation",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5198,7 +5407,9 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:documentation"
+          "cat:documentation",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5237,7 +5448,9 @@
           "enhancement",
           "priority:medium",
           "cat:data-pipeline",
-          "domain:gis"
+          "domain:gis",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5275,7 +5488,9 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:documentation"
+          "cat:documentation",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5313,7 +5528,9 @@
         "labels": [
           "priority:medium",
           "cat:operations",
-          "cat:data"
+          "cat:data",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5354,7 +5571,9 @@
           "priority:high",
           "cat:documentation",
           "domain:repo-organization",
-          "status:plan-approved"
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5396,7 +5615,9 @@
         "labels": [
           "priority:medium",
           "cat:infrastructure",
-          "maintenance"
+          "machine:dev-primary",
+          "maintenance",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5434,7 +5655,9 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:infrastructure"
+          "cat:infrastructure",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5476,7 +5699,9 @@
           "cat:harness",
           "domain:ai-orchestration",
           "domain:workstations",
-          "domain:agent-cost-tracking"
+          "domain:agent-cost-tracking",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5518,7 +5743,9 @@
           "cat:harness",
           "domain:ai-orchestration",
           "domain:workstations",
-          "domain:agent-cost-tracking"
+          "domain:agent-cost-tracking",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5560,7 +5787,9 @@
           "priority:critical",
           "domain:ai-orchestration",
           "domain:workstations",
-          "domain:agent-cost-tracking"
+          "domain:agent-cost-tracking",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5601,7 +5830,9 @@
           "priority:critical",
           "domain:ai-orchestration",
           "domain:workstations",
-          "domain:agent-cost-tracking"
+          "domain:agent-cost-tracking",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5642,7 +5873,9 @@
           "priority:high",
           "priority:medium",
           "priority:critical",
-          "compliance-alert"
+          "machine:dev-primary",
+          "compliance-alert",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5682,7 +5915,9 @@
           "priority:medium",
           "cat:engineering",
           "domain:pipeline",
-          "domain:marine"
+          "domain:marine",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5722,7 +5957,9 @@
           "priority:medium",
           "cat:engineering",
           "cat:research",
-          "domain:marine"
+          "domain:marine",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5761,8 +5998,10 @@
           "priority:medium",
           "cat:documentation",
           "cat:career",
+          "machine:dev-primary",
           "domain:semiconductor",
-          "domain:chip-design"
+          "domain:chip-design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5802,9 +6041,11 @@
           "priority:medium",
           "cat:engineering",
           "cat:tooling",
+          "machine:dev-primary",
           "status:plan-approved",
           "domain:semiconductor",
-          "domain:chip-design"
+          "domain:chip-design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5847,8 +6088,10 @@
           "cat:engineering",
           "cat:tooling",
           "cat:research",
+          "machine:dev-primary",
           "domain:semiconductor",
-          "domain:chip-design"
+          "domain:chip-design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5891,8 +6134,10 @@
           "cat:engineering",
           "cat:research",
           "cat:career",
+          "machine:dev-primary",
           "domain:semiconductor",
-          "domain:chip-design"
+          "domain:chip-design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5934,7 +6179,9 @@
           "priority:medium",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:workflow"
+          "domain:workflow",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5977,7 +6224,9 @@
           "priority:medium",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:workflow"
+          "domain:workflow",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6017,7 +6266,9 @@
           "priority:medium",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:workflow"
+          "domain:workflow",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6056,7 +6307,9 @@
           "priority:medium",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:workflow"
+          "domain:workflow",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6099,7 +6352,9 @@
           "priority:medium",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:workflow"
+          "domain:workflow",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6141,7 +6396,9 @@
         "labels": [
           "priority:medium",
           "cat:documentation",
-          "cat:harness"
+          "cat:harness",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6177,7 +6434,9 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:harness"
+          "cat:harness",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6217,7 +6476,9 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:harness"
+          "cat:harness",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6254,7 +6515,9 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:harness"
+          "cat:harness",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6291,7 +6554,9 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:documentation"
+          "cat:documentation",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6328,7 +6593,9 @@
       "hover": {
         "labels": [
           "priority:low",
-          "cat:harness"
+          "cat:harness",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6365,7 +6632,9 @@
       "hover": {
         "labels": [
           "cat:infrastructure",
-          "maintenance"
+          "machine:dev-primary",
+          "maintenance",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6402,7 +6671,9 @@
       "hover": {
         "labels": [
           "enhancement",
-          "tech-debt"
+          "machine:dev-primary",
+          "tech-debt",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6441,7 +6712,9 @@
           "enhancement",
           "priority:medium",
           "cat:harness",
-          "domain:knowledge-management"
+          "domain:knowledge-management",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6479,7 +6752,9 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:harness"
+          "cat:harness",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6517,7 +6792,9 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:documentation"
+          "cat:documentation",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6556,7 +6833,9 @@
           "bug",
           "priority:medium",
           "cat:ci",
-          "status:pending"
+          "status:pending",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6595,7 +6874,8 @@
           "priority:high",
           "cat:engineering",
           "domain:marine",
-          "machine:dev-primary"
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6637,7 +6917,8 @@
           "priority:high",
           "cat:engineering",
           "domain:marine",
-          "machine:dev-primary"
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6677,7 +6958,8 @@
           "priority:high",
           "cat:engineering",
           "domain:marine",
-          "machine:dev-primary"
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6717,7 +6999,9 @@
           "priority:medium",
           "cat:data-pipeline",
           "cat:documentation",
-          "domain:knowledge-management"
+          "domain:knowledge-management",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6756,7 +7040,8 @@
           "priority:high",
           "cat:engineering",
           "domain:marine",
-          "machine:dev-primary"
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6796,7 +7081,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:infrastructure"
+          "cat:infrastructure",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6832,7 +7119,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:infrastructure"
+          "cat:infrastructure",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6870,7 +7159,9 @@
         "labels": [
           "priority:low",
           "cat:harness",
-          "domain:workflow"
+          "domain:workflow",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6907,7 +7198,9 @@
         "labels": [
           "priority:medium",
           "cat:harness",
-          "domain:workflow"
+          "domain:workflow",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6949,7 +7242,9 @@
           "priority:medium",
           "cat:skills",
           "domain:frontend-design",
-          "claude:design"
+          "machine:dev-primary",
+          "claude:design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6989,7 +7284,9 @@
           "priority:medium",
           "cat:skills",
           "domain:frontend-design",
-          "claude:design"
+          "machine:dev-primary",
+          "claude:design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7029,7 +7326,9 @@
           "priority:medium",
           "cat:skills",
           "domain:frontend-design",
-          "claude:design"
+          "machine:dev-primary",
+          "claude:design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7069,7 +7368,9 @@
           "priority:medium",
           "cat:skills",
           "domain:frontend-design",
-          "claude:design"
+          "machine:dev-primary",
+          "claude:design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7109,7 +7410,9 @@
           "priority:medium",
           "cat:skills",
           "domain:frontend-design",
-          "claude:design"
+          "machine:dev-primary",
+          "claude:design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7149,7 +7452,9 @@
           "priority:medium",
           "cat:skills",
           "domain:frontend-design",
-          "claude:design"
+          "machine:dev-primary",
+          "claude:design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7187,7 +7492,9 @@
         "labels": [
           "priority:high",
           "priority:critical",
-          "compliance-alert"
+          "machine:dev-primary",
+          "compliance-alert",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7227,7 +7534,9 @@
           "priority:medium",
           "cat:skills",
           "domain:frontend-design",
-          "claude:design"
+          "machine:dev-primary",
+          "claude:design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7267,7 +7576,9 @@
           "priority:medium",
           "cat:skills",
           "domain:frontend-design",
-          "claude:design"
+          "machine:dev-primary",
+          "claude:design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7307,7 +7618,9 @@
           "priority:medium",
           "cat:skills",
           "domain:frontend-design",
-          "claude:design"
+          "machine:dev-primary",
+          "claude:design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7345,7 +7658,9 @@
         "labels": [
           "bug",
           "priority:medium",
-          "cat:harness"
+          "cat:harness",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7385,7 +7700,9 @@
           "priority:medium",
           "cat:skills",
           "domain:frontend-design",
-          "claude:design"
+          "machine:dev-primary",
+          "claude:design",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7424,7 +7741,9 @@
           "enhancement",
           "priority:medium",
           "cat:ai-orchestration",
-          "cat:harness"
+          "cat:harness",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7462,7 +7781,9 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:infrastructure"
+          "cat:infrastructure",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7501,7 +7822,9 @@
           "enhancement",
           "priority:medium",
           "cat:harness",
-          "domain:release-management"
+          "domain:release-management",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7538,7 +7861,9 @@
         "labels": [
           "bug",
           "priority:medium",
-          "cat:ai-orchestration"
+          "cat:ai-orchestration",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7577,7 +7902,9 @@
         "labels": [
           "bug",
           "priority:medium",
-          "cat:ai-orchestration"
+          "cat:ai-orchestration",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7619,7 +7946,9 @@
           "priority:medium",
           "cat:harness",
           "cat:automation",
-          "domain:skills"
+          "domain:skills",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7657,7 +7986,9 @@
         "labels": [
           "bug",
           "priority:medium",
-          "cat:harness"
+          "cat:harness",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7695,7 +8026,9 @@
         "labels": [
           "bug",
           "priority:medium",
-          "cat:harness"
+          "cat:harness",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7733,7 +8066,9 @@
         "labels": [
           "bug",
           "priority:medium",
-          "cat:harness"
+          "cat:harness",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7773,7 +8108,9 @@
           "priority:medium",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:release-management"
+          "domain:release-management",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7812,7 +8149,9 @@
           "enhancement",
           "priority:medium",
           "cat:harness",
-          "domain:release-management"
+          "domain:release-management",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7850,7 +8189,9 @@
           "enhancement",
           "priority:high",
           "cat:harness",
-          "domain:release-management"
+          "domain:release-management",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7891,7 +8232,9 @@
           "enhancement",
           "priority:medium",
           "cat:harness",
-          "domain:document-intelligence"
+          "domain:document-intelligence",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7933,8 +8276,10 @@
           "cat:data-pipeline",
           "domain:document-intelligence",
           "status:blocked",
+          "machine:dev-primary",
           "agent:codex",
-          "status:plan-approved"
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7979,8 +8324,10 @@
           "cat:research",
           "domain:document-intelligence",
           "status:working",
+          "machine:dev-primary",
           "agent:codex",
-          "status:plan-approved"
+          "status:plan-approved",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -8025,7 +8372,9 @@
           "priority:medium",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:document-intelligence"
+          "domain:document-intelligence",
+          "machine:dev-primary",
+          "dispatch:ready"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -8051,7 +8400,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-05-25T17:20:10Z",
+  "generated_at": "2026-05-25T21:20:10Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8752,7 +9101,9 @@
             "cat:harness",
             "domain:knowledge",
             "domain:repo-organization",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8790,7 +9141,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "documentation"
+            "documentation",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8826,7 +9179,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "documentation"
+            "documentation",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8867,7 +9222,8 @@
             "domain:workstations",
             "domain:repo-organization",
             "status:blocked",
-            "machine:licensed-win-2"
+            "machine:licensed-win-2",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8910,7 +9266,8 @@
             "domain:workstations",
             "domain:repo-organization",
             "status:blocked",
-            "machine:licensed-win-1"
+            "machine:licensed-win-1",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8951,7 +9308,9 @@
             "enhancement",
             "priority:medium",
             "cat:engineering",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8994,7 +9353,9 @@
             "cat:ai-orchestration",
             "cat:operations",
             "cat:harness",
-            "status:needs-plan"
+            "machine:dev-primary",
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9036,7 +9397,9 @@
             "priority:high",
             "cat:operations",
             "cat:harness",
-            "status:needs-plan"
+            "machine:dev-primary",
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9079,7 +9442,9 @@
             "cat:ai-orchestration",
             "cat:operations",
             "cat:harness",
-            "status:needs-plan"
+            "machine:dev-primary",
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9122,7 +9487,9 @@
             "cat:ai-orchestration",
             "cat:operations",
             "cat:harness",
-            "status:needs-plan"
+            "machine:dev-primary",
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9160,7 +9527,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "machine:dev-primary",
+            "dispatch:ready"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -9201,7 +9571,9 @@
             "domain:hydrodynamics",
             "domain:visualization",
             "domain:naval-architecture",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9244,7 +9616,9 @@
             "priority:medium",
             "cat:developer-experience",
             "domain:agent-ux",
-            "domain:repo-organization"
+            "domain:repo-organization",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9291,7 +9665,8 @@
             "domain:workstations",
             "domain:agent-cost-tracking",
             "machine:licensed-win-2",
-            "status:needs-plan"
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9334,7 +9709,8 @@
             "domain:workstations",
             "domain:agent-cost-tracking",
             "machine:licensed-win-1",
-            "status:needs-plan"
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9381,7 +9757,8 @@
             "domain:agent-cost-tracking",
             "status:working",
             "machine:ace-linux-2",
-            "status:plan-approved"
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9429,7 +9806,8 @@
             "domain:workstations",
             "domain:agent-cost-tracking",
             "machine:ace-linux-1",
-            "status:plan-approved"
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9471,7 +9849,9 @@
           "labels": [
             "cat:operations",
             "domain:machine-setup",
-            "domain:cross-platform"
+            "domain:cross-platform",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9512,7 +9892,9 @@
             "cat:harness",
             "domain:machine-setup",
             "domain:cross-platform",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9554,7 +9936,9 @@
           "labels": [
             "priority:medium",
             "cat:harness",
-            "domain:cleanup"
+            "domain:cleanup",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9593,7 +9977,9 @@
             "priority:high",
             "priority:medium",
             "priority:critical",
-            "compliance-alert"
+            "machine:dev-primary",
+            "compliance-alert",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9634,7 +10020,9 @@
             "cat:data-pipeline",
             "cat:document-intelligence",
             "domain:knowledge",
-            "domain:repo-organization"
+            "domain:repo-organization",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9676,7 +10064,9 @@
             "cat:operations",
             "domain:machine-setup",
             "domain:cross-platform",
-            "status:needs-plan"
+            "machine:dev-primary",
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9718,7 +10108,9 @@
             "cat:harness",
             "domain:testing",
             "domain:notification",
-            "status:needs-plan"
+            "machine:dev-primary",
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9763,7 +10155,8 @@
             "domain:machine-setup",
             "machine:ace-linux-2",
             "agent:claude",
-            "status:plan-approved"
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9810,7 +10203,8 @@
             "domain:notification",
             "machine:ace-linux-1",
             "agent:claude",
-            "status:plan-approved"
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9854,7 +10248,9 @@
             "cat:operations",
             "domain:workstations",
             "domain:notification",
-            "status:needs-plan"
+            "machine:dev-primary",
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9895,7 +10291,9 @@
             "priority:medium",
             "cat:engineering-methodology",
             "domain:knowledge-management",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9939,7 +10337,9 @@
             "priority:medium",
             "cat:engineering-methodology",
             "domain:knowledge-management",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9983,10 +10383,12 @@
             "priority:high",
             "cat:ai-orchestration",
             "domain:knowledge-management",
+            "machine:dev-primary",
             "agent:gemini",
             "agent:claude",
             "agent:codex",
-            "status:plan-approved"
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10029,7 +10431,9 @@
             "priority:high",
             "cat:data-pipeline",
             "domain:knowledge",
-            "domain:repo-organization"
+            "domain:repo-organization",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10069,7 +10473,9 @@
             "cat:data-pipeline",
             "cat:document-intelligence",
             "domain:knowledge",
-            "status:needs-plan"
+            "machine:dev-primary",
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10112,7 +10518,9 @@
             "priority:medium",
             "cat:ai-orchestration",
             "domain:ai-config",
-            "domain:tooling"
+            "domain:tooling",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10150,7 +10558,9 @@
           "labels": [
             "priority:low",
             "cat:harness",
-            "domain:workflow"
+            "domain:workflow",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10189,7 +10599,9 @@
             "priority:high",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:agent-cost-tracking"
+            "domain:agent-cost-tracking",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10228,7 +10640,9 @@
             "priority:high",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:agent-cost-tracking"
+            "domain:agent-cost-tracking",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10269,7 +10683,8 @@
             "cat:engineering",
             "domain:marine",
             "machine:licensed-win-1",
-            "machine:licensed-win-2"
+            "machine:licensed-win-2",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10307,7 +10722,9 @@
           "labels": [
             "bug",
             "priority:medium",
-            "cat:infrastructure"
+            "cat:infrastructure",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10346,7 +10763,9 @@
             "bug",
             "priority:high",
             "cat:ai-orchestration",
-            "cat:infrastructure"
+            "cat:infrastructure",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10383,7 +10802,9 @@
         "hover": {
           "labels": [
             "cat:knowledge-domain",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10421,7 +10842,9 @@
           "labels": [
             "priority:medium",
             "cat:harness",
-            "domain:ai-orchestration"
+            "domain:ai-orchestration",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10461,7 +10884,9 @@
             "priority:medium",
             "cat:engineering",
             "domain:marine",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10506,7 +10931,9 @@
             "cat:ai-orchestration",
             "cat:harness",
             "domain:work-queue",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10551,7 +10978,8 @@
             "priority:high",
             "cat:engineering",
             "domain:marine",
-            "machine:licensed-win-1"
+            "machine:licensed-win-1",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10593,7 +11021,9 @@
         "hover": {
           "labels": [
             "enhancement",
-            "priority:medium"
+            "priority:medium",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10632,7 +11062,9 @@
             "enhancement",
             "priority:medium",
             "cat:engineering",
-            "cat:harness"
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10671,7 +11103,9 @@
             "priority:medium",
             "cat:ai-orchestration",
             "cat:harness",
-            "cat:maintenance"
+            "cat:maintenance",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10709,7 +11143,9 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:ai-orchestration"
+            "cat:ai-orchestration",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10747,7 +11183,9 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:ai-orchestration"
+            "cat:ai-orchestration",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10785,7 +11223,9 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:ai-orchestration"
+            "cat:ai-orchestration",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10864,7 +11304,9 @@
             "priority:medium",
             "cat:ai-orchestration",
             "cat:harness",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10908,7 +11350,9 @@
             "priority:high",
             "cat:engineering",
             "cat:bugfix",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10949,7 +11393,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10987,7 +11433,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11025,7 +11473,9 @@
           "labels": [
             "priority:low",
             "cat:marketing",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11063,7 +11513,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11101,7 +11553,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11139,7 +11593,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11178,7 +11634,9 @@
             "enhancement",
             "priority:medium",
             "cat:engineering",
-            "cat:knowledge-domain"
+            "cat:knowledge-domain",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11219,7 +11677,9 @@
             "priority:high",
             "cat:engineering",
             "cat:bugfix",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11261,7 +11721,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11299,7 +11761,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11337,7 +11801,9 @@
           "labels": [
             "priority:low",
             "cat:marketing",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11375,7 +11841,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11413,7 +11881,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11451,7 +11921,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11490,7 +11962,9 @@
             "enhancement",
             "priority:medium",
             "cat:engineering",
-            "cat:knowledge-domain"
+            "cat:knowledge-domain",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11528,7 +12002,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11566,7 +12042,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11604,7 +12082,9 @@
           "labels": [
             "priority:low",
             "cat:marketing",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11642,7 +12122,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11680,7 +12162,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11718,7 +12202,9 @@
           "labels": [
             "priority:medium",
             "cat:engineering",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11757,7 +12243,9 @@
             "enhancement",
             "priority:medium",
             "cat:engineering",
-            "cat:knowledge-domain"
+            "cat:knowledge-domain",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11796,7 +12284,9 @@
             "enhancement",
             "priority:medium",
             "cat:knowledge-domain",
-            "cat:research"
+            "cat:research",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11833,7 +12323,9 @@
         "hover": {
           "labels": [
             "domain:repo-cleanup",
-            "status:needs-plan"
+            "machine:dev-primary",
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11875,7 +12367,9 @@
             "cat:ai-orchestration",
             "cat:harness",
             "domain:agent-cost-tracking",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11917,7 +12411,9 @@
             "enhancement",
             "priority:medium",
             "cat:harness",
-            "domain:workflow"
+            "domain:workflow",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11994,7 +12490,9 @@
         "hover": {
           "labels": [
             "domain:repo-cleanup",
-            "status:needs-plan"
+            "machine:dev-primary",
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12033,7 +12531,9 @@
             "priority:high",
             "priority:medium",
             "priority:critical",
-            "compliance-alert"
+            "machine:dev-primary",
+            "compliance-alert",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12073,7 +12573,9 @@
             "cat:data",
             "domain:standards-tooling",
             "domain:quality",
-            "llm-wiki"
+            "machine:dev-primary",
+            "llm-wiki",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12114,7 +12616,9 @@
             "priority:high",
             "cat:documentation",
             "cat:harness",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12159,7 +12663,9 @@
             "cat:engineering",
             "cat:harness",
             "domain:repo-organization",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12198,7 +12704,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "repo-readiness"
+            "machine:dev-primary",
+            "repo-readiness",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12233,7 +12741,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "machine:dev-primary",
+            "dispatch:ready"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -12268,7 +12779,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "priority:medium"
+            "priority:medium",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12304,7 +12817,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "priority:high"
+            "priority:high",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12345,7 +12860,8 @@
             "cat:operations",
             "domain:workstations",
             "machine:dev-secondary",
-            "agent:claude"
+            "agent:claude",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12384,7 +12900,8 @@
             "priority:high",
             "cat:engineering",
             "domain:marine",
-            "machine:multi"
+            "machine:multi",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12425,7 +12942,9 @@
             "enhancement",
             "priority:high",
             "cat:engineering",
-            "domain:gtm"
+            "domain:gtm",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12463,7 +12982,9 @@
           "labels": [
             "priority:high",
             "priority:critical",
-            "compliance-alert"
+            "machine:dev-primary",
+            "compliance-alert",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12504,7 +13025,9 @@
             "cat:engineering",
             "cat:harness",
             "domain:testing",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12546,7 +13069,9 @@
             "priority:medium",
             "cat:documentation",
             "domain:security",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12591,7 +13116,9 @@
             "priority:medium",
             "cat:engineering",
             "domain:marine",
-            "domain:mooring"
+            "domain:mooring",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12630,7 +13157,9 @@
             "enhancement",
             "priority:medium",
             "cat:engineering",
-            "domain:testing"
+            "domain:testing",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12669,7 +13198,9 @@
             "enhancement",
             "priority:medium",
             "cat:engineering",
-            "domain:testing"
+            "domain:testing",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12706,8 +13237,10 @@
         "hover": {
           "labels": [
             "domain:testing",
+            "machine:dev-primary",
             "tracker",
-            "domain:digitalmodel"
+            "domain:digitalmodel",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12744,9 +13277,11 @@
         "hover": {
           "labels": [
             "domain:testing",
+            "machine:dev-primary",
             "tracker",
             "domain:digitalmodel",
-            "status:needs-plan"
+            "status:needs-plan",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12781,7 +13316,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "machine:dev-primary",
+            "dispatch:ready"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -12823,7 +13361,9 @@
             "cat:operations",
             "domain:integrations",
             "domain:notification",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12867,7 +13407,9 @@
             "priority:high",
             "cat:engineering",
             "cat:data-pipeline",
-            "status:needs-data"
+            "machine:dev-primary",
+            "status:needs-data",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12905,7 +13447,9 @@
             "priority:high",
             "cat:ai-orchestration",
             "cat:business",
-            "domain:gtm"
+            "domain:gtm",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12946,7 +13490,9 @@
             "documentation",
             "priority:medium",
             "cat:documentation",
-            "domain:repo-organization"
+            "domain:repo-organization",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12986,7 +13532,9 @@
             "priority:medium",
             "cat:documentation",
             "domain:security",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13032,7 +13580,9 @@
             "cat:operations",
             "domain:security",
             "domain:repo-health",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13075,7 +13625,9 @@
             "cat:operations",
             "domain:automation",
             "domain:security",
-            "agent:codex"
+            "machine:dev-primary",
+            "agent:codex",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13116,7 +13668,9 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:documentation"
+            "cat:documentation",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13154,7 +13708,9 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:documentation"
+            "cat:documentation",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13192,7 +13748,9 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:documentation"
+            "cat:documentation",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13230,7 +13788,9 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:documentation"
+            "cat:documentation",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13269,7 +13829,9 @@
             "enhancement",
             "priority:medium",
             "cat:data-pipeline",
-            "domain:gis"
+            "domain:gis",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13307,7 +13869,9 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:documentation"
+            "cat:documentation",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13345,7 +13909,9 @@
           "labels": [
             "priority:medium",
             "cat:operations",
-            "cat:data"
+            "cat:data",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13386,7 +13952,9 @@
             "priority:high",
             "cat:documentation",
             "domain:repo-organization",
-            "status:plan-approved"
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13428,7 +13996,9 @@
           "labels": [
             "priority:medium",
             "cat:infrastructure",
-            "maintenance"
+            "machine:dev-primary",
+            "maintenance",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13466,7 +14036,9 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:infrastructure"
+            "cat:infrastructure",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13508,7 +14080,9 @@
             "cat:harness",
             "domain:ai-orchestration",
             "domain:workstations",
-            "domain:agent-cost-tracking"
+            "domain:agent-cost-tracking",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13550,7 +14124,9 @@
             "cat:harness",
             "domain:ai-orchestration",
             "domain:workstations",
-            "domain:agent-cost-tracking"
+            "domain:agent-cost-tracking",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13592,7 +14168,9 @@
             "priority:critical",
             "domain:ai-orchestration",
             "domain:workstations",
-            "domain:agent-cost-tracking"
+            "domain:agent-cost-tracking",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13633,7 +14211,9 @@
             "priority:critical",
             "domain:ai-orchestration",
             "domain:workstations",
-            "domain:agent-cost-tracking"
+            "domain:agent-cost-tracking",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13674,7 +14254,9 @@
             "priority:high",
             "priority:medium",
             "priority:critical",
-            "compliance-alert"
+            "machine:dev-primary",
+            "compliance-alert",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13714,7 +14296,9 @@
             "priority:medium",
             "cat:engineering",
             "domain:pipeline",
-            "domain:marine"
+            "domain:marine",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13754,7 +14338,9 @@
             "priority:medium",
             "cat:engineering",
             "cat:research",
-            "domain:marine"
+            "domain:marine",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13793,8 +14379,10 @@
             "priority:medium",
             "cat:documentation",
             "cat:career",
+            "machine:dev-primary",
             "domain:semiconductor",
-            "domain:chip-design"
+            "domain:chip-design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13834,9 +14422,11 @@
             "priority:medium",
             "cat:engineering",
             "cat:tooling",
+            "machine:dev-primary",
             "status:plan-approved",
             "domain:semiconductor",
-            "domain:chip-design"
+            "domain:chip-design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13879,8 +14469,10 @@
             "cat:engineering",
             "cat:tooling",
             "cat:research",
+            "machine:dev-primary",
             "domain:semiconductor",
-            "domain:chip-design"
+            "domain:chip-design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13923,8 +14515,10 @@
             "cat:engineering",
             "cat:research",
             "cat:career",
+            "machine:dev-primary",
             "domain:semiconductor",
-            "domain:chip-design"
+            "domain:chip-design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13966,7 +14560,9 @@
             "priority:medium",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:workflow"
+            "domain:workflow",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14009,7 +14605,9 @@
             "priority:medium",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:workflow"
+            "domain:workflow",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14049,7 +14647,9 @@
             "priority:medium",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:workflow"
+            "domain:workflow",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14088,7 +14688,9 @@
             "priority:medium",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:workflow"
+            "domain:workflow",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14131,7 +14733,9 @@
             "priority:medium",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:workflow"
+            "domain:workflow",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14173,7 +14777,9 @@
           "labels": [
             "priority:medium",
             "cat:documentation",
-            "cat:harness"
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14209,7 +14815,9 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:harness"
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14249,7 +14857,9 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:harness"
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14286,7 +14896,9 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:harness"
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14323,7 +14935,9 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:documentation"
+            "cat:documentation",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14360,7 +14974,9 @@
         "hover": {
           "labels": [
             "priority:low",
-            "cat:harness"
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14397,7 +15013,9 @@
         "hover": {
           "labels": [
             "cat:infrastructure",
-            "maintenance"
+            "machine:dev-primary",
+            "maintenance",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14434,7 +15052,9 @@
         "hover": {
           "labels": [
             "enhancement",
-            "tech-debt"
+            "machine:dev-primary",
+            "tech-debt",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14473,7 +15093,9 @@
             "enhancement",
             "priority:medium",
             "cat:harness",
-            "domain:knowledge-management"
+            "domain:knowledge-management",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14511,7 +15133,9 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:harness"
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14549,7 +15173,9 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:documentation"
+            "cat:documentation",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14588,7 +15214,9 @@
             "bug",
             "priority:medium",
             "cat:ci",
-            "status:pending"
+            "status:pending",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14627,7 +15255,8 @@
             "priority:high",
             "cat:engineering",
             "domain:marine",
-            "machine:dev-primary"
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14669,7 +15298,8 @@
             "priority:high",
             "cat:engineering",
             "domain:marine",
-            "machine:dev-primary"
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14709,7 +15339,8 @@
             "priority:high",
             "cat:engineering",
             "domain:marine",
-            "machine:dev-primary"
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14749,7 +15380,9 @@
             "priority:medium",
             "cat:data-pipeline",
             "cat:documentation",
-            "domain:knowledge-management"
+            "domain:knowledge-management",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14788,7 +15421,8 @@
             "priority:high",
             "cat:engineering",
             "domain:marine",
-            "machine:dev-primary"
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14828,7 +15462,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:infrastructure"
+            "cat:infrastructure",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14864,7 +15500,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:infrastructure"
+            "cat:infrastructure",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14902,7 +15540,9 @@
           "labels": [
             "priority:low",
             "cat:harness",
-            "domain:workflow"
+            "domain:workflow",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14939,7 +15579,9 @@
           "labels": [
             "priority:medium",
             "cat:harness",
-            "domain:workflow"
+            "domain:workflow",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14981,7 +15623,9 @@
             "priority:medium",
             "cat:skills",
             "domain:frontend-design",
-            "claude:design"
+            "machine:dev-primary",
+            "claude:design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15021,7 +15665,9 @@
             "priority:medium",
             "cat:skills",
             "domain:frontend-design",
-            "claude:design"
+            "machine:dev-primary",
+            "claude:design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15061,7 +15707,9 @@
             "priority:medium",
             "cat:skills",
             "domain:frontend-design",
-            "claude:design"
+            "machine:dev-primary",
+            "claude:design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15101,7 +15749,9 @@
             "priority:medium",
             "cat:skills",
             "domain:frontend-design",
-            "claude:design"
+            "machine:dev-primary",
+            "claude:design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15141,7 +15791,9 @@
             "priority:medium",
             "cat:skills",
             "domain:frontend-design",
-            "claude:design"
+            "machine:dev-primary",
+            "claude:design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15181,7 +15833,9 @@
             "priority:medium",
             "cat:skills",
             "domain:frontend-design",
-            "claude:design"
+            "machine:dev-primary",
+            "claude:design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15219,7 +15873,9 @@
           "labels": [
             "priority:high",
             "priority:critical",
-            "compliance-alert"
+            "machine:dev-primary",
+            "compliance-alert",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15259,7 +15915,9 @@
             "priority:medium",
             "cat:skills",
             "domain:frontend-design",
-            "claude:design"
+            "machine:dev-primary",
+            "claude:design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15299,7 +15957,9 @@
             "priority:medium",
             "cat:skills",
             "domain:frontend-design",
-            "claude:design"
+            "machine:dev-primary",
+            "claude:design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15339,7 +15999,9 @@
             "priority:medium",
             "cat:skills",
             "domain:frontend-design",
-            "claude:design"
+            "machine:dev-primary",
+            "claude:design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15377,7 +16039,9 @@
           "labels": [
             "bug",
             "priority:medium",
-            "cat:harness"
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15417,7 +16081,9 @@
             "priority:medium",
             "cat:skills",
             "domain:frontend-design",
-            "claude:design"
+            "machine:dev-primary",
+            "claude:design",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15456,7 +16122,9 @@
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "cat:harness"
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15494,7 +16162,9 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:infrastructure"
+            "cat:infrastructure",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15533,7 +16203,9 @@
             "enhancement",
             "priority:medium",
             "cat:harness",
-            "domain:release-management"
+            "domain:release-management",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15570,7 +16242,9 @@
           "labels": [
             "bug",
             "priority:medium",
-            "cat:ai-orchestration"
+            "cat:ai-orchestration",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15609,7 +16283,9 @@
           "labels": [
             "bug",
             "priority:medium",
-            "cat:ai-orchestration"
+            "cat:ai-orchestration",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15651,7 +16327,9 @@
             "priority:medium",
             "cat:harness",
             "cat:automation",
-            "domain:skills"
+            "domain:skills",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15689,7 +16367,9 @@
           "labels": [
             "bug",
             "priority:medium",
-            "cat:harness"
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15727,7 +16407,9 @@
           "labels": [
             "bug",
             "priority:medium",
-            "cat:harness"
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15765,7 +16447,9 @@
           "labels": [
             "bug",
             "priority:medium",
-            "cat:harness"
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15805,7 +16489,9 @@
             "priority:medium",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:release-management"
+            "domain:release-management",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15844,7 +16530,9 @@
             "enhancement",
             "priority:medium",
             "cat:harness",
-            "domain:release-management"
+            "domain:release-management",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15882,7 +16570,9 @@
             "enhancement",
             "priority:high",
             "cat:harness",
-            "domain:release-management"
+            "domain:release-management",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15923,7 +16613,9 @@
             "enhancement",
             "priority:medium",
             "cat:harness",
-            "domain:document-intelligence"
+            "domain:document-intelligence",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15965,8 +16657,10 @@
             "cat:data-pipeline",
             "domain:document-intelligence",
             "status:blocked",
+            "machine:dev-primary",
             "agent:codex",
-            "status:plan-approved"
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -16011,8 +16705,10 @@
             "cat:research",
             "domain:document-intelligence",
             "status:working",
+            "machine:dev-primary",
             "agent:codex",
-            "status:plan-approved"
+            "status:plan-approved",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -16057,7 +16753,9 @@
             "priority:medium",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:document-intelligence"
+            "domain:document-intelligence",
+            "machine:dev-primary",
+            "dispatch:ready"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -16091,9 +16789,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-25T17:20:06.856308Z",
+  "scorecard_generated_at": "2026-05-25T21:20:07.420453Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-25T17:20:06.730718Z",
+  "utilization_generated_at": "2026-05-25T21:20:07.302090Z",
   "warning_summary": {
     "approved_no_marker": 13,
     "approved_no_plan": 5,

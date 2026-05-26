@@ -130,20 +130,37 @@ def propose(args) -> list[dict]:
             "has_machine_label": bool(existing_machine),
             "provider": provider,
             "provider_explicit": provider_explicit,
+            "priority": card.get("priority", 0),  # higher = more urgent (SCHEMA)
             "routed_by": routed_by,
             "reason": rule.get("reason", ""),
             "url": card.get("source_url"),
         })
+    # WIP slots must go to the MOST URGENT cards, not whichever were globbed first.
+    proposals.sort(key=lambda p: (-int(p.get("priority") or 0), p["repo"], _num(p["number"])))
     return apply_wip(proposals, cfg)
 
 
+def _num(s):
+    """Numeric issue number for stable sort; non-numeric sorts last."""
+    try:
+        return (0, int(s))
+    except (TypeError, ValueError):
+        return (1, 0)
+
+
 def apply_wip(proposals: list[dict], cfg: dict) -> list[dict]:
-    """Mark cards beyond a WIP cap as queued (dispatch stays ready, not active)."""
+    """Mark cards beyond a WIP cap as queued. Fail-CLOSED: machines/providers
+    with no explicit cap fall back to a default cap (never unbounded — that is
+    the runaway-worker failure mode this guards). Providers with
+    auto_routable=false are never auto-eligible (manual ai: only).
+    Proposals are expected pre-sorted by priority so winners are the urgent N."""
     caps = cfg.get("wip_caps", {})
     per_machine = caps.get("per_machine", {})
     per_provider = caps.get("per_provider", {})
+    m_default = per_machine.get("default", 1)        # fail-closed default
+    p_default = per_provider.get("default", 999)     # provider default (machine is the real gate)
+    providers = cfg.get("providers", {})
     pools = cfg.get("budget_pools", {})
-    # map provider -> pool
     prov_pool = {}
     for pool, meta in pools.items():
         for member in meta.get("members", []):
@@ -153,17 +170,19 @@ def apply_wip(proposals: list[dict], cfg: dict) -> list[dict]:
     m_count = defaultdict(int)
     p_count = defaultdict(int)
     pool_count = defaultdict(int)
-    # priority: rule-routed engineering first is out of scope here; keep input order
     for p in proposals:
         m, prov = p["machine"], p["provider"]
         over = False
-        if m in per_machine and m_count[m] >= per_machine[m]:
+        # provider must be auto-routable (gemini etc. are manual-only)
+        if providers.get(prov, {}).get("auto_routable", True) is False:
+            over = True
+        mcap = per_machine.get(m, m_default)         # default applies to home-win/macbook/multi/etc.
+        if m_count[m] >= mcap:
             over = True
         if prov in prov_pool:
-            pool = prov_pool[prov]
-            if pool_count[pool] >= pool_cap.get(pool, 999):
+            if pool_count[prov_pool[prov]] >= pool_cap.get(prov_pool[prov], 999):
                 over = True
-        elif prov in per_provider and p_count[prov] >= per_provider[prov]:
+        elif p_count[prov] >= per_provider.get(prov, p_default):
             over = True
         p["slot"] = "queued" if over else "active-eligible"
         if not over:
@@ -273,15 +292,19 @@ def fetch_open_issues(repo: str):
     Replaces per-issue lookups (which exhausted the 5000-pt GraphQL budget on
     big repos). Returns None on API failure (e.g. rate limit) so the caller can
     abort cleanly instead of miscounting failures as drift."""
+    LIMIT = 100000  # effectively unbounded; truncation here silently drops issues
     out = gh(["issue", "list", "--repo", repo, "--state", "open",
-              "--limit", "2000", "--json", "number,labels"])
+              "--limit", str(LIMIT), "--json", "number,labels"])
     if out.returncode != 0:
         return None
     try:
-        return {str(it["number"]): {l["name"] for l in it["labels"]}
-                for it in json.loads(out.stdout)}
+        items = json.loads(out.stdout)
     except Exception:
         return None
+    if len(items) >= LIMIT:
+        # would silently truncate -> false drift-skips that never self-heal; abort
+        return None
+    return {str(it["number"]): {l["name"] for l in it["labels"]} for it in items}
 
 
 def repo_has_domain_authority(repo: str) -> bool:
@@ -299,7 +322,11 @@ def labels_for(p: dict, existing: set[str], skip_domain: bool = False) -> list[s
     - domain: only if issue has none AND repo lacks its own authoritative taxonomy
     - machine: only if none set (respect manual assignment)
     - ai: only when a rule/human chose a non-default provider"""
-    out = ["dispatch:ready"]
+    out = []
+    # dispatch:ready only if the issue has NO dispatch: state yet — re-adding it
+    # would bounce a consumer-advanced (active/done) issue back to ready (P1).
+    if not any(n.startswith("dispatch:") for n in existing):
+        out.append("dispatch:ready")
     has_domain = any(n.startswith("domain:") for n in existing)
     if p["domain"] and not has_domain and not skip_domain:
         out.append(f"domain:{p['domain']}")
