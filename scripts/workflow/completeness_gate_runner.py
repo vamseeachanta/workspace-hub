@@ -23,7 +23,8 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from completeness_gate_check import (  # noqa: E402
-    OPT_IN_LABEL, PLAN_APPROVED_LABEL, VERIFIED_LABEL, evaluate_close, gate_applies,
+    OPT_IN_LABEL, PLAN_APPROVED_LABEL, VERIFIED_LABEL,
+    body_is_fresh, evaluate_close, gate_applies,
 )
 
 _RECORD_RE = re.compile(r"```completeness\s*(\{.*?\})\s*```", re.DOTALL)
@@ -87,8 +88,14 @@ def main() -> int:
 
     record = _parse_record(data.get("body", ""))
     label_actor, label_at = _verified_label_event(repo, issue)
-    body_edited_at = _parse_iso(data.get("updatedAt"))
-    body_verified_fresh = bool(label_at and body_edited_at and label_at >= body_edited_at)
+    # Freshness anchors on the BODY edit time (lastEditedAt), NOT updatedAt — the close
+    # itself bumps updatedAt past the label and would falsely fail freshness (fix #5).
+    owner, name = repo.split("/", 1)
+    ts = _gh_json("api", "graphql", "-f", f'query={{repository(owner:"{owner}",name:"{name}")'
+                  f'{{issue(number:{issue}){{lastEditedAt createdAt}}}}}}') or {}
+    issue_ts = (((ts.get("data") or {}).get("repository") or {}).get("issue")) or {}
+    body_verified_fresh = body_is_fresh(
+        label_at, _parse_iso(issue_ts.get("lastEditedAt")), _parse_iso(issue_ts.get("createdAt")))
 
     require_separate = os.environ.get("COMPLETENESS_REQUIRE_SEPARATE_CLOSER", "").lower() in ("1", "true", "yes")
     decision = evaluate_close(

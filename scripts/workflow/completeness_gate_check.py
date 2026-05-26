@@ -30,6 +30,19 @@ class GateDecision:
     reason: str
 
 
+def body_is_fresh(label_at, last_edited_at, created_at) -> bool:
+    """Whether the verified label post-dates the last BODY edit (anti-forgery).
+
+    Compare against the issue body's edit time (``last_edited_at``, falling back to
+    ``created_at`` when the body was never edited) — NOT the issue's ``updatedAt``,
+    which bumps on labels/comments/**the close itself** and would make a legitimate
+    close fail freshness (fix #5; the close always post-dates the verified label).
+    All args are datetimes or None.
+    """
+    edited = last_edited_at or created_at
+    return bool(label_at and edited and label_at >= edited)
+
+
 def gate_applies(labels: list[str], opt_in_label: str = OPT_IN_LABEL,
                  plan_approved_label: str = PLAN_APPROVED_LABEL) -> bool:
     """Whether the completeness gate enforces on this issue at all.
