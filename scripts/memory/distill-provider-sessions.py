@@ -45,10 +45,12 @@ Called by: scripts/memory/bridge-providers-to-dream.sh (cron, 04:00 daily)
 from __future__ import annotations
 
 import argparse
+import atexit
 import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -84,6 +86,7 @@ CLAUDE_MODEL = os.environ.get("DISTILL_MODEL", "haiku")
 CLAUDE_TIMEOUT = int(os.environ.get("DISTILL_TIMEOUT_SECONDS", "180"))
 # Neutral working dir for headless calls — no project CLAUDE.md to load.
 _NEUTRAL_CWD = tempfile.mkdtemp(prefix="distill-cwd-")
+atexit.register(shutil.rmtree, _NEUTRAL_CWD, ignore_errors=True)  # m1: no /tmp leak
 
 # --- Pre-filter / batching knobs ------------------------------------------------
 PER_SESSION_CHAR_CAP = int(os.environ.get("PER_SESSION_CHAR_CAP", "6000"))
@@ -97,12 +100,20 @@ _NOISE_RE = re.compile(r"(data:[^;]+;base64,|\b[A-Za-z0-9+/]{200,}={0,2})")
 
 # Roles whose content is conversation we want. System/developer/tool turns and
 # their boilerplate (sandbox/permissions/instructions blocks) are dropped.
-_HUMAN_ROLES = {"user", "assistant", "agent", "model", "human", "ai"}
-_SKIP_ROLES = {"system", "developer", "tool", "function", "tool_result"}
+# NOTE: providers tag turns differently — Hermes uses `role` (user/assistant/
+# tool), Gemini uses `type` (user/gemini). _harvest_text reads role-OR-type.
+_HUMAN_ROLES = {"user", "assistant", "agent", "model", "human", "ai", "gemini"}
+# Skip system/tool turns AND model chain-of-thought content-part types (N2:
+# Hermes/Codex assistant turns carry reasoning/summary_text parts = verbose
+# internal planning, not durable signal).
+_SKIP_ROLES = {"system", "developer", "tool", "function", "tool_result", "tool_call",
+               "reasoning", "summary_text", "thinking", "tool_use", "function_call",
+               "function_call_output", "functionresponse"}
 # System-prompt boilerplate fingerprints — drop any segment starting with these.
+# "you are \w+" catches "You are Hermes/Gemini/Claude/Codex/a ..." openers.
 _BOILERPLATE_RE = re.compile(
-    r"^\s*(<permissions|<user_instructions|<environment|<system|"
-    r"sandbox_mode|you are codex|you are a|# instructions\b|## instructions\b)",
+    r"^\s*(<permissions|<user_instructions|<environment|<system|<instructions|"
+    r"sandbox_mode|you are \w+|# agents\.md|# instructions\b|## instructions\b)",
     re.IGNORECASE,
 )
 
@@ -120,21 +131,29 @@ def _harvest_text(obj, out: list[str], depth: int = 0, role: str | None = None) 
         return
     if isinstance(obj, dict):
         # A role on this node governs its subtree (messages are role-tagged).
+        # Providers differ: Hermes tags with `role`, Gemini with `type`
+        # (user/gemini). Read whichever is present so the skip/human gates
+        # actually engage for both (B1: previously Gemini `type` was ignored,
+        # leaving role=None which made everything collectable).
         node_role = obj.get("role")
+        if not isinstance(node_role, str):
+            node_role = obj.get("type")
         if isinstance(node_role, str):
             role = node_role.lower()
         if role in _SKIP_ROLES:
             return  # drop system/developer/tool turns wholesale
         for k, v in obj.items():
-            if k == "role":
+            if k in ("role", "type"):
                 continue
             if isinstance(v, str):
                 seg = v.strip()
-                # Only collect text under known human/assistant roles, or when
-                # role is still unknown (many formats put the first user turn
-                # before any role tag). Never collect once role is a skip-role.
-                collectable = role in _HUMAN_ROLES or role is None
-                if (k in _TEXT_KEYS and seg and collectable
+                # Skip-roles already short-circuited above, so anything reaching
+                # here is user/assistant/unknown. Collect ONLY whitelisted text
+                # keys, and drop blob-noise + system-prompt boilerplate. (We do
+                # NOT gate on _HUMAN_ROLES here: nested content-parts get tagged
+                # type="text"/"output_text" etc., and gating would wrongly drop
+                # the actual message text — B1 follow-on.)
+                if (k in _TEXT_KEYS and seg
                         and not _NOISE_RE.search(seg)
                         and not _BOILERPLATE_RE.match(seg)):
                     out.append(seg)
@@ -175,9 +194,11 @@ def _filter_codex(path: Path) -> str:
                     parts.append(msg.strip())
     except OSError:
         return ""
-    # Fallback for older codex formats with no event_msg stream.
+    # No event_msg stream (unexpected for rollout-*.jsonl) — yield nothing
+    # rather than guessing; the lister only globs .jsonl so there is no .json
+    # path to fall back to anyway (m5: former fallback was dead code).
     if not found_event_msg:
-        return _filter_json_messages(path) if path.suffix == ".json" else ""
+        return ""
     return _join(parts)
 
 
@@ -187,16 +208,23 @@ def _filter_json_messages(path: Path) -> str:
         data = json.loads(path.read_text(errors="replace"))
     except (OSError, json.JSONDecodeError):
         return ""
+    # Only harvest the messages[] array. Do NOT fall back to the whole document
+    # (M2: that would expose top-level system_prompt / tool definitions — e.g.
+    # Hermes' 13 KB "You are Hermes Agent..." block).
+    if not isinstance(data, dict) or not isinstance(data.get("messages"), list):
+        return ""
     parts: list[str] = []
-    msgs = data.get("messages") if isinstance(data, dict) else None
-    _harvest_text(msgs if msgs is not None else data, parts)
+    _harvest_text(data["messages"], parts)
     return _join(parts)
 
 
 def _join(parts: list[str]) -> str:
+    # Dedup on the FULL segment (m3: a 120-char prefix collapsed distinct turns
+    # that share a common preamble, e.g. "The following content is untrusted
+    # review input...", dropping real content before the LLM saw it).
     seen, uniq = set(), []
     for p in parts:
-        key = p[:120]
+        key = hashlib.sha1(p.encode("utf-8", "replace")).digest()
         if key in seen:
             continue
         seen.add(key)
@@ -217,20 +245,36 @@ PROVIDERS = {
 # ==============================================================================
 
 def load_watermark() -> dict:
-    if WATERMARK_FILE.exists():
-        try:
-            return json.loads(WATERMARK_FILE.read_text())
-        except (OSError, json.JSONDecodeError):
-            pass
-    return {}
+    if not WATERMARK_FILE.exists():
+        return {}  # genuinely first run — start fresh
+    try:
+        return json.loads(WATERMARK_FILE.read_text())
+    except json.JSONDecodeError as e:
+        # M3: a corrupt (e.g. partially-written) watermark must NOT be treated as
+        # "never processed" — that would silently reprocess ALL history. Abort
+        # loudly so a human/cron-mail sees it; the file is preserved for repair.
+        sys.stderr.write(f"[distill] FATAL: watermark file corrupt ({e}); refusing to "
+                         f"reprocess all history. Inspect/repair {WATERMARK_FILE}\n")
+        sys.exit(2)
+    except OSError as e:
+        sys.stderr.write(f"[distill] FATAL: cannot read watermark: {e}\n")
+        sys.exit(2)
 
 
 def save_watermark(wm: dict) -> None:
-    WATERMARK_FILE.write_text(json.dumps(wm, indent=2))
+    # M3: atomic write — a reader never sees a truncated file. N1: per-PID tmp
+    # name so a still-running backfill and the daily cron don't fight over one
+    # tmp path (os.replace would FileNotFoundError). os.replace is atomic per
+    # writer; with two writers the final file is intact (last-write-wins) — not
+    # corrupt. There is still NO lock, so a concurrent run can lost-update the
+    # watermark; the deployment is a single daily cron, so this is acceptable.
+    tmp = WATERMARK_FILE.with_suffix(f".tmp.{os.getpid()}")
+    tmp.write_text(json.dumps(wm, indent=2))
+    os.replace(tmp, WATERMARK_FILE)
 
 
 # ==============================================================================
-# Distillation via codex exec (gpt-5.5)
+# Distillation via headless `claude -p` (the subscription)
 # ==============================================================================
 
 _PROMPT = """You are performing a DREAM — distilling AI-agent session logs into \
@@ -255,6 +299,16 @@ exactly as: {{"learnings": [{{"title": "...", "body": "...", "tags": ["..."]}}]}
 --- SESSIONS ---
 {body}
 """
+
+
+# Prose signatures of a TRANSIENT failure surfaced inside an is_error:false
+# result (rate limit / overload / capacity). These should retry, not skip.
+_TRANSIENT_RE = re.compile(
+    r"(rate.?limit|overloaded|capacity|too many requests|try again|"
+    r"temporarily unavailable|unable to (process|respond|complete)|"
+    r"service is (busy|unavailable)|please retry|usage limit)",
+    re.IGNORECASE,
+)
 
 
 def _extract_json_obj(text: str) -> dict | None:
@@ -319,11 +373,18 @@ def claude_distill(provider: str, batch_text: str) -> list[dict] | None:
     inner = envelope.get("result", envelope) if isinstance(envelope, dict) else None
     parsed = _extract_json_obj(inner) if isinstance(inner, str) else inner
     if not isinstance(parsed, dict):
-        # Claude REPLIED but the result wasn't JSON (prose, refusal, garbled).
-        # This is a content problem with THIS batch, not an infra failure —
-        # return [] (skip this batch, advance watermark, continue) rather than
-        # None (which would abort the whole provider and wedge it forever on a
-        # persistently-bad batch). The infra-failure paths above still return None.
+        # Claude REPLIED but the result wasn't JSON. Two sub-cases:
+        #  (a) TRANSIENT prose (rate-limited / overloaded / "try again") inside
+        #      an is_error:false envelope -> return None so the provider aborts
+        #      and retries next run (M4: otherwise these sessions are silently
+        #      lost by advancing the watermark over an "empty" batch).
+        #  (b) genuine garbled/refusal content -> return [] (skip THIS batch,
+        #      continue) so one poison batch can't wedge the whole provider.
+        result_text = inner if isinstance(inner, str) else str(inner)
+        if _TRANSIENT_RE.search(result_text or ""):
+            sys.stderr.write(f"[distill] claude -p TRANSIENT prose for {provider} batch "
+                             f"— aborting provider, will retry next run\n")
+            return None
         sys.stderr.write(f"[distill] claude -p result not JSON for {provider} batch "
                          f"— skipping this batch, continuing\n")
         return []
@@ -380,7 +441,13 @@ def run_provider(provider: str, args, watermark: dict) -> dict:
             mt = f.stat().st_mtime
         except OSError:
             continue
-        if mt <= last_ts:
+        # B2: strict `<`, not `<=`. With `<=` a session whose mtime exactly
+        # equals the watermark (mtime ties under burst writes) is excluded
+        # FOREVER = silent data loss. With `<`, boundary-mtime sessions are
+        # re-processed each run instead — harmless because output filenames are
+        # content-hashed (idempotent overwrite), and bounded to the few files
+        # sharing the max mtime. Gap-free beats a handful of redundant calls.
+        if mt < last_ts:
             continue
         if since_cut and mt < since_cut:
             continue
@@ -412,9 +479,11 @@ def run_provider(provider: str, args, watermark: dict) -> dict:
         if learnings is None:
             batch.clear(); batch_mts.clear()
             return False
+        # Write ALL learnings from a successfully-distilled batch. (M1: never
+        # truncate mid-batch — that dropped learnings #N+1.. AND advanced the
+        # watermark past their sessions = data loss. The cap instead stops us
+        # from STARTING new batches, in the intake loop below.)
         for ln in learnings:
-            if max_learn and stats["learnings"] >= max_learn:
-                break
             p = write_learning(provider, ln, args.dry_run)
             if p:
                 stats["files"].append(p.name)

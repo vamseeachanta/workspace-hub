@@ -5,7 +5,7 @@
 #   transcripts. This wrapper runs the cross-provider distiller so the dream
 #   becomes THE cross-provider consolidator (per the user's decision; see
 #   reference_claude_dreaming_managed_agents.md). The distiller reads other-
-#   provider sessions, distills durable learnings via gpt-5.5 (codex exec), and
+#   provider sessions, distills durable learnings via Claude (headless `claude -p`), and
 #   writes provenance-tagged memory files the dream then consolidates/prunes.
 #
 # USAGE:
