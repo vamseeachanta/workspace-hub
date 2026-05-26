@@ -21,8 +21,10 @@ Full onboarding guide with step-by-step details: `docs/plans/README.md`
 ```
 Issue → Resource Intel → Draft Plan → Adversarial Review → Post to GH
   → Label status:plan-review → USER APPROVES → Label status:plan-approved
-  → Implement (TDD) → Close
+  → Implement (TDD) → Cross-review → Completeness gate (#2798) → Close
 ```
+
+> **Completeness gate before close (#2798):** compute a test-/evidence-based completeness score (`scripts/workflow/completeness_score.py`), persist it (kanban `--metadata` + issue-body ```completeness {json}``` stamp), render `docs/reports/<date>-<issue>-completeness.html`, and require the owner-only `status:completeness-verified` label (≥ class threshold) before `gh issue close`. The server-side gate (`.github/workflows/completeness-gate.yml`) reopens issues closed without it. See the rule `.claude/rules/completeness-before-close.md`.
 
 Canonical execution method: non-trivial work must be classified up front as `single-lane`, `parallel-readonly`, or `parallel-worktree` per `docs/standards/PARALLEL_FIRST_EXECUTION.md`. Resource intelligence, plan review, and validation may run in parallel; implementation still requires user approval and TDD before any write-capable lane starts.
 
