@@ -8,3 +8,4 @@ Files:
 - `codes-standards-data-routing.md` — vendor-licensed codes/standards data → private `vamseeachanta/llm-wiki` (post 2026-05-20 visibility flip)
 - `wiki-sibling-routing.md` — `llm-wiki` + `llm-wiki-<client>` data/knowledge/result routing contract (suffix form, one-sibling-per-client, projects-as-folders; enforced by Level-2 `scripts/enforcement/check-wiki-sibling-frontmatter.py`; per [#2778](https://github.com/vamseeachanta/workspace-hub/issues/2778))
 - `goal-invocation.md` — `/goal` invocation contract; consult [#2695](https://github.com/vamseeachanta/workspace-hub/issues/2695) catalog before invoking
+- `completeness-before-close.md` — test-/evidence-based completeness score (0–100%) owner-verified before `gh issue close`; Level-2 advisory script + Level-3 GH Action gate (per [#2798](https://github.com/vamseeachanta/workspace-hub/issues/2798))

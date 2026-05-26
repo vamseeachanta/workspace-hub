@@ -1,13 +1,13 @@
 # Plan for #2798: test-based completeness score (0–100%) as pre-closure hard-stop gate + HTML artifact
 
-> **Status:** plan-review (revised post-review v2)
+> **Status:** plan-approved (user, 2026-05-25) → implemented on `feat/2798-completeness-gate` (PR #2800)
 > **Complexity:** T3 (systemic — harness/governance, cross-cutting close flow, multi-file)
 > **Date:** 2026-05-25
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2798
 > **Client:** N/A
 > **Project:** (none)
-> **Review artifacts:** scripts/review/results/2026-05-25-plan-2798-{claude,codex,gemini}.md
-> **Review outcome:** Claude r1 MAJOR + Codex r2 MAJOR (corroborating) → revised inline (r-inline). Gemini UNAVAILABLE (env issue → T3 degraded to T2). v1→v2 diff addresses both consensus MAJORs + key MINORs below.
+> **Review artifacts:** scripts/review/results/2026-05-25-plan-2798-{claude,codex,gemini}.md (plan) + 2026-05-25-impl-2798-{claude,codex}.md (code)
+> **Review outcome:** Plan stage — Claude r1 MAJOR + Codex r2 MAJOR → revised inline (r-inline). Code stage — Claude + Codex MAJOR → hardened inline (forgeable-record, stale-label, over-scope). Gemini UNAVAILABLE (env) → T2.
 
 ---
 
@@ -24,50 +24,47 @@
 
 **Gaps to build:** issue→package mapping; completeness-class taxonomy; computed-score persistence; **server-side** close enforcement; owner-verify signal; issue-planning-mode wiring; per-issue HTML generator.
 
-## Review-driven corrections (v1→v2)
+## Review-driven corrections (plan stage, v1→v2)
 
-| # | Finding (reviewer) | Correction in v2 |
+| # | Finding (reviewer) | Correction |
 |---|---|---|
 | MAJOR-1 | Pre-close "git hook" can't intercept `gh issue close` (Claude#1, Codex#15) | Enforcement is a **GitHub Action on the `issues.closed` webhook**: if a closed issue lacks a valid completeness record + owner-verify label, the Action **re-opens it and comments**. Local `check-completeness-before-close.sh` is demoted to an advisory pre-flight (not the gate). |
-| MAJOR-2 | Owner-confirmed % is agent-spoofable in metadata/comments (Claude#2, Codex#20) | Owner confirmation = an **owner-only `status:completeness-verified` label** (label events are attributable in the GH audit log; a repo ruleset restricts who may apply it). Agent writes only the *computed* score; it cannot self-verify. The Action cross-checks the label actor ≠ the closing bot. |
-| MINOR | "Based on tests" undefined for test-less issues (Claude#3, Codex#13) | Completeness **class taxonomy**: `code` (test-derived: pass-rate + changed-code coverage + `test_source_ratio` floor) vs `evidence` (ops/docs/governance: explicit evidence rubric, labeled "evidence-based, no test surface"). Class is auto-derived from changed files — **not selectable** (closes Codex#10 dodge). |
-| MINOR | Single global threshold 90 arbitrary (Claude#4, Codex#13) | **Per-class thresholds** in config (`code:90`, `evidence:80`) + a per-issue declared-exception that itself requires the owner-verify label. |
-| MINOR | #2110 hook collision (Claude#5, Codex#7/#17) | Shared `completeness/v1` report schema; this gate **consumes #2110's single hook** (no second hook); dedup by issue id; defined ordering (completeness before promotion #2236). |
-| MINOR | issue→package mapping undesigned (Codex#9) | Map from the issue's merged-PR **changed files → package** via a `path→package` table (CODEOWNERS-style); multi-package = **min(scores)** (conservative); no mapping ⇒ `evidence` class. |
-| MINOR | snapshot freshness (Codex#8) | Score binds the matrix snapshot **commit SHA**; stale (>1 snapshot behind HEAD) or missing ⇒ fail-closed with a clear message. |
-| MINOR | gaming via low-value tests (Codex#11/#12) | `test_source_ratio` floor + **changed-code coverage** (not whole-package); checklist items must carry an evidence link or don't count. |
-| MINOR | missing legal/security scan (Codex#18) | Add `scripts/legal/legal-sanity-scan.sh` to the verification gate. |
+| MAJOR-2 | Owner-confirmed % is agent-spoofable in metadata/comments (Claude#2, Codex#20) | Owner confirmation = an **owner-only `status:completeness-verified` label** (label events are attributable in the GH audit log; a repo ruleset restricts who may apply it). Agent writes only the *computed* score. The Action cross-checks the label actor ≠ the closing bot. |
+| MINOR | "Based on tests" undefined for test-less issues (Claude#3, Codex#13) | Completeness **class taxonomy**: `code` (test-derived) vs `evidence` (ops/docs/governance rubric). Class is auto-derived from changed files — **not selectable** (closes Codex#10 dodge). |
+| MINOR | Single global threshold 90 arbitrary (Claude#4, Codex#13) | **Per-class thresholds** (`code:90`, `evidence:80`). |
+| MINOR | #2110 hook collision (Claude#5, Codex#7/#17) | Shared schema; consume #2110's single hook; dedup by issue id; ordering (completeness before promotion #2236). |
+| MINOR | issue→package mapping undesigned (Codex#9) | Map changed files → package via a `path→package` table; multi-package = **min(scores)**; no mapping ⇒ `evidence` class. |
+| MINOR | snapshot freshness (Codex#8) | Score binds the matrix snapshot **commit SHA**; stale/missing ⇒ fail-closed. |
+| MINOR | gaming via low-value tests (Codex#11/#12) | `test_source_ratio` floor + **changed-code coverage**; checklist items must carry an evidence link or don't count. |
+| MINOR | missing legal/security scan (Codex#18) | `legal-sanity-scan.sh` in verification. |
 
-## Approach (v2)
+## Code-stage review corrections (as-built hardening)
 
-1. **`scripts/workflow/completeness_score.py`** — classify issue (`code`|`evidence`) from changed files; `code` reuses #1629 snapshot (SHA-bound) + changed-code coverage + checklist-with-evidence ratio; `evidence` uses the rubric. Emits `CompletenessResult{pct, class, threshold, snapshot_sha, evidence[]}`.
-2. **Persistence** — write the **computed** result via `hermes kanban complete --metadata` + stamp on the issue. (Computed only; never the verified value.)
-3. **HTML** — `render_completeness_html.py` → `docs/reports/<date>-<issue>-completeness.html`; test the score/evidence **data contract**, not the CSS (closes Claude#6).
-4. **Server-side gate** — `.github/workflows/completeness-gate.yml` on `issues.closed`: require (a) a computed record for the issue and (b) `status:completeness-verified` applied by an authorized owner; else re-open + comment. Repo ruleset restricts the label.
-5. **Advisory pre-flight** — `scripts/enforcement/check-completeness-before-close.sh` (exit 0/1, `COMPLETENESS_ALLOW=1`) for local feedback before pushing a close; explicitly NOT the authoritative gate.
-6. **Wiring** — issue-planning-mode close step + prose rule in `.claude/rules/`; consume #2110's hook.
+| # | Finding (reviewer) | Correction |
+|---|---|---|
+| MAJOR-A | Body record forgeable; gate trusted record's own `threshold` (Codex#2) | Threshold from **server-side class config**, never the record; record **bound to `issue_number`**. |
+| MAJOR-B | Stale-label bypass — label could pre-date a forged body edit (Codex#1/#3, Claude#2) | Gate requires `body_verified_fresh`: the verified label must be applied **at/after** the issue body's last edit. |
+| MAJOR-C | Action reopened **every** completed/uncompleted close (Claude#1) | Action gated to `state_reason == 'completed'`; runner skips issues lacking `status:plan-approved`. |
+| MINOR | weight/coverage validation, empty-checklist free pass, prefix-boundary, empty-owners opaque | Fail-closed input validation; empty checklist penalised; path-boundary prefix match; explicit empty-owners config error. |
 
-## Implementation steps (TDD)
-1. Tests: `test_completeness_score.py` — class auto-derivation, code vs evidence scoring, boundary 89/90, multi-package min, stale/missing snapshot fail-closed, malformed inputs.
-2. Tests: gate workflow — record-missing ⇒ reopen; label-missing ⇒ reopen; label-by-unauthorized-actor ⇒ reopen; valid ⇒ stays closed. (Exercised via `act` or a workflow unit harness; **plus** an integration test that proves a close is reverted before standing — closes Codex#15.)
-3. Tests: #2110 co-fire (both gates in one path; dedup; ordering); invalid threshold config.
-4. Implement to green, in order: score → persistence → html → workflow → advisory script → wiring.
-5. Verification gate: tests green + `legal-sanity-scan.sh` + adversarial **implementation** review (T3) before merge.
+## Approach (as-built)
+1. `scripts/workflow/completeness_score.py` — classify (`code`|`evidence`); `code` reuses #1629 snapshot (SHA-bound, fail-closed) + changed-code coverage + evidence-linked checklist; `evidence` weighted ratio. Emits `CompletenessResult` (incl. `issue_number`, `generated_at`).
+2. Persistence — computed result via `hermes kanban complete --metadata` + issue-body ```completeness {json}``` stamp.
+3. HTML — `render_completeness_html.py` → `docs/reports/<date>-<issue>-completeness.html`; data-contract tested (not CSS); html-escaped.
+4. Server-side gate — `.github/workflows/completeness-gate.yml` on `issues.closed` (scoped `completed`); `completeness_gate_check.py` (pure decision) + `completeness_gate_runner.py` (gh I/O); reopen+comment on deny.
+5. Advisory pre-flight — `scripts/enforcement/check-completeness-before-close.sh` (`COMPLETENESS_ALLOW=1`).
+6. Wiring — issue-planning-mode close step + `.claude/rules/completeness-before-close.md` + rules README.
 
-## Test plan
-- Unit: classifier, both scoring paths, thresholds, snapshot SHA/staleness, malformed metadata, duplicate/stale records, wrong-issue.
-- Integration: close-revert proof; label-actor authorization; #2110 co-fire; HTML data-contract golden (data, not markup).
-- Security: `legal-sanity-scan.sh`; verify label cannot be self-applied by the automation token.
-- Regression: scope glob to the enforcement/workflow dir (`feedback_regression_test_broader_than_issue_scope`).
+## Test plan (as-built: 34 tests green)
+- Unit: classifier + prefix-boundary, both scoring paths, thresholds, snapshot SHA/staleness fail-closed, coverage/weight validation, empty-checklist penalty.
+- Gate decision: record-missing/label-missing/unauthorized-actor/self-verify/body-stale/forged-threshold/issue-mismatch/unknown-class all DENY; valid ALLOW; per-class thresholds.
+- HTML: data-contract round-trip + injection-escape.
+- Security: `legal-sanity-scan.sh --diff-only` PASS.
 
 ## Risks
 - **GH Action latency** — close-revert isn't instantaneous; a closed issue is briefly visible closed. Acceptable; comment explains.
-- **Label ruleset** — requires repo-admin to configure the authorized-applier ruleset; document as a prerequisite.
-- **Over-blocking** — keep advisory script non-blocking; the Action is the gate, with a documented admin bypass.
-- **#1629 dependency** — if the matrix snapshot pipeline is down, `code` issues fail-closed; document the manual `evidence`-class override (owner-verified).
+- **Label ruleset / `COMPLETENESS_OWNERS`** — repo-admin must configure the authorized-applier ruleset + the owners variable; documented as a prerequisite (unset ⇒ fail-closed on completed closes).
+- **#1629 dependency** — if the matrix snapshot pipeline is down, `code` issues fail-closed; manual `evidence`-class override (owner-verified).
 
 ## Out of scope
 - #2236 promotion targets; #1663 trend dashboard; #1662 PRODUCTION promotion.
-
----
-_Not self-approved. Carries Claude r1 + Codex r2 review evidence (both MAJOR, addressed above); Gemini UNAVAILABLE. Awaiting USER APPROVAL to move status:plan-review → status:plan-approved (`feedback_never_offer_to_self_label_plan_approved`)._

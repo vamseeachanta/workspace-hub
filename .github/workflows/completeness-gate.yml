@@ -1,0 +1,55 @@
+name: completeness-gate
+
+# #2798 — authoritative pre-closure completeness gate.
+# A local git hook CANNOT intercept `gh issue close` (it is a REST API call), so
+# enforcement lives server-side: on issues.closed, if the completeness record +
+# owner-applied verified label are missing/invalid, REOPEN the issue and comment.
+
+on:
+  issues:
+    types: [closed]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  enforce-completeness:
+    runs-on: ubuntu-latest
+    # Only gate issues closed as COMPLETED. Duplicate/won't-fix/invalid are closed as
+    # not_planned and must not be reopened. (The runner further skips issues that never
+    # reached status:plan-approved.)
+    if: github.event.issue.state_reason == 'completed'
+    steps:
+      - name: Checkout (for the gate scripts)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Evaluate completeness gate
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          CLOSING_ACTOR: ${{ github.event.sender.login }}
+          # Authorized verified-label appliers. Keep in a repo variable so it is
+          # not editable via a PR to this workflow file.
+          COMPLETENESS_OWNERS: ${{ vars.COMPLETENESS_OWNERS }}
+        run: |
+          set +e
+          python scripts/workflow/completeness_gate_runner.py
+          echo "decision=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Reopen + comment if denied
+        if: steps.gate.outputs.decision != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue reopen "${{ github.event.issue.number }}" --repo "${{ github.repository }}"
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" \
+            --body "🚧 **Completeness gate (#2798) reopened this issue.** Closure requires a computed completeness record stamped on the issue body (\`\`\`completeness {json}\`\`\`) AND the \`status:completeness-verified\` label applied by an authorized owner who is not the closing actor, with \`completeness_pct >= threshold\`. See \`docs/plans/2798-completeness-gate.md\`."
