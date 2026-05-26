@@ -16,6 +16,10 @@ permissions:
 jobs:
   enforce-completeness:
     runs-on: ubuntu-latest
+    # Only gate issues closed as COMPLETED. Duplicate/won't-fix/invalid are closed as
+    # not_planned and must not be reopened. (The runner further skips issues that never
+    # reached status:plan-approved.)
+    if: github.event.issue.state_reason == 'completed'
     steps:
       - name: Checkout (for the gate scripts)
         uses: actions/checkout@v4

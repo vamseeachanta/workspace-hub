@@ -24,6 +24,7 @@ Design corrections from #2798 plan review (Claude r1 + Codex r2):
 """
 from __future__ import annotations
 
+import datetime as _dt
 from dataclasses import dataclass, field
 
 THRESHOLDS = {"code": 90, "evidence": 80}
@@ -52,6 +53,8 @@ class CompletenessResult:
     threshold: int
     snapshot_sha: str | None
     evidence: list[str] = field(default_factory=list)
+    issue_number: int | None = None          # binds the record to its issue (gate checks this)
+    generated_at: str = field(default_factory=lambda: _dt.datetime.now(_dt.timezone.utc).isoformat())
 
     @property
     def passed(self) -> bool:
@@ -61,9 +64,11 @@ class CompletenessResult:
         return {
             "completeness_pct": self.pct,
             "cls": self.cls,
-            "threshold": self.threshold,
+            "threshold": self.threshold,   # advisory only — the gate uses server-side config, not this
             "passed": self.passed,
             "snapshot_sha": self.snapshot_sha,
+            "issue_number": self.issue_number,
+            "generated_at": self.generated_at,
             "evidence": list(self.evidence),
         }
 
@@ -83,7 +88,9 @@ def classify(changed_files: list[str], path_package_map: dict[str, str]) -> str:
     """
     for f in changed_files or []:
         for prefix in path_package_map:
-            if f.startswith(prefix):
+            # path-boundary match: "src/foo" must not match "src/foo2/x" (Codex#10)
+            norm = prefix if prefix.endswith("/") else prefix + "/"
+            if f == prefix or f.startswith(norm):
                 return "code"
     return "evidence"
 
@@ -94,6 +101,7 @@ def score_code(
     head_sha: str,
     changed_code_coverage: float,
     checklist: list[dict],
+    issue_number: int | None = None,
 ) -> CompletenessResult:
     """Score a code issue against the #1629 matrix snapshot.
 
@@ -101,6 +109,11 @@ def score_code(
     "test_source_ratio": float}}}``. Fails closed if the snapshot is not bound to
     ``head_sha`` or a scored package is missing.
     """
+    # validate coverage input — reject NaN/out-of-range instead of papering over (Codex#9)
+    cov = float(changed_code_coverage)
+    if not (0.0 <= cov <= 1.0):   # NaN compares False on both sides -> rejected
+        raise CompletenessError(f"changed_code_coverage {changed_code_coverage!r} not in [0,1] (fail-closed)")
+    changed_code_coverage = cov
     snap_sha = snapshot.get("sha")
     if snap_sha != head_sha:
         raise StaleSnapshotError(
@@ -126,7 +139,10 @@ def score_code(
         checklist_ratio = met / len(checklist)
         evidence.append(f"checklist: {met}/{len(checklist)} items evidence-linked")
     else:
-        checklist_ratio = 1.0  # no checklist = no penalty
+        # NO acceptance checklist = NO acceptance evidence -> penalise (Codex#8).
+        # Code work should not pass at threshold without acceptance criteria.
+        checklist_ratio = 0.0
+        evidence.append("checklist: ABSENT — no acceptance evidence (penalised)")
 
     cov_factor = _factor(changed_code_coverage, COVERAGE_FLOOR)
     chk_factor = _factor(checklist_ratio, CHECKLIST_FLOOR)
@@ -135,19 +151,25 @@ def score_code(
     pct = int(round(base * cov_factor * chk_factor))
     pct = max(0, min(100, pct))
     return CompletenessResult(pct=pct, cls="code", threshold=THRESHOLDS["code"],
-                              snapshot_sha=snap_sha, evidence=evidence)
+                              snapshot_sha=snap_sha, evidence=evidence, issue_number=issue_number)
 
 
-def score_evidence(items: list[dict]) -> CompletenessResult:
+def score_evidence(items: list[dict], issue_number: int | None = None) -> CompletenessResult:
     """Score an ops/docs/governance issue as a weighted ratio of met evidence.
 
     ``items`` = ``[{"label": str, "weight": number, "met": bool}, ...]``.
     """
-    total = sum(float(i.get("weight", 1)) for i in items) or 1.0
-    met = sum(float(i.get("weight", 1)) for i in items if i.get("met"))
-    pct = int(round(met / total * 100))
-    pct = max(0, min(100, pct))
+    if not items:
+        raise CompletenessError("evidence scoring requires at least one evidence item (fail-closed)")
+    weights = [float(i.get("weight", 1)) for i in items]
+    if any(w < 0 for w in weights):                       # negative weights game the denominator (Codex#7)
+        raise CompletenessError("evidence weights must be non-negative (fail-closed)")
+    total = sum(weights)
+    if total <= 0:
+        raise CompletenessError("evidence weights sum to zero — cannot score (fail-closed)")
+    met = sum(w for w, i in zip(weights, items) if i.get("met"))
+    pct = max(0, min(100, int(round(met / total * 100))))
     evidence = [f"{i.get('label', '?')}: {'met' if i.get('met') else 'UNMET'} (w={i.get('weight', 1)})"
                 for i in items]
     return CompletenessResult(pct=pct, cls="evidence", threshold=THRESHOLDS["evidence"],
-                              snapshot_sha=None, evidence=evidence)
+                              snapshot_sha=None, evidence=evidence, issue_number=issue_number)

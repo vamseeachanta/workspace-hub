@@ -1,11 +1,4 @@
-"""Tests for the #2798 close-gate decision logic.
-
-The decision function is the authoritative core called by BOTH the GitHub Action
-(on issues.closed -> reopen if it denies) and the local advisory pre-flight. It
-encodes the review fixes: a computed record must exist; an owner-only verified
-label must be present; the label must have been applied by an authorized actor
-who is NOT the closing actor (closes the agent-self-verify spoof, Claude#2/Codex#20).
-"""
+"""Tests for the #2798 close-gate decision (hardened per code review)."""
 import sys
 from pathlib import Path
 
@@ -18,57 +11,71 @@ VERIFIED = "status:completeness-verified"
 OWNERS = {"vamseeachanta"}
 
 
-def _record(pct=95, threshold=90):
-    return {"completeness_pct": pct, "threshold": threshold, "cls": "code"}
+def _record(pct=95, cls="code", issue=2798, **extra):
+    r = {"completeness_pct": pct, "cls": cls, "issue_number": issue}
+    r.update(extra)
+    return r
 
 
-def test_allows_when_record_and_verified_label_by_authorized_distinct_actor():
-    d = gate.evaluate_close(
-        record=_record(), labels=[VERIFIED], label_actor="vameseeachanta" if False else "vamseeachanta",
-        closing_actor="hermes-bot", authorized_appliers=OWNERS,
-    )
-    assert d.allowed is True
+def _eval(**kw):
+    base = dict(record=_record(), labels=[VERIFIED], label_actor="vamseeachanta",
+                closing_actor="hermes-bot", authorized_appliers=OWNERS,
+                expected_issue=2798, body_verified_fresh=True)
+    base.update(kw)
+    return gate.evaluate_close(**base)
 
 
-def test_denies_when_no_computed_record():
-    d = gate.evaluate_close(record=None, labels=[VERIFIED], label_actor="vamseeachanta",
-                            closing_actor="hermes-bot", authorized_appliers=OWNERS)
-    assert d.allowed is False
-    assert "record" in d.reason.lower()
+def test_allows_when_all_conditions_met():
+    assert _eval().allowed is True
+
+
+def test_denies_when_no_record():
+    d = _eval(record=None)
+    assert d.allowed is False and "record" in d.reason.lower()
+
+
+def test_denies_when_record_issue_mismatch_forged():
+    d = _eval(record=_record(issue=9999))  # copied/forged record from another issue
+    assert d.allowed is False and ("match" in d.reason.lower() or "forged" in d.reason.lower())
+
+
+def test_threshold_comes_from_config_not_record_so_forged_threshold_ignored():
+    # forged record claims threshold 0 to sneak a low score past the gate
+    d = _eval(record=_record(pct=10, cls="code", threshold=0))
+    assert d.allowed is False  # config threshold 90 applies, 10 < 90
+    assert "90" in d.reason
+
+
+def test_denies_unknown_class():
+    d = _eval(record=_record(cls="bogus"))
+    assert d.allowed is False and "class" in d.reason.lower()
 
 
 def test_denies_when_verified_label_absent():
-    d = gate.evaluate_close(record=_record(), labels=["status:plan-approved"], label_actor=None,
-                            closing_actor="hermes-bot", authorized_appliers=OWNERS)
-    assert d.allowed is False
-    assert "label" in d.reason.lower()
+    d = _eval(labels=["status:plan-approved"], label_actor=None)
+    assert d.allowed is False and "label" in d.reason.lower()
 
 
-def test_denies_when_label_applied_by_unauthorized_actor():
-    # spoof attempt: a non-owner applied the verified label
-    d = gate.evaluate_close(record=_record(), labels=[VERIFIED], label_actor="random-contributor",
-                            closing_actor="hermes-bot", authorized_appliers=OWNERS)
-    assert d.allowed is False
-    assert "authorized" in d.reason.lower() or "actor" in d.reason.lower()
+def test_denies_unauthorized_label_actor():
+    d = _eval(label_actor="random-contributor")
+    assert d.allowed is False and ("authorized" in d.reason.lower() or "actor" in d.reason.lower())
 
 
-def test_denies_when_label_actor_equals_closing_actor():
-    # the closer cannot also be the verifier (no self-verify)
-    d = gate.evaluate_close(record=_record(), labels=[VERIFIED], label_actor="vamseeachanta",
-                            closing_actor="vamseeachanta", authorized_appliers=OWNERS)
-    assert d.allowed is False
-    assert "self" in d.reason.lower() or "same" in d.reason.lower()
+def test_denies_when_verifier_is_closer():
+    d = _eval(label_actor="vamseeachanta", closing_actor="vamseeachanta")
+    assert d.allowed is False and ("self" in d.reason.lower() or "same" in d.reason.lower())
 
 
-def test_denies_when_pct_below_threshold():
-    d = gate.evaluate_close(record=_record(pct=70, threshold=90), labels=[VERIFIED],
-                            label_actor="vamseeachanta", closing_actor="hermes-bot",
-                            authorized_appliers=OWNERS)
-    assert d.allowed is False
-    assert "threshold" in d.reason.lower() or "70" in d.reason
+def test_denies_when_body_edited_after_verification():
+    d = _eval(body_verified_fresh=False)
+    assert d.allowed is False and ("edited" in d.reason.lower() or "re-verification" in d.reason.lower())
 
 
-def test_reason_is_present_on_allow_too():
-    d = gate.evaluate_close(record=_record(), labels=[VERIFIED], label_actor="vamseeachanta",
-                            closing_actor="hermes-bot", authorized_appliers=OWNERS)
-    assert d.reason  # non-empty explanation either way
+def test_denies_when_pct_below_config_threshold():
+    d = _eval(record=_record(pct=70))
+    assert d.allowed is False and "70" in d.reason
+
+
+def test_evidence_class_uses_80_threshold():
+    assert _eval(record=_record(pct=85, cls="evidence")).allowed is True   # 85 >= 80
+    assert _eval(record=_record(pct=75, cls="evidence")).allowed is False  # 75 < 80

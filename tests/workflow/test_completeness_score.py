@@ -124,9 +124,50 @@ def test_score_evidence_all_met_is_100():
 
 def test_result_to_dict_is_json_safe():
     import json
-    r = cs.score_evidence([{"label": "x", "weight": 1, "met": True}])
+    r = cs.score_evidence([{"label": "x", "weight": 1, "met": True}], issue_number=2798)
     d = r.to_dict()
     json.dumps(d)  # must not raise
     assert d["completeness_pct"] == 100
     assert d["cls"] == "evidence"
-    assert "evidence" in d
+    assert d["issue_number"] == 2798
+    assert "generated_at" in d and "evidence" in d
+
+
+# ---- hardening guards (code review fixes) ----
+
+def test_classify_prefix_boundary_no_false_match():
+    # "src/foo2/x" must NOT match package prefix "src/foo"
+    assert cs.classify(["src/foo2/x.py"], {"src/foo": "foo"}) == "evidence"
+    assert cs.classify(["src/foo/x.py"], {"src/foo": "foo"}) == "code"
+
+
+def test_score_code_rejects_out_of_range_coverage():
+    snap = _snapshot(p={"quality_score": 100, "test_source_ratio": 1.0})
+    with pytest.raises(cs.CompletenessError):
+        cs.score_code(["p"], snap, "HEADSHA", changed_code_coverage=1.5,
+                      checklist=[{"text": "a", "evidence": True}])
+
+
+def test_score_code_rejects_nan_coverage():
+    snap = _snapshot(p={"quality_score": 100, "test_source_ratio": 1.0})
+    with pytest.raises(cs.CompletenessError):
+        cs.score_code(["p"], snap, "HEADSHA", changed_code_coverage=float("nan"),
+                      checklist=[{"text": "a", "evidence": True}])
+
+
+def test_score_code_empty_checklist_does_not_pass():
+    # no acceptance checklist -> heavy penalty -> not closure-eligible
+    snap = _snapshot(p={"quality_score": 100, "test_source_ratio": 1.0})
+    r = cs.score_code(["p"], snap, "HEADSHA", changed_code_coverage=1.0, checklist=[])
+    assert r.passed is False
+
+
+def test_score_evidence_rejects_negative_weight():
+    with pytest.raises(cs.CompletenessError):
+        cs.score_evidence([{"label": "x", "weight": -5, "met": False},
+                           {"label": "y", "weight": 1, "met": True}])
+
+
+def test_score_evidence_rejects_empty():
+    with pytest.raises(cs.CompletenessError):
+        cs.score_evidence([])
