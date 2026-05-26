@@ -135,6 +135,28 @@ if [[ -x "${INSTALL_HOOK_CROSS_REPO}" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
+# 2.7. Reinstall Hermes Kanban readability override (user-override dashboard
+#      plugin at ~/.hermes/plugins/kanban/). Makes the fixes — clickable
+#      "Source:" URLs in card descriptions + readable card-text font over the
+#      Mondwest display font — survive hermes-agent updates AND apply on every
+#      Hermes machine that bootstraps from this repo.
+#
+#      Guarded on the BUNDLED plugin existing (unlike the unconditional SOUL
+#      install above): this installer copies from the bundled plugin, so it's a
+#      no-op without it. Machines that don't run a Hermes dashboard (e.g. the
+#      Windows checkout), or where hermes-agent isn't installed yet, skip
+#      harmlessly — re-run bootstrap after installing Hermes to catch up.
+#      Idempotent. Skill: .claude/skills/devops/hermes-kanban-readability/.
+# ---------------------------------------------------------------------------
+KANBAN_READABILITY="${REPO_ROOT}/.claude/skills/devops/hermes-kanban-readability/install.sh"
+HERMES_KANBAN_BUNDLED="${HERMES_HOME:-${HOME}/.hermes}/hermes-agent/plugins/kanban/dashboard"
+if [[ -x "${KANBAN_READABILITY}" && -d "${HERMES_KANBAN_BUNDLED}" ]]; then
+    echo ""
+    echo -e "${CYAN}Reinstalling Hermes Kanban readability override...${NC}"
+    bash "${KANBAN_READABILITY}" || true
+fi
+
+# ---------------------------------------------------------------------------
 # 3. Remind about bridge script (Linux/Hermes machines only)
 # ---------------------------------------------------------------------------
 if [[ -d "${HOME}/.hermes" ]]; then
