@@ -27,6 +27,49 @@
   "cards": [
     {
       "approval_blockers": [
+        "no canonical plan file",
+        "reviews not clean: major_review,unavailable_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "machine:dev-primary",
+          "agent:claude",
+          "status:plan-review"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "feat(governance): test-based completeness score (0\u2013100%) as pre-closure hard-stop gate + HTML artifact"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2798,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "existing claude agent label",
+      "title": "feat(governance): test-based completeness score (0\u2013100%) as pre-closure hard-stop gate + HTML artifact",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2798",
+      "warnings": [
+        "legacy_review_no_sha",
+        "major_review",
+        "unavailable_review"
+      ]
+    },
+    {
+      "approval_blockers": [
         "missing status:plan-review label",
         "no canonical plan file",
         "review evidence not clean",
@@ -8356,56 +8399,57 @@
         "missing_review",
         "unknown_review"
       ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:ai-orchestration",
-          "cat:harness",
-          "domain:document-intelligence",
-          "machine:dev-primary",
-          "dispatch:ready"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(doc-intel): MCP server multi-agent registration \u2014 Claude / Gemini / Hermes"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2401,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(doc-intel): MCP server multi-agent registration \u2014 Claude / Gemini / Hermes",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2401",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-05-25T21:20:10Z",
+  "generated_at": "2026-05-26T01:20:10Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "no canonical plan file",
+          "reviews not clean: major_review,unavailable_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "machine:dev-primary",
+            "agent:claude",
+            "status:plan-review"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "feat(governance): test-based completeness score (0\u2013100%) as pre-closure hard-stop gate + HTML artifact"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2798,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "existing claude agent label",
+        "title": "feat(governance): test-based completeness score (0\u2013100%) as pre-closure hard-stop gate + HTML artifact",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2798",
+        "warnings": [
+          "legacy_review_no_sha",
+          "major_review",
+          "unavailable_review"
+        ]
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16737,48 +16781,6 @@
           "missing_review",
           "unknown_review"
         ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:document-intelligence",
-            "machine:dev-primary",
-            "dispatch:ready"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(doc-intel): MCP server multi-agent registration \u2014 Claude / Gemini / Hermes"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2401,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(doc-intel): MCP server multi-agent registration \u2014 Claude / Gemini / Hermes",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2401",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16789,18 +16791,18 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-25T21:20:07.420453Z",
+  "scorecard_generated_at": "2026-05-26T01:20:07.359441Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-25T21:20:07.302090Z",
+  "utilization_generated_at": "2026-05-26T01:20:07.231486Z",
   "warning_summary": {
     "approved_no_marker": 13,
     "approved_no_plan": 5,
     "empty_review": 3,
-    "legacy_review_no_sha": 29,
-    "major_review": 21,
+    "legacy_review_no_sha": 30,
+    "major_review": 22,
     "marker_without_open_approved_issue": 137,
     "missing_review": 38,
-    "unavailable_review": 14,
+    "unavailable_review": 15,
     "unknown_review": 1
   }
 }

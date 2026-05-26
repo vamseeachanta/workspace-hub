@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-25T21:20:10Z
+Generated: 2026-05-26T01:20:10Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2798 | feat(governance): test-based completeness score (0–100%) as pre-closure hard-stop gate + HTML artifact | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: major_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2797 | Refine dispatch assignments as machine capabilities + workload become clearer (sub of #2795) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2795 | Domain-categorized boards + machine/provider dispatch (GitHub-centered) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2793 | arch(kaggle-rogii-2026): keep experiment repo shallow until seams repeat | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -242,7 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2404 | feat(doc-intel): MCP server audit log + hardened allowlist + retention | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2402 | feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2403 | feat(doc-intel): embeddings model-selection spike — BGE-M3 / Voyage / text-embedding-3-large | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review,unknown_review |
-| #2401 | feat(doc-intel): MCP server multi-agent registration — Claude / Gemini / Hermes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

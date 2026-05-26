@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-25T21:20:09.377988Z",
+  "generated_at": "2026-05-26T01:20:09.187804Z",
   "current_week": "2026-W22",
-  "scorecard_generated_at": "2026-05-25T21:20:07.420453Z",
+  "scorecard_generated_at": "2026-05-26T01:20:07.359441Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -904,7 +904,7 @@
           "labels": [
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-25T20:34:58Z",
+          "updatedAt": "2026-05-26T00:24:17Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -912,6 +912,7 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -1992,23 +1993,21 @@
           ]
         },
         {
-          "number": 2401,
-          "title": "feat(doc-intel): MCP server multi-agent registration \u2014 Claude / Gemini / Hermes",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2401",
+          "number": 2798,
+          "title": "feat(governance): test-based completeness score (0\u2013100%) as pre-closure hard-stop gate + HTML artifact",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2798",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:document-intelligence",
+            "priority:high",
             "machine:dev-primary",
-            "dispatch:ready"
+            "agent:claude",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-05-25T20:21:22Z",
+          "updatedAt": "2026-05-26T00:35:44Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
+          "routing_reason": "existing claude agent label",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
@@ -4573,7 +4572,7 @@
           "title": "Refine dispatch assignments as machine capabilities + workload become clearer (sub of #2795)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2797",
           "labels": [],
-          "updatedAt": "2026-05-25T16:50:01Z",
+          "updatedAt": "2026-05-26T00:24:27Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
