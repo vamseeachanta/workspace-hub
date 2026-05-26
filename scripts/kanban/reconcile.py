@@ -65,6 +65,7 @@ def dump_yaml(data: dict) -> str:
 
 
 def yaml_rt() -> YAML:
+    # ruamel round-trip mode preserves formatting and does not execute Python tags.
     yaml = YAML()
     yaml.preserve_quotes = True
     yaml.width = 1000
@@ -128,9 +129,22 @@ def active_repos(entries: list[BoardEntry]) -> list[str]:
 
 
 def board_files(kanban_root: Path, entries: list[BoardEntry]) -> list[Path]:
-    files = {entry.file for entry in entries}
-    files.update((kanban_root / "boards").glob("*.yaml"))
-    return sorted(files)
+    return sorted({entry.file for entry in entries})
+
+
+def validate_unmanifested_boards(kanban_root: Path, entries: list[BoardEntry]) -> None:
+    manifest_files = {entry.file for entry in entries}
+    for path in sorted((kanban_root / "boards").glob("*.yaml")):
+        if path in manifest_files:
+            continue
+        rel_path = path.relative_to(kanban_root)
+        cards = load_yaml(path).get("cards") or []
+        if cards:
+            raise RuntimeError(
+                f"unmanifested board {rel_path} has {len(cards)} card(s); "
+                "add it to manifest.yaml before reconciling"
+            )
+        print(f"WARNING: unmanifested empty board ignored: {rel_path}", file=sys.stderr)
 
 
 def repo_board_map(entries: list[BoardEntry]) -> dict[str, Path]:
@@ -265,16 +279,29 @@ def build_live_cards(
     existing: dict[str, dict],
     existing_counts: dict[str, int],
     allow_empty_repos: set[str],
+    allow_shrink_repos: set[str],
 ) -> dict[str, tuple[Path, dict]]:
     live = {}
     for repo in repos:
         issues = issue_fetcher(repo)
-        if not issues and existing_counts.get(repo, 0) > 0 and repo not in allow_empty_repos:
-            raise RuntimeError(
-                f"empty issue list for {repo} would remove "
-                f"{existing_counts[repo]} existing github_issue card(s); "
-                "use --allow-empty only after verifying the repo legitimately has zero issues"
-            )
+        existing_count = existing_counts.get(repo, 0)
+        if len(issues) < existing_count:
+            if not issues and repo in allow_empty_repos:
+                pass
+            elif repo in allow_shrink_repos:
+                pass
+            elif not issues:
+                raise RuntimeError(
+                    f"empty issue list for {repo} would remove "
+                    f"{existing_count} existing github_issue card(s); "
+                    "use --allow-empty only after verifying the repo legitimately has zero issues"
+                )
+            else:
+                raise RuntimeError(
+                    f"partial issue list for {repo} returned {len(issues)} live issue(s) "
+                    f"but {existing_count} existing github_issue card(s) are present; "
+                    "use --allow-shrink only after verifying the reduction is legitimate"
+                )
         for issue in issues:
             key = issue_key(repo, issue["number"])
             card = card_for_issue(repo, issue, existing.get(key))
@@ -321,8 +348,10 @@ def reconcile_kanban(
     write_files: bool = True,
     repo_filter: str | None = None,
     allow_empty_repos: set[str] | None = None,
+    allow_shrink_repos: set[str] | None = None,
 ) -> ReconcileResult:
     entries = load_manifest_entries(kanban_root)
+    validate_unmanifested_boards(kanban_root, entries)
     repos = active_repos(entries)
     if repo_filter:
         repos = [repo for repo in repos if repo == repo_filter]
@@ -340,13 +369,15 @@ def reconcile_kanban(
         existing,
         existing_issue_counts_by_repo(existing),
         allow_empty_repos or set(),
+        allow_shrink_repos or set(),
     )
     rebuilt = rebuild_boards(board_data, files, set(repos), live)
     after = {}
     for path in files:
         after[path] = before[path] if rebuilt[path] == board_data[path] else dump_yaml(rebuilt[path])
     changed_files = [path for path in files if before[path] != after[path]]
-    if write_files:
+    write = write_files and not dry_run
+    if write:
         for path in changed_files:
             path.write_text(after[path], encoding="utf-8")
     return ReconcileResult(
@@ -369,6 +400,13 @@ def main(argv: list[str] | None = None) -> int:
         metavar="OWNER/REPO",
         help="allow an active repo with existing cards to reconcile to zero live issues",
     )
+    parser.add_argument(
+        "--allow-shrink",
+        action="append",
+        default=[],
+        metavar="OWNER/REPO",
+        help="allow an active repo to reconcile fewer live issues than existing cards",
+    )
     args = parser.parse_args(argv)
 
     root = args.kanban_root or repo_root() / ".claude/memory/kanban"
@@ -383,6 +421,7 @@ def main(argv: list[str] | None = None) -> int:
         write_files=not args.dry_run,
         repo_filter=args.repo,
         allow_empty_repos=set(args.allow_empty),
+        allow_shrink_repos=set(args.allow_shrink),
     )
     if result.diff:
         print(result.diff, end="")

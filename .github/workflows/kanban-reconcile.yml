@@ -56,12 +56,6 @@ jobs:
             git fetch origin "$GITHUB_REF_NAME"
             git reset --hard "origin/$GITHUB_REF_NAME"
 
-            if ! git pull --rebase origin "$GITHUB_REF_NAME"; then
-              git rebase --abort || true
-              sleep $((attempt * 5))
-              continue
-            fi
-
             uv run python scripts/kanban/reconcile.py
 
             if git diff --quiet -- .claude/memory/kanban/boards; then
@@ -72,8 +66,17 @@ jobs:
             git add .claude/memory/kanban/boards
             git commit -m "chore: reconcile kanban board"
 
-            if git push origin "HEAD:$GITHUB_REF_NAME"; then
+            push_stderr="$(mktemp)"
+            if git push origin "HEAD:$GITHUB_REF_NAME" 2>"$push_stderr"; then
+              rm -f "$push_stderr"
               exit 0
+            fi
+            push_error="$(cat "$push_stderr")"
+            rm -f "$push_stderr"
+            printf '%s\n' "$push_error" >&2
+            if ! grep -Eiq 'non-fast-forward|fetch first' <<<"$push_error"; then
+              echo "Non-retryable git push failure." >&2
+              exit 1
             fi
             sleep $((attempt * 5))
           done
