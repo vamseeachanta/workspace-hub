@@ -16,10 +16,13 @@ permissions:
 jobs:
   enforce-completeness:
     runs-on: ubuntu-latest
-    # Only gate issues closed as COMPLETED. Duplicate/won't-fix/invalid are closed as
-    # not_planned and must not be reopened. (The runner further skips issues that never
-    # reached status:plan-approved.)
-    if: github.event.issue.state_reason == 'completed'
+    # Only gate issues that (a) closed as COMPLETED and (b) explicitly OPTED IN via the
+    # `gate:completeness` label. Opt-in rollout: existing issues + duplicate/won't-fix
+    # closes are untouched. The runner re-checks opt-in + status:plan-approved (defence in
+    # depth) before any owners-config requirement, so an unconfigured gate stays inert.
+    if: >-
+      github.event.issue.state_reason == 'completed' &&
+      contains(github.event.issue.labels.*.name, 'gate:completeness')
     steps:
       - name: Checkout (for the gate scripts)
         uses: actions/checkout@v4

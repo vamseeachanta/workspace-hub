@@ -79,3 +79,22 @@ def test_denies_when_pct_below_config_threshold():
 def test_evidence_class_uses_80_threshold():
     assert _eval(record=_record(pct=85, cls="evidence")).allowed is True   # 85 >= 80
     assert _eval(record=_record(pct=75, cls="evidence")).allowed is False  # 75 < 80
+
+
+# ---- opt-in scoping (rollout fix) ----
+
+def test_gate_applies_only_when_opted_in_and_plan_approved():
+    assert gate.gate_applies(["gate:completeness", "status:plan-approved"]) is True
+
+
+def test_gate_does_not_apply_without_opt_in_label():
+    # the existing backlog (plan-approved but not opted-in) is untouched
+    assert gate.gate_applies(["status:plan-approved"]) is False
+
+
+def test_gate_does_not_apply_without_plan_approved():
+    assert gate.gate_applies(["gate:completeness"]) is False
+
+
+def test_gate_does_not_apply_to_unlabeled_issue():
+    assert gate.gate_applies([]) is False

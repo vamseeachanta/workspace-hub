@@ -1,6 +1,8 @@
 # Completeness-before-closure gate — agent rule (#2798)
 
-**When closing any issue that produced work, a test-/evidence-based completeness score (0–100%) must be computed, persisted, owner-reviewed, and ≥ its class threshold BEFORE `gh issue close`.**
+**When closing an issue that OPTED IN (carries the `gate:completeness` label) and reached `status:plan-approved`, a test-/evidence-based completeness score (0–100%) must be computed, persisted, owner-reviewed, and ≥ its class threshold BEFORE `gh issue close`.**
+
+> **Rollout (opt-in):** the gate enforces ONLY for issues explicitly labeled `gate:completeness`. The existing backlog and routine closes are untouched until opted in. An unconfigured gate (no `COMPLETENESS_OWNERS`) is inert for non-opted-in issues. Graduate to repo-wide enforcement only after the rollout is proven.
 
 **Why:** closure should reflect verified completeness, not agent self-report. The user reviews an objective, test-grounded score before the issue is closed (per the 2026-05-25 requirement). Child of the enforced-gates epic [#1839](https://github.com/vamseeachanta/workspace-hub/issues/1839); reuses the module-status-matrix `quality_score`/`test_source_ratio` (#1629).
 

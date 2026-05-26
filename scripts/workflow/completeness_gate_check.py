@@ -19,6 +19,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 VERIFIED_LABEL = "status:completeness-verified"
+OPT_IN_LABEL = "gate:completeness"
+PLAN_APPROVED_LABEL = "status:plan-approved"
 DEFAULT_THRESHOLDS = {"code": 90, "evidence": 80}
 
 
@@ -26,6 +28,18 @@ DEFAULT_THRESHOLDS = {"code": 90, "evidence": 80}
 class GateDecision:
     allowed: bool
     reason: str
+
+
+def gate_applies(labels: list[str], opt_in_label: str = OPT_IN_LABEL,
+                 plan_approved_label: str = PLAN_APPROVED_LABEL) -> bool:
+    """Whether the completeness gate enforces on this issue at all.
+
+    Opt-in rollout (rollout-fix): the gate enforces ONLY for issues that explicitly
+    carry the ``gate:completeness`` label AND reached ``status:plan-approved``.
+    Everything else is out of scope — so an unconfigured gate and the existing
+    backlog are unaffected (no retroactive disruption).
+    """
+    return opt_in_label in labels and plan_approved_label in labels
 
 
 def evaluate_close(

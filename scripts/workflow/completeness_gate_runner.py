@@ -22,10 +22,11 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from completeness_gate_check import VERIFIED_LABEL, evaluate_close  # noqa: E402
+from completeness_gate_check import (  # noqa: E402
+    OPT_IN_LABEL, PLAN_APPROVED_LABEL, VERIFIED_LABEL, evaluate_close, gate_applies,
+)
 
 _RECORD_RE = re.compile(r"```completeness\s*(\{.*?\})\s*```", re.DOTALL)
-PLAN_APPROVED = "status:plan-approved"
 
 
 def _gh_json(*args: str):
@@ -65,21 +66,24 @@ def main() -> int:
     repo = os.environ.get("GH_REPO") or os.environ.get("REPO", "")
     issue = int(os.environ.get("ISSUE_NUMBER") or sys.argv[1])
     closing_actor = os.environ.get("CLOSING_ACTOR", "")
-    owners = {a.strip() for a in os.environ.get("COMPLETENESS_OWNERS", "").split(",") if a.strip()}
-    if not owners:
-        print("[completeness-gate] CONFIG ERROR: COMPLETENESS_OWNERS repo variable is unset — "
-              "set it (comma-separated logins) or every close will be blocked.", file=sys.stderr)
-        return 1
 
     data = _gh_json("issue", "view", str(issue), "--repo", repo,
                     "--json", "body,labels,updatedAt") or {}
     labels = [l["name"] for l in data.get("labels", [])]
 
-    # not gated: issues that never reached implementation
-    if PLAN_APPROVED not in labels:
-        print(f"[completeness-gate] issue #{issue}: not {PLAN_APPROVED} — completeness gate not applicable, ALLOW",
-              file=sys.stderr)
+    # OPT-IN SCOPE FIRST: the gate only enforces on issues that explicitly opted in
+    # (gate:completeness + status:plan-approved). Checking this BEFORE the owners config
+    # means an unconfigured gate is inert for everything else — no retroactive disruption.
+    if not gate_applies(labels):
+        print(f"[completeness-gate] issue #{issue}: not opted in ({OPT_IN_LABEL}+{PLAN_APPROVED_LABEL}) "
+              f"— gate not applicable, ALLOW", file=sys.stderr)
         return 0
+
+    owners = {a.strip() for a in os.environ.get("COMPLETENESS_OWNERS", "").split(",") if a.strip()}
+    if not owners:
+        print(f"[completeness-gate] issue #{issue}: CONFIG ERROR — opted-in but COMPLETENESS_OWNERS "
+              "repo variable is unset; set it (comma-separated logins).", file=sys.stderr)
+        return 1
 
     record = _parse_record(data.get("body", ""))
     label_actor, label_at = _verified_label_event(repo, issue)
