@@ -1,6 +1,6 @@
 # Plan for #2822: Document/automate worktree dispatch for the Codex-under-Claude route (3-layer sandbox requirement)
 
-> **Status:** adversarial-reviewed (awaiting user approval → `status:plan-review`)
+> **Status:** plan-approved (user-approved 2026-05-26) → implemented on this branch (TDD + code review complete)
 > **Complexity:** T2
 > **Date:** 2026-05-26
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2822
