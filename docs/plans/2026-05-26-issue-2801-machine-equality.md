@@ -141,9 +141,14 @@ emit YAML → .claude/state/equality-<machine>.yaml (or --stdout)
 #       sandbox: HOME/XDG_*/cache/log/history redirected to a throwaway temp dir, CWD a temp clone of
 #       the relevant config (DG4/DC1) — so even if a hook appends a log it lands in the throwaway, not
 #       the repo. test_collect_behavior_probes_readonly snapshots the REPO + real $HOME before/after.
-#   b1 gate_blocks_unsafe_write : feed synthetic "Write to src/ w/o approval" to plan-approval-gate.sh
-#        in the sandbox → expect decision enum `deny`. If the hook cannot be invoked without mutating
-#        anything outside the sandbox (verified, not assumed) → emit `n/a` → MISSING-EVIDENCE.
+#   b1 gate_blocks_unsafe_write : pipe synthetic '{"tool_name":"Write","tool_input":{"file_path":
+#        "src/x.py"}}' to plan-approval-gate.sh stdin → assert stdout decision == "block".
+#        VERIFIED side-effect-free by inspection (2026-05-26): the gate reads stdin + does read-only
+#        fs/git checks (find/stat/grep/git log) and emits its decision via printf to stdout, stderr
+#        diagnostics only — NO log append, mkdir, touch, or `>>` in its 126 lines. So NO hook change
+#        (no --dry-run flag) is needed; the sandbox stays as belt-and-suspenders. Resolves DC1/DG4
+#        (their "gate may audit-log" assumption is false for this hook). Emit `n/a` ONLY if jq is
+#        absent or the script path differs on a machine → MISSING-EVIDENCE.
 #   b2 skill_resolves           : issue-planning-mode SKILL.md present + frontmatter parses → `ok|fail`
 #   b3 artifact_format_default  : read .claude/rules → `html|other`
 #   b4 harness_file_size_gate   : check-harness-file-size.sh exit on the 4 adapter md → `pass|fail`
