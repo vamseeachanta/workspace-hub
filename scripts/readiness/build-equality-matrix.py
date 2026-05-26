@@ -58,12 +58,15 @@ def coerce_to_mib(raw) -> int:
     if isinstance(raw, bool):
         raise ValueError(f"bool is not a size: {raw!r}")
     if isinstance(raw, (int, float)):
-        return int(raw)
-    m = re.fullmatch(r"\s*(\d+(?:\.\d+)?)\s*([KMGTkmgt]i?)?B?\s*", str(raw))
-    if not m:
-        raise ValueError(f"cannot coerce to MiB: {raw!r}")
-    value, unit = float(m.group(1)), (m.group(2) or "").lower()
-    return int(value * _MIB.get(unit, 1))
+        result = int(raw)
+    else:
+        m = re.fullmatch(r"\s*(\d+(?:\.\d+)?)\s*([KMGTkmgt]i?)?B?\s*", str(raw))
+        if not m:
+            raise ValueError(f"cannot coerce to MiB: {raw!r}")
+        result = int(float(m.group(1)) * _MIB.get((m.group(2) or "").lower(), 1))
+    if result < 0:                                  # GC5/MINOR: reject negative as invalid evidence
+        raise ValueError(f"negative size is invalid: {raw!r}")
+    return result
 
 
 # ── cold-dim conformance (D2) ────────────────────────────────────────────────
@@ -102,9 +105,9 @@ def cold_verdict(dim: str, report: dict, baseline: dict | None, probed_repos: li
 
 # ── uniform-dim equality + ties (C1) ─────────────────────────────────────────
 def uniform_verdict(dim: str, values: list) -> str:
-    if dim in EXPECTED_DIFF_DIMS:
-        return "EXPECTED-DIFF"
     real = [v for v in values if v not in (None, "unknown", "n/a")]
+    if dim in EXPECTED_DIFF_DIMS:                   # MINOR: evidence precedes expected-diff suppression
+        return "EXPECTED-DIFF" if real else "PENDING"
     if len(real) < 2:
         return "PENDING"
     counts = Counter(real)
@@ -142,12 +145,17 @@ def extract_value(dim: str, report: dict):
 def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
                 roster: dict, probed_repos: list[str]) -> str:
     status = roster.get(machine, {}).get("status", "active")
-    if machine not in reports:
-        return "UNREACHABLE" if status == "unreachable" else "MISSING-EVIDENCE"
+    rep = reports.get(machine)
+    # CC4: a malformed report (parse error / non-dict / missing dimensions) is NOT evidence.
+    valid = isinstance(rep, dict) and "_error" not in rep and isinstance(rep.get("dimensions"), dict)
+    if not valid:
+        return "UNREACHABLE" if (status == "unreachable" and machine not in reports) else "MISSING-EVIDENCE"
     if dim in COLD_DIMS:
-        return cold_verdict(dim, reports[machine], baselines.get(machine), probed_repos)
+        return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     values = [extract_value(dim, reports[m]) for m in roster
-              if roster[m].get("status") == "active" and m in reports]
+              if roster[m].get("status") == "active"
+              and isinstance(reports.get(m), dict) and "_error" not in reports[m]
+              and isinstance(reports[m].get("dimensions"), dict)]
     return uniform_verdict(dim, values)
 
 

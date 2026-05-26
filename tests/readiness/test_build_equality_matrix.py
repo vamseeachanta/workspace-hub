@@ -74,6 +74,18 @@ def test_coerce_to_mib_parse_failure_raises():
         bem.coerce_to_mib("garbage")
 
 
+def test_coerce_to_mib_negative_raises():
+    with pytest.raises(ValueError):
+        bem.coerce_to_mib(-1)
+
+
+def test_matrix_malformed_report_is_missing_evidence():
+    # CC4: a parse-error / non-dict report must not flow into verdict logic
+    roster = {"dev-primary": {"status": "active"}}
+    for bad in ({"_error": "boom"}, "not-a-dict", {"no": "dimensions"}):
+        assert bem.verdict_for("compute", "dev-primary", {"dev-primary": bad}, {}, roster, TIER1) == "MISSING-EVIDENCE"
+
+
 # ── cold-dim conformance (D2) ───────────────────────────────────────────────
 def _baseline(cores_min=16, ram_gib_min=16, required=None, gpu_required=False):
     return {"compute_floor": {"cores_min": cores_min, "ram_gib_min": ram_gib_min,

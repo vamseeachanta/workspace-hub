@@ -106,6 +106,16 @@ def test_collect_no_forbidden_fields(tmp_path):
     assert d["dimensions"]["harness"]["gh_auth"] in ("ok", "logged-out", "absent")  # enum, not token
 
 
+def test_collect_yaml_injection_escaped(tmp_path):
+    # CC1/GC1: a machine label containing a double-quote must NOT break the emitted YAML
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", 'evil"label: injected'],
+        env={"WORKSPACE_HUB": str(_fixture(tmp_path)), "PATH": "/usr/bin:/bin:/usr/local/bin"},
+        capture_output=True, text=True, timeout=60)
+    d = yaml.safe_load(res.stdout)          # must still parse
+    assert d["machine"] == 'evil"label: injected'   # value preserved, not injected as structure
+
+
 def test_collect_commit_on_change_idempotent(tmp_path):
     # D1/DC4: two runs with no real change must not rewrite (hash excludes volatile + generated_at)
     ws = _fixture(tmp_path)

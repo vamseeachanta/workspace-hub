@@ -57,7 +57,9 @@ workstations:
     report_path: .claude/state/harness-readiness-licensed-win-1.yaml
     notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
     role: licensed-solver
-    compute_floor: {cores_min: 8, ram_gib_min: 16}
+    # CC5: no ram_gib_min — Git-Bash v1 can't reliably read Windows RAM (would force permanent
+    # MISSING-EVIDENCE). RAM floor returns when the .ps1 compute companion lands (C2 follow-up).
+    compute_floor: {cores_min: 8}
     required_data_access: [digitalmodel, assetutilities]
   licensed-win-2:
     ws_hub_path: 'D:\workspace-hub'
@@ -66,7 +68,9 @@ workstations:
     report_path: .claude/state/harness-readiness-licensed-win-2.yaml
     notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
     role: licensed-solver
-    compute_floor: {cores_min: 8, ram_gib_min: 16}
+    # CC5: no ram_gib_min — Git-Bash v1 can't reliably read Windows RAM (would force permanent
+    # MISSING-EVIDENCE). RAM floor returns when the .ps1 compute companion lands (C2 follow-up).
+    compute_floor: {cores_min: 8}
     required_data_access: [digitalmodel, assetutilities]
   home-win:
     ws_hub_path: 'D:\workspace-hub'

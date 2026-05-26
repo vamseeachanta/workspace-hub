@@ -1,13 +1,13 @@
-generated_at: "2026-05-26T09:44:33"
+generated_at: "2026-05-26T09:51:54"
 schema_version: 2
-machine: dev-primary
-host: ace-linux-1
+machine: "dev-primary"
+host: "ace-linux-1"
 os: linux
 status: active
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 23698, disk_avail_gb: 881}
+    headroom: {ram_avail_mib: 23949, disk_avail_gb: 881}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -30,4 +30,4 @@ dimensions:
   scheduler:
     has_repo_sync: true
     has_parity_review: true
-    job_count: 38
+    job_count: 37

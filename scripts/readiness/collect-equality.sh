@@ -39,6 +39,8 @@ if [[ -z "$MACHINE" ]]; then
   esac
 fi
 have() { command -v "$1" >/dev/null 2>&1; }
+# CC1/GC1: escape a value for a YAML double-quoted scalar (backslash, quote; strip CR/LF).
+yesc() { printf '%s' "$1" | tr -d '\r\n' | sed 's/\\/\\\\/g; s/"/\\"/g'; }
 
 # ── 1. COMPUTE (static = graded/hashed; headroom = volatile/excluded) ────────
 cores="unknown"; ram_total_mib="unknown"; gpu="none"; ram_avail_mib="unknown"; disk_avail_gb="unknown"
@@ -90,7 +92,11 @@ ctx="${WS}/.claude/memory/context.md"; ctx_mtime="absent"
 hermes_home="absent"; [[ -d "${HOME:-/nonexistent}/.hermes" ]] && hermes_home="present"
 
 # ── 7. BEHAVIOR — deterministic, SANDBOXED probe corpus (DG4/DC1) ────────────
-SBX="$(mktemp -d 2>/dev/null)/sbx"; mkdir -p "$SBX"
+# CC3: guard mktemp (never let SBX become /sbx → rm -rf /). GC4: trap-based cleanup.
+SBX_PARENT="$(mktemp -d 2>/dev/null)" || { echo "mktemp failed" >&2; exit 1; }
+[[ -n "$SBX_PARENT" && -d "$SBX_PARENT" ]] || { echo "mktemp failed" >&2; exit 1; }
+trap 'rm -rf "$SBX_PARENT"' EXIT
+SBX="${SBX_PARENT}/sbx"; mkdir -p "$SBX"
 sandbox() { HOME="$SBX" XDG_CACHE_HOME="$SBX" XDG_CONFIG_HOME="$SBX" XDG_STATE_HOME="$SBX" "$@"; }
 b1="n/a"
 gate="${WS}/.claude/hooks/plan-approval-gate.sh"
@@ -112,27 +118,27 @@ if [[ -f "$settings" ]] && have jq && have sha256sum; then
   b5=$(jq -cS '.permissions // {}' "$settings" 2>/dev/null | tr -d '\r' | sha256sum | cut -c1-16)
   : "${b5:=n/a}"
 fi
-rm -rf "$(dirname "$SBX")" 2>/dev/null
+# (sandbox cleanup handled by the EXIT trap above — CC3/GC4)
 
 # ── 8. SCHEDULER (counts/booleans only; never cron lines, C4) ────────────────
 job_count=0; has_sync=false; has_parity=false
 if [[ "$OS" != "windows" ]] && have crontab; then
   dump=$(crontab -l 2>/dev/null)
-  job_count=$(printf '%s\n' "$dump" | grep -vc '^[[:space:]]*#')
+  job_count=$(printf '%s\n' "$dump" | grep -cE '^[[:space:]]*[^[:space:]#]')  # non-blank, non-comment
   printf '%s' "$dump" | grep -q 'repository-sync\|repo-sync' && has_sync=true
   printf '%s' "$dump" | grep -q 'parity-review' && has_parity=true
 fi
 
 # ── emit (generated_at + headroom + mtime + job_count are EXCLUDED from the hash) ──
-read -r -d '' BODY <<YAML
+read -r -d '' BODY <<YAML || true
 schema_version: 2
-machine: ${MACHINE}
-host: ${HOST}
+machine: "$(yesc "$MACHINE")"
+host: "$(yesc "$HOST")"
 os: ${OS}
 status: active
 dimensions:
   compute:
-    static: {cores: ${cores}, ram_total_mib: ${ram_total_mib}, gpu_model: "${gpu}"}
+    static: {cores: ${cores}, ram_total_mib: ${ram_total_mib}, gpu_model: "$(yesc "$gpu")"}
     headroom: {ram_avail_mib: ${ram_avail_mib}, disk_avail_gb: ${disk_avail_gb}}
   data_access:
 ${data_yaml}  harness:
@@ -142,10 +148,10 @@ ${data_yaml}  harness:
     readiness_ref: ${readiness_file}
     readiness_overall: ${readiness_overall:-missing}
   skills: {repo_skill_count: ${skills}}
-  kanban: {dispatch_queues: "${queues}"}
+  kanban: {dispatch_queues: "$(yesc "$queues")"}
   memory:
     hermes_home: ${hermes_home}
-    context_md_mtime: "${ctx_mtime}"
+    context_md_mtime: "$(yesc "$ctx_mtime")"
   behavior:
     enums: {b1: ${b1}, b2: ${b2}, b3: ${b3}, b4: ${b4}}
     hashes: {b5: ${b5}}
@@ -157,7 +163,9 @@ YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 
 # canonical payload = exclude volatile/meaningless fields (DC4/DG1)
-canonical() { printf '%s\n' "$1" | grep -vE '^(generated_at:)|(^    headroom:)|(context_md_mtime:)|(job_count:)'; }
+# CC2/GC2: anchor volatile-field exclusion to line start/indent so a value that merely
+# CONTAINS "job_count:"/"context_md_mtime:" can't drop its line from the hash.
+canonical() { printf '%s\n' "$1" | grep -vE '^(generated_at:)|^[[:space:]]*(headroom|context_md_mtime|job_count):'; }
 
 if [[ "$TO_STDOUT" == "1" ]]; then
   printf '%s\n' "$FULL"
