@@ -1,0 +1,34 @@
+name: autoapply-completeness-label
+
+# #2798 (#3) — keep the completeness gate comprehensive for NEW work.
+# The one-time bulk-label covered today's open issues; this auto-applies the
+# `gate:completeness` opt-in label the moment an issue reaches `status:plan-approved`,
+# so newly-approved work is gated at close without manual labeling.
+#
+# Safe by construction: only ADDS a label (idempotent — re-adding is a no-op); never
+# closes/reopens/removes. The completeness gate itself (completeness-gate.yml) is what
+# enforces at close.
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  issues: write
+
+jobs:
+  add-gate-label:
+    runs-on: ubuntu-latest
+    # Only react to the plan-approved label being added.
+    if: github.event.label.name == 'status:plan-approved'
+    steps:
+      - name: Add gate:completeness (idempotent)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # self-heal: ensure the label exists (no-op if present)
+          gh label create "gate:completeness" --repo "${{ github.repository }}" \
+            --color 5319e7 --description "Opt-in: completeness score required before close (#2798)" 2>/dev/null || true
+          gh issue edit "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --add-label "gate:completeness"
