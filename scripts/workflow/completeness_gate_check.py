@@ -52,6 +52,7 @@ def evaluate_close(
     body_verified_fresh: bool,
     class_thresholds: dict[str, int] | None = None,
     verified_label: str = VERIFIED_LABEL,
+    require_separate_closer: bool = False,
 ) -> GateDecision:
     thresholds = class_thresholds or DEFAULT_THRESHOLDS
 
@@ -79,9 +80,15 @@ def evaluate_close(
             f"verified label applied by unauthorized actor {label_actor!r}; "
             f"must be one of {sorted(authorized_appliers)}")
 
-    if label_actor == closing_actor:
+    # Separation-of-duties is OPT-IN (teams), not default. The authorized-appliers check
+    # above already guarantees an authorized owner applied the verified label — that IS the
+    # human gate. Requiring a *different* closer makes the gate unsatisfiable for a solo
+    # operator (always both verifier and closer). Teams that want separation set
+    # COMPLETENESS_REQUIRE_SEPARATE_CLOSER=1.
+    if require_separate_closer and label_actor == closing_actor:
         return GateDecision(
-            False, f"verifier and closer are the same actor {label_actor!r} — self-verification not allowed")
+            False, f"verifier and closer are the same actor {label_actor!r} and separate-closer is "
+                   "required (COMPLETENESS_REQUIRE_SEPARATE_CLOSER)")
 
     if not body_verified_fresh:
         return GateDecision(

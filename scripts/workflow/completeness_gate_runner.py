@@ -90,10 +90,12 @@ def main() -> int:
     body_edited_at = _parse_iso(data.get("updatedAt"))
     body_verified_fresh = bool(label_at and body_edited_at and label_at >= body_edited_at)
 
+    require_separate = os.environ.get("COMPLETENESS_REQUIRE_SEPARATE_CLOSER", "").lower() in ("1", "true", "yes")
     decision = evaluate_close(
         record=record, labels=labels, label_actor=label_actor,
         closing_actor=closing_actor, authorized_appliers=owners,
         expected_issue=issue, body_verified_fresh=body_verified_fresh,
+        require_separate_closer=require_separate,
     )
     print(f"[completeness-gate] issue #{issue}: "
           f"{'ALLOW' if decision.allowed else 'DENY'} — {decision.reason}", file=sys.stderr)
