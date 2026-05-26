@@ -176,6 +176,7 @@ data/document-index/*.jsonl.backup-*
 !.claude/state/corrections/
 !.claude/state/patterns/
 !.claude/state/harness-readiness-licensed-win-1.yaml
+!.claude/state/equality-*.yaml
 !.claude/state/reflect-history/
 !.claude/state/trends/
 !.claude/state/session-signals/

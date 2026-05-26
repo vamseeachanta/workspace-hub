@@ -12,6 +12,7 @@ import sys
 from pathlib import Path
 
 import pytest
+import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MODULE_PATH = REPO_ROOT / "scripts" / "readiness" / "build-equality-matrix.py"
@@ -178,6 +179,20 @@ def test_verdict_unreachable_over_missing():
 def test_verdict_active_no_report_missing_evidence():
     roster = {"dev-secondary": {"status": "active"}}
     assert bem.verdict_for("compute", "dev-secondary", {}, {}, roster, TIER1) == "MISSING-EVIDENCE"
+
+
+def test_harness_config_real_roster_and_baselines():
+    # Loads the REAL harness-config.yaml: home-win/macbook unreachable; active machines have baselines.
+    cfg = yaml.safe_load((REPO_ROOT / "scripts" / "readiness" / "harness-config.yaml").read_text())
+    roster = bem.load_roster(cfg)
+    assert roster["home-win"]["status"] == "unreachable"
+    assert roster["macbook-portable"]["status"] == "unreachable"
+    assert roster["dev-primary"]["status"] == "active"
+    baselines = bem.load_baselines(cfg)
+    for m in ("dev-primary", "dev-secondary", "licensed-win-1", "licensed-win-2"):
+        assert "compute_floor" in baselines[m] and "required_data_access" in baselines[m]
+        # baseline must only name repos the collector actually probes (D2-1)
+        assert set(baselines[m]["required_data_access"]) <= set(TIER1)
 
 
 def test_verdict_behavior_is_uniform_not_expected_diff():
