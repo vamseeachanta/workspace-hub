@@ -195,6 +195,19 @@ def test_harness_config_real_roster_and_baselines():
         assert set(baselines[m]["required_data_access"]) <= set(TIER1)
 
 
+def test_wiring_single_source_schedule():
+    # DC5: the schedule lives in the ONE canonical source (schedule-tasks.yaml), weekly,
+    # all 4 active machines, invoking both collector and matrix builder.
+    tasks = yaml.safe_load(
+        (REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml").read_text())["tasks"]
+    eq = next(t for t in tasks if t["id"] == "equality-report")
+    assert eq["schedule"].split()[-1] == "1"            # weekly, Monday
+    assert "collect-equality.sh" in eq["command"]
+    assert "build-equality-matrix.py" in eq["command"]
+    for m in ("dev-primary", "dev-secondary", "licensed-win-1", "licensed-win-2"):
+        assert m in eq["machines"]
+
+
 def test_verdict_behavior_is_uniform_not_expected_diff():
     # behavior probes compared across machines; identical → EQUAL (M2: never EXPECTED-DIFF)
     roster = {"dev-primary": {"status": "active"}, "dev-secondary": {"status": "active"}}
