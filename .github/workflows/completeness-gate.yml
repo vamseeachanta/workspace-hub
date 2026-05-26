@@ -43,6 +43,9 @@ jobs:
           # Authorized verified-label appliers. Keep in a repo variable so it is
           # not editable via a PR to this workflow file.
           COMPLETENESS_OWNERS: ${{ vars.COMPLETENESS_OWNERS }}
+          # Opt-in separation-of-duties (teams): require the closer to differ from the
+          # verified-label applier. Unset/false = solo-friendly (same actor may verify+close).
+          COMPLETENESS_REQUIRE_SEPARATE_CLOSER: ${{ vars.COMPLETENESS_REQUIRE_SEPARATE_CLOSER }}
         run: |
           set +e
           python scripts/workflow/completeness_gate_runner.py

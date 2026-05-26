@@ -61,9 +61,15 @@ def test_denies_unauthorized_label_actor():
     assert d.allowed is False and ("authorized" in d.reason.lower() or "actor" in d.reason.lower())
 
 
-def test_denies_when_verifier_is_closer():
+def test_allows_same_actor_by_default_solo_operation():
+    # solo operator both verifies and closes — allowed by default (separation is opt-in)
     d = _eval(label_actor="vamseeachanta", closing_actor="vamseeachanta")
-    assert d.allowed is False and ("self" in d.reason.lower() or "same" in d.reason.lower())
+    assert d.allowed is True
+
+
+def test_denies_same_actor_only_when_separate_closer_required():
+    d = _eval(label_actor="vamseeachanta", closing_actor="vamseeachanta", require_separate_closer=True)
+    assert d.allowed is False and ("separate" in d.reason.lower() or "same" in d.reason.lower())
 
 
 def test_denies_when_body_edited_after_verification():
