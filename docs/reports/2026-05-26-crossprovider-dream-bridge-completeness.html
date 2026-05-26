@@ -38,7 +38,7 @@
     <span class="big">78%</span>
     <div>
       <strong>Test-based completeness</strong><br>
-      <span class="mut">Core pipeline built, adversarially reviewed, and verified. Held below 100% by two user/time-dependent steps: the consolidating <code>/dream</code> (not yet run) and cron/hook that are installed but have not yet fired live.</span>
+      <span class="mut">Core pipeline built, adversarially reviewed, and verified. Held below 100% by time-dependent steps that fire on their own: the <strong>automatic background dream</strong> (consolidates the staged learnings when its hours/sessions thresholds are met — there is no manual trigger) and the cron/hook that are installed but have not yet fired live.</span>
     </div>
   </div>
 
@@ -72,20 +72,20 @@
       <tr><td>SessionStart lock-reaper hook</td>
           <td><span class="pill p-warn">INSTALLED</span></td><td class="pct">70</td>
           <td>In <code>settings.json</code> (valid JSON); pipe-tested 3 ways (reap dead / preserve live / no-op). Not yet fired in a real session start.</td></tr>
-      <tr><td>Consolidating <code>/dream</code> over staged learnings</td>
-          <td><span class="pill p-no">NOT&nbsp;RUN</span></td><td class="pct">0</td>
-          <td>User-invoked only. The end-goal step; nothing has consolidated the staged learnings yet.</td></tr>
+      <tr><td>Automatic background dream consolidates staged learnings</td>
+          <td><span class="pill p-warn">PENDING&nbsp;(AUTO)</span></td><td class="pct">0</td>
+          <td>Fires automatically (no manual command) when <code>autoDreamEnabled</code> is true AND hours-since-last ≥ <code>minHours</code> AND new-Claude-sessions-since-last ≥ <code>minSessions</code> AND the consolidate-lock is free. All preconditions are set (toggle on, lock cleared, hook self-heals it); it will fire during normal Claude usage. Not yet observed firing.</td></tr>
       <tr><td>Durability — scripts committed + pushed</td>
           <td><span class="pill p-ok">DONE</span></td><td class="pct">100</td>
           <td>On <code>feat/2833</code>; <span class="mut">machine-config (cron/hook/settings) documented in #2833, not git-tracked by design.</span></td></tr>
     </tbody>
   </table>
 
-  <h2>Blocking items before close</h2>
+  <h2>Items before close (all automatic / time-based — no manual command)</h2>
   <ul>
-    <li><strong>Gemini regen completes</strong> (in progress, ~25 min) — then all 3 providers clean.</li>
-    <li><strong>Run <code>/dream</code></strong> (user) — consolidate the staged cross-provider learnings; this is the feature's payoff.</li>
-    <li><strong>Re-score to ~100%</strong> after the above + first live cron/hook fire, then <code>gh issue close</code>.</li>
+    <li><strong>Gemini regen completes</strong> (in progress) — then all 3 providers clean.</li>
+    <li><strong>Automatic background dream fires</strong> — consolidates the staged cross-provider learnings on its own during normal Claude usage (gated by <code>minHours</code> + <code>minSessions</code> + lock). The feature's payoff; nothing to invoke. Verify afterward via <code>tengu_auto_dream_fired</code> telemetry / a shrinking <code>crossprovider_*.md</code> count.</li>
+    <li><strong>Re-score to ~100%</strong> once the dream has fired at least once and the cron/hook have run live, then <code>gh issue close</code>.</li>
   </ul>
 
   <h2>Accepted residuals (by user decision)</h2>
