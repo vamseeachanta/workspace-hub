@@ -104,3 +104,36 @@ def test_gate_does_not_apply_without_plan_approved():
 
 def test_gate_does_not_apply_to_unlabeled_issue():
     assert gate.gate_applies([]) is False
+
+
+# ---- body-freshness helper (fix #5: anchor on lastEditedAt, not updatedAt) ----
+
+import datetime as _dt  # noqa: E402
+
+def _t(h):  # helper: a UTC datetime at hour h on a fixed day
+    return _dt.datetime(2026, 5, 26, h, 0, tzinfo=_dt.timezone.utc)
+
+
+def test_fresh_when_label_after_body_edit():
+    assert gate.body_is_fresh(label_at=_t(16), last_edited_at=_t(12), created_at=_t(0)) is True
+
+
+def test_not_fresh_when_label_before_body_edit():
+    assert gate.body_is_fresh(label_at=_t(11), last_edited_at=_t(12), created_at=_t(0)) is False
+
+
+def test_falls_back_to_created_at_when_never_edited():
+    # body never edited (lastEditedAt None) -> compare against createdAt
+    assert gate.body_is_fresh(label_at=_t(16), last_edited_at=None, created_at=_t(0)) is True
+    assert gate.body_is_fresh(label_at=_t(11), last_edited_at=None, created_at=_t(12)) is False
+
+
+def test_not_fresh_when_no_label():
+    assert gate.body_is_fresh(label_at=None, last_edited_at=_t(12), created_at=_t(0)) is False
+
+
+def test_close_does_not_break_freshness_regression():
+    # the bug: a later updatedAt (e.g. from the close) must NOT enter the calc.
+    # helper only sees body-edit time, so a label applied after the body edit stays fresh
+    # regardless of any later issue activity.
+    assert gate.body_is_fresh(label_at=_t(16), last_edited_at=_t(12), created_at=_t(0)) is True
