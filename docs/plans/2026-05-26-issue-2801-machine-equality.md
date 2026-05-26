@@ -1,6 +1,6 @@
 # Plan for #2801: Machine-equality matrix across the multi-machine ecosystem
 
-> **Status:** revising (T2 done on original scope; user decisions D1/D2/D3 grew it to T3 — delta re-review required before approval)
+> **Status:** plan-review (FULL T3 gate complete — Claude r1+r3, Codex r2+delta, Gemini delta; Codex/Gemini consensus applied; approval-ready, awaiting USER)
 > **Complexity:** T3 (grew from T2 after D1/D2/D3)
 > **Date:** 2026-05-26
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2801
@@ -95,12 +95,16 @@ A regenerable machine-equality matrix: each machine self-reports 8 dimensions vi
 ```
 # collect-equality.sh (runs per machine; Linux/macOS/Git-Bash)
 detect OS (uname) and machine-label (hostname → roster, --machine override)
-compute:      cores/ram/disk/gpu per-OS branch (Linux nproc/free; macOS sysctl).
-              # C2: Windows v1 — try NUMBER_OF_PROCESSORS + best-effort; if a field
-              #     can't be read reliably (wmic absent on modern Win), emit "unknown"
-              #     sentinel → matrix renders MISSING-EVIDENCE (NOT a fake value).
-              #     Accurate Windows compute deferred to a .ps1 companion (follow-up issue).
-data_access:  for each tier1 repo → nested | sibling:<path> | absent
+compute.static:   cores, ram_total_mib, gpu_model  ← STATIC only (DG1/DC4: hashed + conformance-graded)
+compute.headroom: ram_avail_mib, disk_avail_gb      ← VOLATILE (display-only; EXCLUDED from idempotency
+                  hash AND from conformance; changes every run, would defeat commit-on-change).
+              # All capacity values normalized to a COMMON unit at collection (DG2/DC3): RAM→MiB,
+              # disk→GB; never bare "31Gi"/"512Mi" strings into the verdict path.
+              # C2: Windows v1 — best-effort; a field that can't be read reliably emits "unknown"
+              #     sentinel → MISSING-EVIDENCE (not a fake value). Accurate Windows compute = .ps1 follow-up.
+data_access:  for each tier1 repo → { repo: <bare-name>, mode: nested|sibling|absent }
+              # MC1/DG3: emit access MODE + BARE repo name — NOT the absolute /mnt path
+              # (avoids machine-layout leak per C4, and makes the baseline subset check exact).
 harness:      provider presence (claude/codex/gemini/hermes), gh auth,
               python_cmd; REFERENCE harness-readiness-<machine>.yaml (don't re-run)
 skills:       count SKILL.md (maxdepth 3)
@@ -121,25 +125,31 @@ emit YAML → .claude/state/equality-<machine>.yaml (or --stdout)
 #       - Windows (licensed-win-1/2): weekly task in scripts/windows/setup-scheduler-tasks.ps1
 #         (sibling to the #2229 NightlyReadiness/MemoryBridgeSync tasks).
 #   * On-demand: `collect-equality.sh --now` on any machine.
-#   * COMMIT-ON-CHANGE: content hash EXCLUDING generated_at; if unchanged vs committed file,
-#     do NOT rewrite/commit (no weekly git churn even though the job runs weekly).
+#   * COMMIT-ON-CHANGE via a CANONICAL HASH PAYLOAD (DC4/DG1) — an explicit ALLOWLIST of
+#     stable field paths, NOT "everything minus generated_at". Hash payload = {compute.static,
+#     data_access, harness.providers, harness.readiness_overall, skills.count, kanban.queues,
+#     memory.hermes_home, behavior.b1..b5, scheduler.{has_repo_sync,has_parity_review}}.
+#     EXCLUDED from hash: generated_at, compute.headroom (ram_avail/disk_avail), memory.context_md_mtime,
+#     scheduler.job_count (jitters). If the canonical payload is unchanged vs the committed file,
+#     do NOT rewrite/commit (no weekly git churn).
 #   * Hot dims (harness/skills) stay fresh via the nightly harness-readiness REFERENCE.
+#   * D1-1 wiring: Linux cron entry + Windows task are RENDERED FROM ONE SHARED TEMPLATE/config
+#     (DC5) so both OSes invoke the identical command/repo-path/branch/commit-on-change logic.
 
-# D3 — Behavior probe corpus (deterministic harness behavior — NOT LLM output, which is
-#       non-deterministic and not diffable). Each probe is READ-ONLY / side-effect-free and
-#       yields a stable enum/hash comparable across machines:
-#   b1 gate_blocks_unsafe_write : run .claude/hooks/plan-approval-gate.sh in DRY-RUN against a
-#        synthetic "Write to src/ without approval marker" payload → expect "deny" (no real write)
-#   b2 skill_resolves           : issue-planning-mode SKILL.md present + frontmatter parses → ok/fail
-#   b3 artifact_format_default  : read .claude/rules → "html" | other
-#   b4 harness_file_size_gate   : check-harness-file-size.sh exit (pass/fail) on the 4 adapter md files
-#   b5 settings_permissions_hash: sha256 of the CANONICALIZED .claude/settings.json permissions
-#       block — parse JSON, sort keys, strip insignificant whitespace, force LF — THEN hash.
-#       (D3-1: canonicalize or Windows CRLF vs Linux LF + key order → false DIVERGES on identical policy.)
-#       Hash only — never the contents; uniform hash across machines = same gate behavior.
-#   Probes that cannot run side-effect-free on a machine emit "n/a" → MISSING-EVIDENCE (not a fake pass).
-#   (D3-1: b1 must invoke plan-approval-gate.sh via a verified no-write path — synthetic stdin,
-#    decision echoed, no log append; if that contract can't be confirmed, b1 emits "n/a".)
+# D3 — Behavior probe corpus (deterministic harness behavior — NOT LLM output). Emitted as TWO
+#       typed groups (MC3): behavior.enums {b1..b4} and behavior.hashes {b5}. ALL probes run inside a
+#       sandbox: HOME/XDG_*/cache/log/history redirected to a throwaway temp dir, CWD a temp clone of
+#       the relevant config (DG4/DC1) — so even if a hook appends a log it lands in the throwaway, not
+#       the repo. test_collect_behavior_probes_readonly snapshots the REPO + real $HOME before/after.
+#   b1 gate_blocks_unsafe_write : feed synthetic "Write to src/ w/o approval" to plan-approval-gate.sh
+#        in the sandbox → expect decision enum `deny`. If the hook cannot be invoked without mutating
+#        anything outside the sandbox (verified, not assumed) → emit `n/a` → MISSING-EVIDENCE.
+#   b2 skill_resolves           : issue-planning-mode SKILL.md present + frontmatter parses → `ok|fail`
+#   b3 artifact_format_default  : read .claude/rules → `html|other`
+#   b4 harness_file_size_gate   : check-harness-file-size.sh exit on the 4 adapter md → `pass|fail`
+#   b5 settings_permissions_hash: CANONICALIZE then sha256 (DC2/D3-1) — parse JSON; sort object keys;
+#        sort arrays whose order is NON-semantic; dedup; normalize path separators + drive-letter case;
+#        reject/strip absolute $HOME paths; force LF. Compare semantic policy, not raw bytes. Hash only.
 
 # C4 — Serialization allowlist (security/legal baseline; file is git-tracked, repo may publish):
 #   ALLOWED values: integers, booleans, status enums, provider-presence enums,
@@ -172,15 +182,19 @@ for each dimension × machine:
     elif value is None / parse-error / sentinel("unknown"/"n/a") → MISSING-EVIDENCE   # C6
     elif dimension is COLD (compute|data_access):                                     # D2
         if no baseline declared for <m> → MISSING-BASELINE      # fail-closed, prompt to declare
-        elif required_data_access ⊄ collector-probed-repo-set → MISSING-BASELINE  # D2-1 config error
-        elif compute value fails numeric coercion (e.g. "31Gi"→31 raises) → MISSING-EVIDENCE  # D2-2
-        elif meets compute_floor (coerced int compare) / required_data_access ⊆ actual-accessible → CONFORMS
+        elif baseline repo keys ⊄ collector-probed tier1 set → MISSING-BASELINE  # D2-1/MC2 config error
+        elif required compute.static field absent or == "unknown" → MISSING-EVIDENCE  # D2-2/C6
+        elif compute.static meets TYPED floor AND required_data_access ⊆ accessible → CONFORMS
         else → BELOW-BASELINE                                   # actionable drift
-        # (compute_floor is a MINIMUM; a stronger machine still CONFORMS — hardware
-        #  variance above floor is never flagged. data_access: required set ⊆ {repos not "absent"}.
-        #  D2-1: a baseline naming a repo the collector never probes is a CONFIG error
-        #        (MISSING-BASELINE), never a silent un-satisfiable BELOW-BASELINE.
-        #  D2-2: compute fields are coerced ("31Gi"→31, "881G"→881); parse failure → MISSING-EVIDENCE.)
+        # TYPED floor (DG2/DC3): per-field minimums — cores_min, ram_gib_min, optional
+        #   disk_free_gb_min (graded against headroom, soft), gpu_required(bool). ALL declared
+        #   fields must pass (not just cores). Compare in the COMMON unit the collector emits
+        #   (RAM in MiB, disk in GB) — no bare-string compare; "512Mi" can never pass a 16-GiB floor.
+        # accessible (DG3/MC2): { data_access[i].repo : mode != "absent" }. Subset is on BARE repo
+        #   names (collector already emits bare names) — no "sibling:/mnt/..." prefix mismatch.
+        # compute.static is a MINIMUM; a stronger machine still CONFORMS. compute.headroom
+        #   (avail RAM, free disk) is informational only — never makes a machine BELOW-BASELINE
+        #   except via the optional soft disk_free_gb_min.
     else:   # UNIFORM dims — equality across active reporters
         if python_cmd dimension → EXPECTED-DIFF                 # OS-driven (uv vs python)
         elif active reporters with a real value < 2 → PENDING
@@ -209,9 +223,10 @@ render HTML table → docs/reports/<date>-machine-equality-matrix.html
 | Create | tests/readiness/test_collect_equality.py | TDD: collector schema/OS-branch/label |
 | Create | tests/readiness/test_build_equality_matrix.py | TDD: verdict logic + roster |
 | Modify | .gitignore | add `!.claude/state/equality-*.yaml` **after line 168** (`.claude/state/*`), adjacent to the existing `!harness-readiness-licensed-win-1.yaml` negation (m2) |
-| Modify | scripts/readiness/harness-config.yaml | (a) add `home-win` with `ssh_target: null` + `linux_reachable: false` (m3); (b) **D2: add per-machine `role` + `compute_floor` + `required_data_access` baseline blocks** for the declared-conformance grading |
-| Modify | Linux cron installer (e.g. `scripts/cron/` setup) | **D1-1: per-machine weekly crontab entry** on ace-linux-1 + ace-linux-2 → `collect-equality.sh && build-equality-matrix.py` (commit-on-change) |
-| Modify | scripts/windows/setup-scheduler-tasks.ps1 | **D1-1: weekly EqualityReport task** on licensed-win-1/2 (sibling to #2229 NightlyReadiness) |
+| Modify | scripts/readiness/harness-config.yaml | (a) add `home-win` (`ssh_target: null`, `linux_reachable: false`, m3); (b) **D2: per-machine `role` + TYPED `compute_floor` (`cores_min`, `ram_gib_min`, optional `disk_free_gb_min`, `gpu_required`) + `required_data_access` (bare tier1 names)** for declared-conformance grading (DG2/DC3) |
+| Create | scripts/readiness/equality-schedule.yaml (or shared snippet) | **DC5: single source for the scheduled invocation** — command, repo path, branch, commit-on-change flag; Linux cron + Windows task both render from it |
+| Modify | Linux cron installer (`scripts/cron/` setup) | **D1-1: per-machine weekly crontab entry** on ace-linux-1 + ace-linux-2, rendered from the shared template |
+| Modify | scripts/windows/setup-scheduler-tasks.ps1 | **D1-1: weekly EqualityReport task** on licensed-win-1/2, rendered from the same shared template (sibling to #2229 NightlyReadiness) |
 | Update | docs/plans/README.md | index row for this plan |
 
 ---
@@ -223,7 +238,7 @@ render HTML table → docs/reports/<date>-machine-equality-matrix.html
 | test_collect_emits_valid_yaml | output parses + has 8 dimension keys | run `--stdout` on a tmp fixture root | `yaml.safe_load` OK, keys present |
 | test_collect_machine_label_from_hostname | hostname→label map | `HOST=ace-linux-1` | machine=`dev-primary` |
 | test_collect_machine_override | `--machine` wins over hostname | `--machine licensed-win-2` | machine=`licensed-win-2` |
-| test_collect_data_access_sibling | sibling repo detected when not nested | tmp sibling `digitalmodel/.git` | `sibling:<path>` not `absent` |
+| test_collect_data_access_sibling | sibling repo detected; emits bare repo name + mode (no abs path, MC1) | tmp sibling `digitalmodel/.git` | `{repo: digitalmodel, mode: sibling}`, no `/mnt/` string |
 | test_collect_sources_readiness_value | harness dim's `readiness_overall` is SOURCED from fixture file; collector does not modify that file (m1 — positive assertion, not "no re-run") | fixture `harness-readiness-X.yaml` overall=fail | `readiness_overall==fail`, file mtime unchanged |
 | test_matrix_roster_from_config | roster read from harness-config.yaml, not hardcoded (M1) | config with N machines | matrix has exactly those N columns |
 | test_matrix_pending_under_two | <2 real-value reporters → PENDING not EQUAL | 1 equality yaml | cell verdict `PENDING` |
@@ -245,15 +260,21 @@ render HTML table → docs/reports/<date>-machine-equality-matrix.html
 | test_matrix_data_access_missing_required | a required repo absent → BELOW-BASELINE | missing `digitalmodel` | `BELOW-BASELINE` |
 | test_matrix_missing_baseline_fail_closed | cold dim, no baseline declared → MISSING-BASELINE (fail-closed) | machine w/o baseline block | `MISSING-BASELINE` |
 | test_matrix_baseline_unprobed_repo_is_config_error | required_data_access names a repo collector never probes → MISSING-BASELINE not BELOW-BASELINE (D2-1) | baseline requires `foo-repo` | `MISSING-BASELINE` |
-| test_matrix_compute_coercion_parse_fail | compute field that won't coerce → MISSING-EVIDENCE not silent CONFORMS (D2-2) | ram_total="garbage" | `MISSING-EVIDENCE` |
-| test_collect_settings_hash_canonical | b5 hash stable across CRLF/LF + key reorder of identical policy (D3-1) | same policy, CRLF vs LF | identical sha256 |
+| test_matrix_compute_coercion_parse_fail | compute field that won't coerce → MISSING-EVIDENCE not silent CONFORMS (D2-2) | ram_total bad | `MISSING-EVIDENCE` |
+| test_matrix_compute_floor_per_field | ALL declared floor fields graded, not just cores (DG2/DC3) | cores ok but ram<floor | `BELOW-BASELINE` |
+| test_matrix_compute_unit_normalized | "512Mi" never passes a 16-GiB floor (unit-aware, DG2) | ram 512Mi vs floor 16Gi | `BELOW-BASELINE` |
+| test_matrix_data_access_bare_name_subset | subset on bare repo names, not abs paths (DG3/MC2) | actual mode=sibling, baseline bare name | `CONFORMS` |
 | **D3 — behavior probe** | | | |
-| test_collect_behavior_probes_readonly | probe corpus writes nothing (side-effect-free) | run collector, snapshot fs before/after | no fs mutation |
-| test_collect_behavior_gate_blocks | b1 gate-dry-run on synthetic unsafe write → `deny` | synthetic Write-to-src payload | probe result `deny`/ok |
+| test_collect_behavior_probes_readonly | probes mutate neither REPO nor real $HOME (sandboxed, DG4/DC1) | snapshot repo+$HOME before/after | no mutation anywhere outside throwaway temp |
+| test_collect_behavior_gate_blocks | b1 sandboxed gate on synthetic unsafe write → enum `deny`; if no-write unverifiable → `n/a` | synthetic Write-to-src payload | `deny` or `n/a` (never a real write) |
+| test_collect_settings_hash_canonical | b5 hash stable across CRLF/LF, key reorder, AND non-semantic array reorder of identical policy (DC2/D3-1) | same policy, CRLF + reordered arrays | identical sha256 |
+| test_collect_behavior_typed_groups | behavior emits enums{b1-b4} + hashes{b5} as distinct typed fields (MC3) | run collector | two groups, not one scalar |
 | test_matrix_behavior_uniform_equal | identical probe results across machines → EQUAL | 2 machines same probes | `EQUAL` |
 | test_matrix_behavior_divergence | one machine's gate probe differs → DIVERGES | b1 differs on 1 of 3 | `DIVERGES` |
 | **D1 — cadence/idempotency** | | | |
-| test_collect_commit_on_change_skips_timestamp | content hash excludes generated_at; timestamp-only change → no rewrite | run twice, no real change | 2nd run skips write/commit |
+| test_collect_commit_on_change_canonical_payload | hash uses the field ALLOWLIST; volatile fields excluded (DC4/DG1) | change only disk_avail/ram_avail/mtime/job_count | 2nd run skips write/commit |
+| test_collect_commit_on_change_detects_real_drift | a real change to an allowlisted field DOES trigger rewrite | flip a provider present→absent | rewrite/commit happens |
+| test_wiring_render_shared_template | Linux cron + Windows task render from one template, same command/repo/branch (DC5) | render both | identical invocation core |
 
 ---
 
@@ -280,9 +301,11 @@ render HTML table → docs/reports/<date>-machine-equality-matrix.html
 |---|---|---|
 | Claude (r1) | MAJOR → fixes applied | M1 roster-hardcoding (now reads harness-config.yaml), M2 behavior masked by EXPECTED-DIFF (now MISSING-EVIDENCE), m1 untestable negative reframed, m2 gitignore ordering pinned, m3 home-win config shape + consumer check, nit regression scope |
 | Codex (r2) | MAJOR → fixes applied (r3 inline) | C1 tie-handling undefined (→ NO-MAJORITY verdict), C2 Windows wmic unreliable (→ unknown sentinel/MISSING-EVIDENCE, .ps1 follow-up), C3 verdict state-machine under-tested (→ +5 tests), C4 no redaction contract for git-tracked state (→ serialization allowlist + test_collect_no_forbidden_fields), C5 gitignore test weak (→ check-ignore -q + add -n), C6 compute-failure masked as expected-diff (→ MISSING-EVIDENCE) |
-| Claude (r3 delta on D1/D2/D3) | MAJOR (1+3) | D1-1 weekly cron covers only dev-primary (OPEN — needs cadence-coverage decision); D2-1 baseline may name unprobed repo (→ MISSING-BASELINE config-error, fixed); D2-2 compute needs numeric coercion (→ fixed); D3-1 settings hash CRLF/LF false-divergence (→ canonicalize, fixed) |
+| Claude (r3 delta on D1/D2/D3) | MAJOR (1+3) → resolved | D1-1 weekly cron covered only dev-primary (→ per-machine wiring, user chose literal-weekly); D2-1 unprobed-repo baseline (→ MISSING-BASELINE); D2-2 compute coercion (→ fixed); D3-1 settings-hash CRLF/LF (→ canonicalize) |
+| Codex (delta) | MAJOR (5+4) → resolved | DC1 probe side-effects (→ sandbox HOME/XDG/log redirect + readonly test covers $HOME); DC2 b5 hash schema (→ canonical: sort arrays, normalize paths); DC3 typed compute_floor; DC4 canonical hash payload allowlist; DC5 shared wiring template; MC1 path-leak (→ bare repo name); MC3 enum/hash split |
+| Gemini (delta) | MAJOR (4) → resolved | **CONSENSUS w/ Codex**: DG1 volatile fields break idempotency (→ static/headroom split, hash allowlist); DG2 unit-blind coercion (→ normalize to MiB); DG3 data-access string mismatch (→ bare-name subset); DG4 probe side-effects (→ sandbox) |
 
-**Overall result:** T2 review (Claude r1 + Codex r2) complete on the ORIGINAL scope. **Post-r2 the user made 3 decisions (D1/D2/D3) that materially changed scope** — see below. The plan is therefore NOT approval-ready until the delta is re-reviewed; the behavior-probe (D3) and conformance model (D2) were never seen by Codex r2.
+**Overall result:** FULL gate complete. Original scope: Claude r1 + Codex r2 (T2). Delta scope (D1/D2/D3): Claude r3 + Codex + Gemini (T3). Codex and Gemini **converged** on 4 core delta defects (idempotency-volatile-fields, unit-blind coercion, data-access string mismatch, probe side-effects) → high-confidence consensus, all applied as r-inline patches (loop-break rule: consensus across providers ⇒ patch inline, do NOT re-dispatch). Plan is now approval-ready. Implementation remains blocked pending USER approval.
 
 ### Post-r2 user decisions (2026-05-26) — re-review REQUIRED on the delta
 - **D1 (cadence):** cold dims collected weekly + on-demand, commit-on-change (no daily git churn); hot dims referenced from nightly readiness.
