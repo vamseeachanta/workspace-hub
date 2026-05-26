@@ -1,0 +1,25 @@
+/* ============================================================
+ * kanban-readability skill override — appended by install.sh
+ * (.claude/skills/devops/hermes-kanban-readability)
+ *
+ * Card text inherits the Mondwest display font from a parent Card
+ * wrapper. Mondwest is a headline face and reads poorly for dense card
+ * titles/meta at small sizes, so we pin a readable sans stack (the same
+ * face the column headers already use) and bump the sizes a touch.
+ *
+ * Appended LAST so these win on source order at equal specificity — no
+ * need to edit the in-place rules, which keeps this robust across
+ * upstream restyles of the bundled plugin.
+ * ============================================================ */
+.hermes-kanban-card-title {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+.hermes-kanban-card-meta {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.8rem;
+}
+.hermes-kanban-card-id {
+  font-size: 0.7rem;
+}
