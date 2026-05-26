@@ -1,6 +1,6 @@
 # Plan for #2801: Machine-equality matrix across the multi-machine ecosystem
 
-> **Status:** adversarial-reviewed (r1 Claude MAJOR→fixed; Codex r2 pending)
+> **Status:** plan-review (T2 complete: Claude r1 + Codex r2, all findings applied via r3-inline; approval-ready, awaiting USER)
 > **Complexity:** T2
 > **Date:** 2026-05-26
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2801
@@ -83,7 +83,7 @@ dimensions.scheduler: 38 jobs, has_repo_sync=true, has_parity_review=true
 
 ## Deliverable
 
-A regenerable machine-equality matrix: each machine self-reports 8 dimensions via `collect-equality.sh` into a git-tracked `equality-<machine>.yaml`, and `build-equality-matrix.py` joins them into an HTML report with per-cell `EQUAL`/`DIVERGES`/`EXPECTED-DIFF`/`MISSING-EVIDENCE`/`UNREACHABLE` verdicts.
+A regenerable machine-equality matrix: each machine self-reports 8 dimensions via `collect-equality.sh` into a git-tracked `equality-<machine>.yaml` (counts/booleans/enums only — no secrets/paths/commands), and `build-equality-matrix.py` joins them into an HTML report with per-cell `EQUAL`/`DIVERGES`/`NO-MAJORITY`/`EXPECTED-DIFF`/`PENDING`/`MISSING-EVIDENCE`/`UNREACHABLE` verdicts.
 
 ---
 
@@ -92,7 +92,11 @@ A regenerable machine-equality matrix: each machine self-reports 8 dimensions vi
 ```
 # collect-equality.sh (runs per machine; Linux/macOS/Git-Bash)
 detect OS (uname) and machine-label (hostname → roster, --machine override)
-compute:      cores/ram/disk/gpu per-OS branch (nproc|sysctl|wmic)
+compute:      cores/ram/disk/gpu per-OS branch (Linux nproc/free; macOS sysctl).
+              # C2: Windows v1 — try NUMBER_OF_PROCESSORS + best-effort; if a field
+              #     can't be read reliably (wmic absent on modern Win), emit "unknown"
+              #     sentinel → matrix renders MISSING-EVIDENCE (NOT a fake value).
+              #     Accurate Windows compute deferred to a .ps1 companion (follow-up issue).
 data_access:  for each tier1 repo → nested | sibling:<path> | absent
 harness:      provider presence (claude/codex/gemini/hermes), gh auth,
               python_cmd; REFERENCE harness-readiness-<machine>.yaml (don't re-run)
@@ -100,9 +104,20 @@ skills:       count SKILL.md (maxdepth 3)
 kanban:       list .claude/dispatch/*.yaml
 memory:       context.md mtime + ~/.hermes presence
 behavior:     status=deferred (future cross-machine identical-prompt probe)
-scheduler:    cron job count + has_repo_sync + has_parity_review (Linux/mac);
+scheduler:    cron job COUNT + has_repo_sync(bool) + has_parity_review(bool) (Linux/mac);
               "task-scheduler" sentinel on Windows
+              # C4: emit COUNTS/BOOLEANS ONLY — NEVER serialize raw cron lines,
+              #     job commands, or env values.
 emit YAML → .claude/state/equality-<machine>.yaml (or --stdout)
+
+# C4 — Serialization allowlist (security/legal baseline; file is git-tracked, repo may publish):
+#   ALLOWED values: integers, booleans, status enums, provider-presence enums,
+#     OS/hostname, repo-RELATIVE labels, "sibling:<path-under-/mnt/local-analysis>"
+#     (a checkout location, not a secret).
+#   FORBIDDEN: raw cron lines, shell commands, env var values, tokens/keys,
+#     gh token (emit gh_auth as enum ok|logged-out|absent — NEVER the token),
+#     absolute $HOME paths beyond the approved repo-relative labels.
+#   Enforced by test_collect_no_forbidden_fields scanning emitted YAML against a denylist.
 
 # build-equality-matrix.py
 load roster FROM scripts/readiness/harness-config.yaml `workstations:` (M1: single
@@ -110,18 +125,27 @@ load roster FROM scripts/readiness/harness-config.yaml `workstations:` (M1: sing
   UNREACHABLE via a `status`/`linux_reachable` overlay; home-win + macbook-portable
   are UNREACHABLE for now.
 for each equality-<m>.yaml present: parse
+# Verdict precedence (C3 — evaluate top-to-bottom, first match wins):
 for each dimension × machine:
-    if unreachable & no report → UNREACHABLE
-    elif active & no report    → MISSING-EVIDENCE
-    elif dimension's reported status == "deferred" (behavior v1) → MISSING-EVIDENCE  # M2
+    if unreachable & no report           → UNREACHABLE
+    elif active & no report              → MISSING-EVIDENCE
+    elif value is None / parse-error / sentinel("unknown") → MISSING-EVIDENCE   # C6
+    elif dimension status == "deferred" (behavior v1)      → MISSING-EVIDENCE   # M2
     elif dimension in EXPECTED_DIFF (compute, python_cmd ONLY) → EXPECTED-DIFF
-    elif <2 active reporting    → PENDING
-    else verdict = EQUAL if value==majority else DIVERGES
+    elif active reporters with a real value < 2            → PENDING
+    else:                                                                       # C1 tie handling
+        counts = Counter(real values across active reporters)
+        top, n = counts.most_common(1)[0]
+        if number of values tied at n > 1 → NO-MAJORITY    # explicit, never silently EQUAL
+        else verdict = EQUAL if value == top else DIVERGES
 render HTML table → docs/reports/<date>-machine-equality-matrix.html
 
 # M2: EXPECTED_DIFF = {compute, python_cmd} only. Behavior is NOT expected-diff —
-#     it stays MISSING-EVIDENCE until the cross-machine probe lands, so real
-#     behavioral divergence is never masked green.
+#     it stays MISSING-EVIDENCE until the cross-machine probe lands.
+# C1: ties (2 disagree, 4-split-2/2) render NO-MAJORITY — never an order-dependent
+#     false EQUAL. New verdict added to legend.
+# C6: compute is EXPECTED-DIFF only for successfully-collected values; a failed/
+#     missing compute field is MISSING-EVIDENCE (collection failure ≠ hardware variance).
 ```
 
 ---
@@ -150,13 +174,19 @@ render HTML table → docs/reports/<date>-machine-equality-matrix.html
 | test_collect_data_access_sibling | sibling repo detected when not nested | tmp sibling `digitalmodel/.git` | `sibling:<path>` not `absent` |
 | test_collect_sources_readiness_value | harness dim's `readiness_overall` is SOURCED from fixture file; collector does not modify that file (m1 — positive assertion, not "no re-run") | fixture `harness-readiness-X.yaml` overall=fail | `readiness_overall==fail`, file mtime unchanged |
 | test_matrix_roster_from_config | roster read from harness-config.yaml, not hardcoded (M1) | config with N machines | matrix has exactly those N columns |
-| test_matrix_pending_under_two | <2 active machines → PENDING not EQUAL | 1 equality yaml | cell verdict `PENDING` |
-| test_matrix_diverges_on_minority | value ≠ majority of ≥2 reporters → DIVERGES | 3 yamls, 1 differs | minority cell `DIVERGES` |
-| test_matrix_expected_diff_dims | compute + python_cmd ONLY are EXPECTED-DIFF (M2) | any | `EXPECTED-DIFF` |
-| test_matrix_behavior_deferred_is_missing | deferred behavior → MISSING-EVIDENCE, never EXPECTED-DIFF (M2) | report w/ behavior.status=deferred | `MISSING-EVIDENCE` |
-| test_matrix_unreachable_fixed | home-win/macbook always UNREACHABLE w/o report | no report | `UNREACHABLE` |
+| test_matrix_pending_under_two | <2 real-value reporters → PENDING not EQUAL | 1 equality yaml | cell verdict `PENDING` |
+| test_matrix_two_equal | exactly 2 reporters, same value → EQUAL (C3) | 2 yamls same | `EQUAL` |
+| test_matrix_two_disagree_no_majority | exactly 2 reporters, different → NO-MAJORITY not EQUAL (C1) | 2 yamls differ | `NO-MAJORITY` |
+| test_matrix_four_split_tie | 4 reporters 2/2 → NO-MAJORITY (C1) | 4 yamls 2/2 | `NO-MAJORITY` |
+| test_matrix_diverges_on_minority | value ≠ strict majority of ≥3 → DIVERGES | 3 yamls, 1 differs | minority cell `DIVERGES` |
+| test_matrix_expected_diff_dims | compute + python_cmd ONLY are EXPECTED-DIFF (M2) | successfully-collected values | `EXPECTED-DIFF` |
+| test_matrix_compute_failure_is_missing | compute "unknown" sentinel → MISSING-EVIDENCE not EXPECTED-DIFF (C6) | report w/ compute.cores=unknown | `MISSING-EVIDENCE` |
+| test_matrix_behavior_deferred_is_missing | deferred behavior → MISSING-EVIDENCE (M2) | behavior.status=deferred | `MISSING-EVIDENCE` |
+| test_matrix_precedence_unreachable_over_missing | unreachable w/ stale report still UNREACHABLE (C3) | home-win w/ stale yaml | `UNREACHABLE` |
+| test_matrix_unreachable_fixed | home-win/macbook UNREACHABLE w/o report | no report | `UNREACHABLE` |
 | test_matrix_missing_evidence | active machine w/o report | no report for dev-secondary | `MISSING-EVIDENCE` |
-| test_gitignore_negation_tracks_equality | `equality-*.yaml` is git-trackable after negation | `git check-ignore` | not ignored |
+| test_collect_no_forbidden_fields | emitted YAML carries no cron lines/commands/env/tokens/abs-home paths (C4) | run collector, scan output vs denylist | no denylist hit; gh_auth is enum not token |
+| test_gitignore_negation_tracks_equality | `equality-*.yaml` trackable after negation (C5) | `git check-ignore -q` + `git add -n` | check-ignore exit≠0 AND `git add -n` succeeds |
 | test_harness_config_home_win_shape | home-win added with ssh_target null + linux_reachable false (m3) | parse config | fields present, consumers tolerate |
 
 ---
@@ -166,8 +196,9 @@ render HTML table → docs/reports/<date>-machine-equality-matrix.html
 - [ ] All new tests pass: `uv run pytest tests/readiness/ -v`
 - [ ] No regression in scope: `uv run pytest tests/readiness/` green (whole-suite green is NOT this plan's contract — known unrelated flakiness per memory)
 - [ ] `collect-equality.sh` runs live on dev-primary and writes a parseable `equality-dev-primary.yaml`
-- [ ] `git check-ignore .claude/state/equality-dev-primary.yaml` returns non-match (negation works)
-- [ ] `build-equality-matrix.py` renders HTML with correct verdict counts for a 1-machine and a synthetic 3-machine fixture
+- [ ] `git check-ignore -q .claude/state/equality-dev-primary.yaml` exits non-zero AND `git add -n` succeeds (C5 — proves trackable, not just unmatched)
+- [ ] Emitted YAML passes `test_collect_no_forbidden_fields` — no cron lines, commands, env values, tokens, or absolute $HOME paths; `gh_auth` is an enum (C4)
+- [ ] `build-equality-matrix.py` renders correct verdicts for 1-machine, synthetic 3-machine, 2-disagree (NO-MAJORITY), and 4-split (NO-MAJORITY) fixtures
 - [ ] `home-win`/`macbook-portable` render `UNREACHABLE`; the 4 active machines render live or `MISSING-EVIDENCE`
 - [ ] Review artifacts posted to scripts/review/results/
 - [ ] Issue comment posted on #2801 with matrix link + the 3 architecture findings as follow-ups
@@ -179,9 +210,17 @@ render HTML table → docs/reports/<date>-machine-equality-matrix.html
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude (r1) | MAJOR → fixes applied | M1 roster-hardcoding (now reads harness-config.yaml), M2 behavior masked by EXPECTED-DIFF (now MISSING-EVIDENCE), m1 untestable negative reframed, m2 gitignore ordering pinned, m3 home-win config shape + consumer check, nit regression scope |
-| Codex (r2) | PENDING | requires plan pushed to GitHub first (codex needs pushed artifact) |
+| Codex (r2) | MAJOR → fixes applied (r3 inline) | C1 tie-handling undefined (→ NO-MAJORITY verdict), C2 Windows wmic unreliable (→ unknown sentinel/MISSING-EVIDENCE, .ps1 follow-up), C3 verdict state-machine under-tested (→ +5 tests), C4 no redaction contract for git-tracked state (→ serialization allowlist + test_collect_no_forbidden_fields), C5 gitignore test weak (→ check-ignore -q + add -n), C6 compute-failure masked as expected-diff (→ MISSING-EVIDENCE) |
 
-**Overall result:** r1 PASS-with-revisions; awaiting Codex r2 (T2 second provider). Not approval-ready until r2 clears.
+**Overall result:** T2 complete (Claude r1 + Codex r2). r1/r2 surfaced DIFFERENT defects → per the r3-inline loop-break rule, all r2 findings applied as main-session inline patches (NOT a re-dispatched round). Plan is now approval-ready. Implementation remains blocked pending USER approval.
+
+Codex r2 revisions applied:
+- C1: explicit NO-MAJORITY verdict for ties (2-disagree, 4-split-2/2); +test_matrix_two_disagree_no_majority, test_matrix_four_split_tie, test_matrix_two_equal.
+- C2: Windows compute emits `unknown` sentinel → MISSING-EVIDENCE; accurate Windows compute deferred to .ps1 follow-up issue.
+- C3: verdict precedence order pinned; +test_matrix_compute_failure_is_missing, test_matrix_precedence_unreachable_over_missing.
+- C4: serialization allowlist (counts/booleans/enums only; no cron lines/commands/env/tokens/abs-paths; gh_auth as enum); +test_collect_no_forbidden_fields.
+- C5: gitignore acceptance → `git check-ignore -q` (exit≠0) + `git add -n` success.
+- C6: compute parse-error/missing → MISSING-EVIDENCE, distinct from EXPECTED-DIFF hardware variance.
 
 Revisions made based on review:
 - M1: build-equality-matrix.py reads roster from harness-config.yaml (single source of truth); added test_matrix_roster_from_config.
@@ -198,6 +237,9 @@ Revisions made based on review:
 - **Risk:** Windows compute fields are hard to capture in Git Bash; `.ps1` companion may be needed for accurate `licensed-win-*` compute. Mitigation: collector emits `task-scheduler`/best-effort sentinels on Windows; a `.ps1` is a follow-up if Git-Bash values prove unreliable.
 - **Risk:** other-machine reports only land via the 4-hourly `repo-sync` cron; matrix stays `MISSING-EVIDENCE` until each machine runs the collector once. Mitigation: optionally hook `collect-equality.sh` into `nightly-readiness.sh` (flagged as open question below).
 - **Risk:** `.gitignore` negation must use the exact `!.claude/state/equality-*.yaml` form; wildcard negation under an excluded dir works only because `.claude/state/` itself is re-included at line 164. Test `test_gitignore_negation_tracks_equality` guards this.
+- **Resolved (Codex r2 Q1):** ties render as explicit `NO-MAJORITY` verdict (reuses no existing color; added to legend) — never an order-dependent false EQUAL.
+- **Resolved (Codex r2 Q2):** Windows compute is NOT required accurate in v1 — emits `unknown` sentinel → MISSING-EVIDENCE; accurate Windows compute is a follow-up `.ps1` companion issue.
+- **Follow-up issue (C2):** PowerShell collector companion for accurate `licensed-win-*` compute.
 - **Open:** Should `collect-equality.sh` auto-run from `nightly-readiness.sh` (auto-populate) or stay manual/cron-only? (flag for user at approval)
 - **Open:** Behavior dimension is `deferred` in v1 — is a cross-machine identical-prompt probe in scope now or a follow-up issue?
 
