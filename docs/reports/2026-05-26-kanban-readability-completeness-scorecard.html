@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Completeness Scorecard — Hermes Kanban readability + cross-machine durability (#2805)</title>
+<style>
+  :root { --ok:#1a7f37; --warn:#9a6700; --bg:#f6f8fa; --bd:#d0d7de; --fg:#1f2328; }
+  body { font: 15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; color:var(--fg); margin:0; padding:2rem; max-width:980px; }
+  h1 { font-size:1.4rem; margin:0 0 .25rem; }
+  .sub { color:#57606a; margin:0 0 1.25rem; }
+  .score { display:inline-block; font-size:2.4rem; font-weight:700; color:var(--ok); }
+  .scorewrap { background:var(--bg); border:1px solid var(--bd); border-radius:10px; padding:1rem 1.25rem; margin:1rem 0 1.5rem; }
+  table { border-collapse:collapse; width:100%; margin:1rem 0; }
+  th,td { border:1px solid var(--bd); padding:.5rem .6rem; text-align:left; vertical-align:top; font-size:13.5px; }
+  th { background:var(--bg); }
+  .y { color:var(--ok); font-weight:600; }
+  .p { color:var(--warn); font-weight:600; }
+  code { background:var(--bg); padding:.1rem .3rem; border-radius:4px; font-size:12.5px; }
+  h2 { font-size:1.05rem; margin:1.5rem 0 .4rem; border-bottom:1px solid var(--bd); padding-bottom:.2rem; }
+  ul { margin:.3rem 0; }
+  .meta { color:#57606a; font-size:12.5px; }
+</style>
+</head>
+<body>
+<h1>Completeness Scorecard</h1>
+<p class="sub">Hermes Kanban readability + cross-machine durability &middot; tracks <a href="https://github.com/vamseeachanta/workspace-hub/issues/2805">#2805</a> &middot; 2026-05-26</p>
+
+<div class="scorewrap">
+  <span class="score">95%</span>
+  <p style="margin:.4rem 0 0;">Core deliverables 100% implemented and <strong>empirically tested on both Hermes machines</strong> (ace-linux-1 + ace-linux-2). The 5% reflects two non-core items: the Windows no-op path is expected-but-not-empirically-confirmed, and one board's latest cards are blocked on an external (parallel-session) push — neither is a defect of this work.</p>
+</div>
+
+<h2>Acceptance criteria (test-based)</h2>
+<table>
+<tr><th>#</th><th>Criterion</th><th>Status</th><th>Evidence</th></tr>
+<tr><td>1</td><td>Bare <code>Source: https://…</code> URLs render as clickable links</td><td class="y">PASS</td><td>Live drawer anchor (<code>&lt;a target=_blank rel=noopener&gt;</code>) on both machines; <code>verify.sh</code> autolink check</td></tr>
+<tr><td>2</td><td>Card text uses a readable font (not Mondwest display)</td><td class="y">PASS</td><td>Measured <code>system-ui 14.25px</code>; user-confirmed on ace-linux-2</td></tr>
+<tr><td>3</td><td>Entire board viewable (horizontal scrollbar reachable)</td><td class="y">PASS</td><td>scrollbar 9px, <code>colsBottom 802 ≤ viewport 823</code>, all 8 columns reachable; live screenshot</td></tr>
+<tr><td>4</td><td>Override survives <code>hermes update</code> (user-override path)</td><td class="y">PASS</td><td>Dashboard reports kanban <code>source=user</code>; lives in <code>~/.hermes/plugins/</code> outside the repo</td></tr>
+<tr><td>5</td><td>Recovery skill + idempotent <code>install.sh</code></td><td class="y">PASS</td><td><code>install.sh</code> built the live override; idempotent re-runs verified</td></tr>
+<tr><td>6</td><td>Bootstrap hook auto-reinstalls override (reinstall durability)</td><td class="y">PASS</td><td>In-context §2.7 test fired after the <code>core.fileMode</code>/<code>-f</code> fix (<code>434ba288b</code>)</td></tr>
+<tr><td>7</td><td>Board-data auto-load on pull (opt-in, gated)</td><td class="y">PASS</td><td>Safe-by-default no-op verified; ace-linux-2 loaded <strong>52 boards / 1536 cards / 0 failed</strong></td></tr>
+<tr><td>8</td><td><code>verify.sh</code> PASS/FAIL/N-A check</td><td class="y">PASS</td><td>All-green on ace-linux-1 and ace-linux-2</td></tr>
+<tr><td>9</td><td>Cross-machine: ace-linux-1</td><td class="y">PASS</td><td>Override live + hook proven</td></tr>
+<tr><td>10</td><td>Cross-machine: ace-linux-2</td><td class="y">PASS</td><td>Override PASS + 1536 cards loaded</td></tr>
+<tr><td>11</td><td>Non-Hermes machines no-op cleanly (licensed-win-1/2)</td><td class="p">EXPECTED</td><td>Guard negative-tested on ace-linux-1; not empirically run on the Windows hosts (worker machines, no dashboard)</td></tr>
+<tr><td>12</td><td>ai-orchestration board latest cards on ace-linux-2</td><td class="p">EXTERNAL-BLOCKED</td><td>Staged-unpushed by an active parallel session; other ~51 boards loaded complete</td></tr>
+</table>
+
+<h2>Open items (the 5%)</h2>
+<ul>
+  <li><strong>Windows no-op (criterion 11):</strong> expected to skip via the bundled-plugin guard (negative-tested on ace-linux-1); confirm on <code>licensed-win-1/2</code> when convenient.</li>
+  <li><strong>ai-orchestration board (criterion 12):</strong> external dependency — resolves when the parallel session commits+pushes its staged change; re-run <code>kanban-autoload.sh</code> on ace-linux-2 after.</li>
+  <li><strong>Dispatch safety:</strong> 1536 cards loaded with real statuses; ace-linux-2 should be Manual-orchestration so auto-claim can't spawn a worker swarm (user added completeness verification).</li>
+</ul>
+
+<h2>Provenance (origin/main)</h2>
+<ul class="meta">
+  <li><code>de3410905</code> recovery skill &middot; <code>4d4a4c97c</code> handoff &middot; <code>137a56cd6</code> bootstrap §2.7 &middot; <code>434ba288b</code> fileMode/<code>-f</code> fix</li>
+  <li><code>b3dbcd2ab</code> verify.sh &middot; <code>6a38ade92</code> board scrollbar &middot; <code>f8eecd649</code> opt-in auto-load</li>
+  <li>Skill: <code>.claude/skills/devops/hermes-kanban-readability/</code> &middot; loader: <code>.claude/memory/kanban/scripts/load.py</code></li>
+</ul>
+</body>
+</html>
