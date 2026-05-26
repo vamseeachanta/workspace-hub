@@ -150,7 +150,7 @@ fi
 # ---------------------------------------------------------------------------
 KANBAN_READABILITY="${REPO_ROOT}/.claude/skills/devops/hermes-kanban-readability/install.sh"
 HERMES_KANBAN_BUNDLED="${HERMES_HOME:-${HOME}/.hermes}/hermes-agent/plugins/kanban/dashboard"
-if [[ -x "${KANBAN_READABILITY}" && -d "${HERMES_KANBAN_BUNDLED}" ]]; then
+if [[ -f "${KANBAN_READABILITY}" && -d "${HERMES_KANBAN_BUNDLED}" ]]; then
     echo ""
     echo -e "${CYAN}Reinstalling Hermes Kanban readability override...${NC}"
     bash "${KANBAN_READABILITY}" || true
