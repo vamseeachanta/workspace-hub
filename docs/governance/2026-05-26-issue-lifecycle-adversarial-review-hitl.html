@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Issue Lifecycle — Adversarial Review &amp; Human-in-the-Loop Gates</title>
+<style>
+  :root { --fg:#1b1f24; --mut:#57606a; --line:#d0d7de; --accent:#0969da;
+          --ok:#1a7f37; --warn:#9a6700; --danger:#cf222e; --bg:#fff; --code:#f6f8fa; }
+  * { box-sizing:border-box; }
+  body { font:15px/1.6 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;
+         color:var(--fg); max-width:1000px; margin:0 auto; padding:32px 24px; background:var(--bg); }
+  h1 { font-size:26px; border-bottom:2px solid var(--line); padding-bottom:8px; }
+  h2 { font-size:20px; margin-top:38px; border-bottom:1px solid var(--line); padding-bottom:5px; }
+  h3 { font-size:16px; margin-top:22px; }
+  code,kbd { background:var(--code); padding:1px 5px; border-radius:5px; font:13px ui-monospace,Menlo,monospace; }
+  pre { background:var(--code); padding:12px 14px; border-radius:8px; overflow:auto; font:12.5px/1.5 ui-monospace,monospace; }
+  table { border-collapse:collapse; width:100%; margin:12px 0; font-size:14px; }
+  th,td { border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top; }
+  th { background:var(--code); }
+  .mut { color:var(--mut); }
+  .lead { color:var(--mut); font-size:15px; }
+  blockquote { border-left:3px solid var(--accent); margin:12px 0; padding:4px 14px; color:var(--mut); background:#f6f8fa; }
+  .pill { display:inline-block; padding:1px 8px; border-radius:11px; font-size:12px; font-weight:600; }
+  .tag { font:12px ui-monospace,monospace; background:#ddf4ff; color:var(--accent); padding:1px 6px; border-radius:5px; }
+
+  /* ---- flowchart ---- */
+  .flow { display:flex; flex-direction:column; align-items:center; margin:24px 0; }
+  .node { width:640px; max-width:100%; border:1.5px solid var(--line); border-radius:10px;
+          padding:11px 16px; background:#fff; position:relative; }
+  .node .lbl { font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--mut); }
+  .node .ttl { font-weight:650; font-size:15px; margin-top:1px; }
+  .node .sub { font-size:13px; color:var(--mut); margin-top:3px; }
+  .node .src { font-size:11.5px; color:var(--mut); margin-top:5px; font-style:italic; }
+
+  .arrow { width:2px; height:20px; background:var(--line); position:relative; }
+  .arrow::after { content:""; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+                  border:5px solid transparent; border-top-color:var(--line); }
+
+  .phase { width:640px; max-width:100%; font-size:12px; font-weight:700; letter-spacing:.05em;
+           text-transform:uppercase; color:var(--mut); margin:6px 0 2px; }
+
+  /* node variants */
+  .process { }
+  .guard   { border-color:var(--accent); background:#f2f8ff; }
+  .review  { border-color:var(--warn); background:#fff8e6; border-width:2px; }
+  .human   { border-color:var(--ok); background:#eafaf0; border-width:2.5px; }
+  .start   { border-color:var(--mut); background:var(--code); border-radius:24px; }
+  .close   { border-color:var(--ok); background:#dafbe1; border-radius:24px; }
+
+  .badge { display:inline-block; font-size:11px; font-weight:700; padding:1px 7px; border-radius:6px; margin-left:6px; vertical-align:middle; }
+  .badge.r { background:#fff1cc; color:var(--warn); border:1px solid #e0b300; }
+  .badge.h { background:#c9f5d8; color:var(--ok); border:1px solid #43c463; }
+
+  .loop { width:640px; max-width:100%; font-size:12.5px; color:var(--danger); text-align:right; margin:3px 0; }
+  .legend { display:flex; flex-wrap:wrap; gap:14px; margin:14px 0; font-size:13px; }
+  .legend span { display:inline-flex; align-items:center; gap:7px; }
+  .sw { width:26px; height:15px; border-radius:4px; border:1.5px solid; display:inline-block; }
+  .sw.guard{ border-color:var(--accent); background:#f2f8ff; }
+  .sw.review{ border-color:var(--warn); background:#fff8e6; }
+  .sw.human{ border-color:var(--ok); background:#eafaf0; }
+  .sw.process{ border-color:var(--line); background:#fff; }
+</style>
+</head>
+<body>
+
+<h1>Issue Lifecycle &mdash; Adversarial Review &amp; Human-in-the-Loop</h1>
+<p class="lead">Governance flowchart &middot; workspace-hub ecosystem &middot; 2026-05-26 &middot;
+synthesized from current session-memory practice (see source-map table at the end).</p>
+
+<blockquote>
+GitHub is the center of record &mdash; every unit of work is a GitHub issue; there are no local task IDs.
+The lifecycle has <strong>two non-negotiable adversarial-review gates</strong> (plan-stage and code-stage)
+and <strong>three human-in-the-loop gates</strong> (plan-approve, PR-merge, completeness-verify/close).
+Reviews are never skipped &mdash; what scales with scope is review <em>depth</em> (T1/T2/T3), not its presence.
+</blockquote>
+
+<div class="legend">
+  <span><i class="sw process"></i> Process step</span>
+  <span><i class="sw guard"></i> Pre-work guard / discovery</span>
+  <span><i class="sw review"></i> Adversarial review gate <i class="badge r">R</i></span>
+  <span><i class="sw human"></i> Human-in-the-loop gate <i class="badge h">H</i></span>
+</div>
+
+<h2>1. The flow</h2>
+<div class="flow">
+
+  <div class="node start"><div class="ttl">Issue opened &middot; <code>gh issue create</code></div>
+    <div class="sub">Added to project board. <code>status:needs-plan</code>. GitHub issues only &mdash; no local IDs.</div></div>
+  <div class="arrow"></div>
+
+  <div class="phase">Phase 1 &middot; Pre-work guards (before any writing)</div>
+
+  <div class="node guard"><div class="lbl">Guard</div>
+    <div class="ttl">Fetch remote &amp; check for an existing fix</div>
+    <div class="sub"><code>git fetch origin</code> + <code>git log --all --grep="#NNNN"</code>. Another machine may have already solved &amp; pushed it.</div>
+    <div class="src">feedback_fetch_remote_before_resolving_issue</div></div>
+  <div class="arrow"></div>
+
+  <div class="node guard"><div class="lbl">Guard</div>
+    <div class="ttl">Check parallel work &middot; claim WIP label</div>
+    <div class="sub">Scan in-flight sessions, worktrees, recent <code>.planning/</code> edits. Claim the WIP label to avoid cross-machine clashes.</div>
+    <div class="src">feedback_check_parallel_work</div></div>
+  <div class="arrow"></div>
+
+  <div class="node guard"><div class="lbl">Guard</div>
+    <div class="ttl">Resource intel &amp; discovery-first pass</div>
+    <div class="sub">Inventory the codebase before writing. For a stale <code>plan-approved</code> issue (&gt;~7d), prior commits may have already done most of the scope &mdash; decide: execute / narrow / close-as-done.</div>
+    <div class="src">feedback_discovery_first_on_stale_plan_approved</div></div>
+  <div class="arrow"></div>
+
+  <div class="phase">Phase 2 &middot; Plan</div>
+
+  <div class="node process"><div class="ttl">Draft the plan</div>
+    <div class="sub">Future tense only (no past-tense artifact claims). Classify scope <strong>T1 / T2 / T3</strong> &mdash; this sets review depth, not whether review happens.</div>
+    <div class="src">feedback_plan_past_tense_artifact_claims</div></div>
+  <div class="arrow"></div>
+
+  <div class="node review"><div class="lbl">Gate &mdash; Adversarial Review A <span class="badge r">R</span></div>
+    <div class="ttl">Adversarial PLAN review</div>
+    <div class="sub">Defect-hunting stance (assume defects, no praise, evidence per finding, empty review = failure). Depth: <strong>T1</strong> 1 provider &middot; <strong>T2</strong> Codex+Gemini &middot; <strong>T3</strong> +3rd Claude pass. Must leave an artifact under <code>scripts/review/results/</code>.</div>
+    <div class="src">adversarial_review_stance &middot; always_adversarial_review_scale_depth &middot; cross_provider_review_payoff</div></div>
+  <div class="loop">&#8617; MAJOR findings &rarr; revise plan &amp; re-review (don't auto-loop &gt;3 rounds &mdash; surface consensus)</div>
+  <div class="arrow"></div>
+
+  <div class="node process"><div class="ttl">Label <code>status:plan-review</code></div>
+    <div class="sub">Present to user: links to plan at a stable commit ref + reviewer artifacts + a CLI one-liner they paste themselves.</div></div>
+  <div class="arrow"></div>
+
+  <div class="node human"><div class="lbl">Human gate 1 <span class="badge h">H</span></div>
+    <div class="ttl">USER APPROVES &rarr; <code>status:plan-approved</code></div>
+    <div class="sub">User sets the label themselves (CLI / web UI). <strong>Never self-approve, never offer "tell me and I'll label it," never pre-authorize via handoff prompt.</strong> Planning is where course-correction is cheapest.</div>
+    <div class="src">feedback_never_offer_to_self_label_plan_approved</div></div>
+  <div class="arrow"></div>
+
+  <div class="phase">Phase 3 &middot; Implement</div>
+
+  <div class="node process"><div class="ttl">Implement (TDD &middot; tests-first)</div>
+    <div class="sub">Mid-build self-corrections are normal but are <em>self-review by the author</em> &mdash; they do NOT satisfy the review gate below.</div></div>
+  <div class="arrow"></div>
+
+  <div class="node review"><div class="lbl">Gate &mdash; Adversarial Review B <span class="badge r">R</span></div>
+    <div class="ttl">Adversarial CODE / artifact review</div>
+    <div class="sub">2+ providers; Codex tends to find contract-vs-shipped-data defects Claude misses (non-overlapping). Spot-verify reviewer claims locally (sandbox can misread untracked-but-present files as "absent"). Leaves an artifact.</div>
+    <div class="src">cross_provider_review_payoff &middot; gemini_sandbox_overlay_blindness</div></div>
+  <div class="loop">&#8617; MAJOR findings &rarr; fix &amp; re-review</div>
+  <div class="arrow"></div>
+
+  <div class="phase">Phase 4 &middot; Completeness &amp; cleanup</div>
+
+  <div class="node process"><div class="ttl">Compute completeness score (0&ndash;100%)</div>
+    <div class="sub">Test-grounded (pass-rate + coverage delta + acceptance-criteria checklist), scored adversarially. Documented in HTML under <code>docs/reports/</code>. Stamp the <code>```completeness {json}```</code> record on the issue body <strong>before</strong> the owner applies the verified label (anti-forgery freshness check).</div>
+    <div class="src">completeness_score_before_closure &middot; completeness_gate_first_close_sequence</div></div>
+  <div class="arrow"></div>
+
+  <div class="node process"><div class="ttl">Pre-completion cleanup audit</div>
+    <div class="sub">5-step audit &rarr; bucket residue CLEAN / EXPECTED / UNEXPECTED. <strong>Block completion if any UNEXPECTED residue.</strong></div>
+    <div class="src">feedback_pre_completion_cleanup_audit_gate</div></div>
+  <div class="arrow"></div>
+
+  <div class="node human"><div class="lbl">Human gate 2 <span class="badge h">H</span></div>
+    <div class="ttl">USER MERGES the PR</div>
+    <div class="sub">Merge is a user action, gated on Review B evidence existing. A green pre-push "review-gate PASS" keys off commit metadata, not a real review artifact &mdash; it does not substitute for the gate.</div>
+    <div class="src">adversarial_review_before_user_approval</div></div>
+  <div class="arrow"></div>
+
+  <div class="node human"><div class="lbl">Human gate 3 <span class="badge h">H</span></div>
+    <div class="ttl">USER reviews % &rarr; owner attests <code>status:completeness-verified</code></div>
+    <div class="sub">Owner confirms score &ge; threshold (default 90%); may override DOWN, never silently up. Set <code>COMPLETENESS_OWNERS</code> repo var first; remove+re-add the label so its timestamp is fresh vs. the body edit. Solo operator may verify+close unless separate-closer is required.</div>
+    <div class="src">completeness_score_before_closure &middot; completeness_gate_first_close_sequence</div></div>
+  <div class="arrow"></div>
+
+  <div class="phase">Phase 5 &middot; Close</div>
+
+  <div class="node process"><div class="ttl">Post summary comment (always)</div>
+    <div class="sub"><code>gh issue comment</code> with commit hash, files changed, what was tested. Non-negotiable for every implemented issue.</div>
+    <div class="src">feedback_gh_issue_comment</div></div>
+  <div class="arrow"></div>
+
+  <div class="node close"><div class="ttl"><code>gh issue close</code></div>
+    <div class="sub">If the issue auto-closed via a <code>Closes #N</code> trailer before your comment lands: reopen &rarr; comment &rarr; close (close drops the comment otherwise).</div>
+    <div class="src">feedback_gh_issue_close_silent_comment_drop</div></div>
+
+</div>
+
+<h2>2. The five gates at a glance</h2>
+<table>
+<tr><th>#</th><th>Gate</th><th>Type</th><th>Pass condition</th><th>Failure mode it prevents</th></tr>
+<tr><td>A</td><td>Adversarial plan review</td><td><span class="pill" style="background:#fff8e6;color:var(--warn)">review</span></td>
+    <td>Defect-hunt artifact exists; MAJORs resolved; depth matches T-class</td>
+    <td>Charitable/rubber-stamp APPROVE; shipping a flawed plan to the approval gate</td></tr>
+<tr><td>1</td><td>User approves plan</td><td><span class="pill" style="background:#eafaf0;color:var(--ok)">human</span></td>
+    <td>User sets <code>status:plan-approved</code> themselves</td>
+    <td>Self-approval / proxy pre-authorization collapsing the cheapest course-correction point</td></tr>
+<tr><td>B</td><td>Adversarial code/artifact review</td><td><span class="pill" style="background:#fff8e6;color:var(--warn)">review</span></td>
+    <td>2+ provider artifact exists; MAJORs fixed; claims spot-verified locally</td>
+    <td>Self-review-only merges; non-overlapping defects a single provider misses</td></tr>
+<tr><td>2</td><td>User merges PR</td><td><span class="pill" style="background:#eafaf0;color:var(--ok)">human</span></td>
+    <td>User merges, with Review B evidence present</td>
+    <td>Green-metadata "PASS" masking the absence of a real review</td></tr>
+<tr><td>3</td><td>User verifies completeness &amp; closes</td><td><span class="pill" style="background:#eafaf0;color:var(--ok)">human</span></td>
+    <td>Score reviewed; owner attests label (fresh timestamp); summary comment posted</td>
+    <td>Agent self-report passed off as owner attestation; closure without objective signal</td></tr>
+</table>
+
+<h2>3. Invariants</h2>
+<ul>
+<li><strong>Review presence is fixed; depth is the dial.</strong> Never surface "skip review" as an option &mdash; only "T1-scoped single provider" vs. "full T2/T3."</li>
+<li><strong>Self-review &ne; adversarial review.</strong> The author finding their own bugs mid-build does not satisfy gate A or B.</li>
+<li><strong>The human gates are load-bearing, not friction.</strong> Provide links + CLI; the user performs the action. This holds even after repeated "continue" authorizations in a session.</li>
+<li><strong>If a provider is unavailable</strong> (Codex stdin-hang, Gemini 429/trust-folder), record it explicitly and proceed with available providers &mdash; never silently downgrade to "no review."</li>
+<li><strong>Discovery before execution.</strong> A <code>plan-approved</code> label is a contract about intent, not current state; verify the corpus first.</li>
+</ul>
+
+<h2>4. Source map</h2>
+<p class="mut">Each lifecycle element traces to a session-memory feedback/project record (under
+<code>~/.claude/projects/&hellip;/memory/</code> and <code>.claude/memory/topics/</code>).</p>
+<table>
+<tr><th>Element</th><th>Memory record</th></tr>
+<tr><td>Both review gates before user approval/merge</td><td><code>feedback_adversarial_review_before_user_approval</code></td></tr>
+<tr><td>Scale depth (T1/T2/T3), never skip</td><td><code>feedback_always_adversarial_review_scale_depth</code></td></tr>
+<tr><td>Defect-hunting reviewer stance contract</td><td><code>feedback_adversarial_review_stance</code></td></tr>
+<tr><td>2+ providers find non-overlapping defects</td><td><code>feedback_cross_provider_review_payoff</code></td></tr>
+<tr><td>User-only plan approval; no proxy pre-auth</td><td><code>feedback_never_offer_to_self_label_plan_approved</code></td></tr>
+<tr><td>Completeness score gates closure (HTML)</td><td><code>feedback_completeness_score_before_closure</code></td></tr>
+<tr><td>Owners-var + stamp-before-verify ordering</td><td><code>feedback_completeness_gate_first_close_sequence</code></td></tr>
+<tr><td>Pre-completion cleanup audit buckets</td><td><code>feedback_pre_completion_cleanup_audit_gate</code></td></tr>
+<tr><td>Discovery-first on stale plan-approved</td><td><code>feedback_discovery_first_on_stale_plan_approved</code></td></tr>
+<tr><td>Fetch remote before resolving</td><td><code>feedback_fetch_remote_before_resolving_issue</code></td></tr>
+<tr><td>Check parallel work / WIP claim</td><td><code>feedback_check_parallel_work</code></td></tr>
+<tr><td>Always comment on the issue</td><td><code>feedback_gh_issue_comment</code></td></tr>
+<tr><td>Close drops comments &rarr; reopen-comment-close</td><td><code>feedback_gh_issue_close_silent_comment_drop</code></td></tr>
+<tr><td>Sandbox file-presence misreads in review</td><td><code>feedback_gemini_sandbox_overlay_blindness</code></td></tr>
+</table>
+
+</body>
+</html>
