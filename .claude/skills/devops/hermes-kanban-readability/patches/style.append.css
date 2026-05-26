@@ -23,3 +23,32 @@
 .hermes-kanban-card-id {
   font-size: 0.7rem;
 }
+
+/* ---- Board overflow: make all columns reachable --------------------- *
+ * The columns row lays N columns left-to-right at a fixed width (easily
+ * wider than the screen), and the bundled CSS hides the scrollbar
+ * (scrollbar-width:none + ::-webkit-scrollbar{display:none}) — so columns
+ * off-screen to the right are unreachable with no visual cue. Restore a
+ * visible horizontal scrollbar, and bound the column height so that
+ * scrollbar lands inside the viewport (otherwise the tall columns push it
+ * below the fold and the page doesn't scroll to reveal it).
+ * Appended last so these win on source order. */
+.hermes-kanban-columns {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-foreground) 35%, transparent) transparent;
+  padding-bottom: 2px;
+}
+.hermes-kanban-columns::-webkit-scrollbar {
+  display: block;
+  height: 11px;
+}
+.hermes-kanban-columns::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-foreground) 32%, transparent);
+  border-radius: 999px;
+}
+.hermes-kanban-columns::-webkit-scrollbar-track {
+  background: transparent;
+}
+.hermes-kanban-column {
+  max-height: calc(100vh - 290px);
+}

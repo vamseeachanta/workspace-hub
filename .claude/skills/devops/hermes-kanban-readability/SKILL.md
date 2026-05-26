@@ -1,6 +1,6 @@
 ---
 name: hermes-kanban-readability
-description: Reapply the Hermes Kanban dashboard readability customizations (clickable bare URLs in card descriptions + readable card-text font) as a user-override plugin that survives hermes-agent updates. Use when the Kanban board reverts to the Mondwest display font / plain-text Source URLs after a hermes update, or when bootstrapping a machine whose ~/.hermes was wiped.
+description: Reapply the Hermes Kanban dashboard readability customizations (clickable bare URLs in card descriptions + readable card-text font, a visible horizontal scrollbar so all columns are reachable) as a user-override plugin that survives hermes-agent updates. Use when the Kanban board reverts to the Mondwest display font / plain-text Source URLs after a hermes update, or when bootstrapping a machine whose ~/.hermes was wiped.
 version: 1.0.0
 category: devops
 type: workflow
@@ -17,7 +17,7 @@ Reapplies two customizations to the Hermes Kanban dashboard plugin and installs
 them as a **user-override** so they survive `hermes update` / `git pull` of the
 bundled `hermes-agent` checkout.
 
-## The two customizations
+## The customizations
 
 1. **Clickable bare URLs** — the card-description markdown renderer
    (`renderInline` in `dist/index.js`) only linkified `[text](url)` syntax, so
@@ -30,6 +30,12 @@ bundled `hermes-agent` checkout.
    A CSS override pins the readable `system-ui` sans stack (the same face the
    column headers already use) and bumps sizes: title → 0.95rem, meta → 0.8rem,
    id → 0.7rem.
+3. **Board overflow / scrollbar** — the columns row lays the columns left-to-right
+   at a fixed width (wider than most screens) but the bundled CSS hides the
+   scrollbar, so off-screen columns are unreachable. The override restores a
+   visible horizontal scrollbar and bounds column height so that scrollbar
+   stays inside the viewport (`calc(100vh - 290px)`; tune if a layout starts
+   lower). All columns become reachable on smaller screens (e.g. ace-linux-2).
 
 ## Why a user-override instead of editing the bundled plugin
 
