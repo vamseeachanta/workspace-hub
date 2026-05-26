@@ -99,7 +99,15 @@ def main():
         print("  " + ", ".join(items) + "\n")
 
     if write:
-        out = Path(".claude/memory/kanban/domain-map-workspace-hub.yaml")
+        # repo-root-relative, not cwd-relative — route.py reads this via an
+        # absolute path, so writing it cwd-relative would silently desync the
+        # domain-authority skip when run from a non-root cwd.
+        try:
+            root = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"],
+                        capture_output=True, text=True, check=True).stdout.strip())
+        except Exception:
+            root = Path(__file__).resolve().parents[2]
+        out = root / ".claude/memory/kanban/domain-map-workspace-hub.yaml"
         payload = {
             "repo": "vamseeachanta/workspace-hub",
             "note": "fine domain: label -> coarse board-domain. No issue relabeling; "
