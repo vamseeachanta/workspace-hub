@@ -1,6 +1,6 @@
 # Plan for #2827: Reconciler Phase 3 — per-machine Hermes loader cron
 
-> **Status:** adversarial-reviewed (scope narrowed by discovery: loader + safe autoload-on-post-merge already exist; gap = time-based trigger) · **Complexity:** T1–T2 · **Date:** 2026-05-26
+> **Status:** adversarial-reviewed; MAJOR resolved by user decision (park imports as blocked-with-reason) → ready for `plan-review` · **Complexity:** T1–T2 · **Date:** 2026-05-26
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2827 · **Parent:** #2802 · #2795 · **Client:** N/A
 
 ## Resource Intelligence Summary (CORRECTED 2026-05-26 — discovery vs origin/main)
@@ -36,10 +36,20 @@ In: a per-machine **time-based** trigger (timer/crontab) wrapping the EXISTING `
 ## Dependencies
 Sequenced **after #2826** (board YAML must be auto-current for the projection to be meaningful).
 
-## Adversarial review — findings (2026-05-26; Claude + Codex MAJOR → NEEDS-DECISION)
-Verified against `origin/main`. Verdict: **MAJOR — stays draft/needs-decision** (do NOT advance to `plan-review`).
-- **BLOCKER (needs user/domain decision):** the loaded card status is contradictory in the source — `load.py:100` passes `--initial-status blocked`, but `load.py:4` docstring AND `.claude/memory/kanban/README.md` say `triage`, while `kanban-autoload.sh`'s header says "real status (ready/blocked), not forced triage". `blocked`-without-reason auto-unblocks to ready (`feedback_hermes_blocked_status_auto_unblocked`) → claimable → spawns workers. A periodic (time-based) trigger amplifies this. **The actual loaded status + its gateway behavior must be resolved (and the code/docs reconciled) before a periodic trigger is safe.** (Codex #1; Claude over-trusted the autoload header.)
-- Fix (fold once unblocked): the timer wrapper must capture pre/post SHA itself — `--from-hook` keys on `ORIG_HEAD..HEAD`, unreliable under a timer's `git pull`. (Codex #2)
-- Fix: timer must propagate loader failure — `kanban-autoload.sh` ends `... || true`, masking failures as healthy. (Codex #3)
-- Fix: AC1 (loader idempotency assertion) is inconsistent with "loader out of scope" — drop the AC. (Codex #4)
-Artifacts: as above.
+## Adversarial review — findings (2026-05-26; Claude + Codex MAJOR → RESOLVED, user decision 2026-05-26)
+Verified against `origin/main`. The MAJOR was a safe-status contradiction; **user chose the simplest *safe* path → now plan-review.**
+
+**The contradiction (Codex #1, verified):** `load.py:100` creates imports as `--initial-status blocked` (no reason, idempotency-keyed), but `load.py:4` docstring + `.claude/memory/kanban/README.md` say `triage`, and `kanban-autoload.sh`'s header says "real status, not triage". Crucially, BOTH claimed-safe options are actually UNSAFE on a machine running the Hermes gateway:
+- `triage` is the **pipeline entry**, not a park (`feedback_hermes_triage_is_pipeline_entry`: 134 triage cards → 532 children + 260 workers).
+- `blocked` **without a reason** is **auto-unblocked → ready → claimable** (`feedback_hermes_blocked_status_auto_unblocked`).
+
+**RESOLVED — user decision (simplest safe path):** the loader must park imports as **blocked WITH a `blocked_reason`** (e.g. `--blocked-reason "kanban-import: promote manually"`) — blocked-with-reason **survives** (no auto-unblock, no pipeline entry), so a periodic trigger is safe on any machine. (`archive` is the alternative true-park; blocked+reason is the smaller change.)
+
+**Scope additions (this brings a small loader fix in-scope):**
+1. `load.py`: add `--blocked-reason` to the `hermes kanban create` call; keep the idempotency key.
+2. Reconcile the code-vs-docs drift: fix the `load.py` docstring + `README.md` (they wrongly say `triage`/"safe") to state "blocked-with-reason park".
+3. Timer wrapper captures its own pre/post SHA (don't rely on `--from-hook`'s `ORIG_HEAD..HEAD`, unreliable under a timer's `git pull`). (Codex #2)
+4. Timer propagates loader failure — `kanban-autoload.sh` ends `... || true`, masking failures; the timer/installer must detect nonzero/log-based failure. (Codex #3)
+5. Drop the old AC1 "idempotent loader assertion" wording; replace with: imports land as blocked-with-reason and are NOT auto-unblocked (assert). (Codex #4)
+
+Artifacts: `scripts/review/results/2026-05-26-plan-2826-2827-2828-{claude,codex}.md`. **Note:** the earlier layman framing called triage a "safe holding pen" — corrected here per memory; the safe park is blocked-with-reason (or archive).
