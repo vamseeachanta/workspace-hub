@@ -1,8 +1,8 @@
 ---
 domain: personal
 created: 2026-04-09
-last_updated: 2026-04-09
-page_count: 4
+last_updated: 2026-05-27
+page_count: 0
 source_count: 1
 ---
 
@@ -12,12 +12,9 @@ source_count: 1
 
 ## Entities
 
-| Page | Summary | Last Updated |
-|------|---------|-------------|
-| [[Real Estate Analysis]](entities/real-estate-analysis.md) | Investment analysis — cap rate, cash-on-cash, IRR, value-add strategies | 2026-04-09 |
-| [[Shell Scripting Patterns]](entities/shell-scripting-patterns.md) | Robust scripting — flock, atomic writes, idempotency, defensive coding | 2026-04-09 |
-| [[Python Type Safety]](entities/python-type-safety.md) | mypy strict mode — NamedTuple, type narrowing, Path patterns | 2026-04-09 |
-| [[JSONL Knowledge Stores]](entities/jsonl-knowledge-stores.md) | Append-only JSONL — indexing, dedup, flock, error handling | 2026-04-09 |
+_Entities relocated to their topic-relevant repos (2026-05-27, workspace-hub#2835):_
+- _Real Estate Analysis → `assethold` `docs/domain/realestate/`_
+- _Shell Scripting Patterns, Python Type Safety, JSONL Knowledge Stores → `llm-wiki` `wikis/engineering/wiki/entities/`_
 
 ## Concepts
 
