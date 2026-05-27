@@ -1,13 +1,18 @@
 name: Kanban Reconcile
 
 on:
-  # TODO(#2802 phase 2): re-enable the */20 schedule only after a GitHub App
-  # installation token is available for cross-repo issue reads. GITHUB_TOKEN is
-  # intentionally repo-scoped; running this as cron before App auth risks
-  # incomplete cross-repo visibility. workflow_dispatch remains available for
-  # supervised runs, and unreadable repos still fail closed through gh nonzero.
-  # schedule:
-  #   - cron: "*/20 * * * *"
+  # Phase 2 (#2826): the */20 cron is ACTIVE now that the
+  # KANBAN_RECONCILE_APP_ID / KANBAN_RECONCILE_APP_KEY GitHub App secrets exist.
+  # The App installation token is minted per-run (see the "Mint GitHub App token"
+  # step) and used ONLY for cross-repo issue reads; the board push keeps using the
+  # default GITHUB_TOKEN so bot pushes do not retrigger CI (anti-loop split).
+  schedule:
+    - cron: "*/20 * * * *"
+  # repository_dispatch lets sibling repos send low-latency nudges (see the
+  # kanban-nudge.yml template under .github/workflow-templates/). Correctness
+  # remains cron-reconciler-primary; nudges only shorten latency.
+  repository_dispatch:
+    types: [kanban-nudge]   # only the nudge event triggers a run (narrow surface)
   workflow_dispatch:
 
 permissions:
@@ -36,15 +41,29 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@v5
 
+      - name: Mint GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.KANBAN_RECONCILE_APP_ID }}
+          private-key: ${{ secrets.KANBAN_RECONCILE_APP_KEY }}
+          owner: ${{ github.repository_owner }}
+          # Least-privilege: constrain this run's token to issue reads even if the
+          # installation is granted more (the reconciler only reads sibling issues).
+          permission-issues: read
+
       - name: Reconcile, commit, and push one batched run
         env:
+          # App installation token: cross-repo issue reads via `gh api graphql`.
+          # This token is exported as GH_TOKEN for the reconcile invocation ONLY.
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          # Default repo-scoped token: used by `git push` (via persisted checkout
+          # credentials) so the board commit does NOT carry the App token and does
+          # NOT retrigger CI. This is the anti-loop split.
           GH_TOKEN: ${{ github.token }}
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          # TODO(#2802 phase 2): switch issue-read auth to a GitHub App
-          # installation token for private sibling repos; keep GITHUB_TOKEN
-          # for the workspace-hub contents write so bot pushes do not retrigger CI.
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -56,7 +75,10 @@ jobs:
             git fetch origin "$GITHUB_REF_NAME"
             git reset --hard "origin/$GITHUB_REF_NAME"
 
-            uv run python scripts/kanban/reconcile.py
+            # Reconcile uses the App installation token so `gh api graphql` can read
+            # sibling-repo issues cross-repo. Scoped to this invocation only — the
+            # push below uses the persisted default-token checkout credential.
+            GH_TOKEN="$APP_TOKEN" GITHUB_TOKEN="$APP_TOKEN" uv run python scripts/kanban/reconcile.py
 
             if git diff --quiet -- .claude/memory/kanban/boards; then
               echo "No kanban board changes."
@@ -83,6 +105,3 @@ jobs:
 
           echo "Failed to push kanban reconcile after bounded retries." >&2
           exit 1
-
-      # TODO(#2802 phase 2): add repository_dispatch nudge workflows.
-      # Correctness must remain cron-reconciler-primary.

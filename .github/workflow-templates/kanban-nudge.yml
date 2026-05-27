@@ -1,0 +1,60 @@
+# Kanban nudge — PER-REPO TEMPLATE (do NOT run from workspace-hub itself).
+#
+# Copy this file into a SIBLING repo's `.github/workflows/` directory to give
+# that repo a low-latency path to the workspace-hub kanban reconciler. On a
+# qualifying issue event it sends a `repository_dispatch` to
+# vamseeachanta/workspace-hub, which fires the reconcile workflow's
+# `repository_dispatch:` trigger.
+#
+# This is a NUDGE only. Correctness does NOT depend on it — the */20 cron in
+# workspace-hub's kanban-reconcile.yml is the source of truth. If the dispatch
+# is dropped, throttled, or the token is missing, the next cron tick reconciles
+# the board anyway. The nudge only shortens worst-case latency from ~20 min to
+# seconds.
+#
+# TOKEN REQUIREMENT (read before installing):
+#   `repository_dispatch` writes to ANOTHER repo (workspace-hub), so the default
+#   GITHUB_TOKEN of THIS repo CANNOT authorize it (it is scoped to this repo
+#   only). You MUST provide a cross-repo dispatch-write credential as a repo
+#   secret named KANBAN_DISPATCH_TOKEN — either:
+#     - a GitHub App installation token with `contents: write` (or the
+#       repository-dispatch permission) on vamseeachanta/workspace-hub, or
+#     - a fine-grained PAT scoped to vamseeachanta/workspace-hub with the
+#       "Contents" write permission.
+#   Do NOT hardcode the token; reference it via ${{ secrets.KANBAN_DISPATCH_TOKEN }}.
+
+name: Kanban Nudge
+
+on:
+  issues:
+    # `labeled` is intentionally EXCLUDED — it is high-frequency and would spam
+    # the reconciler. The cron picks up label changes within 20 minutes anyway.
+    types: [opened, reopened, transferred]
+
+permissions:
+  # No special permissions are needed locally; the cross-repo write is authorized
+  # by KANBAN_DISPATCH_TOKEN below, not by this repo's GITHUB_TOKEN.
+  contents: read
+
+concurrency:
+  # Coalesce bursts of issue events into a single in-flight nudge per repo.
+  group: kanban-nudge
+  cancel-in-progress: false
+
+jobs:
+  nudge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch kanban reconcile to workspace-hub
+        env:
+          GH_TOKEN: ${{ secrets.KANBAN_DISPATCH_TOKEN }}  # cross-repo dispatch-write token (App token or PAT) — never hardcode
+        run: |
+          set -euo pipefail
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            /repos/vamseeachanta/workspace-hub/dispatches \
+            -f "event_type=kanban-nudge" \
+            -F "client_payload[source_repo]=${GITHUB_REPOSITORY}" \
+            -F "client_payload[issue]=${{ github.event.issue.number }}" \
+            -F "client_payload[action]=${{ github.event.action }}"
