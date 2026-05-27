@@ -43224,3 +43224,16 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2849
+    title: 'feat(workstations): add licensed-solver capability dimension to equality matrix [#2801 family]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2849
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:operations
+      - domain:workstations
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
