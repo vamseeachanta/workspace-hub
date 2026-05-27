@@ -612,7 +612,7 @@ def test_fetch_repo_issues_emits_graphql_command_with_pagination():
     assert "cursor=CUR1" in page2
 
 
-def test_workflow_contract_keeps_phase_2_cron_deferred_and_push_retry_bounded():
+def test_workflow_contract_keeps_phase_2_cron_active_and_push_retry_bounded():
     text = (ROOT / ".github/workflows/kanban-reconcile.yml").read_text(encoding="utf-8")
     workflow = yaml.load(text, Loader=yaml.BaseLoader)
 
@@ -621,11 +621,50 @@ def test_workflow_contract_keeps_phase_2_cron_deferred_and_push_retry_bounded():
         "cancel-in-progress": "false",
     }
     assert workflow["permissions"] == {"contents": "write", "issues": "read"}
-    assert "# TODO(#2802 phase 2): re-enable the */20 schedule" in text
-    assert '  # schedule:\n  #   - cron: "*/20 * * * *"' in text
+
+    # Phase 2 (#2826): the */20 cron is now ACTIVE (uncommented), and the stale
+    # "re-enable the */20 schedule" deferral TODO is gone.
+    assert "# TODO(#2802 phase 2): re-enable the */20 schedule" not in text
+    assert '  # schedule:\n  #   - cron: "*/20 * * * *"' not in text
+    # `on:` is a YAML key; BaseLoader yields the literal string "on" unless it
+    # parses as a bool, so look it up defensively.
+    triggers = workflow.get("on", workflow.get(True))
+    assert "schedule" in triggers
+    assert {"cron": "*/20 * * * *"} in triggers["schedule"]
+    # repository_dispatch lets sibling repos send low-latency nudges.
+    assert "repository_dispatch" in triggers
+    assert "workflow_dispatch" in triggers
     assert re.search(r"(?m)^  workflow_dispatch:", text)
 
-    run = workflow["jobs"]["reconcile"]["steps"][-1]["run"]
+    steps = workflow["jobs"]["reconcile"]["steps"]
+
+    # The App-token-mint step is present, references the App secrets, and uses
+    # actions/create-github-app-token so `gh api graphql` reads sibling repos.
+    mint = next(
+        s for s in steps if "create-github-app-token" in str(s.get("uses", ""))
+    )
+    assert "KANBAN_RECONCILE_APP_ID" in mint["with"]["app-id"]
+    assert "KANBAN_RECONCILE_APP_KEY" in mint["with"]["private-key"]
+
+    run_step = steps[-1]
+    # Anti-loop split: the reconcile invocation gets the App token, but the
+    # step-level GH_TOKEN/GITHUB_TOKEN (and therefore the push) stay the default
+    # github.token so the board push does NOT carry the App token / retrigger CI.
+    assert run_step["env"]["GH_TOKEN"] == "${{ github.token }}"
+    assert run_step["env"]["GITHUB_TOKEN"] == "${{ github.token }}"
+    assert run_step["env"]["APP_TOKEN"] == "${{ steps.app-token.outputs.token }}"
+
+    run = run_step["run"]
+    # Reconcile uses the App token; the push must NOT.
+    assert 'GH_TOKEN="$APP_TOKEN"' in run
+    assert "uv run python scripts/kanban/reconcile.py" in run
+    assert 'APP_TOKEN' not in run.split("git push")[1]
+    # Anti-loop hardening (Codex #2826.1): the App token must reach ONLY the reconcile
+    # call, never git credentials. Assert no credential-injection sink exists that a
+    # regression could use to wire the App token into the push (which would retrigger CI).
+    for sink in ("git remote set-url", "http.extraheader", "gh auth setup-git", "git config credential"):
+        assert sink not in run, f"anti-loop: unexpected git-credential mechanism '{sink}' in the run step"
+
     assert run.count('git commit -m "chore: reconcile kanban board"') == 1
     assert "for attempt in 1 2 3; do" in run
     assert "push_stderr=" in run
