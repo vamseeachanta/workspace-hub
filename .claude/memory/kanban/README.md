@@ -34,15 +34,52 @@ Each tier is an **isolated Hermes board** — its own dispatcher loop, its own t
 ID space, its own queue. Tasks on `repo-digitalmodel-solver` cannot collide with
 tasks on `repo-workspace-hub`.
 
-## Safety: all imports land in `triage`
+## Safety: all imports land sticky-`blocked` WITH a reason
 
-The loader passes `--triage` to every `hermes kanban create` call, so imported
-tasks land in the **triage** column and workers **cannot auto-claim** them.
-Promotion is explicit:
+The loader parks each card via a **two-step create→block** sequence:
 
+```
+hermes kanban --board <slug> create --initial-status running ... <title>
+hermes kanban --board <slug> block <id> "<reason>"
+```
+
+It creates the card **`running`** (a block-ELIGIBLE status), then blocks it.
+This ordering is load-bearing (verified against hermes v0.14.0 source):
+
+- `hermes kanban block <id>` (`kanban_db.block_task`) runs
+  `UPDATE tasks SET status='blocked' ... WHERE status IN ('running','ready')` and
+  emits the sticky `"blocked"` event row in `task_events` **only on a successful
+  1-row update**. The gateway's `recompute_ready`/`_has_sticky_block` suppresses
+  auto-unblock based on that sticky event being the most recent block/unblock event.
+- A card **created already-`blocked`** matches **0 rows** in `block_task` →
+  returns False → **no sticky event** → the gateway **auto-unblocks it to `ready`**
+  anyway (claimable → runaway worker fan-out). This was the original bug.
+  (`[[feedback_hermes_blocked_status_auto_unblocked]]`)
+- Creating `running` first makes the running→blocked transition succeed and the
+  sticky event fire. The card sits `running` only for the microseconds between
+  the two synchronous calls; the loader runs only on Manual-orchestration
+  machines (the opt-in marker gates the timer), so no dispatcher races to claim it.
+- `triage` is **not** safe: `--triage` puts a card into the gateway's
+  specifier→decomposer **pipeline entry**, which auto-promotes it.
+  (`[[feedback_hermes_triage_is_pipeline_entry]]`)
+
+**Idempotent re-run:** `hermes kanban create --json` emits the card's current
+`status`, and on idempotency-key reuse returns the **existing** card. The loader
+calls `block` **only** when that status is `running`/`ready`; if it is already
+`blocked` (sticky, from a prior run) the loader skips the block call. This avoids
+the `_cmd_block` comment-bloat (it appends a `BLOCKED:` comment **before**
+`block_task` on every call) and the false failure (`block_task` returns False on
+an already-blocked card → exit 1).
+
+`hermes kanban create` has no blocked-reason flag (verified hermes v0.14.0),
+which is why the loader applies the reason as a separate `block` call.
+
+Promotion out of the safe park is explicit:
+
+- `hermes kanban unblock <task-id>`     — return to `ready` (then claimable)
+- `hermes kanban promote <task-id>`     — move blocked/todo → `ready`
 - `hermes kanban specify <task-id>`     — let aux LLM flesh out spec, promote to `todo`
 - `hermes kanban decompose <task-id>`   — fan out into child tasks
-- `hermes kanban edit <task-id>`        — manual promotion
 
 This guards against the bulk-import dispatch hazard from
 [[feedback_multi_agent_commit_serialization]] / runaway worker fan-out.
