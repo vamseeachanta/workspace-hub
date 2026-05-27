@@ -5,7 +5,7 @@ Cron job script that:
 1. Runs llm-wiki lint on all domain wikis
 2. Scans for cross-wiki link opportunities
 3. Detects knowledge gaps
-4. Writes structured report to knowledge/wikis/health-reports/
+4. Writes structured report to docs/reports/wiki-health/
 
 Usage:
     uv run scripts/knowledge/wiki_health_cron.py

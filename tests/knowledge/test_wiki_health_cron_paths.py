@@ -32,6 +32,13 @@ def test_cron_has_no_hardcoded_absolute_path():
     assert "REPORTS_DIR = REPO_ROOT" in text, "REPORTS_DIR must be REPO_ROOT-relative"
 
 
-def test_health_reports_not_listed_as_wiki_domain():
+def test_health_reports_excluded_even_if_dir_reappears(tmp_path, monkeypatch):
+    """Guard the exclusion logic, not just the deletion: a stray health-reports/
+    under WIKIS_DIR must still be excluded from the linted domain set."""
     mod = _load_cron()
-    assert "health-reports" not in mod.get_wiki_domains()
+    (tmp_path / "health-reports").mkdir()
+    (tmp_path / "engineering").mkdir()
+    monkeypatch.setattr(mod, "WIKIS_DIR", tmp_path)
+    domains = mod.get_wiki_domains()
+    assert "health-reports" not in domains
+    assert "engineering" in domains
