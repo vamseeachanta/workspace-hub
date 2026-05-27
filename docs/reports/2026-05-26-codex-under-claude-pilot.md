@@ -64,3 +64,34 @@ The grant targets the system `/usr/bin/bwrap`, shared by VSCode/Firefox/Flatpak 
 
 ## First real-world pilot
 #2802 (kanban reconciler) — executed via this route under its own issue/PR/ACs (referenced, not part of #2804's acceptance).
+
+## Fleet rollout coverage (#2813)
+
+The route is a **per-machine, user-authorized** install (the userns grant is a kernel-LPE-surface decision — no batch/fleet auto-run). Roster enumerated **empirically from `config/workstations/registry.yaml`** (6 machines — not assumed; the registry lists two beyond the four initially in mind, per the "verify coverage empirically" rule). Status as of 2026-05-26:
+
+| Machine | OS / role | Status | Evidence / reason |
+|---|---|---|---|
+| **ace-linux-1** | linux | **FUNCTIONAL** (route live); reconcile to installer-managed pending user sudo | `setup-codex-sandbox.sh --check` → profile present + `network_access: true`; broker ran live Codex `task` jobs (#2822 reviews); codex-cli 0.134.0. Profile applied out-of-band during the #2804 pilot (`managed-by-us: no`); reconcile to the committed installer (sentinel-stamped, teardown-able) is a user-authorized sudo step (see runbook). |
+| **ace-linux-2** | linux (SSH-reachable per registry) | **PENDING** (per-machine) | Not yet onboarded; install runs during a session on ace-linux-2 (runbook below). User chose runbook-only over an SSH-driven install (#2813 Q2). |
+| **shoerack** | linux, gpu-compute | **PENDING — not yet configured** | `workspace_root: null`, `ssh: null` (access TBD) in the registry. The route *applies* (Linux) once the machine has a workspace-hub checkout and is reachable + Codex-under-Claude is wanted; until then nothing to install. |
+| **Vamsees-MacBook-Air** | **macOS**, portable-dev | **N/A** | macOS has no AppArmor/bwrap — the #2804 userns blocker does not exist; installer fail-fasts. Codex's macOS sandbox is a different model (out of #2804 scope). |
+| **licensed-win-1** | windows (`ssh: null`, GUI-only) | **N/A** | The #2804 AppArmor/userns fix is Linux-only; installer fail-fasts on non-Ubuntu/no-AppArmor. Windows-native Codex-under-Claude (if wanted) is a separate, out-of-scope question. |
+| **licensed-win-2** | windows (`ssh: null`, GUI-only) | **N/A** | Same as licensed-win-1. |
+
+`#2813` stays a tracking item until the two Linux PENDINGs (ace-linux-2, shoerack) resolve (installed or confirmed not-wanted).
+
+### Per-machine runbook (Ubuntu, run on the target machine)
+
+One-time, user-authorized. The installer grants userns to `/usr/bin/bwrap` but **does not write `~/.codex/config.toml`** — the `network_access` edit is a separate explicit step (the installer only prints a reminder):
+
+```bash
+cd <workspace-hub> && git pull
+bash scripts/install/setup-codex-sandbox.sh --check               # report state (no mutation; fail-fasts on non-Ubuntu → N/A)
+bash scripts/install/setup-codex-sandbox.sh --accept-userns-lpe-risk   # one-time sudo; persists across reboots
+# REQUIRED separate step — the installer does NOT write config:
+grep -q 'network_access = true' ~/.codex/config.toml || printf '\n[sandbox_workspace_write]\nnetwork_access = true\n' >> ~/.codex/config.toml
+bash scripts/install/setup-codex-sandbox.sh --check               # expect: managed-by-us: yes, network_access: true
+# functional smoke: a broker `task --write` exits 0
+bash scripts/setup/lib/emit-machine-status.sh                     # refresh this machine's baseline + post to tracker #2753
+```
+Reverse with `scripts/install/teardown-codex-sandbox.sh`. For an isolated write-dispatch checkout on the machine, use `scripts/install/codex-dispatch-prep.sh` (#2822).
