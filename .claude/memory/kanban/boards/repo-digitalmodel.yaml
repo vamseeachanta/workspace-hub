@@ -4045,6 +4045,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - machine:licensed-win-1
       - status:plan-review
     gh_assignees: []
     initial_status: triage
@@ -4061,6 +4062,8 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - machine:dev-primary
+      - status:plan-approved
       - status:plan-review
     gh_assignees: []
     initial_status: triage

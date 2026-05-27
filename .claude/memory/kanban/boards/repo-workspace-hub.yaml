@@ -43145,7 +43145,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2841
-    title: 'assess+enforce: harness/skills/memory consistency across the 3 primary orchestrators (Claude Code, Hermes, Codex) + weekly cron drift check'
+    title: harness/skills/memory consistency across orchestrators (Claude / Codex+Hermes) — locked decisions + read-back leg + hybrid failover + weekly check
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2841
     gh_state: open
@@ -43180,6 +43180,43 @@ cards:
       - enhancement
       - priority:low
       - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2845
+    title: 'bug(memory): provider-dream silently drops learnings on non-JSON distill batches (rc=0 masks data loss)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2845
+    gh_state: open
+    gh_labels:
+      - cat:ai-orchestration
+      - domain:memory
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2846
+    title: 'chore(memory): declare provider-dream cron in schedule-tasks.yaml + provide install path (currently hand-installed, not reproducible)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2846
+    gh_state: open
+    gh_labels:
+      - cat:infrastructure
+      - domain:memory
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2847
+    title: 'feat(dispatch): multi-machine leader failover — auto-promote/redistribute when dispatch coordinator (ace-linux-1) is down'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2847
+    gh_state: open
+    gh_labels:
+      - cat:ai-orchestration
+      - cat:infrastructure
     initial_status: triage
     priority: 0
     gh_assignees: []

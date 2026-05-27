@@ -807,6 +807,8 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - machine:dev-primary
+      - machine:licensed-win-1
       - domain:hydro
       - domain:solver
     initial_status: triage
@@ -820,6 +822,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - machine:dev-primary
       - domain:hydro
     initial_status: triage
     priority: 0
@@ -832,6 +835,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - machine:dev-primary
       - domain:hydro
     initial_status: triage
     priority: 0
