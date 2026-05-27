@@ -18,23 +18,29 @@ ws_root=$(cd "$cwd" 2>/dev/null && git rev-parse --show-superproject-working-tre
 # Git branch
 branch=$(cd "$ws_root" 2>/dev/null && git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "?")
 
-# Work queue counts (fast find, no recursion)
-wq="$ws_root/.claude/work-queue"
-if [[ -d "$wq/pending" ]]; then
-    p=$(find "$wq/pending" -maxdepth 1 -name "WRK-*.md" 2>/dev/null | wc -l | tr -d ' ')
-    w=$(find "$wq/working" -maxdepth 1 -name "WRK-*.md" 2>/dev/null | wc -l | tr -d ' ')
-    b=$(find "$wq/blocked" -maxdepth 1 -name "WRK-*.md" 2>/dev/null | wc -l | tr -d ' ')
-else
-    p=0; w=0; b=0
+# Git state markers — surface unpushed/uncommitted risk at a glance.
+# GIT_OPTIONAL_LOCKS=0 avoids the index-lock contention the ecosystem hits
+# in long sessions; -uno skips the untracked-file scan to keep this cheap on
+# the ~33K-file workspace-hub checkout.
+git_marker=""
+if [[ "$branch" != "?" ]]; then
+    if [[ -n "$(GIT_OPTIONAL_LOCKS=0 git -C "$ws_root" status --porcelain -uno 2>/dev/null | head -1)" ]]; then
+        git_marker="\033[1;31m*\033[0m"   # bold red: dirty (tracked changes/staged)
+    fi
+    # ahead/behind vs upstream (rev-list is cheap — no working-tree scan)
+    lr=$(GIT_OPTIONAL_LOCKS=0 git -C "$ws_root" rev-list --count --left-right '@{u}...HEAD' 2>/dev/null)
+    if [[ -n "$lr" ]]; then
+        behind=${lr%%[[:space:]]*}; ahead=${lr##*[[:space:]]}
+        (( ahead  > 0 )) && git_marker="${git_marker}\033[32m↑${ahead}\033[0m"   # green: unpushed
+        (( behind > 0 )) && git_marker="${git_marker}\033[31m↓${behind}\033[0m"  # red: behind remote
+    fi
 fi
 
-# Active WRK item (from per-machine state file)
-active_wrk=""
-active_wrk_file="$ws_root/.claude/state/active-wrk"
-if [[ -f "$active_wrk_file" ]]; then
-    active_id=$(head -1 "$active_wrk_file" | tr -d '[:space:]')
-    [[ -n "$active_id" ]] && active_wrk=" >${active_id}"
-fi
+# Issue badge — "GitHub issues only" ecosystem: derive the active issue from
+# the branch name (e.g. fix/2795-... -> #2795) instead of local WRK counters.
+issue_seg=""
+issue_num=$(echo "$branch" | grep -oE '[0-9]{3,5}' | head -1)
+[[ -n "$issue_num" ]] && issue_seg="\033[36m#${issue_num}\033[0m"
 
 # AI usage remaining percentages
 # C: uses Claude.ai 7-day subscription quota (from statusline JSON) as primary,
@@ -60,22 +66,37 @@ extract_pct() {
     fi
 }
 
+# Render a "LABEL:NN%" segment colored by remaining headroom so a throttle is
+# glance-able for delegation: red <20%, yellow <40%, green otherwise, dim when
+# the figure is unknown. Emits literal \033 escapes for the final printf %b.
+color_pct() {
+    local label="$1" rem="$2" suffix="${3:-}"
+    if [[ -z "$rem" || "$rem" == "-" ]]; then
+        echo "\033[2m${label}:-%${suffix}\033[0m"   # dim: unknown/unavailable
+        return
+    fi
+    local color='\033[32m'                            # green: ample headroom
+    (( rem < 40 )) && color='\033[33m'                # yellow: getting tight
+    (( rem < 20 )) && color='\033[31m'                # red: near throttle
+    echo "${color}${label}:${rem}%${suffix}\033[0m"
+}
+
 # Claude: prefer 7-day subscription remaining from API (most accurate)
 week_used=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+c_suffix=""
 if [[ -n "$week_used" ]]; then
-    c_display=$(awk -v u="$week_used" 'BEGIN { printf "%d", 100 - u }')"%"
+    c_rem=$(awk -v u="$week_used" 'BEGIN { printf "%d", 100 - u }')
 else
     # Fallback to agent-quota file
-    c_pct=$(extract_pct "claude")
-    c_display="${c_pct:--}%"
+    c_rem=$(extract_pct "claude")
     # Sonnet sub-bucket: show tighter limit with (S) indicator
-    if [[ -f "$quota_primary" ]]; then
+    if [[ -f "$quota_primary" && -n "$c_rem" ]]; then
         s_val=$(jq -r '.agents[] | select(.provider == "claude") | .sonnet_pct // empty' \
             "$quota_primary" 2>/dev/null)
-        if [[ -n "$s_val" && "$s_val" != "null" && -n "$c_pct" ]]; then
+        if [[ -n "$s_val" && "$s_val" != "null" ]]; then
             s_remaining=$(awk -v s="$s_val" 'BEGIN { printf "%d", 100 - s }')
-            if (( s_remaining < c_pct )); then
-                c_display="${s_remaining}%(S)"
+            if (( s_remaining < c_rem )); then
+                c_rem="$s_remaining"; c_suffix="(S)"
             fi
         fi
     fi
@@ -83,7 +104,7 @@ fi
 
 o_pct=$(extract_pct "codex")
 g_pct=$(extract_pct "gemini")
-ai_usage="C:${c_display}|O:${o_pct:--}%|G:${g_pct:--}%"
+ai_usage="$(color_pct C "$c_rem" "$c_suffix")|$(color_pct O "$o_pct")|$(color_pct G "$g_pct")"
 
 # Repo module name (basename of workspace root)
 repo_name=$(basename "$ws_root")
@@ -113,9 +134,9 @@ parts=()
 parts+=("\033[1;33m[${hostname_s}]\033[0m")
 parts+=("\033[1;35m${model}\033[0m")
 parts+=("\033[1;37m${repo_name}\033[0m")
-parts+=("\033[33m${branch}\033[0m")
-parts+=("\033[36mWRK:${p}p/${w}w/${b}b${active_wrk}\033[0m")
-parts+=("\033[35m${ai_usage}\033[0m")
+parts+=("\033[33m${branch}\033[0m${git_marker}")
+[[ -n "$issue_seg" ]] && parts+=("${issue_seg}")
+parts+=("${ai_usage}")
 parts+=("${cost_fmt}")
 parts+=("ctx:${ctx}")
 
