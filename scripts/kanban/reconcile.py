@@ -21,8 +21,21 @@ from typing import Callable
 from ruamel.yaml import YAML
 
 
-GH_LIMIT = 100000
-ISSUE_JSON_FIELDS = "number,title,state,labels"
+GH_PAGE_SIZE = 100
+
+# GraphQL query: paginate issues exhaustively (states OPEN+CLOSED) with a nested
+# labels page. We never truncate -- if a page fetch fails mid-loop we raise rather
+# than return a partial set, so a partial fetch is structurally impossible.
+ISSUES_QUERY = (
+    "query($owner:String!, $name:String!, $first:Int!, $cursor:String) {"
+    " repository(owner:$owner, name:$name) {"
+    " issues(first:$first, after:$cursor, states:[OPEN,CLOSED]) {"
+    " pageInfo { hasNextPage endCursor }"
+    " nodes {"
+    " number title state"
+    " labels(first:100) { pageInfo { hasNextPage } nodes { name } }"
+    " } } } }"
+)
 
 
 @dataclass
@@ -77,31 +90,105 @@ def write_yaml(path: Path, data: dict) -> None:
     path.write_text(dump_yaml(data), encoding="utf-8")
 
 
-def fetch_repo_issues(repo: str, *, limit: int = 100000, runner=None) -> list[dict]:
+def fetch_repo_issues(repo: str, *, page_size: int = GH_PAGE_SIZE, runner=None) -> list[dict]:
+    """Fetch ALL issues for a repo via `gh api graphql` cursor pagination.
+
+    Paginates to pageInfo.hasNextPage == false, accumulating every page. A
+    mid-pagination failure (nonzero exit, bad JSON, or a node whose labels are
+    themselves truncated) RAISES rather than returning a truncated set, so a
+    partial fetch cannot silently shrink the board. Each node is mapped to the
+    card shape downstream consumes: {number, title, state, labels:[{name}]}.
+    """
     runner = runner or subprocess.run
-    cmd = [
-        "gh",
-        "issue",
-        "list",
-        "--repo",
-        repo,
-        "--state",
-        "all",
-        "--limit",
-        str(limit),
-        "--json",
-        ISSUE_JSON_FIELDS,
-    ]
-    out = runner(cmd, capture_output=True, text=True, check=False)
-    if out.returncode != 0:
-        raise RuntimeError(f"gh issue list failed for {repo}: {out.stderr.strip()}")
-    try:
-        items = json.loads(out.stdout)
-    except json.JSONDecodeError as exc:
-        raise RuntimeError(f"gh issue list returned invalid JSON for {repo}") from exc
-    if len(items) >= limit:
-        raise RuntimeError(f"gh issue list truncated at --limit {limit} for {repo}")
-    return items
+    owner, name = repo.split("/", 1)
+    issues: list[dict] = []
+    cursor: str | None = None
+    seen_cursors: set[str] = set()
+    while True:
+        cmd = [
+            "gh",
+            "api",
+            "graphql",
+            "-f",
+            f"query={ISSUES_QUERY}",
+            "-F",
+            f"owner={owner}",
+            "-F",
+            f"name={name}",
+            "-F",
+            f"first={page_size}",
+        ]
+        if cursor is not None:
+            cmd += ["-F", f"cursor={cursor}"]
+        out = runner(cmd, capture_output=True, text=True, check=False)
+        if out.returncode != 0:
+            raise RuntimeError(
+                f"gh api graphql failed for {repo} (cursor={cursor}): {out.stderr.strip()}"
+            )
+        try:
+            payload = json.loads(out.stdout)
+        except json.JSONDecodeError as exc:
+            raise RuntimeError(
+                f"gh api graphql returned invalid JSON for {repo} (cursor={cursor})"
+            ) from exc
+        if payload.get("errors"):
+            raise RuntimeError(
+                f"gh api graphql returned errors for {repo} (cursor={cursor}): {payload['errors']}"
+            )
+        try:
+            connection = payload["data"]["repository"]["issues"]
+        except (KeyError, TypeError) as exc:
+            raise RuntimeError(
+                f"gh api graphql response missing issues for {repo} (cursor={cursor})"
+            ) from exc
+        for node in connection.get("nodes") or []:
+            # Fail closed on a malformed labels connection: board routing depends on
+            # labels, so a missing/garbled labels.pageInfo is NOT treated as "no more".
+            labels = node.get("labels")
+            label_page = labels.get("pageInfo") if isinstance(labels, dict) else None
+            if not isinstance(label_page, dict) or "hasNextPage" not in label_page:
+                raise RuntimeError(
+                    f"issue #{node.get('number')} in {repo}: malformed/missing labels.pageInfo"
+                )
+            if label_page.get("hasNextPage"):
+                raise RuntimeError(
+                    f"issue #{node.get('number')} in {repo} has more than {100} labels; "
+                    "label pagination is not implemented and board routing depends on labels"
+                )
+            issues.append(
+                {
+                    "number": node["number"],
+                    "title": node.get("title"),
+                    "state": node.get("state"),
+                    "labels": [{"name": lbl.get("name")} for lbl in (labels.get("nodes") or [])],
+                }
+            )
+        # Fail closed on a malformed issue pageInfo: a missing/garbled pageInfo is
+        # indistinguishable from "last page", so it must RAISE, not silently stop
+        # (that would return a partial set — the exact thing this rewrite prevents).
+        page_info = connection.get("pageInfo")
+        if not isinstance(page_info, dict) or "hasNextPage" not in page_info:
+            raise RuntimeError(
+                f"gh api graphql: malformed/missing issues.pageInfo for {repo} (cursor={cursor})"
+            )
+        if page_info.get("hasNextPage"):
+            next_cursor = page_info.get("endCursor")
+            # hasNextPage with no endCursor would re-fetch page 1 forever; a repeated
+            # endCursor that doesn't advance would also loop. This runs on a 20-min
+            # cron — both must raise, not hang.
+            if not next_cursor:
+                raise RuntimeError(
+                    f"gh api graphql: hasNextPage=true but endCursor missing for {repo}"
+                )
+            if next_cursor in seen_cursors:
+                raise RuntimeError(
+                    f"gh api graphql: endCursor did not advance ({next_cursor}) for {repo} — possible loop"
+                )
+            seen_cursors.add(next_cursor)
+            cursor = next_cursor
+            continue
+        break
+    return issues
 
 
 def load_manifest_entries(kanban_root: Path) -> list[BoardEntry]:
@@ -391,7 +478,14 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--repo", help="limit reconciliation to one active owner/repo")
-    parser.add_argument("--limit", type=int, default=GH_LIMIT)
+    parser.add_argument(
+        "--page-size",
+        "--limit",
+        dest="page_size",
+        type=int,
+        default=GH_PAGE_SIZE,
+        help="GraphQL issues page size (default 100); paginates exhaustively regardless",
+    )
     parser.add_argument("--kanban-root", type=Path)
     parser.add_argument(
         "--allow-empty",
@@ -412,7 +506,7 @@ def main(argv: list[str] | None = None) -> int:
     root = args.kanban_root or repo_root() / ".claude/memory/kanban"
 
     def fetch(repo: str) -> list[dict]:
-        return fetch_repo_issues(repo, limit=args.limit)
+        return fetch_repo_issues(repo, page_size=args.page_size)
 
     result = reconcile_kanban(
         root,
