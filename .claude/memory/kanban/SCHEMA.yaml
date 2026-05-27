@@ -41,7 +41,9 @@ cards:
     gh_state: open
     gh_labels: [bug, p1, solver]
     gh_assignees: []
-    initial_status: triage                # ALWAYS triage on first load (safety)
+    initial_status: blocked-with-reason   # loader parks every card sticky-blocked
+                                           # (create running -> block <reason>); NOT
+                                           # triage (triage = gateway pipeline entry)
     priority: 2                            # 0 default; higher = more urgent
     body_excerpt: |
       First 20 lines of the issue body, trimmed.
@@ -80,15 +82,28 @@ manifest:
 # ---------------------------------------------------------------------------
 # 1. Boards are created via `hermes kanban boards create <slug> --name "<display_name>"`.
 #    `boards create` is idempotent in our wrapper — if slug exists, no-op.
-# 2. Each `source: github_issue` card → `hermes kanban --board <slug> create --triage \
-#       --idempotency-key <key> --workspace dir:<workspace_path> \
-#       --priority <priority> --created-by kanban-loader \
-#       --body <body_excerpt + source_url> <title>`
+# 2. Each `source: github_issue` card is parked STICKY-BLOCKED via a two-step
+#    create→block sequence (verified against hermes v0.14.0 source). A card
+#    created already-`blocked` is auto-unblocked by the gateway (block_task
+#    matches 0 rows → no sticky `"blocked"` event fires), so the loader must
+#    create in a block-ELIGIBLE status first:
+#       hermes kanban --board <slug> create --initial-status running \
+#         --idempotency-key <key> --workspace dir:<workspace_path> \
+#         --priority <priority> --created-by kanban-loader \
+#         --body <body_excerpt + source_url> <title>
+#       hermes kanban --board <slug> block <id> "<reason>"
+#    The running→blocked transition succeeds and emits the sticky event the
+#    gateway keys auto-unblock-suppression on.
 # 3. `source: detected_gap` cards are SKIPPED by the loader. They live in YAML and
 #    in gaps/<repo>.yaml until promoted to a real GH issue, then converted to source:github_issue.
-# 4. `--triage` ensures workers cannot auto-claim. User promotes via
-#    `hermes kanban specify <task-id>` or manual `hermes kanban edit`.
-# 5. Re-running the loader is safe: idempotency_key dedups; existing tasks are returned.
+# 4. The sticky blocked-WITH-reason park is what stops workers auto-claiming —
+#    NOT `triage` (triage is the gateway's specifier/decomposer pipeline ENTRY,
+#    which auto-promotes; see [[feedback_hermes_triage_is_pipeline_entry]]). User
+#    promotes via `hermes kanban unblock|promote|specify <task-id>`.
+# 5. Re-running the loader is safe: idempotency_key dedups; existing tasks are
+#    returned. The loader reads the card's status from `create --json` and SKIPS
+#    the block call when it is already `blocked` (sticky) — no comment-bloat, no
+#    false failure. It blocks only block-ELIGIBLE (`running`/`ready`) cards.
 
 # ===========================================================================
 # Dispatch layer — labels + routing  (added 2026-05-25, issue TBD)
@@ -135,5 +150,6 @@ cards_routing_example:
 #     an explicit --apply; it NEVER auto-spawns a worker.
 #   - Execution is pull-based: each machine drains its own
 #     .claude/dispatch/<machine>.yaml queue file.
-#   - initial_status stays `triage` so a freshly loaded card cannot be
-#     auto-claimed by a worker.
+#   - A freshly loaded card is parked sticky-blocked-WITH-a-reason (create
+#     running -> block <reason>) so it cannot be auto-claimed or auto-unblocked
+#     by the gateway. NOT `triage` (triage = pipeline entry, auto-promotes).
