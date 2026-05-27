@@ -31,3 +31,11 @@ In: rewrite `fetch_repo_issues` to GraphQL cursor pagination; map fields to the 
 
 ## Dependencies
 Independent; **do before/with #2826** so the *scheduled* reconciler is robust. Low coupling to Phase 2/3.
+
+## Adversarial review — findings folded (2026-05-26; Claude + Codex MINOR)
+Verified against `origin/main`. Verdict: **MINOR** (foldable; eligible for `plan-review`).
+1. **Scope the "structurally impossible" claim:** issue-connection pagination must ALSO paginate the nested **labels** connection (board placement/priority parse `domain:*`/labels at `reconcile.py:166-213`); a truncated label set silently mis-routes cards. Add label-pagination to scope + an AC. (Codex #1)
+2. **Concrete rate-limit contract + test:** define page size (e.g. 100) + backoff/abort on secondary-rate-limit; add a fake-runner test for a mid-loop 403/rate-limit → raise (not partial). 14 repo boards × pages = many calls. (Codex #2)
+3. **Decide the `--limit` CLI contract:** keep as GraphQL page-size or remove; update the truncation test (`tests/test_kanban_reconcile.py:392-421`) accordingly. (Codex #3)
+4. Golden-test GraphQL field mapping == prior `gh issue list --json` card shape (make it an AC). (Claude MINOR)
+Artifacts: as above.

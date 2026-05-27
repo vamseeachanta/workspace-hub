@@ -35,3 +35,11 @@ In: App install runbook + secret wiring; token step in the workflow; uncomment c
 
 ## Dependencies / sequencing
 Do **#2828** (GraphQL fetch hardening) before or with this, so the *scheduled* reconciler is robust against partial fetches. Human App-install is the gating manual step.
+
+## Adversarial review — findings folded (2026-05-26; Claude MINOR + Codex MAJOR)
+Verified against `origin/main` before folding. Verdict: **MAJOR → revised to these requirements** (still plan-only).
+1. **Add `on: repository_dispatch` to the reconciler workflow** — the nudge plan adds sibling SENDERS but the workflow currently triggers only on (commented) `schedule` + `workflow_dispatch`; dispatch events would be ignored without the trigger. (Codex #1)
+2. **Nudge dispatch-write token:** a sibling workflow cannot `repository_dispatch` into workspace-hub with its default token — provision a cross-repo App/PAT for the dispatch WRITE (distinct from the reconciler's read token). (Codex #2)
+3. **Tighten the App scope to `issues:read` only** — drop `contents:write` (the push uses the default `GITHUB_TOKEN`); the grant is unnecessary and widens blast radius. (Codex #3)
+4. Enumerate the exact `issues:read` sibling repos from `config/workstations`/board manifest (don't assume a list). (Claude MINOR)
+Artifacts: `scripts/review/results/2026-05-26-plan-2826-2827-2828-{claude,codex}.md`. **Status stays pre-`plan-review`** until 1–3 are written into the plan body.
