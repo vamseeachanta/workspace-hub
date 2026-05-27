@@ -4,9 +4,229 @@ board:
   tier: repo
   repo: vamseeachanta/assethold
   workspace_path: /mnt/local-analysis/assethold
-  description: 'Financial / portfolio analysis library. Ownership transferred samdansk2
-    -> vamseeachanta; local origin may be stale. Tier-2 sub-boards: models, reports,
-    infra.
+  description: 'Financial / portfolio analysis library. Ownership transferred samdansk2 -> vamseeachanta; local origin may be stale. Tier-2 sub-boards: models, reports, infra.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/assethold#1
+    title: Python introduction for finance
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/1
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#2
+    title: Introduction to Stock data
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/2
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#3
+    title: Repository Improvements
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/3
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#4
+    title: Daily Plot | Change datetime to native python type
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/4
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#6
+    title: Program | General Improvements
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/6
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#9
+    title: Charts | Interactive
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/9
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#10
+    title: Investment Value
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/10
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#19
+    title: 'WRK-022: "US property valuation analysis using GIS \u2014 location, traffic, and spatial\'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/19
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#20
+    title: 'WRK-022: "US property valuation analysis using GIS \u2014 location, traffic, and spatial\'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/20
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#29
+    title: Resolve all merge conflicts — unblock development
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/29
+    gh_state: closed
+    gh_labels:
+      - bug
+      - priority:critical
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#30
+    title: Remove legacy code and consolidate duplicate module hierarchy
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/30
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:plan-approval
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#35
+    title: Realtime feeds Phase 1 — market-hours awareness + intraday TTL
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/35
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#38
+    title: Phase 1 follow-ups — code polish and test hygiene
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/38
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:low
+      - status:done
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#39
+    title: Extend market_hours_aware to signals consumers (alert_engine, trend_detector, dashboard)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/39
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - status:done
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#48
+    title: 'fix(ci): resolve coverage and Python 3.9 market-hours failures blocking PR #47'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/48
+    gh_state: closed
+    gh_labels:
+      - bug
+      - priority:high
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#49
+    title: 'chore(repo-structure): normalize assethold folder/file structure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/49
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#50
+    title: 'fix(.claude): unresolved git merge conflict in .claude/settings.json — non-functional settings'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/50
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#52
+    title: 'Review remediation: yaml.Loader, SEC parser miscompute, no-timeout (2026-05-23)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/52
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

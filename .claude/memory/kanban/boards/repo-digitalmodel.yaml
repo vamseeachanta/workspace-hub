@@ -8,262 +8,4163 @@ board:
 
     '
   children:
-  - repo-digitalmodel-solver
-  - repo-digitalmodel-codes
-  - repo-digitalmodel-subsea
-  - repo-digitalmodel-hydro
-  - repo-digitalmodel-qa
+    - repo-digitalmodel-solver
+    - repo-digitalmodel-codes
+    - repo-digitalmodel-subsea
+    - repo-digitalmodel-hydro
+    - repo-digitalmodel-qa
 cards:
-- idempotency_key: gh:vamseeachanta/digitalmodel#261
-  title: 'WRK-618: feat(geotechnical): soil profile models, CPT correlation, shared types'
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/261
-  gh_state: open
-  gh_labels:
-  - enhancement
-  - cat:engineering
-  - priority:high
-  - wrk-item
-  gh_assignees: []
-  initial_status: triage
-  priority: 2
-  body_excerpt: '## WRK-618: feat(geotechnical): soil profile models, CPT correlation, shared types
+  - idempotency_key: gh:vamseeachanta/digitalmodel#261
+    title: 'WRK-618: feat(geotechnical): soil profile models, CPT correlation, shared types'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/261
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-618: feat(geotechnical): soil profile models, CPT correlation, shared types
 
-    **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
 
-    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** [''dev-primary'', ''dev-secondary'']'
-- idempotency_key: gh:vamseeachanta/digitalmodel#168
-  title: 'WRK-171: Cost data calibration — sanctioned project benchmarking & multivariate cost prediction'
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/168
-  gh_state: open
-  gh_labels:
-  - enhancement
-  - cat:engineering
-  - priority:medium
-  - wrk-item
-  gh_assignees: []
-  initial_status: triage
-  priority: 1
-  body_excerpt: '## WRK-171: Cost data calibration — sanctioned project benchmarking & multivariate cost prediction
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** [''dev-primary'', ''dev-secondary'']'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#168
+    title: 'WRK-171: Cost data calibration — sanctioned project benchmarking & multivariate cost prediction'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/168
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-171: Cost data calibration — sanctioned project benchmarking & multivariate cost prediction
 
-    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
 
-    **Repo:** [''worldenergydata''] | **Complexity:** complex | **Machine:** dev-primary'
-- idempotency_key: gh:vamseeachanta/digitalmodel#522
-  title: Codify ultra-constrained Claude subprocess prompt patterns for issue-scope reviews
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/522
-  gh_state: open
-  gh_labels:
-  - status:plan-approved
-  gh_assignees: []
-  initial_status: triage
-  priority: 0
-  body_excerpt: '## Parent / context
+      **Repo:** [''worldenergydata''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#522
+    title: Codify ultra-constrained Claude subprocess prompt patterns for issue-scope reviews
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/522
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent / context
 
-    Follow-up from #515 and the subprocess prompt-pack experiments executed for #517/#518/#519/#520.
+      Follow-up from #515 and the subprocess prompt-pack experiments executed for #517/#518/#519/#520.
 
-    ## Summary'
-- idempotency_key: gh:vamseeachanta/digitalmodel#469
-  title: Assess AI agent session artifact dirs across machines (.codex, .gemini, .claude/skills)
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/469
-  gh_state: open
-  gh_labels:
-  - status:plan-approved
-  gh_assignees: []
-  initial_status: triage
-  priority: 0
-  body_excerpt: '## Purpose
+      ## Summary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#469
+    title: Assess AI agent session artifact dirs across machines (.codex, .gemini, .claude/skills)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/469
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Purpose
 
-    Track the per-machine assessment of how AI agent session artifact directories (`.codex/`, `.gemini/`, `.claude/skills/` symlink files) should be handled in the repo. This issue records decisions made
-    on each machine so they can be compared and a consistent policy confirmed.
+      Track the per-machine assessment of how AI agent session artifact directories (`.codex/`, `.gemini/`, `.claude/skills/` symlink files) should be handled in the repo. This issue records decisions made on each machine so they can be compared and a consistent policy confirmed.
 
-    ---'
-- idempotency_key: gh:vamseeachanta/digitalmodel#461
-  title: Recover ship-dimensions template artifact from WRK-1339 Child E
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/461
-  gh_state: open
-  gh_labels:
-  - wrk-item
-  - status:plan-approved
-  gh_assignees: []
-  initial_status: triage
-  priority: 0
-  body_excerpt: '## Summary
+      ---'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#461
+    title: Recover ship-dimensions template artifact from WRK-1339 Child E
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/461
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
 
-    Recover or deliberately replace the missing Child E deliverable from `WRK-1339` so downstream ship-dimensions work can proceed inside `workspace-hub` without guessing schema or output paths.
+      Recover or deliberately replace the missing Child E deliverable from `WRK-1339` so downstream ship-dimensions work can proceed inside `workspace-hub` without guessing schema or output paths.
 
-    ## Why'
-- idempotency_key: gh:vamseeachanta/digitalmodel#257
-  title: 'WRK-604: chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records)'
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/257
-  gh_state: open
-  gh_labels:
-  - enhancement
-  - priority:low
-  - cat:engineering
-  - wrk-item
-  gh_assignees: []
-  initial_status: triage
-  priority: 0
-  body_excerpt: '## WRK-604: chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records)
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#257
+    title: 'WRK-604: chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/257
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-604: chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records)
 
-    **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** marine
+      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** marine
 
-    **Repo:** [''workspace-hub''] | **Complexity:** low | **Machine:** dev-primary'
-- idempotency_key: gh:vamseeachanta/digitalmodel#127
-  title: 'TASK 1.5: Database Integration Layer'
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/127
-  gh_state: open
-  gh_labels:
-  - wrk-item
-  gh_assignees:
-  - vamseeachanta
-  initial_status: triage
-  priority: 0
-  body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Weeks 2-3)\n**Assigned to:** Infrastructure Lead  \n**Duration:** 1.5-2 weeks (40-45 hours)  "
-- idempotency_key: gh:vamseeachanta/digitalmodel#126
-  title: 'TASK 1.4: Shared Data Models Unification'
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/126
-  gh_state: open
-  gh_labels:
-  - wrk-item
-  gh_assignees:
-  - vamseeachanta
-  initial_status: triage
-  priority: 0
-  body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Weeks 1-2)\n**Assigned to:** Full-Stack Developer  \n**Duration:** 1.5 weeks (30-35 hours)  "
-- idempotency_key: gh:vamseeachanta/digitalmodel#95
-  title: Design Drawings
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/95
-  gh_state: open
-  gh_labels:
-  - wrk-item
-  gh_assignees: []
-  initial_status: triage
-  priority: 0
-  body_excerpt: Please share design drawings [ Inventory ]
-- idempotency_key: gh:vamseeachanta/digitalmodel#92
-  title: engg debt | FreeCAD
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/92
-  gh_state: open
-  gh_labels:
-  - wrk-item
-  gh_assignees: []
-  initial_status: triage
-  priority: 0
-  body_excerpt: "- [ ] Freecad\n  - [ ] Send Geometry file + Macro. \n    - [x] Learn basic macro recording process"
-- idempotency_key: gh:vamseeachanta/digitalmodel#89
-  title: PB | Task List
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/89
-  gh_state: open
-  gh_labels:
-  - wrk-item
-  gh_assignees:
-  - bakkiprasad5669
-  initial_status: triage
-  priority: 0
-  body_excerpt: "- [ ] GrabCAD Inventory\n  - [ ] Create GrabCAD account \n  - [ ] add the CT reel and injector head drawings as part of your portfolio"
-- idempotency_key: gh:vamseeachanta/digitalmodel#80
-  title: Project DRS | Tasks
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/80
-  gh_state: open
-  gh_labels:
-  - project
-  - wrk-item
-  gh_assignees:
-  - vamseeachanta
-  initial_status: triage
-  priority: 0
-  body_excerpt: '- [ ] Follow up for work
+      **Repo:** [''workspace-hub''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#127
+    title: 'TASK 1.5: Database Integration Layer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/127
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Weeks 2-3)\n**Assigned to:** Infrastructure Lead  \n**Duration:** 1.5-2 weeks (40-45 hours)  "
+  - idempotency_key: gh:vamseeachanta/digitalmodel#126
+    title: 'TASK 1.4: Shared Data Models Unification'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/126
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Weeks 1-2)\n**Assigned to:** Full-Stack Developer  \n**Duration:** 1.5 weeks (30-35 hours)  "
+  - idempotency_key: gh:vamseeachanta/digitalmodel#95
+    title: Design Drawings
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/95
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Please share design drawings [ Inventory ]
+  - idempotency_key: gh:vamseeachanta/digitalmodel#92
+    title: engg debt | FreeCAD
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/92
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: "- [ ] Freecad\n  - [ ] Send Geometry file + Macro. \n    - [x] Learn basic macro recording process"
+  - idempotency_key: gh:vamseeachanta/digitalmodel#89
+    title: PB | Task List
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/89
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees:
+      - bakkiprasad5669
+    initial_status: triage
+    priority: 0
+    body_excerpt: "- [ ] GrabCAD Inventory\n  - [ ] Create GrabCAD account \n  - [ ] add the CT reel and injector head drawings as part of your portfolio"
+  - idempotency_key: gh:vamseeachanta/digitalmodel#80
+    title: Project DRS | Tasks
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/80
+    gh_state: open
+    gh_labels:
+      - project
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: '- [ ] Follow up for work
 
-    - [ ] Send email on autocad working script and close-out the work.'
-- idempotency_key: gh:vamseeachanta/digitalmodel#60
-  title: engg debt | Time Series | Filter in FFT and Get Timetrace Back
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/60
-  gh_state: open
-  gh_labels:
-  - feature
-  - wrk-item
-  gh_assignees: []
-  initial_status: triage
-  priority: 0
-  body_excerpt: '- [ ] Filter signal (using low, high, band pass filters)
+      - [ ] Send email on autocad working script and close-out the work.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#60
+    title: engg debt | Time Series | Filter in FFT and Get Timetrace Back
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/60
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '- [ ] Filter signal (using low, high, band pass filters)
 
-    - [ ] Get timetrace back
+      - [ ] Get timetrace back
 
-    - [ ] Plot comparson charts'
-- idempotency_key: gh:vamseeachanta/digitalmodel#54
-  title: SS |  Task List
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/54
-  gh_state: open
-  gh_labels:
-  - wrk-item
-  gh_assignees:
-  - samdansk2
-  initial_status: triage
-  priority: 0
-  body_excerpt: placeholder for SS assignments
-- idempotency_key: gh:vamseeachanta/digitalmodel#47
-  title: engg debt | Plate Buckling Calculations
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/47
-  gh_state: open
-  gh_labels:
-  - feature
-  - wrk-item
-  gh_assignees:
-  - samdansk2
-  initial_status: triage
-  priority: 0
-  body_excerpt: 'Prepare plate buckling calculations.
+      - [ ] Plot comparson charts'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#54
+    title: SS |  Task List
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/54
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees:
+      - samdansk2
+    initial_status: triage
+    priority: 0
+    body_excerpt: placeholder for SS assignments
+  - idempotency_key: gh:vamseeachanta/digitalmodel#47
+    title: engg debt | Plate Buckling Calculations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/47
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees:
+      - samdansk2
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Prepare plate buckling calculations.
 
-    https://github.com/vamseeachanta/digitalmodel/tree/plate_buckling/docs/sub_plate_buckling'
-- idempotency_key: gh:vamseeachanta/digitalmodel#31
-  title: engg debt | Ship design | strength checks
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/31
-  gh_state: open
-  gh_labels:
-  - feature
-  - wrk-item
-  gh_assignees: []
-  initial_status: triage
-  priority: 0
-  body_excerpt: Develop scripts
-- idempotency_key: gh:vamseeachanta/digitalmodel#30
-  title: engg debt | Ship design | min scantling calculations
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/30
-  gh_state: open
-  gh_labels:
-  - feature
-  - wrk-item
-  gh_assignees: []
-  initial_status: triage
-  priority: 0
-  body_excerpt: Develop scripts
-- idempotency_key: gh:vamseeachanta/digitalmodel#12
-  title: engg debt | Padeye Calculations
-  source: github_issue
-  source_url: https://github.com/vamseeachanta/digitalmodel/issues/12
-  gh_state: open
-  gh_labels:
-  - feature
-  - wrk-item
-  gh_assignees: []
-  initial_status: triage
-  priority: 0
-  body_excerpt: Standard padeye calculations and associated checks
+      https://github.com/vamseeachanta/digitalmodel/tree/plate_buckling/docs/sub_plate_buckling'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#31
+    title: engg debt | Ship design | strength checks
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/31
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Develop scripts
+  - idempotency_key: gh:vamseeachanta/digitalmodel#30
+    title: engg debt | Ship design | min scantling calculations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/30
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Develop scripts
+  - idempotency_key: gh:vamseeachanta/digitalmodel#12
+    title: engg debt | Padeye Calculations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/12
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Standard padeye calculations and associated checks
+  - idempotency_key: gh:vamseeachanta/digitalmodel#5
+    title: rao_analysis QA criteria
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/5
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#6
+    title: rao_analysis Seastate RAO plotting
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/6
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#7
+    title: rao_analysis Add Orcawave analysis
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/7
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#8
+    title: rao_analysis calculate heave motions at various locations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/8
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#10
+    title: 'Bug: RAOs plotting should be called vessel_type instead of vessel_name.'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/10
+    gh_state: closed
+    gh_labels:
+      - bug
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#11
+    title: 'RAOs: Add vessel RAOs comparison'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/11
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#14
+    title: modal analysis | Automate results for easy manual review
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/14
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#15
+    title: rao_analysis | Add a program to trim the SSRAOs grid for a structure being installed with defined tolerance.
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/15
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#22
+    title: code_refactor | utilize common code from assetutilities
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/22
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#24
+    title: orcaflex | file management
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/24
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#25
+    title: refactor | accommodating additional software
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/25
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#26
+    title: OrcaFlex | FileManagement | Ability to run select files in current directory
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/26
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - package
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#27
+    title: OrcaFlex | PostProcess | sim file status
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/27
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - package
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#32
+    title: engg debt | Cathodic Protection | Calculations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/32
+    gh_state: closed
+    gh_labels:
+      - feature
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#33
+    title: sesamExtract | Enhancements
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/33
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#35
+    title: pyintro | Example Calculation in Public library
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/35
+    gh_state: closed
+    gh_labels:
+      - feature
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#39
+    title: Prepare plots for project report
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/39
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#42
+    title: print Text | With colors
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/42
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#44
+    title: AQWA Training | SP
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/44
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#48
+    title: Organization Copilot membership
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/48
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#49
+    title: dev | Consolidate MES file messages
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/49
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#50
+    title: 'aqwa | B1516: Remove slow drift in the analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/50
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#51
+    title: aqwa | automate by analysis category (RAO, Static, dynamic)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/51
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#52
+    title: aqwa | DECK10, DECK11 | Current & wind data and force coefficients
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/52
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#53
+    title: tests | pass
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/53
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#55
+    title: aqwa | External Force functions
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/55
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#56
+    title: SIMPY | Solve equations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/56
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#57
+    title: engg debt | Pipeline | Pressure Loss
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/57
+    gh_state: closed
+    gh_labels:
+      - feature
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#58
+    title: aqwa | aqwareader | RAO data
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/58
+    gh_state: closed
+    gh_labels:
+      - bug
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#61
+    title: OrcaFlex | Refactor postprocess code
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/61
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - package
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#66
+    title: Engineering Data | Reduce .csv data size with round-off
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/66
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#67
+    title: optimization | vs code | test launch profiles
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/67
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#68
+    title: small bug | when executing from gitbash colorama text coloring in python is not showing up.
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/68
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#69
+    title: optimization | coding agents | up
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/69
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#70
+    title: optimization | dependency management
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/70
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#71
+    title: OrcaFlex | Vessel Time Traces in Local Coordinate System
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/71
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#72
+    title: OrcaFlex | Postprocess | Linked Statistics
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/72
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#73
+    title: script to customize orcaflex runs
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/73
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#74
+    title: OrcaFlex | ThreadCount PowerShell Script
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/74
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#75
+    title: OrcaFlex | Postprocess | Static Results
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/75
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#76
+    title: OrcaFlex | Model Status update
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/76
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#77
+    title: OrcaFlex | Upgrade computer to v11.5
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/77
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#78
+    title: OrcaFlex | Postprocess | Vessel Motions
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/78
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#81
+    title: Project SN | Tasks
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/81
+    gh_state: closed
+    gh_labels:
+      - project
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#91
+    title: engg debt | Import AceEngineer and DigitalTwinModel code into digitalmodel repo
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/91
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#94
+    title: DESIGN DRAWINGS
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/94
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#97
+    title: '[Suggestion] Replace interp1d(...)(x) with np.interp(...) for simple linear interpolation when extrapolation is not needed'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/97
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#273
+    title: 'WRK-666: feat(workspace-hub): WhatsApp → WRK capture pipeline — monitor number/channel and auto-create work items'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/273
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - status:plan-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#276
+    title: 'WRK-1149: Method assessment and selection — propeller-rudder interaction models'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/276
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#278
+    title: 'WRK-1280: Add 4-quadrant propeller data to propeller-rudder literature'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/278
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#285
+    title: 'WRK-020: "GIS skill for cross-application geospatial tools \u2014 Blender, QGIS, well\'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/285
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - wrk-item
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#286
+    title: 'WRK-101: Add mesh decimation/coarsening to mesh-utilities skill'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/286
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#287
+    title: 'WRK-106: Hull panel geometry generator from waterline, section, and profile line definitions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/287
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#288
+    title: 'WRK-1242: Calculation methodology skill — structured engineering analysis workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/288
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-methodology
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#289
+    title: 'WRK-1279: Extract numerical test vectors from all naval architecture literature and document intelligence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/289
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#290
+    title: 'WRK-101: Add mesh decimation/coarsening to mesh-utilities skill'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/290
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#291
+    title: 'WRK-106: Hull panel geometry generator from waterline, section, and profile line definitions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/291
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#292
+    title: 'WRK-1242: Calculation methodology skill — structured engineering analysis workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/292
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-methodology
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#293
+    title: 'WRK-1279: Extract numerical test vectors from all naval architecture literature and document intelligence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/293
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#294
+    title: 'WRK-5091: feat(diffraction): mesh generate CLI + GmshMeshBuilder exports'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/294
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#295
+    title: 'WRK-5091: feat(diffraction): mesh generate CLI + GmshMeshBuilder exports'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/295
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#296
+    title: 'WRK-026: Unified input data format converter for diffraction solvers (AQWA, OrcaWave, BEMRosetta)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/296
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#297
+    title: 'WRK-057: Define canonical spec.yml schema for diffraction analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/297
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#298
+    title: 'WRK-058: AQWA input backend — spec.yml to single .dat and modular deck files'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/298
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#299
+    title: 'WRK-059: OrcaWave input backend — spec.yml to single .yml and modular includes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/299
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#300
+    title: 'WRK-060: Common mesh format and converter pipeline (BEMRosetta + GMSH)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/300
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#301
+    title: 'WRK-061: CLI and integration layer for spec converter'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/301
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#302
+    title: 'WRK-062: Test suite for spec converter using existing example data'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/302
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#303
+    title: 'WRK-063: Reverse parsers — AQWA .dat and OrcaWave .yml to canonical spec.yml'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/303
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#304
+    title: 'WRK-065: S-lay pipeline installation schema + builders for PRPP Eclipse vessel'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/304
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#305
+    title: 'WRK-014: HSE risk index — client-facing risk insights with risk scoring'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/305
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#306
+    title: 'WRK-025: AQWA diffraction analysis runner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/306
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#307
+    title: 'WRK-027: AQWA batch analysis execution'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/307
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#308
+    title: 'WRK-028: AQWA postprocessing - RAOs and verification'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/308
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#309
+    title: 'WRK-029: OrcaWave diffraction analysis runner + file preparation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/309
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#310
+    title: 'WRK-030: OrcaWave batch analysis + postprocessing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/310
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#311
+    title: 'WRK-031: Benchmark OrcaWave vs AQWA for 2-3 hulls'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/311
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#312
+    title: 'WRK-033: Develop OrcaFlex include-file modular skill for parametrised analysis input'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/312
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#313
+    title: 'WRK-034: Develop OrcaWave modular file prep skill for parametrised analysis input'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/313
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#314
+    title: 'WRK-035: Develop AQWA modular file prep skill for parametrised analysis input'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/314
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#315
+    title: 'WRK-037: Get OrcaFlex framework of agreement and terms'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/315
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#316
+    title: 'WRK-038: Compile global LNG terminal project dataset with comprehensive parameters'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/316
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#317
+    title: 'WRK-040: Mooring benchmarking - AQWA vs OrcaFlex'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/317
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#318
+    title: 'WRK-044: Pipeline wall thickness calculations with parametric utilisation analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/318
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#319
+    title: 'WRK-079: Create marine safety case study — cross-database incident correlation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/319
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#320
+    title: 'WRK-082: Complete LNG terminal data pipeline — from config to working collection'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/320
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#321
+    title: 'WRK-026: Unified input data format converter for diffraction solvers (AQWA, OrcaWave, BEMRosetta)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/321
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#322
+    title: 'WRK-057: Define canonical spec.yml schema for diffraction analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/322
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#323
+    title: 'WRK-058: AQWA input backend — spec.yml to single .dat and modular deck files'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/323
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#324
+    title: 'WRK-059: OrcaWave input backend — spec.yml to single .yml and modular includes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/324
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#325
+    title: 'WRK-060: Common mesh format and converter pipeline (BEMRosetta + GMSH)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/325
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#326
+    title: 'WRK-061: CLI and integration layer for spec converter'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/326
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#327
+    title: 'WRK-062: Test suite for spec converter using existing example data'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/327
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#328
+    title: 'WRK-063: Reverse parsers — AQWA .dat and OrcaWave .yml to canonical spec.yml'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/328
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#329
+    title: 'WRK-100: Run 3-way benchmark on Barge hull'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/329
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#330
+    title: 'WRK-065: S-lay pipeline installation schema + builders for PRPP Eclipse vessel'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/330
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#331
+    title: 'WRK-014: HSE risk index — client-facing risk insights with risk scoring'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/331
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#332
+    title: 'WRK-102: Add generic hull definition/data for all rigs in worldenergydata'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/332
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#333
+    title: 'WRK-015: Metocean data extrapolation to target locations using GIS and nearest-source'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/333
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#334
+    title: 'WRK-025: AQWA diffraction analysis runner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/334
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#335
+    title: 'WRK-027: AQWA batch analysis execution'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/335
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#336
+    title: 'WRK-028: AQWA postprocessing - RAOs and verification'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/336
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#337
+    title: 'WRK-029: OrcaWave diffraction analysis runner + file preparation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/337
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#338
+    title: 'WRK-110: Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/338
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#339
+    title: 'WRK-030: OrcaWave batch analysis + postprocessing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/339
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#340
+    title: 'WRK-031: Benchmark OrcaWave vs AQWA for 2-3 hulls'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/340
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#341
+    title: 'WRK-033: Develop OrcaFlex include-file modular skill for parametrised analysis input'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/341
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#342
+    title: 'WRK-034: Develop OrcaWave modular file prep skill for parametrised analysis input'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/342
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#343
+    title: 'WRK-114: Collect hull panel shapes and sizes for various floating bodies from existing sources'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/343
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#344
+    title: 'WRK-035: Develop AQWA modular file prep skill for parametrised analysis input'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/344
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#345
+    title: 'WRK-037: Get OrcaFlex framework of agreement and terms'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/345
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#346
+    title: 'WRK-115: Link RAO data to hull shapes in hull library catalog'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/346
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#347
+    title: 'WRK-038: Compile global LNG terminal project dataset with comprehensive parameters'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/347
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#348
+    title: 'WRK-116: Scale hull panel meshes to target principal dimensions for hydrodynamic analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/348
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#349
+    title: 'WRK-040: Mooring benchmarking - AQWA vs OrcaFlex'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/349
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#350
+    title: 'WRK-044: Pipeline wall thickness calculations with parametric utilisation analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/350
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#351
+    title: 'WRK-117: Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/351
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#352
+    title: 'WRK-079: Create marine safety case study — cross-database incident correlation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/352
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#353
+    title: 'WRK-082: Complete LNG terminal data pipeline — from config to working collection'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/353
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#354
+    title: 'WRK-084: Integrate metocean data sources into unified aggregation interface'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/354
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#355
+    title: 'WRK-127: Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/355
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#356
+    title: 'WRK-132: Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/356
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#357
+    title: 'WRK-139: Develop gmsh skill and documentation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/357
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#358
+    title: 'WRK-100: Run 3-way benchmark on Barge hull'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/358
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#359
+    title: 'WRK-102: Add generic hull definition/data for all rigs in worldenergydata'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/359
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#360
+    title: 'WRK-143: Full symmetric M-T envelope — closed polygon lens shapes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/360
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#361
+    title: 'WRK-144: API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/361
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#362
+    title: 'WRK-110: Expand hull size library with FST, LNGC, and OrcaFlex benchmark shapes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/362
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#363
+    title: 'WRK-145: Design code versioning — handle changing revisions of standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/363
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#364
+    title: 'WRK-114: Collect hull panel shapes and sizes for various floating bodies from existing sources'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/364
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#365
+    title: 'WRK-115: Link RAO data to hull shapes in hull library catalog'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/365
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#366
+    title: 'WRK-152: Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/366
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#367
+    title: 'WRK-116: Scale hull panel meshes to target principal dimensions for hydrodynamic analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/367
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#368
+    title: 'WRK-117: Refine and coarsen hull panel meshes for mesh convergence sensitivity analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/368
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#369
+    title: 'WRK-155: DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/369
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#370
+    title: 'WRK-157: Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/370
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#371
+    title: 'WRK-127: Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/371
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#372
+    title: 'WRK-132: Refine OrcaWave benchmarks: barge/ship/spar RAO fixes + damping/gyradii/Km comparison'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/372
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#373
+    title: 'WRK-158: Wall thickness parametric engine — Cartesian sweep across D/t, pressure, material'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/373
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#374
+    title: 'WRK-139-gmsh: Develop gmsh skill and documentation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/374
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#375
+    title: 'WRK-143: Full symmetric M-T envelope — closed polygon lens shapes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/375
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#376
+    title: 'WRK-144: API RP 2RD + API STD 2RD riser wall thickness — WSD & LRFD combined loading'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/376
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#377
+    title: 'WRK-159: Three-way design code comparison report — API RP 1111 vs RP 2RD vs STD 2RD'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/377
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#378
+    title: 'WRK-145: Design code versioning — handle changing revisions of standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/378
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#379
+    title: 'WRK-152: Marine safety importer validation — verify MAIB/TSB/IMO/EMSA importers against real data'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/379
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#380
+    title: 'WRK-155: DNV-ST-F101 submarine pipeline wall thickness — WSD and LRFD methods'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/380
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#381
+    title: 'WRK-157: Fatigue analysis module enhancement — S-N curve reporting and parametric sweeps'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/381
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#382
+    title: 'WRK-158: Wall thickness parametric engine — Cartesian sweep across D/t, pressure, material'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/382
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#383
+    title: 'WRK-159: Three-way design code comparison report — API RP 1111 vs RP 2RD vs STD 2RD'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/383
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#384
+    title: 'WRK-170: Integrate MET-OM/metocean-stats as statistical analysis engine for metocean module'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/384
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#385
+    title: 'WRK-170: Integrate MET-OM/metocean-stats as statistical analysis engine for metocean module'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/385
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#386
+    title: 'WRK-220: Offshore decommissioning analytics — data-driven lifecycle planning module'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/386
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#387
+    title: 'WRK-240: Diffraction spec converter skill — register as named agent-callable skill'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/387
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#388
+    title: 'WRK-241: Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/388
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#389
+    title: 'WRK-243: Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/389
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#390
+    title: 'WRK-244: OrcaFlex template library skill — get canonical spec.yml by structure type'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/390
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#391
+    title: 'WRK-245: Fatigue assessment skill — wrap full module with input schema and auto export'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/391
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#392
+    title: 'WRK-246: LNG terminal dataset — queryable module and aceengineer website data card'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/392
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#393
+    title: 'WRK-220: Offshore decommissioning analytics — data-driven lifecycle planning module'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/393
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#394
+    title: 'WRK-248: PHMSA pipeline safety case study — aceengineer website with data-to-assessment workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/394
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#395
+    title: 'WRK-249: ENIGMA safety analysis skill — register as agent-callable capability'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/395
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#396
+    title: 'WRK-250: Cross-database marine safety case study — MAIB, IMO, EMSA, TSB correlation analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/396
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#397
+    title: 'WRK-255: Hull library lookup skill — closest-match hull form by target dimensions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/397
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#398
+    title: 'WRK-259: common.units — global unit conversion registry for cross-basin analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/398
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#399
+    title: 'WRK-266: Calibrate decommissioning cost model against BSEE platform removal notices'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/399
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#400
+    title: 'WRK-268: Wire ENIGMA safety skill to real HSE incident database for data-driven scoring'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/400
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#401
+    title: 'WRK-269: CP standards research — inventory codes, map version gaps, define implementation scope'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/401
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#402
+    title: 'WRK-270: Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/402
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#403
+    title: 'WRK-240: Diffraction spec converter skill — register as named agent-callable skill'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/403
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#404
+    title: 'WRK-271: CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/404
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#405
+    title: 'WRK-272: CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/405
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#406
+    title: 'WRK-241: Pipeline integrity skill — chain wall thickness, parametric engine, and FFS into one callable workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/406
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#407
+    title: 'WRK-276: Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/407
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#408
+    title: 'WRK-243: Hull analysis setup skill — chain select, scale, mesh, RAO-link into one call'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/408
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#409
+    title: 'WRK-277: CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/409
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#410
+    title: 'WRK-244: OrcaFlex template library skill — get canonical spec.yml by structure type'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/410
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#411
+    title: 'WRK-279: Fix DNV_RP_F103_2010 critical defects G-1 through G-4 — replace fabricated table refs + non-standard formulas'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/411
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:critical
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#412
+    title: 'WRK-280: ABS standards acquisition: create folder + download CP Guidance Notes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/412
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#413
+    title: 'WRK-245: Fatigue assessment skill — wrap full module with input schema and auto export'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/413
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#414
+    title: 'WRK-282: Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/414
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#415
+    title: 'WRK-246: LNG terminal dataset — queryable module and aceengineer website data card'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/415
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#416
+    title: 'WRK-290: Install core engineering suite on ace-linux-2 (Blender, OpenFOAM, FreeCAD, Gmsh, BemRosetta)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/416
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#417
+    title: 'WRK-248: PHMSA pipeline safety case study — aceengineer website with data-to-assessment workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/417
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#418
+    title: 'WRK-249: ENIGMA safety analysis skill — register as agent-callable capability'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/418
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#419
+    title: 'WRK-250: Cross-database marine safety case study — MAIB, IMO, EMSA, TSB correlation analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/419
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#420
+    title: 'WRK-255: Hull library lookup skill — closest-match hull form by target dimensions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/420
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#421
+    title: 'WRK-259: common.units — global unit conversion registry for cross-basin analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/421
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#422
+    title: 'WRK-610: Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/422
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#423
+    title: 'WRK-615: Organize files and establish directory structure in CAD-DEVELOPMENTS'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/423
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#424
+    title: 'WRK-266: Calibrate decommissioning cost model against BSEE platform removal notices'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/424
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#425
+    title: 'WRK-268: Wire ENIGMA safety skill to real HSE incident database for data-driven scoring'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/425
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#426
+    title: 'WRK-269: CP standards research — inventory codes, map version gaps, define implementation scope'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/426
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#427
+    title: 'WRK-270: Fix cathodic-protection SKILL.md — align examples to real CathodicProtection API'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/427
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#428
+    title: 'WRK-271: CP worked examples — end-to-end reference calculations for pipeline, ship, and offshore platform'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/428
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#429
+    title: 'WRK-272: CP capability extension — DNV-RP-B401 offshore platform + DNV-RP-F103 2016 update'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/429
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#430
+    title: 'WRK-276: Abstract all CP client calcs to .md reference — strip project names, keep engineering data, use as tests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/430
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#431
+    title: 'WRK-277: CP capability — ABS GN Offshore Structures 2018 route for ABS-classed offshore structures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/431
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#432
+    title: 'WRK-280: ABS standards acquisition: create folder + download CP Guidance Notes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/432
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#433
+    title: 'WRK-282: Migrate raw ABS docs from O&G-Standards/raw/ into structured ABS/ folder'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/433
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#434
+    title: 'WRK-610: Set up CAD-DEVELOPMENTS as AI-agent FEA pipeline repo in workspace-hub'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/434
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#435
+    title: 'WRK-615: Organize files and establish directory structure in CAD-DEVELOPMENTS'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/435
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#436
+    title: 'WRK-1148: Naval architecture literature gathering — propeller-rudder interaction'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/436
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#437
+    title: 'WRK-020: "GIS skill for cross-application geospatial tools \u2014 Blender, QGIS, well\'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/437
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#438
+    title: 'WRK-478: feat(subsea): create Cathodic Protection module (DNV-RP-B401)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/438
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#439
+    title: 'WRK-129: Standardize analysis reporting for each OrcaFlex structure type'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/439
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#440
+    title: 'WRK-140: Integrate gmsh meshing skill into digitalmodel and solver pipelines'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/440
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#441
+    title: 'WRK-072: Technical safety analysis module for worldenergydata using ENIGMA theory'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/441
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#442
+    title: 'WRK-074: Complete marine safety database importers (MAIB, IMO, EMSA, TSB)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/442
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#443
+    title: 'WRK-1300: Review and update PDF/document skills — learnings from WRK-1277 and readability sessions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/443
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#444
+    title: 'WRK-1302: Evaluate PyMuPDF4LLM and pypdfium2 as faster alternatives to Codex and pdftotext'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/444
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#445
+    title: 'WRK-1303: Evaluate Docling for 0%-yield content types (equations, constants, procedures)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/445
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#446
+    title: 'WRK-138: Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/446
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#447
+    title: 'WRK-204: digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/, tests/'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/447
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#448
+    title: 'WRK-1148: Naval architecture literature gathering — propeller-rudder interaction'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/448
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#449
+    title: 'WRK-140: Integrate gmsh meshing skill into digitalmodel and solver pipelines'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/449
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#450
+    title: 'WRK-072: Technical safety analysis module for worldenergydata using ENIGMA theory'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/450
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#451
+    title: 'WRK-074: Complete marine safety database importers (MAIB, IMO, EMSA, TSB)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/451
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#452
+    title: 'WRK-1300: Review and update PDF/document skills — learnings from WRK-1277 and readability sessions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/452
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#453
+    title: 'WRK-1302: Evaluate PyMuPDF4LLM and pypdfium2 as faster alternatives to Codex and pdftotext'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/453
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#454
+    title: 'WRK-1303: Evaluate Docling for 0%-yield content types (equations, constants, procedures)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/454
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#455
+    title: 'WRK-138: Fitness-for-service module enhancement: wall thickness grid, industry targeting, and asset lifecycle'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/455
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#456
+    title: 'WRK-204: digitalmodel: rename modules/ naming pattern across docs/, examples/, scripts/python/, base_configs/, tests/'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/456
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - archived
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#457
+    title: Ship dimensions template + loader (WRK-1380)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/457
+    gh_state: open
+    gh_labels:
+      - feature
+      - domain:naval-architecture
+      - wrk-item
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1380: Ship dimensions manual data entry from 110 ship plans
+
+      **Status:** Stage 6: Cross-Review (in_progress) | **Priority:** low | **Category:** document-intelligence | **Subcategory:** manual-curation
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#458
+    title: GZ curve fixtures and validation tests (WRK-1381)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/458
+    gh_state: closed
+    gh_labels:
+      - feature
+      - domain:naval-architecture
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#459
+    title: 'WRK-1341: CalculiX beam/frame element support — extend INP writer for B31/B32'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/459
+    gh_state: closed
+    gh_labels:
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#460
+    title: 'WRK-5119: CalculiX beam cross-section tests — CIRC and PIPE sections'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/460
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#462
+    title: 'WRK-5123: CalculiX test fix — 3 pre-existing failures [DONE]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/462
+    gh_state: closed
+    gh_labels:
+      - bug
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#468
+    title: 'smoke_test L01: generate .owr from .yml via OrcFxAPI, then export .xlsx'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/468
+    gh_state: closed
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#473
+    title: Create HTML/PDF report renderer for jumper installation
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/473
+    gh_state: closed
+    gh_labels:
+      - feature
+      - cat:engineering
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#474
+    title: 'BUG: Verify PLET-PLEM jumper segment lengths from SZ_Ballymore_Jumper_MF.xlsm'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/474
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#476
+    title: Connect jumper pipeline to OrcaFlex modular model generator
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/476
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#477
+    title: 'Batch 2: FDAS Riser Engineering workbook conversions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/477
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#482
+    title: Integrate Go/No-Go decision into pipeline and report generation
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/482
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#492
+    title: Implement subsea control systems module (API 17F)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/492
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#495
+    title: OrcaFlex YAML-strict validator — automated load-test for generated files
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/495
+    gh_state: closed
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#496
+    title: 'OrcaFlex spec schema: multi-wave-train + multi-current-profile support'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/496
+    gh_state: closed
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#497
+    title: 'OrcaFlex builders: raw_properties round-trip emission + cross-builder validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/497
+    gh_state: closed
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#498
+    title: OrcaFlex builder test coverage uplift — missing builder + integration tests
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/498
+    gh_state: closed
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#499
+    title: 'OrcaFlex model library: upgrade extracted specs from generic to domain-specific sections'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/499
+    gh_state: closed
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#502
+    title: 'OrcaFlex spec audit: fix remaining 13 failures to reach 100% readiness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/502
+    gh_state: closed
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#505
+    title: 'OrcaFlex: emit raw_properties in EnvironmentBuilder for round-trip fidelity'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/505
+    gh_state: closed
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#510
+    title: 'OrcaFlex: fix 20 pre-existing test failures in orcaflex test suite'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/510
+    gh_state: closed
+    gh_labels:
+      - bug
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#511
+    title: 'OrcaFlex: campaign spec generation — parametric sweep from spec.yml'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/511
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#513
+    title: Align pytest-asyncio packaging with async test usage in dev/test extras
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/513
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#515
+    title: Clarify and close semantic-equivalence gaps between spec/LLM-friendly YAML and OrcaFlex strict YAML
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/515
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - route:B
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#516
+    title: Clarify and close semantic-equivalence gaps between spec/LLM-friendly YAML and OrcaWave strict YAML
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/516
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - project
+      - priority:high
+      - cat:engineering-models
+      - cat:development
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#517
+    title: Define OrcaFlex YAML semantic-diff taxonomy and comparison policy
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/517
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:pending
+      - route:B
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#519
+    title: Classify and fix General/Environment/Groups fidelity gaps in OrcaFlex generation
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/519
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - status:pending
+      - route:B
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#520
+    title: Improve and document reverse extraction limits for OrcaFlex strict YAML to spec.yml
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/520
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:pending
+      - route:B
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#521
+    title: Implement OrcaWave semantic-equivalence taxonomy, regression tests, and documentation follow-ups
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/521
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - project
+      - priority:high
+      - cat:engineering-models
+      - cat:development
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#524
+    title: Add OrcaWave value-level semantic roundtrip regression tests
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/524
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - project
+      - priority:high
+      - cat:engineering-models
+      - cat:development
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#525
+    title: Remove silent defaults in OrcaWaveInputParser for semantic-equivalence hardening
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/525
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - project
+      - priority:high
+      - cat:engineering-models
+      - cat:development
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#546
+    title: 'ci: Quality Gates artifact truncates pytest log to 8.6 KB JSON tail — upload full log instead'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/546
+    gh_state: closed
+    gh_labels:
+      - cat:ci
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#552
+    title: 'fix(aqwa-backend): align CRLF/LF line endings between generate_single and generate_modular'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/552
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#554
+    title: 'fix(marine_ops): catenary solver bracketing + sinh overflow — clears 21 of 77 marine_ops failures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/554
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - priority:high
+      - domain:naval-architecture
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R2. Source patch will clear ~21 of 77 marine_ops test failures.
+
+      ## Symptom
+
+      Top errors observed at digitalmodel HEAD `2dfa61e6` (live repro 2026-05-02):'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#555
+    title: 'fix(marine_ops): _generate_chain_database diameters[:20] excludes 76mm — clears 4 of 77 marine_ops failures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/555
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#566
+    title: 'fix(marine_ops): batched residue clusters R1+R5+R7+R8 — clears ~10 of 77 marine_ops failures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/566
+    gh_state: open
+    gh_labels:
+      - bug
+      - domain:naval-architecture
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) covering 4 small heterogeneous clusters per user direction to batch (vs. R6 which was filed 1-issue-per-test for visibility). Sister sub-issues: R2 = [vamseeachanta/digitalmodel#554](https://github.com/vamseeachanta/digitalmodel/issues/554), R4 = [vamseeachanta/digitalmodel#555](https://github.com/vamseeachanta/digitalmodel/issues/555), R6 = [#556](https://github.com/vamseeachanta/digitalmodel/issues/556)–[#565](https://github.com/vamseeachanta/digitalmodel/issues/565). R3 ([vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster) is blocked separately on DNV-RP-B401 standards reconciliation.
+
+      All test paths verified at digitalmodel HEAD `08e9c333`. Total covered: **11 failures across 4 clusters**.
+
+      ---'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#570
+    title: 'fix(tests/orcaflex): replace bare CLI invocations with sys.executable -m — clears ~22 of 42 solvers/orcaflex failures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/570
+    gh_state: closed
+    gh_labels:
+      - bug
+      - cat:engineering
+      - domain:naval-architecture
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#571
+    title: 'fix(tests/orcaflex): test_cli_commands_from_module assertion drift — separate from S1 PATH cluster'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/571
+    gh_state: closed
+    gh_labels:
+      - bug
+      - domain:naval-architecture
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#573
+    title: 'fix(marine_ops): DNV-RP-F103 calibration drift in test_cathodic_protection_dnv.py — clears 16 of 77 marine_ops failures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/573
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - domain:naval-architecture
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R3. Wiki citation surface for DNV-RP-F103 has now landed on workspace-hub main via [vamseeachanta/workspace-hub#2636](https://github.com/vamseeachanta/workspace-hub/pull/2636), unblocking this sub-issue per `.claude/rules/calc-citation-contract.md`.
+
+      ## Affected tests (16)'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#594
+    title: Vessel operability reference synthesis for CTV/SOV/W2W suitability
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/594
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:closed
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#598
+    title: 'feat(naval-architecture): SIROCCO current-heading/rudder force component chart set'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/598
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - cat:engineering-calculations
+      - domain:naval-architecture
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#601
+    title: 'bug(orcaflex): preserve generated jumper line-section YAML in pipeline outputs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/601
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
+
+      The jumper calculation path computes 27 OrcaFlex line sections, but the pipeline does not write them because the result key names do not match:'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#602
+    title: 'feat(orcaflex): convert Ballymore jumper specs into generator-ready ProjectInputSpec models'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/602
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
+
+      Current Ballymore jumper specs are domain calculation specs, not `ProjectInputSpec` inputs for `ModularModelGenerator`:'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#603
+    title: 'test(orcaflex): add regression coverage for Ballymore spec-to-modular pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/603
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
+
+      The current test suite has broad `modular_generator` coverage, but no focused regression test proving the two Ballymore jumper specs can travel through the intended path:'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#604
+    title: 'chore(orcaflex): validate generated Ballymore jumper model on licensed OrcaFlex runner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/604
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
+
+      Linux can validate `ProjectInputSpec` and generate OrcaFlex YAML, but final `.dat`/`.sim` load-run proof requires an OrcaFlex license. Workspace-hub has a related operational smoke issue for generic OrcaFlex queue validation, but the Ballymore jumper generated model still needs a domain-specific licensed proof once #602/#603 land.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#605
+    title: 'OrcaWave: produce self-contained solver packages from spec conversion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/605
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      `diffraction convert-spec --solver orcawave` generates OrcaWave YAML, but it does not yet guarantee the output directory is self-contained and runnable. The backend writes mesh references as basenames, while referenced mesh files and auxiliary meshes may still live beside the source `spec.yml`.
+
+      This overlaps with, but is broader than, #500. #500 covers mesh pre-flight validation and runner auto-copy; this issue is specifically about the conversion/package artifact created by `convert-spec`.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#606
+    title: 'OrcaWave: integrate MeshPipeline into spec conversion and runner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/606
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      The diffraction module has a `MeshPipeline` that can load, validate, and prepare meshes for solvers, but the OrcaWave spec conversion and runner paths do not yet use it to prepare arbitrary mesh inputs.
+
+      Without this integration, a user must already know which mesh formats are solver-ready and manually convert or arrange files before running diffraction.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#607
+    title: 'OrcaWave: add given-mesh CLI workflow for diffraction setup'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/607
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      A user with a mesh file should be able to start a diffraction analysis without manually authoring a complete `spec.yml` from scratch. The current path assumes the canonical spec already exists.
+
+      ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#608
+    title: 'OrcaWave: add mesh quality gates before diffraction solve'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/608
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      For arbitrary user-supplied meshes, file existence is not enough. Diffraction solves need mesh quality checks before invoking OrcaWave, otherwise users will hit solver failures or poor hydrodynamic results late in the workflow.
+
+      ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#609
+    title: 'OrcaWave: normalize auxiliary mesh handling for control surfaces and QTF inputs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/609
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      Auxiliary mesh handling is inconsistent across the schema, backend, and runner. In particular, the schema supports control surfaces at both `VesselSpec.control_surface` and `BodySpec.control_surface`, while the OrcaWave backend and runner currently read the vessel-level location. This can silently ignore body-level control surface definitions in multi-body specs.
+
+      The same packaging/preflight path should also cover damping lid meshes and free-surface panelled-zone meshes used for QTF workflows.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#610
+    title: 'OrcaWave: add licensed end-to-end acceptance test for arbitrary mesh workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/610
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      There is smoke-test coverage for known OrcaWave inputs, but the future workflow needs proof that an arbitrary mesh-driven DigitalModel spec can run end-to-end on a licensed host.
+
+      ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#611
+    title: 'OrcaWave: define result export and postprocess contract for diffraction runs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/611
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      The OrcaWave runner can save `.owr` and a data file through OrcFxAPI, and separate utilities can read `.xlsx` sidecars or `.owr` results. The workflow needs a clear output contract so downstream OrcaFlex handoff, reports, benchmarks, and QA can consume a run consistently.
+
+      ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#612
+    title: 'OrcaWave: add batch mesh convergence and grid sensitivity workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/612
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      Running diffraction from arbitrary meshes requires engineering confidence, not just a single solve. Users need a repeatable workflow for mesh convergence and frequency/heading sensitivity studies.
+
+      ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#613
+    title: 'OrcaWave: add environment and license doctor command'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/613
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      Users need a quick way to know whether the local machine can actually run OrcaWave diffraction before preparing a large solve. Current behavior can silently fall back to dry-run when OrcFxAPI and OrcaWave executable paths are unavailable.
+
+      ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#614
+    title: 'OrcaWave: update docs for canonical spec-to-run workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/614
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      Some OrcaWave documentation and examples still reference older command paths and scripts. The canonical workflow should be clear for users starting from either a `spec.yml` or a mesh-driven workflow.
+
+      ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#616
+    title: 'feat(marine_ops): polar plot with vessel silhouette and on-body force vectors — reusable across OCIMF explorer, SIROCCO review, future studies'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/616
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-calculations
+      - domain:naval-architecture
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#617
+    title: Citation-resolver hardening for LLM_WIKI_PATH env var + fail-closed UX (post llm-wiki privacy flip)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/617
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#619
+    title: 'Ship-class structural stress gaps: sloshing (rule-based), racking/panting, ice loads, drydock support, class-rule slamming'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/619
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#620
+    title: 'Review remediation: SQLi/.format, pickle, yaml.Loader, dup modules (2026-05-23)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/620
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

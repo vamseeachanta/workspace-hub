@@ -4,7 +4,15 @@ board:
   tier: repo
   repo: vamseeachanta/hobbies
   workspace_path: /mnt/local-analysis/hobbies
-  description: Personal knowledge base (gardening, sports, cultural, autism, sdev).
-    Markdown + binaries only — no software. Phase 1/2 cleanup plan from docs/roadmap.md
-    (WRK-041) is the live workstream.
-cards: []
+  description: Personal knowledge base (gardening, sports, cultural, autism, sdev). Markdown + binaries only — no software. Phase 1/2 cleanup plan from docs/roadmap.md (WRK-041) is the live workstream.
+cards:
+  - idempotency_key: gh:vamseeachanta/hobbies#2
+    title: 'Review remediation: scaffolding vs charter, git_manager injection (2026-05-23)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/hobbies/issues/2
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

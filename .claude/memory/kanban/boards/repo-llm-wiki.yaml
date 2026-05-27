@@ -4,8 +4,1423 @@ board:
   tier: repo
   repo: vamseeachanta/llm-wiki
   workspace_path: /mnt/local-analysis/llm-wiki
-  description: 'Private (flipped 2026-05-20) codes/standards corpus + client knowledge
-    wiki. Parent board; cards live in sub-boards (ingest, tooling, content, governance).
+  description: 'Private (flipped 2026-05-20) codes/standards corpus + client knowledge wiki. Parent board; cards live in sub-boards (ingest, tooling, content, governance).
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/llm-wiki#13
+    title: 'epic(knowledge): llm-wiki strengthening roadmap and execution waves'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/13
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - machine:dev-primary
+      - cat:documentation
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Create an umbrella roadmap for the current llm-wiki strengthening program, grouping the recently created issues into execution waves with explicit dependencies, parallelization notes, and staging guidance.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#14
+    title: 'feat(llm-wiki): plan curated SESA LNG corpus extraction from Elements'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/14
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - status:blocked
+      - machine:dev-primary
+      - cat:data-pipeline
+      - domain:knowledge-management
+      - domain:marine
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Plan a bounded curated extraction pass for the SESA FLNG Terminal / DORIS `62092_sesa` corpus now represented metadata-first in the LLM-wikis.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#15
+    title: 'META: resolve standards-routing for maritime-law / lng-projects / acma-projects (post-#2615 deferred Open Questions)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/15
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - status:done
+      - cat:knowledge-domain
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#16
+    title: 'feat(llm-wiki): backfill engineering classification-society entity pages (DNV/ABS/LR/BV)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/16
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - status:done
+      - cat:documentation
+      - domain:knowledge-management
+      - domain:standards
+      - llm-wiki
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#17
+    title: 'feat(llm-wiki): execute marine-engineering P1 standards/concept backfill from W4-C audit'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/17
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:plan-approved
+      - status:done
+      - cat:documentation
+      - domain:knowledge-management
+      - domain:marine
+      - llm-wiki
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#18
+    title: 'feat(llm-wiki): execute marine-engineering P2 platform-entity and overview refresh backfill'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/18
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - status:done
+      - cat:documentation
+      - domain:knowledge-management
+      - domain:marine
+      - llm-wiki
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#19
+    title: 'feat(llm-wiki): plan offshore raw-source family wiki backfill candidates from /mnt/ace-data'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/19
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - status:blocked
+      - machine:dev-primary
+      - cat:data-pipeline
+      - domain:knowledge-management
+      - domain:document-intelligence
+      - llm-wiki
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '# feat(llm-wiki): plan offshore raw-source family wiki backfill candidates from /mnt/ace-data
+
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#20
+    title: 'feat(llm-wiki): backfill engineering-wiki reverse cross-links to Tier C riser/pipeline pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/20
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - machine:dev-primary
+      - cat:documentation
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+
+      The 20 new engineering-wiki concept pages added in Tier C Batch C (#2597 risers + vamseeachanta/workspace-hub#2602 pipelines, commit `6d3483bc5`) have one-way cross-links to existing related pages but the inbound (reverse) links from those existing pages were intentionally deferred to avoid cross-agent races on shared files during the parallel-dispatch phase.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#21
+    title: 'feat(llm-wiki): regenerate cross-links.md across 8 wikis after Tier C page additions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/21
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - machine:dev-primary
+      - cat:documentation
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+
+      Tier C added ~75 new wiki pages across 6 wikis (asset-management, naval-architecture, maritime-law, lng-projects, engineering riser, engineering pipeline). The auto-generated `wiki/cross-links.md` files and any faceted-portal pages (#2368 territory) are now stale and need a regeneration pass.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#22
+    title: 'feat(knowledge): generate faceted portal pages for large LLM-wiki domains'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/22
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:plan-approved
+      - status:done
+      - cat:documentation
+      - domain:knowledge-management
+      - agent:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#25
+    title: 'feat(knowledge): execute Batch Pack 1 to promote API/standards-portal metadata into thin wiki domains'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/25
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:plan-approved
+      - status:blocked
+      - machine:dev-primary
+      - cat:documentation
+      - domain:knowledge-management
+      - agent:codex
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Execute the already-designed external-source Batch Pack 1 so the repo promotes metadata-rich online data APIs and standards portals into wiki-ready stubs for the thin LLM-wiki domains.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#26
+    title: 'feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/26
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:plan-approved
+      - status:blocked
+      - machine:dev-primary
+      - cat:data-pipeline
+      - domain:knowledge-management
+      - agent:codex
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Execute Batch Pack 4 as a narrowly scoped, summary-backed promotion wave for non-ACMA standards knowledge in cathodic-protection, pipeline, and structural domains.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#27
+    title: 'docs(knowledge): add standard uplink/back-navigation block to wiki index pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/27
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - machine:dev-primary
+      - cat:documentation
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add a small, consistent navigation block to every `knowledge/wikis/*/wiki/index.md` so wiki index pages expose both an upward link into the intelligence ecosystem and local back-navigation to sibling wiki surfaces.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#28
+    title: 'feat(knowledge): chunk and paginate the canonical marine-engineering wiki index'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/28
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:plan-approved
+      - machine:dev-primary
+      - cat:documentation
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Chunk and paginate the canonical marine-engineering wiki index so it remains authoritative but no longer forces users and agents through a single 21K-line navigation surface.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#29
+    title: 'feat(knowledge): add canonical source-title aliasing for wiki source pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/29
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:plan-approved
+      - machine:dev-primary
+      - cat:documentation
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Add canonical source-title aliasing for wiki source pages so filename-only and numeric source pages become discoverable by human-readable titles, citation aliases, and stable search labels.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#30
+    title: 'feat(knowledge): backfill promotion provenance on pre-existing wiki pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/30
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - machine:dev-primary
+      - cat:documentation
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Backfill promotion provenance on pre-existing wiki pages so older LLM-wiki content can answer what source artifact, issue, seed, or registry record it was promoted from.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#31
+    title: 'feat(knowledge): promote design-code registry into standards overviews and repo-target backlinks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/31
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - machine:dev-primary
+      - cat:documentation
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Promote the design code registry into first-class LLM-wiki strengthening outputs: standards-family overview pages, edition-awareness cross-links, and repo-target backlinks that connect standards knowledge to downstream engineering repos.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#32
+    title: 'feat: career-learnings seed migration — pipeline integrity, OrcaFlex VIV, FEA, CFD, energy economics'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/32
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - machine:dev-primary
+      - domain:knowledge
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+
+      Migrate career-learnings YAML seed into appropriate wiki domains.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#33
+    title: 'WRK-1126: Add maritime law domain: skill, data, public cases, liabilities'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/33
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - machine:dev-primary
+      - cat:knowledge-domain
+      - domain:maritime-law
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1126: Add maritime law domain: skill, data, public cases, liabilities'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#34
+    title: 'feat: engineering wiki — ingest remaining high-value sources (skills metadata, closed issues)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/34
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - machine:dev-primary
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+
+      Expand the engineering wiki with pages from the remaining high-value source classes identified but not yet ingested during the initial seed (#2034).'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#35
+    title: 'feat: engineering wiki cross-link discovery with domain wikis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/35
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - machine:dev-primary
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+
+      Run cross-wiki link discovery between the engineering wiki and the 3 domain wikis (marine-engineering, maritime-law, naval-architecture) to surface implicit connections.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#36
+    title: 'feat: cross-wiki link discovery and infrastructure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/36
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - machine:dev-primary
+      - domain:knowledge
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+
+      Build tooling to discover and maintain cross-links between the 3 domain wikis (marine-engineering, maritime-law, naval-architecture).'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#37
+    title: 'feat(knowledge): add llm-wiki strengthening scorecard and prioritized action queue'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/37
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - status:done
+      - cat:harness
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#38
+    title: 'feat(knowledge): normalize WRK completions into structured seeds and wiki-candidate corpus'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/38
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - machine:dev-primary
+      - cat:data-pipeline
+      - cat:harness
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Normalize `knowledge-base/wrk-completions.jsonl` into structured seeds and a wiki-candidate corpus, so archived work completions become queryable durable knowledge instead of raw memory-migration blobs.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#39
+    title: 'feat: engineering wiki — ingest skill metadata as wiki pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/39
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - cat:harness
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Ingest the 691+ skill definitions from `.claude/skills/` into the engineering wiki as entity/concept pages.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#40
+    title: 'Research: reservoir engineering literature — local /mnt/ace + online; ingest to llm-wiki'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/40
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - enhancement
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#41
+    title: 'feat(llm-wiki): implement maritime-law standards routing for conventions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/41
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#42
+    title: 'feat(llm-wiki): implement LNG-projects standards routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/42
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#43
+    title: 'governance(llm-wiki): prepare SESA extraction clearance checklist'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/43
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - cat:data-pipeline
+      - domain:knowledge-management
+      - domain:marine
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#44
+    title: 'governance(llm-wiki): prepare BSEE source-family clearance checklist'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/44
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - cat:data-pipeline
+      - domain:knowledge-management
+      - domain:document-intelligence
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#45
+    title: 'governance(llm-wiki): prepare HSE dataset source-family clearance checklist'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/45
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - cat:data-pipeline
+      - domain:knowledge-management
+      - domain:document-intelligence
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#46
+    title: 'governance(llm-wiki): prepare Frontier Deepwater source-family clearance checklist'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/46
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - cat:data-pipeline
+      - domain:knowledge-management
+      - domain:document-intelligence
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#47
+    title: 'governance(llm-wiki): restore Batch Pack 1 approved execution inputs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/47
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#48
+    title: 'governance(llm-wiki): restore Batch Pack 4 approved execution inputs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/48
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - cat:data-pipeline
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#49
+    title: 'epic(drilling-engineering): Phase 1 corpus build-out — rigs + casing + drill pipe + drill bit + rod pump'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/49
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#50
+    title: 'research+ingest(drilling-engineering): drilling rigs — API Spec 4F / 7K / 8C + IADC Drilling Manual + rig-class concept pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/50
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#51
+    title: 'research+ingest(drilling-engineering): casing — API Spec 5CT 10th Edition + API RP 5C5/5C1 + casing-program design'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/51
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#52
+    title: 'research+ingest(drilling-engineering): drill pipe — API Spec 5DP 2nd Ed 2020 + API RP 7G drill-stem design + API RP 7G-2 used drill stem'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/52
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#53
+    title: 'research+ingest(drilling-engineering): drill bit — IADC Bit Classification + SPE-23937 roller cone + SPE/IADC 23939 PDC dull grading'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/53
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#54
+    title: 'research+ingest(drilling-engineering): rod pump — API Spec 11AX 13th Ed 2015 + API RP 11L design calculations + API Spec 11B sucker rods'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/54
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#55
+    title: 'epic(drilling-engineering): Phase 2 corpus build-out — BOP/well-control + drilling fluids + cementing + well services + well-construction concept pack'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/55
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#56
+    title: 'research+ingest(drilling-engineering): BOP and well control — API Spec 16A + Spec 16D + RP 53 + well-control concepts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/56
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#57
+    title: 'research+ingest(drilling-engineering): drilling fluids — API Spec 13A + RP 13B-1 + RP 13B-2 + drilling-fluid system concepts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/57
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#58
+    title: 'research+ingest(drilling-engineering): cementing — API Spec 10A + RP 10B-2 + RP 10B-4 + cement-job design concepts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/58
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#59
+    title: 'research+ingest(drilling-engineering): well services and downhole tools — coiled tubing + wireline + MWD/LWD'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/59
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#60
+    title: 'research+ingest(drilling-engineering): well-construction concept pack — directional / horizontal + well plan + AFE + offset-well + DDR + BHA (Papkov AI-agent consumer pack)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/60
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#61
+    title: 'epic(production-engineering): Phase 1 corpus build-out — artificial-lift family expansion (ESP + gas lift + PCP + plunger lift + jet/hydraulic)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/61
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#62
+    title: 'research+ingest(production-engineering): ESP — API RP 11S family + electric-submersible-pumps concept pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/62
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#63
+    title: 'research+ingest(production-engineering): gas lift — API RP 11V6 + RP 11V2 + continuous/intermittent gas-lift concept pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/63
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#64
+    title: 'research+ingest(production-engineering): PCP — progressing-cavity pumps + elastomer-stator design + heavy-oil application'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/64
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#65
+    title: 'research+ingest(production-engineering): plunger lift — gas-driven free-piston cycling for liquid-loaded gas wells'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/65
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#66
+    title: 'research+ingest(production-engineering): jet pump and hydraulic lift — power-fluid systems for deep / deviated wells'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/66
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#67
+    title: 'epic(drilling-engineering): Phase 3 corpus build-out — MPD/UBD/dual-gradient + subsea wellhead/riser + P&A + named-rig entities'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/67
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#68
+    title: 'research+ingest(drilling-engineering): MPD / UBD / dual-gradient drilling — API RP 92M + RP 92U + IADC UBO publications'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/68
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - status:plan-review
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#69
+    title: 'research+ingest(drilling-engineering): subsea wellhead + drilling riser systems — API Spec 16F/16R + RP 16Q + Spec 17D'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/69
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#70
+    title: 'research+ingest(drilling-engineering): plug and abandonment — API Bull E3 + IOGP 484 + NORSOK D-010 + P&A operational concepts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/70
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#71
+    title: 'research+ingest(drilling-engineering): specific-named-rig entity expansion — populate 4-6 named rigs per fleet stub with worldenergydata cross-links'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/71
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#73
+    title: 'epic(production-engineering): Phase 2 corpus build-out — completions (perforating + sand control + multi-zone + smart)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/73
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#74
+    title: 'epic(production-engineering): Phase 3 corpus build-out — stimulation (matrix acid + hydraulic fracturing + refrac)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/74
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#75
+    title: 'ops(llm-wiki): weekly freshness control loop for concepts, coverage, and issue recommendations'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/75
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:automation
+      - status:plan-approved
+      - cadence:weekly
+      - cat:knowledge-domain
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#76
+    title: 'docs(agent): add llms.txt entrypoints and curated domain manifests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/76
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#77
+    title: 'feat(retrieval): generate public-safe knowledge graph and link-graph manifests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/77
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:plan-approved
+      - machine:dev-primary
+      - cat:data-pipeline
+      - cat:harness
+      - domain:knowledge-management
+      - llm-wiki
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Build a public-safe knowledge-graph/link-graph layer over llm-wiki pages to make engineering concepts, tools, standards, datasets, code modules, and result artifacts traversable by agents.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#78
+    title: 'test(retrieval): add llm-wiki RAG evaluation benchmark for code-development questions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/78
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:plan-approved
+      - cat:harness
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#79
+    title: 'feat(research): maintain weekly OSS engineering-tool watchlist and update candidates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/79
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - cat:automation
+      - status:plan-approved
+      - cadence:weekly
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#80
+    title: 'arch(agent-access): plan CLI/MCP query surface for llm-wiki manifests and retrieval'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/80
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - cat:ai-orchestration
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:knowledge-management
+      - llm-wiki
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Plan an MCP/CLI query surface for llm-wiki so agents can ask focused questions against curated manifests, graph outputs, and evaluation-backed retrieval instead of traversing the repository manually.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#81
+    title: 'research+ingest(production-engineering): perforating — API RP 19B + shaped-charge mechanics + gun systems + perforation strategy'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/81
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#82
+    title: 'research+ingest(production-engineering): sand control — ISO 17824 + gravel pack + frac pack + screens'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/82
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#83
+    title: 'research+ingest(production-engineering): multi-zone & smart completions — selective production + downhole flow control + intelligent-well'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/83
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#84
+    title: 'research+ingest(production-engineering): matrix acid stimulation — sandstone/carbonate acidizing + chemistry + diversion + candidate selection'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/84
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#85
+    title: 'research+ingest(production-engineering): hydraulic fracturing — frac fluids + proppants + frac design (PKN/KGD/3D) + microseismic'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/85
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#86
+    title: 'research+ingest(production-engineering): refrac decisioning — candidate selection + recompletion architectures + DFIT analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/86
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#87
+    title: 'epic(production-engineering): Phase 4 corpus build-out — flow assurance + choke management + well integrity during production'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/87
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#88
+    title: 'fix(cadence): prevent weekly route maps from targeting closed issues'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/88
+    gh_state: closed
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:automation
+      - status:plan-approved
+      - cadence:weekly
+      - cat:harness
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#89
+    title: 'research+ingest(production-engineering): flow assurance — multiphase flow + erosional-velocity + paraffin/asphaltene/scale + hydrate management'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/89
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#90
+    title: 'research+ingest(production-engineering): choke management — choke types + multiphase choke modeling + sand-laden duty + ESD interlocks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/90
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#91
+    title: 'research+ingest(production-engineering): well integrity during production — corrosion / scale / paraffin / asphaltene + monitoring + intervention triggers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/91
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#92
+    title: 'epic(production-engineering): Phase 5 corpus build-out — production accounting + regulatory reporting + surface-handover + data integration'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/92
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:plan-approved
+      - cat:knowledge-domain
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#93
+    title: 'research+ingest(production-engineering): production accounting + measurement — allocation factors + well-test reconciliation + GOR/water-cut tracking + custody-transfer overview + flow-measurement uncertainty'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/93
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:plan-approved
+      - cat:knowledge-domain
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#94
+    title: 'research+ingest(production-engineering): regulatory reporting — production-allowable rates + state production reporting (TX RRC W-1H/W-2/P-4) + federal production reporting (BSEE 30 CFR 250) + FracFocus chemical disclosure + gas-flaring rules'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/94
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:plan-approved
+      - cat:knowledge-domain
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#95
+    title: 'research+ingest(production-engineering): surface-handover + data integration — surface-handover-boundary router + manifold-tie-in + choke-skid-and-separator-inlet + production-SCADA-architecture + production-data-historian-patterns'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/95
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:plan-approved
+      - cat:knowledge-domain
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#96
+    title: 'research(reservoir-engineering): Wave 2 follow-up — license-verification for the 10 defer rows in corpus manifest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/96
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - cat:knowledge-domain
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#97
+    title: 'research(reservoir-engineering): Wave 2 follow-up — arXiv expansion to close mixed-quality gap to ≥50'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/97
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - cat:knowledge-domain
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#98
+    title: 'research(reservoir-engineering): Wave 2 follow-up — Kansas Geological Survey reuse-permission email request'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/98
+    gh_state: closed
+    gh_labels:
+      - priority:low
+      - status:plan-approved
+      - cat:knowledge-domain
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#99
+    title: 'docs(governance): note that /mnt/ace/rock-oil-field/ is wrong-domain for reservoir-eng / formation-eval local-corpus walks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/99
+    gh_state: closed
+    gh_labels:
+      - priority:low
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#100
+    title: 'research(reservoir-engineering): Wave 4 methodology pages — geosteering-workflow + log-correlation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/100
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:medium
+      - status:plan-approved
+      - cat:knowledge-domain
+      - domain:knowledge-management
+      - llm-wiki
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#102
+    title: 'Validator hardening: address cross-review findings before closing #77'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/102
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - machine:dev-primary
+      - cat:harness
+      - domain:knowledge-management
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Context
+
+
+      Cross-review of [#77](https://github.com/vamseeachanta/llm-wiki/issues/77) (public-safe knowledge graph manifests) produced split verdicts on 2026-05-18:'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#118
+    title: 'feat(relocation): move corpus indexes + reports into llm-wiki; personal/health wikis to achantas-data'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/118
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#122
+    title: Private llm-wiki corpus-ingest program (post-2026-05-20 privacy flip)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/122
+    gh_state: open
+    gh_labels:
+      - documentation
+      - machine:dev-primary
+      - dispatch:ready
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#123
+    title: 'epic(acma): client project data-cycle readiness and private llm-wiki launch'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/123
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - machine:dev-primary
+      - cat:data-pipeline
+      - domain:knowledge
+      - dispatch:ready
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#127
+    title: '[client-wiki] docs/disciplines → client-wiki routing plan (~140K docs / 3.4 TB)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/127
+    gh_state: open
+    gh_labels:
+      - priority:high
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#128
+    title: '[client-wiki] client_projects triage manifest (76 mixed dirs) — blocking'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/128
+    gh_state: open
+    gh_labels:
+      - priority:high
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#129
+    title: '[routing] residual /mnt/ace tails — Production/personal, books, engineering-refs, aceengineer-admin'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/129
+    gh_state: open
+    gh_labels:
+      - priority:low
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

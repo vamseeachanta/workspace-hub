@@ -9,4 +9,15 @@ board:
     (2026-05-22): suffix form llm-wiki-acma, one per CLIENT (SIROCCO project nests
     under acma/projects/sirocco/). Zero open GitHub issues; carrying uncommitted
     deliverable for workspace-hub#2760 (SIROCCO current rudder-force report).
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#1
+    title: 'Client work flow: data -> llm-wiki-acma -> problems (issues) -> result layers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/1
+    gh_state: open
+    gh_labels:
+      - documentation
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

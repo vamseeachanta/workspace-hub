@@ -4,7 +4,35 @@ board:
   tier: repo
   repo: vamseeachanta/achantas-data
   workspace_path: /mnt/local-analysis/achantas-data
-  description: Personal + family data and planning repo. Sub-boards cover travel,
-    devaKrishna development, family-planning (estates/insurance/health), finance,
-    and household. This tier-1 board catches any issues that do not fit a sub-domain.
-cards: []
+  description: Personal + family data and planning repo. Sub-boards cover travel, devaKrishna development, family-planning (estates/insurance/health), finance, and household. This tier-1 board catches any issues that do not fit a sub-domain.
+cards:
+  - idempotency_key: gh:vamseeachanta/achantas-data#7
+    title: Consolidate Repo
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/7
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#32
+    title: Investigate capital gains discrepancy — $75,768 vs $72,340 expected
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/32
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#114
+    title: 'Review remediation: Plotly XSS, os-import NameError, gate_pass (2026-05-23)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/114
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
