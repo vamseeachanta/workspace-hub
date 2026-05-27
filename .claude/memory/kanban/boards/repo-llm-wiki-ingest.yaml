@@ -613,3 +613,16 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#138
+    title: '[corpus-ingest] SNAME re-ingest under content-value + dedupe filters (reverted from scale-3) (#124)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/138
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - machine:dev-primary
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

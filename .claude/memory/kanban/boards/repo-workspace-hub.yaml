@@ -43099,10 +43099,11 @@ cards:
     title: 'feat(kanban): #2802 Phase 3 — per-machine Hermes loader cron (board YAML → kanban.db)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2827
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -43153,6 +43154,32 @@ cards:
       - cat:harness
       - domain:skills
       - domain:memory
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2843
+    title: 'statusline: surface Claude (C:) usage — currently always dim/unavailable'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2843
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2844
+    title: 'statusline: add Codex 5-hour burst window + stale/estimate marker'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2844
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:tooling
     initial_status: triage
     priority: 0
     gh_assignees: []
