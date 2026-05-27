@@ -4,7 +4,7 @@ As of **2026-05-05** the engineering domain wikis live at:
 
 > **https://github.com/vamseeachanta/llm-wiki**
 
-Only `health-reports/` (operational health snapshots) and `personal/` (private notes) remain in workspace-hub — both are intentionally workspace-hub-internal.
+Only `personal/` remains under this directory — and only as a scaffold (`index.md` + `CLAUDE.md`); its entity pages were relocated per [#2835](https://github.com/vamseeachanta/workspace-hub/issues/2835). Wiki-health lint telemetry is now generated to `docs/reports/wiki-health/`, not under `knowledge/wikis/`.
 
 ## What moved
 
@@ -25,7 +25,7 @@ The 8 domain wikis previously under `knowledge/wikis/`:
 ## What stayed
 
 - The corpus extraction **pipeline** stays in workspace-hub: `scripts/data/llm-wiki/`, `scripts/knowledge/llm_wiki.py`, `scripts/knowledge/` helpers, `.claude/skills/research/llm-wiki/`, `.claude/skills/coordination/llm-wiki-roadmap-integration/`, `.claude/state/llm-wiki-completeness-loop/`, `data/document-index/`.
-- `health-reports/` and `personal/` remain here under this directory.
+- `personal/` remains here as a scaffold (entity pages relocated per #2835). Wiki-health reports are generated to `docs/reports/wiki-health/` (no longer under `knowledge/wikis/`).
 
 ## Why
 
