@@ -389,37 +389,227 @@ cards:
     assert "title: fresh title" in text
 
 
-def test_fetch_repo_issues_aborts_when_gh_limit_is_reached():
+def gql_node(number: int, title: str, state: str = "OPEN", labels: list[str] | None = None,
+             labels_has_next: bool = False) -> dict:
+    """A single issue node in GraphQL response shape."""
+    return {
+        "number": number,
+        "title": title,
+        "state": state,
+        "labels": {
+            "pageInfo": {"hasNextPage": labels_has_next},
+            "nodes": [{"name": name} for name in (labels or [])],
+        },
+    }
+
+
+def gql_page(nodes: list[dict], has_next_page: bool, end_cursor: str | None) -> str:
+    """A GraphQL response page as the JSON string `gh api graphql` emits on stdout."""
+    return json.dumps(
+        {
+            "data": {
+                "repository": {
+                    "issues": {
+                        "pageInfo": {
+                            "hasNextPage": has_next_page,
+                            "endCursor": end_cursor,
+                        },
+                        "nodes": nodes,
+                    }
+                }
+            }
+        }
+    )
+
+
+def test_fetch_repo_issues_unions_multiple_graphql_pages():
+    reconcile = load_reconcile()
+    calls = []
+
+    pages = [
+        gql_page([gql_node(1, "one"), gql_node(2, "two")], has_next_page=True, end_cursor="CUR1"),
+        gql_page([gql_node(3, "three", state="CLOSED")], has_next_page=False, end_cursor=None),
+    ]
+
+    def runner(cmd, **kwargs):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(cmd, 0, stdout=pages[len(calls) - 1], stderr="")
+
+    result = reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+    assert len(calls) == 2
+    assert [r["number"] for r in result] == [1, 2, 3]
+    # mapped to the card shape downstream expects
+    assert result == [
+        {"number": 1, "title": "one", "state": "OPEN", "labels": []},
+        {"number": 2, "title": "two", "state": "OPEN", "labels": []},
+        {"number": 3, "title": "three", "state": "CLOSED", "labels": []},
+    ]
+
+
+def test_fetch_repo_issues_raises_on_hasnextpage_without_cursor():
+    # Guard against a cron hang: hasNextPage=true with a null endCursor would
+    # otherwise re-fetch page 1 forever.
+    reconcile = load_reconcile()
+
+    def runner(cmd, **kwargs):
+        return subprocess.CompletedProcess(
+            cmd, 0,
+            stdout=gql_page([gql_node(1, "one")], has_next_page=True, end_cursor=None),
+            stderr="",
+        )
+
+    with pytest.raises(RuntimeError, match="endCursor"):
+        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+
+def test_fetch_repo_issues_raises_on_malformed_issue_pageinfo():
+    # A 200 response with nodes but no issues.pageInfo is indistinguishable from
+    # "last page" — must raise, not return a partial set.
+    reconcile = load_reconcile()
+
+    def runner(cmd, **kwargs):
+        payload = {"data": {"repository": {"issues": {"nodes": []}}}}  # pageInfo missing
+        return subprocess.CompletedProcess(cmd, 0, stdout=json.dumps(payload), stderr="")
+
+    with pytest.raises(RuntimeError, match="pageInfo"):
+        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+
+def test_fetch_repo_issues_raises_on_non_advancing_cursor():
+    # hasNextPage=true with a repeated endCursor would loop forever → must raise.
+    reconcile = load_reconcile()
+
+    def runner(cmd, **kwargs):
+        payload = {"data": {"repository": {"issues": {
+            "nodes": [],
+            "pageInfo": {"hasNextPage": True, "endCursor": "SAME"},
+        }}}}
+        return subprocess.CompletedProcess(cmd, 0, stdout=json.dumps(payload), stderr="")
+
+    with pytest.raises(RuntimeError, match="did not advance"):
+        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+
+def test_fetch_repo_issues_raises_on_malformed_label_pageinfo():
+    # A node whose labels has nodes but no pageInfo could silently truncate labels
+    # (board routing depends on them) → must raise.
+    reconcile = load_reconcile()
+
+    def runner(cmd, **kwargs):
+        node = {"number": 1, "title": "x", "state": "OPEN",
+                "labels": {"nodes": [{"name": "domain:foo"}]}}  # labels.pageInfo missing
+        payload = {"data": {"repository": {"issues": {
+            "nodes": [node],
+            "pageInfo": {"hasNextPage": False, "endCursor": None},
+        }}}}
+        return subprocess.CompletedProcess(cmd, 0, stdout=json.dumps(payload), stderr="")
+
+    with pytest.raises(RuntimeError, match="labels.pageInfo"):
+        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+
+def test_fetch_repo_issues_raises_mid_loop_without_partial():
     reconcile = load_reconcile()
     calls = []
 
     def runner(cmd, **kwargs):
         calls.append(cmd)
+        if len(calls) == 1:
+            return subprocess.CompletedProcess(
+                cmd,
+                0,
+                stdout=gql_page([gql_node(1, "one")], has_next_page=True, end_cursor="CUR1"),
+                stderr="",
+            )
+        return subprocess.CompletedProcess(cmd, 1, stdout="", stderr="API rate limited")
+
+    with pytest.raises(RuntimeError) as excinfo:
+        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+    # raised, not returned: no partial list escapes
+    assert "vamseeachanta/workspace-hub" in str(excinfo.value)
+    assert len(calls) == 2
+
+
+def test_fetch_repo_issues_raises_when_labels_truncated():
+    reconcile = load_reconcile()
+
+    def runner(cmd, **kwargs):
         return subprocess.CompletedProcess(
             cmd,
             0,
-            stdout=json.dumps([issue(1, "one"), issue(2, "two")]),
+            stdout=gql_page(
+                [gql_node(1, "many labels", labels=["domain:ops"], labels_has_next=True)],
+                has_next_page=False,
+                end_cursor=None,
+            ),
             stderr="",
         )
 
-    with pytest.raises(RuntimeError, match="truncated"):
-        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", limit=2, runner=runner)
+    with pytest.raises(RuntimeError, match="label"):
+        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
 
-    assert calls == [
-        [
-            "gh",
-            "issue",
-            "list",
-            "--repo",
-            "vamseeachanta/workspace-hub",
-            "--state",
-            "all",
-            "--limit",
-            "2",
-            "--json",
-            "number,title,state,labels",
-        ]
+
+def test_fetch_repo_issues_maps_node_to_card_shape():
+    reconcile = load_reconcile()
+
+    def runner(cmd, **kwargs):
+        return subprocess.CompletedProcess(
+            cmd,
+            0,
+            stdout=gql_page(
+                [gql_node(2802, "Auto-add issue", state="OPEN",
+                          labels=["domain:ops", "priority:high"])],
+                has_next_page=False,
+                end_cursor=None,
+            ),
+            stderr="",
+        )
+
+    result = reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+    assert result == [
+        {
+            "number": 2802,
+            "title": "Auto-add issue",
+            "state": "OPEN",
+            "labels": [{"name": "domain:ops"}, {"name": "priority:high"}],
+        }
     ]
+
+
+def test_fetch_repo_issues_emits_graphql_command_with_pagination():
+    reconcile = load_reconcile()
+    calls = []
+
+    pages = [
+        gql_page([gql_node(1, "one")], has_next_page=True, end_cursor="CUR1"),
+        gql_page([gql_node(2, "two")], has_next_page=False, end_cursor=None),
+    ]
+
+    def runner(cmd, **kwargs):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(cmd, 0, stdout=pages[len(calls) - 1], stderr="")
+
+    reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+    page1, page2 = calls
+    # graphql invocation, not `gh issue list`
+    assert page1[:3] == ["gh", "api", "graphql"]
+    assert "issue" not in page1
+    # query carried via -f query=
+    query_arg = next(a for a in page1 if a.startswith("query="))
+    assert "pageInfo" in query_arg and "hasNextPage" in query_arg
+    assert "first:100" in query_arg
+    assert "labels(first:100)" in query_arg
+    # owner/name passed as -F
+    assert "owner=workspace-hub" not in page1  # owner is the org, not the repo name
+    assert "owner=vamseeachanta" in page1
+    assert "name=workspace-hub" in page1
+    # page 1 carries no cursor; page 2 carries the endCursor from page 1
+    assert not any(a.startswith("cursor=") for a in page1)
+    assert "cursor=CUR1" in page2
 
 
 def test_workflow_contract_keeps_phase_2_cron_deferred_and_push_retry_bounded():
