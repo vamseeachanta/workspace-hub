@@ -43012,6 +43012,7 @@ cards:
     gh_labels:
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 0
     gh_assignees: []
