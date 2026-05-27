@@ -35,10 +35,10 @@
      · branch <code>feat/2833-crossprovider-dream-bridge</code> · 2026-05-26 · <span class="mut">review before <code>gh issue close</code></span></p>
 
   <div class="score">
-    <span class="big">78%</span>
+    <span class="big">88%</span>
     <div>
       <strong>Test-based completeness</strong><br>
-      <span class="mut">Core pipeline built, adversarially reviewed, and verified. Held below 100% by time-dependent steps that fire on their own: the <strong>automatic background dream</strong> (consolidates the staged learnings when its hours/sessions thresholds are met — there is no manual trigger) and the cron/hook that are installed but have not yet fired live.</span>
+      <span class="mut">Core pipeline built, adversarially reviewed, and verified; backfill complete on all 3 providers (3,059 staged learnings). Held below 100% only by time-dependent steps that fire on their own — nothing left to build: the <strong>automatic background dream</strong> consolidating the staged learnings, and the cron/hook firing live for the first time. Re-score to ~100% once those are observed.</span>
     </div>
   </div>
 
@@ -64,8 +64,8 @@
           <td><span class="pill p-ok">DONE</span></td><td class="pct">100</td>
           <td>~100% coverage. <span class="mut">Carry minor N2 CoT noise (pre-fix); accepted by user — dream prunes.</span></td></tr>
       <tr><td>Backfill — Gemini (re-run on fixed code)</td>
-          <td><span class="pill p-warn">IN&nbsp;PROGRESS</span></td><td class="pct">~10</td>
-          <td>Tainted pre-fix files deleted; regenerating clean. ~25 min ETA. Resumable + cron backstop.</td></tr>
+          <td><span class="pill p-ok">DONE</span></td><td class="pct">100</td>
+          <td>1,707/1,707 (100%); 413 clean files regenerated after deleting the B1-tainted set. All 3 providers now ~100% (Codex 99% = 5 brand-new sessions, cron sweeps them).</td></tr>
       <tr><td>Daily 04:00 cron (incremental)</td>
           <td><span class="pill p-warn">INSTALLED</span></td><td class="pct">70</td>
           <td>Crontab entry present (backed up). Not yet fired — first live run unverified.</td></tr>
