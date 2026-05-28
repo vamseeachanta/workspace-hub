@@ -42999,6 +42999,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:high
+      - priority:critical
       - compliance-alert
     initial_status: triage
     priority: 1
@@ -43066,6 +43067,7 @@ cards:
       - enhancement
       - cat:harness
       - status:plan-review
+      - gate:completeness
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -43126,7 +43128,7 @@ cards:
     title: 'Cross-provider dream bridge: distill Codex/Gemini/Hermes sessions into Claude auto-memory'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2833
-    gh_state: open
+    gh_state: closed
     gh_labels: []
     initial_status: triage
     priority: 0
@@ -43272,6 +43274,42 @@ cards:
     gh_labels:
       - cat:ai-orchestration
       - domain:memory
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2855
+    title: 'decide(memory): decommission or repurpose empty ~/.codex/memories/ as Codex read-back target'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2855
+    gh_state: open
+    gh_labels:
+      - cat:ai-orchestration
+      - domain:memory
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2856
+    title: 'feat(memory): shared curation-filter + char-cap for cross-provider memory read-back slice (Codex + Hermes)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2856
+    gh_state: open
+    gh_labels:
+      - cat:ai-orchestration
+      - domain:memory
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2857
+    title: 'feat(agents): Codex skill-index generator in build-soul-runtime.sh (frontmatter-derived)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2857
+    gh_state: open
+    gh_labels:
+      - cat:infrastructure
+      - domain:skills
     initial_status: triage
     priority: 0
     gh_assignees: []
