@@ -4171,3 +4171,17 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#630
+    title: "feat(openfoam): assess HD 'T1 Suzuka Aero' dataset for CFD feasibility + informed reply"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/630
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - cat:business
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
