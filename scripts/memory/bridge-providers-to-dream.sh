@@ -14,8 +14,9 @@
 #   bash bridge-providers-to-dream.sh --dry-run --limit 3   # prove pipeline, write nothing
 #   (extra args are passed straight through to the Python distiller)
 #
-# SCHEDULING: cron 04:00 daily (mirrors bridge-hermes-claude.sh). Install with
-#   scripts/memory/install-provider-bridge-cron.sh (separate, needs user auth).
+# SCHEDULING: declared in config/scheduled-tasks/schedule-tasks.yaml (id:
+#   provider-dream-bridge, staggered ~04:00 daily). Install/refresh the crontab
+#   from that single source via scripts/cron/setup-cron.sh (#2846).
 #
 # LOGGING: appends to logs/orchestrator/memory-bridge/<date>.log under the repo.
 
