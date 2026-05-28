@@ -43191,7 +43191,7 @@ cards:
     title: 'bug(memory): provider-dream silently drops learnings on non-JSON distill batches (rc=0 masks data loss)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2845
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:ai-orchestration
       - domain:memory
@@ -43206,7 +43206,7 @@ cards:
     title: 'chore(memory): declare provider-dream cron in schedule-tasks.yaml + provide install path (currently hand-installed, not reproducible)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2846
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:infrastructure
       - domain:memory
