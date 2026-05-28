@@ -125,8 +125,13 @@ def _load_poison_state() -> dict:
         return {}
     try:
         return json.loads(POISON_FILE.read_text())
-    except (OSError, json.JSONDecodeError):
-        return {}  # corrupt poison state is non-fatal — worst case re-counts from 0
+    except (OSError, json.JSONDecodeError) as e:
+        # Non-fatal, but NOT silent: a corrupt file resets attempts to 0 each run,
+        # so the MAX_POISON_RETRIES cap is unreachable and a poison batch escapes
+        # only via the slower AGE_ESCAPE_DAYS path (#2845 r2 F5). Surface it.
+        sys.stderr.write(f"[distill] WARN: poison-state unreadable ({e}); retry cap "
+                         f"degrades to age-escape until repaired: {POISON_FILE}\n")
+        return {}
 
 
 def _save_poison_state(state: dict) -> None:
@@ -155,6 +160,28 @@ def _deadletter_append(provider: str, files: list[Path], mts: list[float],
     }
     with DEADLETTER_FILE.open("a") as fh:
         fh.write(json.dumps(rec) + "\n")
+
+
+def _load_deadlettered_names() -> set[str]:
+    """Session names already dead-lettered — excluded permanently on intake so a
+    permanently-garbled session isn't re-distilled + re-dead-lettered every cycle
+    (#2845 r2 F2). Bounded: dead-letters are rare. Filenames are unique per provider."""
+    names: set[str] = set()
+    if not DEADLETTER_FILE.exists():
+        return names
+    try:
+        for line in DEADLETTER_FILE.read_text().splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            names.update(rec.get("sessions", []))
+    except OSError:
+        pass
+    return names
 
 # --- Distiller backend: Claude itself, headless, on the subscription ----------
 # "Get Claude to do the dreaming" — dreaming is a Claude-native capability, so
@@ -518,10 +545,18 @@ def run_provider(provider: str, args, watermark: dict) -> dict:
     files = lister()
     last_ts = 0.0 if args.backfill else float(watermark.get(provider, 0))
     since_cut = (time.time() - args.since_days * 86400) if args.since_days else None
+    # Sessions already dead-lettered are skipped PERMANENTLY (#2845 r2 F2): the
+    # strict-`<` watermark below re-globs the boundary session, so without this a
+    # permanently-garbled newest session would be re-distilled and re-dead-lettered
+    # every MAX_POISON_RETRIES runs (duplicate audit records + recurring false rc=3).
+    # Session filenames are unique per provider, so name-skipping is safe.
+    deadlettered = _load_deadlettered_names()
 
     # Select sessions newer than watermark (and within --since-days if set).
     pending = []
     for f in files:
+        if f.name in deadlettered:
+            continue
         try:
             mt = f.stat().st_mtime
         except OSError:
@@ -601,7 +636,12 @@ def run_provider(provider: str, args, watermark: dict) -> dict:
         are not comparable across runs (they just hold). Keyed on a content digest
         of the batch's session paths (the watermark float is NOT a stable key)."""
         nonlocal high_water
-        if args.limit or args.since_days or args.backfill:
+        # dry-run never progresses state: no lock, no counter, no dead-letter, no
+        # advance (#2845 r2 F1/F4 — otherwise a dry-run over pre-seeded poison
+        # state phantom-incremented deadlettered_sessions => false rc=3, and
+        # leaked a .lock file). --limit/--since-days/--backfill reshape the window
+        # so their batches aren't comparable across runs — they just hold too.
+        if args.dry_run or args.limit or args.since_days or args.backfill:
             return "hold"
         sig = _batch_sig(poison_files)
         now = time.time()
