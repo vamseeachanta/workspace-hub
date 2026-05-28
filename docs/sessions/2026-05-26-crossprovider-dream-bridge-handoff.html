@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session Handoff — Cross-Provider Dream Bridge (#2833)</title>
+<style>
+  :root { --bg:#0d1117; --fg:#e6edf3; --mut:#8b949e; --card:#161b22; --line:#30363d; --acc:#58a6ff; --ok:#3fb950; --warn:#d29922; }
+  body { background:var(--bg); color:var(--fg); font:15px/1.6 -apple-system,Segoe UI,Roboto,sans-serif; margin:0; padding:2rem; }
+  .wrap { max-width:920px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .2rem; }
+  h2 { font-size:1.05rem; margin:1.6rem 0 .5rem; border-bottom:1px solid var(--line); padding-bottom:.3rem; }
+  .sub { color:var(--mut); margin:0 0 1.4rem; }
+  a { color:var(--acc); }
+  code { background:#1f2630; padding:.1rem .35rem; border-radius:4px; font-size:.85em; }
+  pre { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:.8rem 1rem; overflow:auto; font-size:.85em; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1rem 1.25rem; margin:.6rem 0; }
+  ul { margin:.3rem 0 1rem; padding-left:1.2rem; } li { margin:.3rem 0; }
+  .ok { color:var(--ok); } .warn { color:var(--warn); } .mut { color:var(--mut); }
+  table { width:100%; border-collapse:collapse; margin:.5rem 0 1rem; }
+  td,th { text-align:left; padding:.4rem .6rem; border-bottom:1px solid var(--line); font-size:.92em; }
+  th { color:var(--mut); font-size:.78rem; text-transform:uppercase; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Session Handoff — Cross-Provider Dream Bridge</h1>
+  <p class="sub">2026-05-26 · issue <a href="https://github.com/vamseeachanta/workspace-hub/issues/2833">#2833</a> · branch <code>feat/2833-crossprovider-dream-bridge</code> · scorecard 88%</p>
+
+  <div class="card">
+    <strong>One-line:</strong> Started from "we never dream" (a stale dead-PID <code>.consolidate-lock</code> had blocked auto-dream since Apr 8). Cleared it, then built + reviewed + ran a bridge that distills Codex/Gemini/Hermes sessions into the Claude auto-memory dir so the <em>automatic</em> background dream consolidates ALL providers — not a manual command.
+  </div>
+
+  <h2>What shipped</h2>
+  <table>
+    <tr><th>Artifact</th><th>Location</th></tr>
+    <tr><td>Distiller</td><td><code>scripts/memory/distill-provider-sessions.py</code></td></tr>
+    <tr><td>Cron wrapper</td><td><code>scripts/memory/bridge-providers-to-dream.sh</code></td></tr>
+    <tr><td>Completeness scorecard</td><td><code>docs/reports/2026-05-26-crossprovider-dream-bridge-completeness.html</code></td></tr>
+    <tr><td>Branch (4 commits, pushed)</td><td><code>feat/2833-crossprovider-dream-bridge</code> @ <code>6f9557f</code></td></tr>
+  </table>
+  <p class="mut">Engine: Claude itself — headless <code>claude -p --model haiku</code> on the subscription (the <code>.env</code> <code>ANTHROPIC_API_KEY</code> is empty; no API key used). Calls run from a neutral cwd to avoid reloading the 67 KB project context.</p>
+
+  <h2>Current state (all clean)</h2>
+  <ul>
+    <li><span class="ok">✓</span> Backfill complete: Codex 696 · Gemini 413 · Hermes 1,950 = <strong>3,059 staged learnings</strong> in the auto-memory dir.</li>
+    <li><span class="ok">✓</span> Watermarks at ~100% all providers (<code>.provider-bridge-watermark.json</code>).</li>
+    <li><span class="ok">✓</span> Adversarial review: REJECT → all findings fixed → MINOR. Evidence on #2833.</li>
+    <li><span class="ok">✓</span> No processes running; no leftover temp dirs / locks / <code>.tmp</code>.</li>
+  </ul>
+
+  <h2>Machine-config — NOT in git (re-apply per machine)</h2>
+  <pre># cron (this machine: installed, crontab backed up to /tmp)
+0 4 * * *  cd /mnt/local-analysis/workspace-hub &amp;&amp; bash scripts/memory/bridge-providers-to-dream.sh \
+           &gt;&gt; logs/orchestrator/memory-bridge/cron-$(date +\%Y\%m\%d).log 2&gt;&amp;1
+
+# ~/.claude/settings.json SessionStart hook (self-heals stale dream lock):
+#   reaps any projects/*/memory/.consolidate-lock whose PID is dead</pre>
+
+  <h2>How dreaming actually works (corrected this session)</h2>
+  <p>There is <strong>no <code>/dream</code> command</strong>. Dreaming is fully automatic/background. Verified from the binary: <code>autoDream</code> fires when <code>autoDreamEnabled</code> is true AND <code>hours_since_last ≥ minHours</code> AND <code>new_sessions_since_last ≥ minSessions</code> AND the consolidate-lock is free. The only manual levers are the settings toggle and running the bridge scripts.</p>
+
+  <h2>Open items (all automatic / time-based — nothing to invoke)</h2>
+  <ul>
+    <li class="warn">Automatic background dream fires during normal Claude usage → consolidates the 3,059 staged learnings.</li>
+    <li class="warn">First live cron run (04:00) and first SessionStart-hook fire.</li>
+    <li class="mut">Then re-score scorecard → ~100% and <code>gh issue close #2833</code>.</li>
+    <li class="mut">Accepted residual: Codex/Hermes learnings carry minor pre-fix CoT noise (user opted not to re-backfill; the dream prunes).</li>
+  </ul>
+
+  <h2>How to verify / resume in a fresh session</h2>
+  <pre># resume the code
+git fetch &amp;&amp; git switch feat/2833-crossprovider-dream-bridge
+
+# has the background dream fired?  (count drops as it consolidates)
+ls ~/.claude/projects/-mnt-local-analysis-workspace-hub/memory/crossprovider_*.md | wc -l
+
+# run the bridge manually anytime (incremental)
+bash scripts/memory/bridge-providers-to-dream.sh
