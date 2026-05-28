@@ -39,12 +39,21 @@ fi
 
 echo "[bridge-to-dream] $(date -u +%Y-%m-%dT%H:%M:%SZ) starting (args: $*)" | tee -a "$LOG_FILE"
 
-# The distiller never exits non-zero on a single provider's failure; it logs and
-# continues. We still capture its rc so cron mail surfaces hard failures.
+# The distiller logs+continues on a single provider's transient failure, but it
+# exits non-zero when sessions were DEAD-LETTERED (rc=3, #2845) or on a hard
+# error. We capture its rc and surface a WARN so cron mail/log review catches it
+# instead of a green "done" masking lost learnings.
 set +e
 "${PY[@]}" "$DISTILLER" "$@" 2>&1 | tee -a "$LOG_FILE"
 rc=${PIPESTATUS[0]}
 set -e
+
+if [ "$rc" -eq 3 ]; then
+  echo "[bridge-to-dream] WARN $(date -u +%Y-%m-%dT%H:%M:%SZ) distiller DEAD-LETTERED session(s) — " \
+       "inspect ~/.claude/projects/*/memory/.provider-bridge-deadletter.jsonl (#2845)" | tee -a "$LOG_FILE"
+elif [ "$rc" -ne 0 ]; then
+  echo "[bridge-to-dream] WARN $(date -u +%Y-%m-%dT%H:%M:%SZ) distiller exited rc=$rc (hard failure)" | tee -a "$LOG_FILE"
+fi
 
 echo "[bridge-to-dream] $(date -u +%Y-%m-%dT%H:%M:%SZ) done (rc=$rc)" | tee -a "$LOG_FILE"
 exit "$rc"

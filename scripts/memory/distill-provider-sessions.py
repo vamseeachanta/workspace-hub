@@ -46,6 +46,8 @@ from __future__ import annotations
 
 import argparse
 import atexit
+import contextlib
+import fcntl
 import hashlib
 import json
 import os
@@ -72,6 +74,87 @@ DEFAULT_MEM_DIR = HOME / ".claude" / "projects" / "-mnt-local-analysis-workspace
 MEM_DIR = Path(os.environ.get("CLAUDE_AUTO_MEMORY_DIR", str(DEFAULT_MEM_DIR)))
 
 WATERMARK_FILE = MEM_DIR / ".provider-bridge-watermark.json"
+
+# --- Non-JSON "poison" handling (#2845) ---------------------------------------
+# A garbled (non-JSON, non-transient) distill response must NOT be confused with
+# a valid-but-empty {"learnings": []}. The POISON sentinel breaks that collision.
+# It is a NAMED, NON-FALSY singleton compared by identity ONLY — a falsy sentinel
+# could be routed into the empty-success path by a future `if not learnings:` edit.
+class _Poison:
+    __slots__ = ()
+    def __repr__(self) -> str:  # legible in logs / tracebacks / dead-letter reason
+        return "<POISON>"
+    def __bool__(self) -> bool:  # explicit: never falsy
+        return True
+
+
+POISON = _Poison()
+
+# A garbled batch HOLDS the watermark and is retried, bounded by MAX_POISON_RETRIES
+# plain-incremental runs, keyed on a CONTENT DIGEST of the batch's session paths
+# (batch identity is not stable across runs — re-glob/re-sort/new-sessions reshape
+# it, so the watermark float is the wrong key). After the cap (or AGE_ESCAPE_DAYS
+# of continuous hold) the batch is dead-lettered and the watermark advances, so a
+# permanently-poison batch can never wedge the provider forever.
+MAX_POISON_RETRIES = int(os.environ.get("MAX_POISON_RETRIES", "3"))
+AGE_ESCAPE_DAYS = int(os.environ.get("POISON_AGE_ESCAPE_DAYS", "7"))
+POISON_FILE = MEM_DIR / ".provider-bridge-poison.json"      # {provider: {sig, attempts, first_ts}}
+DEADLETTER_FILE = MEM_DIR / ".provider-bridge-deadletter.jsonl"  # append-only audit log
+
+
+def _batch_sig(files: list[Path]) -> str:
+    """Stable identity for a batch = sha1 of its sorted session names."""
+    return hashlib.sha1("\n".join(sorted(f.name for f in files)).encode("utf-8", "replace")).hexdigest()
+
+
+@contextlib.contextmanager
+def _poison_lock():
+    """flock'd critical section for the poison-state read-modify-write so a
+    concurrent backfill + cron can't lost-update the retry counter."""
+    lock = POISON_FILE.with_suffix(".lock")
+    with lock.open("w") as fh:
+        fcntl.flock(fh, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)
+
+
+def _load_poison_state() -> dict:
+    if not POISON_FILE.exists():
+        return {}
+    try:
+        return json.loads(POISON_FILE.read_text())
+    except (OSError, json.JSONDecodeError):
+        return {}  # corrupt poison state is non-fatal — worst case re-counts from 0
+
+
+def _save_poison_state(state: dict) -> None:
+    tmp = POISON_FILE.with_suffix(f".tmp.{os.getpid()}")
+    tmp.write_text(json.dumps(state, indent=2))
+    os.replace(tmp, POISON_FILE)
+
+
+def _clear_poison(provider: str) -> None:
+    with _poison_lock():
+        state = _load_poison_state()
+        if provider in state:
+            del state[provider]
+            _save_poison_state(state)
+
+
+def _deadletter_append(provider: str, files: list[Path], mts: list[float],
+                       reason: str, attempts: int) -> None:
+    rec = {
+        "provider": provider,
+        "sessions": [f.name for f in files],
+        "mtimes": list(mts),
+        "reason": reason,
+        "attempts": attempts,
+        "ts": datetime.now(timezone.utc).isoformat(),
+    }
+    with DEADLETTER_FILE.open("a") as fh:
+        fh.write(json.dumps(rec) + "\n")
 
 # --- Distiller backend: Claude itself, headless, on the subscription ----------
 # "Get Claude to do the dreaming" — dreaming is a Claude-native capability, so
@@ -378,16 +461,18 @@ def claude_distill(provider: str, batch_text: str) -> list[dict] | None:
         #      an is_error:false envelope -> return None so the provider aborts
         #      and retries next run (M4: otherwise these sessions are silently
         #      lost by advancing the watermark over an "empty" batch).
-        #  (b) genuine garbled/refusal content -> return [] (skip THIS batch,
-        #      continue) so one poison batch can't wedge the whole provider.
+        #  (b) genuine garbled/refusal content -> return POISON (#2845: distinct
+        #      from valid-empty []). The caller HOLDS + retries (bounded), then
+        #      dead-letters — instead of the old `return []` that advanced the
+        #      watermark over the batch = silent data loss.
         result_text = inner if isinstance(inner, str) else str(inner)
         if _TRANSIENT_RE.search(result_text or ""):
             sys.stderr.write(f"[distill] claude -p TRANSIENT prose for {provider} batch "
                              f"— aborting provider, will retry next run\n")
             return None
         sys.stderr.write(f"[distill] claude -p result not JSON for {provider} batch "
-                         f"— skipping this batch, continuing\n")
-        return []
+                         f"— POISON (will hold + retry, then dead-letter)\n")
+        return POISON
     out = parsed.get("learnings", [])
     return [l for l in out if isinstance(l, dict) and l.get("title") and l.get("body")]
 
@@ -457,7 +542,8 @@ def run_provider(provider: str, args, watermark: dict) -> dict:
         pending = pending[: args.limit]
 
     stats = {"provider": provider, "available": len(files), "pending": len(pending),
-             "distilled_sessions": 0, "learnings": 0, "batches": 0, "files": []}
+             "distilled_sessions": 0, "learnings": 0, "batches": 0,
+             "deadlettered_sessions": 0, "files": []}
     if not pending:
         return stats
 
@@ -466,19 +552,32 @@ def run_provider(provider: str, args, watermark: dict) -> dict:
     pending_skip_hw = last_ts  # advances over skipped (too-small) sessions only
     batch: list[str] = []
     batch_mts: list[float] = []
+    batch_files: list[Path] = []
+    # flush() stashes a poison batch's identity here (it clears the working lists)
+    # so handle_poison() can bounded-retry / dead-letter it (#2845).
+    poison_files: list[Path] = []
+    poison_mts: list[float] = []
 
-    def flush() -> bool:
-        """Process the current batch. Returns True on success (watermark may
-        advance), False on distill FAILURE (watermark must hold so the batch
-        is retried next run)."""
-        nonlocal high_water
+    def flush() -> str:
+        """Process the current batch. Returns:
+          'noop'   — empty batch, nothing to do.
+          'ok'     — distilled (learnings possibly empty); watermark advanced.
+          'hold'   — transient failure (None); watermark MUST hold, retry next run.
+          'poison' — non-JSON garble; batch stashed for handle_poison() (#2845).
+        Previously this returned [] for BOTH valid-empty AND garble, so the caller
+        advanced the watermark over garbled batches = silent data loss."""
+        nonlocal high_water, poison_files, poison_mts
         if not batch:
-            return True
+            return "noop"
         stats["batches"] += 1
         learnings = claude_distill(provider, "\n\n===== NEXT SESSION =====\n\n".join(batch))
         if learnings is None:
-            batch.clear(); batch_mts.clear()
-            return False
+            batch.clear(); batch_mts.clear(); batch_files.clear()
+            return "hold"
+        if learnings is POISON:
+            poison_files = list(batch_files); poison_mts = list(batch_mts)
+            batch.clear(); batch_mts.clear(); batch_files.clear()
+            return "poison"
         # Write ALL learnings from a successfully-distilled batch. (M1: never
         # truncate mid-batch — that dropped learnings #N+1.. AND advanced the
         # watermark past their sessions = data loss. The cap instead stops us
@@ -491,8 +590,46 @@ def run_provider(provider: str, args, watermark: dict) -> dict:
         # Success: it is safe to advance past every session in this batch
         # (and any skipped-small sessions we passed on the way to it).
         high_water = max(high_water, pending_skip_hw, max(batch_mts))
-        batch.clear(); batch_mts.clear()
-        return True
+        batch.clear(); batch_mts.clear(); batch_files.clear()
+        return "ok"
+
+    def handle_poison() -> str:
+        """Bounded-retry + dead-letter for the stashed poison batch (#2845).
+        Returns 'hold' (abort provider, retry next run) or 'deadlettered'
+        (recorded + advanced past it). Counting happens ONLY on plain incremental
+        runs — --limit/--since-days/--backfill reshape the window so their batches
+        are not comparable across runs (they just hold). Keyed on a content digest
+        of the batch's session paths (the watermark float is NOT a stable key)."""
+        nonlocal high_water
+        if args.limit or args.since_days or args.backfill:
+            return "hold"
+        sig = _batch_sig(poison_files)
+        now = time.time()
+        with _poison_lock():
+            state = _load_poison_state()
+            ps = state.get(provider)
+            # first_ts tracks CONTINUOUS poison-hold: carries across sig changes
+            # (a batch that keeps absorbing new sessions), cleared only on recovery.
+            first_ts = ps["first_ts"] if ps else now
+            attempts = (ps["attempts"] + 1) if (ps and ps.get("sig") == sig) else 1
+            age_exceeded = (now - first_ts) > AGE_ESCAPE_DAYS * 86400
+            if attempts >= MAX_POISON_RETRIES or age_exceeded:
+                reason = "age_escape" if (age_exceeded and attempts < MAX_POISON_RETRIES) else "max_retries"
+                if not args.dry_run:
+                    _deadletter_append(provider, poison_files, poison_mts, reason, attempts)
+                    state.pop(provider, None)
+                    _save_poison_state(state)
+                stats["deadlettered_sessions"] += len(poison_files)
+                sys.stderr.write(f"[distill] {provider}: DEAD-LETTERED {len(poison_files)} session(s) "
+                                 f"after {attempts} attempt(s) (reason={reason})\n")
+                high_water = max(high_water, pending_skip_hw, max(poison_mts))
+                return "deadlettered"
+            if not args.dry_run:
+                state[provider] = {"sig": sig, "attempts": attempts, "first_ts": first_ts}
+                _save_poison_state(state)
+            sys.stderr.write(f"[distill] {provider}: poison batch HELD "
+                             f"(attempt {attempts}/{MAX_POISON_RETRIES}); retry next run\n")
+            return "hold"
 
     aborted = False
     for mt, f in pending:
@@ -503,26 +640,36 @@ def run_provider(provider: str, args, watermark: dict) -> dict:
         header = f"[{provider}] {f.name} ({datetime.fromtimestamp(mt).date()})"
         batch.append(f"{header}\n{text}")
         batch_mts.append(mt)
+        batch_files.append(f)
         stats["distilled_sessions"] += 1
         if len(batch) >= args.batch_size:
-            ok = flush()
+            status = flush()
+            if status == "poison":
+                status = handle_poison()          # -> 'hold' or 'deadlettered'
+            elif status == "ok" and not args.dry_run:
+                _clear_poison(provider)           # recovery resets the counter
             if not args.dry_run:
                 watermark[provider] = high_water
                 save_watermark(watermark)
-            if not ok:
-                # Distill failed (quota/timeout/transport) — stop this provider
-                # at the last good watermark; next run resumes here.
+            if status == "hold":
                 sys.stderr.write(f"[distill] {provider}: aborting run at watermark "
-                                 f"{high_water} after batch failure (will retry next run)\n")
+                                 f"{high_water} (will retry next run)\n")
                 aborted = True
                 break
+            # 'ok' / 'deadlettered' -> continue intake
         if max_learn and stats["learnings"] >= max_learn:
             break
+
     if not aborted:
-        if flush():
-            # Final batch good — safe to advance over any trailing pure-skip tail.
+        status = flush()
+        if status == "poison":
+            status = handle_poison()
+        if status in ("ok", "noop", "deadlettered"):
+            if status == "ok" and not args.dry_run:
+                _clear_poison(provider)
+            # Safe to advance over any trailing pure-skip tail.
             high_water = max(high_water, pending_skip_hw)
-        else:
+        elif status == "hold":
             aborted = True
 
     if not args.dry_run:
@@ -556,19 +703,23 @@ def main() -> int:
 
     print(f"[distill] mode={'BACKFILL' if args.backfill else 'incremental'}"
           f"{' DRY-RUN' if args.dry_run else ''} | engine=claude:{CLAUDE_MODEL} | mem={MEM_DIR}")
-    grand = {"learnings": 0, "sessions": 0}
+    grand = {"learnings": 0, "sessions": 0, "deadlettered": 0}
     for prov in providers:
         st = run_provider(prov, args, watermark)
         grand["learnings"] += st["learnings"]
         grand["sessions"] += st["distilled_sessions"]
+        grand["deadlettered"] += st.get("deadlettered_sessions", 0)
         print(f"[distill] {prov}: available={st['available']} pending={st['pending']} "
               f"distilled={st['distilled_sessions']} batches={st['batches']} "
-              f"learnings={st['learnings']}")
+              f"learnings={st['learnings']} deadlettered={st.get('deadlettered_sessions', 0)}")
         if args.dry_run and st["files"]:
             print(f"           would write: {', '.join(st['files'][:10])}"
                   + (" ..." if len(st["files"]) > 10 else ""))
-    print(f"[distill] TOTAL: {grand['sessions']} sessions -> {grand['learnings']} learnings")
-    return 0
+    dl = grand["deadlettered"]
+    print(f"[distill] TOTAL: {grand['sessions']} sessions -> {grand['learnings']} learnings"
+          + (f" | {dl} DEAD-LETTERED (see {DEADLETTER_FILE.name})" if dl else ""))
+    # rc=3 surfaces dead-lettered (silently-lost-before-this-fix) sessions to cron mail.
+    return 3 if dl else 0
 
 
 if __name__ == "__main__":
