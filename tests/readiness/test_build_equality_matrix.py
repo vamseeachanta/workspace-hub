@@ -221,10 +221,18 @@ def test_solvers_missing_evidence_when_unknown_against_licensed():
     assert bem.cold_verdict("solvers", rep, bl, TIER1) == "MISSING-EVIDENCE"
 
 
-def test_solvers_absent_baseline_tolerates_unknown_detection():
-    # declared absent + detected unknown → still CONFORMS (unknown ⊆ absent acceptance)
+def test_solvers_absent_baseline_unknown_is_missing_evidence():
+    # declared absent + detected unknown → MISSING-EVIDENCE (unknown is never evidence,
+    # for ANY baseline — a missing probe must not masquerade as CONFORMS). #2849 Codex r1 #1.
     rep = _report("dev-primary", solvers=_solvers(orcaflex="unknown"))
-    assert bem.cold_verdict("solvers", rep, _solver_baseline(), TIER1) == "CONFORMS"
+    assert bem.cold_verdict("solvers", rep, _solver_baseline(), TIER1) == "MISSING-EVIDENCE"
+
+
+def test_solvers_legacy_v2_absent_baseline_missing_evidence():
+    # a v2 report (no solvers block) against a dev absent-baseline → MISSING-EVIDENCE,
+    # NOT CONFORMS (the whole solvers cell is unknown). #2849 Codex r1 #1.
+    rep = _report("dev-primary")  # base fixture has no solvers key
+    assert bem.cold_verdict("solvers", rep, _solver_baseline(), TIER1) == "MISSING-EVIDENCE"
 
 
 def test_solvers_concrete_miss_dominates_unknown():

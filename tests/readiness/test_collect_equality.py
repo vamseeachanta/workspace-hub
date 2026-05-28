@@ -168,6 +168,27 @@ def test_collect_solvers_no_abs_paths(tmp_path):
         assert "/" not in str(s["evidence"]) and "\\" not in str(s["evidence"])
 
 
+def test_collect_solvers_present_via_env_before_sandbox(tmp_path):
+    # Non-vacuous: a real ORCAWAVE_PATH dir → orcawave `present` (evidence: env). Proves the
+    # solver probe sees the real environment (runs BEFORE the HOME/XDG behaviour sandbox) and
+    # that the present-classification path actually executes, not just the all-absent path.
+    ws = _fixture(tmp_path)
+    owp = tmp_path / "OrcaWaveInstall"
+    owp.mkdir()
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        env={"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin",
+             "ORCAWAVE_PATH": str(owp)},
+        capture_output=True, text=True, timeout=60)
+    assert res.returncode == 0, res.stderr
+    solvers = {s["name"]: s for s in yaml.safe_load(res.stdout)["dimensions"]["solvers"]}
+    assert solvers["orcawave"]["status"] == "present"
+    assert solvers["orcawave"]["evidence"] == "env"
+    # the env-derived value must still not leak the absolute path into the emitted cell
+    assert "/" not in solvers["orcawave"]["status"] and "/" not in solvers["orcawave"]["evidence"]
+    assert str(owp) not in res.stdout.split("solvers:")[1].split("harness:")[0]
+
+
 def test_collect_solvers_canonical_hash_includes_block(tmp_path):
     # Toggling a solver status in the committed file is a MEANINGFUL change → rewrite.
     ws = _fixture(tmp_path)

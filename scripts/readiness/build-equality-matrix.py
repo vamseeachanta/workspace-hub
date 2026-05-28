@@ -32,8 +32,11 @@ COLD_DIMS = {"compute", "data_access", "solvers"}
 # Solver verdict acceptance (STRICT, #2849 decision 1): which DETECTED statuses satisfy
 # each DECLARED baseline. `licensed` baseline is satisfied ONLY by a `licensed` signal
 # (an install-only `present` is NOT enough — licensed work must never route to it).
+# `unknown`/missing detection is NEVER an acceptance for any baseline — it grades
+# MISSING-EVIDENCE (handled in cold_verdict), so a legacy v2 report with no solvers
+# block does not masquerade as CONFORMS on a dev (absent-baseline) machine.
 SOLVER_OK = {
-    "absent":   {"absent", "unknown"},
+    "absent":   {"absent"},
     "present":  {"present", "licensed"},
     "licensed": {"licensed"},
 }
@@ -117,8 +120,9 @@ def cold_verdict(dim: str, report: dict, baseline: dict | None, probed_repos: li
         for name, want in declared.items():
             got = detected.get(name, "unknown")
             ok = SOLVER_OK.get(want, set())
-            # `unknown` against a non-`absent` baseline = no evidence (not a hard fail).
-            if got in (None, "unknown") and want != "absent":
+            # `unknown`/missing detection is NOT evidence for ANY baseline (incl. absent):
+            # a legacy v2 report with no solvers block must not pass as CONFORMS.
+            if got in (None, "unknown"):
                 verdict = "MISSING-EVIDENCE"
                 continue
             if got not in ok:
