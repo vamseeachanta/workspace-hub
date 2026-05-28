@@ -1,7 +1,7 @@
 # Plan for #2817: feat(harness): atomic approve-issue helper (label + marker in one command)
 
-> **Status:** draft
-> **Complexity:** T1
+> **Status:** plan-review (Claude MAJOR→fixed after premature-approval rollback; Codex r2 pending — T1→T2 escalated for gate-security surface)
+> **Complexity:** T2 (escalated from T1 — touches the approval-gate security surface)
 > **Date:** 2026-05-27
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2817
 > **Client:** N/A
@@ -97,10 +97,15 @@ was a `&&` chain failure during manual execution; no automated test exists to ca
 
 ## Deliverable
 
-A `scripts/workflow/approve-issue.sh` script that atomically applies `status:plan-approved`
-label AND creates `.planning/plan-approved/<N>.md` marker in a single user-run command, with
-fail-loud behavior if either step fails, and an optional `--commit` flag to immediately
-commit and push the marker.
+A `scripts/workflow/approve-issue.sh` script that atomically creates the
+`.planning/plan-approved/<N>.md` marker AND applies the `status:plan-approved` label in a
+single user-run command, with fail-loud behavior and **rollback** if either step fails.
+
+**No `--commit` flag (M1, review 2026-05-28):** committing the marker would make it
+gate-trusted immediately, turning the helper into a self-approval bypass (an agent could
+commit a marker to unblock its own writes). v1 leaves the marker uncommitted — the gate
+honors it after its 120s age check or once a human commits it separately. Immediate
+gate-legitimacy via commit is deferred to a separate gate-hardening effort, not this helper.
 
 ---
 
@@ -127,20 +132,20 @@ pattern as `tests/enforcement/test_client_wiki_registry.sh`. Each test uses a tm
 | `test_non_numeric_issue` | rejects non-numeric issue number | `approve-issue.sh abc` | exit 1 |
 | `test_label_applied_and_marker_created` | happy path end-to-end | mock `gh` exits 0; writable tmp marker dir | `.planning/plan-approved/2817.md` exists, exit 0 |
 | `test_marker_content_fields` | marker contains required fields | same setup | file contains "Approved by:" and today's date |
-| `test_no_marker_if_label_fails` | atomicity: no marker if label step fails | mock `gh` exits 1 | marker NOT created, exit non-zero |
-| `test_commit_flag_triggers_git` | `--commit` calls `git add` + `git commit` | mock `git` binary records calls | git commit called with `#2817` in message |
+| `test_rollback_marker_if_label_fails` | M2 atomicity: marker created first, then label; if label fails → marker REMOVED (rollback) | mock `gh` exits 1 | marker NOT present after run, exit non-zero |
+| `test_no_commit_flag` | M1: `--commit` is rejected/absent (no git invocation by the helper) | `approve-issue.sh 2817 --commit` | exit 1 unknown-flag; no `git commit` |
 | `test_already_approved_exits_nonzero` | idempotency guard: exits if marker already exists | pre-create marker file | exit 1, no duplicate label call |
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] `scripts/workflow/approve-issue.sh <N>` applies `status:plan-approved` label and creates
-  `.planning/plan-approved/<N>.md` in a single command
-- [ ] If `gh issue edit` fails: no marker is created; script exits non-zero with explicit error
-- [ ] If marker creation fails after label succeeds: script prints manual recovery command
-  (`gh issue edit <N> --remove-label status:plan-approved`) and exits non-zero
-- [ ] `--commit` flag: `git add .planning/plan-approved/<N>.md && git commit -m "chore: approve #<N>"` on success
+- [ ] `scripts/workflow/approve-issue.sh <N>` creates `.planning/plan-approved/<N>.md` then applies
+  `status:plan-approved` (marker-first), in a single command
+- [ ] **M2 atomicity (marker-first + rollback):** if `gh issue edit` fails after the marker was
+  written → the marker is REMOVED and the script exits non-zero (no marker-without-label parity break);
+  if marker write fails → label is never attempted
+- [ ] **M1:** no `--commit` flag — the helper never git-commits the marker (would be a self-approval bypass)
 - [ ] Marker format matches existing markers (Title, Approved by, Date fields)
 - [ ] `.claude/skills/coordination/issue-planning-mode/SKILL.md` references `approve-issue.sh` in the approve step
 - [ ] All tests pass: `bash tests/workflow/test_approve_issue.sh`
@@ -153,20 +158,22 @@ pattern as `tests/enforcement/test_client_wiki_registry.sh`. Each test uses a tm
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | TBD | — |
-| Codex | TBD | — |
-| Gemini | TBD | — |
+| Claude (2026-05-28, gate-skipped catch-up) | MAJOR → fixed | M1 `--commit` self-approval bypass → flag DROPPED; M2 atomicity contradiction → marker-first + bidirectional rollback; m1 push semantics → removed; m2 rollback tests added |
+| Codex | PENDING | re-review of revised plan |
 
-**Overall result:** PENDING (review not yet run)
+**Overall result:** Plan was prematurely `plan-approved` with no review (rolled back to `plan-review` 2026-05-28). Claude review found 2 MAJOR (incl. a self-approval-bypass security defect), both fixed. Codex re-review pending (escalated T1→T2 due to the gate-security surface). NOT approval-ready until Codex clears.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk (partial-apply):** If label succeeds but marker write fails, the issue carries
-  `status:plan-approved` without a marker — which trips `check-marker-label-parity.sh`.
-  Mitigation: write marker to a tmp file first, then atomic `mv`; only set the label AFTER
-  `mv` succeeds. This reverses the order from the issue body's suggestion.
+- **Risk (partial-apply) — RESOLVED via marker-first + rollback (M2):** order is (1) write marker
+  to tmp → atomic `mv` into `.planning/plan-approved/<N>.md`; (2) apply label. If step 2 fails →
+  `rm` the marker (rollback) and exit non-zero, so neither half is left dangling. Both failure
+  directions are covered, and `check-marker-label-parity.sh` never sees a one-sided state.
+- **Resolved (M1 — self-approval bypass):** no `--commit`. The helper never commits the marker;
+  a committed marker would be gate-trusted and let an agent self-approve. Immediate gate-legitimacy
+  (committed marker) is a separate gate-hardening concern, out of scope here.
 - **Risk (overlap with approve-provider-plan.py):** The two scripts coexist with different
   preconditions. Documenting this split clearly in `issue-planning-mode/SKILL.md` is
   required to prevent confusion about when each applies.
@@ -177,7 +184,8 @@ pattern as `tests/enforcement/test_client_wiki_registry.sh`. Each test uses a tm
 
 ---
 
-## Complexity: T1
+## Complexity: T2
 
-**T1** — single new shell script (~60 lines), one skill-doc section update, no new
-dependencies, no multi-file implementation cascade.
+**T2** (escalated from T1) — single new shell script + tests + skill-doc update, BUT it touches
+the plan-approval gate's security surface (marker creation), so the review found a self-approval
+bypass. T2 ⇒ Claude + Codex review on the revised plan.
