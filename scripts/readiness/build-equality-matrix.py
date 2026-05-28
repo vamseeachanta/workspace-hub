@@ -28,7 +28,15 @@ CONFIG = REPO / "scripts" / "readiness" / "harness-config.yaml"
 
 TIER1_DEFAULT = ["assetutilities", "digitalmodel", "worldenergydata", "assethold"]
 UNREACHABLE_DEFAULT = {"home-win", "macbook-portable"}
-COLD_DIMS = {"compute", "data_access"}
+COLD_DIMS = {"compute", "data_access", "solvers"}
+# Solver verdict acceptance (STRICT, #2849 decision 1): which DETECTED statuses satisfy
+# each DECLARED baseline. `licensed` baseline is satisfied ONLY by a `licensed` signal
+# (an install-only `present` is NOT enough — licensed work must never route to it).
+SOLVER_OK = {
+    "absent":   {"absent", "unknown"},
+    "present":  {"present", "licensed"},
+    "licensed": {"licensed"},
+}
 # Uniform dims whose cross-machine difference is OS-driven, not a defect:
 EXPECTED_DIFF_DIMS = {"python_cmd"}
 
@@ -100,6 +108,22 @@ def cold_verdict(dim: str, report: dict, baseline: dict | None, probed_repos: li
             return "MISSING-BASELINE"
         accessible = {d["repo"] for d in dims.get("data_access", []) if d.get("mode") != "absent"}
         return "CONFORMS" if set(required) <= accessible else "BELOW-BASELINE"
+    if dim == "solvers":
+        declared = baseline.get("solvers_baseline")
+        if not declared:                                 # baseline opted out → fail-closed
+            return "MISSING-BASELINE"
+        detected = {s["name"]: s.get("status") for s in dims.get("solvers", [])}
+        verdict = "CONFORMS"
+        for name, want in declared.items():
+            got = detected.get(name, "unknown")
+            ok = SOLVER_OK.get(want, set())
+            # `unknown` against a non-`absent` baseline = no evidence (not a hard fail).
+            if got in (None, "unknown") and want != "absent":
+                verdict = "MISSING-EVIDENCE"
+                continue
+            if got not in ok:
+                return "BELOW-BASELINE"                   # any concrete miss dominates
+        return verdict
     raise ValueError(f"not a cold dimension: {dim}")
 
 
@@ -171,7 +195,7 @@ def load_reports() -> dict[str, dict]:
     return out
 
 
-DISPLAY_DIMS = ["compute", "data_access", "harness", "python_cmd", "skills",
+DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
                 "kanban", "memory", "behavior", "scheduler"]
 
 

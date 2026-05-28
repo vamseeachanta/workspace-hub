@@ -127,6 +127,61 @@ def test_collect_commit_on_change_idempotent(tmp_path):
     assert out.stat().st_mtime_ns == first_mtime         # unchanged content → not rewritten
 
 
+SOLVER_NAMES = {"orcaflex", "orcawave", "aqwa", "ansys"}
+STATUS_ENUM = {"licensed", "present", "absent", "unknown"}
+EVIDENCE_ENUM = {"import", "env", "root", "absent", "unknown"}
+
+
+def test_collect_emits_schema_v3(tmp_path):
+    # #2849: schema bumped to 3 with the solvers dimension added.
+    d = _run(_fixture(tmp_path))
+    assert d["schema_version"] == 3
+
+
+def test_collect_emits_solvers_block(tmp_path):
+    # #2849: solvers dimension carries all four named solvers.
+    d = _run(_fixture(tmp_path))
+    solvers = d["dimensions"]["solvers"]
+    assert isinstance(solvers, list) and len(solvers) == 4
+    assert {s["name"] for s in solvers} == SOLVER_NAMES
+
+
+def test_collect_solvers_status_enum_only(tmp_path):
+    # Every emitted status/evidence is from the closed enum (no free-form leakage).
+    solvers = _run(_fixture(tmp_path))["dimensions"]["solvers"]
+    for s in solvers:
+        assert s["status"] in STATUS_ENUM
+        assert s["evidence"] in EVIDENCE_ENUM
+
+
+def test_collect_solvers_absent_on_clean_fixture(tmp_path):
+    # The fixture host has no OrcFxAPI / ORCAWAVE_PATH / ANSYS root → all absent.
+    solvers = _run(_fixture(tmp_path))["dimensions"]["solvers"]
+    assert all(s["status"] == "absent" for s in solvers), solvers
+
+
+def test_collect_solvers_no_abs_paths(tmp_path):
+    # bare-name rule: no '/' or '\' characters in any solver status/evidence value.
+    solvers = _run(_fixture(tmp_path))["dimensions"]["solvers"]
+    for s in solvers:
+        assert "/" not in str(s["status"]) and "\\" not in str(s["status"])
+        assert "/" not in str(s["evidence"]) and "\\" not in str(s["evidence"])
+
+
+def test_collect_solvers_canonical_hash_includes_block(tmp_path):
+    # Toggling a solver status in the committed file is a MEANINGFUL change → rewrite.
+    ws = _fixture(tmp_path)
+    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
+    subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
+    text = out.read_text().replace(
+        "{name: orcaflex, status: absent", "{name: orcaflex, status: licensed")
+    out.write_text(text)
+    subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
+    # real collection differs from the tampered file → rewritten back to absent
+    assert "{name: orcaflex, status: absent" in out.read_text()
+
+
 def test_collect_commit_on_change_detects_real_drift(tmp_path):
     # DC4: a change to a MEANINGFUL (non-volatile) field MUST trigger a rewrite. Guards the
     # canonical()-grep bug where a volatile field sharing a line masked its neighbors.

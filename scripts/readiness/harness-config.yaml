@@ -43,6 +43,8 @@ workstations:
     role: high-context-linux-execution
     compute_floor: {cores_min: 16, ram_gib_min: 16}
     required_data_access: [assetutilities, digitalmodel, worldenergydata, assethold]
+    # #2849 solvers baseline (cold-dim): a Linux dev box is EXPECTED to lack solvers → absent
+    solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
   dev-secondary:
     ws_hub_path: /mnt/local-analysis/workspace-hub
     ssh_target: ace-linux-2
@@ -50,6 +52,7 @@ workstations:
     role: linux-execution
     compute_floor: {cores_min: 8, ram_gib_min: 8}
     required_data_access: [assetutilities, digitalmodel, worldenergydata, assethold]
+    solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
   licensed-win-1:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
@@ -61,6 +64,9 @@ workstations:
     # MISSING-EVIDENCE). RAM floor returns when the .ps1 compute companion lands (C2 follow-up).
     compute_floor: {cores_min: 8}
     required_data_access: [digitalmodel, assetutilities]
+    # #2849 solvers baseline (cold-dim, STRICT): licensed work routes here — only a `licensed`
+    # signal satisfies this baseline. An install-only `present` grades BELOW-BASELINE.
+    solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
   licensed-win-2:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
@@ -72,6 +78,8 @@ workstations:
     # MISSING-EVIDENCE). RAM floor returns when the .ps1 compute companion lands (C2 follow-up).
     compute_floor: {cores_min: 8}
     required_data_access: [digitalmodel, assetutilities]
+    # #2849 solvers baseline (cold-dim, STRICT): licensed-solver workstation.
+    solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
   home-win:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null

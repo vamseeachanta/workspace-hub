@@ -49,6 +49,7 @@ lib/
 !scripts/review/lib/
 !scripts/cron/lib/
 !scripts/improve/lib/
+!scripts/readiness/lib/
 !scripts/lib/
 !scripts/review/lib/
 !scripts/work-queue/lib/
