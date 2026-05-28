@@ -43193,7 +43193,6 @@ cards:
     gh_labels:
       - cat:ai-orchestration
       - domain:memory
-      - status:plan-review
       - status:plan-approved
       - gate:completeness
     initial_status: triage
@@ -43233,6 +43232,46 @@ cards:
       - enhancement
       - cat:operations
       - domain:workstations
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2851
+    title: 'fix(workstations): collect-equality freshness guard — flag stale/dirty checkouts to prevent false divergences [#2801 family]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2851
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - domain:workstations
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2852
+    title: 'feat(workstations): real solver license probe on licensed-win-* (present → licensed)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2852
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:operations
+      - domain:workstations
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2854
+    title: 'gap(memory): Hermes read-back leg missing — consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2854
+    gh_state: open
+    gh_labels:
+      - cat:ai-orchestration
+      - domain:memory
     initial_status: triage
     priority: 0
     gh_assignees: []
