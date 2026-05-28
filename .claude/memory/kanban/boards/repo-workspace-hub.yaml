@@ -43234,7 +43234,7 @@ cards:
     title: 'feat(workstations): add licensed-solver capability dimension to equality matrix [#2801 family]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2849
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:operations
