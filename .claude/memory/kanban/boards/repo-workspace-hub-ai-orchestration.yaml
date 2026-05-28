@@ -539,3 +539,15 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2864
+    title: 'bug(harness): nightly sync-agent-configs.sh clobbers Hermes SOUL symlink with the 4KB delta source (recurring gutted identity)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2864
+    gh_state: open
+    gh_labels:
+      - cat:infrastructure
+      - domain:ai-orchestration
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
