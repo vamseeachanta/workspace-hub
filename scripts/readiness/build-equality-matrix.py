@@ -28,7 +28,18 @@ CONFIG = REPO / "scripts" / "readiness" / "harness-config.yaml"
 
 TIER1_DEFAULT = ["assetutilities", "digitalmodel", "worldenergydata", "assethold"]
 UNREACHABLE_DEFAULT = {"home-win", "macbook-portable"}
-COLD_DIMS = {"compute", "data_access"}
+COLD_DIMS = {"compute", "data_access", "solvers"}
+# Solver verdict acceptance (STRICT, #2849 decision 1): which DETECTED statuses satisfy
+# each DECLARED baseline. `licensed` baseline is satisfied ONLY by a `licensed` signal
+# (an install-only `present` is NOT enough — licensed work must never route to it).
+# `unknown`/missing detection is NEVER an acceptance for any baseline — it grades
+# MISSING-EVIDENCE (handled in cold_verdict), so a legacy v2 report with no solvers
+# block does not masquerade as CONFORMS on a dev (absent-baseline) machine.
+SOLVER_OK = {
+    "absent":   {"absent"},
+    "present":  {"present", "licensed"},
+    "licensed": {"licensed"},
+}
 # Uniform dims whose cross-machine difference is OS-driven, not a defect:
 EXPECTED_DIFF_DIMS = {"python_cmd"}
 
@@ -100,6 +111,23 @@ def cold_verdict(dim: str, report: dict, baseline: dict | None, probed_repos: li
             return "MISSING-BASELINE"
         accessible = {d["repo"] for d in dims.get("data_access", []) if d.get("mode") != "absent"}
         return "CONFORMS" if set(required) <= accessible else "BELOW-BASELINE"
+    if dim == "solvers":
+        declared = baseline.get("solvers_baseline")
+        if not declared:                                 # baseline opted out → fail-closed
+            return "MISSING-BASELINE"
+        detected = {s["name"]: s.get("status") for s in dims.get("solvers", [])}
+        verdict = "CONFORMS"
+        for name, want in declared.items():
+            got = detected.get(name, "unknown")
+            ok = SOLVER_OK.get(want, set())
+            # `unknown`/missing detection is NOT evidence for ANY baseline (incl. absent):
+            # a legacy v2 report with no solvers block must not pass as CONFORMS.
+            if got in (None, "unknown"):
+                verdict = "MISSING-EVIDENCE"
+                continue
+            if got not in ok:
+                return "BELOW-BASELINE"                   # any concrete miss dominates
+        return verdict
     raise ValueError(f"not a cold dimension: {dim}")
 
 
@@ -171,7 +199,7 @@ def load_reports() -> dict[str, dict]:
     return out
 
 
-DISPLAY_DIMS = ["compute", "data_access", "harness", "python_cmd", "skills",
+DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
                 "kanban", "memory", "behavior", "scheduler"]
 
 

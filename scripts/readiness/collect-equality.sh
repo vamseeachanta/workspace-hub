@@ -69,6 +69,26 @@ for r in assetutilities digitalmodel worldenergydata assethold; do
   data_yaml+="    - {repo: ${r}, mode: ${mode}}"$'\n'
 done
 
+# ── 2b. SOLVERS — licensed-solver capability (#2849); shared probes, no path leak ──
+# MUST run BEFORE the behaviour-probe sandbox (which redirects HOME/XDG below) so the
+# real-env signals (ORCAWAVE_PATH, ANSYS license vars) are visible. Sourced helper is
+# the single source of truth — the standalone nightly R-ANSYS/R-ORCAFLEX checks were
+# removed per #2849 decision 2 (the matrix cell IS the answer; no nightly duplication).
+solvers_yaml=""
+if [[ -f "${SCRIPT_DIR}/lib/probe-solvers.sh" ]]; then
+  # shellcheck source=lib/probe-solvers.sh
+  source "${SCRIPT_DIR}/lib/probe-solvers.sh"
+  for s in orcaflex orcawave aqwa ansys; do
+    st=$("probe_${s}" 2>/dev/null || echo unknown); : "${st:=unknown}"
+    ev=$("probe_${s}_evidence" 2>/dev/null || echo unknown); : "${ev:=unknown}"
+    solvers_yaml+="    - {name: ${s}, status: ${st}, evidence: ${ev}}"$'\n'
+  done
+else
+  for s in orcaflex orcawave aqwa ansys; do
+    solvers_yaml+="    - {name: ${s}, status: unknown, evidence: unknown}"$'\n'
+  done
+fi
+
 # ── 3. HARNESS (reference readiness; gh_auth as ENUM, never the token) ───────
 readiness_file="harness-readiness-${MACHINE}.yaml"
 [[ -f "${STATE_DIR}/${readiness_file}" ]] || readiness_file="harness-readiness-${HOST}.yaml"
@@ -131,7 +151,7 @@ fi
 
 # ── emit (generated_at + headroom + mtime + job_count are EXCLUDED from the hash) ──
 read -r -d '' BODY <<YAML || true
-schema_version: 2
+schema_version: 3
 machine: "$(yesc "$MACHINE")"
 host: "$(yesc "$HOST")"
 os: ${OS}
@@ -141,7 +161,8 @@ dimensions:
     static: {cores: ${cores}, ram_total_mib: ${ram_total_mib}, gpu_model: "$(yesc "$gpu")"}
     headroom: {ram_avail_mib: ${ram_avail_mib}, disk_avail_gb: ${disk_avail_gb}}
   data_access:
-${data_yaml}  harness:
+${data_yaml}  solvers:
+${solvers_yaml}  harness:
     providers: {claude: $(prov claude), codex: $(prov codex), gemini: $(prov gemini), hermes: $(prov hermes)}
     gh_auth: ${gh_auth}
     python_cmd: ${py_cmd}

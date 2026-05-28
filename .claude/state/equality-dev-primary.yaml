@@ -1,5 +1,5 @@
 generated_at: "2026-05-26T09:51:54"
-schema_version: 2
+schema_version: 3
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
@@ -13,6 +13,11 @@ dimensions:
     - {repo: digitalmodel, mode: sibling}
     - {repo: worldenergydata, mode: sibling}
     - {repo: assethold, mode: sibling}
+  solvers:
+    - {name: orcaflex, status: absent, evidence: absent}
+    - {name: orcawave, status: absent, evidence: absent}
+    - {name: aqwa, status: absent, evidence: absent}
+    - {name: ansys, status: absent, evidence: absent}
   harness:
     providers: {claude: present, codex: present, gemini: present, hermes: present}
     gh_auth: ok

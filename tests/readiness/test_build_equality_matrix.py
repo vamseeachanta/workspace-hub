@@ -157,6 +157,126 @@ def test_matrix_baseline_unprobed_repo_is_config_error():
                             _baseline(required=["foo-repo"]), TIER1) == "MISSING-BASELINE"
 
 
+# ── solvers cold-dim conformance (#2849, STRICT) ────────────────────────────
+def _solvers(orcaflex="absent", orcawave="absent", aqwa="absent", ansys="absent"):
+    return [{"name": "orcaflex", "status": orcaflex, "evidence": "absent"},
+            {"name": "orcawave", "status": orcawave, "evidence": "absent"},
+            {"name": "aqwa", "status": aqwa, "evidence": "absent"},
+            {"name": "ansys", "status": ansys, "evidence": "absent"}]
+
+
+def _solver_baseline(**want):
+    base = {"orcaflex": "absent", "orcawave": "absent", "aqwa": "absent", "ansys": "absent"}
+    base.update(want)
+    return {"solvers_baseline": base}
+
+
+def test_solvers_is_cold_dim():
+    assert "solvers" in bem.COLD_DIMS
+
+
+def test_solvers_conforms_dev_primary_all_absent():
+    # dev-primary: declared all-absent + detected all-absent → CONFORMS (expected divergence)
+    rep = _report("dev-primary", solvers=_solvers())
+    assert bem.cold_verdict("solvers", rep, _solver_baseline(), TIER1) == "CONFORMS"
+
+
+def test_solvers_conforms_licensed_baseline_met():
+    rep = _report("licensed-win-1", solvers=_solvers(
+        orcaflex="licensed", orcawave="licensed", aqwa="licensed", ansys="licensed"))
+    bl = _solver_baseline(orcaflex="licensed", orcawave="licensed", aqwa="licensed", ansys="licensed")
+    assert bem.cold_verdict("solvers", rep, bl, TIER1) == "CONFORMS"
+
+
+def test_solvers_below_baseline_when_licensed_missing():
+    # licensed baseline but detected absent → BELOW-BASELINE
+    rep = _report("licensed-win-1", solvers=_solvers(orcaflex="absent"))
+    bl = _solver_baseline(orcaflex="licensed")
+    assert bem.cold_verdict("solvers", rep, bl, TIER1) == "BELOW-BASELINE"
+
+
+def test_solvers_strict_present_does_not_satisfy_licensed():
+    # STRICT (decision 1): an install-only `present` must FAIL a `licensed` baseline.
+    rep = _report("licensed-win-1", solvers=_solvers(orcaflex="present"))
+    bl = _solver_baseline(orcaflex="licensed")
+    assert bem.cold_verdict("solvers", rep, bl, TIER1) == "BELOW-BASELINE"
+
+
+def test_solvers_below_baseline_when_unexpected_extra():
+    # declared absent but detected licensed (probe found one we didn't declare) → BELOW-BASELINE
+    rep = _report("dev-primary", solvers=_solvers(orcaflex="licensed"))
+    assert bem.cold_verdict("solvers", rep, _solver_baseline(), TIER1) == "BELOW-BASELINE"
+
+
+def test_solvers_missing_baseline_when_unset():
+    # a machine with compute_floor but no solvers_baseline → MISSING-BASELINE (fail-closed)
+    rep = _report("dev-primary", solvers=_solvers())
+    assert bem.cold_verdict("solvers", rep, {"compute_floor": {"cores_min": 8}}, TIER1) == "MISSING-BASELINE"
+
+
+def test_solvers_missing_evidence_when_unknown_against_licensed():
+    # licensed baseline but detected `unknown` (probe couldn't run) → MISSING-EVIDENCE, not fail
+    rep = _report("licensed-win-1", solvers=_solvers(orcaflex="unknown"))
+    bl = _solver_baseline(orcaflex="licensed")
+    assert bem.cold_verdict("solvers", rep, bl, TIER1) == "MISSING-EVIDENCE"
+
+
+def test_solvers_absent_baseline_unknown_is_missing_evidence():
+    # declared absent + detected unknown → MISSING-EVIDENCE (unknown is never evidence,
+    # for ANY baseline — a missing probe must not masquerade as CONFORMS). #2849 Codex r1 #1.
+    rep = _report("dev-primary", solvers=_solvers(orcaflex="unknown"))
+    assert bem.cold_verdict("solvers", rep, _solver_baseline(), TIER1) == "MISSING-EVIDENCE"
+
+
+def test_solvers_legacy_v2_absent_baseline_missing_evidence():
+    # a v2 report (no solvers block) against a dev absent-baseline → MISSING-EVIDENCE,
+    # NOT CONFORMS (the whole solvers cell is unknown). #2849 Codex r1 #1.
+    rep = _report("dev-primary")  # base fixture has no solvers key
+    assert bem.cold_verdict("solvers", rep, _solver_baseline(), TIER1) == "MISSING-EVIDENCE"
+
+
+def test_solvers_concrete_miss_dominates_unknown():
+    # one concrete BELOW miss + one unknown → BELOW-BASELINE wins (hard fail dominates)
+    rep = _report("licensed-win-1", solvers=_solvers(orcaflex="absent", orcawave="unknown"))
+    bl = _solver_baseline(orcaflex="licensed", orcawave="licensed")
+    assert bem.cold_verdict("solvers", rep, bl, TIER1) == "BELOW-BASELINE"
+
+
+def test_solvers_legacy_v2_report_missing_evidence():
+    # a v2 report (no solvers block) against a licensed baseline → MISSING-EVIDENCE, not a crash
+    rep = _report("licensed-win-1")  # base fixture has no solvers key
+    bl = _solver_baseline(orcaflex="licensed", orcawave="licensed", aqwa="licensed", ansys="licensed")
+    assert bem.cold_verdict("solvers", rep, bl, TIER1) == "MISSING-EVIDENCE"
+
+
+def test_solvers_in_display_dims_after_data_access():
+    assert "solvers" in bem.DISPLAY_DIMS
+    assert bem.DISPLAY_DIMS.index("solvers") == bem.DISPLAY_DIMS.index("data_access") + 1
+
+
+def test_solvers_renders_row_in_html(tmp_path, monkeypatch):
+    # End-to-end: matrix HTML includes a solvers row. Drive main() against a tmp state dir.
+    state = tmp_path / "state"
+    state.mkdir()
+    reports_dir = tmp_path / "reports"
+    cfg = tmp_path / "harness-config.yaml"
+    cfg.write_text(yaml.safe_dump({"workstations": {
+        "dev-primary": {"compute_floor": {"cores_min": 8}, "required_data_access": ["digitalmodel"],
+                        "solvers_baseline": {"orcaflex": "absent", "orcawave": "absent",
+                                             "aqwa": "absent", "ansys": "absent"}}},
+        "tier1_repos": TIER1}))
+    rep = _report("dev-primary", data_access=[{"repo": "digitalmodel", "mode": "sibling"}],
+                  solvers=_solvers())
+    (state / "equality-dev-primary.yaml").write_text(yaml.safe_dump(rep))
+    monkeypatch.setattr(bem, "STATE", state)
+    monkeypatch.setattr(bem, "REPORTS", reports_dir)
+    monkeypatch.setattr(bem, "CONFIG", cfg)
+    bem.main()
+    html = next(reports_dir.glob("*-machine-equality-matrix.html")).read_text()
+    assert "<th>solvers</th>" in html
+    assert "conforms" in html  # the dev-primary all-absent cell
+
+
 # ── uniform-dim equality + ties (C1) ────────────────────────────────────────
 def test_matrix_pending_under_two():
     assert bem.uniform_verdict("skills", ["407"]) == "PENDING"
@@ -205,6 +325,10 @@ def test_harness_config_real_roster_and_baselines():
         assert "compute_floor" in baselines[m] and "required_data_access" in baselines[m]
         # baseline must only name repos the collector actually probes (D2-1)
         assert set(baselines[m]["required_data_access"]) <= set(TIER1)
+        # #2849: every active machine declares a solvers baseline over the 4 named solvers
+        sb = baselines[m]["solvers_baseline"]
+        assert set(sb) == {"orcaflex", "orcawave", "aqwa", "ansys"}
+        assert all(v in ("licensed", "present", "absent") for v in sb.values())
 
 
 def test_wiring_single_source_schedule():
