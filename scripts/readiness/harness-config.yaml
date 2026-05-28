@@ -66,6 +66,9 @@ workstations:
     required_data_access: [digitalmodel, assetutilities]
     # #2849 solvers baseline (cold-dim, STRICT): licensed work routes here — only a `licensed`
     # signal satisfies this baseline. An install-only `present` grades BELOW-BASELINE.
+    # NOTE (PR #2850, 2026-05-28): `licensed` is the TARGET, but the probe currently emits at
+    # most `present` (install/import detection only — no real license probe). Until the
+    # Windows-side license probe follow-up lands, these cells grade BELOW-BASELINE by design.
     solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
   licensed-win-2:
     ws_hub_path: 'D:\workspace-hub'
@@ -79,6 +82,8 @@ workstations:
     compute_floor: {cores_min: 8}
     required_data_access: [digitalmodel, assetutilities]
     # #2849 solvers baseline (cold-dim, STRICT): licensed-solver workstation.
+    # NOTE (PR #2850, 2026-05-28): grades BELOW-BASELINE until the Windows license-probe
+    # follow-up emits a real `licensed` signal (probe only detects install/import → `present`).
     solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
   home-win:
     ws_hub_path: 'D:\workspace-hub'

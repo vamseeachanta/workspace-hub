@@ -7,13 +7,23 @@
 # (The standalone nightly R-ANSYS/R-ORCAFLEX checks were removed per #2849 decision 2:
 #  the equality matrix `solvers` cell is the single source of truth — no nightly duplication.)
 #
-# Detection semantics (closed enum on status):
-#   licensed = vendor binary/SDK present AND a licensing signal present
-#              (import-success for the OrcFxAPI SDK, which a real solve fails-closed without;
-#               or a license env var for ANSYS/AQWA).
-#   present  = install root / SDK found but no licensing evidence.
-#   absent   = neither found.
+# Detection semantics (closed enum on status), per #2849 / PR #2850 user decision 2026-05-28:
+#   licensed = a REAL license signal was detected — an actual solver/SDK license
+#              status or checkout probe succeeded. Install/import/env presence is NOT
+#              such a signal. No real license probe exists on Linux yet (and import does
+#              not check out a license), so `licensed` is NEVER emitted by these helpers
+#              today; it will be emitted by a Windows-side license probe (follow-up issue).
+#   present  = the solver is importable / installed (SDK import succeeds, an install
+#              root exists, or a configured env path resolves) but with NO real license
+#              signal. `import OrcFxAPI` success classifies as `present`, not `licensed`.
+#   absent   = no install / import / env evidence found.
 #   unknown  = the probe could not run (e.g. no python interpreter for an import probe).
+#
+# Why: import-success / install-root / a license env var prove the solver can be *found*,
+# not that this machine holds a usable license entitlement at solve time. Conflating the
+# two would let dispatch route licensed work to an install-only machine. Until the real
+# Windows license probe lands, install-presence stays `present` and a `licensed` baseline
+# grades BELOW-BASELINE (STRICT, build-equality-matrix.py SOLVER_OK).
 #
 # Output contract: each probe echoes ONE token on stdout from {licensed, present, absent, unknown}.
 # A separate evidence token (how it was detected) is echoed by *_evidence helpers from the
@@ -62,13 +72,14 @@ probe_orcaflex_root() {
 }
 
 # ── orcaflex solver status ──────────────────────────────────────────────────────
-# licensed = `import OrcFxAPI` succeeds (the SDK is the licensed runtime gate);
-# present  = install root found but no importable SDK;
+# present  = `import OrcFxAPI` succeeds (SDK importable) OR an install root is found;
 # absent   = neither.
+# `licensed` is NEVER emitted here — import-success proves SDK presence, not a license
+# entitlement. A real license signal will come from the Windows-side probe (follow-up).
 probe_orcaflex() {
   local py; py="$(_ps_python)"
   if [[ -n "$py" ]] && "$py" -c "import OrcFxAPI" >/dev/null 2>&1; then
-    echo "licensed"; return 0
+    echo "present"; return 0
   fi
   case "$(probe_orcaflex_root)" in
     present:*) echo "present";;
@@ -82,43 +93,35 @@ probe_orcaflex_evidence() {
 }
 
 # ── orcawave solver status ───────────────────────────────────────────────────────
-# OrcaWave shares the OrcFxAPI SDK gate. licensed = SDK import ok + ORCAWAVE_PATH set;
-# present  = ORCAWAVE_PATH set (dir exists) but no importable SDK, OR install root found;
-# absent   = none.
+# OrcaWave shares the OrcFxAPI SDK. present = SDK import ok, OR ORCAWAVE_PATH set
+# (dir exists), OR install root found; absent = none.
+# `licensed` is NEVER emitted here — none of import/env/root is a real license signal.
 probe_orcawave() {
   local py; py="$(_ps_python)"
-  local env_ok=0
-  [[ -n "${ORCAWAVE_PATH:-}" && -d "${ORCAWAVE_PATH:-/nonexistent}" ]] && env_ok=1
-  if [[ "$env_ok" == "1" ]] && [[ -n "$py" ]] && "$py" -c "import OrcFxAPI" >/dev/null 2>&1; then
-    echo "licensed"; return 0
-  fi
-  if [[ "$env_ok" == "1" ]]; then echo "present"; return 0; fi
+  if [[ -n "$py" ]] && "$py" -c "import OrcFxAPI" >/dev/null 2>&1; then echo "present"; return 0; fi
+  if [[ -n "${ORCAWAVE_PATH:-}" && -d "${ORCAWAVE_PATH:-/nonexistent}" ]]; then echo "present"; return 0; fi
   local root="/c/Program Files (x86)/Orcina/OrcaWave"
   [[ -d "$root" ]] && { echo "present"; return 0; }
   echo "absent"
 }
 probe_orcawave_evidence() {
   local py; py="$(_ps_python)"
-  if [[ -n "${ORCAWAVE_PATH:-}" && -d "${ORCAWAVE_PATH:-/nonexistent}" ]]; then
-    if [[ -n "$py" ]] && "$py" -c "import OrcFxAPI" >/dev/null 2>&1; then echo "import"; else echo "env"; fi
-    return 0
-  fi
+  if [[ -n "$py" ]] && "$py" -c "import OrcFxAPI" >/dev/null 2>&1; then echo "import"; return 0; fi
+  if [[ -n "${ORCAWAVE_PATH:-}" && -d "${ORCAWAVE_PATH:-/nonexistent}" ]]; then echo "env"; return 0; fi
   [[ -d "/c/Program Files (x86)/Orcina/OrcaWave" ]] && { echo "root"; return 0; }
   echo "absent"
 }
 
 # ── ansys solver status ──────────────────────────────────────────────────────────
-# licensed = install root present AND a license env var set (ANSYSLI_SERVERS or
-#            ANSYSLMD_LICENSE_FILE); present = root only; absent = no root.
+# present = install root found (with or without a license env var set); absent = no root.
+# `licensed` is NEVER emitted here. A license env var (ANSYSLI_SERVERS / ANSYSLMD_LICENSE_FILE)
+# only points at a license *server* — it is not proof of a usable checkout, so it is recorded
+# as evidence (`env`) but does not upgrade the status. A real `licensed` signal requires an
+# actual license-status/checkout probe (Windows-side follow-up).
 probe_ansys() {
   case "$(probe_ansys_root)" in
-    present:*)
-      if [[ -n "${ANSYSLI_SERVERS:-}" || -n "${ANSYSLMD_LICENSE_FILE:-}" ]]; then
-        echo "licensed"
-      else
-        echo "present"
-      fi;;
-    *) echo "absent";;
+    present:*) echo "present";;
+    *)         echo "absent";;
   esac
 }
 probe_ansys_evidence() {

@@ -189,6 +189,67 @@ def test_collect_solvers_present_via_env_before_sandbox(tmp_path):
     assert str(owp) not in res.stdout.split("solvers:")[1].split("harness:")[0]
 
 
+# ── probe-solvers.sh unit semantics (#2849 / PR #2850 decision 2026-05-28) ──────
+# present ≠ licensed: install/import/env presence classifies as `present`; `licensed`
+# requires a real license signal (none available locally → never emitted here).
+PROBE_LIB = REPO_ROOT / "scripts" / "readiness" / "lib" / "probe-solvers.sh"
+
+
+def _probe(fn: str, env_extra: dict | None = None, fake_import_ok: bool = False,
+           tmp_path: Path | None = None) -> str:
+    """Source probe-solvers.sh and echo the result of one probe function.
+
+    fake_import_ok=True shims a `python` on PATH whose `import OrcFxAPI` succeeds,
+    so the OrcFxAPI SDK-present path is exercised without the real SDK installed.
+    """
+    env = {"PATH": "/usr/bin:/bin:/usr/local/bin"}
+    path_prefix = ""
+    if fake_import_ok:
+        assert tmp_path is not None
+        binp = tmp_path / "bin"
+        binp.mkdir(exist_ok=True)
+        py = binp / "python"
+        py.write_text("#!/usr/bin/env bash\nexit 0\n")  # any args → success (import ok)
+        py.chmod(0o755)
+        path_prefix = f"{binp}:"
+    env["PATH"] = path_prefix + env["PATH"]
+    if env_extra:
+        env.update(env_extra)
+    res = subprocess.run(
+        ["bash", "-c", f'source "{PROBE_LIB}"; {fn}'],
+        env=env, capture_output=True, text=True, timeout=30)
+    assert res.returncode == 0, res.stderr
+    return res.stdout.strip()
+
+
+def test_probe_orcaflex_import_ok_is_present_not_licensed(tmp_path):
+    # `import OrcFxAPI` success → present (NOT licensed). Load-bearing decision.
+    assert _probe("probe_orcaflex", fake_import_ok=True, tmp_path=tmp_path) == "present"
+    assert _probe("probe_orcaflex_evidence", fake_import_ok=True, tmp_path=tmp_path) == "import"
+
+
+def test_probe_orcawave_import_ok_is_present_not_licensed(tmp_path):
+    assert _probe("probe_orcawave", fake_import_ok=True, tmp_path=tmp_path) == "present"
+
+
+def test_probe_orcawave_env_only_is_present(tmp_path):
+    owp = tmp_path / "ow"; owp.mkdir()
+    assert _probe("probe_orcawave", env_extra={"ORCAWAVE_PATH": str(owp)}) == "present"
+
+
+def test_probe_ansys_license_env_does_not_upgrade_to_licensed(tmp_path):
+    # A license-server env var is recorded as evidence but never upgrades status to licensed.
+    # No ANSYS root on the test host → absent regardless of env (real signal still needed).
+    assert _probe("probe_ansys",
+                  env_extra={"ANSYSLI_SERVERS": "1055@licsrv"}) == "absent"
+
+
+def test_probe_never_emits_licensed_locally(tmp_path):
+    # No real license probe exists locally → no probe emits `licensed` on this host.
+    for fn in ("probe_orcaflex", "probe_orcawave", "probe_aqwa", "probe_ansys"):
+        assert _probe(fn, fake_import_ok=True, tmp_path=tmp_path) != "licensed"
+
+
 def test_collect_solvers_canonical_hash_includes_block(tmp_path):
     # Toggling a solver status in the committed file is a MEANINGFUL change → rewrite.
     ws = _fixture(tmp_path)
