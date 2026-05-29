@@ -43,6 +43,7 @@ cards:
       - type:poc
       - status:ready-for-scope
       - security-review
+      - status:artifact-ready
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -56,6 +57,7 @@ cards:
       - area:teams-bot
       - type:poc
       - status:ready-for-scope
+      - status:artifact-ready
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -110,6 +112,56 @@ cards:
       - area:teams-bot
       - type:poc
       - status:ready-for-scope
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#9
+    title: 'private(cfd): maintain ballast-tank sloshing client geometry and study artifacts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/9
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#10
+    title: 'B1546 Noble Drilling: maintain project wiki intake and analysis readiness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/10
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#11
+    title: 'B1546: complete source extraction and OCR for client inputs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/11
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#12
+    title: 'B1546: formalize coupled roll and sloshing methodology gate'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/12
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#13
+    title: 'All ACMA projects: design 6-hour llm-wiki refresh job'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/13
+    gh_state: open
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []

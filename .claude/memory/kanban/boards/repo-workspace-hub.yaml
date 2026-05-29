@@ -43157,7 +43157,6 @@ cards:
       - cat:harness
       - domain:skills
       - domain:memory
-      - status:plan-review
       - status:plan-approved
       - gate:completeness
     initial_status: triage
