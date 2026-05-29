@@ -398,7 +398,7 @@ tasks:
 
   - id: consistency-weekly-check
     label: Weekly orchestrator-consistency matrix + rolling drift issue
-    schedule: "0 6 * * 0"
+    schedule: "15 6 * * 0"   # 06:15 Sun — offset from the daily 06:00 jobs (load contention)
     machines: [dev-primary]
     requires: [bash, git, gh]
     prefer: dev-primary

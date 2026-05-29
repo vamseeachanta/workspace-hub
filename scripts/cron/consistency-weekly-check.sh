@@ -16,7 +16,7 @@ DRIFT_LABEL="consistency-drift"
 DATE="$(date -u +%Y-%m-%d)"
 OUT_DIR="${REPO_ROOT}/docs/orchestrator-consistency"      # git-tracked (NOT reports/ — gitignored)
 MATRIX="${OUT_DIR}/${DATE}-matrix.md"
-DEADLETTER="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub/memory/.provider-bridge-deadletter.jsonl"
+DEADLETTER="${HOME:-/nonexistent}/.claude/projects/-mnt-local-analysis-workspace-hub/memory/.provider-bridge-deadletter.jsonl"
 BRIDGE_LOG_DIR="${REPO_ROOT}/logs/orchestrator/memory-bridge"
 SCHED="${REPO_ROOT}/config/scheduled-tasks/schedule-tasks.yaml"
 
@@ -63,8 +63,10 @@ run_checks() {
     fi
 }
 
-# Test seam: bypass real checks with a forced fail count.
-if [[ -n "${CONSISTENCY_SELFTEST_FAILS:-}" ]]; then
+# Test seam: bypass real checks with a forced fail count. GATED on an explicit
+# CONSISTENCY_SELFTEST=1 marker (F7) so a leaked/inherited CONSISTENCY_SELFTEST_FAILS
+# can NEVER silently neuter a real run into a falsely-clean matrix.
+if [[ "${CONSISTENCY_SELFTEST:-}" == "1" && -n "${CONSISTENCY_SELFTEST_FAILS:-}" ]]; then
     fails="${CONSISTENCY_SELFTEST_FAILS}"
     if [[ "${fails}" -gt 0 ]]; then row "selftest" FAIL "forced ${fails}"; else row "selftest" PASS "forced clean"; fi
 else

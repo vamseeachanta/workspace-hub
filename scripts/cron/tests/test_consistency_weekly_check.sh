@@ -23,7 +23,7 @@ cat > "${WORK}/gh" <<'MOCK'
 #!/usr/bin/env bash
 echo "$*" >> "${MOCK_LOG}"
 case "$1 $2" in
-  "label list") echo "" ;;
+  "label list") echo "${MOCK_LABELS:-}" ;;
   "label create") : ;;
   "issue list") cat "${MOCK_EXISTING:-/dev/null}" 2>/dev/null ;;
   "issue create") echo "https://github.test/issues/999" ;;
@@ -34,6 +34,7 @@ exit 0
 MOCK
 chmod +x "${WORK}/gh"
 export MOCK_LOG
+export CONSISTENCY_SELFTEST=1   # required marker so the forced-fails seam activates (F7)
 run() { GH_CMD="${WORK}/gh" PATH="${WORK}:${PATH}" "$@"; }
 
 # 1) clean run → matrix written, NO issue created, exit 0
@@ -57,6 +58,18 @@ echo "4242" > "${WORK}/existing.txt"; export MOCK_EXISTING="${WORK}/existing.txt
 run env CONSISTENCY_SELFTEST_FAILS=1 bash "${CHECK}" >/dev/null 2>&1
 chk "existing-issue drift updates (edit)"     "grep -q 'issue edit 4242' '${MOCK_LOG}'"
 chk "existing-issue drift does NOT duplicate" "! grep -q 'issue create' '${MOCK_LOG}'"
+
+# 4) label already exists → no `label create` attempt (F8)
+: > "${MOCK_LOG}"; export MOCK_EXISTING=/dev/null MOCK_LABELS="consistency-drift"
+run env CONSISTENCY_SELFTEST_FAILS=1 bash "${CHECK}" >/dev/null 2>&1
+chk "existing label → no label create (F8)"   "! grep -q 'label create' '${MOCK_LOG}'"
+unset MOCK_LABELS
+
+# 5) seam is INERT without the CONSISTENCY_SELFTEST=1 marker (F7) — real checks run
+: > "${MOCK_LOG}"
+( unset CONSISTENCY_SELFTEST; GH_CMD="${WORK}/gh" PATH="${WORK}:${PATH}" \
+    env CONSISTENCY_SELFTEST_FAILS=0 bash "${CHECK}" >/dev/null 2>&1 )
+chk "seam inert without marker (real run F7)"  "grep -qE 'Hermes probe|SOUL runtime' '${REPO_ROOT}'/docs/orchestrator-consistency/*-matrix.md"
 
 echo "---"
 if [ "${fail}" -gt 0 ]; then echo "FAILED: ${fail}"; exit 1; fi
