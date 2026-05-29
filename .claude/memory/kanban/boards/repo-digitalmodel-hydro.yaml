@@ -841,3 +841,101 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#637
+    title: 'feature(cfd): ballast-tank sloshing CFD study work package'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/637
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:high
+      - domain:hydro
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#638
+    title: 'feat(cfd): assess ballast-tank sloshing methodology and compute path'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/638
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:high
+      - domain:hydro
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#639
+    title: 'feat(openfoam): create 2D ballast-tank sloshing starter case'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/639
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:high
+      - domain:hydro
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#640
+    title: 'feat(openfoam): build 3D L-shaped ballast-tank geometry and mesh pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/640
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - domain:hydro
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#641
+    title: 'feat(openfoam): add ballast-tank fill-level and roll-frequency sweep runner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/641
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - domain:hydro
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#642
+    title: 'feat(cfd-post): extract sloshing frequencies, pressure loads, and response metrics'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/642
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - domain:hydro
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#643
+    title: 'feat(hydro): couple CFD-derived sloshing response into roll time-domain analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/643
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - domain:hydro
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

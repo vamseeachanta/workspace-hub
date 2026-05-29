@@ -731,7 +731,7 @@ cards:
     title: 'Diffraction (c): auto-wire OutputValidator into every run'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/625
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - machine:dev-primary

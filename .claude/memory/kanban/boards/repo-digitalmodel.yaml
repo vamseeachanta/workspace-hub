@@ -4059,7 +4059,7 @@ cards:
     title: 'OrcaWave: define result export and postprocess contract for diffraction runs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/611
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - machine:dev-primary

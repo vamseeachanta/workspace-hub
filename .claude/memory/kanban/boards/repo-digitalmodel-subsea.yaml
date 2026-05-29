@@ -2670,3 +2670,68 @@ cards:
       **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
 
       **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** licensed-win-1'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#632
+    title: 'feat(gtm/parametric): demo_01 DNV-RP-F105 free-span VIV parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/632
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#633
+    title: 'feat(gtm/parametric): demo_02 multi-code wall thickness parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/633
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#634
+    title: 'feat(gtm/parametric): demo_03 deepwater mudmat installation parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/634
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#635
+    title: 'feat(gtm/parametric): demo_04 shallow-water pipelay parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/635
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#636
+    title: 'feat(gtm/parametric): demo_05 deepwater rigid jumper installation parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/636
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

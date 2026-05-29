@@ -26,7 +26,90 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/2
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-review
+      - status:poc-scoped
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#3
+    title: 'Subissue of #2: Verify Teams tenant/app permissions and local Teams POC path'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/3
+    gh_state: open
+    gh_labels:
+      - area:teams-bot
+      - type:poc
+      - status:ready-for-scope
+      - security-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#4
+    title: 'Subissue of #2: Build approved repo knowledge pack for Oil & Gas Q&A POC'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/4
+    gh_state: open
+    gh_labels:
+      - area:teams-bot
+      - type:poc
+      - status:ready-for-scope
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#5
+    title: 'Subissue of #2: Implement minimal Hermes-backed Q&A service over repo knowledge pack'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/5
+    gh_state: open
+    gh_labels:
+      - area:teams-bot
+      - type:poc
+      - status:ready-for-scope
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#6
+    title: 'Subissue of #2: Connect Q&A POC to fastest allowed Teams surface'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/6
+    gh_state: open
+    gh_labels:
+      - area:teams-bot
+      - type:poc
+      - status:ready-for-scope
+      - security-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#7
+    title: 'Subissue of #2: Define security, identity, logging, and credential gates for Teams bot POC'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/7
+    gh_state: open
+    gh_labels:
+      - area:teams-bot
+      - type:poc
+      - status:ready-for-scope
+      - security-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#8
+    title: 'Subissue of #2: Produce HTML POC demo report and acceptance matrix'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/8
+    gh_state: open
+    gh_labels:
+      - area:teams-bot
+      - type:poc
+      - status:ready-for-scope
     initial_status: triage
     priority: 0
     gh_assignees: []
