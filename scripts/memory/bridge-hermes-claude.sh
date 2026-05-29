@@ -263,22 +263,28 @@ if [[ -f "${CURATE}" ]]; then
     else
         RBPY=(python3)
     fi
+    # F1: write to a temp file and mv ONLY on success — a failed emit must never
+    # clobber the existing slice to 0 bytes (`> file` truncates before python runs).
     # Hermes local sink (every machine; not committed)
     if [[ -d "${HOME}/.hermes/memories" ]]; then
-        if "${RBPY[@]}" "${CURATE}" --target hermes --source-dir "${REPO_ROOT}/.claude/memory" \
-                > "${HOME}/.hermes/memories/cross-provider.md" 2>/dev/null; then
+        _tmp_h=$(mktemp)
+        if "${RBPY[@]}" "${CURATE}" --target hermes --source-dir "${REPO_ROOT}/.claude/memory" > "${_tmp_h}"; then
+            mv "${_tmp_h}" "${HOME}/.hermes/memories/cross-provider.md"
             echo "  ✅ ~/.hermes/memories/cross-provider.md (Hermes read-back slice)"
         else
-            echo "  ⚠️  WARN: Hermes read-back slice emit failed"
+            rm -f "${_tmp_h}"
+            echo "  ⚠️  WARN: Hermes read-back slice emit failed — previous kept"
         fi
     fi
     # Codex slice (repo-tracked) — single designated machine only (F1)
     if [[ "${SLICE_OWNER}" == true ]]; then
-        if "${RBPY[@]}" "${CURATE}" --target codex --source-dir "${REPO_ROOT}/.claude/memory" \
-                > "${REPO_ROOT}/config/agents/codex/MEMORY.runtime.md" 2>/dev/null; then
+        _tmp_c=$(mktemp)
+        if "${RBPY[@]}" "${CURATE}" --target codex --source-dir "${REPO_ROOT}/.claude/memory" > "${_tmp_c}"; then
+            mv "${_tmp_c}" "${REPO_ROOT}/config/agents/codex/MEMORY.runtime.md"
             echo "  ✅ config/agents/codex/MEMORY.runtime.md (Codex read-back slice)"
         else
-            echo "  ⚠️  WARN: Codex read-back slice emit failed"
+            rm -f "${_tmp_c}"
+            echo "  ⚠️  WARN: Codex read-back slice emit failed — previous kept (not clobbered)"
         fi
     fi
 fi
@@ -306,7 +312,9 @@ if [[ "${COMMIT_MODE}" == "--commit" ]]; then
         HAS_STASH=true
     fi
 
-    git commit -m "chore(memory): auto-refresh memory bridge (${TIMESTAMP})"
+    # Pathspec-scoped commit (repo multi-agent-commit-serialization rule) — never sweep
+    # unrelated staged changes from a parallel session.
+    git commit -m "chore(memory): auto-refresh memory bridge (${TIMESTAMP})" -- .claude/memory/ config/agents/codex/MEMORY.runtime.md
     echo "[bridge] Committed. Pulling with rebase before push..."
 
     # Pull with rebase — abort if conflicts

@@ -58,7 +58,7 @@ def _collect_entries(source_dir: Path) -> list[str]:
     # 1) auto-memory index lines: "- [Title](slug.md) — desc" (titles + descriptions, NOT bodies)
     auto = source_dir / "claude-auto-memory.md"
     if auto.exists():
-        for line in auto.read_text(errors="replace").splitlines():
+        for line in auto.read_text(encoding="utf-8", errors="replace").splitlines():
             m = _INDEX_RE.match(line.strip())
             if not m:
                 continue
@@ -69,7 +69,7 @@ def _collect_entries(source_dir: Path) -> list[str]:
     # 2) KNOWLEDGE.md bullets (institutional, shared); skip quote/`>`/header lines
     know = source_dir / "KNOWLEDGE.md"
     if know.exists():
-        for line in know.read_text(errors="replace").splitlines():
+        for line in know.read_text(encoding="utf-8", errors="replace").splitlines():
             s = line.strip()
             if s.startswith("- "):
                 entries.append(s)
@@ -98,7 +98,9 @@ def curate(source_dir, target: str, cap: int) -> str:
     body = _HEADER + "".join(out)
     if omitted:
         body += f"_[{omitted} entr{'y' if omitted == 1 else 'ies'} omitted: oversize/over-cap]_\n"
-    return body
+    # F3: hard cap guarantee — for a degenerate tiny cap (< header+reserve) the fixed
+    # overhead alone can exceed cap; clamp so len(body) <= cap always holds.
+    return body if len(body) <= cap else body[:cap]
 
 
 def main() -> int:

@@ -114,3 +114,32 @@ def test_curate_no_timestamps_in_body(memdir):
 def test_curate_managed_header(memdir):
     out = mod.curate(memdir, target="codex", cap=7000)
     assert "MANAGED" in out and "do not hand-edit" in out.lower()
+
+
+def test_curate_regex_handles_markdown_links_in_desc(tmp_path):
+    """F6: a desc containing a markdown link `[#NNNN](https://...)` must parse correctly
+    (slug anchors on the FIRST `.md)`), and the entry is kept."""
+    d = tmp_path / "memory"; d.mkdir()
+    (d / "claude-auto-memory.md").write_text(
+        "## Feedback\n"
+        "- [Cleanup gate](feedback_pre_completion_cleanup_audit_gate.md) — run audit; tracked at "
+        "[#2750](https://github.com/vamseeachanta/workspace-hub/issues/2750) before done\n"
+    )
+    out = mod.curate(d, target="codex", cap=7000)
+    assert "Cleanup gate" in out
+    assert "#2750" in out                     # the markdown link in desc survives
+    assert "feedback_pre_completion_cleanup_audit_gate" not in out.split("]")[0]  # slug parsed, not leaked as claude-only
+
+
+def test_curate_empty_source(tmp_path):
+    """Missing/empty source dir → header-only, no crash."""
+    d = tmp_path / "memory"; d.mkdir()
+    out = mod.curate(d, target="codex", cap=7000)
+    assert "MANAGED" in out
+    assert out.count("\n- ") == 0             # no entries
+
+
+def test_curate_tiny_cap_clamped(memdir):
+    """F3: a degenerate cap below fixed overhead still yields len(out) <= cap."""
+    for cap in (50, 100, 169):
+        assert len(mod.curate(memdir, target="hermes", cap=cap)) <= cap
