@@ -43,6 +43,11 @@ SOLVER_OK = {
 # Uniform dims whose cross-machine difference is OS-driven, not a defect:
 EXPECTED_DIFF_DIMS = {"python_cmd"}
 
+# #2851 freshness guard: a report whose origin/main ref hasn't been refreshed within this
+# many hours can't be trusted to have a meaningful behind_main, so we fail closed. repo-sync
+# pulls ~every 4h, so 12h is a generous trust window.
+ORIGIN_REF_MAX_H = 12
+
 _MIB = {"ki": 1 / 1024, "mi": 1, "gi": 1024, "ti": 1024 * 1024,
         "k": 1 / 1024, "m": 1, "g": 1024, "t": 1024 * 1024}  # treat bare-unit as binary
 
@@ -131,6 +136,26 @@ def cold_verdict(dim: str, report: dict, baseline: dict | None, probed_repos: li
     raise ValueError(f"not a cold dimension: {dim}")
 
 
+# ── checkout-freshness guard (#2851) ─────────────────────────────────────────
+def is_stale(report: dict) -> bool:
+    """A report is STALE-CHECKOUT when its tree was dirty, behind main, or generated from
+    an unverifiable origin ref. Fail-closed: any field we can't trust ⇒ stale. A report with
+    no provenance block at all (legacy / pre-#2851) cannot prove freshness ⇒ stale."""
+    p = report.get("provenance")
+    if not isinstance(p, dict):
+        return True
+    if p.get("dirty") is True:                       # uncommitted measured-path changes
+        return True
+    if p.get("behind_main") not in (0, "0"):         # behind OR "unknown"/absent ⇒ stale (BC2)
+        return True
+    age = p.get("origin_ref_age_h")
+    if age in (None, "unknown"):                     # can't prove the local origin ref is fresh
+        return True
+    if isinstance(age, bool) or not isinstance(age, (int, float)):
+        return True                                  # non-numeric age is not trustworthy evidence
+    return age > ORIGIN_REF_MAX_H                    # stale fetch ⇒ behind_main is unreliable (BC2)
+
+
 # ── uniform-dim equality + ties (C1) ─────────────────────────────────────────
 def uniform_verdict(dim: str, values: list) -> str:
     real = [v for v in values if v not in (None, "unknown", "n/a")]
@@ -173,17 +198,28 @@ def extract_value(dim: str, report: dict):
 def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
                 roster: dict, probed_repos: list[str]) -> str:
     status = roster.get(machine, {}).get("status", "active")
+    # BC3: a status:unreachable roster entry DOMINATES any present report (a stale/old report
+    # on an unreachable machine must never grade as STALE-CHECKOUT or get graded on its merits).
+    if status == "unreachable":
+        return "UNREACHABLE"
     rep = reports.get(machine)
     # CC4: a malformed report (parse error / non-dict / missing dimensions) is NOT evidence.
     valid = isinstance(rep, dict) and "_error" not in rep and isinstance(rep.get("dimensions"), dict)
     if not valid:
-        return "UNREACHABLE" if (status == "unreachable" and machine not in reports) else "MISSING-EVIDENCE"
+        return "MISSING-EVIDENCE"
+    # #2851: a contaminated checkout grades STALE-CHECKOUT for EVERY dim of that machine — below
+    # unreachable/missing-evidence, above the cold/uniform split.
+    if is_stale(rep):
+        return "STALE-CHECKOUT"
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
+    # Stale peers are EXCLUDED from the uniform value list so a stale report can never
+    # manufacture a false EQUAL/DIVERGES/NO-MAJORITY for the fresh machines (A2/BC4).
     values = [extract_value(dim, reports[m]) for m in roster
               if roster[m].get("status") == "active"
               and isinstance(reports.get(m), dict) and "_error" not in reports[m]
-              and isinstance(reports[m].get("dimensions"), dict)]
+              and isinstance(reports[m].get("dimensions"), dict)
+              and not is_stale(reports[m])]
     return uniform_verdict(dim, values)
 
 
@@ -227,7 +263,8 @@ def main() -> None:
 th,td{{border:1px solid #ddd;padding:.4rem .6rem;font-size:.8rem}}thead th{{background:#2d3748;color:#fff}}
 tbody th{{background:#edf2f7}}.conforms,.equal{{background:#c6f6d5}}.below-baseline,.diverges{{background:#fed7d7}}
 .no-majority,.missing-baseline{{background:#feebc8}}.expected-diff{{background:#e9d8fd}}
-.pending,.missing-evidence{{background:#fffaf0}}.unreachable{{background:#f7fafc;color:#a0aec0}}</style></head>
+.pending,.missing-evidence{{background:#fffaf0}}.unreachable{{background:#f7fafc;color:#a0aec0}}
+.stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}</style></head>
 <body><h1>Machine-Equality Matrix</h1>
 <p>#2801 · {date.today().isoformat()} · reporting {reporting}/{active} active machines</p>
 <table><thead><tr><th>Dimension</th>{cols}</tr></thead><tbody>{''.join(rows)}</tbody></table></body></html>"""

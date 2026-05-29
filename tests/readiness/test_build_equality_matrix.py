@@ -27,16 +27,22 @@ spec.loader.exec_module(bem)
 # ── fixtures ────────────────────────────────────────────────────────────────
 TIER1 = ["assetutilities", "digitalmodel", "worldenergydata", "assethold"]
 
+# A "fresh" provenance block (#2851): clean tree, current with main, recent origin ref.
+# is_stale() is fail-closed, so the default fixture MUST be fresh — otherwise every
+# verdict_for() test would short-circuit to STALE-CHECKOUT. Staleness is opt-in per test.
+FRESH_PROV = {"checkout_sha": "abc1234", "dirty": False, "behind_main": 0, "origin_ref_age_h": 1}
+
 
 def _config(machines: dict) -> dict:
     return {"workstations": machines}
 
 
-def _report(machine: str, **dims) -> dict:
+def _report(machine: str, provenance: dict | None = None, **dims) -> dict:
     base = {
         "machine": machine,
         "os": "linux",
         "status": "active",
+        "provenance": dict(FRESH_PROV) if provenance is None else provenance,
         "dimensions": {
             "compute": {"static": {"cores": 32, "ram_total_mib": 31744, "gpu_model": "GTX 750 Ti"},
                         "headroom": {"ram_avail_mib": 23000, "disk_avail_gb": 881}},
@@ -349,3 +355,139 @@ def test_verdict_behavior_is_uniform_not_expected_diff():
     roster = {"dev-primary": {"status": "active"}, "dev-secondary": {"status": "active"}}
     reports = {"dev-primary": _report("dev-primary"), "dev-secondary": _report("dev-secondary")}
     assert bem.verdict_for("behavior", "dev-primary", reports, {}, roster, TIER1) == "EQUAL"
+
+
+# ── #2851 freshness guard: STALE-CHECKOUT verdict + peer exclusion ───────────
+def _prov(**over) -> dict:
+    p = dict(FRESH_PROV)
+    p.update(over)
+    return p
+
+
+def test_is_stale_fresh_is_not_stale():
+    assert bem.is_stale(_report("dev-primary")) is False
+
+
+def test_is_stale_dirty_true():
+    assert bem.is_stale(_report("dev-primary", provenance=_prov(dirty=True))) is True
+
+
+def test_is_stale_behind_main_positive():
+    assert bem.is_stale(_report("dev-primary", provenance=_prov(behind_main=85))) is True
+
+
+def test_is_stale_behind_main_zero_string_ok():
+    # YAML may surface 0 as int or str; both mean "current" → not stale on that axis
+    assert bem.is_stale(_report("dev-primary", provenance=_prov(behind_main="0"))) is False
+
+
+def test_is_stale_absent_provenance_failclosed():
+    # A legacy report with NO provenance block cannot prove freshness → STALE (BC2 fail-closed)
+    rep = _report("dev-primary")
+    del rep["provenance"]
+    assert bem.is_stale(rep) is True
+
+
+def test_matrix_stale_checkout_verdict_dirty():
+    # dirty tree → STALE-CHECKOUT for that machine (any dim)
+    roster = {"dev-primary": {"status": "active"}}
+    reports = {"dev-primary": _report("dev-primary", provenance=_prov(dirty=True))}
+    assert bem.verdict_for("skills", "dev-primary", reports, {}, roster, TIER1) == "STALE-CHECKOUT"
+    # cold dims are stale too — the whole machine column is contaminated
+    assert bem.verdict_for("compute", "dev-primary", reports, {}, roster, TIER1) == "STALE-CHECKOUT"
+
+
+def test_matrix_stale_checkout_verdict_behind():
+    roster = {"dev-primary": {"status": "active"}}
+    reports = {"dev-primary": _report("dev-primary", provenance=_prov(behind_main=85))}
+    assert bem.verdict_for("skills", "dev-primary", reports, {}, roster, TIER1) == "STALE-CHECKOUT"
+
+
+def test_matrix_stale_origin_ref_failclosed():
+    # behind_main "unknown" OR origin_ref_age_h unknown/>12 → STALE (BC2 fail-closed)
+    roster = {"dev-primary": {"status": "active"}}
+    for bad in (_prov(behind_main="unknown"), _prov(origin_ref_age_h="unknown"),
+                _prov(origin_ref_age_h=None), _prov(origin_ref_age_h=13)):
+        reports = {"dev-primary": _report("dev-primary", provenance=bad)}
+        assert bem.verdict_for("skills", "dev-primary", reports, {}, roster, TIER1) == "STALE-CHECKOUT", bad
+
+
+def test_matrix_origin_ref_at_boundary_is_fresh():
+    # age exactly at the 12h trust window is still fresh (boundary inclusive)
+    roster = {"dev-primary": {"status": "active"}, "dev-secondary": {"status": "active"}}
+    reports = {"dev-primary": _report("dev-primary", provenance=_prov(origin_ref_age_h=12)),
+               "dev-secondary": _report("dev-secondary")}
+    assert bem.verdict_for("skills", "dev-primary", reports, {}, roster, TIER1) == "EQUAL"
+
+
+def test_matrix_unreachable_dominates_present_report():
+    # BC3: a status:unreachable roster entry stays UNREACHABLE even WITH a present (stale or fresh) report
+    roster = {"home-win": {"status": "unreachable"}}
+    reports = {"home-win": _report("home-win")}                      # fresh report, but unreachable wins
+    assert bem.verdict_for("skills", "home-win", reports, {}, roster, TIER1) == "UNREACHABLE"
+    reports_stale = {"home-win": _report("home-win", provenance=_prov(dirty=True))}
+    assert bem.verdict_for("compute", "home-win", reports_stale, {}, roster, TIER1) == "UNREACHABLE"
+
+
+def test_matrix_stale_excluded_one_fresh_pending():
+    # 1 fresh + 1 stale → the stale peer is EXCLUDED from the uniform value list, leaving ONE
+    # real reporter → PENDING (A2/BC4 — NOT EQUAL).
+    roster = {"dev-primary": {"status": "active"}, "dev-secondary": {"status": "active"}}
+    reports = {"dev-primary": _report("dev-primary"),
+               "dev-secondary": _report("dev-secondary", provenance=_prov(dirty=True))}
+    assert bem.verdict_for("skills", "dev-primary", reports, {}, roster, TIER1) == "PENDING"
+    assert bem.verdict_for("skills", "dev-secondary", reports, {}, roster, TIER1) == "STALE-CHECKOUT"
+
+
+def test_matrix_stale_excluded_two_fresh_equal():
+    # 2 fresh equal + 1 stale divergent → fresh dims EQUAL (stale value never enters the tally);
+    # the stale machine itself reads STALE-CHECKOUT (BC4).
+    roster = {"dev-primary": {"status": "active"}, "dev-secondary": {"status": "active"},
+              "licensed-win-1": {"status": "active"}}
+    reports = {"dev-primary": _report("dev-primary", skills={"repo_skill_count": 407}),
+               "dev-secondary": _report("dev-secondary", skills={"repo_skill_count": 407}),
+               "licensed-win-1": _report("licensed-win-1", provenance=_prov(behind_main=85),
+                                         skills={"repo_skill_count": 999})}
+    assert bem.verdict_for("skills", "dev-primary", reports, {}, roster, TIER1) == "EQUAL"
+    assert bem.verdict_for("skills", "licensed-win-1", reports, {}, roster, TIER1) == "STALE-CHECKOUT"
+
+
+def test_matrix_stale_not_in_majority():
+    # 2 fresh disagree + 1 stale matching one side → NO-MAJORITY (the stale report must NOT
+    # break the tie by lending its vote to one side) (BC4).
+    roster = {"dev-primary": {"status": "active"}, "dev-secondary": {"status": "active"},
+              "licensed-win-1": {"status": "active"}}
+    reports = {"dev-primary": _report("dev-primary", skills={"repo_skill_count": 407}),
+               "dev-secondary": _report("dev-secondary", skills={"repo_skill_count": 401}),
+               "licensed-win-1": _report("licensed-win-1", provenance=_prov(dirty=True),
+                                         skills={"repo_skill_count": 407})}
+    assert bem.verdict_for("skills", "dev-primary", reports, {}, roster, TIER1) == "NO-MAJORITY"
+
+
+def test_matrix_fresh_unaffected():
+    # Two clean reports grade normally — the guard is invisible when nothing is stale.
+    roster = {"dev-primary": {"status": "active"}, "dev-secondary": {"status": "active"}}
+    reports = {"dev-primary": _report("dev-primary"), "dev-secondary": _report("dev-secondary")}
+    assert bem.verdict_for("skills", "dev-primary", reports, {}, roster, TIER1) == "EQUAL"
+
+
+def test_matrix_stale_renders_in_html(tmp_path, monkeypatch):
+    # End-to-end: a dirty machine's report renders STALE-CHECKOUT cells in the matrix HTML.
+    state = tmp_path / "state"; state.mkdir()
+    reports_dir = tmp_path / "reports"
+    cfg = tmp_path / "harness-config.yaml"
+    cfg.write_text(yaml.safe_dump({"workstations": {
+        "dev-primary": {"compute_floor": {"cores_min": 8}, "required_data_access": ["digitalmodel"],
+                        "solvers_baseline": {"orcaflex": "absent", "orcawave": "absent",
+                                             "aqwa": "absent", "ansys": "absent"}}},
+        "tier1_repos": TIER1}))
+    rep = _report("dev-primary", provenance=_prov(dirty=True),
+                  data_access=[{"repo": "digitalmodel", "mode": "sibling"}])
+    (state / "equality-dev-primary.yaml").write_text(yaml.safe_dump(rep))
+    monkeypatch.setattr(bem, "STATE", state)
+    monkeypatch.setattr(bem, "REPORTS", reports_dir)
+    monkeypatch.setattr(bem, "CONFIG", cfg)
+    bem.main()
+    html = next(reports_dir.glob("*-machine-equality-matrix.html")).read_text()
+    assert "stale-checkout" in html               # CSS class present (lowercased verdict)
+    assert "STALE-CHECKOUT" in html               # visible cell text

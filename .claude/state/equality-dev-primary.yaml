@@ -1,13 +1,18 @@
-generated_at: "2026-05-26T09:51:54"
+generated_at: "2026-05-28T22:37:33"
 schema_version: 3
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
+provenance:
+  checkout_sha: "21bd177b2"
+  dirty: false
+  behind_main: 0
+  origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 23949, disk_avail_gb: 881}
+    headroom: {ram_avail_mib: 22521, disk_avail_gb: 878}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -23,14 +28,14 @@ dimensions:
     gh_auth: ok
     python_cmd: uv-run
     readiness_ref: harness-readiness-ace-linux-1.yaml
-    readiness_overall: fail
-  skills: {repo_skill_count: 407}
+    readiness_overall: missing
+  skills: {repo_skill_count: 396}
   kanban: {dispatch_queues: "dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-05-26T02:05:23"
+    context_md_mtime: "2026-05-28T22:20:34"
   behavior:
-    enums: {b1: deny, b2: ok, b3: other, b4: pass}
+    enums: {b1: deny, b2: ok, b3: html, b4: pass}
     hashes: {b5: f5d0d07e9ba4a3ed}
   scheduler:
     has_repo_sync: true

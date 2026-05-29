@@ -149,13 +149,61 @@ if [[ "$OS" != "windows" ]] && have crontab; then
   printf '%s' "$dump" | grep -q 'parity-review' && has_parity=true
 fi
 
-# ── emit (generated_at + headroom + mtime + job_count are EXCLUDED from the hash) ──
+# ── 9. PROVENANCE — checkout freshness guard (#2851) ─────────────────────────
+# Stamped so the matrix can mark a stale/dirty/behind checkout STALE-CHECKOUT and exclude
+# it from peer comparison (a stale tree must never manufacture a false divergence — see the
+# #2801 b3/skills artifact). Computed read-only, BEFORE the write (A3: the collector's own
+# .claude/state output is outside the measured allowlist AND captured pre-write, so it can
+# never self-trigger dirty). The collector NEVER fetches (no network side-effect, BC2).
+#
+# MEASURED-PATH allowlist (BC1): dirty reflects ONLY the paths the collector actually reads,
+# NOT `.claude` wholesale — else unrelated state/memory edits would false-STALE a healthy
+# machine. Keep this in sync with the dimensions probed above.
+MEASURED=(.claude/skills .claude/memory/context.md .claude/dispatch .claude/rules \
+          .claude/hooks/plan-approval-gate.sh .claude/settings.json \
+          scripts/readiness/harness-config.yaml config/scheduled-tasks/schedule-tasks.yaml)
+checkout_sha="unknown"; dirty=false; behind_main="unknown"; origin_ref_age_h="unknown"
+if git -C "$WS" rev-parse --git-dir >/dev/null 2>&1; then
+  checkout_sha=$(git -C "$WS" rev-parse --short HEAD 2>/dev/null); : "${checkout_sha:=unknown}"
+  # dirty = tracked changes to the measured allowlist only (untracked-or-modified both count)
+  [[ -n "$(git -C "$WS" status --porcelain -- "${MEASURED[@]}" 2>/dev/null)" ]] && dirty=true
+  # behind_main = best-effort vs the LOCAL origin/main ref (no fetch). "unknown" if ref absent
+  # ⇒ fail-closed downstream (BC2): the matrix treats unknown as STALE.
+  bm=$(git -C "$WS" rev-list --count HEAD..origin/main 2>/dev/null)
+  [[ -n "$bm" ]] && behind_main="$bm"
+  # origin-ref freshness from the last fetch, WITHOUT fetching (BC2): a stale LOCAL origin/main
+  # ref false-negatives behind_main, so record its age and let the matrix fail-closed on it.
+  # Use --git-common-dir, NOT --git-dir: in a linked worktree the shared FETCH_HEAD and
+  # refs/remotes/origin/main live in the COMMON dir; --git-dir points at the per-worktree dir
+  # that holds neither, which would false-STALE every worktree-based collection.
+  gd=$(git -C "$WS" rev-parse --git-common-dir 2>/dev/null)
+  [[ -n "$gd" && "$gd" != /* ]] && gd="${WS}/${gd}"
+  # FETCH_HEAD first: its mtime is the true last-fetch time (best freshness signal); fall back
+  # to the loose origin/main ref mtime (set when the ref last moved on fetch).
+  for ref in "${gd}/FETCH_HEAD" "${gd}/refs/remotes/origin/main"; do
+    if [[ -f "$ref" ]]; then
+      mt=$(date -r "$ref" +%s 2>/dev/null); now=$(date +%s 2>/dev/null)
+      [[ -n "$mt" && -n "$now" ]] && origin_ref_age_h=$(( (now - mt) / 3600 ))
+      break
+    fi
+  done
+fi
+
+# ── emit (generated_at + headroom + mtime + job_count + checkout_sha are EXCLUDED from the
+#          hash; dirty + behind_main + origin_ref_age_h ARE hashed — A1/BC5: exclude the pure
+#          churn (sha) ONLY, so every freshness-state field stays live in the committed report
+#          and a fresh→stale transition always forces a rewrite) ──
 read -r -d '' BODY <<YAML || true
 schema_version: 3
 machine: "$(yesc "$MACHINE")"
 host: "$(yesc "$HOST")"
 os: ${OS}
 status: active
+provenance:
+  checkout_sha: "$(yesc "$checkout_sha")"
+  dirty: ${dirty}
+  behind_main: ${behind_main}
+  origin_ref_age_h: ${origin_ref_age_h}
 dimensions:
   compute:
     static: {cores: ${cores}, ram_total_mib: ${ram_total_mib}, gpu_model: "$(yesc "$gpu")"}
@@ -186,7 +234,7 @@ FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 # canonical payload = exclude volatile/meaningless fields (DC4/DG1)
 # CC2/GC2: anchor volatile-field exclusion to line start/indent so a value that merely
 # CONTAINS "job_count:"/"context_md_mtime:" can't drop its line from the hash.
-canonical() { printf '%s\n' "$1" | grep -vE '^(generated_at:)|^[[:space:]]*(headroom|context_md_mtime|job_count):'; }
+canonical() { printf '%s\n' "$1" | grep -vE '^(generated_at:)|^[[:space:]]*(headroom|context_md_mtime|job_count|checkout_sha):'; }
 
 if [[ "$TO_STDOUT" == "1" ]]; then
   printf '%s\n' "$FULL"

@@ -8,6 +8,8 @@ depending on the host's real hardware.
 
 from __future__ import annotations
 
+import os
+import re
 import subprocess
 from pathlib import Path
 
@@ -276,3 +278,156 @@ def test_collect_commit_on_change_detects_real_drift(tmp_path):
     out.write_text(text)
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     assert "hermes_home: absent" in out.read_text()      # rewritten back to the real value
+
+
+# ── #2851 freshness guard: checkout-provenance block ────────────────────────
+MEASURED_PATH = ("scripts", "readiness", "harness-config.yaml")  # in the MEASURED allowlist
+
+
+def _git(ws: Path, *args: str) -> None:
+    """Run a git command in the fixture with deterministic identity."""
+    env = {**os.environ,
+           "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t.test",
+           "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t.test",
+           "HOME": str(ws.parent)}
+    subprocess.run(["git", "-C", str(ws), *args], env=env, check=True,
+                   capture_output=True, timeout=60)
+
+
+def _git_fixture(tmp_path: Path) -> Path:
+    """A WORKSPACE_HUB fixture that is also a committed git repo with an origin/main ref.
+
+    The repo is clean and current → fresh provenance by default. A measured-path file
+    (harness-config.yaml) is tracked so dirty-flag tests can toggle it.
+    """
+    ws = _fixture(tmp_path)
+    (ws / "scripts" / "readiness").mkdir(parents=True, exist_ok=True)
+    (ws / "scripts" / "readiness" / "harness-config.yaml").write_text("workstations: {}\n")
+    _git(ws, "init", "-q", "-b", "main")
+    _git(ws, "add", "-A")
+    _git(ws, "commit", "-q", "-m", "init")
+    _git(ws, "update-ref", "refs/remotes/origin/main", "HEAD")   # current with main → behind=0
+    return ws
+
+
+def _stdout_prov(ws: Path, *args: str, env_extra: dict | None = None) -> dict:
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
+    if env_extra:
+        env.update(env_extra)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary", *args],
+        env=env, capture_output=True, text=True, timeout=60)
+    assert res.returncode == 0, res.stderr
+    return yaml.safe_load(res.stdout)["provenance"]
+
+
+def test_collect_emits_provenance(tmp_path):
+    # report carries a top-level provenance block with the four freshness fields
+    p = _stdout_prov(_git_fixture(tmp_path))
+    assert set(p) >= {"checkout_sha", "dirty", "behind_main", "origin_ref_age_h"}
+
+
+def test_collect_dirty_false_on_clean(tmp_path):
+    # a clean, current checkout → dirty false
+    p = _stdout_prov(_git_fixture(tmp_path))
+    assert p["dirty"] is False
+
+
+def test_collect_behind_main_zero_when_current(tmp_path):
+    # origin/main ref == HEAD → behind_main 0 (not "unknown")
+    p = _stdout_prov(_git_fixture(tmp_path))
+    assert p["behind_main"] == 0
+
+
+def test_collect_dirty_true_on_measured_path(tmp_path):
+    # modify a tracked MEASURED-allowlist file → dirty true (BC1)
+    ws = _git_fixture(tmp_path)
+    (ws.joinpath(*MEASURED_PATH)).write_text("workstations: {dev-primary: {}}\n# changed\n")
+    p = _stdout_prov(ws)
+    assert p["dirty"] is True
+
+
+def test_collect_dirty_false_on_unrelated_edit(tmp_path):
+    # edit a tracked file OUTSIDE the measured allowlist (.claude/state/*) → dirty FALSE (BC1)
+    ws = _git_fixture(tmp_path)
+    (ws / ".claude" / "state" / "harness-readiness-dev-primary.yaml").write_text(
+        "overall: fail\npass_count: 99\n")        # tracked, but not a measured path
+    p = _stdout_prov(ws)
+    assert p["dirty"] is False
+
+
+def test_collect_origin_ref_age_recorded(tmp_path):
+    # origin_ref_age_h is a number (just-created ref → small, well under the 12h window)
+    p = _stdout_prov(_git_fixture(tmp_path))
+    assert isinstance(p["origin_ref_age_h"], (int, float))
+    assert 0 <= p["origin_ref_age_h"] <= 12
+
+
+def test_collect_provenance_unknown_when_not_git(tmp_path):
+    # the non-git fixture (no .git) → fail-closed unknowns, never a crash
+    p = _stdout_prov(_fixture(tmp_path))
+    assert p["checkout_sha"] == "unknown"
+    assert p["behind_main"] == "unknown"
+    assert p["origin_ref_age_h"] == "unknown"
+
+
+def test_collect_sha_excluded_from_hash(tmp_path):
+    # A1: a checkout_sha change ALONE (empty commit, no measured-dim change) → NO rewrite
+    ws = _git_fixture(tmp_path)
+    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
+    subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
+    first_mtime = out.stat().st_mtime_ns
+    _git(ws, "commit", "-q", "--allow-empty", "-m", "advance sha")   # HEAD sha changes; behind=0
+    subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
+    assert out.stat().st_mtime_ns == first_mtime     # sha churn alone must not rewrite
+
+
+def test_collect_dirty_change_forces_rewrite(tmp_path):
+    # A1: a clean→dirty transition (same emitted dims) MUST rewrite, so the committed report
+    # cannot keep a stale dirty:false that fools the matrix.
+    ws = _git_fixture(tmp_path)
+    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
+    subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
+    assert "dirty: false" in out.read_text()
+    (ws.joinpath(*MEASURED_PATH)).write_text("workstations: {}\n# now dirty\n")
+    subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
+    assert "dirty: true" in out.read_text()          # transition was hashed → rewrite happened
+
+
+def test_collect_dirty_no_self_trigger(tmp_path):
+    # A3: the collector's OWN output (.claude/state/equality-*.yaml) must not make dirty true.
+    # dirty is captured pre-write AND .claude/state is outside the measured allowlist.
+    ws = _git_fixture(tmp_path)
+    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
+    subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
+    assert "dirty: false" in out.read_text()         # writing its own report didn't self-dirty
+
+
+def test_collect_origin_ref_age_in_worktree(tmp_path):
+    # Worktree-safety (#2851): refs/remotes/origin/main + FETCH_HEAD live in --git-common-dir,
+    # NOT the per-worktree --git-dir. The collector must resolve the common dir, else every
+    # worktree-based collection fail-closes to origin_ref_age_h=unknown → false STALE-CHECKOUT.
+    main_ws = _git_fixture(tmp_path)
+    wt = tmp_path / "wt"
+    _git(main_ws, "worktree", "add", "-q", "--detach", str(wt))   # full checkout (committed .claude tree)
+    p = _stdout_prov(wt)
+    assert isinstance(p["origin_ref_age_h"], (int, float)) and not isinstance(p["origin_ref_age_h"], bool), p
+    assert 0 <= p["origin_ref_age_h"] <= 12
+    assert p["behind_main"] == 0          # worktree HEAD == origin/main → current, not unknown
+
+
+def test_collect_origin_ref_age_refreshed_not_frozen(tmp_path):
+    # origin_ref_age_h is HASHED (A1: only checkout_sha is excluded from the canonical payload),
+    # so a stale freshness value can never be frozen into the committed report and fool the
+    # matrix. Tamper the committed age to a huge stale value; the next run MUST rewrite it back.
+    ws = _git_fixture(tmp_path)
+    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
+    subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
+    assert re.search(r"origin_ref_age_h: \d", out.read_text())          # live numeric value
+    out.write_text(re.sub(r"origin_ref_age_h: .*", "origin_ref_age_h: 999", out.read_text()))
+    subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
+    assert "origin_ref_age_h: 999" not in out.read_text()               # refreshed, not frozen
