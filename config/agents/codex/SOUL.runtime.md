@@ -166,6 +166,10 @@ Codex `exec` (and the Codex GitHub connector) cannot read local files outside th
 - Codex roles vs skills mapping: `.claude/docs/codex-roles-vs-skills.md`.
 - Parity audit: `specs/architecture/work-queue-codex-parity.md`.
 
+## Consolidated Cross-Provider Memory (read at session start)
+
+At the start of a session, read **`config/agents/codex/MEMORY.runtime.md`** (repo-tracked, relative to the workspace root). It is a curated, budget-capped slice of the consolidated cross-provider memory (the Claude "dream" — durable learnings distilled from Codex/Gemini/Hermes/Claude sessions). It is **machine-invariant and auto-generated** by `scripts/memory/bridge-hermes-claude.sh` (#2841) — do not hand-edit. Treat its entries as durable workspace conventions/learnings; they complement (do not replace) the SHARED_SOUL gates above.
+
 ## Required Gates (Codex-specific extensions to SHARED_SOUL Hard Gates)
 
 Beyond the SHARED_SOUL.md Hard Gates, Codex sessions additionally enforce:

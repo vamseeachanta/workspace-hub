@@ -1,0 +1,40 @@
+<!-- MANAGED by curate_readback_slice.py — do not hand-edit; regenerate via bridge-hermes-claude.sh -->
+
+- [All-provider memory should flow through Hermes](feedback_memory_aspire_to_hermes_level.md) — Hermes is the canonical memory backend; per-provider stores (Claude auto-memory, Codex state, Gemini session) should consolidate to Hermes rather than evolve in parallel. Collapse cross-provider silos (Claude/Codex/Gemini learnings unified, not siloed); aim for Hermes-bar on capture / retrieval / cross-machine + cross-provider sync (2026-05-17)
+- [No local task IDs](feedback_no_reserved_wrk_ids.md) — GitHub issues only
+- [Check parallel work](feedback_check_parallel_work.md) — scan in-flight sessions first
+- [Hermes session grep: journal vs active](feedback_hermes_session_grep_journal_vs_active.md) — `grep -R <path> ~/.hermes/sessions` hits ≠ active use; discriminator is session_id ∩ running pgrep workers, not file existence
+- [Pre-completion cleanup audit gate](feedback_pre_completion_cleanup_audit_gate.md) — run audit skill before "all done"; CLEAN/EXPECTED/UNEXPECTED bucket verdict; never relay completion with UNEXPECTED residue. Hermes flow-through tracked at [#2750](https://github.com/vamseeachanta/workspace-hub/issues/2750)
+- [Discovery-first on stale plan-approved](feedback_discovery_first_on_stale_plan_approved.md) — inventory codebase before writing; prior commits may have completed scope. llm-wiki #41/#42 both validated
+- [Comment on issues](feedback_gh_issue_comment.md) — post summary on every issue
+- [Inline gh issue URLs](feedback_inline_gh_issue_url.md) — render `#NNNN` as Markdown hyperlink in chat (not bare token)
+- [Queue git-tracked](feedback_queue_git_tracked.md) — verify files in git before queue
+- [Worktree gitlink pollution](feedback_worktree_gitlink_pollution.md) — add .claude/worktrees/ to .gitignore before parallel-agent runs
+- [Adversarial review stance](feedback_adversarial_review_stance.md) — every review prompt must force defect-hunting, not charitable reading
+- [Always adversarial review; scale depth](feedback_always_adversarial_review_scale_depth.md) — never skip; dial depth to scope (T1/T2/T3 = 1/2/3 providers)
+- [Doc-counter rules write-time](feedback_doc_counter_rule_writetime.md) — phantom counters as write-time recompute rules, not frozen integers
+- [Cross-provider review payoff](feedback_cross_provider_review_payoff.md) — Codex finds non-overlapping defects vs. Claude; verify Codex GitHub-connector evidence locally
+- [gh issue close drops comments](feedback_gh_issue_close_silent_comment_drop.md) — if CLOSED, --comment silently lost; reopen-comment-close
+- [GitHub addComment "submitted too quickly"](feedback_github_addcomment_submitted_too_quickly.md) — throttle string is "was submitted too quickly", NOT "rate limit"/"abuse"; backoff regex must match it explicitly
+- [Bulk-comment cumulative ceiling](feedback_bulk_comment_cumulative_volume_threshold.md) — ~500 addComment posts on single token in ~25min trips throttle even at 30/min pacing; batch ≤200 + 1hr cooldown
+- [Codex needs pushed artifact](feedback_codex_needs_pushed_artifact.md) — push plan to GH BEFORE `codex exec`; sandbox can't read local files
+- [Codex sandbox model](feedback_codex_sandbox_write_blocked.md) — sandbox blocks fs writes AND shell exec; fallback via js_repl + GH connector. See also: codex_sandbox_no_execution, codex_sandbox_fallback_paths topic files.
+- [Data-format guidelines](data_format_guidelines.md) — default YAML for agent-facing structured data; JSON only when machine-consumed
+- [Cross-machine execution](feedback_cross_machine_execution.md) — per-machine tasks via shared git repo, not SSH/rsync
+- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills under `~/.claude/plugins/cache/`; `git mv` cannot operate
+- [Plan past-tense drift](feedback_plan_past_tense_artifact_claims.md) — plans describing proposed work as committed artifacts trick reviewers; future tense only
+- [Multi-agent commit serialization](feedback_multi_agent_commit_serialization.md) — parallel agents race on git lock; serialize commits OR use worktrees. Umbrella covering: merge-race silent revert, retry-loop reset hazard, git switch --discard-changes, autostash replay, parallel-session staged-change bleedthrough (see topic files; pre-commit `git diff --cached --name-only` is the universal mitigation)
+- [Mock vs live invocation](feedback_mock_vs_live_invocation_divergence.md) — for external-CLI fixes, mocks pass what live CLIs reject; always live-repro before close
+- [Attestation enables contradiction detection](feedback_attestation_enables_contradiction_detection.md) — #2405 unlocks plan-vs-live-state defect finding, not just Class-B silencing
+- [Subagent Write phantom](feedback_subagent_write_phantom.md) — subagent reports Write success while file doesn't land; main session must `ls` before believing
+- [Wait for safety bg task before destructive op](feedback_wait_for_safety_bg_task_before_destructive_op.md) — in-flight "is this safe to delete" bg tasks are blocking deps; "if stale, delete" conditional approval still requires complete evidence first (2026-05-18 digitalmodel premature rm)
+- [Never offer self-label plan-approved](feedback_never_offer_to_self_label_plan_approved.md) — never self-approve, never pre-authorize via handoff-prompt; user-in-loop gate is load-bearing
+- [Recruiter engagement criteria](feedback_recruiter_engagement.md) — consulting-level + credible source only; no drive-by recruiter replies even in active job-search
+- [Email cross-noise](feedback_email_cross_noise.md) — third parties mistakenly using user's Gmail; standard unsubscribe fails; sender-domain DELETE in routing config
+- [Codex sustained-MAJOR loop](feedback_codex_sustained_major_loop.md) — Codex MAJOR 3+ rounds while Claude/Gemini MINOR by v3 → surface consensus-vs-minority, don't auto-cycle (#2045, #2289)
+- [Parallel agent write-only pattern](feedback_parallel_agent_write_only_pattern.md) — agents write files only; main session serializes commits. Avoids git-lock races without worktrees
+- [Parallel subagent shared-target manifest deferral](feedback_parallel_subagent_shared_target_manifest_deferral.md) — partition into unique-target (subagent writes) + shared-target (manifest delta, main applies). For 3 sub-issues use 2-batch + solo trailing (Batch 1 = 2 parallel, Batch 2 = solo on heaviest cross-link). Validated 4 PE epics 2026-05-15 → 2026-05-16
+- [Permission gate blocks cross-review](feedback_permission_gate_blocks_cross_review.md) — planning-only sessions can't dispatch cross-review.sh; fallback is single-author r3 with transparent provenance
+- [Commit attestation narrow scope](feedback_commit_attestation_narrow_scope.md) — "gates passed" covers ONLY that commit's files; re-run live, don't infer from `git log A..B`
+- [GSD](project_gsd_migration.md) — sole workflow, v1.38.1, Node 24+
+_[176 entries omitted: oversize/over-cap]_
