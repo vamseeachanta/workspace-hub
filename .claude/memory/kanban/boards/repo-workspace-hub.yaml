@@ -43229,6 +43229,7 @@ cards:
     gh_labels:
       - cat:ai-orchestration
       - cat:infrastructure
+      - status:plan-review
     initial_status: triage
     priority: 0
     gh_assignees: []
