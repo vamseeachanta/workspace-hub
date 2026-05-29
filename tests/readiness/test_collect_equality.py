@@ -356,6 +356,17 @@ def test_collect_dirty_false_on_unrelated_edit(tmp_path):
     assert p["dirty"] is False
 
 
+def test_collect_dirty_false_on_untracked_noise(tmp_path):
+    # Untracked cruft (.DS_Store, __pycache__, swap files) inside a MEASURED dir must NOT
+    # false-STALE a healthy machine — dirty reflects TRACKED changes only (--untracked-files=no).
+    ws = _git_fixture(tmp_path)
+    (ws / ".claude" / "skills" / ".DS_Store").write_text("\x00")          # untracked noise
+    (ws / "scripts" / "readiness" / "__pycache__").mkdir(exist_ok=True)
+    (ws / "scripts" / "readiness" / "__pycache__" / "x.pyc").write_text("x")
+    p = _stdout_prov(ws)
+    assert p["dirty"] is False
+
+
 def test_collect_origin_ref_age_recorded(tmp_path):
     # origin_ref_age_h is a number (just-created ref → small, well under the 12h window)
     p = _stdout_prov(_git_fixture(tmp_path))

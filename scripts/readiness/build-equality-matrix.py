@@ -153,7 +153,10 @@ def is_stale(report: dict) -> bool:
         return True
     if isinstance(age, bool) or not isinstance(age, (int, float)):
         return True                                  # non-numeric age is not trustworthy evidence
-    return age > ORIGIN_REF_MAX_H                    # stale fetch ⇒ behind_main is unreliable (BC2)
+    # Out of the trust window in EITHER direction ⇒ stale (BC2). A negative age means the ref
+    # mtime is in the future (clock skew / NTP correction / VM jump) — unverifiable, so fail
+    # closed rather than fail open on `age > MAX` alone.
+    return not (0 <= age <= ORIGIN_REF_MAX_H)
 
 
 # ── uniform-dim equality + ties (C1) ─────────────────────────────────────────

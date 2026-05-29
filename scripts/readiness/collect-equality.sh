@@ -165,8 +165,10 @@ MEASURED=(.claude/skills .claude/memory/context.md .claude/dispatch .claude/rule
 checkout_sha="unknown"; dirty=false; behind_main="unknown"; origin_ref_age_h="unknown"
 if git -C "$WS" rev-parse --git-dir >/dev/null 2>&1; then
   checkout_sha=$(git -C "$WS" rev-parse --short HEAD 2>/dev/null); : "${checkout_sha:=unknown}"
-  # dirty = tracked changes to the measured allowlist only (untracked-or-modified both count)
-  [[ -n "$(git -C "$WS" status --porcelain -- "${MEASURED[@]}" 2>/dev/null)" ]] && dirty=true
+  # dirty = TRACKED changes to the measured allowlist only. --untracked-files=no excludes
+  # untracked noise (.DS_Store, __pycache__, editor swap files) that would otherwise
+  # false-STALE a healthy machine on benign cruft inside a measured directory.
+  [[ -n "$(git -C "$WS" status --porcelain --untracked-files=no -- "${MEASURED[@]}" 2>/dev/null)" ]] && dirty=true
   # behind_main = best-effort vs the LOCAL origin/main ref (no fetch). "unknown" if ref absent
   # ⇒ fail-closed downstream (BC2): the matrix treats unknown as STALE.
   bm=$(git -C "$WS" rev-list --count HEAD..origin/main 2>/dev/null)

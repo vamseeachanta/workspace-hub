@@ -381,6 +381,12 @@ def test_is_stale_behind_main_zero_string_ok():
     assert bem.is_stale(_report("dev-primary", provenance=_prov(behind_main="0"))) is False
 
 
+def test_is_stale_negative_age_failclosed():
+    # A negative origin_ref_age_h means the ref mtime is in the future (clock skew / NTP) — the
+    # freshness signal is unverifiable, so fail CLOSED (must not slip through `age > MAX`).
+    assert bem.is_stale(_report("dev-primary", provenance=_prov(origin_ref_age_h=-3))) is True
+
+
 def test_is_stale_absent_provenance_failclosed():
     # A legacy report with NO provenance block cannot prove freshness → STALE (BC2 fail-closed)
     rep = _report("dev-primary")
