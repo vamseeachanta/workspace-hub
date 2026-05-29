@@ -1,0 +1,16 @@
+# Dispatch leadership state — SCHEMA / TEMPLATE (#2847 Phase 1).
+#
+# IMPORTANT: this file on `main` is documentation only. The LIVE leadership state
+# lives on a DEDICATED git ref `dispatch-leader-state` (a one-file tree holding
+# `_leader-state.yaml`), written via plumbing (commit-tree) and pushed with
+# --force-with-lease (atomic CAS). It is NOT stored on main, so heartbeat churn
+# never pollutes main history and a lost push race can never leave a divergent
+# commit that bricks reads. The ref is bootstrapped by the leader's first
+# `dispatch_leader.py --heartbeat`; until then secondaries read UNDETERMINED and
+# do not alert. See scripts/ai/dispatch_leader.py (GitLeaderStateStore).
+#
+# Fields (the schema the dedicated-ref file uses):
+leader: ace-linux-1          # current dispatch leader machine
+term: 0                      # monotonic fencing token (Phase 2 promotion increments)
+heartbeat_utc: 1970-01-01T00:00:00+00:00   # ISO-8601 UTC of the last confirmed heartbeat
+heartbeat_pid: 0             # pid of the process that wrote the heartbeat
