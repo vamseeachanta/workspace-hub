@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Issue #2 — Teams Local Feasibility + Race-to-POC Scope</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b1020; --panel:#111a2e; --muted:#93a4bd; --text:#e8eef8; --accent:#7dd3fc; --ok:#86efac; --warn:#fde68a; --block:#fca5a5; --line:#22304a; }
+    body { margin:0; font-family: Inter, Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+    main { max-width:1180px; margin:0 auto; padding:32px 24px 56px; }
+    h1,h2,h3 { line-height:1.15; }
+    h1 { font-size:2rem; margin:0 0 8px; }
+    h2 { margin-top:28px; padding-top:20px; border-top:1px solid var(--line); color:#dbeafe; }
+    h3 { color:#e0f2fe; }
+    a { color:var(--accent); }
+    .meta, .note { color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+    .card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow:0 10px 30px rgba(0,0,0,.18); overflow-wrap:anywhere; word-break:break-word; }
+    code { overflow-wrap:anywhere; word-break:break-word; }
+    .badge { display:inline-block; border-radius:999px; padding:3px 10px; font-size:.78rem; font-weight:700; letter-spacing:.02em; }
+    .ok { background:#052e1a; color:var(--ok); border:1px solid #166534; }
+    .warn { background:#3b2f05; color:var(--warn); border:1px solid #854d0e; }
+    .block { background:#3b0a0a; color:var(--block); border:1px solid #991b1b; }
+    .info { background:#082f49; color:#bae6fd; border:1px solid #0369a1; }
+    table { width:100%; border-collapse:collapse; margin:12px 0; overflow-wrap:anywhere; }
+    th,td { border:1px solid var(--line); padding:10px; vertical-align:top; }
+    th { background:#17233a; text-align:left; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    pre { background:#070b14; border:1px solid var(--line); border-radius:12px; padding:12px; overflow:auto; }
+    ul { padding-left:1.25rem; }
+    .callout { border-left:4px solid var(--accent); background:#0c1a2b; padding:12px 14px; border-radius:10px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Issue #2 — Teams Local Feasibility + Race-to-POC Scope</h1>
+  <p class="meta">Repo: <code>vamseeachanta/llm-wiki-acma</code> · Parent issue: <code>#2</code> · Generated: <code>2026-05-28 22:50 local</code> · Privacy: client/private repo ecosystem; no raw client data copied into this artifact.</p>
+
+  <section class="callout">
+    <strong>Executive feasibility call:</strong> A fast POC is feasible, but the locally installed Teams desktop client is only a <em>client/runtime</em>, not a bot-hosting surface. The quickest safe race path is to build a local/private Hermes-backed Q&amp;A service over an approved repo knowledge pack, then connect it to Teams through whichever Teams app path the organization permits: sideloaded Bot Framework app, Teams tab + local/API service, or incoming webhook/demo fallback. Production Teams bot access still requires tenant/app-admin approval.
+  </section>
+
+  <h2>1. Local Teams program findings</h2>
+  <div class="grid">
+    <div class="card"><span class="badge ok">FOUND</span><h3>Teams is installed and running</h3><p>Processes observed: <code>ms-teams.exe</code> running. App package: <code>MSTeams_26120.3106.4722.3411_x64__8wekyb3d8bbwe</code>.</p></div>
+    <div class="card"><span class="badge ok">FOUND</span><h3>Modern packaged Teams</h3><p>Install location: <code>C:\Program Files\WindowsApps\MSTeams_26120.3106.4722.3411_x64__8wekyb3d8bbwe</code>. Executable version: <code>26120.3106.4722.3411</code>.</p></div>
+    <div class="card"><span class="badge info">CAPABILITY</span><h3>Protocol and execution aliases</h3><p>Manifest includes <code>msteams</code>, <code>web+msteams</code>, <code>callto</code>, <code>im</code>, <code>sip</code>, <code>tel</code> protocols and <code>ms-teams.exe</code> alias. This is useful for opening Teams/deep links, not for receiving bot messages locally.</p></div>
+    <div class="card"><span class="badge warn">GAP</span><h3>No Hermes Teams gateway configured</h3><p>Hermes status lists Telegram configured, but no Teams/Microsoft Teams messaging platform. The installed client alone does not expose a bot API.</p></div>
+  </div>
+
+  <h2>2. Feasibility implications</h2>
+  <table>
+    <thead><tr><th>Question</th><th>Finding</th><th>Impact</th></tr></thead>
+    <tbody>
+      <tr><td>Can the local Teams app host a bot by itself?</td><td><span class="badge block">NO</span> It can run Teams apps and open deep links, but bot registration/routing happens through Microsoft Bot Framework / Teams app package / tenant policy.</td><td>Need Teams/Azure app setup or permitted sideload/install route.</td></tr>
+      <tr><td>Can we race a POC without tenant-wide Graph permissions?</td><td><span class="badge ok">YES</span> Use Bot Framework activity context or tab/web-chat style demo. Avoid Graph message-read scopes.</td><td>Safer POC; admin approval still may be needed to upload/install app.</td></tr>
+      <tr><td>Can the POC connect to the repo ecosystem quickly?</td><td><span class="badge ok">YES</span> Repo already contains README/workflow docs and report artifacts including HTML/manifest files. Build a pinned knowledge pack/index first.</td><td>Use read-only, approved repo content; do not query raw sources by default.</td></tr>
+      <tr><td>Can org Teams settings be fully reviewed from this computer?</td><td><span class="badge warn">PARTIAL</span> Local package can be inspected, but tenant Teams app policies, sideloading, app permission policies, and Azure app consent require admin portals or Graph access.</td><td>Create permission-gate subissue and request admin evidence.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Fastest safe POC options</h2>
+  <table>
+    <thead><tr><th>Option</th><th>What we build now</th><th>Teams dependency</th><th>Speed</th><th>Risk</th></tr></thead>
+    <tbody>
+      <tr><td><strong>A. Bot Framework Teams bot</strong></td><td>Minimal bot endpoint that calls Hermes/RAG service and returns cited answer cards.</td><td>Azure Bot registration, Teams app manifest, app upload/install permission.</td><td>Fast if admin path exists; otherwise blocked.</td><td>Best production alignment; permission-heavy.</td></tr>
+      <tr><td><strong>B. Teams tab / local web chatbot</strong></td><td>Local or internal web Q&amp;A UI over Hermes repo index; package as Teams tab if sideload is allowed.</td><td>Teams app sideload/upload policy; less bot-specific infra.</td><td>Fastest visual demo.</td><td>Not a conversational bot initially; good stepping stone.</td></tr>
+      <tr><td><strong>C. Incoming webhook/demo bridge</strong></td><td>Hermes/RAG service posts formatted answers to a configured channel webhook after user submits question elsewhere.</td><td>Incoming webhook connector availability in target channel.</td><td>Very fast if connector allowed.</td><td>Not true interactive bot; useful smoke test only.</td></tr>
+      <tr><td><strong>D. Teams deep-link assist</strong></td><td>Use local Teams URI/deep links to open Teams from a local POC and paste/share answer manually.</td><td>Only local Teams client.</td><td>Immediate.</td><td>Manual and non-production; validates answer quality, not integration.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. Recommended race plan</h2>
+  <ol>
+    <li><strong>Today / fastest:</strong> Build a repo knowledge-pack index from approved Markdown/HTML/manifest/report-layer docs only.</li>
+    <li>Create a small Hermes-backed Q&amp;A service or CLI wrapper that answers Oil &amp; Gas questions with citations/source IDs and follow-up suggestions.</li>
+    <li>Expose the Q&amp;A via a local web chatbot; render screenshots/HTML demo transcript.</li>
+    <li>Parallel path: verify whether Teams app sideload/upload, incoming webhooks, or Azure Bot registration are available for this tenant.</li>
+    <li>If sideload is permitted, package the web chatbot as a Teams tab or minimal bot app. If Azure Bot is permitted, wire Bot Framework endpoint to the same Q&amp;A service.</li>
+  </ol>
+
+  <h2>5. Repo ecosystem scan</h2>
+  <p>Observed root structure: <code>CLIENT-WORKFLOW.md</code>, <code>DATA-CYCLE.md</code>, <code>REDACTION-POSTURE.md</code>, <code>pages/</code>, <code>projects/</code>, <code>reports/</code>, <code>sources/</code>, <code>ledgers/</code>. Existing report artifacts include HTML/PDF/DOCX/Markdown plus citations and manifests under <code>reports/B1528/issue-2760/</code>, and the current Teams-bot plan artifact under <code>reports/teams-bot/issue-2/</code>.</p>
+  <p class="note">POC retrieval should start with approved docs/reports/manifests and avoid raw <code>sources/</code> content unless explicitly approved.</p>
+
+  <h2>6. Subissue breakdown</h2>
+  <table>
+    <thead><tr><th>Workstream</th><th>Purpose</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td>Local Teams + tenant policy gate</td><td>Determine what Teams app/bot/install path is permitted.</td><td>HTML permissions checklist and go/no-go for sideload/webhook/Bot Framework.</td></tr>
+      <tr><td>Repo knowledge pack</td><td>Build approved, cited retrieval corpus from repo ecosystem.</td><td>Manifested index/knowledge-pack with source IDs.</td></tr>
+      <tr><td>Hermes Q&amp;A service</td><td>Provide a callable answer endpoint/tool over the knowledge pack.</td><td>Local/API service with answer schema, citations, follow-ups.</td></tr>
+      <tr><td>Teams app integration</td><td>Connect Q&amp;A service to Teams via fastest allowed path.</td><td>Minimal app package or webhook/tab demo.</td></tr>
+      <tr><td>Security/logging/credential gates</td><td>Lock down credentials, authorization, logs, and Graph posture.</td><td>HTML security checklist and approved secrets plan.</td></tr>
+      <tr><td>POC demo + acceptance report</td><td>Demonstrate end-to-end Oil &amp; Gas Q&amp;A.</td><td>HTML demo transcript, screenshots, pass/fail matrix.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7. Non-negotiable gates before live Teams rollout</h2>
+  <ul>
+    <li>No broad Graph message-read scopes by default; do not request <code>ChannelMessage.Read.All</code>, <code>Chat.Read</code>, or tenant-wide history scopes for the POC unless separately approved.</li>
+    <li>Map Teams identity/channel context to repo content entitlements before returning restricted content.</li>
+    <li>Do not persist prompts, raw Teams bodies, retrieved snippets, model answers, or tokens by default.</li>
+    <li>Use read-only repo-scoped credentials or pinned knowledge packs; avoid personal PATs for runtime access.</li>
+    <li>All deliverables should remain HTML-first with provenance/manifest information.</li>
+  </ul>
+
+  <h2>8. Immediate next action</h2>
+  <p>Create the subissues listed above and update parent issue #2 with this feasibility artifact. Then execute the POC in this order: permissions gate in parallel, knowledge pack, local Q&amp;A service, Teams wrapper path selected by available org setting.</p>
+</main>
+</body>
+</html>

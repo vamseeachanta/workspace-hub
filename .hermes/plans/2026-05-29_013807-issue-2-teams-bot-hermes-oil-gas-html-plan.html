@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan for llm-wiki-acma Issue #2 — Teams Bot via Hermes Agent</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #11182b;
+      --panel-2: #172033;
+      --ink: #f4f7fb;
+      --muted: #aeb9cc;
+      --line: rgba(255,255,255,.12);
+      --accent: #6ee7d8;
+      --accent-2: #8fb7ff;
+      --warn: #ffd166;
+      --risk: #ff8fa3;
+      --ok: #8ee98e;
+      --private: #ffbfd1;
+      --code: #050916;
+      --shadow: 0 22px 70px rgba(0,0,0,.36);
+      --radius: 18px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 0%, rgba(110,231,216,.16), transparent 34rem),
+        radial-gradient(circle at 85% 8%, rgba(143,183,255,.12), transparent 30rem),
+        linear-gradient(180deg, #090e1c 0%, var(--bg) 70%);
+      line-height: 1.55;
+    }
+    a { color: var(--accent); }
+    .shell { max-width: 1180px; margin: 0 auto; padding: 40px 22px 72px; }
+    .hero {
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(17,24,43,.94), rgba(11,16,32,.88));
+      box-shadow: var(--shadow);
+      border-radius: 26px;
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, rgba(110,231,216,.18), transparent 70%);
+      pointer-events: none;
+    }
+    .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: .12em; font-weight: 800; font-size: 12px; }
+    h1 { font-size: clamp(32px, 5vw, 58px); line-height: 1.02; margin: 10px 0 16px; max-width: 900px; }
+    h2 { font-size: 28px; margin: 0 0 14px; }
+    h3 { font-size: 19px; margin: 0 0 10px; color: var(--ink); }
+    p { margin: 0 0 12px; }
+    .subtitle { color: var(--muted); font-size: 18px; max-width: 860px; }
+    .meta-grid, .grid { display: grid; gap: 16px; }
+    .meta-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 28px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card {
+      border: 1px solid var(--line);
+      background: rgba(17, 24, 43, .72);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .meta-label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+    .meta-value { font-weight: 800; margin-top: 5px; overflow-wrap: anywhere; }
+    .section { margin-top: 28px; border: 1px solid var(--line); background: rgba(17,24,43,.72); border-radius: 24px; padding: 28px; }
+    .section > .section-head { display: flex; justify-content: space-between; gap: 18px; align-items: start; margin-bottom: 18px; }
+    .section-kicker { color: var(--accent-2); font-size: 12px; text-transform: uppercase; letter-spacing: .11em; font-weight: 800; }
+    .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .pill { border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 6px 10px; font-size: 12px; background: rgba(255,255,255,.04); }
+    .pill.ok { color: var(--ok); border-color: rgba(142,233,142,.35); }
+    .pill.warn { color: var(--warn); border-color: rgba(255,209,102,.35); }
+    .pill.private { color: var(--private); border-color: rgba(255,191,209,.35); }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 14px; font-size: 14px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 12px; text-align: left; vertical-align: top; }
+    th { color: var(--accent); background: rgba(110,231,216,.08); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    tr:last-child td { border-bottom: 0; }
+    ul, ol { margin: 0; padding-left: 20px; }
+    li { margin: 7px 0; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+    code { background: rgba(5,9,22,.78); padding: 2px 6px; border-radius: 7px; color: #dbeafe; }
+    pre { background: var(--code); border: 1px solid var(--line); padding: 16px; border-radius: 16px; overflow: auto; color: #dbeafe; }
+    .timeline { counter-reset: step; display: grid; gap: 14px; }
+    .step { display: grid; grid-template-columns: 58px 1fr; gap: 14px; align-items: start; }
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, rgba(110,231,216,.22), rgba(143,183,255,.14));
+      border: 1px solid rgba(110,231,216,.38);
+      color: var(--accent);
+      font-weight: 900;
+    }
+    .note { border-left: 4px solid var(--accent); padding: 12px 14px; background: rgba(110,231,216,.07); border-radius: 12px; }
+    .risk { border-left-color: var(--risk); background: rgba(255,143,163,.08); }
+    .warnbox { border-left-color: var(--warn); background: rgba(255,209,102,.08); }
+    .footer { color: var(--muted); margin-top: 26px; font-size: 13px; }
+    @media (max-width: 900px) {
+      .meta-grid, .grid.two, .grid.three { grid-template-columns: 1fr; }
+      .hero, .section { padding: 22px; }
+      .section > .section-head { display: block; }
+    }
+    @media print {
+      body { background: white; color: #101827; }
+      .hero, .section, .card { box-shadow: none; background: white; border-color: #d0d7e2; }
+      a, .eyebrow, .section-kicker, th { color: #075b64; }
+      code, pre { background: #f3f6fb; color: #101827; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div class="eyebrow">Plan artifact · HTML first · draft for review</div>
+      <h1>Teams Bot via Hermes Agent for Oil &amp; Gas Q&amp;A over <code>llm-wiki-acma</code></h1>
+      <p class="subtitle">Concrete plan for GitHub issue #2. The work should produce reviewable HTML artifacts at every stage: research matrix, architecture recommendation, permissions checklist, and POC validation report.</p>
+      <div class="meta-grid">
+        <div class="card"><div class="meta-label">Issue</div><div class="meta-value"><a href="https://github.com/vamseeachanta/llm-wiki-acma/issues/2">llm-wiki-acma #2</a></div></div>
+        <div class="card"><div class="meta-label">Status</div><div class="meta-value">draft / plan-review</div></div>
+        <div class="card"><div class="meta-label">Complexity</div><div class="meta-value">T2 research + POC design</div></div>
+        <div class="card"><div class="meta-label">Generated</div><div class="meta-value">2026-05-29 01:38 UTC</div></div>
+      </div>
+      <div class="pill-row">
+        <span class="pill private">client-private repo</span>
+        <span class="pill warn">Teams/Azure permissions required</span>
+        <span class="pill ok">HTML artifacts required</span>
+        <span class="pill">Hermes Agent integration</span>
+      </div>
+    </header>
+
+
+    <section class="section" id="adversarial-review-status">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">00 · Adversarial review status</div>
+          <h2>Review outcome before approval</h2>
+        </div>
+      </div>
+      <div class="note risk">
+        <strong>Initial review result:</strong> MAJOR findings were raised in Teams/Azure/security and repo-provenance review. This revised artifact folds those findings into the plan. User approval should be requested only after reviewers confirm the revised plan is acceptable.
+      </div>
+      <table style="margin-top:16px">
+        <thead><tr><th>Review lens</th><th>Verdict</th><th>Resolution in this revision</th></tr></thead>
+        <tbody>
+          <tr><td>Issue acceptance / repo gates</td><td>APPROVE AFTER REVISION</td><td>Added follow-up suggestions, explicit Hermes configuration research, plan artifact provenance, and corrected approval sequencing; issue/repo-gates re-review approved.</td></tr>
+          <tr><td>Teams / Azure / security</td><td>APPROVE AFTER REVISION</td><td>Second review found blockers for Graph scope boundaries, logging policy, repo credential handling, and stale MAJOR labels. This revision adds explicit Graph-scope posture, logging policy, credential rules, and removes stale blocker labels.</td></tr>
+          <tr><td>Repo workflow / provenance</td><td>APPROVE AFTER REVISION</td><td>Added manifest-style provenance for this artifact and required the same schema for all downstream HTML/chatbot artifacts; provenance re-review approved.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section" id="goal">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">01 · Goal</div>
+          <h2>What needs to exist when #2 is complete</h2>
+        </div>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <h3>Primary deliverable</h3>
+          <p>A self-contained HTML research and recommendation artifact that compares Teams bot options, documents organization permission requirements, and recommends a POC path for Hermes-backed Oil &amp; Gas Q&amp;A over the private ACMA wiki ecosystem.</p>
+        </div>
+        <div class="card">
+          <h3>Optional follow-on deliverable</h3>
+          <p>If the plan is approved, a small POC can be built after permission checks: Teams message → bot/webhook → Hermes profile → repo retrieval/index → cited answer → Teams response. POC implementation remains gated by approvals and TDD.</p>
+        </div>
+      </div>
+      <div class="note warnbox" style="margin-top:16px">
+        <strong>Artifact rule from user:</strong> all work for this issue should be generated as HTML artifacts for easy review. Markdown can be generated only as a secondary export when needed; the HTML artifact is the source-of-review.
+      </div>
+    </section>
+
+    <section class="section" id="resource-intelligence">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">02 · Resource intelligence</div>
+          <h2>Sources checked and concrete findings</h2>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>Source</th><th>Finding</th><th>Plan implication</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>Issue #2</code></td>
+            <td>Requests research options for a Teams bot via Hermes Agent, answers Oil &amp; Gas questions, returns results from repo ecosystem, reviews Teams settings, and seeks required permissions.</td>
+            <td>Plan must be research-first and permission-first before implementation.</td>
+          </tr>
+          <tr>
+            <td><code>README.md</code></td>
+            <td>Repo is a private ACMA LLM wiki and evidence workspace; raw data remains under <code>/mnt/ace/acma-projects/</code>; repo is the curated bridge to reports/chatbots.</td>
+            <td>Bot must not query raw data directly unless explicitly approved; default retrieval scope should be curated repo artifacts and approved derivatives.</td>
+          </tr>
+          <tr>
+            <td><code>DATA-CYCLE.md</code></td>
+            <td>Defines data, execution, and report layers. Chatbot knowledge packs and retrieval indexes are report-layer outputs. Public promotion requires sanitized derivative and ledger.</td>
+            <td>Bot answers need source residency checks, citation manifests, and privacy classification.</td>
+          </tr>
+          <tr>
+            <td><code>CLIENT-WORKFLOW.md</code></td>
+            <td>Shows the intended flow: raw project data → private wiki → issues → result layers, including chatbot knowledge pack + retrieval index.</td>
+            <td>Architecture should reuse the repo workflow: GitHub issues as tasks, reports and chatbot packs as outputs.</td>
+          </tr>
+          <tr>
+            <td><code>reports/README.md</code></td>
+            <td>Every client-facing HTML/PDF/chatbot pack must declare source IDs, tool/code revision, raw output path, final output path, evidence manifest, privacy classification, and publishability decision.</td>
+            <td>HTML deliverables and any POC response report must include a manifest section.</td>
+          </tr>
+          <tr>
+            <td><code>reports/B1528/issue-2760/report-layer-manifest.json</code></td>
+            <td>Existing report-layer example includes input source IDs, execution tool, raw/final output paths, citation manifest, generated manifest, privacy class, and publishability decision.</td>
+            <td>Use this as the schema model for chatbot answer provenance.</td>
+          </tr>
+          <tr>
+            <td>Repo tree search for <code>teams|bot|hermes|gateway|chat|retriev|index</code></td>
+            <td>No existing Teams bot, Hermes adapter, retrieval index, or chatbot pack path found in current tree names.</td>
+            <td>Research and POC design start from scratch; do not assume existing implementation.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+
+    <section class="section" id="provenance-manifest">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">02A · Provenance / report-layer manifest</div>
+          <h2>Manifest required for this and all downstream HTML artifacts</h2>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>Field</th><th>Value for this plan artifact</th></tr></thead>
+        <tbody>
+          <tr><td><code>issue</code></td><td><a href="https://github.com/vamseeachanta/llm-wiki-acma/issues/2">https://github.com/vamseeachanta/llm-wiki-acma/issues/2</a></td></tr>
+          <tr><td><code>artifact_class</code></td><td><code>private-acma-plan-review-html</code></td></tr>
+          <tr><td><code>privacy_classification</code></td><td><code>client-private</code></td></tr>
+          <tr><td><code>publishability_decision</code></td><td><code>not public; ACMA private repo only unless sanitized review + ledger approval occurs</code></td></tr>
+          <tr><td><code>source_ids</code></td><td><code>ISSUE-2</code>, <code>README</code>, <code>DATA-CYCLE</code>, <code>CLIENT-WORKFLOW</code>, <code>REPORTS-README</code>, <code>B1528-ISSUE-2760-MANIFEST</code>, <code>REDACTION-POSTURE</code></td></tr>
+          <tr><td><code>repo_revision</code></td><td><code>3fb41023d1d777dcb7b405cc16830eb665de241b</code></td></tr>
+          <tr><td><code>execution_tool</code></td><td><code>Hermes Agent plan + browser render verification + adversarial review subagents</code></td></tr>
+          <tr><td><code>compute_environment</code></td><td><code>Windows host via Hermes terminal/browser tools; local artifact generated under C:/workspace-hub</code></td></tr>
+          <tr><td><code>raw_output_path</code></td><td><code>C:/workspace-hub/.hermes/plans/2026-05-29_013807-issue-2-teams-bot-hermes-oil-gas-html-plan.html</code></td></tr>
+          <tr><td><code>final_output_path</code></td><td><code>llm-wiki-acma:reports/teams-bot/issue-2/2026-05-29_013807-plan-review.html</code></td></tr>
+          <tr><td><code>evidence_manifest</code></td><td>Embedded source table plus future <code>reports/teams-bot/issue-2/manifest.json</code>.</td></tr>
+        </tbody>
+      </table>
+      <div class="note warnbox" style="margin-top:16px"><strong>Hard rule:</strong> every future HTML/PDF/chatbot pack for this issue must carry these manifest fields: source IDs, tool/code revision, compute environment, raw output path, final output path, citation/evidence manifest, privacy classification, and publishability decision.</div>
+    </section>
+
+    <section class="section" id="architecture-options">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">03 · Architecture options to research</div>
+          <h2>Compare these paths in the first HTML artifact</h2>
+        </div>
+      </div>
+      <div class="grid three">
+        <div class="card">
+          <h3>Option A — Microsoft Bot Framework + Azure Bot Service</h3>
+          <p><strong>Best for:</strong> production Teams bot with supported auth, tenant controls, app catalog deployment, and Teams-native experiences.</p>
+          <ul>
+            <li>Teams user sends message to bot.</li>
+            <li>Bot service calls a Hermes API/gateway endpoint.</li>
+            <li>Hermes profile performs retrieval over approved ACMA knowledge pack.</li>
+            <li>Bot returns answer with citations and manifest link.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Option B — Teams app + messaging extension</h3>
+          <p><strong>Best for:</strong> structured search/query UX where users want to find project facts, reports, citations, or generated answer cards.</p>
+          <ul>
+            <li>Users invoke search/action command in Teams.</li>
+            <li>Extension queries retrieval service or Hermes-backed search.</li>
+            <li>Results returned as cards with links to HTML artifacts.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Option C — Graph/webhook bridge to Hermes</h3>
+          <p><strong>Best for:</strong> internal proof-of-concept or controlled channel integration, if org permits subscriptions/webhooks.</p>
+          <ul>
+            <li>Message event or webhook forwards text to Hermes.</li>
+            <li>Hermes processes question with constrained tools.</li>
+            <li>Response delivered through Graph, webhook, or configured Teams delivery.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>Option D — Incoming webhook / workflow-only POC</h3>
+        <p><strong>Best for:</strong> delivery-only notifications or posting generated HTML/report links. Not sufficient as an interactive Q&amp;A bot unless paired with a separate input channel.</p>
+        <ul><li>Use only for low-risk review notifications or status updates.</li><li>Do not use for broad private-content Q&amp;A without identity-aware authorization.</li></ul>
+      </div>
+      <div class="note" style="margin-top:16px">
+        <strong>Recommended research hypothesis:</strong> use Option A for production and Option C only for a narrow POC if Teams app approval is slow. Validate this against actual tenant policies before committing.
+      </div>
+    </section>
+
+
+    <section class="section" id="security-permissions-gates">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">03A · Teams/Azure/security gates</div>
+          <h2>Concrete approval checklist before any live POC</h2>
+        </div>
+      </div>
+      <div class="grid two">
+        <div class="card"><h3>Teams admin center checks</h3><ul>
+          <li>Custom app upload / sideloading policy for pilot users.</li>
+          <li>Org-wide app settings and app permission policies for custom apps and bots.</li>
+          <li>App setup policy or targeted pilot-user installation path.</li>
+          <li>Bot scopes allowed: 1:1 only for first pilot unless Teams admin approves private channel/team scope.</li>
+          <li>Teams app manifest review: valid domains, bot commands, webApplicationInfo, privacy/terms URLs, tenant restrictions.</li>
+        </ul></div>
+        <div class="card"><h3>Azure / Graph least privilege</h3><ul>
+          <li>Single-tenant Azure app registration unless admins explicitly approve otherwise.</li>
+          <li><strong>Default Graph posture:</strong> no Graph message-read scopes for the Bot Framework POC. Use Bot Framework activity payloads for inbound bot messages instead of tenant-wide message access.</li>
+          <li><strong>Allowed by default:</strong> OpenID/profile/sign-in scopes required for Teams/Bot auth; app-specific bot credentials; Graph read scopes only for identity/group checks if admin-approved.</li>
+          <li><strong>Conditionally allowed:</strong> <code>User.Read</code>, <code>GroupMember.Read.All</code>, or equivalent group-membership validation only when needed for authorization and admin-approved.</li>
+          <li><strong>Prohibited unless separately approved:</strong> channel/chat/message read application scopes such as broad <code>ChannelMessage.Read.All</code>, <code>Chat.Read.All</code>, <code>Channel.ReadBasic.All</code>, mailbox/file scopes, or any tenant-wide content-read permission.</li>
+          <li>Admin consent evidence must be captured with approver, timestamp, app ID, and exact approved scopes.</li>
+          <li>Prefer managed identity or certificate credentials; if client secret is used, require expiry, rotation owner, and approved secret store.</li>
+        </ul></div>
+        <div class="card"><h3>Authorization and data leakage controls</h3><ul>
+          <li>Map Teams identity to content authorization before retrieval: Azure AD group, Teams membership, repo collaborator mapping, or explicit allowlist.</li>
+          <li>Default pilot surface: 1:1 bot or restricted private Team/channel; block broad/public channel responses until approved.</li>
+          <li>Classify answer before posting and include citations; refuse if source is outside user entitlement.</li>
+          <li>Account for Teams retention, eDiscovery, forwarding, screenshots, and channel membership drift.</li>
+        </ul></div>
+        <div class="card"><h3>Hermes execution boundary</h3><ul>
+          <li>Dedicated locked-down Hermes profile with only approved read/retrieval and Teams response tools.</li>
+          <li>No write access to raw data or repo during answer generation; no external posting except approved Teams response path.</li>
+          <li>Disable persistent memory of private/client content unless explicitly approved.</li>
+          <li>Prompt-injection tests must cover malicious repo text, data exfiltration, citation spoofing, and overbroad retrieval.</li>
+        </ul></div>
+      </div>
+      <div class="note risk" style="margin-top:16px"><strong>Approval artifact required:</strong> no POC starts until named owners are recorded for Teams admin, Azure app registration, security/privacy review, repo/data ownership, hosting/network, secrets rotation, and rollback execution.</div>
+    </section>
+
+
+    <section class="section" id="logging-credentials-policy">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">03B · Logging and credential policy</div>
+          <h2>Hard controls before any bot runtime exists</h2>
+        </div>
+      </div>
+      <div class="grid two">
+        <div class="card"><h3>Logging policy</h3><ul>
+          <li><strong>Default:</strong> do not persist full prompts, full answers, retrieved private snippets, repo file contents, access tokens, or raw Teams message bodies.</li>
+          <li>Allowed logs: request ID, timestamp, hashed/pseudonymous Teams user ID, authorization decision, source IDs/citation IDs, artifact path, high-level status, and error category.</li>
+          <li>Retention must be explicitly set before POC; default target is short retention for pilot diagnostics only.</li>
+          <li>Access to logs must be limited to named operators; logs must not be sent to third-party analytics or external LLM traces without approval.</li>
+          <li>Client/private content in logs is treated as an incident unless deliberately captured in an approved evidence artifact.</li>
+        </ul></div>
+        <div class="card"><h3>Repo credential policy</h3><ul>
+          <li><strong>Preferred:</strong> prebuilt, approved knowledge pack generated from a pinned repo commit; bot runtime reads the pack, not the full repository.</li>
+          <li>If runtime repo access is needed, use a read-only deploy key or fine-grained token restricted to <code>vamseeachanta/llm-wiki-acma</code>; avoid broad personal access tokens.</li>
+          <li>Credentials must live only in an approved secret store or platform secret facility, never in HTML artifacts, repo files, Hermes memory, logs, or prompts.</li>
+          <li>Define rotation cadence, secret owner, revocation command/path, emergency disable procedure, and audit evidence before pilot.</li>
+          <li>Hermes tools must be configured so token values and private snippets cannot be echoed into Teams or persisted to unapproved logs.</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section class="section" id="work-plan">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">04 · Step-by-step plan</div>
+          <h2>Plan before implementation</h2>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="step"><div class="card"><h3>Confirm scope and artifact inventory</h3><ul><li>Create <code>reports/teams-bot/issue-2/</code> or equivalent local staging path for HTML artifacts if approved.</li><li>Define artifact names: <code>teams-bot-research.html</code>, <code>teams-permissions-checklist.html</code>, <code>poc-architecture.html</code>, <code>poc-validation-report.html</code>.</li><li>Record issue URL, repo URL, and privacy classification in each artifact header.</li></ul></div></div>
+        <div class="step"><div class="card"><h3>Map available knowledge and data residency</h3><ul><li>Inventory <code>sources/</code>, <code>pages/</code>, <code>projects/</code>, <code>reports/</code>, and ledgers.</li><li>Classify which content is eligible for bot retrieval: private repo curated pages, report manifests, citation JSON, HTML reports, and approved extracted derivatives.</li><li>Explicitly exclude raw project data unless a separate permission gate approves it.</li></ul></div></div>
+        <div class="step"><div class="card"><h3>Design retrieval and answer provenance contract</h3><ul><li>Define an answer schema: question, answer, source citations, confidence, private/public classification, retrieved files, manifest path, follow-up suggestions, refusal/escalation notes, and user authorization basis.</li><li>Reuse the report-layer manifest model from <code>reports/B1528/issue-2760/</code>.</li><li>Specify how generated answer HTML should cite evidence and expose links for review.</li></ul></div></div>
+        <div class="step"><div class="card"><h3>Research Teams/Azure integration choices</h3><ul><li>Compare Bot Framework, Teams app + messaging extension, Graph/webhook bridge, and incoming webhook/workflow-only POC. Also research existing Hermes Gateway/Teams/Graph support, profile configuration, skills/tools, memory posture, retrieval/indexing options, and locked-down toolset design.</li><li>For each option, document hosting, auth, tenant admin requirements, Graph permissions, operational complexity, auditability, and data-leakage risk.</li><li>Generate the comparison as a single HTML decision matrix.</li></ul></div></div>
+        <div class="step"><div class="card"><h3>Review organization Teams settings and permission path</h3><ul><li>Check whether custom Teams apps are allowed, whether sideloading is disabled/enabled, and whether org app catalog publishing is available.</li><li>Check app permission policies, app setup policies, bot installation policies, and whether external/custom apps require admin approval.</li><li>Identify Azure app registration owner, Graph permission approver, Teams admin owner, repo/content owner, and hosting/network owner.</li></ul></div></div>
+        <div class="step"><div class="card"><h3>Draft the POC architecture</h3><ul><li>Recommended default: Teams Bot Framework bot → Hermes API/gateway endpoint → dedicated Hermes profile → read-only retrieval over approved ACMA knowledge pack → cited Teams answer.</li><li>Define secrets: bot app ID/secret, tenant ID, Graph credentials if needed, Hermes provider key, repo token/read-only deploy key.</li><li>Define rollback: uninstall Teams app, disable bot endpoint, revoke app secret, remove Graph subscription, disable Hermes profile/cron/webhook.</li></ul></div></div>
+        <div class="step"><div class="card"><h3>Plan POC tests and validation</h3><ul><li>Use 5–10 representative oil and gas / ACMA project questions.</li><li>Validate answer grounding: every factual claim links to a repo source or says insufficient evidence.</li><li>Validate access controls: unauthorized Teams users cannot retrieve private content.</li><li>Validate HTML artifacts render locally and include manifest/provenance sections.</li></ul></div></div>
+        <div class="step"><div class="card"><h3>Run adversarial review before implementation</h3><ul><li>Review the plan against security, privacy, Teams policy, and repo evidence standards.</li><li>Mark plan as <code>status:plan-review</code>.</li><li>Proceed to implementation only after user approval changes status to <code>status:plan-approved</code>.</li></ul></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="files">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">05 · Artifact map</div>
+          <h2>Files likely to be created or modified after approval</h2>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>Action</th><th>Path</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>Create</td><td><code>.hermes/plans/2026-05-29_013807-issue-2-teams-bot-hermes-oil-gas-html-plan.html</code></td><td>This planning artifact.</td></tr>
+          <tr><td>Create</td><td><code>reports/teams-bot/issue-2/teams-bot-research.html</code></td><td>Research matrix comparing Teams integration options.</td></tr>
+          <tr><td>Create</td><td><code>reports/teams-bot/issue-2/teams-permissions-checklist.html</code></td><td>Organization Teams/Azure settings checklist and permission owners.</td></tr>
+          <tr><td>Create</td><td><code>reports/teams-bot/issue-2/poc-architecture.html</code></td><td>Recommended POC architecture, sequence diagram, data flow, secrets, rollback.</td></tr>
+          <tr><td>Create</td><td><code>reports/teams-bot/issue-2/poc-validation-report.html</code></td><td>POC validation results if implementation is later approved.</td></tr>
+          <tr><td>Create</td><td><code>reports/teams-bot/issue-2/manifest.json</code></td><td>Machine-readable provenance for all issue #2 artifacts.</td></tr>
+          <tr><td>Optional create</td><td><code>reports/teams-bot/issue-2/knowledge-pack-manifest.json</code></td><td>Defines bot retrieval scope and excluded content.</td></tr>
+          <tr><td>Optional create</td><td><code>reports/teams-bot/issue-2/sample-qa-cases.json</code></td><td>Representative evaluation questions and expected evidence behavior.</td></tr>
+        </tbody>
+      </table>
+      <div class="note warnbox" style="margin-top:16px">
+        Paths under <code>reports/teams-bot/issue-2/</code> should be committed only after plan approval. This planning turn created only the local plan artifact.
+      </div>
+    </section>
+
+    <section class="section" id="validation">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">06 · Validation and acceptance criteria</div>
+          <h2>How we know #2 is done</h2>
+        </div>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <h3>Research acceptance</h3>
+          <ul>
+            <li>2–3 viable Teams architecture options are documented in HTML with pros/cons.</li>
+            <li>Recommended path is selected and justified against repo privacy/data-cycle constraints.</li>
+            <li>Teams org settings are actually checked or marked as requiring admin confirmation.</li>
+            <li>Permissions checklist identifies owners and approval steps.</li>
+            <li>Risks are explicit: security, permissions, data leakage, source attribution, operations.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>POC acceptance, if approved</h3>
+          <ul>
+            <li>Bot answers a representative set of ACMA/Oil &amp; Gas questions.</li>
+            <li>Every answer includes citations to approved repo artifacts, follow-up suggestions, and/or says insufficient evidence.</li>
+            <li>Unauthorized content is not exposed.</li>
+            <li>HTML validation report captures prompts, responses, citations, failures, and follow-ups.</li>
+            <li>Named operational owners, exact Graph scopes, logging policy, and repo credential policy are approved before live use.</li><li>Rollback procedure is tested or dry-run documented.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="risks">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">07 · Risks and open questions</div>
+          <h2>Review before approval</h2>
+        </div>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <h3>Risks</h3>
+          <ul>
+            <li><strong>Tenant policy risk:</strong> Teams custom app or bot installation may be restricted by admin policy.</li>
+            <li><strong>Graph permission risk:</strong> Graph application permissions may require admin consent and security review.</li>
+            <li><strong>Data leakage risk:</strong> private ACMA content must not be returned to unauthorized Teams users or public channels.</li>
+            <li><strong>Grounding risk:</strong> oil and gas answers can be technically consequential; bot must cite sources and refuse when evidence is weak.</li>
+            <li><strong>Operational risk:</strong> endpoint hosting, secrets rotation, logs, and incident response need an owner.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Open questions</h3>
+          <ul>
+            <li>Who owns Teams admin approval for custom apps/bots?</li>
+            <li>Which Teams channel or group should pilot the bot?</li>
+            <li>Should bot access be limited to repo collaborators, an Azure AD group, or a Teams team?</li>
+            <li>What hosting target is acceptable: Azure App Service, container, internal VM, or existing Hermes gateway host?</li>
+            <li>Should the POC use only existing repo artifacts, or may it build a retrieval index from approved local derivatives?</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note risk" style="margin-top:16px">
+        <strong>Hard gate:</strong> do not implement a live bot or expose private repo content to Teams until the permissions checklist and user approval are complete.
+      </div>
+    </section>
+
+    <section class="section" id="next">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">08 · Recommended next action</div>
+          <h2>Move to plan review</h2>
+        </div>
+      </div>
+      <ol>
+        <li>Review this revised HTML plan artifact.</li>
+        <li>Complete adversarial review sign-off for the revised plan; do not approve while MAJOR findings remain open.</li>
+        <li>If acceptable, record user approval on issue #2 with <code>PLAN APPROVED</code> and move to <code>status:plan-approved</code>.</li>
+        <li>After approval, create the first HTML deliverable: <code>reports/teams-bot/issue-2/teams-bot-research.html</code>.</li>
+      </ol>
+      <pre>Recommended status: status:plan-review (revised, awaiting review sign-off)
+Implementation status: blocked until user/admin approval</pre>
+    </section>
+
+    <p class="footer">Generated by Hermes Agent. Revised after adversarial review found MAJOR Teams/security/provenance gaps. Verification inputs: GitHub issue #2, repo metadata, root tree, README/DATA-CYCLE/CLIENT-WORKFLOW/REDACTION-POSTURE, reports/sources/pages READMEs, and B1528 report manifests.</p>
+  </main>
+</body>
+</html>

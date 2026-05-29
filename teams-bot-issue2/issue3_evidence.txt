@@ -1,0 +1,122 @@
+== timestamp ==
+2026-05-29T04:58:17-05:00
+== host ==
+MINGW64_NT-10.0-22631 ACMA-WS014 3.6.5-22c95533.x86_64 2025-10-10 12:02 UTC x86_64 Msys
+== gh repo ==
+{"defaultBranchRef":{"name":"main"},"nameWithOwner":"vamseeachanta/llm-wiki-acma","url":"https://github.com/vamseeachanta/llm-wiki-acma","visibility":"PRIVATE"}
+== Teams processes ==
+ms-teams.exe                 11296 Console                    1     64,132 K
+ms-teams.exe                 35364 Console                    1     36,952 K
+== Teams Appx package ==
+{
+    "Name":  "MSTeams",
+    "Version":  "26120.3106.4722.3411",
+    "PackageFullName":  "MSTeams_26120.3106.4722.3411_x64__8wekyb3d8bbwe",
+    "Architecture":  9,
+    "Publisher":  "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+    "InstallLocation":  "C:\\Program Files\\WindowsApps\\MSTeams_26120.3106.4722.3411_x64__8wekyb3d8bbwe"
+}
+== Teams appx manifest selected protocol/capability lines ==
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:build="http://schemas.microsoft.com/developer/appx/2015/build" xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3" xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" xmlns:uap6="http://schemas.microsoft.com/appx/manifest/uap/windows10/6" xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10" xmlns:uap11="http://schemas.microsoft.com/appx/manifest/uap/windows10/11" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:desktop2="http://schemas.microsoft.com/appx/manifest/desktop/windows10/2" xmlns:desktop6="http://schemas.microsoft.com/appx/manifest/desktop/windows10/6" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" xmlns:rescap3="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities/3" xmlns:virtualization="http://schemas.microsoft.com/appx/manifest/virtualization/windows10" xmlns:win32dependencies="http://schemas.microsoft.com/appx/manifest/externaldependencies" IgnorableNamespaces="uap5 uap6 uap10 uap11 com desktop desktop6 virtualization win32dependencies rescap3">
+  <Identity Name="MSTeams" Version="26120.3106.4722.3411" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProcessorArchitecture="x64" />
+        <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\ProtocolExecute</virtualization:ExcludedKey>
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+    <Application Id="MSTeamsRemoteModuleContainer" Executable="ms-teams.exe" EntryPoint="Windows.PartialTrustApplication" uap10:RuntimeBehavior="packagedClassicApp" uap10:TrustLevel="appContainer">
+        <uap5:Extension Category="windows.appExecutionAlias" Executable="ms-teams.exe" EntryPoint="Windows.PartialTrustApplication" uap10:RuntimeBehavior="packagedClassicApp" uap10:TrustLevel="appContainer">
+          <uap5:AppExecutionAlias>
+          </uap5:AppExecutionAlias>
+    <Application Id="MSTeams" Executable="ms-teams.exe" EntryPoint="Windows.FullTrustApplication">
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="msteams" />
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="web+msteams" />
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="msteamscanary" />
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="callto" />
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="im" />
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="sip" />
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="sips" />
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="tel" />
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="action-sip" />
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="action-schedule" />
+        <desktop:Extension Category="windows.startupTask" Executable="msteams_autostarter.exe" EntryPoint="Windows.FullTrustApplication">
+          <uap3:AppExtension Name="com.microsoft.windows.ai.actions" Id="MSTeamsActions" PublicFolder="desktop-assets" DisplayName="Microsoft Teams">
+        <uap5:Extension Category="windows.appExecutionAlias" Executable="ms-teams.exe" EntryPoint="Windows.FullTrustApplication">
+          <uap5:AppExecutionAlias>
+          </uap5:AppExecutionAlias>
+        <uap:Extension Category="windows.shareTarget">
+          <uap:ShareTarget Description="Send to Microsoft Teams">
+          </uap:ShareTarget>
+    <Application Id="MSTeams.Update" Executable="ms-teamsupdate.exe" EntryPoint="Windows.FullTrustApplication">
+        <uap5:Extension Category="windows.appExecutionAlias" Executable="ms-teamsupdate.exe" EntryPoint="Windows.FullTrustApplication">
+          <uap5:AppExecutionAlias>
+          </uap5:AppExecutionAlias>
+    <Application Id="msteamsautostarter" Executable="msteams_autostarter.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements DisplayName="msteamsautostarter" Description="msteamsautostarter" Square150x150Logo="Images\TeamsForWorkNewMedTile.png" Square44x44Logo="Images\TeamsForWorkNewAppList.png" BackgroundColor="transparent" AppListEntry="none" />
+        <uap5:Extension Category="windows.appExecutionAlias" Executable="msteams_autostarter.exe" EntryPoint="Windows.FullTrustApplication">
+          <uap5:AppExecutionAlias>
+          </uap5:AppExecutionAlias>
+    <desktop2:Extension Category="windows.firewallRules">
+      <desktop2:FirewallRules Executable="ms-teams.exe">
+        <desktop2:Rule Direction="in" IPProtocol="TCP" Profile="all" />
+        <desktop2:Rule Direction="in" IPProtocol="UDP" Profile="all" />
+        <desktop2:Rule Direction="out" IPProtocol="TCP" Profile="all" />
+        <desktop2:Rule Direction="out" IPProtocol="UDP" Profile="all" />
+      </desktop2:FirewallRules>
+    <desktop2:Extension Category="windows.firewallRules">
+      <desktop2:FirewallRules Executable="ms-teams.exe">
+        <desktop2:Rule Direction="in" IPProtocol="TCP" Profile="all" />
+        <desktop2:Rule Direction="in" IPProtocol="UDP" Profile="all" />
+        <desktop2:Rule Direction="out" IPProtocol="TCP" Profile="all" />
+        <desktop2:Rule Direction="out" IPProtocol="UDP" Profile="all" />
+      </desktop2:FirewallRules>
+== Hermes status Teams-related ==
+◆ Messaging Platforms
+  Telegram      ✓ configured
+  Discord       ✗ not configured
+  WhatsApp      ✗ not configured
+  Signal        ✗ not configured
+  Slack         ✗ not configured
+  Email         ✗ not configured
+  SMS           ✗ not configured
+◆ Gateway Service
+== Hermes config/env Teams indicators redacted ==
+FILE /c/Users/vamseea/AppData/Local/hermes/.env
+# Uses custom Chromium build to avoid bot detection altogether
+# Slack Bot Token - From Slack App settings (OAuth & Permissions)
+# SLACK_BOT_TOKEN=[REDACTED]
+# Telegram Bot Token - From @BotFather (https://t.me/BotFather)
+# TELEGRAM_BOT_TOKEN=[REDACTED]
+# Makes the bot feel less robotic.
+# GitHub App credentials (optional — for bot identity on PRs)
+# MICROSOFT TEAMS INTEGRATION
+# Register a Bot in Azure: https://dev.botframework.com/ → "Register a bot"
+# Or use Azure Portal: Azure Active Directory → App registrations → New registration
+# Then add the bot to Teams via the Bot Framework or App Studio.
+# TEAMS_CLIENT_ID=[REDACTED]
+# TEAMS_CLIENT_SECRET=[REDACTED]
+# TEAMS_TENANT_ID=[REDACTED]
+# TEAMS_ALLOWED_USERS=[REDACTED]
+# TEAMS_ALLOW_ALL_USERS=[REDACTED]
+# TEAMS_HOME_CHANNEL=[REDACTED]
+# TEAMS_HOME_CHANNEL_NAME=[REDACTED]
+# TEAMS_PORT=[REDACTED]
+# GOOGLE_CHAT_ALLOWED_USERS=[REDACTED]
+TELEGRAM_BOT_TOKEN=[REDACTED]
+FILE /c/Users/vamseea/AppData/Local/hermes/config.yaml
+  mode: both
+  qqbot:
+  - hermes-qqbot
+  teams:
+  - hermes-teams
+#   bedrock      (AWS IAM / boto3)     — AWS Bedrock (Converse API)
+== Windows app uri handlers quick query ==

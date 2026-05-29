@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Issue #3 — Teams Tenant/App Permission Checklist</title>
+<style>
+:root{--bg:#0b1020;--panel:#111a2e;--line:#22304a;--text:#e8eef8;--muted:#93a4bd;--ok:#86efac;--warn:#fde68a;--block:#fca5a5;--accent:#7dd3fc}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.55}main{max-width:1180px;margin:auto;padding:32px 24px 56px}h1,h2,h3{line-height:1.15}h2{border-top:1px solid var(--line);padding-top:20px;margin-top:30px;color:#dbeafe}a{color:var(--accent)}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0;overflow-wrap:anywhere}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}table{width:100%;border-collapse:collapse;margin:14px 0}th,td{border:1px solid var(--line);padding:10px;vertical-align:top;overflow-wrap:anywhere}th{background:#17233a;text-align:left}code{overflow-wrap:anywhere}.badge{display:inline-block;border-radius:999px;padding:3px 10px;font-size:.78rem;font-weight:700;white-space:nowrap}.ok{background:#052e1a;color:var(--ok);border:1px solid #166534}.warn{background:#3b2f05;color:var(--warn);border:1px solid #854d0e}.block{background:#3b0a0a;color:var(--block);border:1px solid #991b1b}.info{background:#082f49;color:#bae6fd;border:1px solid #0369a1}.muted{color:var(--muted)}pre{background:#070b14;border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;max-height:360px}
+</style></head><body><main>
+<h1>Issue #3 — Teams Tenant/App Permission Checklist</h1>
+<p class="muted">Generated: <code>2026-05-29T05:00:05-05:00</code> · Repo: <code>vamseeachanta/llm-wiki-acma</code> · Main SHA: <code>c67ba78ba5b680bd91dd7c57c9c26ecedebd3e3c</code> · Privacy: client/private; values redacted where config could contain secrets.</p>
+<div class="card"><strong>Decision:</strong> local Teams is available, but tenant policy/admin evidence is still required. The safest immediate route is to keep building the repo-backed Q&amp;A core while asking an admin to confirm whether custom Teams app upload, incoming webhooks, and Azure Bot registration are permitted.</div>
+<h2>Observed local evidence</h2><div class="grid">
+<div class="card"><span class="badge ok">FOUND</span><h3>Teams desktop</h3><p><code>ms-teams.exe</code> is running. Package observed: <code>MSTeams_26120.3106.4722.3411_x64__8wekyb3d8bbwe</code>.</p></div>
+<div class="card"><span class="badge info">CLIENT ONLY</span><h3>Protocols</h3><p>Package manifest includes <code>msteams</code>, <code>web+msteams</code>, <code>callto</code>, <code>im</code>, <code>sip</code>, <code>tel</code>, share target, app execution alias, and firewall rules.</p></div>
+<div class="card"><span class="badge warn">NOT CONFIGURED</span><h3>Hermes Teams gateway</h3><p>Hermes status shows Telegram configured; no live Teams gateway/platform config is active. Teams-related sample env keys exist as commented guidance only.</p></div>
+<div class="card"><span class="badge warn">ADMIN NEEDED</span><h3>Tenant settings</h3><p>App upload policies, connectors, Azure Bot registration, and Graph/admin consent cannot be fully verified from the local Teams client alone.</p></div>
+</div>
+<h2>Permission checklist</h2><table><thead><tr><th>Setting / gate</th><th>Status now</th><th>Evidence</th><th>Required next action</th></tr></thead><tbody>
+<tr><td>Teams desktop installed and usable</td><td><span class="badge ok">PASS</span></td><td>Running <code>ms-teams.exe</code>; MSTeams Appx package installed.</td><td>None.</td></tr>
+<tr><td>Custom Teams app upload / sideload</td><td><span class="badge warn">UNKNOWN</span></td><td>Not discoverable from local package inspection.</td><td>Admin/user must check Teams Admin Center → Teams apps → Setup policies / Manage apps / Org-wide app settings, or attempt sanctioned upload in target Team.</td></tr>
+<tr><td>Incoming webhooks/connectors</td><td><span class="badge warn">UNKNOWN</span></td><td>No target Team/channel connector evidence available locally.</td><td>Check target channel “Connectors/Workflows” availability; if allowed, this can be fastest demo-only bridge.</td></tr>
+<tr><td>Azure Bot registration</td><td><span class="badge warn">UNKNOWN</span></td><td>No Teams app registration values configured; Graph/MS env vars absent for pipeline.</td><td>Identify Azure owner; create/approve Bot Framework registration only if production-like bot route is selected.</td></tr>
+<tr><td>Graph message-read scopes</td><td><span class="badge ok">NOT REQUESTED</span></td><td>No Graph credentials configured for this POC path.</td><td>Keep default: no <code>ChannelMessage.Read.All</code>, <code>Chat.Read</code>, or tenant-wide history scopes.</td></tr>
+<tr><td>Bot Framework activity context</td><td><span class="badge info">RECOMMENDED</span></td><td>Does not require broad message-read permissions for direct bot interactions.</td><td>Use this if Azure Bot route is approved.</td></tr>
+<tr><td>Teams tab wrapper</td><td><span class="badge info">FAST VISUAL POC</span></td><td>Requires app upload policy, less bot-specific infrastructure.</td><td>Select if custom app upload is allowed before Azure Bot approval is ready.</td></tr>
+<tr><td>Deep-link/manual fallback</td><td><span class="badge ok">AVAILABLE</span></td><td>Local protocol handlers are present.</td><td>Can demo answer quality immediately, but not a real chatbot integration.</td></tr>
+</tbody></table>
+<h2>Go / no-go recommendation</h2><ul>
+<li><strong>Go now:</strong> continue #4 knowledge pack and #5 local Q&amp;A service.</li>
+<li><strong>Conditional go:</strong> #6 Teams wrapper depends on admin/user confirmation for sideload, webhook, or Azure Bot path.</li>
+<li><strong>No-go by default:</strong> any route requiring broad Graph message-read scopes or raw Teams message history.</li>
+</ul>
+<h2>Admin evidence needed</h2><ol>
+<li>Screenshot or written confirmation of custom app upload policy for the target user/team.</li>
+<li>Confirmation whether incoming webhooks/connectors/workflows are enabled in the target channel.</li>
+<li>Azure/Bot Framework owner and whether bot registration/admin consent can be granted.</li>
+<li>Target Team/channel/user group for the POC and expected content entitlement boundary.</li>
+</ol>
+<h2>Validation</h2><p>HTML artifact parsed successfully locally. No secrets or token values are included.</p>
+</main></body></html>

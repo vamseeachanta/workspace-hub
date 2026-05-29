@@ -1,0 +1,38 @@
+[
+  {
+    "number": 3,
+    "title": "Subissue of #2: Verify Teams tenant/app permissions and local Teams POC path",
+    "url": "https://github.com/vamseeachanta/llm-wiki-acma/issues/3",
+    "existing": false
+  },
+  {
+    "number": 4,
+    "title": "Subissue of #2: Build approved repo knowledge pack for Oil & Gas Q&A POC",
+    "url": "https://github.com/vamseeachanta/llm-wiki-acma/issues/4",
+    "existing": false
+  },
+  {
+    "number": 5,
+    "title": "Subissue of #2: Implement minimal Hermes-backed Q&A service over repo knowledge pack",
+    "url": "https://github.com/vamseeachanta/llm-wiki-acma/issues/5",
+    "existing": false
+  },
+  {
+    "number": 6,
+    "title": "Subissue of #2: Connect Q&A POC to fastest allowed Teams surface",
+    "url": "https://github.com/vamseeachanta/llm-wiki-acma/issues/6",
+    "existing": false
+  },
+  {
+    "number": 7,
+    "title": "Subissue of #2: Define security, identity, logging, and credential gates for Teams bot POC",
+    "url": "https://github.com/vamseeachanta/llm-wiki-acma/issues/7",
+    "existing": false
+  },
+  {
+    "number": 8,
+    "title": "Subissue of #2: Produce HTML POC demo report and acceptance matrix",
+    "url": "https://github.com/vamseeachanta/llm-wiki-acma/issues/8",
+    "existing": false
+  }
+]
