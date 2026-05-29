@@ -84,6 +84,13 @@ class DispatcherConfig:
     lease_ttl_seconds: int = DEFAULT_LEASE_TTL_S
     max_implementation_per_run: int = 3
     promotion_token: str | None = None  # set when ace-linux-2 is explicitly promoted
+    # #2847 Phase 1b — self-fence: when True, a tick originates leases only if this
+    # machine is the confirmed git-leader (a fresh heartbeat was pushed). Default
+    # False so behavior is unchanged until deliberately enabled (env
+    # DISPATCH_ENFORCE_LEADER_FENCE=1). leader_state_store is injectable for tests;
+    # when None and enforcement is on, a GitLeaderStateStore is built.
+    enforce_leader_fence: bool = False
+    leader_state_store: Any = None
 
 
 def utc_now() -> str:
@@ -330,6 +337,29 @@ def make_lease(
     )
 
 
+def leader_fence_enabled_from_env() -> bool:
+    """#2847 Phase 1b — the self-fence is opt-in via DISPATCH_ENFORCE_LEADER_FENCE.
+    Truthy only for an explicit 1/true/yes (case-insensitive); unset/empty/anything
+    else is False, so the default is always the no-behavior-change path."""
+    return os.environ.get("DISPATCH_ENFORCE_LEADER_FENCE", "").strip().lower() in ("1", "true", "yes")
+
+
+def _load_dispatch_leader():
+    """Lazy-import the sibling dispatch_leader module (only when the fence is on),
+    so the dispatch loop carries no import cost / dependency when enforcement is off."""
+    import importlib.util
+    mod = sys.modules.get("dispatch_leader")
+    if mod is not None:
+        return mod
+    path = Path(__file__).resolve().parent / "dispatch_leader.py"
+    spec = importlib.util.spec_from_file_location("dispatch_leader", path)
+    mod = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(mod)
+    sys.modules["dispatch_leader"] = mod
+    return mod
+
+
 def run_loop(
     cfg: DispatcherConfig,
     kanban: dict[str, Any],
@@ -362,7 +392,30 @@ def run_loop(
         "planning_fallback": [],
         "skipped_due_to_lease": [],
         "skipped_due_to_machine": [],
+        "self_fenced": False,
     }
+
+    # #2847 Phase 1b self-fence: when enabled, originate leases ONLY if this machine
+    # is the confirmed git-leader (a fresh heartbeat was pushed this tick). This is
+    # what prevents an alive-but-cannot-push leader from originating in a split-brain.
+    # NOTE: a `tick` is one dispatch *invocation* (cron cadence), not a hot loop, so
+    # the per-tick heartbeat push aligns with the heartbeat design (review #7).
+    # dry_run is NOT fenced — it writes no leases, so it stays a valid plan-preview
+    # even on a fenced/secondary machine (review #1).
+    if cfg.enforce_leader_fence and not dry_run:
+        _dl = _load_dispatch_leader()
+        store = cfg.leader_state_store or _dl.GitLeaderStateStore(WORKSPACE_HUB)
+        fence_msgs: list[str] = []
+
+        def _cap(m: str) -> None:  # capture the reason so the halt isn't silent (review #2)
+            _dl._stderr_alert(m)
+            fence_msgs.append(m)
+
+        if not _dl.leader_can_originate(store, current_machine(), now=now, alert=_cap):
+            summary["self_fenced"] = True
+            # detail distinguishes not-leader vs store-unavailable vs push-unconfirmed
+            summary["self_fenced_detail"] = fence_msgs
+            return summary  # stand down — originate nothing this tick
 
     ready = select_execution_ready(kanban, leases)
     for card in ready[: cfg.max_implementation_per_run]:
@@ -488,7 +541,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    cfg = DispatcherConfig(leader_host=args.leader_host, promotion_token=args.promotion_token)
+    cfg = DispatcherConfig(
+        leader_host=args.leader_host,
+        promotion_token=args.promotion_token,
+        # #2847 Phase 1b — opt-in via env so the fence can be enabled deliberately
+        # (after the dispatch-leader-state ref is bootstrapped) without a code change.
+        enforce_leader_fence=leader_fence_enabled_from_env(),
+    )
 
     if args.morning_qa:
         text = generate_morning_qa(cfg)

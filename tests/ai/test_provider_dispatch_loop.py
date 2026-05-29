@@ -304,3 +304,113 @@ def test_dispatch_loop_creates_lease_with_idempotency_key_and_parent_issue(tmp_p
     assert lease["parent_issue"] == "#2519"
     assert lease["expires_at"]
     assert lease["expected_artifact"]
+
+
+# ────────────────────────────────────────────────────────────────────────────
+# #2847 Phase 1b — self-fence wired into the lease path
+# ────────────────────────────────────────────────────────────────────────────
+
+# Load the sibling dispatch_leader module to build a fake store + reuse its types.
+_DL_PATH = REPO_ROOT / "scripts" / "ai" / "dispatch_leader.py"
+_dl_spec = importlib.util.spec_from_file_location("dispatch_leader", _DL_PATH)
+_dl = importlib.util.module_from_spec(_dl_spec)
+sys.modules["dispatch_leader"] = _dl
+_dl_spec.loader.exec_module(_dl)
+
+
+class _FenceStore:
+    """Minimal injectable LeaderStateStore for the fence tests."""
+    def __init__(self, leader, term, claim_result):
+        self._leader, self._term, self._claim = leader, term, claim_result
+        self.claims = []
+
+    def read(self):
+        if self._leader is None:
+            raise _dl.StoreUnavailable("uninitialized")
+        return _dl.LeaderState(leader=self._leader, term=self._term,
+                               heartbeat_utc=datetime(2026, 5, 28, tzinfo=timezone.utc).isoformat(),
+                               heartbeat_pid=1)
+
+    def claim(self, state):
+        self.claims.append(state)
+        return self._claim
+
+
+def test_loop_default_off_originates_without_a_store(tmp_path, monkeypatch):
+    # enforce_leader_fence defaults False -> behavior unchanged, no store needed.
+    cfg = _cfg(tmp_path)
+    _set_machine(monkeypatch, "ace-linux-1")
+    summary = module.run_loop(cfg, _kanban_with([_kanban_card(8200)]), {})
+    assert summary.get("self_fenced") is False
+    assert len(summary["execution_ready"]) == 1
+
+
+def test_loop_originates_when_confirmed_git_leader(tmp_path, monkeypatch):
+    _set_machine(monkeypatch, "ace-linux-1")
+    cfg = _cfg(tmp_path)
+    cfg.enforce_leader_fence = True
+    cfg.leader_state_store = _FenceStore("ace-linux-1", 7, _dl.ClaimResult.PUSHED)
+    summary = module.run_loop(cfg, _kanban_with([_kanban_card(8201)]), {})
+    assert summary["self_fenced"] is False
+    assert len(summary["execution_ready"]) == 1
+
+
+def test_loop_self_fences_when_push_not_confirmed(tmp_path, monkeypatch):
+    # Leader is correct but the heartbeat push cannot be confirmed -> stand down.
+    _set_machine(monkeypatch, "ace-linux-1")
+    cfg = _cfg(tmp_path)
+    cfg.enforce_leader_fence = True
+    cfg.leader_state_store = _FenceStore("ace-linux-1", 7, _dl.ClaimResult.PUSH_FAILED)
+    summary = module.run_loop(cfg, _kanban_with([_kanban_card(8202)]), {})
+    assert summary["self_fenced"] is True
+    assert summary["execution_ready"] == []  # originated NOTHING
+    assert not cfg.lease_ledger_path.exists() or cfg.lease_ledger_path.read_text() == ""
+
+
+def test_loop_self_fences_when_not_the_committed_leader(tmp_path, monkeypatch):
+    # This machine is ace-linux-2 but committed leader is ace-linux-1 (and it
+    # passes the config leader check via promotion_token) -> git-fence still blocks.
+    _set_machine(monkeypatch, "ace-linux-2")
+    cfg = _cfg(tmp_path, promotion_token="tok")  # passes is_leader_machine
+    cfg.enforce_leader_fence = True
+    cfg.leader_state_store = _FenceStore("ace-linux-1", 7, _dl.ClaimResult.PUSHED)
+    summary = module.run_loop(cfg, _kanban_with([_kanban_card(8203)]), {})
+    assert summary["self_fenced"] is True
+    assert summary["execution_ready"] == []
+
+
+def test_loop_dry_run_is_not_fenced(tmp_path, monkeypatch):
+    # dry-run writes no leases -> it must still produce a plan preview even when the
+    # fence is on and this machine could not originate (review #1).
+    _set_machine(monkeypatch, "ace-linux-1")
+    cfg = _cfg(tmp_path)
+    cfg.enforce_leader_fence = True
+    cfg.leader_state_store = _FenceStore("ace-linux-1", 7, _dl.ClaimResult.PUSH_FAILED)  # would block origination
+    summary = module.run_loop(cfg, _kanban_with([_kanban_card(8204)]), {}, dry_run=True)
+    assert summary["self_fenced"] is False
+    assert len(summary["execution_ready"]) == 1  # planned (dry-run), not originated
+    assert summary["execution_ready"][0].get("planned") is True
+
+
+def test_loop_self_fences_with_reason_when_store_unavailable(tmp_path, monkeypatch):
+    # Enabling the fence before the ref is bootstrapped halts origination, but the
+    # reason must be surfaced (not silent) (review #2).
+    _set_machine(monkeypatch, "ace-linux-1")
+    cfg = _cfg(tmp_path)
+    cfg.enforce_leader_fence = True
+    cfg.leader_state_store = _FenceStore(None, 0, _dl.ClaimResult.PUSHED)  # read() raises StoreUnavailable
+    summary = module.run_loop(cfg, _kanban_with([_kanban_card(8205)]), {})
+    assert summary["self_fenced"] is True
+    assert summary["execution_ready"] == []
+    assert any("unavailable" in m.lower() for m in summary.get("self_fenced_detail", []))
+
+
+def test_leader_fence_enabled_from_env(monkeypatch):
+    monkeypatch.delenv("DISPATCH_ENFORCE_LEADER_FENCE", raising=False)
+    assert module.leader_fence_enabled_from_env() is False
+    for v in ("1", "true", "TRUE", "yes", " Yes "):
+        monkeypatch.setenv("DISPATCH_ENFORCE_LEADER_FENCE", v)
+        assert module.leader_fence_enabled_from_env() is True
+    for v in ("0", "false", "no", "", "off", "enabled-please"):
+        monkeypatch.setenv("DISPATCH_ENFORCE_LEADER_FENCE", v)
+        assert module.leader_fence_enabled_from_env() is False
