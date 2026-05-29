@@ -362,7 +362,10 @@ sync_hermes_config() {
       log "Hermes: [dry-run] would run install-soul-runtime.sh (re-link ~/.hermes/SOUL.md)"
     else
       log "Hermes: (re)installing SOUL runtime symlink (install-soul-runtime.sh)"
-      bash "$soul_installer" 2>&1 | grep -iE 'soul|hermes' | tee -a "$LOG_FILE"
+      # install-soul-runtime.sh resolves the repo via `git rev-parse` from cwd, so
+      # run it from $WORKSPACE_HUB (robust even if harness-update is invoked from
+      # an arbitrary cwd, not only the cron entry that already cd's into the repo).
+      ( cd "$WORKSPACE_HUB" && bash "$soul_installer" ) 2>&1 | grep -iE 'soul|hermes' | tee -a "$LOG_FILE"
     fi
   fi
 }
