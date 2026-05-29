@@ -21,12 +21,22 @@ HERMES_HOME="${HERMES_HOME:-$HOME/.hermes}"
 REPO_ROOT="${WORKSPACE_HUB:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)}"
 
 pass=0; warn=0; fail=0
-ok()   { printf '  \033[32mPASS\033[0m  %s\n' "$1"; pass=$((pass+1)); }
-wn()   { printf '  \033[33mWARN\033[0m  %s\n' "$1"; warn=$((warn+1)); }
-no()   { printf '  \033[31mFAIL\033[0m  %s\n' "$1"; fail=$((fail+1)); }
-hdr()  { printf '\n\033[1m== %s ==\033[0m\n' "$1"; }
+# Colors only on an interactive TTY and when NO_COLOR is unset — otherwise ANSI
+# escapes garble CI logs, redirected output, and some Windows terminals.
+if [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then
+  C_G='\033[32m'; C_Y='\033[33m'; C_R='\033[31m'; C_B='\033[1m'; C_0='\033[0m'
+else
+  C_G=''; C_Y=''; C_R=''; C_B=''; C_0=''
+fi
+ok()   { printf '  %bPASS%b  %s\n' "$C_G" "$C_0" "$1"; pass=$((pass+1)); }
+wn()   { printf '  %bWARN%b  %s\n' "$C_Y" "$C_0" "$1"; warn=$((warn+1)); }
+no()   { printf '  %bFAIL%b  %s\n' "$C_R" "$C_0" "$1"; fail=$((fail+1)); }
+hdr()  { printf '\n%b== %s ==%b\n' "$C_B" "$1" "$C_0"; }
 
-echo "Hermes consistency check — host=$(hostname 2>/dev/null) HERMES_HOME=$HERMES_HOME"
+# Hostname: `hostname` is absent on some minimal Git Bash installs — fall back to
+# the Windows %COMPUTERNAME%, then "unknown".
+host=$(hostname 2>/dev/null); host=${host:-${COMPUTERNAME:-unknown}}
+echo "Hermes consistency check — host=$host HERMES_HOME=$HERMES_HOME"
 echo "repo=$REPO_ROOT  ($(date -u +%Y-%m-%dT%H:%M:%SZ))"
 
 # ── 0. Repo present + sync state ──────────────────────────────────────────────
@@ -35,10 +45,21 @@ if [ -d "$REPO_ROOT/.git" ] || git -C "$REPO_ROOT" rev-parse --git-dir >/dev/nul
   ok "workspace-hub clone present at $REPO_ROOT"
   if git -C "$REPO_ROOT" rev-parse --abbrev-ref HEAD >/dev/null 2>&1; then
     br=$(git -C "$REPO_ROOT" rev-parse --abbrev-ref HEAD)
-    git -C "$REPO_ROOT" fetch --quiet origin "$br" 2>/dev/null
-    behind=$(git -C "$REPO_ROOT" rev-list --count "HEAD..origin/$br" 2>/dev/null || echo "?")
-    [ "$behind" = "0" ] && ok "branch '$br' up to date with origin" \
-      || wn "branch '$br' is $behind commit(s) behind origin/$br — pull to sync config"
+    # Only fetch+compare when this branch exists on origin. A local-only branch
+    # (or an unreachable origin) otherwise yields a bogus "? commits behind" WARN.
+    if git -C "$REPO_ROOT" ls-remote --exit-code --heads origin "$br" >/dev/null 2>&1; then
+      git -C "$REPO_ROOT" fetch --quiet origin "$br" 2>/dev/null
+      behind=$(git -C "$REPO_ROOT" rev-list --count "HEAD..origin/$br" 2>/dev/null || echo "?")
+      if [ "$behind" = "0" ]; then
+        ok "branch '$br' up to date with origin"
+      elif [ "$behind" = "?" ]; then
+        wn "branch '$br' sync state undetermined (origin/$br ref unavailable locally)"
+      else
+        wn "branch '$br' is $behind commit(s) behind origin/$br — pull to sync config"
+      fi
+    else
+      wn "branch '$br' not found on origin (local-only branch or origin unreachable) — sync check skipped"
+    fi
   fi
 else
   no "no workspace-hub clone at $REPO_ROOT (set WORKSPACE_HUB=...) — config comparison skipped"
@@ -63,11 +84,15 @@ if [ -e "$SOUL_LINK" ]; then
     wn "~/.hermes/SOUL.md exists but is a COPY, not a symlink (drift risk — prefer install-soul-runtime.sh)"
   fi
   if [ -f "$SOUL_CANON" ]; then
-    if diff -q "$SOUL_LINK" "$SOUL_CANON" >/dev/null 2>&1; then
+    # Compare CRLF-insensitively: on Windows a core.autocrlf checkout can give one
+    # side CRLF and the other LF, which would otherwise report a false DIFFERS.
+    if diff -q <(tr -d '\r' < "$SOUL_LINK") <(tr -d '\r' < "$SOUL_CANON") >/dev/null 2>&1; then
       ok "SOUL runtime matches repo canonical (config/agents/hermes/SOUL.runtime.md)"
     else
       no "SOUL runtime DIFFERS from repo canonical — re-run scripts/agents/build-soul-runtime.sh + install-soul-runtime.sh"
     fi
+  else
+    wn "canonical SOUL not found at $SOUL_CANON — cannot compare (check sparse-checkout / branch)"
   fi
 else
   no "~/.hermes/SOUL.md missing — identity/gates not delivered to Hermes"
@@ -135,8 +160,20 @@ hdr "Scheduled bridges (#2846)"
 SCHED="$REPO_ROOT/config/scheduled-tasks/schedule-tasks.yaml"
 if [ -f "$SCHED" ]; then
   for id in provider-dream-bridge hermes-claude-bridge; do
-    grep -qE "id:\s*${id}\b" "$SCHED" && ok "declared in schedule-tasks.yaml: $id (+ -win variant)" \
-      || wn "not declared: $id"
+    # Confirm BOTH the Linux-cron id and its Windows task-scheduler "-win" variant
+    # are present, rather than asserting the -win variant without checking it.
+    base_ok=0; win_ok=0
+    # Anchor to the YAML list-item form ("- id: <name>") from line start so a
+    # commented "# id: ..." or a longer key like "grid:" can't produce a match.
+    grep -qE "^[[:space:]]*-?[[:space:]]*id:[[:space:]]*${id}([[:space:]]|\$)" "$SCHED" && base_ok=1
+    grep -qE "^[[:space:]]*-?[[:space:]]*id:[[:space:]]*${id}-win([[:space:]]|\$)" "$SCHED" && win_ok=1
+    if [ "$base_ok" = 1 ] && [ "$win_ok" = 1 ]; then
+      ok "declared in schedule-tasks.yaml: $id + ${id}-win"
+    elif [ "$base_ok" = 1 ]; then
+      wn "declared: $id but MISSING Windows variant ${id}-win"
+    else
+      wn "not declared: $id"
+    fi
   done
   echo "  (On Windows, confirm the windows-task-scheduler tasks are actually registered:"
   echo "   PowerShell:  Get-ScheduledTask | Where-Object {\$_.TaskName -like '*dream*' -or \$_.TaskName -like '*hermes*'} )"
