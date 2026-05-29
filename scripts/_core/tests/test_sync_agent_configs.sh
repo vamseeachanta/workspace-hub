@@ -364,7 +364,49 @@ EOF
     rm -rf "$tmpdir"
 }
 
+# #2864 — sync-agent-configs.sh must NOT clobber the Hermes SOUL symlink with the
+# delta. install-soul-runtime.sh is the single owner of ~/.hermes/SOUL.md; sync
+# must leave it alone (Option B). RED before fix: sync cp+mv-f's the 4KB delta
+# over the symlink, replacing it with a regular file.
+assert_is_symlink() {
+    local path="$1" label="$2"
+    if [[ -L "$path" ]]; then
+        pass "$label"
+    else
+        fail "$label (expected symlink, got $( [[ -f "$path" ]] && echo regular-file || echo missing ))"
+    fi
+}
+
+run_hermes_soul_no_clobber_test() {
+    local tmpdir ws_root home_root soul_target
+    tmpdir="$(mktemp -d)"
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    make_workspace "$ws_root"
+    # Hermes fixture: the small delta source + the built runtime artifact.
+    mkdir -p "$ws_root/config/agents/hermes" "$home_root/.hermes"
+    printf 'HERMES DELTA SOURCE (small)\n' > "$ws_root/config/agents/hermes/SOUL.md"
+    printf 'FULL RUNTIME IDENTITY + GATES (large)\n' > "$ws_root/config/agents/hermes/SOUL.runtime.md"
+    # Correct install-soul-runtime state: SOUL.md is a symlink to the runtime artifact.
+    ln -s "$ws_root/config/agents/hermes/SOUL.runtime.md" "$home_root/.hermes/SOUL.md"
+    soul_target="$home_root/.hermes/SOUL.md"
+
+    HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" >/dev/null 2>&1 || true
+
+    assert_is_symlink "$soul_target" "sync leaves ~/.hermes/SOUL.md as a symlink (no clobber)"
+    if [[ -L "$soul_target" && "$(readlink "$soul_target")" == *"SOUL.runtime.md" ]]; then
+        pass "sync preserves symlink -> SOUL.runtime.md (not the delta)"
+    else
+        fail "sync preserves symlink -> SOUL.runtime.md (not the delta)"
+    fi
+    # The delta source must remain on disk (build input for build-soul-runtime.sh).
+    assert_file_exists "$ws_root/config/agents/hermes/SOUL.md" "delta config/agents/hermes/SOUL.md retained"
+
+    rm -rf "$tmpdir"
+}
+
 echo "=== test_sync_agent_configs.sh ==="
+run_hermes_soul_no_clobber_test
 run_sanitize_test
 run_multiline_string_preservation_test
 run_inline_table_sanitization_test
