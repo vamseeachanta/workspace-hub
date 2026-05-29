@@ -136,6 +136,29 @@ def test_check_term_regression_is_undetermined():
     assert alerts.msgs
 
 
+# ── leader_can_originate (Phase 1b gate entrypoint) ─────────────────────────
+
+def test_can_originate_true_when_leader_and_push_confirmed():
+    store = FakeStore(state=_state(leader="ace-linux-1", term=5), claim_result=ClaimResult.PUSHED)
+    assert module.leader_can_originate(store, "ace-linux-1", now=T0) is True
+
+
+def test_can_originate_false_when_not_leader():
+    store = FakeStore(state=_state(leader="ace-linux-1"), claim_result=ClaimResult.PUSHED)
+    assert module.leader_can_originate(store, "ace-linux-2", now=T0) is False
+    assert store.claims == []  # not leader -> never heartbeats
+
+
+def test_can_originate_false_when_push_cannot_be_confirmed():
+    store = FakeStore(state=_state(leader="ace-linux-1", term=5), claim_result=ClaimResult.PUSH_FAILED)
+    assert module.leader_can_originate(store, "ace-linux-1", now=T0) is False  # self-fence
+
+
+def test_can_originate_false_when_store_unavailable():
+    store = FakeStore(read_exc=StoreUnavailable("uninitialized"))
+    assert module.leader_can_originate(store, "ace-linux-1", now=T0) is False
+
+
 # ── invariants ──────────────────────────────────────────────────────────────
 
 def test_threshold_coherence_invariant():

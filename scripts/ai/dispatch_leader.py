@@ -150,6 +150,32 @@ def may_write_leases(
     return True
 
 
+def leader_can_originate(
+    store: LeaderStateStore,
+    machine: str,
+    *,
+    now: datetime | None = None,
+    alert=None,
+) -> bool:
+    """Phase 1b gate — may `machine` originate a lease right now?
+
+    True iff `machine` is the committed leader AND a fresh heartbeat is confirmed
+    pushed (the self-fence). Reads once to learn the committed term, then
+    `may_write_leases` performs the confirmed-push CAS. A non-leader, an
+    unconfirmed push, or an unreadable store all return False (stand down)."""
+    try:
+        st = store.read()
+    except StoreUnavailable as e:
+        if alert:
+            alert(f"leader_can_originate: store unavailable ({e}) — refusing to originate")
+        return False
+    if st.leader != machine:
+        if alert:
+            alert(f"leader_can_originate: {machine} is not the leader ({st.leader}) — refusing")
+        return False
+    return may_write_leases(store, machine, st.term, now=now, alert=alert)
+
+
 def check(
     store: LeaderStateStore,
     me: str,
