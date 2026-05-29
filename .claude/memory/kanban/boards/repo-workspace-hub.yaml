@@ -43151,7 +43151,7 @@ cards:
     title: harness/skills/memory consistency across orchestrators (Claude / Codex+Hermes) — locked decisions + read-back leg + hybrid failover + weekly check
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2841
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:ai-orchestration
       - cat:harness
@@ -43159,6 +43159,7 @@ cards:
       - domain:memory
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 0
     gh_assignees: []

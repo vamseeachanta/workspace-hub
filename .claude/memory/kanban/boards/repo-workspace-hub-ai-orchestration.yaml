@@ -517,7 +517,7 @@ cards:
     title: 'feat(readiness): per-machine Hermes consistency probe (hermes-consistency-check.sh) [#2841 child]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2860
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:infrastructure
       - domain:ai-orchestration
