@@ -352,6 +352,19 @@ sync_hermes_config() {
       bash "$sync_script" 2>&1 | grep -i hermes | tee -a "$LOG_FILE"
     fi
   fi
+  # #2864: (re)install the Hermes SOUL symlink via its sole owner so the runtime
+  # identity self-heals nightly. install-soul-runtime.sh is idempotent on a
+  # correct symlink and backs up any stale copy. It has no --dry-run mode, so
+  # under DRY_RUN we only log the intended action and do NOT mutate.
+  local soul_installer="${WORKSPACE_HUB}/scripts/agents/install-soul-runtime.sh"
+  if [[ -f "$soul_installer" ]]; then
+    if [[ "$DRY_RUN" == "true" ]]; then
+      log "Hermes: [dry-run] would run install-soul-runtime.sh (re-link ~/.hermes/SOUL.md)"
+    else
+      log "Hermes: (re)installing SOUL runtime symlink (install-soul-runtime.sh)"
+      bash "$soul_installer" 2>&1 | grep -iE 'soul|hermes' | tee -a "$LOG_FILE"
+    fi
+  fi
 }
 
 update_hermes() {

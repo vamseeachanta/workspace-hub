@@ -44,13 +44,16 @@ CLAUDE_TEMPLATE="$WS_HUB/config/agents/claude/settings.json"
 CODEX_TEMPLATE="$WS_HUB/config/agents/codex/config.toml"
 GEMINI_TEMPLATE="$WS_HUB/config/agents/gemini/settings.json"
 HERMES_TEMPLATE="$WS_HUB/config/agents/hermes/config.yaml.template"
-HERMES_SOUL_TEMPLATE="$WS_HUB/config/agents/hermes/SOUL.md"
+# NOTE: ~/.hermes/SOUL.md is intentionally NOT synced here (#2864). It is a
+# symlink owned solely by scripts/agents/install-soul-runtime.sh, which points
+# it at the built runtime artifact config/agents/hermes/SOUL.runtime.md (NOT the
+# delta config/agents/hermes/SOUL.md). A plain-file copy here would clobber that
+# symlink nightly with the 4 KB delta, giving Hermes a gutted identity.
 
 CLAUDE_TARGET="$HOME/.claude/settings.json"
 CODEX_TARGET="$HOME/.codex/config.toml"
 GEMINI_TARGET="$HOME/.gemini/settings.json"
 HERMES_TARGET="$HOME/.hermes/config.yaml"
-HERMES_SOUL_TARGET="$HOME/.hermes/SOUL.md"
 
 changed=0
 skipped=0
@@ -1161,6 +1164,11 @@ PY
     rm -f "$resolved_template" "$merged"
 }
 
+# NOTE (#2864): no longer called — the Hermes SOUL.md sync was removed because it
+# clobbered install-soul-runtime.sh's symlink. RETAINED intentionally: its
+# definition line is a text anchor used by
+# tests/readiness/test_sync_agent_configs_pyyaml_fallback.py to delimit the
+# sync_hermes_yaml_config body. Do not delete without updating that test.
 sync_hermes_plain_file() {
     local template="$1"
     local target="$2"
@@ -1241,12 +1249,12 @@ sync_codex_managed_config "$CODEX_TEMPLATE" "$CODEX_TARGET" "Codex config"
 sync_json_merge "$GEMINI_TEMPLATE" "$GEMINI_TARGET" "Gemini settings"
 sync_repo_codex_configs "$WS_HUB"
 
-# Hermes — sync config.yaml and SOUL.md if templates exist
+# Hermes — sync config.yaml only. ~/.hermes/SOUL.md is deliberately NOT synced
+# here (#2864): it is a symlink owned by scripts/agents/install-soul-runtime.sh
+# (→ config/agents/hermes/SOUL.runtime.md). harness-update.sh re-runs that
+# installer so the symlink self-heals; copying the delta here would clobber it.
 if [[ -f "$HERMES_TEMPLATE" ]]; then
     sync_hermes_yaml_config "$HERMES_TEMPLATE" "$HERMES_TARGET" "Hermes config"
-fi
-if [[ -f "$HERMES_SOUL_TEMPLATE" ]]; then
-    sync_hermes_plain_file "$HERMES_SOUL_TEMPLATE" "$HERMES_SOUL_TARGET" "Hermes SOUL.md"
 fi
 
 # ── Restore agent memory snapshots on fresh machine ───────────────────
