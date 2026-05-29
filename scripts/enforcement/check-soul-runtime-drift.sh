@@ -24,10 +24,18 @@ QUIET=0
 TMPDIR="$(mktemp -d)"
 trap 'rm -rf "${TMPDIR}"' EXIT
 
-# Mirror the build script's emit logic into a tmp tree so we can diff
-# without mutating the committed artifacts.
+# Rebuild ALL runtime artifacts via the REAL build script into a tmp tree, then diff.
+# (#2841 Phase B) — we no longer re-implement emit logic inline; that duplication
+# silently broke when build-soul-runtime.sh gained the codex AGENTS.runtime.md
+# skill-index/rules append. Sources still read from REPO_ROOT; only output is redirected.
 SHARED="${REPO_ROOT}/config/agents/SHARED_SOUL.md"
 [[ -f "${SHARED}" ]] || { echo "ERROR: ${SHARED} not found" >&2; exit 2; }
+
+REBUILD_BASE="${TMPDIR}/config/agents"
+if ! SOUL_RUNTIME_OUT_BASE="${REBUILD_BASE}" bash "${REPO_ROOT}/scripts/agents/build-soul-runtime.sh" >/dev/null 2>&1; then
+    echo "ERROR: build-soul-runtime.sh failed during drift rebuild" >&2
+    exit 2
+fi
 
 drift_count=0
 
@@ -35,7 +43,7 @@ check_one() {
     local provider="$1" delta_file="$2" runtime_file="$3"
     local delta_path="${REPO_ROOT}/config/agents/${provider}/${delta_file}"
     local committed_path="${REPO_ROOT}/config/agents/${provider}/${runtime_file}"
-    local rebuilt_path="${TMPDIR}/${provider}-${runtime_file}"
+    local rebuilt_path="${REBUILD_BASE}/${provider}/${runtime_file}"
 
     if [[ ! -f "${delta_path}" ]]; then
         return 0
@@ -45,17 +53,6 @@ check_one() {
         drift_count=$((drift_count + 1))
         return 0
     fi
-
-    {
-        echo "<!-- BUILT by scripts/agents/build-soul-runtime.sh — edit ${delta_file} or SHARED_SOUL.md, not this file. -->"
-        echo "<!-- Refs: workspace-hub#2719 Phase 3. -->"
-        echo
-        cat "${SHARED}"
-        echo
-        echo "---"
-        echo
-        cat "${delta_path}"
-    } > "${rebuilt_path}"
 
     if ! diff -q "${committed_path}" "${rebuilt_path}" > /dev/null 2>&1; then
         echo "DRIFT  ${provider}/${runtime_file} — committed artifact differs from rebuilt sources"

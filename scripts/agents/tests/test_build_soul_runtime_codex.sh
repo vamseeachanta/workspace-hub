@@ -34,6 +34,16 @@ bash "${REPO_ROOT}/scripts/agents/build-soul-runtime.sh" >/dev/null 2>&1
 after=$(wc -l < "${AGENTS}")
 chk "rebuild is idempotent (no double-append)"    "[ '${before}' = '${after}' ]"
 
+# ── r2 review additions ──
+chk "drift checker passes after build (F1)"        "bash '${REPO_ROOT}/scripts/enforcement/check-soul-runtime-drift.sh' --quiet"
+chk "no empty (0-skill) family in index (F5)"      "! grep -qE '— 0 skill' '${AGENTS}'"
+chk "SOUL.delta has Skills section (Phase B)"      "grep -q 'Skills (no native loader' '${REPO_ROOT}/config/agents/codex/SOUL.delta.md'"
+chk "enumerate hint is recursive find, not ls (F2)" "! grep -qE 'ls .claude/skills/[^ ]+/\*/SKILL.md' '${AGENTS}'"
+# F2: a sampled family's index count equals its recursive find count
+wh_idx=$(awk '/^## Skill index/,/^## Universal rules/' "${AGENTS}" | sed -n 's/.*\*\*workspace-hub\/\*\* — \([0-9]*\) skill.*/\1/p')
+wh_real=$(find "${REPO_ROOT}/.claude/skills/workspace-hub" -name SKILL.md -not -path '*_archive*' 2>/dev/null | wc -l | tr -d ' ')
+chk "index count matches recursive find (F2)"      "[ -n '${wh_idx}' ] && [ '${wh_idx}' = '${wh_real}' ]"
+
 echo "---"
 if [ "${fail}" -gt 0 ]; then echo "FAILED: ${fail} check(s)"; exit 1; fi
 echo "ALL PASS"

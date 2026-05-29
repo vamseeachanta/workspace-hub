@@ -192,49 +192,48 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 ---
 
 ## Skill index
-> Codex has no native skill loader — enumerate + USE these. Indexed by FAMILY (top-level `.claude/skills/<family>/`); run `ls .claude/skills/<family>/*/SKILL.md` to list a family's skills. Workspace `.claude/skills/` wins over `.agents/skills/` and `~/.claude/plugins/`. Mandatory lifecycle skills: `coordination/issue-planning-mode`, `coordination/pre-completion-cleanup-audit`. Auto-generated — do not hand-edit.
+> Codex has no native skill loader — enumerate + USE these. Indexed by FAMILY (top-level `.claude/skills/<family>/`): each `name/` entry shows a recursive skill count + a `find` command to enumerate it; a bare `name` entry is itself a single leaf skill (description shown). Workspace `.claude/skills/` wins over `.agents/skills/` and `~/.claude/plugins/`. Mandatory lifecycle skills: `coordination/issue-planning-mode`, `coordination/pre-completion-cleanup-audit`. Auto-generated from live `.claude/skills/` — do not hand-edit; rebuild via build-soul-runtime.sh after skill changes.
 
-- **ai/** — 15 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
-- **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
-- **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
-- **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
-- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
-- **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
-- **business-marketing/** — 1 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
-- **coordination/** — 58 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
+- **ai/** — 15 skill(s); `find .claude/skills/ai -name SKILL.md -not -path '*_archive*'` to enumerate
+- **apple/** — 5 skill(s); `find .claude/skills/apple -name SKILL.md -not -path '*_archive*'` to enumerate
+- **autonomous-ai-agents/** — 9 skill(s); `find .claude/skills/autonomous-ai-agents -name SKILL.md -not -path '*_archive*'` to enumerate
+- **business/** — 74 skill(s); `find .claude/skills/business -name SKILL.md -not -path '*_archive*'` to enumerate
+- **business_admin/** — 1 skill(s); `find .claude/skills/business_admin -name SKILL.md -not -path '*_archive*'` to enumerate
+- **business-finance/** — 1 skill(s); `find .claude/skills/business-finance -name SKILL.md -not -path '*_archive*'` to enumerate
+- **business-marketing/** — 1 skill(s); `find .claude/skills/business-marketing -name SKILL.md -not -path '*_archive*'` to enumerate
+- **coordination/** — 58 skill(s); `find .claude/skills/coordination -name SKILL.md -not -path '*_archive*'` to enumerate
 - **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
-- **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate
-- **data/** — 81 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
-- **data-science/** — 1 skill(s); `ls .claude/skills/data-science/*/SKILL.md` to enumerate
-- **development/** — 71 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
-- **devops/** — 7 skill(s); `ls .claude/skills/devops/*/SKILL.md` to enumerate
-- **devtools/** — 1 skill(s); `ls .claude/skills/devtools/*/SKILL.md` to enumerate
-- **digitalmodel/** — 3 skill(s); `ls .claude/skills/digitalmodel/*/SKILL.md` to enumerate
-- **email/** — 10 skill(s); `ls .claude/skills/email/*/SKILL.md` to enumerate
-- **eng/** — 0 skill(s); `ls .claude/skills/eng/*/SKILL.md` to enumerate
-- **engineering/** — 89 skill(s); `ls .claude/skills/engineering/*/SKILL.md` to enumerate
+- **creative/** — 20 skill(s); `find .claude/skills/creative -name SKILL.md -not -path '*_archive*'` to enumerate
+- **data/** — 81 skill(s); `find .claude/skills/data -name SKILL.md -not -path '*_archive*'` to enumerate
+- **data-science/** — 1 skill(s); `find .claude/skills/data-science -name SKILL.md -not -path '*_archive*'` to enumerate
+- **development/** — 71 skill(s); `find .claude/skills/development -name SKILL.md -not -path '*_archive*'` to enumerate
+- **devops/** — 7 skill(s); `find .claude/skills/devops -name SKILL.md -not -path '*_archive*'` to enumerate
+- **devtools/** — 1 skill(s); `find .claude/skills/devtools -name SKILL.md -not -path '*_archive*'` to enumerate
+- **digitalmodel/** — 3 skill(s); `find .claude/skills/digitalmodel -name SKILL.md -not -path '*_archive*'` to enumerate
+- **email/** — 10 skill(s); `find .claude/skills/email -name SKILL.md -not -path '*_archive*'` to enumerate
+- **engineering/** — 89 skill(s); `find .claude/skills/engineering -name SKILL.md -not -path '*_archive*'` to enumerate
 - **extract-learnings-to-issues** — Extract unstructured user reflections and learnings, distill core themes, route insights to existing GitHub issues as contextual c
 - **field-dev-code-recon** — Extract field development information from external sources (LinkedIn posts, technical content), map against digitalmodel codebase
-- **finance/** — 3 skill(s); `ls .claude/skills/finance/*/SKILL.md` to enumerate
-- **gaming/** — 2 skill(s); `ls .claude/skills/gaming/*/SKILL.md` to enumerate
-- **github/** — 19 skill(s); `ls .claude/skills/github/*/SKILL.md` to enumerate
-- **leisure/** — 1 skill(s); `ls .claude/skills/leisure/*/SKILL.md` to enumerate
-- **marketing/** — 1 skill(s); `ls .claude/skills/marketing/*/SKILL.md` to enumerate
-- **mcp/** — 2 skill(s); `ls .claude/skills/mcp/*/SKILL.md` to enumerate
-- **media/** — 5 skill(s); `ls .claude/skills/media/*/SKILL.md` to enumerate
-- **mlops/** — 21 skill(s); `ls .claude/skills/mlops/*/SKILL.md` to enumerate
-- **operations/** — 17 skill(s); `ls .claude/skills/operations/*/SKILL.md` to enumerate
-- **productivity/** — 11 skill(s); `ls .claude/skills/productivity/*/SKILL.md` to enumerate
-- **red-teaming/** — 1 skill(s); `ls .claude/skills/red-teaming/*/SKILL.md` to enumerate
-- **research/** — 15 skill(s); `ls .claude/skills/research/*/SKILL.md` to enumerate
-- **science/** — 6 skill(s); `ls .claude/skills/science/*/SKILL.md` to enumerate
-- **smart-home/** — 1 skill(s); `ls .claude/skills/smart-home/*/SKILL.md` to enumerate
-- **social-media/** — 2 skill(s); `ls .claude/skills/social-media/*/SKILL.md` to enumerate
-- **software-development/** — 35 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
-- **test-dummy-validation/** — 1 skill(s); `ls .claude/skills/test-dummy-validation/*/SKILL.md` to enumerate
-- **travel/** — 8 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
-- **workspace-hub/** — 146 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
-- **workspace-hub-learned/** — 69 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
+- **finance/** — 3 skill(s); `find .claude/skills/finance -name SKILL.md -not -path '*_archive*'` to enumerate
+- **gaming/** — 2 skill(s); `find .claude/skills/gaming -name SKILL.md -not -path '*_archive*'` to enumerate
+- **github/** — 19 skill(s); `find .claude/skills/github -name SKILL.md -not -path '*_archive*'` to enumerate
+- **leisure/** — 1 skill(s); `find .claude/skills/leisure -name SKILL.md -not -path '*_archive*'` to enumerate
+- **marketing/** — 1 skill(s); `find .claude/skills/marketing -name SKILL.md -not -path '*_archive*'` to enumerate
+- **mcp/** — 2 skill(s); `find .claude/skills/mcp -name SKILL.md -not -path '*_archive*'` to enumerate
+- **media/** — 5 skill(s); `find .claude/skills/media -name SKILL.md -not -path '*_archive*'` to enumerate
+- **mlops/** — 21 skill(s); `find .claude/skills/mlops -name SKILL.md -not -path '*_archive*'` to enumerate
+- **operations/** — 17 skill(s); `find .claude/skills/operations -name SKILL.md -not -path '*_archive*'` to enumerate
+- **productivity/** — 11 skill(s); `find .claude/skills/productivity -name SKILL.md -not -path '*_archive*'` to enumerate
+- **red-teaming/** — 1 skill(s); `find .claude/skills/red-teaming -name SKILL.md -not -path '*_archive*'` to enumerate
+- **research/** — 15 skill(s); `find .claude/skills/research -name SKILL.md -not -path '*_archive*'` to enumerate
+- **science/** — 6 skill(s); `find .claude/skills/science -name SKILL.md -not -path '*_archive*'` to enumerate
+- **smart-home/** — 1 skill(s); `find .claude/skills/smart-home -name SKILL.md -not -path '*_archive*'` to enumerate
+- **social-media/** — 2 skill(s); `find .claude/skills/social-media -name SKILL.md -not -path '*_archive*'` to enumerate
+- **software-development/** — 35 skill(s); `find .claude/skills/software-development -name SKILL.md -not -path '*_archive*'` to enumerate
+- **test-dummy-validation/** — 1 skill(s); `find .claude/skills/test-dummy-validation -name SKILL.md -not -path '*_archive*'` to enumerate
+- **travel/** — 8 skill(s); `find .claude/skills/travel -name SKILL.md -not -path '*_archive*'` to enumerate
+- **workspace-hub/** — 146 skill(s); `find .claude/skills/workspace-hub -name SKILL.md -not -path '*_archive*'` to enumerate
+- **workspace-hub-learned/** — 69 skill(s); `find .claude/skills/workspace-hub-learned -name SKILL.md -not -path '*_archive*'` to enumerate
 
 ## Universal rules (inlined for Codex)
 > Claude reads .claude/rules/ natively; these are inlined here because Codex has no native rules loader. Domain/Claude-only rules (goal-invocation, calc-citation, wiki-routing) stay path-references.
