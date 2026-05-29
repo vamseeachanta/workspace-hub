@@ -396,6 +396,25 @@ tasks:
     is_claude_task: false
     description: Windows Task Scheduler — daily 04:50 Hermes→Claude repo-memory bridge via Git Bash. Issue #2846.
 
+  - id: consistency-weekly-check
+    label: Weekly orchestrator-consistency matrix + rolling drift issue
+    schedule: "15 6 * * 0"   # 06:15 Sun — offset from the daily 06:00 jobs (load contention)
+    machines: [dev-primary]
+    requires: [bash, git, gh]
+    prefer: dev-primary
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/consistency-weekly-check.sh
+      >> $WORKSPACE_HUB/logs/quality/consistency-weekly-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/consistency-weekly-*.log
+    is_claude_task: false
+    description: >-
+      Sunday 06:00 UTC (dev-primary ONLY — single owner avoids a concurrent rolling-issue
+      create race) — runs the per-machine probe (#2860) + SOUL drift + dream dead-letters
+      (#2845) + read-back freshness + cron-declared checks, renders the orchestrators×dimensions
+      matrix to docs/orchestrator-consistency/, and upserts ONE rolling consistency-drift issue
+      on divergence. Exit non-zero on drift. Issue #2841 (Phase C, the standing check).
+
 
   - id: cron-health
     label: Cron health check
