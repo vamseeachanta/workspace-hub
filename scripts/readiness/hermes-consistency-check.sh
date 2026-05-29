@@ -77,6 +77,10 @@ fi
 hdr "Memory"
 [ -f "$HERMES_HOME/memories/MEMORY.md" ] && ok "~/.hermes/memories/MEMORY.md present" \
   || wn "~/.hermes/memories/MEMORY.md absent (no read-back store yet — see #2854)"
+# Cross-provider read-back sink (#2841 Phase A): the bridge writes the consolidated
+# slice here on every machine. Absence = the read-back leg hasn't run on this host.
+[ -f "$HERMES_HOME/memories/cross-provider.md" ] && ok "~/.hermes/memories/cross-provider.md present (read-back leg, #2841)" \
+  || wn "~/.hermes/memories/cross-provider.md absent — run bridge-hermes-claude.sh (read-back leg, #2841)"
 CFG="$HERMES_HOME/config.yaml"
 if [ -f "$CFG" ]; then
   grep -qiE '^\s*memory_enabled:\s*true' "$CFG" && ok "memory_enabled: true" \

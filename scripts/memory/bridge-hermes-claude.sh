@@ -246,12 +246,53 @@ done
 echo ""
 
 # ---------------------------------------------------------------------------
+# 7b. Cross-provider read-back slices (#2841 Phase A, gap 1/2)
+#   Source = the git-tracked .claude/memory/ snapshot (machine-invariant — F1), so
+#   the committed Codex slice is identical across machines. The Codex slice is
+#   regenerated + committed ONLY on the single designated machine to avoid the
+#   cross-machine churn race; the Hermes local sink is written on every machine
+#   (local-only, NOT committed).
+# ---------------------------------------------------------------------------
+CURATE="${REPO_ROOT}/scripts/memory/curate_readback_slice.py"
+HOSTNAME_SHORT=$(hostname -s 2>/dev/null | tr '[:upper:]' '[:lower:]' || echo unknown)
+SLICE_OWNER=false
+[[ "${HOSTNAME_SHORT}" == "ace-linux-1" || "${HOSTNAME_SHORT}" == "dev-primary" ]] && SLICE_OWNER=true
+if [[ -f "${CURATE}" ]]; then
+    if command -v uv >/dev/null 2>&1 && uv run --no-project python -c "print(1)" >/dev/null 2>&1; then
+        RBPY=(uv run --no-project python)
+    else
+        RBPY=(python3)
+    fi
+    # Hermes local sink (every machine; not committed)
+    if [[ -d "${HOME}/.hermes/memories" ]]; then
+        if "${RBPY[@]}" "${CURATE}" --target hermes --source-dir "${REPO_ROOT}/.claude/memory" \
+                > "${HOME}/.hermes/memories/cross-provider.md" 2>/dev/null; then
+            echo "  ✅ ~/.hermes/memories/cross-provider.md (Hermes read-back slice)"
+        else
+            echo "  ⚠️  WARN: Hermes read-back slice emit failed"
+        fi
+    fi
+    # Codex slice (repo-tracked) — single designated machine only (F1)
+    if [[ "${SLICE_OWNER}" == true ]]; then
+        if "${RBPY[@]}" "${CURATE}" --target codex --source-dir "${REPO_ROOT}/.claude/memory" \
+                > "${REPO_ROOT}/config/agents/codex/MEMORY.runtime.md" 2>/dev/null; then
+            echo "  ✅ config/agents/codex/MEMORY.runtime.md (Codex read-back slice)"
+        else
+            echo "  ⚠️  WARN: Codex read-back slice emit failed"
+        fi
+    fi
+fi
+echo ""
+
+# ---------------------------------------------------------------------------
 # 8. Commit (only if --commit flag and changes exist)
 # ---------------------------------------------------------------------------
 if [[ "${COMMIT_MODE}" == "--commit" ]]; then
     cd "${REPO_ROOT}"
     # Diff-aware: only commit if something actually changed
     git add .claude/memory/
+    # Codex read-back slice (#2841) — staged only on the designated slice owner
+    [[ "${SLICE_OWNER}" == true ]] && git add config/agents/codex/MEMORY.runtime.md 2>/dev/null || true
     if git diff --cached --quiet; then
         echo "[bridge] No changes to commit — .claude/memory/ is already up to date"
         exit 0
