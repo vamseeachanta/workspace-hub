@@ -382,16 +382,34 @@ def test_collect_provenance_unknown_when_not_git(tmp_path):
     assert p["origin_ref_age_h"] == "unknown"
 
 
+def test_collect_ahead_main_recorded(tmp_path):
+    # ahead_main is emitted; current-with-main fixture → 0 (not "unknown")
+    p = _stdout_prov(_git_fixture(tmp_path))
+    assert p["ahead_main"] == 0
+
+
+def test_collect_ahead_main_counts_local_commits(tmp_path):
+    # a local commit ahead of origin/main → ahead_main > 0 (the unpushed-checkout case)
+    ws = _git_fixture(tmp_path)
+    _git(ws, "commit", "-q", "--allow-empty", "-m", "local ahead")   # HEAD ahead, origin/main not moved
+    p = _stdout_prov(ws)
+    assert p["ahead_main"] == 1
+    assert p["behind_main"] == 0
+
+
 def test_collect_sha_excluded_from_hash(tmp_path):
-    # A1: a checkout_sha change ALONE (empty commit, no measured-dim change) → NO rewrite
+    # A1: a checkout_sha change ALONE → NO rewrite. To change sha WITHOUT changing ahead/behind
+    # (which ARE hashed), advance origin/main in lockstep with HEAD — i.e. a normal pull where
+    # local and remote move together. Only checkout_sha differs → canonical payload identical.
     ws = _git_fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
     env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     first_mtime = out.stat().st_mtime_ns
-    _git(ws, "commit", "-q", "--allow-empty", "-m", "advance sha")   # HEAD sha changes; behind=0
+    _git(ws, "commit", "-q", "--allow-empty", "-m", "advance sha")
+    _git(ws, "update-ref", "refs/remotes/origin/main", "HEAD")       # origin advances too → ahead=behind=0
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
-    assert out.stat().st_mtime_ns == first_mtime     # sha churn alone must not rewrite
+    assert out.stat().st_mtime_ns == first_mtime     # only sha changed → must not rewrite
 
 
 def test_collect_dirty_change_forces_rewrite(tmp_path):

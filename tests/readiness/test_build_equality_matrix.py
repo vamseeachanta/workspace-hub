@@ -30,7 +30,8 @@ TIER1 = ["assetutilities", "digitalmodel", "worldenergydata", "assethold"]
 # A "fresh" provenance block (#2851): clean tree, current with main, recent origin ref.
 # is_stale() is fail-closed, so the default fixture MUST be fresh — otherwise every
 # verdict_for() test would short-circuit to STALE-CHECKOUT. Staleness is opt-in per test.
-FRESH_PROV = {"checkout_sha": "abc1234", "dirty": False, "behind_main": 0, "origin_ref_age_h": 1}
+FRESH_PROV = {"checkout_sha": "abc1234", "dirty": False, "behind_main": 0, "ahead_main": 0,
+              "origin_ref_age_h": 1}
 
 
 def _config(machines: dict) -> dict:
@@ -374,6 +375,22 @@ def test_is_stale_dirty_true():
 
 def test_is_stale_behind_main_positive():
     assert bem.is_stale(_report("dev-primary", provenance=_prov(behind_main=85))) is True
+
+
+def test_is_stale_ahead_main_positive():
+    # local commits NOT on origin/main (unpushed feature checkout) ⇒ non-canonical ⇒ stale
+    assert bem.is_stale(_report("dev-primary", provenance=_prov(ahead_main=2))) is True
+
+
+def test_is_stale_ahead_main_unknown_failclosed():
+    assert bem.is_stale(_report("dev-primary", provenance=_prov(ahead_main="unknown"))) is True
+
+
+def test_is_stale_dirty_missing_failclosed():
+    # a provenance block with dirty omitted (garbled / partial) must fail closed, not open
+    rep = _report("dev-primary")
+    del rep["provenance"]["dirty"]
+    assert bem.is_stale(rep) is True
 
 
 def test_is_stale_behind_main_zero_string_ok():

@@ -144,9 +144,11 @@ def is_stale(report: dict) -> bool:
     p = report.get("provenance")
     if not isinstance(p, dict):
         return True
-    if p.get("dirty") is True:                       # uncommitted measured-path changes
-        return True
+    if p.get("dirty") is not False:                  # anything but an explicit clean flag ⇒ stale
+        return True                                  # (uncommitted changes, OR missing/garbled field)
     if p.get("behind_main") not in (0, "0"):         # behind OR "unknown"/absent ⇒ stale (BC2)
+        return True
+    if p.get("ahead_main") not in (0, "0"):          # local commits not on origin/main ⇒ non-canonical
         return True
     age = p.get("origin_ref_age_h")
     if age in (None, "unknown"):                     # can't prove the local origin ref is fresh
