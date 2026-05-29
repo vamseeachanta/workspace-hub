@@ -170,6 +170,10 @@ Codex `exec` (and the Codex GitHub connector) cannot read local files outside th
 
 At the start of a session, read **`config/agents/codex/MEMORY.runtime.md`** (repo-tracked, relative to the workspace root). It is a curated, budget-capped slice of the consolidated cross-provider memory (the Claude "dream" — durable learnings distilled from Codex/Gemini/Hermes/Claude sessions). It is **machine-invariant and auto-generated** by `scripts/memory/bridge-hermes-claude.sh` (#2841) — do not hand-edit. Treat its entries as durable workspace conventions/learnings; they complement (do not replace) the SHARED_SOUL gates above.
 
+## Skills (no native loader — use the Skill index)
+
+Codex has no native skill loader. The **Skill index** at the bottom of `AGENTS.runtime.md` lists every workspace skill family (`.claude/skills/<family>/`) with a count + an `ls` command to enumerate a family's skills. Consult it and **use** the relevant skill rather than improvising; workspace `.claude/skills/` wins over `.agents/skills/` and `~/.claude/plugins/`. Mandatory lifecycle skills: `coordination/issue-planning-mode` and `coordination/pre-completion-cleanup-audit`.
+
 ## Required Gates (Codex-specific extensions to SHARED_SOUL Hard Gates)
 
 Beyond the SHARED_SOUL.md Hard Gates, Codex sessions additionally enforce:

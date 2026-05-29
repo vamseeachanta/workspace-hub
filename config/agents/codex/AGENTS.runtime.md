@@ -170,6 +170,10 @@ Codex `exec` (and the Codex GitHub connector) cannot read local files outside th
 
 At the start of a session, read **`config/agents/codex/MEMORY.runtime.md`** (repo-tracked, relative to the workspace root). It is a curated, budget-capped slice of the consolidated cross-provider memory (the Claude "dream" — durable learnings distilled from Codex/Gemini/Hermes/Claude sessions). It is **machine-invariant and auto-generated** by `scripts/memory/bridge-hermes-claude.sh` (#2841) — do not hand-edit. Treat its entries as durable workspace conventions/learnings; they complement (do not replace) the SHARED_SOUL gates above.
 
+## Skills (no native loader — use the Skill index)
+
+Codex has no native skill loader. The **Skill index** at the bottom of `AGENTS.runtime.md` lists every workspace skill family (`.claude/skills/<family>/`) with a count + an `ls` command to enumerate a family's skills. Consult it and **use** the relevant skill rather than improvising; workspace `.claude/skills/` wins over `.agents/skills/` and `~/.claude/plugins/`. Mandatory lifecycle skills: `coordination/issue-planning-mode` and `coordination/pre-completion-cleanup-audit`.
+
 ## Required Gates (Codex-specific extensions to SHARED_SOUL Hard Gates)
 
 Beyond the SHARED_SOUL.md Hard Gates, Codex sessions additionally enforce:
@@ -184,3 +188,86 @@ Beyond the SHARED_SOUL.md Hard Gates, Codex sessions additionally enforce:
 `~/.codex/AGENTS.md` on this machine contains a `sed`-derived copy of `~/.claude/CLAUDE.md` with `s/claude/Codex/g` substitutions (broken — should have been `s/claude/codex/g`). Resulting `.Codex/memory/` path is wrong (capital C). The generator is NOT in any tracked script. (`feedback_codex_bootstrap_untracked_sed_origin` — write-time pending)
 
 The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.com/vamseeachanta/workspace-hub/issues/2719) Phase 4) which symlinks `~/.codex/AGENTS.md` to the committed `config/agents/codex/AGENTS.runtime.md` artifact, bypassing the broken sed pattern entirely.
+
+---
+
+## Skill index
+> Codex has no native skill loader — enumerate + USE these. Indexed by FAMILY (top-level `.claude/skills/<family>/`); run `ls .claude/skills/<family>/*/SKILL.md` to list a family's skills. Workspace `.claude/skills/` wins over `.agents/skills/` and `~/.claude/plugins/`. Mandatory lifecycle skills: `coordination/issue-planning-mode`, `coordination/pre-completion-cleanup-audit`. Auto-generated — do not hand-edit.
+
+- **ai/** — 15 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
+- **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
+- **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
+- **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
+- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
+- **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
+- **business-marketing/** — 1 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
+- **coordination/** — 58 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
+- **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
+- **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate
+- **data/** — 81 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
+- **data-science/** — 1 skill(s); `ls .claude/skills/data-science/*/SKILL.md` to enumerate
+- **development/** — 71 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
+- **devops/** — 7 skill(s); `ls .claude/skills/devops/*/SKILL.md` to enumerate
+- **devtools/** — 1 skill(s); `ls .claude/skills/devtools/*/SKILL.md` to enumerate
+- **digitalmodel/** — 3 skill(s); `ls .claude/skills/digitalmodel/*/SKILL.md` to enumerate
+- **email/** — 10 skill(s); `ls .claude/skills/email/*/SKILL.md` to enumerate
+- **eng/** — 0 skill(s); `ls .claude/skills/eng/*/SKILL.md` to enumerate
+- **engineering/** — 89 skill(s); `ls .claude/skills/engineering/*/SKILL.md` to enumerate
+- **extract-learnings-to-issues** — Extract unstructured user reflections and learnings, distill core themes, route insights to existing GitHub issues as contextual c
+- **field-dev-code-recon** — Extract field development information from external sources (LinkedIn posts, technical content), map against digitalmodel codebase
+- **finance/** — 3 skill(s); `ls .claude/skills/finance/*/SKILL.md` to enumerate
+- **gaming/** — 2 skill(s); `ls .claude/skills/gaming/*/SKILL.md` to enumerate
+- **github/** — 19 skill(s); `ls .claude/skills/github/*/SKILL.md` to enumerate
+- **leisure/** — 1 skill(s); `ls .claude/skills/leisure/*/SKILL.md` to enumerate
+- **marketing/** — 1 skill(s); `ls .claude/skills/marketing/*/SKILL.md` to enumerate
+- **mcp/** — 2 skill(s); `ls .claude/skills/mcp/*/SKILL.md` to enumerate
+- **media/** — 5 skill(s); `ls .claude/skills/media/*/SKILL.md` to enumerate
+- **mlops/** — 21 skill(s); `ls .claude/skills/mlops/*/SKILL.md` to enumerate
+- **operations/** — 17 skill(s); `ls .claude/skills/operations/*/SKILL.md` to enumerate
+- **productivity/** — 11 skill(s); `ls .claude/skills/productivity/*/SKILL.md` to enumerate
+- **red-teaming/** — 1 skill(s); `ls .claude/skills/red-teaming/*/SKILL.md` to enumerate
+- **research/** — 15 skill(s); `ls .claude/skills/research/*/SKILL.md` to enumerate
+- **science/** — 6 skill(s); `ls .claude/skills/science/*/SKILL.md` to enumerate
+- **smart-home/** — 1 skill(s); `ls .claude/skills/smart-home/*/SKILL.md` to enumerate
+- **social-media/** — 2 skill(s); `ls .claude/skills/social-media/*/SKILL.md` to enumerate
+- **software-development/** — 35 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
+- **test-dummy-validation/** — 1 skill(s); `ls .claude/skills/test-dummy-validation/*/SKILL.md` to enumerate
+- **travel/** — 8 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
+- **workspace-hub/** — 146 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
+- **workspace-hub-learned/** — 69 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
+
+## Universal rules (inlined for Codex)
+> Claude reads .claude/rules/ natively; these are inlined here because Codex has no native rules loader. Domain/Claude-only rules (goal-invocation, calc-citation, wiki-routing) stay path-references.
+
+### coding-style
+# Coding Style Rules — Universal
+
+## Edit Safety
+- Prefer targeted single-site edits over bulk find-replace — verify each change site
+- After edits: confirm imports not mangled, no duplicate definitions, no deleted adjacent code
+- Multi-file refactors: edit one file at a time, run tests between files
+
+## Path Handling
+- In scripts: use relative paths or `$(git rev-parse --show-toplevel)` / `${REPO_ROOT}` — never hardcode absolute paths (enforced: `scripts/enforcement/check-no-abs-paths.sh`)
+- Absolute paths permitted only when a tool call explicitly requires them (e.g., `file_path` parameter)
+
+## Agent Harness Files
+CLAUDE.md, MEMORY.md, AGENTS.md, GEMINI.md must not exceed 20 lines. Migrate excess to a skill or doc. (enforced: `scripts/enforcement/check-harness-file-size.sh`)
+
+### patterns
+# Design Patterns Rules — Universal
+
+## Enforcement Gradient
+
+Rules exist on a maturity spectrum. Move rules toward stronger enforcement over time:
+
+| Level | Mechanism | Reliability | When to use |
+|---|---|---|---|
+| 0 — Prose | Skill file | Lowest — only if invoked | Broad guidance |
+| 1 — Micro-skill | Per-stage file, auto-loaded | Medium — guaranteed at stage entry | Stage-specific checklists |
+| 2 — Script | Shell/Python, called from skill or CI | High — auditable, testable | Binary checks: did/didn't |
+| 3 — Hook | pre-commit / stop-hook | Strongest — fires automatically | Must-never-miss enforcement |
+
+Migration path: when a prose rule can be expressed as exit 0/1, write a script. When it must fire on every commit, promote to a hook.
+
+Level-2 examples (#2322): `scripts/enforcement/check-no-abs-paths.sh`, `scripts/enforcement/check-harness-file-size.sh`.
