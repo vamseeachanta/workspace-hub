@@ -43377,3 +43377,120 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2886
+    title: 'Disposition: bulk-close 48 content-free WRK-XXXX:untitled migration-ghost issues (ops board cleanup, #2878)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2886
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2888
+    title: 'feat(workstations): AI-tool version-currency cell (installed vs latest) for all providers [#2887 R1]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2888
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:ai-tools
+      - domain:workstations
+      - machine:multi
+      - status:needs-plan
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2889
+    title: 'feat(workstations): per-provider harness-parity cell (memory/skills/workflow × Claude/Codex/Hermes) [#2887 R2]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2889
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:memory
+      - domain:workstations
+      - machine:multi
+      - agent:claude
+      - agent:codex
+      - status:needs-plan
+      - gate:completeness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2890
+    title: 'feat(workstations): repo-sync-status cell (ahead/behind/dirty/detached) in equivalence status [#2887 R3]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2890
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - domain:workstations
+      - machine:multi
+      - status:needs-plan
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2891
+    title: 'feat(workstations): network/data-availability reachability cell (mounts, GitHub, provider APIs, license servers) [#2887 R4]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2891
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - domain:workstations
+      - machine:multi
+      - status:needs-plan
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2892
+    title: 'feat(workstations): OSS custom-program inventory + version-currency dimension (OpenFOAM/Blender/CalculiX/Gmsh/Capytaine) [#2887 R5]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2892
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - domain:workstations
+      - machine:multi
+      - status:needs-plan
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2893
+    title: 'feat(workstations): cross-provider statusline parity (Claude/Codex/Gemini/Hermes equivalent) [#2887 R6]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2893
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - domain:workstations
+      - machine:multi
+      - status:needs-plan
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

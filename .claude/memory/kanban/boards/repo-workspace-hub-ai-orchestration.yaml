@@ -557,3 +557,21 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2887
+    title: 'epic(workstations): machine + AI-provider equivalence status — equal work across machines & providers [extends #2801]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2887
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+      - domain:workstations
+      - machine:multi
+      - gate:completeness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
