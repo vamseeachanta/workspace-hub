@@ -1,6 +1,6 @@
 # Plan for #2816 + #2815: Windows-side completion of the #2801 machine-equality matrix
 
-> **Status:** plan-review (NOT approved — awaiting USER)
+> **Status:** plan-review — **T2 review complete** (Claude r1 + Codex r2, 2026-05-30); design revised per the Adversarial Review Resolution section below. NOT approved — awaiting USER.
 > **Complexity:** #2816 = T2 · #2815 = T2 (combined, dependency-ordered)
 > **Date:** 2026-05-30
 > **Issues:** https://github.com/vamseeachanta/workspace-hub/issues/2816 · https://github.com/vamseeachanta/workspace-hub/issues/2815
@@ -144,7 +144,21 @@ Teach `setup-scheduler-tasks.ps1` to parse `schedule-tasks.yaml` (via `python -c
 - **Open (USER) — RAM floor value.** Recommend: land `.ps1`, capture one real run, set `ram_gib_min` to the owner-confirmed spec. Do not guess.
 - **Open (USER) — Windows tier-1 layout.** Brief/`context.md` suggest repos are NESTED under `D:\workspace-hub\` (unlike Linux siblings). The `data_access` probe handles both, so this only affects whether `required_data_access` resolves CONFORMS. Confirm the layout.
 
+## Adversarial Review Resolution (Codex r2 — 2026-05-30)
+Codex returned MAJOR; both load-bearing claims were verified locally against `origin/main`. These **amend the Design / Files / Acceptance above**; artifact: `scripts/review/results/2026-05-30-plan-2816-2815-codex.md`.
+
+| # | Finding | Verified | Resolution |
+|---|---|---|---|
+| W1 | **The report is never committed/pushed.** `collect-equality.sh` ends at `printf … > "$OUT"; exit` — "commit-on-change" = idempotent file *rewrite*, NOT git push. A Windows report stays local; the central matrix never sees it. | ✅ `collect-equality.sh` tail = `printf > OUT`, no `git commit/push` | **`equality-report.ps1` MUST commit + push `.claude/state/equality-*.yaml` after a successful collect+build** (or explicitly delegate to a verified `win-session-state-commit` step). New AC + a test asserting the wrapper invokes the commit/push step. (Same gap exists for Linux but is covered by repo-sync; Windows must not assume it.) |
+| W2 | **PyYAML / `uv` env contract.** The `equality-report` task declares `requires: [bash, python3, uv]`; the matrix imports `yaml`. Windows has system `python` but no `uv` and possibly no PyYAML → `ModuleNotFoundError: yaml`. | ✅ `schedule-tasks.yaml` `equality-report.requires: [bash, python3, uv]`; `build-equality-matrix.py:22 import yaml` | **Explicit Windows Python environment contract (new AC):** the renderer/wrapper resolves a Python that has PyYAML — preference order: `uv run python` IF uv is present on the box, else system `python` with PyYAML confirmed installed (documented in the owner runbook + a preflight check that fails fast with a clear message). For the small YAML read in the renderer, prefer a stdlib-only extraction to avoid the dependency entirely. |
+| W3 | **Freshness mitigation was advisory, not an acceptance item.** A stale `origin/main` ref → every Windows cell STALE-CHECKOUT, yet the plan only *suggested* "ensure RepoSync / OR git fetch." | ✅ collector never fetches; `is_stale()` fail-closes | **Required:** `equality-report.ps1` runs a **freshness preflight** — `git fetch` (or verify FETCH_HEAD age + `behind_main==0`) BEFORE collecting; if it can't establish freshness, it **fails fast without writing a report** (no silent STALE-CHECKOUT). New AC + owner-run check of `origin_ref_age_h`/`behind_main`. |
+| W4 | **`ram_gib_min` restoration is unimplementable as written** — listed as a #2816 file change + acceptance, but the value is deferred to "owner runs once." | ✅ `harness-config.yaml` has no Windows RAM floor | **Split into a two-step gate:** #2816 lands the `.ps1` + captures one real `-Stdout` run; the `ram_gib_min` floor is set in a **follow-up commit** (within #2816) once the owner confirms the value, OR the owner supplies it before approval. Removed from the hard pre-floor acceptance; added as a gated post-evidence step. |
+| W5 (MINOR) | **EQ_* override seam needs numeric allowlisting**, not happy-path only — a null/failed CIM query or malformed `EQ_*` could emit `0`/empty/garbled YAML instead of `unknown`. | — | The `.sh` seam validates each `EQ_*` is a non-negative integer (counts/MiB/GiB) and **falls back to `unknown`** otherwise. New tests: empty, non-numeric, newline, negative, unit-suffixed values. |
+| W6 (MINOR) | **Scheduler tests are static string checks** — they don't cover cron(Mon-weekly)→TaskScheduler-trigger translation; the current PS1 only supports daily `-At` triggers, so a renderer could register a daily/wrong-day task and still pass. | ✅ `setup-scheduler-tasks.ps1` daily `-At` only | Add a **parser-level contract test** asserting the generated trigger metadata is weekly-Monday at the YAML time (not daily), exercising the cron→trigger translation, not just string presence. |
+
+**Amended Acceptance (supersedes conflicting items):** the wrapper commits+pushes state after success (W1); a Windows Python-with-PyYAML contract + fail-fast preflight (W2); a freshness preflight that fails fast rather than emit a STALE report (W3); `ram_gib_min` set in a gated follow-up after captured evidence (W4); EQ_* integer-validation with `unknown` fallback (W5); a weekly-Monday trigger contract test (W6).
+
 ## Complexity
-#2816 = **T2** (new `.ps1` + `.sh` seam + config + Python contract tests; owner-driven live verify). #2815 = **T2** (PS1 renderer + wrapper + YAML/test wiring; owner-driven live-validation). Combined review T2 (Claude + Codex).
+#2816 = **T2** (new `.ps1` + `.sh` seam + config + Python contract tests; owner-driven live verify). #2815 = **T2** (PS1 renderer + wrapper + YAML/test wiring; owner-driven live-validation). Combined review T2 (Claude + Codex — complete).
 
 *Not approved. Future-tense throughout. Awaiting USER approval to move `status:plan-review` → `status:plan-approved`.*

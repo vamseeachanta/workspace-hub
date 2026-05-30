@@ -1,6 +1,6 @@
 # Plan for #2817 (re-scoped): plan-approval gate trusts label-actor authority; retire the forgeable local marker
 
-> **Status:** plan-review (NOT approved — awaiting USER; T3 ⇒ Claude + Codex + Gemini)
+> **Status:** plan-review — **T3 review complete** (Claude r1 + Codex r2 + Gemini r3, 2026-05-30); design revised per the Adversarial Review Resolution section below. NOT approved — awaiting USER.
 > **Complexity:** T3 (systemic security gate)
 > **Date:** 2026-05-30
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2817
@@ -152,8 +152,24 @@ Gated behind `PLAN_APPROVAL_GATE_ENABLED` (staged rollout: the fail-closed gate 
 - **Freshness false-positives on legitimate force-push/rebase:** changes head time, can invalidate a still-valid approval → re-approve. Accepted for security; documented (mirrors #2798 reopen-on-freshness).
 - **5 MAJORs sourced from a comment, not a reviewed artifact:** the T3 review must produce the missing Codex artifact and may surface findings beyond the 5.
 
+## Adversarial Review Resolution (Codex r2 + Gemini r3 — 2026-05-30)
+Both providers confirmed the #2798 helper exists (validating the r1 correction) and returned MAJOR. These resolutions **amend the Design / Acceptance above** where they conflict; artifacts: `scripts/review/results/2026-05-30-plan-2817v3-{codex,gemini}.md`.
+
+| # | Finding (provider) | Resolution |
+|---|---|---|
+| R1 | **Staged-rollout fail-open window** — disabling the new gate behind `PLAN_APPROVAL_GATE_ENABLED` while demoting `require-plan-approval.sh` + retiring marker-parity leaves NEITHER authority enforcing (Codex + Gemini consensus) | **The old `require-plan-approval.sh` stays a HARD CI gate until `PLAN_APPROVAL_GATE_ENABLED=1` is verified green in CI.** The demotion of the old gate and the new gate's enforcement are the SAME atomic cutover — never a window with neither. Marker-parity retired only after the new required check is confirmed. |
+| R2 | **`pr_head_time` is wrong** — workflow-breaking (approval precedes implementation, so PR head always post-dates the label → re-approval after every push) AND forgeable via `GIT_COMMITTER_DATE` (Gemini + Codex) | **Drop `pr_head_time` entirely.** Freshness = `label_applied_at ≥ plan_revision_time` ONLY. All timestamps are **GitHub-observed** (timeline event times / commit `pushedDate`), never commit author/committer metadata. `synchronize` does NOT invalidate plan-approval (it's plan-approval, not PR-review). |
+| R3 | **Anti-substitution NOT closed** — resolver trusts PR body / commit trailers, which are PR-author-controlled; a `feat/misc-cleanup` PR with body `Refs #2817` borrows an unrelated fresh label (Codex + Gemini) | **Non-forgeable binding:** (a) linked issue resolved from the **branch name** (`feat/<N>-*`) and/or GitHub's native linked-issue metadata — NOT PR body/trailers for authority; (b) the **approved plan artifact path + revision SHA must be recorded ON THE ISSUE by an authorized actor** (an owner posts the plan link), and the gate checks the PR touches that plan path. PR-body refs are advisory hints only, never the authority. |
+| R4 | **PAT/machine-user rejection overclaimed** — GitHub timeline cannot distinguish a human click from a PAT/machine-user of `type: User` (Codex) | **Narrow the claim — it is a POLICY control, not a runtime detection.** The gate rejects `*[bot]`/`type: Bot` (detectable) and requires `actor ∈ PLAN_APPROVAL_OWNERS`; preventing PAT/machine-user abuse relies on the **enforceable external controls**: a human-only OWNERS allowlist (no machine accounts admitted), a **protected-label repo ruleset** restricting who can apply `status:plan-approved`, and audit logging. The plan no longer claims runtime PAT detection. |
+| R5 | **Gate is not a required status check** — a fail-closed-but-not-required check still allows maintainer/auto-merge bypass (Codex) | **New AC + test: the "Plan Approval Check" MUST be a branch-protection / ruleset *required status check* on `main`** before `require-plan-approval.sh` + marker-parity are retired. Documented as an admin prerequisite alongside the label ruleset. |
+| R6 | **Shared-helper refactor not behavior-preserving** — `allow_bots=False` default would start failing completeness closes if `COMPLETENESS_OWNERS` holds a service account (Codex, MINOR) | **`is_authorized_human` bot-rejection is OPT-IN per caller.** The completeness gate keeps its exact current membership-only check (no new bot rejection); only the #2817 gate opts into `reject_bots=True`. The refactor is a pure extraction; `tests/workflow/test_completeness_gate_check.py` must stay green unchanged. |
+
+**OWNERS decision (user-confirmed):** `PLAN_APPROVAL_OWNERS` is a **comma-separated list of human logins**, bootstrapped to `vamseeachanta`, extensible to future collaborators. Startup asserts no entry resolves to `type: Bot`.
+
+**Amended Acceptance Criteria (supersede the conflicting items above):** freshness binds to `plan_revision_time` only (GitHub-observed); anti-substitution requires branch-name/linked-issue resolution + owner-recorded plan-artifact binding (PR body never authoritative); PAT/machine-user mitigation is the OWNERS-allowlist + protected-label-ruleset + audit policy (not runtime detection); the Plan Approval Check is a **required** status check before any old gate is retired; the old `require-plan-approval.sh` stays hard until the new required check is green; the shared-helper refactor leaves all completeness tests green unchanged.
+
 ## Complexity: T3
-Systemic, security-critical (a wrong fail-open re-opens the bypass), cross-provider (`.claude`+`.codex`), touches a shared helper used by another live gate, needs a repo-ruleset admin prerequisite + migration. ⇒ Claude + Codex + Gemini review.
+Systemic, security-critical (a wrong fail-open re-opens the bypass), cross-provider (`.claude`+`.codex`), touches a shared helper used by another live gate, needs a repo-ruleset admin prerequisite + migration. ⇒ Claude + Codex + Gemini review (complete).
 
 ## Open Questions (need the USER)
 1. `PLAN_APPROVAL_OWNERS` membership — presumably just `vamseeachanta` (solo). Confirm the exact human login set + that the repo ruleset can be admin-configured to restrict the label.
