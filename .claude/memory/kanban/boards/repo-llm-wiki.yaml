@@ -1424,3 +1424,33 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#199
+    title: '[verification] Structural-triage refresh: ~13k untriaged table rows after 13-publisher influx (precursor to #135)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/199
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#200
+    title: '[quality] Code_id dedup + heuristic refinement: same standard fragmented across code_ids'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/200
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#201
+    title: '[corpus-ingest] OCR backlog: image-only / DRM-locked PDFs in _skipped.csv (low-extractable-text / open-failed)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/201
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

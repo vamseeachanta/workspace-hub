@@ -43349,3 +43349,31 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2878
+    title: 'Kanban: reorganize boards by domain → subdomain (right-size oversized boards); pilot digitalmodel, then ecosystem-wide'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2878
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2880
+    title: 'feat(codex): make yolo-equivalent permission defaults travel across machines'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2880
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:ai-config
+      - machine:multi
+      - agent:codex
+      - status:needs-plan
+      - gate:completeness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
