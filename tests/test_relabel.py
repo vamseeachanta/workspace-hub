@@ -198,3 +198,54 @@ def test_load_remap_rejects_duplicate_issue(rl, tmp_path):
     )
     with pytest.raises(Exception):
         rl.load_remap(p)
+
+
+# ── adversarial-review regressions ───────────────────────────────────────────
+
+def test_plan_relabel_rejects_invalid_target(rl):
+    # E: the pure core must self-validate, not trust callers.
+    for bad in ["", "domain:y", "Bad Domain", "UPPER"]:
+        with pytest.raises(ValueError):
+            rl.plan_relabel(["enhancement"], bad)
+
+
+@pytest.mark.parametrize("body", [
+    "repo: r\n",                                   # missing remap
+    "repo: r\nremap: []\n",                        # empty list
+    "repo: r\nremaps:\n  - issue: 1\n    domain: a\n",  # misspelled key
+    "repo: r\nremap:\n  - just-a-string\n",        # non-mapping entry
+])
+def test_load_remap_fails_closed_on_empty_or_malformed(rl, tmp_path, body):
+    # D: a reviewed batch must NOT silently no-op (esp. under --apply).
+    p = tmp_path / "remap.yaml"
+    p.write_text(body, encoding="utf-8")
+    with pytest.raises(Exception):
+        rl.load_remap(p)
+
+
+@pytest.mark.parametrize("issue_yaml", ["true", "0", "-3"])
+def test_load_remap_rejects_bool_zero_negative_issue(rl, tmp_path, issue_yaml):
+    # F: bool is a subclass of int; 0/negatives are not real issues.
+    p = tmp_path / "remap.yaml"
+    p.write_text(f"repo: r\nremap:\n  - issue: {issue_yaml}\n    domain: a\n", encoding="utf-8")
+    with pytest.raises(Exception):
+        rl.load_remap(p)
+
+
+def test_throttle_excludes_primary_rate_limit(rl):
+    # G: primary hourly limit is NOT backoff-clearable -> must fail fast.
+    runner = FakeRunner([(1, "", "API rate limit exceeded for user")])
+    ok = rl.apply_relabel("r", 7, {"add": ["domain:x"], "remove": []},
+                          runner=runner, sleep=lambda s: None, max_retries=3)
+    assert ok is False
+    assert len(runner.calls) == 1, "primary rate limit must not be retried"
+
+
+def test_throttle_matches_abuse_detection(rl):
+    # G: secondary/abuse limit IS retryable.
+    runner = FakeRunner([(1, "", "You have triggered an abuse detection mechanism"),
+                         (0, "", "")])
+    ok = rl.apply_relabel("r", 7, {"add": ["domain:x"], "remove": []},
+                          runner=runner, sleep=lambda s: None, max_retries=3)
+    assert ok is True
+    assert len(runner.calls) == 2

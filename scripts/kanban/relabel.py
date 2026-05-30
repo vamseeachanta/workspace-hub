@@ -49,7 +49,13 @@ except ImportError:
 
 DOMAIN_PREFIX = "domain:"
 _DOMAIN_RE = re.compile(r"^[a-z0-9-]+$")
-_THROTTLE_RE = re.compile(r"submitted too quickly|secondary rate|rate limit", re.I)
+# Only the SECONDARY/abuse limits are backoff-clearable in a few retries. The
+# PRIMARY hourly "API rate limit exceeded" is NOT (matching bare "rate limit"
+# would waste retries on it), so it is deliberately excluded -> fail fast.
+_THROTTLE_RE = re.compile(
+    r"submitted too quickly|secondary rate limit|abuse detection|please wait a few",
+    re.I,
+)
 
 
 def validate_domain(domain: str) -> bool:
@@ -63,7 +69,14 @@ def plan_relabel(labels: list[str], target_domain: str) -> dict:
     Removes every other `domain:` label (enforcing one-domain), adds the target
     only when absent (assign-missing + idempotent). Non-`domain:` labels are
     never touched. Returns {"add": [...], "remove": [...]}.
+
+    Raises ValueError on an invalid target slug — this is the reusable pure core,
+    so it self-validates rather than trusting every future caller to pre-check
+    (load_remap also validates, but a direct caller must not be able to plan a
+    malformed `domain:` label).
     """
+    if not validate_domain(target_domain):
+        raise ValueError(f"invalid target domain slug: {target_domain!r}")
     target = f"{DOMAIN_PREFIX}{target_domain}"
     existing_domains = [l for l in labels if l.startswith(DOMAIN_PREFIX)]
     remove = [l for l in existing_domains if l != target]
@@ -126,13 +139,21 @@ def load_remap(path: Path) -> dict:
     repo = data.get("repo")
     if not repo:
         raise ValueError("remap: missing 'repo'")
+    remap = data.get("remap")
+    # Fail closed on an empty/misspelled batch (`remaps:` typo, `remap: []`) — a
+    # reviewed migration must NOT silently no-op-and-exit-0 under --apply.
+    if not isinstance(remap, list) or not remap:
+        raise ValueError("remap: 'remap' must be a non-empty list of {issue, domain}")
     seen: set[int] = set()
     out = []
-    for entry in data.get("remap") or []:
+    for entry in remap:
+        if not isinstance(entry, dict):
+            raise ValueError(f"remap: each entry must be a mapping, got {entry!r}")
         issue = entry.get("issue")
         domain = entry.get("domain")
-        if not isinstance(issue, int):
-            raise ValueError(f"remap: issue must be an int, got {issue!r}")
+        # bool is a subclass of int — reject it explicitly; require a positive issue.
+        if isinstance(issue, bool) or not isinstance(issue, int) or issue <= 0:
+            raise ValueError(f"remap: issue must be a positive int, got {issue!r}")
         if not validate_domain(domain or ""):
             raise ValueError(f"remap: invalid domain {domain!r} for issue #{issue}")
         if issue in seen:

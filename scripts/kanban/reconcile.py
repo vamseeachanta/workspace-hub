@@ -73,6 +73,15 @@ def repo_root() -> Path:
     return Path(__file__).resolve().parents[2]
 
 
+def _coerce_int(value, default: int = 0) -> int:
+    """Tolerant int — a non-numeric/None manifest card_count must NOT crash the
+    reconcile (this runs on the */20 cron critical path)."""
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
 def load_yaml(path: Path) -> dict:
     data = yaml_rt().load(path.read_text(encoding="utf-8"))
     return data or {}
@@ -212,7 +221,7 @@ def load_manifest_entries(kanban_root: Path) -> list[BoardEntry]:
                 repo=raw.get("repo"),
                 domain=raw.get("domain"),
                 file=kanban_root / file_name,
-                card_count=int(raw.get("card_count") or 0),
+                card_count=_coerce_int(raw.get("card_count")),
             )
         )
     return entries
@@ -309,7 +318,7 @@ def update_manifest_counts(kanban_root: Path) -> bool:
         if not board_path.exists():
             continue
         actual = count_issue_cards(load_yaml(board_path))
-        if raw.get("card_count") != actual:
+        if _coerce_int(raw.get("card_count")) != actual:
             raw["card_count"] = actual
             changed = True
     if changed:
@@ -608,17 +617,21 @@ def main(argv: list[str] | None = None) -> int:
         print("DRY-RUN: no files written")
 
     # On-demand card_count recompute (writes manifest.yaml; skipped in dry-run).
+    counts_fixed = False
     if args.update_counts and not args.dry_run:
-        print("manifest card_count recomputed"
-              if update_manifest_counts(root) else "manifest card_count already current")
+        counts_fixed = update_manifest_counts(root)
+        print("manifest card_count recomputed" if counts_fixed
+              else "manifest card_count already current")
 
-    # Always surface the size + drift reports (informational, never blocks).
+    # Always surface the size report (informational, never blocks).
     if result.oversized:
         print(f"\nNOTE: {len(result.oversized)} board(s) over the {args.size_limit}-card "
               "policy (workspace-hub#2878):", file=sys.stderr)
         for slug, n in result.oversized:
             print(f"  oversized: {slug} = {n}", file=sys.stderr)
-    if result.count_drift:
+    # Drift report — suppressed when --update-counts just fixed it (the drift was
+    # computed pre-update, so printing it would falsely tell the operator to re-run).
+    if result.count_drift and not (args.update_counts and not args.dry_run):
         print(f"\nNOTE: {len(result.count_drift)} manifest card_count drift(s) "
               "(run --update-counts to fix):", file=sys.stderr)
         for slug, old, new in result.count_drift:

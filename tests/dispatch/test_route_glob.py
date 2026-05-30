@@ -120,6 +120,33 @@ def test_question_mark_and_charclass_globs(route):
     assert route.match_rule(rules, repo="r", domain="codes-zzz", gh_labels=[])["assign"] == DEFAULT
 
 
+# ── domain_family: precise parent-or-(parent-)child (not a greedy prefix) ─────
+
+def _family_rules():
+    return [
+        {"match": {"domain_family": "hydro"}, "assign": LICENSED},
+        {"match": {}, "assign": DEFAULT},
+    ]
+
+
+@pytest.mark.parametrize("domain", ["hydro", "hydro-diffraction", "hydro-mooring"])
+def test_domain_family_matches_parent_and_children(route, domain):
+    got = route.match_rule(_family_rules(), repo="r", domain=domain, gh_labels=[])
+    assert got["assign"] == LICENSED
+
+
+@pytest.mark.parametrize("domain", ["hydrocarbon", "hydrostatic", "hydrology", "hydro2", "subsea"])
+def test_domain_family_does_not_over_match_prefix(route, domain):
+    # the bare-glob bug: `hydro*` matched these; `domain_family: hydro` must NOT.
+    got = route.match_rule(_family_rules(), repo="r", domain=domain, gh_labels=[])
+    assert got["assign"] == DEFAULT, f"{domain} must NOT match the hydro family"
+
+
+def test_domain_family_none_domain_does_not_match(route):
+    got = route.match_rule(_family_rules(), repo="r", domain=None, gh_labels=[])
+    assert got["assign"] == DEFAULT
+
+
 # ── Integration: the REAL routing-rules.yaml must route the #2878 splits ──────
 
 @pytest.mark.parametrize("domain", ["hydro", "hydro-diffraction", "hydro-mooring",
@@ -134,3 +161,14 @@ def test_live_rules_route_digitalmodel_splits_to_licensed(route, domain):
                            domain=domain, gh_labels=[])
     assert got.get("assign", {}).get("machine") == "licensed-win-1", (
         f"domain {domain!r} must route to licensed-win-1, got {got}")
+
+
+@pytest.mark.parametrize("domain", ["hydrocarbon", "hydrostatic", "solverless", "subsea"])
+def test_live_rules_do_not_overmatch_prefix(route, domain):
+    """The shipped rules must NOT pin unrelated hydro*/solver* prefixes to the
+    licensed box (the domain_family fix for the adversarial-review over-match)."""
+    cfg = route.load_rules()
+    got = route.match_rule(cfg.get("rules", []), repo="vamseeachanta/digitalmodel",
+                           domain=domain, gh_labels=[])
+    assert got.get("assign", {}).get("machine") != "licensed-win-1", (
+        f"domain {domain!r} must NOT route to licensed-win-1, got {got}")

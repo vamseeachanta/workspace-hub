@@ -110,3 +110,47 @@ def test_update_manifest_counts_rewrites_to_actual(rc, tmp_path):
     assert "card_count: 99" not in text
     # idempotent: a second run makes no change
     assert rc.update_manifest_counts(kanban) is False
+
+
+# ── adversarial-review regressions ───────────────────────────────────────────
+
+@pytest.mark.parametrize("value,expected", [(5, 5), ("7", 7), (None, 0), ("tbd", 0), ("", 0)])
+def test_coerce_int_is_tolerant(rc, value, expected):
+    # MAJOR: a non-numeric manifest card_count must NEVER crash the reconcile
+    # (load_manifest_entries runs at the top of every */20 cron run).
+    assert rc._coerce_int(value) == expected
+
+
+def test_non_numeric_card_count_does_not_crash_manifest_load(rc, tmp_path):
+    kanban = tmp_path
+    (kanban / "boards").mkdir()
+    (kanban / "boards" / "repo-x.yaml").write_text(
+        "board:\n  slug: repo-x\ncards: []\n", encoding="utf-8")
+    (kanban / "manifest.yaml").write_text(
+        "manifest:\n  boards:\n"
+        "    - slug: repo-x\n      tier: repo\n      repo: r\n      domain: null\n"
+        "      file: boards/repo-x.yaml\n      card_count: tbd\n",
+        encoding="utf-8",
+    )
+    entries = rc.load_manifest_entries(kanban)  # must not raise
+    assert entries[0].card_count == 0
+    # update_manifest_counts heals the bad value to the real count (0 here).
+    assert rc.update_manifest_counts(kanban) is False  # already 0 actual
+
+
+def test_update_manifest_counts_heals_non_numeric(rc, tmp_path):
+    kanban = tmp_path
+    (kanban / "boards").mkdir()
+    (kanban / "boards" / "repo-x.yaml").write_text(
+        "board:\n  slug: repo-x\ncards:\n"
+        "  - idempotency_key: gh:r#1\n    source: github_issue\n",
+        encoding="utf-8",
+    )
+    (kanban / "manifest.yaml").write_text(
+        "manifest:\n  boards:\n"
+        "    - slug: repo-x\n      tier: repo\n      repo: r\n"
+        "      file: boards/repo-x.yaml\n      card_count: tbd\n",
+        encoding="utf-8",
+    )
+    assert rc.update_manifest_counts(kanban) is True
+    assert "card_count: 1" in (kanban / "manifest.yaml").read_text(encoding="utf-8")
