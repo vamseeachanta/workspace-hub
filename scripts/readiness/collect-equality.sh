@@ -31,11 +31,15 @@ HOST="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
 case "$(uname -s 2>/dev/null)" in
   Linux) OS="linux";; Darwin) OS="macos";; MINGW*|MSYS*|CYGWIN*) OS="windows";; *) OS="unknown";;
 esac
-# EQ_OS_OVERRIDE: force the OS branch (companion/test seam). The collect-equality.ps1 companion
-# runs under Git Bash (uname → MINGW → "windows") so it does NOT need this; it exists so the
-# Linux contract test can exercise the windows EQ_* override seam (#2816 W5). Allowlisted values
-# only — never trusts arbitrary input to pick a code path.
-case "${EQ_OS_OVERRIDE:-}" in linux|macos|windows|unknown) OS="$EQ_OS_OVERRIDE";; esac
+# EQ_OS_OVERRIDE: force the OS branch — TEST SEAM ONLY, double-gated behind the explicit
+# EQ_TEST_ENABLE_OS_OVERRIDE=1 flag so ambient production env can NEVER spoof the collector OS.
+# (A bare override would let a Linux host misreport os: windows + trusted Windows compute —
+# Codex code-review MAJOR.) The collect-equality.ps1 companion runs under Git Bash
+# (uname → MINGW → "windows") and never sets the test flag; this exists only so the Linux contract
+# test can exercise the windows EQ_* override seam (#2816 W5). Allowlisted values only.
+if [[ "${EQ_TEST_ENABLE_OS_OVERRIDE:-}" == "1" ]]; then
+  case "${EQ_OS_OVERRIDE:-}" in linux|macos|windows|unknown) OS="$EQ_OS_OVERRIDE";; esac
+fi
 if [[ -z "$MACHINE" ]]; then
   case "$HOST" in
     ace-linux-1*) MACHINE="dev-primary";; ace-linux-2*) MACHINE="dev-secondary";;

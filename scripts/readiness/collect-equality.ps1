@@ -71,13 +71,13 @@ function Test-Fresh {
         if (-not [System.IO.Path]::IsPathRooted($commonDir)) {
             $commonDir = Join-Path $Repo $commonDir
         }
-        $refPath = $null
-        foreach ($r in @('FETCH_HEAD', 'refs/remotes/origin/main')) {
-            $candidate = Join-Path $commonDir $r
-            if (Test-Path $candidate) { $refPath = $candidate; break }
-        }
-        if (-not $refPath) {
-            return @{ Fresh = $false; Reason = 'fetch failed and no local origin ref to age-check' }
+        # Age-check the tracked origin/main ref ONLY — NOT FETCH_HEAD. FETCH_HEAD is bumped by ANY
+        # fetch (e.g. of an unrelated branch) and does not prove origin/main itself is fresh, so a
+        # recent unrelated fetch could falsely pass freshness while origin/main is stale. If the
+        # loose ref is absent (packed/never-fetched), we cannot prove freshness -> fail closed.
+        $refPath = Join-Path $commonDir 'refs/remotes/origin/main'
+        if (-not (Test-Path $refPath)) {
+            return @{ Fresh = $false; Reason = 'fetch failed and no loose origin/main ref to age-check' }
         }
         $ageH = ((Get-Date) - (Get-Item $refPath).LastWriteTime).TotalHours
         if ($ageH -lt 0 -or $ageH -gt 12) {
@@ -99,12 +99,19 @@ if (-not $freshness.Fresh) {
 $cs = Get-CimInstance Win32_ComputerSystem
 $os = Get-CimInstance Win32_OperatingSystem
 
+# Each CIM value is $null-guarded BEFORE arithmetic: PowerShell coerces a missing/null numeric
+# to 0 in math (e.g. [math]::Floor($null / 1MB) == 0), which eqint() would accept as a valid 0 and
+# mis-grade as BELOW-BASELINE instead of MISSING-EVIDENCE. A degraded CIM response must emit
+# "unknown" (the .sh validator keeps it unknown -> matrix grades MISSING-EVIDENCE, fail-closed).
 # cores
-$env:EQ_CORES = [string]$cs.NumberOfLogicalProcessors
+$env:EQ_CORES = if ($null -ne $cs -and $null -ne $cs.NumberOfLogicalProcessors) {
+    [string]$cs.NumberOfLogicalProcessors } else { 'unknown' }
 # RAM total: TotalPhysicalMemory is BYTES -> MiB
-$env:EQ_RAM_TOTAL_MIB = [string][math]::Floor($cs.TotalPhysicalMemory / 1MB)
+$env:EQ_RAM_TOTAL_MIB = if ($null -ne $cs -and $null -ne $cs.TotalPhysicalMemory) {
+    [string][math]::Floor($cs.TotalPhysicalMemory / 1MB) } else { 'unknown' }
 # RAM available: FreePhysicalMemory is KB -> MiB
-$env:EQ_RAM_AVAIL_MIB = [string][math]::Floor($os.FreePhysicalMemory / 1KB)
+$env:EQ_RAM_AVAIL_MIB = if ($null -ne $os -and $null -ne $os.FreePhysicalMemory) {
+    [string][math]::Floor($os.FreePhysicalMemory / 1KB) } else { 'unknown' }
 
 # Disk free on the drive that actually HOSTS the resolved workspace path — NOT a hardcoded D:.
 $wsQualifier = (Split-Path -Qualifier $WS)              # e.g. "D:"

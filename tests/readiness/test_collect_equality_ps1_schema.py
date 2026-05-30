@@ -134,6 +134,11 @@ def _sh_stdout(env_extra: dict, tmp_path: Path, machine: str = "licensed-win-1")
     (ws / ".claude" / "memory").mkdir(parents=True)
     (ws / ".claude" / "memory" / "context.md").write_text("ctx")
     env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(tmp_path)}
+    # The OS-override seam is double-gated: it only applies when the explicit test-enable flag is
+    # set (so ambient production env can't spoof the OS). Tests that force the windows branch via
+    # EQ_OS_OVERRIDE must also set EQ_TEST_ENABLE_OS_OVERRIDE=1.
+    if "EQ_OS_OVERRIDE" in env_extra:
+        env["EQ_TEST_ENABLE_OS_OVERRIDE"] = "1"
     env.update(env_extra)
     res = subprocess.run(
         ["bash", str(SH), "--stdout", "--machine", machine],
@@ -229,3 +234,22 @@ def test_ps1_documents_w1_commit_is_wrappers_job():
     assert "#2815" in text or "equality-report.ps1" in text
     # W3: a freshness preflight that fails fast without writing a STALE report.
     assert "fetch" in text.lower()
+
+
+def test_eq_os_override_ignored_without_test_flag(tmp_path):
+    # SECURITY (Codex code-review MAJOR): EQ_OS_OVERRIDE must NOT spoof the OS in production. It
+    # only applies behind the explicit EQ_TEST_ENABLE_OS_OVERRIDE=1 flag. Without the flag the
+    # override is ignored, the collector reports the REAL OS (linux on this CI box), and the
+    # injected windows EQ_* compute never enters the report.
+    ws = tmp_path / "workspace-hub"
+    (ws / ".claude" / "state").mkdir(parents=True)
+    (ws / ".claude" / "memory").mkdir(parents=True)
+    (ws / ".claude" / "memory" / "context.md").write_text("ctx")
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(tmp_path),
+           "EQ_OS_OVERRIDE": "windows", "EQ_CORES": "999"}  # deliberately NO test-enable flag
+    res = subprocess.run(["bash", str(SH), "--stdout", "--machine", "licensed-win-1"],
+                         env=env, capture_output=True, text=True, timeout=60)
+    assert res.returncode == 0, res.stderr
+    d = yaml.safe_load(res.stdout)
+    assert d["os"] == "linux"                                        # real OS — override ignored
+    assert str(d["dimensions"]["compute"]["static"]["cores"]) != "999"  # injected value not trusted
