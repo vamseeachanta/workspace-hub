@@ -498,7 +498,7 @@ cards:
     title: 'assess(workstations): machine-equality matrix across the multi-machine ecosystem (compute, data, harness, skills, boards, memory, behavior)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2801
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -509,6 +509,7 @@ cards:
       - domain:workstations
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 1
     gh_assignees: []

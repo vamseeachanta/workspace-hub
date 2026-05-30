@@ -43022,13 +43022,14 @@ cards:
     title: 'docs(harness): fix stale context.md repo-layout claim (siblings vs nested) [#2801 family]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2814
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:harness
       - domain:workstations
       - status:plan-review
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 0
     gh_assignees: []
