@@ -14,11 +14,9 @@ Hardening:
 """
 from __future__ import annotations
 
-import datetime as _dt
 import json
 import os
 import re
-import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -26,19 +24,9 @@ from completeness_gate_check import (  # noqa: E402
     OPT_IN_LABEL, PLAN_APPROVED_LABEL, VERIFIED_LABEL,
     body_is_fresh, evaluate_close, gate_applies,
 )
+from label_authority import gh_json, parse_iso, verified_label_event  # noqa: E402
 
 _RECORD_RE = re.compile(r"```completeness\s*(\{.*?\})\s*```", re.DOTALL)
-
-
-def _gh_json(*args: str):
-    out = subprocess.run(["gh", *args], capture_output=True, text=True, check=True).stdout
-    return json.loads(out) if out.strip() else None
-
-
-def _parse_iso(ts: str | None):
-    if not ts:
-        return None
-    return _dt.datetime.fromisoformat(ts.replace("Z", "+00:00"))
 
 
 def _parse_record(body: str) -> dict | None:
@@ -51,25 +39,13 @@ def _parse_record(body: str) -> dict | None:
         return None  # fail-closed: unparseable record => no record
 
 
-def _verified_label_event(repo: str, issue: int):
-    """(actor, applied_at) for the most recent application of the verified label."""
-    events = _gh_json("api", f"repos/{repo}/issues/{issue}/timeline",
-                      "--paginate", "-H", "Accept: application/vnd.github+json") or []
-    actor, applied_at = None, None
-    for ev in events:
-        if ev.get("event") == "labeled" and (ev.get("label") or {}).get("name") == VERIFIED_LABEL:
-            actor = (ev.get("actor") or {}).get("login")
-            applied_at = _parse_iso(ev.get("created_at"))
-    return actor, applied_at
-
-
 def main() -> int:
     repo = os.environ.get("GH_REPO") or os.environ.get("REPO", "")
     issue = int(os.environ.get("ISSUE_NUMBER") or sys.argv[1])
     closing_actor = os.environ.get("CLOSING_ACTOR", "")
 
-    data = _gh_json("issue", "view", str(issue), "--repo", repo,
-                    "--json", "body,labels,updatedAt") or {}
+    data = gh_json("issue", "view", str(issue), "--repo", repo,
+                   "--json", "body,labels,updatedAt") or {}
     labels = [l["name"] for l in data.get("labels", [])]
 
     # OPT-IN SCOPE FIRST: the gate only enforces on issues that explicitly opted in
@@ -87,15 +63,15 @@ def main() -> int:
         return 1
 
     record = _parse_record(data.get("body", ""))
-    label_actor, label_at = _verified_label_event(repo, issue)
+    label_actor, label_at = verified_label_event(repo, issue, VERIFIED_LABEL)
     # Freshness anchors on the BODY edit time (lastEditedAt), NOT updatedAt — the close
     # itself bumps updatedAt past the label and would falsely fail freshness (fix #5).
     owner, name = repo.split("/", 1)
-    ts = _gh_json("api", "graphql", "-f", f'query={{repository(owner:"{owner}",name:"{name}")'
+    ts = gh_json("api", "graphql", "-f", f'query={{repository(owner:"{owner}",name:"{name}")'
                   f'{{issue(number:{issue}){{lastEditedAt createdAt}}}}}}') or {}
     issue_ts = (((ts.get("data") or {}).get("repository") or {}).get("issue")) or {}
     body_verified_fresh = body_is_fresh(
-        label_at, _parse_iso(issue_ts.get("lastEditedAt")), _parse_iso(issue_ts.get("createdAt")))
+        label_at, parse_iso(issue_ts.get("lastEditedAt")), parse_iso(issue_ts.get("createdAt")))
 
     require_separate = os.environ.get("COMPLETENESS_REQUIRE_SEPARATE_CLOSER", "").lower() in ("1", "true", "yes")
     decision = evaluate_close(
