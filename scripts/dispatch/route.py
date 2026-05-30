@@ -18,7 +18,7 @@ Usage:
   route.py --apply         write GH labels (requires gh; Phase B)
 """
 from __future__ import annotations
-import argparse, json, subprocess, sys
+import argparse, fnmatch, json, subprocess, sys
 from collections import defaultdict
 from pathlib import Path
 
@@ -72,6 +72,24 @@ def existing_label_value(labels: list[str], prefix: str) -> str | None:
     return None
 
 
+def _domain_matches(pattern: str, domain) -> bool:
+    """Match a rule's `domain:` pattern against a card's domain.
+
+    Backward-compatible: a plain string matches exactly (existing rules like
+    `domain: solver` keep their exact semantics). A pattern containing a glob
+    metacharacter (`* ? [`) matches via `fnmatch`, so ONE rule `domain: hydro*`
+    covers the parent domain `hydro` AND all its split subdomains
+    (`hydro-diffraction`, `hydro-mooring`, ...) — this is what keeps licensed-
+    Windows routing attached across the workspace-hub#2878 subdomain splits.
+    A card with no domain (None) never matches a domain rule.
+    """
+    if domain is None:
+        return False
+    if any(ch in pattern for ch in "*?["):
+        return fnmatch.fnmatchcase(domain, pattern)
+    return pattern == domain
+
+
 def match_rule(rules: list[dict], *, repo, domain, gh_labels) -> dict:
     """First-match-wins. Empty match {} is the catch-all."""
     labelset = set(gh_labels or [])
@@ -79,7 +97,7 @@ def match_rule(rules: list[dict], *, repo, domain, gh_labels) -> dict:
         m = rule.get("match", {})
         if "repo" in m and m["repo"] != repo:
             continue
-        if "domain" in m and m["domain"] != domain:
+        if "domain" in m and not _domain_matches(m["domain"], domain):
             continue
         if "gh_label" in m and m["gh_label"] not in labelset:
             continue
