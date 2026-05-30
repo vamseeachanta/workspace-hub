@@ -43044,6 +43044,9 @@ cards:
       - cat:harness
       - domain:workstations
       - machine:licensed-win-1
+      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -43057,6 +43060,9 @@ cards:
       - enhancement
       - cat:harness
       - domain:workstations
+      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -43069,7 +43075,8 @@ cards:
     gh_labels:
       - enhancement
       - cat:harness
-      - status:needs-plan
+      - status:plan-review
+      - status:plan-approved
       - gate:completeness
     initial_status: triage
     priority: 0
