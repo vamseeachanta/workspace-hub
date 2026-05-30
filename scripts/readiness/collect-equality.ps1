@@ -54,7 +54,7 @@ function Test-Fresh {
     param([string]$Repo)
     # Best effort: refresh origin/main. A transient network miss is tolerated only if the local
     # ref is already current+recent (checked below); a hard inability to prove freshness fails.
-    & git -C $Repo fetch --quiet origin main 2>$null | Out-Null
+    & git -C $Repo fetch --quiet origin '+refs/heads/main:refs/remotes/origin/main' 2>$null | Out-Null
     $fetchOk = ($LASTEXITCODE -eq 0)
 
     $behind = (& git -C $Repo rev-list --count 'HEAD..origin/main' 2>$null)
@@ -93,6 +93,21 @@ if (-not $freshness.Fresh) {
                  'Refusing to write a STALE-CHECKOUT report. Run the RepoSync task / `git fetch` ' +
                  'and retry.')
     exit 1
+}
+
+function Resolve-EqualityMachineLabel {
+    $hostName = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { "" }
+    switch -Wildcard ($hostName) {
+        "licensed-win-1" { return "licensed-win-1" }
+        "acma-ansys05*" { return "licensed-win-1" }
+        "licensed-win-2" { return "licensed-win-2" }
+        "acma-ws014*" { return "licensed-win-2" }
+        default { throw "Unknown Windows equality collector host '$hostName'; pass -Machine explicitly" }
+    }
+}
+
+if ([string]::IsNullOrWhiteSpace($Machine)) {
+    $Machine = Resolve-EqualityMachineLabel
 }
 
 # ------ CIM compute (the .ps1's real job) ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

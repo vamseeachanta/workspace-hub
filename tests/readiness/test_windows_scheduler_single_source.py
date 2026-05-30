@@ -26,6 +26,7 @@ def test_setup_ps1_reads_schedule_yaml():
     text = SETUP_PS1.read_text()
     assert "schedule-tasks.yaml" in text
     assert "Get-EqualityReportTask" in text
+    assert "Unknown Windows scheduler host" in text
 
 
 def test_setup_ps1_has_no_hardcoded_equality_schedule_or_uv():
@@ -72,10 +73,45 @@ def test_wrapper_invokes_collector_builder_and_state_sync():
     text = WRAPPER_PS1.read_text()
     assert "collect-equality.ps1" in text
     assert "build-equality-matrix.py" in text
-    assert ".claude/state/equality-*.yaml" in text
+    assert ".claude/state/equality-<machine>.yaml" in text
+    assert 'equality-$Machine.yaml' in text
+    assert ".claude/state/equality-*.yaml" not in text
+    assert "logs\\quality" in text
+    assert "Invoke-EqualityTranscript" in text
+    assert "Start-Transcript" in text
+    assert "Stop-Transcript" in text
     assert "git" in text
     assert "commit" in text
     assert "push" in text
+
+
+def test_wrapper_recovers_existing_equality_commits_only():
+    text = WRAPPER_PS1.read_text()
+    assert "Push-ExistingEqualityCommit" in text
+    assert "Invoke-ExistingEqualityCommitRebase" in text
+    assert "Test-AheadCommitIsEqualityReport" in text
+    assert "^chore: equality report from " in text
+    assert "git diff-tree --no-commit-id --name-only -r" in text
+    assert "non-equality commits; refusing to push" in text
+    assert "git rebase origin/main" in text
+    assert "Push-ExistingEqualityCommit -Branch $Branch -Machine $Machine -Ahead $ahead" in text
+    assert '"commit", "--amend", "--only"' in text
+
+
+def test_wrapper_runs_from_main_only():
+    text = WRAPPER_PS1.read_text()
+    assert 'EqualityReport must run from main' in text
+    assert "Unknown Windows equality host" in text
+    assert "acma-ws014" in text
+
+
+def test_wrapper_commit_and_matrix_dirty_guards_are_path_scoped():
+    text = WRAPPER_PS1.read_text()
+    assert '"commit", "--only"' in text
+    assert '"commit", "--amend", "--only"' in text
+    assert "Confirm-MatrixReportClean" in text
+    assert "Clear-GeneratedMatrixReport" in text
+    assert "git pull --rebase" not in text
 
 
 def test_wrapper_uses_python_not_uv():

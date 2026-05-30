@@ -11,12 +11,21 @@ from __future__ import annotations
 import os
 import re
 import subprocess
+import time
 from pathlib import Path
 
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = REPO_ROOT / "scripts" / "readiness" / "collect-equality.sh"
+BASH_PATH = "/mingw64/bin:/usr/bin:/bin:/usr/local/bin"
+
+
+def _bash_path(path: Path) -> str:
+    try:
+        return subprocess.check_output(["cygpath", "-u", str(path)], text=True).strip()
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        return str(path)
 
 
 def _fixture(tmp_path: Path) -> Path:
@@ -40,7 +49,7 @@ def _fixture(tmp_path: Path) -> Path:
 def _run(ws: Path, *args: str) -> dict:
     res = subprocess.run(
         ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary", *args],
-        env={"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"},
+        env={"WORKSPACE_HUB": _bash_path(ws), "PATH": BASH_PATH},
         capture_output=True, text=True, timeout=60)
     assert res.returncode == 0, res.stderr
     return yaml.safe_load(res.stdout)
@@ -56,9 +65,30 @@ def test_collect_emits_valid_yaml(tmp_path):
 def test_collect_machine_override(tmp_path):
     res = subprocess.run(
         ["bash", str(SCRIPT), "--stdout", "--machine", "licensed-win-2"],
-        env={"WORKSPACE_HUB": str(_fixture(tmp_path)), "PATH": "/usr/bin:/bin:/usr/local/bin"},
+        env={"WORKSPACE_HUB": _bash_path(_fixture(tmp_path)), "PATH": BASH_PATH},
         capture_output=True, text=True, timeout=60)
     assert yaml.safe_load(res.stdout)["machine"] == "licensed-win-2"
+
+
+def test_collect_windows_autodetect_unknown_host_fails_closed(tmp_path):
+    ws = _fixture(tmp_path)
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    hostname = bin_dir / "hostname"
+    hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' unknown-win\n")
+    hostname.chmod(0o755)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout"],
+        env={
+            "WORKSPACE_HUB": _bash_path(ws),
+            "PATH": f"{bin_dir}:{BASH_PATH}",
+            "HOME": str(tmp_path),
+            "EQ_TEST_ENABLE_OS_OVERRIDE": "1",
+            "EQ_OS_OVERRIDE": "windows",
+        },
+        capture_output=True, text=True, timeout=60)
+    assert res.returncode != 0
+    assert "unknown Windows host" in res.stderr
 
 
 def test_collect_compute_static_headroom_split(tmp_path):
@@ -99,7 +129,7 @@ def test_collect_no_forbidden_fields(tmp_path):
     # C4: no tokens, env values, cron lines, or absolute $HOME paths in the emitted YAML
     res = subprocess.run(
         ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary"],
-        env={"WORKSPACE_HUB": str(_fixture(tmp_path)), "PATH": "/usr/bin:/bin:/usr/local/bin"},
+        env={"WORKSPACE_HUB": _bash_path(_fixture(tmp_path)), "PATH": BASH_PATH},
         capture_output=True, text=True, timeout=60)
     out = res.stdout
     assert "gho_" not in out and "ghp_" not in out       # no gh token
@@ -311,7 +341,7 @@ def _git_fixture(tmp_path: Path) -> Path:
 
 
 def _stdout_prov(ws: Path, *args: str, env_extra: dict | None = None) -> dict:
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
+    env = {"WORKSPACE_HUB": _bash_path(ws), "PATH": BASH_PATH, "HOME": str(ws.parent)}
     if env_extra:
         env.update(env_extra)
     res = subprocess.run(
@@ -372,6 +402,26 @@ def test_collect_origin_ref_age_recorded(tmp_path):
     p = _stdout_prov(_git_fixture(tmp_path))
     assert isinstance(p["origin_ref_age_h"], (int, float))
     assert 0 <= p["origin_ref_age_h"] <= 12
+
+
+def test_collect_fetch_head_freshness_requires_origin_main_sha_match(tmp_path):
+    ws = _git_fixture(tmp_path)
+    _git(ws, "commit", "-q", "--allow-empty", "-m", "advance local head")
+    head_sha = subprocess.check_output(["git", "-C", str(ws), "rev-parse", "HEAD"], text=True).strip()
+    common_dir = subprocess.check_output(
+        ["git", "-C", str(ws), "rev-parse", "--git-common-dir"], text=True).strip()
+    git_dir = Path(common_dir)
+    if not git_dir.is_absolute():
+        git_dir = ws / git_dir
+    origin_ref = git_dir / "refs" / "remotes" / "origin" / "main"
+    fetch_head = git_dir / "FETCH_HEAD"
+    fetch_head.write_text(f"{head_sha}\t\tbranch 'main' of https://example.invalid/repo\n")
+    stale_time = time.time() - (26 * 3600)
+    os.utime(origin_ref, (stale_time, stale_time))
+
+    p = _stdout_prov(ws)
+    assert p["ahead_main"] == 1
+    assert p["origin_ref_age_h"] >= 24
 
 
 def test_collect_provenance_unknown_when_not_git(tmp_path):

@@ -46,8 +46,11 @@ function Get-DefaultTaskSetting {
 function Get-CurrentMachineLabel {
     $hostName = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { "" }
     switch -Wildcard ($hostName) {
+        "licensed-win-1" { return "licensed-win-1" }
+        "acma-ansys05*" { return "licensed-win-1" }
+        "licensed-win-2" { return "licensed-win-2" }
         "acma-ws014*" { return "licensed-win-2" }
-        default { return "licensed-win-1" }
+        default { throw "Unknown Windows scheduler host '$hostName'; refusing to assume a licensed-win-* identity" }
     }
 }
 
