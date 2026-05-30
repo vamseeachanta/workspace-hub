@@ -86,6 +86,7 @@ manifest:
     children:
     - repo-digitalmodel-codes
     - repo-digitalmodel-hydro
+    - repo-digitalmodel-hydro-diffraction
     - repo-digitalmodel-qa
     - repo-digitalmodel-solver
     - repo-digitalmodel-subsea
@@ -248,6 +249,14 @@ manifest:
     workspace_path: /mnt/local-analysis/digitalmodel
     file: boards/repo-digitalmodel-hydro.yaml
     card_count: 44
+  - slug: repo-digitalmodel-hydro-diffraction
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: hydro-diffraction
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-hydro-diffraction.yaml
+    card_count: 0
   - slug: repo-digitalmodel-qa
     tier: domain
     repo: vamseeachanta/digitalmodel

@@ -19,6 +19,7 @@ repos:
     board: repo-digitalmodel
     domains:
       - {name: hydro,  status: existing}   # hydrodynamics, naval arch, mooring, fatigue
+      - {name: hydro-diffraction, status: new}  # epic #622 OrcaWave→AQWA diffraction cluster (pilot 2026-05-30)
       - {name: solver, status: existing}   # OrcaWave/AQWA bridges, time-domain integrators
       - {name: codes,  status: existing}   # codes & standards modules
       - {name: subsea, status: existing}   # subsea / pipeline / riser

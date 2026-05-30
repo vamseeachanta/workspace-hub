@@ -1,0 +1,12 @@
+board:
+  slug: repo-digitalmodel-hydro-diffraction
+  display_name: digitalmodel · hydro · diffraction
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: hydro-diffraction
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'OrcaWave→AQWA output-driven diffraction-domain module (epic #622): mesh pre-flight + auto-copy, self-contained solver packages, MeshPipeline integration, given-mesh CLI, pre-solve QA gates, auxiliary-mesh/QTF handling, convergence/sensitivity, and the canonical spec-to-run workflow — resolve + assume + sanity-check.
+
+    '
+cards: []
