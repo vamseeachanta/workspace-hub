@@ -9,4 +9,156 @@ board:
   description: 'OrcaWave→AQWA output-driven diffraction-domain module (epic #622): mesh pre-flight + auto-copy, self-contained solver packages, MeshPipeline integration, given-mesh CLI, pre-solve QA gates, auxiliary-mesh/QTF handling, convergence/sensitivity, and the canonical spec-to-run workflow — resolve + assume + sanity-check.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#500
+    title: 'OrcaWave: mesh file pre-flight validation + auto-copy in runner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/500
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Machine: ace-linux-1
+
+      ## Problem
+
+      OrcaWave runner expects mesh files to exist in the output directory but:'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#605
+    title: 'OrcaWave: produce self-contained solver packages from spec conversion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/605
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      `diffraction convert-spec --solver orcawave` generates OrcaWave YAML, but it does not yet guarantee the output directory is self-contained and runnable. The backend writes mesh references as basenames, while referenced mesh files and auxiliary meshes may still live beside the source `spec.yml`.
+
+      This overlaps with, but is broader than, #500. #500 covers mesh pre-flight validation and runner auto-copy; this issue is specifically about the conversion/package artifact created by `convert-spec`.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#606
+    title: 'OrcaWave: integrate MeshPipeline into spec conversion and runner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/606
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      The diffraction module has a `MeshPipeline` that can load, validate, and prepare meshes for solvers, but the OrcaWave spec conversion and runner paths do not yet use it to prepare arbitrary mesh inputs.
+
+      Without this integration, a user must already know which mesh formats are solver-ready and manually convert or arrange files before running diffraction.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#607
+    title: 'OrcaWave: add given-mesh CLI workflow for diffraction setup'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/607
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      A user with a mesh file should be able to start a diffraction analysis without manually authoring a complete `spec.yml` from scratch. The current path assumes the canonical spec already exists.
+
+      ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#608
+    title: 'OrcaWave: add mesh quality gates before diffraction solve'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/608
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      For arbitrary user-supplied meshes, file existence is not enough. Diffraction solves need mesh quality checks before invoking OrcaWave, otherwise users will hit solver failures or poor hydrodynamic results late in the workflow.
+
+      ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#609
+    title: 'OrcaWave: normalize auxiliary mesh handling for control surfaces and QTF inputs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/609
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      Auxiliary mesh handling is inconsistent across the schema, backend, and runner. In particular, the schema supports control surfaces at both `VesselSpec.control_surface` and `BodySpec.control_surface`, while the OrcaWave backend and runner currently read the vessel-level location. This can silently ignore body-level control surface definitions in multi-body specs.
+
+      The same packaging/preflight path should also cover damping lid meshes and free-surface panelled-zone meshes used for QTF workflows.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#612
+    title: 'OrcaWave: add batch mesh convergence and grid sensitivity workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/612
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      Running diffraction from arbitrary meshes requires engineering confidence, not just a single solve. Users need a repeatable workflow for mesh convergence and frequency/heading sensitivity studies.
+
+      ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#614
+    title: 'OrcaWave: update docs for canonical spec-to-run workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/614
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      Some OrcaWave documentation and examples still reference older command paths and scripts. The canonical workflow should be clear for users starting from either a `spec.yml` or a mesh-driven workflow.
+
+      ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#622
+    title: 'Epic: Output-driven diffraction domain module (OrcaWave pilot → AQWA) — resolve + assume + sanity-check'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/622
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - machine:licensed-win-1
+      - domain:hydro-diffraction
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

@@ -800,21 +800,6 @@ cards:
       **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** marine
 
       **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** licensed-win-1'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#622
-    title: 'Epic: Output-driven diffraction domain module (OrcaWave pilot → AQWA) — resolve + assume + sanity-check'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/622
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - machine:dev-primary
-      - machine:licensed-win-1
-      - domain:hydro
-      - domain:solver
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/digitalmodel#623
     title: 'Diffraction (a): inverse entry point + resolver — outcome + barebones data -> complete spec'
     source: github_issue
