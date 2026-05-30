@@ -1,0 +1,56 @@
+# Golden sample — collect-equality.ps1 → collect-equality.sh emission on licensed-win-1 (#2816).
+#
+# This is the EXACT shape collect-equality.sh emits when collect-equality.ps1 computes Windows
+# compute via CIM and exports EQ_CORES / EQ_RAM_TOTAL_MIB / EQ_RAM_AVAIL_MIB / EQ_DISK_AVAIL_GB /
+# EQ_GPU_MODEL (the .ps1 is a thin compute overlay; schema/provenance/solvers/idempotency stay
+# single-sourced in the .sh — see the plan PART A design). Consumed by the Linux-runnable contract
+# tests in test_collect_equality_ps1_schema.py, which PowerShell cannot run on.
+#
+# Provenance is a fresh, clean, current checkout (dirty:false / behind_main:0 / ahead_main:0 /
+# origin_ref_age_h:1) so is_stale()==False. Compute satisfies licensed-win-1's compute_floor
+# (cores_min:8; ram_gib_min restored in the #2816 W4 follow-up). NOT a live machine report —
+# regenerate by re-running the .sh seam if the schema changes.
+generated_at: "2026-05-30T04:31:07"
+schema_version: 3
+machine: "licensed-win-1"
+host: "acma-ws002"
+os: windows
+status: active
+provenance:
+  checkout_sha: "0bee0d3"
+  dirty: false
+  behind_main: 0
+  ahead_main: 0
+  origin_ref_age_h: 1
+dimensions:
+  compute:
+    static: {cores: 16, ram_total_mib: 65277, gpu_model: "NVIDIA RTX A2000 12GB"}
+    headroom: {ram_avail_mib: 41203, disk_avail_gb: 742}
+  data_access:
+    - {repo: assetutilities, mode: nested}
+    - {repo: digitalmodel, mode: nested}
+    - {repo: worldenergydata, mode: nested}
+    - {repo: assethold, mode: nested}
+  solvers:
+    - {name: orcaflex, status: present, evidence: import}
+    - {name: orcawave, status: present, evidence: env}
+    - {name: aqwa, status: absent, evidence: absent}
+    - {name: ansys, status: present, evidence: root}
+  harness:
+    providers: {claude: present, codex: present, gemini: present, hermes: present}
+    gh_auth: ok
+    python_cmd: python
+    readiness_ref: harness-readiness-licensed-win-1.yaml
+    readiness_overall: pass
+  skills: {repo_skill_count: 312}
+  kanban: {dispatch_queues: "licensed-win-1"}
+  memory:
+    hermes_home: present
+    context_md_mtime: "2026-05-29T22:14:03"
+  behavior:
+    enums: {b1: deny, b2: ok, b3: html, b4: pass}
+    hashes: {b5: 4f2a9c1e7b0d6385}
+  scheduler:
+    has_repo_sync: true
+    has_parity_review: true
+    job_count: 4
