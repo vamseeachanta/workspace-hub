@@ -64,15 +64,22 @@ wip_caps:
 # Capability rules — first match wins. Produce (machine, provider) proposal.
 # Matchers: domain (domain:<name>), any gh_label, repo. provider omitted ->
 # default_provider. A human-set ai:/machine: label on the issue always overrides.
+# Domain matchers: `domain` (exact, or fnmatch glob if it carries `* ? [`) and
+# `domain_family` (precise: the parent domain OR a `parent-`child subdomain). Use
+# `domain_family` for taxonomy families so ONE rule covers a parent AND its
+# workspace-hub#2878 splits WITHOUT over-matching unrelated prefixes (route.py
+# _family_matches: `hydro` => hydro, hydro-diffraction — NOT hydrocarbon).
 # ---------------------------------------------------------------------------
 rules:
-  # Windows-only engineering tooling (OrcaWave/AQWA/OrcaFlex) -> licensed boxes
-  - match: {repo: vamseeachanta/digitalmodel, domain: solver}
+  # Windows-only engineering tooling (OrcaWave/AQWA/OrcaFlex) -> licensed boxes.
+  # domain_family so the #2878 splits (solver-orcaflex, hydro-diffraction, ...)
+  # inherit, but hydrocarbon/hydrostatic/solverless do NOT get pinned to Windows.
+  - match: {repo: vamseeachanta/digitalmodel, domain_family: solver}
     assign: {machine: licensed-win-1}
-    reason: "AQWA/OrcaWave bridges need a licensed Windows box"
-  - match: {repo: vamseeachanta/digitalmodel, domain: hydro}
+    reason: "AQWA/OrcaWave bridges need a licensed Windows box (solver + solver-* splits)"
+  - match: {repo: vamseeachanta/digitalmodel, domain_family: hydro}
     assign: {machine: licensed-win-1}
-    reason: "RAO/QTF/seakeeping runs use OrcaWave/AQWA"
+    reason: "RAO/QTF/seakeeping runs use OrcaWave/AQWA (hydro + hydro-* splits)"
 
   # CFD / OpenFOAM -> the box with the CFD storage (CONFIRM machine at checkpoint)
   - match: {gh_label: "domain:cfd"}

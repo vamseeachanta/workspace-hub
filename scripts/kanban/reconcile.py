@@ -14,7 +14,7 @@ import io
 import json
 import subprocess
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable
 
@@ -22,6 +22,10 @@ from ruamel.yaml import YAML
 
 
 GH_PAGE_SIZE = 100
+
+# Target-size policy for the domain->subdomain taxonomy (workspace-hub#2878):
+# boards should hold <= this many active github_issue cards. Reported, not enforced.
+DEFAULT_BOARD_SIZE_LIMIT = 30
 
 # GraphQL query: paginate issues exhaustively (states OPEN+CLOSED) with a nested
 # labels page. We never truncate -- if a page fetch fails mid-loop we raise rather
@@ -43,6 +47,8 @@ class ReconcileResult:
     changed: bool
     diff: str
     changed_files: list[Path]
+    oversized: list[tuple[str, int]] = field(default_factory=list)
+    count_drift: list[tuple[str, int, int]] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -52,6 +58,7 @@ class BoardEntry:
     repo: str | None
     domain: str | None
     file: Path
+    card_count: int = 0
 
 
 def repo_root() -> Path:
@@ -64,6 +71,15 @@ def repo_root() -> Path:
     if out.returncode == 0:
         return Path(out.stdout.strip())
     return Path(__file__).resolve().parents[2]
+
+
+def _coerce_int(value, default: int = 0) -> int:
+    """Tolerant int — a non-numeric/None manifest card_count must NOT crash the
+    reconcile (this runs on the */20 cron critical path)."""
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
 
 
 def load_yaml(path: Path) -> dict:
@@ -205,6 +221,7 @@ def load_manifest_entries(kanban_root: Path) -> list[BoardEntry]:
                 repo=raw.get("repo"),
                 domain=raw.get("domain"),
                 file=kanban_root / file_name,
+                card_count=_coerce_int(raw.get("card_count")),
             )
         )
     return entries
@@ -248,6 +265,65 @@ def domain_board_map(entries: list[BoardEntry]) -> dict[tuple[str, str], Path]:
         for entry in entries
         if entry.tier == "domain" and entry.repo and entry.domain
     }
+
+
+def count_issue_cards(board: dict) -> int:
+    """Number of github_issue cards on a board (detected_gap/theme cards excluded)."""
+    return sum(1 for c in (board.get("cards") or []) if c.get("source") == "github_issue")
+
+
+def board_size_report(rebuilt: dict[Path, dict], limit: int = DEFAULT_BOARD_SIZE_LIMIT) -> list[tuple[str, int]]:
+    """[(slug, count)] for boards OVER `limit`, sorted by count desc then slug.
+
+    Surfaces the #2878 ≤30 policy as a visible signal so the taxonomy stays
+    right-sized over time. Reporting only — never blocks a reconcile.
+    """
+    rows = []
+    for data in rebuilt.values():
+        n = count_issue_cards(data)
+        if n > limit:
+            slug = (data.get("board") or {}).get("slug") or "?"
+            rows.append((slug, n))
+    return sorted(rows, key=lambda r: (-r[1], r[0]))
+
+
+def card_count_drift(rebuilt: dict[Path, dict], entries: list[BoardEntry]) -> list[tuple[str, int, int]]:
+    """[(slug, manifest_count, actual_count)] where manifest card_count is stale."""
+    actual = {path: count_issue_cards(data) for path, data in rebuilt.items()}
+    rows = [
+        (e.slug, e.card_count, actual[e.file])
+        for e in entries
+        if e.file in actual and e.card_count != actual[e.file]
+    ]
+    return sorted(rows, key=lambda r: r[0])
+
+
+def update_manifest_counts(kanban_root: Path) -> bool:
+    """Recompute every manifest board's card_count from its board file in place.
+
+    card_count is a display field nothing consumes, so it drifts as a frozen
+    integer. Per feedback_doc_counter_rule_writetime it should be a write-time
+    recompute; this is the on-demand recompute command (NOT run in the */20 cron,
+    which commits only boards/). Returns True if the manifest changed.
+    """
+    manifest_path = kanban_root / "manifest.yaml"
+    doc = load_yaml(manifest_path)
+    boards = (doc.get("manifest") or {}).get("boards") or []
+    changed = False
+    for raw in boards:
+        file_name = raw.get("file")
+        if not file_name:
+            continue
+        board_path = kanban_root / file_name
+        if not board_path.exists():
+            continue
+        actual = count_issue_cards(load_yaml(board_path))
+        if _coerce_int(raw.get("card_count")) != actual:
+            raw["card_count"] = actual
+            changed = True
+    if changed:
+        write_yaml(manifest_path, doc)
+    return changed
 
 
 def label_names(issue: dict) -> list[str]:
@@ -436,6 +512,7 @@ def reconcile_kanban(
     repo_filter: str | None = None,
     allow_empty_repos: set[str] | None = None,
     allow_shrink_repos: set[str] | None = None,
+    size_limit: int = DEFAULT_BOARD_SIZE_LIMIT,
 ) -> ReconcileResult:
     entries = load_manifest_entries(kanban_root)
     validate_unmanifested_boards(kanban_root, entries)
@@ -471,6 +548,8 @@ def reconcile_kanban(
         changed=bool(changed_files),
         diff=unified_diff(before, after, kanban_root),
         changed_files=changed_files,
+        oversized=board_size_report(rebuilt, limit=size_limit),
+        count_drift=card_count_drift(rebuilt, entries),
     )
 
 
@@ -501,6 +580,18 @@ def main(argv: list[str] | None = None) -> int:
         metavar="OWNER/REPO",
         help="allow an active repo to reconcile fewer live issues than existing cards",
     )
+    parser.add_argument(
+        "--update-counts",
+        action="store_true",
+        help="recompute manifest.yaml card_count from board files after reconciling "
+        "(writes manifest.yaml; not used by the */20 cron, which commits only boards/)",
+    )
+    parser.add_argument(
+        "--size-limit",
+        type=int,
+        default=DEFAULT_BOARD_SIZE_LIMIT,
+        help=f"oversized-board threshold for the size report (default {DEFAULT_BOARD_SIZE_LIMIT})",
+    )
     args = parser.parse_args(argv)
 
     root = args.kanban_root or repo_root() / ".claude/memory/kanban"
@@ -516,6 +607,7 @@ def main(argv: list[str] | None = None) -> int:
         repo_filter=args.repo,
         allow_empty_repos=set(args.allow_empty),
         allow_shrink_repos=set(args.allow_shrink),
+        size_limit=args.size_limit,
     )
     if result.diff:
         print(result.diff, end="")
@@ -523,6 +615,27 @@ def main(argv: list[str] | None = None) -> int:
         print("kanban reconcile: no changes")
     if args.dry_run:
         print("DRY-RUN: no files written")
+
+    # On-demand card_count recompute (writes manifest.yaml; skipped in dry-run).
+    counts_fixed = False
+    if args.update_counts and not args.dry_run:
+        counts_fixed = update_manifest_counts(root)
+        print("manifest card_count recomputed" if counts_fixed
+              else "manifest card_count already current")
+
+    # Always surface the size report (informational, never blocks).
+    if result.oversized:
+        print(f"\nNOTE: {len(result.oversized)} board(s) over the {args.size_limit}-card "
+              "policy (workspace-hub#2878):", file=sys.stderr)
+        for slug, n in result.oversized:
+            print(f"  oversized: {slug} = {n}", file=sys.stderr)
+    # Drift report — suppressed when --update-counts just fixed it (the drift was
+    # computed pre-update, so printing it would falsely tell the operator to re-run).
+    if result.count_drift and not (args.update_counts and not args.dry_run):
+        print(f"\nNOTE: {len(result.count_drift)} manifest card_count drift(s) "
+              "(run --update-counts to fix):", file=sys.stderr)
+        for slug, old, new in result.count_drift:
+            print(f"  drift: {slug} manifest={old} actual={new}", file=sys.stderr)
     return 0
 
 
