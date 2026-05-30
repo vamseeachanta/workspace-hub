@@ -31,6 +31,11 @@ HOST="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
 case "$(uname -s 2>/dev/null)" in
   Linux) OS="linux";; Darwin) OS="macos";; MINGW*|MSYS*|CYGWIN*) OS="windows";; *) OS="unknown";;
 esac
+# EQ_OS_OVERRIDE: force the OS branch (companion/test seam). The collect-equality.ps1 companion
+# runs under Git Bash (uname → MINGW → "windows") so it does NOT need this; it exists so the
+# Linux contract test can exercise the windows EQ_* override seam (#2816 W5). Allowlisted values
+# only — never trusts arbitrary input to pick a code path.
+case "${EQ_OS_OVERRIDE:-}" in linux|macos|windows|unknown) OS="$EQ_OS_OVERRIDE";; esac
 if [[ -z "$MACHINE" ]]; then
   case "$HOST" in
     ace-linux-1*) MACHINE="dev-primary";; ace-linux-2*) MACHINE="dev-secondary";;
@@ -41,6 +46,16 @@ fi
 have() { command -v "$1" >/dev/null 2>&1; }
 # CC1/GC1: escape a value for a YAML double-quoted scalar (backslash, quote; strip CR/LF).
 yesc() { printf '%s' "$1" | tr -d '\r\n' | sed 's/\\/\\\\/g; s/"/\\"/g'; }
+# #2816 W5: validate an EQ_* compute override is a clean non-negative integer (counts/MiB/GiB).
+# Echoes the validated integer, or "unknown" on empty / non-numeric / negative / newline /
+# unit-suffixed input — so a null/failed CIM query in the .ps1 companion can never emit 0/garbage
+# into the graded compute cells (the matrix treats "unknown" as MISSING-EVIDENCE, fail-closed).
+eqint() {
+  local v="${1-}"
+  # printf %s + the [[ =~ ]] anchors below reject embedded \n/\r, leading +/-, "16GB", " 5 ",
+  # decimals, and empty. Only a pure run of ASCII digits survives.
+  [[ "$v" =~ ^[0-9]+$ ]] && printf '%s' "$v" || printf '%s' unknown
+}
 
 # ── 1. COMPUTE (static = graded/hashed; headroom = volatile/excluded) ────────
 cores="unknown"; ram_total_mib="unknown"; gpu="none"; ram_avail_mib="unknown"; disk_avail_gb="unknown"
@@ -55,7 +70,16 @@ case "$OS" in
     cores=$(sysctl -n hw.ncpu 2>/dev/null || echo unknown)
     ram_total_mib=$(( $(sysctl -n hw.memsize 2>/dev/null || echo 0) / 1048576 ));;
   windows)
-    cores="${NUMBER_OF_PROCESSORS:-unknown}";;  # RAM/disk unreliable in Git Bash -> unknown -> MISSING-EVIDENCE
+    # RAM/disk/gpu are unreliable in bare Git Bash -> "unknown" -> MISSING-EVIDENCE. The
+    # collect-equality.ps1 companion (#2816) computes them via CIM and exports EQ_* overrides;
+    # honor those when present (W5: each validated to a clean non-negative integer, else "unknown").
+    cores="${NUMBER_OF_PROCESSORS:-unknown}"
+    [[ -n "${EQ_CORES+x}" ]]          && cores=$(eqint "$EQ_CORES")
+    [[ -n "${EQ_RAM_TOTAL_MIB+x}" ]]  && ram_total_mib=$(eqint "$EQ_RAM_TOTAL_MIB")
+    [[ -n "${EQ_RAM_AVAIL_MIB+x}" ]]  && ram_avail_mib=$(eqint "$EQ_RAM_AVAIL_MIB")
+    [[ -n "${EQ_DISK_AVAIL_GB+x}" ]]  && disk_avail_gb=$(eqint "$EQ_DISK_AVAIL_GB")
+    # gpu is a free-form string (not an integer) — escape like any other string scalar; empty -> none.
+    [[ -n "${EQ_GPU_MODEL+x}" && -n "$EQ_GPU_MODEL" ]] && gpu="$EQ_GPU_MODEL";;
 esac
 [[ -z "$gpu" ]] && gpu="none"
 

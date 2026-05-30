@@ -62,6 +62,9 @@ workstations:
     role: licensed-solver
     # CC5: no ram_gib_min — Git-Bash v1 can't reliably read Windows RAM (would force permanent
     # MISSING-EVIDENCE). RAM floor returns when the .ps1 compute companion lands (C2 follow-up).
+    # TODO(#2816 W4 follow-up): collect-equality.ps1 now yields a trustworthy ram_total_mib via CIM.
+    # Set ram_gib_min here to the OWNER-CONFIRMED value captured from one real `-Stdout` run — do
+    # NOT guess (too-high = permanent BELOW-BASELINE, too-low = no signal). Gated post-evidence step.
     compute_floor: {cores_min: 8}
     required_data_access: [digitalmodel, assetutilities]
     # #2849 solvers baseline (cold-dim, STRICT): licensed work routes here — only a `licensed`
@@ -79,6 +82,8 @@ workstations:
     role: licensed-solver
     # CC5: no ram_gib_min — Git-Bash v1 can't reliably read Windows RAM (would force permanent
     # MISSING-EVIDENCE). RAM floor returns when the .ps1 compute companion lands (C2 follow-up).
+    # TODO(#2816 W4 follow-up): set ram_gib_min from an owner-confirmed collect-equality.ps1 run
+    # (gated post-evidence step; do NOT guess — see licensed-win-1 note above).
     compute_floor: {cores_min: 8}
     required_data_access: [digitalmodel, assetutilities]
     # #2849 solvers baseline (cold-dim, STRICT): licensed-solver workstation.
