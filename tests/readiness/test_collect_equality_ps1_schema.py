@@ -108,6 +108,14 @@ def test_ps1_ram_total_mib_is_mib_integer():
     assert mib >= int(floor_gib) * 1024
 
 
+def test_harness_config_winram_floor_present():
+    config = yaml.safe_load(CONFIG.read_text())
+    for machine in ("licensed-win-1", "licensed-win-2"):
+        floor = config["workstations"][machine]["compute_floor"]
+        assert floor["cores_min"] == 8
+        assert floor["ram_gib_min"] == 15
+
+
 # ════════════════════════════════════════════════════════════════════════════
 # 5. field-key parity: fixture key-tree == collect-equality.sh --stdout key-tree
 # ════════════════════════════════════════════════════════════════════════════

@@ -3,32 +3,37 @@
 # Run as Administrator: powershell -ExecutionPolicy Bypass -File setup-scheduler-tasks.ps1
 #
 # Tasks registered:
-#   \Claude\ContextManagementDaily     — 06:00 daily  — context file health check
-#   \Claude\WorkstationVersionCheck    — 07:00 daily  — ANSYS + OrcaFlex version check
-#   \Claude\NightlyReadiness           — 23:00 daily  — 11-check ecosystem readiness
-#   \Claude\RepoSync                   — 23:30 daily  — workspace-hub git pull + submodule sync
-#   \Claude\MemoryBridgeSync           — 04:30 daily  — refresh repo-tracked memory outputs (#1918)
+#   \Claude\ContextManagementDaily     - daily context file health check
+#   \Claude\WorkstationVersionCheck    - daily ANSYS + OrcaFlex version check
+#   \Claude\NightlyReadiness           - daily ecosystem readiness
+#   \Claude\RepoSync                   - daily workspace-hub git pull + submodule sync
+#   \Claude\MemoryBridgeSync           - daily repo-tracked memory refresh
+#   \Claude\EqualityReport             - rendered from config/scheduled-tasks/schedule-tasks.yaml
 
+[CmdletBinding()]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification='Operator-facing scheduler installer uses console output.')]
 param(
+    [string]$WorkspaceRoot = "",
     [switch]$WhatIf,
     [switch]$Remove
 )
 
-$WorkspaceRoot = "D:\workspace-hub"
+$ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
+
+if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
+    $WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+}
 $GitBash = "C:\Program Files\Git\bin\bash.exe"
 $TaskPath = "\Claude\"
+$RemoveMode = $Remove
 
-# ── Helpers ──────────────────────────────────────────────────────────────────
-
-function Require-Admin {
-    $p = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    if (-not $p.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-        Write-Error "Run this script as Administrator."
-        exit 1
-    }
+function Test-Admin {
+    $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
-function Default-Settings {
+function Get-DefaultTaskSetting {
     New-ScheduledTaskSettingsSet `
         -AllowStartIfOnBatteries `
         -DontStopIfGoingOnBatteries `
@@ -38,19 +43,174 @@ function Default-Settings {
         -MultipleInstances IgnoreNew
 }
 
-function Register-ClaudeTask {
+function Get-CurrentMachineLabel {
+    $hostName = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { "" }
+    switch -Wildcard ($hostName) {
+        "acma-ws014*" { return "licensed-win-2" }
+        default { return "licensed-win-1" }
+    }
+}
+
+function Get-ScheduleTaskBlock {
     param(
-        [string]$Name,
-        [string]$Description,
-        [string]$ScriptPath,
-        [string]$Time,
-        [string]$Args = ""
+        [Parameter(Mandatory=$true)][string]$TaskId
+    )
+
+    $schedulePath = Join-Path $WorkspaceRoot "config\scheduled-tasks\schedule-tasks.yaml"
+    if (-not (Test-Path $schedulePath)) {
+        throw "Schedule source not found: $schedulePath"
+    }
+
+    $lines = Get-Content $schedulePath
+    $start = -1
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        if ($lines[$i] -match ("^\s*-\s+id:\s+{0}\s*$" -f [regex]::Escape($TaskId))) {
+            $start = $i
+            break
+        }
+    }
+    if ($start -lt 0) {
+        throw "Task '$TaskId' not found in $schedulePath"
+    }
+
+    $block = New-Object System.Collections.Generic.List[string]
+    for ($i = $start; $i -lt $lines.Count; $i++) {
+        if ($i -gt $start -and $lines[$i] -match "^\s*-\s+id:\s+") {
+            break
+        }
+        $block.Add($lines[$i])
+    }
+    return ,$block.ToArray()
+}
+
+function Get-YamlScalar {
+    param(
+        [string[]]$Block,
+        [Parameter(Mandatory=$true)][string]$Name
+    )
+
+    $pattern = "^\s+{0}:\s*(.+?)\s*$" -f [regex]::Escape($Name)
+    foreach ($line in $Block) {
+        if ($line -match $pattern) {
+            $value = $Matches[1].Trim()
+            if (($value.StartsWith('"') -and $value.EndsWith('"')) -or
+                ($value.StartsWith("'") -and $value.EndsWith("'"))) {
+                $value = $value.Substring(1, $value.Length - 2)
+            }
+            return $value
+        }
+    }
+    throw "Field '$Name' not found in YAML task block"
+}
+
+function Get-YamlInlineList {
+    param(
+        [string[]]$Block,
+        [Parameter(Mandatory=$true)][string]$Name
+    )
+
+    $pattern = "^\s+{0}:\s*\[(.+?)\]\s*$" -f [regex]::Escape($Name)
+    foreach ($line in $Block) {
+        if ($line -match $pattern) {
+            return @($Matches[1].Split(",") | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+        }
+    }
+    throw "Inline list '$Name' not found in YAML task block"
+}
+
+function Get-EqualityReportTask {
+    $block = Get-ScheduleTaskBlock -TaskId "equality-report"
+    $label = Get-YamlScalar -Block $block -Name "label"
+    $description = Get-YamlScalar -Block $block -Name "description"
+    if ($description -match "^[>|]") {
+        $description = $label
+    }
+    [pscustomobject]@{
+        Id = "equality-report"
+        Label = $label
+        Schedule = Get-YamlScalar -Block $block -Name "schedule"
+        Machines = Get-YamlInlineList -Block $block -Name "machines"
+        Description = $description
+    }
+}
+
+function Convert-CronSchedule {
+    param(
+        [Parameter(Mandatory=$true)][string]$Schedule
+    )
+
+    $parts = $Schedule -split "\s+"
+    if ($parts.Count -ne 5) {
+        throw "Only 5-field cron schedules are supported for EqualityReport: '$Schedule'"
+    }
+
+    $minute, $hour, $dayOfMonth, $month, $dayOfWeek = $parts
+    if ($dayOfMonth -ne "*" -or $month -ne "*") {
+        throw "Only weekly/daily cron schedules are supported for EqualityReport: '$Schedule'"
+    }
+    if (-not ($minute -match "^\d+$") -or -not ($hour -match "^\d+$")) {
+        throw "Cron minute/hour must be numeric for EqualityReport: '$Schedule'"
+    }
+
+    $minuteInt = [int]$minute
+    $hourInt = [int]$hour
+    if ($minuteInt -lt 0 -or $minuteInt -gt 59 -or $hourInt -lt 0 -or $hourInt -gt 23) {
+        throw "Cron minute/hour out of range for EqualityReport: '$Schedule'"
+    }
+
+    $time = New-TimeSpan -Hours $hourInt -Minutes $minuteInt
+    $days = @{
+        "0" = "Sunday"; "7" = "Sunday"; "1" = "Monday"; "2" = "Tuesday";
+        "3" = "Wednesday"; "4" = "Thursday"; "5" = "Friday"; "6" = "Saturday"
+    }
+
+    if ($dayOfWeek -eq "*") {
+        return [pscustomobject]@{ Kind = "Daily"; Time = $time; DaysOfWeek = @() }
+    }
+    if (-not $days.ContainsKey($dayOfWeek)) {
+        throw "Unsupported day-of-week cron field for EqualityReport: '$Schedule'"
+    }
+    return [pscustomobject]@{ Kind = "Weekly"; Time = $time; DaysOfWeek = @($days[$dayOfWeek]) }
+}
+
+function Format-TimeOfDay {
+    param([TimeSpan]$Time)
+    return "{0:D2}:{1:D2}" -f $Time.Hours, $Time.Minutes
+}
+
+function Format-TriggerSpec {
+    param([Parameter(Mandatory=$true)]$Spec)
+    if ($Spec.Kind -eq "Weekly") {
+        return "weekly {0} {1}" -f ($Spec.DaysOfWeek -join ","), (Format-TimeOfDay -Time $Spec.Time)
+    }
+    return "daily {0}" -f (Format-TimeOfDay -Time $Spec.Time)
+}
+
+function ConvertTo-TaskTrigger {
+    param([Parameter(Mandatory=$true)]$Spec)
+    $at = Format-TimeOfDay -Time $Spec.Time
+    if ($Spec.Kind -eq "Weekly") {
+        return New-ScheduledTaskTrigger -Weekly -DaysOfWeek $Spec.DaysOfWeek -At $at
+    }
+    return New-ScheduledTaskTrigger -Daily -At $at
+}
+
+function Register-ClaudeTask {
+    [CmdletBinding(DefaultParameterSetName="Daily")]
+    param(
+        [Parameter(Mandatory=$true)][string]$Name,
+        [Parameter(Mandatory=$true)][string]$Description,
+        [Parameter(Mandatory=$true)][string]$ScriptPath,
+        [Parameter(ParameterSetName="Daily", Mandatory=$true)][string]$DailyAt,
+        [Parameter(ParameterSetName="Cron", Mandatory=$true)][string]$CronSchedule,
+        [string]$TaskArguments = "",
+        [switch]$PowerShell
     )
 
     $fullName = "${TaskPath}${Name}"
 
-    if ($Remove) {
-        $existing = Get-ScheduledTask -TaskName $Name -ErrorAction SilentlyContinue
+    if ($RemoveMode) {
+        $existing = Get-ScheduledTask -TaskName $Name -TaskPath $TaskPath -ErrorAction SilentlyContinue
         if ($existing) {
             Unregister-ScheduledTask -TaskName $Name -TaskPath $TaskPath -Confirm:$false
             Write-Host "  Removed: $fullName" -ForegroundColor Yellow
@@ -60,19 +220,42 @@ function Register-ClaudeTask {
         return
     }
 
-    $actionArgs = if ($Args) { "-c `"$ScriptPath $Args`"" } else { "-c `"$ScriptPath`"" }
-    $Action    = New-ScheduledTaskAction -Execute $GitBash -Argument $actionArgs -WorkingDirectory $WorkspaceRoot
-    $Trigger   = New-ScheduledTaskTrigger -Daily -At $Time
-    $Settings  = Default-Settings
-    $Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType S4U -RunLevel Limited
+    if ($PSCmdlet.ParameterSetName -eq "Cron") {
+        $triggerSpec = Convert-CronSchedule -Schedule $CronSchedule
+    } else {
+        $triggerSpec = [pscustomobject]@{
+            Kind = "Daily"
+            Time = [DateTime]::Parse($DailyAt).TimeOfDay
+            DaysOfWeek = @()
+        }
+    }
+    $triggerSummary = Format-TriggerSpec -Spec $triggerSpec
+
+    if ($PowerShell) {
+        $actionArgs = if ($TaskArguments) {
+            "-NoProfile -ExecutionPolicy Bypass -File `"$ScriptPath`" $TaskArguments"
+        } else {
+            "-NoProfile -ExecutionPolicy Bypass -File `"$ScriptPath`""
+        }
+        $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $actionArgs -WorkingDirectory $WorkspaceRoot
+        $execSummary = "powershell.exe $actionArgs"
+    } else {
+        $actionArgs = if ($TaskArguments) { "-c `"$ScriptPath $TaskArguments`"" } else { "-c `"$ScriptPath`"" }
+        $action = New-ScheduledTaskAction -Execute $GitBash -Argument $actionArgs -WorkingDirectory $WorkspaceRoot
+        $execSummary = "$GitBash $actionArgs"
+    }
+
+    $trigger = ConvertTo-TaskTrigger -Spec $triggerSpec
+    $settings = Get-DefaultTaskSetting
+    $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType S4U -RunLevel Limited
 
     if ($WhatIf) {
-        Write-Host "  [WhatIf] Would register: $fullName at $Time"
-        Write-Host "           Exec: $GitBash $actionArgs"
+        Write-Host "  [WhatIf] Would register: $fullName at $triggerSummary"
+        Write-Host "           Exec: $execSummary"
         return
     }
 
-    $existing = Get-ScheduledTask -TaskName $Name -ErrorAction SilentlyContinue
+    $existing = Get-ScheduledTask -TaskName $Name -TaskPath $TaskPath -ErrorAction SilentlyContinue
     if ($existing) {
         Write-Host "  Removing existing: $fullName"
         Unregister-ScheduledTask -TaskName $Name -TaskPath $TaskPath -Confirm:$false
@@ -82,24 +265,29 @@ function Register-ClaudeTask {
         Register-ScheduledTask `
             -TaskName $Name `
             -TaskPath $TaskPath `
-            -Action $Action `
-            -Trigger $Trigger `
-            -Settings $Settings `
-            -Principal $Principal `
+            -Action $action `
+            -Trigger $trigger `
+            -Settings $settings `
+            -Principal $principal `
             -Description $Description | Out-Null
-        Write-Host "  Registered: $fullName  ($Time daily)" -ForegroundColor Green
+        Write-Host "  Registered: $fullName  ($triggerSummary)" -ForegroundColor Green
     } catch {
         Write-Error "  Failed to register ${fullName}: $_"
     }
 }
 
-# ── Main ─────────────────────────────────────────────────────────────────────
-
-if (-not $WhatIf) { Require-Admin }
+if (-not $WhatIf -and -not (Test-Admin)) {
+    Write-Error "Run this script as Administrator."
+    exit 1
+}
 
 if (-not (Test-Path $GitBash)) {
-    Write-Error "Git Bash not found at '$GitBash'. Install Git for Windows or update `$GitBash."
-    exit 1
+    if ($WhatIf) {
+        Write-Warning "Git Bash not found at '$GitBash'. Git-Bash-backed tasks would fail until it is installed or `$GitBash is updated."
+    } else {
+        Write-Error "Git Bash not found at '$GitBash'. Install Git for Windows or update `$GitBash."
+        exit 1
+    }
 }
 
 Write-Host ""
@@ -109,51 +297,56 @@ Write-Host " Workspace: $WorkspaceRoot"
 Write-Host "=============================================="
 Write-Host ""
 
-# 1. Context management — 06:00
 Register-ClaudeTask `
     -Name "ContextManagementDaily" `
     -Description "Daily context file health check and improvement suggestions" `
     -ScriptPath "scripts/coordination/context/daily_context_check.bat" `
-    -Time "06:00AM"
+    -DailyAt "06:00AM"
 
-# 2. Workstation version check (ANSYS + OrcaFlex) — 07:00
 Register-ClaudeTask `
     -Name "WorkstationVersionCheck" `
     -Description "Daily ANSYS and OrcaFlex version check; appends Readiness section to daily log" `
     -ScriptPath "scripts/readiness/workstation-version-check.sh" `
-    -Time "07:00AM"
+    -DailyAt "07:00AM"
 
-# 3. Nightly readiness (11 ecosystem checks) — 23:00
-# Writes shared readiness proof under .claude/state/harness-readiness-licensed-win-1.yaml
 Register-ClaudeTask `
     -Name "NightlyReadiness" `
-    -Description "11-check ecosystem health: memory, context budget, submodules, harness files, ANSYS, OrcaFlex; updates shared readiness proof" `
+    -Description "11-check ecosystem health; updates shared readiness proof" `
     -ScriptPath "scripts/readiness/nightly-readiness.sh" `
-    -Time "11:00PM"
+    -DailyAt "11:00PM"
 
-# 4. Repo sync — 23:30
 Register-ClaudeTask `
     -Name "RepoSync" `
     -Description "Nightly workspace-hub git pull and submodule sync" `
     -ScriptPath "scripts/windows/repo-sync-daily.sh" `
-    -Time "11:30PM"
+    -DailyAt "11:30PM"
 
-# 5. Memory bridge sync — 04:30 (#1918)
-# Refreshes context.md, Claude auto-memory snapshot, and topic mirrors; commits + pushes.
-# On Windows, Hermes is absent — the bridge gracefully skips Hermes-specific steps.
 Register-ClaudeTask `
     -Name "MemoryBridgeSync" `
-    -Description "Refresh repo-tracked memory outputs (context.md, auto-memory snapshot, topic mirrors); commits and pushes (#1918)" `
+    -Description "Refresh repo-tracked memory outputs; commits and pushes (#1918)" `
     -ScriptPath "scripts/memory/bridge-hermes-claude.sh" `
-    -Args "--commit" `
-    -Time "04:30AM"
+    -TaskArguments "--commit" `
+    -DailyAt "04:30AM"
+
+$equalityTask = Get-EqualityReportTask
+$currentMachine = Get-CurrentMachineLabel
+if ($equalityTask.Machines -contains $currentMachine) {
+    Register-ClaudeTask `
+        -Name "EqualityReport" `
+        -Description $equalityTask.Description `
+        -ScriptPath "scripts/windows/equality-report.ps1" `
+        -CronSchedule $equalityTask.Schedule `
+        -PowerShell
+} else {
+    Write-Host "  Skip EqualityReport: $currentMachine is not listed in schedule-tasks.yaml"
+}
 
 Write-Host ""
 Write-Host "Done. To verify:"
 Write-Host "  Get-ScheduledTask -TaskPath '\Claude\' | Select TaskName, State"
 Write-Host ""
 Write-Host "To run a task now:"
-Write-Host "  Start-ScheduledTask -TaskName 'WorkstationVersionCheck' -TaskPath '\Claude\'"
+Write-Host "  Start-ScheduledTask -TaskName 'EqualityReport' -TaskPath '\Claude\'"
 Write-Host ""
 Write-Host "To remove all tasks:"
 Write-Host "  powershell -File setup-scheduler-tasks.ps1 -Remove"

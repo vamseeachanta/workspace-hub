@@ -39,6 +39,18 @@
 | 01:45 daily | harness-update | AI harness tools update (GStack, Hermes, Superpowers, GSD) | `logs/maintenance/harness-update-*.log` |
 | */4h | repository-sync | Pull/push all repos | `.claude/state/learning-reports/cron.log` |
 
+## Task Schedule (licensed-win-1 / licensed-win-2 - Windows Task Scheduler)
+
+`scripts/windows/setup-scheduler-tasks.ps1` renders `\Claude\EqualityReport` from
+`config/scheduled-tasks/schedule-tasks.yaml` instead of hardcoding a duplicate cadence.
+The task runs `scripts/windows/equality-report.ps1`, which uses system `python` for the
+matrix build and commits/pushes `.claude/state/equality-*.yaml` after a successful
+collector + matrix run.
+
+| Time | ID | Description | Log |
+|------|-----|-------------|-----|
+| 04:30 Mon | equality-report | Machine-equality self-report plus matrix build; commits/pushes equality state | `logs/quality/equality-*.log` |
+
 ## Skills Curation v2 Contract
 
 The `skills-curation` scheduled task remains the single periodic path for skill ecosystem housekeeping. Its default cron invocation is local-only: it writes deterministic JSON and Markdown artifacts under `logs/maintenance/skills-curation/`, does not call `gh`, does not require network access, and does not mutate `.claude/skills` or `.claude/state/skill-usage-report/`. In v2 it also reports tracked-vs-filesystem inventory, including active filesystem-only `SKILL.md` files that are at risk of loss until dispositioned.

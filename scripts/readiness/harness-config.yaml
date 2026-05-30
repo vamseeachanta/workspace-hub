@@ -60,12 +60,9 @@ workstations:
     report_path: .claude/state/harness-readiness-licensed-win-1.yaml
     notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
     role: licensed-solver
-    # CC5: no ram_gib_min — Git-Bash v1 can't reliably read Windows RAM (would force permanent
-    # MISSING-EVIDENCE). RAM floor returns when the .ps1 compute companion lands (C2 follow-up).
-    # TODO(#2816 W4 follow-up): collect-equality.ps1 now yields a trustworthy ram_total_mib via CIM.
-    # Set ram_gib_min here to the OWNER-CONFIRMED value captured from one real `-Stdout` run — do
-    # NOT guess (too-high = permanent BELOW-BASELINE, too-low = no signal). Gated post-evidence step.
-    compute_floor: {cores_min: 8}
+    # #2816 W4: collect-equality.ps1 owner run on licensed-win-2 measured ram_total_mib=15982.
+    # Floor is set below the measured 15.6 GiB with margin while still catching a real downgrade.
+    compute_floor: {cores_min: 8, ram_gib_min: 15}
     required_data_access: [digitalmodel, assetutilities]
     # #2849 solvers baseline (cold-dim, STRICT): licensed work routes here — only a `licensed`
     # signal satisfies this baseline. An install-only `present` grades BELOW-BASELINE.
@@ -80,11 +77,9 @@ workstations:
     report_path: .claude/state/harness-readiness-licensed-win-2.yaml
     notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
     role: licensed-solver
-    # CC5: no ram_gib_min — Git-Bash v1 can't reliably read Windows RAM (would force permanent
-    # MISSING-EVIDENCE). RAM floor returns when the .ps1 compute companion lands (C2 follow-up).
-    # TODO(#2816 W4 follow-up): set ram_gib_min from an owner-confirmed collect-equality.ps1 run
-    # (gated post-evidence step; do NOT guess — see licensed-win-1 note above).
-    compute_floor: {cores_min: 8}
+    # #2816 W4: same licensed Windows hardware class; owner run measured ram_total_mib=15982.
+    # Floor is set below the measured 15.6 GiB with margin while still catching a real downgrade.
+    compute_floor: {cores_min: 8, ram_gib_min: 15}
     required_data_access: [digitalmodel, assetutilities]
     # #2849 solvers baseline (cold-dim, STRICT): licensed-solver workstation.
     # NOTE (PR #2850, 2026-05-28): grades BELOW-BASELINE until the Windows license-probe
