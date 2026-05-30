@@ -47,6 +47,7 @@ lib/
 !scripts/coordination/routing/lib/
 !scripts/setup/lib/
 !scripts/review/lib/
+!scripts/ai/assessment/lib/
 !scripts/cron/lib/
 !scripts/improve/lib/
 !scripts/readiness/lib/
