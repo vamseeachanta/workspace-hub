@@ -126,10 +126,28 @@ jobs:
           fetch-depth: 0
 
       - name: Check plan approval for implementation commits
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PLAN_APPROVAL_GATE_ENABLED: ${{ vars.PLAN_APPROVAL_GATE_ENABLED }}
+          PLAN_APPROVAL_ADMIN_PREREQS_CONFIRMED: ${{ vars.PLAN_APPROVAL_ADMIN_PREREQS_CONFIRMED }}
+          PLAN_APPROVAL_OWNERS: ${{ vars.PLAN_APPROVAL_OWNERS }}
         run: |
           echo "## Plan Approval Check" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
+          set +e
+          if command -v uv >/dev/null 2>&1; then
+            uv run python scripts/workflow/plan_approval_gate_check.py
+          else
+            python3 scripts/workflow/plan_approval_gate_check.py
+          fi
+          PLAN_APPROVAL_LABEL_GATE_RC=$?
+          set -e
+
+          # PLAN_APPROVAL_GATE_ENABLED=1 is intentionally blocking. Keep it unset
+          # until this check is required and the protected-label ruleset is live.
           chmod +x scripts/enforcement/require-plan-approval.sh
 
           if scripts/enforcement/require-plan-approval.sh --strict 2>&1; then
@@ -143,6 +161,11 @@ jobs:
             echo "2. Get review: \`/gsd:review --phase N\`" >> $GITHUB_STEP_SUMMARY
             echo "3. Approval creates marker in \`.planning/plan-approved/\`" >> $GITHUB_STEP_SUMMARY
             exit $EXIT_CODE
+          fi
+
+          if [[ "$PLAN_APPROVAL_LABEL_GATE_RC" -ne 0 ]]; then
+            echo "**Result:** FAIL — label-authority plan approval gate failed" >> $GITHUB_STEP_SUMMARY
+            exit "$PLAN_APPROVAL_LABEL_GATE_RC"
           fi
 
   marker-label-parity:
