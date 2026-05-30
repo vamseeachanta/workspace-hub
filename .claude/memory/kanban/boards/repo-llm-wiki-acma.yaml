@@ -166,3 +166,73 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#14
+    title: 'B1546: capture Noble approval, PO, and approved scope baseline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/14
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#15
+    title: 'B1546: build candidate tank geometry and fill-level data index'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/15
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#16
+    title: 'B1546: validate AQWA archive import and roll-focused frequency grid'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/16
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#17
+    title: 'B1546: define CFD prototype, compute plan, and software ownership'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/17
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#18
+    title: 'B1546: define sloshing pressure extraction and structural assessment criteria'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/18
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#19
+    title: 'B1546: maintain Phase A schedule, deliverable gates, and client action tracker'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/19
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#20
+    title: 'B1546: extract technical references for sloshing methodology basis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/20
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
