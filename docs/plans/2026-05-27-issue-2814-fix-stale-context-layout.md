@@ -1,11 +1,13 @@
 # Plan for #2814: docs(harness): fix stale context.md repo-layout claim (siblings vs nested)
 
-> **Status:** draft
+> **Status:** implemented (2026-05-29) — T1 review resolved the `aceengineer-strategy` open question (live-verified sibling); corrected ALL tier-1 siblings + regenerated `context.md` from the template; added anti-drift regression test.
 > **Complexity:** T1
 > **Date:** 2026-05-27
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2814
 > **Client:** N/A
-> **Review artifacts:** scripts/review/results/2026-05-27-plan-2814-claude.md | ...-codex.md | ...-gemini.md
+> **Review artifacts:** scripts/review/results/2026-05-29-2814-claude.md (T1 plan+code; APPROVE)
+>
+> **Implementation note (2026-05-29):** The `aceengineer-strategy` "open question" below is RESOLVED — live `.git` probe confirms it (and `digitalmodel`/`worldenergydata`/`assetutilities`/`assethold`) are all siblings at `/mnt/local-analysis/`. The fix edits the bridge heredoc template and regenerates `context.md` from it (faithful quoted-heredoc extraction — NOT a hand-edit), removing the prior `*stale:*` drift markers. `tests/memory/test_context_md_bridge_sync.py` locks the heredoc↔context.md sync so this drift cannot recur. Scoped to the Linux layout section; Windows (`D:\workspace-hub\`, genuinely nested) untouched.
 
 ---
 

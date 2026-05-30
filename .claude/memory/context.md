@@ -17,19 +17,23 @@
 
 ## Workspace Layout (Linux)
 
-- `/mnt/local-analysis/workspace-hub/` — the real git repo mount
-- `~/workspace-hub` — **sparse overlay** on ace-linux-1; writes may fail silently *stale: 2026-05-24*
+- `/mnt/local-analysis/workspace-hub/` — the real git repo mount (harness / control-plane)
+- `~/workspace-hub` — **sparse overlay** on ace-linux-1; writes may fail silently
   - If a write via tool fails: write to `/tmp/` first, then `mv` via terminal to the real mount
-- `digitalmodel/` — **separate git repo** (vamseeachanta/digitalmodel.git), gitignored by parent *stale: 2026-05-25*
-  - Commits MUST be made from inside `digitalmodel/` — not from workspace-hub root
-- `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent *stale: 2026-05-24*
-- `worldenergydata/` — energy data sub-repo
+- **Tier-1 repos live as SIBLINGS at `/mnt/local-analysis/<repo>` — NOT nested under workspace-hub.**
+  `workspace-hub` is the harness/control-plane, not a parent for tier-1 checkouts. Each is a
+  separate git repo; commit from inside it, never from the workspace-hub root.
+  - `/mnt/local-analysis/digitalmodel/` — separate git repo (vamseeachanta/digitalmodel.git)
+  - `/mnt/local-analysis/worldenergydata/` — separate git repo
+  - `/mnt/local-analysis/assetutilities/` — separate git repo
+  - `/mnt/local-analysis/assethold/` — separate git repo
+  - `/mnt/local-analysis/aceengineer-strategy/` — private GTM strategy repo (sibling, not nested)
 
 ## Windows Path Conventions
 
 - MINGW64 bash: paths use `/d/workspace-hub/` (not `D:\workspace-hub`)
 - `core.symlinks=false` — git treats junctions as dirs; never commit symlinks cross-platform
-- Shell scripts: `#!/usr/bin/env bash`, LF line endings *stale: 2026-05-25*
+- Shell scripts: `#!/usr/bin/env bash`, LF line endings
 
 ## Memory Sync Model
 
