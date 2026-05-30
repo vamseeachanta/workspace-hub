@@ -2749,3 +2749,59 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#645
+    title: 'demo_06: CP for offshore structures (jacket/monopile) — sacrificial-anode design, DNV-RP-B401'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/645
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:subsea
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#646
+    title: 'demo_07: CP for subsea pipelines — bracelet-anode design, ISO 15589-2 / DNV-RP-F103'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/646
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:subsea
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#647
+    title: 'demo_08: ICCP design — rectifier & ground-bed sizing for platform/hull'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/647
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:subsea
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#648
+    title: 'demo_09: CP retrofit & remaining-life assessment for aging structures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/648
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:subsea
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
