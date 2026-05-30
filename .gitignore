@@ -543,3 +543,6 @@ wikis/**/raw/papers/*.pdf
 # Moved 2026-05-07 from /mnt/local-analysis/{llm-wiki,kaggle-rogii-2026}
 /llm-wiki/
 /kaggle-rogii-2026/
+
+# Local uv/virtualenv (machine-specific, do not track)
+.venv/
