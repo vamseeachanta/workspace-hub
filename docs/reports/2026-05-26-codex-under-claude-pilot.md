@@ -71,14 +71,14 @@ The route is a **per-machine, user-authorized** install (the userns grant is a k
 
 | Machine | OS / role | Status | Evidence / reason |
 |---|---|---|---|
-| **ace-linux-1** | linux | **FUNCTIONAL** (route live); reconcile to installer-managed pending user sudo | `setup-codex-sandbox.sh --check` → profile present + `network_access: true`; broker ran live Codex `task` jobs (#2822 reviews); codex-cli 0.134.0. Profile applied out-of-band during the #2804 pilot (`managed-by-us: no`); reconcile to the committed installer (sentinel-stamped, teardown-able) is a user-authorized sudo step (see runbook). |
-| **ace-linux-2** | linux (SSH-reachable per registry) | **PENDING** (per-machine) | Not yet onboarded; install runs during a session on ace-linux-2 (runbook below). User chose runbook-only over an SSH-driven install (#2813 Q2). |
-| **shoerack** | linux, gpu-compute | **PENDING — not yet configured** | `workspace_root: null`, `ssh: null` (access TBD) in the registry. The route *applies* (Linux) once the machine has a workspace-hub checkout and is reachable + Codex-under-Claude is wanted; until then nothing to install. |
+| **ace-linux-1** | linux | **DONE** (installer-managed) | reconciled 2026-05-27: out-of-band profile removed (backup `/root/codex-bwrap.bak.*`) + reinstalled via `setup-codex-sandbox.sh --accept-userns-lpe-risk`; `--check` → `managed-by-us: yes` + `network_access: true`; `VERIFIED: /usr/bin/bwrap can now create a user namespace`. codex-cli 0.134.0. |
+| **ace-linux-2** | linux | **DONE** (installer-managed) | installed 2026-05-27 (per-machine, runbook): fresh `profile: no` → `--accept-userns-lpe-risk` → `Profile loaded` + `VERIFIED: … create a user namespace`; `--check` → `managed-by-us: yes` + `network_access: true`. codex-cli 0.133.0. |
+| **shoerack** | linux, **gpu-compute** | **DEFERRED / likely-N/A** | `gali-linux-compute-1`: 2× RTX 3090 / 128 GB, role = *future GPU compute* (ML/solver workloads), NOT agent orchestration. Not yet onboarded (`workspace_root: null`, access TBD). The Codex-under-Claude route is for orchestration nodes; whether a compute node needs it is TBD. Covered by a fresh issue if/when onboarded + the route is wanted. |
 | **Vamsees-MacBook-Air** | **macOS**, portable-dev | **N/A** | macOS has no AppArmor/bwrap — the #2804 userns blocker does not exist; installer fail-fasts. Codex's macOS sandbox is a different model (out of #2804 scope). |
 | **licensed-win-1** | windows (`ssh: null`, GUI-only) | **N/A** | The #2804 AppArmor/userns fix is Linux-only; installer fail-fasts on non-Ubuntu/no-AppArmor. Windows-native Codex-under-Claude (if wanted) is a separate, out-of-scope question. |
 | **licensed-win-2** | windows (`ssh: null`, GUI-only) | **N/A** | Same as licensed-win-1. |
 
-`#2813` stays a tracking item until the two Linux PENDINGs (ace-linux-2, shoerack) resolve (installed or confirmed not-wanted).
+**#2813 resolved 2026-05-27:** both orchestration boxes (ace-linux-1, ace-linux-2) are installer-managed; macOS + Windows are N/A (Linux-only fix); shoerack (future GPU-compute, unonboarded) is deferred to a fresh issue. The route is live where Codex-under-Claude orchestration runs.
 
 ### Per-machine runbook (Ubuntu, run on the target machine)
 
