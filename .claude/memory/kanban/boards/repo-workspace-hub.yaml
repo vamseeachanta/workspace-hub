@@ -1115,7 +1115,7 @@ cards:
     title: 'WRK-1121: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/49
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -1134,7 +1134,7 @@ cards:
     title: 'WRK-1122: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/50
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -1598,7 +1598,7 @@ cards:
     title: 'WRK-1207: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/75
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -1657,7 +1657,7 @@ cards:
     title: 'WRK-1226: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/78
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -1731,7 +1731,7 @@ cards:
     title: 'WRK-1258: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/82
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -1863,7 +1863,7 @@ cards:
     title: 'WRK-1285: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/89
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -1882,7 +1882,7 @@ cards:
     title: 'WRK-1286: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/90
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -1998,7 +1998,7 @@ cards:
     title: 'WRK-1315: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/97
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2051,7 +2051,7 @@ cards:
     title: 'WRK-1326: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/100
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2495,7 +2495,7 @@ cards:
     title: 'WRK-5004: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/122
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2514,7 +2514,7 @@ cards:
     title: 'WRK-5005: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/123
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2533,7 +2533,7 @@ cards:
     title: 'WRK-5006: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/124
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2552,7 +2552,7 @@ cards:
     title: 'WRK-5007: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/125
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2571,7 +2571,7 @@ cards:
     title: 'WRK-5008: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/126
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2590,7 +2590,7 @@ cards:
     title: 'WRK-5009: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/127
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2609,7 +2609,7 @@ cards:
     title: 'WRK-5010: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/128
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2628,7 +2628,7 @@ cards:
     title: 'WRK-5011: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/129
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2647,7 +2647,7 @@ cards:
     title: 'WRK-5012: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/130
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2687,7 +2687,7 @@ cards:
     title: 'WRK-5014: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/132
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2706,7 +2706,7 @@ cards:
     title: 'WRK-5015: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/133
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2725,7 +2725,7 @@ cards:
     title: 'WRK-5017: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/134
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2744,7 +2744,7 @@ cards:
     title: 'WRK-5024: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/135
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2763,7 +2763,7 @@ cards:
     title: 'WRK-5025: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/136
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2804,7 +2804,7 @@ cards:
     title: 'WRK-5028: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/138
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2823,7 +2823,7 @@ cards:
     title: 'WRK-5029: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/139
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2857,7 +2857,7 @@ cards:
     title: 'WRK-5031: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/141
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2876,7 +2876,7 @@ cards:
     title: 'WRK-5032: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/142
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2895,7 +2895,7 @@ cards:
     title: 'WRK-5033: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/143
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2914,7 +2914,7 @@ cards:
     title: 'WRK-5034: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/144
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2933,7 +2933,7 @@ cards:
     title: 'WRK-5043: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/145
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2952,7 +2952,7 @@ cards:
     title: 'WRK-5045: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/146
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2971,7 +2971,7 @@ cards:
     title: 'WRK-5049: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/147
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -2990,7 +2990,7 @@ cards:
     title: 'WRK-5050: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/148
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3009,7 +3009,7 @@ cards:
     title: 'WRK-5051: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/149
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3028,7 +3028,7 @@ cards:
     title: 'WRK-5052: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/150
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3047,7 +3047,7 @@ cards:
     title: 'WRK-5053: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/151
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3095,7 +3095,7 @@ cards:
     title: 'WRK-5061: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/154
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3114,7 +3114,7 @@ cards:
     title: 'WRK-5073: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/155
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3133,7 +3133,7 @@ cards:
     title: 'WRK-5074: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/156
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3152,7 +3152,7 @@ cards:
     title: 'WRK-5075: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/157
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3171,7 +3171,7 @@ cards:
     title: 'WRK-5076: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/158
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3190,7 +3190,7 @@ cards:
     title: 'WRK-5078: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/159
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3209,7 +3209,7 @@ cards:
     title: 'WRK-5079: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/160
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3228,7 +3228,7 @@ cards:
     title: 'WRK-5080: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/161
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3247,7 +3247,7 @@ cards:
     title: 'WRK-5081: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/162
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3266,7 +3266,7 @@ cards:
     title: 'WRK-5083: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/163
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -3304,7 +3304,7 @@ cards:
     title: 'WRK-5090: untitled'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/165
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -43382,7 +43382,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2886
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-approved
+      - gate:completeness
     initial_status: triage
     priority: 0
     gh_assignees: []

@@ -2813,6 +2813,33 @@ cards:
     gh_labels:
       - documentation
       - cat:engineering
+      - status:plan-approved
+      - domain:subsea
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#653
+    title: 'bug(gtm): demo_01 calc_max_allowable_span silently saturates at 500 m when no CF onset in range'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/653
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - domain:subsea
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#654
+    title: 'feat(gtm/parametric): demo_01 §2 — yaml Sweep Config + loader (baseline reproduces 680 cases)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/654
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
       - domain:subsea
     initial_status: triage
     priority: 0
