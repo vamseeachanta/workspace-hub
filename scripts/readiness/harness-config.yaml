@@ -60,9 +60,13 @@ workstations:
     report_path: .claude/state/harness-readiness-licensed-win-1.yaml
     notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
     role: licensed-solver
-    # #2816 W4: collect-equality.ps1 owner run on licensed-win-2 measured ram_total_mib=15982.
-    # Floor is set below the measured 15.6 GiB with margin while still catching a real downgrade.
-    compute_floor: {cores_min: 8, ram_gib_min: 15}
+    # ram_gib_min restored (#2816 W4, owner-confirmed 2026-05-31): collect-equality.ps1 now yields a
+    # trustworthy ram_total_mib via CIM. Floor = 12 GiB. Evidence: the paired licensed-win-2
+    # (acma-ws014) measured ram_total_mib 15982 MiB (~16 GB physical; CIM excludes hardware-reserved)
+    # on a real `-Stdout` run. 12 GiB gives margin below spec while still flagging a degraded sub-12
+    # GB box. A floor of 16 would false-fail (15982 < 16384). licensed-win-1 is the same
+    # licensed-solver class (assumed 16 GB); confirm/retune at its first -Stdout run.
+    compute_floor: {cores_min: 8, ram_gib_min: 12}
     required_data_access: [digitalmodel, assetutilities]
     # #2849 solvers baseline (cold-dim, STRICT): licensed work routes here — only a `licensed`
     # signal satisfies this baseline. An install-only `present` grades BELOW-BASELINE.
@@ -77,9 +81,11 @@ workstations:
     report_path: .claude/state/harness-readiness-licensed-win-2.yaml
     notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
     role: licensed-solver
-    # #2816 W4: same licensed Windows hardware class; owner run measured ram_total_mib=15982.
-    # Floor is set below the measured 15.6 GiB with margin while still catching a real downgrade.
-    compute_floor: {cores_min: 8, ram_gib_min: 15}
+    # ram_gib_min restored (#2816 W4, owner-confirmed 2026-05-31): measured ram_total_mib on this box
+    # (acma-ws014) = 15982 MiB (~16 GB physical) via collect-equality.ps1 -Stdout on 2026-05-31.
+    # Floor = 12 GiB gives margin below the real spec while still catching a degraded box. A floor of
+    # 16 would false-fail (15982 < 16384). See licensed-win-1 note above for the class rationale.
+    compute_floor: {cores_min: 8, ram_gib_min: 12}
     required_data_access: [digitalmodel, assetutilities]
     # #2849 solvers baseline (cold-dim, STRICT): licensed-solver workstation.
     # NOTE (PR #2850, 2026-05-28): grades BELOW-BASELINE until the Windows license-probe

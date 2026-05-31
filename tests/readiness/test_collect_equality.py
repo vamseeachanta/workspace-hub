@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import os
 import re
+import shlex
 import subprocess
 import time
 from pathlib import Path
@@ -496,6 +497,35 @@ def test_collect_origin_ref_age_in_worktree(tmp_path):
     assert isinstance(p["origin_ref_age_h"], (int, float)) and not isinstance(p["origin_ref_age_h"], bool), p
     assert 0 <= p["origin_ref_age_h"] <= 12
     assert p["behind_main"] == 0          # worktree HEAD == origin/main → current, not unknown
+
+
+def test_winabs_guard_classifies_windows_drive_paths():
+    # #2816 W4 worktree-freshness fix (Windows): a linked-worktree --git-common-dir on Windows is
+    # an absolute drive-letter path (C:/repo/.git or C:\repo\.git) that does NOT start with "/", so
+    # the bare "!= /*" guard alone would treat it as RELATIVE and corrupt it (WS/C:/repo/.git) ->
+    # FETCH_HEAD unfound -> origin_ref_age_h "unknown" -> matrix false-STALEs every worktree run on
+    # Windows. The Linux-only test_collect_origin_ref_age_in_worktree above cannot reproduce this
+    # (Linux common-dirs are relative or "/"-absolute). Bind this test to the REAL winabs pattern
+    # extracted from the script (not a copy) so weakening the guard fails CI.
+    src = SCRIPT.read_text()
+    m = re.search(r"winabs='([^']*)'", src)
+    assert m, "winabs guard missing from collect-equality.sh (#2816 W4 worktree-freshness fix)"
+    winabs = m.group(1)
+
+    def classify(gd: str) -> str:
+        prog = (f"winabs={shlex.quote(winabs)}\n"
+                'if [[ -n "$1" && "$1" != /* && ! "$1" =~ $winabs ]]; then echo relative; '
+                'else echo absolute; fi')
+        return subprocess.run(["bash", "-c", prog, "_", gd],
+                              capture_output=True, text=True, timeout=30).stdout.strip()
+
+    # Windows linked-worktree common-dir (forward AND back slash) must classify ABSOLUTE -> no join
+    assert classify("C:/workspace-hub/.git") == "absolute"
+    assert classify(r"C:\workspace-hub\.git") == "absolute"
+    # POSIX absolute stays absolute; genuine relative paths still join to WS
+    assert classify("/srv/repo/.git") == "absolute"
+    assert classify(".git") == "relative"
+    assert classify("worktrees/x/.git") == "relative"
 
 
 def test_collect_origin_ref_age_refreshed_not_frozen(tmp_path):

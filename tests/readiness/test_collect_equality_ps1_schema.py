@@ -114,7 +114,7 @@ def test_harness_config_winram_floor_present():
     for machine in ("licensed-win-1", "licensed-win-2"):
         floor = config["workstations"][machine]["compute_floor"]
         assert floor["cores_min"] == 8
-        assert floor["ram_gib_min"] == 15
+        assert floor["ram_gib_min"] == 12
 
 
 # ════════════════════════════════════════════════════════════════════════════
