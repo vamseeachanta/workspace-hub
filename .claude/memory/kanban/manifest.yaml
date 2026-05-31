@@ -136,6 +136,8 @@ manifest:
     - repo-llm-wiki-content
     - repo-llm-wiki-governance
     - repo-llm-wiki-ingest
+    - repo-llm-wiki-ingest-batch-extraction
+    - repo-llm-wiki-ingest-corpus-acquisition
     - repo-llm-wiki-tooling
   - slug: repo-llm-wiki-acma
     tier: repo
@@ -512,6 +514,22 @@ manifest:
     workspace_path: /mnt/local-analysis/llm-wiki
     file: boards/repo-llm-wiki-ingest.yaml
     card_count: 33
+  - slug: repo-llm-wiki-ingest-batch-extraction
+    tier: domain
+    repo: vamseeachanta/llm-wiki
+    domain: ingest-batch-extraction
+    parent_slug: repo-llm-wiki
+    workspace_path: /mnt/local-analysis/llm-wiki
+    file: boards/repo-llm-wiki-ingest-batch-extraction.yaml
+    card_count: 0
+  - slug: repo-llm-wiki-ingest-corpus-acquisition
+    tier: domain
+    repo: vamseeachanta/llm-wiki
+    domain: ingest-corpus-acquisition
+    parent_slug: repo-llm-wiki
+    workspace_path: /mnt/local-analysis/llm-wiki
+    file: boards/repo-llm-wiki-ingest-corpus-acquisition.yaml
+    card_count: 0
   - slug: repo-llm-wiki-tooling
     tier: domain
     repo: vamseeachanta/llm-wiki

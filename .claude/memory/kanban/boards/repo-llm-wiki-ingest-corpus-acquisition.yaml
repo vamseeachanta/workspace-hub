@@ -1,0 +1,12 @@
+board:
+  slug: repo-llm-wiki-ingest-corpus-acquisition
+  display_name: llm-wiki · ingest-corpus-acquisition
+  tier: domain
+  repo: vamseeachanta/llm-wiki
+  domain: ingest-corpus-acquisition
+  parent_slug: repo-llm-wiki
+  workspace_path: /mnt/local-analysis/llm-wiki
+  description: 'llm-wiki ingest-corpus-acquisition subdomain (split from oversized ingest board). Manifested 2026-05-31.
+
+    '
+cards: []
