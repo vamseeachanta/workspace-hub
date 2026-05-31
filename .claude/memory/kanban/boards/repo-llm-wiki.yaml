@@ -1475,3 +1475,23 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#226
+    title: '[corpus-ingest] content-value-filter should reject personal/non-standard docs (resume/bank/wire) by content'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/226
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#227
+    title: '[verification] flagged bucket dominated by non-tables (forms/figures) + BSI page-attribution unreliable — strategy for #135'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/227
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
