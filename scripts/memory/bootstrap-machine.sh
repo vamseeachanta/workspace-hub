@@ -183,6 +183,26 @@ if [[ -f "${KANBAN_AUTOLOAD}" && -n "${GIT_DIR}" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
+# 2.9. Install update-harness-tools symlink into ~/.local/bin (per #2920 dec. A)
+#      Makes `update-harness-tools` runnable from PATH on every machine for
+#      ad-hoc "update now" runs. The same script is the canonical scheduled
+#      updater (schedule-tasks.yaml id: harness-update). Idempotent; only the
+#      symlink target is managed, never the user's other ~/.local/bin entries.
+# ---------------------------------------------------------------------------
+HARNESS_UPDATER="${REPO_ROOT}/scripts/maintenance/update-harness-tools.sh"
+if [[ -f "${HARNESS_UPDATER}" && "${OS}" != "windows" ]]; then
+    mkdir -p "${HOME}/.local/bin"
+    LINK="${HOME}/.local/bin/update-harness-tools"
+    # Only (re)place when missing or pointing elsewhere; never clobber a real file.
+    if [[ -L "${LINK}" || ! -e "${LINK}" ]]; then
+        ln -sfn "${HARNESS_UPDATER}" "${LINK}"
+        echo -e "${CYAN}Installed update-harness-tools symlink → scripts/maintenance/update-harness-tools.sh${NC}"
+    else
+        echo -e "${YELLOW}~/.local/bin/update-harness-tools exists and is not a symlink — leaving it alone.${NC}"
+    fi
+fi
+
+# ---------------------------------------------------------------------------
 # 3. Remind about bridge script (Linux/Hermes machines only)
 # ---------------------------------------------------------------------------
 if [[ -d "${HOME}/.hermes" ]]; then

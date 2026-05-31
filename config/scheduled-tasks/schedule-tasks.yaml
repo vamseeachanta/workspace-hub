@@ -87,7 +87,7 @@ tasks:
     description: Nightly uv.lock freshness, outdated packages, CVE advisories across 5 repos.
 
   - id: harness-update
-    label: AI harness tools daily update (staggered canary)
+    label: AI harness tools daily update (native commands, staggered)
     schedule_by_machine:
       dev-primary: "15 1 * * *"      # 01:15 — canary
       ace-linux-1: "15 1 * * *"
@@ -102,14 +102,17 @@ tasks:
     command: >-
       PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
       cd $WORKSPACE_HUB &&
-      bash scripts/cron/harness-update.sh
-      >> $WORKSPACE_HUB/logs/maintenance/harness-update-$(date +\%Y-\%m-\%d).log 2>&1
-    log: logs/maintenance/harness-update-*.log
+      bash scripts/maintenance/update-harness-tools.sh
+      >> $WORKSPACE_HUB/logs/maintenance/update-harness-tools-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/maintenance/update-harness-tools-*.log
     is_claude_task: false
     description: >-
-      Daily AI harness lifecycle — all 7 tools. Staggered canary: dev-primary 01:15,
-      dev-secondary 01:45, Windows 02:15. Health checks, rollback, drift, alerting.
-      Issues: #1668, #1672-#1675.
+      Daily AI harness update via NATIVE updaters — hermes update / claude update /
+      codex update / gemini (npm). Per #2920 decision A: native script is canonical;
+      missing tools are skipped per machine. Staggered: dev-primary 01:15,
+      dev-secondary 01:45, Windows 02:15. NOTE: the prior npm-based
+      scripts/cron/harness-update.sh (health-check/rollback/drift) is retained in-repo
+      but no longer scheduled. Issues: #1668, #1672-#1675, #2920.
 
   - id: comprehensive-learning
     label: Comprehensive learning pipeline
