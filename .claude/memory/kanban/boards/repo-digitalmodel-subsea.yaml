@@ -2845,3 +2845,15 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#655
+    title: 'decision(gtm/parametric): demo_01 §3 — agreed parameters to vary (baseline yaml = template)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/655
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - domain:subsea
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
