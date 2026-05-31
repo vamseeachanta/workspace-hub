@@ -13642,7 +13642,7 @@ cards:
     title: '[Template] Prospect - [Company Name] - [Contact Name]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1465
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - machine:dev-primary
       - pipeline:contacted
