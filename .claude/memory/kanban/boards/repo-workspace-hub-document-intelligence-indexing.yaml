@@ -377,3 +377,108 @@ cards:
       Scoped-out follow-up from [#2403](https://github.com/vamseeachanta/workspace-hub/issues/2403). Per path-C decision (2026-05-14 morning triage), the parent spike is being reduced to **BGE-M3 only** so it can unblock its downstream consumer [#2402](https://github.com/vamseeachanta/workspace-hub/issues/2402) without waiting on API-key provisioning. The cloud-model portion (Voyage + OpenAI `text-embed-3`) moves here as its own work item.
 
       ## Background — why the split'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#57
+    title: 'WRK-1152: Collect and download electrical engineering resources to document-intelligence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/57
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:document-intelligence-indexing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1152: Collect and download electrical engineering resources to document-intelligence
+
+      **Status:** pending | **Priority:** medium | **Category:** research | **Subcategory:** electrical-engineering
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#91
+    title: 'WRK-1287: Document extraction pipeline — index repo ecosystem files and extract key info via doc/excel skills'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/91
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:document-intelligence-indexing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1287: Document extraction pipeline — index repo ecosystem files and extract key info via doc/excel skills
+
+      **Status:** pending | **Priority:** medium | **Category:** document-intelligence | **Subcategory:** document-index
+
+      **Repo:** [''workspace-hub''] | **Complexity:** complex | **Machine:** unset'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#166
+    title: 'WRK-5092: sabithaandkrishnaestates repo — document indexing and structure enhancement'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/166
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:personal-finance
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:document-intelligence-indexing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5092: sabithaandkrishnaestates repo — document indexing and structure enhancement
+
+      **Status:** pending | **Priority:** medium | **Category:** personal-finance | **Subcategory:** infrastructure
+
+      **Repo:** [''sabithaandkrishnaestates''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1818
+    title: 'dark-intel: extract riser engineering priority files from /mnt/ace/ (3837-CAL series)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1818
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-calculations
+      - machine:dev-primary
+      - dark-intelligence
+      - dispatch:ready
+      - gate:completeness
+      - domain:document-intelligence-indexing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Extract Riser Engineering Priority Calculations
+
+      ### What
+
+      The /mnt/ace/ riser-eng-job archive has 3,550 .xls + 43 .xlsx files.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1956
+    title: 'Phase 2: Deep scan 3,879 .xls binary workbooks with xlrd library'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1956
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:engineering
+      - cat:data-pipeline
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:document-intelligence-indexing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The Excel inventory scan (#1910, #1909) cataloged 4,125 workbooks but only fully scanned the 193 .xlsx files. The 3,879 .xls files (94% of inventory) are in legacy BIFF binary format and require the `xlrd` library to read sheet contents.
+
+      ## Inventory'

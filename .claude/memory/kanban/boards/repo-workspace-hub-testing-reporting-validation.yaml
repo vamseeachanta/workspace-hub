@@ -453,3 +453,25 @@ cards:
       Define and execute the final proof that Telegram/Hermes dispatch works safely after coordinator and first worker readiness pass.
 
       ## Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2215
+    title: 'feat(analysis): add migration-debt trend snapshots to provider-session audit'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2215
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-reporting-validation
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Summary
+
+      Extend the provider-session ecosystem audit from point-in-time migration-debt reporting to trend reporting. Persist snapshots of migration-debt density/volume and surface week-over-week change so regressions and improvements are easier to spot.
+
+      Why'

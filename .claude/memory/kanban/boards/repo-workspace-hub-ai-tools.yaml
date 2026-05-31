@@ -659,3 +659,24 @@ cards:
       `codex-cli 0.130.0` (current installed via `~/.npm-global/bin/codex`) reproduces the v0.124-era stdin-hang regression on **both** stdin and positional invocations, **and** affects Hermes-routed Codex calls because `hermes -z` shells out to `codex exec` subprocess for tool execution. Multiple downstream paths are blocked.
 
       ## Reproduction (verified 2026-05-15)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#44
+    title: 'WRK-1109: Set up WhatsApp MCP for Claude CLI on ace-linux-1'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/44
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness/skills
+      - domain:ai-tools
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1109: Set up WhatsApp MCP for Claude CLI on dev-primary
+
+      **Status:** pending | **Priority:** low | **Category:** harness/skills | **Subcategory:** integrations
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'

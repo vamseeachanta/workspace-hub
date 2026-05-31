@@ -525,3 +525,25 @@ cards:
       Decide which tier-1 repositories should be present on `licensed-win-2`, and which should be optional, reference-only, or not planned.
 
       This is a **decision issue**, not an implementation issue. It does not approve clone/move/delete/sync work.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#137
+    title: 'WRK-5026: chore(onboarding): add inotify watch limit fix to new-machine-setup'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/137
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - domain:workstations-machine-bringup
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5026: chore(onboarding): add inotify watch limit fix to new-machine-setup
+
+      **Status:** done | **Priority:** low | **Category:** harness | **Subcategory:** onboarding
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'

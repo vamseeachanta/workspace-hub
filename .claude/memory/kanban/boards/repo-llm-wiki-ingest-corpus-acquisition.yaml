@@ -9,4 +9,406 @@ board:
   description: 'llm-wiki ingest-corpus-acquisition subdomain (split from oversized ingest board). Manifested 2026-05-31.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/llm-wiki#12
+    title: 'WRK-280: ABS standards acquisition: create folder + download CP Guidance Notes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/12
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:high
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-280: ABS standards acquisition: create folder + download CP Guidance Notes
+
+
+      **Status:** blocked | **Priority:** high | **Category:** data/standards'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#72
+    title: 'feat(execution): dry-tree Lower Tertiary corpus ingestion — child execution lane under #19 (Frontier source family)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/72
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent + clearance
+
+      - **Parent (canonical plan)**: #19 — names Frontier Deepwater as one of three offshore raw-source families pending execution
+
+      - **Clearance checklist**: #46 (CLOSED) — defines public-safe handling for Frontier/offshore-operations material'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#101
+    title: '[meta] Follow-on substance work from 2026-05-18 14-URL ingest batch (2 domain foundings + COLREG family + ~25 named tasks)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/101
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'On 2026-05-18 a 14-URL LinkedIn batch landed (commits `aa7a8ec4..fa13ceb9` fast-forwarded to `main` after rebase over 5 parallel reservoir-engineering commits). The batch surfaced two **domain-founding events** plus a **COLREG family bootstrap** and a number of substance gaps that were explicitly seeded for follow-on work in log entries and source-page "Follow-on work" sections. This issue is the discoverable index of those follow-on tasks — without it they fossilize inside per-source-page bullets nobody re-reads.
+
+
+      ## Domain foundings (this batch)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#103
+    title: '[corpus-ingest] marine-engineering — class societies + IMO regulatory'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/103
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/marine-engineering/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#104
+    title: '[corpus-ingest] civil-structural-engineering — AISC, ASCE, ASME, AWS, NFPA, ANSI structural'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/104
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/engineering/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#105
+    title: '[corpus-ingest] drilling-engineering — API drilling spec family (4F, 7K, 8C, etc.)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/105
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/drilling-engineering/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#106
+    title: '[corpus-ingest] production-engineering — API production specs + SPE technical papers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/106
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/production-engineering/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#107
+    title: '[corpus-ingest] maritime-regulatory — USCG, BSEE, EPA, OSHA, CBP/Jones Act, Canal authorities, ColRegs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/107
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/maritime-law/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#108
+    title: '[corpus-ingest] electrical-instrumentation — marine/shipboard electrical (IEC 60092-series, 61363-1, 61892-7; IEEE 45)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/108
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/engineering/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#109
+    title: '[corpus-ingest] materials-and-mechanical — ASTM, SAE, ANSI mechanical'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/109
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/engineering-standards/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#110
+    title: '[corpus-ingest] specialty-and-international — AMSA, ADCI, IAATO, ILO, JSP, NAVSEA, Matthews Daniel, Noble Denton, PIANC, SAWE, USACE'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/110
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/engineering/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#111
+    title: '[specialist-corpus] hydrodynamic-mooring OSS — HAMS, MoorDyn, MoorPy'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/111
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:low
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Target wiki domain**: `wikis/marine-engineering/wiki/`
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#112
+    title: '[specialist-corpus] BEM hydrodynamics — capytaine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/112
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:low
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Target wiki domain**: `wikis/marine-engineering/wiki/`
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#113
+    title: '[specialist-corpus] offshore renewables — openfast, WEC-Sim'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/113
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:low
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Target wiki domain**: `wikis/marine-engineering/wiki/`
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#115
+    title: '[specialist-corpus] vendor-contractor pdfs — 2H, saipem, doris, frontierdeepwater, OGManufacturing, umbilical, seanation, rock-oil-field'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/115
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:low
+      - cat:data
+      - status:plan-approved
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Target wiki domain**: `wikis/marine-engineering/wiki/`
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#116
+    title: '[corpus-ingest] marine-engineering/dnv — OS-E301 citation-pilot verification + corpus expansion (Phase 1)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/116
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Parent epic**: [llm-wiki#103](https://github.com/vamseeachanta/llm-wiki/issues/103) — marine-engineering corpus ingest, Phase 1
+
+      **Umbrella**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#117
+    title: '[corpus-ingest] marine-engineering/sigtto — 14-document ingest (Phase 1 pattern-validation)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/117
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Parent epic**: [llm-wiki#103](https://github.com/vamseeachanta/llm-wiki/issues/103) — marine-engineering corpus ingest, Phase 1
+
+      **Umbrella**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#124
+    title: '[corpus-ingest] O&G-Standards full-fidelity ingest (~54K docs) — untracked gap'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/124
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#125
+    title: '[corpus-ingest] docs/conferences → llm-wiki (19,797 PDFs, indexed not ingested)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/125
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#126
+    title: '[corpus-ingest] docs/literature → llm-wiki (4,095 docs, indexed not ingested)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/126
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#134
+    title: '[corpus-ingest] O&G-Standards catalog↔disk reconciliation — uncataloged live dirs (ABS/ASCE/ASME/AWS/NACE)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/134
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#138
+    title: '[corpus-ingest] SNAME re-ingest under content-value + dedupe filters (reverted from scale-3) (#124)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/138
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - machine:dev-primary
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

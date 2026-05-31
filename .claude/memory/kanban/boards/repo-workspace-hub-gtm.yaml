@@ -1027,3 +1027,133 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#70
+    title: 'WRK-1184: Establish ecosystem theme — tethering timeless engineering to single source of truth'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/70
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:strategy
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1184: Establish ecosystem theme — tethering timeless engineering to single source of truth
+
+      **Status:** pending | **Priority:** high | **Category:** strategy | **Subcategory:** branding
+
+      **Repo:** [''aceengineer-website'', ''digitalmodel'', ''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#190
+    title: 'WRK-626: feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/190
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:personal
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-626: feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3)
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** personal | **Subcategory:** home
+
+      **Repo:** [''frontierdeepwater''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1309
+    title: 'WRK-5117: Add VC funding of 1MM to market brochures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1309
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:gtm
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: "## WRK-5117: Add VC funding of 1MM to market brochures\n**Status:** Stage 1: Capture (in_progress) | **Priority:** medium | **Category:** \n**Repo:** ['aceengineer-website'] | **Complexity:** simple | **Machine:** unset"
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1798
+    title: 'DATA: Collect public construction/heavy-lift vessel specs for GTM demos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1798
+    gh_state: open
+    gh_labels:
+      - domain:gtm
+      - machine:dev-primary
+      - gtm
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Status: Web research completed — subagent collected HLV vessel specs
+
+      A subagent researched heavy-lift vessels across multiple operators (Heerema, Subsea7, Allseas, Boskalis, etc.) and gathered specifications including crane capacities, DP classes, deck areas, and more.
+
+      ### What Was Gathered'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1799
+    title: 'DATA: Collect public pipelay barge/vessel specs for shallow water GTM demo'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1799
+    gh_state: open
+    gh_labels:
+      - domain:gtm
+      - machine:dev-primary
+      - gtm
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Purpose
+
+      Collect publicly available vessel specifications for pipelay barges and vessels (shallow water capable) to use in GTM demo 4: shallow water pipeline installation analysis.
+
+      ## Required Data (per vessel, 2 size classes)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1833
+    title: 'GTM Demo 2: Review findings -- pressure insensitivity at large D/t, lifecycle phase chart clarity'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1833
+    gh_state: open
+    gh_labels:
+      - domain:gtm
+      - machine:dev-primary
+      - gtm
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Review Findings from Demo 2
+
+      ### Finding 1: Pressure insensitivity for 16" and 20" pipes
+
+      At 16" and 20" with mid-range WT at 500m depth, propagation buckling governs across ALL pressure levels (10-25 MPa). This is technically correct (propagation buckling is D/t-dependent, not pressure-dependent) but may confuse non-specialist viewers who expect different pressures to show different utilisations.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2859
+    title: 'Doris demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2859
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:gtm
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

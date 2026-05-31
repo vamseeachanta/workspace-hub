@@ -9,4 +9,124 @@ board:
     '
   domain: engineering
   parent_slug: repo-workspace-hub
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#33
+    title: 'WRK-1027: DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/33
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:engineering
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1027: DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** cathodic-protection
+
+      **Repo:** [''digitalmodel''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#601
+    title: 'WRK-460: feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of...'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/601
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:engineering
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-460: feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of...
+
+      | Field | Value |
+
+      |-------|-------|'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#604
+    title: 'WRK-560: docs(digitalmodel): add calc_examples mapping — pipeline domain'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/604
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:engineering
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-560: docs(digitalmodel): add calc_examples mapping — pipeline domain
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** calculation-examples
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1320
+    title: 'WRK-1378: Regulatory compliance engine — IMO/ABS/DNV automated checks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1320
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:engineering
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Auto-created by backfill-github-refs.sh
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1701
+    title: 'ANSYS package: Calculation examples — pressure vessel, flange, nozzle worked examples'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1701
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:engineering
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Context
+
+      After #1676, the ansys package has complete ASME VIII pressure vessel analysis capability (thickness calcs, MAWP, nozzle reinforcement, hydrotest, APDL generation, batch management, results extraction). These should be documented as worked calculation examples.
+
+      ## Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1958
+    title: Build slim-hole well engineering module — casing program comparison + economics
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1958
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:engineering
+      - machine:dev-primary
+      - dark-intelligence
+      - dispatch:ready
+      - gate:completeness
+      - domain:engineering
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Research in #1 completed the Slim Hole vs. Standard Hole vs. Big Hole comparison. Key findings:
+
+      - Slim hole saves 30-50% drilling cost but limits production rates'

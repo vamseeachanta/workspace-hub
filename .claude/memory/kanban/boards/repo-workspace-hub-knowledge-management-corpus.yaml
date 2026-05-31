@@ -428,3 +428,24 @@ cards:
       Create a source-grounded, readable-summary unblocker for the ACMA wiki-promotion targets currently blocking #2227.
 
       ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2658
+    title: 'O&G-Standards consolidator: 8 catalog-classification defects surfaced by parallel-agent ingest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2658
+    gh_state: open
+    gh_labels:
+      - cat:tooling
+      - cat:data
+      - machine:dev-primary
+      - llm-wiki
+      - dispatch:ready
+      - gate:completeness
+      - domain:knowledge-management-corpus
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Iterations 8-9 of the LLM-wiki completeness loop ran 9 parallel research agents against `/mnt/ace/O&G-Standards/`. They independently surfaced the same structural classification gap in the upstream **O&G Standards Consolidation System** (per `_catalog.json` `metadata.source`, version 1.0.0, generated 2025-12-25). The consolidator''s outputs — `_catalog.json` (19.5 MB), `_inventory.db` (6.8 GB SQLite), `_catalog.html` — encode the eight defects below, which all downstream wiki ingest, retrieval, and citation consumers inherit.
+
+      Cross-agent confirmation across 9 independent passes makes this a high-confidence, reproducible defect — not a sampling artifact.'

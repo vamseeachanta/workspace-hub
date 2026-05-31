@@ -544,3 +544,58 @@ cards:
       Create a nightly cron job that scans for engineering commits without review evidence and auto-creates GitHub issues for remediation.
 
       ## What it does'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2012
+    title: 'Review backlog: 22 unreviewed commits from 2026-04-07'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2012
+    gh_state: open
+    gh_labels:
+      - domain:cross-review
+      - machine:dev-primary
+      - review-backlog
+      - maintenance
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Review Compliance Audit — 2026-04-07
+
+      **Compliance:** 4% (threshold: 80%)
+
+      **Audit window:** last 24 hours (since 2026-04-06 06:30:01)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2721
+    title: 'fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts — retrofit with `script -qc`'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2721
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:cross-review
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Symptom
+
+      `scripts/review/submit-to-codex.sh` silently degrades when invoked from any non-TTY context (cron, background processes, Hermes worker, Claude Code''s Bash tool with `run_in_background=true`, any `bash -c ''...''` indirection). The wrapper appears to complete (rc=0, codex-spawn-PID returned) but the codex subprocess hangs at "Reading additional input from stdin..." and never emits the LLM response. Cross-review fanout that depends on Codex''s verdict silently drops to 2-provider consensus (Claude + Gemini only).
+
+      ## Root cause'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2783
+    title: 'Review remediation: workspace-hub repo-specific findings (2026-05-23)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2783
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - domain:cross-review
+      - gate:completeness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

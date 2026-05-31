@@ -523,3 +523,42 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1613
+    title: Cross-reference resource registry with standards transfer ledger
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1613
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Cross-reference online resource registry with standards transfer ledger\n\n**Parent:** #1563 (Data & Resource Intelligence)\n**Depends on:** #1576 (closed), #1577 (closed)\n\n### Context\nTwo data assets now exist side by side but are not formally linked:\n-  — 247 online resources\n-  — 425 standards (235 gaps)\n\nMany standard portals in the registry correspond to standards in the ledger (e.g., DNV rules, API standards).\nThe domain view pages show them in parallel but don''t cross-reference.\n\n### Scope\n1. Build  that:\n   - For each standard with status=gap, search registry for matching portals\n   - Generate a mapping: standard_id → [registry_entry_ids] showing where to find each standard\n   - Identify standards with NO matching registry entry (truly unreachable)\n   - Identify registry entries that don''t match any standard (pure research resources)\n\n2. Output: \n3. Update domain view pages to show cross-reference links\n4. TDD\n\n### Acceptance Criteria\n-
+      [ ] Cross-reference YAML mapping standards ↔ registry entries\n- [ ] At least 50 standards linked to registry portals\n- [ ] Domain views updated with cross-reference section\n'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2238
+    title: 'feat(conformance): add closed-issue citation guardrail so durable docs reference promoted knowledge instead'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2238
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add a guardrail/linter that detects durable artifacts citing closed GitHub issues as if they were the canonical source of domain knowledge.
+
+      ## Why'

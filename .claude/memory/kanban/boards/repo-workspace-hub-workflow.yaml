@@ -683,3 +683,162 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1324
+    title: 'WRK-1324: Fix archive hook deadlock: enforce-stage-machinery blocks evidence writes after all stages complete'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1324
+    gh_state: open
+    gh_labels:
+      - domain:workflow
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1409
+    title: 'WRK-1409: fix: archive blocker from WRK-workspace-hub-1398 — Create centralized machine registry (config/machines/registr'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1409
+    gh_state: open
+    gh_labels:
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1801
+    title: Adopt pre:config-protection hook — prevent agents from weakening linter/formatter configs
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1801
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      From review of affaan-m/everything-claude-code (50K stars, MIT).
+
+      Added to online-resource-registry.yaml on 2026-04-03.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1802
+    title: Implement batch-at-Stop pattern — defer format+typecheck to session end
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1802
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      From review of affaan-m/everything-claude-code (50K stars, MIT).
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1839
+    title: Workflow hard-stops and session governance — Hermes-orchestrated lifecycle with enforced gates
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1839
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - domain:workflow
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Problem
+
+      Our workflow lacks enforced hard stops where the user must review and approve before the agent continues. Evidence from session trend data is damning:
+
+      - **6.1M wasted tool calls** across 3 runaway WRK items (no session abort mechanism)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1876
+    title: Enforce engineering workflow via Hermes prefill + Claude Code hooks (Option 2+3 of engineering-issue-workflow)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1876
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: 'Parent: #1839
+
+      Created from engineering-issue-workflow skill v1.1.0 deployment.
+
+      Option 1 (skill-based workflow) is the baseline. Layer enforcement if adherence stays below 30% after 2 weeks.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1877
+    title: Back-test engineering commits for workflow compliance
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1877
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:engineering
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Parent: #1839
+
+      Audit the last 2 weeks of engineering commits to establish workflow compliance baseline.
+
+      ## Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2046
+    title: Audit compliance of strict issue planning workflow after rollout
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2046
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:operations
+      - domain:workflow
+      - status:working
+      - machine:dev-primary
+      - agent:codex
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'After the new strict planning workflow has been used for a short period, audit compliance across agent activity.
+
+      Audit focus:
+
+      - Was `issue-planning-mode` used for all issues?'

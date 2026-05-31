@@ -308,3 +308,47 @@ cards:
       Web research subagents have collected vessel specifications for two datasets:
 
       ### HLV Vessels (#1798)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#118
+    title: 'WRK-475: feat(marine_ops): wire Open-Meteo Marine API into weather-window module'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/118
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:uncategorised
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-475: feat(marine_ops): wire Open-Meteo Marine API into weather-window module
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** uncategorised | **Subcategory:** uncategorised
+
+      **Repo:** [''digitalmodel''] | **Complexity:** simple | **Machine:** unset'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2558
+    title: 'data(field-dev): primary-source GoM equipment/cost source pack for #2112/#2055'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2558
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - cat:data-pipeline
+      - machine:dev-primary
+      - status:needs-data
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Create the next #2112 source-quality pass: a primary/public-source evidence pack for #2055''s GoM field-development cost benchmarking gate.
+
+      This is a follow-up to the provisional artifact committed in `624c87f12`, which intentionally kept #2055 blocked because the candidate dataset failed source/semantic review.'

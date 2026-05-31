@@ -535,3 +535,25 @@ cards:
       Filed 2026-05-14 after #2703 skill-curation lane (PR [#2705](https://github.com/vamseeachanta/workspace-hub/pull/2705)) discovered that the original \"empty top-level dirs\" inventory was wrong. The dirs flagged as empty actually contain real content — just not in the standard \`<name>/SKILL.md\` shape that the count heuristic looked for.
 
       This issue tracks the **judgment-required curation work** that #2703 deliberately deferred. Each item below needs user input on *what* to do — not just *whether* to do it.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#42
+    title: "WRK-1103: learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/42
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - domain:skills-lifecycle
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1103: learn(harness): complete Anthropic''s official Claude Code in Action course + capture learnings
+
+      **Status:** pending | **Priority:** medium | **Category:** harness | **Subcategory:** training
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'

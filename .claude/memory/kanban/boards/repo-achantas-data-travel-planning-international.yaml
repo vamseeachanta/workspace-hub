@@ -9,4 +9,223 @@ board:
   description: 'achantas-data travel-planning-international regional travel subdomain (split from oversized travel board). Manifested 2026-05-31.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/achantas-data#67
+    title: 'Feature: Travel ranking matrix for family trip review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/67
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Feature: family travel ranking decision matrix
+
+      Create and maintain a single review-friendly matrix for the top travel options so family members can compare choices quickly without opening every issue first.
+
+      ## Purpose'
+  - idempotency_key: gh:vamseeachanta/achantas-data#68
+    title: 'Travel Plan: Switzerland 1-week train + scenic family trip'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/68
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      A 7-day, 6-night family trip to Switzerland built around scenic rail rather than driving. We fly into and out of **Zurich (ZRH)**, then chain together three classic Swiss-rail experiences — Lucerne / Jungfrau region / Zermatt (or Engadin) — using the Swiss Travel Pass. The trip mixes one full-service hotel (arrival city, easiest with jet lag) and two Airbnb/Vrbo stays (mountain towns where apartments give space, kitchens, and balcony views). Aimed at May–June or September for green meadows, low avalanche/closure risk, and pre-/post-peak crowds.
+
+      ## Trip parameters'
+  - idempotency_key: gh:vamseeachanta/achantas-data#70
+    title: 'Feature: Digitalize family IDs for domestic + international travel (US, India e-OCI, others)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/70
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Feature: digitalize family IDs to streamline travel
+
+      > **Companion:** #71 — Travel apps shortlist (which apps hold and activate these credentials end-to-end for a trip).
+
+      Build a single tracking matrix for digitalizing every ID our family carries, so domestic and international travel uses verified digital wallets / digital cards instead of physical-only documents wherever possible.'
+  - idempotency_key: gh:vamseeachanta/achantas-data#71
+    title: 'Feature: Travel apps shortlist — install/login checklist for smoother domestic + international trips'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/71
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Feature: travel apps shortlist for smoother trips
+
+      Companion to #70 (digital ID tracker). That issue tracks **which credentials we digitalize**; this issue tracks **which apps we install, log into, and pre-configure** so those credentials and the rest of the trip flow work end-to-end.
+
+      ## Goal'
+  - idempotency_key: gh:vamseeachanta/achantas-data#90
+    title: 'trip: plan Colorado road trip from Houston (4-day itinerary received from Sabitha)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/90
+    gh_state: open
+    gh_labels:
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Source
+
+      - Gmail thread `19e246501cf1a80b` — subject "Colorado Trip itinerary"
+
+      - From: d.sabitha@ymail.com, To: vamsee.achanta@aceengineer.com'
+  - idempotency_key: gh:vamseeachanta/achantas-data#107
+    title: 'Travel Plan: South America Costco Travel comparison hub'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/107
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Compare Costco Travel South America / South-and-Central-America tour options and decide which country-specific trip plans are worth developing into booking-ready itineraries.
+
+      This is the comparison hub. Each child issue should hold one country’s Costco Travel deal research, itinerary fit, cost posture, and watch-outs.'
+  - idempotency_key: gh:vamseeachanta/achantas-data#108
+    title: 'Travel Plan: South America — Peru Costco Travel deal research'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/108
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Research Costco Travel deal/package options for **Peru** as one candidate in the South America trip comparison.
+
+      Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'
+  - idempotency_key: gh:vamseeachanta/achantas-data#109
+    title: 'Travel Plan: South America — Ecuador / Galapagos Costco Travel deal research'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/109
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Research Costco Travel deal/package options for **Ecuador / Galapagos** as one candidate in the South America trip comparison.
+
+      Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'
+  - idempotency_key: gh:vamseeachanta/achantas-data#110
+    title: 'Travel Plan: South America — Argentina Costco Travel deal research'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/110
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Research Costco Travel deal/package options for **Argentina** as one candidate in the South America trip comparison.
+
+      Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'
+  - idempotency_key: gh:vamseeachanta/achantas-data#111
+    title: 'Travel Plan: South America — Chile Costco Travel deal research'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/111
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Research Costco Travel deal/package options for **Chile** as one candidate in the South America trip comparison.
+
+      Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'
+  - idempotency_key: gh:vamseeachanta/achantas-data#112
+    title: 'Travel Plan: South America — Brazil Costco Travel deal research'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/112
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Research Costco Travel deal/package options for **Brazil** as one candidate in the South America trip comparison.
+
+      Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'
+  - idempotency_key: gh:vamseeachanta/achantas-data#113
+    title: 'Travel Plan: South America — Colombia Costco Travel deal research'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/113
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Research Costco Travel deal/package options for **Colombia** as one candidate in the South America trip comparison.
+
+      Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'

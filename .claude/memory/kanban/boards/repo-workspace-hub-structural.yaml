@@ -788,3 +788,28 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1242
+    title: 'WRK-5082: Parachute frame force calculation — drag car parachute deployment'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1242
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-calculations
+      - domain:structural
+      - discrepancy
+      - discrepancy:dims
+      - discrepancy:load
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5082: Parachute frame force calculation — drag car parachute deployment
+
+      **Status:** Stage 8: Claim (in_progress) | **Priority:** medium | **Category:** engineering-calculations | **Subcategory:** structural-dynamics
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'

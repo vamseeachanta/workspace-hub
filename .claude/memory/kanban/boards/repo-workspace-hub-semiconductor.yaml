@@ -9,4 +9,125 @@ board:
   description: 'Semiconductor / chip-design / EDA career-lane work. Phase-1 base-drain board 2026-05-31.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2507
+    title: 'Feature: semiconductor chip-design CAD/FEM career lane'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2507
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - cat:research
+      - cat:career
+      - machine:dev-primary
+      - domain:semiconductor
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Create a focused semiconductor / chip-design CAD + FEM career lane in workspace-hub, using ACE Engineer strengths in CAD automation, FEM, document intelligence, and job-market scanning.
+
+      ## Roadmap'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2508
+    title: 'research(semiconductor): build chip-design CAD/FEM knowledge base and job taxonomy'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2508
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - cat:research
+      - cat:career
+      - status:plan-approved
+      - domain:semiconductor
+      - domain:chip-design
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2509
+    title: 'feat(eda): create reproducible OpenLane/OpenROAD RTL-to-GDS demo report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2509
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - cat:tooling
+      - cat:research
+      - machine:dev-primary
+      - domain:semiconductor
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Context
+
+      Parent: #2507
+
+      Roadmap: `docs/roadmaps/chip-design-cad-fem-career-roadmap.md`'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2510
+    title: 'feat(cad): build Python layout/CAD automation demo for chip/package geometries'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2510
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:engineering
+      - cat:tooling
+      - machine:dev-primary
+      - status:plan-approved
+      - domain:semiconductor
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Parent: #2507
+
+      Roadmap: `docs/roadmaps/chip-design-cad-fem-career-roadmap.md`'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2511
+    title: 'feat(fem): create semiconductor package thermal/thermo-mechanical benchmark'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2511
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - cat:engineering-calculations
+      - status:done
+      - domain:semiconductor
+      - domain:chip-design
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2512
+    title: 'feat(career): build semiconductor CAD/FEM portfolio and job-application packet'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2512
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - cat:career
+      - machine:dev-primary
+      - domain:semiconductor
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Parent: #2507
+
+      Roadmap: `docs/roadmaps/chip-design-cad-fem-career-roadmap.md`'

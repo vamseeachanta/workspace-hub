@@ -538,3 +538,37 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#38
+    title: 'WRK-1088: feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/38
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - domain:knowledge-management-platform
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1088: feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets
+
+      **Status:** pending | **Priority:** medium | **Category:** harness | **Subcategory:** data-pipeline
+
+      **Repo:** [''workspace-hub'', ''worldenergydata'', ''assethold''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2854
+    title: 'gap(memory): Hermes read-back leg missing — consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2854
+    gh_state: open
+    gh_labels:
+      - cat:ai-orchestration
+      - domain:knowledge-management-platform
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

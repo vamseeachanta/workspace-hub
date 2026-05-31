@@ -681,3 +681,24 @@ cards:
       Plan a scheduler parity report that compares canonical system cron, live system crontab, and Hermes Gateway cron jobs in one operator-facing artifact.
 
       ## Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#207
+    title: 'WRK-006: Upload videos from iPhone to YouTube'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/207
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:personal
+      - domain:automation
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-006: Upload videos from iPhone to YouTube
+
+      **Status:** blocked | **Priority:** low | **Category:** personal/uncategorised
+
+      **Complexity:** simple | **Machine:** ace-linux-1'

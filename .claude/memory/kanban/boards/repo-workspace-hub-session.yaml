@@ -1288,3 +1288,47 @@ cards:
       The refreshed provider-session audit (`2026-05-08T11:03:24Z`) escalated Hermes to a red/next-up remediation lane for `llm_wiki_spinout_path_drift`.
 
       Durable transfer report: `docs/reports/2026-05-08-provider-session-learning-transfer.md`.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#63
+    title: 'WRK-1168: Review session logs and eliminate recurring errors'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/63
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:session
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1168: Review session logs and eliminate recurring errors
+
+      **Status:** done | **Priority:** medium | **Category:** harness | **Subcategory:** session-health
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#110
+    title: 'WRK-181: Session Replay & Time Travel'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/110
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:session
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-181: Session Replay & Time Travel
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** harness | **Subcategory:** uncategorised
+
+      **Repo:** [''workspace-hub''] | **Complexity:** high | **Machine:** dev-primary'

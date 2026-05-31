@@ -757,3 +757,69 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#66
+    title: 'WRK-1176: Two-agent pattern — initializer vs coder session roles'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/66
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:ai-orchestration
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1176: Two-agent pattern — initializer vs coder session roles
+
+      **Status:** pending | **Priority:** low | **Category:** ai-orchestration | **Subcategory:** agent-patterns
+
+      **Repo:** [''workspace-hub''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#101
+    title: 'WRK-1327: Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/101
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1327: Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh
+
+      **Status:** Stage 1: Capture (in_progress) | **Priority:** medium | **Category:** harness | **Subcategory:** agent-adapters
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#109
+    title: "WRK-180: 'Stop Hook: Cross-Agent Learning Sync'"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/109
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-180: Stop Hook: Cross-Agent Learning Sync
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** harness | **Subcategory:** hooks
+
+      **Repo:** [''workspace-hub''] | **Complexity:** high | **Machine:** dev-primary'

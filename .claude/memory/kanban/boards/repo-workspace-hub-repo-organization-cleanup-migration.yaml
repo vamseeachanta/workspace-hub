@@ -373,3 +373,105 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#31
+    title: 'WRK-1001: Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/31
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-cleanup-migration
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1001: Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo
+
+      **Status:** Stage 18: Reclaim (n) | **Priority:** medium | **Category:** maintenance | **Subcategory:** cleanup
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#53
+    title: 'WRK-1134: Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/53
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:maintenance
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-cleanup-migration
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1134: Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al
+
+      **Status:** pending | **Priority:** low | **Category:** maintenance | **Subcategory:** git-hygiene
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#181
+    title: 'WRK-575: Clean digitalmodel docs/modules/ stale content'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/181
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:maintenance
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-cleanup-migration
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-575: Clean digitalmodel docs/modules/ stale content
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** maintenance | **Subcategory:** cleanup
+
+      **Repo:** [''digitalmodel''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2662
+    title: GTM client-artifact layout inconsistent across repos — no shared bundle convention
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2662
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-cleanup-migration
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      Client-sendable GTM bundles are saved in different layouts, with different date conventions, and in different bundle formats across child repos and within workspace-hub itself. Searching any single canonical path misses bundles delivered from other repos in the same week.
+
+      This was noticed on 2026-05-11 when a recall query for "GTM material from the last week" cited only two of three known bundles — the `digitalmodel` pack was missed because it lives under a different layout root than the `worldenergydata` and `workspace-hub` packs.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2666
+    title: Multi-repo codex-burn-20260511 batch — 2 unmerged branches remaining (assetutilities, worldenergydata)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2666
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-cleanup-migration
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Pattern
+
+      The 2026-05-11 codex-burn batch generated branches across multiple repos. Each branch carries substantive implementation work for closed or open issues. Discovered while consolidating outer-clone duplicates (sibling cleanup).
+
+      ## State (as of 2026-05-12 00:00 UTC)'

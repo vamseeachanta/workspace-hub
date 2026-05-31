@@ -566,3 +566,22 @@ cards:
       [#2681](https://github.com/vamseeachanta/workspace-hub/issues/2681) — R5 Mooring code audit + follow-up catenary canonicalization investigation.
 
       Full investigation: `docs/field-development/catenary-canonicalization-investigation.md` (in commit 7c2a46710).'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1932
+    title: 'INVENTORY: Complete OrcaFlex/OrcaWave model catalog (3,524 YML + legacy)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1932
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-orcaflex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Scope
+
+      Build complete inventory of all OrcaFlex models and OrcaWave models across all data mounts.
+
+      ## Current State (discovered in workspace-hub audit)'

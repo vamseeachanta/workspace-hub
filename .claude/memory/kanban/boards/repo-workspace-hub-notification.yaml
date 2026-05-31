@@ -172,3 +172,108 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2900
+    title: Plan Hermes multi-platform notification fanout for Telegram, WhatsApp, and Teams
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2900
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:notification
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2901
+    title: Plan Hermes Telegram/WhatsApp/Teams platform parity reconnaissance
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2901
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:notification
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2902
+    title: Plan shared Hermes delivery group and fanout contract
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2902
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:notification
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2903
+    title: Plan Hermes conversation reply policy guardrails for multi-platform fanout
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2903
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:notification
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2904
+    title: Plan send_message multi-target text fanout for Hermes
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2904
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:notification
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2905
+    title: Plan operator docs for Hermes Telegram WhatsApp Teams fanout
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2905
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:notification
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2906
+    title: Choose product name for Hermes multi-platform bot
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2906
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:notification
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

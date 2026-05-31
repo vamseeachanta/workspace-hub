@@ -9,4 +9,565 @@ board:
     '
   domain: harness
   parent_slug: repo-workspace-hub
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#12
+    title: 'WRK-1022: Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/12
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1022: Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents
+
+      **Status:** Stage 18: Reclaim (n) | **Priority:** medium | **Category:** harness | **Subcategory:** agent-ux
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#40
+    title: 'WRK-1089: Split check-all.sh by responsibility (400L hard limit violated)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/40
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1089: Split check-all.sh by responsibility (400L hard limit violated)
+
+      **Status:** pending | **Priority:** medium | **Category:** harness | **Subcategory:** scripts
+
+      **Repo:** workspace-hub | **Complexity:** unset | **Machine:** unset'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#88
+    title: 'WRK-1284: Evaluate Zellij terminal multiplexer for cross-workstation deployment'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/88
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1284: Evaluate Zellij terminal multiplexer for cross-workstation deployment
+
+      **Status:** pending | **Priority:** medium | **Category:** tooling | **Subcategory:** terminal
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1462
+    title: Install and configure tmux (or chosen multiplexer) across all workstation machines
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1462
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - machine:multi
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '### Mission
+
+      Install and configure a terminal multiplexer (tmux, or the winner from the Zellij evaluation in #88) consistently across all workstation machines so every machine has persistent sessions, pane/window management, and session recovery.
+
+      ### What'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2064
+    title: 'fix(governance): plan-approval-gate safe-path and marker tests fail due to path mismatch'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2064
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'TestPlanApprovalGate::test_hook_allows_safe_paths_without_marker and test_hook_allows_with_marker both fail. Tests pass WORKSPACE_HUB=tmpdir but submit absolute paths like /ws/tests/test_foo.py — the hook can''t resolve them against the temp directory. Fix: update test paths to use tmpdir as prefix. Pre-existing as of #2056.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2065
+    title: 'chore(governance): derive FAST_PATH_CEILING dynamically from YAML threshold'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2065
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      `session-governor-check.sh` has a hardcoded `FAST_PATH_CEILING=800` (80% of the
+
+      1000-call threshold). If `tool-call-ceiling.threshold` in `governance-checkpoints.yaml`'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2071
+    title: Batch remediate historical stage-prompt drift with evidence summaries
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2071
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      The new stage-prompt drift checker identified a backlog of historical work items whose `stage-N-prompt.md` artifacts are missing without replacement evidence summaries.
+
+      ## Why this matters'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2073
+    title: Expose stage-prompt drift doctor/status in CI and operator summaries
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2073
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      A local doctor command now exists for the stage-prompt drift guard:
+
+      - `scripts/enforcement/stage-prompt-drift-status.sh`'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2077
+    title: 'fix(governance): narrow tests/* safe-path pattern in plan-approval-gate'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2077
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Narrow the `*/tests/*|*/test_*` glob in `is_safe_path()` — currently allows any nested tests/ directory to bypass plan approval. Should be scoped to known test dirs. Adversarial finding from #2056 commit 58dfd9298. See that commit''s issue comment for full detail.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2078
+    title: 'test(governance): harden block assertion and error-tracker source scan in test_session_governance_gates.py'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2078
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Two fragile tests from #2056: (1) test_governor_hook_emits_block_on_stop silently passes when stdout is empty — add explicit non-empty assert before json.loads. (2) test_error_tracker_resets_on_success uses raw source-scan instead of behavioral check — run hook and assert counter file = 0. Adversarial finding from commit 58dfd9298.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2186
+    title: 'feat(validation): enforce suppression expiry and reviewer sign-off in unresolved-read gate'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2186
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Enforce suppression expiry and reviewer sign-off in the unresolved-read gate.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2202
+    title: 'feat(operations): extend readiness bundle schema for additional canonical check evidence contracts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2202
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Extend the readiness evidence bundle schema so canonical and future readiness checks have a clearer evidence-contract evolution path.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2255
+    title: 'feat(governance): reconcile GitHub plan-approval labels with local marker ledger'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2255
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Automate reconciliation between GitHub plan-approval labels and the local `.planning/plan-approved/` marker ledger so implementation readiness can be trusted across sessions and agents.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2300
+    title: 'feat(governance): reconcile GitHub labels, approval markers, and README planning state'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2300
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Create a follow-on governance issue to extend #2255 from label-vs-marker reconciliation into full three-signal planning-state hygiene, including contradictory label cleanup and README/index alignment.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2431
+    title: 'Compliance alert: W17 — 20% (critical)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2431
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - priority:critical
+      - machine:dev-primary
+      - compliance-alert
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Compliance Alert — 2026-04-21
+
+      **Compliance rate:** 20% | **Severity:** critical
+
+      **Total commits:** 96 | **Reviewed:** 5 | **Unreviewed:** 19'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2491
+    title: Extend pyramid-conformance-check.py DT1_REQUIRED_FIELDS to include standards-page fields (code_id, publisher, revision)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2491
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - tech-debt
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Issue #2471 (plan `docs/plans/2026-04-23-issue-2471-standards-wiki-path-sanction.md`) sanctioned `wiki/standards/` as a first-class wiki page type and defined a frontmatter contract requiring three new fields:
+
+      | Field | Description |'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2498
+    title: 'chore(harness): #2364 plan branch drift recovery decision needed'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2498
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      [#2364](https://github.com/vamseeachanta/llm-wiki/issues/25) approved at `7cc1c0b1a`; current branch tip is `0ff8cb033`. The drift commit is an unrelated handoff doc (`docs(handoff): vamseeachanta/workspace-hub#504 OrcaFlex buoys builder refactor`) that landed on the wrong branch via the wave-3/wave-5 cross-branch contamination pattern.
+
+      Plan content is unchanged — only a stray docs commit on top.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2499
+    title: 'chore(harness): #2368 missing revision-bound approval marker'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2499
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      [#2368](https://github.com/vamseeachanta/llm-wiki/issues/22) (faceted-portal-pages) has `status:plan-approved` label applied without an explicit revision-bound marker comment. Per [#2460](https://github.com/vamseeachanta/workspace-hub/issues/2460) binding rule, every approval must include a comment naming the SHA, plan path, and storage surface.
+
+      ## Current state'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2500
+    title: 'chore(harness): #2476 non-standard approval pattern (no plan branch)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2500
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      [#2476](https://github.com/vamseeachanta/workspace-hub/issues/2476) (llm-wiki canonical semantic-equivalence contract + fixture cookbook) was approved 2026-04-24 with explicit Codex/Gemini review-runner waiver. The plan file lives on main directly:
+
+      - `docs/plans/2026-04-23-issue-2476-llm-wiki-semantic-equivalence-contract.md` (blob `322d10ef`)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2501
+    title: 'chore(planning): #2105 governance-lock — handoff vs live-state discrepancy'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2501
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The 2026-04-26 morning handoff stated [#2105](https://github.com/vamseeachanta/workspace-hub/issues/2105) (governance-lock) needs a v5 plan revision before [#2483](https://github.com/vamseeachanta/workspace-hub/issues/2483) and [#2484](https://github.com/vamseeachanta/workspace-hub/issues/2484) can unblock. However, live-state inspection shows:
+
+      - [#2105](https://github.com/vamseeachanta/workspace-hub/issues/2105) state: OPEN'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2517
+    title: 'Compliance alert: W18 — 42% (high)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2517
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - priority:medium
+      - priority:critical
+      - machine:dev-primary
+      - compliance-alert
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Compliance Alert — 2026-04-27
+
+      **Compliance rate:** 42% | **Severity:** high
+
+      **Total commits:** 56 | **Reviewed:** 11 | **Unreviewed:** 15'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2634
+    title: 'Compliance alert: W19 — 35% (high)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2634
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - priority:critical
+      - machine:dev-primary
+      - compliance-alert
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Compliance Alert — 2026-05-04
+
+      **Compliance rate:** 35% | **Severity:** high
+
+      **Total commits:** 31 | **Reviewed:** 6 | **Unreviewed:** 11'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2660
+    title: 'Compliance alert: W20 — 0% (critical)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2660
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - priority:medium
+      - priority:critical
+      - machine:dev-primary
+      - compliance-alert
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Compliance Alert — 2026-05-11
+
+      **Compliance rate:** 0% | **Severity:** critical
+
+      **Total commits:** 33 | **Reviewed:** 0 | **Unreviewed:** 17'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2701
+    title: 'audit(harness): 17 status:plan-approved issues missing .planning/plan-approved/ markers — restore user-in-loop contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2701
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - cat:maintenance
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      During the [#2695](https://github.com/vamseeachanta/workspace-hub/issues/2695) /goal use-case catalog session (2026-05-13), an inventory of approval gates surfaced a systemic gap: **17 of 29** open issues with `status:plan-approved` label do not have their corresponding `.planning/plan-approved/<N>.md` marker on disk.
+
+      This breaks the user-in-loop contract enforced by `scripts/enforcement/require-plan-approval.sh` (and documented by memory `feedback_never_offer_to_self_label_plan_approved`).'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2749
+    title: 'Compliance alert: W21 — 50% (medium)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2749
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - priority:medium
+      - priority:critical
+      - machine:dev-primary
+      - compliance-alert
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Compliance Alert — 2026-05-18
+
+      **Compliance rate:** 50% | **Severity:** medium
+
+      **Total commits:** 27 | **Reviewed:** 6 | **Unreviewed:** 6'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2750
+    title: 'Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2750
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      A new contract was established 2026-05-19: `.claude/skills/coordination/pre-completion-cleanup-audit/SKILL.md` defines a closeout gate that runs before any agent reports "all done". The must-fire rule in `config/agents/SHARED_SOUL.md` binds standalone agents (Claude main session, Codex CLI, Gemini CLI). This issue tracks the Hermes-side integration so the gate runs **automatically on every sub-agent completion signal**, not just when the sub-agent remembers.
+
+      ## Driver'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2806
+    title: 'Compliance alert: W22 — 36% (high)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2806
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - priority:critical
+      - compliance-alert
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2817
+    title: 'feat(harness): plan-approval gate — trust label-actor authority, retire forgeable local marker (re-scoped from approve-issue helper)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2817
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
+      - status:completeness-verified
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2911
+    title: 'bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2911
+    gh_state: open
+    gh_labels:
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

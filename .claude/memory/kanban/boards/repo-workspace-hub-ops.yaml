@@ -361,3 +361,68 @@ cards:
       The download-and-catalog pipeline (#1578, commit 1beb6c8a) is ready for scheduled operation. Currently 230 entries in `online-resource-registry.yaml` have `download_status: not_started`.
 
       ## Tasks'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2551
+    title: 'audit(security): verify branch/ruleset protections across public repos after collaborator-only lockdown'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2551
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - domain:ops
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Audit public repository rulesets, branch protection, issue/PR permissions, and contributor surfaces after the interaction-limit lockdown in #2546.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2552
+    title: 'docs(security): external contributor and unsolicited paid-help response runbook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2552
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:documentation
+      - domain:ops
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Create a concise policy/runbook for handling non-collaborator comments, unsolicited paid-help offers, and external contributor requests on public repos.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2626
+    title: 'fix(security): narrow #2552 external-contributor runbook tests + scenario 3 — drop privacy-leaking test, define ingestion vector, resolve interaction-limit contradiction'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2626
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:ops
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Source:** #2552 plan-review queue audit 2026-05-03. Per [#2552 approval marker](https://github.com/vamseeachanta/workspace-hub/blob/main/.planning/plan-approved/2552.md), the runbook content was approved despite a 4+ day Tier-D persistent-MAJOR pattern (claude/codex/gemini all MAJOR across 4+ rounds). The architectural defects under those MAJORs are deferred here for a focused fresh plan.
+
+      ## Defects to address (from latest reviews)
+
+      ### 1. Privacy-leaking test (Gemini, repeat)'

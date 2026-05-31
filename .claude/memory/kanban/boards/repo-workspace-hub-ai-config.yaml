@@ -751,3 +751,89 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#121
+    title: 'WRK-5002: Task complexity tier → model routing (extend task_classifier.sh)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/121
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:automation
+      - domain:ai-config
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5002: Task complexity tier → model routing (extend task_classifier.sh)
+
+      **Status:** pending | **Priority:** medium | **Category:** automation | **Subcategory:** labor-market
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2254
+    title: 'fix(provider-telemetry): improve Claude and Gemini quota observability for exact weekly targeting'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2254
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:harness
+      - domain:ai-config
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Improve Claude and Gemini quota observability so provider utilization can support exact weekly targeting instead of falling back to directional activity heuristics.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2665
+    title: 'feat(kanban): provider-credit approval dashboard and dispatch gates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2665
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-config
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Build the operator-facing Kanban approval/control surface that turns underused AI-provider credits into safe, continuous work without bypassing plan gates.
+
+      This issue is a child/implementation-planning surface for the broader provider-credit governance in #1838 and workstation/provider orchestration in #2519.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2718
+    title: 'audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2718
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-config
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Why now
+
+      Overnight dispatch on 2026-05-14/15 failed 0-of-6 across two distinct canary runs. Diagnostics reveal **two compounding hazards** in the kanban-worker dispatch path that need addressing before the catalog ([#2695](https://github.com/vamseeachanta/workspace-hub/issues/2695))''s `hermes → claude-code` / `hermes → codex` routing model is safe to use.
+
+      Filing this now while context is fresh; companion to [#2715](https://github.com/vamseeachanta/workspace-hub/issues/2715) (codex-cli hang) and [#2696](https://github.com/vamseeachanta/workspace-hub/issues/2696) (routing-layer audit).'
