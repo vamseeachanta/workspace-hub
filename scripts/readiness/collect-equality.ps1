@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   collect-equality.ps1 — Windows compute overlay for the #2801 machine-equality matrix (#2816).
 

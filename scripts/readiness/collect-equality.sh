@@ -211,7 +211,13 @@ if git -C "$WS" rev-parse --git-dir >/dev/null 2>&1; then
   # refs/remotes/origin/main live in the COMMON dir; --git-dir points at the per-worktree dir
   # that holds neither, which would false-STALE every worktree-based collection.
   gd=$(git -C "$WS" rev-parse --git-common-dir 2>/dev/null)
-  [[ -n "$gd" && "$gd" != /* ]] && gd="${WS}/${gd}"
+  # Join to WS only when gd is RELATIVE. On Windows (Git Bash) a linked worktree's --git-common-dir
+  # is an absolute drive-letter path (e.g. C:/repo/.git) that does NOT begin with "/", so a bare
+  # "!= /*" test wrongly treats it as relative and corrupts it (WS/C:/repo/.git) -> FETCH_HEAD not
+  # found -> origin_ref_age_h "unknown" -> the matrix false-STALEs every worktree-based collection.
+  # winabs matches a Windows drive root (C:/ or C:\); git emits forward slashes here in practice.
+  winabs='^[A-Za-z]:[/\]'
+  [[ -n "$gd" && "$gd" != /* && ! "$gd" =~ $winabs ]] && gd="${WS}/${gd}"
   # FETCH_HEAD first: its mtime is the true last-fetch time (best freshness signal); fall back
   # to the loose origin/main ref mtime (set when the ref last moved on fetch).
   for ref in "${gd}/FETCH_HEAD" "${gd}/refs/remotes/origin/main"; do
