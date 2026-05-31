@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-31T08:20:01-05:00",
+  "timestamp": "2026-05-31T12:20:02-05:00",
   "agents": [
     {
       "provider": "claude",
@@ -17,10 +17,10 @@
       "tier": "subscription",
       "weekly_limit": 1400,
       "week_messages": 12,
-      "week_pct": 3.0,
-      "five_hour_pct": 2.0,
-      "pct_remaining": 97,
-      "hours_to_reset": 151,
+      "week_pct": 4.0,
+      "five_hour_pct": 0.0,
+      "pct_remaining": 96,
+      "hours_to_reset": 147,
       "resets_at": "2026-06-06T16:06:46-0500",
       "source": "local-session-rate-limits"
     },

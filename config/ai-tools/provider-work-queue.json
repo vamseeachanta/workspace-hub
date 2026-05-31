@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-31T13:20:09.270714Z",
+  "generated_at": "2026-05-31T17:20:09.256533Z",
   "current_week": "2026-W22",
-  "scorecard_generated_at": "2026-05-31T13:20:07.425020Z",
+  "scorecard_generated_at": "2026-05-31T17:20:07.441476Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -4669,7 +4669,7 @@
           "title": "Kanban: reorganize boards by domain \u2192 subdomain (right-size oversized boards); pilot digitalmodel, then ecosystem-wide",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2878",
           "labels": [],
-          "updatedAt": "2026-05-31T11:01:10Z",
+          "updatedAt": "2026-05-31T15:15:56Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",

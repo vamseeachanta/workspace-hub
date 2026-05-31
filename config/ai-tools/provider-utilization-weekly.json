@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-31T13:20:07.316291Z",
+  "generated_at": "2026-05-31T17:20:07.334723Z",
   "current_week": "2026-W22",
   "report_weeks": 8,
   "subscriptions": {
@@ -1037,18 +1037,18 @@
         "provider": "claude",
         "week": "2026-W22",
         "sessions": 7,
-        "post_records": 1157,
-        "activity_utilization_pct": 2.8,
+        "post_records": 1163,
+        "activity_utilization_pct": 2.9,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 2.8,
+        "reported_utilization_pct": 2.9,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-05-31T13:20:01Z",
+        "quota_snapshot_ts": "2026-05-31T17:20:02Z",
         "top_tools": [
           {
             "tool": "unknown",
-            "count": 1156
+            "count": 1162
           },
           {
             "tool": "Read",
@@ -1056,7 +1056,7 @@
           }
         ],
         "first_ts": "2026-05-26T00:29:50Z",
-        "last_ts": "2026-05-31T11:03:59Z",
+        "last_ts": "2026-05-31T15:18:20Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
@@ -1065,12 +1065,12 @@
         "sessions": 0,
         "post_records": 0,
         "activity_utilization_pct": 0.0,
-        "quota_utilization_pct": 3.0,
-        "reported_utilization_pct": 3.0,
+        "quota_utilization_pct": 4.0,
+        "reported_utilization_pct": 4.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "local-session-rate-limits",
-        "quota_snapshot_ts": "2026-05-31T13:20:01Z",
+        "quota_snapshot_ts": "2026-05-31T17:20:02Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -1087,7 +1087,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "estimated_daily_quota",
         "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-05-31T13:20:01Z",
+        "quota_snapshot_ts": "2026-05-31T17:20:02Z",
         "top_tools": [
           {
             "tool": "Browser",
@@ -1120,15 +1120,15 @@
   "underutilization_alerts": [
     {
       "provider": "claude",
-      "reported_utilization_pct": 2.8,
+      "reported_utilization_pct": 2.9,
       "basis": "activity_vs_recent_peak",
-      "message": "claude at 2.8% (activity_vs_recent_peak)"
+      "message": "claude at 2.9% (activity_vs_recent_peak)"
     },
     {
       "provider": "codex",
-      "reported_utilization_pct": 3.0,
+      "reported_utilization_pct": 4.0,
       "basis": "quota",
-      "message": "codex at 3.0% (quota)"
+      "message": "codex at 4.0% (quota)"
     },
     {
       "provider": "gemini",
