@@ -55,6 +55,10 @@ manifest:
     - repo-achantas-data-finance
     - repo-achantas-data-household
     - repo-achantas-data-travel
+    - repo-achantas-data-travel-arkansas
+    - repo-achantas-data-travel-gulf-prairie
+    - repo-achantas-data-travel-oklahoma-texas
+    - repo-achantas-data-travel-planning-international
   - slug: repo-assethold
     tier: repo
     repo: vamseeachanta/assethold
@@ -132,6 +136,8 @@ manifest:
     - repo-llm-wiki-content
     - repo-llm-wiki-governance
     - repo-llm-wiki-ingest
+    - repo-llm-wiki-ingest-batch-extraction
+    - repo-llm-wiki-ingest-corpus-acquisition
     - repo-llm-wiki-tooling
   - slug: repo-llm-wiki-acma
     tier: repo
@@ -199,6 +205,7 @@ manifest:
     - repo-workspace-hub-repo-organization-structure
     - repo-workspace-hub-research
     - repo-workspace-hub-session
+    - repo-workspace-hub-semiconductor
     - repo-workspace-hub-skills-harness
     - repo-workspace-hub-skills-lifecycle
     - repo-workspace-hub-structural
@@ -267,6 +274,38 @@ manifest:
     workspace_path: /mnt/local-analysis/achantas-data
     file: boards/repo-achantas-data-travel.yaml
     card_count: 58
+  - slug: repo-achantas-data-travel-arkansas
+    tier: domain
+    repo: vamseeachanta/achantas-data
+    domain: travel-arkansas
+    parent_slug: repo-achantas-data
+    workspace_path: /mnt/local-analysis/achantas-data
+    file: boards/repo-achantas-data-travel-arkansas.yaml
+    card_count: 0
+  - slug: repo-achantas-data-travel-oklahoma-texas
+    tier: domain
+    repo: vamseeachanta/achantas-data
+    domain: travel-oklahoma-texas
+    parent_slug: repo-achantas-data
+    workspace_path: /mnt/local-analysis/achantas-data
+    file: boards/repo-achantas-data-travel-oklahoma-texas.yaml
+    card_count: 0
+  - slug: repo-achantas-data-travel-gulf-prairie
+    tier: domain
+    repo: vamseeachanta/achantas-data
+    domain: travel-gulf-prairie
+    parent_slug: repo-achantas-data
+    workspace_path: /mnt/local-analysis/achantas-data
+    file: boards/repo-achantas-data-travel-gulf-prairie.yaml
+    card_count: 0
+  - slug: repo-achantas-data-travel-planning-international
+    tier: domain
+    repo: vamseeachanta/achantas-data
+    domain: travel-planning-international
+    parent_slug: repo-achantas-data
+    workspace_path: /mnt/local-analysis/achantas-data
+    file: boards/repo-achantas-data-travel-planning-international.yaml
+    card_count: 0
   - slug: repo-assethold-infra
     tier: domain
     repo: vamseeachanta/assethold
@@ -475,6 +514,22 @@ manifest:
     workspace_path: /mnt/local-analysis/llm-wiki
     file: boards/repo-llm-wiki-ingest.yaml
     card_count: 33
+  - slug: repo-llm-wiki-ingest-batch-extraction
+    tier: domain
+    repo: vamseeachanta/llm-wiki
+    domain: ingest-batch-extraction
+    parent_slug: repo-llm-wiki
+    workspace_path: /mnt/local-analysis/llm-wiki
+    file: boards/repo-llm-wiki-ingest-batch-extraction.yaml
+    card_count: 0
+  - slug: repo-llm-wiki-ingest-corpus-acquisition
+    tier: domain
+    repo: vamseeachanta/llm-wiki
+    domain: ingest-corpus-acquisition
+    parent_slug: repo-llm-wiki
+    workspace_path: /mnt/local-analysis/llm-wiki
+    file: boards/repo-llm-wiki-ingest-corpus-acquisition.yaml
+    card_count: 0
   - slug: repo-llm-wiki-tooling
     tier: domain
     repo: vamseeachanta/llm-wiki
@@ -555,6 +610,14 @@ manifest:
     workspace_path: /mnt/local-analysis/workspace-hub
     file: boards/repo-workspace-hub-ops.yaml
     card_count: 120
+  - slug: repo-workspace-hub-semiconductor
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: semiconductor
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-semiconductor.yaml
+    card_count: 0
   - slug: repo-workspace-hub-gtm
     tier: domain
     repo: vamseeachanta/workspace-hub

@@ -57,6 +57,8 @@ repos:
     domains:
       - {name: content,    status: existing}
       - {name: ingest,     status: existing}
+      - {name: ingest-batch-extraction, status: new}
+      - {name: ingest-corpus-acquisition, status: new}
       - {name: governance, status: existing}
       - {name: tooling,    status: existing}
 
@@ -69,6 +71,7 @@ repos:
       - {name: engineering,      status: existing}
       - {name: harness,          status: existing}
       - {name: ops,              status: existing}
+      - {name: semiconductor, status: new}  # base-drain career-lane cluster 2026-05-31
       # Phase-1a 2026-05-30: manifest existing fine-grained domain: labels as boards
       # (cards already carry these; reconcile auto-routes them off the base board).
       - {name: gtm,                   status: new}
@@ -126,6 +129,10 @@ repos:
       - {name: finance,         status: existing}
       - {name: household,       status: existing}
       - {name: travel,          status: existing}
+      - {name: travel-arkansas, status: new}
+      - {name: travel-oklahoma-texas, status: new}
+      - {name: travel-gulf-prairie, status: new}
+      - {name: travel-planning-international, status: new}
 
   vamseeachanta/assethold:
     board: repo-assethold
