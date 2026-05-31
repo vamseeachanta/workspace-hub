@@ -127,6 +127,10 @@ repos:
       - {name: finance,         status: existing}
       - {name: household,       status: existing}
       - {name: travel,          status: existing}
+      - {name: travel-arkansas, status: new}
+      - {name: travel-oklahoma-texas, status: new}
+      - {name: travel-gulf-prairie, status: new}
+      - {name: travel-planning-international, status: new}
 
   vamseeachanta/assethold:
     board: repo-assethold
