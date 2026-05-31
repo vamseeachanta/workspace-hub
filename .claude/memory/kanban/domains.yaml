@@ -69,6 +69,7 @@ repos:
       - {name: engineering,      status: existing}
       - {name: harness,          status: existing}
       - {name: ops,              status: existing}
+      - {name: semiconductor, status: new}  # base-drain career-lane cluster 2026-05-31
       # Phase-1a 2026-05-30: manifest existing fine-grained domain: labels as boards
       # (cards already carry these; reconcile auto-routes them off the base board).
       - {name: gtm,                   status: new}
