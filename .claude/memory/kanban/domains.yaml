@@ -56,11 +56,7 @@ repos:
       - {name: ops,              status: existing}
       # Phase-1a 2026-05-30: manifest existing fine-grained domain: labels as boards
       # (cards already carry these; reconcile auto-routes them off the base board).
-      - {name: marine,                status: new}
-      - {name: knowledge-management,  status: new}
       - {name: gtm,                   status: new}
-      - {name: document-intelligence, status: new}
-      - {name: workstations,          status: new}
       # Phase-1b 2026-05-30: clean <=30 domains (subagent-classified from titles)
       - {name: ai-config, status: new}
       - {name: work-queue, status: new}
