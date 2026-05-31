@@ -1,0 +1,12 @@
+board:
+  slug: repo-digitalmodel-cad
+  display_name: digitalmodel · cad
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: cad
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel cad domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards: []

@@ -1,0 +1,12 @@
+board:
+  slug: repo-digitalmodel-hydro-rao-seakeeping
+  display_name: digitalmodel · hydro-rao-seakeeping
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: hydro-rao-seakeeping
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel hydro-rao-seakeeping domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards: []

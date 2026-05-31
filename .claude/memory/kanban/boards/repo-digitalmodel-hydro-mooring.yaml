@@ -1,0 +1,12 @@
+board:
+  slug: repo-digitalmodel-hydro-mooring
+  display_name: digitalmodel · hydro-mooring
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: hydro-mooring
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel hydro-mooring domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards: []

@@ -1,0 +1,12 @@
+board:
+  slug: repo-digitalmodel-hydro-vessel-motions
+  display_name: digitalmodel · hydro-vessel-motions
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: hydro-vessel-motions
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel hydro-vessel-motions domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards: []

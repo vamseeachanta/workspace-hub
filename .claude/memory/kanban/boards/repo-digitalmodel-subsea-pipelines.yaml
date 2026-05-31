@@ -1,0 +1,12 @@
+board:
+  slug: repo-digitalmodel-subsea-pipelines
+  display_name: digitalmodel · subsea-pipelines
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: subsea-pipelines
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel subsea-pipelines domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards: []

@@ -1,0 +1,12 @@
+board:
+  slug: repo-digitalmodel-subsea-hardware
+  display_name: digitalmodel · subsea-hardware
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: subsea-hardware
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel subsea-hardware domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards: []
