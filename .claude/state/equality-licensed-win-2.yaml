@@ -1,0 +1,44 @@
+generated_at: "2026-05-31T18:03:56"
+schema_version: 3
+machine: "licensed-win-2"
+host: "acma-ws014"
+os: windows
+status: active
+provenance:
+  checkout_sha: "63daaf137"
+  dirty: false
+  behind_main: 0
+  ahead_main: 0
+  origin_ref_age_h: 0
+dimensions:
+  compute:
+    static: {cores: 32, ram_total_mib: unknown, gpu_model: "none"}
+    headroom: {ram_avail_mib: unknown, disk_avail_gb: unknown}
+  data_access:
+    - {repo: assetutilities, mode: sibling}
+    - {repo: digitalmodel, mode: sibling}
+    - {repo: worldenergydata, mode: sibling}
+    - {repo: assethold, mode: absent}
+  solvers:
+    - {name: orcaflex, status: present, evidence: root}
+    - {name: orcawave, status: absent, evidence: absent}
+    - {name: aqwa, status: absent, evidence: absent}
+    - {name: ansys, status: absent, evidence: absent}
+  harness:
+    providers: {claude: present, codex: present, gemini: absent, hermes: present}
+    gh_auth: ok
+    python_cmd: python
+    readiness_ref: harness-readiness-acma-ws014.yaml
+    readiness_overall: fail
+  skills: {repo_skill_count: 396}
+  kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
+  memory:
+    hermes_home: absent
+    context_md_mtime: "2026-05-30T08:15:31"
+  behavior:
+    enums: {b1: n/a, b2: ok, b3: html, b4: pass}
+    hashes: {b5: n/a}
+  scheduler:
+    has_repo_sync: false
+    has_parity_review: false
+    job_count: 0
