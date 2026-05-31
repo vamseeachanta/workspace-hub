@@ -158,7 +158,6 @@ manifest:
     - repo-workspace-hub-cross-review
     - repo-workspace-hub-cv-strategy
     - repo-workspace-hub-data
-    - repo-workspace-hub-document-intelligence
     - repo-workspace-hub-document-intelligence-indexing
     - repo-workspace-hub-document-intelligence-summarization
     - repo-workspace-hub-engineering
@@ -167,10 +166,8 @@ manifest:
     - repo-workspace-hub-harness
     - repo-workspace-hub-hydrodynamics
     - repo-workspace-hub-knowledge
-    - repo-workspace-hub-knowledge-management
     - repo-workspace-hub-knowledge-management-corpus
     - repo-workspace-hub-knowledge-management-platform
-    - repo-workspace-hub-marine
     - repo-workspace-hub-marine-field-dev
     - repo-workspace-hub-marine-orcaflex
     - repo-workspace-hub-marine-oss-tools
@@ -198,7 +195,6 @@ manifest:
     - repo-workspace-hub-testing-suite-triage
     - repo-workspace-hub-work-queue
     - repo-workspace-hub-workflow
-    - repo-workspace-hub-workstations
     - repo-workspace-hub-workstations-fleet-equivalence
     - repo-workspace-hub-workstations-machine-bringup
     - repo-workspace-hub-workstations-windows-readiness
@@ -433,14 +429,6 @@ manifest:
     workspace_path: /mnt/local-analysis/workspace-hub
     file: boards/repo-workspace-hub-ops.yaml
     card_count: 120
-  - slug: repo-workspace-hub-document-intelligence
-    tier: domain
-    repo: vamseeachanta/workspace-hub
-    domain: document-intelligence
-    parent_slug: repo-workspace-hub
-    workspace_path: /mnt/local-analysis/workspace-hub
-    file: boards/repo-workspace-hub-document-intelligence.yaml
-    card_count: 0
   - slug: repo-workspace-hub-gtm
     tier: domain
     repo: vamseeachanta/workspace-hub
@@ -448,30 +436,6 @@ manifest:
     parent_slug: repo-workspace-hub
     workspace_path: /mnt/local-analysis/workspace-hub
     file: boards/repo-workspace-hub-gtm.yaml
-    card_count: 0
-  - slug: repo-workspace-hub-knowledge-management
-    tier: domain
-    repo: vamseeachanta/workspace-hub
-    domain: knowledge-management
-    parent_slug: repo-workspace-hub
-    workspace_path: /mnt/local-analysis/workspace-hub
-    file: boards/repo-workspace-hub-knowledge-management.yaml
-    card_count: 0
-  - slug: repo-workspace-hub-marine
-    tier: domain
-    repo: vamseeachanta/workspace-hub
-    domain: marine
-    parent_slug: repo-workspace-hub
-    workspace_path: /mnt/local-analysis/workspace-hub
-    file: boards/repo-workspace-hub-marine.yaml
-    card_count: 0
-  - slug: repo-workspace-hub-workstations
-    tier: domain
-    repo: vamseeachanta/workspace-hub
-    domain: workstations
-    parent_slug: repo-workspace-hub
-    workspace_path: /mnt/local-analysis/workspace-hub
-    file: boards/repo-workspace-hub-workstations.yaml
     card_count: 0
   - slug: repo-workspace-hub-ai-config
     tier: domain
