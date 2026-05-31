@@ -36,7 +36,7 @@ tasks:
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
       bash scripts/readiness/collect-equality.sh &&
-      uv run python scripts/readiness/build-equality-matrix.py
+      uv run --no-project --with pyyaml python scripts/readiness/build-equality-matrix.py
       >> $WORKSPACE_HUB/logs/quality/equality-$(date +\%Y-\%m-\%d).log 2>&1
     log: logs/quality/equality-*.log
     is_claude_task: false
