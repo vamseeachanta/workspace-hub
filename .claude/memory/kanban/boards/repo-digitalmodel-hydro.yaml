@@ -924,3 +924,78 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#658
+    title: 'feat(openfoam): prescribed single-DOF tank motion engine (dynamicMeshDict)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/658
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:high
+      - domain:hydro
+      - domain:cfd
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#659
+    title: 'feat(openfoam): partial-fill setFields wrapper (wire SloshingSetup.fill_level)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/659
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:high
+      - domain:hydro
+      - domain:cfd
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#660
+    title: 'feat(cfd-post): FFT fluid natural-frequency extraction + analytical check'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/660
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - domain:hydro
+      - domain:cfd
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#661
+    title: 'feat(cfd-post): named wall pressure-tap function objects'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/661
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - domain:hydro
+      - domain:cfd
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#662
+    title: 'feat(openfoam): gmsh -> OpenFOAM polyMesh bridge (Phase B / 3D)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/662
+    gh_state: open
+    gh_labels:
+      - feature
+      - priority:low
+      - cat:engineering
+      - domain:hydro
+      - domain:cfd
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
