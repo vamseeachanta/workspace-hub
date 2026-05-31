@@ -72,3 +72,45 @@ def test_verified_label_event_ignores_unlabeled_events(monkeypatch):
     monkeypatch.setattr(la, "gh_json", lambda *a: events)
     actor, at = la.verified_label_event("o/r", 1, "status:plan-approved")
     assert actor == "vamsee" and at == la.parse_iso("2026-05-03T00:00:00Z")
+
+
+def test_verified_label_event_uses_readd_actor_after_unlabel(monkeypatch):
+    events = [
+        {"event": "labeled", "label": {"name": "status:plan-approved"},
+         "actor": {"login": "owner"}, "created_at": "2026-05-03T00:00:00Z"},
+        {"event": "unlabeled", "label": {"name": "status:plan-approved"},
+         "actor": {"login": "owner"}, "created_at": "2026-05-04T00:00:00Z"},
+        {"event": "labeled", "label": {"name": "status:plan-approved"},
+         "actor": {"login": "contributor"}, "created_at": "2026-05-05T00:00:00Z"},
+    ]
+    monkeypatch.setattr(la, "gh_json", lambda *a: events)
+    actor, at = la.verified_label_event("o/r", 1, "status:plan-approved")
+    assert actor == "contributor" and at == la.parse_iso("2026-05-05T00:00:00Z")
+
+
+def test_is_authorized_human_membership_only_by_default():
+    # R6: callers opt into bot rejection. Existing completeness behavior remains
+    # membership-only and can still accept a service account if configured.
+    assert la.is_authorized_human("service[bot]", {"service[bot]"}) is True
+
+
+def test_is_authorized_human_rejects_bots_when_opted_in():
+    owners = {"service[bot]", "automation", "vamseeachanta"}
+    assert la.is_authorized_human("vamseeachanta", owners, reject_bots=True, actor_type="User") is True
+    assert la.is_authorized_human("service[bot]", owners, reject_bots=True, actor_type="User") is False
+    assert la.is_authorized_human("automation", owners, reject_bots=True, actor_type="Bot") is False
+
+
+def test_is_authorized_human_matches_github_logins_case_insensitively():
+    assert la.is_authorized_human("VamseeAchanta", {"vamseeachanta"}, reject_bots=True,
+                                  actor_type="User") is True
+
+
+def test_label_is_fresh_requires_label_at_or_after_anchor():
+    plan_time = la.parse_iso("2026-05-30T11:00:00Z")
+    approved_after = la.parse_iso("2026-05-30T12:00:00Z")
+    approved_before = la.parse_iso("2026-05-30T10:00:00Z")
+    assert la.label_is_fresh(approved_after, plan_time) is True
+    assert la.label_is_fresh(approved_before, plan_time) is False
+    assert la.label_is_fresh(None, plan_time) is False
+    assert la.label_is_fresh(approved_after, None) is False
