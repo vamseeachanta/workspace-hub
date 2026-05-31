@@ -1428,7 +1428,7 @@ cards:
     title: '[verification] Structural-triage refresh: ~13k untriaged table rows after 13-publisher influx (precursor to #135)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/199
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - status:plan-approved
     initial_status: triage
