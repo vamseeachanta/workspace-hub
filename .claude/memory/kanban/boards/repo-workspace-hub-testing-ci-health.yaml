@@ -9,4 +9,307 @@ board:
   description: 'workspace-hub testing-ci-health subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1663
+    title: Quality score trend dashboard — track maturity trajectory over time
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1663
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The module status matrix now produces JSON snapshots with `quality_score`, `test_source_ratio`, and `loc` per package (#1629). Trend comparison (↑↓→) works by diffing current vs previous JSON.
+
+      ### Proposed feature'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1664
+    title: Schedule test health dashboard as weekly cron task (Sunday 04:00 UTC)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1664
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:operations
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context\nThe test health dashboard (`scripts/quality/test-health-dashboard.py`) was created in #1573 and generates `docs/dashboards/test-health-dashboard.md` with per-package pass/fail metrics.\n\nCurrently it must be run manually. It should run weekly like the architecture and staleness scanners.\n\n## Acceptance criteria\n1. Add `test-health-dashboard` entry to `config/scheduled-tasks/schedule-tasks.yaml`\n   - Schedule: Sunday 04:00 UTC (`0 4 * * 0`) — after architecture (02:00) and staleness (03:00)\n   - Machines: dev-primary, ace-linux-1\n   - Auto: git pull, run dashboard, commit, push\n2. Verify YAML valid\n3. Do NOT modify setup-cron.sh\n\n## Parent\n- Part of #1573\n'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1666
+    title: 'Test health dashboard: add historical trend tracking and coverage delta detection'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1666
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:analysis
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context\nThe test health dashboard (#1573) generates a point-in-time snapshot. For tracking improvement over time, we need historical data and trend detection.\n\n## Acceptance criteria\n1. Write tests first in `tests/quality/test_test_health_dashboard.py` (extend existing)\n2. After each run, append summary to `docs/dashboards/test-health-history.json`\n   - Fields: timestamp, total, passed, failed, errors, skipped, pass_rate\n3. Add trend section to markdown dashboard showing last 8 runs\n4. Add delta detection: if pass_rate drops >5% from previous run, add warning banner\n5. Tests pass\n\n## Parent\n- Follow-up to #1573\n'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2210
+    title: 'chore(harness): add ws_hub fallback regression coverage for sync-agent-configs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2210
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add regression coverage for `scripts/_core/sync-agent-configs.sh` when `resolve_ws_hub_path()` cannot resolve a machine-specific path from `scripts/readiness/harness-config.yaml`.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2211
+    title: 'chore(harness): add dry-run existing-target regression coverage for sync helpers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2211
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add regression tests proving `scripts/_core/sync-agent-configs.sh --dry-run` leaves existing target files byte-for-byte unchanged on merge/update paths.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2212
+    title: 'chore(harness): add invalid-update atomicity regression coverage for sync helpers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2212
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Expand regression coverage for invalid incoming templates on update paths so failed syncs prove existing targets remain intact across all hardened helper types.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2267
+    title: 'chore(sync): add regression coverage for stale gitlink and missing .gitmodules recovery'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2267
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      A repo sync/recovery session found a stale gitlink path (`heavyequipemnt-rag`) present in the root tree/index without a matching `.gitmodules` entry, causing:
+
+      `fatal: no submodule mapping found in .gitmodules for path ''heavyequipemnt-rag''`'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2297
+    title: 'feat(portability): schedule unified smoke drift detection after #2272 baseline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2297
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add a follow-on issue for scheduled portability drift detection after the initial unified OpenFOAM + Blender smoke runner lands.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2298
+    title: 'feat(portability): phase-2 unified smoke runner expansion for CalculiX/Gmsh/Capytaine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2298
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Create a follow-on issue to extend the unified portability smoke runner beyond OpenFOAM + Blender to additional engineering tools.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2338
+    title: 'chore(cron): cadence-lib smoke test — pre-commit --smoke dry-run'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2338
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Any edit to `scripts/cron/lib/cadence-common.sh` can silently break all 8 cadence crons (#2313-#2319 + wed#309). Currently exercised only by per-cadence pytest tests.
+
+      ## Proposed'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2414
+    title: 'test(ecosystem-sync): autobuild or skip missing local git fixtures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2414
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      The ecosystem-sync signal tests currently hard-fail on a clean checkout if the local git fixture repos have not already been built under `tests/ecosystem-sync/fixtures/repos/`.
+
+      ## Why this matters'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2427
+    title: 'bug(ci): baseline-check.yml references deleted shell tests, causing repo-wide false failures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2427
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      `Run Tests` in `.github/workflows/baseline-check.yml` is referencing shell test scripts that were deleted on 2026-03-25, causing PRs such as #2354 to fail for repo-wide CI reasons unrelated to the feature branch.
+
+      ## Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2449
+    title: 'chore(ci-health): audit .planning/templates/ orphan refs from WRK→GSD migration'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2449
+    gh_state: open
+    gh_labels:
+      - cat:infrastructure
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '### Context
+
+      Split from #2437 / parent #2424.
+
+      While executing #2437 (pruning `.github/workflows/baseline-check.yml` + `.pre-commit-config.yaml` dangling WRK-era refs), the plan (docs/plans/2026-04-21-issue-2437-workspace-hub-prune.md §Risks / Open) deferred a larger audit:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2478
+    title: 'follow-up(ci): worldenergydata Python test matrix fails after lint restoration'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2478
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:ci
+      - status:pending
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      After the #2452 lint-restoration stream, `worldenergydata` main now has a green `Lint` job, but the same CI workflow remains red because all Python test-matrix jobs fail.
+
+      This is intentionally a new follow-up issue rather than reopening #2452: #2452 was scoped to flake8/lint restoration and is complete.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2628
+    title: 'epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2628
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - cat:harness
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - domain:testing-ci-health
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Why now
+
+      This session surfaced that digitalmodel''s QG suite has been chronically green-washed by \`maxfail=20\` masking 200+ pre-existing failures across 53 test files. The admin-merge-via-Quality-Gates-failure pattern (PRs [#541](https://github.com/vamseeachanta/digitalmodel/pull/541), [#544](https://github.com/vamseeachanta/digitalmodel/pull/544), [#549](https://github.com/vamseeachanta/digitalmodel/pull/549), [#550](https://github.com/vamseeachanta/digitalmodel/pull/550), [#551](https://github.com/vamseeachanta/digitalmodel/pull/551), [#553](https://github.com/vamseeachanta/digitalmodel/pull/553), [#568](https://github.com/vamseeachanta/digitalmodel/pull/568), [#569](https://github.com/vamseeachanta/digitalmodel/pull/569)) is now the default merge path — operationally fast but strategically corrosive: every PR carries the same ''gate trips on unrelated debt'' justification.
+
+      Root cause: a single repo-wide \`pytest --maxfail=20\` invocation can''t distinguish ''this PR introduced a regression in its own scope'' from ''unrelated debt elsewhere in the repo.'' Per-domain CI fixes both.'

@@ -84,12 +84,26 @@ manifest:
     file: boards/repo-digitalmodel.yaml
     card_count: 18
     children:
+    - repo-digitalmodel-cad
     - repo-digitalmodel-codes
+    - repo-digitalmodel-core
     - repo-digitalmodel-hydro
     - repo-digitalmodel-hydro-diffraction
+    - repo-digitalmodel-hydro-mooring
+    - repo-digitalmodel-hydro-rao-seakeeping
+    - repo-digitalmodel-hydro-vessel-motions
     - repo-digitalmodel-qa
     - repo-digitalmodel-solver
+    - repo-digitalmodel-solver-infra
+    - repo-digitalmodel-solver-orcaflex
+    - repo-digitalmodel-structural
     - repo-digitalmodel-subsea
+    - repo-digitalmodel-subsea-cp-integrity
+    - repo-digitalmodel-subsea-hardware
+    - repo-digitalmodel-subsea-installation
+    - repo-digitalmodel-subsea-pipelines
+    - repo-digitalmodel-subsea-risers
+    - repo-digitalmodel-gtm
   - slug: repo-hobbies
     tier: repo
     repo: vamseeachanta/hobbies
@@ -158,7 +172,6 @@ manifest:
     - repo-workspace-hub-cross-review
     - repo-workspace-hub-cv-strategy
     - repo-workspace-hub-data
-    - repo-workspace-hub-document-intelligence
     - repo-workspace-hub-document-intelligence-indexing
     - repo-workspace-hub-document-intelligence-summarization
     - repo-workspace-hub-engineering
@@ -167,10 +180,8 @@ manifest:
     - repo-workspace-hub-harness
     - repo-workspace-hub-hydrodynamics
     - repo-workspace-hub-knowledge
-    - repo-workspace-hub-knowledge-management
     - repo-workspace-hub-knowledge-management-corpus
     - repo-workspace-hub-knowledge-management-platform
-    - repo-workspace-hub-marine
     - repo-workspace-hub-marine-field-dev
     - repo-workspace-hub-marine-orcaflex
     - repo-workspace-hub-marine-oss-tools
@@ -198,7 +209,6 @@ manifest:
     - repo-workspace-hub-testing-suite-triage
     - repo-workspace-hub-work-queue
     - repo-workspace-hub-workflow
-    - repo-workspace-hub-workstations
     - repo-workspace-hub-workstations-fleet-equivalence
     - repo-workspace-hub-workstations-machine-bringup
     - repo-workspace-hub-workstations-windows-readiness
@@ -289,6 +299,110 @@ manifest:
     workspace_path: /mnt/local-analysis/digitalmodel
     file: boards/repo-digitalmodel-codes.yaml
     card_count: 29
+  - slug: repo-digitalmodel-subsea-pipelines
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: subsea-pipelines
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-subsea-pipelines.yaml
+    card_count: 0
+  - slug: repo-digitalmodel-subsea-risers
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: subsea-risers
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-subsea-risers.yaml
+    card_count: 0
+  - slug: repo-digitalmodel-subsea-hardware
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: subsea-hardware
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-subsea-hardware.yaml
+    card_count: 0
+  - slug: repo-digitalmodel-subsea-cp-integrity
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: subsea-cp-integrity
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-subsea-cp-integrity.yaml
+    card_count: 0
+  - slug: repo-digitalmodel-subsea-installation
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: subsea-installation
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-subsea-installation.yaml
+    card_count: 0
+  - slug: repo-digitalmodel-hydro-rao-seakeeping
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: hydro-rao-seakeeping
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-hydro-rao-seakeeping.yaml
+    card_count: 0
+  - slug: repo-digitalmodel-hydro-mooring
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: hydro-mooring
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-hydro-mooring.yaml
+    card_count: 0
+  - slug: repo-digitalmodel-hydro-vessel-motions
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: hydro-vessel-motions
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-hydro-vessel-motions.yaml
+    card_count: 0
+  - slug: repo-digitalmodel-solver-orcaflex
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: solver-orcaflex
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-solver-orcaflex.yaml
+    card_count: 0
+  - slug: repo-digitalmodel-solver-infra
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: solver-infra
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-solver-infra.yaml
+    card_count: 0
+  - slug: repo-digitalmodel-core
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: core
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-core.yaml
+    card_count: 0
+  - slug: repo-digitalmodel-cad
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: cad
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-cad.yaml
+    card_count: 0
+  - slug: repo-digitalmodel-structural
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: structural
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-structural.yaml
+    card_count: 0
   - slug: repo-digitalmodel-hydro
     tier: domain
     repo: vamseeachanta/digitalmodel
@@ -329,6 +443,14 @@ manifest:
     workspace_path: /mnt/local-analysis/digitalmodel
     file: boards/repo-digitalmodel-subsea.yaml
     card_count: 131
+  - slug: repo-digitalmodel-gtm
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: gtm
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-gtm.yaml
+    card_count: 12
   - slug: repo-llm-wiki-content
     tier: domain
     repo: vamseeachanta/llm-wiki
@@ -433,14 +555,6 @@ manifest:
     workspace_path: /mnt/local-analysis/workspace-hub
     file: boards/repo-workspace-hub-ops.yaml
     card_count: 120
-  - slug: repo-workspace-hub-document-intelligence
-    tier: domain
-    repo: vamseeachanta/workspace-hub
-    domain: document-intelligence
-    parent_slug: repo-workspace-hub
-    workspace_path: /mnt/local-analysis/workspace-hub
-    file: boards/repo-workspace-hub-document-intelligence.yaml
-    card_count: 0
   - slug: repo-workspace-hub-gtm
     tier: domain
     repo: vamseeachanta/workspace-hub
@@ -448,30 +562,6 @@ manifest:
     parent_slug: repo-workspace-hub
     workspace_path: /mnt/local-analysis/workspace-hub
     file: boards/repo-workspace-hub-gtm.yaml
-    card_count: 0
-  - slug: repo-workspace-hub-knowledge-management
-    tier: domain
-    repo: vamseeachanta/workspace-hub
-    domain: knowledge-management
-    parent_slug: repo-workspace-hub
-    workspace_path: /mnt/local-analysis/workspace-hub
-    file: boards/repo-workspace-hub-knowledge-management.yaml
-    card_count: 0
-  - slug: repo-workspace-hub-marine
-    tier: domain
-    repo: vamseeachanta/workspace-hub
-    domain: marine
-    parent_slug: repo-workspace-hub
-    workspace_path: /mnt/local-analysis/workspace-hub
-    file: boards/repo-workspace-hub-marine.yaml
-    card_count: 0
-  - slug: repo-workspace-hub-workstations
-    tier: domain
-    repo: vamseeachanta/workspace-hub
-    domain: workstations
-    parent_slug: repo-workspace-hub
-    workspace_path: /mnt/local-analysis/workspace-hub
-    file: boards/repo-workspace-hub-workstations.yaml
     card_count: 0
   - slug: repo-workspace-hub-ai-config
     tier: domain

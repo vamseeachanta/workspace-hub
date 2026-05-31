@@ -1,0 +1,584 @@
+board:
+  slug: repo-digitalmodel-core
+  display_name: digitalmodel · core
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: core
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel core domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#60
+    title: engg debt | Time Series | Filter in FFT and Get Timetrace Back
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/60
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '- [ ] Filter signal (using low, high, band pass filters)
+
+      - [ ] Get timetrace back
+
+      - [ ] Plot comparson charts'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#109
+    title: debt | Architecture Implementation
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/109
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: "- How to index repo files in Claude code\n- References\n  -  https://github.com/buildermethods/agent-os"
+  - idempotency_key: gh:vamseeachanta/digitalmodel#124
+    title: 'TASK 1.2: Mathematical Solvers Migration'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/124
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Weeks 1-2)\n**Assigned to:** Full-Stack Developer  \n**Duration:** 1.5 weeks (35-40 hours)  "
+  - idempotency_key: gh:vamseeachanta/digitalmodel#125
+    title: 'TASK 1.3: Common Utilities Deduplication'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/125
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Weeks 1-3)\n**Assigned to:** Both developers (Parallel work)  \n**Duration:** 1.5-2 weeks (45-50 hours total)  "
+  - idempotency_key: gh:vamseeachanta/digitalmodel#126
+    title: 'TASK 1.4: Shared Data Models Unification'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/126
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Weeks 1-2)\n**Assigned to:** Full-Stack Developer  \n**Duration:** 1.5 weeks (30-35 hours)  "
+  - idempotency_key: gh:vamseeachanta/digitalmodel#127
+    title: 'TASK 1.5: Database Integration Layer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/127
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Weeks 2-3)\n**Assigned to:** Infrastructure Lead  \n**Duration:** 1.5-2 weeks (40-45 hours)  "
+  - idempotency_key: gh:vamseeachanta/digitalmodel#132
+    title: 'WRK-023: Property GIS development timeline with future projection and Google Earth animation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/132
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-023: Property GIS development timeline with future projection and Google Earth animation
+
+      **Status:** pending | **Priority:** low | **Category:** engineering/pipeline
+
+      **Complexity:** complex | **Machine:** ace-linux-1'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#145
+    title: 'WRK-1179: 15-day ecosystem sprint — data completeness + calculation coverage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/145
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1179: 15-day ecosystem sprint — data completeness + calculation coverage
+
+      **Status:** coordinating | **Priority:** high | **Category:** engineering | **Subcategory:** ecosystem-vision
+
+      **Repo:** [''digitalmodel'', ''worldenergydata'', ''assethold'', ''assetutilities'', ''workspace-hub''] | **Complexity:** high | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#153
+    title: 'WRK-1249: gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/153
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1249: gmsh deep meshing workflows — parametric studies, adaptive refinement, quality automation
+
+      **Status:** Stage 10: Work Execution (in_progress) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel'', ''workspace-hub''] | **Complexity:** complex | **Machine:** dev-secondary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#155
+    title: 'WRK-1252: Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/155
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1252: Full CAD-to-CFD pipeline — FreeCAD → gmsh → OpenFOAM → ParaView end-to-end automation
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel'', ''workspace-hub''] | **Complexity:** complex | **Machine:** dev-secondary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#158
+    title: 'WRK-1274: Upgrade Gen 1 calc examples — add scope, design_basis, calculations sections'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/158
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-methodology
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1274: Upgrade Gen 1 calc examples — add scope, design_basis, calculations sections
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering-methodology | **Subcategory:** calculation-examples
+
+      **Repo:** workspace-hub | **Complexity:** medium | **Machine:** unset'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#159
+    title: 'WRK-1275: Add sensitivity, validation, verification to calc examples'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/159
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-methodology
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1275: Add sensitivity, validation, verification to calc examples
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering-methodology | **Subcategory:** calculation-examples
+
+      **Repo:** workspace-hub | **Complexity:** medium | **Machine:** unset'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#164
+    title: 'WRK-1304: Update pdf skill to recommend PyMuPDF4LLM over Codex for single-doc Markdown conversion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/164
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1304: Update pdf skill to recommend PyMuPDF4LLM over Codex for single-doc Markdown conversion
+
+      **Status:** Stage 14: Verify Gate Evidence (in_progress) | **Priority:** medium | **Category:** engineering | **Subcategory:** skills-maintenance
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#165
+    title: 'WRK-1320: Benchmark Docling on ace-linux-2 GPU (T400 4GB) and establish machine task routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/165
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1320: Benchmark Docling on dev-secondary GPU (T400 4GB) and establish machine task routing
+
+      **Status:** blocked | **Priority:** high | **Category:** engineering | **Subcategory:** document-intelligence
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-secondary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#166
+    title: 'WRK-137: Download and parse rig spec PDFs (102 PDFs from 4 operators)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/166
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-137: Download and parse rig spec PDFs (102 PDFs from 4 operators)
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** marine
+
+      **Repo:** [''worldenergydata''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#212
+    title: 'WRK-5077: Data needs registry — fill gaps across all digitalmodel domains'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/212
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5077: Data needs registry — fill gaps across all digitalmodel domains
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** cross-domain
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#246
+    title: 'WRK-543: feat(digitalmodel/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/246
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-543: feat(digitalmodel/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** structural
+
+      **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#247
+    title: 'WRK-544: feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/247
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-544: feat(OGManufacturing/structural): Implement ASTM E1049 — ASTM E1049-85(2005) Standard Practices for Cycle C
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** structural
+
+      **Repo:** [''OGManufacturing''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#257
+    title: 'WRK-604: chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/257
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-604: chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records)
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** marine
+
+      **Repo:** [''workspace-hub''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#260
+    title: 'WRK-616: chore(wrk-309): convert document-intelligence findings into structured data sources'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/260
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-616: chore(wrk-309): convert document-intelligence findings into structured data sources
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''workspace-hub'', ''digitalmodel'', ''worldenergydata'', ''assetutilities''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#457
+    title: Ship dimensions template + loader (WRK-1380)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/457
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1380: Ship dimensions manual data entry from 110 ship plans
+
+      **Status:** Stage 6: Cross-Review (in_progress) | **Priority:** low | **Category:** document-intelligence | **Subcategory:** manual-curation
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#461
+    title: Recover ship-dimensions template artifact from WRK-1339 Child E
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/461
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Recover or deliberately replace the missing Child E deliverable from `WRK-1339` so downstream ship-dimensions work can proceed inside `workspace-hub` without guessing schema or output paths.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#469
+    title: Assess AI agent session artifact dirs across machines (.codex, .gemini, .claude/skills)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/469
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Purpose
+
+      Track the per-machine assessment of how AI agent session artifact directories (`.codex/`, `.gemini/`, `.claude/skills/` symlink files) should be handled in the repo. This issue records decisions made on each machine so they can be compared and a consistent policy confirmed.
+
+      ---'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#483
+    title: 'sub: curves.py decomposition -- break up 29,666-line monolith'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/483
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Scope
+
+      **Parent:** #1962 (Tier-1 Repo Ecosystem Refactoring) -- Phase 2
+
+      **Status:** Ready for adversarial plan review'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#506
+    title: Add PassingShipSpec and JumperInstallationSpec schemas for non-generic specs
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/506
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Machine: ace-linux-1
+
+      ## Context
+
+      The spec audit identified 3 specs using different schemas than ProjectInputSpec:'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#522
+    title: Codify ultra-constrained Claude subprocess prompt patterns for issue-scope reviews
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/522
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent / context
+
+      Follow-up from #515 and the subprocess prompt-pack experiments executed for #517/#518/#519/#520.
+
+      ## Summary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#523
+    title: 'Harvest #517 subprocess review into actionable implementation tasks for #515 program'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/523
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent / context
+
+      Follow-up from #515 and successful subprocess review output for #517.
+
+      ## Summary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#596
+    title: 'chore(repo-structure): normalize digitalmodel folder/file structure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/596
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Repo-specific planning issue for normalizing `digitalmodel` folder/file structure as the first repo in the tier-1 repo-by-repo refactor wave.
+
+      This child issue is anchored to:'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#597
+    title: 'chore(repo-structure): classify and relocate B1528 generated evidence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/597
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - status:pending
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:core
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Purpose
+
+      Follow-up to #596 repo-structure normalization.
+
+      `#596` intentionally keeps tracked `outputs/b1528_sirocco/**` files in place as a temporary metadata-complete durable exception because relocating them requires package-source traceability-link decisions and per-file retention classification.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#620
+    title: 'Review remediation: SQLi/.format, pickle, yaml.Loader, dup modules (2026-05-23)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/620
+    gh_state: open
+    gh_labels:
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

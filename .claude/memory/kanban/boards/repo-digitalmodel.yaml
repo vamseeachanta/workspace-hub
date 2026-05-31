@@ -14,26 +14,6 @@ board:
     - repo-digitalmodel-hydro
     - repo-digitalmodel-qa
 cards:
-  - idempotency_key: gh:vamseeachanta/digitalmodel#261
-    title: 'WRK-618: feat(geotechnical): soil profile models, CPT correlation, shared types'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/261
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:engineering
-      - priority:high
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 1
-    body_excerpt: '## WRK-618: feat(geotechnical): soil profile models, CPT correlation, shared types
-
-      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
-
-      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** [''dev-primary'', ''dev-secondary'']'
   - idempotency_key: gh:vamseeachanta/digitalmodel#168
     title: 'WRK-171: Cost data calibration — sanctioned project benchmarking & multivariate cost prediction'
     source: github_issue
@@ -54,132 +34,6 @@ cards:
       **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
 
       **Repo:** [''worldenergydata''] | **Complexity:** complex | **Machine:** dev-primary'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#522
-    title: Codify ultra-constrained Claude subprocess prompt patterns for issue-scope reviews
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/522
-    gh_state: open
-    gh_labels:
-      - machine:dev-primary
-      - status:plan-approved
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Parent / context
-
-      Follow-up from #515 and the subprocess prompt-pack experiments executed for #517/#518/#519/#520.
-
-      ## Summary'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#469
-    title: Assess AI agent session artifact dirs across machines (.codex, .gemini, .claude/skills)
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/469
-    gh_state: open
-    gh_labels:
-      - machine:dev-primary
-      - status:plan-approved
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Purpose
-
-      Track the per-machine assessment of how AI agent session artifact directories (`.codex/`, `.gemini/`, `.claude/skills/` symlink files) should be handled in the repo. This issue records decisions made on each machine so they can be compared and a consistent policy confirmed.
-
-      ---'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#461
-    title: Recover ship-dimensions template artifact from WRK-1339 Child E
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/461
-    gh_state: open
-    gh_labels:
-      - wrk-item
-      - machine:dev-primary
-      - status:plan-approved
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Summary
-
-      Recover or deliberately replace the missing Child E deliverable from `WRK-1339` so downstream ship-dimensions work can proceed inside `workspace-hub` without guessing schema or output paths.
-
-      ## Why'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#257
-    title: 'WRK-604: chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/257
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:low
-      - cat:engineering
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## WRK-604: chore(doc-index): remap legacy HDD records — va-hdd-2, 2021-11-22-sd-HDD (25K records)
-
-      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** marine
-
-      **Repo:** [''workspace-hub''] | **Complexity:** low | **Machine:** dev-primary'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#127
-    title: 'TASK 1.5: Database Integration Layer'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/127
-    gh_state: open
-    gh_labels:
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees:
-      - vamseeachanta
-    initial_status: triage
-    priority: 0
-    body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Weeks 2-3)\n**Assigned to:** Infrastructure Lead  \n**Duration:** 1.5-2 weeks (40-45 hours)  "
-  - idempotency_key: gh:vamseeachanta/digitalmodel#126
-    title: 'TASK 1.4: Shared Data Models Unification'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/126
-    gh_state: open
-    gh_labels:
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees:
-      - vamseeachanta
-    initial_status: triage
-    priority: 0
-    body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Weeks 1-2)\n**Assigned to:** Full-Stack Developer  \n**Duration:** 1.5 weeks (30-35 hours)  "
-  - idempotency_key: gh:vamseeachanta/digitalmodel#95
-    title: Design Drawings
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/95
-    gh_state: open
-    gh_labels:
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: Please share design drawings [ Inventory ]
-  - idempotency_key: gh:vamseeachanta/digitalmodel#92
-    title: engg debt | FreeCAD
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/92
-    gh_state: open
-    gh_labels:
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: "- [ ] Freecad\n  - [ ] Send Geometry file + Macro. \n    - [x] Learn basic macro recording process"
   - idempotency_key: gh:vamseeachanta/digitalmodel#89
     title: PB | Task List
     source: github_issue
@@ -211,24 +65,6 @@ cards:
     body_excerpt: '- [ ] Follow up for work
 
       - [ ] Send email on autocad working script and close-out the work.'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#60
-    title: engg debt | Time Series | Filter in FFT and Get Timetrace Back
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/60
-    gh_state: open
-    gh_labels:
-      - feature
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '- [ ] Filter signal (using low, high, band pass filters)
-
-      - [ ] Get timetrace back
-
-      - [ ] Plot comparson charts'
   - idempotency_key: gh:vamseeachanta/digitalmodel#54
     title: SS |  Task List
     source: github_issue
@@ -243,65 +79,6 @@ cards:
     initial_status: triage
     priority: 0
     body_excerpt: placeholder for SS assignments
-  - idempotency_key: gh:vamseeachanta/digitalmodel#47
-    title: engg debt | Plate Buckling Calculations
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/47
-    gh_state: open
-    gh_labels:
-      - feature
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees:
-      - samdansk2
-    initial_status: triage
-    priority: 0
-    body_excerpt: 'Prepare plate buckling calculations.
-
-      https://github.com/vamseeachanta/digitalmodel/tree/plate_buckling/docs/sub_plate_buckling'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#31
-    title: engg debt | Ship design | strength checks
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/31
-    gh_state: open
-    gh_labels:
-      - feature
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: Develop scripts
-  - idempotency_key: gh:vamseeachanta/digitalmodel#30
-    title: engg debt | Ship design | min scantling calculations
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/30
-    gh_state: open
-    gh_labels:
-      - feature
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: Develop scripts
-  - idempotency_key: gh:vamseeachanta/digitalmodel#12
-    title: engg debt | Padeye Calculations
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/12
-    gh_state: open
-    gh_labels:
-      - feature
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: Standard padeye calculations and associated checks
   - idempotency_key: gh:vamseeachanta/digitalmodel#5
     title: rao_analysis QA criteria
     source: github_issue
@@ -3360,26 +3137,6 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/digitalmodel#457
-    title: Ship dimensions template + loader (WRK-1380)
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/457
-    gh_state: open
-    gh_labels:
-      - feature
-      - domain:naval-architecture
-      - wrk-item
-      - machine:licensed-win-1
-      - status:plan-approved
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## WRK-1380: Ship dimensions manual data entry from 110 ship plans
-
-      **Status:** Stage 6: Cross-Review (in_progress) | **Priority:** low | **Category:** document-intelligence | **Subcategory:** manual-curation
-
-      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#458
     title: GZ curve fixtures and validation tests (WRK-1381)
     source: github_issue
@@ -3766,27 +3523,6 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/digitalmodel#554
-    title: 'fix(marine_ops): catenary solver bracketing + sinh overflow — clears 21 of 77 marine_ops failures'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/554
-    gh_state: open
-    gh_labels:
-      - bug
-      - cat:engineering
-      - priority:high
-      - domain:naval-architecture
-      - machine:licensed-win-1
-      - status:plan-approved
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 1
-    body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R2. Source patch will clear ~21 of 77 marine_ops test failures.
-
-      ## Symptom
-
-      Top errors observed at digitalmodel HEAD `2dfa61e6` (live repro 2026-05-02):'
   - idempotency_key: gh:vamseeachanta/digitalmodel#555
     title: 'fix(marine_ops): _generate_chain_database diameters[:20] excludes 76mm — clears 4 of 77 marine_ops failures'
     source: github_issue
@@ -3798,25 +3534,6 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/digitalmodel#566
-    title: 'fix(marine_ops): batched residue clusters R1+R5+R7+R8 — clears ~10 of 77 marine_ops failures'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/566
-    gh_state: open
-    gh_labels:
-      - bug
-      - domain:naval-architecture
-      - machine:dev-primary
-      - status:plan-approved
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) covering 4 small heterogeneous clusters per user direction to batch (vs. R6 which was filed 1-issue-per-test for visibility). Sister sub-issues: R2 = [vamseeachanta/digitalmodel#554](https://github.com/vamseeachanta/digitalmodel/issues/554), R4 = [vamseeachanta/digitalmodel#555](https://github.com/vamseeachanta/digitalmodel/issues/555), R6 = [#556](https://github.com/vamseeachanta/digitalmodel/issues/556)–[#565](https://github.com/vamseeachanta/digitalmodel/issues/565). R3 ([vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster) is blocked separately on DNV-RP-B401 standards reconciliation.
-
-      All test paths verified at digitalmodel HEAD `08e9c333`. Total covered: **11 failures across 4 clusters**.
-
-      ---'
   - idempotency_key: gh:vamseeachanta/digitalmodel#570
     title: 'fix(tests/orcaflex): replace bare CLI invocations with sys.executable -m — clears ~22 of 42 solvers/orcaflex failures'
     source: github_issue
@@ -3844,26 +3561,6 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/digitalmodel#573
-    title: 'fix(marine_ops): DNV-RP-F103 calibration drift in test_cathodic_protection_dnv.py — clears 16 of 77 marine_ops failures'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/573
-    gh_state: open
-    gh_labels:
-      - bug
-      - cat:engineering
-      - domain:naval-architecture
-      - machine:dev-primary
-      - status:plan-approved
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Summary
-
-      Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R3. Wiki citation surface for DNV-RP-F103 has now landed on workspace-hub main via [vamseeachanta/workspace-hub#2636](https://github.com/vamseeachanta/workspace-hub/pull/2636), unblocking this sub-issue per `.claude/rules/calc-citation-contract.md`.
-
-      ## Affected tests (16)'
   - idempotency_key: gh:vamseeachanta/digitalmodel#594
     title: Vessel operability reference synthesis for CTV/SOV/W2W suitability
     source: github_issue
@@ -3894,87 +3591,6 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/digitalmodel#601
-    title: 'bug(orcaflex): preserve generated jumper line-section YAML in pipeline outputs'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/601
-    gh_state: open
-    gh_labels:
-      - cat:engineering
-      - status:plan-review
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Context
-
-      Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
-
-      The jumper calculation path computes 27 OrcaFlex line sections, but the pipeline does not write them because the result key names do not match:'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#602
-    title: 'feat(orcaflex): convert Ballymore jumper specs into generator-ready ProjectInputSpec models'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/602
-    gh_state: open
-    gh_labels:
-      - cat:engineering
-      - status:plan-review
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Context
-
-      Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
-
-      Current Ballymore jumper specs are domain calculation specs, not `ProjectInputSpec` inputs for `ModularModelGenerator`:'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#603
-    title: 'test(orcaflex): add regression coverage for Ballymore spec-to-modular pipeline'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/603
-    gh_state: open
-    gh_labels:
-      - cat:engineering
-      - status:plan-review
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Context
-
-      Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
-
-      The current test suite has broad `modular_generator` coverage, but no focused regression test proving the two Ballymore jumper specs can travel through the intended path:'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#604
-    title: 'chore(orcaflex): validate generated Ballymore jumper model on licensed OrcaFlex runner'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/604
-    gh_state: open
-    gh_labels:
-      - cat:engineering
-      - status:plan-review
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Context
-
-      Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
-
-      Linux can validate `ProjectInputSpec` and generate OrcaFlex YAML, but final `.dat`/`.sim` load-run proof requires an OrcaFlex license. Workspace-hub has a related operational smoke issue for generic OrcaFlex queue validation, but the Ballymore jumper generated model still needs a domain-specific licensed proof once #602/#603 land.'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#610
-    title: 'OrcaWave: add licensed end-to-end acceptance test for arbitrary mesh workflow'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/610
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - machine:licensed-win-1
-      - status:plan-review
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Problem
-
-      There is smoke-test coverage for known OrcaWave inputs, but the future workflow needs proof that an arbitrary mesh-driven DigitalModel spec can run end-to-end on a licensed host.
-
-      ## Required work'
   - idempotency_key: gh:vamseeachanta/digitalmodel#611
     title: 'OrcaWave: define result export and postprocess contract for diffraction runs'
     source: github_issue
@@ -3991,22 +3607,6 @@ cards:
     body_excerpt: '## Problem
 
       The OrcaWave runner can save `.owr` and a data file through OrcFxAPI, and separate utilities can read `.xlsx` sidecars or `.owr` results. The workflow needs a clear output contract so downstream OrcaFlex handoff, reports, benchmarks, and QA can consume a run consistently.
-
-      ## Required work'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#613
-    title: 'OrcaWave: add environment and license doctor command'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/613
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - status:plan-review
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Problem
-
-      Users need a quick way to know whether the local machine can actually run OrcaWave diffraction before preparing a large solve. Current behavior can silently fall back to dry-run when OrcFxAPI and OrcaWave executable paths are unavailable.
 
       ## Required work'
   - idempotency_key: gh:vamseeachanta/digitalmodel#616
@@ -4032,29 +3632,6 @@ cards:
     gh_labels:
       - enhancement
       - status:plan-approved
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/digitalmodel#619
-    title: 'Ship-class structural stress gaps: sloshing (rule-based), racking/panting, ice loads, drydock support, class-rule slamming'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/619
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:engineering
-      - priority:medium
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/digitalmodel#620
-    title: 'Review remediation: SQLi/.format, pickle, yaml.Loader, dup modules (2026-05-23)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/620
-    gh_state: open
-    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []

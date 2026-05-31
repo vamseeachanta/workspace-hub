@@ -9,4 +9,297 @@ board:
   description: 'workspace-hub marine-solver-queue subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1586
+    title: 'Harden solver queue: batch submission, result watcher, auto post-processing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1586
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:licensed-win-1
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Context
+
+      Identified in docs/roadmaps/orcawave-orcaflex-capability-roadmap.md (gap analysis) and docs/plans/2026-04-01-orcawave-orcaflex-intensive-plan.md (Wave 1).
+
+      Current state: 1 successful OrcaWave run (test01.owd, 7.8s), 1 failed run (bad path). No batch submission, no result watching, no auto post-processing.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1628
+    title: 'Sprint plan: OrcaWave/OrcaFlex Phase 1 — solver queue hardening + orcawave test coverage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1628
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Context
+
+      The OrcaWave/OrcaFlex capability roadmap (`docs/roadmaps/orcawave-orcaflex-capability-roadmap.md`,
+
+      #1572) identifies Phase 1 as the critical near-term work (1-2 weeks).'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1826
+    title: 'dark-intel: rebuild stale specs/module-registry.yaml as canonical calculation index'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1826
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-calculations
+      - machine:dev-primary
+      - dark-intelligence
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Rebuild Module Registry
+
+      ### What
+
+      specs/module-registry.yaml is referenced in ROADMAP.md as the canonical module'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1827
+    title: 'licensed-win-1: extract .sim model metadata to JSON for snapshot testing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1827
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - machine:licensed-win-1
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      #1652 and #1788 require OrcaFlex model data extraction from .sim files.
+
+      Both minimal_test.sim and mooring_with_raos.sim are binary — cannot parse on dev-primary.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1904
+    title: 'INVENTORY: Complete OrcaFlex/OrcaWave model and Excel workbook catalog across all data mounts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1904
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - machine:dev-primary
+      - gtm
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Status: Research completed — data extraction in progress
+
+      A subagent scanned both data mounts and catalogued the model inventory. The detailed JSON output was generated in an isolated session.
+
+      ### What Exists'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2029
+    title: 'TASK: Run YML + Excel inventory script locally to produce catalog JSON'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2029
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Subagent scan completed the discovery phase. The inventory structure is known. What''s needed now is an executable script that runs locally and produces the definitive catalog.
+
+      ## What We Know'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2170
+    title: 'feat(operations): implement OrcaFlex, OrcaWave, and ANSYS/AQWA Windows probe adapters'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2170
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Implement the OrcaFlex, OrcaWave, and ANSYS/AQWA Windows probe adapters for readiness bundles.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2176
+    title: 'test(operations): add OrcaWave diffraction smoke fixtures and AQWA install-vs-usable classification tests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2176
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add OrcaWave diffraction smoke fixtures and ANSYS/AQWA install-vs-usable classification tests for Windows probe adapters.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2182
+    title: 'test(operations): add OrcaWave L02 OC4 semi-sub manifest assertions and parity regression coverage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2182
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add OrcaWave L02 OC4 semi-sub manifest assertions and .xlsx-vs-.owr parity regression coverage.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2641
+    title: 'feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2641
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:multi
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Add a hands-off multi-machine solver batch pipeline so a user can drop manifests/input files into a known inbox, have Linux hosts ingest/queue them, and have Windows licensed hosts run OrcaWave, OrcaFlex, and AQWA/ANSYS jobs via periodic polling without manually touching the machines.
+
+      ## Current evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2709
+    title: 'feat(solver-queue): add AQWA runner adapter and schema extension'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2709
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:licensed-win-1
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Why
+
+      Current solver queue supports `orcawave | orcaflex` only. AQWA is referenced in `docs/ops/2026-05-04-multimachine-baseline-inventory.md` §5 as "Run only on licensed Windows hosts" and is in scope for #2641''s broader multi-machine inbox vision, but no runner adapter exists. User goal stated 2026-05-14: "run aqwa and orcaflex analyses as needed from any machine with a prompt and submission of files."
+
+      Related: #2641 (multi-machine inbox parent — broader), #2708 (OrcaFlex validation — proves the pattern for AQWA to mirror).'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2711
+    title: 'feat(provider-data): service-provider data library — Helix 15k IRS pilot'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2711
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Why
+
+      User goal 2026-05-14: "also add data from service providers such as helix: example brochure: https://helixesg.com/downloads/Helix_Well_Ops-_IRS_7_15k-_LTR_11-28-23_FINAL.pdf"
+
+      This expands the solver-submission story from "submit a model file" to "build a model from real service-provider equipment data, then submit." Service-provider brochures contain engineering-grade parameters (working pressures, water-depth ratings, bore diameters, design temperature ranges) that should feed directly into OrcaFlex/AQWA riser, vessel, and mooring models.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2717
+    title: 'infra: live AQWA env access on licensed Windows host — prerequisite for #2709'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2717
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:licensed-win-1
+      - machine:licensed-win-2
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-solver-queue
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Why
+
+      [#2709](https://github.com/vamseeachanta/workspace-hub/issues/2709) (AQWA runner adapter) has been adversarially reviewed twice (r1 Codex MAJOR / 7 blockers, r2 Claude MAJOR / 13 findings, 8 blockers). The reviewer''s closing diagnosis on r2:
+
+      > "Until the live smoke validation actually runs once and is captured, the probe and scrape logic is speculation."'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2789
+    title: 'arch(digitalmodel): deepen engineering workflow modules around bounded seams'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2789
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - status:needs-plan
+      - gate:completeness
+      - domain:marine-solver-queue
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

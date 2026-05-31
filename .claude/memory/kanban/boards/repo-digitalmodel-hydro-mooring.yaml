@@ -1,0 +1,152 @@
+board:
+  slug: repo-digitalmodel-hydro-mooring
+  display_name: digitalmodel · hydro-mooring
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: hydro-mooring
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel hydro-mooring domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#135
+    title: 'WRK-039: SPM project benchmarking - AQWA vs OrcaFlex'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/135
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:hydro-mooring
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-039: SPM project benchmarking - AQWA vs OrcaFlex
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering/marine
+
+      **Complexity:** complex | **Machine:** acma-ansys05'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#203
+    title: 'WRK-5062: Mooring analysis study — literature, methods and implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/203
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:hydro-mooring
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-5062: Mooring analysis study — literature, methods and implementation
+
+      **Status:** pending | **Priority:** high | **Category:** engineering | **Subcategory:** mooring
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#283
+    title: 'WRK-131: Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/283
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-mooring
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-131: Passing ship analysis for moored vessels — AQWA-based force calculation and mooring response
+
+      **Status:** blocked | **Priority:** high | **Category:** engineering/marine
+
+      **Complexity:** complex | **Machine:** orcaflex-license-machine'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#554
+    title: 'fix(marine_ops): catenary solver bracketing + sinh overflow — clears 21 of 77 marine_ops failures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/554
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - priority:high
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-mooring
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R2. Source patch will clear ~21 of 77 marine_ops test failures.
+
+      ## Symptom
+
+      Top errors observed at digitalmodel HEAD `2dfa61e6` (live repro 2026-05-02):'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#561
+    title: 'fix(marine_ops): test_ocimf_mooring_integration.py::test_combined_environmental_forces — wrong test premise (current dominates)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/561
+    gh_state: open
+    gh_labels:
+      - bug
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-mooring
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R6 (heterogeneous OCIMF/RAO/integration). Individual-test issue per user direction to maintain visibility ("9 individual issues to help keep gap").
+
+      ## Test nodeid
+
+      `tests/marine_ops/marine_engineering/integration/test_ocimf_mooring_integration.py::TestOCIMFMooringIntegration::test_combined_environmental_forces`'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#564
+    title: 'fix(marine_ops): test_ocimf_mooring_integration.py::test_environmental_forces_to_mooring_tension — needs investigation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/564
+    gh_state: open
+    gh_labels:
+      - bug
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-mooring
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R6 (heterogeneous OCIMF/RAO/integration). Individual-test issue per user direction to maintain visibility ("9 individual issues to help keep gap").
+
+      ## Test nodeid
+
+      `tests/marine_ops/marine_engineering/integration/test_ocimf_mooring_integration.py::TestOCIMFMooringIntegration::test_environmental_forces_to_mooring_tension`'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#588
+    title: 'fix(marine_ops): test_find_chain_with_safety_factor needs chain entry ≥78mm R4'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/588
+    gh_state: open
+    gh_labels:
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:hydro-mooring
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Surfaced during execution of #555 (PR #587). The diameter-slice expansion to `[:24]` fixed `test_get_chain_by_specification` but not this test, which has an orthogonal root cause.
+
+      ## Root cause'

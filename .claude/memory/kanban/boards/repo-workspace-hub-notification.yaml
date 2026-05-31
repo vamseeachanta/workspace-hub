@@ -172,27 +172,3 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2741
-    title: 'test(hermes): validate Telegram dispatch smoke tests and destructive-action canary'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2741
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:medium
-      - cat:operations
-      - cat:harness
-      - domain:testing
-      - domain:notification
-      - machine:dev-primary
-      - status:needs-plan
-      - dispatch:ready
-      - gate:completeness
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Summary
-
-      Define and execute the final proof that Telegram/Hermes dispatch works safely after coordinator and first worker readiness pass.
-
-      ## Scope'

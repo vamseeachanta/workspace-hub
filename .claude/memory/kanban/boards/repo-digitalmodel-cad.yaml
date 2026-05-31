@@ -1,0 +1,97 @@
+board:
+  slug: repo-digitalmodel-cad
+  display_name: digitalmodel · cad
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: cad
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel cad domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#64
+    title: engg debt | CAD
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/64
+    gh_state: open
+    gh_labels:
+      - feature
+      - package
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:cad
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: '- [ ] freeCAD
+
+      - [ ] Progress this work for hull shapes etc.
+
+      - [ ] Autocad 3D'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#87
+    title: engg debt | Autodesk Autocad
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/87
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:cad
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: "-   [ ] Other work\n  - [ ] Try recording a macro\n    - [ ] https://www.youtube.com/watch?v=6qLrPmS7VTE"
+  - idempotency_key: gh:vamseeachanta/digitalmodel#92
+    title: engg debt | FreeCAD
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/92
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:cad
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: "- [ ] Freecad\n  - [ ] Send Geometry file + Macro. \n    - [x] Learn basic macro recording process"
+  - idempotency_key: gh:vamseeachanta/digitalmodel#95
+    title: Design Drawings
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/95
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:cad
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Please share design drawings [ Inventory ]
+  - idempotency_key: gh:vamseeachanta/digitalmodel#277
+    title: 'WRK-1251: FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/277
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:cad
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1251: FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies
+
+      **Status:** working | **Priority:** medium | **Category:** engineering/pipeline
+
+      **Complexity:** complex | **Machine:** ace-linux-2'

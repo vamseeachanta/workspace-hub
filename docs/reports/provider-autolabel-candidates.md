@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-05-25T21:20:09.505340Z
+Generated: 2026-05-31T17:20:09.379892Z
 Apply mode: False
 Threshold: 0.9
 
@@ -14,6 +14,8 @@ Threshold: 0.9
 | #2665 feat(kanban): provider-credit approval dashboard and dispatch gates | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2686 Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2694 Epic: Cross-domain duplicate-implementation cleanup (catenary, PipeCapacity, cathodic protection, natural-period, hydro-matrix, on-bottom stability) | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2813 chore(infra): roll out Codex-under-Claude sandbox fix (#2804) to remaining ecosystem machines | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
+| #2886 Disposition: bulk-close 48 content-free WRK-XXXX:untitled migration-ghost issues (ops board cleanup, #2878) | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #2472 feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2474 feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2647 ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up) | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |

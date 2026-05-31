@@ -1,0 +1,453 @@
+board:
+  slug: repo-digitalmodel-hydro-vessel-motions
+  display_name: digitalmodel · hydro-vessel-motions
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: hydro-vessel-motions
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel hydro-vessel-motions domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#141
+    title: 'WRK-099: Run 3-way benchmark on Unit Box hull'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/141
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-099: Run 3-way benchmark on Unit Box hull
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering/marine
+
+      **Complexity:** medium | **Machine:** ace-linux-1'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#143
+    title: 'WRK-1147: Propeller-rudder hydrodynamic interaction study — literature, methods and implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/143
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1147: Propeller-rudder hydrodynamic interaction study — literature, methods and implementation
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** hydrodynamics
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#144
+    title: 'WRK-1150: Python implementation — propeller-rudder interaction with RPM sweep'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/144
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1150: Python implementation — propeller-rudder interaction with RPM sweep
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** hydrodynamics
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#161
+    title: 'WRK-1281: Extract numerical test vectors from all naval architecture literature and document intelligence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/161
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1281: Extract numerical test vectors from all naval architecture literature and document intelligence
+
+      **Status:** pending | **Priority:** high | **Category:** engineering | **Subcategory:** naval-architecture
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#174
+    title: 'WRK-474: feat(subsea): integrate MoorDyn + MoorPy for mooring analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/174
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-474: feat(subsea): integrate MoorDyn + MoorPy for mooring analysis
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+
+      **Repo:** [''digitalmodel''] | **Complexity:** moderate | **Machine:** unset'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#199
+    title: 'WRK-5056: feat(digitalmodel): integrate theoretical naval architecture into ecosystem models'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/199
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-models
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5056: feat(digitalmodel): integrate theoretical naval architecture into ecosystem models
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering-models | **Subcategory:** naval-architecture
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#211
+    title: 'WRK-5070: Metocean and extreme value analysis study — literature, methods and implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/211
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5070: Metocean and extreme value analysis study — literature, methods and implementation
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** metocean
+
+      **Repo:** [''digitalmodel'', ''worldenergydata''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#463
+    title: Populate ship-dimensions dataset from ship plans (manual curation follow-on)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/463
+    gh_state: open
+    gh_labels:
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Track the remaining manual-curation work after the ship-dimensions template + loader code was completed in `#457`.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#493
+    title: Implement river/shallow-water current profile modeling
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/493
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Background
+
+      Towed barge operations in rivers and shallow waters face strong current-induced risks. We have ocean current support (`data_procurement/metocean/`) and DNV-RP-H103 open-sea current loading, but no river/shallow-water current profiles.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#591
+    title: GTM vessel suitability analysis for installation and pipeline operations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/591
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - cat:website
+      - status:pending
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The current GTM demos already contain representative vessel raw-data inputs for installation and pipeline examples:
+
+      - `examples/demos/gtm/data/csv_hlv_vessels.json` — CSV / HLV vessel classes for mudmat and jumper installation demos, with crane curves, RAO peak summaries, natural periods, and operational limits.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#592
+    title: Assess client-ready vessel capability GTM narrative and chart lineup
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/592
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:website
+      - status:pending
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Assess how the current vessel-capability GTM material can be sharpened for client-facing use today and for the next iteration of #591.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#593
+    title: Assess vessel data provenance, confidence, and capability scoring gaps for GTM
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/593
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:website
+      - status:pending
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Assess gaps in vessel data provenance and scoring so GTM vessel capability claims remain defensible for client/prospect review.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#595
+    title: Assess client PDF packaging for vessel capability GTM material
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/595
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:website
+      - status:pending
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:hydro-vessel-motions
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Assess how to package the vessel capability GTM material into client-ready PDFs and offline deliverables for same-day outreach.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#637
+    title: 'feature(cfd): ballast-tank sloshing CFD study work package'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/637
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:high
+      - domain:hydro-vessel-motions
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#638
+    title: 'feat(cfd): assess ballast-tank sloshing methodology and compute path'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/638
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:high
+      - domain:hydro-vessel-motions
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#639
+    title: 'feat(openfoam): create 2D ballast-tank sloshing starter case'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/639
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:high
+      - domain:hydro-vessel-motions
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#640
+    title: 'feat(openfoam): build 3D L-shaped ballast-tank geometry and mesh pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/640
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - domain:hydro-vessel-motions
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#641
+    title: 'feat(openfoam): add ballast-tank fill-level and roll-frequency sweep runner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/641
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - domain:hydro-vessel-motions
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#642
+    title: 'feat(cfd-post): extract sloshing frequencies, pressure loads, and response metrics'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/642
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - domain:hydro-vessel-motions
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#643
+    title: 'feat(hydro): couple CFD-derived sloshing response into roll time-domain analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/643
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - domain:hydro-vessel-motions
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#658
+    title: 'feat(openfoam): prescribed single-DOF tank motion engine (dynamicMeshDict)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/658
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:high
+      - domain:hydro-vessel-motions
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#659
+    title: 'feat(openfoam): partial-fill setFields wrapper (wire SloshingSetup.fill_level)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/659
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:high
+      - domain:hydro-vessel-motions
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#660
+    title: 'feat(cfd-post): FFT fluid natural-frequency extraction + analytical check'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/660
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - domain:hydro-vessel-motions
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#661
+    title: 'feat(cfd-post): named wall pressure-tap function objects'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/661
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - domain:hydro-vessel-motions
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#662
+    title: 'feat(openfoam): gmsh -> OpenFOAM polyMesh bridge (Phase B / 3D)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/662
+    gh_state: open
+    gh_labels:
+      - feature
+      - priority:low
+      - cat:engineering
+      - domain:hydro-vessel-motions
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

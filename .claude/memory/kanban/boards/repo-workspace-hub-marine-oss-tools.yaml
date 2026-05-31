@@ -9,4 +9,259 @@ board:
   description: 'workspace-hub marine-oss-tools subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1440
+    title: Install Capytaine BEM solver into ACE ecosystem
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1440
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-oss-tools
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Install and configure Capytaine — open-source Python BEM solver for wave-body interaction — as the first OSS integration from the engineering software catalog (#1397).
+
+      ## Rationale'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1441
+    title: Integrate OpenDrift ocean trajectory modelling into ACE ecosystem
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1441
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-oss-tools
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: 'Pure Python oil spill tracking and marine drift modelling. pip-installable, GPL-2.0.
+
+      **Library**: [OpenDrift](https://github.com/OpenDrift/opendrift) (300 stars)
+
+      **Why priority**: Direct O&G relevance — oil spill, SAR drift, environmental compliance. Pure Python, pip-installable.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1443
+    title: Integrate FLORIS wind farm wake modelling
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1443
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-oss-tools
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: 'NREL controls-focused wind farm simulation. Pure Python, Apache-2.0, 260 stars.
+
+      **Library**: [FLORIS](https://github.com/NREL/floris)
+
+      **Why priority**: Steady-state wake models for power prediction and layout/yaw optimization. Vectorized for rapid design iteration.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1444
+    title: Integrate RAFT floating wind turbine dynamics
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1444
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-oss-tools
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: 'Frequency-domain dynamics for floating turbines. Pure Python, Apache-2.0.
+
+      **Library**: [RAFT](https://github.com/WISDEM/RAFT)
+
+      **Why priority**: Couples pyHAMS (hydro) + MoorPy (mooring) + CCBlade (aero). Level 1 model in WEIS. Integrates tools already cloned at ACE.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1445
+    title: Integrate WISDEM wind plant system design
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1445
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-oss-tools
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: 'Integrated wind plant cost-of-energy model. Python, Apache-2.0, 172 stars.
+
+      **Library**: [WISDEM](https://github.com/WISDEM/WISDEM)
+
+      **Why priority**: Full wind plant design optimization — rotor, drivetrain, tower, financials. OpenMDAO-based. NREL-maintained.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1460
+    title: Integrate WEIS floating wind co-design framework
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1460
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-oss-tools
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Multi-fidelity co-design for floating wind. Apache-2.0.
+
+      **Library**: [WEIS](https://github.com/WISDEM/WEIS)
+
+      **Why priority**: Couples OpenFAST + WISDEM + ROSCO for controls co-design optimization. DOE WETO Software Stack.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1464
+    title: Capytaine BEM available for hull mesh wave load analysis
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1464
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-oss-tools
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Capytaine 2.3.1 BEM solver is now installed on dev-secondary. Once backlog 999.1 (Ship Plan CAD Pipeline) produces reconstructed hull meshes, Capytaine can compute wave loads on them.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1620
+    title: Clone and pip-install BEMRosetta, pyHAMS, OCEANLYZ, wavespectra — critical marine OSS tools
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1620
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-oss-tools
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: 'Identified in: docs/reports/orcawave-orcaflex-research-gaps.md (#1575)
+
+      ## Problem
+
+      Of 41 marine/hydro OSS tools in the catalog, only 7 are cloned (17%) and 0 are pip-installed. Four critical tools for the OrcaWave/OrcaFlex pipeline are missing:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2327
+    title: 'digitalmodel: CadQuery spike for parametric offshore geometry generation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2327
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:engineering
+      - cat:research
+      - status:working
+      - machine:dev-primary
+      - agent:codex
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-oss-tools
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      CadQuery is a Python library for parametric 3D CAD on the OpenCASCADE B-rep kernel. STEP export is high-fidelity, so downstream meshers (gmsh, Salome) can control density without being trapped by authoring-time facets — a good shape for offshore component geometry that feeds AQWA.
+
+      Discovered via HN discussion 2026-04-17 (180 points, 47 comments): https://news.ycombinator.com/item?id=47772725'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2328
+    title: 'CAD-DEVELOPMENTS: comparison — CadQuery vs build123d vs ReplicAD vs FluidCAD'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2328
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:engineering
+      - cat:tooling
+      - cat:research
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-oss-tools
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The HN CadQuery thread (2026-04-17) surfaces adjacent code-first CAD libraries that all reach parametric B-rep → STEP via different ergonomics. Before committing `CAD-DEVELOPMENTS/` tooling, a structured comparison is needed.
+
+      > **Revised 2026-04-17 per [adversarial review](https://github.com/vamseeachanta/workspace-hub/issues/2328#issuecomment-4269066629)**: scope locked to code-first tools only; N=3 parts replace N=1; FluidCAD dropped (wrong category); LLM-codegen protocol specified; decision-maker named.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2329
+    title: 'Engineering methodology: code-first vs GUI CAD for offshore parametric hardware families'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2329
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:engineering
+      - cat:engineering-methodology
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-oss-tools
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Status
+
+      **Blocked by #2327 and #2328.** This issue must not start until both siblings produce empirical evidence.
+
+      > **Revised 2026-04-17 per [adversarial review](https://github.com/vamseeachanta/workspace-hub/issues/2329#issuecomment-4269067993)**: blocked on siblings; reframed to find threshold empirically; enforcement tier committed (Level 1 or 2, not Level 0 prose); decay plan added; inventory scoped out.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2513
+    title: 'feat(knowledge): catalogue offshore wind and oil gas subsea cross-section sources'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2513
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - cat:research
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-oss-tools
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build a source-backed catalogue for offshore wind and oil and gas subsea cross-section families: inter-array/export cables, electro-hydraulic umbilicals, power/optical umbilicals, rigid pipelines/flowlines, and flexible pipe/riser follow-ups.
+
+      ## Why'

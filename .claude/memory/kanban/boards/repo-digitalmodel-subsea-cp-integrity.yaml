@@ -1,0 +1,291 @@
+board:
+  slug: repo-digitalmodel-subsea-cp-integrity
+  display_name: digitalmodel · subsea-cp-integrity
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: subsea-cp-integrity
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel subsea-cp-integrity domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#176
+    title: 'WRK-478: feat(subsea): create Cathodic Protection module (DNV-RP-B401)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/176
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-cp-integrity
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-478: feat(subsea): create Cathodic Protection module (DNV-RP-B401)
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** cathodic-protection
+
+      **Repo:** [''digitalmodel''] | **Complexity:** moderate | **Machine:** unset'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#180
+    title: 'WRK-483: feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/180
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-cp-integrity
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-483: feat(digitalmodel/cathodic_protection): Implement ASTM G80 — ASTM G80 (1998) Std Test Method for Specific Catho
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#181
+    title: 'WRK-484: feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/181
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-cp-integrity
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-484: feat(digitalmodel/cathodic_protection): Implement ASTM G42 — ASTM G42 (1996) Std Test Method for Cathodic Disbo
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#182
+    title: 'WRK-485: feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/182
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-cp-integrity
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-485: feat(digitalmodel/cathodic_protection): Implement ASTM G95 — ASTM G95 (1998) Std Test Method for Cathodic Disbo
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#183
+    title: 'WRK-486: feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/183
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-cp-integrity
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-486: feat(digitalmodel/cathodic_protection): Implement ASTM G8 — ASTM G8 (1996) Std Test Methods for Cathodic Disbo
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#184
+    title: 'WRK-487: feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/184
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-cp-integrity
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-487: feat(digitalmodel/cathodic_protection): Implement ASTM G110 — ASTM G110 (2003) Std Practice for Evaluating Inter
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** uncategorised
+
+      **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#189
+    title: 'WRK-496: feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/189
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-cp-integrity
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-496: feat(digitalmodel/cathodic_protection): Implement DNV F112 — DNV RP F112 (2008) Stainless steel subsea equipmen
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** cathodic-protection
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#205
+    title: 'WRK-5064: Asset integrity and fitness-for-service study — literature, methods and implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/205
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-cp-integrity
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-5064: Asset integrity and fitness-for-service study — literature, methods and implementation
+
+      **Status:** pending | **Priority:** high | **Category:** engineering | **Subcategory:** asset-integrity
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#208
+    title: 'WRK-5068: Cathodic protection study — literature, methods and implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/208
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-cp-integrity
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5068: Cathodic protection study — literature, methods and implementation
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** cathodic-protection
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#573
+    title: 'fix(marine_ops): DNV-RP-F103 calibration drift in test_cathodic_protection_dnv.py — clears 16 of 77 marine_ops failures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/573
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-cp-integrity
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R3. Wiki citation surface for DNV-RP-F103 has now landed on workspace-hub main via [vamseeachanta/workspace-hub#2636](https://github.com/vamseeachanta/workspace-hub/pull/2636), unblocking this sub-issue per `.claude/rules/calc-citation-contract.md`.
+
+      ## Affected tests (16)'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#644
+    title: 'Doris GTM: cathodic protection analysis/requirements for structures — add demo_06 worked example + promote tier'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/644
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:subsea-cp-integrity
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#645
+    title: 'demo_06: CP for offshore structures (jacket/monopile) — sacrificial-anode design, DNV-RP-B401'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/645
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:subsea-cp-integrity
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#646
+    title: 'demo_07: CP for subsea pipelines — bracelet-anode design, ISO 15589-2 / DNV-RP-F103'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/646
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:subsea-cp-integrity
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#647
+    title: 'demo_08: ICCP design — rectifier & ground-bed sizing for platform/hull'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/647
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:subsea-cp-integrity
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#648
+    title: 'demo_09: CP retrofit & remaining-life assessment for aging structures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/648
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:subsea-cp-integrity
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

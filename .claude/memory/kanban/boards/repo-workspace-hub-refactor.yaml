@@ -162,23 +162,6 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2785
-    title: 'arch(ecosystem): deepen workspace-hub repo routing and sync module'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2785
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:high
-      - cat:harness
-      - domain:refactor
-      - domain:repo-organization
-      - status:needs-plan
-      - gate:completeness
-    initial_status: triage
-    priority: 1
-    gh_assignees: []
-    body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2786
     title: 'arch(ecosystem): put duplicated agent infrastructure behind one sync seam'
     source: github_issue
@@ -246,41 +229,6 @@ cards:
       - domain:refactor
       - domain:gtm
       - domain:website
-      - status:needs-plan
-      - gate:completeness
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2791
-    title: 'arch(ecosystem): split admin/document stores from executable modules'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2791
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:medium
-      - cat:data-pipeline
-      - cat:documentation
-      - domain:refactor
-      - domain:repo-organization
-      - status:needs-plan
-      - gate:completeness
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2793
-    title: 'arch(kaggle-rogii-2026): keep experiment repo shallow until seams repeat'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2793
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:low
-      - cat:research
-      - domain:refactor
-      - domain:repo-organization
       - status:needs-plan
       - gate:completeness
     initial_status: triage

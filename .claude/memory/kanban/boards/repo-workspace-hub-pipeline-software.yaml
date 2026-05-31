@@ -9,4 +9,229 @@ board:
   description: 'workspace-hub pipeline-software subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#14
+    title: 'WRK-1251: FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/14
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:pipeline-software
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1251: FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies
+
+      **Status:** All stages done | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel'', ''workspace-hub''] | **Complexity:** complex | **Machine:** dev-secondary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#18
+    title: 'WRK-023: Property GIS development timeline with future projection and Google Earth animation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/18
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:pipeline-software
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-023: Property GIS development timeline with future projection and Google Earth animation
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''assethold''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1578
+    title: Automated download-and-catalog pipeline — discover, download to /mnt/ace, catalog, link
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1578
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:pipeline-software
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Child of holistic doc-intel feature. Extend scripts/data/research-literature/download-template.sh into a reusable pipeline: (1) reads online-resource-registry.yaml for entries with download_status=pending, (2) downloads to /mnt/ace/<repo-name>/<domain-name>/, (3) updates registry with local_backup_path and download_status=completed, (4) adds to document-index if PDF/doc. Uses scripts/lib/download-helpers.sh. TDD. Use uv run.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1609
+    title: Automated resource download pipeline — execute top-priority downloads from registry
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1609
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:pipeline-software
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Automated resource download pipeline — execute top-priority downloads\n\n**Parent:** #1563 (Data & Resource Intelligence)\n**Depends on:** #1576 (closed), #1580 (closed)\n\n### Context\nThe unified online-resource-registry.yaml now has 247 entries, 230 with download_status=not_started.\nThe registry includes local_backup_path targets and relevance_scores for prioritization.\n\n### Scope\n1. Build `scripts/data/download-registry-resources.py` that:\n   - Reads `data/document-index/online-resource-registry.yaml`\n   - For each entry with download_status=not_started, ordered by relevance_score desc:\n     - GitHub repos: `git clone --depth 1` to local_backup_path\n     - PDFs: `wget`/`curl` to local_backup_path\n     - Standard portals: skip (require manual/browser interaction)\n     - Data APIs: basic metadata fetch\n   - Updates download_status in registry after each download\n   - Respects rate limits, retries on failure\n   - Writes download log to `data/document-index/download-log.yaml`\n\n2.
+      Priority targets (all relevance_score=5):\n   - The Well (Polymathic AI) — GitHub repo + paper\n   - DNV Standards Explorer (reference, skip download)\n   - API Standards (reference, skip download)\n   - BSEE/EIA/SODIR data APIs\n   - Copernicus CDS API\n   - NDBC ocean observations\n\n3. TDD — tests first\n\n### Acceptance Criteria\n- [ ] Download script with --dry-run mode\n- [ ] At least 20 resources downloaded in first batch\n- [ ] Registry updated with download_status=downloaded for completed items\n- [ ] Download log with timestamps and error tracking\n'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1614
+    title: Registry freshness checker — periodic URL validation and dead link detection
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1614
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:pipeline-software
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Registry freshness checker — periodic URL validation and dead link detection\n\n**Parent:** #1563 (Data & Resource Intelligence)\n**Depends on:** #1576 (closed)\n\n### Context\nThe online resource registry has 247 URLs. Over time, URLs go dead, content moves, or APIs change.\nNeed a periodic check to keep the registry accurate.\n\n### Scope\n1. Build `scripts/data/check-registry-freshness.py` that:\n   - Reads `data/document-index/online-resource-registry.yaml`\n   - For each URL, performs HEAD request (with timeout/retry)\n   - Updates `last_checked` field with current date\n   - Flags dead links (HTTP 404/410/5xx or connection error)\n   - Reports: alive, redirected, dead, timeout\n\n2. Add to schedule-tasks.yaml as a weekly cron task\n3. TDD\n\n### Acceptance Criteria\n- [ ] Freshness checker validates all 247 URLs\n- [ ] Dead links flagged with `download_status: dead_link`\n- [ ] Cron entry in schedule-tasks.yaml (weekly, off-peak)\n- [ ] Summary report in last
+      run output\n'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1648
+    title: 'Solver queue: integrate watch-results.sh into cron schedule + JSONL dashboard'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1648
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:pipeline-software
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Terminal 1 overnight run (2026-04-02) delivered:
+
+      - `scripts/solver/watch-results.sh` — polls queue/completed/ for new results'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1650
+    title: 'Solver queue: batch manifest validation CLI + schema enforcement'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1650
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:pipeline-software
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      `scripts/solver/submit-batch.sh` reads YAML manifests and submits jobs.
+
+      Currently validation is inline in the shell script (via python3 one-liner).'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1654
+    title: 'Solver queue: retry logic for failed jobs + exponential backoff'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1654
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:pipeline-software
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      `scripts/solver/process-queue.py` moves failed jobs to `queue/failed/` permanently.
+
+      There is no retry mechanism for transient failures (license timeout, network glitch).'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1683
+    title: 'Solver queue: integrate retry_handler into process-queue.py main loop'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1683
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:pipeline-software
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Overnight terminal-5 (2026-04-02) delivered `scripts/solver/retry_handler.py` with full retry logic, exponential backoff, and JSONL logging (#1654). The module is tested (26 tests) but not yet wired into the main queue processor.
+
+      ## Task'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1685
+    title: 'Solver queue: integrate validate_manifest into submit-batch.sh pre-flight'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1685
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:pipeline-software
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Overnight terminal-5 (2026-04-02) delivered `scripts/solver/validate_manifest.py` with Pydantic schema validation, file-ref checks, and duplicate detection (#1650). The CLI works standalone but is not yet called by `submit-batch.sh`.
+
+      ## Task'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1688
+    title: 'Solver queue: deploy cron entries for watch-results + dashboard on ace-linux-1'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1688
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:pipeline-software
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Overnight terminal-5 (2026-04-02) added two new cron entries to `config/scheduled-tasks/schedule-tasks.yaml` (#1648):
+
+      - `solver-watch-results`: every 4h on ace-linux-1'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1693
+    title: 'Solver queue: notification alerts on repeated failures + retry exhaustion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1693
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:pipeline-software
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      With retry logic (#1654) and dashboard (#1648) in place, the next gap is alerting. When retries are exhausted or the same job fails multiple times, no one is notified.
+
+      ## Task'

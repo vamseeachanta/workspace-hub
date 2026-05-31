@@ -291,3 +291,81 @@ cards:
       - [ ] Complete all basic tests. Write all other tests to ensure results stay consistent when any other changes
 
       - [ ] gitbash for running all tests?'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#160
+    title: 'WRK-1276: Create audit-calc-methodology.py — auto-score examples against 16-section checklist'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/160
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering-methodology
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:qa
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1276: Create audit-calc-methodology.py — auto-score examples against 16-section checklist
+
+      **Status:** pending | **Priority:** low | **Category:** engineering-methodology | **Subcategory:** scripts
+
+      **Repo:** workspace-hub | **Complexity:** simple | **Machine:** unset'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#531
+    title: 'OrcaFlex: follow-up — 9 pre-existing test failures across 5 files not covered by #510 plan scope'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/531
+    gh_state: open
+    gh_labels:
+      - bug
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:qa
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Umbrella tracking issue for 9 pre-existing test failures in the orcaflex test subtree that were outside the file-scope of #510. Adversarial review of plan-510 pre-flagged this gap in defect D1: the plan only covered 5 files for rename / path-drift / cwd-anchor repairs. These 9 failures live in files the plan never touched.
+
+      ## Failing tests (grouped by file)'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#562
+    title: 'fix(marine_ops): test_marine_eng_performance.py::test_complete_workflow_performance — numpy.bool_ not JSON serializable'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/562
+    gh_state: open
+    gh_labels:
+      - bug
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:qa
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R6 (heterogeneous OCIMF/RAO/integration). Individual-test issue per user direction to maintain visibility ("9 individual issues to help keep gap").
+
+      ## Test nodeid
+
+      `tests/marine_ops/marine_engineering/integration/test_marine_eng_performance.py::TestPerformanceBenchmarks::test_complete_workflow_performance`'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#566
+    title: 'fix(marine_ops): batched residue clusters R1+R5+R7+R8 — clears ~10 of 77 marine_ops failures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/566
+    gh_state: open
+    gh_labels:
+      - bug
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:qa
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) covering 4 small heterogeneous clusters per user direction to batch (vs. R6 which was filed 1-issue-per-test for visibility). Sister sub-issues: R2 = [vamseeachanta/digitalmodel#554](https://github.com/vamseeachanta/digitalmodel/issues/554), R4 = [vamseeachanta/digitalmodel#555](https://github.com/vamseeachanta/digitalmodel/issues/555), R6 = [#556](https://github.com/vamseeachanta/digitalmodel/issues/556)–[#565](https://github.com/vamseeachanta/digitalmodel/issues/565). R3 ([vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster) is blocked separately on DNV-RP-B401 standards reconciliation.
+
+      All test paths verified at digitalmodel HEAD `08e9c333`. Total covered: **11 failures across 4 clusters**.
+
+      ---'

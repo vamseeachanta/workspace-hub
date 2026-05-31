@@ -24,6 +24,21 @@ repos:
       - {name: codes,  status: existing}   # codes & standards modules
       - {name: subsea, status: existing}   # subsea / pipeline / riser
       - {name: qa,     status: existing}   # test, CI, quality
+      # Phase-2 2026-05-31: holistic split of subsea/hydro/solver/base (subagent-classified)
+      - {name: subsea-pipelines, status: new}
+      - {name: subsea-risers, status: new}
+      - {name: subsea-hardware, status: new}
+      - {name: subsea-cp-integrity, status: new}
+      - {name: subsea-installation, status: new}
+      - {name: hydro-rao-seakeeping, status: new}
+      - {name: hydro-mooring, status: new}
+      - {name: hydro-vessel-motions, status: new}
+      - {name: solver-orcaflex, status: new}
+      - {name: solver-infra, status: new}
+      - {name: core, status: new}
+      - {name: cad, status: new}
+      - {name: structural, status: new}
+      - {name: gtm,    status: new}        # go-to-market parametric deliverables (#591 umbrella, #632–636 demos)
 
   vamseeachanta/worldenergydata:
     board: repo-worldenergydata
@@ -56,11 +71,7 @@ repos:
       - {name: ops,              status: existing}
       # Phase-1a 2026-05-30: manifest existing fine-grained domain: labels as boards
       # (cards already carry these; reconcile auto-routes them off the base board).
-      - {name: marine,                status: new}
-      - {name: knowledge-management,  status: new}
       - {name: gtm,                   status: new}
-      - {name: document-intelligence, status: new}
-      - {name: workstations,          status: new}
       # Phase-1b 2026-05-30: clean <=30 domains (subagent-classified from titles)
       - {name: ai-config, status: new}
       - {name: work-queue, status: new}

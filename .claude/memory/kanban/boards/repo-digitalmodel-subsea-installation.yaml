@@ -1,0 +1,189 @@
+board:
+  slug: repo-digitalmodel-subsea-installation
+  display_name: digitalmodel · subsea-installation
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: subsea-installation
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel subsea-installation domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#133
+    title: 'WRK-032: Modular OrcaFlex pipeline installation input with parametric campaign support'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/133
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-installation
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-032: Modular OrcaFlex pipeline installation input with parametric campaign support
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering/pipeline
+
+      **Complexity:** complex | **Machine:** acma-ansys05'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#261
+    title: 'WRK-618: feat(geotechnical): soil profile models, CPT correlation, shared types'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/261
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-installation
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-618: feat(geotechnical): soil profile models, CPT correlation, shared types
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** [''dev-primary'', ''dev-secondary'']'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#265
+    title: 'WRK-622: feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/265
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:subsea-installation
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-622: feat(geotechnical): anchor capacity — drag, suction caisson, torpedo/SEPLA
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** [''dev-primary'', ''dev-secondary'']'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#467
+    title: Subsea structure installation analysis — vessel performance and real-time motion feedback
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/467
+    gh_state: open
+    gh_labels:
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-installation
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Enable rapid assessment of subsea structure installation feasibility across varying structure dimensions, water depths, and installation vessels — then extend to real-time operational decision support.
+
+      ## Scope'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#471
+    title: 'STORY: Jumper Installation Analysis Pipeline — spec.yml to OrcaFlex'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/471
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-installation
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '# STORY: Jumper Installation Analysis Pipeline — spec.yml → jumper_lift → OrcaFlex model → analysis → outputs
+
+      ## Architecture
+
+      ```'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#472
+    title: Implement Go/No-Go decision logic per DNV-RP-H103
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/472
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-installation
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Task
+
+      Add DNV-compliant Go/No-Go decision criteria to jumper analysis.
+
+      ## Criteria'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#479
+    title: HTML/PDF report renderer for jumper installation analysis
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/479
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-installation
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Machine: ace-linux-1
+
+      ## Task
+
+      Generate professional engineering reports from jumper analysis results.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#634
+    title: 'feat(gtm/parametric): demo_03 deepwater mudmat installation parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/634
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-installation
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#635
+    title: 'feat(gtm/parametric): demo_04 shallow-water pipelay parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/635
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-installation
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#636
+    title: 'feat(gtm/parametric): demo_05 deepwater rigid jumper installation parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/636
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-installation
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

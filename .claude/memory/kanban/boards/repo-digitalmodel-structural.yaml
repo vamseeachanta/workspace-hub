@@ -1,0 +1,171 @@
+board:
+  slug: repo-digitalmodel-structural
+  display_name: digitalmodel · structural
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: structural
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel structural domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#12
+    title: engg debt | Padeye Calculations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/12
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:structural
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Standard padeye calculations and associated checks
+  - idempotency_key: gh:vamseeachanta/digitalmodel#28
+    title: engg debt | Fatigue | ship design | spectral-based fatigue analysis
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/28
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:structural
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-075: OFFPIPE Integration Module — pipelay cross-validation against OrcaFlex
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** marine
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** licensed-win-1'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#29
+    title: engg debt | fatigue | SN Curve module
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/29
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:structural
+    gh_assignees:
+      - vamseeachanta
+      - samdansk2
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-099: Run 3-way benchmark on Unit Box hull
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#30
+    title: engg debt | Ship design | min scantling calculations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/30
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:structural
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Develop scripts
+  - idempotency_key: gh:vamseeachanta/digitalmodel#31
+    title: engg debt | Ship design | strength checks
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/31
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:structural
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Develop scripts
+  - idempotency_key: gh:vamseeachanta/digitalmodel#47
+    title: engg debt | Plate Buckling Calculations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/47
+    gh_state: open
+    gh_labels:
+      - feature
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:structural
+    gh_assignees:
+      - samdansk2
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Prepare plate buckling calculations.
+
+      https://github.com/vamseeachanta/digitalmodel/tree/plate_buckling/docs/sub_plate_buckling'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#206
+    title: 'WRK-5065: Structural analysis study — literature, methods and implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/206
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:structural
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-5065: Structural analysis study — literature, methods and implementation
+
+      **Status:** pending | **Priority:** high | **Category:** engineering | **Subcategory:** structural
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#253
+    title: 'WRK-587: research: evaluate Code_Aster for large-scale topside structural FEA'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/253
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:structural
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-587: research: evaluate Code_Aster for large-scale topside structural FEA
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** structural
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** [''dev-primary'', ''dev-secondary'']'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#619
+    title: 'Ship-class structural stress gaps: sloshing (rule-based), racking/panting, ice loads, drydock support, class-rule slamming'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/619
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

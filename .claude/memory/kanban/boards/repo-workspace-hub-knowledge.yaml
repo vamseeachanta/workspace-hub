@@ -507,28 +507,6 @@ cards:
       Parent: #2727 — define data layer boundary and llm-wiki data promotion model.
 
       Related broader layer issue: #2726.'
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2732
-    title: 'feat(data-governance): canonical first/second-level mount and folder taxonomy for repo ecosystem'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2732
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:high
-      - cat:data-pipeline
-      - domain:knowledge
-      - domain:repo-organization
-      - machine:dev-primary
-      - dispatch:ready
-      - gate:completeness
-    gh_assignees: []
-    initial_status: triage
-    priority: 1
-    body_excerpt: '## Parent / context
-
-      Parent: #2731 — inventory and normalize canonical data/repo locations for llm-wiki promotion.
-
-      Related architecture umbrella: #2726.'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2746
     title: 'feat(acma): create private llm-wiki repo target llm-wiki-acma'
     source: github_issue
@@ -541,49 +519,6 @@ cards:
       - cat:document-intelligence
       - domain:knowledge
       - status:plan-approved
-    initial_status: triage
-    priority: 1
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2778
-    title: 'feat(architecture): codify retrieval-time wiki-sibling routing rule + planning/citation/frontmatter plumbing'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2778
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:high
-      - cat:data-pipeline
-      - cat:harness
-      - domain:knowledge
-      - domain:repo-organization
-      - machine:dev-primary
-      - status:plan-approved
-      - dispatch:ready
-      - gate:completeness
-    gh_assignees: []
-    initial_status: triage
-    priority: 1
-    body_excerpt: '## Summary
-
-      Formalize a workspace-hub-enforced **data / knowledge / result search routing** convention across sibling repos:
-
-      - **Generic, sanitized data, knowledge, and search results** flow through the sibling [`vamseeachanta/llm-wiki`](https://github.com/vamseeachanta/llm-wiki) repo (private since 2026-05-20).'
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2792
-    title: 'arch(llm-wiki): treat wiki repos as Knowledge Index modules'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2792
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:high
-      - cat:data-pipeline
-      - cat:documentation
-      - domain:knowledge
-      - domain:refactor
-      - domain:knowledge-management
-      - status:needs-plan
-      - gate:completeness
     initial_status: triage
     priority: 1
     gh_assignees: []

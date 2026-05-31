@@ -1455,3 +1455,13 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#210
+    title: '[quality] Verification-queue row duplication (46% bloat) + union-merge root cause'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/210
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

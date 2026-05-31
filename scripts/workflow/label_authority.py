@@ -45,3 +45,32 @@ def verified_label_event(repo: str, issue: int, label: str):
             actor = (ev.get("actor") or {}).get("login")
             applied_at = parse_iso(ev.get("created_at"))
     return actor, applied_at
+
+
+def is_authorized_human(
+    actor: str | None,
+    owners: set[str],
+    *,
+    reject_bots: bool = False,
+    actor_type: str | None = None,
+) -> bool:
+    """Whether ``actor`` is an allowed label applier for the caller's policy.
+
+    Bot rejection is opt-in so existing #2798 completeness behavior stays
+    membership-only. The #2817 plan-approval gate opts into ``reject_bots``.
+    """
+    normalized_actor = (actor or "").lower()
+    normalized_owners = {owner.lower() for owner in owners}
+    if not normalized_actor or normalized_actor not in normalized_owners:
+        return False
+    if not reject_bots:
+        return True
+    return not (normalized_actor.endswith("[bot]") or (actor_type or "").lower() in {"bot", "app"})
+
+
+def label_is_fresh(applied_at, *not_before_times) -> bool:
+    """Whether a label application is at/after all required GitHub-observed anchors."""
+    anchors = [ts for ts in not_before_times if ts is not None]
+    if not applied_at or not anchors:
+        return False
+    return applied_at >= max(anchors)

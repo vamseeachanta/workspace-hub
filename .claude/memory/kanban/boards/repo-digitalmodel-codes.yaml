@@ -564,3 +564,56 @@ cards:
     initial_status: triage
     priority: 0
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#23
+    title: dnvrph103 | Create common functions from rectangular and circular files
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/23
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:codes
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-045: OrcaFlex rigid jumper analysis - stress and VIV for various configurations
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** licensed-win-1'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#577
+    title: Safety Case / MAH ALARP framework module (NORSOK Z-013, UK HSE SCR-2015)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/577
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:codes
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Background
+
+      Recon of [Mark Prentice LinkedIn post (2026-05-04)](https://www.linkedin.com/posts/mark-prentice-185722115_floatingoffshorewind-fowt-offshorewind-share-7455555454048452609-vusy). Mapping doc: [`docs/field-development/2026-05-04-fowt-oilgas-crossover-mapping.md`](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/field-development/2026-05-04-fowt-oilgas-crossover-mapping.md) (commit `de69ddab5`).
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#633
+    title: 'feat(gtm/parametric): demo_02 multi-code wall thickness parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/633
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:codes
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

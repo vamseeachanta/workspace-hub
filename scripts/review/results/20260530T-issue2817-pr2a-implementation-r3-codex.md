@@ -1,0 +1,17 @@
+### Verdict: MAJOR
+
+### Summary
+Local focused tests pass, but I found remaining gate-bypass/cutover blockers. Checked `scripts/workflow/plan_approval_gate_check.py`, `scripts/workflow/label_authority.py`, `tests/workflow/test_plan_approval_gate_check.py`, `tests/workflow/test_label_authority.py`, and `.github/workflows/enforcement-gate.yml`; ran `uv run pytest tests/workflow/test_plan_approval_gate_check.py tests/workflow/test_label_authority.py -q` => 35 passed.
+
+### Issues Found
+- MAJOR: The new server-side gate is not wired into CI. `.github/workflows/enforcement-gate.yml:128-145` still runs `scripts/enforcement/require-plan-approval.sh --strict`, and repository search found `PLAN_APPROVAL_GATE_ENABLED`, `PLAN_APPROVAL_ADMIN_PREREQS_CONFIRMED`, and `PLAN_APPROVAL_OWNERS` only in the new script/tests, not in workflow wiring. That means PRs continue using the old marker/recent-evidence gate, so the label-actor authority gate can be fully bypassed in real merges.
+- MAJOR: The approved revision is not bound to the PR's current plan content. `scripts/workflow/plan_approval_gate_check.py:_evaluate_binding` only checks that the PR touches `binding.plan_path` (`lines 213-214`) and that the recorded commit touched that path (`lines 215-220` via `fetch_plan_revision_anchor`). `PrContext` carries only path names (`lines 63-68`, `274-286`), so the gate cannot detect a later PR update that changes the same plan file after owner approval. The test `test_synchronize_after_approval_does_not_invalidate` (`tests/workflow/test_plan_approval_gate_check.py:170-174`) intentionally proves later synchronizes are ignored, but there is no counter-test for later plan-file mutation. A contributor with push rights can obtain approval for revision A, then alter `docs/plans/...issue-2817...md` in the same PR and still satisfy the gate because the path is present and the old recorded SHA exists.
+- MINOR: The 'full 40-hex revision SHA only' parser is not actually delimiter-safe. `_REVISION_RE` in `scripts/workflow/plan_approval_gate_check.py:32-34` captures the first 40 hex characters inside longer hex strings because it lacks a trailing hex boundary. I verified locally that `Plan revision: 2f3d873d48acd05336268ac679f47b5b2708a567a` extracts `2f3d873d48acd05336268ac679f47b5b2708a567`. The existing test at `tests/workflow/test_plan_approval_gate_check.py:231-239` covers short SHAs but not overlong SHAs.
+
+### Suggestions
+- Wire the CI job to execute `scripts/workflow/plan_approval_gate_check.py` with `GH_TOKEN`, `PLAN_APPROVAL_GATE_ENABLED=1`, explicit `PLAN_APPROVAL_OWNERS`, and fail-closed `PLAN_APPROVAL_ADMIN_PREREQS_CONFIRMED` during cutover; keep the old marker gate only as advisory or remove it from the required check path once the new check is required.
+- Bind the approved plan revision to the PR state: either require the recorded commit to be an ancestor of the PR head and verify no later commit changes `binding.plan_path`, or compare the plan blob at `binding.revision_sha:binding.plan_path` to the checked-out PR head blob before allowing merge.
+- Change `_REVISION_RE` to require a non-hex boundary after the 40-character SHA, and add regression tests for 39-char, 40-char, 41-char, and 64-char values.
+
+### Questions for Author
+- Is PR2a supposed to include the workflow cutover, or is it only adding the script for a later PR? If later, the payload should not claim CI enforcement for the new gate yet.

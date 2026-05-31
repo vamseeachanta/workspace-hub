@@ -9,4 +9,412 @@ board:
   description: 'workspace-hub repo-organization-structure subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#84
+    title: 'WRK-1262: aceengineer-admin repo restructure — canonical document taxonomy'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/84
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:infrastructure
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1262: aceengineer-admin repo restructure — canonical document taxonomy
+
+      **Status:** pending | **Priority:** medium | **Category:** infrastructure | **Subcategory:** repo-organization
+
+      **Repo:** [''aceengineer-admin''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1249
+    title: 'WRK-1388: Propagate canonical AGENTS.md format to child repos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1249
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - wrk-item
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1388: chore(harness): propagate canonical AGENTS.md format to child repos
+
+      **Status:** unknown | **Priority:** medium | **Category:** harness | **Subcategory:** compliance
+
+      **Repo:** workspace-hub | **Complexity:** simple | **Machine:** unset'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1525
+    title: Define canonical repo control-plane contract across workspace ecosystem
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1525
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Parent
+
+      - #1523
+
+      ## Summary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1567
+    title: 'Feature: Continuous Repo Architecture Intelligence — automated discovery, staleness detection, and domain capability roadmap'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1567
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Feature: Continuous Repo Architecture Intelligence
+
+      ### Problem
+
+      The workspace-hub ecosystem has extensive architecture documentation (25 repos mapped, 110 domain directories, 1,594 source files, 830 test files across digitalmodel alone). However:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1603
+    title: Multi-repo architecture scan — expand scanner to all tier-1 repositories
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1603
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The architecture scanner (#1569, closed) and module status matrix (#1570, closed) currently scan only `digitalmodel/`. The workspace-hub has **25+ repositories** that would benefit from the same analysis.
+
+      ### Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1604
+    title: 'Architecture scanner: detect API surface and import dependency graph'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1604
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The architecture scanner (#1569) discovers packages, counts classes/functions, and detects entry points. The next evolution is to also discover the **API surface** (public functions/classes per package) and the **internal import graph** (which packages import which).
+
+      ### Deliverables'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1661
+    title: 'Architecture scanner: dependency cycle detection and layering violations'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1661
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The architecture scanner (#1604) now has:
+
+      - Package discovery (31 packages)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1962
+    title: 'FEATURE: Tier-1 Repo Ecosystem Refactoring — audit, plan, execute with Claude Code plan mode'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1962
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - cat:harness
+      - status:working
+      - machine:dev-primary
+      - agent:gemini
+      - agent:claude
+      - agent:codex
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Systematic refactoring of the workspace-hub repo ecosystem, starting with tier-1 repositories. The goal is to reduce architectural debt, consolidate duplicate patterns, enforce consistent structure, and improve agent navigability across all tier-1 repos.
+
+      ## Tier-1 Repos (Priority Order)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2287
+    title: 'feat(architecture): assess LR and Noble Denton corpus for downstream repo routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2287
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Follow-on issue split from #2244 triage artifact to handle a bounded slice of ACMA breadth discovered outside the approved #2227 scope.
+
+      ## Why this is split'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2339
+    title: 'Ecosystem: canonical .gitignore fragment + propagation for Claude-agent dirs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2339
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Follow-up to #2326 (now fully swept across digitalmodel, assetutilities, assethold, achantas-data, worldenergydata). That issue''s handoff explicitly called out a shared template as the durable fix:
+
+      > "Also consider updating any shared \`.gitignore\` template under \`workspace-hub/\` so new repos inherit the fix."'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2397
+    title: 'epic(repo-organization): canonical folder structure and refactor contract across tier-1 repos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2397
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Create a dedicated follow-up issue for repo-wide structural refactors that are broader than code cleanup alone. The current tier-1 refactor umbrella (#1962) identifies architectural debt and duplicate patterns, but it does not yet break out a canonical folder-structure and repository-layout workstream.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2533
+    title: 'feat(repo-portfolio): review and revise mission/objective statements across active repos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2533
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:documentation
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Review and revise the mission/objective statements across all active workspace repos so future GitHub issue work can quickly answer:
+
+      1. what is this repo for?'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2553
+    title: 'docs(repo-portfolio): reconcile repository overview docs after mission review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2553
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:documentation
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Reconcile the remaining portfolio/context documentation after the mission-document review wave and Business Brain update.
+
+      The mission review updated multiple per-repo mission documents and `docs/BUSINESS_BRAIN.md`. The remaining portfolio docs should be reviewed next so they do not preserve stale repo counts, stale tiering, or legacy `.agent-os/product/*` authority language.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2656
+    title: 'chore(repo-structure): normalize workspace-hub folder/file structure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2656
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - cat:harness
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Objective
+
+      Plan a conservative, repo-by-repo folder/file structure normalization for `workspace-hub` under the workspace-hub tier-1 ecosystem workflow.
+
+      ## Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2732
+    title: 'feat(data-governance): canonical first/second-level mount and folder taxonomy for repo ecosystem'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2732
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Parent / context
+
+      Parent: #2731 — inventory and normalize canonical data/repo locations for llm-wiki promotion.
+
+      Related architecture umbrella: #2726.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2758
+    title: Clarify agent/runtime folder architecture to reduce human and agent confusion
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2758
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:developer-experience
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      The current agent/runtime folder layout is confusing for both humans and agents. The repo contains overlapping surfaces such as `config/agents/<provider>/`, `.claude/`, `.codex/`, `.gemini/`, `~/.hermes/`, runtime symlinks, memory bridges, skill external dirs, and provider-specific generated artifacts. The same conceptual thing can appear under several names: SOUL, AGENTS, GEMINI, memory, skills, commands, runtime, templates, deltas, snapshots.
+
+      This confusion keeps recurring and causes avoidable friction when deciding where canonical files should live, what is generated vs source-of-truth, what is local-only vs repo-tracked, and which paths each provider actually reads.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2778
+    title: 'feat(architecture): codify retrieval-time wiki-sibling routing rule + planning/citation/frontmatter plumbing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2778
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - cat:harness
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - domain:repo-organization-structure
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Formalize a workspace-hub-enforced **data / knowledge / result search routing** convention across sibling repos:
+
+      - **Generic, sanitized data, knowledge, and search results** flow through the sibling [`vamseeachanta/llm-wiki`](https://github.com/vamseeachanta/llm-wiki) repo (private since 2026-05-20).'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2785
+    title: 'arch(ecosystem): deepen workspace-hub repo routing and sync module'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2785
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - status:needs-plan
+      - gate:completeness
+      - domain:repo-organization-structure
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2791
+    title: 'arch(ecosystem): split admin/document stores from executable modules'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2791
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - cat:documentation
+      - status:needs-plan
+      - gate:completeness
+      - domain:repo-organization-structure
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2793
+    title: 'arch(kaggle-rogii-2026): keep experiment repo shallow until seams repeat'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2793
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:research
+      - status:needs-plan
+      - gate:completeness
+      - domain:repo-organization-structure
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

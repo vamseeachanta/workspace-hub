@@ -1,0 +1,132 @@
+board:
+  slug: repo-digitalmodel-solver-infra
+  display_name: digitalmodel · solver-infra
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: solver-infra
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'digitalmodel solver-infra domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
+
+    '
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#280
+    title: "WRK-064: 'OrcaFlex format converter: license-required validation and backward-compat"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/280
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:solver-infra
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-064: ''OrcaFlex format converter: license-required validation and backward-compat
+
+      **Status:** blocked | **Priority:** medium | **Category:** engineering/marine
+
+      **Complexity:** medium | **Machine:** acma-ansys05'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#281
+    title: 'WRK-121: Extract & Catalog OrcaFlex Models from rock-oil-field/s7'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/281
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:solver-infra
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-121: Extract & Catalog OrcaFlex Models from rock-oil-field/s7
+
+      **Status:** blocked | **Priority:** high | **Category:** engineering/marine
+
+      **Complexity:** medium | **Machine:** orcaflex-license-machine'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#503
+    title: Ingest OrcaFlex/OrcaWave online help into LLM-accessible format
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/503
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:solver-infra
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Machine: ace-linux-1
+
+      ## Context
+
+      Orcina publishes comprehensive online help for all products:'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#507
+    title: 'OrcaFlex reference: complete Orcina help ingestion — environment, waves, current pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/507
+    gh_state: open
+    gh_labels:
+      - documentation
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:solver-infra
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Machine: ace-linux-1 (or acma-ansys05 for Windows extraction)
+
+      ## Context
+
+      22 reference pages were ingested from Orcina WebHelp, but key sections are missing because the webhelp uses JavaScript-rendered frames that can''t be fetched directly. The downloaded ZIPs contain Windows .exe (compiled CHM), not raw HTML.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#509
+    title: 'OrcaFlex: add pre-commit hook for YAML-strict validation on spec changes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/509
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:solver-infra
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Machine: ace-linux-1
+
+      ## Context
+
+      The YAML-strict validator and post-validator are now in place (yaml_validator.py, post_validator.py). To prevent regression, add a pre-commit hook that validates any changed spec.yml files.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#529
+    title: "OrcaFlex: convert_batch() parallel path doesn't aggregate success counts into self.stats"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/529
+    gh_state: open
+    gh_labels:
+      - bug
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:solver-infra
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      `OrcaFlexConverterEnhanced.convert_batch()` with `parallel=True` does not update `self.stats[''successful'']`, `self.stats[''failed'']`, `self.stats[''validation_failed'']`, or `self.stats[''errors'']` as worker futures complete. The progress bar shows `✓` for each converted file, but `stats[''successful'']` remains `0` after batch completion.
+
+      ## Evidence'
