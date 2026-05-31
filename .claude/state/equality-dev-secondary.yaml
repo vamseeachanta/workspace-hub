@@ -1,29 +1,40 @@
-generated_at: "2026-05-26T17:44:46"
-schema_version: 2
+generated_at: "2026-05-31T17:14:44"
+schema_version: 3
 machine: "dev-secondary"
 host: "ace-linux-2"
 os: linux
 status: active
+provenance:
+  checkout_sha: "ad5fef00b"
+  dirty: true
+  behind_main: 20
+  ahead_main: 1
+  origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running."}
-    headroom: {ram_avail_mib: 24391, disk_avail_gb: 886}
+    headroom: {ram_avail_mib: 22499, disk_avail_gb: 885}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
     - {repo: worldenergydata, mode: sibling}
     - {repo: assethold, mode: sibling}
+  solvers:
+    - {name: orcaflex, status: absent, evidence: absent}
+    - {name: orcawave, status: absent, evidence: absent}
+    - {name: aqwa, status: absent, evidence: absent}
+    - {name: ansys, status: absent, evidence: absent}
   harness:
     providers: {claude: present, codex: present, gemini: present, hermes: present}
     gh_auth: ok
     python_cmd: uv-run
     readiness_ref: harness-readiness-ace-linux-2.yaml
-    readiness_overall: missing
+    readiness_overall: fail
   skills: {repo_skill_count: 396}
-  kanban: {dispatch_queues: "dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
+  kanban: {dispatch_queues: "dev-primary,dev-secondary,home-win,_leader-state,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-05-25T14:47:12"
+    context_md_mtime: "2026-05-30T07:25:18"
   behavior:
     enums: {b1: deny, b2: ok, b3: html, b4: pass}
     hashes: {b5: f5d0d07e9ba4a3ed}
