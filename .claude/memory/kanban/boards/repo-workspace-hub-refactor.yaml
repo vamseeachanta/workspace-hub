@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-refactor
+  display_name: workspace-hub · refactor
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: refactor
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Engineering-code refactors (units/Pint, module retrofits, CP/fatigue) (domain:refactor). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

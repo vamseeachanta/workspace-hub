@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-cross-review
+  display_name: workspace-hub · cross-review
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: cross-review
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Cross-review enforcement + unreviewed-commit audits (domain:cross-review). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

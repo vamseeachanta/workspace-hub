@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-code-promotion
+  display_name: workspace-hub · code-promotion
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: code-promotion
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'dark-intel Excel->code promotion into engineering modules (domain:code-promotion). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

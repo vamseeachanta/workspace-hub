@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-automation
+  display_name: workspace-hub · automation
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: automation
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Cron/cadence scheduling, report automation, scheduled pipelines (domain:automation). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

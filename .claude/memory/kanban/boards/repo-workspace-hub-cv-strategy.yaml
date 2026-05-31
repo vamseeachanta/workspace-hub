@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-cv-strategy
+  display_name: workspace-hub · cv-strategy
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: cv-strategy
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Career/CV portfolio modules (power-gen controls, CAD/FEM packet) (domain:cv-strategy). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

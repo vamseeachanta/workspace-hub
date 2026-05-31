@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-workflow
+  display_name: workspace-hub · workflow
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: workflow
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Plan/approval workflow automation + GSD progression (domain:workflow). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

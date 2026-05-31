@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-work-queue
+  display_name: workspace-hub · work-queue
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: work-queue
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Legacy WRK work-queue tooling + session/roadmap tools (domain:work-queue). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

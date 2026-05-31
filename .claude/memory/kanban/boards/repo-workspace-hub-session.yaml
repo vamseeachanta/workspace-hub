@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-session
+  display_name: workspace-hub · session
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: session
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Memory ecosystem / session governance / continuity / auto-memory (domain:session). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

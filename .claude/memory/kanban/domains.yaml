@@ -61,6 +61,28 @@ repos:
       - {name: gtm,                   status: new}
       - {name: document-intelligence, status: new}
       - {name: workstations,          status: new}
+      # Phase-1b 2026-05-30: clean <=30 domains (subagent-classified from titles)
+      - {name: ai-config, status: new}
+      - {name: work-queue, status: new}
+      - {name: automation, status: new}
+      - {name: session, status: new}
+      - {name: workflow, status: new}
+      - {name: release-management, status: new}
+      - {name: naval-architecture, status: new}
+      - {name: structural, status: new}
+      - {name: code-promotion, status: new}
+      - {name: refactor, status: new}
+      - {name: knowledge, status: new}
+      - {name: frontend-design, status: new}
+      - {name: hydrodynamics, status: new}
+      - {name: ai-tools, status: new}
+      - {name: cross-platform, status: new}
+      - {name: notification, status: new}
+      - {name: tax-preparation, status: new}
+      - {name: research, status: new}
+      - {name: cross-review, status: new}
+      - {name: cv-strategy, status: new}
+      - {name: subsea-risers, status: new}
 
   vamseeachanta/achantas-data:
     board: repo-achantas-data

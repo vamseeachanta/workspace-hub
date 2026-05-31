@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-hydrodynamics
+  display_name: workspace-hub · hydrodynamics
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: hydrodynamics
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Hydrodynamics domain knowledge sweeps (RAO/QTF/seakeeping) (domain:hydrodynamics). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

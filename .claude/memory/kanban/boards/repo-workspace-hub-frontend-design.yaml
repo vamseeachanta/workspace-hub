@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-frontend-design
+  display_name: workspace-hub · frontend-design
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: frontend-design
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Claude Design adoption + aceengineer-website visual refresh (domain:frontend-design). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []
