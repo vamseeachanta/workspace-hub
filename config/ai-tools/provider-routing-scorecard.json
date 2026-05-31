@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-25T21:20:07.420453Z",
+  "generated_at": "2026-05-31T13:20:07.425020Z",
   "current_week": "2026-W22",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-05-25T21:20:07.302090Z",
+    "utilization_generated_at": "2026-05-31T13:20:07.316291Z",
     "audit_generated_at": "2026-05-25T09:15:31Z"
   },
   "recommended_provider_order": [
@@ -17,11 +17,11 @@
       "provider": "claude",
       "status": "underused",
       "priority": "high",
-      "reported_utilization_pct": 0.0,
+      "reported_utilization_pct": 2.8,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 0,
-      "post_records_current_week": 0,
+      "sessions_current_week": 7,
+      "post_records_current_week": 1157,
       "audit_post_records": 115036,
       "missing_repo_reads": 8624,
       "python3_per_1k_records": 9.35,
@@ -29,36 +29,12 @@
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
-          "tool": "Bash",
-          "count": 63879
+          "tool": "unknown",
+          "count": 1156
         },
         {
           "tool": "Read",
-          "count": 21279
-        },
-        {
-          "tool": "Edit",
-          "count": 9507
-        },
-        {
-          "tool": "Write",
-          "count": 8421
-        },
-        {
-          "tool": "unknown",
-          "count": 3710
-        },
-        {
-          "tool": "Grep",
-          "count": 2613
-        },
-        {
-          "tool": "Agent",
-          "count": 1380
-        },
-        {
-          "tool": "ToolSearch",
-          "count": 681
+          "count": 1
         }
       ],
       "preferred_work": [
@@ -83,9 +59,9 @@
       "provider": "codex",
       "status": "underused",
       "priority": "highest",
-      "reported_utilization_pct": 0.8,
+      "reported_utilization_pct": 3.0,
       "quota_basis": "quota",
-      "quota_source": "history.jsonl",
+      "quota_source": "local-session-rate-limits",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
       "audit_post_records": 42243,
@@ -147,11 +123,11 @@
       "provider": "gemini",
       "status": "underused",
       "priority": "highest",
-      "reported_utilization_pct": 0.0,
+      "reported_utilization_pct": 0.2,
       "quota_basis": "estimated_daily_quota",
       "quota_source": "estimated",
-      "sessions_current_week": 0,
-      "post_records_current_week": 0,
+      "sessions_current_week": 3,
+      "post_records_current_week": 5,
       "audit_post_records": 6200,
       "missing_repo_reads": 611,
       "python3_per_1k_records": 46.94,
@@ -159,36 +135,8 @@
       "top_migration_hint": "legacy_local_work_queue_items",
       "top_tools": [
         {
-          "tool": "Bash",
-          "count": 2288
-        },
-        {
-          "tool": "Read",
-          "count": 2181
-        },
-        {
-          "tool": "Grep",
-          "count": 655
-        },
-        {
-          "tool": "Write",
-          "count": 535
-        },
-        {
-          "tool": "Edit",
-          "count": 394
-        },
-        {
           "tool": "Browser",
-          "count": 133
-        },
-        {
-          "tool": "ToolSearch",
-          "count": 9
-        },
-        {
-          "tool": "generalist",
-          "count": 3
+          "count": 5
         }
       ],
       "preferred_work": [

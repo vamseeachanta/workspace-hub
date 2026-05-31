@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-25T21:20:09.505340Z",
+  "generated_at": "2026-05-31T13:20:09.398301Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -13,12 +13,13 @@
         "enhancement",
         "priority:high",
         "cat:documentation",
-        "domain:repo-organization",
         "machine:dev-primary",
         "status:plan-approved",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:repo-organization-structure"
       ],
-      "updatedAt": "2026-05-25T19:43:30Z",
+      "updatedAt": "2026-05-31T10:57:26Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -53,9 +54,10 @@
         "domain:notification",
         "machine:dev-primary",
         "status:plan-approved",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness"
       ],
-      "updatedAt": "2026-05-25T19:57:28Z",
+      "updatedAt": "2026-05-26T09:29:27Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -86,12 +88,13 @@
         "priority:high",
         "cat:engineering",
         "cat:harness",
-        "domain:testing",
         "machine:dev-primary",
         "status:plan-approved",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:testing-ci-health"
       ],
-      "updatedAt": "2026-05-25T19:57:24Z",
+      "updatedAt": "2026-05-31T10:57:54Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -122,12 +125,13 @@
         "priority:high",
         "cat:engineering",
         "cat:harness",
-        "domain:repo-organization",
         "machine:dev-primary",
         "status:plan-approved",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:repo-organization-structure"
       ],
-      "updatedAt": "2026-05-25T19:57:15Z",
+      "updatedAt": "2026-05-31T10:58:05Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -158,11 +162,13 @@
         "priority:high",
         "cat:documentation",
         "cat:harness",
+        "domain:session",
         "machine:dev-primary",
         "status:plan-approved",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness"
       ],
-      "updatedAt": "2026-05-25T19:57:13Z",
+      "updatedAt": "2026-05-31T03:33:20Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -196,9 +202,10 @@
         "domain:agent-cost-tracking",
         "machine:dev-primary",
         "status:plan-approved",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness"
       ],
-      "updatedAt": "2026-05-25T19:57:07Z",
+      "updatedAt": "2026-05-26T09:27:47Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -231,9 +238,11 @@
         "cat:bugfix",
         "machine:dev-primary",
         "status:plan-approved",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:marine-orcaflex"
       ],
-      "updatedAt": "2026-05-25T19:48:22Z",
+      "updatedAt": "2026-05-31T10:58:27Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -264,11 +273,13 @@
         "priority:high",
         "cat:engineering",
         "cat:bugfix",
+        "domain:refactor",
         "machine:dev-primary",
         "status:plan-approved",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness"
       ],
-      "updatedAt": "2026-05-25T19:48:06Z",
+      "updatedAt": "2026-05-31T03:33:45Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -291,6 +302,64 @@
       "eligible": true
     },
     {
+      "number": 2813,
+      "title": "chore(infra): roll out Codex-under-Claude sandbox fix (#2804) to remaining ecosystem machines",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2813",
+      "labels": [
+        "domain:ai-config",
+        "status:plan-approved",
+        "gate:completeness",
+        "status:completeness-verified"
+      ],
+      "updatedAt": "2026-05-31T03:34:21Z",
+      "execution_ready": true,
+      "priority_rank": 4,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.8,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2886,
+      "title": "Disposition: bulk-close 48 content-free WRK-XXXX:untitled migration-ghost issues (ops board cleanup, #2878)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2886",
+      "labels": [
+        "status:plan-approved",
+        "gate:completeness"
+      ],
+      "updatedAt": "2026-05-30T22:58:15Z",
+      "execution_ready": true,
+      "priority_rank": 4,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.8,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
       "number": 2472,
       "title": "feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2472",
@@ -298,11 +367,12 @@
         "enhancement",
         "priority:high",
         "cat:engineering",
-        "domain:marine",
         "machine:dev-primary",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:marine-rao-seakeeping"
       ],
-      "updatedAt": "2026-05-25T19:49:27Z",
+      "updatedAt": "2026-05-31T10:56:54Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -330,11 +400,12 @@
         "enhancement",
         "priority:high",
         "cat:engineering",
-        "domain:marine",
         "machine:dev-primary",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:marine-orcaflex"
       ],
-      "updatedAt": "2026-05-25T19:49:23Z",
+      "updatedAt": "2026-05-31T10:56:59Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -360,10 +431,12 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
       "labels": [
         "priority:high",
+        "domain:notification",
         "machine:dev-primary",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness"
       ],
-      "updatedAt": "2026-05-25T19:57:20Z",
+      "updatedAt": "2026-05-31T03:33:16Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -393,9 +466,10 @@
         "cat:harness",
         "domain:agent-cost-tracking",
         "machine:dev-primary",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness"
       ],
-      "updatedAt": "2026-05-25T19:56:52Z",
+      "updatedAt": "2026-05-26T09:24:47Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -425,11 +499,13 @@
         "cat:ai-orchestration",
         "cat:operations",
         "cat:harness",
+        "domain:automation",
         "machine:dev-primary",
         "status:needs-plan",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness"
       ],
-      "updatedAt": "2026-05-25T19:56:37Z",
+      "updatedAt": "2026-05-31T03:34:08Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -458,11 +534,13 @@
         "priority:high",
         "cat:operations",
         "cat:harness",
+        "domain:ai-orchestration",
         "machine:dev-primary",
         "status:needs-plan",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness"
       ],
-      "updatedAt": "2026-05-25T19:56:35Z",
+      "updatedAt": "2026-05-31T03:34:10Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -490,9 +568,10 @@
         "priority:medium",
         "cat:harness",
         "machine:dev-primary",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness"
       ],
-      "updatedAt": "2026-05-25T19:57:51Z",
+      "updatedAt": "2026-05-26T09:32:00Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "gemini",
@@ -520,9 +599,10 @@
         "cat:documentation",
         "cat:harness",
         "machine:dev-primary",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness"
       ],
-      "updatedAt": "2026-05-25T19:57:44Z",
+      "updatedAt": "2026-05-26T09:31:47Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "gemini",
@@ -550,9 +630,11 @@
         "cat:engineering",
         "cat:research",
         "machine:dev-primary",
-        "dispatch:ready"
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:marine-orcaflex"
       ],
-      "updatedAt": "2026-05-25T19:48:28Z",
+      "updatedAt": "2026-05-31T10:58:19Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "gemini",
