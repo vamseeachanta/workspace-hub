@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-naval-architecture
+  display_name: workspace-hub · naval-architecture
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: naval-architecture
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Naval architecture — stability, curves of form, tonnage, hull (domain:naval-architecture). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-ai-tools
+  display_name: workspace-hub · ai-tools
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: ai-tools
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'AI tooling/integration (codex/gemini CLIs, MCP, free providers) (domain:ai-tools). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

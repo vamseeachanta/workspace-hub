@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-ai-config
+  display_name: workspace-hub · ai-config
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: ai-config
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Per-provider AI config/plumbing (CLI integration, auth, provider health) (domain:ai-config). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

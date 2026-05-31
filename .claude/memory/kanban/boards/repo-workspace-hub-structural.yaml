@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-structural
+  display_name: workspace-hub · structural
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: structural
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'FEM/structural — ANSYS/CalculiX, beams/frames, sections (domain:structural). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

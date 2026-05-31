@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-notification
+  display_name: workspace-hub · notification
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: notification
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Telegram/WhatsApp/notification dispatch + remote control (domain:notification). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

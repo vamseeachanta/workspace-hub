@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-cross-platform
+  display_name: workspace-hub · cross-platform
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: cross-platform
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Cross-platform parity (Windows/macOS/Linux harness setup) (domain:cross-platform). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []

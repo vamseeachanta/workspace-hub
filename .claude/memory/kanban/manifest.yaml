@@ -148,16 +148,37 @@ manifest:
     file: boards/repo-workspace-hub.yaml
     card_count: 19
     children:
+    - repo-workspace-hub-ai-config
     - repo-workspace-hub-ai-orchestration
+    - repo-workspace-hub-ai-tools
+    - repo-workspace-hub-automation
     - repo-workspace-hub-business
+    - repo-workspace-hub-code-promotion
+    - repo-workspace-hub-cross-platform
+    - repo-workspace-hub-cross-review
+    - repo-workspace-hub-cv-strategy
     - repo-workspace-hub-data
     - repo-workspace-hub-document-intelligence
     - repo-workspace-hub-engineering
+    - repo-workspace-hub-frontend-design
     - repo-workspace-hub-gtm
     - repo-workspace-hub-harness
+    - repo-workspace-hub-hydrodynamics
+    - repo-workspace-hub-knowledge
     - repo-workspace-hub-knowledge-management
     - repo-workspace-hub-marine
+    - repo-workspace-hub-naval-architecture
+    - repo-workspace-hub-notification
     - repo-workspace-hub-ops
+    - repo-workspace-hub-refactor
+    - repo-workspace-hub-release-management
+    - repo-workspace-hub-research
+    - repo-workspace-hub-session
+    - repo-workspace-hub-structural
+    - repo-workspace-hub-subsea-risers
+    - repo-workspace-hub-tax-preparation
+    - repo-workspace-hub-work-queue
+    - repo-workspace-hub-workflow
     - repo-workspace-hub-workstations
   - slug: repo-worldenergydata
     tier: repo
@@ -429,6 +450,174 @@ manifest:
     parent_slug: repo-workspace-hub
     workspace_path: /mnt/local-analysis/workspace-hub
     file: boards/repo-workspace-hub-workstations.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-ai-config
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: ai-config
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-ai-config.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-work-queue
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: work-queue
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-work-queue.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-automation
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: automation
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-automation.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-session
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: session
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-session.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-workflow
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: workflow
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-workflow.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-release-management
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: release-management
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-release-management.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-naval-architecture
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: naval-architecture
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-naval-architecture.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-structural
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: structural
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-structural.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-code-promotion
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: code-promotion
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-code-promotion.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-refactor
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: refactor
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-refactor.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-knowledge
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: knowledge
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-knowledge.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-frontend-design
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: frontend-design
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-frontend-design.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-hydrodynamics
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: hydrodynamics
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-hydrodynamics.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-ai-tools
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: ai-tools
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-ai-tools.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-cross-platform
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: cross-platform
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-cross-platform.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-notification
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: notification
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-notification.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-tax-preparation
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: tax-preparation
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-tax-preparation.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-research
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: research
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-research.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-cross-review
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: cross-review
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-cross-review.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-cv-strategy
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: cv-strategy
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-cv-strategy.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-subsea-risers
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: subsea-risers
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-subsea-risers.yaml
     card_count: 0
   - slug: repo-worldenergydata-gtm
     tier: domain

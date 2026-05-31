@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-subsea-risers
+  display_name: workspace-hub · subsea-risers
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: subsea-risers
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Subsea risers/pipelines (freespan VIV, on-bottom stability, jumpers) (domain:subsea-risers). Phase-1b board manifested 2026-05-30.
+
+    '
+cards: []
