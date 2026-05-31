@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-knowledge-management
+  display_name: workspace-hub · knowledge-management
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: knowledge-management
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Knowledge-management / llm-wiki / memory work tracked in workspace-hub (domain:knowledge-management). Phase-1a board manifested 2026-05-30.
+
+    '
+cards: []

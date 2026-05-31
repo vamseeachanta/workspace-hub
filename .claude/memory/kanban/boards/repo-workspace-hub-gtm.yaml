@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-gtm
+  display_name: workspace-hub · gtm
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: gtm
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Go-to-market / client-conversion / outreach work tracked in workspace-hub (domain:gtm). Phase-1a board manifested 2026-05-30.
+
+    '
+cards: []

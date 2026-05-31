@@ -151,9 +151,14 @@ manifest:
     - repo-workspace-hub-ai-orchestration
     - repo-workspace-hub-business
     - repo-workspace-hub-data
+    - repo-workspace-hub-document-intelligence
     - repo-workspace-hub-engineering
+    - repo-workspace-hub-gtm
     - repo-workspace-hub-harness
+    - repo-workspace-hub-knowledge-management
+    - repo-workspace-hub-marine
     - repo-workspace-hub-ops
+    - repo-workspace-hub-workstations
   - slug: repo-worldenergydata
     tier: repo
     repo: vamseeachanta/worldenergydata
@@ -385,6 +390,46 @@ manifest:
     workspace_path: /mnt/local-analysis/workspace-hub
     file: boards/repo-workspace-hub-ops.yaml
     card_count: 120
+  - slug: repo-workspace-hub-document-intelligence
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: document-intelligence
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-document-intelligence.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-gtm
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: gtm
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-gtm.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-knowledge-management
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: knowledge-management
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-knowledge-management.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-marine
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: marine
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-marine.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-workstations
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: workstations
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-workstations.yaml
+    card_count: 0
   - slug: repo-worldenergydata-gtm
     tier: domain
     repo: vamseeachanta/worldenergydata
