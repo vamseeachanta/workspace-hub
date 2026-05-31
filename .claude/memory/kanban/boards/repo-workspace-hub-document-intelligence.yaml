@@ -9,4 +9,645 @@ board:
   description: 'Document-intelligence pipeline work (indexing, summarization, extraction) tracked in workspace-hub (domain:document-intelligence). Phase-1a board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#168
+    title: 'WRK-541: feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/168
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: "## WRK-541: feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural \n**Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence\n**Repo:** ['digitalmodel'] | **Complexity:** low | **Machine:** dev-primary"
+  - idempotency_key: gh:vamseeachanta/workspace-hub#169
+    title: 'WRK-542: feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/169
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: "## WRK-542: feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural \n**Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence\n**Repo:** ['OGManufacturing'] | **Complexity:** low | **Machine:** dev-primary"
+  - idempotency_key: gh:vamseeachanta/workspace-hub#170
+    title: 'WRK-545: feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/170
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-545: feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+      **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#171
+    title: 'WRK-546: feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/171
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-546: feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+      **Repo:** [''OGManufacturing''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#172
+    title: 'WRK-547: feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/172
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-547: feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** data | **Subcategory:** document-intelligence
+
+      **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#173
+    title: 'WRK-548: feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/173
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-548: feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** data | **Subcategory:** document-intelligence
+
+      **Repo:** [''OGManufacturing''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#174
+    title: 'WRK-549: feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/174
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-549: feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+      **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#175
+    title: 'WRK-550: feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/175
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-550: feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+      **Repo:** [''OGManufacturing''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#176
+    title: 'WRK-551: feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/176
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-551: feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+      **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#177
+    title: 'WRK-552: feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/177
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-552: feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+      **Repo:** [''OGManufacturing''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#178
+    title: 'WRK-553: feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/178
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-553: feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+      **Repo:** [''digitalmodel''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#179
+    title: 'WRK-554: feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/179
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-554: feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** data | **Subcategory:** document-intelligence
+
+      **Repo:** [''OGManufacturing''] | **Complexity:** low | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#198
+    title: 'WRK-679: test(review): standardize execute gate variation tests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/198
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:document-intelligence
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#949
+    title: "WRK-1170: Reclassify 101k 'other' domain documents and validate classification accuracy"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/949
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:document-intelligence
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1155
+    title: "WRK-1170: Reclassify 101k 'other' domain documents and validate classification accuracy"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1155
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - archived
+      - domain:document-intelligence
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1608
+    title: Index /mnt/ace/docs/conferences/ into document-index (38,526 files across 30 collections)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1608
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - domain:document-intelligence
+      - agent:gemini
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1610
+    title: Add opm-common to open-source-engineering-catalog.yaml (reservoir simulation domain)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1610
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:resources
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The /mnt/ace audit (#1579) found that `opm-common` is the only cloned repo at `/mnt/ace/` NOT present in `.planning/archive/catalog/open-source-engineering-catalog.yaml`.
+
+      ## Details'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1612
+    title: Expand ASTM standards-transfer-ledger coverage (25,537 files, 0.4% coverage)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1612
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - domain:document-intelligence
+      - agent:gemini
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1616
+    title: Catalog /mnt/ace/docs/engineering-refs/ — organize 31 loose files + 5 subdirs
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1616
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:document-intelligence
+      - domain:document-intelligence
+      - agent:gemini
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2363
+    title: 'feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2363
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Materialize the `wiki_refs` reverse-lookup contract that is already defined in the provenance architecture, so a registry entry or `doc_key` can answer: which LLM-wiki pages cite this source?
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2379
+    title: 'feat(knowledge): generate task and asset explorer views from the intelligence accessibility registry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2379
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Generate task and asset explorer views from the intelligence accessibility registry so humans and agents can navigate the intelligence ecosystem by question, task, and access path instead of reading raw YAML or scattered docs.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2389
+    title: 'feat(doc-intel): thread source_doc_key through promotion pipeline and promoted artifacts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2389
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - domain:document-intelligence
+      - status:working
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2392
+    title: 'feat(knowledge): wiki coverage-gap detector — inventory × wiki diff per discipline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2392
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - cat:documentation
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      The LLM-wiki portfolio has no coverage-gap detector. We cannot currently answer the question *"which authoritative sources on `/mnt/ace/**`, in `docs/reports/**`, or in `data/document-index/**.yaml` have no corresponding L3 wiki page in `knowledge/wikis/**`?"* without a manual sweep.
+
+      Existing related work:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2393
+    title: 'feat(doc-intel): embeddings index over L2 registry + L3 wiki pages (nightly refresh)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2393
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - domain:document-intelligence
+      - status:plan-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2394
+    title: 'feat(workflow): retrieval-augmented planner step in issue-planning-mode'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2394
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:documentation
+      - cat:harness
+      - domain:document-intelligence
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2395
+    title: 'feat(doc-intel): eCFR ingestion — Title 30 (BOEM/BSEE), 33 (USCG), 40 (EPA), 46/49 regulatory corpus'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2395
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - domain:document-intelligence
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2396
+    title: 'feat(doc-intel): MCP server exposing doc_key lookup, wiki search, registry query'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2396
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:document-intelligence
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2400
+    title: 'feat(doc-intel): MCP server core — doc_key_lookup, wiki_search, registry_query'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2400
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Split from #2396 (v1 closed after MAJOR×2 cross-provider review flagged scope creep: plan delivered 5 tools + registration + audit + allowlist when title said 3 tools). This issue matches the original title scope.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2401
+    title: 'feat(doc-intel): MCP server multi-agent registration — Claude / Gemini / Hermes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2401
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Split from #2396 (core server in #2400). This issue handles multi-agent registration only.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2402
+    title: 'feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2402
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - domain:document-intelligence
+      - status:blocked
+      - machine:dev-primary
+      - agent:codex
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Context
+
+      Split from vamseeachanta/workspace-hub#2393 (v1 closed after MAJOR×2 cross-provider review flagged scope creep + storage-authority ambiguity + AC-vs-test gaps).
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2403
+    title: 'feat(doc-intel): embeddings model-selection spike — BGE-M3 / Voyage / text-embedding-3-large'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2403
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - cat:research
+      - domain:document-intelligence
+      - status:working
+      - machine:dev-primary
+      - agent:codex
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Split from #2393 (v1 closed after MAJOR×2 cross-provider review flagged scope creep: model-selection spike bundled with implementation). This issue isolates the spike.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2404
+    title: 'feat(doc-intel): MCP server audit log + hardened allowlist + retention'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2404
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:document-intelligence
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Split from #2396 (core server in #2400; registration in #2401). This issue handles audit-log + allowlist hardening.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2406
+    title: "fix(review): submit-to-codex.sh hangs on 'Reading additional input from stdin' for substantial plan files"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2406
+    gh_state: closed
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:document-intelligence
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2643
+    title: 'feat(llm-wiki): plan metadata-only /mnt/ace-data raw-like source coverage triage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2643
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:data-pipeline
+      - cat:documentation
+      - domain:document-intelligence
+      - domain:knowledge-management
+      - status:plan-approved
+      - llm-wiki
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

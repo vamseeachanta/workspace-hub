@@ -575,3 +575,400 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1720
+    title: 'analysis: cross-agent session corpus audit — mine 1M+ tool calls for ecosystem curation opportunities'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1720
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - cat:harness/skills
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Objective
+
+      Analyze the full session log corpus across all 4 AI agents to identify:
+
+      1. **Skill gaps** — recurring manual workflows with no skill coverage'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1745
+    title: 'feat(hermes): enable correction tracking in Hermes orchestrator logs (#1720)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1745
+    gh_state: open
+    gh_labels:
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Phase D finding. Claude tracks 8965 corrections in .claude/state/corrections/*.jsonl. Hermes logs record tool invocations but not file-level corrections, preventing cross-agent comparison. Action: add post-hook capturing file corrections to logs/orchestrator/hermes/corrections/ in same JSONL format.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1806
+    title: Document autonomous loop patterns — 6 architectures from sequential to RFC-driven DAG
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1806
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      From review of affaan-m/everything-claude-code autonomous-loops skill.
+
+      ## Description'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1838
+    title: AI credit utilization governance — horses-for-courses routing with Gemini as first-class provider
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1838
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Problem
+
+      We pay for 4 AI subscriptions monthly (~$260/mo total):
+
+      - Claude Max: $200 (heavy use — near quota ceiling)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1881
+    title: Install Hermes gateway as systemd service for cron job firing
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1881
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Parent: #1839
+
+      Hermes has 1 internal cron job (deepseek-weekly-check, Mondays 9am) that cannot fire because the gateway is not running as a system service. Current status: running manually (PID 834676), not installed as a service.
+
+      Without the gateway:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1885
+    title: Configure Telegram messaging platform for Hermes gateway on ace-linux-1
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1885
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - cat:infrastructure
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Task\nConfigure Telegram bot integration for the Hermes gateway running as a systemd service on ace-linux-1.\n\n## Current State\n- Hermes gateway installed and running as system service (v0.7.0)\n- `GATEWAY_ALLOW_ALL_USERS=true` already set in `~/.hermes/.env`\n- Systemd service properly loads `EnvironmentFile=/home/vamsee/.hermes/.env`\n- No messaging platforms configured yet — gateway logs: "No messaging platforms enabled"\n\n## Required Config (add to `~/.hermes/.env`)\n```\nTELEGRAM_BOT_TOKEN=<bot-token-from-botfather>\nTELEGRAM_ALLOWED_USERS=<user-chat-id>\n```\n\n## Steps\n1. Create bot via @BotFather on Telegram → get token\n2. Start a chat with the bot, send any message\n3. Get chat ID via `curl https://api.telegram.org/bot<TOKEN>/getUpdates`\n4. Add both vars to `~/.hermes/.env`\n5. `hermes gateway restart --system`\n6. Verify gateway logs show Telegram polling started\n7. Send test message to verify end-to-end\n\n## Acceptance\n- Gateway logs show Telegram
+      bot connected\n- Bot responds to a test command (e.g., /status)\n- Message delivery to origin works'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2107
+    title: 'fix(hermes): auto-clear stale Codex exhaustion state on credential pool load'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2107
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      When Codex accounts hit weekly usage limits, exhaustion state is recorded in three places:
+
+      1. `~/.hermes/auth.json` credential pool (`last_error_message`, `last_error_reset_at`)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2109
+    title: 'test(hermes): add test coverage for codex_quota reset-time recovery and stale cache handling'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2109
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      The `codex_quota.py` module was hardened with three new behaviors in this session, but the existing test suite (25 tests, all passing) doesn''t cover them:
+
+      1. **Reset-time recovery**: When `last_error_reset_at` is in the past, credentials should be treated as recovered even if other signals indicate exhaustion'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2113
+    title: 'feat(orchestrator-worker): fresh repo bootstrap for governance adoption'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2113
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Fresh repo bootstrap for orchestrator/worker context enforcement: package the already-landed plan-gate, artifact-verification, and worker-discovery patterns into a fast setup path for new repos.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2224
+    title: 'Codex: reduce stale warning churn in provider-health after live cleanup'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2224
+    gh_state: open
+    gh_labels:
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      Codex is now operationally healthy again (`status: ok`, `routing_state: eligible`) after:
+
+      - moving archived skills out of the live root'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2266
+    title: 'fix(ops): reconcile provider-health artifact contract after rebase and upstream divergence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2266
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:operations
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      During rebase of local `main` onto `origin/main`, `config/ai_agents/provider-health.yaml` conflicted with upstream state and was not preserved as a live artifact in the rebased history.
+
+      The repo now needs an explicit decision on the provider-health artifact contract:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2301
+    title: 'bug(hermes): classify and recover from openai-codex transport/challenge failures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2301
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Document and harden against intermittent `openai-codex` transport failures where Hermes retries `gpt-5.4` calls against `https://chatgpt.com/backend-api/codex`, receives repeated `APIConnectionError`, and never recovers because fallback routing is disabled.
+
+      ## Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2425
+    title: 'meta(ai-orchestration): Claude Code CLI integration rollout — pilot sequence from 2026-04-21 review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2425
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '# Claude Code CLI integration rollout tracker (revised 2026-04-21 post-adversarial-review)
+
+      ## Purpose
+
+      Meta-tracker for the Claude Code CLI integration sweep identified in the 2026-04-21 ecosystem review. Source artifact: [`docs/reports/2026-04-21-claude-cli-rollout-review.md`](../blob/main/docs/reports/2026-04-21-claude-cli-rollout-review.md) (commit `602039a6b`).'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2695
+    title: 'feat(harness): /goal use-case catalog for repo ecosystem (claude+codex+hermes)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2695
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Canonical, periodically-refreshed catalog of work patterns where `/goal` (and
+
+      its underlying `planning-goal` / `planning-code-goal` skills) is the right'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2698
+    title: 'feat(ai-orchestration): migration plan for AI_ECOSYSTEM_DESIGN.md adoption (day-1 / month-1 / quarter-1)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2698
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      [`docs/standards/AI_ECOSYSTEM_DESIGN.md`](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/standards/AI_ECOSYSTEM_DESIGN.md) landed at commit `f30a8fe2d` (parent: [#2675](https://github.com/vamseeachanta/workspace-hub/issues/2675), closed) as the durable design contract for how the repo ecosystem uses Claude, Hermes, Codex, and Gemini together. It declares **what good looks like** per work class (§A), **who owns what** (§B), and **how the work flows** (§C–§D), plus the **failure-mode contract** (§E).
+
+      What''s missing: an **adoption schedule**. The design contract is correct in intent, but the operational world doesn''t reorganize itself overnight to match. Existing `config/agents/`, `config/ai-tools/`, `scripts/review/`, and skill files were written incrementally over months and contain settings that the standards doc supersedes — but no sequence-of-changes is defined to bring them into alignment.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2700
+    title: 'feat(ai-orchestration): "Memory-to-Surface" map maintenance contract for AI_ECOSYSTEM_DESIGN.md §E'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2700
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      [`docs/standards/AI_ECOSYSTEM_DESIGN.md`](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/standards/AI_ECOSYSTEM_DESIGN.md) §E ("Failure-mode design contract") maps **20 memory feedback files** from `~/.claude/projects/.../memory/feedback_*.md` to their **durable mitigation surfaces** in the repo. This is the *anti-orphaning contract*: lessons in memory are connected to artifacts that enforce them.
+
+      The map declares a maintenance contract at the bottom of §E and again in §AI_ECOSYSTEM_DESIGN.md''s `Maintenance contract` section:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2764
+    title: 'fix(operations): harden Hermes session exporter for undated session files'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2764
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:operations
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:dev-primary
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Harden `scripts/cron/hermes-session-export.sh` so Hermes session export does not abort on undated session filenames.
+
+      ## Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2804
+    title: 'bug(infra): Codex-under-Claude sandbox nesting blocks broker delegation (#2802 orchestration) — choose a supported execution route'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2804
+    gh_state: open
+    gh_labels:
+      - domain:ai-orchestration
+      - status:plan-approved
+      - gate:completeness
+      - status:completeness-verified
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2822
+    title: Document/automate worktree dispatch for the Codex-under-Claude route (3-layer sandbox requirement)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2822
+    gh_state: open
+    gh_labels:
+      - domain:ai-orchestration
+      - status:plan-approved
+      - gate:completeness
+      - status:completeness-verified
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2847
+    title: 'feat(dispatch): multi-machine leader failover — auto-promote/redistribute when dispatch coordinator (ace-linux-1) is down'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2847
+    gh_state: open
+    gh_labels:
+      - cat:ai-orchestration
+      - cat:infrastructure
+      - domain:ai-orchestration
+      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

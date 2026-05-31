@@ -9,4 +9,582 @@ board:
   description: 'Knowledge/wiki content + accessibility registry + cross-link (domain:knowledge). Phase-1b board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#894
+    title: 'WRK-1105: Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/894
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:knowledge
+      - wrk-item
+      - agent:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1084
+    title: 'WRK-1105: Knowledge persistence architecture — move work-done summaries from MEMORY.md to structured resource-intelligence / knowledge systems'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1084
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:knowledge
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1360
+    title: 'WRK: extract algorithms and methods from riser-eng-job archives'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1360
+    gh_state: open
+    gh_labels:
+      - domain:knowledge
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '94 GB of riser engineering jobs now in digitalmodel/docs/domain/subsea-risers/riser-eng-job/. Contains analysis scripts (.py, .m, .vbs), FEA models, calc spreadsheets. Identify reusable algorithms for digitalmodel source (riser analysis, mooring, SLOR design). Parent: WRK-1355'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1995
+    title: 'feat: LLM Wiki — persistent, compounding knowledge base (Karpathy pattern)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1995
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:knowledge
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1996
+    title: 'feat: batch ingest pipeline — conference papers as wiki sources'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1996
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1997
+    title: 'feat: wiki health automation — cron lint, index refresh, contradiction detection'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1997
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:automation
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1998
+    title: 'chore: scaffold llm-wiki CLI — core commands (init, ingest, query, lint, status)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1998
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:knowledge
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1999
+    title: 'feat: bootstrap marine-engineering wiki — ingest 10+ seed sources'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1999
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:knowledge
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2000
+    title: 'feat: knowledge seed migration — consolidate YAML seeds into wiki domains'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2000
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2001
+    title: 'feat: batch ingest pipeline — conference papers as wiki sources'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2001
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2002
+    title: 'feat: wiki health automation — cron lint, index refresh, contradiction detection'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2002
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:automation
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2007
+    title: 'feat: wiki health automation — weekly cron lint, cross-wiki link audit, contradiction scan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2007
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2008
+    title: 'feat: migrate career-learnings seed — 11 cross-domain entries into wiki'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2008
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2009
+    title: 'feat: Obsidian integration — vault setup, graph view, web clipper → raw pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2009
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2014
+    title: 'feat: compound engineering learning loop -- capture agent learnings into self-improving repo'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2014
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:platform
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2021
+    title: 'feat: document compound engineering methodology -- 5 operational lessons from production'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2021
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2121
+    title: 'feat(knowledge): add weekly-review query packs and verification fixtures for ecosystem intelligence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2121
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add task-oriented query packs and verification fixtures for ecosystem intelligence used by the weekly review.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2133
+    title: 'fix(today): research-highlights extraction returns empty for synthesis files'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2133
+    gh_state: open
+    gh_labels:
+      - bug
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      The `/today` daily report''s Research Highlights section shows "(could not extract findings)" for 2026-04-10-synthesis, making the report 5KB instead of the typical 10-15KB.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2137
+    title: 'docs(knowledge): create canonical Intelligence Entry Points page and backlink coverage test'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2137
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Create the canonical Intelligence Entry Points page and backlink coverage test.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2149
+    title: 'feat(knowledge): generate seeded intelligence accessibility registry from existing inventories'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2149
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Generate the seeded intelligence accessibility registry from existing source inventories.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2156
+    title: 'feat(knowledge): add registry coherence validator for accessibility registry and seeded output'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2156
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add the registry coherence validator for the intelligence accessibility registry, workstation registry, and seeded output.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2161
+    title: 'feat(knowledge): ingest provider-session ecosystem audit reads into seeded accessibility registry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2161
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Ingest provider-session ecosystem audit reads into the seeded accessibility registry.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2168
+    title: 'feat(validation): add cross-registry coverage and drift report for accessibility registry and provider-session reads'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2168
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add the cross-registry coverage/drift report for accessibility registry, entry points, and provider-session reads.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2173
+    title: 'feat(knowledge): wire provider-session ecosystem audit into weekly registry build manifest and publication bundle'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2173
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Wire provider-session ecosystem audit into the weekly registry build manifest and publication bundle.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2174
+    title: 'feat(knowledge): generate unresolved session-read triage report and backfill historical alias-normalized registry snapshots'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2174
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Generate the unresolved session-read triage report and backfill historical alias-normalized registry snapshots.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2180
+    title: 'feat(validation): add registry lineage/provenance report and unresolved-read suppression policy'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2180
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add the registry lineage/provenance report and audit-derived unresolved-read suppression policy.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2726
+    title: 'feat(architecture): review data, execution, and report layer boundaries'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2726
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - cat:document-intelligence
+      - domain:reporting
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2727
+    title: 'feat(architecture): define data layer boundary and llm-wiki data promotion model'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2727
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - cat:document-intelligence
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2731
+    title: 'feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2731
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - cat:document-intelligence
+      - domain:knowledge
+      - machine:dev-primary
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Parent / context
+
+      Parent: #2727 — define data layer boundary and llm-wiki data promotion model.
+
+      Related broader layer issue: #2726.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2732
+    title: 'feat(data-governance): canonical first/second-level mount and folder taxonomy for repo ecosystem'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2732
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - domain:knowledge
+      - domain:repo-organization
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Parent / context
+
+      Parent: #2731 — inventory and normalize canonical data/repo locations for llm-wiki promotion.
+
+      Related architecture umbrella: #2726.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2746
+    title: 'feat(acma): create private llm-wiki repo target llm-wiki-acma'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2746
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - cat:document-intelligence
+      - domain:knowledge
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2778
+    title: 'feat(architecture): codify retrieval-time wiki-sibling routing rule + planning/citation/frontmatter plumbing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2778
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - cat:harness
+      - domain:knowledge
+      - domain:repo-organization
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Formalize a workspace-hub-enforced **data / knowledge / result search routing** convention across sibling repos:
+
+      - **Generic, sanitized data, knowledge, and search results** flow through the sibling [`vamseeachanta/llm-wiki`](https://github.com/vamseeachanta/llm-wiki) repo (private since 2026-05-20).'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2792
+    title: 'arch(llm-wiki): treat wiki repos as Knowledge Index modules'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2792
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - cat:documentation
+      - domain:knowledge
+      - domain:refactor
+      - domain:knowledge-management
+      - status:needs-plan
+      - gate:completeness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

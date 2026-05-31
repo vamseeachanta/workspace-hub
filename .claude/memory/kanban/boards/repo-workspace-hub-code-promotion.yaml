@@ -9,4 +9,618 @@ board:
   description: 'dark-intel Excel->code promotion into engineering modules (domain:code-promotion). Phase-1b board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1044
+    title: 'WRK-5040: feat(doc-intel): promote-to-code.py — promote all 8 manifest content types'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1044
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:document-intelligence
+      - domain:code-promotion
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1185
+    title: 'WRK-5040: feat(doc-intel): promote-to-code.py — promote all 8 manifest content types'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1185
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:document-intelligence
+      - archived
+      - domain:code-promotion
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1587
+    title: 'Promote near-PRODUCTION packages: add docstrings to asset_integrity, structural, data_systems'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1587
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:code-promotion
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The module status matrix (#1570) identified several large DEVELOPMENT packages that are close to PRODUCTION status. They have sufficient tests and source files but lack module-level docstrings in >50% of files.
+
+      ### Packages Ready for Promotion'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1602
+    title: Promote DEVELOPMENT packages toward PRODUCTION maturity — docstring + test uplift
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1602
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:code-promotion
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The module status matrix (#1570, now closed) identified **13 DEVELOPMENT-tier packages** in digitalmodel. These have some tests but don''t meet PRODUCTION criteria (>5 test files AND >3 source files AND >50% docstrings).
+
+      ### Packages to uplift (sorted by file count, highest ROI first)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1645
+    title: Docstring uplift wave 2 — web, reservoir, infrastructure, marine_ops packages
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1645
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - domain:code-promotion
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Terminal 2 (2026-04-02) completed wave 1 docstring uplift, bringing 7 packages to 100% module-level docstring coverage (#1587, #1602). This issue tracks the remaining packages that are below 80%.
+
+      ## Packages Requiring Uplift'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1646
+    title: Docstring uplift wave 3 — solvers, hydrodynamics, specialized, signal_processing, remaining stragglers
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1646
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - domain:code-promotion
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Follow-up to wave 1 (#1587) and wave 2 (#1645). These packages are 73-97% covered — small effort to reach 100%.
+
+      ## Packages Requiring Uplift'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1659
+    title: Promote data_models from SKELETON to DEVELOPMENT — add tests for curves.py
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1659
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:code-promotion
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      data_models is the only remaining SKELETON package (1 of 31). It has:
+
+      - 2 files: `__init__.py` (added in #1626) + `curves.py`'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1662
+    title: 'Module status matrix: PRODUCTION promotion campaign — 16 DEVELOPMENT packages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1662
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:code-promotion
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Current maturity breakdown (2026-04-02):
+
+      - 14 PRODUCTION, 16 DEVELOPMENT, 1 SKELETON, 0 GAP'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1687
+    title: Docstring uplift wave 3 — complete infrastructure/ coverage (24 files remaining) (#1645 follow-up)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1687
+    gh_state: open
+    gh_labels:
+      - domain:code-promotion
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Terminal 4 overnight (2026-04-02) completed docstring wave 2 for web/, reservoir/, infrastructure/, marine_ops/. However, infrastructure/ had 43 files initially identified as lacking docstrings and only 19 were completed before the subagent reached its iteration limit.
+
+      ## Remaining Work (24 files)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1689
+    title: 'ANSYS package: Promote to PRODUCTION maturity — docstring audit + models.py test coverage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1689
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:code-promotion
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The ansys package has strong test coverage (324 tests, 13/14 modules tested) after #1676 expansion. To reach PRODUCTION status per the module status matrix (#1662), it needs:
+
+      1. **models.py test file** — only source module without a dedicated test file. Pure dataclasses, but needs construction/serialization tests.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1810
+    title: 'epic: dark intelligence Excel-to-code promotion — extract 3,600 Excel calcs into digitalmodel'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1810
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering-calculations
+      - domain:code-promotion
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Epic: Dark Intelligence Excel-to-Code Promotion
+
+      ### Context
+
+      The workspace-hub ecosystem contains ~3,600 Excel calculation files across mounted'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1811
+    title: 'dark-intel: promote SN curve POC v2 output → digitalmodel/fatigue/sn_curves.py'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1811
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:code-promotion
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Promote SN Curve Extraction to digitalmodel
+
+      ### What
+
+      Wire the dark-intelligence POC v2 extraction of SN curve definitions into'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1812
+    title: 'dark-intel: promote conductor length assessment → digitalmodel/structural/conductor.py'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1812
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:code-promotion
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Promote Conductor Length Assessment to digitalmodel
+
+      ### What
+
+      Wire the conductor length assessment extraction into digitalmodel structural module.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1813
+    title: 'dark-intel: promote surface wellhead SITP calculation → digitalmodel/well/sitp.py'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1813
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:code-promotion
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Promote Wellhead SITP Calculation to digitalmodel
+
+      ### What
+
+      Wire the surface wellhead shut-in tubing pressure (SITP) calculation into digitalmodel.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1814
+    title: 'dark-intel: promote API RP 2GEO alpha method archive → digitalmodel/geotechnical/ (offshore pile capacity)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1814
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:code-promotion
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Promote Geotechnical Pile Capacity to digitalmodel (OFFSHORE)
+
+      ### Context
+
+      This issue covers OFFSHORE geotechnical pile capacity only.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1815
+    title: 'dark-intel: promote flowback calculator extraction → digitalmodel/production_engineering/'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1815
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:code-promotion
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Promote Flowback Calculator to digitalmodel
+
+      ### What
+
+      Wire the flowback calculator extraction (647,447 formulas, 2.5x compression) into'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1819
+    title: 'dark-intel: close 93 materials domain standards gaps (0 of 122 implemented)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1819
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-calculations
+      - domain:code-promotion
+      - dark-intelligence
+      - agent:gemini
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1820
+    title: 'dark-intel: close 53 process domain standards gaps (0 of 55 implemented)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1820
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering-calculations
+      - domain:code-promotion
+      - dark-intelligence
+      - agent:gemini
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1821
+    title: 'dark-intel: close 24 structural standards gaps (4 of 72 implemented)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1821
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering-calculations
+      - domain:code-promotion
+      - dark-intelligence
+      - agent:gemini
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1822
+    title: 'dark-intel: close 13 pipeline standards gaps (12 of 55 implemented)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1822
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-calculations
+      - domain:code-promotion
+      - dark-intelligence
+      - agent:gemini
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1825
+    title: 'dark-intel: create promotion feedback loop — extraction output → digitalmodel → ledger update'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1825
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - domain:code-promotion
+      - dark-intelligence
+      - agent:gemini
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1840
+    title: 'feat(geotechnical): onshore foundations — shallow foundations, bored piles, settlement, slope stability'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1840
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:code-promotion
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Onshore Geotechnical Foundations Module
+
+      ### Context
+
+      ALL existing geotechnical code (4 modules, 768 LOC) is OFFSHORE-focused.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1841
+    title: 'feat(geotechnical): offshore gaps — lateral piles, mudmats, spudcans, torpedo piles, suction install'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1841
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:code-promotion
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Offshore Geotechnical Gaps
+
+      ### Context
+
+      Existing offshore geotechnical covers axial pile capacity, anchors, scour,'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1843
+    title: 'feat(field-dev): concept selection framework — hub vs standalone, wet vs dry tree, host type'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1843
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:code-promotion
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Field Development Concept Selection
+
+      ### What
+
+      Decision-support tool for offshore field development concept screening.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1858
+    title: 'feat(field-dev): integrate worldenergydata FDAS + economics into field development workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1858
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:code-promotion
+      - dark-intelligence
+      - agent:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1859
+    title: 'feat(naval-arch): integrate worldenergydata vessel fleet + hull models into naval architecture'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1859
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:code-promotion
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Integrate worldenergydata Vessel Data into Naval Architecture
+
+      ### Context
+
+      worldenergydata has rich vessel/hull data NOT connected to digitalmodel naval_architecture/:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2048
+    title: 'feat(field-dev): wire ML cost predictor into economics facade CAPEX adapter'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2048
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:code-promotion
+      - agent:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2050
+    title: 'feat(field-dev): add fiscal regime tax adjustment to economics cashflows'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2050
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:code-promotion
+      - agent:claude
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2051
+    title: 'feat(field-dev): wire economics facade into field_development workflow.py'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2051
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:code-promotion
+      - agent:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2054
+    title: 'feat(field-dev): add production decline curve to economics cashflow model'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2054
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:code-promotion
+      - agent:claude
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2059
+    title: 'feat(naval-arch): real vessel stability test cases from fleet data (Sleipnir, Thialf, Balder)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2059
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:code-promotion
+      - agent:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2062
+    title: drilling rig fleet adapter — drillship and semi-sub hull form validation (~138 rigs with geometry)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2062
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:code-promotion
+      - agent:claude
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2063
+    title: 'feat(naval-arch): wire drilling riser components into mooring/riser analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2063
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:code-promotion
+      - agent:claude
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

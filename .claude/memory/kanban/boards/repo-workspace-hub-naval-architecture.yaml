@@ -9,4 +9,596 @@ board:
   description: 'Naval architecture — stability, curves of form, tonnage, hull (domain:naval-architecture). Phase-1b board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#41
+    title: 'WRK-1096: Add HydroComp NavCad electric-motor resources to workspace library'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/41
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:resources
+      - domain:naval-architecture
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1096: Add HydroComp NavCad electric-motor resources to workspace library
+
+      **Status:** pending | **Priority:** medium | **Category:** resources | **Subcategory:** naval-architecture
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#464
+    title: 'WRK-394: Planing hull motion model — nonlinear 2D+t strip theory for high-speed vessels'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/464
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - domain:naval-architecture
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#509
+    title: 'WRK-394: Planing hull motion model — nonlinear 2D+t strip theory for high-speed vessels'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/509
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - domain:naval-architecture
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#654
+    title: 'WRK-612: Research and prototype Gmsh Python API for automated hull mesh generation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/654
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:naval-architecture
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#658
+    title: 'WRK-614: Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/658
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:naval-architecture
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#936
+    title: 'WRK-1151: Collect and download naval architecture resources to document-intelligence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/936
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - domain:naval-architecture
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#964
+    title: 'WRK-612: Research and prototype Gmsh Python API for automated hull mesh generation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/964
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:naval-architecture
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#966
+    title: 'WRK-614: Research FreeCAD Ship Workbench for offset-table-driven parametric hull generation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/966
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:naval-architecture
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1135
+    title: 'WRK-106: Hull panel geometry generator from waterline, section, and profile line definitions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1135
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:naval-architecture
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1145
+    title: 'WRK-1151: Collect and download naval architecture resources to document-intelligence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1145
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - archived
+      - domain:naval-architecture
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1296
+    title: 'WRK-1379: Naval architecture expert skill — knowledge synthesis agent'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1296
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:ai-orchestration
+      - domain:naval-architecture
+      - wrk-item
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1379: Naval architecture expert skill — knowledge synthesis agent
+
+      **Status:** pending | **Priority:** high | **Category:** ai-orchestration | **Subcategory:** expert-agent
+
+      **Repo:** [workspace-hub, digitalmodel] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1297
+    title: 'WRK-1382: Naval architect expert skill — engineering + legal consultant agent'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1297
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:ai-orchestration
+      - domain:naval-architecture
+      - wrk-item
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1382: Naval architect expert skill — engineering + legal consultant agent
+
+      **Status:** pending | **Priority:** high | **Category:** ai-orchestration | **Subcategory:** expert-agent
+
+      **Repo:** [workspace-hub, digitalmodel] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1314
+    title: 'WRK-1372: Ship-specific hydrostatic data tables (DDG-51, FFG-7)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1314
+    gh_state: open
+    gh_labels:
+      - domain:naval-architecture
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Auto-created by backfill-github-refs.sh
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1316
+    title: 'WRK-1374: Advanced stability — damage stability and IMO compliance'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1316
+    gh_state: open
+    gh_labels:
+      - domain:naval-architecture
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Auto-created by backfill-github-refs.sh
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1317
+    title: 'WRK-1375: Maneuverability module — rudder forces and turning circle'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1317
+    gh_state: open
+    gh_labels:
+      - domain:naval-architecture
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Auto-created by backfill-github-refs.sh
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1318
+    title: 'WRK-1376: Resistance prediction — Holtrop-Mennen method implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1318
+    gh_state: open
+    gh_labels:
+      - domain:naval-architecture
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Auto-created by backfill-github-refs.sh
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1319
+    title: 'WRK-1377: Hull form parametric design — coefficients and Series 60'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1319
+    gh_state: open
+    gh_labels:
+      - domain:naval-architecture
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Auto-created by backfill-github-refs.sh
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1849
+    title: 'epic: naval architecture expansion — floating platforms, classification, gyradius, trim optimization'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1849
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:naval-architecture
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Epic: Naval Architecture Module Expansion
+
+      ### Current State (Strong Foundation)
+
+      17 Python modules, 1,814+ LOC in naval_architecture/:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1850
+    title: 'feat(naval-arch): floating platform stability — FPSO, semi-sub, spar, TLP, barge'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1850
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:naval-architecture
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Floating Platform Stability Calculations
+
+      ### What
+
+      Generic stability code exists (GZ curves, IMO criteria) but no platform-'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1851
+    title: 'feat(naval-arch): gyradius calculator — mass distribution, roll/pitch/yaw inertia from geometry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1851
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:naval-architecture
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Gyradius (Radius of Gyration) Calculator
+
+      ### What
+
+      Seakeeping.py uses hardcoded k_xx=0.40*B, k_yy=0.25*L which is a rough'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1852
+    title: 'feat(naval-arch): trim and ballast optimization — minimize fuel, maximize stability'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1852
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:naval-architecture
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Trim and Ballast Optimization
+
+      ### What
+
+      No trim optimization or ballast management code exists. These are'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1853
+    title: 'feat(naval-arch): complete curves_of_form.py — hydrostatic tables from hull geometry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1853
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:naval-architecture
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Complete Curves of Form Implementation
+
+      ### What
+
+      curves_of_form.py exists as a stub (displacement_at_draft raises'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1854
+    title: 'feat(naval-arch): tonnage and regulatory calculations — GT/NT, load line, MARPOL'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1854
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - domain:naval-architecture
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Tonnage and Regulatory Calculations
+
+      ### What
+
+      compliance.py has simplified ICLL freeboard but no tonnage calculations'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1898
+    title: 'Claude: naval architecture expansion sprint (#1850+#1851+#1852+#1853+#1854+#1859)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1898
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - domain:naval-architecture
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Naval Architecture Expansion — Implementation Sprint
+
+      ### Claude tasks (implementation)
+
+      1. #1849 Epic: naval architecture expansion'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1927
+    title: Extract SNAME naval architecture knowledge into digitalmodel modules
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1927
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data-pipeline
+      - domain:naval-architecture
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      SNAME (Society of Naval Architects & Marine Engineers) documents contain foundational naval architecture knowledge — hull forms, resistance, propulsion, stability, structural design — that should populate `digitalmodel/naval_architecture/`.
+
+      ## Plan Reference'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2260
+    title: 'feat(acma-codes): staged metadata-only wiki sweep for ACMA standards collection'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2260
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - cat:documentation
+      - domain:naval-architecture
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2261
+    title: 'feat(acma-codes): Wave 1 metadata-only wiki sweep — OCIMF (MEG 4), OCIMF, CSA'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2261
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - cat:documentation
+      - domain:naval-architecture
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2262
+    title: "feat(acma-codes): Wave 2 metadata-only wiki sweep — API, Lloyd's Register, SIGTTO, Noble Denton"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2262
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - cat:documentation
+      - domain:naval-architecture
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2263
+    title: 'feat(acma-codes): Wave 3 metadata-only wiki sweep — ISO, ASTM, IACS'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2263
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - cat:documentation
+      - domain:naval-architecture
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2264
+    title: 'feat(acma-codes): Wave 4 metadata-only wiki sweep — DNV Rules, ABS Rules, IMO, USCG'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2264
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - cat:documentation
+      - domain:naval-architecture
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2278
+    title: 'chore(acma-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2278
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - cat:documentation
+      - domain:naval-architecture
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Reconcile the two OCIMF MEG (2008) fragment PDFs discovered under the `Noble Denton Guidelines/` directory during Wave 2 so Wave 1 and Wave 2 metadata-only outputs do not maintain conflicting family ownership.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2279
+    title: 'chore(acma-codes): codify support-artifact defer/reject policy for metadata-only sweep waves'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2279
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data-pipeline
+      - cat:documentation
+      - domain:naval-architecture
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Define a repeatable policy for handling non-standard supporting artifacts encountered during ACMA metadata-only sweeps: catalogs, screenshots, newsletters, access notes, shortcuts, temp files, and other non-promotable support materials.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2589
+    title: 'feat(llm-wiki): naval-architecture wiki topical expansion — 10 core concept pages (W1-D)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2589
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:naval-architecture
+      - domain:knowledge-management
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

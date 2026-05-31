@@ -9,4 +9,677 @@ board:
   description: 'Plan/approval workflow automation + GSD progression (domain:workflow). Phase-1b board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#8
+    title: 'WRK-1317: Generalize workflow engine — GitHub Projects templates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/8
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#72
+    title: 'WRK-1201: Create calculation-implementation-workflow orchestration skill'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/72
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:skills
+      - domain:workflow
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1201: Create calculation-implementation-workflow orchestration skill
+
+      **Status:** pending | **Priority:** medium | **Category:** skills | **Subcategory:** workflow
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#76
+    title: 'WRK-1208: [script]: Missing back-link: workspace-hub/workflow-gatepass should list workspa'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/76
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1208: [script]: Missing back-link: workspace-hub/workflow-gatepass should list workspa
+
+      **Status:** pending | **Priority:** low | **Category:** harness | **Subcategory:** workflow
+
+      **Repo:** workspace-hub | **Complexity:** unset | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#803
+    title: 'WRK-1014: improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/803
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#806
+    title: 'WRK-1017: bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/806
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#884
+    title: 'WRK-1014: improve(workflow): add plan-mode ideation stage to WRK lifecycle — pre-Stage 4 orchestrator think-through'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/884
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#892
+    title: 'WRK-1017: bug: investigate why work-queue-workflow skill Stage 5 interactive planning is missed'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/892
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1351
+    title: Lifecycle HTML still referenced in stage prompts and micro-skills
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1351
+    gh_state: open
+    gh_labels:
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Discrepancy
+
+      Lifecycle HTML was removed from the workflow, but references to it persist in:
+
+      1. **Stage prompt packages** — `stage-4-prompt.md` for workspace-hub-1291 lists `assets/WRK-NNN/WRK-NNN-lifecycle.html` as an exit artifact and includes instructions to "Record plan in lifecycle HTML Stage 4 section" and "Update lifecycle HTML Stage 4 chip to done"'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1899
+    title: 'Claude: workflow governance sprint (#1839+#1855+#1856+#1782)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1899
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:ai-orchestration
+      - domain:workflow
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Workflow Governance — Implementation Sprint
+
+      ### Tasks
+
+      1. #1839 Workflow hard-stops and session governance'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2013
+    title: 'feat(harness): enforce plan-review and commit-review gates to prevent agent bypass'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2013
+    gh_state: closed
+    gh_labels:
+      - duplicate
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2018
+    title: 'feat: agent bypass resistance -- enforce workflow with technical gates, not text instructions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2018
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2020
+    title: 'feat: orchestrator/worker context enforcement -- plan gates, artifact verification, knowledge propagation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2020
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - cat:platform
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2027
+    title: 'feat: enable enforcement strict mode -- wire plan gate into pre-commit, chain learning extraction'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2027
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2028
+    title: 'feat: review gate strict mode + GitHub Actions CI enforcement workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2028
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:engineering
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Enable review gate strict mode and add GitHub Actions CI enforcement
+
+      ### Current State
+
+      - require-review-on-push.sh exists but REVIEW_GATE_STRICT defaults to 0 (advisory)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2031
+    title: 'build: automated compliance monitoring -- daily cron, alerts, weekly report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2031
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Automated compliance monitoring -- cron + alerts
+
+      ### Current State
+
+      - compliance-dashboard.sh works and reports compliance metrics'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2234
+    title: 'chore(workflow): update session-start-routine to treat handoffs as unverified context'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2234
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Update the `session-start-routine` skill/workflow so handoff artifacts are explicitly treated as unverified working context rather than accepted truth.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2235
+    title: 'chore(plans): add retention metadata section to issue plan template'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2235
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add a `Retention` section to the issue plan template so plan artifacts carry explicit expiration/archival expectations aligned with the durable-vs-transient boundary policy.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2236
+    title: 'chore(workflow): add post-closure promotion step to issue-planning-mode'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2236
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Extend the issue planning/execution workflow with an explicit post-closure promotion step that asks whether the issue produced reusable knowledge worth promoting into durable artifacts.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2289
+    title: Plan rollback/recovery for enforcement bypasses detected after commit or push
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2289
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:harness
+      - domain:workflow
+      - status:done
+      - agent:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2299
+    title: 'chore(plans): make retention metadata a required planning artifact'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2299
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Create a follow-on governance issue to make retention metadata a required, consistently enforced part of the issue-planning workflow after #2235 lands.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2387
+    title: 'chore(governance): cross-ref cleanup for 4 predecessor issues closed without comment 2026-03-19'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2387
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '# Governance cleanup — silent close comments on WRK-1005/1045 duplicates
+
+      ## Observation
+
+      Four issues closed 2026-03-19 with **empty `.comments` arrays** per `gh issue view --json comments`:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2445
+    title: 'Implement bypass-rollback advisor and post-commit observer per #2289 policy'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2445
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Implement the advisor script, post-commit bypass correlator, all-commits observer, and TDD suite specified as policy in #2289.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2446
+    title: Close Hermes onboarding gate — SOUL.md has no workflow/gate references
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2446
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2447
+    title: 'Residual #2045 gaps — CODEX.md legacy WRK ref + GEMINI.md deprecated workflow pointer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2447
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Two small onboarding-surface cleanups identified during #2045 triage (2026-04-21). These are the residual gaps from the broader agent-onboarding work; separated here so #2045 can close on the substantive enforcement landing.
+
+      ## Gap 1: `.codex/CODEX.md:6` legacy WRK reference'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2489
+    title: 'feat(ai-orchestration): continuous planning pipeline for AFK issue throughput'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2489
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:workflow
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2502
+    title: 'feat(ai-orchestration): harden plan-review artifact metadata and stale-SHA handling'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2502
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Objective
+
+      Harden plan-review artifacts so continuous planning reports can reliably distinguish current clean reviews from stale, missing, empty, disagreement-only, or legacy/no-SHA artifacts.
+
+      Parent stream: #2489'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2503
+    title: 'feat(ai-orchestration): standardize canonical approval-request comments for plan-review issues'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2503
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Objective
+
+      Define and backfill a canonical approval-request comment schema so Lane A approval candidates are machine-readable without treating fuzzy comments as authority.
+
+      Parent stream: #2489'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2504
+    title: 'feat(ai-orchestration): define dispatch-ledger trust contract and lease lifecycle writer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2504
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Objective
+
+      Create the follow-up contract for dispatch-ledger trust, lease lifecycle, and eventual writer authority so #2489 can consume active-work evidence without becoming a scheduler.
+
+      Parent stream: #2489'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2505
+    title: 'feat(ai-orchestration): add golden-output contract for morning approval and QA packet'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2505
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Objective
+
+      Make the #2489 morning packet human-actionable by defining golden Markdown/JSON outputs, top-action ordering, truncation rules, and warning/noise budgets.
+
+      Parent stream: #2489'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2506
+    title: 'feat(ai-orchestration): validate Lane E implementation handoff readiness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2506
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Objective
+
+      Create a Lane E handoff validator so next-day review/QA packets can separate open PRs from genuinely review-ready implementation artifacts.
+
+      Parent stream: #2489'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2664
+    title: 'feat(workflow): HTML PR explainer artifact (author-side) — diff + annotations + focus callouts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2664
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Adopt the HTML PR-explainer pattern from Thariq''s article: every PR author attaches a self-contained HTML artifact that renders the diff with inline annotations, highlights focus areas, and color-codes findings by severity. This issue covers **author-side only**; reviewer-side (HTML-rendered code review responses) is deferred to a follow-up.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2719
+    title: 'feat(ai-orchestration): unify SOUL.md across providers — SHARED + per-provider canonical with symlink runtime'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2719
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:workflow
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2722
+    title: 'feat(enforcement): pre-commit hook to block unresolved merge-conflict markers across tier-1 repos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2722
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2723
+    title: 'chore(enforcement): clean up dead code in .git/hooks/pre-commit (deferred from #2722)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2723
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Background
+
+      While planning [#2722](https://github.com/vamseeachanta/workspace-hub/issues/2722) (pre-commit conflict-marker hook), Claude r1 review finding #13 noted that `.git/hooks/pre-commit` has dead code at lines 51-54 of the canonical workspace-hub local installation:
+
+      ```bash'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2724
+    title: 'feat(soul): add 5 cross-provider must-fire rules derived from #2722 review wave'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2724
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2725
+    title: 'feat(soul): auto-load SOUL.runtime.md into Claude + Gemini session surfaces'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2725
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2728
+    title: 'feat(architecture): define execution layer contracts, tooling, and compute routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2728
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:operations
+      - cat:harness
+      - domain:workflow
+      - domain:infrastructure
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

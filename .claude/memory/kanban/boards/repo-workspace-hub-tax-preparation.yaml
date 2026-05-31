@@ -9,4 +9,193 @@ board:
   description: 'Tax prep + CRE/personal finance (1120s, franchise, cost-seg) (domain:tax-preparation). Phase-1b board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#98
+    title: 'WRK-1319: Self-prepared cost segregation study — 15645 Westpark (Family Dollar)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/98
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:personal-finance
+      - domain:tax-preparation
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1319: Self-prepared cost segregation study — 15645 Westpark (Family Dollar)
+
+      **Status:** pending | **Priority:** high | **Category:** personal-finance | **Subcategory:** tax-preparation
+
+      **Repo:** [''sabithaandkrishnaestates''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#204
+    title: 'WRK-1318: 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/204
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:personal-finance
+      - domain:tax-preparation
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1318: 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120)
+
+      **Status:** working | **Priority:** high | **Category:** personal-finance | **Subcategory:** tax-preparation
+
+      **Repo:** [''aceengineer-admin''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#205
+    title: 'WRK-5084: 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/205
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:personal-finance
+      - domain:tax-preparation
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-5084: 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ)
+
+      **Status:** working | **Priority:** high | **Category:** personal-finance | **Subcategory:** tax-preparation
+
+      **Repo:** [''achantas-data''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#206
+    title: 'WRK-5093: 2025 SKEstates Inc tax preparation — C-Corp (Form 1120)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/206
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:personal-finance
+      - domain:tax-preparation
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-5093: 2025 SKEstates Inc tax preparation — C-Corp (Form 1120)
+
+      **Status:** working | **Priority:** high | **Category:** personal-finance | **Subcategory:** tax-preparation
+
+      **Repo:** [''sabithaandkrishnaestates''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#532
+    title: 'WRK-448: feat(assetutilities/calculations): implement Larimore, D., et al, 1998 - Case Hist... — Larimore, D., et al, 1998   Case History   Firs...'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/532
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:tax-preparation
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#578
+    title: 'WRK-448: feat(assetutilities/calculations): implement Larimore, D., et al, 1998 - Case Hist... — Larimore, D., et al, 1998   Case History   Firs...'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/578
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:tax-preparation
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#691
+    title: 'WRK-590: Split activity_taxonomy.py into 2 focused modules'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/691
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - archived
+      - priority:P1
+      - domain:tax-preparation
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1992
+    title: 'TODO: File taxes using 1099 payment analysis, then close issue'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1992
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:infrastructure
+      - domain:tax-preparation
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Observation
+
+      The SKEstates inbox scan revealed an ACTIVE thread on the 1099-MISC discrepancy:
+
+      **Thread: Store #30150 - 2025 Form 1099-MISC Amount Discrepancy Inquiry**'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2295
+    title: 'WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2295
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:personal-finance
+      - domain:tax-preparation
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      File Texas franchise tax No Tax Due Reports + Public Information Reports (PIR) for both C-Corps via Texas Comptroller Webfile.
+
+      ## Entities'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2296
+    title: 'WRK: 2026 tax projections — SKEstates and AceEngineer income tax planning'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2296
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:personal-finance
+      - domain:tax-preparation
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Project 2026 federal income tax for both C-Corps to enable advance planning (estimated tax payments, NOL utilization, depreciation schedules).
+
+      ## Entities'

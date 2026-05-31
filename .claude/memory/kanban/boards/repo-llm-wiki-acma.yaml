@@ -85,6 +85,7 @@ cards:
       - type:poc
       - status:ready-for-scope
       - security-review
+      - status:artifact-ready
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -230,6 +231,16 @@ cards:
     title: 'B1546: extract technical references for sloshing methodology basis'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/20
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#21
+    title: 'B1546: execute sloshing-in-tanks CFD study from May 2026 email package'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/21
     gh_state: open
     gh_labels: []
     initial_status: triage

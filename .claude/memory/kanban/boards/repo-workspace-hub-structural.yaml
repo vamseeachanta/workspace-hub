@@ -9,4 +9,782 @@ board:
   description: 'FEM/structural — ANSYS/CalculiX, beams/frames, sections (domain:structural). Phase-1b board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#20
+    title: 'WRK-036: OrcaFlex structure deployment analysis - supply boat side deployment with structural'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/20
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - domain:structural
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-036: OrcaFlex structure deployment analysis - supply boat side deployment with structural loads
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** structural
+
+      **Repo:** [''acma-projects''] | **Complexity:** complex | **Machine:** licensed-win-1'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#192
+    title: 'WRK-634: feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/192
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - domain:structural
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-634: feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** structural
+
+      **Repo:** [''workspace-hub'', ''frontierdeepwater'', ''TBD-client2-repo''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#257
+    title: 'WRK-191: Field development case study catalog — structured reference library of real projects'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/257
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#297
+    title: 'WRK-191: Field development case study catalog — structured reference library of real projects'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/297
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#306
+    title: 'WRK-289: Research open source FEA programs for engineering assignments'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/306
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#310
+    title: 'WRK-291: Install recommended FEA programs on ace-linux-2'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/310
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#351
+    title: 'WRK-289: Research open source FEA programs for engineering assignments'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/351
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#355
+    title: 'WRK-291: Install recommended FEA programs on ace-linux-2'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/355
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#380
+    title: 'WRK-333: Establish OGManufacturing repo structure — README src specs tests scaffold'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/380
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#390
+    title: 'WRK-338: LNG tank structural checks — API 620 and EN 14620 thin-shell hoop stress'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/390
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#392
+    title: 'WRK-339: Aluminium structural module — Eurocode 9 and AA ADM member capacity checks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/392
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#394
+    title: 'WRK-340: Composite panel design tool — Classical Laminate Theory CLT strength checks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/394
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#415
+    title: 'WRK-354: Structural module — implement jacket and topside analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/415
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#425
+    title: 'WRK-333: Establish OGManufacturing repo structure — README src specs tests scaffold'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/425
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#435
+    title: 'WRK-338: LNG tank structural checks — API 620 and EN 14620 thin-shell hoop stress'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/435
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#437
+    title: 'WRK-339: Aluminium structural module — Eurocode 9 and AA ADM member capacity checks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/437
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#439
+    title: 'WRK-340: Composite panel design tool — Classical Laminate Theory CLT strength checks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/439
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#458
+    title: 'WRK-354: Structural module — implement jacket and topside analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/458
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#466
+    title: 'WRK-402: worldenergydata test structure consolidation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/466
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#511
+    title: 'WRK-402: worldenergydata test structure consolidation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/511
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#605
+    title: 'WRK-561: docs(digitalmodel): add calc_examples mapping — structural domain'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/605
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#628
+    title: 'WRK-572: docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/628
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#641
+    title: 'WRK-600: chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/641
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#647
+    title: 'WRK-561: docs(digitalmodel): add calc_examples mapping — structural domain'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/647
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#660
+    title: 'WRK-617: feat(digitalmodel/ansys): catalog and port APDL scripts from /mnt/ace to digitalmodel.ansys domain'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/660
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#669
+    title: 'WRK-572: docs(digitalmodel): map ANSYS .inp FEA models to structural/riser module tests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/669
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#681
+    title: 'WRK-600: chore(worldenergydata): fix src/ structure violations — docs in src, notebook in src, naming'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/681
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#967
+    title: 'WRK-617: feat(digitalmodel/ansys): catalog and port APDL scripts from /mnt/ace to digitalmodel.ansys domain'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/967
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:structural
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#968
+    title: 'WRK-634: feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/968
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:structural
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1133
+    title: 'WRK-101: Add mesh decimation/coarsening to mesh-utilities skill'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1133
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - domain:structural
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1260
+    title: 'WRK-1361: 2D engineering drawing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1260
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering-calculations
+      - domain:structural
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1361: 2D engineering drawing
+
+      **Status:** pending | **Priority:** high | **Category:** engineering-calculations | **Subcategory:** structural-dynamics
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1262
+    title: 'WRK-1363: 2D frame analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1262
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering-calculations
+      - domain:structural
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1363: 2D frame analysis
+
+      **Status:** pending | **Priority:** high | **Category:** engineering-calculations | **Subcategory:** structural-dynamics
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1265
+    title: 'WRK-1366: 2D vs 3D comparison'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1265
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering-calculations
+      - domain:structural
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1366: 2D vs 3D comparison
+
+      **Status:** pending | **Priority:** high | **Category:** engineering-calculations | **Subcategory:** structural-dynamics
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1274
+    title: 'WRK-5118: CalculiX B32 quadratic beam integration test with ccx'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1274
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-calculations
+      - domain:structural
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5118: CalculiX B32 quadratic beam integration test with ccx
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering-calculations
+
+      **Repo:** digitalmodel | **Parent:** WRK-5082'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1275
+    title: 'WRK-5119: CalculiX beam cross-section tests — CIRC and PIPE sections'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1275
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-calculations
+      - domain:structural
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5119: CalculiX beam cross-section tests — CIRC and PIPE sections
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering-calculations
+
+      **Repo:** digitalmodel | **Parent:** WRK-5082'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1279
+    title: 'WRK-5123: CalculiX plate-with-hole test fix — 2 pre-existing failures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1279
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-calculations
+      - domain:structural
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5123: CalculiX plate-with-hole test fix — 2 pre-existing failures
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering-calculations
+
+      **Repo:** digitalmodel'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1282
+    title: 'WRK-5124: INP writer: validate beam element/section compatibility and auto-reorder B32 connectivity'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1282
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-calculations
+      - domain:structural
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5124: INP writer: validate beam element/section compatibility and auto-reorder B32 connectivity
+
+      **Status:** Stage 1: Capture (in_progress) | **Priority:** medium | **Category:** engineering-calculations | **Subcategory:** calculix-solver
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1442
+    title: Integrate FEniCSx PDE solver into ACE ecosystem
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1442
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:structural
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: 'First-class Python FEM solver for custom PDE problems. pip-installable, LGPL-3.0, 1088 stars.
+
+      **Library**: [FEniCSx/DOLFINx](https://github.com/FEniCS/dolfinx)
+
+      **Why priority**: Core PDE solving capability with automatic code generation from variational forms. Enables bespoke structural/thermal analyses.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1453
+    title: Integrate ANYstructure DNV steel design tool
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1453
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:structural
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'DNV standards-based plate/cylinder design. MIT, Python.
+
+      **Library**: [ANYstructure](https://github.com/audunarn/ANYstructure)
+
+      **Why priority**: Buckling, fatigue, plate design checks per DNV-OS/RP standards. Directly relevant to offshore steel structures.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1497
+    title: Add AISC shapes database lookup for sectionproperties
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1497
+    gh_state: open
+    gh_labels:
+      - domain:structural
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      sectionproperties (#1452 evaluation) has no built-in AISC shapes database — users must supply dimensions manually via `i_section(d, b, t_f, t_w, r, n_r)`. This is error-prone and tedious for standard shapes.
+
+      ## Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1498
+    title: Production sectionproperties module in digitalmodel
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1498
+    gh_state: open
+    gh_labels:
+      - domain:structural
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      sectionproperties PoC (#1452) validated accuracy (<2% geometric, <0.4% CHS). Ready to graduate from `scripts/integrations/` to a production module.
+
+      ## Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1499
+    title: Composite/multi-material section analysis PoC with sectionproperties
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1499
+    gh_state: open
+    gh_labels:
+      - domain:structural
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      sectionproperties #1452 evaluation covered homogeneous steel only. Offshore structures frequently use composite sections: concrete-filled tubulars (CFT), grouted connections, steel-concrete composite beams.
+
+      ## Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1600
+    title: Cross-tool structural comparison framework — 2D solver vs OrcaFlex vs CalculiX
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1600
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:structural
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Identified in docs/roadmaps/orcawave-orcaflex-capability-roadmap.md (Gap §4.1) and docs/plans/2026-04-01-orcawave-orcaflex-intensive-plan.md (Wave 3 Task 3.4).\n\n## Problem\nThe parachute frame analysis exists in three solver contexts: 2D direct stiffness (frame_solver.py, working), OrcaFlex (planned #1264), and CalculiX FEM (potential). There''s no framework to compare results across solvers for validation.\n\n## Deliverables\n1. \n2. \n   -  class: add_result(), compare_reactions(), compare_deflections(), compare_member_forces(), compare_dynamic_amplification(), generate_report()\n3. \n\n## Context\n- 2D frame solver exists:  (working, tested)\n- 3D frame geometry exists: \n- OrcaFlex frame builder planned (#1264 static, #1292 dynamic)\n- Needed to validate that OrcaFlex frame results match 2D solver within tolerance\n\n## Dependencies\nDepends on: #1264 (OrcaFlex frame analysis)\nRelated: #1292 (dynamic snap load), #1242 (parent parachute issue)\nParent: #1567'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1695
+    title: 'ANSYS package: YAML-based pipeline spec — define full FEA workflow in a single YAML file'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1695
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:structural
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The ansys package now has mature components for geometry, material, loading, meshing, solving, and post-processing (after #1676). The next evolution is a single YAML spec file that defines an entire FEA workflow, similar to the OrcaWave DiffractionSpec pattern.
+
+      ## Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1698
+    title: 'ANSYS package: Solver queue integration — dispatch FEA jobs to licensed-win-1'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1698
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:structural
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The ansys package generates APDL scripts and batch launchers but has no integration with the solver queue infrastructure at `scripts/solver/` that dispatches jobs to licensed-win-1 (the machine with ANSYS licenses).
+
+      ## Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1959
+    title: Implement OpenTURNS fatigue reliability analysis module
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1959
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:engineering
+      - domain:structural
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Research in #187 evaluated OpenTURNS for fatigue reliability integration. Conclusion: strong candidate.
+
+      ## Key Findings'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1983
+    title: Implement OpenTURNS fatigue reliability analysis module
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1983
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:engineering
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

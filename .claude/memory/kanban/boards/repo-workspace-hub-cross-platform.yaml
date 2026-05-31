@@ -9,4 +9,223 @@ board:
   description: 'Cross-platform parity (Windows/macOS/Linux harness setup) (domain:cross-platform). Phase-1b board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#47
+    title: 'WRK-1117: Windows/Git Bash: fix comprehensive-learning push path + signal generation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/47
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - domain:cross-platform
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1117: Windows/Git Bash: fix comprehensive-learning push path + signal generation
+
+      **Status:** pending | **Priority:** medium | **Category:** tooling | **Subcategory:** cross-platform
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#48
+    title: 'WRK-1118: Cross-platform bash sweep — replace bc/python3/nproc in all scripts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/48
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - domain:cross-platform
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1118: Cross-platform bash sweep — replace bc/python3/nproc in all scripts
+
+      **Status:** pending | **Priority:** medium | **Category:** tooling | **Subcategory:** cross-platform
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#131
+    title: 'WRK-5013: Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/131
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - domain:cross-platform
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5013: Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection)
+
+      **Status:** pending | **Priority:** medium | **Category:** tooling | **Subcategory:** cross-platform
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** licensed-win-1'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2158
+    title: 'feat(operations): add Git Bash launcher and path-normalization bridge for Windows evidence writer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2158
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:cross-platform
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add the Git Bash launcher and path-normalization bridge for the Windows readiness evidence writer.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2164
+    title: 'test(operations): build cygpath/native-path fixture suite for Windows launcher bridge'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2164
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:cross-platform
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build the cygpath/native-path fixture suite for the Windows launcher bridge.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2229
+    title: 'feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2229
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:cross-platform
+      - status:working
+      - machine:licensed-win-1
+      - agent:claude
+      - agent:codex
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Now that the repo-side Windows parity hardening is in place (tracked readiness proof path, MemoryBridgeSync scheduler task, bridge script cross-platform updates), run the live validation on `licensed-win-1` and replace the bootstrap placeholder artifact with real machine evidence.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2257
+    title: 'fix(windows-scheduler): align RepoSync cadence with schedule-tasks source of truth'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2257
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:cross-platform
+      - machine:licensed-win-1
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Align the Windows Scheduled Task registration for `RepoSync` with `config/scheduled-tasks/schedule-tasks.yaml`.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2742
+    title: 'plan(hermes): Windows and macOS Telegram/Hermes dispatch parity path'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2742
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:operations
+      - domain:machine-setup
+      - domain:cross-platform
+      - machine:dev-primary
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Plan how Windows and macOS machines can move from status-only/manual machines to safe Telegram/Hermes dispatch targets.
+
+      ## Current state'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2751
+    title: 'Cross-platform harness setup: integrate AI-provider bootstrap, auth orchestration, macOS+PowerShell, per-machine status registry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2751
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:harness
+      - domain:machine-setup
+      - domain:cross-platform
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Context
+
+      Following a thorough cross-machine reproducibility assessment (parent conversation 2026-05-19), the AI-provider harness setup on a fresh machine has gaps relative to "identical behavior" parity. Most infrastructure exists; the work is **gap-fill against `scripts/setup/new-machine-setup.sh` (WRK-313)**, not greenfield.
+
+      ## Background — what already exists'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2753
+    title: 'Operational tracker: fresh-machine setup runs (evergreen — do not close)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2753
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - domain:machine-setup
+      - domain:cross-platform
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Purpose
+
+      This is the **operational tracker** for fresh-machine setup runs across the workspace-hub fleet. It is intentionally evergreen — never closed once opened. Each time someone bootstraps a new machine via the cross-platform setup tooling (built per [#2751](https://github.com/vamseeachanta/workspace-hub/issues/2751)), they post a comment on this issue with the machine''s harness-parity status report.
+
+      ## How operators use this issue'

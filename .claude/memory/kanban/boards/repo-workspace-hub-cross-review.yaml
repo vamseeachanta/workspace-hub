@@ -9,4 +9,538 @@ board:
   description: 'Cross-review enforcement + unreviewed-commit audits (domain:cross-review). Phase-1b board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#215
+    title: 'WRK-1006: chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/215
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#216
+    title: 'WRK-1007: fix(review): comprehensively test and troubleshoot submit-to-gemini.sh'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/216
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#217
+    title: 'WRK-1008: hardening(review): troubleshoot submit-to-codex.sh with cross-agent regression coverage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/217
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#236
+    title: 'WRK-1006: chore(review): troubleshoot submit-to-{claude,codex,gemini}.sh for agent-call reliability + comprehensive test suite'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/236
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#238
+    title: 'WRK-1007: fix(review): comprehensively test and troubleshoot submit-to-gemini.sh'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/238
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#240
+    title: 'WRK-1008: hardening(review): troubleshoot submit-to-codex.sh with cross-agent regression coverage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/240
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#662
+    title: 'WRK-640: chore(review): harden Claude and Gemini non-interactive review transport'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/662
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#670
+    title: 'WRK-644: feat(review): define Claude-specific compact review bundle for plan reviews'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/670
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#672
+    title: 'WRK-645: investigate(review): test Claude CLI file-write review artifact path'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/672
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#675
+    title: 'WRK-647: validate(review): test patched Claude wrapper against WRK-624 plan spec'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/675
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#678
+    title: 'WRK-648: validate(review): test patched Claude wrapper on full WRK-624 plan spec'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/678
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#679
+    title: 'WRK-649: validate(review): rerun full-bundle Claude review to natural 120s timeout'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/679
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#682
+    title: 'WRK-650: docs(review): codify Claude full-vs-compact bundle policy in workflow spec'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/682
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#684
+    title: 'WRK-651: review(workflow): apply Claude review-mode policy to WRK-624 final review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/684
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#685
+    title: 'WRK-652: review(workflow): attach final review artifacts and synthesis to WRK-624'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/685
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#696
+    title: 'WRK-657: fix(review): harden submit-to-claude.sh timeout cleanup and liveness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/696
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#711
+    title: 'WRK-686: standardization(ux): define and enforce canonical HTML templates for plan and review artifacts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/711
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#818
+    title: 'WRK-1037: cross-review hardening: uv readiness tests + Codex-missing user approval gate'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/818
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#929
+    title: 'WRK-1037: cross-review hardening: uv readiness tests + Codex-missing user approval gate'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/929
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:cross-review
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#969
+    title: 'WRK-640: chore(review): harden Claude and Gemini non-interactive review transport'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/969
+    gh_state: closed
+    gh_labels:
+      - domain:cross-review
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#973
+    title: 'WRK-644: feat(review): define Claude-specific compact review bundle for plan reviews'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/973
+    gh_state: closed
+    gh_labels:
+      - domain:cross-review
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#974
+    title: 'WRK-645: investigate(review): test Claude CLI file-write review artifact path'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/974
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#976
+    title: 'WRK-647: validate(review): test patched Claude wrapper against WRK-624 plan spec'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/976
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#977
+    title: 'WRK-648: validate(review): test patched Claude wrapper on full WRK-624 plan spec'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/977
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#978
+    title: 'WRK-649: validate(review): rerun full-bundle Claude review to natural 120s timeout'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/978
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:cross-review
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#979
+    title: 'WRK-650: docs(review): codify Claude full-vs-compact bundle policy in workflow spec'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/979
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#980
+    title: 'WRK-651: review(workflow): apply Claude review-mode policy to WRK-624 final review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/980
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#981
+    title: 'WRK-652: review(workflow): attach final review artifacts and synthesis to WRK-624'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/981
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:cross-review
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1326
+    title: 'WRK-5138: Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1326
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:cross-review
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5138: Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON
+
+      **Status:** Stage 1: Capture (in_progress) | **Priority:** medium | **Category:** engineering | **Subcategory:** infrastructure
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1331
+    title: 'WRK-1331: Fix cross-review.sh Codex dispatch crash — unguarded ls glob in count_wrk_codex_reviews()'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1331
+    gh_state: open
+    gh_labels:
+      - domain:cross-review
+      - wrk-item
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1514
+    title: Design minimal provider-neutral AI harness for orchestrator, coding-agent, and review ecosystem
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1514
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:mcp-servers
+      - domain:cross-review
+      - domain:agent-adapters
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1538
+    title: Verify cross-review adversarial enforcement across sessions
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1538
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:cross-review
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Follow-up to #1537. The cross-review gate scripts and Claude hook are deployed. Need to verify over 3-5 real sessions that adversarial review enforcement is actually firing and working correctly.
+
+      ## Verification checklist'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1736
+    title: 'chore: standardize cross-review verdict format across Codex and Gemini'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1736
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:ai-orchestration
+      - domain:cross-review
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      Cross-review logs use 7+ different verdict strings, making automated agreement analysis unreliable.
+
+      ## Observed Verdict Strings'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1882
+    title: Enable cross-review strict mode -- gate defaults to WARNING not blocking
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1882
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness/ops
+      - domain:cross-review
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Parent: #1839, related to #1515, #1537, #1538
+
+      The review enforcement scripts default to WARNING mode, meaning they print a warning but allow the commit/push to proceed. This has resulted in 542 commits since Mar 24 with only 1 review artifact.
+
+      ## Scripts affected'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1884
+    title: 'Cross-review enforcement: nightly audit cron for unreviewed engineering commits'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1884
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness/ops
+      - domain:cross-review
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Parent: #1839, related to #1512, #1515
+
+      Create a nightly cron job that scans for engineering commits without review evidence and auto-creates GitHub issues for remediation.
+
+      ## What it does'

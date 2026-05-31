@@ -9,4 +9,527 @@ board:
   description: 'CI + release-readiness (smoke battery, golden-task corpus, weekly publication) (domain:release-management). Phase-1b board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#409
+    title: 'WRK-348: Add root pyproject.toml to workspace-hub src/'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/409
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:release-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#452
+    title: 'WRK-348: Add root pyproject.toml to workspace-hub src/'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/452
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:release-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#856
+    title: 'WRK-1072: feat(harness): release management — semantic versioning + changelog for tier-1 repos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/856
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:release-management
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1004
+    title: 'WRK-1072: feat(harness): release management — semantic versioning + changelog for tier-1 repos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1004
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - domain:release-management
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1680
+    title: Validate harness-update rollback with simulated tool breakage (#1668 follow-up)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1680
+    gh_state: open
+    gh_labels:
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Simulate broken tools to validate that health checks, rollback, and alerting actually work.
+
+      ## Test plan
+
+      ### Test 1: Hermes health check catches broken import'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1681
+    title: Supply chain hardening for AI harness updates (#1668 follow-up)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1681
+    gh_state: open
+    gh_labels:
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Both Codex and Gemini flagged supply chain security as CRITICAL during #1668 review.
+
+      ## Current state
+
+      - Major version bumps blocked'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2106
+    title: 'chore(reporting): define canonical artifact model for weekly ecosystem review outputs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2106
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Define the canonical artifact location and history model for weekly ecosystem review outputs so findings remain accessible, comparable over time, and actionable.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2122
+    title: 'feat(reporting): add weekly ecosystem scorecard with trend deltas and regression flags'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2122
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add a weekly ecosystem scorecard with trend deltas and regression flags.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2139
+    title: 'feat(reporting): define weekly review artifact schema and canonical output layout'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2139
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Define the weekly review artifact schema and canonical output layout.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2146
+    title: 'feat(reporting): add versioned schema spec for weekly ecosystem review run artifacts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2146
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add the versioned schema spec for weekly ecosystem review run artifacts.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2153
+    title: 'feat(reporting): implement weekly review history index and latest manifest writer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2153
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Implement the weekly review history index and latest manifest writer.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2159
+    title: 'feat(reporting): build publication bundle assembler for weekly review outputs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2159
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build the publication bundle assembler for weekly review outputs.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2177
+    title: 'feat(reporting): implement atomic weekly publication promotion with staged latest/history swap'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2177
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Implement atomic weekly publication promotion with staged latest/history swap.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2178
+    title: 'feat(reporting): add bundle checksum manifest and tree-diff helper for assembled publication outputs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2178
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add the bundle checksum manifest and tree-diff helper for assembled weekly publication outputs.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2183
+    title: 'feat(reporting): add publication rollback journal and recover-promotion command'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2183
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add the publication rollback journal and recover-promotion command.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2184
+    title: 'feat(reporting): enforce manifest-driven pre-promotion gate for staged weekly publication bundles'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2184
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Enforce the manifest-driven pre-promotion gate for staged weekly publication bundles.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2189
+    title: 'test(reporting): lock deterministic shared-asset canonical placement across latest/history/staged bundles'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2189
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Lock deterministic shared-asset canonical placement across latest/history/staged bundles.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2190
+    title: 'feat(reporting): add manifest-indexed pruning for orphaned shared assets after successful publication'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2190
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add manifest-indexed pruning for orphaned shared assets after successful publication.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2399
+    title: 'feat(ai-orchestration): define next-model-release readiness contract for repo ecosystem'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2399
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Create a repo-ecosystem readiness program for upcoming model/provider releases so new Claude/Codex/Gemini/Hermes capabilities can be adopted without breaking workflow discipline, portability, or review quality.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2408
+    title: 'feat(release-readiness): workspace-hub-only model-release readiness contract and upgrade playbook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2408
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:release-management
+      - status:done
+      - agent:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2409
+    title: 'feat(release-readiness): fixture-backed golden-task corpus for model-release comparisons'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2409
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Create the fixture-backed golden-task corpus for model-release comparisons. This is the evaluation-corpus slice split out of #2399.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2410
+    title: 'feat(release-readiness): smoke-battery schema and runner contract (no runner implementation)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2410
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Define the schema and minimal runner contract for the model-release smoke battery without implementing the runner itself.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2411
+    title: 'feat(release-readiness): tier-1 provider entrypoint and parity surface inventory'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2411
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:release-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2412
+    title: 'feat(release-readiness): deterministic follow-up issue creation and dedup policy'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2412
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Define deterministic policy for creating, deduplicating, and idempotently updating follow-up issues discovered during model-release readiness analysis.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2421
+    title: 'chore(control-plane): normalize workspace-hub provider entrypoint surfaces'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2421
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:release-management
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Normalize workspace-hub provider-facing entry surfaces so discoverability and workflow anchors are consistent across root entry files and provider-specific adapter files.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2663
+    title: 'chore(harness): adopt HTML as default artifact format — .claude/rules/artifact-format.md'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2663
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:release-management
+      - status:plan-review
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Adopt HTML as the default output format for rich human-facing artifacts (plans, specs, reports, design prototypes, PR explainers, custom editor UIs), while keeping Markdown for agent-facing harness files (CLAUDE.md, AGENTS.md, `.claude/rules/`, `.claude/skills/`, plan-template body). Codify the decision rule in `.claude/rules/artifact-format.md` and **deliberately do NOT create a `/html` skill**.
+
+      ## Why'

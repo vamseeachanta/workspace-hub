@@ -9,4 +9,1021 @@ board:
   description: 'Go-to-market / client-conversion / outreach work tracked in workspace-hub (domain:gtm). Phase-1a board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#108
+    title: 'WRK-148: ACE-GTM: A&CE Go-to-Market strategy stream'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/108
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-148: ACE-GTM: A&CE Go-to-Market strategy stream
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** business | **Subcategory:** gtm
+
+      **Repo:** [''aceengineer-website'', ''aceengineer-strategy'', ''workspace-hub''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#117
+    title: 'WRK-470: feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/117
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-470: feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** business | **Subcategory:** gtm
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#191
+    title: 'WRK-632: feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/191
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-632: feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients)
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** business | **Subcategory:** gtm
+
+      **Repo:** [''frontierdeepwater'', ''TBD-client2-repo''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#197
+    title: 'WRK-665: docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/197
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-665: docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** business | **Subcategory:** gtm
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#808
+    title: 'WRK-1019: feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/808
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:gtm
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#898
+    title: 'WRK-1019: feat(skills): repo-portfolio-steering skill — balance harness vs technical work to hit GTM objectives'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/898
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - archived
+      - domain:gtm
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1669
+    title: '[WRK] GTM: Vessel Installation Contractor Email Outreach Campaign'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1669
+    gh_state: open
+    gh_labels:
+      - cat:business
+      - cat:strategy
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Objective
+
+      Prepare and execute a go-to-market (GTM) email outreach campaign targeting **vessel installation contractors** as the first client segment for ACE Engineer consulting and AI-powered engineering services.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1670
+    title: '[WRK] GTM: Energy Company Job Market Scan — Map Hiring Demand to ACE Engineer Consulting Offerings'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1670
+    gh_state: closed
+    gh_labels:
+      - cat:business
+      - cat:strategy
+      - domain:gtm
+      - agent:gemini
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1671
+    title: '[WRK] GTM: Systematic US-Wide Job Market Scan — Match All Hiring Demand to ACE Engineer Services'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1671
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:business
+      - cat:strategy
+      - domain:gtm
+      - agent:gemini
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1676
+    title: '[WRK] Market-Driven Repo Development Roadmap — Align digitalmodel Packages to Job Market Demand'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1676
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - cat:strategy
+      - domain:gtm
+      - agent:gemini
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1692
+    title: 'Demo notebook: S-N curve library API — 221 curves visualization and comparison'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1692
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1792
+    title: 'feat(freespan): GTM demo notebook — free-span VIV assessment walkthrough'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1792
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The DNV-RP-F105 free-span VIV module is now complete with 93 passing tests.
+
+      A Jupyter notebook demonstrating the full workflow would serve as:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1993
+    title: '[WRK] Rigzone job application pipeline — resume tailoring and submission'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1993
+    gh_state: open
+    gh_labels:
+      - cat:business
+      - cat:strategy
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Scraped and scored 13 Rigzone job postings against Vamsee''s profile (23yr PE, offshore/subsea, Chevron 16yr, Python/digital transformation). Chevron Project Manager III (R000065929) was the best fit at 9/10 but confirmed EXPIRED on careers.chevron.com.
+
+      ## Top Candidates to Track'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1994
+    title: '[WRK] Register for GLG, AlphaSights, Guidepoint expert networks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1994
+    gh_state: open
+    gh_labels:
+      - cat:business
+      - cat:strategy
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Expert networks are the HIGHEST ROI ad-hoc income channel. Zero application hassle vs. full job applications. 1-hour phone consultations with hedge funds, PE firms, law firms about offshore/marine engineering topics. Your 23yr PE + OrcaFlex + Chevron + BP background is exactly what they seek.
+
+      ## Platforms to Register'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2016
+    title: 'feat(gtm): client conversion pipeline -- turn repo capability into paying clients'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2016
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:business
+      - cat:strategy
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: "     1|## Mission: Convert engineering capability to paying clients\n     2|\n     3|> \"All of this is paper work until I get some clients.\""
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2022
+    title: 'feat: publish repo knowledge bases as aceengineer.com content -- engine for client acquisition'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2022
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:business
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2030
+    title: 'publish: methodology docs to aceengineer.com -- 4 pages for client-facing technical content'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2030
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:business
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2035
+    title: 'feat(gtm): manim-based engineering explainer pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2035
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build a Manim-based engineering explainer pipeline that turns key engineering analyses into reusable animated assets for GTM, demos, and public-facing technical content.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2037
+    title: 'feat(gtm): manim mooring layout / force explainer animation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2037
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build the second Manim engineering explainer: mooring layout with force/excursion visualization.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2038
+    title: 'feat(gtm): manim installation sequence / operability envelope animation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2038
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build the third Manim engineering explainer: offshore installation sequence with vessel operability envelope.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2043
+    title: 'feat(gtm): mooring layout force explainer animation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2043
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2087
+    title: 'feat(gtm): retrofit --from-cache flag to Demo 2 wall thickness script'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2087
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:gtm
+      - gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2090
+    title: 'feat(gtm): 1-page branded PDF capability summary for email outreach'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2090
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:gtm
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2091
+    title: 'docs(gtm): demo gallery README with run commands and chart previews'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2091
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:documentation
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2093
+    title: 'test(gtm): demo validation runner — verify all 5 demos with --from-cache'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2093
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2095
+    title: 'feat(gtm): expert network profile content — GLG/AlphaSights/Guidepoint (#1994)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2095
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:gtm
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2098
+    title: 'feat(gtm): engineering capability map — discipline × repo × demo matrix'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2098
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2099
+    title: 'feat(gtm): LinkedIn content calendar — 12 posts for first month'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2099
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2114
+    title: 'feat(gtm): VIV demo notebook — freespan walkthrough for pipeline engineers (#1792)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2114
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Purpose
+
+      Create a Jupyter notebook walkthrough of Demo 1 (freespan/VIV) for pipeline engineers. Like the S-N notebook but focused on span assessment workflow.
+
+      ## Content'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2115
+    title: 'feat(gtm): mooring demo — GTM Demo 6 for station-keeping outreach'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2115
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2116
+    title: 'feat(gtm): aceengineer.com demo gallery page — embed GIFs + report links'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2116
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:gtm
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2117
+    title: 'feat(gtm): resume + cover letter generator for Rigzone applications (#1993)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2117
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Purpose
+
+      Automate resume tailoring for offshore engineering job applications. Vamsee applies to Rigzone positions not to get hired but to generate consulting conversations.
+
+      ## Deliverable'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2118
+    title: 'chore(gtm): run all 5 demos end-to-end and validate HTML reports'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2118
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2288
+    title: 'feat(gtm): upgrade remaining demo GIFs to workflow-style format'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2288
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2342
+    title: 'fix(gtm): publish detail pages for Demos 1-4 to aceengineer.com (currently 404)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2342
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:business
+      - domain:gtm
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2343
+    title: 'fix(gtm): demo gallery links only to Demo 5 — wire remaining 4 detail-page links'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2343
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - domain:gtm
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2344
+    title: 'feat(gtm): complete #2090 — render branded 1-page capability-summary PDF leave-behind'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2344
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:business
+      - domain:gtm
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2345
+    title: 'feat(gtm): wire GTM demos into unified smoke runner — prevent silent demo rot'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2345
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:engineering
+      - cat:harness
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      #2118 validated all 5 GTM demos once on 2026-04-15 as a manual chore. No regression gate exists. A refactor in digitalmodel or a data-file move will break charts silently; a prospect finds out before we do.
+
+      ## Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2346
+    title: 'feat(gtm): prospect-data customized-demo pipeline — 48hr turnaround + pre-staged vessel templates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2346
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - domain:gtm
+      - status:working
+      - agent:codex
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2347
+    title: 'chore(gtm): reconcile stale tracker bodies for #2016, #1669, #117, #191 to shipped reality'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2347
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - domain:gtm
+      - machine:dev-primary
+      - review-backlog
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Four umbrella / strategy issues have bodies that predate the 2026-04-10 and 2026-04-15 shipping waves. Reviewers can''t tell what''s open vs. shipped.
+
+      ## Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2348
+    title: 'triage: promote #1707/#1708/#1709 from review-backlog — live scanner has ToS/rate-limit exposure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2348
+    gh_state: closed
+    gh_labels:
+      - bug
+      - priority:high
+      - domain:gtm
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2349
+    title: 'docs(gtm): refresh 30-day plan — #1809 closed, update dependency table + Day-7 checkpoint'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2349
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      `docs/gtm/gtm-plan-30day.md` lists #1809 as a Week-1 dependency. #1809 closed 2026-04-15 and workflow GIFs (#2288) landed. Plan doc still stale.
+
+      ## Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2350
+    title: 'verify: #2043 mooring animation render outputs — confirm published or reopen'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2350
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      #2043 closed with Manim scene script but acceptance also required rendered GIF + MP4 and README update. Script exists; render and publish status are unverified.
+
+      ## Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2351
+    title: 'feat(gtm): Day-7/14/21/30 checkpoint dashboard — surface plan metrics for weekly review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2351
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - domain:gtm
+      - machine:dev-primary
+      - claude:design
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      The 30-day GTM plan contains checkpoint tables at Day 7/14/21/30 and a Success Metrics table. Nothing surfaces progress against them; no tripwire for "No paid engagement by Day 30".
+
+      ## Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2355
+    title: 'chore(website): pin Node engines in aceengineer-website package.json + vercel.json'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2355
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:engineering
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      The `aceengineer-website/package.json` has no `engines` field and `vercel.json` does not pin a Node runtime version. This leaves the build environment implicit and susceptible to silent drift when Vercel''s default Node image changes.
+
+      ## Why accepted as debt (not blocker)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2356
+    title: 'feat(ci): add GH Actions workflow to run npm test on aceengineer-website PRs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2356
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:harness
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      `aceengineer-website/` has no GitHub Actions workflow under `.github/workflows/`. The Jest link-check suite runs only locally via `npm test`, so PRs can merge without automated verification that internal links resolve.
+
+      ## Why accepted as debt (not blocker)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2357
+    title: 'chore(seo): backfill sitemap.xml apex-host entries to www host (canonical redirect target)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2357
+    gh_state: closed
+    gh_labels:
+      - priority:low
+      - cat:business
+      - domain:gtm
+      - status:done
+      - agent:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2367
+    title: 'feat(gtm): wire capability-summary-v1.pdf download link from gallery CTA + 4 methodology pages (#2344 follow-up)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2367
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:business
+      - domain:gtm
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2391
+    title: "fix(website): sitemap.xml is 404 in production — build.js doesn't copy to dist/"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2391
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:business
+      - domain:gtm
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2407
+    title: 'sec(aceengineer-website): triage 29 dependabot vulns — 1 critical, 15 high'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2407
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:infrastructure
+      - domain:gtm
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2422
+    title: 'feat(gtm): extend capability-summary-v1.pdf CTA to 5 demo detail pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2422
+    gh_state: closed
+    gh_labels:
+      - priority:low
+      - cat:business
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2554
+    title: 'feat(gtm): weekly vessel contractor outreach matrix for April target'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2554
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:business
+      - cat:strategy
+      - domain:gtm
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2555
+    title: 'feat(gtm): vessel capability charts for contractor brochure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2555
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:business
+      - cat:strategy
+      - domain:gtm
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2556
+    title: 'feat(gtm): vessel contractor brochure and outbound send tracker'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2556
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:business
+      - cat:strategy
+      - domain:gtm
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2557
+    title: 'chore(productivity): weekly work-pattern review and flow hacks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2557
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:ai-orchestration
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Weekly Business Brain issue: review the owner''s full work pattern and recommend productivity hacks that make work flow faster.
+
+      ## Business Brain target'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2560
+    title: 'DATA(gtm): fill deep-link evidence for high-priority vessel contractor targets'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2560
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:business
+      - domain:gtm
+      - status:done
+      - type:follow-up
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2561
+    title: 'feat(gtm): FOWT mooring screening worked example for wind-contractor outreach'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2561
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:business
+      - domain:gtm
+      - type:follow-up
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2562
+    title: 'DATA(gtm): expand GoM niche vessel-contractor evidence lane'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2562
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:business
+      - domain:gtm
+      - type:follow-up
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2577
+    title: 'feat(gtm): send tracker + legal/evidence sanity review for vessel-contractor brochure (#2556 follow-up)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2577
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:business
+      - domain:gtm
+      - type:follow-up
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2578
+    title: 'DATA(gtm): repair 14 broken evidence URLs in vessel-contractor matrix (Adv-C F1)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2578
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:business
+      - domain:gtm
+      - review-backlog
+      - type:follow-up
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2640
+    title: 'feat(gtm): worldenergydata production decline forecast — shareable Jupyter notebook for GTM demo'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2640
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Context
+
+      Issue [#117](https://github.com/vamseeachanta/workspace-hub/issues/117) acceptance criteria includes:
+
+      > Build shareable Jupyter notebook: production decline forecast (worldenergydata)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2729
+    title: 'feat(architecture): define report layer outputs, publication surfaces, and evidence rules'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2729
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:documentation
+      - domain:reporting
+      - domain:gtm
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

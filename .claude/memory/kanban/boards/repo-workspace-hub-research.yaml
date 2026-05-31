@@ -9,4 +9,176 @@ board:
   description: 'Domain-knowledge research sweeps + expert mapping (domain:research). Phase-1b board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#68
+    title: 'WRK-1181: Create research-and-literature-gathering skill for engineering categories'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/68
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:skills
+      - domain:research
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#226
+    title: 'WRK-1183: Create dark intelligence workflow skill — Excel extraction to clean implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/226
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:skills
+      - archived
+      - domain:research
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#260
+    title: 'WRK-1183: Create dark intelligence workflow skill — Excel extraction to clean implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/260
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:skills
+      - archived
+      - domain:research
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#463
+    title: 'WRK-393: Evaluate Polymathic AI — The Well for ecosystem integration'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/463
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:research
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#507
+    title: 'WRK-393: Evaluate Polymathic AI — The Well for ecosystem integration'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/507
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:research
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1393
+    title: 'WRK-1393: Add Equinor ASA Databricks marketplace as oil and gas data source'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1393
+    gh_state: open
+    gh_labels:
+      - domain:research
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1394
+    title: 'WRK-1394: Add Equinor/Norce U7 reference data as curated dataset'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1394
+    gh_state: open
+    gh_labels:
+      - domain:research
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1395
+    title: 'WRK-1395: Add Equinor Northern Lights dataset as curated data'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1395
+    gh_state: open
+    gh_labels:
+      - domain:research
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1667
+    title: 'Reservoir package: add well correlation and facies analysis functions (#1633 follow-up)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1667
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:research
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context\n#1633 refactored `stratigraphic.py` from a raw script to an importable module with 5 public functions. The reservoir package now has a clean base for expansion.\n\n## Next steps\n1. Add `well_correlation.py` — compute and plot formation correlations between wells\n2. Add `facies_analysis.py` — statistical analysis of facies distributions per well/zone\n3. Add petrophysical cutoff functions (net-to-gross, pay zone identification)\n4. Expand test suite from 8 to 20+ tests\n5. Move reservoir package from SKELETON toward DEVELOPMENT maturity\n\n## Dependencies\n- Requires #1633 (done — module refactored)\n- Related: #1645 (docstring uplift wave 2 includes reservoir)\n'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2667
+    title: 'Feature: Domain Knowledge Sweep — systematic multi-source research → coverage map → implementation issues'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2667
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:knowledge-domain
+      - cat:research
+      - domain:research
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build a systematic workflow that audits a single engineering domain across **all relevant knowledge surfaces** (academic, standards, industry practice, social/marketing, codebase) and emits a coverage map + a tree of subissues capturing every implementation gap.
+
+      This formalizes the ad-hoc LinkedIn-extraction pattern (`field-dev-code-recon` skill) into a defensible knowledge-acquisition system. Per memory feedback (`feedback_llm_wiki_concept_pages_need_public_references`), LinkedIn-only sourcing fails day-one lint — comprehensive sourcing is required for engineering defensibility.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2714
+    title: 'research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2714
+    gh_state: open
+    gh_labels:
+      - cat:knowledge-domain
+      - cat:research
+      - domain:research
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Goal
+
+      Produce a **data-grounded** analysis of (1) the trajectory of Gulf of Mexico ("Gulf of America" in 2025+ federal nomenclature) crude oil and natural gas production over the last 25 years, (2) the technical and economic role of the **Lower Tertiary / Wilcox / Paleogene** play within that trajectory, and (3) whether Lower Tertiary is in fact strategically important for US energy security — or not.
+
+      The conclusion must follow from the data. **The analysis is NOT to be written toward a predetermined conclusion** — neither pro nor con the FDAS / Frontier Deepwater thesis. If the EIA / BSEE / BOEM / USGS / IEA data supports the thesis, say so and show why. If it contradicts the thesis or qualifies it heavily, say that and show why.'

@@ -2857,3 +2857,16 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#656
+    title: 'feat(gtm/parametric): demo_01 §4 — Results Store (SQLite + CSV/manifest, per-case promoted-axis cols)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/656
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
