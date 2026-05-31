@@ -659,21 +659,3 @@ cards:
       `codex-cli 0.130.0` (current installed via `~/.npm-global/bin/codex`) reproduces the v0.124-era stdin-hang regression on **both** stdin and positional invocations, **and** affects Hermes-routed Codex calls because `hermes -z` shells out to `codex exec` subprocess for tool execution. Multiple downstream paths are blocked.
 
       ## Reproduction (verified 2026-05-15)'
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2888
-    title: 'feat(workstations): AI-tool version-currency cell (installed vs latest) for all providers [#2887 R1]'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2888
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:medium
-      - cat:harness
-      - domain:ai-tools
-      - domain:workstations
-      - machine:multi
-      - status:needs-plan
-      - gate:completeness
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''

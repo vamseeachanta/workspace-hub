@@ -9,4 +9,302 @@ board:
   description: 'workspace-hub marine-field-dev subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1842
+    title: 'epic: field development analysis system — concept selection, economics, facility sizing, FDP'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1842
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Epic: Field Development Analysis System
+
+      ### Current State
+
+      11 implemented areas exist but are scattered and not integrated:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1844
+    title: 'feat(field-dev): CAPEX/OPEX estimation models — parametric cost curves for offshore facilities'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1844
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## CAPEX/OPEX Estimation Models
+
+      ### What
+
+      Parametric cost estimation for offshore field development screening.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1845
+    title: 'feat(field-dev): production profile generator — decline curves, plateau optimization, reserves'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1845
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Production Profile Generator
+
+      ### Current State
+
+      Basic Arps decline exists (marine_ops/reservoir/):'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1846
+    title: 'feat(field-dev): facility sizing — separator, compressor, water injection, power generation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1846
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Facility Sizing Calculations
+
+      ### What
+
+      Process equipment sizing for topsides weight and cost estimation.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1848
+    title: 'feat(field-dev): wire existing scattered modules into integrated FDP workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1848
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Integrate Scattered Field Development Modules
+
+      ### What
+
+      11 existing code areas are scattered across 4 repos. Create an integration'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1861
+    title: 'data: build SubseaIQ-to-field-development bridge — concept screening benchmarks from real projects'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1861
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## SubseaIQ → Field Development Benchmark Bridge
+
+      ### What
+
+      Once SubseaIQ data is scraped, build the bridge to use it as benchmark'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1866
+    title: 'feat(field-dev): worldenergydata unified production client as field development data backbone'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1866
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Unified Production Client → Field Development Data Backbone
+
+      ### Context
+
+      worldenergydata has a unified production client wrapping 8 regional sources'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1897
+    title: 'Claude: field development system implementation sprint (#1843+#1844+#1845+#1846+#1847+#1848)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1897
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Field Development Analysis System — Implementation Sprint
+
+      ### Claude tasks (implementation)
+
+      1. #1843 Concept selection framework — hub vs standalone, wet vs dry tree'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1912
+    title: 'Claude: implementation sprint — field dev, naval arch, dark-intel, governance'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1912
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - machine:dev-primary
+      - dark-intelligence
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: 'After Gemini planning completes, Claude executes across 4 domains:
+
+      Field Dev (#1897): #1843 concept selection, #1844 CAPEX/OPEX, #1845 production profile, #1846 facility sizing, #1847 subsea arch, #1848 integrated FDP, #1858 worldenergydata FDAS, #1866 production client
+
+      Naval Arch (#1898): #1853 curves_of_form, #1851 gyradius, #1850 floating platform, #1852 trim/ballast, #1854 tonnage, #1859 worldenergydata integration'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1928
+    title: Extract 419 marine Excel calculation references → digitalmodel mapping
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1928
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data-pipeline
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      419 marine Excel calculation references identified in `data/catalog.yaml`. These contain recurring calculation templates that should be mapped to digitalmodel modules or extracted as reusable code.
+
+      ## Plan Reference'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1935
+    title: 'Batch 1: Ballymore Jumper Lift + Mudmat Analysis — 10 workbooks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1935
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '# Batch 1: Ballymore Jumper Lift + Mudmat Analysis
+
+      **Source**: `engineering_workbooks/ballymore/` (10 workbooks)
+
+      **Machine**: ws014 (Windows)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1937
+    title: 'Batch 3: Installation Engineering References — 18 workbooks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1937
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '# Batch 3: Installation Engineering References
+
+      **Source**: `engineering_workbooks/references/` + `energy_engineering/` plate buckling
+
+      **Machine**: ws014 (Windows)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1940
+    title: 'Batch 6: Shell Perdido + VMCast + Production Eng Library — 71 workbooks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1940
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '# Batch 6: Shell Perdido Manifold + VMCast + Production Engineering
+
+      **Source**: `engineering_workbooks/shell_perdido_south/`, `engineering_workbooks/BP_MD2_FJR_vmcast/`, `client_projects/energy_engineering/`
+
+      **Machine**: ws014 (Windows)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2032
+    title: 'TASK: Write HLV and pipelay vessel spec JSON files from research data'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2032
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:marine-field-dev
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Web research subagents have collected vessel specifications for two datasets:
+
+      ### HLV Vessels (#1798)'
