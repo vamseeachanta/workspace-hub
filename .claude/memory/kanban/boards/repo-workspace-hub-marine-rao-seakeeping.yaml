@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-marine-rao-seakeeping
+  display_name: workspace-hub · marine-rao-seakeeping
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: marine-rao-seakeeping
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'workspace-hub marine-rao-seakeeping subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
+
+    '
+cards: []

@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-marine-orcaflex
+  display_name: workspace-hub · marine-orcaflex
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: marine-orcaflex
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'workspace-hub marine-orcaflex subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
+
+    '
+cards: []

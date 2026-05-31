@@ -159,6 +159,8 @@ manifest:
     - repo-workspace-hub-cv-strategy
     - repo-workspace-hub-data
     - repo-workspace-hub-document-intelligence
+    - repo-workspace-hub-document-intelligence-indexing
+    - repo-workspace-hub-document-intelligence-summarization
     - repo-workspace-hub-engineering
     - repo-workspace-hub-frontend-design
     - repo-workspace-hub-gtm
@@ -166,20 +168,40 @@ manifest:
     - repo-workspace-hub-hydrodynamics
     - repo-workspace-hub-knowledge
     - repo-workspace-hub-knowledge-management
+    - repo-workspace-hub-knowledge-management-corpus
+    - repo-workspace-hub-knowledge-management-platform
     - repo-workspace-hub-marine
+    - repo-workspace-hub-marine-field-dev
+    - repo-workspace-hub-marine-orcaflex
+    - repo-workspace-hub-marine-oss-tools
+    - repo-workspace-hub-marine-rao-seakeeping
+    - repo-workspace-hub-marine-solver-queue
     - repo-workspace-hub-naval-architecture
     - repo-workspace-hub-notification
     - repo-workspace-hub-ops
+    - repo-workspace-hub-pipeline-field-dev
+    - repo-workspace-hub-pipeline-software
+    - repo-workspace-hub-pipeline-subsea
     - repo-workspace-hub-refactor
     - repo-workspace-hub-release-management
+    - repo-workspace-hub-repo-organization-cleanup-migration
+    - repo-workspace-hub-repo-organization-structure
     - repo-workspace-hub-research
     - repo-workspace-hub-session
+    - repo-workspace-hub-skills-harness
+    - repo-workspace-hub-skills-lifecycle
     - repo-workspace-hub-structural
     - repo-workspace-hub-subsea-risers
     - repo-workspace-hub-tax-preparation
+    - repo-workspace-hub-testing-ci-health
+    - repo-workspace-hub-testing-reporting-validation
+    - repo-workspace-hub-testing-suite-triage
     - repo-workspace-hub-work-queue
     - repo-workspace-hub-workflow
     - repo-workspace-hub-workstations
+    - repo-workspace-hub-workstations-fleet-equivalence
+    - repo-workspace-hub-workstations-machine-bringup
+    - repo-workspace-hub-workstations-windows-readiness
   - slug: repo-worldenergydata
     tier: repo
     repo: vamseeachanta/worldenergydata
@@ -618,6 +640,182 @@ manifest:
     parent_slug: repo-workspace-hub
     workspace_path: /mnt/local-analysis/workspace-hub
     file: boards/repo-workspace-hub-subsea-risers.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-document-intelligence-indexing
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: document-intelligence-indexing
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-document-intelligence-indexing.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-document-intelligence-summarization
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: document-intelligence-summarization
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-document-intelligence-summarization.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-knowledge-management-corpus
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: knowledge-management-corpus
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-knowledge-management-corpus.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-knowledge-management-platform
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: knowledge-management-platform
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-knowledge-management-platform.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-marine-field-dev
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: marine-field-dev
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-marine-field-dev.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-marine-orcaflex
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: marine-orcaflex
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-marine-orcaflex.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-marine-oss-tools
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: marine-oss-tools
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-marine-oss-tools.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-marine-rao-seakeeping
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: marine-rao-seakeeping
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-marine-rao-seakeeping.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-marine-solver-queue
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: marine-solver-queue
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-marine-solver-queue.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-pipeline-field-dev
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: pipeline-field-dev
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-pipeline-field-dev.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-pipeline-software
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: pipeline-software
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-pipeline-software.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-pipeline-subsea
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: pipeline-subsea
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-pipeline-subsea.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-repo-organization-cleanup-migration
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: repo-organization-cleanup-migration
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-repo-organization-cleanup-migration.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-repo-organization-structure
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: repo-organization-structure
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-repo-organization-structure.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-skills-harness
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: skills-harness
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-skills-harness.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-skills-lifecycle
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: skills-lifecycle
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-skills-lifecycle.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-testing-ci-health
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: testing-ci-health
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-testing-ci-health.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-testing-reporting-validation
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: testing-reporting-validation
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-testing-reporting-validation.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-testing-suite-triage
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: testing-suite-triage
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-testing-suite-triage.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-workstations-fleet-equivalence
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: workstations-fleet-equivalence
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-workstations-fleet-equivalence.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-workstations-machine-bringup
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: workstations-machine-bringup
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-workstations-machine-bringup.yaml
+    card_count: 0
+  - slug: repo-workspace-hub-workstations-windows-readiness
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: workstations-windows-readiness
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-workstations-windows-readiness.yaml
     card_count: 0
   - slug: repo-worldenergydata-gtm
     tier: domain

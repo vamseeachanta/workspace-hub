@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-testing-reporting-validation
+  display_name: workspace-hub · testing-reporting-validation
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: testing-reporting-validation
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'workspace-hub testing-reporting-validation subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
+
+    '
+cards: []

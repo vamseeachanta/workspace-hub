@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-knowledge-management-corpus
+  display_name: workspace-hub · knowledge-management-corpus
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: knowledge-management-corpus
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'workspace-hub knowledge-management-corpus subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
+
+    '
+cards: []

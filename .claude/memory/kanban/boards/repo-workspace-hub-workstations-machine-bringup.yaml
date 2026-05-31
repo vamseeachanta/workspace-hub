@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-workstations-machine-bringup
+  display_name: workspace-hub · workstations-machine-bringup
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: workstations-machine-bringup
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'workspace-hub workstations-machine-bringup subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
+
+    '
+cards: []

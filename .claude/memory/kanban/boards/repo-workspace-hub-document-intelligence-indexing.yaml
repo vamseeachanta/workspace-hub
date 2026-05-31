@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-document-intelligence-indexing
+  display_name: workspace-hub · document-intelligence-indexing
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: document-intelligence-indexing
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'workspace-hub document-intelligence-indexing subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
+
+    '
+cards: []
