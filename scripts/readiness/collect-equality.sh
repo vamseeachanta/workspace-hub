@@ -43,8 +43,15 @@ fi
 if [[ -z "$MACHINE" ]]; then
   case "$HOST" in
     ace-linux-1*) MACHINE="dev-primary";; ace-linux-2*) MACHINE="dev-secondary";;
-    *macbook*) MACHINE="macbook-portable";; acma-ws014*) MACHINE="licensed-win-2";;
-    *) [[ "$OS" == "windows" ]] && MACHINE="licensed-win-1" || MACHINE="$HOST";;
+    *macbook*) MACHINE="macbook-portable";;
+    licensed-win-1*|acma-ansys05*) MACHINE="licensed-win-1";;
+    licensed-win-2*|acma-ws014*) MACHINE="licensed-win-2";;
+    *)
+      if [[ "$OS" == "windows" ]]; then
+        echo "collect-equality.sh: unknown Windows host '$HOST'; pass --machine licensed-win-1 or licensed-win-2" >&2
+        exit 1
+      fi
+      MACHINE="$HOST";;
   esac
 fi
 have() { command -v "$1" >/dev/null 2>&1; }
@@ -212,15 +219,27 @@ if git -C "$WS" rev-parse --git-dir >/dev/null 2>&1; then
   # that holds neither, which would false-STALE every worktree-based collection.
   gd=$(git -C "$WS" rev-parse --git-common-dir 2>/dev/null)
   [[ -n "$gd" && "$gd" != /* ]] && gd="${WS}/${gd}"
-  # FETCH_HEAD first: its mtime is the true last-fetch time (best freshness signal); fall back
-  # to the loose origin/main ref mtime (set when the ref last moved on fetch).
-  for ref in "${gd}/FETCH_HEAD" "${gd}/refs/remotes/origin/main"; do
-    if [[ -f "$ref" ]]; then
-      mt=$(date -r "$ref" +%s 2>/dev/null); now=$(date +%s 2>/dev/null)
-      [[ -n "$mt" && -n "$now" ]] && origin_ref_age_h=$(( (now - mt) / 3600 ))
-      break
+  # Age-check a fetch that proves origin/main. Prefer FETCH_HEAD only when its content explicitly
+  # names branch 'main'; otherwise fall back to the tracked origin/main ref. This handles the
+  # Windows wrapper's freshness preflight where origin/main may not move for >12h, while still
+  # avoiding unrelated FETCH_HEAD refreshes from other branches.
+  ref=""
+  origin_main_sha="$(git -C "$WS" rev-parse --verify refs/remotes/origin/main 2>/dev/null || true)"
+  if [[ -f "${gd}/FETCH_HEAD" ]] && grep -q "branch 'main' of " "${gd}/FETCH_HEAD" 2>/dev/null; then
+    fetch_head_sha="$(awk "/branch 'main' of / {print \$1; exit}" "${gd}/FETCH_HEAD" 2>/dev/null)"
+    if [[ -n "$fetch_head_sha" && -n "$origin_main_sha" && "$fetch_head_sha" == "$origin_main_sha" ]]; then
+      ref="${gd}/FETCH_HEAD"
     fi
-  done
+  elif [[ -f "${gd}/refs/remotes/origin/main" ]]; then
+    ref="${gd}/refs/remotes/origin/main"
+  fi
+  if [[ -z "$ref" && -f "${gd}/refs/remotes/origin/main" ]]; then
+    ref="${gd}/refs/remotes/origin/main"
+  fi
+  if [[ -n "$ref" ]]; then
+    mt=$(date -r "$ref" +%s 2>/dev/null); now=$(date +%s 2>/dev/null)
+    [[ -n "$mt" && -n "$now" ]] && origin_ref_age_h=$(( (now - mt) / 3600 ))
+  fi
 fi
 
 # ── emit (generated_at + headroom + mtime + job_count + checkout_sha are EXCLUDED from the

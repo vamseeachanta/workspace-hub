@@ -340,7 +340,7 @@ def test_harness_config_real_roster_and_baselines():
 
 def test_wiring_single_source_schedule():
     # DC5: the schedule lives in the ONE canonical source (schedule-tasks.yaml), weekly,
-    # all 4 active machines, invoking both collector and matrix builder.
+    # all 4 active machines, invoking both collector and matrix builder, with a Windows render path.
     tasks = yaml.safe_load(
         (REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml").read_text())["tasks"]
     eq = next(t for t in tasks if t["id"] == "equality-report")
@@ -349,6 +349,7 @@ def test_wiring_single_source_schedule():
     assert "build-equality-matrix.py" in eq["command"]
     for m in ("dev-primary", "dev-secondary", "licensed-win-1", "licensed-win-2"):
         assert m in eq["machines"]
+    assert (REPO_ROOT / "scripts" / "windows" / "equality-report.ps1").exists()
 
 
 def test_verdict_behavior_is_uniform_not_expected_diff():

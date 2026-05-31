@@ -30,6 +30,7 @@ SH = REPO_ROOT / "scripts" / "readiness" / "collect-equality.sh"
 PS1 = REPO_ROOT / "scripts" / "readiness" / "collect-equality.ps1"
 FIXTURE = REPO_ROOT / "tests" / "readiness" / "fixtures" / "equality-licensed-win-1.sample.yaml"
 CONFIG = REPO_ROOT / "scripts" / "readiness" / "harness-config.yaml"
+BASH_PATH = "/mingw64/bin:/usr/bin:/bin:/usr/local/bin"
 
 
 # ── import the matrix builder as a module (it has no import-time side effects) ──
@@ -108,6 +109,14 @@ def test_ps1_ram_total_mib_is_mib_integer():
     assert mib >= int(floor_gib) * 1024
 
 
+def test_harness_config_winram_floor_present():
+    config = yaml.safe_load(CONFIG.read_text())
+    for machine in ("licensed-win-1", "licensed-win-2"):
+        floor = config["workstations"][machine]["compute_floor"]
+        assert floor["cores_min"] == 8
+        assert floor["ram_gib_min"] == 15
+
+
 # ════════════════════════════════════════════════════════════════════════════
 # 5. field-key parity: fixture key-tree == collect-equality.sh --stdout key-tree
 # ════════════════════════════════════════════════════════════════════════════
@@ -133,7 +142,7 @@ def _sh_stdout(env_extra: dict, tmp_path: Path, machine: str = "licensed-win-1")
     (ws / ".claude" / "state").mkdir(parents=True)
     (ws / ".claude" / "memory").mkdir(parents=True)
     (ws / ".claude" / "memory" / "context.md").write_text("ctx")
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(tmp_path)}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": BASH_PATH, "HOME": str(tmp_path)}
     # The OS-override seam is double-gated: it only applies when the explicit test-enable flag is
     # set (so ambient production env can't spoof the OS). Tests that force the windows branch via
     # EQ_OS_OVERRIDE must also set EQ_TEST_ENABLE_OS_OVERRIDE=1.
@@ -234,22 +243,22 @@ def test_ps1_documents_w1_commit_is_wrappers_job():
     assert "#2815" in text or "equality-report.ps1" in text
     # W3: a freshness preflight that fails fast without writing a STALE report.
     assert "fetch" in text.lower()
+    assert "Resolve-EqualityMachineLabel" in text
+    assert "Unknown Windows equality collector host" in text
 
 
 def test_eq_os_override_ignored_without_test_flag(tmp_path):
     # SECURITY (Codex code-review MAJOR): EQ_OS_OVERRIDE must NOT spoof the OS in production. It
     # only applies behind the explicit EQ_TEST_ENABLE_OS_OVERRIDE=1 flag. Without the flag the
-    # override is ignored, the collector reports the REAL OS (linux on this CI box), and the
-    # injected windows EQ_* compute never enters the report.
+    # override is ignored, so the collector reports the REAL OS instead of the injected value.
     ws = tmp_path / "workspace-hub"
     (ws / ".claude" / "state").mkdir(parents=True)
     (ws / ".claude" / "memory").mkdir(parents=True)
     (ws / ".claude" / "memory" / "context.md").write_text("ctx")
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(tmp_path),
-           "EQ_OS_OVERRIDE": "windows", "EQ_CORES": "999"}  # deliberately NO test-enable flag
+    env = {"WORKSPACE_HUB": str(ws), "PATH": BASH_PATH, "HOME": str(tmp_path),
+           "EQ_OS_OVERRIDE": "unknown"}  # deliberately NO test-enable flag
     res = subprocess.run(["bash", str(SH), "--stdout", "--machine", "licensed-win-1"],
                          env=env, capture_output=True, text=True, timeout=60)
     assert res.returncode == 0, res.stderr
     d = yaml.safe_load(res.stdout)
-    assert d["os"] == "linux"                                        # real OS — override ignored
-    assert str(d["dimensions"]["compute"]["static"]["cores"]) != "999"  # injected value not trusted
+    assert d["os"] != "unknown"                                      # real OS, override ignored

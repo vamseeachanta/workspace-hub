@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  collect-equality.ps1 — Windows compute overlay for the #2801 machine-equality matrix (#2816).
+  collect-equality.ps1 --- Windows compute overlay for the #2801 machine-equality matrix (#2816).
 
 .DESCRIPTION
   A THIN compute overlay over collect-equality.sh. Git Bash on Windows cannot reliably read
@@ -9,17 +9,17 @@
   overrides, then delegates to `bash scripts/readiness/collect-equality.sh`.
 
   Schema, the provenance block, solver probes, behaviour probes, and the canonical-hash
-  commit-on-change idempotency stay SINGLE-SOURCED in the .sh — this script only fills the five
+  commit-on-change idempotency stay SINGLE-SOURCED in the .sh --- this script only fills the five
   Windows compute fields. That avoids the schema-drift trap of a standalone reimplementation.
 
   W1 (Codex r2): this collector does NOT commit or push the resulting .claude/state/equality-*.yaml.
   Committing + pushing the state to origin so the central matrix can see it is the wrapper's job
-  (scripts/windows/equality-report.ps1, #2815) — NOT this collector's. Run standalone, the report
+  (scripts/windows/equality-report.ps1, #2815) --- NOT this collector's. Run standalone, the report
   stays local (same as collect-equality.sh on Linux, which relies on repo-sync to push).
 
   W3 (Codex r2): a freshness preflight runs FIRST. If the checkout's origin/main ref cannot be
   shown to be fresh (fetch fails AND the local ref is stale/behind), the script FAILS FAST without
-  writing a report — so a stale checkout never silently produces an all-STALE-CHECKOUT report.
+  writing a report --- so a stale checkout never silently produces an all-STALE-CHECKOUT report.
 
 .PARAMETER Stdout
   Pass through to collect-equality.sh --stdout (emit to stdout, do not write the state file).
@@ -45,16 +45,16 @@ Set-StrictMode -Version Latest
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $WS = (Resolve-Path (Join-Path $ScriptDir '..\..')).Path
 
-# ── W3: freshness preflight — establish a fresh origin/main BEFORE collecting ────────────────────
+# ------ W3: freshness preflight --- establish a fresh origin/main BEFORE collecting ------------------------------------------------------------
 # A stale origin/main ref makes is_stale() fail-closed (origin_ref_age_h out of window OR
 # behind_main != 0), so every cell would grade STALE-CHECKOUT. Try a fetch; if that fails, only
 # proceed when the LOCAL origin/main ref is already current (behind_main == 0) AND recent. Else
-# FAIL FAST without writing a report — a silent STALE report is worse than a loud, actionable miss.
+# FAIL FAST without writing a report --- a silent STALE report is worse than a loud, actionable miss.
 function Test-Fresh {
     param([string]$Repo)
     # Best effort: refresh origin/main. A transient network miss is tolerated only if the local
     # ref is already current+recent (checked below); a hard inability to prove freshness fails.
-    & git -C $Repo fetch --quiet origin main 2>$null | Out-Null
+    & git -C $Repo fetch --quiet origin '+refs/heads/main:refs/remotes/origin/main' 2>$null | Out-Null
     $fetchOk = ($LASTEXITCODE -eq 0)
 
     $behind = (& git -C $Repo rev-list --count 'HEAD..origin/main' 2>$null)
@@ -71,7 +71,7 @@ function Test-Fresh {
         if (-not [System.IO.Path]::IsPathRooted($commonDir)) {
             $commonDir = Join-Path $Repo $commonDir
         }
-        # Age-check the tracked origin/main ref ONLY — NOT FETCH_HEAD. FETCH_HEAD is bumped by ANY
+        # Age-check the tracked origin/main ref ONLY --- NOT FETCH_HEAD. FETCH_HEAD is bumped by ANY
         # fetch (e.g. of an unrelated branch) and does not prove origin/main itself is fresh, so a
         # recent unrelated fetch could falsely pass freshness while origin/main is stale. If the
         # loose ref is absent (packed/never-fetched), we cannot prove freshness -> fail closed.
@@ -95,7 +95,22 @@ if (-not $freshness.Fresh) {
     exit 1
 }
 
-# ── CIM compute (the .ps1's real job) ────────────────────────────────────────────────────────────
+function Resolve-EqualityMachineLabel {
+    $hostName = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { "" }
+    switch -Wildcard ($hostName) {
+        "licensed-win-1" { return "licensed-win-1" }
+        "acma-ansys05*" { return "licensed-win-1" }
+        "licensed-win-2" { return "licensed-win-2" }
+        "acma-ws014*" { return "licensed-win-2" }
+        default { throw "Unknown Windows equality collector host '$hostName'; pass -Machine explicitly" }
+    }
+}
+
+if ([string]::IsNullOrWhiteSpace($Machine)) {
+    $Machine = Resolve-EqualityMachineLabel
+}
+
+# ------ CIM compute (the .ps1's real job) ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 $cs = Get-CimInstance Win32_ComputerSystem
 $os = Get-CimInstance Win32_OperatingSystem
 
@@ -113,7 +128,7 @@ $env:EQ_RAM_TOTAL_MIB = if ($null -ne $cs -and $null -ne $cs.TotalPhysicalMemory
 $env:EQ_RAM_AVAIL_MIB = if ($null -ne $os -and $null -ne $os.FreePhysicalMemory) {
     [string][math]::Floor($os.FreePhysicalMemory / 1KB) } else { 'unknown' }
 
-# Disk free on the drive that actually HOSTS the resolved workspace path — NOT a hardcoded D:.
+# Disk free on the drive that actually HOSTS the resolved workspace path --- NOT a hardcoded D:.
 $wsQualifier = (Split-Path -Qualifier $WS)              # e.g. "D:"
 $disk = Get-CimInstance Win32_LogicalDisk -Filter ("DeviceID='{0}'" -f $wsQualifier)
 if ($null -ne $disk -and $null -ne $disk.FreeSpace) {
@@ -126,7 +141,7 @@ if ($null -ne $disk -and $null -ne $disk.FreeSpace) {
 $gpu = (Get-CimInstance Win32_VideoController | Select-Object -First 1 -ExpandProperty Name -ErrorAction SilentlyContinue)
 $env:EQ_GPU_MODEL = if ([string]::IsNullOrWhiteSpace($gpu)) { 'none' } else { $gpu }
 
-# ── delegate to the canonical .sh (schema/provenance/solvers/idempotency single-sourced there) ───
+# ------ delegate to the canonical .sh (schema/provenance/solvers/idempotency single-sourced there) ---------
 $shPath = Join-Path $ScriptDir 'collect-equality.sh'
 $shArgs = @($shPath)
 if ($Stdout) { $shArgs += '--stdout' }
