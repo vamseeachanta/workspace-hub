@@ -1,19 +1,19 @@
-generated_at: "2026-05-31T17:49:48"
+generated_at: "2026-05-31T18:28:44"
 schema_version: 3
 machine: "dev-secondary"
 host: "ace-linux-2"
 os: linux
 status: active
 provenance:
-  checkout_sha: "b35573f1b"
-  dirty: true
+  checkout_sha: "10ffa918d"
+  dirty: false
   behind_main: 0
-  ahead_main: 0
+  ahead_main: 1
   origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running."}
-    headroom: {ram_avail_mib: 22371, disk_avail_gb: 885}
+    headroom: {ram_avail_mib: 22665, disk_avail_gb: 885}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -41,4 +41,4 @@ dimensions:
   scheduler:
     has_repo_sync: false
     has_parity_review: false
-    job_count: 5
+    job_count: 6
