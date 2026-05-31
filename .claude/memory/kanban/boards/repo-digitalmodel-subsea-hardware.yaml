@@ -9,4 +9,231 @@ board:
   description: 'digitalmodel subsea-hardware domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#222
+    title: 'WRK-515: feat(digitalmodel/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/222
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-hardware
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-515: feat(digitalmodel/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#223
+    title: 'WRK-516: feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/223
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-hardware
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-516: feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''doris''] | **Complexity:** high | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#480
+    title: 'BUG: Verify PLET-PLEM jumper segment lengths from SZ_Ballymore_Jumper_MF.xlsm'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/480
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-hardware
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Machine: ws014 (Windows - Claude cowork)
+
+      ## Problem
+
+      KNOWN_JUMPER_CONFIGS["ballymore_plet_plem"] uses placeholder segment lengths identical to MF-PLET. PLET-PLEM is a different jumper with different geometry.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#481
+    title: Convert PLET-PLEM workbook via Windows cowork
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/481
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-hardware
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Machine: ws014 (Windows - Claude cowork)
+
+      ## Task
+
+      Convert SZ_Ballymore_Jumper_MF.xlsm (PLET-PLEM jumper) using Claude cowork workflow.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#484
+    title: Implement subsea tree modeling module (API 17D)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/484
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-hardware
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Background
+
+      Industry taxonomy of subsea production systems (LMI, 2026-04) identifies **12 core component categories**, each governed by specific API 17 sub-specifications. This issue tracks implementation of the **Subsea Tree** module per API 17D.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#485
+    title: Implement subsea manifold aggregation module (API 17P)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/485
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-hardware
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Background
+
+      Full subsea production system map (LMI, 2026-04) covers 12 core components with their API 17 references. This issue addresses **subsea manifolds** — the hub that collects from multiple trees and balances flow upstream of the flowline/riser system.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#486
+    title: Implement subsea connectors and jumpers module (API 17R)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/486
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-hardware
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Background
+
+      Subsea production system map identifies **connectors and jumpers (API 17R)** as the critical link between subsea equipment for fluid transfer. Currently we only have OrcaFlex skill-level coverage — no native Python solver.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#488
+    title: Implement subsea umbilical and control systems module (API 17E, 17F)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/488
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-hardware
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Background
+
+      Subsea production systems rely on umbilicals (API 17E) for power, communication, and chemical delivery, and subsea control systems (API 17F) for remote valve and sensor operations. Neither has dedicated code.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#489
+    title: Implement HIPPS modeling module (API 17O)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/489
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-hardware
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Background
+
+      Subsea production system map identifies **HIPPS (High Integrity Pressure Protection Systems, API 17O)** as a critical safety component. No existing code.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#490
+    title: Implement capping stack analysis module (API 17W)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/490
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-hardware
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Background
+
+      Subsea production system map identifies **capping stack (API 17W)** as the emergency blowout containment system. No existing code.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#491
+    title: Implement ROV intervention modeling module (API 17H)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/491
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-hardware
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Background
+
+      Subsea production systems require ROVs (API 17H) for inspection, maintenance, and emergency intervention. No ROV capability modeling exists.
+
+      ## Problem'

@@ -162,3 +162,221 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#62
+    title: engg debt | OrcaWave
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/62
+    gh_state: open
+    gh_labels:
+      - feature
+      - package
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:hydro-diffraction
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: "- [ ] Develop ecosystem and documentation\n- [ ] perform BASIC orcawave analysis\n  - [ ] Orcina documentation example"
+  - idempotency_key: gh:vamseeachanta/digitalmodel#170
+    title: 'WRK-311: improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/170
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-311: improve: QTF benchmarking for case 3.1 — charts, comparisons, and validation depth
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** unset'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#207
+    title: 'WRK-5067: Hydrodynamics and wave mechanics study — literature, methods and implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/207
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:licensed-win-1
+      - dispatch:ready
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5067: Hydrodynamics and wave mechanics study — literature, methods and implementation
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** hydrodynamics
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#269
+    title: 'WRK-629: feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal system prompts + knowledge base'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/269
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-629: feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal system prompts + knowledge base
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
+
+      **Repo:** [''TBD-client2-repo''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#270
+    title: 'WRK-630: feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/270
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-630: feat(client2): engineering AI demo — diffraction + plate FFS + GoA + maritime legal workflows + demo package
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** marine
+
+      **Repo:** [''TBD-client2-repo''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#282
+    title: 'WRK-130: Standardize analysis reporting for each OrcaWave structure type'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/282
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-130: Standardize analysis reporting for each OrcaWave structure type
+
+      **Status:** blocked | **Priority:** high | **Category:** engineering/marine
+
+      **Complexity:** complex | **Machine:** acma-ansys05'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#464
+    title: Add hydrodynamic BEM analysis module (Capytaine)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/464
+    gh_state: open
+    gh_labels:
+      - feature
+      - priority:medium
+      - cat:engineering-calculations
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add wave-body interaction analysis to digitalmodel using Capytaine BEM solver — diffraction, radiation, added mass, damping coefficients, and RAOs for floating/submerged bodies.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#465
+    title: Capytaine ship hull benchmarking — OC4 semi-sub + WAMIT validation
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/465
+    gh_state: open
+    gh_labels:
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The Capytaine BEM module (#464) is implemented with a sphere analytical benchmark (Hulme 1982). Ship hull validation is the logical next step to establish confidence for production use.
+
+      ## Available data in repo'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#501
+    title: 'OrcaWave: expand QTF config + field points + irregular frequency method'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/501
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:licensed-win-1
+      - status:plan-approved
+      - dispatch:ready
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Machine: ace-linux-1
+
+      ## Problem
+
+      OrcaWave spec schema has three feature gaps that limit accuracy for advanced analyses:'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#610
+    title: 'OrcaWave: add licensed end-to-end acceptance test for arbitrary mesh workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/610
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - machine:licensed-win-1
+      - status:plan-review
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      There is smoke-test coverage for known OrcaWave inputs, but the future workflow needs proof that an arbitrary mesh-driven DigitalModel spec can run end-to-end on a licensed host.
+
+      ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#613
+    title: 'OrcaWave: add environment and license doctor command'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/613
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+      - domain:hydro-diffraction
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      Users need a quick way to know whether the local machine can actually run OrcaWave diffraction before preparing a large solve. Current behavior can silently fall back to dry-run when OrcFxAPI and OrcaWave executable paths are unavailable.
+
+      ## Required work'

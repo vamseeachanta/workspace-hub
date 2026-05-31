@@ -9,4 +9,588 @@ board:
   description: 'digitalmodel subsea-risers domain (holistic reorg of subsea/hydro/solver/base). Phase-2 board manifested 2026-05-31.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#137
+    title: 'WRK-045: OrcaFlex rigid jumper analysis - stress and VIV for various configurations'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/137
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-045: OrcaFlex rigid jumper analysis - stress and VIV for various configurations
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering/pipeline
+
+      **Complexity:** complex | **Machine:** acma-ansys05'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#138
+    title: 'WRK-046: OrcaFlex drilling and completion riser parametric analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/138
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-046: OrcaFlex drilling and completion riser parametric analysis
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering/marine
+
+      **Complexity:** complex | **Machine:** acma-ansys05'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#197
+    title: 'WRK-503: feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/197
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-503: feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#198
+    title: 'WRK-504: feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/198
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-504: feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''doris''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#200
+    title: 'WRK-5058: Drilling riser engineering study — literature, methods and implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/200
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5058: Drilling riser engineering study — literature, methods and implementation
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** drilling-riser
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#201
+    title: 'WRK-505: feat(digitalmodel/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/201
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-505: feat(digitalmodel/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#204
+    title: 'WRK-5063: VIV analysis study — literature, methods and implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/204
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-5063: VIV analysis study — literature, methods and implementation
+
+      **Status:** pending | **Priority:** high | **Category:** engineering | **Subcategory:** viv
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#209
+    title: 'WRK-5069: Subsea risers and flowlines study — literature, methods and implementation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/209
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5069: Subsea risers and flowlines study — literature, methods and implementation
+
+      **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** subsea-risers
+
+      **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#210
+    title: 'WRK-506: feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/210
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-506: feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''doris''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#213
+    title: 'WRK-507: feat(digitalmodel/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/213
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-507: feat(digitalmodel/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#215
+    title: 'WRK-508: feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/215
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-508: feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''doris''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#216
+    title: 'WRK-509: feat(digitalmodel/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/216
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-509: feat(digitalmodel/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#217
+    title: 'WRK-510: feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/217
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-510: feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''doris''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#218
+    title: 'WRK-511: feat(digitalmodel/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/218
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-511: feat(digitalmodel/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#219
+    title: 'WRK-512: feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/219
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-512: feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''doris''] | **Complexity:** high | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#226
+    title: 'WRK-519: feat(digitalmodel/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/226
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-519: feat(digitalmodel/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#227
+    title: 'WRK-520: feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/227
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-520: feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''doris''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#232
+    title: 'WRK-525: feat(digitalmodel/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/232
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-525: feat(digitalmodel/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#233
+    title: 'WRK-526: feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/233
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-526: feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''doris''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#238
+    title: 'WRK-531: feat(digitalmodel/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/238
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-531: feat(digitalmodel/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#239
+    title: 'WRK-532: feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/239
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-532: feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''doris''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#240
+    title: 'WRK-533: feat(digitalmodel/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/240
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-533: feat(digitalmodel/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#241
+    title: 'WRK-534: feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/241
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-534: feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''doris''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#250
+    title: 'WRK-571: feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/250
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-571: feat(digitalmodel): port VIV MATLAB mode analysis scripts to Python
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel''] | **Complexity:** large | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#258
+    title: 'WRK-608: chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/258
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-608: chore(digitalmodel): catalog and port MATLAB riser/VIV/API scripts — 997 .m files
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+      **Repo:** [''digitalmodel'', ''OGManufacturing''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#259
+    title: 'WRK-609: chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/259
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-609: chore(digitalmodel): catalog and port ANSYS .inp riser/casing/pile models — 1070 files
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** structural
+
+      **Repo:** [''digitalmodel'', ''OGManufacturing''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#494
+    title: Enhance flexible pipe modeling — API 17B/17J compliance
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/494
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Background
+
+      Subsea production systems use unbonded flexible pipes (API 17B/17J) for dynamic riser and flowline applications. Current `subsea/catenary_riser/` has basic catenary/lazy-wave geometry but no flexible-pipe-specific modeling.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#615
+    title: Riser-analysis results as stage-by-stage animated HTML deliverable for clients
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/615
+    gh_state: open
+    gh_labels:
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:subsea-risers
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      User-stated downstream-consumer intent captured during the 2026-05-15 llm-wiki ingest session of Lloyd''s Maritime Institute''s [offshore drilling sequence animation LinkedIn post](https://github.com/vamseeachanta/llm-wiki/blob/main/wikis/drilling-engineering/wiki/sources/lloyds-maritime-institute-2026-drilling-sequence-animation.md):
+
+      > "We can easily use this animation to show the drilling riser analysis results to clients as a html via animation."'
