@@ -49,7 +49,7 @@ cards:
     title: 'TEST-FINAL3: delete me'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1006
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - wrk-item
       - machine:dev-primary
@@ -63,7 +63,7 @@ cards:
     title: 'TEST-RATELIMIT7: delete me'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/720
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
@@ -1988,7 +1988,7 @@ cards:
     title: 'WRK-TEST-ENSEMBLE: Smoke test for ensemble planning'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/203
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:low
@@ -12161,7 +12161,7 @@ cards:
     title: 'WRK-1329: WRK-1329'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1289
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - wrk-item
@@ -12176,7 +12176,7 @@ cards:
     title: 'WRK-1338: WRK-1338'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1290
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - wrk-item
@@ -12250,7 +12250,7 @@ cards:
     title: 'WRK-1383: WRK-1383'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1298
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - wrk-item
@@ -12300,7 +12300,7 @@ cards:
     title: 'WRK-5096: WRK-5096'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1303
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - wrk-item
@@ -12315,7 +12315,7 @@ cards:
     title: 'WRK-5098: WRK-5098'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1304
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - wrk-item
@@ -12330,7 +12330,7 @@ cards:
     title: 'WRK-5101: WRK-5101'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1305
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - wrk-item
@@ -12418,7 +12418,7 @@ cards:
     title: 'WRK-5130: WRK-5130'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1313
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - wrk-item
