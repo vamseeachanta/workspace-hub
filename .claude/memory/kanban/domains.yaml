@@ -45,7 +45,6 @@ repos:
     # RESOLVED 2026-05-25: keep 'quality' as a 6th domain (28 real cards);
     # rename 'ingestion' -> 'ingest'; add 'bsee' + 'hse'.
     domains:
-      - {name: ingest,  status: existing}  # renamed from ingestion 2026-05-25 (board + 22 issue labels)
       - {name: gtm,     status: existing}
       - {name: bsee,    status: existing}  # board def created; awaiting card categorization
       - {name: hse,     status: existing}  # board def created; awaiting card categorization
@@ -67,7 +66,6 @@ repos:
     domains:
       - {name: ai-orchestration, status: existing}
       - {name: business,         status: existing}
-      - {name: data,             status: existing}
       - {name: engineering,      status: existing}
       - {name: harness,          status: existing}
       - {name: ops,              status: existing}
@@ -128,7 +126,6 @@ repos:
       - {name: family-planning, status: existing}
       - {name: finance,         status: existing}
       - {name: household,       status: existing}
-      - {name: travel,          status: existing}
       - {name: travel-arkansas, status: new}
       - {name: travel-oklahoma-texas, status: new}
       - {name: travel-gulf-prairie, status: new}

@@ -54,7 +54,6 @@ manifest:
     - repo-achantas-data-family-planning
     - repo-achantas-data-finance
     - repo-achantas-data-household
-    - repo-achantas-data-travel
     - repo-achantas-data-travel-arkansas
     - repo-achantas-data-travel-gulf-prairie
     - repo-achantas-data-travel-oklahoma-texas
@@ -135,7 +134,6 @@ manifest:
     children:
     - repo-llm-wiki-content
     - repo-llm-wiki-governance
-    - repo-llm-wiki-ingest
     - repo-llm-wiki-ingest-batch-extraction
     - repo-llm-wiki-ingest-corpus-acquisition
     - repo-llm-wiki-tooling
@@ -177,7 +175,6 @@ manifest:
     - repo-workspace-hub-cross-platform
     - repo-workspace-hub-cross-review
     - repo-workspace-hub-cv-strategy
-    - repo-workspace-hub-data
     - repo-workspace-hub-document-intelligence-indexing
     - repo-workspace-hub-document-intelligence-summarization
     - repo-workspace-hub-engineering
@@ -266,14 +263,6 @@ manifest:
     workspace_path: /mnt/local-analysis/achantas-data
     file: boards/repo-achantas-data-household.yaml
     card_count: 12
-  - slug: repo-achantas-data-travel
-    tier: domain
-    repo: vamseeachanta/achantas-data
-    domain: travel
-    parent_slug: repo-achantas-data
-    workspace_path: /mnt/local-analysis/achantas-data
-    file: boards/repo-achantas-data-travel.yaml
-    card_count: 58
   - slug: repo-achantas-data-travel-arkansas
     tier: domain
     repo: vamseeachanta/achantas-data
@@ -506,14 +495,6 @@ manifest:
     workspace_path: /mnt/local-analysis/llm-wiki
     file: boards/repo-llm-wiki-governance.yaml
     card_count: 7
-  - slug: repo-llm-wiki-ingest
-    tier: domain
-    repo: vamseeachanta/llm-wiki
-    domain: ingest
-    parent_slug: repo-llm-wiki
-    workspace_path: /mnt/local-analysis/llm-wiki
-    file: boards/repo-llm-wiki-ingest.yaml
-    card_count: 33
   - slug: repo-llm-wiki-ingest-batch-extraction
     tier: domain
     repo: vamseeachanta/llm-wiki
@@ -578,14 +559,6 @@ manifest:
     workspace_path: /mnt/local-analysis/workspace-hub
     file: boards/repo-workspace-hub-business.yaml
     card_count: 60
-  - slug: repo-workspace-hub-data
-    tier: domain
-    repo: vamseeachanta/workspace-hub
-    domain: data
-    parent_slug: repo-workspace-hub
-    workspace_path: /mnt/local-analysis/workspace-hub
-    file: boards/repo-workspace-hub-data.yaml
-    card_count: 63
   - slug: repo-workspace-hub-engineering
     tier: domain
     repo: vamseeachanta/workspace-hub
