@@ -57,6 +57,8 @@ repos:
     domains:
       - {name: content,    status: existing}
       - {name: ingest,     status: existing}
+      - {name: ingest-batch-extraction, status: new}
+      - {name: ingest-corpus-acquisition, status: new}
       - {name: governance, status: existing}
       - {name: tooling,    status: existing}
 

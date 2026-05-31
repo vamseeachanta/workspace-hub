@@ -1,0 +1,12 @@
+board:
+  slug: repo-llm-wiki-ingest-batch-extraction
+  display_name: llm-wiki · ingest-batch-extraction
+  tier: domain
+  repo: vamseeachanta/llm-wiki
+  domain: ingest-batch-extraction
+  parent_slug: repo-llm-wiki
+  workspace_path: /mnt/local-analysis/llm-wiki
+  description: 'llm-wiki ingest-batch-extraction subdomain (split from oversized ingest board). Manifested 2026-05-31.
+
+    '
+cards: []
