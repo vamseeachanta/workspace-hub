@@ -1,0 +1,176 @@
+board:
+  slug: repo-digitalmodel-gtm
+  display_name: digitalmodel · gtm
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: gtm
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'Go-to-market — parametric-runs productization of the gtm demos (#591 umbrella; #632–636 demo_01–05: yaml-driven Sweep Configs, SQLite Results Store, run/lookup CLI). demo_01 (#632) is the completed pilot template.
+
+    '
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#591
+    title: GTM vessel suitability analysis for installation and pipeline operations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/591
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - cat:website
+      - status:pending
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:gtm
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The current GTM demos already contain representative vessel raw-data inputs for installation and pipeline examples:
+
+      - `examples/demos/gtm/data/csv_hlv_vessels.json` — CSV / HLV vessel classes for mudmat and jumper installation demos, with crane curves, RAO peak summaries, natural periods, and operational limits.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#632
+    title: 'feat(gtm/parametric): demo_01 DNV-RP-F105 free-span VIV parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/632
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#633
+    title: 'feat(gtm/parametric): demo_02 multi-code wall thickness parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/633
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#634
+    title: 'feat(gtm/parametric): demo_03 deepwater mudmat installation parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/634
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#635
+    title: 'feat(gtm/parametric): demo_04 shallow-water pipelay parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/635
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#636
+    title: 'feat(gtm/parametric): demo_05 deepwater rigid jumper installation parametric runs (yaml-driven client deliverable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/636
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#649
+    title: 'feat(gtm/parametric): demo_01 §1 — reproduce + document the DNV-RP-F105 free-span VIV analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/649
+    gh_state: open
+    gh_labels:
+      - documentation
+      - cat:engineering
+      - status:plan-approved
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#653
+    title: 'bug(gtm): demo_01 calc_max_allowable_span silently saturates at 500 m when no CF onset in range'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/653
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#654
+    title: 'feat(gtm/parametric): demo_01 §2 — yaml Sweep Config + loader (baseline reproduces 680 cases)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/654
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#655
+    title: 'decision(gtm/parametric): demo_01 §3 — agreed parameters to vary (baseline yaml = template)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/655
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#656
+    title: 'feat(gtm/parametric): demo_01 §4 — Results Store (SQLite + CSV/manifest, per-case promoted-axis cols)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/656
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#657
+    title: 'feat(gtm/parametric): demo_01 §5 — run CLI (--run-id) + lookup subcommand + per-run report + runbook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/657
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

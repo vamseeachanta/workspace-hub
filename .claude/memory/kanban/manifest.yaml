@@ -90,6 +90,7 @@ manifest:
     - repo-digitalmodel-qa
     - repo-digitalmodel-solver
     - repo-digitalmodel-subsea
+    - repo-digitalmodel-gtm
   - slug: repo-hobbies
     tier: repo
     repo: vamseeachanta/hobbies
@@ -329,6 +330,14 @@ manifest:
     workspace_path: /mnt/local-analysis/digitalmodel
     file: boards/repo-digitalmodel-subsea.yaml
     card_count: 131
+  - slug: repo-digitalmodel-gtm
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: gtm
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-gtm.yaml
+    card_count: 12
   - slug: repo-llm-wiki-content
     tier: domain
     repo: vamseeachanta/llm-wiki
