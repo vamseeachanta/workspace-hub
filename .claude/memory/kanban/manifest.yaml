@@ -199,6 +199,7 @@ manifest:
     - repo-workspace-hub-repo-organization-structure
     - repo-workspace-hub-research
     - repo-workspace-hub-session
+    - repo-workspace-hub-semiconductor
     - repo-workspace-hub-skills-harness
     - repo-workspace-hub-skills-lifecycle
     - repo-workspace-hub-structural
@@ -555,6 +556,14 @@ manifest:
     workspace_path: /mnt/local-analysis/workspace-hub
     file: boards/repo-workspace-hub-ops.yaml
     card_count: 120
+  - slug: repo-workspace-hub-semiconductor
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: semiconductor
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-semiconductor.yaml
+    card_count: 0
   - slug: repo-workspace-hub-gtm
     tier: domain
     repo: vamseeachanta/workspace-hub

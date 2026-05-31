@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-semiconductor
+  display_name: workspace-hub · semiconductor
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: semiconductor
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Semiconductor / chip-design / EDA career-lane work. Phase-1 base-drain board 2026-05-31.
+
+    '
+cards: []
