@@ -608,6 +608,26 @@ send_notification() {
   fi
 }
 
+# ── Crontab self-sync (#2894) ────────────────────────────────────────────────
+# Idempotent: setup-cron.sh only ADDS entries absent from the live crontab
+# (never removes), so every nightly run converges each machine toward
+# schedule-tasks.yaml — closing the gap where a newly-added job (e.g. the
+# equality-matrix self-report) never reaches a machine's crontab. Respects
+# --dry-run. Non-fatal (cron contract is exit-0; failures are logged only).
+sync_crontab() {
+  local installer="${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"
+  [[ -f "$installer" ]] || { log "CRON" "setup-cron.sh absent — skip"; return; }
+  if [[ "$DRY_RUN" == "true" ]]; then
+    local n
+    n=$(bash "$installer" --dry-run 2>/dev/null | grep -cE '^[[:space:]]+[0-9*]' || true)
+    log "CRON" "dry-run: ${n} schedule-tasks.yaml entry/entries would be ensured"
+    return
+  fi
+  local out
+  out=$(bash "$installer" 2>&1) || true
+  log "CRON" "$(printf '%s\n' "$out" | grep -iE 'Installed|Replaced|already present' | tail -1)"
+}
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 log "==========================================="
@@ -624,6 +644,8 @@ update_gsd
 update_claude_code
 update_codex
 update_gemini
+
+sync_crontab
 
 print_summary
 send_notification
