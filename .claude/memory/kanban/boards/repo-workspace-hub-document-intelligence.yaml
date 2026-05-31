@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-document-intelligence
+  display_name: workspace-hub · document-intelligence
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: document-intelligence
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Document-intelligence pipeline work (indexing, summarization, extraction) tracked in workspace-hub (domain:document-intelligence). Phase-1a board manifested 2026-05-30.
+
+    '
+cards: []

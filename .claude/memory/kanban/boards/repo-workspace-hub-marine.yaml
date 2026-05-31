@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-marine
+  display_name: workspace-hub · marine
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: marine
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'Marine/hydrodynamics engineering work tracked in workspace-hub (domain:marine). Phase-1a board manifested 2026-05-30 for the existing domain:marine label.
+
+    '
+cards: []
