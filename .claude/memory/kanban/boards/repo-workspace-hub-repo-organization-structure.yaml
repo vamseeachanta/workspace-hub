@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-repo-organization-structure
+  display_name: workspace-hub · repo-organization-structure
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: repo-organization-structure
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'workspace-hub repo-organization-structure subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
+
+    '
+cards: []

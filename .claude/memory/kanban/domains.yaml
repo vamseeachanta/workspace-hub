@@ -83,6 +83,29 @@ repos:
       - {name: cross-review, status: new}
       - {name: cv-strategy, status: new}
       - {name: subsea-risers, status: new}
+      # Phase-1c 2026-05-30: subdomain splits of the 8 oversized domains (subagent-classified)
+      - {name: document-intelligence-indexing, status: new}
+      - {name: document-intelligence-summarization, status: new}
+      - {name: knowledge-management-corpus, status: new}
+      - {name: knowledge-management-platform, status: new}
+      - {name: marine-field-dev, status: new}
+      - {name: marine-orcaflex, status: new}
+      - {name: marine-oss-tools, status: new}
+      - {name: marine-rao-seakeeping, status: new}
+      - {name: marine-solver-queue, status: new}
+      - {name: pipeline-field-dev, status: new}
+      - {name: pipeline-software, status: new}
+      - {name: pipeline-subsea, status: new}
+      - {name: repo-organization-cleanup-migration, status: new}
+      - {name: repo-organization-structure, status: new}
+      - {name: skills-harness, status: new}
+      - {name: skills-lifecycle, status: new}
+      - {name: testing-ci-health, status: new}
+      - {name: testing-reporting-validation, status: new}
+      - {name: testing-suite-triage, status: new}
+      - {name: workstations-fleet-equivalence, status: new}
+      - {name: workstations-machine-bringup, status: new}
+      - {name: workstations-windows-readiness, status: new}
 
   vamseeachanta/achantas-data:
     board: repo-achantas-data

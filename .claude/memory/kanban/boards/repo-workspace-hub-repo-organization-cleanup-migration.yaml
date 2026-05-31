@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-repo-organization-cleanup-migration
+  display_name: workspace-hub · repo-organization-cleanup-migration
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: repo-organization-cleanup-migration
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'workspace-hub repo-organization-cleanup-migration subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
+
+    '
+cards: []

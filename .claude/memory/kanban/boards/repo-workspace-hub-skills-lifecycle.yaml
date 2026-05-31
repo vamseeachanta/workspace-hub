@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-skills-lifecycle
+  display_name: workspace-hub · skills-lifecycle
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: skills-lifecycle
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'workspace-hub skills-lifecycle subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
+
+    '
+cards: []

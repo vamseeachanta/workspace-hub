@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-testing-ci-health
+  display_name: workspace-hub · testing-ci-health
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: testing-ci-health
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'workspace-hub testing-ci-health subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
+
+    '
+cards: []

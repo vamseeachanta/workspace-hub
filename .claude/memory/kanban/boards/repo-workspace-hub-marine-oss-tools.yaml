@@ -1,0 +1,12 @@
+board:
+  slug: repo-workspace-hub-marine-oss-tools
+  display_name: workspace-hub · marine-oss-tools
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  domain: marine-oss-tools
+  parent_slug: repo-workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'workspace-hub marine-oss-tools subdomain (split from oversized parent). Phase-1c board manifested 2026-05-30.
+
+    '
+cards: []
