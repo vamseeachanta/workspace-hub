@@ -69,6 +69,8 @@
     <span class="badge b-ok">pure core complete: engine+audit+runtime+hook+pipeline · 146/146 green</span>
     <span class="badge b-info">Layer-2 hardened fail-closed (60 bypasses closed); PAT = real boundary</span>
     <span class="badge b-ok">committed config is fail-closed (empty operators ⇒ deny)</span>
+    <span class="badge b-ok">detective alarm built (Free-plan compensator)</span>
+    <span class="badge b-info">zoom-out roadmap: 2 reviews synthesized</span>
   </div>
   <p class="note">Deckhand lets an authenticated <b>operator</b> drive <code>git</code>/<code>gh</code> on repository <b>scopes</b>
   (<code>acma</code>, <code>doris</code>, <code>ecosystem</code>) from a chat platform. This page tracks every decision, the
@@ -121,6 +123,8 @@
       <tr><td>Recon: git/gh choke point</td><td><code>terminal_tool</code> pre_tool_call hook + <b>7 bypass paths</b> → scoped PAT is the real boundary</td></tr>
       <tr><td>Board + task + delegation review</td><td><b style="color:var(--bad)">CHANGES-REQUESTED</b> — missing tasks (PAT provisioning, bypass-tests, rollback, rate-limit, operator intake); board needs dependency links; all queued</td></tr>
       <tr><td>Platform connectivity + terminology</td><td><b style="color:var(--ok)">DONE</b> — gateway currently STOPPED / channels empty; terminology validated vs Hermes (no conflicts, 3 annotations applied)</td></tr>
+      <tr><td>Zoom-out architectural review</td><td><b style="color:var(--ok)">DONE</b> — Claude + codex converge: next leverage = single audited live enforcement gateway + typed config + live bypass proofs (not more classifier work).</td></tr>
+      <tr><td>Detective control build</td><td><b style="color:var(--ok)">DONE</b> — force-push/branch-delete alarm workflow + deploy-detective (dry-run guarded). Committed.</td></tr>
     </table></div>
     <div>
       <div class="layerbox">GUARDRAIL FLOOR (approved, real repos today)
@@ -174,7 +178,20 @@ hook  : pre_tool_call + PATH git/gh shim
     <tr><td><code>src/deckhand/hook.py</code></td><td>Layer-2 command enforcement (hardened fail-closed)</td><td>96</td><td><span class="pill p-done">adversarial→hardened</span></td></tr>
     <tr><td><code>src/deckhand/pipeline.py</code></td><td>end-to-end dry-run pipeline</td><td>7</td><td><span class="pill p-done">APPROVE</span></td></tr>
   </table></div>
-  <p class="note">Reviews under <a href="../../scripts/review/results/">scripts/review/results/</a>. Remaining = owner-gated only: per-scope PATs, tester IDs, repo decisions, gateway up (<a href="https://github.com/vamseeachanta/workspace-hub/issues/2933">#2933</a>). The live <code>executor</code> (git/gh via PAT) + the <code>~/.hermes</code> hook/PATH shim are the live-wiring step. <b>Critical:</b> the executor MUST run with the per-scope PAT (<code>GH_TOKEN</code>), never this box's ambient owner <code>gh</code> login, or scoping is bypassed. <b>Public</b> ecosystem repos (read free; write needs token) support rulesets on Free; <b>private</b> repos do not.</p>
+  <p class="note">Reviews under <a href="../../scripts/review/results/">scripts/review/results/</a>. Remaining = owner-gated only: per-scope PATs, tester IDs, repo decisions, gateway up (<a href="https://github.com/vamseeachanta/workspace-hub/issues/2933">#2933</a>). The live <code>executor</code> (git/gh via PAT) + the <code>~/.hermes</code> hook/PATH shim are the live-wiring step. <b>Critical:</b> the executor MUST run with the per-scope PAT (<code>GH_TOKEN</code>), never this box's ambient owner <code>gh</code> login, or scoping is bypassed. <b>Public</b> ecosystem repos (read free; write needs token) support rulesets on Free; <b>private</b> repos do not. Detective alarm (force-push/branch-delete) built + committed; install with <code>scripts/deckhand/protect-and-verify.sh deploy-detective --apply</code>.</p>
+
+  <!-- ROADMAP -->
+  <h2>Improvement roadmap<span class="n">next leverage after pure core</span></h2>
+  <div class="panel">
+    <p class="note" style="margin-top:0">Roadmap: <a href="../plans/2026-06-01-deckhand-improvement-roadmap.md">../plans/2026-06-01-deckhand-improvement-roadmap.md</a>. Tier-1 items:</p>
+    <ul class="tight">
+      <li>single audited enforcement seam</li>
+      <li>prove live integration / 7 bypass paths</li>
+      <li>executor uses scope PAT not ambient <code>gh</code></li>
+      <li>private-repo compensation (PR-only enforced + direct-default-push canary + detective alarm)</li>
+    </ul>
+    <p class="note" style="margin-bottom:0">Tier-2 (typed config loader, unify destructive taxonomy, operator person registry, dry-run/live mode, ecosystem glob snapshot, elevation workflow, diff-risk) and Tier-3 (industry/multi-tenant) are in the roadmap doc.</p>
+  </div>
 
   <!-- PLATFORMS -->
   <h2>Platform connectivity<span class="n">codex live recon — gateway currently STOPPED</span></h2>
