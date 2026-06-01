@@ -27,6 +27,7 @@
 #     --root DIR           Directory whose git subdirs are swept (default: dirname of repo root)
 #     --repos a,b,c        Limit to these repo names (default: all git subdirs)
 #     --prune-ignored      Also remove git-ignored dirs (git clean -fdx, minus denylist)
+#     --no-clean-dirs      Do NOT remove any untracked/ignored dirs (branches/worktrees only)
 #     --no-pr              Skip PR creation (still commits/pushes branches)
 #     --branch NAME        Housekeeping branch name for stray main-branch changes
 #                          (default: housekeeping/YYYY-MM-DD)
@@ -43,6 +44,7 @@ set -uo pipefail
 # ── Options ───────────────────────────────────────────────────────────────────
 APPLY=0
 PRUNE_IGNORED=0
+CLEAN_DIRS=1
 MAKE_PR=1
 ROOT=""
 ONLY_REPOS=""
@@ -55,6 +57,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --apply)         APPLY=1 ;;
     --prune-ignored) PRUNE_IGNORED=1 ;;
+    --no-clean-dirs) CLEAN_DIRS=0 ;;
     --no-pr)         MAKE_PR=0 ;;
     --root)          ROOT="${2:-}"; shift ;;
     --repos)         ONLY_REPOS="${2:-}"; shift ;;
@@ -115,7 +118,11 @@ echo -e "${BOLD}${CYAN}=== repo-housekeeping ===${NC}"
 echo "  Mode      : $( ((APPLY)) && echo 'APPLY (mutating)' || echo 'DRY-RUN (report only)')"
 echo "  Sweep root: ${ROOT}"
 echo "  PR mode   : $( ((MAKE_PR)) && echo 'open PRs for ahead branches' || echo 'disabled (--no-pr)')"
-echo "  Prune dirs: untracked=$( ((APPLY)) && echo yes || echo 'dry' ) ignored=$( ((PRUNE_IGNORED)) && echo yes || echo no )"
+if (( CLEAN_DIRS )); then
+  echo "  Prune dirs: untracked=$( ((APPLY)) && echo yes || echo 'dry' ) ignored=$( ((PRUNE_IGNORED)) && echo yes || echo no )"
+else
+  echo "  Prune dirs: DISABLED (--no-clean-dirs) — branches/worktrees only"
+fi
 echo "  HK branch : ${HK_BRANCH}"
 command -v gh >/dev/null 2>&1 || { MAKE_PR=0; echo -e "  ${YELLOW}gh not found — PR creation disabled${NC}"; }
 echo ""
@@ -251,7 +258,9 @@ for dir in "${REPO_DIRS[@]}"; do
     act "git worktree prune -v" git worktree prune -v 2>/dev/null || true
   fi
 
-  # 4c) PRUNE untracked dirs (always under --apply), ignored dirs (--prune-ignored)
+  # 4c) PRUNE untracked dirs (under --apply), ignored dirs (--prune-ignored).
+  #     Skipped entirely under --no-clean-dirs (branch/worktree cleanup only).
+  if (( CLEAN_DIRS )); then
   untracked="$(git clean -nd 2>/dev/null | sed 's/^Would remove //')"
   if [[ -n "$untracked" ]]; then
     echo "  untracked dirs/files to remove:"; echo "$untracked" | sed 's/^/      /'
@@ -266,6 +275,7 @@ for dir in "${REPO_DIRS[@]}"; do
       act "git clean -fdx (denylist-protected)" git clean -fdx "${excludes[@]}" >/dev/null 2>&1
     fi
   fi
+  fi  # CLEAN_DIRS
 
   SUMMARY+=("$name: ok (branch=${cur})")
   popd >/dev/null
