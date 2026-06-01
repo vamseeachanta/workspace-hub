@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-01T04:20:01-05:00",
+  "timestamp": "2026-06-01T08:20:02-05:00",
   "agents": [
     {
       "provider": "claude",
@@ -20,7 +20,7 @@
       "week_pct": 2.0,
       "five_hour_pct": 3.0,
       "pct_remaining": 98,
-      "hours_to_reset": 151,
+      "hours_to_reset": 147,
       "resets_at": "2026-06-07T12:00:32-0500",
       "source": "local-session-rate-limits"
     },

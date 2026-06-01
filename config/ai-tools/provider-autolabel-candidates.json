@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-01T09:20:09.417184Z",
+  "generated_at": "2026-06-01T13:20:10.038868Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -360,39 +360,6 @@
       "eligible": false
     },
     {
-      "number": 2474,
-      "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2474",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:engineering",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness",
-        "domain:marine-orcaflex"
-      ],
-      "updatedAt": "2026-05-31T10:56:59Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 2647,
       "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
@@ -510,6 +477,39 @@
       "updatedAt": "2026-05-31T03:34:10Z",
       "execution_ready": false,
       "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2484,
+      "title": "feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2484",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:harness",
+        "machine:dev-primary",
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:knowledge-management-platform"
+      ],
+      "updatedAt": "2026-05-31T10:57:05Z",
+      "execution_ready": false,
+      "priority_rank": 2,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",

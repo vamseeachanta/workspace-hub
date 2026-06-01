@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-01T09:20:09.288937Z",
+  "generated_at": "2026-06-01T13:20:09.911732Z",
   "current_week": "2026-W23",
-  "scorecard_generated_at": "2026-06-01T09:20:07.311889Z",
+  "scorecard_generated_at": "2026-06-01T13:20:07.633888Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 33,
-      "total_candidates": 171,
+      "execution_ready_count": 34,
+      "total_candidates": 172,
       "top_issues": [
         {
           "number": 2533,
@@ -930,6 +930,33 @@
           ]
         },
         {
+          "number": 2931,
+          "title": "Plan Deckhand named repository scopes and scope policy",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2931",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:ai-orchestration",
+            "domain:security",
+            "domain:notification",
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness"
+          ],
+          "updatedAt": "2026-06-01T11:08:40Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2804,
           "title": "bug(infra): Codex-under-Claude sandbox nesting blocks broker delegation (#2802 orchestration) \u2014 choose a supported execution route",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2804",
@@ -1287,6 +1314,27 @@
             "domain:harness"
           ],
           "updatedAt": "2026-05-31T22:54:19Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2934,
+          "title": "Compliance alert: W23 \u2014 23% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2934",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-06-01T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -2244,22 +2292,19 @@
           ]
         },
         {
-          "number": 2478,
-          "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
+          "number": 2933,
+          "title": "Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2933",
           "labels": [
-            "bug",
-            "priority:medium",
-            "cat:ci",
-            "status:pending",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:testing-ci-health"
+            "enhancement",
+            "priority:high",
+            "cat:operations",
+            "domain:notification",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T10:57:01Z",
+          "updatedAt": "2026-06-01T10:03:26Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -2644,7 +2689,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-31T12:10:10Z",
+          "updatedAt": "2026-06-01T12:11:50Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3644,7 +3689,7 @@
         },
         {
           "number": 2741,
-          "title": "test(hermes): validate Telegram dispatch smoke tests and destructive-action canary",
+          "title": "test(deckhand): validate Telegram dispatch smoke tests and destructive-action canary",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2741",
           "labels": [
             "enhancement",
@@ -3657,7 +3702,7 @@
             "gate:completeness",
             "domain:testing-reporting-validation"
           ],
-          "updatedAt": "2026-05-31T10:59:12Z",
+          "updatedAt": "2026-06-01T10:00:22Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3979,7 +4024,7 @@
         },
         {
           "number": 2900,
-          "title": "Plan Hermes multi-platform notification fanout for Telegram, WhatsApp, and Teams",
+          "title": "Plan Deckhand multi-platform notification fanout for Telegram, Signal, WhatsApp, and Teams",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2900",
           "labels": [
             "enhancement",
@@ -3988,7 +4033,7 @@
             "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T22:46:43Z",
+          "updatedAt": "2026-06-01T09:59:41Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4003,7 +4048,7 @@
         },
         {
           "number": 2901,
-          "title": "Plan Hermes Telegram/WhatsApp/Teams platform parity reconnaissance",
+          "title": "Plan Deckhand Telegram/Signal/WhatsApp/Teams platform parity reconnaissance",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2901",
           "labels": [
             "enhancement",
@@ -4012,7 +4057,7 @@
             "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T22:46:45Z",
+          "updatedAt": "2026-06-01T10:01:56Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4027,7 +4072,7 @@
         },
         {
           "number": 2902,
-          "title": "Plan shared Hermes delivery group and fanout contract",
+          "title": "Plan Deckhand shared delivery group and fanout contract",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2902",
           "labels": [
             "enhancement",
@@ -4036,7 +4081,7 @@
             "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T22:46:47Z",
+          "updatedAt": "2026-06-01T09:59:45Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4051,7 +4096,7 @@
         },
         {
           "number": 2903,
-          "title": "Plan Hermes conversation reply policy guardrails for multi-platform fanout",
+          "title": "Plan Deckhand conversation reply policy guardrails for multi-platform fanout",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2903",
           "labels": [
             "enhancement",
@@ -4060,7 +4105,7 @@
             "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T22:46:49Z",
+          "updatedAt": "2026-06-01T09:59:46Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4075,7 +4120,7 @@
         },
         {
           "number": 2904,
-          "title": "Plan send_message multi-target text fanout for Hermes",
+          "title": "Plan Deckhand send_message multi-target text fanout",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2904",
           "labels": [
             "enhancement",
@@ -4084,7 +4129,7 @@
             "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T22:46:51Z",
+          "updatedAt": "2026-06-01T10:00:24Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4099,7 +4144,7 @@
         },
         {
           "number": 2905,
-          "title": "Plan operator docs for Hermes Telegram WhatsApp Teams fanout",
+          "title": "Plan Deckhand operator docs for Telegram, Signal, WhatsApp, and Teams fanout",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2905",
           "labels": [
             "enhancement",
@@ -4108,7 +4153,7 @@
             "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T22:46:53Z",
+          "updatedAt": "2026-06-01T10:00:26Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4123,7 +4168,7 @@
         },
         {
           "number": 2906,
-          "title": "Choose product name for Hermes multi-platform bot",
+          "title": "Apply Deckhand product name across the multi-platform bot plan",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2906",
           "labels": [
             "enhancement",
@@ -4132,7 +4177,7 @@
             "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T22:46:55Z",
+          "updatedAt": "2026-06-01T10:00:27Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4158,7 +4203,7 @@
             "status:needs-plan",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-01T02:22:06Z",
+          "updatedAt": "2026-06-01T09:49:58Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4167,31 +4212,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2931,
-          "title": "Plan Deckhand named channels and repository scope policy",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2931",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "domain:security",
-            "domain:notification",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-06-01T02:45:30Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
             "strategy"
           ]
         },
@@ -4404,7 +4424,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-01T04:02:00Z",
+          "updatedAt": "2026-06-01T11:11:15Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4649,7 +4669,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 2,
-      "total_candidates": 24,
+      "total_candidates": 23,
       "top_issues": [
         {
           "number": 2813,
@@ -4684,31 +4704,6 @@
           "updatedAt": "2026-05-30T22:58:15Z",
           "execution_ready": true,
           "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2474,
-          "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2474",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-orcaflex"
-          ],
-          "updatedAt": "2026-05-31T10:56:59Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -4847,6 +4842,31 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2484,
+          "title": "feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2484",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:knowledge-management-platform"
+          ],
+          "updatedAt": "2026-05-31T10:57:05Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
         }
       ],
       "full_candidates": [
@@ -4883,31 +4903,6 @@
           "updatedAt": "2026-05-30T22:58:15Z",
           "execution_ready": true,
           "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2474,
-          "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2474",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-orcaflex"
-          ],
-          "updatedAt": "2026-05-31T10:56:59Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -5326,7 +5321,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-31T10:11:53Z",
+          "updatedAt": "2026-06-01T10:12:13Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
