@@ -64,6 +64,8 @@ Before final delivery, deduplicate generated broken-reference evidence by `(repo
 
 If the existing `tier-1-indexing-freshness-latest.md` contains stale status or stale broken-link counts from a prior generator, explicitly note the correction in the refreshed report. Do not silently preserve stale counts: re-run false-positive-filtered checks, keep `aceengineer-website` red until `docs/registry/module-routing.yaml` exists, and keep `assetutilities` yellow when the only confirmed remaining issue is trusted-path runtime/cache/log/report noise.
 
+If context compaction or job resumption happens after the report was already written, do not restart the audit by default. First read back the existing latest report and verify whether it satisfies the requested deliverable. Only rerun the full scan or rewrite the report if the file is missing, stale, or internally inconsistent. In cron delivery, summarize artifact path, final verification evidence, per-repo statuses, and next actions rather than duplicating the whole report body.
+
 ### 1. Load context and identify tier-1 repos
 Read:
 - `docs/BUSINESS_BRAIN.md`
@@ -166,6 +168,7 @@ Latest evidence references:
 - `references/2026-05-20-freshness-audit-lessons.md` — dedupe generated broken-reference evidence before finalizing, verify file status/mtime/hash after all report patches, and preserve the corrected RED/YELLOW tier-1 status baseline.
 - `references/2026-05-21-freshness-audit-lessons.md` — compaction-resume closeout pattern, byte-identical dated/latest verification, status-level drift wording, and sibling-checkout generator path drift handling.
 - `references/2026-05-25-freshness-audit-lessons.md` — stale latest-report correction pattern, sibling-fallback evidence snapshot, latest-only verification shape, and current RED/YELLOW baseline.
+- `references/2026-06-01-freshness-audit-lessons.md` — cron compaction-resume recovery after report write, concise final-delivery evidence shape, and current RED/YELLOW baseline with repo-specific 2026-04-22 assumption revisions.
 
 
 ## Daily freshness automation pattern

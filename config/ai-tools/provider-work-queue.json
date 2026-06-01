@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-31T21:20:09.682964Z",
-  "current_week": "2026-W22",
-  "scorecard_generated_at": "2026-05-31T21:20:07.739511Z",
+  "generated_at": "2026-06-01T17:20:10.276023Z",
+  "current_week": "2026-W23",
+  "scorecard_generated_at": "2026-06-01T17:20:08.159170Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -163,13 +163,13 @@
             "priority:high",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:agent-cost-tracking",
+            "domain:ai-config",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:27:47Z",
+          "updatedAt": "2026-05-31T22:46:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -389,13 +389,13 @@
             "priority:high",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:agent-cost-tracking",
+            "domain:ai-config",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:27:47Z",
+          "updatedAt": "2026-05-31T22:46:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -673,11 +673,10 @@
             "machine:dev-primary",
             "status:plan-approved",
             "domain:semiconductor",
-            "domain:chip-design",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:31:15Z",
+          "updatedAt": "2026-05-31T22:45:50Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -697,14 +696,13 @@
             "enhancement",
             "priority:medium",
             "cat:operations",
-            "domain:security",
-            "domain:repo-health",
+            "domain:ops",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:29:48Z",
+          "updatedAt": "2026-05-31T22:45:55Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -725,13 +723,13 @@
             "documentation",
             "priority:medium",
             "cat:documentation",
-            "domain:security",
+            "domain:ops",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:29:44Z",
+          "updatedAt": "2026-05-31T22:45:57Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -751,13 +749,13 @@
           "labels": [
             "priority:medium",
             "cat:documentation",
-            "domain:security",
+            "domain:ops",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:28:58Z",
+          "updatedAt": "2026-05-31T22:46:01Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -912,12 +910,40 @@
             "enhancement",
             "priority:medium",
             "cat:engineering",
+            "domain:hydrodynamics",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:22:33Z",
+          "updatedAt": "2026-05-31T22:46:30Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2931,
+          "title": "Plan Deckhand named repository scopes and scope policy",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2931",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:ai-orchestration",
+            "domain:security",
+            "domain:notification",
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness"
+          ],
+          "updatedAt": "2026-06-01T11:08:40Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -966,7 +992,7 @@
             "gate:completeness",
             "domain:workstations-windows-readiness"
           ],
-          "updatedAt": "2026-05-31T10:59:55Z",
+          "updatedAt": "2026-05-31T22:40:42Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -989,7 +1015,7 @@
             "gate:completeness",
             "domain:workstations-windows-readiness"
           ],
-          "updatedAt": "2026-05-31T10:59:57Z",
+          "updatedAt": "2026-05-31T22:33:58Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -997,29 +1023,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "strategy"
-          ]
-        },
-        {
-          "number": 2817,
-          "title": "feat(harness): plan-approval gate \u2014 trust label-actor authority, retire forgeable local marker (re-scoped from approve-issue helper)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2817",
-          "labels": [
-            "enhancement",
-            "cat:harness",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-05-31T18:18:35Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
             "strategy"
           ]
         },
@@ -1150,9 +1153,10 @@
             "machine:dev-primary",
             "compliance-alert",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:30:57Z",
+          "updatedAt": "2026-05-31T22:54:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1229,9 +1233,10 @@
             "machine:dev-primary",
             "compliance-alert",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:28:50Z",
+          "updatedAt": "2026-05-31T22:54:08Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1255,9 +1260,10 @@
             "machine:dev-primary",
             "compliance-alert",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:28:04Z",
+          "updatedAt": "2026-05-31T22:54:11Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1281,9 +1287,10 @@
             "machine:dev-primary",
             "compliance-alert",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:23:40Z",
+          "updatedAt": "2026-05-31T22:54:15Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1303,9 +1310,10 @@
           "labels": [
             "priority:high",
             "priority:critical",
-            "compliance-alert"
+            "compliance-alert",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-31T11:45:07Z",
+          "updatedAt": "2026-05-31T22:54:19Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1319,21 +1327,16 @@
           ]
         },
         {
-          "number": 2473,
-          "title": "feat(canonical-spec): prove OrcaWave-to-OrcaFlex hydrodynamic handoff semantics",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2473",
+          "number": 2934,
+          "title": "Compliance alert: W23 \u2014 23% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2934",
           "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-rao-seakeeping"
+            "priority:critical",
+            "compliance-alert"
           ],
-          "updatedAt": "2026-05-31T10:56:56Z",
+          "updatedAt": "2026-06-01T11:45:06Z",
           "execution_ready": false,
-          "priority_rank": 1,
+          "priority_rank": 0,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1356,11 +1359,10 @@
             "cat:career",
             "machine:dev-primary",
             "domain:semiconductor",
-            "domain:chip-design",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:31:23Z",
+          "updatedAt": "2026-05-31T22:45:46Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1384,11 +1386,10 @@
             "cat:research",
             "machine:dev-primary",
             "domain:semiconductor",
-            "domain:chip-design",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:31:19Z",
+          "updatedAt": "2026-05-31T22:45:48Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1493,9 +1494,10 @@
             "machine:dev-primary",
             "status:needs-data",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:marine-field-dev"
           ],
-          "updatedAt": "2026-05-26T09:29:31Z",
+          "updatedAt": "2026-05-31T22:45:59Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1699,12 +1701,12 @@
             "priority:high",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:agent-cost-tracking",
+            "domain:cross-review",
             "machine:dev-primary",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:24:42Z",
+          "updatedAt": "2026-05-31T22:46:24Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2013,9 +2015,10 @@
           "labels": [
             "bug",
             "priority:high",
+            "domain:cross-review",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:21:49Z",
+          "updatedAt": "2026-05-31T22:46:32Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2165,9 +2168,10 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:business"
+            "cat:business",
+            "domain:gtm"
           ],
-          "updatedAt": "2026-05-29T23:49:22Z",
+          "updatedAt": "2026-05-31T22:46:40Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2249,7 +2253,7 @@
             "gate:completeness",
             "domain:workstations-fleet-equivalence"
           ],
-          "updatedAt": "2026-05-31T12:50:36Z",
+          "updatedAt": "2026-06-01T00:35:38Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2263,49 +2267,44 @@
           ]
         },
         {
-          "number": 2470,
-          "title": "feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2470",
+          "number": 2926,
+          "title": "feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2926",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:data-pipeline",
-            "cat:documentation",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:knowledge-management-corpus"
+            "priority:high",
+            "cat:operations",
+            "domain:workstations",
+            "machine:licensed-win-2",
+            "status:needs-plan",
+            "gate:completeness"
           ],
-          "updatedAt": "2026-05-31T10:56:52Z",
+          "updatedAt": "2026-06-01T00:39:25Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation",
             "strategy"
           ]
         },
         {
-          "number": 2478,
-          "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
+          "number": 2933,
+          "title": "Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2933",
           "labels": [
-            "bug",
-            "priority:medium",
-            "cat:ci",
-            "status:pending",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:testing-ci-health"
+            "enhancement",
+            "priority:high",
+            "cat:operations",
+            "domain:notification",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T10:57:01Z",
+          "updatedAt": "2026-06-01T10:03:26Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -2402,9 +2401,10 @@
             "cat:harness",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:31:56Z",
+          "updatedAt": "2026-05-31T22:53:59Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2425,9 +2425,10 @@
             "cat:harness",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:31:52Z",
+          "updatedAt": "2026-05-31T22:54:01Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2581,11 +2582,10 @@
             "cat:career",
             "machine:dev-primary",
             "domain:semiconductor",
-            "domain:chip-design",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:31:10Z",
+          "updatedAt": "2026-05-31T22:45:52Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2689,7 +2689,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-31T12:10:10Z",
+          "updatedAt": "2026-06-01T12:11:50Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3542,9 +3542,10 @@
             "cat:maintenance",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:25:34Z",
+          "updatedAt": "2026-05-31T22:54:13Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3688,7 +3689,7 @@
         },
         {
           "number": 2741,
-          "title": "test(hermes): validate Telegram dispatch smoke tests and destructive-action canary",
+          "title": "test(deckhand): validate Telegram dispatch smoke tests and destructive-action canary",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2741",
           "labels": [
             "enhancement",
@@ -3701,7 +3702,7 @@
             "gate:completeness",
             "domain:testing-reporting-validation"
           ],
-          "updatedAt": "2026-05-31T10:59:12Z",
+          "updatedAt": "2026-06-01T10:00:22Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4023,16 +4024,16 @@
         },
         {
           "number": 2900,
-          "title": "Plan Hermes multi-platform notification fanout for Telegram, WhatsApp, and Teams",
+          "title": "Plan Deckhand multi-platform notification fanout for Telegram, Signal, WhatsApp, and Teams",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2900",
           "labels": [
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T12:42:21Z",
+          "updatedAt": "2026-06-01T09:59:41Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4047,16 +4048,16 @@
         },
         {
           "number": 2901,
-          "title": "Plan Hermes Telegram/WhatsApp/Teams platform parity reconnaissance",
+          "title": "Plan Deckhand Telegram/Signal/WhatsApp/Teams platform parity reconnaissance",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2901",
           "labels": [
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T05:45:23Z",
+          "updatedAt": "2026-06-01T10:01:56Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4071,16 +4072,16 @@
         },
         {
           "number": 2902,
-          "title": "Plan shared Hermes delivery group and fanout contract",
+          "title": "Plan Deckhand shared delivery group and fanout contract",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2902",
           "labels": [
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T05:45:24Z",
+          "updatedAt": "2026-06-01T09:59:45Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4095,16 +4096,16 @@
         },
         {
           "number": 2903,
-          "title": "Plan Hermes conversation reply policy guardrails for multi-platform fanout",
+          "title": "Plan Deckhand conversation reply policy guardrails for multi-platform fanout",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2903",
           "labels": [
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T05:45:25Z",
+          "updatedAt": "2026-06-01T09:59:46Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4119,16 +4120,16 @@
         },
         {
           "number": 2904,
-          "title": "Plan send_message multi-target text fanout for Hermes",
+          "title": "Plan Deckhand send_message multi-target text fanout",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2904",
           "labels": [
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T05:45:27Z",
+          "updatedAt": "2026-06-01T10:00:24Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4143,16 +4144,16 @@
         },
         {
           "number": 2905,
-          "title": "Plan operator docs for Hermes Telegram WhatsApp Teams fanout",
+          "title": "Plan Deckhand operator docs for Telegram, Signal, WhatsApp, and Teams fanout",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2905",
           "labels": [
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T05:45:28Z",
+          "updatedAt": "2026-06-01T10:00:26Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4167,16 +4168,16 @@
         },
         {
           "number": 2906,
-          "title": "Choose product name for Hermes multi-platform bot",
+          "title": "Apply Deckhand product name across the multi-platform bot plan",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2906",
           "labels": [
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T10:41:42Z",
+          "updatedAt": "2026-06-01T10:00:27Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4186,6 +4187,31 @@
           "work_type": [
             "research",
             "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2925,
+          "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2925",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "domain:skills",
+            "domain:workstations",
+            "status:needs-plan",
+            "gate:completeness"
+          ],
+          "updatedAt": "2026-06-01T09:49:58Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "strategy"
           ]
         },
@@ -4322,9 +4348,10 @@
             "machine:dev-primary",
             "tech-debt",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:32:16Z",
+          "updatedAt": "2026-05-31T22:53:55Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4397,7 +4424,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-31T11:11:21Z",
+          "updatedAt": "2026-06-01T11:11:15Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4417,14 +4444,13 @@
           "labels": [
             "cat:tooling",
             "cat:data",
-            "domain:standards-tooling",
-            "domain:quality",
             "machine:dev-primary",
             "llm-wiki",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:knowledge-management-corpus"
           ],
-          "updatedAt": "2026-05-26T09:28:08Z",
+          "updatedAt": "2026-05-31T22:46:05Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4442,13 +4468,13 @@
           "title": "GTM client-artifact layout inconsistent across repos \u2014 no shared bundle convention",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2662",
           "labels": [
-            "domain:repo-cleanup",
             "machine:dev-primary",
             "status:needs-plan",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:repo-organization-cleanup-migration"
           ],
-          "updatedAt": "2026-05-26T09:28:00Z",
+          "updatedAt": "2026-05-31T22:46:11Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4466,13 +4492,13 @@
           "title": "Multi-repo codex-burn-20260511 batch \u2014 2 unmerged branches remaining (assetutilities, worldenergydata)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2666",
           "labels": [
-            "domain:repo-cleanup",
             "machine:dev-primary",
             "status:needs-plan",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:repo-organization-cleanup-migration"
           ],
-          "updatedAt": "2026-05-26T09:27:42Z",
+          "updatedAt": "2026-05-31T22:46:18Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4620,30 +4646,11 @@
           ]
         },
         {
-          "number": 2854,
-          "title": "gap(memory): Hermes read-back leg missing \u2014 consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2854",
-          "labels": [
-            "cat:ai-orchestration",
-            "domain:memory"
-          ],
-          "updatedAt": "2026-05-29T00:29:09Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "default long-context routing",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "general"
-          ]
-        },
-        {
           "number": 2878,
           "title": "Kanban: reorganize boards by domain \u2192 subdomain (right-size oversized boards); pilot digitalmodel, then ecosystem-wide",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2878",
           "labels": [],
-          "updatedAt": "2026-05-31T19:00:18Z",
+          "updatedAt": "2026-06-01T00:26:53Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4662,7 +4669,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 2,
-      "total_candidates": 24,
+      "total_candidates": 23,
       "top_issues": [
         {
           "number": 2813,
@@ -4707,56 +4714,6 @@
           ]
         },
         {
-          "number": 2472,
-          "title": "feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2472",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-rao-seakeeping"
-          ],
-          "updatedAt": "2026-05-31T10:56:54Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2474,
-          "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2474",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-orcaflex"
-          ],
-          "updatedAt": "2026-05-31T10:56:59Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 2647,
           "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
@@ -4787,12 +4744,12 @@
             "priority:high",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:agent-cost-tracking",
+            "domain:ai-config",
             "machine:dev-primary",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:24:47Z",
+          "updatedAt": "2026-05-31T22:46:22Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4858,6 +4815,58 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 2880,
+          "title": "feat(codex): make yolo-equivalent permission defaults travel across machines",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2880",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:harness",
+            "domain:ai-config",
+            "machine:multi",
+            "agent:codex",
+            "status:needs-plan",
+            "gate:completeness"
+          ],
+          "updatedAt": "2026-05-30T12:45:58Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "existing codex agent label",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2484,
+          "title": "feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2484",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:knowledge-management-platform"
+          ],
+          "updatedAt": "2026-05-31T10:57:05Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
         }
       ],
       "full_candidates": [
@@ -4904,56 +4913,6 @@
           ]
         },
         {
-          "number": 2472,
-          "title": "feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2472",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-rao-seakeeping"
-          ],
-          "updatedAt": "2026-05-31T10:56:54Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2474,
-          "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2474",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-orcaflex"
-          ],
-          "updatedAt": "2026-05-31T10:56:59Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 2647,
           "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
@@ -4984,12 +4943,12 @@
             "priority:high",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:agent-cost-tracking",
+            "domain:ai-config",
             "machine:dev-primary",
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-26T09:24:47Z",
+          "updatedAt": "2026-05-31T22:46:22Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -5217,12 +5176,12 @@
           "labels": [
             "priority:medium",
             "cat:harness",
-            "domain:cleanup",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:23:35Z",
+          "updatedAt": "2026-05-31T22:54:17Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -5362,7 +5321,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-31T10:11:53Z",
+          "updatedAt": "2026-06-01T10:12:13Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -5423,8 +5382,10 @@
           "number": 2911,
           "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2911",
-          "labels": [],
-          "updatedAt": "2026-05-31T18:56:39Z",
+          "labels": [
+            "domain:harness"
+          ],
+          "updatedAt": "2026-05-31T22:54:26Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -5435,6 +5396,22 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 2920,
+          "title": "Roll out update-harness-tools.sh across machine ecosystem",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2920",
+          "labels": [],
+          "updatedAt": "2026-06-01T00:42:19Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation"
+          ]
         }
       ]
     },
@@ -5442,7 +5419,7 @@
       "provider": "gemini",
       "routing_priority": "highest",
       "execution_ready_count": 1,
-      "total_candidates": 4,
+      "total_candidates": 5,
       "top_issues": [
         {
           "number": 2733,
@@ -5482,9 +5459,10 @@
             "cat:harness",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:32:00Z",
+          "updatedAt": "2026-05-31T22:53:57Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "gemini",
@@ -5505,9 +5483,10 @@
             "cat:harness",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:31:47Z",
+          "updatedAt": "2026-05-31T22:54:04Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "gemini",
@@ -5540,6 +5519,25 @@
           "provider_status": "underused",
           "work_type": [
             "research"
+          ]
+        },
+        {
+          "number": 2854,
+          "title": "gap(memory): Hermes read-back leg missing \u2014 consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2854",
+          "labels": [
+            "cat:ai-orchestration",
+            "domain:knowledge-management-platform"
+          ],
+          "updatedAt": "2026-05-31T22:46:38Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "gemini",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "general"
           ]
         }
       ],
@@ -5582,9 +5580,10 @@
             "cat:harness",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:32:00Z",
+          "updatedAt": "2026-05-31T22:53:57Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "gemini",
@@ -5605,9 +5604,10 @@
             "cat:harness",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
-          "updatedAt": "2026-05-26T09:31:47Z",
+          "updatedAt": "2026-05-31T22:54:04Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "gemini",
@@ -5640,6 +5640,25 @@
           "provider_status": "underused",
           "work_type": [
             "research"
+          ]
+        },
+        {
+          "number": 2854,
+          "title": "gap(memory): Hermes read-back leg missing \u2014 consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2854",
+          "labels": [
+            "cat:ai-orchestration",
+            "domain:knowledge-management-platform"
+          ],
+          "updatedAt": "2026-05-31T22:46:38Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "gemini",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "general"
           ]
         }
       ]

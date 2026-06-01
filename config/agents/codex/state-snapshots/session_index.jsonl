@@ -37,3 +37,25 @@
 {"id":"019df264-135a-7230-9d52-450f694122fd","thread_name":"@/mnt/local-analysis/worktrees/nightly-batch-2-20260504-011417/scripts/review/plan-review-prompt.md — review the plan...","updated_at":"2026-05-04T09:48:59.358951352Z"}
 {"id":"019e30bf-1204-7c03-9c88-92714b558153","thread_name":"Codex Companion Task: Perform an adversarial r2 cross-provider review of ll...","updated_at":"2026-05-16T12:25:01.67165886Z"}
 {"id":"019e30bf-1dea-7d53-b97a-3b9f4483e1c9","thread_name":"Codex Companion Task: <task> Perform a Codex r2 adversarial review of llm-w...","updated_at":"2026-05-16T12:25:01.806787268Z"}
+{"id":"019e6397-3331-7f91-92db-362b6bea31bf","thread_name":"Codex Companion Task: --help","updated_at":"2026-05-26T09:22:31.459099786Z"}
+{"id":"019e6398-3ec8-7853-b9e3-77331cbaf7d9","thread_name":"Codex Companion Task: ROLE: Implement workspace-hub issue #2802 (auto-add e...","updated_at":"2026-05-26T09:23:02.903248244Z"}
+{"id":"019e63b2-5fae-79d2-9c3e-49ee82a53817","thread_name":"Codex Companion Task: Run this exact shell command and report its raw stdou...","updated_at":"2026-05-26T09:51:51.073168418Z"}
+{"id":"019e63c1-7e7e-7852-9b51-2c41f983b58f","thread_name":"Codex Companion Task: You are an ADVERSARIAL plan reviewer. Your job is to ...","updated_at":"2026-05-26T10:08:06.051660702Z"}
+{"id":"019e6436-776f-7563-9486-3fe3bd289cba","thread_name":"Codex Companion Task: Run exactly this shell command and report its raw std...","updated_at":"2026-05-26T12:16:09.134783963Z"}
+{"id":"019e6439-fa14-7641-abeb-2f93959440da","thread_name":"Codex Companion Task: Run this shell command and report ONLY its stdout: pr...","updated_at":"2026-05-26T12:19:42.162615103Z"}
+{"id":"019e643a-870c-7dc3-8d1e-841f5cecbfa5","thread_name":"Codex Companion Task: Do two things and report results: (1) run `git rev-pa...","updated_at":"2026-05-26T12:20:18.226742512Z"}
+{"id":"019e6485-fc24-7081-a37f-c70a1496604f","thread_name":"Codex Companion Task: Run 'git rev-parse --abbrev-ref HEAD' and show stdout...","updated_at":"2026-05-26T13:42:58.910971392Z"}
+{"id":"019e648a-f1ab-7362-bcfd-a2620ebf7051","thread_name":"Codex Companion Task: You are an ADVERSARIAL plan reviewer. Your job is to ...","updated_at":"2026-05-26T13:48:08.37434548Z"}
+{"id":"019e64e4-9c70-7e73-9b7b-e6033cea8561","thread_name":"Codex Companion Task: --cd /mnt/local-analysis/wt-2802 ROLE: Implement work...","updated_at":"2026-05-26T15:26:04.912260627Z"}
+{"id":"019e64e7-c7ab-7973-adcd-77a3bc6ce9c8","thread_name":"Codex Companion Task: --help","updated_at":"2026-05-26T15:29:32.37791414Z"}
+{"id":"019e64e9-c48e-75b2-87ca-e0bdc3eca870","thread_name":"Codex Companion Task: ROLE: Implement workspace-hub issue #2802 (auto-add e...","updated_at":"2026-05-26T15:32:09.439727759Z"}
+{"id":"019e6589-2e41-7851-9fc7-68ccf0743bd0","thread_name":"Codex Companion Task: ADVERSARIAL CODE REVIEW of PR #2820 (Refs #2802) — th...","updated_at":"2026-05-26T18:25:50.155597178Z"}
+{"id":"019e6598-c628-7b03-ac84-c5ee0953573e","thread_name":"Codex Companion Task: --cd /mnt/local-analysis/wt-2802 ROLE: Apply code-rev...","updated_at":"2026-05-26T18:42:52.002470641Z"}
+{"id":"019e659c-3c9e-7c13-bba4-707ad66230b3","thread_name":"Codex Companion Task: --cd /mnt/local-analysis/workspace-hub/.claude/worktr...","updated_at":"2026-05-26T18:46:38.896980831Z"}
+{"id":"019e6644-f334-7241-be63-bacc43478cf0","thread_name":"Codex Companion Task: You are an ADVERSARIAL reviewer. Assume the plan has ...","updated_at":"2026-05-26T21:50:55.605301097Z"}
+{"id":"019e667e-ea90-7d61-8124-d3c2b1093702","thread_name":"Codex Companion Task: You are an ADVERSARIAL code reviewer. Assume the code...","updated_at":"2026-05-26T22:54:14.503878424Z"}
+{"id":"019e66c8-0192-7c72-a85d-e35e6effd89a","thread_name":"Codex Companion Task: You are an ADVERSARIAL reviewer. Assume the plan has ...","updated_at":"2026-05-27T00:14:04.461854985Z"}
+{"id":"019e674a-1180-72e3-b1ce-26c16780bcea","thread_name":"Codex Companion Task: You are an ADVERSARIAL reviewer. Assume each plan has...","updated_at":"2026-05-27T02:36:25.461610772Z"}
+{"id":"019e68de-8f46-75c3-b807-69b1a46302ce","thread_name":"Codex Companion Task: You are an ADVERSARIAL code reviewer. Assume the code...","updated_at":"2026-05-27T09:58:15.613759906Z"}
+{"id":"019e690b-1881-7240-a49d-4d7ba3f7e259","thread_name":"Codex Companion Task: You are an ADVERSARIAL code reviewer. Assume defects ...","updated_at":"2026-05-27T10:46:35.794415313Z"}
+{"id":"019e692d-0d6e-7131-b561-61c44f2db716","thread_name":"Codex Companion Task: You are an ADVERSARIAL code reviewer. Assume defects ...","updated_at":"2026-05-27T11:23:41.309812899Z"}

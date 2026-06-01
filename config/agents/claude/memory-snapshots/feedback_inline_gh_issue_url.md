@@ -14,3 +14,6 @@ When referencing GitHub issues in chat output or comments posted via `gh`, alway
 - `gh issue comment` bodies: keep the existing `#NNNN` short form there — GitHub auto-links those, full URLs would be redundant.
 - Cross-repo issues: same pattern with the cross-repo path (`org/repo#NNNN` → full URL).
 - Applies to all repos under workspace-hub (vamseeachanta/workspace-hub is the default).
+- **PRs**: `[PR #NNNN](https://github.com/vamseeachanta/workspace-hub/pull/NNNN)`.
+- **Settings/config pages, dashboards, comment permalinks**: hyperlink the label, never paste a bare raw URL.
+- **User-action targets (reinforced 2026-05-28)**: when summarizing what the USER should do — verify/close an issue, approve a plan, flip a CI variable/setting, merge a PR, run a script — hyperlink the target (issue/PR/settings page) so they click straight to it. Every issue/PR cell in a status/action table is a hyperlink, never a bare `#NNNN`.

@@ -7,6 +7,22 @@ metadata:
   originSessionId: c33ac478-fe2b-456e-b884-3c68d71720c2
 ---
 
+## UPDATE — 2026-05-25 (0.133.0: hang appears RESOLVED; strong signal, not exhaustive)
+
+codex-cli upgraded to **0.133.0** (was 0.130.0). Live re-probe this session from `/mnt/local-analysis/workspace-hub`:
+
+| Invocation context | 0.130.0 | 0.133.0 (2026-05-25) |
+|---|---|---|
+| Foreground Claude-Code-Bash, `</dev/null` | ✅ | ✅ ROUTE_OK exit 0 |
+| `bash -c` subshell, **CLAUDECODE=1 inherited**, `</dev/null` | ❌ HUNG | ✅ **ROUTE_OK exit 0, no hang** |
+| True Hermes-worker dispatch / `run_in_background=true` | ❌ HUNG | ⚠️ UNTESTED |
+
+The `bash -c` subshell + `CLAUDECODE=1` case was a **documented failing case** on 0.130.0 (see matrix below) and now **passes** on 0.133.0. The "Reading additional input from stdin..." banner still prints but is now **cosmetic** — execution proceeds to completion instead of wedging. `script -qc` and `env -u CLAUDECODE` workarounds are **no longer required** for the tested cases.
+
+**How to apply (revised):** On 0.133.0, treat codex as RELIABLE for foreground + non-TTY-subshell invocation. Still verify before trusting the true Hermes-worker / `run_in_background=true` path (untested today). Do NOT downgrade. The pre-0.133 "treat codex as DEAD/UNAVAILABLE in non-TTY contexts" guidance below is **superseded** for 0.133.0 — keep it only as history / fallback if a hang re-appears. Verified via probe: `codex exec --skip-git-repo-check "Reply with exactly: ROUTE_OK" </dev/null` + the subshell variant. Companion artifact: `docs/reports/2026-05-25-harness-flow-paths.html`.
+
+---
+
 ## Current status — 2026-05-16 (TTY-faking + CLAUDECODE-env-unset workarounds identified)
 
 Codex 0.130.0 hangs in non-TTY invocation contexts (cron, background, subshell, Hermes worker, Claude Code Bash with `run_in_background=true`). The hang is **TTY-detection-layer**: codex probes `isatty(0)` and if false, enters a stdin-waiting state that even `</dev/null` does NOT defeat. The reliable workarounds are:
