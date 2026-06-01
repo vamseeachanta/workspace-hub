@@ -20,6 +20,7 @@ LINK_MARKER=".link-marker"
 
 OPT_HOOKS=true; OPT_SKILLS=true; OPT_DRY_RUN=false; OPT_VERBOSE=false; OPT_ONLY=""
 HOOKS_ADDED=0; HOOKS_SKIPPED=0; HOOKS_FAILED=0
+PERMS_ADDED=0; PERMS_SKIPPED=0; PERMS_FAILED=0
 SKILLS_LINKED=0; SKILLS_SKIPPED_MODIFIED=0; SKILLS_ALREADY_LINKED=0; SKILLS_CREATED=0
 
 # Colors (disabled in pipes)
@@ -189,6 +190,47 @@ propagate_hooks() {
         rm -f "$tmp_f"
         log_fail "$repo_name — jq failed, manual edit needed"; HOOKS_FAILED=$((HOOKS_FAILED+1))
     fi
+}
+
+# --- propagate_permissions(repo_dir) ---
+# Union-merge the canonical permissions.allow from workspace-hub's settings into
+# each sibling repo's .claude/settings.json. propagate_hooks only carries the Stop
+# hook; allow-rules (e.g. the sanctioned GIT_PRE_PUSH_SKIP pre-push bypass for the
+# sibling-layout tier1 gate, #2925) were stranded per-repo. Idempotent: only adds
+# canonical entries that are missing; never removes a repo's own local rules.
+propagate_permissions() {
+    local repo_dir="$1" repo_name; repo_name="$(basename "$repo_dir")"
+    local settings="$repo_dir/.claude/settings.json"
+    local canon="$WS_HUB/.claude/settings.json"
+
+    [[ "$repo_dir" -ef "$WS_HUB" ]] && return  # never self-propagate the canonical source
+    if [[ ! -f "$settings" ]]; then
+        log_skip "$repo_name — no .claude/settings.json"; PERMS_SKIPPED=$((PERMS_SKIPPED+1)); return; fi
+    if ! command -v jq &>/dev/null; then
+        log_fail "$repo_name — jq not available"; PERMS_FAILED=$((PERMS_FAILED+1)); return; fi
+
+    local canon_allow; canon_allow="$(jq -c '.permissions.allow // []' "$canon" 2>/dev/null || echo '[]')"
+    if [[ "$canon_allow" == "[]" ]]; then
+        log_skip "$repo_name — no canonical permissions.allow to propagate"; PERMS_SKIPPED=$((PERMS_SKIPPED+1)); return; fi
+
+    local missing; missing="$(jq -r --argjson canon "$canon_allow" \
+        '($canon - (.permissions.allow // [])) | length' "$settings" 2>/dev/null || echo 1)"
+    if [[ "$missing" == "0" ]]; then
+        log_ok "$repo_name — permissions.allow already current"; PERMS_SKIPPED=$((PERMS_SKIPPED+1)); return; fi
+
+    if [[ "$OPT_DRY_RUN" == "true" ]]; then
+        log_add "$repo_name — would union-merge $missing permission rule(s) (dry-run)"; PERMS_ADDED=$((PERMS_ADDED+1)); return; fi
+
+    local tmp_f; tmp_f="$(mktemp)"; local jq_rc=0
+    jq --argjson canon "$canon_allow" \
+        '.permissions.allow = (((.permissions.allow // []) + $canon) | unique)' \
+        "$settings" > "$tmp_f" 2>/dev/null || jq_rc=$?
+    if [[ $jq_rc -eq 0 && -s "$tmp_f" ]]; then
+        mv "$tmp_f" "$settings"
+        log_add "$repo_name — merged permissions.allow (+$missing)"; PERMS_ADDED=$((PERMS_ADDED+1))
+    else
+        rm -f "$tmp_f"
+        log_fail "$repo_name — jq merge failed, manual edit needed"; PERMS_FAILED=$((PERMS_FAILED+1)); fi
 }
 
 # --- update_gitignore(repo_dir) ---
@@ -376,6 +418,9 @@ main() {
         printf "${C_BOLD}HOOKS:${C_RESET}\n"
         for r in "${submodules[@]}"; do propagate_hooks "$r"; done
         echo ""
+        printf "${C_BOLD}PERMISSIONS:${C_RESET}\n"
+        for r in "${submodules[@]}"; do propagate_permissions "$r"; done
+        echo ""
     fi
     if [[ "$OPT_SKILLS" == "true" ]]; then
         printf "${C_BOLD}SKILLS:${C_RESET}\n"
@@ -419,6 +464,9 @@ main() {
     if [[ "$OPT_HOOKS" == "true" ]]; then
         printf "  Hooks:  %d added, %d skipped" "$HOOKS_ADDED" "$HOOKS_SKIPPED"
         [[ $HOOKS_FAILED -gt 0 ]] && printf ", ${C_RED}%d failed${C_RESET}" "$HOOKS_FAILED"
+        echo ""
+        printf "  Perms:  %d merged, %d skipped" "$PERMS_ADDED" "$PERMS_SKIPPED"
+        [[ $PERMS_FAILED -gt 0 ]] && printf ", ${C_RED}%d failed${C_RESET}" "$PERMS_FAILED"
         echo ""
     fi
     if [[ "$OPT_SKILLS" == "true" ]]; then

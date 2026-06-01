@@ -103,3 +103,5 @@ shown:
     tips: [bp-shell-dynamic, cc-bare]
   - date: 2026-05-31
     tips: [cc-simplify, eco-repo-sync]
+  - date: 2026-06-01
+    tips: [gsd-forensics, cc-rewind]
