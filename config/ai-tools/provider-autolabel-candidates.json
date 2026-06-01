@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-31T21:20:09.951695Z",
+  "generated_at": "2026-06-01T01:20:09.398757Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -199,13 +199,13 @@
         "priority:high",
         "cat:ai-orchestration",
         "cat:harness",
-        "domain:agent-cost-tracking",
+        "domain:ai-config",
         "machine:dev-primary",
         "status:plan-approved",
         "dispatch:ready",
         "gate:completeness"
       ],
-      "updatedAt": "2026-05-26T09:27:47Z",
+      "updatedAt": "2026-05-31T22:46:13Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -360,39 +360,6 @@
       "eligible": false
     },
     {
-      "number": 2472,
-      "title": "feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2472",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:engineering",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness",
-        "domain:marine-rao-seakeeping"
-      ],
-      "updatedAt": "2026-05-31T10:56:54Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 2474,
       "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2474",
@@ -464,12 +431,12 @@
         "priority:high",
         "cat:ai-orchestration",
         "cat:harness",
-        "domain:agent-cost-tracking",
+        "domain:ai-config",
         "machine:dev-primary",
         "dispatch:ready",
         "gate:completeness"
       ],
-      "updatedAt": "2026-05-26T09:24:47Z",
+      "updatedAt": "2026-05-31T22:46:22Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -569,9 +536,10 @@
         "cat:harness",
         "machine:dev-primary",
         "dispatch:ready",
-        "gate:completeness"
+        "gate:completeness",
+        "domain:harness"
       ],
-      "updatedAt": "2026-05-26T09:32:00Z",
+      "updatedAt": "2026-05-31T22:53:57Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "gemini",
@@ -600,9 +568,10 @@
         "cat:harness",
         "machine:dev-primary",
         "dispatch:ready",
-        "gate:completeness"
+        "gate:completeness",
+        "domain:harness"
       ],
-      "updatedAt": "2026-05-26T09:31:47Z",
+      "updatedAt": "2026-05-31T22:54:04Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "gemini",
@@ -648,6 +617,32 @@
       "confidence": 0.6,
       "confidence_reasons": [
         "priority-labeled",
+        "strong-gemini-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2854,
+      "title": "gap(memory): Hermes read-back leg missing \u2014 consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2854",
+      "labels": [
+        "cat:ai-orchestration",
+        "domain:knowledge-management-platform"
+      ],
+      "updatedAt": "2026-05-31T22:46:38Z",
+      "execution_ready": false,
+      "priority_rank": 4,
+      "suggested_provider": "gemini",
+      "routing_reason": "research/triage/audit language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "general"
+      ],
+      "target_label": "agent:gemini",
+      "confidence": 0.45,
+      "confidence_reasons": [
         "strong-gemini-language-match",
         "provider-highest-priority"
       ],

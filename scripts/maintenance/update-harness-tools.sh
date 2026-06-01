@@ -12,6 +12,14 @@
 
 set -uo pipefail
 
+# Ensure tool dirs are on PATH. Cron and Windows Task Scheduler launch this with a
+# minimal environment, so the npm-global / ~/.local/bin dirs where the CLIs live
+# are not on PATH by default. Mirrors scripts/cron/harness-update-windows.sh.
+if [[ -n "${APPDATA:-}" ]] && command -v cygpath >/dev/null 2>&1; then
+  PATH="$(cygpath "$APPDATA")/npm:${PATH}"   # Windows npm-global (Git Bash / MINGW64)
+fi
+export PATH="${HOME}/.local/bin:${HOME}/.npm-global/bin:${PATH}"
+
 DRY_RUN=0
 [[ "${1:-}" == "--dry-run" || "${1:-}" == "-n" ]] && DRY_RUN=1
 

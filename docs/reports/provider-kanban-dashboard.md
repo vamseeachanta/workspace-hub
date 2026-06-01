@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-31T21:20:11Z
+Generated: 2026-06-01T01:20:11Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2926 | feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2925 | feat(workstations): skills-inventory parity gap — dev-secondary 396 vs dev-primary 404 [#2887 matrix finding] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2920 | Roll out update-harness-tools.sh across machine ecosystem | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2911 | bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2906 | Choose product name for Hermes multi-platform bot | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2905 | Plan operator docs for Hermes Telegram WhatsApp Teams fanout | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -63,7 +66,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2880 | feat(codex): make yolo-equivalent permission defaults travel across machines | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2878 | Kanban: reorganize boards by domain → subdomain (right-size oversized boards); pilot digitalmodel, then ecosystem-wide | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2859 | Doris demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2854 | gap(memory): Hermes read-back leg missing — consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2854 | gap(memory): Hermes read-back leg missing — consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex) | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2852 | feat(workstations): real solver license probe on licensed-win-* (present → licensed) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2847 | feat(dispatch): multi-machine leader failover — auto-promote/redistribute when dispatch coordinator (ace-linux-1) is down | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; issue already has approval marker on disk |
 | #2844 | statusline: add Codex 5-hour burst window + stale/estimate marker | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -72,7 +75,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2828 | hardening(kanban): reconciler fetch via GraphQL pagination (hasNextPage) to structurally eliminate partial fetches | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2826 | feat(kanban): #2802 Phase 2 — activate reconciler (cron + GitHub App token + repository_dispatch nudge) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2822 | Document/automate worktree dispatch for the Codex-under-Claude route (3-layer sandbox requirement) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
-| #2817 | feat(harness): plan-approval gate — trust label-actor authority, retire forgeable local marker (re-scoped from approve-issue helper) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2816 | feat(workstations): collect-equality.ps1 — accurate Windows compute + restore RAM floor [#2801 family] | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
 | #2815 | feat(workstations): Windows Task Scheduler reads schedule-tasks.yaml + EqualityReport live-validation [#2801 family] | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
 | #2813 | chore(infra): roll out Codex-under-Claude sandbox fix (#2804) to remaining ecosystem machines | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
@@ -241,8 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2478 | follow-up(ci): worldenergydata Python test matrix fails after lint restoration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2474 | feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2473 | feat(canonical-spec): prove OrcaWave-to-OrcaFlex hydrodynamic handoff semantics | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2472 | feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2470 | feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
