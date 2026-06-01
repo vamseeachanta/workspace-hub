@@ -222,7 +222,7 @@ hook  : pre_tool_call + PATH git/gh shim
     <ol class="tight">
       <li>✅ <s><b>Create 2 fine-grained PATs</b></s> — done + <code>verify-pat</code> green (acma→llm-wiki-acma; doris→llm-wiki-doris+doris; cross-scope isolation confirmed). <b>TODO: rotate both</b> — values appeared in the chat transcript.</li>
       <li>✅ <s><b>Send external tester platform IDs</b></s> — Telegram id <code>8748731589</code> added to <code>acma</code> + <code>doris</code> operators (engine-verified: read/write allowed, force-push denied; unknown operator fail-closed). <code>ecosystem</code> off.</li>
-      <li><b>Bring the gateway up</b> (<a href="https://github.com/vamseeachanta/workspace-hub/issues/2933">#2933</a>) on ace-linux-2 — currently stopped — and <b>connect Telegram</b> (BotFather token → <code>TELEGRAM_BOT_TOKEN</code> + allowed users). Lowest-friction platform for a first test.</li>
+      <li>✅ <s><b>Gateway up + Telegram connected</b></s> — gateway running (systemd+linger+auto-restart, covers most of <a href="https://github.com/vamseeachanta/workspace-hub/issues/2933">#2933</a>); bot live as <b><code>@the_deckhand_bot</code></b>; tester <code>8748731589</code> allowlisted. <b>⚠ enforcement NOT yet wired</b> — messaging the bot now hits the plain Hermes agent (ambient owner <code>gh</code> = full access), not the scoped Deckhand path.</li>
       <li><b>Optional, when ready:</b> run <code>scripts/deckhand/protect-and-verify.sh deploy-detective --apply</code> to install the force-push/delete alarm into the scope repos.</li>
     </ol>
     <p class="note">Done: ✅ plan-approved (#2931) · ✅ v1 repo set (confident-only) · ✅ branch-protection decision (stay Free → detective control).</p>
