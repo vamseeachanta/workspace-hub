@@ -220,7 +220,7 @@ hook  : pre_tool_call + PATH git/gh shim
   <div class="owner">
     <h2>User actions — to do</h2>
     <ol class="tight">
-      <li><b>Create 2 fine-grained PATs</b> (owner-only; the real security boundary). <code>deckhand-acma</code> → repo <code>llm-wiki-acma</code>; <code>deckhand-doris</code> → repos <code>llm-wiki-doris</code> + <code>doris</code>. Perms each: Contents R/W + Pull requests R/W + Metadata R, <b>no Administration</b>. Store in <code>~/.hermes/.env</code> as <code>DECKHAND_PAT_ACMA</code> / <code>DECKHAND_PAT_DORIS</code>. → then I run <code>verify-pat</code>.</li>
+      <li>✅ <s><b>Create 2 fine-grained PATs</b></s> — done + <code>verify-pat</code> green (acma→llm-wiki-acma; doris→llm-wiki-doris+doris; cross-scope isolation confirmed). <b>TODO: rotate both</b> — values appeared in the chat transcript.</li>
       <li><b>Send external tester platform IDs</b> — stable IDs (Telegram numeric user id / Teams AAD oid), per scope. → I add them to <code>operators</code> in <code>scopes.yml</code>.</li>
       <li><b>Bring the gateway up</b> (<a href="https://github.com/vamseeachanta/workspace-hub/issues/2933">#2933</a>) on ace-linux-2 — currently stopped — and <b>connect Telegram</b> (BotFather token → <code>TELEGRAM_BOT_TOKEN</code> + allowed users). Lowest-friction platform for a first test.</li>
       <li><b>Optional, when ready:</b> run <code>scripts/deckhand/protect-and-verify.sh deploy-detective --apply</code> to install the force-push/delete alarm into the scope repos.</li>
