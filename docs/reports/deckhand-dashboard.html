@@ -71,7 +71,8 @@
     <span class="badge b-ok">committed config is fail-closed (empty operators ⇒ deny)</span>
     <span class="badge b-ok">✅ B1 DONE — live enforcement validated: force-push DENIED on the real bot (audit-confirmed DENY); clean reads allowed; scope=acma via DM binding</span>
     <span class="badge b-ok">DM-bound scope deployed: tester DM 8748731589 → acma (no /scope, no core patch)</span>
-    <span class="badge b-ok">B2 APPLIED: scoped-PAT executor live (PATH-shim + 2 core patches) — standalone-validated: out-of-scope repo → 404 under acma PAT</span>
+    <span class="badge b-ok">✅ B2 DONE: /scope identity live ✓; scoped-PAT shim applied + proven (out-of-scope → 404); allowed git/gh use DECKHAND_PAT_&lt;scope&gt;</span>
+    <span class="badge b-warn">live bypass observed: execute_code → terminal() evades the allow/deny gate (PAT boundary still holds) → next: harden scan_python_source (t_be8b4534)</span>
     <span class="badge b-ok">/scope identity core patch applied; allowed git/gh now run under DECKHAND_PAT_&lt;scope&gt;, not ambient gh</span>
     <span class="badge b-info">acma/doris user-onboarding runbook committed (scripts/review/results)</span>
     <span class="badge b-ok">detective alarm built (Free-plan compensator)</span>
@@ -80,7 +81,7 @@
   <p class="note">Deckhand lets an authenticated <b>operator</b> drive <code>git</code>/<code>gh</code> on repository <b>scopes</b>
   (<code>acma</code>, <code>doris</code>, <code>ecosystem</code>) from a chat platform. This page tracks every decision, the
   grilling turns, codex reviews, the board, and what's blocking go-live.</p>
-  <p class="note"><b>Live wiring (B) — status 2026-06-01:</b> B1 enforcement plugin installed + enabled on the gateway in <b>report mode</b>. Telegram report-mode test confirmed the <code>pre_tool_call</code> hook fires, resolves the operator, and is fail-closed (git-status with no scope → WOULD_BLOCK). Found: the <code>/scope</code> command can't see operator identity (Hermes dispatches plugin commands <i>before</i> session identity is set) — a pure-plugin fix is impossible. <b>Decision:</b> pivot to <b>DM-bound scope</b> (channel→repo binding; no Hermes core patch). <code>/scope</code> command + scoped-PAT execution remain deferred to an explicitly-authorized core patch (B2).</p>
+  <p class="note"><b>Live wiring (B) — status 2026-06-01:</b> B1 enforcement plugin installed + enabled on the gateway in <b>report mode</b>. Telegram report-mode test confirmed the <code>pre_tool_call</code> hook fires, resolves the operator, and is fail-closed (git-status with no scope → WOULD_BLOCK). Found: the <code>/scope</code> command can't see operator identity (Hermes dispatches plugin commands <i>before</i> session identity is set) — a pure-plugin fix is impossible. <b>Then:</b> pivoted to DM-bound scope (validated live: force-push DENIED) → owner authorized the core patch → <b>B2 applied</b>: <code>/scope</code> identity fix works live, and the scoped-PAT PATH-shim is proven (out-of-scope repo → 404 under the acma PAT; allowed git/gh now use <code>DECKHAND_PAT_&lt;scope&gt;</code>, not ambient). <b>Open:</b> <code>execute_code</code> → <code>terminal()</code> bypasses the allow/deny gate (credential boundary still holds) — next is hardening <code>scan_python_source</code> (bypass-containment <code>t_be8b4534</code>).</p>
 
   <!-- DECISIONS -->
   <h2>Design decisions<span class="n">9 resolved · captured in glossary + governance records</span></h2>
