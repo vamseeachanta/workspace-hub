@@ -27,6 +27,7 @@
 #     --root DIR           Directory whose git subdirs are swept (default: dirname of repo root)
 #     --repos a,b,c        Limit to these repo names (default: all git subdirs)
 #     --prune-ignored      Also remove git-ignored dirs (git clean -fdx, minus denylist)
+#     --no-clean-dirs      Do NOT remove any untracked/ignored dirs (branches/worktrees only)
 #     --no-pr              Skip PR creation (still commits/pushes branches)
 #     --branch NAME        Housekeeping branch name for stray main-branch changes
 #                          (default: housekeeping/YYYY-MM-DD)
@@ -43,6 +44,7 @@ set -uo pipefail
 # ── Options ───────────────────────────────────────────────────────────────────
 APPLY=0
 PRUNE_IGNORED=0
+CLEAN_DIRS=1
 MAKE_PR=1
 ROOT=""
 ONLY_REPOS=""
@@ -55,6 +57,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --apply)         APPLY=1 ;;
     --prune-ignored) PRUNE_IGNORED=1 ;;
+    --no-clean-dirs) CLEAN_DIRS=0 ;;
     --no-pr)         MAKE_PR=0 ;;
     --root)          ROOT="${2:-}"; shift ;;
     --repos)         ONLY_REPOS="${2:-}"; shift ;;
@@ -115,7 +118,11 @@ echo -e "${BOLD}${CYAN}=== repo-housekeeping ===${NC}"
 echo "  Mode      : $( ((APPLY)) && echo 'APPLY (mutating)' || echo 'DRY-RUN (report only)')"
 echo "  Sweep root: ${ROOT}"
 echo "  PR mode   : $( ((MAKE_PR)) && echo 'open PRs for ahead branches' || echo 'disabled (--no-pr)')"
-echo "  Prune dirs: untracked=$( ((APPLY)) && echo yes || echo 'dry' ) ignored=$( ((PRUNE_IGNORED)) && echo yes || echo no )"
+if (( CLEAN_DIRS )); then
+  echo "  Prune dirs: untracked=$( ((APPLY)) && echo yes || echo 'dry' ) ignored=$( ((PRUNE_IGNORED)) && echo yes || echo no )"
+else
+  echo "  Prune dirs: DISABLED (--no-clean-dirs) — branches/worktrees only"
+fi
 echo "  HK branch : ${HK_BRANCH}"
 command -v gh >/dev/null 2>&1 || { MAKE_PR=0; echo -e "  ${YELLOW}gh not found — PR creation disabled${NC}"; }
 echo ""
@@ -186,12 +193,29 @@ for dir in "${REPO_DIRS[@]}"; do
   done < <(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{print $2}')
 
   # 2+3) PUSH ahead branches + open PRs --------------------------------------
+  # Integrate against the REMOTE main (origin/main) when available — a stale local
+  # main would otherwise hide already-merged branches and trigger duplicate PRs.
+  base="$mainb"
+  if [[ -n "$has_remote" ]] && git rev-parse --verify --quiet "origin/${mainb}" >/dev/null 2>&1; then
+    base="origin/${mainb}"
+  fi
   if [[ -n "$has_remote" ]]; then
     while IFS= read -r br; do
       [[ -z "$br" || "$br" == "$mainb" || "$br" == "master" ]] && continue
-      # Ahead of main?
-      ahead="$(git rev-list --count "${mainb}..${br}" 2>/dev/null || echo 0)"
+      # Ahead of (remote) main?
+      ahead="$(git rev-list --count "${base}..${br}" 2>/dev/null || echo 0)"
       [[ "$ahead" -gt 0 ]] || continue
+      # Already merged (patch-id equivalent — catches squash/rebase merges where the
+      # branch still shows commits "ahead")? Prune it instead of opening a stale PR.
+      if [[ -z "$(git cherry "$base" "$br" 2>/dev/null | grep '^+')" ]]; then
+        if [[ "$br" == "$cur" ]]; then
+          echo -e "  branch ${br}: already merged into ${base} — ${YELLOW}current branch, not deleting${NC}"
+        else
+          echo -e "  branch ${br}: ${ahead} ahead but all commits already in ${base} — ${GREEN}merged; pruning${NC}"
+          act "git branch -D ${br}" git branch -D "$br" 2>/dev/null && branches_deleted=$((branches_deleted+1))
+        fi
+        continue
+      fi
       # Guard 1: archival/backup branch names → report only, never PR.
       if [[ "$br" =~ $SKIP_BRANCH_RE ]]; then
         echo -e "  branch ${br}: ${ahead} ahead — ${YELLOW}skipped (archival/backup name; --skip-branches / --pr-all to override)${NC}"; continue
@@ -200,7 +224,7 @@ for dir in "${REPO_DIRS[@]}"; do
       if [[ "$ahead" -gt "$MAX_AHEAD" ]]; then
         echo -e "  branch ${br}: ${ahead} ahead — ${YELLOW}skipped (> --max-ahead=${MAX_AHEAD}; review manually or --pr-all)${NC}"; continue
       fi
-      echo "  branch ${br}: ${ahead} commit(s) ahead of ${mainb}"
+      echo "  branch ${br}: ${ahead} commit(s) ahead of ${base}"
       act "git push -u origin ${br}" git push -u origin "$br" 2>/dev/null && pushed=$((pushed+1))
       if (( MAKE_PR )); then
         existing="$(gh pr list --head "$br" --json number --jq '.[0].number' 2>/dev/null || echo '')"
@@ -219,20 +243,24 @@ for dir in "${REPO_DIRS[@]}"; do
     echo "  (no remote — skip push/PR)"
   fi
 
-  # 4) PRUNE stale branches (merged into main, any age) -----------------------
+  # 4) PRUNE stale branches whose tip is an ancestor of (remote) main. The cherry
+  # check above already pruned patch-equivalent (squash/rebase) merges; this catches
+  # plain ancestor merges and is a no-op for branches handled above.
   while IFS= read -r mb; do
     mb="$(echo "$mb" | sed 's/^[* +]*//;s/ *$//')"
     [[ -z "$mb" || "$mb" == "$mainb" || "$mb" == "master" || "$mb" == "$cur" ]] && continue
-    echo "  stale branch (merged into ${mainb}): ${mb}"
+    echo "  stale branch (merged into ${base}): ${mb}"
     act "git branch -d ${mb}" git branch -d "$mb" 2>/dev/null && branches_deleted=$((branches_deleted+1))
-  done < <(git branch --merged "$mainb" 2>/dev/null)
+  done < <(git branch --merged "$base" 2>/dev/null)
 
   # 4b) PRUNE worktrees (merged or missing) -----------------------------------
   if git worktree list >/dev/null 2>&1; then
     act "git worktree prune -v" git worktree prune -v 2>/dev/null || true
   fi
 
-  # 4c) PRUNE untracked dirs (always under --apply), ignored dirs (--prune-ignored)
+  # 4c) PRUNE untracked dirs (under --apply), ignored dirs (--prune-ignored).
+  #     Skipped entirely under --no-clean-dirs (branch/worktree cleanup only).
+  if (( CLEAN_DIRS )); then
   untracked="$(git clean -nd 2>/dev/null | sed 's/^Would remove //')"
   if [[ -n "$untracked" ]]; then
     echo "  untracked dirs/files to remove:"; echo "$untracked" | sed 's/^/      /'
@@ -247,6 +275,7 @@ for dir in "${REPO_DIRS[@]}"; do
       act "git clean -fdx (denylist-protected)" git clean -fdx "${excludes[@]}" >/dev/null 2>&1
     fi
   fi
+  fi  # CLEAN_DIRS
 
   SUMMARY+=("$name: ok (branch=${cur})")
   popd >/dev/null

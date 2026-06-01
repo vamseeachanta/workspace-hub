@@ -277,3 +277,19 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2931
+    title: Plan Deckhand named channels and repository scope policy
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2931
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:security
+      - domain:notification
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

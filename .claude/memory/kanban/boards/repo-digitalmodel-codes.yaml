@@ -630,3 +630,29 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#665
+    title: 'feat(gtm/parametric): demo_02 §B — Results Store (SQLite + CSV/manifest, flatten checks{})'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/665
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:codes
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#666
+    title: 'feat(gtm/parametric): demo_02 §C — run CLI (--run-id) + lookup + per-run report + runbook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/666
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:codes
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
