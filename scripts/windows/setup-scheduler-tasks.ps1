@@ -8,6 +8,7 @@
 #   \Claude\NightlyReadiness           - daily ecosystem readiness
 #   \Claude\RepoSync                   - daily workspace-hub git pull + submodule sync
 #   \Claude\MemoryBridgeSync           - daily repo-tracked memory refresh
+#   \Claude\HarnessUpdate              - daily AI CLI update (claude/codex/gemini) via native updater
 #   \Claude\EqualityReport             - rendered from config/scheduled-tasks/schedule-tasks.yaml
 
 [CmdletBinding()]
@@ -330,6 +331,15 @@ Register-ClaudeTask `
     -ScriptPath "scripts/memory/bridge-hermes-claude.sh" `
     -TaskArguments "--commit" `
     -DailyAt "04:30AM"
+
+# HarnessUpdate — native AI CLI updater (claude/codex/gemini; hermes skipped on Windows).
+# Canonical entry: config/scheduled-tasks/schedule-tasks.yaml id:harness-update
+# (licensed-win-1/2 slot 02:15 per its schedule_by_machine). Per #2920 decision A.
+Register-ClaudeTask `
+    -Name "HarnessUpdate" `
+    -Description "Daily AI harness update via native updaters (claude/codex/gemini). #2920" `
+    -ScriptPath "scripts/maintenance/update-harness-tools.sh" `
+    -DailyAt "02:15AM"
 
 $equalityTask = Get-EqualityReportTask
 $currentMachine = Get-CurrentMachineLabel
