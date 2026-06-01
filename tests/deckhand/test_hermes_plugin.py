@@ -174,6 +174,23 @@ def test_write_blocked_when_repo_unresolvable(monkeypatch, tmp_path):
     assert "resolve target repository" in out["message"]
 
 
+def test_dm_binding_resolves_scope_without_scope_command(monkeypatch, tmp_path):
+    plugin = load_plugin(monkeypatch, tmp_path)
+    scopes_path = plugin.CONFIG_DIR / "scopes.yml"
+    data = yaml.safe_load(scopes_path.read_text(encoding="utf-8"))
+    data["scopes"]["acma"]["channel_repo_bindings"] = [
+        {"platform": "telegram", "channel_id": "dm-100", "repo": "owner/acma"}
+    ]
+    scopes_path.write_text(yaml.safe_dump(data), encoding="utf-8")
+    repo = make_repo(tmp_path, "owner/acma")
+
+    # No /scope state set; the DM binding must resolve scope=acma and allow a write.
+    assert plugin.on_pre_tool_call("terminal", {"command": "git commit -m ok", "workdir": str(repo)}) is None
+    # Destructive still blocked even with the binding.
+    forced = plugin.on_pre_tool_call("terminal", {"command": "git push --force", "workdir": str(repo)})
+    assert forced["action"] == "block"
+
+
 def test_report_mode_never_blocks(monkeypatch, tmp_path):
     plugin = load_plugin(monkeypatch, tmp_path)
     repo = make_repo(tmp_path, "owner/acma")

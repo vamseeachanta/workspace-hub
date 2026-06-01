@@ -23,10 +23,10 @@ scopes:
       # deferred (not in v1 PAT scope): vamseeachanta/acma-projects (archived) — revisit per #2931 repo-membership
     operators: ["8748731589"]         # Telegram numeric user id (POC tester)
     data_root: "/mnt/ace/acma-projects/"   # off-repo raw source-of-truth (evidence: client-wikis.yml)
-    channel_repo_bindings: []         # origin-bound default; binding only, never prose
-      # - platform: telegram
-      #   channel_id: "<chat-id>"
-      #   repo: vamseeachanta/llm-wiki-acma
+    channel_repo_bindings:            # DM-bound scope (no-core-patch path; binding only, never prose)
+      - platform: telegram
+        channel_id: "8748731589"      # POC tester DM -> acma scope
+        repo: vamseeachanta/llm-wiki-acma
     # action_policy: {}               # optional per-client override of policy.yml defaults
     # rate_limits: {}                 # optional per-client override of policy.yml defaults
 

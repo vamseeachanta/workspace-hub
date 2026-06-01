@@ -253,6 +253,11 @@ def _write_active_scope(identity: dict[str, str], scope_name: str) -> None:
 def _active_scope_name(identity: dict[str, str], scopes: dict[str, Any]) -> str | None:
     if not _has_identity(identity):
         return None
+    # /scope state takes precedence; else fall back to a DM channel->repo binding.
+    return _scope_from_state(identity, scopes) or _scope_from_binding(identity, scopes)
+
+
+def _scope_from_state(identity: dict[str, str], scopes: dict[str, Any]) -> str | None:
     try:
         record = json.loads(_state_path(identity).read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
@@ -270,6 +275,28 @@ def _active_scope_name(identity: dict[str, str], scopes: dict[str, Any]) -> str 
     if identity["operator_id"] not in _as_list(scope.get("operators")):
         return None
     return str(scope_name)
+
+
+def _scope_from_binding(identity: dict[str, str], scopes: dict[str, Any]) -> str | None:
+    """DM-bound scope: a channel->repo binding selects the scope when no /scope
+    state exists (the /scope command is unavailable until a Hermes core patch).
+    The operator must still be authorized for the bound scope."""
+    platform = identity.get("platform")
+    chat_id = str(identity.get("chat_id") or "")
+    operator_id = identity.get("operator_id")
+    for name, scope in scopes.items():
+        if not isinstance(scope, dict):
+            continue
+        if operator_id not in _as_list(scope.get("operators")):
+            continue
+        for binding in _as_list(scope.get("channel_repo_bindings")):
+            if (
+                isinstance(binding, dict)
+                and binding.get("platform") == platform
+                and str(binding.get("channel_id")) == chat_id
+            ):
+                return str(name)
+    return None
 
 def _scope_missing_or_invalid(identity: dict[str, str], scope_name: str | None, config: dict[str, Any]) -> bool:
     scopes = config.get("scopes", {}).get("scopes", {})
