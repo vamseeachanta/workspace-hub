@@ -20,9 +20,7 @@ scopes:
     pat_env: DECKHAND_PAT_ACMA        # env var holding this scope's fine-grained PAT (no secret here)
     repositories:
       - vamseeachanta/llm-wiki-acma
-      - vamseeachanta/acma-projects
-    repository_flags:                 # typed repo state (codex review) — not just comments
-      vamseeachanta/acma-projects: { archived: true, read_only: true }   # OPEN: confirm read-only inclusion
+      # deferred (not in v1 PAT scope): vamseeachanta/acma-projects (archived) — revisit per #2931 repo-membership
     operators: []                     # OPEN: stable platform IDs authorized for acma
     data_root: "/mnt/ace/acma-projects/"   # off-repo raw source-of-truth (evidence: client-wikis.yml)
     channel_repo_bindings: []         # origin-bound default; binding only, never prose
@@ -39,9 +37,7 @@ scopes:
     pat_env: DECKHAND_PAT_DORIS
     repositories:
       - vamseeachanta/doris
-      - vamseeachanta/llm-wiki-doris
-    repository_flags:
-      vamseeachanta/llm-wiki-doris: { planned: true }   # OPEN: status:planned — confirm inclusion
+      # deferred (not in v1 PAT scope): vamseeachanta/llm-wiki-doris (status: planned) — revisit per #2931
     operators: []                     # OPEN: stable platform IDs authorized for doris
     data_root: "/mnt/ace/doris/"
     channel_repo_bindings: []
