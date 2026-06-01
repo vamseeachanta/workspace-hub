@@ -39,13 +39,11 @@ def authorized_real_config() -> dict:
     return config
 
 
-def test_real_committed_config_is_fail_closed_for_writes_with_empty_operators(tmp_path):
+def test_real_committed_config_denies_unknown_operator_writes(tmp_path):
     config = load_config(REAL_CONFIG_DIR)
-    assert {name: scope["operators"] for name, scope in config["scopes"]["scopes"].items()} == {
-        "acma": [],
-        "doris": [],
-        "ecosystem": [],
-    }
+    # ecosystem stays off for external operators (invariant); acma/doris may list
+    # authorized testers (Action 2) but an UNKNOWN operator must still be denied.
+    assert config["scopes"]["scopes"]["ecosystem"]["operators"] == []
 
     audit_path = tmp_path / "audit.ndjson"
     outcome = evaluate(

@@ -1,0 +1,3 @@
+name: deckhand-scope
+description: Enforce Deckhand scope allow/deny checks for Hermes terminal and code tools.
+entry: __init__.py
