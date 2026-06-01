@@ -21,7 +21,7 @@ scopes:
     repositories:
       - vamseeachanta/llm-wiki-acma
       # deferred (not in v1 PAT scope): vamseeachanta/acma-projects (archived) — revisit per #2931 repo-membership
-    operators: []                     # OPEN: stable platform IDs authorized for acma
+    operators: ["8748731589"]         # Telegram numeric user id (POC tester)
     data_root: "/mnt/ace/acma-projects/"   # off-repo raw source-of-truth (evidence: client-wikis.yml)
     channel_repo_bindings: []         # origin-bound default; binding only, never prose
       # - platform: telegram
@@ -40,7 +40,7 @@ scopes:
       - vamseeachanta/doris             # reference repo (read-only; writes denied by engine)
     repository_flags:
       vamseeachanta/doris: { reference: true, read_only: true }
-    operators: []                     # OPEN: stable platform IDs authorized for doris
+    operators: ["8748731589"]         # Telegram numeric user id (POC tester)
     data_root: "/mnt/ace/doris/"
     channel_repo_bindings: []
 
