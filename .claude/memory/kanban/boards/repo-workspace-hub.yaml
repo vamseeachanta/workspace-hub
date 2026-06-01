@@ -20514,7 +20514,7 @@ cards:
     title: 'feat(workstations): skills-inventory parity gap — dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2925
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
