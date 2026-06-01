@@ -35,6 +35,40 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2911,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2911",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
         "labels": [
           "enhancement",
           "priority:medium",
@@ -8547,59 +8581,48 @@
       "title": "feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2470",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "reviews not clean: major_review,missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:engineering",
-          "machine:dev-primary",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:marine-orcaflex"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- **In scope (claim):** static-YAML semantic equivalence of `c03_turret_moored_fpso` \u2014 the generated modular output (`spec.yml \u2192 ModularModelGenerator \u2192 master.yml + includes/`) contains no `Significance.SIGNIFICANT` or `Significance.TYPE_MISMATCH` diffs against the monolithic YA",
-        "provider_route": "claude",
-        "risks": "**Risk \u2014 generator compatibility:** `ModularModelGenerator(c03/spec.yml).generate(tmp)` is assumed to succeed. If it raises on the large `environment.raw_properties` bag or on generic-track object pass-through, the execution phase files a child issue and downgrades this plan's claim to \"partial L0 \u2014 generator does not yet consume c03\". Verification sequence at execution: smoke-generate first; only",
-        "tests": "9 TDD tests defined",
-        "title": "feat(canonical-spec): validate flagship generic-track OrcaFlex mooring case via turret-moored FPSO semantic proof"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2454,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-04-23-issue-2454-c03-fpso-semantic-proof.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(canonical-spec): validate flagship generic-track OrcaFlex mooring case via turret-moored FPSO semantic proof",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2454",
-      "warnings": [
-        "legacy_review_no_sha",
-        "major_review",
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-05-31T17:20:10Z",
+  "generated_at": "2026-05-31T21:20:11Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2911,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2911",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -17122,51 +17145,6 @@
         "title": "feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2470",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "reviews not clean: major_review,missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-orcaflex"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- **In scope (claim):** static-YAML semantic equivalence of `c03_turret_moored_fpso` \u2014 the generated modular output (`spec.yml \u2192 ModularModelGenerator \u2192 master.yml + includes/`) contains no `Significance.SIGNIFICANT` or `Significance.TYPE_MISMATCH` diffs against the monolithic YA",
-          "provider_route": "claude",
-          "risks": "**Risk \u2014 generator compatibility:** `ModularModelGenerator(c03/spec.yml).generate(tmp)` is assumed to succeed. If it raises on the large `environment.raw_properties` bag or on generic-track object pass-through, the execution phase files a child issue and downgrades this plan's claim to \"partial L0 \u2014 generator does not yet consume c03\". Verification sequence at execution: smoke-generate first; only",
-          "tests": "9 TDD tests defined",
-          "title": "feat(canonical-spec): validate flagship generic-track OrcaFlex mooring case via turret-moored FPSO semantic proof"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2454,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-04-23-issue-2454-c03-fpso-semantic-proof.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(canonical-spec): validate flagship generic-track OrcaFlex mooring case via turret-moored FPSO semantic proof",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2454",
-        "warnings": [
-          "legacy_review_no_sha",
-          "major_review",
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -17177,18 +17155,18 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-31T17:20:07.441476Z",
+  "scorecard_generated_at": "2026-05-31T21:20:07.739511Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-31T17:20:07.334723Z",
+  "utilization_generated_at": "2026-05-31T21:20:07.490763Z",
   "warning_summary": {
     "approved_no_marker": 21,
     "approved_no_plan": 11,
     "dual_status_labels": 4,
     "empty_review": 3,
-    "legacy_review_no_sha": 31,
-    "major_review": 23,
+    "legacy_review_no_sha": 30,
+    "major_review": 22,
     "marker_without_open_approved_issue": 147,
-    "missing_review": 38,
+    "missing_review": 37,
     "unavailable_review": 15
   }
 }

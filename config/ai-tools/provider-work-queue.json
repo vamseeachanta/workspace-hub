@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-31T17:20:09.256533Z",
+  "generated_at": "2026-05-31T21:20:09.682964Z",
   "current_week": "2026-W22",
-  "scorecard_generated_at": "2026-05-31T17:20:07.441476Z",
+  "scorecard_generated_at": "2026-05-31T21:20:07.739511Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 34,
-      "total_candidates": 173,
+      "total_candidates": 172,
       "top_issues": [
         {
           "number": 2533,
@@ -1011,7 +1011,7 @@
             "status:plan-approved",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-30T13:06:54Z",
+          "updatedAt": "2026-05-31T18:18:35Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1308,32 +1308,6 @@
           "updatedAt": "2026-05-31T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2454,
-          "title": "feat(canonical-spec): validate flagship generic-track OrcaFlex mooring case via turret-moored FPSO semantic proof",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2454",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-orcaflex"
-          ],
-          "updatedAt": "2026-05-31T10:56:50Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4669,7 +4643,7 @@
           "title": "Kanban: reorganize boards by domain \u2192 subdomain (right-size oversized boards); pilot digitalmodel, then ecosystem-wide",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2878",
           "labels": [],
-          "updatedAt": "2026-05-31T15:15:56Z",
+          "updatedAt": "2026-05-31T19:00:18Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4688,7 +4662,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 2,
-      "total_candidates": 23,
+      "total_candidates": 24,
       "top_issues": [
         {
           "number": 2813,
@@ -5434,6 +5408,23 @@
             "gate:completeness"
           ],
           "updatedAt": "2026-05-26T09:23:26Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2911,
+          "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2911",
+          "labels": [],
+          "updatedAt": "2026-05-31T18:56:39Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

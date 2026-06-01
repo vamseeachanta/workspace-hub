@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-31T17:20:07.334723Z",
+  "generated_at": "2026-05-31T21:20:07.490763Z",
   "current_week": "2026-W22",
   "report_weeks": 8,
   "subscriptions": {
@@ -1044,7 +1044,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-05-31T17:20:02Z",
+        "quota_snapshot_ts": "2026-05-31T21:20:02Z",
         "top_tools": [
           {
             "tool": "unknown",
@@ -1070,7 +1070,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "local-session-rate-limits",
-        "quota_snapshot_ts": "2026-05-31T17:20:02Z",
+        "quota_snapshot_ts": "2026-05-31T21:20:02Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -1087,7 +1087,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "estimated_daily_quota",
         "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-05-31T17:20:02Z",
+        "quota_snapshot_ts": "2026-05-31T21:20:02Z",
         "top_tools": [
           {
             "tool": "Browser",
