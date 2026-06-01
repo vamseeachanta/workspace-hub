@@ -118,7 +118,7 @@
       <tr><td>Recon: scope membership</td><td>acma/doris are client slugs (not orgs) → explicit allowlists</td></tr>
       <tr><td>Recon: git/gh choke point</td><td><code>terminal_tool</code> pre_tool_call hook + <b>7 bypass paths</b> → scoped PAT is the real boundary</td></tr>
       <tr><td>Board + task + delegation review</td><td><b style="color:var(--bad)">CHANGES-REQUESTED</b> — missing tasks (PAT provisioning, bypass-tests, rollback, rate-limit, operator intake); board needs dependency links; all queued</td></tr>
-      <tr><td>Platform connectivity + terminology</td><td><i>running — Signal/WhatsApp/Telegram/Teams work + Hermes wording alignment</i></td></tr>
+      <tr><td>Platform connectivity + terminology</td><td><b style="color:var(--ok)">DONE</b> — gateway currently STOPPED / channels empty; terminology validated vs Hermes (no conflicts, 3 annotations applied)</td></tr>
     </table></div>
     <div>
       <div class="layerbox">GUARDRAIL FLOOR (approved, real repos today)
@@ -151,6 +151,29 @@ hook  : pre_tool_call + PATH git/gh shim
     <tr><td><code>t_a6d843ec</code></td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/2906">#2906</a></td><td>Product naming (Deckhand)</td><td><span class="pill p-need">needs-plan</span></td></tr>
     <tr><td><code>t_df8756ca</code> · <code>t_7cfe94f6</code> · <code>t_7731a586</code></td><td>#2563/#1881/#1885</td><td>Telegram mobile access / gateway / platform setup</td><td><span class="pill p-ops">operational</span></td></tr>
   </table></div>
+  <p class="note" style="margin-top:10px"><b>Gated build tasks</b> (new — children of <code>t_d36d4625</code>, blocked on plan-approved; from codex delegation review):</p>
+  <div class="panel"><table>
+    <tr><th>Task</th><th>Work</th><th>Status</th></tr>
+    <tr><td><code>t_3c0e3ddd</code></td><td>Provision per-scope fine-grained PATs (acma, doris)</td><td><span class="pill p-need">blocked</span></td></tr>
+    <tr><td><code>t_be8b4534</code></td><td>Bypass-containment test suite (7 paths)</td><td><span class="pill p-need">blocked</span></td></tr>
+    <tr><td><code>t_5f59efd9</code></td><td>Operator-ID intake + per-scope authorization</td><td><span class="pill p-need">blocked</span></td></tr>
+    <tr><td><code>t_74757d91</code></td><td>Rollback / kill-switch drill</td><td><span class="pill p-need">blocked</span></td></tr>
+    <tr><td><code>t_d94406ab</code></td><td>Rate-limit / abuse controls</td><td><span class="pill p-need">blocked</span></td></tr>
+    <tr><td><code>t_38dd79de</code></td><td>Resolve repo-membership OPENs (archived/planned)</td><td><span class="pill p-need">blocked</span></td></tr>
+  </table></div>
+
+  <!-- PLATFORMS -->
+  <h2>Platform connectivity<span class="n">codex live recon — gateway currently STOPPED</span></h2>
+  <div class="panel"><table>
+    <tr><th>Platform</th><th>State</th><th>Needs</th><th>Effort</th></tr>
+    <tr><td>Telegram</td><td>not configured</td><td>BotFather token + allowed IDs; <code>gateway start</code></td><td>S</td></tr>
+    <tr><td>WhatsApp</td><td>enabled, not paired</td><td><code>hermes whatsapp</code> QR scan + allowlist (ban risk)</td><td>M</td></tr>
+    <tr><td>Signal</td><td>not configured</td><td>install <code>signal-cli</code>, link device, daemon</td><td>M</td></tr>
+    <tr><td>Teams</td><td>plugin present, not configured</td><td>Teams CLI + Azure app + public HTTPS (adapter is a <i>plugin</i>)</td><td>L</td></tr>
+  </table></div>
+  <p class="note">Order: gateway-up → Telegram → WhatsApp → Signal → Teams. <code>msgraph_webhook</code> is a separate Graph-event surface, not the Teams chatbot. Recon on <a href="https://github.com/vamseeachanta/workspace-hub/issues/2901">#2901</a> · <a href="../../scripts/review/results/2026-06-01-deckhand-platform-connectivity-and-terminology-codex.md">full artifact</a>.</p>
+  <p class="note"><b style="color:var(--warn)">Availability:</b> gateway must be always-on (no service-down) — logged as
+  <a href="https://github.com/vamseeachanta/workspace-hub/issues/2933">#2933</a> (supervised process, start-on-boot, health-check/auto-restart, inbound durability), board <code>t_694ac155</code> under gateway-service #1881.</p>
 
   <!-- CONFIG -->
   <h2>Config surface<span class="n">all config in YAML — nothing in code · industry multi-tenant</span></h2>
