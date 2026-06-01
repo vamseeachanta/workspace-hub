@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+tool_name="gh"
+shim_path="$(readlink -f "${BASH_SOURCE[0]}")"
+shim_dir="$(dirname "$shim_path")"
+repo_root="$(cd "$shim_dir/../../.." && pwd -P)"
+
+find_real_binary() {
+  local old_ifs="$IFS"
+  local path_entry candidate
+  IFS=':'
+  for path_entry in ${PATH:-}; do
+    IFS="$old_ifs"
+    [[ -n "$path_entry" ]] || path_entry="."
+    if [[ "$(cd "$path_entry" 2>/dev/null && pwd -P || true)" == "$shim_dir" ]]; then
+      IFS=':'
+      continue
+    fi
+    candidate="$path_entry/$tool_name"
+    if [[ -x "$candidate" && ! "$candidate" -ef "$shim_path" ]]; then
+      printf '%s\n' "$candidate"
+      return 0
+    fi
+    IFS=':'
+  done
+  IFS="$old_ifs"
+  return 1
+}
+
+resolve_pat_env() {
+  PYTHONPATH="$repo_root/src${PYTHONPATH:+:$PYTHONPATH}" python3 -m deckhand.shim_resolve
+}
+
+read_pat_value() {
+  local pat_env="$1"
+  local env_file="${HOME}/.hermes/.env"
+  local line value
+  [[ "$pat_env" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || return 1
+  [[ -f "$env_file" ]] || return 1
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    line="${line%$'\r'}"
+    [[ "$line" =~ ^[[:space:]]*# ]] && continue
+    [[ "$line" =~ ^[[:space:]]*$ ]] && continue
+    if [[ "$line" =~ ^[[:space:]]*${pat_env}[[:space:]]*= ]]; then
+      value="${line#*=}"
+      value="${value#"${value%%[![:space:]]*}"}"
+      value="${value%"${value##*[![:space:]]}"}"
+      if [[ "$value" == \"*\" && "$value" == *\" ]]; then
+        value="${value:1:${#value}-2}"
+      elif [[ "$value" == \'*\' && "$value" == *\' ]]; then
+        value="${value:1:${#value}-2}"
+      fi
+      printf '%s' "$value"
+      return 0
+    fi
+  done < "$env_file"
+  return 1
+}
+
+real_binary="$(find_real_binary || true)"
+if [[ -z "$real_binary" ]]; then
+  echo "Deckhand: real gh binary not found outside shim dir" >&2
+  exit 127
+fi
+
+pat_env="$(resolve_pat_env || true)"
+if [[ -z "$pat_env" ]]; then
+  echo "Deckhand: no active scope; set one before git/gh" >&2
+  exit 3
+fi
+
+pat_value="$(read_pat_value "$pat_env" || true)"
+if [[ -z "$pat_value" ]]; then
+  echo "Deckhand: scoped PAT value is not configured" >&2
+  exit 4
+fi
+
+unset GH_TOKEN GITHUB_TOKEN
+export GH_TOKEN="$pat_value"
+export GITHUB_TOKEN="$pat_value"
+
+exec "$real_binary" "$@"

@@ -1,0 +1,19 @@
+# Target: tools/environments/local.py
+# Plan reference: scripts/review/results/2026-06-01-deckhand-b2-plan-codex.md
+# Maintenance: re-apply and re-check after Hermes updates; this is a local Deckhand B2 core patch.
+diff --git a/tools/environments/local.py b/tools/environments/local.py
+--- a/tools/environments/local.py
++++ b/tools/environments/local.py
+@@ -315,6 +315,12 @@ def _make_run_env(env: dict) -> dict:
+         elif k not in _HERMES_PROVIDER_ENV_BLOCKLIST or _is_passthrough(k):
+             run_env[k] = v
+     existing_path = run_env.get("PATH", "")
++    deckhand_shim_dir = os.path.expanduser("~/.hermes/deckhand/shims")
++    if not _IS_WINDOWS and os.path.isdir(deckhand_shim_dir):
++        path_parts = [part for part in existing_path.split(":") if part]
++        if deckhand_shim_dir not in path_parts:
++            run_env["PATH"] = f"{deckhand_shim_dir}:{existing_path}" if existing_path else deckhand_shim_dir
++            existing_path = run_env.get("PATH", "")
+     # The "/usr/bin not already present → inject sane POSIX path" heuristic
+     # only makes sense on POSIX.  On Windows the PATH separator is ";"
+     # (the split(":") above turns a full Windows PATH into a single
