@@ -14,11 +14,23 @@ scripts/deckhand/protect-and-verify.sh protect      # ruleset per scope repo: bl
 scripts/deckhand/protect-and-verify.sh verify       # list rulesets per scope repo
 scripts/deckhand/protect-and-verify.sh verify-pat   # confirm each PAT reaches ONLY its scope repos (reads ~/.hermes/.env; never prints secrets)
 scripts/deckhand/protect-and-verify.sh unprotect    # remove the deckhand ruleset (reversal)
+scripts/deckhand/protect-and-verify.sh deploy-detective        # dry-run install plan for destructive-event alarm workflow
+scripts/deckhand/protect-and-verify.sh deploy-detective --apply # install/update the workflow in each scope repo
+scripts/deckhand/protect-and-verify.sh verify-detective        # check workflow presence per scope repo
 ```
 
 - `protect` enforces, on each repo's default branch, a ruleset (`deckhand-protect-default`,
   `enforcement: active`) with `deletion` + `non_fast_forward` rules — the server-side
   no-destructive guarantee that a `Contents: write` PAT cannot provide on its own.
+- `deploy-detective` installs
+  [`scripts/deckhand/templates/deckhand-destructive-alarm.yml`](templates/deckhand-destructive-alarm.yml)
+  as `.github/workflows/deckhand-destructive-alarm.yml` in every concrete repo listed in
+  `scopes.yml`. It prints a dry-run plan by default and only mutates repos with `--apply`.
+- `verify-detective` reports whether that workflow is present in every concrete scope repo.
+- The destructive alarm is a DETECTIVE compensating control: it opens an issue when a
+  force-push or branch/tag deletion is detected, but it does not prevent the event. This
+  exists because GitHub Free does not provide private-repo server-side branch protection
+  for the Deckhand scope repos.
 - `verify-pat` does a positive check (token reaches its own repos) and a negative check
   (warns if a token is over-broad and reaches out-of-scope repos). It loads
   `DECKHAND_PAT_*` from `~/.hermes/.env`. Secrets are never printed.

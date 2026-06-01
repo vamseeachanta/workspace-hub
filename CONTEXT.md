@@ -44,7 +44,9 @@ _Avoid_: Access, role, grant
 A scope declares a *sensitivity* (e.g. `acma` = private, `ecosystem` = internal);
 a delivery group declares the *clearance* — which sensitivities it may receive.
 Output produced under a scope may only fan out to delivery groups cleared for that
-scope's sensitivity (the origin chat is always allowed). This is what couples the
+scope's sensitivity. Full-detail replies on the origin chat are allowed only when it
+is a DM or a clearance-matched channel; an uncleared/shared origin gets a generic
+"continue in DM" reply (no repo names / PR URLs). This is what couples the
 otherwise-orthogonal scope and routing concepts, mirroring the wiki
 `client → other-client` leakage ban.
 _Avoid_: Classification, label (overloaded with GitHub labels here)

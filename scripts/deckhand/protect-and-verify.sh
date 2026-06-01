@@ -12,13 +12,20 @@
 #   verify-pat   Confirm each scope's fine-grained PAT reaches ONLY its own repos.
 #                Reads DECKHAND_PAT_* from env or ~/.hermes/.env. Never prints secrets.
 #   unprotect    Remove the deckhand ruleset from each scope repo (reversal).
+#   deploy-detective [--apply]
+#                Install the destructive-event alarm workflow in each scope repo.
+#                Dry-run by default; mutates only when --apply is passed.
+#   verify-detective
+#                Check whether each scope repo has the destructive-event workflow.
 #
 # Requires: gh (authenticated), python3 with pyyaml.
 set -euo pipefail
 
-RULESET_NAME="deckhand-protect-default"
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 SCOPES_YML="${DECKHAND_SCOPES_YML:-$REPO_ROOT/config/deckhand/scopes.yml}"
+RULESET_NAME="deckhand-protect-default"
+DETECTIVE_TEMPLATE="$REPO_ROOT/scripts/deckhand/templates/deckhand-destructive-alarm.yml"
+DETECTIVE_WORKFLOW_PATH=".github/workflows/deckhand-destructive-alarm.yml"
 
 [ -f "$SCOPES_YML" ] || { echo "scopes.yml not found: $SCOPES_YML" >&2; exit 1; }
 command -v gh >/dev/null || { echo "gh not found" >&2; exit 1; }
@@ -71,6 +78,32 @@ _rulesets_json() {
 }
 
 _ruleset_id_from() { printf '%s' "$1" | python3 -c "import sys,json;a=json.load(sys.stdin);print(next((str(x['id']) for x in a if x.get('name')=='$RULESET_NAME'),''))" 2>/dev/null; }
+
+_detective_existing_sha() {
+  gh api "repos/$1/contents/$DETECTIVE_WORKFLOW_PATH" -q '.sha' 2>/dev/null || true
+}
+
+_detective_content_b64() {
+  python3 - "$DETECTIVE_TEMPLATE" <<'PY'
+import base64, sys
+print(base64.b64encode(open(sys.argv[1], "rb").read()).decode("ascii"))
+PY
+}
+
+_detective_put() {
+  local repo="$1" sha="$2" content="$3"
+  python3 - "$sha" "$content" <<'PY' | gh api -X PUT "repos/$repo/contents/$DETECTIVE_WORKFLOW_PATH" --input - >/dev/null
+import json, sys
+sha, content = sys.argv[1], sys.argv[2]
+payload = {
+    "message": "chore(deckhand): install destructive event alarm",
+    "content": content,
+}
+if sha:
+    payload["sha"] = sha
+print(json.dumps(payload))
+PY
+}
 
 protect() {
   while IFS= read -r r; do [ -n "$r" ] || continue
@@ -127,10 +160,55 @@ verify_pat() {
   done < <(_py pat-map)
 }
 
+deploy_detective() {
+  local apply=0
+  [ "$#" -le 1 ] || { echo "usage: $0 deploy-detective [--apply]" >&2; exit 2; }
+  case "${1:-}" in
+    "") ;;
+    --apply) apply=1 ;;
+    *) echo "usage: $0 deploy-detective [--apply]" >&2; exit 2 ;;
+  esac
+
+  [ -f "$DETECTIVE_TEMPLATE" ] || { echo "template not found: $DETECTIVE_TEMPLATE" >&2; exit 1; }
+
+  if [ "$apply" -eq 0 ]; then
+    echo "dry-run: would install $DETECTIVE_TEMPLATE as $DETECTIVE_WORKFLOW_PATH"
+  else
+    echo "apply: installing $DETECTIVE_TEMPLATE as $DETECTIVE_WORKFLOW_PATH"
+  fi
+
+  local content sha
+  content="$(_detective_content_b64)"
+  while IFS= read -r r; do [ -n "$r" ] || continue
+    if [ "$apply" -eq 0 ]; then
+      echo "would-put:  $r:$DETECTIVE_WORKFLOW_PATH"
+      continue
+    fi
+    sha="$(_detective_existing_sha "$r")"
+    if _detective_put "$r" "$sha" "$content"; then
+      if [ -n "$sha" ]; then echo "updated:    $r:$DETECTIVE_WORKFLOW_PATH"; else echo "created:    $r:$DETECTIVE_WORKFLOW_PATH"; fi
+    else
+      echo "put-failed: $r:$DETECTIVE_WORKFLOW_PATH"
+    fi
+  done < <(_py repos)
+}
+
+verify_detective() {
+  while IFS= read -r r; do [ -n "$r" ] || continue
+    if gh api "repos/$r/contents/$DETECTIVE_WORKFLOW_PATH" -q '.path' >/dev/null 2>&1; then
+      echo "$r: present"
+    else
+      echo "$r: absent"
+    fi
+  done < <(_py repos)
+}
+
 case "${1:-}" in
   protect) protect ;;
   verify) verify ;;
   unprotect) unprotect ;;
   verify-pat) verify_pat ;;
-  *) echo "usage: $0 {protect|verify|unprotect|verify-pat}" >&2; exit 2 ;;
+  deploy-detective) shift; deploy_detective "$@" ;;
+  verify-detective) shift; [ "$#" -eq 0 ] || { echo "usage: $0 verify-detective" >&2; exit 2; }; verify_detective ;;
+  *) echo "usage: $0 {protect|verify|unprotect|verify-pat|deploy-detective [--apply]|verify-detective}" >&2; exit 2 ;;
 esac
