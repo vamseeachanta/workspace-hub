@@ -1,7 +1,10 @@
 ---
-name: AI orchestration — models, agents, and cross-review
-description: Model routing, provider constraints, quota management, cross-AI review patterns, and Hermes config.yaml mapping
-type: reference
+name: ai-orchestration-models-agents-and-cross-review
+description: "Model routing, provider constraints, quota management, cross-AI review patterns, and Hermes config.yaml mapping"
+metadata: 
+  node_type: memory
+  type: reference
+  originSessionId: e9bcfa5b-c1dc-4596-834b-bda6539efc25
 ---
 
 ## Copilot Provider Model Constraints (verified 2026-04-08)
@@ -14,6 +17,7 @@ GitHub Copilot API (`api.githubcopilot.com`) only proxies a fixed set of models:
 **Known gotcha:** `gemini-2.5-flash` returns HTTP 400 "model_not_supported" through Copilot. Must route to `gemini` provider (Google AI Studio direct) instead. Fixed in `~/.hermes/config.yaml` on 2026-04-08.
 
 ## Hermes config.yaml Model Routing (2026-04-08)
+> **SUPERSEDED 2026-05-25** — see [[feedback_hermes_no_openrouter_always_gpt55]]. User directive: remove OpenRouter entirely + use gpt-5.5/openai-codex for ALL routing (default, delegation, every quick_command, smart_routing cheap_model, and all `auxiliary.*` tasks). The table below is historical (Copilot-multiplier era) and no longer reflects live config. Live default is `gpt-5.5` via `openai-codex`; there are no `provider: auto`, copilot, anthropic, or gemini routes in the active config.
 | Config key | Model | Provider | Cost source |
 |---|---|---|---|
 | model.default | claude-opus-4.6 | anthropic | Claude Max |
