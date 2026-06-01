@@ -174,7 +174,7 @@ hook  : pre_tool_call + PATH git/gh shim
     <tr><td><code>src/deckhand/hook.py</code></td><td>Layer-2 command enforcement (hardened fail-closed)</td><td>96</td><td><span class="pill p-done">adversarial→hardened</span></td></tr>
     <tr><td><code>src/deckhand/pipeline.py</code></td><td>end-to-end dry-run pipeline</td><td>7</td><td><span class="pill p-done">APPROVE</span></td></tr>
   </table></div>
-  <p class="note">Reviews under <a href="../../scripts/review/results/">scripts/review/results/</a>. Remaining = owner-gated only: per-scope PATs, tester IDs, repo decisions, gateway up (<a href="https://github.com/vamseeachanta/workspace-hub/issues/2933">#2933</a>). The live <code>executor</code> (git/gh via PAT) + the <code>~/.hermes</code> hook/PATH shim are the live-wiring step.</p>
+  <p class="note">Reviews under <a href="../../scripts/review/results/">scripts/review/results/</a>. Remaining = owner-gated only: per-scope PATs, tester IDs, repo decisions, gateway up (<a href="https://github.com/vamseeachanta/workspace-hub/issues/2933">#2933</a>). The live <code>executor</code> (git/gh via PAT) + the <code>~/.hermes</code> hook/PATH shim are the live-wiring step. <b>Critical:</b> the executor MUST run with the per-scope PAT (<code>GH_TOKEN</code>), never this box's ambient owner <code>gh</code> login, or scoping is bypassed. <b>Public</b> ecosystem repos (read free; write needs token) support rulesets on Free; <b>private</b> repos do not.</p>
 
   <!-- PLATFORMS -->
   <h2>Platform connectivity<span class="n">codex live recon — gateway currently STOPPED</span></h2>
