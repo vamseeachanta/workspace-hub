@@ -204,8 +204,8 @@ hook  : pre_tool_call + PATH git/gh shim
     <h2>Blocking on owner</h2>
     <ul class="tight">
       <li>✅ <s><code>status:plan-approved</code> on <a href="https://github.com/vamseeachanta/workspace-hub/issues/2931">#2931</a></s> — applied by owner.</li>
-      <li>✅ <s>Repo set decision</s> — v1 = confident-only: <code>acma→llm-wiki-acma</code>, <code>doris→doris</code> (archived/planned deferred).</li>
-      <li><b>In progress:</b> provision per-scope fine-grained PATs (<code>DECKHAND_PAT_ACMA</code>, <code>DECKHAND_PAT_DORIS</code>) + branch-protection rulesets (block force-push + deletion).</li>
+      <li>✅ <s>Repo set decision</s> — v1: <code>acma→llm-wiki-acma</code>; <code>doris→llm-wiki-doris</code> (write) + <code>doris</code> (read-only reference).</li>
+      <li><b>In progress:</b> provision per-scope fine-grained PATs (<code>DECKHAND_PAT_ACMA</code>, <code>DECKHAND_PAT_DORIS</code>) + run <code>scripts/deckhand/protect-and-verify.sh protect</code> (config-driven, reusable; blocks force-push + deletion).</li>
       <li><b>Next:</b> external tester platform IDs for <code>acma</code>/<code>doris</code> operators (stable IDs; <code>ecosystem</code> off); bring gateway up (<a href="https://github.com/vamseeachanta/workspace-hub/issues/2933">#2933</a>).</li>
     </ul>
     <p class="note" style="margin-bottom:0">On approval, build sequence (TDD-first) runs on ace-linux-2: tests → config wiring → per-scope PATs → pre_tool_call hook + PATH shim → #2741 canary → add testers.</p>

@@ -36,8 +36,10 @@ scopes:
     permission: write
     pat_env: DECKHAND_PAT_DORIS
     repositories:
-      - vamseeachanta/doris
-      # deferred (not in v1 PAT scope): vamseeachanta/llm-wiki-doris (status: planned) — revisit per #2931
+      - vamseeachanta/llm-wiki-doris    # primary (read + write)
+      - vamseeachanta/doris             # reference repo (read-only; writes denied by engine)
+    repository_flags:
+      vamseeachanta/doris: { reference: true, read_only: true }
     operators: []                     # OPEN: stable platform IDs authorized for doris
     data_root: "/mnt/ace/doris/"
     channel_repo_bindings: []
