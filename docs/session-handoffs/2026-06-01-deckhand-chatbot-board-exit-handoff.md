@@ -2,7 +2,7 @@
 
 - **Machine:** ace-linux-1
 - **Repo:** `/mnt/local-analysis/workspace-hub`
-- **Exit timestamp:** 2026-06-01T04:04:45-05:00
+- **Exit timestamp:** 2026-06-01T04:10:00-05:00
 - **Primary issue:** [#2931 — Plan Deckhand named channels and repository scope policy](https://github.com/vamseeachanta/workspace-hub/issues/2931)
 - **Board:** `repo-workspace-hub-deckhand` (`workspace-hub · Deckhand`)
 
@@ -85,7 +85,13 @@ Known local state from this session:
 
 ## Repo state at exit
 
-`git status --short` in `/mnt/local-analysis/workspace-hub` showed existing dirty state plus this handoff document. Observed before writing this handoff:
+This handoff document was committed and pushed after a fetch/rebase over the concurrent remote commit `4fe38489c chore: reconcile kanban board`.
+
+- Handoff commit on `main`: `80cf263ee docs: add Deckhand chatbot board exit handoff`
+- Push status: `origin/main` updated successfully
+- Ahead/behind after push: `0 0`
+
+`git status --short` in `/mnt/local-analysis/workspace-hub` still shows unrelated/mixed working-tree residue that was not swept into the handoff commit:
 
 ```text
  M .claude/skills/coordination/ace-linux-1-control-surface/SKILL.md
@@ -101,11 +107,12 @@ Known local state from this session:
 ?? .claude/skills/devops/hermes-ecosystem-integration/references/multi-channel-chatbot-kanban-board.md
 ?? .claude/skills/devops/hermes-local-configuration/references/messaging-platform-routing.md
 ?? .claude/state/session-signals/2026-06-01.jsonl
+?? CONTEXT.md
 ?? docs/plans/2026-05-31-issue-2900-deckhand-board-level-plan.md
 ?? docs/plans/2026-05-31-issue-2900-deckhand-multiplatform-fanout-preliminary-plan.md
 ```
 
-No commit/push was performed in this exit pass because the working tree includes a mixed set of skill/reference/plan/config/session-signal files that should be reviewed as a coherent Deckhand planning/update bundle rather than swept blindly.
+Do not treat that residue as part of the pushed handoff commit. Review it as a separate Deckhand planning/skill bundle before committing or deleting anything.
 
 ## Suggested skills for next session
 
