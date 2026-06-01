@@ -69,13 +69,15 @@
     <span class="badge b-ok">pure core complete: engine+audit+runtime+hook+pipeline · 146/146 green</span>
     <span class="badge b-info">Layer-2 hardened fail-closed (60 bypasses closed); PAT = real boundary</span>
     <span class="badge b-ok">committed config is fail-closed (empty operators ⇒ deny)</span>
-    <span class="badge b-info">B1 live: /scope + pre_tool_call enforcement plugin enabled (report mode)</span>
+    <span class="badge b-info">B1 plugin live (report mode): pre_tool_call hook fires, resolves operator, fail-closed ✓</span>
+    <span class="badge b-warn">/scope blocked by Hermes (command dispatch precedes identity) → pivot to DM-bound scope (no core patch)</span>
     <span class="badge b-ok">detective alarm built (Free-plan compensator)</span>
     <span class="badge b-info">zoom-out roadmap: 2 reviews synthesized</span>
   </div>
   <p class="note">Deckhand lets an authenticated <b>operator</b> drive <code>git</code>/<code>gh</code> on repository <b>scopes</b>
   (<code>acma</code>, <code>doris</code>, <code>ecosystem</code>) from a chat platform. This page tracks every decision, the
   grilling turns, codex reviews, the board, and what's blocking go-live.</p>
+  <p class="note"><b>Live wiring (B) — status 2026-06-01:</b> B1 enforcement plugin installed + enabled on the gateway in <b>report mode</b>. Telegram report-mode test confirmed the <code>pre_tool_call</code> hook fires, resolves the operator, and is fail-closed (git-status with no scope → WOULD_BLOCK). Found: the <code>/scope</code> command can't see operator identity (Hermes dispatches plugin commands <i>before</i> session identity is set) — a pure-plugin fix is impossible. <b>Decision:</b> pivot to <b>DM-bound scope</b> (channel→repo binding; no Hermes core patch). <code>/scope</code> command + scoped-PAT execution remain deferred to an explicitly-authorized core patch (B2).</p>
 
   <!-- DECISIONS -->
   <h2>Design decisions<span class="n">9 resolved · captured in glossary + governance records</span></h2>
