@@ -173,7 +173,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2900
-    title: Plan Hermes multi-platform notification fanout for Telegram, WhatsApp, and Teams
+    title: Plan Deckhand multi-platform notification fanout for Telegram, Signal, WhatsApp, and Teams
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2900
     gh_state: open
@@ -188,7 +188,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2901
-    title: Plan Hermes Telegram/WhatsApp/Teams platform parity reconnaissance
+    title: Plan Deckhand Telegram/Signal/WhatsApp/Teams platform parity reconnaissance
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2901
     gh_state: open
@@ -203,7 +203,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2902
-    title: Plan shared Hermes delivery group and fanout contract
+    title: Plan Deckhand shared delivery group and fanout contract
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2902
     gh_state: open
@@ -218,7 +218,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2903
-    title: Plan Hermes conversation reply policy guardrails for multi-platform fanout
+    title: Plan Deckhand conversation reply policy guardrails for multi-platform fanout
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2903
     gh_state: open
@@ -233,7 +233,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2904
-    title: Plan send_message multi-target text fanout for Hermes
+    title: Plan Deckhand send_message multi-target text fanout
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2904
     gh_state: open
@@ -248,7 +248,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2905
-    title: Plan operator docs for Hermes Telegram WhatsApp Teams fanout
+    title: Plan Deckhand operator docs for Telegram, Signal, WhatsApp, and Teams fanout
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2905
     gh_state: open
@@ -263,7 +263,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2906
-    title: Choose product name for Hermes multi-platform bot
+    title: Apply Deckhand product name across the multi-platform bot plan
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2906
     gh_state: open
@@ -278,7 +278,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2931
-    title: Plan Deckhand named channels and repository scope policy
+    title: Plan Deckhand named repository scopes and scope policy
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2931
     gh_state: open
@@ -288,8 +288,25 @@ cards:
       - cat:ai-orchestration
       - domain:security
       - domain:notification
-      - status:needs-plan
+      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2933
+    title: 'Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2933
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:operations
+      - domain:notification
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

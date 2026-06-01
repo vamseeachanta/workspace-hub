@@ -656,3 +656,16 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#667
+    title: 'feat(gtm/parametric): demo_02 §D — full config externalization (all config in yaml, wired; ADR-0005)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/667
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:codes
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

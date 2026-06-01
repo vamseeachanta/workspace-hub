@@ -431,7 +431,7 @@ cards:
 
       ## Why'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2741
-    title: 'test(hermes): validate Telegram dispatch smoke tests and destructive-action canary'
+    title: 'test(deckhand): validate Telegram dispatch smoke tests and destructive-action canary'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2741
     gh_state: open
