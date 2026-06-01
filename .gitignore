@@ -299,6 +299,10 @@ memory/
 !.claude/memory/
 !scripts/memory/
 !tests/memory/
+# Skill trees swallowed by bare-dir ignores above (digitalmodel/ L14, memory/ here);
+# negate after both rules so .claude/skills/{digitalmodel,memory}/ skills are tracked (#2925).
+!.claude/skills/digitalmodel/
+!.claude/skills/memory/
 *.memory.json
 *.session.json
 ai-memory/

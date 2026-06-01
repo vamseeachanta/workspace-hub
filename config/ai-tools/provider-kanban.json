@@ -35,7 +35,252 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
+        "labels": [
+          "priority:critical",
+          "compliance-alert"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Compliance alert: W23 \u2014 23% (critical)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2934,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Compliance alert: W23 \u2014 23% (critical)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2934",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:operations",
+          "domain:notification",
+          "status:needs-plan"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2933,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2933",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "already has status:plan-approved",
+        "no canonical plan file",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:ai-orchestration",
+          "domain:security",
+          "domain:notification",
+          "status:plan-review",
+          "status:plan-approved",
+          "gate:completeness"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Plan Deckhand named repository scopes and scope policy"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2931,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Plan Deckhand named repository scopes and scope policy",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2931",
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "dual_status_labels",
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:operations",
+          "domain:workstations",
+          "machine:licensed-win-2",
+          "status:needs-plan",
+          "gate:completeness"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2926,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2926",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:harness",
+          "domain:skills",
+          "domain:workstations",
+          "status:needs-plan",
+          "gate:completeness"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2925,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2925",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
         "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Roll out update-harness-tools.sh across machine ecosystem"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2920,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "Roll out update-harness-tools.sh across machine ecosystem",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2920",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "domain:harness"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -73,7 +318,7 @@
           "enhancement",
           "priority:medium",
           "cat:ai-orchestration",
-          "domain:integrations",
+          "domain:notification",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -82,7 +327,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "Choose product name for Hermes multi-platform bot"
+        "title": "Apply Deckhand product name across the multi-platform bot plan"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -95,7 +340,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "Choose product name for Hermes multi-platform bot",
+      "title": "Apply Deckhand product name across the multi-platform bot plan",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2906",
       "warnings": []
     },
@@ -113,7 +358,7 @@
           "enhancement",
           "priority:medium",
           "cat:ai-orchestration",
-          "domain:integrations",
+          "domain:notification",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -122,7 +367,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "Plan operator docs for Hermes Telegram WhatsApp Teams fanout"
+        "title": "Plan Deckhand operator docs for Telegram, Signal, WhatsApp, and Teams fanout"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -135,7 +380,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "Plan operator docs for Hermes Telegram WhatsApp Teams fanout",
+      "title": "Plan Deckhand operator docs for Telegram, Signal, WhatsApp, and Teams fanout",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2905",
       "warnings": []
     },
@@ -153,7 +398,7 @@
           "enhancement",
           "priority:medium",
           "cat:ai-orchestration",
-          "domain:integrations",
+          "domain:notification",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -162,7 +407,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "Plan send_message multi-target text fanout for Hermes"
+        "title": "Plan Deckhand send_message multi-target text fanout"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -175,7 +420,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "Plan send_message multi-target text fanout for Hermes",
+      "title": "Plan Deckhand send_message multi-target text fanout",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2904",
       "warnings": []
     },
@@ -193,7 +438,7 @@
           "enhancement",
           "priority:medium",
           "cat:ai-orchestration",
-          "domain:integrations",
+          "domain:notification",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -202,7 +447,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "Plan Hermes conversation reply policy guardrails for multi-platform fanout"
+        "title": "Plan Deckhand conversation reply policy guardrails for multi-platform fanout"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -215,7 +460,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "Plan Hermes conversation reply policy guardrails for multi-platform fanout",
+      "title": "Plan Deckhand conversation reply policy guardrails for multi-platform fanout",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2903",
       "warnings": []
     },
@@ -233,7 +478,7 @@
           "enhancement",
           "priority:medium",
           "cat:ai-orchestration",
-          "domain:integrations",
+          "domain:notification",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -242,7 +487,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "Plan shared Hermes delivery group and fanout contract"
+        "title": "Plan Deckhand shared delivery group and fanout contract"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -255,7 +500,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "Plan shared Hermes delivery group and fanout contract",
+      "title": "Plan Deckhand shared delivery group and fanout contract",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2902",
       "warnings": []
     },
@@ -273,7 +518,7 @@
           "enhancement",
           "priority:medium",
           "cat:ai-orchestration",
-          "domain:integrations",
+          "domain:notification",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -282,7 +527,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "Plan Hermes Telegram/WhatsApp/Teams platform parity reconnaissance"
+        "title": "Plan Deckhand Telegram/Signal/WhatsApp/Teams platform parity reconnaissance"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -295,7 +540,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "Plan Hermes Telegram/WhatsApp/Teams platform parity reconnaissance",
+      "title": "Plan Deckhand Telegram/Signal/WhatsApp/Teams platform parity reconnaissance",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2901",
       "warnings": []
     },
@@ -313,7 +558,7 @@
           "enhancement",
           "priority:medium",
           "cat:ai-orchestration",
-          "domain:integrations",
+          "domain:notification",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -322,7 +567,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "Plan Hermes multi-platform notification fanout for Telegram, WhatsApp, and Teams"
+        "title": "Plan Deckhand multi-platform notification fanout for Telegram, Signal, WhatsApp, and Teams"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -335,7 +580,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "Plan Hermes multi-platform notification fanout for Telegram, WhatsApp, and Teams",
+      "title": "Plan Deckhand multi-platform notification fanout for Telegram, Signal, WhatsApp, and Teams",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2900",
       "warnings": []
     },
@@ -811,7 +1056,8 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:business"
+          "cat:business",
+          "domain:gtm"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -848,12 +1094,12 @@
       "hover": {
         "labels": [
           "cat:ai-orchestration",
-          "domain:memory"
+          "domain:knowledge-management-platform"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
+        "provider_route": "gemini",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
         "title": "gap(memory): Hermes read-back leg missing \u2014 consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)"
@@ -866,9 +1112,9 @@
       "number": 2854,
       "pipeline_lane": "C",
       "plan": null,
-      "provider_route": "claude",
+      "provider_route": "gemini",
       "review_clean": false,
-      "routing_reason": "default long-context routing",
+      "routing_reason": "research/triage/audit language",
       "title": "gap(memory): Hermes read-back leg missing \u2014 consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2854",
       "warnings": []
@@ -1210,49 +1456,6 @@
     {
       "approval_blockers": [
         "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "cat:harness",
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- **EXISTS**: `scripts/ai/approve-provider-plan.py` \u2014 heavyweight 670-line Python approval",
-        "provider_route": "claude",
-        "risks": "**Risk (partial-apply):** If label succeeds but marker write fails, the issue carries | **Risk (overlap with approve-provider-plan.py):** The two scripts coexist with different | **Open:** Should `approve-issue.sh` also remove `status:plan-review` (the mirror of what",
-        "tests": "7 TDD tests defined",
-        "title": "feat(harness): plan-approval gate \u2014 trust label-actor authority, retire forgeable local marker (re-scoped from approve-issue helper)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2817,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-27-issue-2817-atomic-approve-issue-helper.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(harness): plan-approval gate \u2014 trust label-actor authority, retire forgeable local marker (re-scoped from approve-issue helper)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2817",
-      "warnings": [
-        "approved_no_marker",
-        "dual_status_labels",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "already has status:plan-approved",
         "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
@@ -1402,7 +1605,8 @@
         "labels": [
           "priority:high",
           "priority:critical",
-          "compliance-alert"
+          "compliance-alert",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1979,6 +2183,7 @@
         "labels": [
           "bug",
           "priority:high",
+          "domain:cross-review",
           "gate:completeness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2349,6 +2554,7 @@
           "enhancement",
           "priority:medium",
           "cat:engineering",
+          "domain:hydrodynamics",
           "machine:dev-primary",
           "status:plan-approved",
           "dispatch:ready",
@@ -2986,10 +3192,10 @@
         "labels": [
           "priority:medium",
           "cat:harness",
-          "domain:cleanup",
           "machine:dev-primary",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3031,7 +3237,8 @@
           "machine:dev-primary",
           "compliance-alert",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3128,7 +3335,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "test(hermes): validate Telegram dispatch smoke tests and destructive-action canary"
+        "title": "test(deckhand): validate Telegram dispatch smoke tests and destructive-action canary"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -3141,7 +3348,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "test(hermes): validate Telegram dispatch smoke tests and destructive-action canary",
+      "title": "test(deckhand): validate Telegram dispatch smoke tests and destructive-action canary",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2741",
       "warnings": []
     },
@@ -3615,7 +3822,7 @@
           "priority:high",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:agent-cost-tracking",
+          "domain:cross-review",
           "machine:dev-primary",
           "dispatch:ready",
           "gate:completeness"
@@ -3657,7 +3864,7 @@
           "priority:high",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:agent-cost-tracking",
+          "domain:ai-config",
           "machine:dev-primary",
           "dispatch:ready",
           "gate:completeness"
@@ -4139,7 +4346,8 @@
           "cat:maintenance",
           "machine:dev-primary",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5414,11 +5622,11 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "domain:repo-cleanup",
           "machine:dev-primary",
           "status:needs-plan",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:repo-organization-cleanup-migration"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5459,7 +5667,7 @@
           "priority:high",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:agent-cost-tracking",
+          "domain:ai-config",
           "machine:dev-primary",
           "status:plan-approved",
           "dispatch:ready",
@@ -5586,11 +5794,11 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "domain:repo-cleanup",
           "machine:dev-primary",
           "status:needs-plan",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:repo-organization-cleanup-migration"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5632,7 +5840,8 @@
           "machine:dev-primary",
           "compliance-alert",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5670,12 +5879,11 @@
         "labels": [
           "cat:tooling",
           "cat:data",
-          "domain:standards-tooling",
-          "domain:quality",
           "machine:dev-primary",
           "llm-wiki",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:knowledge-management-corpus"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6099,7 +6307,8 @@
           "machine:dev-primary",
           "compliance-alert",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6184,7 +6393,7 @@
         "labels": [
           "priority:medium",
           "cat:documentation",
-          "domain:security",
+          "domain:ops",
           "machine:dev-primary",
           "status:plan-approved",
           "dispatch:ready",
@@ -6532,7 +6741,8 @@
           "machine:dev-primary",
           "status:needs-data",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:marine-field-dev"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6656,7 +6866,7 @@
           "documentation",
           "priority:medium",
           "cat:documentation",
-          "domain:security",
+          "domain:ops",
           "machine:dev-primary",
           "status:plan-approved",
           "dispatch:ready",
@@ -6704,8 +6914,7 @@
           "enhancement",
           "priority:medium",
           "cat:operations",
-          "domain:security",
-          "domain:repo-health",
+          "domain:ops",
           "machine:dev-primary",
           "status:plan-approved",
           "dispatch:ready",
@@ -7399,7 +7608,8 @@
           "machine:dev-primary",
           "compliance-alert",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7525,7 +7735,6 @@
           "cat:career",
           "machine:dev-primary",
           "domain:semiconductor",
-          "domain:chip-design",
           "dispatch:ready",
           "gate:completeness"
         ],
@@ -7570,7 +7779,6 @@
           "machine:dev-primary",
           "status:plan-approved",
           "domain:semiconductor",
-          "domain:chip-design",
           "dispatch:ready",
           "gate:completeness"
         ],
@@ -7617,7 +7825,6 @@
           "cat:research",
           "machine:dev-primary",
           "domain:semiconductor",
-          "domain:chip-design",
           "dispatch:ready",
           "gate:completeness"
         ],
@@ -7664,7 +7871,6 @@
           "cat:career",
           "machine:dev-primary",
           "domain:semiconductor",
-          "domain:chip-design",
           "dispatch:ready",
           "gate:completeness"
         ],
@@ -7933,7 +8139,8 @@
           "cat:harness",
           "machine:dev-primary",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7972,7 +8179,8 @@
           "cat:harness",
           "machine:dev-primary",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -8015,7 +8223,8 @@
           "cat:harness",
           "machine:dev-primary",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -8055,7 +8264,8 @@
           "cat:harness",
           "machine:dev-primary",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -8218,7 +8428,8 @@
           "machine:dev-primary",
           "tech-debt",
           "dispatch:ready",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -8368,222 +8579,9 @@
       "title": "chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2483",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "priority:medium",
-          "cat:ci",
-          "status:pending",
-          "machine:dev-primary",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:testing-ci-health"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2478,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:engineering",
-          "machine:dev-primary",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:marine-orcaflex"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `digitalmodel/src/digitalmodel/hydrodynamics/diffraction/reverse_parsers.py` (784 lines) \u2014 defines `OrcaWaveInputParser.parse(yml_path) -> DiffractionSpec`. This is the **OrcaWave reverse-parser baseline pattern** that #2474 will mirror for OrcaFlex. Class begins at line",
-        "provider_route": "codex",
-        "risks": "**Risk:** OrcaFlex native YAML uses many native-side conveniences (computed defaults, polymorphic key shapes, multi-doc YAML, BOM-encoded files) that PR #528 forward generation hides. Reverse parsing surfaces them. Mitigation: schema-version pin + ignored-fields registry + parser raises on unknown keys outside the registry. | **Risk:** Upstream OrcaFlex format change silently breaks reverse parsin",
-        "tests": "TDD section present",
-        "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2474,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-04-26-issue-2474-orcaflex-reverse-parser.md",
-      "provider_route": "codex",
-      "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
-      "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2474",
-      "warnings": [
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:engineering",
-          "machine:dev-primary",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:marine-rao-seakeeping"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(canonical-spec): prove OrcaWave-to-OrcaFlex hydrodynamic handoff semantics"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2473,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(canonical-spec): prove OrcaWave-to-OrcaFlex hydrodynamic handoff semantics",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2473",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:engineering",
-          "machine:dev-primary",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:marine-rao-seakeeping"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2472,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "codex",
-      "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
-      "title": "feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2472",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:data-pipeline",
-          "cat:documentation",
-          "machine:dev-primary",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:knowledge-management-corpus"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2470,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2470",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-05-31T21:20:11Z",
+  "generated_at": "2026-06-01T17:20:12Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8599,7 +8597,252 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Compliance alert: W23 \u2014 23% (critical)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2934,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Compliance alert: W23 \u2014 23% (critical)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2934",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:operations",
+            "domain:notification",
+            "status:needs-plan"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2933,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2933",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "already has status:plan-approved",
+          "no canonical plan file",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:ai-orchestration",
+            "domain:security",
+            "domain:notification",
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Plan Deckhand named repository scopes and scope policy"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2931,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Plan Deckhand named repository scopes and scope policy",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2931",
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "dual_status_labels",
+          "missing_review"
+        ]
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:operations",
+            "domain:workstations",
+            "machine:licensed-win-2",
+            "status:needs-plan",
+            "gate:completeness"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2926,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2926",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "domain:skills",
+            "domain:workstations",
+            "status:needs-plan",
+            "gate:completeness"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2925,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2925",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
           "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Roll out update-harness-tools.sh across machine ecosystem"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2920,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "Roll out update-harness-tools.sh across machine ecosystem",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2920",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "domain:harness"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -8637,7 +8880,7 @@
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8646,7 +8889,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "Choose product name for Hermes multi-platform bot"
+          "title": "Apply Deckhand product name across the multi-platform bot plan"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -8659,7 +8902,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "Choose product name for Hermes multi-platform bot",
+        "title": "Apply Deckhand product name across the multi-platform bot plan",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2906",
         "warnings": []
       },
@@ -8677,7 +8920,7 @@
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8686,7 +8929,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "Plan operator docs for Hermes Telegram WhatsApp Teams fanout"
+          "title": "Plan Deckhand operator docs for Telegram, Signal, WhatsApp, and Teams fanout"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -8699,7 +8942,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "Plan operator docs for Hermes Telegram WhatsApp Teams fanout",
+        "title": "Plan Deckhand operator docs for Telegram, Signal, WhatsApp, and Teams fanout",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2905",
         "warnings": []
       },
@@ -8717,7 +8960,7 @@
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8726,7 +8969,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "Plan send_message multi-target text fanout for Hermes"
+          "title": "Plan Deckhand send_message multi-target text fanout"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -8739,7 +8982,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "Plan send_message multi-target text fanout for Hermes",
+        "title": "Plan Deckhand send_message multi-target text fanout",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2904",
         "warnings": []
       },
@@ -8757,7 +9000,7 @@
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8766,7 +9009,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "Plan Hermes conversation reply policy guardrails for multi-platform fanout"
+          "title": "Plan Deckhand conversation reply policy guardrails for multi-platform fanout"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -8779,7 +9022,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "Plan Hermes conversation reply policy guardrails for multi-platform fanout",
+        "title": "Plan Deckhand conversation reply policy guardrails for multi-platform fanout",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2903",
         "warnings": []
       },
@@ -8797,7 +9040,7 @@
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8806,7 +9049,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "Plan shared Hermes delivery group and fanout contract"
+          "title": "Plan Deckhand shared delivery group and fanout contract"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -8819,7 +9062,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "Plan shared Hermes delivery group and fanout contract",
+        "title": "Plan Deckhand shared delivery group and fanout contract",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2902",
         "warnings": []
       },
@@ -8837,7 +9080,7 @@
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8846,7 +9089,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "Plan Hermes Telegram/WhatsApp/Teams platform parity reconnaissance"
+          "title": "Plan Deckhand Telegram/Signal/WhatsApp/Teams platform parity reconnaissance"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -8859,7 +9102,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "Plan Hermes Telegram/WhatsApp/Teams platform parity reconnaissance",
+        "title": "Plan Deckhand Telegram/Signal/WhatsApp/Teams platform parity reconnaissance",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2901",
         "warnings": []
       },
@@ -8877,7 +9120,7 @@
             "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "domain:integrations",
+            "domain:notification",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8886,7 +9129,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "Plan Hermes multi-platform notification fanout for Telegram, WhatsApp, and Teams"
+          "title": "Plan Deckhand multi-platform notification fanout for Telegram, Signal, WhatsApp, and Teams"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -8899,7 +9142,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "Plan Hermes multi-platform notification fanout for Telegram, WhatsApp, and Teams",
+        "title": "Plan Deckhand multi-platform notification fanout for Telegram, Signal, WhatsApp, and Teams",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2900",
         "warnings": []
       },
@@ -9375,7 +9618,8 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:business"
+            "cat:business",
+            "domain:gtm"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9412,12 +9656,12 @@
         "hover": {
           "labels": [
             "cat:ai-orchestration",
-            "domain:memory"
+            "domain:knowledge-management-platform"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
+          "provider_route": "gemini",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
           "title": "gap(memory): Hermes read-back leg missing \u2014 consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)"
@@ -9430,9 +9674,9 @@
         "number": 2854,
         "pipeline_lane": "C",
         "plan": null,
-        "provider_route": "claude",
+        "provider_route": "gemini",
         "review_clean": false,
-        "routing_reason": "default long-context routing",
+        "routing_reason": "research/triage/audit language",
         "title": "gap(memory): Hermes read-back leg missing \u2014 consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2854",
         "warnings": []
@@ -9774,49 +10018,6 @@
       {
         "approval_blockers": [
           "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "cat:harness",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- **EXISTS**: `scripts/ai/approve-provider-plan.py` \u2014 heavyweight 670-line Python approval",
-          "provider_route": "claude",
-          "risks": "**Risk (partial-apply):** If label succeeds but marker write fails, the issue carries | **Risk (overlap with approve-provider-plan.py):** The two scripts coexist with different | **Open:** Should `approve-issue.sh` also remove `status:plan-review` (the mirror of what",
-          "tests": "7 TDD tests defined",
-          "title": "feat(harness): plan-approval gate \u2014 trust label-actor authority, retire forgeable local marker (re-scoped from approve-issue helper)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2817,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-27-issue-2817-atomic-approve-issue-helper.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(harness): plan-approval gate \u2014 trust label-actor authority, retire forgeable local marker (re-scoped from approve-issue helper)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2817",
-        "warnings": [
-          "approved_no_marker",
-          "dual_status_labels",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "already has status:plan-approved",
           "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
@@ -9966,7 +10167,8 @@
           "labels": [
             "priority:high",
             "priority:critical",
-            "compliance-alert"
+            "compliance-alert",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10543,6 +10745,7 @@
           "labels": [
             "bug",
             "priority:high",
+            "domain:cross-review",
             "gate:completeness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10913,6 +11116,7 @@
             "enhancement",
             "priority:medium",
             "cat:engineering",
+            "domain:hydrodynamics",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
@@ -11550,10 +11754,10 @@
           "labels": [
             "priority:medium",
             "cat:harness",
-            "domain:cleanup",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11595,7 +11799,8 @@
             "machine:dev-primary",
             "compliance-alert",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11692,7 +11897,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "test(hermes): validate Telegram dispatch smoke tests and destructive-action canary"
+          "title": "test(deckhand): validate Telegram dispatch smoke tests and destructive-action canary"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -11705,7 +11910,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "test(hermes): validate Telegram dispatch smoke tests and destructive-action canary",
+        "title": "test(deckhand): validate Telegram dispatch smoke tests and destructive-action canary",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2741",
         "warnings": []
       },
@@ -12179,7 +12384,7 @@
             "priority:high",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:agent-cost-tracking",
+            "domain:cross-review",
             "machine:dev-primary",
             "dispatch:ready",
             "gate:completeness"
@@ -12221,7 +12426,7 @@
             "priority:high",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:agent-cost-tracking",
+            "domain:ai-config",
             "machine:dev-primary",
             "dispatch:ready",
             "gate:completeness"
@@ -12703,7 +12908,8 @@
             "cat:maintenance",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13978,11 +14184,11 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "domain:repo-cleanup",
             "machine:dev-primary",
             "status:needs-plan",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:repo-organization-cleanup-migration"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14023,7 +14229,7 @@
             "priority:high",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:agent-cost-tracking",
+            "domain:ai-config",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
@@ -14150,11 +14356,11 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "domain:repo-cleanup",
             "machine:dev-primary",
             "status:needs-plan",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:repo-organization-cleanup-migration"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14196,7 +14402,8 @@
             "machine:dev-primary",
             "compliance-alert",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14234,12 +14441,11 @@
           "labels": [
             "cat:tooling",
             "cat:data",
-            "domain:standards-tooling",
-            "domain:quality",
             "machine:dev-primary",
             "llm-wiki",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:knowledge-management-corpus"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14663,7 +14869,8 @@
             "machine:dev-primary",
             "compliance-alert",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14748,7 +14955,7 @@
           "labels": [
             "priority:medium",
             "cat:documentation",
-            "domain:security",
+            "domain:ops",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
@@ -15096,7 +15303,8 @@
             "machine:dev-primary",
             "status:needs-data",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:marine-field-dev"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15220,7 +15428,7 @@
             "documentation",
             "priority:medium",
             "cat:documentation",
-            "domain:security",
+            "domain:ops",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
@@ -15268,8 +15476,7 @@
             "enhancement",
             "priority:medium",
             "cat:operations",
-            "domain:security",
-            "domain:repo-health",
+            "domain:ops",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
@@ -15963,7 +16170,8 @@
             "machine:dev-primary",
             "compliance-alert",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -16089,7 +16297,6 @@
             "cat:career",
             "machine:dev-primary",
             "domain:semiconductor",
-            "domain:chip-design",
             "dispatch:ready",
             "gate:completeness"
           ],
@@ -16134,7 +16341,6 @@
             "machine:dev-primary",
             "status:plan-approved",
             "domain:semiconductor",
-            "domain:chip-design",
             "dispatch:ready",
             "gate:completeness"
           ],
@@ -16181,7 +16387,6 @@
             "cat:research",
             "machine:dev-primary",
             "domain:semiconductor",
-            "domain:chip-design",
             "dispatch:ready",
             "gate:completeness"
           ],
@@ -16228,7 +16433,6 @@
             "cat:career",
             "machine:dev-primary",
             "domain:semiconductor",
-            "domain:chip-design",
             "dispatch:ready",
             "gate:completeness"
           ],
@@ -16497,7 +16701,8 @@
             "cat:harness",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -16536,7 +16741,8 @@
             "cat:harness",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -16579,7 +16785,8 @@
             "cat:harness",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -16619,7 +16826,8 @@
             "cat:harness",
             "machine:dev-primary",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -16782,7 +16990,8 @@
             "machine:dev-primary",
             "tech-debt",
             "dispatch:ready",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -16932,219 +17141,6 @@
         "title": "chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2483",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:ci",
-            "status:pending",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:testing-ci-health"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2478,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-orcaflex"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `digitalmodel/src/digitalmodel/hydrodynamics/diffraction/reverse_parsers.py` (784 lines) \u2014 defines `OrcaWaveInputParser.parse(yml_path) -> DiffractionSpec`. This is the **OrcaWave reverse-parser baseline pattern** that #2474 will mirror for OrcaFlex. Class begins at line",
-          "provider_route": "codex",
-          "risks": "**Risk:** OrcaFlex native YAML uses many native-side conveniences (computed defaults, polymorphic key shapes, multi-doc YAML, BOM-encoded files) that PR #528 forward generation hides. Reverse parsing surfaces them. Mitigation: schema-version pin + ignored-fields registry + parser raises on unknown keys outside the registry. | **Risk:** Upstream OrcaFlex format change silently breaks reverse parsin",
-          "tests": "TDD section present",
-          "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2474,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-04-26-issue-2474-orcaflex-reverse-parser.md",
-        "provider_route": "codex",
-        "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
-        "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2474",
-        "warnings": [
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-rao-seakeeping"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(canonical-spec): prove OrcaWave-to-OrcaFlex hydrodynamic handoff semantics"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2473,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(canonical-spec): prove OrcaWave-to-OrcaFlex hydrodynamic handoff semantics",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2473",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-rao-seakeeping"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2472,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "codex",
-        "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
-        "title": "feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2472",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:data-pipeline",
-            "cat:documentation",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:knowledge-management-corpus"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2470,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2470",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -17155,18 +17151,18 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-31T21:20:07.739511Z",
+  "scorecard_generated_at": "2026-06-01T17:20:08.159170Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-31T21:20:07.490763Z",
+  "utilization_generated_at": "2026-06-01T17:20:08.051643Z",
   "warning_summary": {
     "approved_no_marker": 21,
-    "approved_no_plan": 11,
+    "approved_no_plan": 12,
     "dual_status_labels": 4,
     "empty_review": 3,
     "legacy_review_no_sha": 30,
     "major_review": 22,
     "marker_without_open_approved_issue": 147,
-    "missing_review": 37,
+    "missing_review": 36,
     "unavailable_review": 15
   }
 }

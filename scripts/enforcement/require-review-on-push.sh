@@ -91,11 +91,20 @@ commit_touches_only_low_risk_paths() {
   return 0
 }
 
+# NOTE on the `[[ -n "$(...)" ]]` / here-string forms below (#2925):
+# The previous `find ... | grep -q .` and `git log ... | grep -qiE ...` pipelines
+# returned a FALSE NEGATIVE under this script's `set -o pipefail`. `grep -q` exits
+# on its first match and closes the pipe; the upstream `find`/`git log` is then
+# killed by SIGPIPE (exit 141), and pipefail propagates that 141 as the pipeline's
+# status — so a check with genuine evidence read as "no evidence" and blocked the
+# push. Capturing output via command substitution (find) or feeding grep with a
+# here-string (git log) removes the pipe entirely, so SIGPIPE can never fire.
+
 # Check 1: scripts/review/results/ has files from today
 check_review_results() {
   local results_dir="${REPO_ROOT}/scripts/review/results"
   if [[ -d "$results_dir" ]]; then
-    if find "$results_dir" -maxdepth 2 -type f -newermt "$TODAY 00:00:00" 2>/dev/null | grep -q .; then
+    if [[ -n "$(find "$results_dir" -maxdepth 2 -type f -newermt "$TODAY 00:00:00" 2>/dev/null)" ]]; then
       return 0
     fi
   fi
@@ -105,11 +114,11 @@ check_review_results() {
 # Check 2: .planning/phases/*/REVIEWS.md or .planning/quick/REVIEWS.md modified today
 check_planning_reviews() {
   # Phase REVIEWS.md
-  if find "${REPO_ROOT}/.planning/phases/" -name "REVIEWS.md" -newermt "$TODAY 00:00:00" 2>/dev/null | grep -q .; then
+  if [[ -n "$(find "${REPO_ROOT}/.planning/phases/" -name "REVIEWS.md" -newermt "$TODAY 00:00:00" 2>/dev/null)" ]]; then
     return 0
   fi
   # Quick-mode REVIEWS.md
-  if find "${REPO_ROOT}/.planning/quick/" -name "REVIEWS.md" -newermt "$TODAY 00:00:00" 2>/dev/null | grep -q .; then
+  if [[ -n "$(find "${REPO_ROOT}/.planning/quick/" -name "REVIEWS.md" -newermt "$TODAY 00:00:00" 2>/dev/null)" ]]; then
     return 0
   fi
   return 1
@@ -117,7 +126,7 @@ check_planning_reviews() {
 
 # Check 3: .claude/reports/*review* modified today
 check_report_reviews() {
-  if find "${REPO_ROOT}/.claude/reports/" -iname "*review*" -newermt "$TODAY 00:00:00" 2>/dev/null | grep -q .; then
+  if [[ -n "$(find "${REPO_ROOT}/.claude/reports/" -iname "*review*" -newermt "$TODAY 00:00:00" 2>/dev/null)" ]]; then
     return 0
   fi
   return 1
@@ -125,7 +134,9 @@ check_report_reviews() {
 
 # Check 4: Recent git commit messages contain review keywords
 check_git_evidence() {
-  if git log --oneline -30 --format='%s' 2>/dev/null | grep -qiE '(review|codex|gemini|adversarial)'; then
+  local recent
+  recent="$(git log --oneline -30 --format='%s' 2>/dev/null || true)"
+  if grep -qiE '(review|codex|gemini|adversarial)' <<< "$recent"; then
     return 0
   fi
   return 1
