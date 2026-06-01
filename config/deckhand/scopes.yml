@@ -1,0 +1,71 @@
+# Deckhand — scopes, one self-contained SECTION PER CLIENT  (PROPOSED, pending #2931 plan-approved)
+#
+# A SCOPE = a named set of repositories + the permission/identity/data policy over them.
+# Each client gets ONE self-contained section here (repos, operators, sensitivity, data root,
+# channel bindings) so it can be reviewed/edited in one place. Generic by design: onboarding
+# a new client = add a section, NO code change. `acma`/`doris` are EXAMPLE sections.
+# Global enforcement defaults live in policy.yml; this file only carries per-scope values
+# and per-scope overrides. Fail-closed: unknown scope / repo not listed / unparseable => DENY.
+#
+# Identity rule (policy.yml): operators are STABLE platform IDs (Telegram numeric user id,
+# Teams AAD oid, WhatsApp E.164) — never display names. NO secrets in this file.
+schema_version: 2
+
+scopes:
+
+  # ====================== CLIENT: ACMA ======================
+  acma:
+    sensitivity: private              # routes only to delivery groups cleared for "private"
+    permission: write                 # read + write; destructive denied (policy.yml)
+    pat_env: DECKHAND_PAT_ACMA        # env var holding this scope's fine-grained PAT (no secret here)
+    repositories:
+      - vamseeachanta/llm-wiki-acma
+      - vamseeachanta/acma-projects
+    repository_flags:                 # typed repo state (codex review) — not just comments
+      vamseeachanta/acma-projects: { archived: true, read_only: true }   # OPEN: confirm read-only inclusion
+    operators: []                     # OPEN: stable platform IDs authorized for acma
+    data_root: "/mnt/ace/acma-projects/"   # off-repo raw source-of-truth (evidence: client-wikis.yml)
+    channel_repo_bindings: []         # origin-bound default; binding only, never prose
+      # - platform: telegram
+      #   channel_id: "<chat-id>"
+      #   repo: vamseeachanta/llm-wiki-acma
+    # action_policy: {}               # optional per-client override of policy.yml defaults
+    # rate_limits: {}                 # optional per-client override of policy.yml defaults
+
+  # ====================== CLIENT: DORIS =====================
+  doris:
+    sensitivity: private
+    permission: write
+    pat_env: DECKHAND_PAT_DORIS
+    repositories:
+      - vamseeachanta/doris
+      - vamseeachanta/llm-wiki-doris
+    repository_flags:
+      vamseeachanta/llm-wiki-doris: { planned: true }   # OPEN: status:planned — confirm inclusion
+    operators: []                     # OPEN: stable platform IDs authorized for doris
+    data_root: "/mnt/ace/doris/"
+    channel_repo_bindings: []
+
+  # ================ CROSS-CUTTING: ECOSYSTEM ================
+  # All repositories, read+write, destructive denied. OFF for external operators in the POC.
+  ecosystem:
+    sensitivity: internal
+    permission: write
+    pat_env: DECKHAND_PAT_ECOSYSTEM
+    repositories: "owner:vamseeachanta/*"   # snapshot-audited glob; resolve + record at load
+    operators: []                     # internal operators only; external testers NEVER here
+    external_disabled: true
+    data_root: null
+
+# Origin-bound default scope: resolves the repo ONLY from a scope's channel_repo_bindings
+# above (never from message prose); read+write, no destructive; the repo must already be in
+# an authorized scope's allowlist.
+origin_bound_default:
+  enabled: true
+  resolve_from: channel_repo_binding
+  permission: write
+  destructive_denied: true
+  require_containment: true
+
+# POC: external testers may be placed in acma/doris operators only — never ecosystem.
+poc_external_scope_allowlist: [acma, doris]

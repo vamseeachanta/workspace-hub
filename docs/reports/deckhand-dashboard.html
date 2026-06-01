@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deckhand — Work Dashboard</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1d212b; --ink:#e7ebf0; --mut:#9aa4b2;
+    --line:#2a2f3a; --acc:#5aa9ff; --ok:#43c08a; --warn:#e0b341; --bad:#e5635e; --info:#9b8cff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+  header.top{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:8px}
+  h1{font-size:26px;margin:0;letter-spacing:.2px}
+  .sub{color:var(--mut);font-size:13px}
+  .meta{margin-left:auto;color:var(--mut);font-size:12.5px;text-align:right}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 6px}
+  .badge{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+  .b-ok{color:var(--ok);border-color:#1f5c45} .b-warn{color:var(--warn);border-color:#5c4d1f}
+  .b-bad{color:var(--bad);border-color:#5c2a28} .b-info{color:var(--info);border-color:#3a3470}
+  h2{font-size:16px;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line);color:#fff}
+  h2 .n{color:var(--mut);font-weight:400;font-size:13px;margin-left:8px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:2px 0;overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.4px;background:var(--panel2)}
+  tr:last-child td{border-bottom:none}
+  td code,p code,li code{background:#0c0e12;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:12.5px}
+  .pill{font-size:11px;padding:2px 8px;border-radius:999px;white-space:nowrap}
+  .p-rev{background:#2a2410;color:var(--warn)} .p-need{background:#1a1d24;color:var(--mut)}
+  .p-ops{background:#10241b;color:var(--ok)} .p-done{background:#10241b;color:var(--ok)}
+  .q{display:grid;grid-template-columns:30px 1fr;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line)}
+  .q:last-child{border-bottom:none}
+  .q .num{color:var(--mut);font-variant-numeric:tabular-nums}
+  .q .ask{color:var(--ink)} .q .ans{color:var(--ok);font-weight:600;margin-top:3px}
+  .q .ans.alt{color:var(--info)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}.meta{margin-left:0;text-align:left}}
+  .note{color:var(--mut);font-size:12.5px;margin:6px 2px}
+  ul.tight{margin:8px 0;padding-left:20px} ul.tight li{margin:3px 0}
+  .owner{background:#1c1410;border:1px solid #5c2a28;border-radius:10px;padding:14px 16px}
+  .owner h2{border:none;margin:0 0 8px;color:var(--bad)}
+  .foot{color:var(--mut);font-size:12px;margin-top:40px;border-top:1px solid var(--line);padding-top:12px}
+  .layerbox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:#0c0e12;border:1px solid var(--line);border-radius:8px;padding:12px;color:var(--mut);white-space:pre-wrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <h1>Deckhand — Work Dashboard</h1>
+      <div class="sub">Hermes-gateway chatbot · named repository scopes &amp; multi-channel routing · host: <b>ace-linux-2</b></div>
+    </div>
+    <div class="meta">
+      Canonical review surface — rewritten as work progresses<br>
+      Last updated: <b>2026-06-01</b> · Primary issue:
+      <a href="https://github.com/vamseeachanta/workspace-hub/issues/2931">#2931</a>
+    </div>
+  </header>
+
+  <div class="badges">
+    <span class="badge b-warn">#2931 status: plan-review</span>
+    <span class="badge b-bad">codex review: CHANGES-REQUESTED (resolved)</span>
+    <span class="badge b-ok">go-live envelope: approved (real repos + guardrail floor)</span>
+    <span class="badge b-info">gate: owner applies plan-approved</span>
+  </div>
+  <p class="note">Deckhand lets an authenticated <b>operator</b> drive <code>git</code>/<code>gh</code> on repository <b>scopes</b>
+  (<code>acma</code>, <code>doris</code>, <code>ecosystem</code>) from a chat platform. This page tracks every decision, the
+  grilling turns, codex reviews, the board, and what's blocking go-live.</p>
+
+  <!-- DECISIONS -->
+  <h2>Design decisions<span class="n">9 resolved · captured in glossary + governance records</span></h2>
+  <div class="panel"><table>
+    <tr><th>#</th><th>Decision</th><th>Why it matters</th></tr>
+    <tr><td>1</td><td><b>"named channel" → <code>scope</code></b></td><td><code>scope</code> (repos+perms) ≠ <code>channel</code> (transport target, <code>channel_directory.py</code>) ≠ <code>delivery group</code> (#2902). Stops one word meaning three things.</td></tr>
+    <tr><td>2</td><td><b>Scope ⟂ routing</b></td><td>A command names a scope (repos) and, separately, where output goes. Replies default to origin. Issue body fused them; we split them.</td></tr>
+    <tr><td>3</td><td><b>Explicit allowlist, fail-closed</b></td><td>Membership is an enumerable list, not "all as needed". Unknown repo → deny.</td></tr>
+    <tr><td>4</td><td><b>"deletion" = destructive ops</b></td><td>repo/branch/tag/release delete, force-push, reset --hard/clean — <i>not</i> a commit that removes file lines.</td></tr>
+    <tr><td>5</td><td><b>Enforced below the model</b></td><td>command hook + per-scope fine-grained PAT; prompt text is guidance only, never the boundary.</td></tr>
+    <tr><td>6</td><td><b>Per-scope operator allowlist</b></td><td>On top of the gateway allowlist; <code>ecosystem</code> gets the tightest list. Fail-closed.</td></tr>
+    <tr><td>7</td><td><b>Origin-bound default scope</b></td><td>Resolved from a registered channel→repo binding only (never prose); read+write no-destructive; allowlist-contained.</td></tr>
+    <tr><td>8</td><td><b>Audit every decision</b></td><td>allow+deny, PENDING-before + FINAL-after, redacted; raw private, redacted summary public; feeds #2741 canary.</td></tr>
+    <tr><td>9</td><td><b>Sensitivity clears routing</b></td><td>Private-scope output fans out only to cleared delivery groups; origin allowed only if DM/cleared.</td></tr>
+  </table></div>
+  <p class="note">Records:
+    <a href="../governance/2026-06-01-deckhand-scope-routing-orthogonality-decision.md">scope/routing orthogonality</a> ·
+    <a href="../governance/2026-06-01-deckhand-scope-enforcement-below-model-decision.md">enforcement below the model</a> ·
+    glossary <a href="../../CONTEXT.md">CONTEXT.md</a></p>
+
+  <!-- TURNS -->
+  <h2>Grilling turns — questions &amp; choices<span class="n">how each decision was reached</span></h2>
+  <div class="panel">
+    <div class="q"><div class="num">1</div><div><div class="ask">What should <code>ecosystem/acma/doris</code> be called, to keep three concepts distinct?</div><div class="ans">→ Scope (rename away from "channel")</div></div></div>
+    <div class="q"><div class="num">2</div><div><div class="ask">Is a scope purely repo-authorization, or does it also bind routing?</div><div class="ans">→ Fully orthogonal</div></div></div>
+    <div class="q"><div class="num">3</div><div><div class="ask">How is a scope's repo set defined &amp; resolved?</div><div class="ans">→ Explicit allowlist per scope (fail-closed)</div></div></div>
+    <div class="q"><div class="num">4</div><div><div class="ask">For a no-delete scope, what counts as forbidden "deletion"?</div><div class="ans">→ Destructive ops, not file edits</div></div></div>
+    <div class="q"><div class="num">5</div><div><div class="ask">Where is per-scope policy enforced so it holds when the LLM misbehaves?</div><div class="ans">→ Command-layer hook + scoped token</div></div></div>
+    <div class="q"><div class="num">6</div><div><div class="ask">How does operator identity gate which scopes can be invoked?</div><div class="ans">→ Per-scope operator allowlist</div></div></div>
+    <div class="q"><div class="num">7</div><div><div class="ask">Default active scope when none is named?</div><div class="ans alt">→ Origin-bound default (user's pick over "no default")</div></div></div>
+    <div class="q"><div class="num">8</div><div><div class="ask">How does the origin-bound default resolve / permit / contain?</div><div class="ans">→ Explicit-context, write, allowlist-contained</div></div></div>
+    <div class="q"><div class="num">9</div><div><div class="ask">What does the audit log capture &amp; where does it live?</div><div class="ans">→ Every decision; raw durable-private + redacted public summary</div></div></div>
+    <div class="q"><div class="num">10</div><div><div class="ask">Should scope sensitivity constrain which delivery groups output may reach?</div><div class="ans">→ Yes — routing must clear the scope</div></div></div>
+    <div class="q"><div class="num">11</div><div><div class="ask">Where to record the load-bearing decisions?</div><div class="ans">→ <code>docs/governance/</code> (repo convention)</div></div></div>
+    <div class="q"><div class="num">12</div><div><div class="ask">What can external members touch when testing the POC today?</div><div class="ans alt">→ Full POC on real repos today (owner's call)</div></div></div>
+    <div class="q"><div class="num">13</div><div><div class="ask">Given codex CHANGES-REQUESTED, how to go live today?</div><div class="ans">→ Real repos + guardrail floor</div></div></div>
+  </div>
+
+  <!-- CODEX REVIEWS -->
+  <h2>Codex reviews &amp; recon<span class="n">heavy work delegated to codex</span></h2>
+  <div class="grid2">
+    <div class="panel"><table>
+      <tr><th>Lane</th><th>Result</th></tr>
+      <tr><td>POC adversarial review</td><td><b style="color:var(--bad)">CHANGES-REQUESTED</b> — 3 BLOCKERs + 6 MAJORs; all resolved in POC plan</td></tr>
+      <tr><td>Recon: scope membership</td><td>acma/doris are client slugs (not orgs) → explicit allowlists</td></tr>
+      <tr><td>Recon: git/gh choke point</td><td><code>terminal_tool</code> pre_tool_call hook + <b>7 bypass paths</b> → scoped PAT is the real boundary</td></tr>
+      <tr><td>Board + task + delegation review</td><td><b style="color:var(--bad)">CHANGES-REQUESTED</b> — missing tasks (PAT provisioning, bypass-tests, rollback, rate-limit, operator intake); board needs dependency links; all queued</td></tr>
+      <tr><td>Platform connectivity + terminology</td><td><i>running — Signal/WhatsApp/Telegram/Teams work + Hermes wording alignment</i></td></tr>
+    </table></div>
+    <div>
+      <div class="layerbox">GUARDRAIL FLOOR (approved, real repos today)
+token : per-scope fine-grained PAT
+        contents+pull_requests write
+        NO delete / NO admin, repo-restricted
+action: PR-only, no force-push,
+        no protected-branch direct push
+scope : acma, doris only (ecosystem OFF ext)
+reply : DM-only for private scopes
+audit : PENDING before + FINAL after, every deny
+hook  : pre_tool_call + PATH git/gh shim
+        (defense-in-depth above the token)</div>
+      <p class="note">Full review: <a href="../../scripts/review/results/2026-06-01-poc-2931-codex.md">poc-2931-codex.md</a></p>
+    </div>
+  </div>
+
+  <!-- BOARD -->
+  <h2>Kanban board<span class="n">repo-workspace-hub-deckhand · 12 tasks</span></h2>
+  <div class="panel"><table>
+    <tr><th>Task</th><th>Issue</th><th>Title</th><th>Status</th></tr>
+    <tr><td><code>t_d36d4625</code></td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/2931">#2931</a></td><td>Named scopes &amp; repository-scope policy</td><td><span class="pill p-rev">plan-review</span></td></tr>
+    <tr><td><code>t_28ed2d54</code></td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/2902">#2902</a></td><td>Shared delivery group + fanout contract</td><td><span class="pill p-need">needs-plan</span></td></tr>
+    <tr><td><code>t_d9be8df2</code></td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/2903">#2903</a></td><td>Conversation reply policy guardrails</td><td><span class="pill p-need">needs-plan</span></td></tr>
+    <tr><td><code>t_c7a0a03b</code></td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/2901">#2901</a></td><td>Platform parity reconnaissance</td><td><span class="pill p-need">needs-plan</span></td></tr>
+    <tr><td><code>t_3d352af0</code></td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/2741">#2741</a></td><td>Telegram dispatch + destructive-action canary</td><td><span class="pill p-need">needs-plan</span></td></tr>
+    <tr><td><code>t_95dfc823</code></td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/2900">#2900</a></td><td>Board-level multi-platform fanout</td><td><span class="pill p-need">needs-plan</span></td></tr>
+    <tr><td><code>t_84cbb375</code></td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/2904">#2904</a></td><td>send_message multi-target fanout</td><td><span class="pill p-need">needs-plan</span></td></tr>
+    <tr><td><code>t_0910b4d7</code></td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/2905">#2905</a></td><td>Operator docs</td><td><span class="pill p-need">needs-plan</span></td></tr>
+    <tr><td><code>t_a6d843ec</code></td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/2906">#2906</a></td><td>Product naming (Deckhand)</td><td><span class="pill p-need">needs-plan</span></td></tr>
+    <tr><td><code>t_df8756ca</code> · <code>t_7cfe94f6</code> · <code>t_7731a586</code></td><td>#2563/#1881/#1885</td><td>Telegram mobile access / gateway / platform setup</td><td><span class="pill p-ops">operational</span></td></tr>
+  </table></div>
+
+  <!-- CONFIG -->
+  <h2>Config surface<span class="n">all config in YAML — nothing in code · industry multi-tenant</span></h2>
+  <div class="panel"><table>
+    <tr><th>File</th><th>Holds</th></tr>
+    <tr><td><a href="../../config/deckhand/policy.yml"><code>policy.yml</code></a></td><td>Generic enforcement: destructive ops, action/diff-risk gate, reply clearance, audit + sinks, enforcement layers, kill switches, rate limits, elevation</td></tr>
+    <tr><td><a href="../../config/deckhand/scopes.yml"><code>scopes.yml</code></a></td><td><b>One self-contained section per client</b>: repos (+typed flags), <code>pat_env</code>, operators, sensitivity, data root, channel→repo bindings; origin-bound default. acma/doris are examples</td></tr>
+    <tr><td><a href="../../config/deckhand/platforms.yml"><code>platforms.yml</code></a></td><td>Platform enablement + credential-by-reference (env var names; no secrets)</td></tr>
+  </table></div>
+  <p class="note">Principle: a new client/tenant or member is a YAML edit (a section in <code>scopes.yml</code>), not a code change. No secrets in config (env-referenced). See <a href="../../config/deckhand/README.md">config/deckhand/README.md</a>.</p>
+
+  <!-- OWNER -->
+  <div class="owner">
+    <h2>Blocking on owner</h2>
+    <ul class="tight">
+      <li><b>Apply <code>status:plan-approved</code> on <a href="https://github.com/vamseeachanta/workspace-hub/issues/2931">#2931</a></b> — authorizes the live cutover. Agents cannot self-apply.</li>
+      <li><b>External tester platform IDs</b> for <code>acma</code>/<code>doris</code> operator groups (stable IDs; <code>ecosystem</code> stays off for them).</li>
+      <li>Confirm: include archived <code>acma-projects</code>? include planned <code>llm-wiki-doris</code>? channel→repo bindings?</li>
+    </ul>
+    <p class="note" style="margin-bottom:0">On approval, build sequence (TDD-first) runs on ace-linux-2: tests → config wiring → per-scope PATs → pre_tool_call hook + PATH shim → #2741 canary → add testers.</p>
+  </div>
+
+  <!-- ARTIFACTS -->
+  <h2>Artifact index</h2>
+  <div class="panel"><table>
+    <tr><th>Artifact</th><th>Path</th></tr>
+    <tr><td>Glossary</td><td><a href="../../CONTEXT.md">CONTEXT.md</a></td></tr>
+    <tr><td>POC + flowcharts</td><td><a href="../plans/2026-06-01-issue-2931-deckhand-message-lifecycle-poc.md">docs/plans/2026-06-01-issue-2931-…poc.md</a></td></tr>
+    <tr><td>Delegation plan</td><td><a href="../plans/2026-06-01-deckhand-delegation-plan.md">docs/plans/2026-06-01-deckhand-delegation-plan.md</a></td></tr>
+    <tr><td>Decision: orthogonality</td><td><a href="../governance/2026-06-01-deckhand-scope-routing-orthogonality-decision.md">docs/governance/…orthogonality-decision.md</a></td></tr>
+    <tr><td>Decision: enforcement</td><td><a href="../governance/2026-06-01-deckhand-scope-enforcement-below-model-decision.md">docs/governance/…enforcement-below-model-decision.md</a></td></tr>
+    <tr><td>Codex POC review</td><td><a href="../../scripts/review/results/2026-06-01-poc-2931-codex.md">scripts/review/results/2026-06-01-poc-2931-codex.md</a></td></tr>
+    <tr><td>Config surface</td><td><a href="../../config/deckhand/">config/deckhand/</a></td></tr>
+  </table></div>
+
+  <div class="foot">Deckhand dashboard · regenerated by the working session · this file is the constant review location and will be rewritten as work progresses.</div>
+</div>
+</body>
+</html>

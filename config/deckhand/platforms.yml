@@ -1,0 +1,28 @@
+# Deckhand — messaging platform references  (PROPOSED, pending #2931 status:plan-approved)
+#
+# Platform ENABLEMENT and config-by-REFERENCE only. NO secrets/tokens in this file —
+# credentials are supplied via environment variables (referenced here by NAME) and live
+# in ~/.hermes/.env or the OS secret store. Generic: enable a platform by flipping enabled.
+schema_version: 1
+
+platforms:
+  telegram:
+    enabled: true
+    token_env: TELEGRAM_BOT_TOKEN        # value lives in env, never here
+    group_privacy_mode: true             # bot only sees @mentions/commands in groups
+  whatsapp:
+    enabled: false                       # Baileys bridge; QR pairing; unofficial-API risk
+    note: "requires `hermes whatsapp` QR pairing; dedicated bot number recommended"
+  teams:
+    enabled: false
+    client_id_env: TEAMS_CLIENT_ID
+    client_secret_env: TEAMS_CLIENT_SECRET
+    tenant_id_env: TEAMS_TENANT_ID
+    note: "needs public HTTPS webhook to /api/messages; group/channel require @mention"
+  signal:
+    enabled: false
+
+# Default reply routing: origin chat only (subject to reply_clearance in policy.yml).
+# Fanout to delivery groups is a separate, later capability (#2900/#2902) and stays off here.
+fanout:
+  enabled: false
