@@ -58,25 +58,51 @@ cat <<'JSON'
 JSON
 }
 
-_ruleset_id() { gh api "repos/$1/rulesets" -q ".[] | select(.name==\"$RULESET_NAME\") | .id" 2>/dev/null | head -n1; }
+# Echoes the rulesets JSON array, or the literal UNAVAILABLE / ERROR:<msg>.
+_rulesets_json() {
+  local out rc
+  out="$(gh api "repos/$1/rulesets" 2>&1)"; rc=$?
+  if [ "$rc" -ne 0 ]; then
+    if printf '%s' "$out" | grep -qi 'Upgrade to GitHub Pro\|make this repository public'; then echo UNAVAILABLE
+    else echo "ERROR:$out"; fi
+    return 0
+  fi
+  printf '%s' "$out"
+}
+
+_ruleset_id_from() { printf '%s' "$1" | python3 -c "import sys,json;a=json.load(sys.stdin);print(next((str(x['id']) for x in a if x.get('name')=='$RULESET_NAME'),''))" 2>/dev/null; }
 
 protect() {
   while IFS= read -r r; do [ -n "$r" ] || continue
-    if [ -n "$(_ruleset_id "$r")" ]; then echo "exists:    $r"
-    else ruleset_body | gh api -X POST "repos/$r/rulesets" --input - >/dev/null && echo "protected: $r"; fi
+    json="$(_rulesets_json "$r")"
+    case "$json" in
+      UNAVAILABLE) echo "unavailable: $r  (rulesets need GitHub Pro/Team for private repos)"; continue;;
+      ERROR:*)     echo "error:       $r: ${json#ERROR:}"; continue;;
+    esac
+    if [ -n "$(_ruleset_id_from "$json")" ]; then echo "exists:      $r"
+    else ruleset_body | gh api -X POST "repos/$r/rulesets" --input - >/dev/null 2>&1 && echo "protected:   $r" || echo "post-failed:  $r"; fi
   done < <(_py repos)
 }
 
 verify() {
   while IFS= read -r r; do [ -n "$r" ] || continue
-    echo "$r:"; gh api "repos/$r/rulesets" -q '.[] | "  - " + .name + " (" + .enforcement + ")"' 2>/dev/null || echo "  (none)"
+    json="$(_rulesets_json "$r")"
+    case "$json" in
+      UNAVAILABLE) echo "$r: UNAVAILABLE (needs GitHub Pro/Team for private repo)"; continue;;
+      ERROR:*)     echo "$r: error ${json#ERROR:}"; continue;;
+    esac
+    echo "$r:"; printf '%s' "$json" | python3 -c "import sys,json
+a=json.load(sys.stdin)
+[print('  - '+x.get('name','?')+' ('+x.get('enforcement','?')+')') for x in a] or print('  (none)')" 2>/dev/null
   done < <(_py repos)
 }
 
 unprotect() {
   while IFS= read -r r; do [ -n "$r" ] || continue
-    id="$(_ruleset_id "$r")"
-    if [ -n "$id" ]; then gh api -X DELETE "repos/$r/rulesets/$id" >/dev/null && echo "removed:   $r"; else echo "absent:    $r"; fi
+    json="$(_rulesets_json "$r")"
+    case "$json" in UNAVAILABLE|ERROR:*) echo "skip:    $r"; continue;; esac
+    id="$(_ruleset_id_from "$json")"
+    if [ -n "$id" ]; then gh api -X DELETE "repos/$r/rulesets/$id" >/dev/null && echo "removed: $r"; else echo "absent:  $r"; fi
   done < <(_py repos)
 }
 
