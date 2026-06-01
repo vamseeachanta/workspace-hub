@@ -20510,3 +20510,37 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2925
+    title: 'feat(workstations): skills-inventory parity gap — dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2925
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:skills
+      - domain:workstations
+      - status:needs-plan
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2926
+    title: 'feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2926
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:operations
+      - domain:workstations
+      - machine:licensed-win-2
+      - status:needs-plan
+      - gate:completeness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
