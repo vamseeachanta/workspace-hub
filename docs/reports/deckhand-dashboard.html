@@ -66,8 +66,9 @@
     <span class="badge b-ok">#2931 status: plan-approved ✓</span>
     <span class="badge b-bad">codex review: CHANGES-REQUESTED (resolved)</span>
     <span class="badge b-ok">go-live envelope: approved (real repos + guardrail floor)</span>
-    <span class="badge b-ok">engine+audit+runtime+hook: 139/139 green · reviews APPROVE</span>
-    <span class="badge b-info">Layer-2 hook hardened fail-closed (60 bypasses closed); PAT = real boundary</span>
+    <span class="badge b-ok">pure core complete: engine+audit+runtime+hook+pipeline · 146/146 green</span>
+    <span class="badge b-info">Layer-2 hardened fail-closed (60 bypasses closed); PAT = real boundary</span>
+    <span class="badge b-ok">committed config is fail-closed (empty operators ⇒ deny)</span>
   </div>
   <p class="note">Deckhand lets an authenticated <b>operator</b> drive <code>git</code>/<code>gh</code> on repository <b>scopes</b>
   (<code>acma</code>, <code>doris</code>, <code>ecosystem</code>) from a chat platform. This page tracks every decision, the
@@ -162,6 +163,18 @@ hook  : pre_tool_call + PATH git/gh shim
     <tr><td><code>t_d94406ab</code></td><td>Rate-limit / abuse controls</td><td><span class="pill p-need">blocked</span></td></tr>
     <tr><td><code>t_38dd79de</code></td><td>Resolve repo-membership OPENs (archived/planned)</td><td><span class="pill p-need">blocked</span></td></tr>
   </table></div>
+
+  <!-- IMPLEMENTATION -->
+  <h2>Implementation — pure core<span class="n">TDD, codex-built, Claude-reviewed · 146 tests green</span></h2>
+  <div class="panel"><table>
+    <tr><th>Module</th><th>Role</th><th>Tests</th><th>Review</th></tr>
+    <tr><td><code>src/deckhand/engine.py</code></td><td>authZ + enforcement decision (fail-closed)</td><td>30</td><td><span class="pill p-done">APPROVE</span></td></tr>
+    <tr><td><code>src/deckhand/audit.py</code></td><td>append-only raw store + redacted summary</td><td>8</td><td><span class="pill p-done">APPROVE</span></td></tr>
+    <tr><td><code>src/deckhand/runtime.py</code></td><td>orchestration: PENDING→exec→FINAL, rate-limit</td><td>5</td><td><span class="pill p-done">APPROVE</span></td></tr>
+    <tr><td><code>src/deckhand/hook.py</code></td><td>Layer-2 command enforcement (hardened fail-closed)</td><td>96</td><td><span class="pill p-done">adversarial→hardened</span></td></tr>
+    <tr><td><code>src/deckhand/pipeline.py</code></td><td>end-to-end dry-run pipeline</td><td>7</td><td><span class="pill p-done">APPROVE</span></td></tr>
+  </table></div>
+  <p class="note">Reviews under <a href="../../scripts/review/results/">scripts/review/results/</a>. Remaining = owner-gated only: per-scope PATs, tester IDs, repo decisions, gateway up (<a href="https://github.com/vamseeachanta/workspace-hub/issues/2933">#2933</a>). The live <code>executor</code> (git/gh via PAT) + the <code>~/.hermes</code> hook/PATH shim are the live-wiring step.</p>
 
   <!-- PLATFORMS -->
   <h2>Platform connectivity<span class="n">codex live recon — gateway currently STOPPED</span></h2>
