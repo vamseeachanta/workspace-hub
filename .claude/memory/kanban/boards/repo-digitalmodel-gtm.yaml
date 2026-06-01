@@ -9,4 +9,17 @@ board:
   description: 'Go-to-market — parametric-runs productization of the gtm demos (#591 umbrella; #632–636 demo_01–05: yaml-driven Sweep Configs, SQLite Results Store, run/lookup CLI). demo_01 (#632) is the completed pilot template.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#669
+    title: 'feat(gtm/parametric): demo_03 §1 — full config-externalized yaml + loader + golden (180-case baseline)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/669
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
