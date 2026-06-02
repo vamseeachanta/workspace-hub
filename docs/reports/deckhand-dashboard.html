@@ -215,7 +215,7 @@ hook  : pre_tool_call + PATH git/gh shim
     <tr><td>Telegram</td><td>not configured</td><td>BotFather token + allowed IDs; <code>gateway start</code></td><td>S</td></tr>
     <tr><td>WhatsApp</td><td>✅ ONLINE (bot mode, connected)</td><td>add Doris group → post → capture @g.us JID → bind. Migrate off personal # by 2026-06-08 (<a href="https://github.com/vamseeachanta/workspace-hub/issues/2940">#2940</a>)</td><td>M</td></tr>
     <tr><td>Signal</td><td>not configured</td><td>install <code>signal-cli</code>, link device, daemon</td><td>M</td></tr>
-    <tr><td>Teams</td><td>plugin present, not configured</td><td>Teams CLI + Azure app + public HTTPS (adapter is a <i>plugin</i>)</td><td>L</td></tr>
+    <tr><td>Teams</td><td>📋 planned — <a href="https://github.com/vamseeachanta/workspace-hub/issues/2941">#2941</a> plan-review</td><td>Bot Framework: Azure app + public HTTPS ingress (none on box yet) + tenant decision. Gates: D1 internal-only vs guests, D2 cloudflared tunnel</td><td>L</td></tr>
   </table></div>
   <p class="note">Order: gateway-up → Telegram → WhatsApp → Signal → Teams. <code>msgraph_webhook</code> is a separate Graph-event surface, not the Teams chatbot. Recon on <a href="https://github.com/vamseeachanta/workspace-hub/issues/2901">#2901</a> · <a href="../../scripts/review/results/2026-06-01-deckhand-platform-connectivity-and-terminology-codex.md">full artifact</a>.</p>
   <p class="note"><b style="color:var(--warn)">Availability:</b> gateway must be always-on (no service-down) — logged as
