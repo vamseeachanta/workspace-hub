@@ -5,6 +5,7 @@ Allowed git/gh commands still run with ambient credentials until the B2
 scoped-PAT executor lands.
 """
 from __future__ import annotations
+import hashlib
 import json
 import logging
 import os
@@ -21,7 +22,7 @@ REPO_ROOT = PLUGIN_DIR.parents[3]
 SRC_DIR = REPO_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
-from deckhand import audit, engine, hook  # noqa: E402
+from deckhand import audit, engine, hook, ratelimit  # noqa: E402
 
 CONFIG_DIR = REPO_ROOT / "config" / "deckhand"
 GATED_TOOLS = {"terminal", "execute_code"}
@@ -158,6 +159,25 @@ def _handle_terminal(
         # (engine treats empty target_repos as "nothing out of scope").
         allowed = False
         reason = "Deckhand: cannot resolve target repository for a write (run inside the scope's git repo)"
+    if allowed and _has_write_action(actions):
+        try:
+            # Remaining parts of #2938: LLM-turn/quota cap at gateway-message
+            # level and GitHub secondary-ratelimit backoff at shim level.
+            rate_allowed, rate_reason = ratelimit.decide(
+                identity.get("operator_id") or "",
+                scope_name or "",
+                _write_action_class(actions),
+                hashlib.sha256(command.encode("utf-8")).hexdigest(),
+                policy=engine_config,
+                store_dir=Path.home() / ".hermes" / "deckhand" / "ratelimit",
+                clock=_now,
+            )
+        except Exception:  # noqa: BLE001 - writes must fail closed at hook boundary.
+            rate_allowed, rate_reason = False, "rate-limit store error"
+        outcome = {**outcome, "rate_limit": {"allow": rate_allowed, "reason": rate_reason}}
+        if not rate_allowed:
+            allowed = False
+            reason = rate_reason
     decision = "ALLOW" if allowed else _deny_word()
     _audit_decision(
         decision=decision,
@@ -481,6 +501,13 @@ def _has_identity(identity: dict[str, str]) -> bool:
 
 def _has_write_action(actions: list[Any]) -> bool:
     return any(getattr(action, "action_class", None) != engine.READ_ACTION for action in actions)
+
+def _write_action_class(actions: list[Any]) -> str:
+    for action in actions:
+        action_class = getattr(action, "action_class", engine.READ_ACTION)
+        if action_class != engine.READ_ACTION:
+            return str(action_class)
+    return engine.READ_ACTION
 
 def _command_may_write(command: str) -> bool:
     actions = hook.classify_command(command)

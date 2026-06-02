@@ -32,6 +32,10 @@ scopes:
         channel_id: "-5109954935"
         repo: example/acma
         authorize_members: true
+      - platform: whatsapp
+        channel_id: "12025550199-1234567890@g.us"
+        repo: example/acma
+        authorize_members: true
   doris:
     operators: []
     repositories:
@@ -81,6 +85,37 @@ if run_script alice >"$tmpdir/non_numeric.out" 2>"$tmpdir/non_numeric.err"; then
   exit 1
 fi
 assert_contains "digits only" "$tmpdir/non_numeric.err"
+
+write_scopes
+printf 'OTHER_ENV=do-not-print\n' >"$env_file"
+if run_script invalid-whatsapp --platform whatsapp >"$tmpdir/whatsapp_invalid.out" 2>"$tmpdir/whatsapp_invalid.err"; then
+  printf 'expected invalid WhatsApp id to fail\n' >&2
+  exit 1
+fi
+assert_contains "E.164 digits" "$tmpdir/whatsapp_invalid.err"
+
+write_scopes
+printf 'OTHER_ENV=do-not-print\nWHATSAPP_ALLOWED_USERS=+15550001111\n' >"$env_file"
+run_script +15550002222 --platform whatsapp --scope acma >"$tmpdir/whatsapp_dry_run.out"
+assert_contains "would add +15550002222 to WHATSAPP_ALLOWED_USERS" "$tmpdir/whatsapp_dry_run.out"
+assert_contains "would welcome: whatsapp:12025550199-1234567890@g.us" "$tmpdir/whatsapp_dry_run.out"
+assert_not_contains "+15550002222" "$env_file"
+if [[ -f "$hermes_recorder" ]]; then
+  printf 'expected WhatsApp dry-run not to call hermes\n' >&2
+  exit 1
+fi
+
+run_script +15550002222 --platform whatsapp --scope acma --apply >"$tmpdir/whatsapp_apply.out"
+assert_contains "added +15550002222 to WHATSAPP_ALLOWED_USERS" "$tmpdir/whatsapp_apply.out"
+assert_contains "WHATSAPP_ALLOWED_USERS=+15550001111,+15550002222" "$env_file"
+assert_contains "send --to whatsapp:12025550199-1234567890@g.us" "$hermes_recorder"
+assert_contains "authorized for the acma" "$hermes_recorder"
+if [[ "$(wc -l <"$hermes_recorder")" -ne 1 ]]; then
+  printf 'expected one hermes welcome call after WhatsApp apply\n' >&2
+  exit 1
+fi
+
+rm -f "$hermes_recorder"
 
 write_scopes
 printf 'OTHER_ENV=do-not-print\nTELEGRAM_ALLOWED_USERS=111\n' >"$env_file"

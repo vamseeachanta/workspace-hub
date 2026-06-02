@@ -4,8 +4,8 @@ set -euo pipefail
 usage() {
   cat >&2 <<'EOF'
 usage:
-  add-member.sh <telegram_numeric_id> [--scope acma|doris] [--operator] [--no-welcome] [--apply]
-  add-member.sh --list
+  add-member.sh <member_id> [--platform telegram|whatsapp] [--scope acma|doris] [--operator] [--no-welcome] [--apply]
+  add-member.sh --list [--platform telegram|whatsapp]
 EOF
 }
 
@@ -20,8 +20,9 @@ apply=false
 list=false
 operator=false
 welcome=true
-telegram_id=""
+member_id=""
 scope=""
+platform="telegram"
 python_bin="${DECKHAND_PYTHON:-python3}"
 
 while [[ $# -gt 0 ]]; do
@@ -37,6 +38,11 @@ while [[ $# -gt 0 ]]; do
     --operator)
       operator=true
       shift
+      ;;
+    --platform)
+      [[ $# -ge 2 ]] || die "--platform requires a value"
+      platform="$2"
+      shift 2
       ;;
     --scope)
       [[ $# -ge 2 ]] || die "--scope requires a value"
@@ -55,18 +61,36 @@ while [[ $# -gt 0 ]]; do
       die "unknown option: $1"
       ;;
     *)
-      [[ -z "$telegram_id" ]] || die "only one telegram_numeric_id may be provided"
-      telegram_id="$1"
+      [[ -z "$member_id" ]] || die "only one member_id may be provided"
+      member_id="$1"
       shift
       ;;
   esac
 done
 
+case "$platform" in
+  telegram|whatsapp)
+    ;;
+  *)
+    die "--platform must be telegram or whatsapp"
+    ;;
+esac
+
+allowed_users_var() {
+  case "$platform" in
+    telegram) printf 'TELEGRAM_ALLOWED_USERS\n' ;;
+    whatsapp) printf 'WHATSAPP_ALLOWED_USERS\n' ;;
+  esac
+}
+
+allowed_users_var_name="$(allowed_users_var)"
+
 read_allowed_users() {
   local file="$1"
+  local var_name="$2"
   [[ -f "$file" ]] || return 0
-  awk -F= '
-    $1 == "TELEGRAM_ALLOWED_USERS" {
+  awk -F= -v var_name="$var_name" '
+    $1 == var_name {
       value = substr($0, index($0, "=") + 1)
     }
     END {
@@ -90,10 +114,11 @@ id_in_csv() {
 
 write_allowed_users() {
   local file="$1"
-  local id="$2"
+  local var_name="$2"
+  local id="$3"
   local current new_value tmp
 
-  current="$(read_allowed_users "$file" || true)"
+  current="$(read_allowed_users "$file" "$var_name" || true)"
   if id_in_csv "$id" "$current"; then
     return 0
   fi
@@ -107,22 +132,22 @@ write_allowed_users() {
   mkdir -p "$(dirname "$file")"
   tmp="$(mktemp)"
   if [[ -f "$file" ]]; then
-    awk -F= -v new_value="$new_value" '
+    awk -F= -v var_name="$var_name" -v new_value="$new_value" '
       BEGIN { updated = 0 }
-      $1 == "TELEGRAM_ALLOWED_USERS" && index($0, "=") > 0 {
+      $1 == var_name && index($0, "=") > 0 {
         if (!updated) {
-          print "TELEGRAM_ALLOWED_USERS=" new_value
+          print var_name "=" new_value
           updated = 1
         }
         next
       }
       { print }
       END {
-        if (!updated) print "TELEGRAM_ALLOWED_USERS=" new_value
+        if (!updated) print var_name "=" new_value
       }
     ' "$file" >"$tmp"
   else
-    printf 'TELEGRAM_ALLOWED_USERS=%s\n' "$new_value" >"$tmp"
+    printf '%s=%s\n' "$var_name" "$new_value" >"$tmp"
   fi
   mv "$tmp" "$file"
 }
@@ -131,15 +156,16 @@ scope_status() {
   local mode="$1"
   local id="${2:-}"
   local scope_name="${3:-}"
-  "$python_bin" - "$mode" "$scopes_yml" "$id" "$scope_name" <<'PY'
+  "$python_bin" - "$mode" "$scopes_yml" "$id" "$scope_name" "$platform" <<'PY'
 import ast
 import re
 import sys
 from pathlib import Path
 
 mode, path_arg = sys.argv[1], sys.argv[2]
-telegram_id = sys.argv[3] if len(sys.argv) > 3 else ""
+member_id = sys.argv[3] if len(sys.argv) > 3 else ""
 scope_name = sys.argv[4] if len(sys.argv) > 4 else ""
+target_platform = sys.argv[5] if len(sys.argv) > 5 else "telegram"
 path = Path(path_arg)
 
 if not path.exists():
@@ -198,7 +224,7 @@ def find_ops(name):
             return index, parse_ops(match.group(1)), match.group(2) or ""
     return None, [], ""
 
-def find_welcome_target(name):
+def find_welcome_target(name, platform_name):
     start, end = scope_ranges[name]
     in_bindings = False
     binding = None
@@ -227,7 +253,7 @@ def find_welcome_target(name):
         if str(candidate.get("authorize_members", "")).lower() == "true":
             platform = candidate.get("platform")
             channel_id = candidate.get("channel_id")
-            if platform and channel_id:
+            if platform == platform_name and channel_id:
                 return platform, channel_id
     return None
 
@@ -255,12 +281,12 @@ if ops is None:
     sys.exit(1)
 
 if mode == "contains":
-    sys.exit(0 if telegram_id in ops else 2)
+    sys.exit(0 if member_id in ops else 2)
 
 if mode == "apply":
-    if telegram_id in ops:
+    if member_id in ops:
         sys.exit(0)
-    ops.append(telegram_id)
+    ops.append(member_id)
     rendered = ", ".join(repr(item).replace("'", '"') for item in ops)
     replacement = f"    operators: [{rendered}]{comment}"
     if ops_line is None:
@@ -272,7 +298,7 @@ if mode == "apply":
     sys.exit(0)
 
 if mode == "welcome-target":
-    target = find_welcome_target(scope_name)
+    target = find_welcome_target(scope_name, target_platform)
     if target is None:
         sys.exit(2)
     print(f"{target[0]}:{target[1]}")
@@ -304,8 +330,8 @@ send_welcome() {
 }
 
 if "$list"; then
-  [[ -z "$telegram_id" && -z "$scope" && "$apply" == false && "$operator" == false && "$welcome" == true ]] || die "--list cannot be combined with other arguments"
-  allowed="$(read_allowed_users "$env_file" || true)"
+  [[ -z "$member_id" && -z "$scope" && "$apply" == false && "$operator" == false && "$welcome" == true ]] || die "--list cannot be combined with other arguments except --platform"
+  allowed="$(read_allowed_users "$env_file" "$allowed_users_var_name" || true)"
   count=0
   if [[ -n "$allowed" ]]; then
     IFS=',' read -r -a allowed_items <<<"$allowed"
@@ -315,26 +341,33 @@ if "$list"; then
       [[ -n "$item" ]] && count=$((count + 1))
     done
   fi
-  printf 'TELEGRAM_ALLOWED_USERS count: %s\n' "$count"
+  printf '%s count: %s\n' "$allowed_users_var_name" "$count"
   scope_status list
   exit 0
 fi
 
-[[ -n "$telegram_id" ]] || { usage; exit 1; }
-[[ "$telegram_id" =~ ^[0-9]+$ ]] || die "telegram_numeric_id must contain digits only; usernames are not accepted"
+[[ -n "$member_id" ]] || { usage; exit 1; }
+case "$platform" in
+  telegram)
+    [[ "$member_id" =~ ^[0-9]+$ ]] || die "telegram member_id must contain digits only; usernames are not accepted"
+    ;;
+  whatsapp)
+    [[ "$member_id" =~ ^\+?[0-9]+$ ]] || die "whatsapp member_id must be E.164 digits, with optional leading +"
+    ;;
+esac
 if "$operator" && [[ -z "$scope" ]]; then
   die "--operator requires --scope"
 fi
 
-allowed="$(read_allowed_users "$env_file" || true)"
+allowed="$(read_allowed_users "$env_file" "$allowed_users_var_name" || true)"
 allowlist_change=false
-if ! id_in_csv "$telegram_id" "$allowed"; then
+if ! id_in_csv "$member_id" "$allowed"; then
   allowlist_change=true
 fi
 
 operator_change=false
 if "$operator"; then
-  if scope_status contains "$telegram_id" "$scope"; then
+  if scope_status contains "$member_id" "$scope"; then
     operator_change=false
   else
     rc=$?
@@ -356,10 +389,10 @@ fi
 
 if ! "$apply"; then
   if "$allowlist_change"; then
-    printf 'would add %s to TELEGRAM_ALLOWED_USERS\n' "$telegram_id"
+    printf 'would add %s to %s\n' "$member_id" "$allowed_users_var_name"
   fi
   if "$operator_change"; then
-    printf 'would add %s to scope %s operators\n' "$telegram_id" "$scope"
+    printf 'would add %s to scope %s operators\n' "$member_id" "$scope"
   fi
   if [[ -n "$scope" ]] && "$welcome"; then
     if "$welcome_target_found"; then
@@ -375,13 +408,13 @@ if ! "$apply"; then
 fi
 
 if "$allowlist_change"; then
-  write_allowed_users "$env_file" "$telegram_id"
-  printf 'added %s to TELEGRAM_ALLOWED_USERS\n' "$telegram_id"
+  write_allowed_users "$env_file" "$allowed_users_var_name" "$member_id"
+  printf 'added %s to %s\n' "$member_id" "$allowed_users_var_name"
 fi
 
 if "$operator_change"; then
-  scope_status apply "$telegram_id" "$scope"
-  printf 'added %s to scope %s operators\n' "$telegram_id" "$scope"
+  scope_status apply "$member_id" "$scope"
+  printf 'added %s to scope %s operators\n' "$member_id" "$scope"
 fi
 
 if [[ -n "$scope" ]] && "$welcome"; then
