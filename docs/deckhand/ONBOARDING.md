@@ -40,18 +40,16 @@ Two authorization layers + the same guards everywhere:
 5. Member is in the channel group → operates on that scope. Verify isolation:
    `HERMES_SESSION_USER_ID=<id> HERMES_SESSION_PLATFORM=telegram HERMES_SESSION_CHAT_ID=<group_id> PYTHONPATH=src python3 -m deckhand.shim_resolve` → expect the scope's `DECKHAND_PAT_*`.
 
-**Acknowledge the member (proactive welcome) — automated + named.** `add-member.sh <id> --scope <ch> --apply` auto-sends a welcome to the scope's channel group (resolves the `authorize_members` group binding → `hermes send`). The welcome **names the member**: pass `--name "Full Name"`, or it **auto-derives** the name from the gateway log (`Unauthorized user: <id> (<name>)`) — e.g. *"✅ Welcome, Kedar Kolluri — you're now authorized for the doris channel…"*. Suppress with `--no-welcome`; skips gracefully if the scope has no group binding.
+**Acknowledge the member (proactive welcome) — automated + named.** `add-member.sh <id> --scope <ch> --apply` auto-sends a welcome to the scope's channel group (resolves the `authorize_members` group binding → `hermes send`). The welcome **names the member**: pass `--name "Full Name"`, or it **auto-derives** the name from the gateway log (`Unauthorized user: <id> (<name>)`) — e.g. *"✅ Welcome, Pat Example — you're now authorized for the doris channel…"*. Suppress with `--no-welcome`; skips gracefully if the scope has no group binding.
 
 **After authorizing — tell the member to re-send their request.** The bot does NOT replay pre-authorization messages: those were already received + rejected (Telegram long-poll offset has moved past them), and no conversation history is kept (denied at the gateway gate before any session). So a freshly-onboarded member must send a **new** message — that one is answered (now allowlisted + scope-enforced). Edge case: a message sent during the ~10s restart window is buffered by Telegram and processed on restart.
 
 **Remove a member:** delete their ID from `TELEGRAM_ALLOWED_USERS` (and any scope `operators`) → restart. (A `remove-member` helper is a TODO.)
 
-**Onboarded so far:**
-| Name | ID | Channel | Date |
-|---|---|---|---|
-| Vamsee Achanta (owner) | 8748731589 | acma + doris | 2026-06-01 |
-| Vamsi Galigutta | 448087190 | doris | 2026-06-01 |
-| Kedar Kolluri | 8882836063 | doris | 2026-06-01 |
+**Onboarded so far:** the named roster (member names + IDs = client info) lives in the private
+`aceengineer-strategy` repo → `strategy/deckhand/onboarded-roster.md` (per owner routing 2026-06-02:
+client info → aceengineer-strategy; the legal rule keeps client display names out of workspace-hub).
+This repo keeps only the **generic onboarding process** above.
 
 **Gotchas learned:**
 - Group inbound logs show the **display name, not the numeric ID** — capture IDs via the `telegram:group:<chat>:<id>` log token (privacy-off), `/whoami`, or @userinfobot.
