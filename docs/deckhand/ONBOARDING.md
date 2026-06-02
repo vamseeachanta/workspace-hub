@@ -40,6 +40,10 @@ Two authorization layers + the same guards everywhere:
 5. Member is in the channel group → operates on that scope. Verify isolation:
    `HERMES_SESSION_USER_ID=<id> HERMES_SESSION_PLATFORM=telegram HERMES_SESSION_CHAT_ID=<group_id> PYTHONPATH=src python3 -m deckhand.shim_resolve` → expect the scope's `DECKHAND_PAT_*`.
 
+**Acknowledge the member (proactive welcome).** Since the bot can't replay their old messages, send a welcome so they know they're in:
+`hermes send --to telegram:<group_chat_id> "✅ Welcome — you're authorized for the <scope> channel. Re-send your request."`
+(The bot posts to the channel group, which the member sees. *TODO: bake this into `add-member.sh --apply` so onboarding auto-welcomes.*)
+
 **After authorizing — tell the member to re-send their request.** The bot does NOT replay pre-authorization messages: those were already received + rejected (Telegram long-poll offset has moved past them), and no conversation history is kept (denied at the gateway gate before any session). So a freshly-onboarded member must send a **new** message — that one is answered (now allowlisted + scope-enforced). Edge case: a message sent during the ~10s restart window is buffered by Telegram and processed on restart.
 
 **Remove a member:** delete their ID from `TELEGRAM_ALLOWED_USERS` (and any scope `operators`) → restart. (A `remove-member` helper is a TODO.)
