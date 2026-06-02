@@ -148,3 +148,21 @@ def test_cli_prints_name_only_and_exit_3_without_scope(monkeypatch, tmp_path):
     )
     assert missing.returncode == 3
     assert missing.stdout == ""
+
+
+def test_group_member_resolves_scope_via_authorize_members_binding(tmp_path):
+    import yaml as _y
+    from deckhand import shim_resolve
+    cfg = tmp_path / "scopes.yml"
+    cfg.write_text(_y.safe_dump({"scopes": {"acma": {
+        "pat_env": "DECKHAND_PAT_ACMA",
+        "operators": ["owner-only"],
+        "channel_repo_bindings": [
+            {"platform": "telegram", "channel_id": "-100777", "repo": "o/acma", "authorize_members": True}
+        ],
+    }}}), encoding="utf-8")
+    env = {"HERMES_SESSION_USER_ID": "stranger", "HERMES_SESSION_PLATFORM": "telegram", "HERMES_SESSION_CHAT_ID": "-100777"}
+    assert shim_resolve.resolve_pat_env(env=env, config_path=cfg, home=tmp_path) == "DECKHAND_PAT_ACMA"
+    # a different chat (no binding) -> not resolved
+    env2 = {**env, "HERMES_SESSION_CHAT_ID": "-100999"}
+    assert shim_resolve.resolve_pat_env(env=env2, config_path=cfg, home=tmp_path) is None

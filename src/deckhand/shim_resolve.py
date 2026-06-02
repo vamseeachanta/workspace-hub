@@ -43,8 +43,11 @@ def resolve_pat_env(
     scope = scopes.get(scope_name)
     if not isinstance(scope, dict):
         return None
-    if identity["operator_id"] not in _as_list(scope.get("operators")):
-        return None
+    # Route A requires the operator be listed; route B (authorize_members group
+    # binding) authorizes any member of the bound group, so skip the operator check.
+    if not _is_group_authorized(identity, scope_name, scopes):
+        if identity["operator_id"] not in _as_list(scope.get("operators")):
+            return None
 
     pat_env = scope.get("pat_env")
     if not isinstance(pat_env, str) or not pat_env.strip():
@@ -100,16 +103,35 @@ def _scope_from_binding(identity: dict[str, str], scopes: dict[str, Any]) -> str
     for name, scope in scopes.items():
         if not isinstance(scope, dict):
             continue
-        if operator_id not in _as_list(scope.get("operators")):
-            continue
         for binding in _as_list(scope.get("channel_repo_bindings")):
-            if (
+            if not (
                 isinstance(binding, dict)
                 and binding.get("platform") == platform
                 and str(binding.get("channel_id")) == chat_id
             ):
+                continue
+            # route B: any member of an authorize_members group binding resolves the scope;
+            # route A: a plain binding still requires the operator be listed.
+            if binding.get("authorize_members") or operator_id in _as_list(scope.get("operators")):
                 return str(name)
     return None
+
+
+def _is_group_authorized(identity: dict[str, str], scope_name: str, scopes: dict[str, Any]) -> bool:
+    scope = scopes.get(scope_name)
+    if not isinstance(scope, dict):
+        return False
+    platform = identity.get("platform")
+    chat_id = str(identity.get("chat_id") or "")
+    for binding in _as_list(scope.get("channel_repo_bindings")):
+        if (
+            isinstance(binding, dict)
+            and binding.get("authorize_members")
+            and binding.get("platform") == platform
+            and str(binding.get("channel_id")) == chat_id
+        ):
+            return True
+    return False
 
 
 def _state_path(identity: dict[str, str], *, home: str | Path | None) -> Path:

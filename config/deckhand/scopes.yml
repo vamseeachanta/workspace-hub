@@ -25,12 +25,12 @@ scopes:
     data_root: "/mnt/ace/acma-projects/"   # off-repo raw source-of-truth (evidence: client-wikis.yml)
     channel_repo_bindings:            # DM-bound scope (no-core-patch path; binding only, never prose)
       - platform: telegram
-        channel_id: "8748731589"      # POC tester DM -> acma scope
+        channel_id: "8748731589"      # route A: POC tester DM -> acma scope
         repo: vamseeachanta/llm-wiki-acma
-      # - platform: telegram
-      #   channel_id: "<negative_group_chat_id>"
-      #   repo: vamseeachanta/llm-wiki-acma
-      #   authorize_members: true        # route B: any member of this group is authorized for acma
+      - platform: telegram
+        channel_id: "-5109954935"     # route B: acma Telegram group — any member authorized for acma
+        repo: vamseeachanta/llm-wiki-acma
+        authorize_members: true
     # action_policy: {}               # optional per-client override of policy.yml defaults
     # rate_limits: {}                 # optional per-client override of policy.yml defaults
 
@@ -46,7 +46,11 @@ scopes:
       vamseeachanta/doris: { reference: true, read_only: true }
     operators: ["8748731589"]         # Telegram numeric user id (POC tester)
     data_root: "/mnt/ace/doris/"
-    channel_repo_bindings: []
+    channel_repo_bindings:
+      - platform: telegram
+        channel_id: "-5211977662"     # route B: doris Telegram group — any member authorized for doris
+        repo: vamseeachanta/llm-wiki-doris
+        authorize_members: true
 
   # ================ CROSS-CUTTING: ECOSYSTEM ================
   # All repositories, read+write, destructive denied. OFF for external operators in the POC.
