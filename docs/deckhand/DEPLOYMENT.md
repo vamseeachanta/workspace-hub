@@ -36,7 +36,7 @@ paths; **the scoped PAT is the load-bearing boundary** (`config/deckhand/policy.
 - **node/npm** only if you will connect the **WhatsApp** Baileys bridge.
 - **A clone of `workspace-hub`** on the host — all configs/scripts/shims live in-repo and are
   referenced by relative path; the installer symlinks the shims into the runtime tree.
-- **Secrets live in `~/.hermes/.env`** (runtime path, never committed). PATs and platform tokens
+- **Scoped PATs live in `~/.hermes/deckhand/secrets.env`** (chmod 600, runtime path, never committed; shims read it before `.env`). Other secrets/platform tokens live in `~/.hermes/.env`. PATs and platform tokens
   go there by **env-var name** only; `config/*.yml` reference names, never values.
 - **GitHub org access to mint fine-grained PATs** scoped to exactly the new scope's repos.
 
@@ -88,12 +88,19 @@ Notes that match the live behaviour:
    pick **exactly** the repos in this scope's `repositories:` (no more).
 3. Permissions: Contents `Read and write`, Pull requests `Read and write`, Metadata `Read`
    (add others only if a workflow needs them). Keep it minimal.
-4. Put the value in `~/.hermes/.env` under the **exact `pat_env` name** from the scope:
+4. Put the value in the **dedicated secrets file** under the **exact `pat_env` name** from the scope
+   — kept out of `~/.hermes/.env` so general greps/dumps of `.env` never surface PATs. The shims read
+   `~/.hermes/deckhand/secrets.env` first, then fall back to `.env`:
 
    ```bash
-   # ~/.hermes/.env   (runtime only — never committed)
+   # ~/.hermes/deckhand/secrets.env   (runtime only — never committed; chmod 600)
    DECKHAND_PAT_<NEWCLIENT>=github_pat_xxxxxxxx
    ```
+   ```bash
+   chmod 600 ~/.hermes/deckhand/secrets.env   # owner-only
+   ```
+   > Partial hardening (2026-06-02): still plaintext at rest. At-rest encryption (keyring/age/systemd
+   > LoadCredential) is tracked in #2943.
 
 5. The PAT IS the server-side boundary: a request for any repo **outside** this token's selected
    set returns **404** even if every other layer were bypassed. Prove it in §5 (`verify-pat`).
