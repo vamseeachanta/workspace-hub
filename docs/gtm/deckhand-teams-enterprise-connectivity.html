@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deckhand for Microsoft Teams — Enterprise Connectivity</title>
+<style>
+  :root{
+    --ink:#0f1b2d; --muted:#5a6b82; --line:#e1e7f0; --bg:#f6f8fc; --card:#fff;
+    --brand:#1b5cff; --brand-d:#0b3fb8; --ok:#0f9d58; --warn:#b8860b; --warnbg:#fff7e6;
+    --teal:#0a8a8a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  .slide{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:22px 0;padding:30px 34px;box-shadow:0 1px 3px rgba(16,30,54,.05)}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:.1em 0 .3em}
+  h2{font-size:22px;margin:0 0 .5em}
+  h3{font-size:16px;margin:1.2em 0 .4em;color:var(--brand-d)}
+  p{margin:.5em 0}
+  .lead{font-size:18px;color:var(--muted)}
+  .hero{background:linear-gradient(135deg,#0b3fb8,#1b5cff 60%,#0a8a8a);color:#fff;border:none}
+  .hero .kicker{color:#bcd2ff}
+  .hero h1{font-size:34px}
+  .hero p{color:#e7eeff;font-size:18px;max-width:62ch}
+  .grid{display:grid;gap:16px;grid-template-columns:1fr 1fr}
+  .grid3{display:grid;gap:14px;grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:760px){.grid,.grid3{grid-template-columns:1fr}}
+  .tile{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+  .tile h3{margin:.1em 0 .3em}
+  .tile .ico{font-size:22px}
+  ul{margin:.4em 0;padding-left:1.2em}
+  li{margin:.3em 0}
+  .badge{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;margin:2px 4px 2px 0}
+  .b-ok{background:#e6f6ec;color:var(--ok)} .b-brand{background:#e8f0ff;color:var(--brand-d)}
+  .b-warn{background:var(--warnbg);color:var(--warn)} .b-teal{background:#e3f5f5;color:var(--teal)}
+  table{width:100%;border-collapse:collapse;margin:.6em 0;font-size:14.5px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+  th{background:var(--bg);font-weight:700}
+  .rec{background:#e6f6ec}
+  .decision{border-left:5px solid var(--warn);background:var(--warnbg)}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;margin:.6em 0}
+  .flow .step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-weight:600}
+  .flow .arr{color:var(--muted);font-weight:700}
+  .note{font-size:13px;color:var(--muted)}
+  .foot{font-size:12.5px;color:var(--muted);text-align:center;margin:26px 0}
+  .pill{display:inline-block;background:#0b1f3a;color:#cfe0ff;font-size:11px;padding:2px 8px;border-radius:6px;font-family:ui-monospace,Menlo,monospace}
+  .check{color:var(--ok);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- SLIDE 1 — HERO -->
+  <section class="slide hero">
+    <p class="kicker">GTM · Platform Section · Microsoft Teams</p>
+    <h1>Deckhand, inside Microsoft Teams</h1>
+    <p>Your team drives real repository and project actions — from the chat workspace they already live in — with enterprise-grade authorization, scoped access, and a complete audit trail. No new app to learn, no console access to hand out.</p>
+  </section>
+
+  <!-- SLIDE 2 — WHAT IT IS -->
+  <section class="slide">
+    <p class="kicker">The capability</p>
+    <h2>Chat-driven operations, governed by design</h2>
+    <p class="lead">Deckhand is an authenticated assistant that turns a Teams message into a controlled action on a defined set of repositories — then proves what it did.</p>
+    <div class="grid3">
+      <div class="tile"><div class="ico">💬</div><h3>Where work happens</h3><p>Operators ask in Teams; Deckhand executes against the right project. No context-switch to a terminal or a portal.</p></div>
+      <div class="tile"><div class="ico">🎯</div><h3>Scoped by project</h3><p>Each conversation is bound to a <b>scope</b> — a named set of repositories with explicit permissions. A message can only touch its scope.</p></div>
+      <div class="tile"><div class="ico">🧾</div><h3>Provable</h3><p>Every decision (allowed or denied) is recorded with the operator, the action, and the outcome — a durable audit trail.</p></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 — SECURITY POSTURE (for the client's IT/security reviewer) -->
+  <section class="slide">
+    <p class="kicker">Security posture — for your IT &amp; security reviewers</p>
+    <h2>Five enforcement layers, below the assistant</h2>
+    <p>Guardrails are enforced beneath the model, not by prompting. The same floor applies on every platform.</p>
+    <table>
+      <tr><th>Layer</th><th>What it guarantees</th></tr>
+      <tr><td><b>Closed gateway</b></td><td>Only explicitly allow-listed identities can talk to Deckhand at all. There is no "open to anyone" mode in your deployment.</td></tr>
+      <tr><td><b>Scope authorization</b></td><td>A message is authorized for exactly one project scope; it cannot reach repositories outside it.</td></tr>
+      <tr><td><b>Scoped access token</b></td><td>Each scope runs under its own fine-grained credential. An out-of-scope repository is invisible — the request fails at the server (404), not just in our code. This is the real boundary.</td></tr>
+      <tr><td><b>No-destructive guard</b></td><td>Irreversible operations (force-push, history rewrite, branch deletion) are denied. High-impact actions can require an in-chat approval card.</td></tr>
+      <tr><td><b>Audit + rate limit</b></td><td>Full decision log; per-operator and per-scope throughput caps with duplicate suppression, fail-closed.</td></tr>
+    </table>
+    <p class="note">Teams transport adds Microsoft Bot Framework token validation on every inbound message, on top of the layers above.</p>
+  </section>
+
+  <!-- SLIDE 4 — IDENTITY MODEL (D1 decided) -->
+  <section class="slide">
+    <p class="kicker">Who uses it · decided</p>
+    <h2>Teams = your internal team</h2>
+    <div class="grid">
+      <div class="tile">
+        <h3><span class="check">✓</span> Internal-only on Teams</h3>
+        <p>Teams access is scoped to members of <b>your</b> Microsoft 365 tenant. Identities are your existing Azure AD users — no separate accounts to provision, no external guests added to your tenant.</p>
+        <span class="badge b-ok">No guest accounts</span><span class="badge b-ok">No new identity store</span>
+      </div>
+      <div class="tile">
+        <h3>External collaborators</h3>
+        <p>Partners or vendors outside your tenant are served on <b>Telegram or WhatsApp</b> — already live — under the same five-layer enforcement floor. Teams stays clean for your staff.</p>
+        <span class="badge b-brand">Telegram ✓ live</span><span class="badge b-brand">WhatsApp ✓ live</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 — THE DECISION FOR THE CLIENT (D2) -->
+  <section class="slide decision">
+    <p class="kicker">⚠ One decision we need from you</p>
+    <h2>How should Teams reach Deckhand?</h2>
+    <p>Microsoft Teams delivers messages by <b>calling a secure HTTPS endpoint</b> (the bot's "messaging endpoint"). That endpoint must be reachable from Microsoft's cloud. How we expose it is a <b>network &amp; security choice that belongs to your team.</b> Three options, ranked:</p>
+    <table>
+      <tr><th>Option</th><th>How it works</th><th>Trade-off</th></tr>
+      <tr class="rec"><td><b>1. Managed tunnel</b> <span class="badge b-ok">recommended</span></td><td>An outbound-only secure tunnel (e.g. Cloudflare Tunnel) publishes the endpoint over HTTPS. <b>No inbound firewall change.</b></td><td>Fastest, lowest exposure, stable hostname, free tier. Adds one managed dependency.</td></tr>
+      <tr><td><b>2. Reverse proxy on your edge</b></td><td>You front the bot with your own proxy + DNS record + TLS certificate, opening a controlled inbound port.</td><td>Maximum control, lives entirely on your infrastructure. More setup; opens a real inbound port to manage.</td></tr>
+      <tr><td><b>3. Host in your cloud</b></td><td>Deploy the bot endpoint inside your Azure/cloud tenant behind your existing ingress.</td><td>Cleanest tenancy story; highest lift; ties hosting to your cloud ops.</td></tr>
+    </table>
+    <p><b>What we need:</b> your IT/security team's preference among 1–3 (or a variant), plus confirmation that a <b>tenant admin</b> can complete the one-time Azure app registration for the bot.</p>
+  </section>
+
+  <!-- SLIDE 6 — WHAT IT TAKES / TIMELINE -->
+  <section class="slide">
+    <p class="kicker">Rollout</p>
+    <h2>What standing it up looks like</h2>
+    <div class="flow">
+      <span class="step">1 · Confirm ingress (you)</span><span class="arr">→</span>
+      <span class="step">2 · Azure app reg (tenant admin)</span><span class="arr">→</span>
+      <span class="step">3 · Publish endpoint (us)</span><span class="arr">→</span>
+      <span class="step">4 · Bind scopes + allow-list (us)</span><span class="arr">→</span>
+      <span class="step">5 · Verify &amp; go live</span>
+    </div>
+    <div class="grid">
+      <div class="tile"><h3>Your side (one-time)</h3>
+        <ul>
+          <li>Pick the ingress option (Slide 5).</li>
+          <li>Tenant admin: register the bot app + grant consent.</li>
+          <li>Name the internal users + Teams channels in scope.</li>
+        </ul>
+      </div>
+      <div class="tile"><h3>Our side</h3>
+        <ul>
+          <li>Publish + secure the messaging endpoint.</li>
+          <li>Wire Teams channels to project scopes (closed allow-list).</li>
+          <li>Verify parity: destructive actions denied, out-of-scope repos invisible, audit confirmed.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">The Teams assistant itself is already built; this is configuration + a one-time enterprise registration, not custom development.</p>
+  </section>
+
+  <!-- SLIDE 7 — ASK -->
+  <section class="slide">
+    <p class="kicker">The ask</p>
+    <h2>Two confirmations to start</h2>
+    <p><span class="badge b-warn">1</span> Your preferred <b>ingress option</b> (managed tunnel / your reverse proxy / your cloud).</p>
+    <p><span class="badge b-warn">2</span> A <b>tenant admin</b> available for the one-time Azure app registration.</p>
+    <p class="lead">With those, Teams joins your already-live Telegram and WhatsApp channels under one governed, audited control plane.</p>
+  </section>
+
+  <p class="foot">Deckhand — governed chat-driven operations · internal GTM section, client-facing draft · platform: Microsoft Teams (Bot Framework)<br>
+  Status: identity model decided (internal-only); ingress option pending client review.</p>
+
+</div>
+</body>
+</html>
