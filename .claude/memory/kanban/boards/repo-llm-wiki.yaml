@@ -1502,7 +1502,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - status:pending
+      - status:plan-review
       - cat:data-pipeline
       - domain:marine
       - domain:standards
