@@ -621,7 +621,7 @@ cards:
     title: 'feat(gtm/parametric): demo_02 §A — yaml Sweep Config + loader + normalized output (72-case baseline)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/664
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
