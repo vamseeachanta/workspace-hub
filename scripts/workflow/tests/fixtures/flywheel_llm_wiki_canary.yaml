@@ -1,0 +1,51 @@
+sources:
+  - kind: issue
+    repo: vamseeachanta/llm-wiki
+    locator: https://github.com/vamseeachanta/llm-wiki/issues/135
+    title: vision verification campaign
+    text: parser-limit and page-remap findings should become prompt guidance
+  - kind: issue
+    repo: vamseeachanta/llm-wiki
+    locator: https://github.com/vamseeachanta/llm-wiki/issues/226
+    title: non-standard content filtering
+    text: content-value filter should be script hardening
+  - kind: issue
+    repo: vamseeachanta/llm-wiki
+    locator: https://github.com/vamseeachanta/llm-wiki/issues/227
+    title: flagged bucket strategy
+    text: parser-limit lesson should become prompt guidance
+  - kind: issue
+    repo: vamseeachanta/llm-wiki
+    locator: https://github.com/vamseeachanta/llm-wiki/issues/259
+    title: dispatch cockpit
+    text: wave closeout should leave flywheel evidence
+  - kind: issue
+    repo: vamseeachanta/llm-wiki
+    locator: https://github.com/vamseeachanta/llm-wiki/issues/260
+    title: learning to tools flywheel
+    text: repo-local learning extraction should route durable assets
+  - kind: pr
+    repo: vamseeachanta/llm-wiki
+    locator: https://github.com/vamseeachanta/llm-wiki/pull/176
+    title: verification batch start
+    text: parser-limit lesson should become prompt guidance
+  - kind: review_artifact
+    repo: vamseeachanta/llm-wiki
+    locator: scripts/review/results/2026-06-02-plan-259-disagreement.md
+    title: review artifact privacy
+    text: review artifact stale SHA and stderr publishability risk should route to workspace-hub
+  - kind: pr
+    repo: vamseeachanta/llm-wiki
+    locator: https://github.com/vamseeachanta/llm-wiki/pull/248
+    title: content-value filter
+    text: content-value filter should be script hardening
+  - kind: pr
+    repo: vamseeachanta/llm-wiki
+    locator: https://github.com/vamseeachanta/llm-wiki/pull/258
+    title: verification wave close
+    text: review artifact stale SHA and stderr publishability risk should route to workspace-hub
+existing_issues:
+  - repo: vamseeachanta/workspace-hub
+    number: 2502
+    title: Review artifact metadata and privacy
+    state: OPEN
