@@ -152,7 +152,7 @@ cards:
     title: 'feat(gtm/parametric): demo_03 deepwater mudmat installation parametric runs (yaml-driven client deliverable)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/634
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering

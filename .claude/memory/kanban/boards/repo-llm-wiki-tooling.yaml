@@ -30,3 +30,23 @@ cards:
     body_excerpt: '**Target wiki domain**: `wikis/reservoir-engineering/wiki/`
 
       **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#260
+    title: '[flywheel] Convert verification and ingest learnings into reusable llm-wiki skills/scripts/tools'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/260
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:tooling
+      - cat:automation
+      - machine:dev-primary
+      - cat:harness
+      - agent:codex
+      - dispatch:ready
+      - domain:tooling
+      - domain:ingest-batch-extraction
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

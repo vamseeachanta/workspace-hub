@@ -3650,3 +3650,63 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#674
+    title: 'feat(gtm/parametric): demo_04 §1 — config externalization + loader + combined-stress fix + golden (fix-before-golden)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/674
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#675
+    title: 'feat(gtm/parametric): demo_04 §2 — SQLite Results Store (flatten 5 checks, sentinels/NULL round-trip)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/675
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#676
+    title: 'feat(gtm/parametric): demo_04 §3 — run/lookup/rebuild-db CLI + per-run report + runbook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/676
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#677
+    title: 'feat(gtm/parametric): demo_05 §1 — config + loader + DUAL-PHASE M/W-geometry fix (Phase-2 lift + Phase-5 tie-in) + golden'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/677
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#678
+    title: 'feat(gtm/parametric): demo_05 §2 — SQLite Results Store (flatten 5 phases, ERROR→NULL round-trip)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/678
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#679
+    title: 'feat(gtm/parametric): demo_05 §3 — run/lookup/rebuild-db CLI + per-run report + runbook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/679
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

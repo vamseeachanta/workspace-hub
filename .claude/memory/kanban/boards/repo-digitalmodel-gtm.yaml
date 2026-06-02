@@ -14,7 +14,7 @@ cards:
     title: 'feat(gtm/parametric): demo_03 §1 — full config-externalized yaml + loader + golden (180-case baseline)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/669
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
@@ -27,7 +27,7 @@ cards:
     title: 'feat(gtm/parametric): demo_03 §2 — Results Store (SQLite + CSV/manifest, flatten 5-phase phases{})'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/670
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
@@ -40,7 +40,7 @@ cards:
     title: 'feat(gtm/parametric): demo_03 §3 — run CLI (--run-id) + lookup + rebuild-db + runbook'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/671
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
@@ -53,7 +53,7 @@ cards:
     title: 'fix(gtm/geotech): demo_03 §4 — bearing CAPACITY (Brinch Hansen q_ult=su·Nc) replaces flat-50 pressure check (ties #264)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/672
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - bug
       - cat:engineering

@@ -608,7 +608,7 @@ cards:
     title: 'feat(gtm/parametric): demo_02 multi-code wall thickness parametric runs (yaml-driven client deliverable)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/633
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
@@ -634,7 +634,7 @@ cards:
     title: 'feat(gtm/parametric): demo_02 §B — Results Store (SQLite + CSV/manifest, flatten checks{})'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/665
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
@@ -647,7 +647,7 @@ cards:
     title: 'feat(gtm/parametric): demo_02 §C — run CLI (--run-id) + lookup + per-run report + runbook'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/666
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
@@ -660,7 +660,7 @@ cards:
     title: 'feat(gtm/parametric): demo_02 §D — full config externalization (all config in yaml, wired; ADR-0005)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/667
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
