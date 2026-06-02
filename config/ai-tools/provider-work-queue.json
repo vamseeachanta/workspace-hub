@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-02T01:20:09.550874Z",
+  "generated_at": "2026-06-02T05:20:09.242904Z",
   "current_week": "2026-W23",
-  "scorecard_generated_at": "2026-06-02T01:20:07.639924Z",
+  "scorecard_generated_at": "2026-06-02T05:20:07.249427Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -2316,74 +2316,19 @@
           ]
         },
         {
-          "number": 2478,
-          "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:ci",
-            "status:pending",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:testing-ci-health"
-          ],
-          "updatedAt": "2026-05-31T10:57:01Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2483,
-          "title": "chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2483",
+          "number": 2938,
+          "title": "Deckhand: wire + harden rate-limit / abuse controls (live enforcement)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2938",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:knowledge-management-platform"
+            "priority:high",
+            "cat:operations",
+            "domain:security",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T10:57:03Z",
+          "updatedAt": "2026-06-02T03:13:10Z",
           "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2485,
-          "title": "feat(enforcement): mechanical linter + ledger for llm-wiki \u2192 GTM boundary (enforces #2482 policy)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2485",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:knowledge-management-platform"
-          ],
-          "updatedAt": "2026-05-31T10:57:07Z",
-          "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4218,6 +4163,53 @@
           ]
         },
         {
+          "number": 2939,
+          "title": "Deckhand: connect WhatsApp platform \u2014 channels + user onboarding (mirror Telegram model)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2939",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:ai-orchestration",
+            "domain:notification",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-06-02T03:13:11Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2941,
+          "title": "Deckhand: connect Microsoft Teams platform \u2014 channels + user onboarding (Bot Framework)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2941",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:ai-orchestration",
+            "domain:notification",
+            "status:plan-review"
+          ],
+          "updatedAt": "2026-06-02T04:52:46Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2672,
           "title": "R4 \u2014 Hydrodynamics: LinkedIn expert mapping (marketing surface)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2672",
@@ -4342,31 +4334,6 @@
           ]
         },
         {
-          "number": 2491,
-          "title": "Extend pyramid-conformance-check.py DT1_REQUIRED_FIELDS to include standards-page fields (code_id, publisher, revision)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2491",
-          "labels": [
-            "enhancement",
-            "machine:dev-primary",
-            "tech-debt",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:harness"
-          ],
-          "updatedAt": "2026-05-31T22:53:55Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2585,
           "title": "tracker(digitalmodel-tests): 26 collect_ignore entries from 2026-03-24 slim-down need real fixes",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2585",
@@ -4426,7 +4393,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-01T11:11:15Z",
+          "updatedAt": "2026-06-02T04:01:47Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4664,6 +4631,24 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2940,
+          "title": "Deckhand: migrate WhatsApp off personal number to a dedicated bot number (by 2026-06-08)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2940",
+          "labels": [],
+          "updatedAt": "2026-06-02T04:09:04Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4846,21 +4831,18 @@
           ]
         },
         {
-          "number": 2484,
-          "title": "feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2484",
+          "number": 2936,
+          "title": "Rotate Deckhand PATs by 2026-06-08 (transcript exposure)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2936",
           "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:knowledge-management-platform"
+            "priority:high",
+            "cat:operations",
+            "domain:security",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T10:57:05Z",
+          "updatedAt": "2026-06-02T02:17:26Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -5045,21 +5027,18 @@
           ]
         },
         {
-          "number": 2484,
-          "title": "feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2484",
+          "number": 2936,
+          "title": "Rotate Deckhand PATs by 2026-06-08 (transcript exposure)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2936",
           "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:knowledge-management-platform"
+            "priority:high",
+            "cat:operations",
+            "domain:security",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-05-31T10:57:05Z",
+          "updatedAt": "2026-06-02T02:17:26Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -5291,29 +5270,6 @@
           ]
         },
         {
-          "number": 2494,
-          "title": "chore(cleanup): aceengineer-admin \u2014 remove legacy src/aceengineer_admin/automation/common/config.py (rename drift)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2494",
-          "labels": [
-            "cat:infrastructure",
-            "machine:dev-primary",
-            "maintenance",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:repo-organization-cleanup-migration"
-          ],
-          "updatedAt": "2026-05-31T10:57:10Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation"
-          ]
-        },
-        {
           "number": 2572,
           "title": "Routine: /repo-sync + /mnt/local-analysis cleanup audit (every 2 days)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2572",
@@ -5412,6 +5368,28 @@
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
+            "implementation"
+          ]
+        },
+        {
+          "number": 2937,
+          "title": "Deckhand: seamless member-onboarding guide (per connected platform, living doc)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2937",
+          "labels": [
+            "enhancement",
+            "cat:operations",
+            "domain:notification",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-06-02T02:46:17Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation"
           ]
         }

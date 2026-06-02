@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-06-02T01:20:09.550874Z
+Generated: 2026-06-02T05:20:09.242904Z
 Current week: 2026-W23
 Recommended provider order: gemini, codex, claude
 
@@ -38,7 +38,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #2763 plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent | no | implementation/test/fix language | enhancement, priority:high, cat:ai-orchestration, cat:operations, cat:harness, domain:automation |
 | #2764 fix(operations): harden Hermes session exporter for undated session files | no | implementation/test/fix language | bug, priority:high, cat:operations, cat:harness, domain:ai-orchestration, machine:dev-primary |
 | #2880 feat(codex): make yolo-equivalent permission defaults travel across machines | no | existing codex agent label | enhancement, priority:high, cat:harness, domain:ai-config, machine:multi, agent:codex |
-| #2484 feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR) | no | implementation/test/fix language | enhancement, priority:medium, cat:harness, machine:dev-primary, dispatch:ready, gate:completeness |
+| #2936 Rotate Deckhand PATs by 2026-06-08 (transcript exposure) | no | implementation/test/fix language | priority:high, cat:operations, domain:security, status:needs-plan |
 
 ## gemini
 

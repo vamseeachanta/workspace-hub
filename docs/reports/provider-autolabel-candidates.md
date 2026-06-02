@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-06-02T01:20:09.675190Z
+Generated: 2026-06-02T05:20:09.366763Z
 Apply mode: False
 Threshold: 0.9
 
@@ -20,7 +20,7 @@ Threshold: 0.9
 | #2718 audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2763 plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2764 fix(operations): harden Hermes session exporter for undated session files | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
-| #2484 feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR) | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2936 Rotate Deckhand PATs by 2026-06-08 (transcript exposure) | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2498 chore(harness): #2364 plan branch drift recovery decision needed | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2501 chore(planning): #2105 governance-lock — handoff vs live-state discrepancy | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2679 R3 — Mooring: Industry practice (Vryhof, Bridon, MIRP, OMAE sessions) | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |

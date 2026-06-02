@@ -11128,3 +11128,63 @@
     git_non_conventional: 15
     git_missing_wrk_ref: 16
     git_exempt_type: 33
+- scanned_at: "2026-06-02T07:03:56Z"
+  log: "/home/vamsee/.codex/sessions/2026/06/01/rollout-2026-06-01T04-45-07-019e8292-9d3f-73c2-afef-0652f4cabb9f.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-06-02T07:03:56Z"
+  log: "/home/vamsee/.codex/sessions/2026/06/01/rollout-2026-06-01T04-53-21-019e829a-2890-7852-9193-9313198f26cf.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-06-02T07:03:56Z"
+  log: "/home/vamsee/.codex/sessions/2026/06/01/rollout-2026-06-01T04-59-00-019e829f-5561-7333-a55d-fecac1e2d764.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-06-02T07:03:56Z"
+  log: "/home/vamsee/.codex/sessions/2026/06/01/rollout-2026-06-01T09-55-10-019e83ae-7b62-7a01-aed3-3e848f18fd5f.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-06-02T07:03:56Z"
+  log: "/home/vamsee/.codex/sessions/2026/06/01/rollout-2026-06-01T10-15-05-019e83c0-b5f4-7ed3-9096-036cb6ee5943.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-06-02T07:03:56Z"
+  log: "/home/vamsee/.codex/sessions/2026/06/01/rollout-2026-06-01T17-56-15-019e8566-eacc-7af3-afc0-c7ebfead6618.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0

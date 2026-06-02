@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-02T01:20:09.675190Z",
+  "generated_at": "2026-06-02T05:20:09.366763Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -495,21 +495,18 @@
       "eligible": false
     },
     {
-      "number": 2484,
-      "title": "feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2484",
+      "number": 2936,
+      "title": "Rotate Deckhand PATs by 2026-06-08 (transcript exposure)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2936",
       "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:harness",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness",
-        "domain:knowledge-management-platform"
+        "priority:high",
+        "cat:operations",
+        "domain:security",
+        "status:needs-plan"
       ],
-      "updatedAt": "2026-05-31T10:57:05Z",
+      "updatedAt": "2026-06-02T02:17:26Z",
       "execution_ready": false,
-      "priority_rank": 2,
+      "priority_rank": 1,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
