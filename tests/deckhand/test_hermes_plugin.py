@@ -191,6 +191,127 @@ def test_dm_binding_resolves_scope_without_scope_command(monkeypatch, tmp_path):
     assert forced["action"] == "block"
 
 
+def test_group_binding_authorizes_members_without_operator_listing(monkeypatch, tmp_path):
+    plugin = load_plugin(
+        monkeypatch,
+        tmp_path,
+        env={
+            "HERMES_SESSION_USER_ID": "tg-999",
+            "HERMES_SESSION_PLATFORM": "telegram",
+            "HERMES_SESSION_CHAT_ID": "grp-acma",
+            "HERMES_SESSION_THREAD_ID": "thread-1",
+        },
+    )
+    scopes_path = plugin.CONFIG_DIR / "scopes.yml"
+    data = yaml.safe_load(scopes_path.read_text(encoding="utf-8"))
+    data["scopes"]["acma"]["channel_repo_bindings"] = [
+        {
+            "platform": "telegram",
+            "channel_id": "grp-acma",
+            "repo": "owner/acma",
+            "authorize_members": True,
+        }
+    ]
+    scopes_path.write_text(yaml.safe_dump(data), encoding="utf-8")
+    repo = make_repo(tmp_path, "owner/acma")
+
+    assert plugin._active_scope_name(plugin._identity(), plugin._scopes()) == "acma"
+    assert plugin.on_pre_tool_call("terminal", {"command": "git commit -m ok", "workdir": str(repo)}) is None
+
+    forced = plugin.on_pre_tool_call("terminal", {"command": "git push --force", "workdir": str(repo)})
+    assert forced["action"] == "block"
+
+    outside_repo = make_repo(tmp_path / "outside", "owner/other")
+    outside = plugin.on_pre_tool_call(
+        "terminal",
+        {"command": "git push origin main", "workdir": str(outside_repo)},
+    )
+    assert outside["action"] == "block"
+    assert "outside scope" in outside["message"]
+
+    audit_records = [
+        json.loads(line)
+        for line in (plugin.CONFIG_DIR / "audit.ndjson").read_text(encoding="utf-8").splitlines()
+    ]
+    assert any(
+        record["decision"] == "ALLOW"
+        and record["scope"] == "acma"
+        and record["outcome"]["authorization"] == "group_membership"
+        for record in audit_records
+    )
+    persisted = yaml.safe_load(scopes_path.read_text(encoding="utf-8"))
+    assert persisted["scopes"]["acma"]["operators"] == ["tg-100"]
+
+
+def test_group_binding_does_not_authorize_from_different_chat(monkeypatch, tmp_path):
+    plugin = load_plugin(
+        monkeypatch,
+        tmp_path,
+        env={
+            "HERMES_SESSION_USER_ID": "tg-999",
+            "HERMES_SESSION_PLATFORM": "telegram",
+            "HERMES_SESSION_CHAT_ID": "not-grp-acma",
+            "HERMES_SESSION_THREAD_ID": "thread-1",
+        },
+    )
+    scopes_path = plugin.CONFIG_DIR / "scopes.yml"
+    data = yaml.safe_load(scopes_path.read_text(encoding="utf-8"))
+    data["scopes"]["acma"]["channel_repo_bindings"] = [
+        {
+            "platform": "telegram",
+            "channel_id": "grp-acma",
+            "repo": "owner/acma",
+            "authorize_members": True,
+        }
+    ]
+    scopes_path.write_text(yaml.safe_dump(data), encoding="utf-8")
+    repo = make_repo(tmp_path, "owner/acma")
+
+    assert plugin._active_scope_name(plugin._identity(), plugin._scopes()) is None
+    denied = plugin.on_pre_tool_call("terminal", {"command": "git commit -m ok", "workdir": str(repo)})
+    assert denied["action"] == "block"
+    assert "scope required" in denied["message"]
+
+
+def test_dm_binding_still_requires_listed_operator(monkeypatch, tmp_path):
+    plugin = load_plugin(
+        monkeypatch,
+        tmp_path,
+        env={
+            "HERMES_SESSION_USER_ID": "tg-999",
+            "HERMES_SESSION_PLATFORM": "telegram",
+            "HERMES_SESSION_CHAT_ID": "dm-100",
+            "HERMES_SESSION_THREAD_ID": "thread-1",
+        },
+    )
+    scopes_path = plugin.CONFIG_DIR / "scopes.yml"
+    data = yaml.safe_load(scopes_path.read_text(encoding="utf-8"))
+    data["scopes"]["acma"]["channel_repo_bindings"] = [
+        {"platform": "telegram", "channel_id": "dm-100", "repo": "owner/acma"}
+    ]
+    scopes_path.write_text(yaml.safe_dump(data), encoding="utf-8")
+    repo = make_repo(tmp_path, "owner/acma")
+
+    assert plugin._active_scope_name(plugin._identity(), plugin._scopes()) is None
+    denied = plugin.on_pre_tool_call("terminal", {"command": "git commit -m ok", "workdir": str(repo)})
+    assert denied["action"] == "block"
+    assert "scope required" in denied["message"]
+
+
+def test_dm_binding_route_a_still_allows_listed_operator(monkeypatch, tmp_path):
+    plugin = load_plugin(monkeypatch, tmp_path)
+    scopes_path = plugin.CONFIG_DIR / "scopes.yml"
+    data = yaml.safe_load(scopes_path.read_text(encoding="utf-8"))
+    data["scopes"]["acma"]["channel_repo_bindings"] = [
+        {"platform": "telegram", "channel_id": "dm-100", "repo": "owner/acma"}
+    ]
+    scopes_path.write_text(yaml.safe_dump(data), encoding="utf-8")
+    repo = make_repo(tmp_path, "owner/acma")
+
+    assert plugin._active_scope_name(plugin._identity(), plugin._scopes()) == "acma"
+    assert plugin.on_pre_tool_call("terminal", {"command": "git commit -m ok", "workdir": str(repo)}) is None
+
+
 def test_report_mode_never_blocks(monkeypatch, tmp_path):
     plugin = load_plugin(monkeypatch, tmp_path)
     repo = make_repo(tmp_path, "owner/acma")

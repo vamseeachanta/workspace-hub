@@ -27,6 +27,10 @@ scopes:
       - platform: telegram
         channel_id: "8748731589"      # POC tester DM -> acma scope
         repo: vamseeachanta/llm-wiki-acma
+      # - platform: telegram
+      #   channel_id: "<negative_group_chat_id>"
+      #   repo: vamseeachanta/llm-wiki-acma
+      #   authorize_members: true        # route B: any member of this group is authorized for acma
     # action_policy: {}               # optional per-client override of policy.yml defaults
     # rate_limits: {}                 # optional per-client override of policy.yml defaults
 

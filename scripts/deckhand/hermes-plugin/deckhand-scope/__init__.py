@@ -97,7 +97,14 @@ def _handle_terminal(
         return None
     identity = _identity()
     config = _config()
-    scope_name = _active_scope_name(identity, config.get("scopes", {}).get("scopes", {}))
+    scopes = config.get("scopes", {}).get("scopes", {})
+    scope_name = _active_scope_name(identity, scopes)
+    group_authorized = _is_group_authorized(identity, scope_name, scopes)
+    engine_config = (
+        _config_with_group_operator(config, scope_name, identity.get("operator_id"))
+        if group_authorized
+        else config
+    )
     repo = _repo_from_cwd(cwd)
     request_context = {
         "operator_id": identity.get("operator_id"),
@@ -110,10 +117,12 @@ def _handle_terminal(
         },
         "repo": repo,
     }
-    outcome = hook.inspect(command, cwd=cwd, request_context=request_context, config=config)
+    outcome = hook.inspect(command, cwd=cwd, request_context=request_context, config=engine_config)
+    if group_authorized:
+        outcome = {**outcome, "authorization": "group_membership"}
     allowed = bool(outcome.get("allow"))
     reason = str(outcome.get("reason") or "denied")
-    if _scope_missing_or_invalid(identity, scope_name, config) and _has_write_action(actions):
+    if _scope_missing_or_invalid(identity, scope_name, engine_config) and _has_write_action(actions):
         allowed = False
         reason = "Deckhand scope required for git/gh writes; run /scope [name]"
     elif _has_write_action(actions) and not repo:
@@ -146,6 +155,12 @@ def _handle_execute_code(
     tool_call_id: str,
 ) -> dict[str, str] | None:
     src = str(args.get("code") or "")
+    identity = _identity()
+    config = _config()
+    scopes = config.get("scopes", {}).get("scopes", {})
+    scope_name = _active_scope_name(identity, scopes)
+    group_authorized = _is_group_authorized(identity, scope_name, scopes)
+    outcome = {"authorization": "group_membership"} if group_authorized else None
     should_block = hook.scan_python_source(src)
     reason = (
         "code-execution touching git/gh must go through an approved Deckhand path"
@@ -159,7 +174,9 @@ def _handle_execute_code(
         task_id=task_id,
         session_id=session_id,
         tool_call_id=tool_call_id,
-        identity=_identity(),
+        identity=identity,
+        scope_name=scope_name,
+        outcome=outcome,
     )
     if should_block and not _report_mode():
         return {"action": "block", "message": reason}
@@ -253,8 +270,7 @@ def _write_active_scope(identity: dict[str, str], scope_name: str) -> None:
 def _active_scope_name(identity: dict[str, str], scopes: dict[str, Any]) -> str | None:
     if not _has_identity(identity):
         return None
-    # /scope state takes precedence; else fall back to a DM channel->repo binding.
-    return _scope_from_state(identity, scopes) or _scope_from_binding(identity, scopes)
+    return _scope_from_state(identity, scopes) or _scope_from_binding(identity, scopes) or _group_binding_scope(identity, scopes)
 
 
 def _scope_from_state(identity: dict[str, str], scopes: dict[str, Any]) -> str | None:
@@ -278,9 +294,7 @@ def _scope_from_state(identity: dict[str, str], scopes: dict[str, Any]) -> str |
 
 
 def _scope_from_binding(identity: dict[str, str], scopes: dict[str, Any]) -> str | None:
-    """DM-bound scope: a channel->repo binding selects the scope when no /scope
-    state exists (the /scope command is unavailable until a Hermes core patch).
-    The operator must still be authorized for the bound scope."""
+    """Normal channel->repo binding. The operator must still be authorized."""
     platform = identity.get("platform")
     chat_id = str(identity.get("chat_id") or "")
     operator_id = identity.get("operator_id")
@@ -292,11 +306,53 @@ def _scope_from_binding(identity: dict[str, str], scopes: dict[str, Any]) -> str
         for binding in _as_list(scope.get("channel_repo_bindings")):
             if (
                 isinstance(binding, dict)
+                and not binding.get("authorize_members")
                 and binding.get("platform") == platform
                 and str(binding.get("channel_id")) == chat_id
             ):
                 return str(name)
     return None
+
+def _group_binding_scope(identity: dict[str, str], scopes: dict[str, Any]) -> str | None:
+    platform = identity.get("platform")
+    chat_id = str(identity.get("chat_id") or "")
+    for name, scope in scopes.items():
+        if not isinstance(scope, dict):
+            continue
+        for binding in _as_list(scope.get("channel_repo_bindings")):
+            if (
+                isinstance(binding, dict)
+                and binding.get("authorize_members")
+                and binding.get("platform") == platform
+                and str(binding.get("channel_id")) == chat_id
+            ):
+                return str(name)
+    return None
+
+def _is_group_authorized(identity: dict[str, str], scope_name: str | None, scopes: dict[str, Any]) -> bool:
+    if not scope_name or not _has_identity(identity):
+        return False
+    return _group_binding_scope(identity, {scope_name: scopes.get(scope_name)}) == scope_name
+
+def _config_with_group_operator(
+    config: dict[str, Any],
+    scope_name: str | None,
+    operator_id: str | None,
+) -> dict[str, Any]:
+    if not scope_name or not operator_id:
+        return config
+    scopes_config = config.get("scopes")
+    scopes = scopes_config.get("scopes") if isinstance(scopes_config, dict) else None
+    scope = scopes.get(scope_name) if isinstance(scopes, dict) else None
+    if not isinstance(scope, dict):
+        return config
+    operators = list(_as_list(scope.get("operators")))
+    if operator_id not in operators:
+        operators.append(operator_id)
+    copied_scope = {**scope, "operators": operators}
+    copied_scopes = {**scopes, scope_name: copied_scope}
+    copied_scopes_config = {**scopes_config, "scopes": copied_scopes}
+    return {**config, "scopes": copied_scopes_config}
 
 def _scope_missing_or_invalid(identity: dict[str, str], scope_name: str | None, config: dict[str, Any]) -> bool:
     scopes = config.get("scopes", {}).get("scopes", {})
