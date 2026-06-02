@@ -51,6 +51,7 @@ Two authorization layers + the same guards everywhere:
 |---|---|---|---|
 | Vamsee Achanta (owner) | 8748731589 | acma + doris | 2026-06-01 |
 | Vamsi Galigutta | 448087190 | doris | 2026-06-01 |
+| Kedar Kolluri | 8882836063 | doris | 2026-06-01 |
 
 **Gotchas learned:**
 - Group inbound logs show the **display name, not the numeric ID** — capture IDs via the `telegram:group:<chat>:<id>` log token (privacy-off), `/whoami`, or @userinfobot.
