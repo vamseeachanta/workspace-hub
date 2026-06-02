@@ -78,7 +78,8 @@
     <span class="badge b-ok">first member onboarded: Vamsi Galigutta (448087190) → doris (owner-confirmed; scope-isolated verified)</span>
     <span class="badge b-info">tooling: add-member.sh (allowlist-by-id) + /whoami; 172 tests green; PAT rotation #2936 due 2026-06-08</span>
     <span class="badge b-ok">✅ live rate-limiting (#2938): per-operator/scope write caps + duplicate suppression, fail-closed</span>
-    <span class="badge b-info">WhatsApp support ready (#2939): add-member.sh --platform whatsapp + recon (route B works on JIDs); QR pairing = owner</span>
+    <span class="badge b-ok">✅ WhatsApp ONLINE (#2939): paired + WHATSAPP_MODE=bot, bridge /health=connected; bot # 17133069029</span>
+    <span class="badge b-warn">⚠ WhatsApp on owner's PERSONAL number — Baileys ban-risk; migrate to dedicated # by 2026-06-08 (#2940)</span>
     <span class="badge b-ok">members onboarded → doris: Vamsi Galigutta (448087190), Kedar Kolluri (8882836063); named auto-welcome</span>
     <span class="badge b-ok">/scope identity core patch applied; allowed git/gh now run under DECKHAND_PAT_&lt;scope&gt;, not ambient gh</span>
     <span class="badge b-info">acma/doris user-onboarding runbook committed (scripts/review/results)</span>
@@ -212,7 +213,7 @@ hook  : pre_tool_call + PATH git/gh shim
   <div class="panel"><table>
     <tr><th>Platform</th><th>State</th><th>Needs</th><th>Effort</th></tr>
     <tr><td>Telegram</td><td>not configured</td><td>BotFather token + allowed IDs; <code>gateway start</code></td><td>S</td></tr>
-    <tr><td>WhatsApp</td><td>enabled, not paired</td><td><code>hermes whatsapp</code> QR scan + allowlist (ban risk)</td><td>M</td></tr>
+    <tr><td>WhatsApp</td><td>✅ ONLINE (bot mode, connected)</td><td>add Doris group → post → capture @g.us JID → bind. Migrate off personal # by 2026-06-08 (<a href="https://github.com/vamseeachanta/workspace-hub/issues/2940">#2940</a>)</td><td>M</td></tr>
     <tr><td>Signal</td><td>not configured</td><td>install <code>signal-cli</code>, link device, daemon</td><td>M</td></tr>
     <tr><td>Teams</td><td>plugin present, not configured</td><td>Teams CLI + Azure app + public HTTPS (adapter is a <i>plugin</i>)</td><td>L</td></tr>
   </table></div>
