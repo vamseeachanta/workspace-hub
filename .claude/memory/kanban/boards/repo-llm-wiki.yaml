@@ -1495,3 +1495,39 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#264
+    title: '[corpus-ingest] ABS rules and guidelines into llm-wiki'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/264
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:pending
+      - cat:data-pipeline
+      - domain:marine
+      - domain:standards
+      - llm-wiki
+      - tracker
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#268
+    title: '[ABS ingest] Validate ABS corpus coverage, retrieval, and citations'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/268
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:pending
+      - cat:data-pipeline
+      - domain:marine
+      - domain:standards
+      - domain:document-intelligence
+      - llm-wiki
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

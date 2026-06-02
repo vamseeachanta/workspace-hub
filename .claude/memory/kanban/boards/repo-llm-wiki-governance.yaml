@@ -9,4 +9,22 @@ board:
   description: 'Privacy-flip aftermath, README, structure, cross-link regeneration, uplink/back-navigation blocks, index pagination, meta follow-ups.
 
     '
-cards: []
+cards:
+  - idempotency_key: gh:vamseeachanta/llm-wiki#266
+    title: '[ABS ingest] Define ABS metadata, version taxonomy, and source-routing guardrails'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/266
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:pending
+      - cat:data-pipeline
+      - domain:marine
+      - domain:standards
+      - llm-wiki
+      - domain:governance
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

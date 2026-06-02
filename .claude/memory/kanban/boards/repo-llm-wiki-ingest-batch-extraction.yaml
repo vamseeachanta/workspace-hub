@@ -243,3 +243,21 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#267
+    title: '[ABS ingest] Extract ABS data and add derived artifacts to llm-wiki corpus'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/267
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:pending
+      - cat:data-pipeline
+      - domain:marine
+      - domain:standards
+      - llm-wiki
+      - domain:ingest
+      - domain:ingest-batch-extraction
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

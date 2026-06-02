@@ -412,3 +412,39 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#265
+    title: '[ABS ingest] Download all ABS rules, codes, guides, and guideline documents'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/265
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:pending
+      - cat:data-pipeline
+      - domain:marine
+      - domain:standards
+      - llm-wiki
+      - domain:ingest
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#269
+    title: '[ABS ingest] Download and export ABS database-backed resources'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/269
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:pending
+      - cat:data-pipeline
+      - domain:marine
+      - domain:standards
+      - llm-wiki
+      - domain:ingest
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

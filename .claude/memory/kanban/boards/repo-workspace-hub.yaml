@@ -20649,3 +20649,18 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2948
+    title: 'Deckhand: create a dedicated PRIVATE repo (engine + operational data/work + sanitized chat history)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2948
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - deckhand
+      - repo:workspace-hub
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
