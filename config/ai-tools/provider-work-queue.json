@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-02T05:20:09.242904Z",
+  "generated_at": "2026-06-02T17:20:10.018693Z",
   "current_week": "2026-W23",
-  "scorecard_generated_at": "2026-06-02T05:20:07.249427Z",
+  "scorecard_generated_at": "2026-06-02T17:20:08.111301Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -941,9 +941,11 @@
             "domain:notification",
             "status:plan-review",
             "status:plan-approved",
-            "gate:completeness"
+            "gate:completeness",
+            "deckhand",
+            "repo:workspace-hub"
           ],
-          "updatedAt": "2026-06-01T11:08:40Z",
+          "updatedAt": "2026-06-02T11:37:06Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1334,7 +1336,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-06-01T11:45:06Z",
+          "updatedAt": "2026-06-02T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -2324,9 +2326,11 @@
             "priority:high",
             "cat:operations",
             "domain:security",
-            "status:needs-plan"
+            "status:needs-plan",
+            "deckhand",
+            "repo:workspace-hub"
           ],
-          "updatedAt": "2026-06-02T03:13:10Z",
+          "updatedAt": "2026-06-02T11:37:14Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2340,20 +2344,19 @@
           ]
         },
         {
-          "number": 2497,
-          "title": "chore(memory): handoff-doc cross-row SHA transcription hazard",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2497",
+          "number": 2944,
+          "title": "Deckhand: aggressively document all work + build a fresh-session knowledge map",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2944",
           "labels": [
-            "priority:medium",
-            "cat:documentation",
-            "domain:session",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness"
+            "documentation",
+            "priority:high",
+            "cat:ai-orchestration",
+            "deckhand",
+            "repo:workspace-hub"
           ],
-          "updatedAt": "2026-05-31T03:33:08Z",
+          "updatedAt": "2026-06-02T11:49:11Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -2365,44 +2368,22 @@
           ]
         },
         {
-          "number": 2499,
-          "title": "chore(harness): #2368 missing revision-bound approval marker",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2499",
+          "number": 2945,
+          "title": "[flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2945",
           "labels": [
-            "priority:medium",
+            "enhancement",
+            "priority:high",
+            "cat:ai-orchestration",
             "cat:harness",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:harness"
+            "cat:harness/skills",
+            "domain:skill-improvement",
+            "domain:tooling",
+            "domain:agent-patterns"
           ],
-          "updatedAt": "2026-05-31T22:53:59Z",
+          "updatedAt": "2026-06-02T11:42:48Z",
           "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2500,
-          "title": "chore(harness): #2476 non-standard approval pattern (no plan branch)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2500",
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:harness"
-          ],
-          "updatedAt": "2026-05-31T22:54:01Z",
-          "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -2661,7 +2642,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-01T12:11:50Z",
+          "updatedAt": "2026-06-02T12:12:12Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4171,9 +4152,11 @@
             "priority:medium",
             "cat:ai-orchestration",
             "domain:notification",
-            "status:needs-plan"
+            "status:needs-plan",
+            "deckhand",
+            "repo:workspace-hub"
           ],
-          "updatedAt": "2026-06-02T03:13:11Z",
+          "updatedAt": "2026-06-02T11:37:17Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4194,9 +4177,35 @@
             "priority:medium",
             "cat:ai-orchestration",
             "domain:notification",
-            "status:plan-review"
+            "status:plan-review",
+            "deckhand",
+            "repo:workspace-hub"
           ],
-          "updatedAt": "2026-06-02T04:52:46Z",
+          "updatedAt": "2026-06-02T11:37:23Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2948,
+          "title": "Deckhand: create a dedicated PRIVATE repo (engine + operational data/work + sanitized chat history)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2948",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:ai-orchestration",
+            "deckhand",
+            "repo:workspace-hub"
+          ],
+          "updatedAt": "2026-06-02T15:13:17Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4393,7 +4402,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-02T04:01:47Z",
+          "updatedAt": "2026-06-02T11:11:40Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4636,8 +4645,11 @@
           "number": 2940,
           "title": "Deckhand: migrate WhatsApp off personal number to a dedicated bot number (by 2026-06-08)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2940",
-          "labels": [],
-          "updatedAt": "2026-06-02T04:09:04Z",
+          "labels": [
+            "deckhand",
+            "repo:workspace-hub"
+          ],
+          "updatedAt": "2026-06-02T11:37:20Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4656,7 +4668,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 2,
-      "total_candidates": 23,
+      "total_candidates": 24,
       "top_issues": [
         {
           "number": 2813,
@@ -4838,9 +4850,11 @@
             "priority:high",
             "cat:operations",
             "domain:security",
-            "status:needs-plan"
+            "status:needs-plan",
+            "deckhand",
+            "repo:workspace-hub"
           ],
-          "updatedAt": "2026-06-02T02:17:26Z",
+          "updatedAt": "2026-06-02T11:37:09Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -5034,9 +5048,11 @@
             "priority:high",
             "cat:operations",
             "domain:security",
-            "status:needs-plan"
+            "status:needs-plan",
+            "deckhand",
+            "repo:workspace-hub"
           ],
-          "updatedAt": "2026-06-02T02:17:26Z",
+          "updatedAt": "2026-06-02T11:37:09Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -5203,26 +5219,25 @@
           ]
         },
         {
-          "number": 2496,
-          "title": "chore(routines): use $(date -u) substitution in execution-agent prompts (cosmetic)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2496",
+          "number": 2943,
+          "title": "Deckhand: encrypt scoped PATs at rest (keyring / age / systemd LoadCredential)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2943",
           "labels": [
-            "priority:low",
-            "cat:harness",
-            "domain:ai-config",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness"
+            "enhancement",
+            "priority:medium",
+            "cat:ai-orchestration",
+            "domain:notification",
+            "deckhand",
+            "repo:workspace-hub"
           ],
-          "updatedAt": "2026-05-31T03:33:06Z",
+          "updatedAt": "2026-06-02T11:37:30Z",
           "execution_ready": false,
-          "priority_rank": 3,
+          "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
-            "research",
             "implementation"
           ]
         },
@@ -5266,6 +5281,29 @@
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
+            "implementation"
+          ]
+        },
+        {
+          "number": 2942,
+          "title": "Deckhand: install-hermes-b2.sh should symlink the deckhand-scope plugin (not just shims)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2942",
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:ai-orchestration",
+            "deckhand",
+            "repo:workspace-hub"
+          ],
+          "updatedAt": "2026-06-02T11:37:27Z",
+          "execution_ready": false,
+          "priority_rank": 3,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation"
           ]
         },
@@ -5379,9 +5417,11 @@
             "enhancement",
             "cat:operations",
             "domain:notification",
-            "status:needs-plan"
+            "status:needs-plan",
+            "deckhand",
+            "repo:workspace-hub"
           ],
-          "updatedAt": "2026-06-02T02:46:17Z",
+          "updatedAt": "2026-06-02T11:37:12Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -5399,7 +5439,7 @@
       "provider": "gemini",
       "routing_priority": "highest",
       "execution_ready_count": 1,
-      "total_candidates": 5,
+      "total_candidates": 4,
       "top_issues": [
         {
           "number": 2733,
@@ -5428,29 +5468,6 @@
             "research",
             "implementation",
             "strategy"
-          ]
-        },
-        {
-          "number": 2498,
-          "title": "chore(harness): #2364 plan branch drift recovery decision needed",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2498",
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:harness"
-          ],
-          "updatedAt": "2026-05-31T22:53:57Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "gemini",
-          "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research"
           ]
         },
         {
@@ -5549,29 +5566,6 @@
             "research",
             "implementation",
             "strategy"
-          ]
-        },
-        {
-          "number": 2498,
-          "title": "chore(harness): #2364 plan branch drift recovery decision needed",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2498",
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:harness"
-          ],
-          "updatedAt": "2026-05-31T22:53:57Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "gemini",
-          "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research"
           ]
         },
         {

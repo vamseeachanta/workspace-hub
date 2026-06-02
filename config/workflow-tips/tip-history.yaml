@@ -105,3 +105,5 @@ shown:
     tips: [cc-simplify, eco-repo-sync]
   - date: 2026-06-01
     tips: [gsd-forensics, cc-rewind]
+  - date: 2026-06-02
+    tips: [bp-context-fork, bp-subagents-offload]

@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-02T05:20:11Z
+Generated: 2026-06-02T17:20:11Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,11 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2948 | Deckhand: create a dedicated PRIVATE repo (engine + operational data/work + sanitized chat history) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2945 | [flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2944 | Deckhand: aggressively document all work + build a fresh-session knowledge map | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2943 | Deckhand: encrypt scoped PATs at rest (keyring / age / systemd LoadCredential) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2942 | Deckhand: install-hermes-b2.sh should symlink the deckhand-scope plugin (not just shims) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2941 | Deckhand: connect Microsoft Teams platform — channels + user onboarding (Bot Framework) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2940 | Deckhand: migrate WhatsApp off personal number to a dedicated bot number (by 2026-06-08) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2939 | Deckhand: connect WhatsApp platform — channels + user onboarding (mirror Telegram model) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -238,11 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2503 | feat(ai-orchestration): standardize canonical approval-request comments for plan-review issues | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review,missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2502 | feat(ai-orchestration): harden plan-review artifact metadata and stale-SHA handling | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: empty_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2501 | chore(planning): #2105 governance-lock — handoff vs live-state discrepancy | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2500 | chore(harness): #2476 non-standard approval pattern (no plan branch) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2499 | chore(harness): #2368 missing revision-bound approval marker | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2498 | chore(harness): #2364 plan branch drift recovery decision needed | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2497 | chore(memory): handoff-doc cross-row SHA transcription hazard | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2496 | chore(routines): use $(date -u) substitution in execution-agent prompts (cosmetic) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

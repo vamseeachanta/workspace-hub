@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-02T05:20:07.141825Z",
+  "generated_at": "2026-06-02T17:20:07.996522Z",
   "current_week": "2026-W23",
   "report_weeks": 8,
   "subscriptions": {
@@ -142,9 +142,9 @@
         "week": "2026-W16",
         "sessions": 252,
         "post_records": 27097,
-        "activity_utilization_pct": 17.8,
+        "activity_utilization_pct": 14.9,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 17.8,
+        "reported_utilization_pct": 14.9,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
@@ -296,9 +296,9 @@
         "week": "2026-W17",
         "sessions": 646,
         "post_records": 62750,
-        "activity_utilization_pct": 41.3,
+        "activity_utilization_pct": 34.5,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 41.3,
+        "reported_utilization_pct": 34.5,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
@@ -434,9 +434,9 @@
         "week": "2026-W18",
         "sessions": 669,
         "post_records": 22663,
-        "activity_utilization_pct": 14.9,
+        "activity_utilization_pct": 12.5,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 14.9,
+        "reported_utilization_pct": 12.5,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
@@ -572,9 +572,9 @@
         "week": "2026-W19",
         "sessions": 633,
         "post_records": 16294,
-        "activity_utilization_pct": 10.7,
+        "activity_utilization_pct": 9.0,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 10.7,
+        "reported_utilization_pct": 9.0,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
@@ -710,9 +710,9 @@
         "week": "2026-W20",
         "sessions": 1631,
         "post_records": 78335,
-        "activity_utilization_pct": 51.6,
+        "activity_utilization_pct": 43.1,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 51.6,
+        "reported_utilization_pct": 43.1,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
@@ -847,7 +847,7 @@
         "provider": "hermes",
         "week": "2026-W21",
         "sessions": 1267,
-        "post_records": 151873,
+        "post_records": 181820,
         "activity_utilization_pct": 100.0,
         "quota_utilization_pct": null,
         "reported_utilization_pct": 100.0,
@@ -858,23 +858,23 @@
         "top_tools": [
           {
             "tool": "Read",
-            "count": 67778
+            "count": 81155
           },
           {
             "tool": "Bash",
-            "count": 52194
+            "count": 62680
           },
           {
             "tool": "Grep",
-            "count": 17623
+            "count": 21070
           },
           {
             "tool": "Write",
-            "count": 7370
+            "count": 8932
           },
           {
             "tool": "Edit",
-            "count": 2954
+            "count": 3524
           }
         ],
         "first_ts": "2026-05-18T03:30:43.743526Z",
@@ -991,40 +991,49 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W23",
-        "sessions": 0,
-        "post_records": 0,
+        "sessions": 1,
+        "post_records": 4,
         "activity_utilization_pct": 0.0,
         "quota_utilization_pct": null,
         "reported_utilization_pct": 0.0,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-06-02T05:20:01Z",
-        "top_tools": [],
-        "first_ts": null,
-        "last_ts": null,
+        "quota_snapshot_ts": "2026-06-02T17:20:02Z",
+        "top_tools": [
+          {
+            "tool": "Bash",
+            "count": 3
+          },
+          {
+            "tool": "Read",
+            "count": 1
+          }
+        ],
+        "first_ts": "2026-06-02T11:55:12Z",
+        "last_ts": "2026-06-02T11:56:07Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
         "provider": "codex",
         "week": "2026-W23",
-        "sessions": 2,
-        "post_records": 25,
-        "activity_utilization_pct": 0.3,
-        "quota_utilization_pct": 3.0,
-        "reported_utilization_pct": 3.0,
+        "sessions": 8,
+        "post_records": 194,
+        "activity_utilization_pct": 2.1,
+        "quota_utilization_pct": 8.0,
+        "reported_utilization_pct": 8.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "local-session-rate-limits",
-        "quota_snapshot_ts": "2026-06-02T05:20:01Z",
+        "quota_snapshot_ts": "2026-06-02T17:20:02Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 25
+            "count": 194
           }
         ],
         "first_ts": "2026-06-01T00:52:07.885000Z",
-        "last_ts": "2026-06-01T02:49:08.810000Z",
+        "last_ts": "2026-06-01T22:59:09.021000Z",
         "note": "week_pct from local-session-rate-limits"
       },
       "gemini": {
@@ -1038,7 +1047,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "estimated_daily_quota",
         "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-06-02T05:20:01Z",
+        "quota_snapshot_ts": "2026-06-02T17:20:02Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -1072,9 +1081,9 @@
     },
     {
       "provider": "codex",
-      "reported_utilization_pct": 3.0,
+      "reported_utilization_pct": 8.0,
       "basis": "quota",
-      "message": "codex at 3.0% (quota)"
+      "message": "codex at 8.0% (quota)"
     },
     {
       "provider": "gemini",
