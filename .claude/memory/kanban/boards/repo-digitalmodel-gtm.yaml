@@ -36,3 +36,29 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#671
+    title: 'feat(gtm/parametric): demo_03 §3 — run CLI (--run-id) + lookup + rebuild-db + runbook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/671
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#672
+    title: 'fix(gtm/geotech): demo_03 §4 — bearing CAPACITY (Brinch Hansen q_ult=su·Nc) replaces flat-50 pressure check (ties #264)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/672
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

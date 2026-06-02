@@ -339,3 +339,18 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2941
+    title: 'Deckhand: connect Microsoft Teams platform — channels + user onboarding (Bot Framework)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2941
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:notification
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
