@@ -310,3 +310,32 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2937
+    title: 'Deckhand: seamless member-onboarding guide (per connected platform, living doc)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2937
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:operations
+      - domain:notification
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2939
+    title: 'Deckhand: connect WhatsApp platform — channels + user onboarding (mirror Telegram model)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2939
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:ai-orchestration
+      - domain:notification
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

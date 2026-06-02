@@ -20556,3 +20556,32 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2936
+    title: Rotate Deckhand PATs by 2026-06-08 (transcript exposure)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2936
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:operations
+      - domain:security
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2938
+    title: 'Deckhand: wire + harden rate-limit / abuse controls (live enforcement)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2938
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:operations
+      - domain:security
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
