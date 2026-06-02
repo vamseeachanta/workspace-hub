@@ -202,48 +202,6 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:harness",
-          "domain:skills",
-          "domain:workstations",
-          "status:needs-plan",
-          "gate:completeness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2925,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2925",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
         "labels": [],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -8579,9 +8537,52 @@
       "title": "chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2483",
       "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "bug",
+          "priority:medium",
+          "cat:ci",
+          "status:pending",
+          "machine:dev-primary",
+          "dispatch:ready",
+          "gate:completeness",
+          "domain:testing-ci-health"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2478,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
+      "warnings": []
     }
   ],
-  "generated_at": "2026-06-01T21:20:11Z",
+  "generated_at": "2026-06-02T01:20:11Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8752,48 +8753,6 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2926",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "domain:skills",
-            "domain:workstations",
-            "status:needs-plan",
-            "gate:completeness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2925,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2925",
         "warnings": []
       },
       {
@@ -17141,6 +17100,49 @@
         "title": "chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2483",
         "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "priority:medium",
+            "cat:ci",
+            "status:pending",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:testing-ci-health"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2478,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
+        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -17151,9 +17153,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-06-01T21:20:07.756184Z",
+  "scorecard_generated_at": "2026-06-02T01:20:07.639924Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-01T21:20:07.615678Z",
+  "utilization_generated_at": "2026-06-02T01:20:07.533590Z",
   "warning_summary": {
     "approved_no_marker": 21,
     "approved_no_plan": 12,

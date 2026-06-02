@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-01T21:20:09.706384Z",
+  "generated_at": "2026-06-02T01:20:09.550874Z",
   "current_week": "2026-W23",
-  "scorecard_generated_at": "2026-06-01T21:20:07.756184Z",
+  "scorecard_generated_at": "2026-06-02T01:20:07.639924Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -2316,6 +2316,33 @@
           ]
         },
         {
+          "number": 2478,
+          "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
+          "labels": [
+            "bug",
+            "priority:medium",
+            "cat:ci",
+            "status:pending",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:testing-ci-health"
+          ],
+          "updatedAt": "2026-05-31T10:57:01Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2483,
           "title": "chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2483",
@@ -4187,31 +4214,6 @@
           "work_type": [
             "research",
             "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2925,
-          "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2925",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "domain:skills",
-            "domain:workstations",
-            "status:needs-plan",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-01T09:49:58Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "strategy"
           ]
         },
