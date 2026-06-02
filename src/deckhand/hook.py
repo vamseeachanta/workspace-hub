@@ -35,6 +35,9 @@ SUSPICIOUS_ACTION = "unparseable_suspicious"
 GENERIC_DESTRUCTIVE_ACTION = "destructive"
 _GITISH_RE = re.compile(r"(^|[/\\\s'\"=(])(?:git|gh|hub)(?:$|[\s'\";|&)/\\])")
 _TRUSTED_TOOLS = {"git", "gh", "hub"}
+_HERMES_TOOL_MODULE = "hermes_tools"
+_HERMES_REENTRY_CALLS = {"terminal", "execute_code", "run_agent", "tool"}
+_HERMES_BOUND_REENTRY_CALLS = _HERMES_REENTRY_CALLS | {"execute"}
 _SHELL_UNSAFE_CHARS = {"$", "`", "\n", "(", ")", "{", "}", "<", ">"}
 _DESTRUCTIVE_HINT_RE = re.compile(
     r"\b(?:push|delete|remove|rm|close|disable|archive|rename|transfer|reset|clean|rebase|"
@@ -540,6 +543,11 @@ def _gh_api_can_mutate(args: list[str]) -> bool:
 
 
 class _PythonCommandGateVisitor(ast.NodeVisitor):
+    # execute_code is gated when source touches process/tool re-entry:
+    # subprocess/os.system/os.popen/os.exec*/shell=True, literal git/gh/hub argv,
+    # hermes_tools imports/attributes/dynamic imports, direct Hermes helper names
+    # (terminal/execute_code/run_agent/tool), and aliases/getattr dispatch of
+    # Hermes helpers including execute. Syntax errors fail closed in caller.
     def __init__(self) -> None:
         self.module_aliases: dict[str, str] = {}
         self.callable_aliases: dict[str, tuple[str, str]] = {}
@@ -555,6 +563,9 @@ class _PythonCommandGateVisitor(ast.NodeVisitor):
             if alias.name in {"subprocess", "os"}:
                 self.module_aliases[alias.asname or alias.name] = alias.name
                 self.should_gate = True
+            if self._is_hermes_module_name(alias.name):
+                self.module_aliases[alias.asname or alias.name.split(".", 1)[0]] = _HERMES_TOOL_MODULE
+                self.should_gate = True
         self.generic_visit(node)
 
     def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
@@ -563,6 +574,11 @@ class _PythonCommandGateVisitor(ast.NodeVisitor):
             for alias in node.names:
                 name = alias.asname or alias.name
                 self.callable_aliases[name] = (node.module, alias.name)
+        if node.module and self._is_hermes_module_name(node.module):
+            self.should_gate = True
+            for alias in node.names:
+                name = alias.asname or alias.name
+                self.callable_aliases[name] = (_HERMES_TOOL_MODULE, alias.name)
         self.generic_visit(node)
 
     def visit_Assign(self, node: ast.Assign) -> None:
@@ -572,6 +588,9 @@ class _PythonCommandGateVisitor(ast.NodeVisitor):
                 self.constants[target.id] = value
             if isinstance(target, ast.Name) and self._is_subprocess_dynamic_import(node.value):
                 self.callable_aliases[target.id] = ("subprocess", "*")
+                self.should_gate = True
+            if isinstance(target, ast.Name) and self._is_hermes_tool_reference(node.value):
+                self.callable_aliases[target.id] = (_HERMES_TOOL_MODULE, "*")
                 self.should_gate = True
         self.generic_visit(node)
 
@@ -590,9 +609,13 @@ class _PythonCommandGateVisitor(ast.NodeVisitor):
             return True
         if self._is_dynamic_import_call(node):
             return True
+        if self._is_hermes_getattr_call(node):
+            return True
         func = node.func
         if isinstance(func, ast.Attribute):
             if self._is_subprocess_dynamic_import(func.value):
+                return True
+            if self._is_hermes_tool_reference(func.value):
                 return True
             if isinstance(func.value, ast.Name):
                 module = self.module_aliases.get(func.value.id)
@@ -600,9 +623,15 @@ class _PythonCommandGateVisitor(ast.NodeVisitor):
                     return True
                 if module == "os" and (func.attr in {"system", "popen"} or func.attr.startswith("exec")):
                     return True
+                if module == _HERMES_TOOL_MODULE:
+                    return True
         if isinstance(func, ast.Name):
             module_func = self.callable_aliases.get(func.id)
             if module_func and (module_func[0] == "subprocess" or module_func in {("os", "system"), ("os", "popen")}):
+                return True
+            if module_func and module_func[0] == _HERMES_TOOL_MODULE:
+                return True
+            if func.id in _HERMES_REENTRY_CALLS:
                 return True
         return False
 
@@ -641,7 +670,7 @@ class _PythonCommandGateVisitor(ast.NodeVisitor):
     def _is_dynamic_import_call(self, node: ast.Call) -> bool:
         if isinstance(node.func, ast.Name) and node.func.id == "__import__" and node.args:
             value = self._constant_value(node.args[0])
-            return value in {"subprocess", "os"}
+            return value in {"subprocess", "os", _HERMES_TOOL_MODULE}
         return False
 
     def _is_subprocess_dynamic_import(self, node: ast.AST) -> bool:
@@ -652,6 +681,27 @@ class _PythonCommandGateVisitor(ast.NodeVisitor):
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "getattr":
             return bool(node.args and self._is_subprocess_dynamic_import(node.args[0]))
         return False
+
+    def _is_hermes_tool_reference(self, node: ast.AST) -> bool:
+        if isinstance(node, ast.Name):
+            return self.module_aliases.get(node.id) == _HERMES_TOOL_MODULE
+        if isinstance(node, ast.Attribute):
+            return self._is_hermes_tool_reference(node.value)
+        if isinstance(node, ast.Call):
+            return self._is_dynamic_import_call(node) or self._is_hermes_getattr_call(node)
+        return False
+
+    def _is_hermes_getattr_call(self, node: ast.Call) -> bool:
+        if not (isinstance(node.func, ast.Name) and node.func.id == "getattr" and len(node.args) >= 2):
+            return False
+        attr = self._constant_value(node.args[1])
+        return isinstance(attr, str) and attr in _HERMES_BOUND_REENTRY_CALLS and self._is_hermes_tool_reference(
+            node.args[0]
+        )
+
+    @staticmethod
+    def _is_hermes_module_name(name: str) -> bool:
+        return name == _HERMES_TOOL_MODULE or name.startswith(f"{_HERMES_TOOL_MODULE}.")
 
     @staticmethod
     def _truthy(node: ast.AST) -> bool:

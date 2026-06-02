@@ -172,6 +172,30 @@ def test_scan_python_source_detects_git_subprocess_patterns():
 
 
 @pytest.mark.parametrize(
+    "src",
+    [
+        "from hermes_tools import terminal\nr=terminal('command -v git', workdir='/tmp')",
+        "import hermes_tools; hermes_tools.terminal('git status')",
+        "__import__('hermes_tools')",
+        "getattr(__import__('hermes_tools'), 'terminal')('git status')",
+    ],
+)
+def test_scan_python_source_detects_hermes_tool_reentry(src):
+    assert scan_python_source(src) is True
+
+
+@pytest.mark.parametrize(
+    "src",
+    [
+        "print(1)",
+        "x = (2 + 3) * 5\nprint(x)",
+    ],
+)
+def test_scan_python_source_allows_benign_scripts(src):
+    assert scan_python_source(src) is False
+
+
+@pytest.mark.parametrize(
     "command",
     [
         "git push $F origin main",
