@@ -40,17 +40,18 @@ No relevant wiki pages (no wiki content touched — Client: N/A).
 
 ---
 
-## Decision gates (OWNER — block the build)
+## Decision gates (OWNER)
 
-**D1. External-member identity model.** Teams is tenant-bound (unlike open Telegram/WhatsApp). Options, ranked:
-1. **(Recommended) Teams = ecosystem/internal-only** transport; external acma/doris members stay on Telegram/WhatsApp. Lowest org-security blast radius; no guest accounts. Deckhand still gets a Teams channel for internal operators.
-2. **Guest users** — invite acma/doris members as guests into the aceengineer Azure AD tenant. Works, but guests gain tenant footprint; needs admin policy review.
-3. **Multi-tenant bot** — heaviest; bot accepts any tenant. Broadest exposure; defer.
+**D1. External-member identity model — DECIDED 2026-06-01: Option 1, internal/ecosystem-only.** Teams serves internal operators in the aceengineer tenant; external acma/doris members stay on Telegram/WhatsApp. No guest accounts, no multi-tenant bot.
+- (Rejected) Guest users — adds tenant footprint; needs admin policy review.
+- (Rejected) Multi-tenant bot — broadest exposure; unnecessary for internal use.
 
-**D2. Public ingress mechanism.** Options, ranked:
-1. **(Recommended) Cloudflare Tunnel (`cloudflared`)** — no inbound firewall hole, stable hostname, free tier, TLS handled. Best fit for a single home/office box.
-2. **ngrok** — fastest to demo; free tier has unstable hostnames + session limits (poor for a persistent bot).
-3. **Reverse proxy (caddy/nginx) + DNS A-record + Let's Encrypt + port-forward** — most control, most setup + exposes a real inbound port.
+**D2. Public ingress mechanism — DEFERRED 2026-06-01: needs CLIENT review.** This touches the client's network/security posture, so it is theirs to choose. Surfaced in the client-facing GTM section `docs/gtm/deckhand-teams-enterprise-connectivity.html` (Slide 5). Options presented to client, ranked:
+1. **(Recommended) Managed tunnel (Cloudflare Tunnel / `cloudflared`)** — outbound-only, no inbound firewall hole, stable hostname, free tier, TLS handled.
+2. **Reverse proxy on client edge** — DNS + TLS + controlled inbound port; max control, more setup.
+3. **Host in client cloud** — cleanest tenancy; highest lift.
+
+**Build does not start until D2 returns from client review.**
 
 ## Implementation steps (after D1/D2 approved)
 1. **Recon** (Explore/Codex, read-only): trace the Teams adapter inbound path → exact `HERMES_SESSION_PLATFORM` (== "teams"?), `USER_ID` (AAD object id vs UPN), `CHAT_ID` (Bot Framework conversation id format). Decide: plugin/shim unchanged vs normalization. **TDD: write the recon assertions as tests first.**
