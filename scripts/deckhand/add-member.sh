@@ -4,7 +4,7 @@ set -euo pipefail
 usage() {
   cat >&2 <<'EOF'
 usage:
-  add-member.sh <member_id> [--platform telegram|whatsapp] [--scope acma|doris] [--operator] [--no-welcome] [--apply]
+  add-member.sh <member_id> [--platform telegram|whatsapp] [--scope acma|doris] [--name "Full Name"] [--operator] [--no-welcome] [--apply]
   add-member.sh --list [--platform telegram|whatsapp]
 EOF
 }
@@ -23,6 +23,7 @@ welcome=true
 member_id=""
 scope=""
 platform="telegram"
+name=""
 python_bin="${DECKHAND_PYTHON:-python3}"
 
 while [[ $# -gt 0 ]]; do
@@ -47,6 +48,11 @@ while [[ $# -gt 0 ]]; do
     --scope)
       [[ $# -ge 2 ]] || die "--scope requires a value"
       scope="$2"
+      shift 2
+      ;;
+    --name)
+      [[ $# -ge 2 ]] || die "--name requires a value"
+      name="$2"
       shift 2
       ;;
     --no-welcome)
@@ -314,11 +320,27 @@ welcome_target() {
   scope_status welcome-target "" "$scope_name"
 }
 
+derive_name_from_log() {
+  # Best-effort: pull the member's display name from the gateway log
+  # ("Unauthorized user: <id> (<name>)"). Telegram only. Empty if not found.
+  local id="$1" logdir="${HOME}/.hermes/logs"
+  [[ -d "$logdir" ]] || return 0
+  grep -hoE "Unauthorized user: ${id} \([^)]*\)" "$logdir"/*.log 2>/dev/null \
+    | head -1 | sed -E "s/^Unauthorized user: ${id} \\((.*)\\)\$/\\1/"
+}
+
 send_welcome() {
   local target="$1"
   local scope_name="$2"
-  local msg
-  msg="✅ Welcome — you're now authorized for the ${scope_name} channel. Please re-send your request (messages sent before authorization weren't processed)."
+  local msg display_name="${name:-}"
+  if [[ -z "$display_name" && "$platform" == "telegram" && -n "${member_id:-}" ]]; then
+    display_name="$(derive_name_from_log "$member_id" || true)"
+  fi
+  if [[ -n "$display_name" ]]; then
+    msg="✅ Welcome, ${display_name} — you're now authorized for the ${scope_name} channel. Please re-send your request (messages sent before authorization weren't processed)."
+  else
+    msg="✅ Welcome — you're now authorized for the ${scope_name} channel. Please re-send your request (messages sent before authorization weren't processed)."
+  fi
 
   if ! command -v hermes >/dev/null 2>&1; then
     printf 'warning: hermes not found; welcome not sent to %s\n' "$target" >&2
