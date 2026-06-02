@@ -31,6 +31,12 @@ scopes:
         channel_id: "-5109954935"     # route B: acma Telegram group — any member authorized for acma
         repo: vamseeachanta/llm-wiki-acma
         authorize_members: true
+      # route B: acma WhatsApp group (created 2026-06-01; recruiting 2026-06-02).
+      # Fill channel_id with the @g.us JID once a non-bot member posts (bridge logs it). Then restart.
+      # - platform: whatsapp
+      #   channel_id: "TODO@g.us"
+      #   repo: vamseeachanta/llm-wiki-acma
+      #   authorize_members: true
     # action_policy: {}               # optional per-client override of policy.yml defaults
     # rate_limits: {}                 # optional per-client override of policy.yml defaults
 
@@ -51,6 +57,12 @@ scopes:
         channel_id: "-5211977662"     # route B: doris Telegram group — any member authorized for doris
         repo: vamseeachanta/llm-wiki-doris
         authorize_members: true
+      # route B: doris WhatsApp group (created 2026-06-01; recruiting 2026-06-02).
+      # Fill channel_id with the @g.us JID once a non-bot member posts (bridge logs it). Then restart.
+      # - platform: whatsapp
+      #   channel_id: "TODO@g.us"
+      #   repo: vamseeachanta/llm-wiki-doris
+      #   authorize_members: true
 
   # ================ CROSS-CUTTING: ECOSYSTEM ================
   # All repositories, read+write, destructive denied. OFF for external operators in the POC.

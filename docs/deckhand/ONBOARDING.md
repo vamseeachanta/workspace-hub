@@ -60,8 +60,20 @@ Two authorization layers + the same guards everywhere:
 
 ---
 
-## WhatsApp — NOT CONNECTED (stub)
-Connect first (#2901): `hermes whatsapp` → QR pair (unofficial-API/ban risk). Member ID = E.164 number; allowlist var `WHATSAPP_ALLOWED_USERS`. Onboarding mirrors Telegram once connected. *(Fill in when live.)*
+## WhatsApp — CONNECTED ✅  (bot mode; #2939)
+
+**Bot identity:** number `17133069029` (+1 713 306 9029). ⚠ **This is the owner's PERSONAL number** — Baileys is the unofficial protocol; bot automation on a personal account risks a WhatsApp ban. **Migrate to a dedicated number by 2026-06-08 ([#2940](https://github.com/vamseeachanta/workspace-hub/issues/2940)).** Reversible meanwhile: WhatsApp → Linked Devices → unlink.
+
+**Config:** `WHATSAPP_ENABLED=true`, `WHATSAPP_MODE=bot` (self-chat mode can't do groups), `WHATSAPP_ALLOWED_USERS=<E.164 digits>` (gateway stays CLOSED — same model as Telegram). Verify live: `curl -s http://127.0.0.1:3000/health` → `{"status":"connected"}`.
+
+**Groups created (recruiting 2026-06-02):** `acma`, `doris` WhatsApp groups exist; bindings pre-staged (commented) in `config/deckhand/scopes.yml` awaiting their `@g.us` JIDs.
+
+**Capture a group's `@g.us` JID (one-time per group):** the bridge does **not** log the bot's own (`fromMe`) posts, so capture from a **non-bot** member's message:
+1. A member posts any message in the WhatsApp group (even before they're allowlisted — the gateway logs the rejection *with* the group JID + sender JID).
+2. Capture: `curl -s http://127.0.0.1:3000/messages | grep -oE "[0-9-]+@g\.us"` (or grep the gateway log for `@g.us`).
+3. Uncomment the scope's WhatsApp binding in `scopes.yml`, set `channel_id: "<jid>@g.us"`, `authorize_members: true`. Restart.
+
+**Add a member:** `scripts/deckhand/add-member.sh <e164_digits> --platform whatsapp --scope <ch> --apply` (allowlist var `WHATSAPP_ALLOWED_USERS`; named welcome resolves the scope's WhatsApp `authorize_members` binding → `hermes send --to whatsapp:<jid>`). Member ID = E.164 digits (route-A operator JID↔E.164 normalization is a follow-up under #2939). Restart, then verify isolation with `shim_resolve` (`HERMES_SESSION_PLATFORM=whatsapp`).
 
 ## Signal — NOT CONNECTED (stub)
 Connect first: install `signal-cli` + Java, link device, run daemon, `SIGNAL_*`. Member ID = phone number; `SIGNAL_ALLOWED_USERS`. *(Fill in when live.)*
