@@ -4,7 +4,7 @@ set -euo pipefail
 usage() {
   cat >&2 <<'EOF'
 usage:
-  add-member.sh <telegram_numeric_id> [--scope acma|doris] [--apply]
+  add-member.sh <telegram_numeric_id> [--scope acma|doris] [--operator] [--no-welcome] [--apply]
   add-member.sh --list
 EOF
 }
@@ -18,6 +18,8 @@ env_file="${DECKHAND_ENV_FILE:-$HOME/.hermes/.env}"
 scopes_yml="${DECKHAND_SCOPES_YML:-config/deckhand/scopes.yml}"
 apply=false
 list=false
+operator=false
+welcome=true
 telegram_id=""
 scope=""
 python_bin="${DECKHAND_PYTHON:-python3}"
@@ -32,10 +34,18 @@ while [[ $# -gt 0 ]]; do
       list=true
       shift
       ;;
+    --operator)
+      operator=true
+      shift
+      ;;
     --scope)
       [[ $# -ge 2 ]] || die "--scope requires a value"
       scope="$2"
       shift 2
+      ;;
+    --no-welcome)
+      welcome=false
+      shift
       ;;
     -h|--help)
       usage
@@ -188,6 +198,39 @@ def find_ops(name):
             return index, parse_ops(match.group(1)), match.group(2) or ""
     return None, [], ""
 
+def find_welcome_target(name):
+    start, end = scope_ranges[name]
+    in_bindings = False
+    binding = None
+    bindings = []
+    for index in range(start + 1, end):
+        line = lines[index]
+        if re.match(r"^    channel_repo_bindings:\s*(#.*)?$", line):
+            in_bindings = True
+            continue
+        if in_bindings and re.match(r"^    [A-Za-z0-9_-]+:\s*", line):
+            break
+        if not in_bindings:
+            continue
+        item_match = re.match(r"^      -\s+([A-Za-z0-9_-]+):\s*(.*?)(?:\s+#.*)?$", line)
+        if item_match:
+            if binding is not None:
+                bindings.append(binding)
+            binding = {item_match.group(1): item_match.group(2).strip().strip("\"'")}
+            continue
+        kv_match = re.match(r"^        ([A-Za-z0-9_-]+):\s*(.*?)(?:\s+#.*)?$", line)
+        if binding is not None and kv_match:
+            binding[kv_match.group(1)] = kv_match.group(2).strip().strip("\"'")
+    if binding is not None:
+        bindings.append(binding)
+    for candidate in bindings:
+        if str(candidate.get("authorize_members", "")).lower() == "true":
+            platform = candidate.get("platform")
+            channel_id = candidate.get("channel_id")
+            if platform and channel_id:
+                return platform, channel_id
+    return None
+
 if mode == "list":
     for name in scope_ranges:
         _, ops, _ = find_ops(name)
@@ -228,13 +271,40 @@ if mode == "apply":
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     sys.exit(0)
 
+if mode == "welcome-target":
+    target = find_welcome_target(scope_name)
+    if target is None:
+        sys.exit(2)
+    print(f"{target[0]}:{target[1]}")
+    sys.exit(0)
+
 print(f"error: unknown mode: {mode}", file=sys.stderr)
 sys.exit(1)
 PY
 }
 
+welcome_target() {
+  local scope_name="$1"
+  scope_status welcome-target "" "$scope_name"
+}
+
+send_welcome() {
+  local target="$1"
+  local scope_name="$2"
+  local msg
+  msg="✅ Welcome — you're now authorized for the ${scope_name} channel. Please re-send your request (messages sent before authorization weren't processed)."
+
+  if ! command -v hermes >/dev/null 2>&1; then
+    printf 'warning: hermes not found; welcome not sent to %s\n' "$target" >&2
+    return 0
+  fi
+  if ! hermes send --to "$target" "$msg"; then
+    printf 'warning: hermes send failed; welcome not sent to %s\n' "$target" >&2
+  fi
+}
+
 if "$list"; then
-  [[ -z "$telegram_id" && -z "$scope" && "$apply" == false ]] || die "--list cannot be combined with other arguments"
+  [[ -z "$telegram_id" && -z "$scope" && "$apply" == false && "$operator" == false && "$welcome" == true ]] || die "--list cannot be combined with other arguments"
   allowed="$(read_allowed_users "$env_file" || true)"
   count=0
   if [[ -n "$allowed" ]]; then
@@ -252,6 +322,9 @@ fi
 
 [[ -n "$telegram_id" ]] || { usage; exit 1; }
 [[ "$telegram_id" =~ ^[0-9]+$ ]] || die "telegram_numeric_id must contain digits only; usernames are not accepted"
+if "$operator" && [[ -z "$scope" ]]; then
+  die "--operator requires --scope"
+fi
 
 allowed="$(read_allowed_users "$env_file" || true)"
 allowlist_change=false
@@ -260,13 +333,24 @@ if ! id_in_csv "$telegram_id" "$allowed"; then
 fi
 
 operator_change=false
-if [[ -n "$scope" ]]; then
+if "$operator"; then
   if scope_status contains "$telegram_id" "$scope"; then
     operator_change=false
   else
     rc=$?
     [[ "$rc" -eq 2 ]] || exit "$rc"
     operator_change=true
+  fi
+fi
+
+welcome_target_value=""
+welcome_target_found=false
+if [[ -n "$scope" ]] && "$welcome"; then
+  if welcome_target_value="$(welcome_target "$scope")"; then
+    welcome_target_found=true
+  else
+    rc=$?
+    [[ "$rc" -eq 2 ]] || exit "$rc"
   fi
 fi
 
@@ -277,7 +361,14 @@ if ! "$apply"; then
   if "$operator_change"; then
     printf 'would add %s to scope %s operators\n' "$telegram_id" "$scope"
   fi
-  if ! "$allowlist_change" && ! "$operator_change"; then
+  if [[ -n "$scope" ]] && "$welcome"; then
+    if "$welcome_target_found"; then
+      printf 'would welcome: %s\n' "$welcome_target_value"
+    else
+      printf 'no welcome target for scope %s (no authorize_members group binding); skipping welcome\n' "$scope"
+    fi
+  fi
+  if ! "$allowlist_change" && ! "$operator_change" && { [[ -z "$scope" ]] || ! "$welcome"; }; then
     printf 'no changes\n'
   fi
   exit 0
@@ -291,6 +382,14 @@ fi
 if "$operator_change"; then
   scope_status apply "$telegram_id" "$scope"
   printf 'added %s to scope %s operators\n' "$telegram_id" "$scope"
+fi
+
+if [[ -n "$scope" ]] && "$welcome"; then
+  if "$welcome_target_found"; then
+    send_welcome "$welcome_target_value" "$scope"
+  else
+    printf 'no welcome target for scope %s (no authorize_members group binding); skipping welcome\n' "$scope"
+  fi
 fi
 
 if ! "$allowlist_change" && ! "$operator_change"; then
