@@ -35,6 +35,12 @@ def register(ctx: Any) -> None:
         description="Select active Deckhand scope",
         args_hint="[name]",
     )
+    ctx.register_command(
+        "whoami",
+        handle_whoami,
+        description="Show your Deckhand identity (Telegram numeric id)",
+        args_hint="",
+    )
     ctx.register_hook("pre_tool_call", on_pre_tool_call)
 
 def handle_scope(raw_args: str = "") -> str:
@@ -56,6 +62,28 @@ def handle_scope(raw_args: str = "") -> str:
         return f"denied: operator is not authorized for Deckhand scope '{requested}'"
     _write_active_scope(identity, requested)
     return f"active scope = {requested} (write, destructive denied)"
+
+def handle_whoami(raw_args: str = "") -> str:
+    identity = _identity()
+    if not _has_identity(identity):
+        return "denied: Deckhand cannot identify this operator/session"
+    operator_id = identity["operator_id"]
+    platform = identity["platform"]
+    chat_id = identity["chat_id"]
+    # With the gateway closed (allowlist), a non-allowlisted user cannot reach
+    # this command; /whoami confirms an already-allowlisted user's id and
+    # future-proofs an open gateway. New-member onboarding uses @userinfobot.
+    LOGGER.info(
+        "DECKHAND_WHOAMI operator=%s platform=%s chat=%s",
+        operator_id,
+        platform,
+        chat_id,
+    )
+    return (
+        f"Your Telegram numeric id: {operator_id}\n"
+        f"platform: {platform}  chat: {chat_id}\n"
+        "Give this id to the admin to be added."
+    )
 
 def on_pre_tool_call(
     tool_name: str,

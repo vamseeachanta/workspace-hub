@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import logging
 import subprocess
 import sys
 import types
@@ -136,6 +137,65 @@ def test_scope_sets_state_for_authorized_operator_and_refuses_unauthorized(monke
     assert "denied" in denied
     state_after = json.loads(plugin._state_path(plugin._identity()).read_text(encoding="utf-8"))
     assert state_after["scope_name"] == "acma"
+
+
+def test_register_adds_whoami_command(monkeypatch, tmp_path):
+    plugin = load_plugin(monkeypatch, tmp_path)
+    registered_commands = {}
+    registered_hooks = {}
+
+    class Context:
+        def register_command(self, name, handler, description="", args_hint=""):
+            registered_commands[name] = {
+                "handler": handler,
+                "description": description,
+                "args_hint": args_hint,
+            }
+
+        def register_hook(self, name, handler):
+            registered_hooks[name] = handler
+
+    plugin.register(Context())
+
+    assert registered_commands["whoami"] == {
+        "handler": plugin.handle_whoami,
+        "description": "Show your Deckhand identity (Telegram numeric id)",
+        "args_hint": "",
+    }
+    assert registered_commands["scope"]["handler"] == plugin.handle_scope
+    assert registered_hooks["pre_tool_call"] == plugin.on_pre_tool_call
+
+
+def test_whoami_returns_identity_and_logs_capture_line(monkeypatch, tmp_path, caplog):
+    plugin = load_plugin(monkeypatch, tmp_path)
+
+    with caplog.at_level(logging.INFO, logger=plugin.LOGGER.name):
+        reply = plugin.handle_whoami()
+
+    assert reply == (
+        "Your Telegram numeric id: tg-100\n"
+        "platform: telegram  chat: dm-100\n"
+        "Give this id to the admin to be added."
+    )
+    assert (
+        "DECKHAND_WHOAMI operator=tg-100 platform=telegram chat=dm-100"
+        in caplog.text
+    )
+
+
+def test_whoami_denies_when_identity_empty(monkeypatch, tmp_path):
+    plugin = load_plugin(
+        monkeypatch,
+        tmp_path,
+        env={
+            "HERMES_SESSION_USER_ID": "",
+            "HERMES_SESSION_PLATFORM": "",
+            "HERMES_SESSION_CHAT_ID": "",
+            "HERMES_SESSION_THREAD_ID": "",
+        },
+    )
+
+    assert plugin.handle_whoami() == "denied: Deckhand cannot identify this operator/session"
 
 
 def test_pre_tool_call_blocks_and_allows_by_scope(monkeypatch, tmp_path):
