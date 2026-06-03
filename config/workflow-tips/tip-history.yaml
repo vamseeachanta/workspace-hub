@@ -107,3 +107,5 @@ shown:
     tips: [gsd-forensics, cc-rewind]
   - date: 2026-06-02
     tips: [bp-context-fork, bp-subagents-offload]
+  - date: 2026-06-03
+    tips: [eco-insights, cc-desktop-server]
