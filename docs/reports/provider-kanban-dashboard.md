@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-02T21:20:12Z
+Generated: 2026-06-03T01:20:13Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,7 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #2945 | [flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: unavailable_review,unknown_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2945 | [flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: unavailable_review,unknown_review |
 | #2934 | Compliance alert: W23 — 23% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2933 | Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2926 | feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |

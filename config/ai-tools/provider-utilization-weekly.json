@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-02T21:20:07.760841Z",
+  "generated_at": "2026-06-03T01:20:09.281008Z",
   "current_week": "2026-W23",
   "report_weeks": 8,
   "subscriptions": {
@@ -999,7 +999,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-06-02T21:20:01Z",
+        "quota_snapshot_ts": "2026-06-03T01:20:01Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -1020,12 +1020,12 @@
         "sessions": 8,
         "post_records": 194,
         "activity_utilization_pct": 2.1,
-        "quota_utilization_pct": 9.0,
-        "reported_utilization_pct": 9.0,
+        "quota_utilization_pct": 13.0,
+        "reported_utilization_pct": 13.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "local-session-rate-limits",
-        "quota_snapshot_ts": "2026-06-02T21:20:01Z",
+        "quota_snapshot_ts": "2026-06-03T01:20:01Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -1047,7 +1047,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "estimated_daily_quota",
         "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-06-02T21:20:01Z",
+        "quota_snapshot_ts": "2026-06-03T01:20:01Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -1081,9 +1081,9 @@
     },
     {
       "provider": "codex",
-      "reported_utilization_pct": 9.0,
+      "reported_utilization_pct": 13.0,
       "basis": "quota",
-      "message": "codex at 9.0% (quota)"
+      "message": "codex at 13.0% (quota)"
     },
     {
       "provider": "gemini",

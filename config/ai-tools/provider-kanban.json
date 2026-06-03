@@ -27,10 +27,13 @@
   "cards": [
     {
       "approval_blockers": [
+        "missing status:plan-review label",
+        "already has status:plan-approved",
         "reviews not clean: unavailable_review,unknown_review",
+        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": null,
+      "approval_marker": ".planning/plan-approved/2945.md",
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -42,7 +45,8 @@
           "domain:skill-improvement",
           "domain:tooling",
           "domain:agent-patterns",
-          "status:plan-review"
+          "status:plan-approved",
+          "gate:completeness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -8580,7 +8584,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-06-02T21:20:12Z",
+  "generated_at": "2026-06-03T01:20:13Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8588,10 +8592,13 @@
     "planning_feedstock": [
       {
         "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
           "reviews not clean: unavailable_review,unknown_review",
+          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": null,
+        "approval_marker": ".planning/plan-approved/2945.md",
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8603,7 +8610,8 @@
             "domain:skill-improvement",
             "domain:tooling",
             "domain:agent-patterns",
-            "status:plan-review"
+            "status:plan-approved",
+            "gate:completeness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -17149,9 +17157,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-06-02T21:20:07.872850Z",
+  "scorecard_generated_at": "2026-06-03T01:20:09.388518Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-02T21:20:07.760841Z",
+  "utilization_generated_at": "2026-06-03T01:20:09.281008Z",
   "warning_summary": {
     "approved_no_marker": 20,
     "approved_no_plan": 11,
