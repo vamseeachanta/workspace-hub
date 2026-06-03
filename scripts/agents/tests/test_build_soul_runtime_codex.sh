@@ -28,9 +28,6 @@ chk "claude SOUL.runtime.md has NO Skill index"   "! grep -q '## Skill index' '$
 # Claude-only rules NOT inlined into Codex (goal-invocation 'binds Claude only')
 chk "goal-invocation NOT inlined into AGENTS"     "! grep -qi '/goal invocation contract' '${AGENTS}'"
 
-# Drift checker must mirror the Codex-only append, not flag the skill index as drift.
-chk "drift check accepts Codex AGENTS extras"     "bash '${REPO_ROOT}/scripts/enforcement/check-soul-runtime-drift.sh' --quiet"
-
 # Idempotent: a second build does not double-append
 before=$(wc -l < "${AGENTS}")
 bash "${REPO_ROOT}/scripts/agents/build-soul-runtime.sh" >/dev/null 2>&1

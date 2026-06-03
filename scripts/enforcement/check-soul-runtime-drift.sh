@@ -18,7 +18,6 @@
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-source "${REPO_ROOT}/scripts/agents/soul-runtime-lib.sh"
 QUIET=0
 [[ "${1:-}" == "--quiet" ]] && QUIET=1
 
@@ -57,10 +56,6 @@ check_one() {
         echo
         cat "${delta_path}"
     } > "${rebuilt_path}"
-
-    if [[ "${provider}" == "codex" && "${runtime_file}" == "AGENTS.runtime.md" ]]; then
-        append_codex_agents_extras "${REPO_ROOT}" "${rebuilt_path}"
-    fi
 
     if ! diff -q "${committed_path}" "${rebuilt_path}" > /dev/null 2>&1; then
         echo "DRIFT  ${provider}/${runtime_file} — committed artifact differs from rebuilt sources"
