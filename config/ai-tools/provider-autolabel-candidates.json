@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-03T01:20:11.822747Z",
+  "generated_at": "2026-06-03T05:20:10.580659Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -316,18 +316,18 @@
       "priority_rank": 4,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
+      "provider_priority": "high",
       "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation"
       ],
       "target_label": "agent:codex",
-      "confidence": 0.8,
+      "confidence": 0.75,
       "confidence_reasons": [
         "execution-ready",
         "strong-codex-language-match",
-        "provider-highest-priority"
+        "provider-high-priority"
       ],
       "eligible": false
     },
@@ -344,186 +344,18 @@
       "priority_rank": 4,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
+      "provider_priority": "high",
       "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation"
       ],
       "target_label": "agent:codex",
-      "confidence": 0.8,
+      "confidence": 0.75,
       "confidence_reasons": [
         "execution-ready",
         "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2647,
-      "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
-      "labels": [
-        "priority:high",
-        "domain:notification",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness"
-      ],
-      "updatedAt": "2026-05-31T03:33:16Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2718,
-      "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
-      "labels": [
-        "priority:high",
-        "cat:ai-orchestration",
-        "cat:harness",
-        "domain:ai-config",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness"
-      ],
-      "updatedAt": "2026-05-31T22:46:22Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2763,
-      "title": "plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2763",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:ai-orchestration",
-        "cat:operations",
-        "cat:harness",
-        "domain:automation",
-        "machine:dev-primary",
-        "status:needs-plan",
-        "dispatch:ready",
-        "gate:completeness"
-      ],
-      "updatedAt": "2026-05-31T03:34:08Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2764,
-      "title": "fix(operations): harden Hermes session exporter for undated session files",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2764",
-      "labels": [
-        "bug",
-        "priority:high",
-        "cat:operations",
-        "cat:harness",
-        "domain:ai-orchestration",
-        "machine:dev-primary",
-        "status:needs-plan",
-        "dispatch:ready",
-        "gate:completeness"
-      ],
-      "updatedAt": "2026-05-31T03:34:10Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2484,
-      "title": "feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2484",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:harness",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness",
-        "domain:knowledge-management-platform"
-      ],
-      "updatedAt": "2026-05-31T10:57:05Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
+        "provider-high-priority"
       ],
       "eligible": false
     },
@@ -619,6 +451,174 @@
         "priority-labeled",
         "strong-gemini-language-match",
         "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2647,
+      "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
+      "labels": [
+        "priority:high",
+        "domain:notification",
+        "machine:dev-primary",
+        "dispatch:ready",
+        "gate:completeness"
+      ],
+      "updatedAt": "2026-05-31T03:33:16Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2718,
+      "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
+      "labels": [
+        "priority:high",
+        "cat:ai-orchestration",
+        "cat:harness",
+        "domain:ai-config",
+        "machine:dev-primary",
+        "dispatch:ready",
+        "gate:completeness"
+      ],
+      "updatedAt": "2026-05-31T22:46:22Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2763,
+      "title": "plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2763",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:ai-orchestration",
+        "cat:operations",
+        "cat:harness",
+        "domain:automation",
+        "machine:dev-primary",
+        "status:needs-plan",
+        "dispatch:ready",
+        "gate:completeness"
+      ],
+      "updatedAt": "2026-05-31T03:34:08Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2764,
+      "title": "fix(operations): harden Hermes session exporter for undated session files",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2764",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:operations",
+        "cat:harness",
+        "domain:ai-orchestration",
+        "machine:dev-primary",
+        "status:needs-plan",
+        "dispatch:ready",
+        "gate:completeness"
+      ],
+      "updatedAt": "2026-05-31T03:34:10Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2484,
+      "title": "feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2484",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:harness",
+        "machine:dev-primary",
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:knowledge-management-platform"
+      ],
+      "updatedAt": "2026-05-31T10:57:05Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
       ],
       "eligible": false
     },

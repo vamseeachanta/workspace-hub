@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-03T01:20:11.692797Z",
+  "generated_at": "2026-06-03T05:20:10.448074Z",
   "current_week": "2026-W23",
-  "scorecard_generated_at": "2026-06-03T01:20:09.388518Z",
+  "scorecard_generated_at": "2026-06-03T05:20:08.519823Z",
   "recommended_provider_order": [
     "gemini",
-    "codex",
-    "claude"
+    "claude",
+    "codex"
   ],
   "provider_queues": {
     "claude": {
@@ -4428,7 +4428,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-02T11:11:40Z",
+          "updatedAt": "2026-06-03T04:00:53Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4671,7 +4671,7 @@
     },
     "codex": {
       "provider": "codex",
-      "routing_priority": "highest",
+      "routing_priority": "high",
       "execution_ready_count": 2,
       "total_candidates": 23,
       "top_issues": [
@@ -4690,7 +4690,7 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -4710,7 +4710,7 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -4733,7 +4733,7 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -4758,7 +4758,7 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -4786,7 +4786,7 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -4813,7 +4813,7 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -4839,7 +4839,7 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -4865,7 +4865,7 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -4889,7 +4889,7 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -4909,7 +4909,7 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -4932,7 +4932,7 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -4957,7 +4957,7 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -4985,7 +4985,7 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5012,7 +5012,7 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5038,7 +5038,7 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5064,7 +5064,7 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5091,7 +5091,7 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5116,7 +5116,7 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5141,7 +5141,7 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5166,7 +5166,7 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5190,7 +5190,7 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5218,7 +5218,7 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5242,7 +5242,7 @@
           "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5264,7 +5264,7 @@
           "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5286,7 +5286,7 @@
           "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
@@ -5309,7 +5309,7 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
@@ -5330,7 +5330,7 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5352,7 +5352,7 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
@@ -5375,7 +5375,7 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5394,7 +5394,7 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
@@ -5411,7 +5411,7 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
+          "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
