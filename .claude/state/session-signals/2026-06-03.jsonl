@@ -1,2 +1,4 @@
 {"ts":"2026-06-03T10:10:11Z","event":"session_tool_summary","session_id":"3615e3a8-ffe5-407e-bfdd-187fe1962c8d","wrk":"none","tool_calls":25,"edits":0,"reads":4}
 {"ts":"2026-06-03T10:10:11Z","event":"stop_signal_captured","session_id":"3615e3a8-ffe5-407e-bfdd-187fe1962c8d"}
+{"ts":"2026-06-03T13:15:28Z","event":"session_tool_summary","session_id":"20ef38b8-5a6b-4475-afa6-3cfe14d37d65","wrk":"none","tool_calls":98,"edits":0,"reads":61}
+{"ts":"2026-06-03T13:15:28Z","event":"stop_signal_captured","session_id":"20ef38b8-5a6b-4475-afa6-3cfe14d37d65"}
