@@ -231,21 +231,21 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
+          "status:plan-review",
           "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
+        "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
         "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)"
@@ -258,12 +258,14 @@
       "number": 2911,
       "pipeline_lane": "C",
       "plan": null,
-      "provider_route": "codex",
+      "provider_route": "claude",
       "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
+      "routing_reason": "strategy/workflow/architecture language",
       "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2911",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -929,9 +931,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -944,7 +945,7 @@
           "domain:ai-config",
           "machine:multi",
           "agent:codex",
-          "status:needs-plan",
+          "status:plan-review",
           "gate:completeness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -968,7 +969,9 @@
       "routing_reason": "existing codex agent label",
       "title": "feat(codex): make yolo-equivalent permission defaults travel across machines",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2880",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8585,7 +8588,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-06-03T13:20:13Z",
+  "generated_at": "2026-06-03T17:20:12Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8797,21 +8800,21 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
+            "status:plan-review",
             "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
+          "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
           "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)"
@@ -8824,12 +8827,14 @@
         "number": 2911,
         "pipeline_lane": "C",
         "plan": null,
-        "provider_route": "codex",
+        "provider_route": "claude",
         "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
+        "routing_reason": "strategy/workflow/architecture language",
         "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2911",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -9495,9 +9500,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -9510,7 +9514,7 @@
             "domain:ai-config",
             "machine:multi",
             "agent:codex",
-            "status:needs-plan",
+            "status:plan-review",
             "gate:completeness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9534,7 +9538,9 @@
         "routing_reason": "existing codex agent label",
         "title": "feat(codex): make yolo-equivalent permission defaults travel across machines",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2880",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -17159,9 +17165,9 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-06-03T13:20:08.654356Z",
+  "scorecard_generated_at": "2026-06-03T17:20:08.784572Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-03T13:20:08.544595Z",
+  "utilization_generated_at": "2026-06-03T17:20:08.674165Z",
   "warning_summary": {
     "approved_no_marker": 20,
     "approved_no_plan": 11,
@@ -17170,7 +17176,7 @@
     "legacy_review_no_sha": 31,
     "major_review": 22,
     "marker_without_open_approved_issue": 147,
-    "missing_review": 35,
+    "missing_review": 37,
     "unavailable_review": 16,
     "unknown_review": 1
   }

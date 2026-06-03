@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-03T13:20:11.256858Z",
+  "generated_at": "2026-06-03T17:20:10.992691Z",
   "current_week": "2026-W23",
-  "scorecard_generated_at": "2026-06-03T13:20:08.654356Z",
+  "scorecard_generated_at": "2026-06-03T17:20:08.784572Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 34,
-      "total_candidates": 172,
+      "total_candidates": 173,
       "top_issues": [
         {
           "number": 2533,
@@ -4667,6 +4667,26 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2911,
+          "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2911",
+          "labels": [
+            "status:plan-review",
+            "domain:harness"
+          ],
+          "updatedAt": "2026-06-03T13:26:29Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
         }
       ]
     },
@@ -4674,7 +4694,7 @@
       "provider": "codex",
       "routing_priority": "high",
       "execution_ready_count": 2,
-      "total_candidates": 23,
+      "total_candidates": 22,
       "top_issues": [
         {
           "number": 2813,
@@ -4832,10 +4852,10 @@
             "domain:ai-config",
             "machine:multi",
             "agent:codex",
-            "status:needs-plan",
+            "status:plan-review",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-30T12:45:58Z",
+          "updatedAt": "2026-06-03T13:26:30Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -5031,10 +5051,10 @@
             "domain:ai-config",
             "machine:multi",
             "agent:codex",
-            "status:needs-plan",
+            "status:plan-review",
             "gate:completeness"
           ],
-          "updatedAt": "2026-05-30T12:45:58Z",
+          "updatedAt": "2026-06-03T13:26:30Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -5372,25 +5392,6 @@
             "gate:completeness"
           ],
           "updatedAt": "2026-05-26T09:23:26Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2911,
-          "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2911",
-          "labels": [
-            "domain:harness"
-          ],
-          "updatedAt": "2026-05-31T22:54:26Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
