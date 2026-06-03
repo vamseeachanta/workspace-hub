@@ -86,6 +86,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "priority:medium",
           "priority:critical",
           "compliance-alert"
         ],
@@ -8584,7 +8585,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-06-03T09:20:13Z",
+  "generated_at": "2026-06-03T13:20:13Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8651,6 +8652,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "priority:medium",
             "priority:critical",
             "compliance-alert"
           ],
@@ -17157,9 +17159,9 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-06-03T09:20:08.862050Z",
+  "scorecard_generated_at": "2026-06-03T13:20:08.654356Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-03T09:20:08.752860Z",
+  "utilization_generated_at": "2026-06-03T13:20:08.544595Z",
   "warning_summary": {
     "approved_no_marker": 20,
     "approved_no_plan": 11,

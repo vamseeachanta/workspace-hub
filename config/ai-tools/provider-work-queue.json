@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-03T09:20:11.119241Z",
+  "generated_at": "2026-06-03T13:20:11.256858Z",
   "current_week": "2026-W23",
-  "scorecard_generated_at": "2026-06-03T09:20:08.862050Z",
+  "scorecard_generated_at": "2026-06-03T13:20:08.654356Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -1333,10 +1333,11 @@
           "title": "Compliance alert: W23 \u2014 23% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2934",
           "labels": [
+            "priority:medium",
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-06-02T11:45:06Z",
+          "updatedAt": "2026-06-03T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -2718,7 +2719,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-02T12:12:12Z",
+          "updatedAt": "2026-06-03T12:11:13Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4428,7 +4429,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-03T04:00:53Z",
+          "updatedAt": "2026-06-03T11:12:12Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -5325,7 +5326,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-01T10:12:13Z",
+          "updatedAt": "2026-06-03T10:10:02Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
