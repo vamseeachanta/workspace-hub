@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-06-02T17:20:10.018693Z
+Generated: 2026-06-02T21:20:10.399831Z
 Current week: 2026-W23
 Recommended provider order: gemini, codex, claude
 
@@ -9,7 +9,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 34
+- Execution-ready candidates: 33
 - Total routed candidates: 172
 
 | Issue | Ready | Why routed here | Labels |
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: highest
 - Execution-ready candidates: 2
-- Total routed candidates: 24
+- Total routed candidates: 23
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -38,17 +38,18 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #2763 plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent | no | implementation/test/fix language | enhancement, priority:high, cat:ai-orchestration, cat:operations, cat:harness, domain:automation |
 | #2764 fix(operations): harden Hermes session exporter for undated session files | no | implementation/test/fix language | bug, priority:high, cat:operations, cat:harness, domain:ai-orchestration, machine:dev-primary |
 | #2880 feat(codex): make yolo-equivalent permission defaults travel across machines | no | existing codex agent label | enhancement, priority:high, cat:harness, domain:ai-config, machine:multi, agent:codex |
-| #2936 Rotate Deckhand PATs by 2026-06-08 (transcript exposure) | no | implementation/test/fix language | priority:high, cat:operations, domain:security, status:needs-plan, deckhand, repo:workspace-hub |
+| #2484 feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR) | no | implementation/test/fix language | enhancement, priority:medium, cat:harness, machine:dev-primary, dispatch:ready, gate:completeness |
 
 ## gemini
 
 - Routing priority: highest
 - Execution-ready candidates: 1
-- Total routed candidates: 4
+- Total routed candidates: 5
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2733 epic: make Hermes agent memory canonical across all AI providers | yes | existing gemini agent label | priority:high, cat:ai-orchestration, machine:dev-primary, agent:gemini, agent:claude, agent:codex |
+| #2498 chore(harness): #2364 plan branch drift recovery decision needed | no | research/triage/audit language | priority:medium, cat:harness, machine:dev-primary, dispatch:ready, gate:completeness, domain:harness |
 | #2501 chore(planning): #2105 governance-lock — handoff vs live-state discrepancy | no | research/triage/audit language | priority:medium, cat:documentation, cat:harness, machine:dev-primary, dispatch:ready, gate:completeness |
 | #2679 R3 — Mooring: Industry practice (Vryhof, Bridon, MIRP, OMAE sessions) | no | research/triage/audit language | priority:medium, cat:engineering, cat:research, machine:dev-primary, dispatch:ready, gate:completeness |
 | #2854 gap(memory): Hermes read-back leg missing — consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex) | no | research/triage/audit language | cat:ai-orchestration, domain:knowledge-management-platform |

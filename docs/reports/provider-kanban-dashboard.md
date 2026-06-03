@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-02T17:20:11Z
+Generated: 2026-06-02T21:20:12Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,20 +43,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #2948 | Deckhand: create a dedicated PRIVATE repo (engine + operational data/work + sanitized chat history) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2945 | [flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2944 | Deckhand: aggressively document all work + build a fresh-session knowledge map | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2943 | Deckhand: encrypt scoped PATs at rest (keyring / age / systemd LoadCredential) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2942 | Deckhand: install-hermes-b2.sh should symlink the deckhand-scope plugin (not just shims) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2941 | Deckhand: connect Microsoft Teams platform — channels + user onboarding (Bot Framework) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2940 | Deckhand: migrate WhatsApp off personal number to a dedicated bot number (by 2026-06-08) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2939 | Deckhand: connect WhatsApp platform — channels + user onboarding (mirror Telegram model) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2938 | Deckhand: wire + harden rate-limit / abuse controls (live enforcement) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2937 | Deckhand: seamless member-onboarding guide (per connected platform, living doc) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2936 | Rotate Deckhand PATs by 2026-06-08 (transcript exposure) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2945 | [flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: unavailable_review,unknown_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2934 | Compliance alert: W23 — 23% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2933 | Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2931 | Plan Deckhand named repository scopes and scope policy | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
 | #2926 | feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2920 | Roll out update-harness-tools.sh across machine ecosystem | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2911 | bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -243,6 +232,17 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2503 | feat(ai-orchestration): standardize canonical approval-request comments for plan-review issues | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review,missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2502 | feat(ai-orchestration): harden plan-review artifact metadata and stale-SHA handling | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: empty_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2501 | chore(planning): #2105 governance-lock — handoff vs live-state discrepancy | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2500 | chore(harness): #2476 non-standard approval pattern (no plan branch) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2499 | chore(harness): #2368 missing revision-bound approval marker | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2498 | chore(harness): #2364 plan branch drift recovery decision needed | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2497 | chore(memory): handoff-doc cross-row SHA transcription hazard | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2496 | chore(routines): use $(date -u) substitution in execution-agent prompts (cosmetic) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2494 | chore(cleanup): aceengineer-admin — remove legacy src/aceengineer_admin/automation/common/config.py (rename drift) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2491 | Extend pyramid-conformance-check.py DT1_REQUIRED_FIELDS to include standards-page fields (code_id, publisher, revision) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2485 | feat(enforcement): mechanical linter + ledger for llm-wiki → GTM boundary (enforces #2482 policy) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2484 | feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2483 | chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2478 | follow-up(ci): worldenergydata Python test matrix fails after lint restoration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
