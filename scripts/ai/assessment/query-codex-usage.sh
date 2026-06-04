@@ -1,24 +1,29 @@
 #!/usr/bin/env bash
-# ABOUTME: Query Codex weekly usage and reset time from local Codex session logs
-# ABOUTME: Parses latest token_count rate_limits.secondary values from ~/.codex/sessions
+# ABOUTME: Query Codex weekly usage and reset time (live app-server RPC first)
+# ABOUTME: Falls back to token_count rate_limits parsing from ~/.codex/sessions
 
 set -euo pipefail
 
 SESSIONS_DIR="${HOME}/.codex/sessions"
 MAX_FILES=20
 MODE="text"
+NO_LIVE="${CODEX_USAGE_NO_LIVE:-0}"
 
 usage() {
     cat <<'EOF'
 Usage:
-  query-codex-usage.sh         Show weekly Codex usage summary
-  query-codex-usage.sh --json  Output JSON only
+  query-codex-usage.sh            Show weekly Codex usage summary
+  query-codex-usage.sh --json     Output JSON only
+  query-codex-usage.sh --no-live  Skip live app-server query (session logs only)
+
+Env: CODEX_USAGE_NO_LIVE=1 (same as --no-live), CODEX_APPSERVER_WAIT (default 6s)
 EOF
 }
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --json) MODE="json"; shift ;;
+        --no-live) NO_LIVE=1; shift ;;
         --help|-h) usage; exit 0 ;;
         *) echo "Unknown arg: $1" >&2; usage; exit 2 ;;
     esac
@@ -53,6 +58,43 @@ format_time_left() {
     else
         echo "${minutes}m"
     fi
+}
+
+# Live query via `codex app-server` JSON-RPC (account/rateLimits/read).
+# Authoritative even when no Codex session ran recently — session-log parsing
+# (below) freezes at the last session's view and goes stale across weekly
+# window rollovers (observed 2026-06-04: logs said 21% used/resets Jun 7
+# while live was 1% used/resets Jun 11).
+# Protocol: JSONL over stdio; stdin must stay open until the response lands
+# (immediate EOF kills the server before it answers), hence printf + sleep.
+# grep -m1 exits on match; the pipeline still waits out the sleep (~6s),
+# which is fine for the 4-hourly cron consumer.
+get_live_rate_limits() {
+    [[ "$NO_LIVE" == "1" ]] && return 1
+    command -v codex >/dev/null 2>&1 || return 1
+    command -v timeout >/dev/null 2>&1 || return 1
+
+    local wait_s="${CODEX_APPSERVER_WAIT:-6}" resp=""
+    resp=$({ printf '%s\n' \
+        '{"method":"initialize","id":0,"params":{"clientInfo":{"name":"query-codex-usage","title":"Quota Query","version":"1.0.0"}}}' \
+        '{"method":"initialized","params":{}}' \
+        '{"method":"account/rateLimits/read","id":1}'
+        sleep "$wait_s"
+      } | timeout $(( wait_s + 9 )) codex app-server 2>/dev/null \
+        | grep -m1 '"id":1') || true
+    [[ -n "$resp" ]] || return 1
+
+    # Map camelCase RPC fields onto the session-parser entry shape so main()
+    # is source-agnostic. Reject payloads missing the weekly (secondary) lane.
+    echo "$resp" | jq -ce '
+        .result.rateLimits
+        | select(.secondary.usedPercent != null and .secondary.resetsAt != null)
+        | {
+            week_pct: .secondary.usedPercent,
+            resets_at_epoch: .secondary.resetsAt,
+            five_hour_pct: (.primary.usedPercent // 0),
+            five_hour_resets_at_epoch: (.primary.resetsAt // 0)
+        }' 2>/dev/null || return 1
 }
 
 get_latest_rate_limit_entry() {
@@ -115,8 +157,13 @@ manual_fallback() {
 }
 
 main() {
-    local latest
-    latest=$(get_latest_rate_limit_entry || true)
+    local latest source_label="local-session-rate-limits"
+    latest=$(get_live_rate_limits || true)
+    if [[ -n "$latest" ]]; then
+        source_label="app-server-live"
+    else
+        latest=$(get_latest_rate_limit_entry || true)
+    fi
 
     if [[ -z "$latest" ]]; then
         local fallback
@@ -140,7 +187,7 @@ main() {
     resets_at_epoch=$(echo "$latest" | jq -r '.resets_at_epoch')
     five_hour_pct=$(echo "$latest" | jq -r '.five_hour_pct // 0')
     five_hour_resets_at_epoch=$(echo "$latest" | jq -r '.five_hour_resets_at_epoch // 0')
-    source_file=$(echo "$latest" | jq -r '.session_file')
+    source_file=$(echo "$latest" | jq -r '.session_file // "live:codex-app-server"')
 
     local now_epoch pct_remaining seconds_to_reset hours_to_reset
     now_epoch=$(date +%s)
@@ -165,6 +212,7 @@ main() {
         --argjson five_hour_pct "$five_hour_pct" \
         --argjson five_hour_resets_at_epoch "$five_hour_resets_at_epoch" \
         --arg session_file "$source_file" \
+        --arg source_label "$source_label" \
         --arg updated_at "$(date -Iseconds)" \
         '{
             provider: "codex",
@@ -175,7 +223,7 @@ main() {
             hours_to_reset: $hours_to_reset,
             five_hour_pct: $five_hour_pct,
             five_hour_resets_at_epoch: $five_hour_resets_at_epoch,
-            source: "local-session-rate-limits",
+            source: $source_label,
             session_file: $session_file,
             updated_at: $updated_at
         }')
