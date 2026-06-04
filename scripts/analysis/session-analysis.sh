@@ -50,7 +50,7 @@ mkdir -p "$ANALYSIS_DIR" "$CANDIDATES_DIR"
 # --- Step 1: Cross-machine aggregation via git pull ---
 log "Step 1: cross-machine aggregation"
 if command -v git &>/dev/null && git -C "$WS_HUB" rev-parse --git-dir &>/dev/null 2>&1; then
-    if git -C "$WS_HUB" pull --quiet --rebase 2>/dev/null; then
+    if git -C "$WS_HUB" pull --quiet --rebase --autostash 2>/dev/null; then
         log "  git pull: OK"
     else
         warn "git pull failed — proceeding with local signals only"
