@@ -16,7 +16,7 @@ Usage:
   query-codex-usage.sh --json     Output JSON only
   query-codex-usage.sh --no-live  Skip live app-server query (session logs only)
 
-Env: CODEX_USAGE_NO_LIVE=1 (same as --no-live), CODEX_APPSERVER_WAIT (default 6s)
+Env: CODEX_USAGE_NO_LIVE=1 (same as --no-live), CODEX_APPSERVER_WAIT (default 3s)
 EOF
 }
 
@@ -67,14 +67,18 @@ format_time_left() {
 # while live was 1% used/resets Jun 11).
 # Protocol: JSONL over stdio; stdin must stay open until the response lands
 # (immediate EOF kills the server before it answers), hence printf + sleep.
-# grep -m1 exits on match; the pipeline still waits out the sleep (~6s),
-# which is fine for the 4-hourly cron consumer.
+# The pipeline waits out the full sleep (~3s default) even after grep -m1
+# matches — fine for the 4-hourly cron consumer.
 get_live_rate_limits() {
     [[ "$NO_LIVE" == "1" ]] && return 1
     command -v codex >/dev/null 2>&1 || return 1
     command -v timeout >/dev/null 2>&1 || return 1
 
-    local wait_s="${CODEX_APPSERVER_WAIT:-6}" resp=""
+    # Integer-validate (review nit): bad values would only cost a stderr
+    # line (the || true absorbs the arithmetic abort), but stay quiet.
+    # Responses arrive in ~1s; 3s gives margin without dragging the cron.
+    local wait_s="${CODEX_APPSERVER_WAIT:-3}" resp=""
+    [[ "$wait_s" =~ ^[0-9]+$ ]] || wait_s=3
     resp=$({ printf '%s\n' \
         '{"method":"initialize","id":0,"params":{"clientInfo":{"name":"query-codex-usage","title":"Quota Query","version":"1.0.0"}}}' \
         '{"method":"initialized","params":{}}' \
