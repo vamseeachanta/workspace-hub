@@ -28,7 +28,10 @@ if [[ "$branch" != "?" ]]; then
         git_marker="\033[1;31m*\033[0m"   # bold red: dirty (tracked changes/staged)
     fi
     # ahead/behind vs upstream (rev-list is cheap — no working-tree scan)
-    lr=$(GIT_OPTIONAL_LOCKS=0 git -C "$ws_root" rev-list --count --left-right '@{u}...HEAD' 2>/dev/null)
+    # `|| true` guards: under set -euo pipefail a failing substitution
+    # (no upstream here; no digits in branch below) silently kills the
+    # script -> blank statusline (same class as review-gate SIGPIPE fix).
+    lr=$(GIT_OPTIONAL_LOCKS=0 git -C "$ws_root" rev-list --count --left-right '@{u}...HEAD' 2>/dev/null) || true
     if [[ -n "$lr" ]]; then
         behind=${lr%%[[:space:]]*}; ahead=${lr##*[[:space:]]}
         (( ahead  > 0 )) && git_marker="${git_marker}\033[32m↑${ahead}\033[0m"   # green: unpushed
@@ -39,7 +42,7 @@ fi
 # Issue badge — "GitHub issues only" ecosystem: derive the active issue from
 # the branch name (e.g. fix/2795-... -> #2795) instead of local WRK counters.
 issue_seg=""
-issue_num=$(echo "$branch" | grep -oE '[0-9]{3,5}' | head -1)
+issue_num=$(echo "$branch" | grep -oE '[0-9]{3,5}' | head -1) || true
 [[ -n "$issue_num" ]] && issue_seg="\033[36m#${issue_num}\033[0m"
 
 # AI usage remaining percentages
