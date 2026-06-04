@@ -8588,7 +8588,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-06-03T21:20:12Z",
+  "generated_at": "2026-06-04T01:20:11Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -17165,9 +17165,9 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-06-03T21:20:08.193134Z",
+  "scorecard_generated_at": "2026-06-04T01:20:08.215368Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-03T21:20:08.084439Z",
+  "utilization_generated_at": "2026-06-04T01:20:08.104588Z",
   "warning_summary": {
     "approved_no_marker": 20,
     "approved_no_plan": 11,
