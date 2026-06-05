@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-01T17:20:12Z
+Generated: 2026-06-04T20:43:33Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,13 +43,12 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2945 | [flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2934 | Compliance alert: W23 — 23% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2933 | Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2931 | Plan Deckhand named repository scopes and scope policy | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
 | #2926 | feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2925 | feat(workstations): skills-inventory parity gap — dev-secondary 396 vs dev-primary 404 [#2887 matrix finding] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2920 | Roll out update-harness-tools.sh across machine ecosystem | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2911 | bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2911 | bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree) | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2906 | Apply Deckhand product name across the multi-platform bot plan | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2905 | Plan Deckhand operator docs for Telegram, Signal, WhatsApp, and Teams fanout | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2904 | Plan Deckhand send_message multi-target text fanout | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -66,7 +65,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2888 | feat(workstations): AI-tool version-currency cell (installed vs latest) for all providers [#2887 R1] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2887 | epic(workstations): machine + AI-provider equivalence status — equal work across machines & providers [extends #2801] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2886 | Disposition: bulk-close 48 content-free WRK-XXXX:untitled migration-ghost issues (ops board cleanup, #2878) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #2880 | feat(codex): make yolo-equivalent permission defaults travel across machines | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2880 | feat(codex): make yolo-equivalent permission defaults travel across machines | codex | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2878 | Kanban: reorganize boards by domain → subdomain (right-size oversized boards); pilot digitalmodel, then ecosystem-wide | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2859 | Doris demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2854 | gap(memory): Hermes read-back leg missing — consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex) | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -243,6 +242,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2485 | feat(enforcement): mechanical linter + ledger for llm-wiki → GTM boundary (enforces #2482 policy) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2484 | feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2483 | chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2478 | follow-up(ci): worldenergydata Python test matrix fails after lint restoration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

@@ -85,6 +85,12 @@ pipe.plot()
 - **Tested**: PyVista 0.47.1, VTK 9.6.0, NVIDIA GTX 750 Ti
 - **Headless**: Set `PYVISTA_OFF_SCREEN=true` or use `off_screen=True` in Plotter
 
+## Headless Fallback Pattern
+
+When the deliverable is an engineering animation/video and the full VTK/PyVista/ParaView rendering path is temporarily unavailable, unstable in the current runtime, or overkill for a first-pass approximation, use a deterministic raw RGB frame pipeline into `ffmpeg`. Keep the artifact clearly labeled as a visualization fallback, not a validated solver output, and verify it with `ffprobe` plus a preview frame before delivery.
+
+Reference: `references/rawvideo-ffmpeg-headless-fallback.md`
+
 ## Known Issues
 
 - `cell_quality()` segfaults on tube meshes with VTK 9.6; use deprecated `compute_cell_quality()` until PyVista 0.48+

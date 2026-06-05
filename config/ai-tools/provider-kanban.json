@@ -28,6 +28,56 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
+        "no canonical plan file",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:ai-orchestration",
+          "cat:harness",
+          "cat:harness/skills",
+          "domain:skill-improvement",
+          "domain:tooling",
+          "domain:agent-patterns",
+          "status:plan-approved",
+          "gate:completeness"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "[flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2945,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "[flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2945",
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
         "no canonical plan file",
         "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
@@ -36,6 +86,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "priority:medium",
           "priority:critical",
           "compliance-alert"
         ],
@@ -104,54 +155,6 @@
     },
     {
       "approval_blockers": [
-        "already has status:plan-approved",
-        "no canonical plan file",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:ai-orchestration",
-          "domain:security",
-          "domain:notification",
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Plan Deckhand named repository scopes and scope policy"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2931,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Plan Deckhand named repository scopes and scope policy",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2931",
-      "warnings": [
-        "approved_no_marker",
-        "approved_no_plan",
-        "dual_status_labels",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
         "missing status:plan-review label",
         "no canonical plan file",
         "review evidence not clean",
@@ -202,48 +205,6 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:harness",
-          "domain:skills",
-          "domain:workstations",
-          "status:needs-plan",
-          "gate:completeness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2925,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2925",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
         "labels": [],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -270,23 +231,22 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
+          "status:plan-review",
           "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "plan_summary": "- Found: `scripts/quality/check-all.sh:435-438` \u2014 FAILs (increments `FAIL_COUNT`) when a sibling repo directory is absent; this is the root cause of the worktree block.",
+        "provider_route": "claude",
+        "risks": "**Risk:** FAIL\u2192SKIP change could silently hide drift if sibling repos are expected to be present on the executing machine. Mitigation: emit a distinct `[SKIP] repo not found` WARN line (not silent) so operators know the check was bypassed, not passed. | **Risk:** This plan does NOT create `scripts/hooks/pre-push.sh`, so `tests/hooks/test_pre_push.py` remains red. That is explicitly deferred to #22",
+        "tests": "4 TDD tests defined",
         "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)"
       },
       "lane": "planning_feedstock",
@@ -296,13 +256,15 @@
       "machine_route": null,
       "number": 2911,
       "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "codex",
+      "plan": "docs/plans/2026-06-03-issue-2911-prepush-worktree-skip.md",
+      "provider_route": "claude",
       "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
+      "routing_reason": "strategy/workflow/architecture language",
       "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2911",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -968,9 +930,7 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -983,15 +943,15 @@
           "domain:ai-config",
           "machine:multi",
           "agent:codex",
-          "status:needs-plan",
+          "status:plan-review",
           "gate:completeness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `config/agents/codex/config.toml` \u2014 repo-tracked Codex template; contains `model`, `model_reasoning_effort`, and `[status_line]` section only. `approval_policy` and `sandbox_mode` are absent.",
         "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** Expanding `managed_keys` will overwrite any locally-customized `approval_policy` or `sandbox_mode` on next sync. This is the intended behavior per the issue, but must be documented in the config comment. | **Risk:** Two identical Python blocks (`managed_keys` at lines 221 and 409) \u2014 if only one is updated, the uv-fallback path will silently diverge. Plan explicitly requires both; tests m",
+        "tests": "4 TDD tests defined",
         "title": "feat(codex): make yolo-equivalent permission defaults travel across machines"
       },
       "lane": "planning_feedstock",
@@ -1001,13 +961,15 @@
       "machine_route": null,
       "number": 2880,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-06-03-issue-2880-codex-yolo-defaults-sync.md",
       "provider_route": "codex",
       "review_clean": false,
       "routing_reason": "existing codex agent label",
       "title": "feat(codex): make yolo-equivalent permission defaults travel across machines",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2880",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8579,14 +8541,107 @@
       "title": "chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2483",
       "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "bug",
+          "priority:medium",
+          "cat:ci",
+          "status:pending",
+          "machine:dev-primary",
+          "dispatch:ready",
+          "gate:completeness",
+          "domain:testing-ci-health"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2478,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
+      "warnings": []
     }
   ],
-  "generated_at": "2026-06-01T17:20:12Z",
+  "generated_at": "2026-06-04T20:43:33Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
+          "no canonical plan file",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "cat:harness/skills",
+            "domain:skill-improvement",
+            "domain:tooling",
+            "domain:agent-patterns",
+            "status:plan-approved",
+            "gate:completeness"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "[flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2945,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "[flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2945",
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8598,6 +8653,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "priority:medium",
             "priority:critical",
             "compliance-alert"
           ],
@@ -8666,54 +8722,6 @@
       },
       {
         "approval_blockers": [
-          "already has status:plan-approved",
-          "no canonical plan file",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "domain:security",
-            "domain:notification",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Plan Deckhand named repository scopes and scope policy"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2931,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Plan Deckhand named repository scopes and scope policy",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2931",
-        "warnings": [
-          "approved_no_marker",
-          "approved_no_plan",
-          "dual_status_labels",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
           "missing status:plan-review label",
           "no canonical plan file",
           "review evidence not clean",
@@ -8764,48 +8772,6 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "domain:skills",
-            "domain:workstations",
-            "status:needs-plan",
-            "gate:completeness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2925,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(workstations): skills-inventory parity gap \u2014 dev-secondary 396 vs dev-primary 404 [#2887 matrix finding]",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2925",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
           "labels": [],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8832,23 +8798,22 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
+            "status:plan-review",
             "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "plan_summary": "- Found: `scripts/quality/check-all.sh:435-438` \u2014 FAILs (increments `FAIL_COUNT`) when a sibling repo directory is absent; this is the root cause of the worktree block.",
+          "provider_route": "claude",
+          "risks": "**Risk:** FAIL\u2192SKIP change could silently hide drift if sibling repos are expected to be present on the executing machine. Mitigation: emit a distinct `[SKIP] repo not found` WARN line (not silent) so operators know the check was bypassed, not passed. | **Risk:** This plan does NOT create `scripts/hooks/pre-push.sh`, so `tests/hooks/test_pre_push.py` remains red. That is explicitly deferred to #22",
+          "tests": "4 TDD tests defined",
           "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)"
         },
         "lane": "planning_feedstock",
@@ -8858,13 +8823,15 @@
         "machine_route": null,
         "number": 2911,
         "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "codex",
+        "plan": "docs/plans/2026-06-03-issue-2911-prepush-worktree-skip.md",
+        "provider_route": "claude",
         "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
+        "routing_reason": "strategy/workflow/architecture language",
         "title": "bug(hooks): pre-push config-drift check is worktree-incompatible (blocks push from any worktree)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2911",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -9530,9 +9497,7 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -9545,15 +9510,15 @@
             "domain:ai-config",
             "machine:multi",
             "agent:codex",
-            "status:needs-plan",
+            "status:plan-review",
             "gate:completeness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `config/agents/codex/config.toml` \u2014 repo-tracked Codex template; contains `model`, `model_reasoning_effort`, and `[status_line]` section only. `approval_policy` and `sandbox_mode` are absent.",
           "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** Expanding `managed_keys` will overwrite any locally-customized `approval_policy` or `sandbox_mode` on next sync. This is the intended behavior per the issue, but must be documented in the config comment. | **Risk:** Two identical Python blocks (`managed_keys` at lines 221 and 409) \u2014 if only one is updated, the uv-fallback path will silently diverge. Plan explicitly requires both; tests m",
+          "tests": "4 TDD tests defined",
           "title": "feat(codex): make yolo-equivalent permission defaults travel across machines"
         },
         "lane": "planning_feedstock",
@@ -9563,13 +9528,15 @@
         "machine_route": null,
         "number": 2880,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-06-03-issue-2880-codex-yolo-defaults-sync.md",
         "provider_route": "codex",
         "review_clean": false,
         "routing_reason": "existing codex agent label",
         "title": "feat(codex): make yolo-equivalent permission defaults travel across machines",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2880",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -17141,6 +17108,49 @@
         "title": "chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2483",
         "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "priority:medium",
+            "cat:ci",
+            "status:pending",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:testing-ci-health"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2478,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
+        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -17151,18 +17161,18 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-06-01T17:20:08.159170Z",
+  "scorecard_generated_at": "2026-06-04T20:43:28.633811Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-01T17:20:08.051643Z",
+  "utilization_generated_at": "2026-06-04T20:43:28.393104Z",
   "warning_summary": {
     "approved_no_marker": 21,
     "approved_no_plan": 12,
-    "dual_status_labels": 4,
+    "dual_status_labels": 3,
     "empty_review": 3,
     "legacy_review_no_sha": 30,
     "major_review": 22,
     "marker_without_open_approved_issue": 147,
-    "missing_review": 36,
+    "missing_review": 38,
     "unavailable_review": 15
   }
 }

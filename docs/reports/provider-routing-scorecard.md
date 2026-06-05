@@ -1,6 +1,6 @@
 # Provider routing scorecard
 
-Generated: 2026-06-01T17:20:08.159170Z
+Generated: 2026-06-04T20:43:28.633811Z
 Current week: 2026-W23
 Recommended provider order: gemini, codex, claude
 
@@ -8,11 +8,11 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 ## claude
 
-- Status: underused
+- Status: needs_cleanup
 - Priority: high
-- Current-week reported utilization: 0.0%
+- Current-week reported utilization: 19.8%
 - Quota basis: unavailable (unavailable)
-- Current-week sessions / post records: 0 / 0
+- Current-week sessions / post records: 3 / 1075
 - Audit post records: 115036
 - Missing repo reads: 8624
 - Python3 per 1k records: 9.35
@@ -40,8 +40,8 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 - Status: underused
 - Priority: highest
 - Current-week reported utilization: 3.0%
-- Quota basis: quota (local-session-rate-limits)
-- Current-week sessions / post records: 2 / 25
+- Quota basis: quota (app-server-live)
+- Current-week sessions / post records: 0 / 0
 - Audit post records: 42243
 - Missing repo reads: 1253
 - Python3 per 1k records: 8.83

@@ -79,6 +79,8 @@ find /tmp -maxdepth 3 -user "$USER" -mmin -240 -type f \
 ```
 (Exclude harness/browser-managed paths; surface only user-meaningful scratch.) If browser automation profiles exist, summarize them by top-level directory instead of listing cached files. The useful closeout signal is usually ad-hoc issue/comment drafts, screenshots, downloads, or manually named scratch files — not Chrome cache internals.
 
+If `/tmp` contains the requested deliverable itself (for example: recursive inventory output, exported report, generated media, downloaded attachment, or a helper script the user asked for), classify it as **EXPECTED** residue when it is named, verified, and delivered/linked in the final response. See `references/user-facing-scratch-artifacts.md` for the closeout wording pattern.
+
 ### 4. Lock/trash-stage state
 ```bash
 ls /mnt/local-analysis/.cleanup-lock 2>/dev/null
