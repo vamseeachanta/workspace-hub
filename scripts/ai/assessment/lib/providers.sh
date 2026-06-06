@@ -214,8 +214,10 @@ PYEOF
     local assess_dir telemetry
     assess_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." 2>/dev/null && pwd)"
     telemetry=$(bash "$assess_dir/query-codex-usage.sh" --json 2>/dev/null || true)
+    # Accept either live app-server telemetry (preferred — survives weekly
+    # window rollovers with no recent local session) or session-log telemetry.
     if [[ -n "$telemetry" ]] \
-        && echo "$telemetry" | jq -e '.source == "local-session-rate-limits" and .pct_remaining != null' &>/dev/null; then
+        && echo "$telemetry" | jq -e '(.source == "app-server-live" or .source == "local-session-rate-limits") and .pct_remaining != null' &>/dev/null; then
         echo "$telemetry" | jq -c \
             --argjson limit "$limit" \
             --argjson messages "$messages" \
@@ -223,7 +225,7 @@ PYEOF
               week_messages:$messages, week_pct:.week_pct,
               five_hour_pct:.five_hour_pct, pct_remaining:.pct_remaining,
               hours_to_reset:.hours_to_reset, resets_at:.resets_at,
-              source:"local-session-rate-limits"}'
+              source:.source}'
         return
     fi
 

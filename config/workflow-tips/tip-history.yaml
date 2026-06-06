@@ -109,3 +109,9 @@ shown:
     tips: [bp-context-fork, bp-subagents-offload]
   - date: 2026-06-03
     tips: [eco-insights, cc-desktop-server]
+  - date: 2026-06-04
+    tips: [bp-squash-merge, bp-skill-gotchas]
+  - date: 2026-06-05
+    tips: [eco-session-memory, cc-doctor]
+  - date: 2026-06-06
+    tips: [cc-teleport, cc-effort]

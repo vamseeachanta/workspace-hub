@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-04T05:20:10.455943Z",
+  "generated_at": "2026-06-06T13:20:17.708565Z",
   "current_week": "2026-W23",
-  "scorecard_generated_at": "2026-06-04T05:20:08.511735Z",
+  "scorecard_generated_at": "2026-06-06T13:20:16.007907Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -1337,7 +1337,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-06-03T11:45:07Z",
+          "updatedAt": "2026-06-06T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -2719,7 +2719,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-03T12:11:13Z",
+          "updatedAt": "2026-06-06T12:11:33Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4429,7 +4429,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-04T04:02:13Z",
+          "updatedAt": "2026-06-06T11:05:45Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -5346,7 +5346,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-03T10:10:02Z",
+          "updatedAt": "2026-06-05T10:10:46Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

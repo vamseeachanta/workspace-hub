@@ -460,3 +460,15 @@
 {"ts":"2026-06-04T07:03:15Z","host":"ace-linux-1","agent":"claude","status":"warn","version":"","message":"CLI not found in PATH"}
 {"ts":"2026-06-04T07:03:15Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.136.0","message":"version 0.136.0 below minimum 1.0.0 — run update"}
 {"ts":"2026-06-04T07:03:15Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.27.3","message":"version 0.27.3 below minimum 1.0.0 — run update"}
+{"ts":"2026-06-05T07:02:25Z","host":"ace-linux-1","agent":"claude","status":"warn","version":"","message":"CLI not found in PATH"}
+{"ts":"2026-06-05T07:02:25Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.136.0","message":"version 0.136.0 below minimum 1.0.0 — run update"}
+{"ts":"2026-06-05T07:02:25Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.27.3","message":"version 0.27.3 below minimum 1.0.0 — run update"}
+{"ts":"2026-06-05T07:03:24Z","host":"ace-linux-1","agent":"claude","status":"warn","version":"","message":"CLI not found in PATH"}
+{"ts":"2026-06-05T07:03:24Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.136.0","message":"version 0.136.0 below minimum 1.0.0 — run update"}
+{"ts":"2026-06-05T07:03:24Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.27.3","message":"version 0.27.3 below minimum 1.0.0 — run update"}
+{"ts":"2026-06-06T07:02:29Z","host":"ace-linux-1","agent":"claude","status":"warn","version":"","message":"CLI not found in PATH"}
+{"ts":"2026-06-06T07:02:29Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.136.0","message":"version 0.136.0 below minimum 1.0.0 — run update"}
+{"ts":"2026-06-06T07:02:29Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.27.3","message":"version 0.27.3 below minimum 1.0.0 — run update"}
+{"ts":"2026-06-06T07:03:23Z","host":"ace-linux-1","agent":"claude","status":"warn","version":"","message":"CLI not found in PATH"}
+{"ts":"2026-06-06T07:03:23Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.136.0","message":"version 0.136.0 below minimum 1.0.0 — run update"}
+{"ts":"2026-06-06T07:03:23Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.27.3","message":"version 0.27.3 below minimum 1.0.0 — run update"}

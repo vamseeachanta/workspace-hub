@@ -172,6 +172,8 @@ Latest evidence references:
 - `references/2026-06-02-freshness-audit-lessons.md` — compaction-resume verification pattern, sibling-checkout fallback correction, active-broken-link red-status rule, and concise final cron delivery evidence shape.
 - `references/2026-06-03-freshness-audit-lessons.md` — cron-safe scan execution when `execute_code` is approval-blocked, stale latest-report correction wording, unchanged RED/YELLOW baseline, and final verification evidence shape.
 - `references/2026-06-04-freshness-audit-lessons.md` — rewrite stale generated latest reports instead of patching around old boilerplate, treat sibling fallback as status-critical, summarize runtime/cache noise categorically, and preserve the current RED/YELLOW baseline.
+- `references/2026-06-05-freshness-audit-lessons.md` — read stale latest reports before rewriting, use normal tools when `execute_code` is approval-blocked in cron mode, preserve the RED/YELLOW baseline, and verify final report with stat/hash/git evidence.
+- `references/2026-06-06-freshness-audit-lessons.md` — sibling fallback can correct stale generated latest-report missing-surface claims; explicitly call out the correction, preserve the RED/YELLOW baseline, and keep cron closeout concise with artifact/hash/git evidence.
 
 
 ## Daily freshness automation pattern
