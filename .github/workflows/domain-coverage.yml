@@ -1,0 +1,50 @@
+# workspace-hub#2962: warn-only guard that the ecosystem `domain:` label
+# invariant (exactly one taxonomy-known domain per open issue) does not rot.
+# Companion to the */20 kanban-reconcile cron — same App-token mechanism for
+# cross-repo issue reads, plus contents:read to fetch the deckhand taxonomy SoT.
+# Reports to the run summary; never mutates anything.
+name: domain-coverage
+
+on:
+  schedule:
+    - cron: "17 6 * * *"   # daily, offset off the :00/:20 reconcile slots
+  workflow_dispatch:
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pyyaml
+
+      - name: Mint GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.KANBAN_RECONCILE_APP_ID }}
+          private-key: ${{ secrets.KANBAN_RECONCILE_APP_KEY }}
+          owner: ${{ github.repository_owner }}
+          # Reads sibling-repo issues (coverage) + the deckhand taxonomy file.
+          permission-issues: read
+          permission-contents: read
+
+      - name: Fetch taxonomy SoT (best effort)
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          # The 1:1 crosswalk lives in the private deckhand repo. If unreachable,
+          # the guard still runs zero/multi checks (drift/alias are skipped).
+          gh api repos/${{ github.repository_owner }}/deckhand/contents/routing/taxonomy.yaml \
+            --jq '.content' 2>/dev/null | base64 -d > /tmp/taxonomy.yaml \
+            && echo "taxonomy fetched ($(wc -l < /tmp/taxonomy.yaml) lines)" \
+            || echo "taxonomy unreachable — zero/multi checks only"
+
+      - name: Run domain-coverage guard
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          python scripts/kanban/domain_coverage.py --taxonomy /tmp/taxonomy.yaml \
+            | tee "$GITHUB_STEP_SUMMARY"
