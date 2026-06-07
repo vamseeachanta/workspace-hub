@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-06T17:20:15Z
+Generated: 2026-06-06T21:20:15Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2960 | epic(ecosystem): Deckhand question-routing protocol — domain → subdomain → llm-wiki → analytical workflow or 24h-SLA issue | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2945 | [flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: unavailable_review,unknown_review |
 | #2934 | Compliance alert: W23 — 23% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2933 | Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -242,7 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2485 | feat(enforcement): mechanical linter + ledger for llm-wiki → GTM boundary (enforces #2482 policy) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2484 | feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2483 | chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2478 | follow-up(ci): worldenergydata Python test matrix fails after lint restoration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

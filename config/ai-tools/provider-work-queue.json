@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-06T17:20:13.835852Z",
+  "generated_at": "2026-06-06T21:20:14.219397Z",
   "current_week": "2026-W23",
-  "scorecard_generated_at": "2026-06-06T17:20:12.102791Z",
+  "scorecard_generated_at": "2026-06-06T21:20:12.342293Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -2308,33 +2308,6 @@
           "updatedAt": "2026-06-01T10:03:26Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2478,
-          "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:ci",
-            "status:pending",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:testing-ci-health"
-          ],
-          "updatedAt": "2026-05-31T10:57:01Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4686,6 +4659,24 @@
           "work_type": [
             "research",
             "implementation"
+          ]
+        },
+        {
+          "number": 2960,
+          "title": "epic(ecosystem): Deckhand question-routing protocol \u2014 domain \u2192 subdomain \u2192 llm-wiki \u2192 analytical workflow or 24h-SLA issue",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2960",
+          "labels": [],
+          "updatedAt": "2026-06-06T19:31:41Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
           ]
         }
       ]
