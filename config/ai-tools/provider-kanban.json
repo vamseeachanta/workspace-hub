@@ -28,40 +28,6 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "epic(ecosystem): Deckhand question-routing protocol \u2014 domain \u2192 subdomain \u2192 llm-wiki \u2192 analytical workflow or 24h-SLA issue"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2960,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "epic(ecosystem): Deckhand question-routing protocol \u2014 domain \u2192 subdomain \u2192 llm-wiki \u2192 analytical workflow or 24h-SLA issue",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2960",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: unavailable_review,unknown_review",
         "issue already has approval marker on disk",
@@ -8577,48 +8543,57 @@
       "title": "chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2483",
       "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "bug",
+          "priority:medium",
+          "cat:ci",
+          "status:pending",
+          "machine:dev-primary",
+          "dispatch:ready",
+          "gate:completeness",
+          "domain:testing-ci-health"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2478,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
+      "warnings": []
     }
   ],
-  "generated_at": "2026-06-07T01:20:15Z",
+  "generated_at": "2026-06-07T05:20:15Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "epic(ecosystem): Deckhand question-routing protocol \u2014 domain \u2192 subdomain \u2192 llm-wiki \u2192 analytical workflow or 24h-SLA issue"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2960,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "epic(ecosystem): Deckhand question-routing protocol \u2014 domain \u2192 subdomain \u2192 llm-wiki \u2192 analytical workflow or 24h-SLA issue",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2960",
-        "warnings": []
-      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -17137,6 +17112,49 @@
         "title": "chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2483",
         "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "priority:medium",
+            "cat:ci",
+            "status:pending",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:testing-ci-health"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2478,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
+        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -17147,9 +17165,9 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-06-07T01:20:11.955679Z",
+  "scorecard_generated_at": "2026-06-07T05:20:12.085226Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-07T01:20:11.844289Z",
+  "utilization_generated_at": "2026-06-07T05:20:11.970958Z",
   "warning_summary": {
     "approved_no_marker": 20,
     "approved_no_plan": 11,

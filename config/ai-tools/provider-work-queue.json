@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-07T01:20:13.815137Z",
+  "generated_at": "2026-06-07T05:20:14.066568Z",
   "current_week": "2026-W23",
-  "scorecard_generated_at": "2026-06-07T01:20:11.955679Z",
+  "scorecard_generated_at": "2026-06-07T05:20:12.085226Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -2319,6 +2319,33 @@
           ]
         },
         {
+          "number": 2478,
+          "title": "follow-up(ci): worldenergydata Python test matrix fails after lint restoration",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2478",
+          "labels": [
+            "bug",
+            "priority:medium",
+            "cat:ci",
+            "status:pending",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:testing-ci-health"
+          ],
+          "updatedAt": "2026-05-31T10:57:01Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2483,
           "title": "chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2483",
@@ -4402,7 +4429,7 @@
             "dispatch:ready",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-06T11:05:45Z",
+          "updatedAt": "2026-06-07T04:01:19Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4659,24 +4686,6 @@
           "work_type": [
             "research",
             "implementation"
-          ]
-        },
-        {
-          "number": 2960,
-          "title": "epic(ecosystem): Deckhand question-routing protocol \u2014 domain \u2192 subdomain \u2192 llm-wiki \u2192 analytical workflow or 24h-SLA issue",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2960",
-          "labels": [],
-          "updatedAt": "2026-06-06T19:31:41Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
           ]
         }
       ]
