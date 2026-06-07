@@ -19,11 +19,13 @@ version: 1.0.0
 ## When to Use
 
 - VIV analysis for risers and pipelines
+- Pipeline free-span VIV screening and fatigue prechecks
 - Natural frequency calculation for tubular members
 - Vortex shedding frequency analysis
 - VIV fatigue damage assessment
 - Tubular member VIV screening
 - Safety factor evaluation against VIV criteria
+- Pressure wall prechecks when VIV span inputs depend on pipe wall/section properties
 
 ## Prerequisites
 
@@ -90,6 +92,18 @@ stress_range = viv_fatigue.calculate_stress_range(
     diameter=0.324,
 
 *See sub-skills for full details.*
+
+## Pipeline Free-Span VIV Workflow Notes
+
+For subsea pipeline span work, treat VIV screening as a coupled structural/fatigue workflow rather than a standalone vortex-shedding calculation:
+
+1. Establish pipe section properties from the actual design basis: OD, nominal WT, corrosion allowance, mill tolerance, grade/SMYS, weld factor, temperature factor, and code/design factor.
+2. Run a pressure-wall sanity check before relying on the section for span/fatigue calculations. When using `digitalmodel`, prefer the pipe-capacity implementation under `src/digitalmodel/structural/pipe_capacity/` and document the equation branch used.
+3. Use minimum/corroded wall for span stress and fatigue section properties unless the governing code or project basis specifies another convention.
+4. Then evaluate span natural frequencies, reduced velocity, lock-in susceptibility, stress range, fatigue damage, and acceptance criteria under DNV-RP-F105 / DNV-ST-F101 or project-specific rules.
+5. Do not present pressure containment as final wall adequacy; collapse, propagation buckling, local buckling, installation, hydrotest, thermal/strain, on-bottom stability, and VIV/free-span fatigue may still govern.
+
+See `references/pipeline-span-pressure-wall-precheck.md` for the session-derived digitalmodel pressure-wall pattern and 12 in / 3000 psi example.
 
 ## Key Classes
 

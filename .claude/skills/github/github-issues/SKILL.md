@@ -107,6 +107,11 @@ for i in json.load(sys.stdin)['items']:
 
 Before creating a new feature issue, do a quick grounding pass to avoid duplicates and align with repo taxonomy:
 
+0. If the user's request is to convert notes into issues across multiple repos, first classify each candidate issue by canonical home before creating anything:
+   - client-sensitive engagement notes, follow-up wording, pilot selection, and knowledge-base governance → private/client wiki or engagement repo;
+   - engineering calculations, solver workflows, report-generation patterns, and model-readiness gaps → engineering/model repo;
+   - public/regional data, field economics, HSE/safety datasets, and portfolio screening → data repo.
+   Produce a routing summary with repo buckets before or alongside issue bodies so the user can audit placement.
 1. Search existing issues by the key nouns/phrases in the request. Use broad searches first, then exact-title filtering if needed. `gh --jq` is not the standalone `jq` CLI and does not accept `--arg`; for exact title checks, pipe JSON to Python or `jq` yourself, for example:
 
    ```bash
@@ -122,7 +127,13 @@ Before creating a new feature issue, do a quick grounding pass to avoid duplicat
 5. Prefer writing the body to a temp markdown file and using `--body-file` for long, structured issue descriptions.
 6. If you are creating a linked issue tree (parent + children), render any placeholders like `<PARENT_ISSUE>` / `<QUEUE_ISSUE>` into temporary files before calling `gh issue create`. Do not rely on post-hoc mental substitution.
 7. After creation or update, immediately verify the final artifact's title, labels, URL, and rendered body.
-8. When the issue work also commits plan/report artifacts, verify both local and remote repository state before claiming closeout: pushed `HEAD`, local `origin/main`, remote `refs/heads/main`, ahead/behind count, and tracked worktree cleanliness. Do not treat a local commit hash alone as enough evidence.
+8. If GitHub issue access is blocked (for example, private repo token lacks `repository.issues` and `gh issue list/create` returns `GraphQL: Resource not accessible by personal access token`), do not stop with only a verbal plan. Preserve the work in a durable issue packet plus an executable creation script:
+   - write a repo-routed markdown packet containing every issue title, target repo, labels, body, and acceptance check;
+   - write a `scripts/create-...-issues.sh` helper using `gh issue create --repo <owner/repo> --body-file ...`;
+   - use only labels you have verified exist, or fall back to broadly available labels such as `enhancement` / `documentation` when label access cannot be audited;
+   - run `bash -n` on the helper and count expected issue entries versus `create_issue` calls;
+   - report the exact GitHub access blocker and the command to run after access is fixed.
+9. When the issue work also commits plan/report artifacts, verify both local and remote repository state before claiming closeout: pushed `HEAD`, local `origin/main`, remote `refs/heads/main`, ahead/behind count, and tracked worktree cleanliness. Do not treat a local commit hash alone as enough evidence.
 9. If push emits GitHub-side ref-lock/cannot-lock-ref noise during closeout, do not assume success or failure from the warning. Re-query remote and tracking refs; only call it benign when `HEAD == origin/<branch> == remote refs/heads/<branch>` and ahead/behind is `0 0`.
 10. If ending a session with a linked issue tree, produce a restart-safe closeout: issue states/gate labels, artifact paths, validation results, pushed commits, remote-ref sync evidence, and preserved unrelated worktrees. See `references/issue-tree-exit-closeout.md`.
 11. If you accidentally create an issue with unresolved placeholders, fix it immediately with `gh issue edit --body-file ...` and then re-verify the rendered body.

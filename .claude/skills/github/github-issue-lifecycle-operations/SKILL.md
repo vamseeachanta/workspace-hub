@@ -20,7 +20,8 @@ Use for GitHub issue intake, decomposition, planning, execution handoff, label/e
 6. If a docs-only planning commit is blocked by branch protection / required PR rules, publish the exact planning commit on a short-lived `plan/issue-<N>-...` branch, open a PR, and post the issue's final plan-review comment with the PR/branch evidence instead of treating direct-main push failure as completion.
 6. Use checklist skills as support material, not separate discovery targets.
 7. For user-approved batches, reconcile labels with explicit issue-number `gh issue view` loops and body-file comments; do not rely on broad comma-separated `gh issue list --search` queries for final proof. See `references/approval-label-reconciliation.md`.
-8. For W0/Kanban reconciliation, classify stale WIP into closeable-landed, landed-but-externally-blocked, no-code dependency-blocked, or closed-label-drift before launching any new swarm; verify landed commits against `origin/main`, post evidence via body files, fix labels, and write a scoped report without sweeping unrelated generated dirt. See `references/w0-kanban-reconciliation-closeout.md`.
+8. If `gh issue create` is blocked by current repo credentials after a safe single attempt, do not lose the decomposition. Preserve the proposed issue set as a repo-local issue packet plus a rerunnable `gh issue create --body-file ...` script, then report the access gap plainly without inventing issue URLs. See `references/issue-creation-denied-packet-fallback.md`.
+9. For W0/Kanban reconciliation, classify stale WIP into closeable-landed, landed-but-externally-blocked, no-code dependency-blocked, or closed-label-drift before launching any new swarm; verify landed commits against `origin/main`, post evidence via body files, fix labels, and write a scoped report without sweeping unrelated generated dirt. See `references/w0-kanban-reconciliation-closeout.md`.
 
 ## Consolidated Session Learnings
 

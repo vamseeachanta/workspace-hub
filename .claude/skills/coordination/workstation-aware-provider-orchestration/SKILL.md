@@ -39,6 +39,12 @@ Design or operate a central AI workflow control plane that combines provider quo
 
 ## Planning workflow
 
+### Check company/workstream routing before local execution
+
+Before doing client/company ecosystem work, check whether that company has a designated dispatch surface and worker-machine route. If the work belongs to a specific company channel, keep intake/status there and route execution to the named workstation rather than defaulting to the current Hermes host. Example pattern from Doris: the `doris` Telegram channel is the Doris company-admin dispatch surface, and Doris ecosystem execution should route to `ace-linux-2`; the current Hermes session remains the control/coordination surface only when explicitly asked.
+
+If the worker route is blocked by auth or reachability, preserve the work as repo-owned artifacts and a runnable handoff script, then report the exact block and the command to run on the correct workstation. Do not silently substitute local execution for routed execution.
+
 ### Keep canonical infrastructure out of the decision loop
 
 When the user asks to decide machine roles or tier-1 repo placement, do not turn the stream into recurring repo-placement, memory-layout, skill-layout, artifact-format, output-format, or cross-repo file-structure governance. Treat those as canonical infrastructure unless a narrow enforcement defect is explicitly in scope.
