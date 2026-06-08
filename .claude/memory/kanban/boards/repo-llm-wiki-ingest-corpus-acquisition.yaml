@@ -618,10 +618,302 @@ cards:
     title: '[civil-structural] ANSI/ACP structural and safety-signage slice'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/511
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#520
+    title: '[materials-mechanical] reconcile #109 ledger with ANSI/ACP #511 decisions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/520
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#521
+    title: '[materials-mechanical] ASTM #109-owned F/B-series page and dataset canary'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/521
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#522
+    title: '[materials-mechanical] NACE corrosion materials source/page canary'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/522
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#523
+    title: '[materials-mechanical] SAE J755 locked-source metadata lane'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/523
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#524
+    title: '[electrical-instrumentation] IEC extractable standards page/dataset canary'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/524
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#525
+    title: '[electrical-instrumentation] locked IEC/IEEE metadata-only lane'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/525
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#526
+    title: '[electrical-instrumentation] IEEE 45 interpretation and support-reference routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/526
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#527
+    title: '[production-api] API RP 14C edition-mismatch reconciliation plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/527
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#528
+    title: '[production-api] API RP 14J canonical page and duplicate-source plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/528
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#529
+    title: '[production-api] extractable API standards page/dataset canary plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/529
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#530
+    title: '[production-api] locked/catalog/missing-source handoff plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/530
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#532
+    title: '[specialty-international] AMSA/ILO maritime-law tranche plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/532
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#533
+    title: '[specialty-international] NAVSEA/USACE authorship verification plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/533
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#534
+    title: '[specialty-international] Matthews Daniel/Noble Denton MWS tranche plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/534
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#535
+    title: '[specialty-international] PIANC ports/fenders canary plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/535
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#536
+    title: '[specialty-international] ADCI/IAATO/JSP/SAWE methods canary plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/536
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#537
+    title: '[specialty-international] locked/non-ingestable handoff plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/537
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
       - machine:dev-primary
       - agent:codex
       - dispatch:ready
