@@ -925,3 +925,6 @@
 {"ts":"2026-06-03T09:00:30Z","agent":"unknown","action":"modify","skill_path":".claude/skills/workspace-hub/tier1-indexing-scorecard-and-freshness-audit/SKILL.md","commit":"f22580175386da61372a1df043ee526b57b2806d"}
 {"ts":"2026-06-04T09:00:31Z","agent":"unknown","action":"modify","skill_path":".claude/skills/workspace-hub/tier1-indexing-scorecard-and-freshness-audit/SKILL.md","commit":"bb3a8f8c282214254065e1922238b79912f0d280"}
 {"ts":"2026-06-06T17:00:37Z","agent":"unknown","action":"modify","skill_path":".claude/skills/workspace-hub/tier1-indexing-scorecard-and-freshness-audit/SKILL.md","commit":"2eec42b2dc4bf78b065eb8f5f62eece3e70915c0"}
+{"ts":"2026-06-08T17:00:40Z","agent":"unknown","action":"modify","skill_path":".claude/skills/research/llm-wiki-page-shape-contract/SKILL.md","commit":"43ad45df9cd6b5ca1d346b47c712e3f67afe1d0d"}
+{"ts":"2026-06-08T17:00:40Z","agent":"unknown","action":"modify","skill_path":".claude/skills/research/llm-wiki-weekly-freshness/SKILL.md","commit":"43ad45df9cd6b5ca1d346b47c712e3f67afe1d0d"}
+{"ts":"2026-06-08T17:00:40Z","agent":"unknown","action":"modify","skill_path":".claude/skills/workspace-hub/tier1-indexing-scorecard-and-freshness-audit/SKILL.md","commit":"43ad45df9cd6b5ca1d346b47c712e3f67afe1d0d"}
