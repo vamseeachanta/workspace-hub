@@ -37,13 +37,37 @@ A venue-consistency **contract** (in workspace-hub) guaranteeing exactly-one-act
 - **workspace-hub (this issue):** the venue contract + the single-active-venue lease integration (reuse F3) + a parity/consistency verifier + the comms-dispatch role binding. 
 - **deckhand (cross-repo follow-up issue, filed by this plan):** wire the bot/sweep send-path to honor the lease token (fencing), the retry/dead-letter queue, and the audit emitter. deckhand owns its runtime; workspace-hub owns the contract it must satisfy.
 
-## Design
-1. **Single-active-venue lease** (reuse F3 #2970 versioned-CAS + fencing). A `refs/heads/dispatch/leases/venue-telegram` lease names the one active venue host. The member-audit + escalation-sweep + bot only run when the local host holds the venue lease (the cron wrapper checks the lease token first; non-holder = no-op). Failover = lease handoff (TTL + liveness, same semantics as F3). **Fencing**: every outbound side effect (Telegram send, GitHub mirror) re-verifies the venue token → a partitioned-but-alive old host cannot double-send.
-2. **Delivery contract** (`config/deckhand/`-referenced spec, authored in workspace-hub `docs/ops/telegram-venue-contract.md`):
-   - **Idempotency keys**: extend the existing `needs-mirror→mirrored` pattern to a generalized per-message idempotency key (client-ref + content-hash) so a retried send never duplicates.
-   - **Retry/dead-letter**: failed sends go to a durable queue with bounded retries; terminal failures land in a dead-letter list + operator alert (JSONL notification surface, per the F5/#2967 decision).
-   - **Audit trail**: every client-facing send appended to an audit log (who/when/scope/idempotency-key/result) so cross-host continuity is provable.
-3. **Role binding**: the comms-dispatch role overlay (F1) declares the venue lease + the 3 venue crons as role-managed-but-external-owned (preserved_external from F2) so a failover comms-dispatch host reproduces identical venue behavior.
+## Design (Codex MAJOR folded)
+
+### 1. Lease per CAPABILITY, not one gate for all (Codex #4)
+Venue functions are split by side-effect risk — NOT a single blanket lease:
+| Function | Side-effect | Lease/fencing? |
+|---|---|---|
+| escalation-sweep (mirrors → client repos) | **write** (client-visible) | single-active + fenced |
+| bot outbound replies/sends | **write** (client-visible) | single-active + fenced |
+| member-audit (roster-diff alert) | low/read-mostly | safe multi-host OR single, NOT fenced |
+| parity verifier | read-only | multi-host fine |
+Only the write-side-effect functions go behind `holds_venue()`; read-only functions are not gated (so they can't be silently stopped by lease trouble).
+
+### 2. Independent "no-active-venue / stale-SLA" detector (Codex #1 — the load-bearing safety add)
+Gating a cron behind `holds_venue()` introduces a fleet-wide **silent-stop** risk (CAS fails / clock skew / all hosts no-op → `needs-mirror` ages forever). So an **absence detector runs DECOUPLED from the venue lease** (e.g. on the control-plane host's own schedule): alert if EITHER no valid venue holder exists OR any `needs-mirror`/last-sweep-success heartbeat is older than a threshold (< SLA). The detector never depends on the lease it monitors. JSONL + escalation alert.
+
+### 3. Ordered delivery state machine (Codex #2 — reconcile the two idempotency layers)
+The existing GitHub `needs-mirror→mirrored` label-swap (mirror state) and a new per-message delivery key must not disagree. Define ONE ordered, recoverable state machine:
+`reserve(idempotency_key) → send → record audit → swap label`, with each step checking the prior. Recovery rules cover every partial-failure crack: sent-but-label-not-swapped (audit/dedup record is the source of truth → do NOT re-send, retry only the label swap), label-swapped-before-send (forbidden ordering — send precedes swap), etc. The label-swap remains the durable mirror-state marker; the delivery key guards the outbound send; the audit record reconciles them.
+
+### 4. Delivery guarantees
+- **Idempotency key** = `client-ref + message-type + monotonic-seq` (NOT raw content-hash — see PII below). Retried send with same key → single delivery.
+- **Retry/dead-letter**: bounded retries; terminal failure → dead-letter + operator alert (JSONL, per #2967 decision).
+
+### 5. PII-safe audit (Codex #5)
+Audit rows store `who(host)/when/scope/idempotency-key/result` ONLY — **never chat content, and no reversible client identifier or content-hash** that could correlate sensitive text. Specify redaction, retention window, and access control in the contract. The audit proves cross-host continuity without storing what was said.
+
+### 6. Cross-repo version pinning (Codex #3)
+The contract carries a `contract_version` + hash; deckhand pins the version it implements; the parity verifier (run in deckhand CI) **fails closed** when deckhand's schema is older/unknown vs the pinned contract. Defines a compat window.
+
+### 7. Role binding
+The comms-dispatch role overlay (F1) declares the venue lease + the write-side venue crons as preserved_external (F2) so a failover comms-dispatch host reproduces identical venue behavior; secrets via env.
 
 ## Files to Change
 | Action | Path | Reason |
@@ -63,8 +87,13 @@ A venue-consistency **contract** (in workspace-hub) guaranteeing exactly-one-act
 | test_fencing_superseded_host_no_send | old host token superseded | send aborts (no double-message) |
 | test_idempotency_key_dedups_retry | same message retried | single delivery |
 | test_dead_letter_on_terminal_failure | send fails past retries | dead-letter + notification |
-| test_audit_records_each_send | a send | audit row with key/scope/result |
+| test_audit_records_each_send | a send | audit row with key/scope/result, NO content/reversible-id |
 | test_parity_verifier_flags_missing_contract_field | deckhand config missing a field | verifier reports gap |
+| test_read_only_functions_not_lease_gated | member-audit/parity | run regardless of venue lease (no silent stop) |
+| test_absence_detector_alerts_no_holder | no valid venue holder | alert fires (decoupled from lease) |
+| test_absence_detector_alerts_stale_mirror | needs-mirror older than threshold | alert fires |
+| test_delivery_sm_sent_but_label_unswapped_no_resend | partial failure | retries label swap, does NOT re-send |
+| test_contract_version_mismatch_fails_ci | deckhand pins old/unknown schema | parity verifier fails closed |
 
 ## Acceptance Criteria
 - [ ] Exactly one host runs the venue (lease-gated); a second host no-ops (test-proven).
@@ -72,13 +101,26 @@ A venue-consistency **contract** (in workspace-hub) guaranteeing exactly-one-act
 - [ ] Idempotency-key dedup + retry/dead-letter + audit trail specified in the contract and verifiable.
 - [ ] Parity verifier checks deckhand venue config against the contract; cross-repo deckhand issue filed for the send-path implementation.
 - [ ] `uv run pytest tests/operations/test_venue_lease.py -v` passes; no regression.
-- [ ] Cross-review (T3): Claude + Codex (+ Gemini if available).
+- [ ] Only write-side functions (escalation-sweep, bot send) are lease-gated; read-only (member-audit, parity) are NOT gated (no silent-stop).
+- [ ] Independent absence detector (decoupled from the venue lease) alerts on no-holder OR stale-mirror before SLA breach.
+- [ ] Ordered delivery state machine with recovery rules reconciles the label-swap + delivery-key layers (test-proven for the sent-but-unswapped crack).
+- [ ] Audit stores NO chat content / no reversible client id / no content-hash; redaction + retention + access specified.
+- [ ] Contract carries a version+hash; deckhand parity CI fails closed on schema mismatch.
+- [ ] Cross-review (T3): Claude + Codex (+ Gemini if available). **Codex r1 = MAJOR; folded.**
 
 ## Risks and Open Questions
 - **Risk:** the venue lease must NOT fight the deckhand sweep's existing `needs-mirror→mirrored` idempotency — build on it, don't duplicate. The lease gates *who runs*, the label-swap dedups *what's mirrored*.
 - **Risk:** cross-repo drift — the contract in workspace-hub and the implementation in deckhand can diverge; the parity verifier is the guard (run in deckhand CI).
 - **Open (user):** should F4 actually move the venue crons behind the lease now (touches live a2 client automation), or ship the contract + lease + verifier and gate the live cutover behind a separate approved step? Recommendation: **contract + lease + verifier this slice; live cutover is a separate operator-approved step** (a2 runs live client SLA — highest-stakes host in the fleet).
 - **Open (user):** is a second comms-dispatch host actually planned (failover), or is single-active enough for now? If no failover host exists yet, F4 still delivers the single-active *guarantee* (prevents accidental double-run) even without a standby.
+
+## Adversarial Review Summary
+| Provider | Verdict | Key findings (folded) |
+|---|---|---|
+| Codex r1 | **MAJOR → resolved** | (1) lease-gating creates fleet-wide silent-stop → independent absence detector decoupled from the lease; (2) two idempotency layers can disagree → ordered delivery state machine + recovery rules; (3) cross-repo drift → contract version+hash pin, deckhand CI fails closed; (4) "single-active" too broad → split by side-effect risk (only write functions gated/fenced); (5) audit PII leak → no content/no reversible id/no content-hash, redaction+retention+access. |
+| Gemini | pending/optional | dispatch if quota (T3 → 3-agent) |
+
+**Overall:** MAJOR addressed in-plan; remaining gate = user approval.
 
 ## Complexity: T3
 Cross-repo, live client venue, reuses F3 lease/fencing; full TDD; 3-agent review.
