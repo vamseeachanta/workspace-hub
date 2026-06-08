@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["pyyaml"]
+# ///
 """build-equality-matrix.py — machine-equality matrix verdict engine + HTML render (#2801).
 
 Joins per-machine .claude/state/equality-<machine>.yaml self-reports into one
@@ -8,7 +12,8 @@ machines × dimensions matrix. Two grading families (D2):
   UNIFORM dims (harness, skills, kanban, memory, behavior, scheduler) → equality across
              active machines → EQUAL / DIVERGES / NO-MAJORITY / EXPECTED-DIFF / PENDING
 plus MISSING-EVIDENCE / UNREACHABLE. Roster is read from harness-config.yaml (never
-hardcoded, M1). Run: uv run python scripts/readiness/build-equality-matrix.py [--open]
+hardcoded, M1). Run: uv run --script scripts/readiness/build-equality-matrix.py [--open]
+(PEP-723 inline deps above make the cron/standalone path resolve pyyaml — #2972.)
 """
 from __future__ import annotations
 
