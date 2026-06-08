@@ -222,7 +222,7 @@ cards:
     title: '[specialist-corpus] hydrodynamic-mooring OSS — HAMS, MoorDyn, MoorPy'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/111
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:low
@@ -242,7 +242,7 @@ cards:
     title: '[specialist-corpus] BEM hydrodynamics — capytaine'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/112
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:low
@@ -282,7 +282,7 @@ cards:
     title: '[specialist-corpus] vendor-contractor pdfs — 2H, saipem, doris, frontierdeepwater, OGManufacturing, umbilical, seanation, rock-oil-field'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/115
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:low

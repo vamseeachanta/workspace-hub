@@ -452,3 +452,18 @@ cards:
 
 
       Ingest the public well-log / wellbore-geology datasets needed to support the [Kaggle ROGII Wellbore Geology Prediction](https://www.kaggle.com/competitions/rogii-wellbore-geology-prediction) competition (deadline 2026-08-05) into worldenergydata''s data-collection layer, under a redistribution-clean license posture.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#451
+    title: 'feat(flywheel): integrate BSEE and FDAS source readiness for well-operations runs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/451
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

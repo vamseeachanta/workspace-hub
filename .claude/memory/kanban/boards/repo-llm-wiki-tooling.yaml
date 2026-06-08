@@ -14,7 +14,7 @@ cards:
     title: '[specialist-corpus] reservoir-simulation OSS + meshing — opm-common, gmsh'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/114
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:low

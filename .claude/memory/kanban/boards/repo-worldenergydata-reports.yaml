@@ -209,3 +209,33 @@ cards:
 
 
       Child of marketing-pipeline umbrella **#423**. Combines [#403](https://github.com/vamseeachanta/worldenergydata/issues/403) hurricane-mooring infrastructure with BSEE WAR intervention timing. Operational decision-support framing: when to schedule interventions to minimize storm + currents + crew-fatigue risk overlap.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#452
+    title: 'feat(flywheel): run well-operations insight workflow from WAR, production, FDAS, and HSE inputs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/452
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:data
+      - domain:reports
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#453
+    title: 'feat(flywheel): publish well-operations insight outputs to wiki with provenance and routing gates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/453
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - cat:automation
+      - domain:reports
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
