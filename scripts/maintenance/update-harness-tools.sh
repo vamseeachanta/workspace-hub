@@ -30,6 +30,12 @@ set -uo pipefail
 # repo, so $(git rev-parse) can't resolve it); it is env-overridable and the
 # step is guarded by an [ -x ] existence check, hence the exemption sentinel.
 DECKHAND_HERMES_INSTALLER="${DECKHAND_HERMES_INSTALLER:-/mnt/local-analysis/deckhand/scripts/deckhand/install-hermes-b2.sh}"  # abs-path-allowed
+# deckhand#162 — gateway-host patch-health guard (stdlib-only; alerts owner if
+# the live gateway is unpatched). Run right after re-apply so a re-apply that
+# FAILED (e.g. a patch needs re-fitting for a new hermes) pages within seconds,
+# instead of only the loud-but-unwatched log + the hourly guard cron. The
+# 2026-06-08 incident ran unpatched for hours because that failure was silent.
+DECKHAND_HEALTH_CHECK="${DECKHAND_HEALTH_CHECK:-/mnt/local-analysis/deckhand/scripts/deckhand/patch-health-check.py}"  # abs-path-allowed
 
 # Ensure tool dirs are on PATH. Cron and Windows Task Scheduler launch this with a
 # minimal environment, so the npm-global / ~/.local/bin dirs where the CLIs live
@@ -147,6 +153,11 @@ echo "Harness update — $(date '+%Y-%m-%d %H:%M:%S')"
 
 run_step hermes hermes update
 reapply_hermes_patches   # deckhand#63 — re-apply patches wiped by `hermes update`
+# deckhand#162 — immediately verify patches landed; alert owner on regression.
+if [[ -f "$DECKHAND_HEALTH_CHECK" ]] && (( ! DRY_RUN )); then
+  echo "==> hermes-patches: verifying gateway is patched (deckhand#162 guard)"
+  python3 "$DECKHAND_HEALTH_CHECK" || true   # read-only; alerts owner if unpatched
+fi
 run_step claude claude update
 run_step codex  codex  update
 run_step gemini npm install -g @google/gemini-cli@latest
