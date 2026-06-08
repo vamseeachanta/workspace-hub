@@ -7,6 +7,8 @@ on:
     paths:
       - '.claude/skills/**/SKILL.md'
       - 'scripts/skills/*.sh'
+      - 'scripts/skills/*.py'
+      - 'tests/enforcement/test_validate_skills_frontmatter.py'
       - '.github/workflows/skills-validation.yml'
   push:
     branches:
@@ -14,6 +16,8 @@ on:
     paths:
       - '.claude/skills/**/SKILL.md'
       - 'scripts/skills/*.sh'
+      - 'scripts/skills/*.py'
+      - 'tests/enforcement/test_validate_skills_frontmatter.py'
       - '.github/workflows/skills-validation.yml'
   workflow_dispatch:
 
@@ -27,12 +31,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+
       - name: Run skill validator
-        # NOTE: Many SKILL.md files under _diverged/ and _internal/ do not yet have
-        # YAML frontmatter. Validation runs in soft-fail mode until those are updated.
-        # Tracked in the work queue for remediation.
-        continue-on-error: true
-        run: bash scripts/skills/validate-skills.sh
+        run: |
+          UV_CACHE_DIR=.claude/state/uv-cache bash scripts/skills/validate-skills.sh
+
+      - name: Run validator regression tests
+        run: |
+          UV_CACHE_DIR=.claude/state/uv-cache uv run --no-project --with pytest --with pyyaml pytest tests/enforcement/test_validate_skills_frontmatter.py -v
 
       - name: Generate skills summary
         if: always()
@@ -41,6 +49,3 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           TOTAL=$(find .claude/skills -name 'SKILL.md' | wc -l)
           echo "**Total SKILL.md files:** ${TOTAL}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Note: Validation runs in soft-fail mode." >> $GITHUB_STEP_SUMMARY
-          echo "Files under \`_diverged/\` and \`_internal/\` may lack frontmatter." >> $GITHUB_STEP_SUMMARY
