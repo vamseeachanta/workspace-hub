@@ -130,3 +130,24 @@ def test_no_scorecard_preserves_policy_order():
     result = route("review", "ace-linux-2", policy=POLICY)
     # default policy order is [codex, gemini, claude]; no scorecard => unchanged.
     assert result == ["codex", "gemini", "claude"]
+
+
+# ── #2970 code-review MINOR fixes ────────────────────────────────────────────
+def test_cli_fails_closed_on_empty_after_prune(capsys):
+    import importlib.util as _u, sys as _s
+    # unconditional disallow of all providers for a fake role on a machine
+    pol = {"roles": {"only": ["codex"]},
+           "machine_overrides": {"m": {"codex": {"disallow_attrs": []}}}}
+    import json as _j, tempfile, os
+    d = tempfile.mkdtemp(); pp = os.path.join(d, "p.yaml")
+    import yaml as _y; open(pp, "w").write(_y.safe_dump(pol))
+    rc = module.main(["only", "m", "--policy", pp, "--scorecard", "/nonexistent"])
+    assert rc == 3                              # fail closed
+    rc2 = module.main(["only", "m", "--policy", pp, "--scorecard", "/nonexistent", "--allow-empty"])
+    assert rc2 == 0                             # opt-in permits empty
+
+
+def test_constraint_clause_must_be_string():
+    import pytest
+    with pytest.raises(ValueError):
+        module._constraint_matches([{"not": "a string"}], {"x": "y"})

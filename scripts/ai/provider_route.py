@@ -72,6 +72,8 @@ def _constraint_matches(disallow_attrs: Any, attrs: dict) -> bool:
             f"disallow_attrs must be a list of 'key=value' strings, got {disallow_attrs!r}"
         )
     for clause in disallow_attrs:
+        if not isinstance(clause, str):  # #2970 code-review MINOR #4
+            raise ValueError(f"disallow_attrs clause must be a string, got {clause!r}")
         if "=" not in clause:
             raise ValueError(f"malformed disallow_attrs clause (need key=value): {clause!r}")
         key, _, want = clause.partition("=")
@@ -178,6 +180,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--json", action="store_true", help="emit JSON instead of plain text")
     parser.add_argument(
+        "--allow-empty",
+        action="store_true",
+        help="permit an empty provider list after hard-constraint pruning "
+             "(default: FAIL CLOSED so callers can't fall back to a pruned provider)",
+    )
+    parser.add_argument(
         "--policy", default=str(DEFAULT_POLICY_PATH), help="path to policy YAML"
     )
     parser.add_argument(
@@ -196,6 +204,17 @@ def main(argv: list[str] | None = None) -> int:
     except ValueError as exc:
         parser.error(str(exc))
         return 2  # unreachable; parser.error exits
+
+    # #2970 code-review MINOR #3: fail closed on empty-after-prune so downstream
+    # callers can't interpret blank output as "use a default" and bypass a hard
+    # constraint that legitimately removed every provider.
+    if not providers and not args.allow_empty:
+        sys.stderr.write(
+            f"provider_route: no provider permitted for task '{args.task_type}' on "
+            f"'{args.machine}' after hard-constraint pruning (attrs={attrs}). "
+            f"Pass --allow-empty to permit an empty result.\n"
+        )
+        return 3
 
     if args.json:
         print(

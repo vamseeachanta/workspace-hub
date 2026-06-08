@@ -53,12 +53,19 @@ class GitRefLease:
         msg = self._git("show", "-s", "--format=%B", sha).stdout
         return (sha, json.loads(msg))
 
-    def _write_lease_commit(self, blob_dict: dict) -> str:
+    def _write_lease_commit(self, blob_dict: dict, parent: str | None = None) -> str:
         # JSON-in-commit-message over the empty tree → a commit object that a
         # refs/heads/* ref can point at (and that GitHub will accept on push).
+        # Parenting each update on the PRIOR lease commit guarantees a UNIQUE sha
+        # every CAS (the parent always differs), so the ref strictly advances even
+        # for identical content in the same second (#2970 code-review MINOR #1 —
+        # commit-tree is deterministic per tree+msg+ident+timestamp otherwise).
         empty_tree = self._git("hash-object", "-t", "tree", "-w", "/dev/null").stdout.strip()
         text = json.dumps(blob_dict, sort_keys=True)
-        return self._git("commit-tree", empty_tree, "-m", text).stdout.strip()
+        args = ["commit-tree", empty_tree, "-m", text]
+        if parent:
+            args += ["-p", parent]
+        return self._git(*args).stdout.strip()
 
     def create_ref(self, ref: str, blob_dict: dict):
         csha = self._write_lease_commit(blob_dict)
@@ -67,7 +74,8 @@ class GitRefLease:
         return csha if r.returncode == 0 else None
 
     def cas_update_ref(self, ref: str, expected_sha: str, blob_dict: dict):
-        csha = self._write_lease_commit(blob_dict)
+        # parent on expected_sha → the new commit can never collide with the old
+        csha = self._write_lease_commit(blob_dict, parent=expected_sha)
         # update-ref with an explicit old-value is an atomic compare-and-swap
         r = self._git("update-ref", ref, csha, expected_sha, check=False)
         return csha if r.returncode == 0 else None
