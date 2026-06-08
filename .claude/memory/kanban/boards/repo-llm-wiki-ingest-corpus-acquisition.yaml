@@ -538,7 +538,7 @@ cards:
     title: '[civil-structural] AISC methodology/article + structural steel source slice'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/506
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - status:plan-approved
@@ -554,7 +554,7 @@ cards:
     title: '[civil-structural] ASCE dry dock + ASCE 7 dedupe source slice'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/507
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - status:plan-approved
@@ -570,7 +570,7 @@ cards:
     title: '[civil-structural] ASME BPVC/B31 source-overlap slice'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/508
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - status:plan-approved
@@ -602,7 +602,7 @@ cards:
     title: '[civil-structural] NFPA fire/LNG standards slice'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/510
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - status:plan-approved

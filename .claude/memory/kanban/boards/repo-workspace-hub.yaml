@@ -20784,3 +20784,16 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2986
+    title: 'fix(cron): make nightly skill validation resolve uv reliably'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2986
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:automation
+      - domain:review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
