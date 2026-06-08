@@ -20679,7 +20679,7 @@ cards:
     title: 'feat(workstations): role-overlay harness reconciler — git base + per-role overlay, self-healing [#2967 F1]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2968
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:harness
@@ -20687,6 +20687,7 @@ cards:
       - machine:multi
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -20699,8 +20700,10 @@ cards:
     gh_labels:
       - enhancement
       - cat:harness
+      - status:working
       - machine:multi
-      - status:needs-plan
+      - status:plan-approved
+      - gate:completeness
     initial_status: triage
     priority: 0
     gh_assignees: []
