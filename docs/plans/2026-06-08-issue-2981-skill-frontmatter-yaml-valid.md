@@ -1,12 +1,12 @@
 # Plan for #2981: Make SKILL.md Frontmatter YAML-Valid for Review Dispatch
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T2
 > **Date:** 2026-06-08
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2981
 > **Client:** N/A
 > **Project:** N/A
-> **Review artifacts:** scripts/review/results/2026-06-08-plan-2981-claude.md | scripts/review/results/2026-06-08-plan-2981-gemini.md | scripts/review/results/2026-06-08-plan-2981-r1-*.md | scripts/review/results/2026-06-08-plan-2981-r2-*.md | scripts/review/results/2026-06-08-plan-2981-r3-*.md | scripts/review/results/2026-06-08-plan-2981-r4-codex.md | scripts/review/results/2026-06-08-plan-2981-r5-codex.md | scripts/review/results/2026-06-08-plan-2981-r6-codex.md
+> **Review artifacts:** scripts/review/results/2026-06-08-plan-2981-claude.md | scripts/review/results/2026-06-08-plan-2981-gemini.md | scripts/review/results/2026-06-08-plan-2981-r1-*.md | scripts/review/results/2026-06-08-plan-2981-r2-*.md | scripts/review/results/2026-06-08-plan-2981-r3-*.md | scripts/review/results/2026-06-08-plan-2981-r4-codex.md | scripts/review/results/2026-06-08-plan-2981-r5-codex.md | scripts/review/results/2026-06-08-plan-2981-r6-codex.md | scripts/review/results/2026-06-08-plan-2981-r7-codex.md
 
 ---
 
@@ -116,7 +116,7 @@ rc=0
 
 **Live inventory of YAML parse failures**:
 ```
-$ uv run --no-project --with pyyaml python - <<'PY'
+$ UV_CACHE_DIR=.claude/state/uv-cache uv run --no-project --with pyyaml python - <<'PY'
 from pathlib import Path
 import yaml
 files = sorted(Path('.claude/skills').glob('**/SKILL.md'))
@@ -152,7 +152,7 @@ MALFORMED .claude/skills/coordination/flywheel-closeout/SKILL.md: mapping values
 
 **Reproduction proofs** (verify-against-repo-state, per Step 1.5 of `issue-planning-mode`):
 ```
-$ uv run --no-project --with pyyaml python - <<'PY'
+$ UV_CACHE_DIR=.claude/state/uv-cache uv run --no-project --with pyyaml python - <<'PY'
 from pathlib import Path
 import yaml
 path = Path('.claude/skills/coordination/flywheel-closeout/SKILL.md')
@@ -196,6 +196,7 @@ mapping values are not allowed here
 | Plan review — round 4 Codex | `scripts/review/results/2026-06-08-plan-2981-r4-codex.md` |
 | Plan review — round 5 Codex | `scripts/review/results/2026-06-08-plan-2981-r5-codex.md` |
 | Plan review — round 6 Codex | `scripts/review/results/2026-06-08-plan-2981-r6-codex.md` |
+| Plan review — round 7 Codex | `scripts/review/results/2026-06-08-plan-2981-r7-codex.md` |
 
 ---
 
@@ -336,8 +337,9 @@ timeout -k 5s 120s codex exec "Return exactly CODEX_SKILL_LOAD_OK." </dev/null
 | Codex r4 | MAJOR | Review provenance still omitted r3/r4 artifacts; summary still self-declared r3 FAIL; hard-fail decision remained open; RED proof could pass by missing test file. |
 | Codex r5 | MAJOR | Review provenance still contested; existing `scripts/skills` parser surfaces not accounted for; hard-fail wording still had stale open-decision language; one stale "canonical splitter" phrase remained. |
 | Codex r6 | MAJOR | Provenance still cited unsuffixed Codex artifact; Files-to-Change row retained stale "decide whether" hard-fail wording. |
+| Codex r7 | MINOR | No blockers. Requested `UV_CACHE_DIR` in evidence commands and removal of final canonical-delimiter wording. |
 
-**Overall result:** FAIL after r6 because Codex still returned MAJOR. This revision addresses r6 bookkeeping blockers; do not apply `status:plan-review` until a fresh focused review clears.
+**Overall result:** PASS for plan-review. Claude r3 = MINOR, Codex r7 = MINOR with no blockers, Gemini r3 = UNAVAILABLE after timeout/file-read failure. No MAJOR findings remain in the latest usable provider signal.
 
 Revisions made based on review:
 - Added explicit Python/PyYAML CI setup requirement and workflow path-filter updates.
@@ -362,13 +364,14 @@ Revisions made based on review:
 - Removed stale open-decision language around `continue-on-error: true`.
 - Replaced remaining "canonical splitter" test wording with conservative splitter wording.
 - Moved Codex review provenance to preserved `r6-codex` artifact and removed the final stale "decide whether" Files-to-Change wording.
+- Preserved Codex r7 MINOR artifact, patched `UV_CACHE_DIR` into evidence commands, and removed final canonical-delimiter wording.
 
 ---
 
 ## Risks and Open Questions
 
 - **Risk:** Hard-failing `.github/workflows/skills-validation.yml` before `uv` setup is present would create a red CI for the wrong reason. Sequence: add `uv` setup first, verify live inventory pass after the skill fix, then remove `continue-on-error: true`.
-- **Risk:** A validator that diverges from real skill-loader parsing can false-pass or false-fail. The implementation will document the canonical delimiter rule and keep it intentionally conservative: leading frontmatter only, delimiter line by itself after whitespace stripping, PyYAML mapping required.
+- **Risk:** A validator that diverges from real skill-loader parsing can false-pass or false-fail. The implementation will document the conservative delimiter rule and keep it intentionally conservative: leading frontmatter only, delimiter line by itself after whitespace stripping, PyYAML mapping required.
 - **Decision:** This issue will remove `continue-on-error: true` in the same implementation after adding `uv` setup and after live inventory passes. Rationale: retaining soft-fail leaves the root cause unguarded and a future malformed skill can still break review dispatch.
 
 ---
