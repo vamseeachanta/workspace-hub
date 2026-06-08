@@ -55,13 +55,19 @@ reduction_rules:             # from AI_REVIEW_ROUTING_POLICY.md
   user_requests_lighter: "drop to 2-agent, document"
   provider_unavailable: "continue, record missing reviewer"
 ```
-A resolver `scripts/ai/provider_route.py` exposes `route(task_type, machine) -> [providers]` (pure + CLI). `AI_REVIEW_ROUTING_POLICY.md` becomes a thin doc that POINTS at this file (single source of truth; no drift). Existing scorecard stays the load-balancing input, consulted within a role's provider list.
+A resolver `scripts/ai/provider_route.py` exposes `route(task_type, machine, attrs) -> [providers]` (pure + CLI). **Resolution order (Codex #4 — no ambiguity):** (1) start from the role's provider list; (2) apply **hard constraints** from `machine_overrides` + task attributes (e.g. `authoring_weight: heavy` removes codex on ace-linux-1) — constraints PRUNE the candidate set; (3) only then rank the SURVIVORS by the utilization scorecard. Constraints always dominate the scorecard, so the scorecard can never re-select a provider a constraint removed. Task attributes (`authoring_weight`, `needs_large_context`, etc.) are typed inputs, not free text.
 
-### Part B — registry-driven machine dispatch
+`AI_REVIEW_ROUTING_POLICY.md` becomes a thin doc that POINTS at this file — but ONLY after a **consumer inventory** (Codex #5): grep for everything that reads the .md (prompt assembly, docs linters, grep-based checks) and confirm none depend on its embedded tables before converting; migrate or keep a generated table if any consumer needs it.
+
+### Part B — registry-driven machine dispatch (Codex MAJOR folded)
 Extend `workstation-dispatch.sh` (+ a `dispatch_select.py` core) to:
 1. **Role match**: select machines where `task.roles ∩ machine.harness_profile.roles ≠ ∅` (F1 model), in addition to `requires:` capability match.
-2. **Live probe** (Codex finding): before routing to a host, run a fast capability probe (ssh + `command -v` / license check / `git -C <root> rev-parse`); a host that DECLARES but fails to PROVE the capability is **excluded** (fail-closed), not trusted.
-3. **Atomic lease** (#2720): acquire `refs/heads/dispatch/leases/<task>-<machine>` via non-forced push (the push result is the winner/loser arbiter). Lease carries a **TTL**; a stale lease past TTL may be reclaimed; **split-brain guard** — a coordinator that holds a lease but fails its own liveness probe must not block reclaim (coordinate #2847).
+2. **Two-phase live probe** (Codex #3): a cached probe is used ONLY to skip obviously-bad hosts at *selection*; it NEVER proves readiness. After lease acquisition AND immediately before command execution, run a **just-in-time** probe (license/mount/auth/`git rev-parse`); JIT failure → release lease, do not execute (fail-closed). Cache is a negative filter, not a positive proof.
+3. **Lease = versioned CAS + fencing token** (Codex #1/#2 — the load-bearing fix):
+   - The lease ref blob stores `{holder, generation:N, token:<uuid>, ttl, renewed_at}`. Creation: non-forced push (arbiter for the FIRST holder). **Reclaim/renewal is a compare-and-swap on the ref SHA**: a contender must read generation N, and push an update that the server accepts only if the ref still points at the SHA it read (lost-update-safe); it writes generation N+1 with a new token. Two would-be reclaimers cannot both win — exactly one CAS succeeds.
+   - **Fencing**: the holder's `token` is threaded into execution; every external side effect (GitHub mutation, repo write) is tagged/guarded by the token, and the worker re-verifies it still holds the current token before/through execution. A worker whose token was superseded **aborts its own side effects** → a partition that makes a healthy worker look dead cannot cause double-commit.
+   - **Reclaim safety**: stale-reclaim requires BOTH `now - renewed_at > ttl` AND a failed liveness probe, with `ttl` set larger than worst-case (clock-skew + probe-latency + renewal-interval). Workers **renew through execution** (heartbeat the lease), so a slow-but-alive worker keeps its lease.
+   - **Idempotency fallback**: tasks that cannot be made fencing-safe must be declared `idempotent: true` (dedup key) to be lease-eligible; non-idempotent, non-fenceable tasks are refused.
 4. Canonical state stays GitHub labels + git-ref leases (Telegram = notification only).
 
 ## Files to Change
@@ -82,9 +88,13 @@ Extend `workstation-dispatch.sh` (+ a `dispatch_select.py` core) to:
 | test_route_unknown_tasktype_fails_closed | route('bogus', …) | raises / empty + flagged |
 | test_dispatch_role_match | task roles ∩ machine roles | only role-matching machines eligible |
 | test_live_probe_excludes_declared_but_unproven | declares cap, probe fails | machine excluded (fail-closed) |
-| test_lease_non_forced_push_is_arbiter | two contenders | exactly one wins |
-| test_stale_lease_past_ttl_reclaimable | lease older than TTL | reclaim allowed |
-| test_split_brain_dead_coordinator_not_blocking | lease held by unresponsive host | reclaimable (coordinate #2847) |
+| test_route_hard_constraint_prunes_before_scorecard | authoring_weight=heavy on a1 | codex removed even if scorecard ranks it #1 |
+| test_lease_create_non_forced_push_is_arbiter | two first-contenders | exactly one wins |
+| test_lease_reclaim_is_cas_on_generation | two reclaimers see gen N | exactly one CAS succeeds → gen N+1 |
+| test_superseded_token_aborts_side_effects | worker token superseded | worker refuses to commit (fencing) |
+| test_reclaim_needs_ttl_AND_liveness_fail | past TTL but alive (heartbeat) | NOT reclaimed |
+| test_jit_probe_after_lease_before_exec | cached-capable but JIT probe fails | release lease, no execution |
+| test_non_idempotent_unfenceable_refused | task not fenceable, not idempotent | refused (not lease-eligible) |
 
 ## Acceptance Criteria
 - [ ] `provider_route.py route review ace-linux-1` returns the policy order; the codex-authoring override is applied on a1 (machine_overrides honored).
@@ -92,7 +102,12 @@ Extend `workstation-dispatch.sh` (+ a `dispatch_select.py` core) to:
 - [ ] Dispatch excludes a machine that declares a capability but fails the **live probe**.
 - [ ] Dispatch acquires an atomic git-ref lease (non-forced push arbiter); stale-past-TTL reclaim + split-brain handling tested.
 - [ ] `uv run pytest tests/ai/test_provider_route.py tests/operations/test_dispatch_select.py -v` passes; no regression.
-- [ ] Cross-review (T3): Claude + Codex (+ Gemini if available).
+- [ ] Lease reclaim is a **versioned CAS** (generation + ref-SHA), not TTL-alone; double-reclaim impossible (test-proven).
+- [ ] **Fencing token** threaded through execution; a superseded worker aborts its own side effects (test-proven); non-fenceable + non-idempotent tasks refused.
+- [ ] **JIT probe** runs after lease acquisition and immediately before execution; cache is a negative filter only.
+- [ ] Provider resolution: hard constraints prune BEFORE scorecard ranking (test-proven).
+- [ ] `AI_REVIEW_ROUTING_POLICY.md` migration preceded by a committed consumer inventory.
+- [ ] Cross-review (T3): Claude + Codex (+ Gemini if available). **Codex r1 = MAJOR; folded.**
 
 ## Risks and Open Questions
 - **Risk:** live probe adds latency/SSH dependency; cache probe results with a short TTL; probe failure = exclude, never crash dispatch.
@@ -100,5 +115,13 @@ Extend `workstation-dispatch.sh` (+ a `dispatch_select.py` core) to:
 - **Open (user):** should `provider_route.py` be consumed by the existing review scripts (`scripts/review/*`) in this slice, or only ship the policy+resolver and wire consumers in a fast-follow? Recommendation: ship policy + resolver + dispatch wiring; wire review scripts as fast-follow to bound blast radius.
 - **Open (user):** keep Gemini in the default review set given recent quota 429s, or make it best-effort? Recommendation: keep default, degrade-on-429 per existing reduction rule.
 
+## Adversarial Review Summary
+| Provider | Verdict | Key findings (folded) |
+|---|---|---|
+| Codex r1 | **MAJOR → resolved** | (1) lease reclaim must be **versioned CAS** not TTL-alone (else double-execution); (2) split-brain needs a **fencing token** (else partitioned-alive worker loses lease mid-run); (3) cached live-probe can't prove readiness → **JIT probe before execution**; (4) provider precedence ambiguous → **hard constraints prune before scorecard ranking** + typed task attrs; (5) .md→pointer migration needs a **consumer inventory** first. |
+| Gemini | pending/optional | dispatch if quota (T3 → 3-agent) |
+
+**Overall:** MAJOR addressed in-plan; remaining gate = user approval.
+
 ## Complexity: T3
-Cross-machine dispatch + cross-provider policy; atomic leases; full TDD; 3-agent review.
+Cross-machine dispatch (versioned-CAS leases + fencing) + cross-provider policy; full TDD; 3-agent review.
