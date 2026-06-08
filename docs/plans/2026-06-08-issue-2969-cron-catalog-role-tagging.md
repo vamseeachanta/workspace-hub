@@ -68,6 +68,14 @@ Replace the destructive `--replace` with a marker-block writer:
 - Post-cutover: re-read `crontab -l`, assert **zero net removals** of non-generated lines; run daemon health checks (hermes gateway / whatsapp bridge / deckhand sweep present) on comms hosts; on failure, auto-restore from backup.
 - Idempotent: re-run produces a byte-identical generated block (sorted by id).
 
+### 3a. Crontab TRANSACTION model (Codex MAJOR — the load-bearing fix)
+The cutover is a fail-closed transaction, not a string-splice:
+- **Strict marker parser.** Exactly one managed block `>>> workspace-hub managed (role: …) >>>` … `<<<`. Ambiguous state — zero markers on a non-empty crontab is fine (first install appends a block); **>1 managed block, malformed/nested/manually-edited markers, or a marker mismatch → ABORT** (fail closed, never guess).
+- **Env/header lines** (`MAILTO`, `SHELL`, `PATH=`, blank, comment) are first-class non-generated lines: preserved verbatim in original position; never absorbed into the block.
+- **Lock + compare-and-swap.** Acquire a per-host lock (`flock` on `~/.cron-reconcile.lock`); `A = crontab -l`; compute new; **re-read `B = crontab -l`; if A≠B → ABORT** (deckhand reinstalled mid-run). Publish the lock path so deckhand tooling can honor it (best-effort; CAS is the hard guarantee).
+- **external-owner fingerprints.** `preserved_external` entries match by a structured fingerprint, NOT a brittle full-string: `{owner_repo, command_contains:[...], cwd_contains, script_basename}`. A line matching a fingerprint → preserved. A line matching **no** catalog task and **no** fingerprint → uncataloged → ABORT (operator classifies). Fingerprint tests cover command variation (path/venv/args/log-redirect change) so a deckhand refactor neither blocks forever nor gets mis-absorbed.
+- **Dual-read precedence (deterministic).** Selection key = `task.id` (dedupe). A task installs once if `roles ∩ machine.roles ≠ ∅` **OR** legacy `machines` pin matches; if both paths select it → still once (id-deduped). A legacy `machines` pin that EXCLUDES a role-selected host → **explicit conflict, surfaced in the audit**, role wins only if `task.roles_authoritative: true`, else legacy wins (auditable, no silent wrong-host install).
+
 ### 4. Reconcile reality
 Inventory a1 (~38) + a2 (10) live crons; produce a committed audit mapping each line → {cataloged | preserved_external | uncataloged}. The deckhand trio lands in `preserved_external`.
 
@@ -94,9 +102,20 @@ Inventory a1 (~38) + a2 (10) live crons; produce a committed audit mapping each 
 | test_cutover_idempotent | run twice | byte-identical generated block |
 | test_post_cutover_zero_net_removal | simulated drop | detected → auto-restore |
 | test_dry_run_no_crontab_write | --dry-run | crontab untouched, no backup |
+| test_no_markers_first_install | crontab w/o markers | appends one block, preserves all existing |
+| test_multiple_managed_blocks_aborts | 2 managed blocks | ABORT, fail closed |
+| test_malformed_marker_aborts | edited/nested markers | ABORT |
+| test_env_header_lines_preserved | MAILTO/SHELL/PATH/blank lines | verbatim, not absorbed |
+| test_cas_aborts_on_concurrent_change | crontab changes between read/write | ABORT (no write) |
+| test_fingerprint_matches_command_variation | deckhand cmd w/ changed path/args | still preserved (not uncataloged) |
+| test_fingerprint_no_false_positive | unrelated cron resembling deckhand | NOT mis-preserved |
+| test_dualread_dedupe_single_emit | task matches role AND machines pin | emitted once |
+| test_legacy_pin_conflict_surfaced | machines pin excludes role host | conflict in audit, deterministic winner |
 
 ## Acceptance Criteria
-- [ ] a2 `setup-cron.sh` cutover **preserves** the 3 deckhand crons (proven by test + live dry-run diff).
+- [ ] **Post-REAL-cutover evidence** (not just dry-run): `crontab -l` on a2 shows all 3 deckhand crons present **verbatim, outside** the managed block; committed as audit evidence. Rollback proof: a forced health-check failure auto-restores from backup (demonstrated).
+- [ ] Crontab transaction: strict marker parser (aborts on ambiguous state), `flock` + compare-and-swap (aborts on concurrent change), fingerprint matching robust to command variation (test-proven both directions).
+- [ ] Dual-read is deterministic: id-deduped single emit; legacy-vs-role conflict surfaced in audit.
 - [ ] An uncataloged live line hard-blocks cutover.
 - [ ] Marker-block + backup + one-command restore; post-cutover zero-net-removal assertion; comms-daemon health check.
 - [ ] Role selection works; `machines:` pin + `schedule_variant` still honored (transition).
@@ -108,6 +127,14 @@ Inventory a1 (~38) + a2 (10) live crons; produce a committed audit mapping each 
 - **Risk:** the deckhand crons are installed by deckhand's own tooling; F2 must only PRESERVE them, never manage them (avoid two owners). Encoded via `preserved_external`.
 - **Open (user):** migrate task→machine selection fully to roles now, or dual-read (`roles` + legacy `machines`/`schedule_variant`) for one cycle then deprecate? Recommendation: **dual-read** (safer; deprecate after one clean cycle).
 - **Open (user):** first cutover host — **ace-linux-2** (proves preservation of the live deckhand crons, the highest-risk case) or ace-linux-1 (more tasks, no comms daemons)? Recommendation: **dry-run both; first real cutover on a1** (no client-facing daemons to risk), then a2 once preservation is proven.
+
+## Adversarial Review Summary
+| Provider | Verdict | Key findings (folded) |
+|---|---|---|
+| Codex r1 | **MAJOR → resolved** | (1) marker parser under-specified → strict parser + fail-closed on ambiguous/duplicate/malformed + env-header preservation; (2) preserved_external brittle → structured fingerprints + variation tests; (3) race → flock + compare-and-swap abort; (4) dual-read ambiguity → id-dedupe + deterministic precedence + conflict surfacing; (5) acceptance gap → post-REAL-cutover `crontab -l` evidence + rollback proof. Core fix: **fail-closed crontab transaction model.** |
+| Gemini | pending/optional | dispatch if quota (T3 → 3-agent) |
+
+**Overall:** MAJOR addressed in-plan; remaining gate = user approval.
 
 ## Complexity: T3
 Touches live schedulers on control plane + comms host; full TDD; fail-closed cutover; 3-agent review.
