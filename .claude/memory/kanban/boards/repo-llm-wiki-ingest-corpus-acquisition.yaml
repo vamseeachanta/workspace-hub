@@ -106,7 +106,7 @@ cards:
     title: '[corpus-ingest] drilling-engineering — API drilling spec family (4F, 7K, 8C, etc.)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/105
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:medium
@@ -497,6 +497,126 @@ cards:
     gh_labels:
       - priority:medium
       - cat:data
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#504
+    title: '[conference-canary] add disposition gate runner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/504
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#505
+    title: '[conference-canary] add manual-review lane for failed papers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/505
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#506
+    title: '[civil-structural] AISC methodology/article + structural steel source slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/506
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#507
+    title: '[civil-structural] ASCE dry dock + ASCE 7 dedupe source slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/507
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#508
+    title: '[civil-structural] ASME BPVC/B31 source-overlap slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/508
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#509
+    title: '[civil-structural] AWS welding standards + credential-exclusion slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/509
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#510
+    title: '[civil-structural] NFPA fire/LNG standards slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/510
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#511
+    title: '[civil-structural] ANSI/ACP structural and safety-signage slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/511
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 0
