@@ -75,17 +75,34 @@ Every local-state item is classified; the reconciler only ever touches the first
 | **intentionally-divergent** | theme, per-machine experiments | declared-divergent allowlist; reconciler skips |
 | **uncataloged-live** (Codex MAJOR) | a live cron line / daemon not yet in the catalog (e.g. a2 deckhand escalation sweep, WhatsApp bridge) | **BLOCKS `--apply`** until explicitly classified as role-managed (catalog it) or machine-private/preserved. Never silently removed. |
 
-`harness_profile` declares the role-managed set as **key requirements**, e.g.:
+**Decision Q1 (user, 2026-06-08): COMPOSABLE roles.** A machine carries a `roles: [...]` list; applied overlay = role-invariant `_base` + **union** of listed role overlays. Matches reality (a2 is both comms-dispatch and sim-worker) and keeps future single-purpose hosts expressible. Role definitions live in a new `config/workstations/harness-roles.yaml`; machines reference roles by name in `registry.yaml.harness_profile`:
 ```yaml
-# registry.yaml  machines.dev-secondary.harness_profile:
-harness_profile:
-  role: comms-dispatch
-  inherits: _base            # role-invariant: safety deny-list + Stop/SessionStart hooks (fixes a2 gap)
-  user_settings_required_keys: [permissions.deny, hooks.Stop, hooks.SessionStart, effortLevel]
-  skill_families: [coordination, deckhand, research]
-  schedule_variant: comms-dispatch
-  managed: true              # opt-in; machine must declare before reconciler writes
+# config/workstations/harness-roles.yaml
+roles:
+  _base:                       # role-invariant — applied to EVERY managed machine
+    user_settings_required_keys: [permissions.deny, hooks.Stop, hooks.SessionStart]
+    skill_families: [core]
+  control-plane:
+    user_settings_required_keys: [effortLevel, env.REVIEW_GATE_STRICT]
+    skill_families: [coordination, workspace-hub, research]
+    schedule_jobs: [benchmarks, nightly-learning, memory-backup, equality-matrix, gtm]
+  comms-dispatch:
+    skill_families: [coordination, deckhand]
+    schedule_jobs: [deckhand-member-audit, escalation-sweep, provider-utilization]
+  sim-worker:
+    skill_families: [engineering-sim]
+    schedule_jobs: [solver-watch]
+  licensed-solver:             # Q2: declared for routing, never converged (Windows/Task Scheduler)
+    capabilities: [orcaflex, aqwa, ansys]
+
+# registry.yaml  machines.<id>.harness_profile:
+# dev-primary:    roles: [control-plane]              managed: true
+# dev-secondary:  roles: [comms-dispatch, sim-worker] managed: true
+# licensed-win-1: roles: [licensed-solver]            managed: false   # Q2 declare-only
+# licensed-win-2: roles: [licensed-solver]            managed: false   # Q2 declare-only
+# macbook-portable: deferred (Q2)
 ```
+Apply = `_base ∪ role₁ ∪ role₂…`. **Conflict rule:** a key present in multiple overlays must be identical, else the reconciler **fails closed** (no silent last-writer-wins). `managed: true` is the per-machine opt-in gate before any write; `managed: false` hosts are declared for **F3 dispatch routing only**, never converged.
 
 ---
 
@@ -140,8 +157,8 @@ Each feature lands test-first. Epic-level integration test (added with F2): give
 - **Risk (Codex #2):** registry truth-vs-target staleness → F3 pairs declared capability with live probe.
 - **Risk (Codex #3):** venue consistency ≠ control-plane consistency → F4 is a full delivery contract, not a config copy.
 - **Risk:** `schedule_variant` is currently coarse; F2 must preserve existing `setup-cron.sh` behavior during shadow phase (no silent cron loss).
-- **Open (user):** role names — confirm `{control-plane, comms-dispatch, sim-worker}` is the right taxonomy, or split sim-worker out from comms-dispatch on a2 (a2 currently does both)?
-- **Open (user):** licensed-win-* and macbook are in registry but unreachable — in-scope for role declaration now (declare, don't apply), or defer entirely?
+- **Resolved Q1 (2026-06-08):** COMPOSABLE roles (a machine has `roles: [...]`, overlay = `_base ∪ roles`). a1=[control-plane], a2=[comms-dispatch, sim-worker]. See §managed-surface schema above.
+- **Resolved Q2 (2026-06-08):** declare `licensed-win-1/2` as `roles: [licensed-solver] managed: false` now (routing-only, never converged); defer `macbook-portable`.
 
 ## Complexity: T3
 Systemic, multi-machine, five coordinated features; sequenced so each lands behind its own gate. This document is the architecture+sequencing contract; per-feature plans carry the TDD detail.
