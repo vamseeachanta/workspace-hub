@@ -20718,7 +20718,7 @@ cards:
       - cat:ai-orchestration
       - cat:harness
       - machine:multi
-      - status:needs-plan
+      - status:plan-review
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -20763,6 +20763,19 @@ cards:
     gh_labels:
       - priority:critical
       - compliance-alert
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2981
+    title: 'fix: make SKILL.md frontmatter YAML-valid for review dispatch'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2981
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:automation
+      - domain:review
     initial_status: triage
     priority: 0
     gh_assignees: []
