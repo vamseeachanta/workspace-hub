@@ -233,3 +233,41 @@ def test_holds_venue_write_on_real_git_repo(tmp_path):
     )
     assert res2["allowed"] is False
     assert res2["reason"] == "held by hostA"
+
+
+# ── #2971 code-review MAJOR fixes ────────────────────────────────────────────
+def test_guarded_write_runs_only_when_held_and_fenced(tmp_path):
+    import importlib.util as _u, sys as _s
+    grl = _s.modules.get("git_ref_lease")
+    if grl is None:
+        spec = _u.spec_from_file_location("git_ref_lease", REPO_ROOT / "scripts" / "operations" / "git_ref_lease.py")
+        grl = _u.module_from_spec(spec); _s.modules["git_ref_lease"] = grl; spec.loader.exec_module(grl)
+    import subprocess
+    subprocess.run(["git","init","-q",str(tmp_path)],check=True)
+    subprocess.run(["git","-C",str(tmp_path),"config","user.email","t@t"],check=True)
+    subprocess.run(["git","-C",str(tmp_path),"config","user.name","t"],check=True)
+    git = grl.GitRefLease(str(tmp_path))
+    ran = []
+    res = venue_lease.guarded_write(git, "escalation-sweep", "host-a", 60, 1000.0, "tok-a",
+                           side_effect_fn=lambda: ran.append(1) or "done")
+    assert res["ran"] is True and res["result"] == "done" and ran == [1]
+
+
+def test_guarded_write_skips_when_not_holder(tmp_path):
+    import importlib.util as _u, sys as _s, subprocess
+    grl = _s.modules["git_ref_lease"]
+    subprocess.run(["git","init","-q",str(tmp_path)],check=True)
+    subprocess.run(["git","-C",str(tmp_path),"config","user.email","t@t"],check=True)
+    subprocess.run(["git","-C",str(tmp_path),"config","user.name","t"],check=True)
+    git = grl.GitRefLease(str(tmp_path))
+    venue_lease.holds_venue(git, "escalation-sweep", "host-a", 60, 1000.0, "tok-a")  # host-a holds
+    ran = []
+    res = venue_lease.guarded_write(git, "escalation-sweep", "host-b", 60, 1001.0, "tok-b",
+                           side_effect_fn=lambda: ran.append(1))
+    assert res["ran"] is False and ran == []   # host-b never runs the side effect
+
+
+def test_is_our_lease_rejects_other_holder():
+    assert venue_lease._is_our_lease({"holder": "me"}, "me") is True
+    assert venue_lease._is_our_lease({"holder": "other"}, "me") is False
+    assert venue_lease._is_our_lease(None, "me") is False

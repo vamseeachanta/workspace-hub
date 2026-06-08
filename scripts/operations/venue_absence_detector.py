@@ -69,8 +69,36 @@ def evaluate(
           - "stale-mirror"    : any mirror age > sla_h * warn_fraction
           - "stale-heartbeat" : heartbeat_age_h is not None and > threshold
     """
+    # (0) Input validation — malformed telemetry must FAIL CLOSED, never be read as
+    # healthy (#2971 code-review MAJOR #5).
+    import math
+    if not (isinstance(sla_h, (int, float)) and sla_h > 0):
+        raise ValueError(f"sla_h must be a positive number, got {sla_h!r}")
+    if not (isinstance(warn_fraction, (int, float)) and 0 < warn_fraction <= 1):
+        raise ValueError(f"warn_fraction must be in (0,1], got {warn_fraction!r}")
+    for a in mirror_ages_h or []:
+        if isinstance(a, bool) or not isinstance(a, (int, float)) or math.isnan(a) or a < 0:
+            raise ValueError(f"mirror age must be a non-negative number, got {a!r}")
+    if heartbeat_age_h is not None and (
+        isinstance(heartbeat_age_h, bool)
+        or not isinstance(heartbeat_age_h, (int, float))
+        or math.isnan(heartbeat_age_h) or heartbeat_age_h < 0
+    ):
+        raise ValueError(f"heartbeat_age_h must be None or a non-negative number, got {heartbeat_age_h!r}")
+
     threshold_h = sla_h * warn_fraction
     alerts: list[dict] = []
+
+    # (a0) UNKNOWN telemetry is NOT health (#2971 code-review MAJOR #4): if we have
+    # neither a sweep heartbeat NOR any pending-mirror signal, we cannot prove the
+    # sweep is alive — a dead sweep produces exactly this empty picture. Alert.
+    if heartbeat_age_h is None and not (mirror_ages_h or []):
+        alerts.append({
+            "kind": "unknown-telemetry",
+            "detail": ("no sweep heartbeat and no pending-mirror signal — cannot prove "
+                       "the venue sweep is alive (a dead sweep looks identical)"),
+            "severity": "critical",
+        })
 
     # (a) No valid venue holder — the lease itself has silently stopped.
     if not lease_present or not lease_valid:

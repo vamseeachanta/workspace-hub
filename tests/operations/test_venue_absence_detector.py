@@ -54,10 +54,28 @@ def test_no_holder_when_present_but_invalid():
         lease_present=True,
         lease_valid=False,
         mirror_ages_h=[],
-        heartbeat_age_h=None,
+        heartbeat_age_h=1.0,   # fresh heartbeat → isolates the no-holder condition
     )
     kinds = [a["kind"] for a in alerts]
     assert kinds == ["no-holder"]
+
+
+def test_unknown_telemetry_alerts_when_no_signal():
+    # empty mirrors + no heartbeat = cannot prove the sweep is alive → alert (#2971 MAJOR #4)
+    alerts = vad.evaluate(
+        lease_present=True, lease_valid=True, mirror_ages_h=[], heartbeat_age_h=None,
+    )
+    assert [a["kind"] for a in alerts] == ["unknown-telemetry"]
+
+
+def test_evaluate_rejects_bad_inputs():
+    import pytest
+    for bad in [dict(sla_h=0), dict(warn_fraction=0), dict(warn_fraction=1.5),
+                dict(mirror_ages_h=[-1.0]), dict(heartbeat_age_h=-1.0)]:
+        kw = dict(lease_present=True, lease_valid=True, mirror_ages_h=[], heartbeat_age_h=1.0)
+        kw.update(bad)
+        with pytest.raises(ValueError):
+            vad.evaluate(**kw)
 
 
 def test_stale_mirror_over_threshold():
@@ -106,10 +124,12 @@ def test_stale_heartbeat_over_threshold():
 
 
 def test_none_heartbeat_produces_no_heartbeat_alert():
+    # a None heartbeat must not produce a stale-heartbeat alert; supply a pending
+    # mirror so the unknown-telemetry guard doesn't fire (we have a live signal).
     alerts = vad.evaluate(
         lease_present=True,
         lease_valid=True,
-        mirror_ages_h=[],
+        mirror_ages_h=[1.0],
         heartbeat_age_h=None,
     )
     assert [a["kind"] for a in alerts if a["kind"] == "stale-heartbeat"] == []
@@ -158,7 +178,7 @@ def _args(**overrides):
         lease_present=True,
         lease_valid=True,
         mirror_age_h=[],
-        heartbeat_age_h=None,
+        heartbeat_age_h=1.0,   # fresh heartbeat = genuinely-healthy baseline
         sla_h=24.0,
         warn_fraction=0.5,
     )

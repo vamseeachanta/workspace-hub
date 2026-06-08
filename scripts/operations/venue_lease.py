@@ -121,6 +121,11 @@ def holds_venue(
     # acquire handles both the free-create case and the re-entrant renew case.
     lease = dispatch_lease.acquire(git, name, holder, ttl_s, now, new_token)
     if lease is not None:
+        # Defense-in-depth (#2971 code-review MAJOR #1): never trust a non-None
+        # return as authorization — confirm WE are the holder before allowing a
+        # WRITE. A primitive bug returning another holder's blob must NOT pass.
+        if not _is_our_lease(lease, holder):
+            return {"allowed": False, "reason": "lease not ours after acquire", "lease": None}
         return {"allowed": True, "reason": "acquired", "lease": lease}
 
     # We did not get it via acquire. Inspect why.
@@ -139,9 +144,37 @@ def holds_venue(
             git, name, holder, ttl_s, now, new_token, liveness_fn
         )
         if reclaimed is not None:
+            if not _is_our_lease(reclaimed, holder):
+                return {"allowed": False, "reason": "lease not ours after reclaim", "lease": None}
             return {"allowed": True, "reason": "reclaimed", "lease": reclaimed}
 
     return {"allowed": False, "reason": f"held by {other}", "lease": None}
+
+
+def _is_our_lease(lease: dict, holder: str) -> bool:
+    """A lease authorizes a WRITE only if it actually names us as holder."""
+    return isinstance(lease, dict) and lease.get("holder") == holder
+
+
+def guarded_write(git, capability, holder, ttl_s, now, new_token, side_effect_fn,
+                  *, liveness_fn=None):
+    """Run a client-visible WRITE side effect ONLY while holding the venue lease,
+    fencing immediately before the side effect (#2971 code-review MAJOR #2 — make
+    the fence mandatory by construction, closing the holds_venue→send TOCTOU).
+
+    Returns {"ran": bool, "reason": str, "result": Any}. The side_effect_fn runs
+    iff holds_venue allows AND fence() passes at the last moment; otherwise it is
+    never invoked.
+    """
+    decision = holds_venue(git, capability, holder, ttl_s, now, new_token,
+                           liveness_fn=liveness_fn)
+    if not decision["allowed"]:
+        return {"ran": False, "reason": decision["reason"], "result": None}
+    lease = decision["lease"]
+    # READ capabilities are ungated (lease is None) — no fence needed.
+    if lease is not None and not fence(git, lease["token"]):
+        return {"ran": False, "reason": "fence failed (lease superseded)", "result": None}
+    return {"ran": True, "reason": "ok", "result": side_effect_fn()}
 
 
 def fence(git: Any, token: str) -> bool:
