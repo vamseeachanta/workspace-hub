@@ -173,7 +173,6 @@ cards:
       - cat:ai-orchestration
       - cat:harness
       - domain:refactor
-      - domain:agent-adapters
       - status:needs-plan
       - gate:completeness
     initial_status: triage
@@ -190,7 +189,6 @@ cards:
       - priority:high
       - cat:engineering
       - cat:data-pipeline
-      - domain:data-pipeline
       - domain:refactor
       - status:needs-plan
       - gate:completeness
@@ -208,7 +206,6 @@ cards:
       - priority:medium
       - cat:engineering
       - cat:development
-      - domain:api-contracts
       - domain:refactor
       - status:needs-plan
       - gate:completeness
@@ -227,8 +224,6 @@ cards:
       - cat:documentation
       - cat:website
       - domain:refactor
-      - domain:gtm
-      - domain:website
       - status:needs-plan
       - gate:completeness
     initial_status: triage

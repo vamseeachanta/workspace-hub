@@ -228,7 +228,7 @@ cards:
     title: '[flywheel] Build Friday-demo dispatch cockpit for llm-wiki Codex/subagent push'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/259
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -247,15 +247,69 @@ cards:
     title: '[ABS ingest] Extract ABS data and add derived artifacts to llm-wiki corpus'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/267
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
-      - status:pending
       - cat:data-pipeline
       - domain:marine
       - domain:standards
       - llm-wiki
       - domain:ingest
+      - domain:ingest-batch-extraction
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#200
+    title: '[quality] Code_id dedup + heuristic refinement: same standard fragmented across code_ids'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/200
+    gh_state: open
+    gh_labels:
+      - domain:ingest-batch-extraction
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#201
+    title: '[corpus-ingest] OCR backlog: image-only / DRM-locked PDFs in _skipped.csv (low-extractable-text / open-failed)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/201
+    gh_state: open
+    gh_labels:
+      - domain:ingest-batch-extraction
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#223
+    title: '[quality] _row_identity degrades for no-csv rows with blank table_id (dedup collision risk)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/223
+    gh_state: open
+    gh_labels:
+      - domain:ingest-batch-extraction
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#227
+    title: '[verification] flagged bucket dominated by non-tables (forms/figures) + BSI page-attribution unreliable — strategy for #135'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/227
+    gh_state: open
+    gh_labels:
+      - domain:ingest-batch-extraction
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#291
+    title: 'Re-parse candidates + queue duplicate-row provenance (from #135 vision batches)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/291
+    gh_state: open
+    gh_labels:
       - domain:ingest-batch-extraction
     initial_status: triage
     priority: 0

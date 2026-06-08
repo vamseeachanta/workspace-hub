@@ -95,3 +95,36 @@ cards:
       **Status:** working | **Priority:** medium | **Category:** engineering/pipeline
 
       **Complexity:** complex | **Machine:** ace-linux-2'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#80
+    title: Project DRS | Tasks
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/80
+    gh_state: open
+    gh_labels:
+      - project
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:cad
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: '- [ ] Follow up for work
+
+      - [ ] Send email on autocad working script and close-out the work.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#89
+    title: PB | Task List
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/89
+    gh_state: open
+    gh_labels:
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:cad
+    gh_assignees:
+      - bakkiprasad5669
+    initial_status: triage
+    priority: 0
+    body_excerpt: "- [ ] GrabCAD Inventory\n  - [ ] Create GrabCAD account \n  - [ ] add the CT reel and injector head drawings as part of your portfolio"

@@ -37,7 +37,6 @@ cards:
       - status:blocked
       - machine:dev-primary
       - cat:data-pipeline
-      - domain:knowledge-management
       - domain:marine
       - dispatch:ready
     gh_assignees: []
@@ -53,7 +52,6 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:medium
-      - status:plan-approved
       - status:done
       - cat:knowledge-domain
       - domain:knowledge-management
@@ -68,7 +66,6 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:medium
-      - status:plan-approved
       - status:done
       - cat:documentation
       - domain:knowledge-management
@@ -85,7 +82,6 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:high
-      - status:plan-approved
       - status:done
       - cat:documentation
       - domain:knowledge-management
@@ -102,7 +98,6 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:medium
-      - status:plan-approved
       - status:done
       - cat:documentation
       - domain:knowledge-management
@@ -124,7 +119,6 @@ cards:
       - machine:dev-primary
       - cat:data-pipeline
       - domain:knowledge-management
-      - domain:document-intelligence
       - llm-wiki
       - dispatch:ready
     gh_assignees: []
@@ -178,7 +172,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - status:plan-approved
       - status:done
       - cat:documentation
       - domain:knowledge-management
@@ -255,7 +248,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - status:plan-approved
       - machine:dev-primary
       - cat:documentation
       - domain:knowledge-management
@@ -270,11 +262,10 @@ cards:
     title: 'feat(knowledge): add canonical source-title aliasing for wiki source pages'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/29
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
-      - status:plan-approved
       - machine:dev-primary
       - cat:documentation
       - domain:knowledge-management
@@ -468,7 +459,6 @@ cards:
     gh_labels:
       - documentation
       - enhancement
-      - status:plan-approved
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -479,7 +469,6 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/41
     gh_state: closed
     gh_labels:
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -492,7 +481,6 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/42
     gh_state: closed
     gh_labels:
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -505,7 +493,6 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/43
     gh_state: closed
     gh_labels:
-      - status:plan-approved
       - cat:data-pipeline
       - domain:knowledge-management
       - domain:marine
@@ -519,7 +506,6 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/44
     gh_state: closed
     gh_labels:
-      - status:plan-approved
       - cat:data-pipeline
       - domain:knowledge-management
       - domain:document-intelligence
@@ -533,7 +519,6 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/45
     gh_state: closed
     gh_labels:
-      - status:plan-approved
       - cat:data-pipeline
       - domain:knowledge-management
       - domain:document-intelligence
@@ -547,7 +532,6 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/46
     gh_state: closed
     gh_labels:
-      - status:plan-approved
       - cat:data-pipeline
       - domain:knowledge-management
       - domain:document-intelligence
@@ -561,7 +545,6 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/47
     gh_state: closed
     gh_labels:
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -574,7 +557,6 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/48
     gh_state: closed
     gh_labels:
-      - status:plan-approved
       - cat:data-pipeline
       - domain:knowledge-management
     initial_status: triage
@@ -604,7 +586,6 @@ cards:
       - enhancement
       - priority:high
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -620,7 +601,6 @@ cards:
       - enhancement
       - priority:high
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -636,7 +616,6 @@ cards:
       - enhancement
       - priority:high
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -652,7 +631,6 @@ cards:
       - enhancement
       - priority:high
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -668,7 +646,6 @@ cards:
       - enhancement
       - priority:medium
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -698,7 +675,6 @@ cards:
       - enhancement
       - priority:high
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -714,7 +690,6 @@ cards:
       - enhancement
       - priority:high
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -730,7 +705,6 @@ cards:
       - enhancement
       - priority:high
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -746,7 +720,6 @@ cards:
       - enhancement
       - priority:medium
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -762,7 +735,6 @@ cards:
       - enhancement
       - priority:high
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -792,7 +764,6 @@ cards:
       - enhancement
       - priority:high
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -808,7 +779,6 @@ cards:
       - enhancement
       - priority:high
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -824,7 +794,6 @@ cards:
       - enhancement
       - priority:medium
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -840,7 +809,6 @@ cards:
       - enhancement
       - priority:medium
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -856,7 +824,6 @@ cards:
       - enhancement
       - priority:medium
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -902,7 +869,6 @@ cards:
       - enhancement
       - priority:medium
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -918,7 +884,6 @@ cards:
       - enhancement
       - priority:medium
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -934,7 +899,6 @@ cards:
       - enhancement
       - priority:medium
       - cat:research
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
     initial_status: triage
@@ -946,8 +910,7 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/73
     gh_state: closed
-    gh_labels:
-      - status:plan-approved
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -957,8 +920,7 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/74
     gh_state: closed
-    gh_labels:
-      - status:plan-approved
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -972,7 +934,6 @@ cards:
       - enhancement
       - priority:high
       - cat:automation
-      - status:plan-approved
       - cadence:weekly
       - cat:knowledge-domain
       - domain:knowledge-management
@@ -989,7 +950,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
       - llm-wiki
@@ -1001,17 +961,15 @@ cards:
     title: 'feat(retrieval): generate public-safe knowledge graph and link-graph manifests'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/77
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
-      - status:plan-approved
       - machine:dev-primary
       - cat:data-pipeline
       - cat:harness
       - domain:knowledge-management
       - llm-wiki
-      - dispatch:ready
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -1026,7 +984,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - status:plan-approved
       - cat:harness
       - domain:knowledge-management
       - llm-wiki
@@ -1044,7 +1001,6 @@ cards:
       - priority:medium
       - cat:research
       - cat:automation
-      - status:plan-approved
       - cadence:weekly
       - domain:knowledge-management
       - llm-wiki
@@ -1056,13 +1012,12 @@ cards:
     title: 'arch(agent-access): plan CLI/MCP query surface for llm-wiki manifests and retrieval'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/80
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
       - cat:tooling
       - cat:ai-orchestration
-      - status:plan-approved
       - machine:dev-primary
       - domain:knowledge-management
       - llm-wiki
@@ -1138,8 +1093,7 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/87
     gh_state: closed
-    gh_labels:
-      - status:plan-approved
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1153,7 +1107,6 @@ cards:
       - bug
       - priority:high
       - cat:automation
-      - status:plan-approved
       - cadence:weekly
       - cat:harness
       - domain:knowledge-management
@@ -1167,8 +1120,7 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/89
     gh_state: closed
-    gh_labels:
-      - status:plan-approved
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1178,8 +1130,7 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/90
     gh_state: closed
-    gh_labels:
-      - status:plan-approved
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1189,8 +1140,7 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/91
     gh_state: closed
-    gh_labels:
-      - status:plan-approved
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1202,7 +1152,6 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:high
-      - status:plan-approved
       - cat:knowledge-domain
       - domain:knowledge-management
       - llm-wiki
@@ -1217,7 +1166,6 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:high
-      - status:plan-approved
       - cat:knowledge-domain
       - domain:knowledge-management
       - llm-wiki
@@ -1232,7 +1180,6 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:high
-      - status:plan-approved
       - cat:knowledge-domain
       - domain:knowledge-management
       - llm-wiki
@@ -1247,7 +1194,6 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:high
-      - status:plan-approved
       - cat:knowledge-domain
       - domain:knowledge-management
       - llm-wiki
@@ -1262,7 +1208,6 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:medium
-      - status:plan-approved
       - cat:knowledge-domain
       - domain:knowledge-management
       - llm-wiki
@@ -1277,7 +1222,6 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:medium
-      - status:plan-approved
       - cat:knowledge-domain
       - domain:knowledge-management
       - llm-wiki
@@ -1292,7 +1236,6 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:low
-      - status:plan-approved
       - cat:knowledge-domain
       - domain:knowledge-management
       - llm-wiki
@@ -1307,7 +1250,6 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:low
-      - status:plan-approved
       - cat:documentation
       - domain:knowledge-management
       - llm-wiki
@@ -1324,7 +1266,6 @@ cards:
       - documentation
       - enhancement
       - priority:medium
-      - status:plan-approved
       - cat:knowledge-domain
       - domain:knowledge-management
       - llm-wiki
@@ -1336,14 +1277,13 @@ cards:
     title: 'Validator hardening: address cross-review findings before closing #77'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/102
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
       - machine:dev-primary
       - cat:harness
       - domain:knowledge-management
-      - dispatch:ready
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -1370,6 +1310,7 @@ cards:
       - documentation
       - machine:dev-primary
       - dispatch:ready
+      - domain:ingest
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1391,65 +1332,11 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki#127
-    title: '[client-wiki] docs/disciplines → client-wiki routing plan (~140K docs / 3.4 TB)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki/issues/127
-    gh_state: open
-    gh_labels:
-      - priority:high
-    initial_status: triage
-    priority: 1
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki#128
-    title: '[client-wiki] client_projects triage manifest (76 mixed dirs) — blocking'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki/issues/128
-    gh_state: open
-    gh_labels:
-      - priority:high
-    initial_status: triage
-    priority: 1
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki#129
-    title: '[routing] residual /mnt/ace tails — Production/personal, books, engineering-refs, aceengineer-admin'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki/issues/129
-    gh_state: open
-    gh_labels:
-      - priority:low
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#199
     title: '[verification] Structural-triage refresh: ~13k untriaged table rows after 13-publisher influx (precursor to #135)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/199
     gh_state: closed
-    gh_labels:
-      - status:plan-approved
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki#200
-    title: '[quality] Code_id dedup + heuristic refinement: same standard fragmented across code_ids'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki/issues/200
-    gh_state: open
-    gh_labels: []
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki#201
-    title: '[corpus-ingest] OCR backlog: image-only / DRM-locked PDFs in _skipped.csv (low-extractable-text / open-failed)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki/issues/201
-    gh_state: open
     gh_labels: []
     initial_status: triage
     priority: 0
@@ -1465,44 +1352,13 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki#223
-    title: '[quality] _row_identity degrades for no-csv rows with blank table_id (dedup collision risk)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki/issues/223
-    gh_state: open
-    gh_labels: []
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki#226
-    title: '[corpus-ingest] content-value-filter should reject personal/non-standard docs (resume/bank/wire) by content'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki/issues/226
-    gh_state: open
-    gh_labels: []
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki#227
-    title: '[verification] flagged bucket dominated by non-tables (forms/figures) + BSI page-attribution unreliable — strategy for #135'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki/issues/227
-    gh_state: open
-    gh_labels: []
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#264
     title: '[corpus-ingest] ABS rules and guidelines into llm-wiki'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/264
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
-      - status:plan-review
       - cat:data-pipeline
       - domain:marine
       - domain:standards
@@ -1517,16 +1373,108 @@ cards:
     title: '[ABS ingest] Validate ABS corpus coverage, retrieval, and citations'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/268
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
-      - status:pending
       - cat:data-pipeline
       - domain:marine
       - domain:standards
       - domain:document-intelligence
       - llm-wiki
       - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#289
+    title: Apply artifact-bound manifest validation across ingest workflows
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/289
+    gh_state: open
+    gh_labels:
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#290
+    title: '[ABS ingest] Browser-assisted bulk export of ABS database-backed resources'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/290
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data-pipeline
+      - domain:marine
+      - domain:standards
+      - llm-wiki
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#414
+    title: Integrate vetted OSS extraction tooling (raw-to-knowledge-playbook doc 12)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/414
+    gh_state: open
+    gh_labels:
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#438
+    title: 'Bootstrap transportation-planning domain: toll T&R forecasting methodology'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/438
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#439
+    title: 'Concepts page: value pricing & travelers willingness-to-pay'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/439
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#440
+    title: 'Methodology page: revenue risk, sensitivity & probabilistic forecast conventions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/440
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#443
+    title: 'research(retrieval): Graph RAG assessment for the repo ecosystem — framework decision + phased adoption plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/443
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - domain:knowledge-management
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#444
+    title: 'Create proposed wiki nodes from routing taxonomy v1: semiconductor-engineering domain + engineering/solvers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/444
+    gh_state: open
+    gh_labels:
+      - domain:knowledge-management
     initial_status: triage
     priority: 0
     gh_assignees: []

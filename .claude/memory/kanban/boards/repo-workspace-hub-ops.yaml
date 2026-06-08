@@ -426,3 +426,60 @@ cards:
       ## Defects to address (from latest reviews)
 
       ### 1. Privacy-leaking test (Gemini, repeat)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2878
+    title: 'Kanban: reorganize boards by domain → subdomain (right-size oversized boards); pilot digitalmodel, then ecosystem-wide'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2878
+    gh_state: open
+    gh_labels:
+      - domain:ops
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2886
+    title: 'Disposition: bulk-close 48 content-free WRK-XXXX:untitled migration-ghost issues (ops board cleanup, #2878)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2886
+    gh_state: open
+    gh_labels:
+      - domain:ops
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2962
+    title: 'Domain-coverage guard: nightly check that every open issue has exactly one taxonomy-known domain: label (all 17 repos)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2962
+    gh_state: open
+    gh_labels:
+      - domain:ops
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2963
+    title: Bulk-relabel command + execute the 5 alias renames from routing taxonomy v1 (label-first, kanban-manifest coordinated)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2963
+    gh_state: open
+    gh_labels:
+      - domain:ops
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2964
+    title: 'routing-rules.yaml entries for the 34 new domain: labels (avoid silent dev-primary catch-all)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2964
+    gh_state: open
+    gh_labels:
+      - domain:ops
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

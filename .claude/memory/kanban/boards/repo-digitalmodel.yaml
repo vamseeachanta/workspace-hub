@@ -14,71 +14,6 @@ board:
     - repo-digitalmodel-hydro
     - repo-digitalmodel-qa
 cards:
-  - idempotency_key: gh:vamseeachanta/digitalmodel#168
-    title: 'WRK-171: Cost data calibration — sanctioned project benchmarking & multivariate cost prediction'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/168
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:engineering
-      - priority:medium
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## WRK-171: Cost data calibration — sanctioned project benchmarking & multivariate cost prediction
-
-      **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** marine
-
-      **Repo:** [''worldenergydata''] | **Complexity:** complex | **Machine:** dev-primary'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#89
-    title: PB | Task List
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/89
-    gh_state: open
-    gh_labels:
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees:
-      - bakkiprasad5669
-    initial_status: triage
-    priority: 0
-    body_excerpt: "- [ ] GrabCAD Inventory\n  - [ ] Create GrabCAD account \n  - [ ] add the CT reel and injector head drawings as part of your portfolio"
-  - idempotency_key: gh:vamseeachanta/digitalmodel#80
-    title: Project DRS | Tasks
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/80
-    gh_state: open
-    gh_labels:
-      - project
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees:
-      - vamseeachanta
-    initial_status: triage
-    priority: 0
-    body_excerpt: '- [ ] Follow up for work
-
-      - [ ] Send email on autocad working script and close-out the work.'
-  - idempotency_key: gh:vamseeachanta/digitalmodel#54
-    title: SS |  Task List
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/digitalmodel/issues/54
-    gh_state: open
-    gh_labels:
-      - wrk-item
-      - machine:dev-primary
-      - dispatch:ready
-    gh_assignees:
-      - samdansk2
-    initial_status: triage
-    priority: 0
-    body_excerpt: placeholder for SS assignments
   - idempotency_key: gh:vamseeachanta/digitalmodel#5
     title: rao_analysis QA criteria
     source: github_issue
@@ -3646,6 +3581,7 @@ cards:
       - cat:engineering
       - priority:high
       - cat:business
+      - domain:cfd
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -3654,7 +3590,7 @@ cards:
     title: 'feat(gtm/parametric): demo_04 §1 — config externalization + loader + combined-stress fix + golden (fix-before-golden)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/674
-    gh_state: open
+    gh_state: closed
     gh_labels: []
     initial_status: triage
     priority: 0
@@ -3664,7 +3600,7 @@ cards:
     title: 'feat(gtm/parametric): demo_04 §2 — SQLite Results Store (flatten 5 checks, sentinels/NULL round-trip)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/675
-    gh_state: open
+    gh_state: closed
     gh_labels: []
     initial_status: triage
     priority: 0
@@ -3674,7 +3610,7 @@ cards:
     title: 'feat(gtm/parametric): demo_04 §3 — run/lookup/rebuild-db CLI + per-run report + runbook'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/676
-    gh_state: open
+    gh_state: closed
     gh_labels: []
     initial_status: triage
     priority: 0
@@ -3684,7 +3620,7 @@ cards:
     title: 'feat(gtm/parametric): demo_05 §1 — config + loader + DUAL-PHASE M/W-geometry fix (Phase-2 lift + Phase-5 tie-in) + golden'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/677
-    gh_state: open
+    gh_state: closed
     gh_labels: []
     initial_status: triage
     priority: 0
@@ -3694,7 +3630,7 @@ cards:
     title: 'feat(gtm/parametric): demo_05 §2 — SQLite Results Store (flatten 5 phases, ERROR→NULL round-trip)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/678
-    gh_state: open
+    gh_state: closed
     gh_labels: []
     initial_status: triage
     priority: 0
@@ -3704,7 +3640,7 @@ cards:
     title: 'feat(gtm/parametric): demo_05 §3 — run/lookup/rebuild-db CLI + per-run report + runbook'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/679
-    gh_state: open
+    gh_state: closed
     gh_labels: []
     initial_status: triage
     priority: 0

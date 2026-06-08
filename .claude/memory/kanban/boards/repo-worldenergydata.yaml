@@ -2411,35 +2411,6 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#387
-    title: 'WRK-688: eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/387
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:engineering
-      - priority:medium
-      - wrk-item
-      - status:plan-review
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## WRK-688: eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration'
-  - idempotency_key: gh:vamseeachanta/worldenergydata#392
-    title: 'feat(data): public well-log datasets for wellbore geology — Kaggle ROGII companion ingest'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/392
-    gh_state: open
-    gh_labels:
-      - status:plan-review
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Goal
-
-
-      Ingest the public well-log / wellbore-geology datasets needed to support the [Kaggle ROGII Wellbore Geology Prediction](https://www.kaggle.com/competitions/rogii-wellbore-geology-prediction) competition (deadline 2026-08-05) into worldenergydata''s data-collection layer, under a redistribution-clean license posture.'
   - idempotency_key: gh:vamseeachanta/worldenergydata#394
     title: 'chore(repo-structure): normalize worldenergydata folder/file structure'
     source: github_issue
@@ -2515,78 +2486,6 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#423
-    title: 'epic(marketing): Engineering Analytics from Public Regulatory Data — long-term marketing pipeline'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/423
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:engineering
-      - priority:medium
-      - cat:business
-      - status:plan-review
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Umbrella for A&CE''s public-regulatory-data marketing pipeline
-
-
-      A&CE''s distinctive position: engineering analytics built on public regulatory data (BSEE, EPA, OSHA, PHMSA, USCG, IMO). Operators and engineering firms can verify the data source — every pattern A&CE surfaces gains credibility-by-source. This issue tracks the long-term pipeline of analytical artifacts that exercise that capability.'
-  - idempotency_key: gh:vamseeachanta/worldenergydata#424
-    title: 'feat(analysis): decommissioning market outlook — 5-yr GoM forecast (#423 child)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/424
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:medium
-      - cat:data
-      - cat:business
-      - status:plan-review
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Context
-
-
-      Child of marketing-pipeline umbrella **#423**. Market-intelligence framing, lighter on HSE. Forward-looking given the GoM decommissioning wave (many fields reaching end-of-life). Strong commercial relevance — operators, contractors, and capital allocators all care about decom volumes and timing.'
-  - idempotency_key: gh:vamseeachanta/worldenergydata#426
-    title: 'feat(analysis): drilling HSE patterns (#423 child, sibling of #416)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/426
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:engineering
-      - priority:medium
-      - cat:data
-      - status:plan-review
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Context
-
-
-      Child of marketing-pipeline umbrella **#423**. Sibling of [#416](https://github.com/vamseeachanta/worldenergydata/issues/416) intervention HSE. Reuses the same data + classifier + WAR infrastructure but cuts on DRILL.drilling / DRILL.completion subactivities instead of DRILL.workover / DRILL.well_control.'
-  - idempotency_key: gh:vamseeachanta/worldenergydata#427
-    title: 'feat(analysis): seasonal intervention risk windows — hurricane × WAR × ops (#423 child, sibling of #403)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/427
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:engineering
-      - priority:medium
-      - cat:data
-      - status:plan-review
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Context
-
-
-      Child of marketing-pipeline umbrella **#423**. Combines [#403](https://github.com/vamseeachanta/worldenergydata/issues/403) hurricane-mooring infrastructure with BSEE WAR intervention timing. Operational decision-support framing: when to schedule interventions to minimize storm + currents + crew-fatigue risk overlap.'
   - idempotency_key: gh:vamseeachanta/worldenergydata#429
     title: Public-data corpus routing decision — BSEE/NOAA/USGS/MMS (post llm-wiki privacy flip)
     source: github_issue
@@ -2595,16 +2494,6 @@ cards:
     gh_labels:
       - enhancement
       - status:plan-approved
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#431
-    title: 'Review remediation: unify HTTP stack, PHMSA N+1, EIA key-in-URL (2026-05-23)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/431
-    gh_state: open
-    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []

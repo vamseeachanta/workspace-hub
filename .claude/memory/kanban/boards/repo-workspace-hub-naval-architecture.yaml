@@ -602,3 +602,25 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2760
+    title: 'revise(naval-arch): B1528 SIROCCO force calculation review updates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2760
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering-calculations
+      - domain:naval-architecture
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Purpose
+
+      Capture and execute revisions to the B1528 SIROCCO moored-current ship/rudder force calculation package through an interactive, force-by-force engineering review.
+
+      ## Parent / source issue'

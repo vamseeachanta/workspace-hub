@@ -566,6 +566,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2911
     gh_state: open
     gh_labels:
+      - status:plan-review
       - domain:harness
     initial_status: triage
     priority: 0

@@ -17,6 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - documentation
+      - domain:governance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -29,6 +30,7 @@ cards:
     gh_labels:
       - status:plan-review
       - status:poc-scoped
+      - domain:tooling
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -44,6 +46,7 @@ cards:
       - status:ready-for-scope
       - security-review
       - status:artifact-ready
+      - domain:tooling
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -58,6 +61,7 @@ cards:
       - type:poc
       - status:ready-for-scope
       - status:artifact-ready
+      - domain:ingest
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -71,6 +75,7 @@ cards:
       - area:teams-bot
       - type:poc
       - status:ready-for-scope
+      - domain:tooling
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -86,6 +91,7 @@ cards:
       - status:ready-for-scope
       - security-review
       - status:artifact-ready
+      - domain:tooling
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -100,6 +106,7 @@ cards:
       - type:poc
       - status:ready-for-scope
       - security-review
+      - domain:governance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -113,6 +120,7 @@ cards:
       - area:teams-bot
       - type:poc
       - status:ready-for-scope
+      - domain:content
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -122,7 +130,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/9
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -132,7 +141,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/10
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:content
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -142,7 +152,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/11
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:ingest
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -152,7 +163,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/12
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -162,7 +174,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/13
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:tooling
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -172,7 +185,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/14
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:governance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -182,7 +196,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/15
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -192,7 +207,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/16
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -202,7 +218,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/17
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -212,7 +229,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/18
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -222,7 +240,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/19
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:governance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -232,7 +251,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/20
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:content
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -242,7 +262,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/21
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -252,7 +273,45 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/22
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#23
+    title: domains/ scaffold + domain charters (analysis, marketing) + data-cycle docs updated
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/23
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - status:ready-for-scope
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#24
+    title: Per-domain knowledge pack builder with fail-closed redaction gate + --domain flag on QA engine
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/24
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - status:ready-for-scope
+      - security-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#25
+    title: 'QR onboarding kit per channel: invite links (join-approval on marketing), generic QR script, rotation procedure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/25
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - status:ready-for-scope
     initial_status: triage
     priority: 0
     gh_assignees: []

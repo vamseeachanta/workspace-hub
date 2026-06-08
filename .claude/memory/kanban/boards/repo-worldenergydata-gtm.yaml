@@ -94,3 +94,22 @@ cards:
 
 
       Adopt the workspace-hub `calc-citation-contract` (`.claude/rules/calc-citation-contract.md`) for every standards-derived constant or formula in worldenergydata calc modules. Emit `Citation` instances as sidecars to numeric outputs so engineering results are defensible to reviewers, regulators, and buyers.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#423
+    title: 'epic(marketing): Engineering Analytics from Public Regulatory Data — long-term marketing pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/423
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:business
+      - status:plan-review
+      - domain:gtm
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Umbrella for A&CE''s public-regulatory-data marketing pipeline
+
+
+      A&CE''s distinctive position: engineering analytics built on public regulatory data (BSEE, EPA, OSHA, PHMSA, USCG, IMO). Operators and engineering firms can verify the data source — every pattern A&CE surfaces gains credibility-by-source. This issue tracks the long-term pipeline of analytical artifacts that exercise that capability.'

@@ -11,7 +11,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/hobbies/issues/2
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:code-quality
     initial_status: triage
     priority: 0
     gh_assignees: []

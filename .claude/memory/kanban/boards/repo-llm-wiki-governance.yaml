@@ -14,10 +14,9 @@ cards:
     title: '[ABS ingest] Define ABS metadata, version taxonomy, and source-routing guardrails'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/266
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
-      - status:pending
       - cat:data-pipeline
       - domain:marine
       - domain:standards

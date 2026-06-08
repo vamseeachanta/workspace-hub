@@ -421,3 +421,34 @@ cards:
     initial_status: triage
     priority: 0
     body_excerpt: Get pipeline data with OD, WT, design Pressure, operating pressure, test pressure etc.
+  - idempotency_key: gh:vamseeachanta/worldenergydata#387
+    title: 'WRK-688: eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/387
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - wrk-item
+      - status:plan-review
+      - domain:ingest
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-688: eval(worldenergydata): evaluate pyWAsP for wind resource assessment integration'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#392
+    title: 'feat(data): public well-log datasets for wellbore geology — Kaggle ROGII companion ingest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/392
+    gh_state: open
+    gh_labels:
+      - status:plan-review
+      - domain:ingest
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Goal
+
+
+      Ingest the public well-log / wellbore-geology datasets needed to support the [Kaggle ROGII Wellbore Geology Prediction](https://www.kaggle.com/competitions/rogii-wellbore-geology-prediction) competition (deadline 2026-08-05) into worldenergydata''s data-collection layer, under a redistribution-clean license posture.'

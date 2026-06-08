@@ -130,3 +130,14 @@ cards:
       `OrcaFlexConverterEnhanced.convert_batch()` with `parallel=True` does not update `self.stats[''successful'']`, `self.stats[''failed'']`, `self.stats[''validation_failed'']`, or `self.stats[''errors'']` as worker futures complete. The progress bar shows `✓` for each converted file, but `stats[''successful'']` remains `0` after batch completion.
 
       ## Evidence'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#686
+    title: Adopt vetted OSS tooling for Excel-to-code and solver-data lanes (raw-to-knowledge-playbook doc 12)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/686
+    gh_state: open
+    gh_labels:
+      - domain:solver-infra
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

@@ -111,30 +111,6 @@ cards:
       Single-issue thread for the `daily-inbox-manageability` remote routine to post its daily report. Each comment is a single day''s inbox state across `aceengineer.com` and `achantav@gmail.com` (personal). Mute this issue when graduated; close it when the routine is disabled.
 
       ## Graduation criteria (the "under control" definition)'
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2563
-    title: Set up Telegram mobile access for Hermes AI control
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2563
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:high
-      - cat:ai-orchestration
-      - cat:operations
-      - domain:integrations
-      - domain:notification
-      - machine:dev-primary
-      - status:plan-approved
-      - dispatch:ready
-      - gate:completeness
-    gh_assignees: []
-    initial_status: triage
-    priority: 1
-    body_excerpt: '## Summary
-
-      Set up Telegram-based mobile access to Hermes/AI so Vamsee can interact with the agent, approve/adjust plans, tweak task lists, and monitor/steer work while on the move.
-
-      ## Current user state'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2647
     title: 'ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)'
     source: github_issue
@@ -277,26 +253,6 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2931
-    title: Plan Deckhand named repository scopes and scope policy
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2931
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:medium
-      - cat:ai-orchestration
-      - domain:security
-      - domain:notification
-      - status:plan-review
-      - status:plan-approved
-      - gate:completeness
-      - deckhand
-      - repo:workspace-hub
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2933
     title: 'Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message'
     source: github_issue
@@ -310,71 +266,5 @@ cards:
       - status:needs-plan
     initial_status: triage
     priority: 1
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2937
-    title: 'Deckhand: seamless member-onboarding guide (per connected platform, living doc)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2937
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:operations
-      - domain:notification
-      - status:needs-plan
-      - deckhand
-      - repo:workspace-hub
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2939
-    title: 'Deckhand: connect WhatsApp platform — channels + user onboarding (mirror Telegram model)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2939
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:medium
-      - cat:ai-orchestration
-      - domain:notification
-      - status:needs-plan
-      - deckhand
-      - repo:workspace-hub
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2941
-    title: 'Deckhand: connect Microsoft Teams platform — channels + user onboarding (Bot Framework)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2941
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:medium
-      - cat:ai-orchestration
-      - domain:notification
-      - status:plan-review
-      - deckhand
-      - repo:workspace-hub
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2943
-    title: 'Deckhand: encrypt scoped PATs at rest (keyring / age / systemd LoadCredential)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2943
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:medium
-      - cat:ai-orchestration
-      - domain:notification
-      - deckhand
-      - repo:workspace-hub
-    initial_status: triage
-    priority: 0
     gh_assignees: []
     body_excerpt: ''

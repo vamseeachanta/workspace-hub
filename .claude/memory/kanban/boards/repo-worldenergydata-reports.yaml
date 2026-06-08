@@ -152,3 +152,60 @@ cards:
     body_excerpt: '## Summary
 
       Create a foundation-only v1 disclosure data layer for annual project/operator cost disclosures.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#424
+    title: 'feat(analysis): decommissioning market outlook — 5-yr GoM forecast (#423 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/424
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - cat:business
+      - status:plan-review
+      - domain:reports
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+
+      Child of marketing-pipeline umbrella **#423**. Market-intelligence framing, lighter on HSE. Forward-looking given the GoM decommissioning wave (many fields reaching end-of-life). Strong commercial relevance — operators, contractors, and capital allocators all care about decom volumes and timing.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#426
+    title: 'feat(analysis): drilling HSE patterns (#423 child, sibling of #416)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/426
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - domain:reports
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+
+      Child of marketing-pipeline umbrella **#423**. Sibling of [#416](https://github.com/vamseeachanta/worldenergydata/issues/416) intervention HSE. Reuses the same data + classifier + WAR infrastructure but cuts on DRILL.drilling / DRILL.completion subactivities instead of DRILL.workover / DRILL.well_control.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#427
+    title: 'feat(analysis): seasonal intervention risk windows — hurricane × WAR × ops (#423 child, sibling of #403)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/427
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - domain:reports
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+
+      Child of marketing-pipeline umbrella **#423**. Combines [#403](https://github.com/vamseeachanta/worldenergydata/issues/403) hurricane-mooring infrastructure with BSEE WAR intervention timing. Operational decision-support framing: when to schedule interventions to minimize storm + currents + crew-fatigue risk overlap.'

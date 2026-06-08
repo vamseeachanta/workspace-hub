@@ -487,3 +487,14 @@ cards:
     initial_status: triage
     priority: 0
     body_excerpt: Get wind farm and structural data from public sources
+  - idempotency_key: gh:vamseeachanta/worldenergydata#431
+    title: 'Review remediation: unify HTTP stack, PHMSA N+1, EIA key-in-URL (2026-05-23)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/431
+    gh_state: open
+    gh_labels:
+      - domain:quality
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

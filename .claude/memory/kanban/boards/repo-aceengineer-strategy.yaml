@@ -19,6 +19,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
+      - domain:gtm
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -38,6 +39,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
+      - domain:gtm
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -57,6 +59,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
+      - domain:gtm
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -76,6 +79,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
+      - domain:gtm
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -95,6 +99,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
+      - domain:gtm
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -113,6 +118,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
+      - domain:operations-governance
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -132,6 +138,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
+      - domain:product
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -152,6 +159,7 @@ cards:
       - layer:feedback
       - dispatch:ready
       - machine:dev-primary
+      - domain:pilots-data
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -172,6 +180,7 @@ cards:
       - layer:realtime
       - dispatch:ready
       - machine:dev-primary
+      - domain:pilots-data
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -192,6 +201,7 @@ cards:
       - layer:client-data
       - dispatch:ready
       - machine:dev-primary
+      - domain:pilots-data
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -212,6 +222,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
+      - domain:operations-governance
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -232,6 +243,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
+      - domain:commercial
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -253,6 +265,7 @@ cards:
       - layer:client-data
       - dispatch:ready
       - machine:dev-primary
+      - domain:product
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -274,6 +287,7 @@ cards:
       - layer:client-data
       - dispatch:ready
       - machine:dev-primary
+      - domain:product
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -294,6 +308,7 @@ cards:
       - layer:public-data
       - dispatch:ready
       - machine:dev-primary
+      - domain:product
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -314,6 +329,7 @@ cards:
       - layer:public-data
       - dispatch:ready
       - machine:dev-primary
+      - domain:product
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -334,6 +350,7 @@ cards:
       - layer:standards
       - dispatch:ready
       - machine:dev-primary
+      - domain:product
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -354,6 +371,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
+      - domain:commercial
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -374,6 +392,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
+      - domain:product
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -394,6 +413,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
+      - domain:product
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -409,6 +429,352 @@ cards:
     gh_state: closed
     gh_labels:
       - strategy
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#25
+    title: 'EXP-002: Open Deck demand validation — run + weekly tally (30 days)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/25
+    gh_state: open
+    gh_labels:
+      - domain:pilots-data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#30
+    title: 'Outreach #1 (canary): Intermoor — held DM, send gate, follow-up ladder'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/30
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - status:scoping
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#31
+    title: 'Build Open Deck #1: Naval architecture & hydrodynamics capability deck (due ~2026-06-11)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/31
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - status:scoping
+      - domain:product
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#32
+    title: 'Installation-contractor track (majors): envelope-analysis invitations — Subsea7, McDermott, Ocean Installer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/32
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - status:scoping
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#33
+    title: Pursue Tier S smaller installation contractors (EPIC, Bisso, Cal Dive, Leviathan, ...) — decom envelope outreach
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/33
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - status:scoping
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#34
+    title: MODEC Mooring Solutions BU (ex-SOFEC) — network outreach via mooring community
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/34
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - status:scoping
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#35
+    title: BSEE idle-iron decom-targeting intel — worldenergydata cross-sell asset
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/35
+    gh_state: open
+    gh_labels:
+      - priority:P2
+      - strategy
+      - status:scoping
+      - domain:pilots-data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#36
+    title: Close out EXP-001 (LinkedIn OrcaFlex content series) — stale since ~2026-03-16
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/36
+    gh_state: open
+    gh_labels:
+      - priority:P3
+      - strategy
+      - status:scoping
+      - domain:pilots-data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#40
+    title: Pamphlet/onboarding content rewrite — speak to core-discipline engineers (mechanical, civil, structural, O&G)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/40
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#42
+    title: "Decision record: Deckhand as the marketing-outreach surface — reconcile with EXP-003 'do not market it' note"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/42
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - status:scoping
+      - domain:product
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#43
+    title: "Messaging upgrade from Collide VoC: 'AI that shows its work' + 'deterministic deliverables' across decks and deckhand demos"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/43
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - status:scoping
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#44
+    title: "Collide community presence track: offshore 'Problem of the Week' series + Q&A answering (VA member, 362 Watts)"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/44
+    gh_state: open
+    gh_labels:
+      - priority:P2
+      - strategy
+      - status:scoping
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#45
+    title: 'ICP add: independent due-diligence consultants (NDA-bound) — local-first/NDA-safe analysis offer, deckhand security posture as proof'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/45
+    gh_state: open
+    gh_labels:
+      - priority:P2
+      - strategy
+      - status:scoping
+      - domain:commercial
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#46
+    title: 'EXP-003 invitation copy: challenge-as-research CTA question + one provocation-shaped proof post'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/46
+    gh_state: open
+    gh_labels:
+      - priority:P3
+      - strategy
+      - status:scoping
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#47
+    title: 'Funnel mapping: EXP-003 invitations → capability deck → Open Deck onboarding → EXP-002 tally'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/47
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - status:scoping
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#48
+    title: Marketing promotion around Open Deck decks — cadence, amplification, gated assets (public bot-promo gated on EXP-002 PASS)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/48
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - status:scoping
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#51
+    title: 'Epic: Content→Outreach flywheel — feed-scan → case studies → triage → outreach → deckhand delivery → demand feedback'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/51
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - epic
+      - strategy
+      - status:scoping
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#52
+    title: GTM daily reanalysis log (Open Deck / flywheel / Collide)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/52
+    gh_state: open
+    gh_labels:
+      - strategy
+      - domain:operations-governance
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#53
+    title: 'Publish Case Study #1 — voice-edit DNV-RP-F105 post, time with deck #1 (#31) + Intermoor canary (#30)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/53
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - status:scoping
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#54
+    title: Engagement-to-queue triage loop — CS#1 reactors/commenters → ICP screen → outreach queue with content-trigger note
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/54
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - status:scoping
+      - dispatch:ready
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#55
+    title: Unified monthly LinkedIn scan routine — one scan, three outputs (feed-scan doc + job-signals refresh + llm-wiki trends ingest PR)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/55
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - status:scoping
+      - dispatch:ready
+      - domain:operations-governance
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#56
+    title: Case-study series pipeline CS#2+ — each CS mapped to Open Deck deck / EXP-002 ask-domain; CS#2 candidates queued
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/56
+    gh_state: open
+    gh_labels:
+      - priority:P2
+      - strategy
+      - status:scoping
+      - dispatch:ready
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#57
+    title: Brand assets HITL — LinkedIn newsletter shell + named framework/blueprint infographic (assumption-ledger methodology)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/57
+    gh_state: open
+    gh_labels:
+      - priority:P2
+      - strategy
+      - status:scoping
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#58
+    title: Demand-signal ↔ content topic loop — deckhand#22 weekly asks-summary drives next CS/deck topic selection
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/58
+    gh_state: open
+    gh_labels:
+      - priority:P2
+      - strategy
+      - status:scoping
+      - dispatch:ready
+      - domain:pilots-data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#59
+    title: Hanwha Ocean mooring engineer applications — Senior (#1546) + Lead (#1547) portal follow-up
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/59
+    gh_state: open
+    gh_labels:
+      - priority:P2
+      - strategy
+      - status:scoping
+      - domain:gtm
     initial_status: triage
     priority: 0
     gh_assignees: []

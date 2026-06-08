@@ -16,6 +16,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:records-ops
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -32,6 +33,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:tax
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -48,6 +50,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:records-ops
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -64,6 +67,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:tax
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -80,6 +84,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:tax
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -96,6 +101,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:records-ops
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -112,6 +118,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:rd-program
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -128,6 +135,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:tax
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -144,6 +152,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:rd-program
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -160,6 +169,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:tax
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -176,6 +186,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:tax
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -192,6 +203,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:rd-program
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -208,6 +220,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:records-ops
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -224,6 +237,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:tax
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -240,6 +254,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:tax
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -256,6 +271,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - domain:tax
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -329,7 +345,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/26
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:security
     initial_status: triage
     priority: 0
     gh_assignees: []

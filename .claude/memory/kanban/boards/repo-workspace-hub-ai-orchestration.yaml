@@ -823,3 +823,19 @@ cards:
       **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** harness | **Subcategory:** hooks
 
       **Repo:** [''workspace-hub''] | **Complexity:** high | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2967
+    title: 'epic(workstations): consistent experience via dynamic workflows — role-overlay reconciler + workflow catalog + registry dispatch + Telegram venue [extends #2887/#2720]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2967
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:multi
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

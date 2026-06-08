@@ -707,7 +707,6 @@ cards:
       - priority:medium
       - cat:ai-orchestration
       - domain:ai-config
-      - domain:tooling
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -745,7 +744,7 @@ cards:
       - domain:ai-config
       - machine:multi
       - agent:codex
-      - status:needs-plan
+      - status:plan-review
       - gate:completeness
     initial_status: triage
     priority: 1

@@ -34,7 +34,7 @@ cards:
     title: '[flywheel] Convert verification and ingest learnings into reusable llm-wiki skills/scripts/tools'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/260
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -48,5 +48,16 @@ cards:
       - domain:ingest-batch-extraction
     initial_status: triage
     priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#420
+    title: 'EPIC: storage architecture — how the llm-wikis are saved (assessment + ultra research)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/420
+    gh_state: open
+    gh_labels:
+      - domain:tooling
+    initial_status: triage
+    priority: 0
     gh_assignees: []
     body_excerpt: ''

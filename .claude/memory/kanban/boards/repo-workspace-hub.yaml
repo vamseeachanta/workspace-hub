@@ -21,6 +21,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2761
     gh_state: open
     gh_labels:
+      - domain:uncategorised
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -1302,6 +1303,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
+      - domain:uncategorised
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -18656,28 +18658,6 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2878
-    title: 'Kanban: reorganize boards by domain → subdomain (right-size oversized boards); pilot digitalmodel, then ecosystem-wide'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2878
-    gh_state: open
-    gh_labels: []
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2886
-    title: 'Disposition: bulk-close 48 content-free WRK-XXXX:untitled migration-ghost issues (ops board cleanup, #2878)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2886
-    gh_state: open
-    gh_labels:
-      - status:plan-approved
-      - gate:completeness
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#39
     title: 'WRK-1330: Archive synthesis — backfill knowledge capture + distill into roadmap'
     source: github_issue
@@ -20505,7 +20485,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2920
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:machine-setup
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -20550,85 +20531,12 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2934
     gh_state: open
     gh_labels:
+      - priority:medium
       - priority:critical
+      - domain:workflow-compliance
       - compliance-alert
     initial_status: triage
     priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2936
-    title: Rotate Deckhand PATs by 2026-06-08 (transcript exposure)
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2936
-    gh_state: open
-    gh_labels:
-      - priority:high
-      - cat:operations
-      - domain:security
-      - status:needs-plan
-      - deckhand
-      - repo:workspace-hub
-    initial_status: triage
-    priority: 1
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2938
-    title: 'Deckhand: wire + harden rate-limit / abuse controls (live enforcement)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2938
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:high
-      - cat:operations
-      - domain:security
-      - status:needs-plan
-      - deckhand
-      - repo:workspace-hub
-    initial_status: triage
-    priority: 1
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2940
-    title: 'Deckhand: migrate WhatsApp off personal number to a dedicated bot number (by 2026-06-08)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2940
-    gh_state: open
-    gh_labels:
-      - deckhand
-      - repo:workspace-hub
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2942
-    title: 'Deckhand: install-hermes-b2.sh should symlink the deckhand-scope plugin (not just shims)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2942
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:low
-      - cat:ai-orchestration
-      - deckhand
-      - repo:workspace-hub
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2944
-    title: 'Deckhand: aggressively document all work + build a fresh-session knowledge map'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2944
-    gh_state: open
-    gh_labels:
-      - documentation
-      - priority:high
-      - cat:ai-orchestration
-      - deckhand
-      - repo:workspace-hub
-    initial_status: triage
-    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2945
@@ -20643,23 +20551,210 @@ cards:
       - cat:harness
       - cat:harness/skills
       - domain:skill-improvement
-      - domain:tooling
-      - domain:agent-patterns
+      - status:plan-approved
+      - gate:completeness
     initial_status: triage
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2948
-    title: 'Deckhand: create a dedicated PRIVATE repo (engine + operational data/work + sanitized chat history)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2550
+    title: 'chore(security): codify public repo interaction-limit renewal in scheduled tasks'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2948
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2550
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - domain:security
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Move the public-repo collaborator-only interaction-limit renewal from a Hermes-local cron reminder into workspace-hub''s canonical scheduled-task system, with deterministic verification and issue-comment reporting.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2563
+    title: Set up Telegram mobile access for Hermes AI control
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2563
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:ai-orchestration
+      - cat:operations
+      - domain:integrations
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Set up Telegram-based mobile access to Hermes/AI so Vamsee can interact with the agent, approve/adjust plans, tweak task lists, and monitor/steer work while on the move.
+
+      ## Current user state'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2742
+    title: 'plan(hermes): Windows and macOS Telegram/Hermes dispatch parity path'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2742
     gh_state: open
     gh_labels:
       - enhancement
       - priority:medium
       - cat:ai-orchestration
-      - deckhand
-      - repo:workspace-hub
+      - cat:operations
+      - domain:machine-setup
+      - machine:dev-primary
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Plan how Windows and macOS machines can move from status-only/manual machines to safe Telegram/Hermes dispatch targets.
+
+      ## Current state'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2751
+    title: 'Cross-platform harness setup: integrate AI-provider bootstrap, auth orchestration, macOS+PowerShell, per-machine status registry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2751
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:harness
+      - domain:machine-setup
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Context
+
+      Following a thorough cross-machine reproducibility assessment (parent conversation 2026-05-19), the AI-provider harness setup on a fresh machine has gaps relative to "identical behavior" parity. Most infrastructure exists; the work is **gap-fill against `scripts/setup/new-machine-setup.sh` (WRK-313)**, not greenfield.
+
+      ## Background — what already exists'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2753
+    title: 'Operational tracker: fresh-machine setup runs (evergreen — do not close)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2753
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - domain:machine-setup
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Purpose
+
+      This is the **operational tracker** for fresh-machine setup runs across the workspace-hub fleet. It is intentionally evergreen — never closed once opened. Each time someone bootstraps a new machine via the cross-platform setup tooling (built per [#2751](https://github.com/vamseeachanta/workspace-hub/issues/2751)), they post a comment on this issue with the machine''s harness-parity status report.
+
+      ## How operators use this issue'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2960
+    title: 'epic(ecosystem): Deckhand question-routing protocol — domain → subdomain → llm-wiki → analytical workflow or 24h-SLA issue'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2960
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2968
+    title: 'feat(workstations): role-overlay harness reconciler — git base + per-role overlay, self-healing [#2967 F1]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2968
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - machine:multi
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2969
+    title: 'feat(workstations): declarative workflow/cron catalog — role-tagged, materialize per-role subset [#2967 F2]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2969
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - machine:multi
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2970
+    title: 'feat(workstations): registry-driven dispatch + single provider-routing policy [#2967 F3]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2970
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - machine:multi
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2971
+    title: 'feat(workstations): Telegram-as-venue consistency — deckhand onboarding/scope-routing/escalation parity across hosts [#2967 F4]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2971
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - machine:multi
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2972
+    title: 'feat(workstations): fix silently-broken equality-matrix + fail-loud cron [#2967 F5]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2972
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - machine:multi
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2973
+    title: 'Compliance alert: W24 — 0% (critical)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2973
+    gh_state: open
+    gh_labels:
+      - priority:critical
+      - compliance-alert
     initial_status: triage
     priority: 0
     gh_assignees: []

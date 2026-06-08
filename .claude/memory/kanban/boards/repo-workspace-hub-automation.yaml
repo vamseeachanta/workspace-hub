@@ -549,29 +549,6 @@ cards:
       Follow-on to #2017 (email-as-queue workflow). Per v6 scope decision (Path 3 hybrid), #2017 v1 delivers **local-queue contract only** — state tracking, extraction, classification. Gmail-side inbox hygiene is handled by the user manually via the Gmail UI.
 
       This issue tracks the **automated Gmail-side delete/archive** capability that was de-scoped from #2017 v1.'
-  - idempotency_key: gh:vamseeachanta/workspace-hub#2550
-    title: 'chore(security): codify public repo interaction-limit renewal in scheduled tasks'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2550
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - priority:medium
-      - cat:operations
-      - domain:automation
-      - domain:security
-      - machine:dev-primary
-      - agent:codex
-      - dispatch:ready
-      - gate:completeness
-    gh_assignees: []
-    initial_status: triage
-    priority: 0
-    body_excerpt: '## Summary
-
-      Move the public-repo collaborator-only interaction-limit renewal from a Hermes-local cron reminder into workspace-hub''s canonical scheduled-task system, with deterministic verification and issue-comment reporting.
-
-      ## Why'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2572
     title: 'Routine: /repo-sync + /mnt/local-analysis cleanup audit (every 2 days)'
     source: github_issue

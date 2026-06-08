@@ -220,13 +220,3 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/assethold#52
-    title: 'Review remediation: yaml.Loader, SEC parser miscompute, no-timeout (2026-05-23)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/assethold/issues/52
-    gh_state: open
-    gh_labels: []
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
