@@ -509,6 +509,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - status:plan-approved
       - status:plan-review
       - machine:dev-primary
       - agent:codex
@@ -524,6 +525,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - status:plan-approved
       - status:plan-review
       - machine:dev-primary
       - agent:codex
@@ -539,6 +541,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - status:plan-approved
       - status:plan-review
       - machine:dev-primary
       - agent:codex
@@ -614,6 +617,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - status:plan-approved
       - status:plan-review
       - machine:dev-primary
       - agent:codex

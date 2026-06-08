@@ -20713,7 +20713,7 @@ cards:
     title: 'feat(workstations): registry-driven dispatch + single provider-routing policy [#2967 F3]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2970
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:ai-orchestration
@@ -20733,8 +20733,8 @@ cards:
       - enhancement
       - cat:ai-orchestration
       - cat:harness
+      - status:working
       - machine:multi
-      - status:plan-review
     initial_status: triage
     priority: 0
     gh_assignees: []
