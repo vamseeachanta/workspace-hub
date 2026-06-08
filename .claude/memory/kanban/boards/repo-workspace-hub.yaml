@@ -20728,7 +20728,7 @@ cards:
     title: 'feat(workstations): Telegram-as-venue consistency — deckhand onboarding/scope-routing/escalation parity across hosts [#2967 F4]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2971
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:ai-orchestration
@@ -20777,6 +20777,9 @@ cards:
       - bug
       - cat:automation
       - domain:review
+      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
     initial_status: triage
     priority: 0
     gh_assignees: []

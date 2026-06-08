@@ -186,12 +186,12 @@ cards:
     title: Implement metocean adapter — connect Open-Meteo API
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/268
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
+      - status:done
       - machine:dev-primary
-      - status:plan-approved
       - dispatch:ready
       - domain:ingest
     gh_assignees: []

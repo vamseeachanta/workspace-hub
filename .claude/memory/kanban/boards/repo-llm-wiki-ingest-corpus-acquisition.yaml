@@ -506,13 +506,13 @@ cards:
     title: '[conference-canary] add disposition gate runner'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/504
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - status:plan-approved
-      - status:plan-review
       - machine:dev-primary
       - agent:codex
+      - dispatch:ready
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 0
@@ -522,13 +522,13 @@ cards:
     title: '[conference-canary] add manual-review lane for failed papers'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/505
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - status:plan-approved
-      - status:plan-review
       - machine:dev-primary
       - agent:codex
+      - dispatch:ready
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 0
@@ -542,9 +542,9 @@ cards:
     gh_labels:
       - priority:medium
       - status:plan-approved
-      - status:plan-review
       - machine:dev-primary
       - agent:codex
+      - dispatch:ready
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 0
@@ -557,9 +557,10 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - status:plan-review
+      - status:plan-approved
       - machine:dev-primary
       - agent:codex
+      - dispatch:ready
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 0
@@ -572,9 +573,10 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - status:plan-review
+      - status:plan-approved
       - machine:dev-primary
       - agent:codex
+      - dispatch:ready
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 0
@@ -584,12 +586,13 @@ cards:
     title: '[civil-structural] AWS welding standards + credential-exclusion slice'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/509
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
-      - status:plan-review
+      - status:plan-approved
       - machine:dev-primary
       - agent:codex
+      - dispatch:ready
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 0
@@ -602,9 +605,10 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - status:plan-review
+      - status:plan-approved
       - machine:dev-primary
       - agent:codex
+      - dispatch:ready
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 0
@@ -618,9 +622,9 @@ cards:
     gh_labels:
       - priority:medium
       - status:plan-approved
-      - status:plan-review
       - machine:dev-primary
       - agent:codex
+      - dispatch:ready
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 0
