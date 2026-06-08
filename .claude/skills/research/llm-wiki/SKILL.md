@@ -316,6 +316,17 @@ For structured YAML knowledge seeds in `knowledge/seeds/`:
 Proven pattern: 18 mooring failure entries → 4 wiki pages (source + 2 concepts + 1 entity)
                 10 law cases + 6 conventions → 20 wiki pages with cross-references
 
+### 6. Private client wiki draft → review submission
+
+When working in a private client wiki such as `llm-wiki-<client>` and the user asks to draft a note/report "for review":
+
+1. Save the draft under the existing client-wiki convention, usually `reports/YYYY-MM-DD-<slug>.md` unless the wiki schema says otherwise.
+2. Keep the draft clearly marked with private/synthetic/client-specific frontmatter as applicable (`visibility`, `client`, `synthetic`, `source_pages`).
+3. If the user later says the draft "looks good" and asks to "submit" it so they can approve it, do **not** treat that as external sending or final client publication. Instead, mark the artifact as submitted for internal/client review, for example `review_status: submitted_for_<client>_review`.
+4. Add the artifact to the local review queue/index if one exists (for the simple private-wiki layout, add it to `reports/README.md` under a "Submitted for <Client> review" section).
+5. Read back the touched files to verify the submission marker and queue entry landed before claiming it is submitted.
+6. If the wiki uses PR-only/Deckhand guardrails, avoid direct push claims unless the approved workflow explicitly authorizes GitHub write actions; local review-queue submission is still useful and auditable.
+
 ## Working with the Wiki
 
 ### Searching
