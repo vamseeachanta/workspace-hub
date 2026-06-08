@@ -8,6 +8,12 @@
 
 ---
 
+> **Machine-readable policy (#2970, F3):** the executable single-source for provider routing is
+> [`config/ai-tools/provider-routing-policy.yaml`](../../config/ai-tools/provider-routing-policy.yaml),
+> resolved by [`scripts/ai/provider_route.py`](../../scripts/ai/provider_route.py)
+> (`route(task_type, machine, attrs)`). This document remains the human-readable rationale;
+> when they differ, the YAML is authoritative for automated routing.
+
 ## Provider Roles
 
 | Provider | Role | Scope |
