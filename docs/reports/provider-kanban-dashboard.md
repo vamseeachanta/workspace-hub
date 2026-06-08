@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-07T05:20:15Z
+Generated: 2026-06-08T13:21:49Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,16 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2973 | Compliance alert: W24 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2972 | feat(workstations): fix silently-broken equality-matrix + fail-loud cron [#2967 F5] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
+| #2971 | feat(workstations): Telegram-as-venue consistency — deckhand onboarding/scope-routing/escalation parity across hosts [#2967 F4] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2970 | feat(workstations): registry-driven dispatch + single provider-routing policy [#2967 F3] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2969 | feat(workstations): declarative workflow/cron catalog — role-tagged, materialize per-role subset [#2967 F2] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2968 | feat(workstations): role-overlay harness reconciler — git base + per-role overlay, self-healing [#2967 F1] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2967 | epic(workstations): consistent experience via dynamic workflows — role-overlay reconciler + workflow catalog + registry dispatch + Telegram venue [extends #2887/#2720] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
+| #2964 | routing-rules.yaml entries for the 34 new domain: labels (avoid silent dev-primary catch-all) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2963 | Bulk-relabel command + execute the 5 alias renames from routing taxonomy v1 (label-first, kanban-manifest coordinated) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2962 | Domain-coverage guard: nightly check that every open issue has exactly one taxonomy-known domain: label (all 17 repos) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2945 | [flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: unavailable_review,unknown_review |
 | #2934 | Compliance alert: W23 — 23% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2933 | Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -233,16 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2502 | feat(ai-orchestration): harden plan-review artifact metadata and stale-SHA handling | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: empty_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2501 | chore(planning): #2105 governance-lock — handoff vs live-state discrepancy | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2500 | chore(harness): #2476 non-standard approval pattern (no plan branch) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2499 | chore(harness): #2368 missing revision-bound approval marker | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2498 | chore(harness): #2364 plan branch drift recovery decision needed | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2497 | chore(memory): handoff-doc cross-row SHA transcription hazard | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2496 | chore(routines): use $(date -u) substitution in execution-agent prompts (cosmetic) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2494 | chore(cleanup): aceengineer-admin — remove legacy src/aceengineer_admin/automation/common/config.py (rename drift) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2491 | Extend pyramid-conformance-check.py DT1_REQUIRED_FIELDS to include standards-page fields (code_id, publisher, revision) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2485 | feat(enforcement): mechanical linter + ledger for llm-wiki → GTM boundary (enforces #2482 policy) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2484 | feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2483 | chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2478 | follow-up(ci): worldenergydata Python test matrix fails after lint restoration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

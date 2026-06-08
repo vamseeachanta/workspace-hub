@@ -174,6 +174,7 @@ Latest evidence references:
 - `references/2026-06-04-freshness-audit-lessons.md` — rewrite stale generated latest reports instead of patching around old boilerplate, treat sibling fallback as status-critical, summarize runtime/cache noise categorically, and preserve the current RED/YELLOW baseline.
 - `references/2026-06-05-freshness-audit-lessons.md` — read stale latest reports before rewriting, use normal tools when `execute_code` is approval-blocked in cron mode, preserve the RED/YELLOW baseline, and verify final report with stat/hash/git evidence.
 - `references/2026-06-06-freshness-audit-lessons.md` — sibling fallback can correct stale generated latest-report missing-surface claims; explicitly call out the correction, preserve the RED/YELLOW baseline, and keep cron closeout concise with artifact/hash/git evidence.
+- `references/2026-06-08-freshness-audit-lessons.md` — rewrite stale generated latest reports using sibling fallback evidence, revise 2026-04-22 repo-specific assumptions from current surfaces, preserve the RED/YELLOW baseline, and keep cron closeout concise.
 
 
 ## Daily freshness automation pattern

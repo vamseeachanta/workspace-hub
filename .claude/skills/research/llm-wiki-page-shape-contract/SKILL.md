@@ -70,6 +70,7 @@ This is the canonical mapping. If a source class is not listed, default to
 | Handoff (`docs/handoffs/*.md`) | concept update (rarely new page) | ripple update on existing concepts; **never** a new summary |
 | Review result (`scripts/review/results/*.md`) | candidate-only | [#2374](https://github.com/vamseeachanta/workspace-hub/issues/2374) queue → reviewed → promote |
 | External article/post (LinkedIn, blog, paper) | summary + concept update | `wikis/<domain>/sources/<slug>.md` + concept update (per `feedback_llm_wiki_external_post_ingest_workflow`) |
+| Social post pointing to a public discovery index (X → Papers With Code / Hugging Face conference page, curated bibliography, catalog) | source-only strategic/discovery page | `wikis/<domain>/sources/<slug>.md`; capture both social pointer and expanded destination, record observed counts as non-authoritative page state, and defer concept pages until triangulated (see `references/social-post-discovery-index-ingest.md`) |
 | Domain knowledge synthesis | concept page or methodology page | `wikis/<domain>/concepts/<slug>.md` or `wikis/<domain>/methodology/<slug>.md` |
 | Entity (person, tool, org, paper) | entity page | `wikis/<domain>/entities/<slug>.md` |
 | Large binary (model weights, PDF >10 MB, dataset) | **ref pointer**, not copy | `wikis/<domain>/sources/refs/<slug>.md` with `external_path:` frontmatter |

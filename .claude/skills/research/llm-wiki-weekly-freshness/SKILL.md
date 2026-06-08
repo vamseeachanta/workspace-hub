@@ -173,6 +173,7 @@ Public graph work often produces generated files plus dated reports. Before comm
 - Do not validate one dated report while staging another dated report; the validator command, summary `run_date`, report filename, and committed report must align.
 - Keep transient review scratch directories such as `.planning/quick/` out of commits unless the repository explicitly tracks review artifacts.
 - Re-run the artifact validator after final staging normalization, not only after the first generation.
+- For scheduled/cron health reports invoked from a dirty or non-main checkout, run the requested command there for evidence, but commit from a clean temporary `origin/main` worktree and distinguish requested-checkout findings from committed-main findings; see `references/cron-health-report-clean-main-worktree.md`.
 
 ## Weekly report format
 Produce a compact report with:
@@ -204,6 +205,7 @@ A good llm-wiki maintenance issue includes:
 - Do not let generated artifact path drift invalidate closeout evidence.
 
 ## References
+- `references/cron-health-report-clean-main-worktree.md` — pattern for scheduled health reports when the requested checkout is dirty or not on `main`, including clean-worktree commit/push and split evidence reporting.
 - `references/public-safe-graph-validation.md` — session-derived checks for public-safe graph manifests and adversarial-review blockers.
 - `references/issue-closeout-handoff-pattern.md` — restart-handoff pattern from an llm-wiki public-graph issue closeout where validation passed but implementation files still needed final commit and issue closure.
 - `references/session-2026-05-unresolved-agent-edge-leakage.md` — concrete edge-field leakage patch and validation pattern.

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-07T05:20:14.192274Z",
+  "generated_at": "2026-06-08T13:21:40.712768Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -51,13 +51,12 @@
         "cat:ai-orchestration",
         "cat:operations",
         "domain:integrations",
-        "domain:notification",
         "machine:dev-primary",
         "status:plan-approved",
         "dispatch:ready",
         "gate:completeness"
       ],
-      "updatedAt": "2026-05-26T09:29:27Z",
+      "updatedAt": "2026-06-07T13:05:44Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -336,10 +335,11 @@
       "title": "Disposition: bulk-close 48 content-free WRK-XXXX:untitled migration-ghost issues (ops board cleanup, #2878)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2886",
       "labels": [
+        "domain:ops",
         "status:plan-approved",
         "gate:completeness"
       ],
-      "updatedAt": "2026-05-30T22:58:15Z",
+      "updatedAt": "2026-06-07T13:05:34Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
@@ -356,37 +356,6 @@
         "execution-ready",
         "strong-codex-language-match",
         "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2498,
-      "title": "chore(harness): #2364 plan branch drift recovery decision needed",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2498",
-      "labels": [
-        "priority:medium",
-        "cat:harness",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness",
-        "domain:harness"
-      ],
-      "updatedAt": "2026-05-31T22:53:57Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "gemini",
-      "routing_reason": "research/triage/audit language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research"
-      ],
-      "target_label": "agent:gemini",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-gemini-language-match",
-        "provider-highest-priority"
       ],
       "eligible": false
     },
@@ -572,39 +541,6 @@
       "updatedAt": "2026-05-31T03:34:10Z",
       "execution_ready": false,
       "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2484,
-      "title": "feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2484",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:harness",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness",
-        "domain:knowledge-management-platform"
-      ],
-      "updatedAt": "2026-05-31T10:57:05Z",
-      "execution_ready": false,
-      "priority_rank": 2,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "high",

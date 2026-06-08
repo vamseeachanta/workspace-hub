@@ -115,3 +115,7 @@ shown:
     tips: [eco-session-memory, cc-doctor]
   - date: 2026-06-06
     tips: [cc-teleport, cc-effort]
+  - date: 2026-06-07
+    tips: [cc-stats, cc-pr-comments]
+  - date: 2026-06-08
+    tips: [gsd-insert-phase, cc-context]

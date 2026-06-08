@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-07T05:20:12.085226Z",
-  "current_week": "2026-W23",
+  "generated_at": "2026-06-08T13:21:28.441534Z",
+  "current_week": "2026-W24",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-06-07T05:20:11.970958Z",
+    "utilization_generated_at": "2026-06-08T13:21:22.936911Z",
     "audit_generated_at": "2026-05-25T09:15:31Z"
   },
   "recommended_provider_order": [
@@ -21,7 +21,7 @@
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
       "sessions_current_week": 1,
-      "post_records_current_week": 4,
+      "post_records_current_week": 8,
       "audit_post_records": 115036,
       "missing_repo_reads": 8624,
       "python3_per_1k_records": 9.35,
@@ -29,12 +29,8 @@
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
-          "tool": "Bash",
-          "count": 3
-        },
-        {
-          "tool": "Read",
-          "count": 1
+          "tool": "unknown",
+          "count": 8
         }
       ],
       "preferred_work": [
@@ -59,11 +55,11 @@
       "provider": "codex",
       "status": "needs_cleanup",
       "priority": "high",
-      "reported_utilization_pct": 19.0,
+      "reported_utilization_pct": 26.0,
       "quota_basis": "quota",
-      "quota_source": "app-server-live",
-      "sessions_current_week": 119,
-      "post_records_current_week": 7748,
+      "quota_source": "local-session-rate-limits",
+      "sessions_current_week": 1,
+      "post_records_current_week": 462,
       "audit_post_records": 42243,
       "missing_repo_reads": 1253,
       "python3_per_1k_records": 8.83,
@@ -72,23 +68,11 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 7393
+          "count": 453
         },
         {
           "tool": "spawn_agent",
-          "count": 104
-        },
-        {
-          "tool": "wait_agent",
-          "count": 100
-        },
-        {
-          "tool": "close_agent",
-          "count": 69
-        },
-        {
-          "tool": "Read",
-          "count": 39
+          "count": 9
         }
       ],
       "preferred_work": [
