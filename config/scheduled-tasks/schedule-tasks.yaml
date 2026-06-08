@@ -16,6 +16,7 @@ tasks:
     label: Performance benchmark regression check
     schedule: "30 1 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv, git]
     prefer: dev-primary
     command: >-
@@ -31,6 +32,7 @@ tasks:
     label: Machine-equality self-report (#2801)
     schedule: "30 4 * * 1"
     machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, licensed-win-1, licensed-win-2]
+    roles: [control-plane, comms-dispatch, sim-worker]
     requires: [bash, python3, uv]
     command: >-
       PATH=$HOME/.local/bin:$PATH;
@@ -49,6 +51,7 @@ tasks:
     label: Nightly GSD domain researcher
     schedule: "35 1 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [claude, python3, uv]
     prefer: dev-primary
     command: >-
@@ -64,6 +67,7 @@ tasks:
     label: Research artifact staleness check
     schedule: "0 6 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [bash]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -77,6 +81,7 @@ tasks:
     label: Dependency health check
     schedule: "0 1 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv, git]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -97,6 +102,7 @@ tasks:
       licensed-win-2: "15 2 * * *"
     schedule: "15 1 * * *"           # fallback
     machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, licensed-win-1, licensed-win-2]
+    roles: [control-plane, comms-dispatch, sim-worker]
     requires: [bash, git, npm]
     prefer: dev-primary
     command: >-
@@ -118,6 +124,7 @@ tasks:
     label: Comprehensive learning pipeline
     schedule: "0 2 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv, git]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -131,6 +138,7 @@ tasks:
     label: Documentation drift baseline refresh
     schedule: "30 2 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -144,6 +152,7 @@ tasks:
     label: Agent capability radar HTML
     schedule: "30 2 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv]
     command: >-
       PATH=$HOME/.local/bin:$PATH;
@@ -158,6 +167,7 @@ tasks:
     label: AI CLI version check
     schedule: "15 3 * * 0"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [claude, gemini]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -171,6 +181,7 @@ tasks:
     label: Model ID refresh
     schedule: "30 3 * * 0"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [bash, git]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -184,6 +195,7 @@ tasks:
     label: Harness file lean-out audit
     schedule: "30 3 * * 1"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [bash, git]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -197,6 +209,7 @@ tasks:
     label: Weekly skills audit
     schedule: "0 4 * * 1"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv, bash]
     command: >-
       PATH=$HOME/.local/bin:$PATH;
@@ -216,6 +229,7 @@ tasks:
     label: Provider session ecosystem audit refresh
     schedule: "15 4 * * 1"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane, comms-dispatch]
     requires: [bash, python3, uv]
     prefer: dev-primary
     command: >-
@@ -230,6 +244,7 @@ tasks:
     label: Provider quota snapshot + utilization refresh
     schedule: "20 */4 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane, comms-dispatch]
     requires: [bash, python3, uv]
     prefer: dev-primary
     command: >-
@@ -244,6 +259,7 @@ tasks:
     label: Weekly Hermes cross-machine parity review
     schedule: "30 4 * * 1"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [bash, git]
     prefer: dev-primary
     command: >-
@@ -262,6 +278,7 @@ tasks:
     label: Claude plugin weekly audit
     schedule: "45 3 * * 0"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [bash, claude]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -275,6 +292,7 @@ tasks:
     label: Notification log 7-day retention
     schedule: "30 4 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [comms-dispatch]
     requires: [bash]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -287,6 +305,7 @@ tasks:
     label: Morning session signal analysis
     schedule: "0 3 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, bash, git]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -300,6 +319,7 @@ tasks:
     label: All-agent memory backup to ace-linux-2
     schedule: "0 5 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [bash]
     prefer: dev-primary
     command: >-
@@ -314,6 +334,7 @@ tasks:
     label: Memory quality health check + drift alert
     schedule: "50 5 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv, git]
     prefer: dev-primary
     command: >-
@@ -336,6 +357,7 @@ tasks:
       ace-linux-2: "15 4 * * *"
     schedule: "0 4 * * *"            # fallback
     machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    roles: [control-plane]
     requires: [bash, git]
     prefer: dev-primary
     command: >-
@@ -354,6 +376,7 @@ tasks:
     label: Cross-provider dream (Windows)
     schedule: "daily 04:40"
     machines: [licensed-win-1, licensed-win-2]
+    roles: [control-plane]
     requires: [bash, git]
     scheduler: windows-task-scheduler
     command: >-
@@ -372,6 +395,7 @@ tasks:
       ace-linux-2: "35 4 * * *"
     schedule: "20 4 * * *"           # fallback
     machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    roles: [control-plane]
     requires: [bash, git]
     prefer: dev-primary
     command: >-
@@ -390,6 +414,7 @@ tasks:
     label: Hermes → Claude repo-memory bridge (Windows)
     schedule: "daily 04:50"
     machines: [licensed-win-1, licensed-win-2]
+    roles: [control-plane]
     requires: [bash, git]
     scheduler: windows-task-scheduler
     command: >-
@@ -403,6 +428,7 @@ tasks:
     label: Weekly orchestrator-consistency matrix + rolling drift issue
     schedule: "15 6 * * 0"   # 06:15 Sun — offset from the daily 06:00 jobs (load contention)
     machines: [dev-primary]
+    roles: [control-plane]
     requires: [bash, git, gh]
     prefer: dev-primary
     command: >-
@@ -422,6 +448,7 @@ tasks:
     label: Dispatch-leader heartbeat / health watcher (#2847 Phase 1)
     schedule: "*/15 * * * *"        # every 15 min — < STALE_THRESHOLD (30 min) so a dead leader surfaces within one cycle
     machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    roles: [comms-dispatch]
     requires: [bash, git, python3]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -439,6 +466,7 @@ tasks:
     label: Dispatch-leader watcher (Windows)
     schedule: "every 15 minutes"
     machines: [licensed-win-1, licensed-win-2]
+    roles: [comms-dispatch]
     requires: [bash, git, python3]
     scheduler: windows-task-scheduler
     command: >-
@@ -453,6 +481,7 @@ tasks:
     label: Cron health check
     schedule: "45 5 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [bash, python3, uv]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -466,6 +495,7 @@ tasks:
     label: Daily productivity summary
     schedule: "0 6 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, bash, git]
     command: >-
       PATH=$HOME/.local/bin:$PATH;
@@ -480,6 +510,7 @@ tasks:
     label: Daily review compliance audit
     schedule: "30 6 * * *"
     machines: [ace-linux-1]
+    roles: [control-plane]
     requires: [bash, git, gh]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -495,6 +526,7 @@ tasks:
     label: Repository sync
     schedule: "0 */4 * * *"
     machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    roles: [control-plane, comms-dispatch, sim-worker]
     requires: [bash, git]
     command: >-
       cd $WORKSPACE_HUB &&
@@ -511,6 +543,7 @@ tasks:
     label: Weekly architecture scanner
     schedule: "0 2 * * 0"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv, git]
     prefer: dev-primary
     command: >-
@@ -526,6 +559,7 @@ tasks:
     label: Weekly doc staleness scanner
     schedule: "0 3 * * 0"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv, git]
     prefer: dev-primary
     command: >-
@@ -543,6 +577,7 @@ tasks:
     label: Repository sync (Windows)
     schedule: "every 4 hours"
     machines: [licensed-win-1, licensed-win-2]
+    roles: [control-plane, comms-dispatch, sim-worker]
     requires: [bash, git]
     scheduler: windows-task-scheduler
     command: >-
@@ -567,6 +602,7 @@ tasks:
     label: Weekly GTM job market scan refresh
     schedule: "0 5 * * 1"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, git]
     prefer: dev-primary
     command: >-
@@ -591,6 +627,7 @@ tasks:
     label: Solver queue watch-results (every 4h)
     schedule: "0 */4 * * *"
     machines: [ace-linux-1]
+    roles: [sim-worker]
     requires: [bash, python3, git]
     prefer: ace-linux-1
     command: >-
@@ -607,6 +644,7 @@ tasks:
     label: Solver queue dashboard regeneration (daily 05:00)
     schedule: "0 5 * * *"
     machines: [ace-linux-1]
+    roles: [sim-worker]
     requires: [python3, uv, git]
     prefer: ace-linux-1
     command: >-
@@ -624,6 +662,7 @@ tasks:
     label: Session state commit (Windows)
     schedule: "daily 03:00"
     machines: [licensed-win-1, licensed-win-2]
+    roles: [control-plane]
     requires: [bash, git]
     scheduler: windows-task-scheduler
     command: >-
@@ -637,6 +676,7 @@ tasks:
     label: Gemini nightly batch processor
     schedule: "0 23 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv, gh]
     prefer: dev-primary
     command: >-
@@ -656,6 +696,7 @@ tasks:
     label: Weekly AI credit utilization report
     schedule: "0 23 * * 0"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane, comms-dispatch]
     requires: [python3, uv]
     prefer: dev-primary
     command: >-
@@ -674,6 +715,7 @@ tasks:
     label: Weekly agent work queue refresh
     schedule: "30 22 * * 0"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv, gh, git]
     prefer: dev-primary
     command: >-
@@ -695,6 +737,7 @@ tasks:
     label: Daily compliance monitoring with alerts
     schedule: "45 6 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     prefer: dev-primary
     requires: [bash, git, gh]
     command: >-
@@ -712,6 +755,7 @@ tasks:
     label: Weekly compliance summary report
     schedule: "0 7 * * 1"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     prefer: dev-primary
     requires: [bash, git, gh]
     command: >-
@@ -731,6 +775,7 @@ tasks:
     label: Engineering wiki incremental ingest
     schedule: "15 2 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv, git, gh]
     prefer: dev-primary
     command: >-
@@ -749,6 +794,7 @@ tasks:
     label: Weekly pyramid conformance + registry freshness check
     schedule: "45 4 * * 1"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [python3, uv, gh]
     prefer: dev-primary
     command: >-
@@ -769,6 +815,7 @@ tasks:
     label: Daily tier-1 indexing freshness audit
     schedule: "30 6 * * *"
     machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
     requires: [bash, git]
     prefer: dev-primary
     command: >-

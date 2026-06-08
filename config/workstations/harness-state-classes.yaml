@@ -52,3 +52,38 @@ hooks_known:
     type: command
     command_contains: [".consolidate-lock", "dream"]
     class: role-managed            # stale dream-lock reaper
+
+# Preserved-external cron lines (#2969, F2) — crontab entries OWNED by another repo.
+# The deckhand repo installs its OWN Telegram client-SLA cron jobs on ace-linux-2. The
+# workspace-hub cron reconciler/cutover (scripts/cron/cron-audit.py + cron_transaction.py)
+# MUST classify any live line matching one of these fingerprints as `preserved_external`
+# and NEVER delete, absorb, or rewrite it. These are read by classify_line() via
+# match_fingerprint(): ALL present fingerprint keys must be substrings of the cron line.
+#
+# Fingerprints intentionally match only STABLE identity bits — the working directory and
+# the script basename — NOT the full command string. This keeps the match valid even if
+# deckhand changes its PATH prefix, log-redirect target, or python wrapper
+# (uv run --with X / python3 / .venv/bin/python). Do NOT add command_contains values that
+# pin volatile flags (e.g. "--with telethon") or they will stop matching on a deckhand bump.
+preserved_external:
+  - owner: deckhand
+    note: >-
+      Daily Telegram member-audit cron (member-audit-cron.py) run from the deckhand
+      checkout. Stable bits: /deckhand cwd + member-audit-cron.py basename.
+    fingerprint:
+      cwd_contains: /deckhand
+      script_basename: member-audit-cron.py
+  - owner: deckhand
+    note: >-
+      15-minute escalation-sweep cron (escalations.py sweep) run from the detached
+      .deckhand-sweep worktree. Stable bits: /.deckhand-sweep cwd + escalations.py basename.
+    fingerprint:
+      cwd_contains: /.deckhand-sweep
+      script_basename: escalations.py
+  - owner: deckhand
+    note: >-
+      Hourly patch-health-check cron (patch-health-check.py) run from the detached
+      .deckhand-guard worktree. Stable bits: /.deckhand-guard cwd + patch-health-check.py basename.
+    fingerprint:
+      cwd_contains: /.deckhand-guard
+      script_basename: patch-health-check.py
