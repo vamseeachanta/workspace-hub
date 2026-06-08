@@ -179,18 +179,23 @@ def classify_line(
 
     Returns one of:
       "ignore"             blank / comment / env-header line — callers skip it
-      "cataloged"          a catalog command is a substring of the line
       "preserved_external" an external fingerprint matches the line
+      "cataloged"          a catalog command is a substring of the line
       "uncataloged"        none of the above (a live line we don't recognise)
+
+    SAFETY ORDERING (#2969 code-review MAJOR): preserved_external is checked BEFORE
+    cataloged. An externally-owned line (e.g. a deckhand cron) whose command happens to
+    contain a catalog script-path substring must still be PRESERVED, never pulled into the
+    managed block and dropped. Ownership (fingerprint) dominates substring coincidence.
     """
     if _is_ignore_line(line):
         return "ignore"
-    for cmd in catalog_commands or []:
-        if cmd in line:
-            return "cataloged"
     for fp in external_fingerprints or []:
         if match_fingerprint(line, fp):
             return "preserved_external"
+    for cmd in catalog_commands or []:
+        if cmd in line:
+            return "cataloged"
     return "uncataloged"
 
 

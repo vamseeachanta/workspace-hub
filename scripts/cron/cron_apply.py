@@ -24,11 +24,14 @@ Default is --dry-run (prints the plan, writes nothing, creates no artifact). --a
 from __future__ import annotations
 
 import argparse
+import contextlib
+import fcntl
 import importlib.util
 import json
 import socket
 import subprocess
 import sys
+from collections import Counter
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -51,10 +54,38 @@ except ModuleNotFoundError:  # pragma: no cover
     yaml = None
 
 
+# ── process lock (real flock — #2969 code-review MAJOR #2) ───────────────────
+@contextlib.contextmanager
+def _flock(path: Path):
+    """Exclusive advisory lock held for the read→write critical section."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    f = open(path, "w")
+    try:
+        fcntl.flock(f.fileno(), fcntl.LOCK_EX)
+        yield
+    finally:
+        fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+        f.close()
+
+
 # ── IO seams (injectable for tests) ──────────────────────────────────────────
+class CronReadError(RuntimeError):
+    """crontab -l failed for a reason OTHER than 'no crontab' — fail closed."""
+
+
 def read_crontab(_run=subprocess.run) -> str:
     r = _run(["crontab", "-l"], capture_output=True, text=True)
-    return r.stdout if r.returncode == 0 else ""  # no crontab yet → empty
+    if r.returncode == 0:
+        return r.stdout
+    # `crontab -l` exits non-zero in TWO very different cases:
+    #   (a) the user has no crontab yet  → legitimately empty, safe to proceed
+    #   (b) a real error (permissions, crond down, command missing) → MUST NOT be
+    #       treated as empty, or backup/rollback would write an empty crontab (#2969
+    #       code-review MAJOR #2). Distinguish by stderr and FAIL CLOSED on (b).
+    err = (r.stderr or "").lower()
+    if "no crontab" in err:
+        return ""
+    raise CronReadError(f"crontab -l failed (rc={r.returncode}): {r.stderr.strip()!r}")
 
 
 def write_crontab(text: str, _run=subprocess.run) -> None:
@@ -137,20 +168,29 @@ def run_cutover(machine_id: str, apply: bool, ts: str,
 
     BACKUP_DIR.mkdir(parents=True, exist_ok=True)
     backup = BACKUP_DIR / f"{machine_id}-{ts}.crontab"
-    backup.write_text(A)
 
-    B = _read()                                   # compare-and-swap
-    if B != A:
-        return {"status": "abort", "reason": "crontab changed during cutover (CAS) — no write",
-                "backup": str(backup)}
+    # Hold an exclusive process lock across the read→write critical section so a concurrent
+    # cron-apply / setup-cron cannot interleave (#2969 code-review MAJOR #2). A writer that
+    # does NOT honor the lock (e.g. deckhand) is still caught by the compare-and-swap below.
+    with _flock(LOCKFILE):
+        current = _read()                         # re-read UNDER the lock (CAS baseline)
+        if current != A:                          # changed since we planned → plan is stale
+            return {"status": "abort",
+                    "reason": "crontab changed during cutover (CAS) — re-run", "backup": None}
+        backup.write_text(A)                       # A is verified-intact (read succeeded)
+        _write(plan["new_text"])
+        after = _read()
 
-    _write(plan["new_text"])
-
-    # post-cutover: zero-net-removal of preserved/ignore lines
-    after = _read()
-    for line in plan.get("preserved", []):
-        if line not in after:
-            _write(A)                             # rollback
+    # post-cutover: every preserved/ignore line present BEFORE must still be present, by
+    # LINE IDENTITY + multiplicity, not substring (#2969 code-review MAJOR #4).
+    after_counts = Counter(after.splitlines())
+    need = Counter(ln for ln in A.splitlines()
+                   if ln.strip()
+                   and ct.classify_line(ln, cat_cmds, ext_fps) in ("preserved_external", "ignore"))
+    for line, n in need.items():
+        if after_counts[line] < n:
+            with _flock(LOCKFILE):
+                _write(A)                          # rollback to verified-intact A
             return {"status": "rolled-back", "reason": f"preserved line lost: {line!r}",
                     "backup": str(backup)}
     result["status"] = "applied"

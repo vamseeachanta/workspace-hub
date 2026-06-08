@@ -19,6 +19,55 @@ DECKHAND = ("30 7 * * * cd /mnt/local-analysis/deckhand && uv run --with teletho
             "scripts/deckhand/member-audit-cron.py >> $HOME/.hermes/logs/member-audit.log 2>&1")
 
 
+# ── code-review MAJOR fixes (#2969 round 2) ──────────────────────────────────
+def test_read_crontab_fails_closed_on_error(monkeypatch):
+    # a REAL crontab -l error (not "no crontab") must raise, never return "" (#2 fix)
+    class R:
+        returncode = 1
+        stdout = ""
+        stderr = "crontab: permission denied"
+    raised = False
+    try:
+        ca.read_crontab(_run=lambda *a, **k: R())
+    except ca.CronReadError:
+        raised = True
+    assert raised   # must raise rather than silently yield empty
+
+
+def test_read_crontab_empty_when_no_crontab(monkeypatch):
+    class R:
+        returncode = 1
+        stdout = ""
+        stderr = "no crontab for vamsee"
+    assert ca.read_crontab(_run=lambda *a, **k: R()) == ""
+
+
+def test_flock_is_real():
+    # the lock context manager actually exists and acquires a lock (no exception)
+    import tempfile, os
+    p = Path(tempfile.mkdtemp()) / "lock"
+    with ca._flock(p):
+        assert p.exists()
+
+
+def test_external_with_catalog_substring_preserved(monkeypatch, tmp_path):
+    # a deckhand line that ALSO contains a catalog script path must be PRESERVED, not
+    # pulled into the managed block (#1 classify ordering fix)
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "bk")
+    line = ("30 7 * * * cd /mnt/local-analysis/deckhand && python3 "
+            "scripts/deckhand/member-audit-cron.py; scripts/x.sh >> /dev/null 2>&1")
+    state = {"crontab": line + "\n"}
+    _patch_configs(monkeypatch,
+                   [{"id": "a", "schedule": "0 1 * * *", "command": "scripts/x.sh", "roles": ["control-plane"]}],
+                   ["control-plane"],
+                   [{"cwd_contains": "/deckhand", "script_basename": "member-audit-cron.py"}])
+    res = ca.run_cutover("m1", apply=True, ts="t",
+                         _read=lambda: state["crontab"], _write=lambda t: state.update(crontab=t),
+                         _daemons=lambda pat: False)
+    assert res["status"] == "applied"
+    assert line in state["crontab"]              # external line survived despite catalog substring
+
+
 def _patch_configs(monkeypatch, tasks, roles, ext_fps):
     monkeypatch.setattr(ca, "_load", lambda p: (
         {"tasks": tasks} if "schedule-tasks" in str(p)
