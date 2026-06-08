@@ -1,0 +1,54 @@
+# harness-state-classes.yaml — local-state classification for the reconciler (#2968, F1).
+#
+# Every item of machine-local harness state belongs to exactly one class. The reconciler
+# (scripts/readiness/harness_reconcile.py) WRITES only role-managed state; everything else
+# is read-only or off-limits. An item matching NO class that is present locally is
+# `uncataloged-live` and BLOCKS `--apply` until explicitly classified (Codex blast-radius
+# mitigation). See epic #2967 managed-surface contract.
+
+classes:
+  role-managed:
+    description: converged to git base + role overlay (harness-roles.yaml)
+    items:
+      - permissions.deny           # _base deny-list
+      - effortLevel                # control-plane scalar
+      - skill_families             # declarative (skill-tree convergence)
+  git-managed:
+    description: already synced by git pull; reconciler does not touch
+    items:
+      - .claude/settings.json (project)
+      - .claude/rules/
+      - .claude/skills/
+  machine-private:
+    description: legitimately per-machine; never converged
+    items:
+      - theme
+      - /mnt/workspace-hub symlink (a2 only)
+      - statusLine.command (resolves repo root locally)
+      - gpu / sim tool config
+  secret:
+    description: credentials — git declares required KEYS, never values; reconciler NEVER reads
+    items:
+      - ~/.hermes/.env
+      - ~/.codex/auth.json
+      - TELEGRAM_BOT_TOKEN
+      - TELEGRAM_ALLOWED_USERS
+  intentionally-divergent:
+    description: explicitly allowed to differ per machine (reconciler skips these keys)
+    items:
+      - theme
+      - spinnerVerbs
+      - voiceEnabled
+
+# Cataloged hooks — present hooks whose identity matches one of these are NOT flagged
+# uncataloged-live. Substring (command_contains) form keeps the catalog portable across
+# machines whose hook commands carry absolute paths.
+hooks_known:
+  - event: Stop
+    type: command
+    command_contains: ["skill-extractor.py"]
+    class: role-managed            # the per-session skill extractor (a1 today; role-invariant target)
+  - event: SessionStart
+    type: command
+    command_contains: [".consolidate-lock", "dream"]
+    class: role-managed            # stale dream-lock reaper

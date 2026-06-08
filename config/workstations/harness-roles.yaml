@@ -1,0 +1,84 @@
+# harness-roles.yaml — role-overlay definitions for the harness reconciler (#2968, F1).
+#
+# Read by scripts/readiness/harness_reconcile.py. A machine in registry.yaml declares
+# `harness_profile.roles: [...]`; the applied overlay = `_base ∪ role₁ ∪ role₂…` (Q1
+# composable roles). Lists are set-unioned; scalar keys conflicting across roles fail
+# closed (no last-writer-wins).
+#
+# Overlay fields the reconciler understands:
+#   deny_required    list[str]  → unioned into permissions.deny (additive, never drops local)
+#   hooks_required   dict       → event → [{hooks:[{type,command,...}]}]; merged by identity
+#   scalar_required  dict       → top-level settings keys forced to the given value
+#   skill_families   list[str]  → declarative (skill-tree convergence; informational in F1)
+#   schedule_jobs    list[str]  → declarative only in F1; F2 (#2969) materializes cron from these
+#   capabilities     list[str]  → declarative; consumed by F3 (#2970) dispatch routing
+
+roles:
+  # role-invariant — applied to EVERY managed machine. This is the set ace-linux-2 is
+  # missing today (probe 2026-06-08: a2 ~/.claude/settings.json had no deny-list).
+  _base:
+    skill_families: [core]
+    deny_required:
+      - "Bash(rm -rf /)"
+      - "Bash(rm -rf ~:*)"
+      - "Bash(rm -rf .:*)"
+      - "Bash(dd if=/dev/zero:*)"
+      - "Bash(mkfs:*)"
+      - "Bash(shred:*)"
+      - "Bash(sudo:*)"
+      - "Bash(su :*)"
+      - "Bash(pkexec:*)"
+      - "Bash(doas:*)"
+      - "Bash(chmod 777:*)"
+      - "Bash(eval:*)"
+      - "Bash(sh -c:*)"
+      - "Bash(bash -c:*)"
+      - "Bash(zsh -c:*)"
+      - "Bash(python -c:*)"
+      - "Bash(python3 -c:*)"
+      - "Bash(perl -e:*)"
+      - "Bash(ruby -e:*)"
+      - "Bash(node -e:*)"
+      - "Bash(curl * | bash:*)"
+      - "Bash(curl * | sh:*)"
+      - "Bash(wget * -O- | bash:*)"
+      - "Bash(wget * -O- | sh:*)"
+      - "Bash(| bash:*)"
+      - "Bash(| sh:*)"
+      - "Bash(nc:*)"
+      - "Bash(ncat:*)"
+      - "Bash(base64:*)"
+      - "Bash(xxd:*)"
+      - "Bash(git push --force:*)"
+      - "Bash(git push -f:*)"
+      - "Bash(git push --force-with-lease:*)"
+      - "Bash(git -c core.hooksPath:*)"
+      - "Bash(git -c core.hookspath:*)"
+      - "Bash(crontab:*)"
+      - "Bash(systemctl:*)"
+    # NOTE (F1 scope): hooks_required is intentionally omitted here. The live Stop/
+    # SessionStart hooks carry machine-absolute paths (/home/<user>, /mnt/...), which is
+    # the very path-portability hazard tracked by epic #2967. Hook convergence needs a
+    # portable-template + env-expansion resolution; the reconciler already SUPPORTS
+    # hooks_required (tested), so it is enabled in a fast-follow once templating lands.
+    # The current hooks are cataloged in harness-state-classes.yaml so they are not
+    # flagged uncataloged-live.
+
+  control-plane:
+    scalar_required:
+      effortLevel: high
+    skill_families: [coordination, workspace-hub, research]
+    schedule_jobs: [benchmarks, nightly-learning, memory-backup, equality-matrix, gtm, research]
+
+  comms-dispatch:
+    skill_families: [coordination, deckhand]
+    schedule_jobs: [deckhand-member-audit, escalation-sweep, provider-utilization]
+
+  sim-worker:
+    skill_families: [engineering-sim]
+    schedule_jobs: [solver-watch]
+
+  # Q2: declared for F3 dispatch routing only; machines carrying this role are
+  # managed:false, so the reconciler never converges them (Windows uses Task Scheduler).
+  licensed-solver:
+    capabilities: [orcaflex, orcawave, aqwa, ansys]
