@@ -87,7 +87,7 @@ cards:
     title: '[corpus-ingest] civil-structural-engineering — AISC, ASCE, ASME, AWS, NFPA, ANSI structural'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/104
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:medium
@@ -146,7 +146,7 @@ cards:
     title: '[corpus-ingest] maritime-regulatory — USCG, BSEE, EPA, OSHA, CBP/Jones Act, Canal authorities, ColRegs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/107
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:medium
@@ -908,6 +908,114 @@ cards:
     title: '[specialty-international] locked/non-ingestable handoff plan'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/537
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#540
+    title: '[maritime-regulatory] public-agency authorship verification tranche plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/540
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#541
+    title: '[maritime-regulatory] licensed-private metadata-only lane plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/541
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#542
+    title: '[maritime-regulatory] Suez HTML source canary plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/542
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#543
+    title: '[maritime-regulatory] OSHA official-source replacement plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/543
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#544
+    title: '[maritime-regulatory] HSE public-agency license-review tranche plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/544
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#545
+    title: '[maritime-regulatory] dataset/support-asset handoff plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/545
     gh_state: open
     gh_labels:
       - documentation
