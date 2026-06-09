@@ -43,6 +43,7 @@ This plan branch was recovered after Phase 1a/1b merged. The detailed Phase 2 pl
 The repaired plan must address, before implementation:
 
 - an explicit Phase 2 approval record, separate from the Phase 1 approval marker;
+- a decision on how this leader-failover design will integrate with, replace, or stay separate from the newer `scripts/operations/dispatch_lease.py` and `scripts/operations/git_ref_lease.py` CAS + fencing-token lease surface;
 - an enforceable cluster-wide fence-readiness gate, not only a local `DISPATCH_ENFORCE_LEADER_FENCE` assertion;
 - per-append fencing before auto-promotion, or a documented acceptance of bounded duplicates;
 - a concrete change to the live idempotency contract or an alternate cross-machine WIP acquisition guard;

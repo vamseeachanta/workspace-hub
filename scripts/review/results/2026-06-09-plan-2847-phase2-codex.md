@@ -62,9 +62,9 @@ The repaired plan needs shell/CLI tests for the watcher matrix, not only `try_pr
 
 The repo hard gate requires `scripts/legal/legal-sanity-scan.sh`. The Phase 2 plan acceptance omits it. Add the legal scan or a scoped/legal documented fallback if the repo-wide scan is blocked by unrelated legacy matches.
 
-### INVALIDATED REVIEW CLAIM: newer `scripts/operations/*lease*.py` files
+### MAJOR: Replan must reconcile with newer `scripts/operations/*lease*.py`
 
-A subagent review claimed `scripts/operations/dispatch_lease.py` and `scripts/operations/git_ref_lease.py` exist on current `origin/main`. Local verification against fetched `origin/main` found those paths do not exist. Do not base replanning on that claim unless a future branch intentionally introduces those files.
+Current `origin/main` contains `scripts/operations/dispatch_lease.py` and `scripts/operations/git_ref_lease.py`. They define a separate git-ref dispatch lease surface with CAS plus fencing-token semantics. A repaired Phase 2 plan must decide whether leader failover integrates with that lease surface, replaces it, or explicitly remains separate. Proceeding without that decision risks two independent dispatch-control primitives with different fencing and failover contracts.
 
 ## Recommendation
 
