@@ -42,8 +42,8 @@ def _registry(tmp_path: Path) -> Path:
                     "readiness_freshness_thresholds": {"report_hours": 25},
                 },
             },
-            "licensed-win-1": {
-                "hostname": "licensed-win-1",
+            "ace-win-1": {
+                "hostname": "ace-win-1",
                 "os": "windows",
                 "role": "simulation-license-host",
                 "workspace_root": "D:\\workspace-hub",
@@ -160,8 +160,8 @@ def test_cross_os_and_not_onboarded_host_readiness(tmp_path: Path, monkeypatch) 
     report = module.collect_readiness(registry)
 
     assert report["hosts"]["dev-primary"]["status"] == "pass"
-    assert report["hosts"]["licensed-win-1"]["status"] == "status-only"
-    assert report["hosts"]["licensed-win-1"]["workspace_root"] == "D:\\workspace-hub"
+    assert report["hosts"]["ace-win-1"]["status"] == "status-only"
+    assert report["hosts"]["ace-win-1"]["workspace_root"] == "D:\\workspace-hub"
     assert report["hosts"]["macbook-portable"]["dispatchable"] is False
     assert report["hosts"]["gali-linux-compute-1"]["status"] == "not-onboarded"
     assert report["hosts"]["gali-linux-compute-1"]["dispatchable"] is False
@@ -728,7 +728,7 @@ def test_live_registry_has_dispatch_metadata_without_secret_fields(monkeypatch) 
     assert report["hosts"]["dev-secondary"]["dispatchable"] is False
     assert "host-local readiness evidence missing" in "\n".join(report["hosts"]["dev-secondary"]["failures"])
     assert "host-local-readiness-evidence" in report["hosts"]["dev-secondary"]["missing_data"]
-    assert report["hosts"]["licensed-win-1"]["status"] == "status-only"
+    assert report["hosts"]["ace-win-1"]["status"] == "status-only"
 
 
 def test_local_workspace_without_git_metadata_fails_closed(tmp_path: Path, monkeypatch) -> None:

@@ -441,11 +441,12 @@ cards:
     title: 'Disposition: bulk-close 48 content-free WRK-XXXX:untitled migration-ghost issues (ops board cleanup, #2878)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2886
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:ops
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 0
     gh_assignees: []

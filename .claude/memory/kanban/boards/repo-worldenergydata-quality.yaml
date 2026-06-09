@@ -53,7 +53,7 @@ cards:
     title: 'ops(scheduler): verify and instrument refresh health — last successful run 2026-03-25 (37 days stale)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/360
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - bug
       - priority:high
@@ -74,7 +74,7 @@ cards:
     title: 'audit(scheduler): prepare source refresh runtime readiness matrix'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/351
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -94,7 +94,7 @@ cards:
     title: 'audit(data): build data completeness and freshness scorecard'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/350
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -294,7 +294,7 @@ cards:
     title: Fix SODIR scheduler runtime endpoint contract
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/273
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high

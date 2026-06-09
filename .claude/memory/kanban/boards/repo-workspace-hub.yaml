@@ -20543,7 +20543,7 @@ cards:
     title: '[flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2945
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -20553,6 +20553,7 @@ cards:
       - domain:skill-improvement
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -20696,7 +20697,7 @@ cards:
     title: 'feat(workstations): declarative workflow/cron catalog — role-tagged, materialize per-role subset [#2967 F2]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2969
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:harness
@@ -20704,6 +20705,7 @@ cards:
       - machine:multi
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -20712,13 +20714,13 @@ cards:
     title: 'feat(workstations): registry-driven dispatch + single provider-routing policy [#2967 F3]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2970
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:ai-orchestration
       - cat:harness
+      - status:working
       - machine:multi
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -20727,13 +20729,13 @@ cards:
     title: 'feat(workstations): Telegram-as-venue consistency — deckhand onboarding/scope-routing/escalation parity across hosts [#2967 F4]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2971
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:ai-orchestration
       - cat:harness
+      - status:working
       - machine:multi
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -20763,6 +20765,94 @@ cards:
     gh_labels:
       - priority:critical
       - compliance-alert
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2981
+    title: 'fix: make SKILL.md frontmatter YAML-valid for review dispatch'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2981
+    gh_state: closed
+    gh_labels:
+      - bug
+      - cat:automation
+      - domain:review
+      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
+      - status:completeness-verified
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2986
+    title: 'fix(cron): make nightly skill validation resolve uv reliably'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2986
+    gh_state: closed
+    gh_labels:
+      - bug
+      - cat:automation
+      - domain:review
+      - status:plan-approved
+      - gate:completeness
+      - status:completeness-verified
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2988
+    title: 'feat(cron): preserved_local class for machine-local crons (unblocks F2 a2 cutover, #2967 follow-up)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2988
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - machine:multi
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2999
+    title: 'feat(workstations): WF1 — role-overlay reconciler on Windows (licensed-win-1/2) [#2998]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2999
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - machine:multi
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3000
+    title: 'feat(workstations): WF3 — dispatch to no-SSH hosts via pull/poll lease model [#2998]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3000
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - machine:multi
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3001
+    title: 'chore(workstations): WF0 — Windows rollout prerequisites + decisions (naming, managed-flag readiness) [#2998]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3001
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - machine:multi
+      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []

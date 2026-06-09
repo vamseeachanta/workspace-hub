@@ -1,6 +1,6 @@
 ---
 name: flywheel-closeout
-description: Use this at the end of substantial repo or agent waves to convert evidence-backed lessons into proposed durable assets: skills, scripts, rules/checks, prompt templates, docs, or issues. Always use it when the user mentions flywheel, wave closeout, repo ecosystem learning, durable asset promotion, or learning-to-tools.
+description: "Use this at the end of substantial repo or agent waves to convert evidence-backed lessons into proposed durable assets: skills, scripts, rules/checks, prompt templates, docs, or issues. Always use it when the user mentions flywheel, wave closeout, repo ecosystem learning, durable asset promotion, or learning-to-tools."
 ---
 
 # Flywheel Closeout

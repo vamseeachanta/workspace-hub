@@ -156,6 +156,7 @@ data/document-index/*.jsonl.backup-*
 !.claude/knowledge/
 # Status line - portable across machines
 !.claude/statusline-command.sh
+!.claude/statusline-combined.sh
 # Repo-level memory - shared institutional knowledge
 !.claude/memory/
 # Work queue - tracked for cross-machine/user portability
@@ -177,7 +178,7 @@ data/document-index/*.jsonl.backup-*
 !.claude/state/candidates/
 !.claude/state/corrections/
 !.claude/state/patterns/
-!.claude/state/harness-readiness-licensed-win-1.yaml
+!.claude/state/harness-readiness-ace-win-1.yaml
 !.claude/state/equality-*.yaml
 !.claude/state/reflect-history/
 !.claude/state/trends/

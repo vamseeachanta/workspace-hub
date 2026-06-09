@@ -47,11 +47,11 @@ function Get-DefaultTaskSetting {
 function Get-CurrentMachineLabel {
     $hostName = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { "" }
     switch -Wildcard ($hostName) {
-        "licensed-win-1" { return "licensed-win-1" }
-        "acma-ansys05*" { return "licensed-win-1" }
-        "licensed-win-2" { return "licensed-win-2" }
-        "acma-ws014*" { return "licensed-win-2" }
-        default { throw "Unknown Windows scheduler host '$hostName'; refusing to assume a licensed-win-* identity" }
+        "ace-win-1" { return "ace-win-1" }
+        "acma-ansys05*" { return "ace-win-1" }
+        "ace-win-2" { return "ace-win-2" }
+        "acma-ws014*" { return "ace-win-2" }
+        default { throw "Unknown Windows scheduler host '$hostName'; refusing to assume a ace-win-* identity" }
     }
 }
 
@@ -334,7 +334,7 @@ Register-ClaudeTask `
 
 # HarnessUpdate — native AI CLI updater (claude/codex/gemini; hermes skipped on Windows).
 # Canonical entry: config/scheduled-tasks/schedule-tasks.yaml id:harness-update
-# (licensed-win-1/2 slot 02:15 per its schedule_by_machine). Per #2920 decision A.
+# (ace-win-1/2 slot 02:15 per its schedule_by_machine). Per #2920 decision A.
 Register-ClaudeTask `
     -Name "HarnessUpdate" `
     -Description "Daily AI harness update via native updaters (claude/codex/gemini). #2920" `

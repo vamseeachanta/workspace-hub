@@ -65,9 +65,9 @@ def _report(machine: str, provenance: dict | None = None, **dims) -> dict:
 
 # ── roster from config (M1) ─────────────────────────────────────────────────
 def test_matrix_roster_from_config():
-    cfg = _config({"dev-primary": {}, "dev-secondary": {}, "licensed-win-1": {}})
+    cfg = _config({"dev-primary": {}, "dev-secondary": {}, "ace-win-1": {}})
     roster = bem.load_roster(cfg)
-    assert set(roster) == {"dev-primary", "dev-secondary", "licensed-win-1"}
+    assert set(roster) == {"dev-primary", "dev-secondary", "ace-win-1"}
 
 
 # ── unit coercion (DG2/DC3/D2-2) ────────────────────────────────────────────
@@ -189,7 +189,7 @@ def test_solvers_conforms_dev_primary_all_absent():
 
 
 def test_solvers_conforms_licensed_baseline_met():
-    rep = _report("licensed-win-1", solvers=_solvers(
+    rep = _report("ace-win-1", solvers=_solvers(
         orcaflex="licensed", orcawave="licensed", aqwa="licensed", ansys="licensed"))
     bl = _solver_baseline(orcaflex="licensed", orcawave="licensed", aqwa="licensed", ansys="licensed")
     assert bem.cold_verdict("solvers", rep, bl, TIER1) == "CONFORMS"
@@ -197,14 +197,14 @@ def test_solvers_conforms_licensed_baseline_met():
 
 def test_solvers_below_baseline_when_licensed_missing():
     # licensed baseline but detected absent → BELOW-BASELINE
-    rep = _report("licensed-win-1", solvers=_solvers(orcaflex="absent"))
+    rep = _report("ace-win-1", solvers=_solvers(orcaflex="absent"))
     bl = _solver_baseline(orcaflex="licensed")
     assert bem.cold_verdict("solvers", rep, bl, TIER1) == "BELOW-BASELINE"
 
 
 def test_solvers_strict_present_does_not_satisfy_licensed():
     # STRICT (decision 1): an install-only `present` must FAIL a `licensed` baseline.
-    rep = _report("licensed-win-1", solvers=_solvers(orcaflex="present"))
+    rep = _report("ace-win-1", solvers=_solvers(orcaflex="present"))
     bl = _solver_baseline(orcaflex="licensed")
     assert bem.cold_verdict("solvers", rep, bl, TIER1) == "BELOW-BASELINE"
 
@@ -223,7 +223,7 @@ def test_solvers_missing_baseline_when_unset():
 
 def test_solvers_missing_evidence_when_unknown_against_licensed():
     # licensed baseline but detected `unknown` (probe couldn't run) → MISSING-EVIDENCE, not fail
-    rep = _report("licensed-win-1", solvers=_solvers(orcaflex="unknown"))
+    rep = _report("ace-win-1", solvers=_solvers(orcaflex="unknown"))
     bl = _solver_baseline(orcaflex="licensed")
     assert bem.cold_verdict("solvers", rep, bl, TIER1) == "MISSING-EVIDENCE"
 
@@ -244,14 +244,14 @@ def test_solvers_legacy_v2_absent_baseline_missing_evidence():
 
 def test_solvers_concrete_miss_dominates_unknown():
     # one concrete BELOW miss + one unknown → BELOW-BASELINE wins (hard fail dominates)
-    rep = _report("licensed-win-1", solvers=_solvers(orcaflex="absent", orcawave="unknown"))
+    rep = _report("ace-win-1", solvers=_solvers(orcaflex="absent", orcawave="unknown"))
     bl = _solver_baseline(orcaflex="licensed", orcawave="licensed")
     assert bem.cold_verdict("solvers", rep, bl, TIER1) == "BELOW-BASELINE"
 
 
 def test_solvers_legacy_v2_report_missing_evidence():
     # a v2 report (no solvers block) against a licensed baseline → MISSING-EVIDENCE, not a crash
-    rep = _report("licensed-win-1")  # base fixture has no solvers key
+    rep = _report("ace-win-1")  # base fixture has no solvers key
     bl = _solver_baseline(orcaflex="licensed", orcawave="licensed", aqwa="licensed", ansys="licensed")
     assert bem.cold_verdict("solvers", rep, bl, TIER1) == "MISSING-EVIDENCE"
 
@@ -328,7 +328,7 @@ def test_harness_config_real_roster_and_baselines():
     assert roster["macbook-portable"]["status"] == "unreachable"
     assert roster["dev-primary"]["status"] == "active"
     baselines = bem.load_baselines(cfg)
-    for m in ("dev-primary", "dev-secondary", "licensed-win-1", "licensed-win-2"):
+    for m in ("dev-primary", "dev-secondary", "ace-win-1", "ace-win-2"):
         assert "compute_floor" in baselines[m] and "required_data_access" in baselines[m]
         # baseline must only name repos the collector actually probes (D2-1)
         assert set(baselines[m]["required_data_access"]) <= set(TIER1)
@@ -347,7 +347,7 @@ def test_wiring_single_source_schedule():
     assert eq["schedule"].split()[-1] == "1"            # weekly, Monday
     assert "collect-equality.sh" in eq["command"]
     assert "build-equality-matrix.py" in eq["command"]
-    for m in ("dev-primary", "dev-secondary", "licensed-win-1", "licensed-win-2"):
+    for m in ("dev-primary", "dev-secondary", "ace-win-1", "ace-win-2"):
         assert m in eq["machines"]
     assert (REPO_ROOT / "scripts" / "windows" / "equality-report.ps1").exists()
 
@@ -467,23 +467,23 @@ def test_matrix_stale_excluded_two_fresh_equal():
     # 2 fresh equal + 1 stale divergent → fresh dims EQUAL (stale value never enters the tally);
     # the stale machine itself reads STALE-CHECKOUT (BC4).
     roster = {"dev-primary": {"status": "active"}, "dev-secondary": {"status": "active"},
-              "licensed-win-1": {"status": "active"}}
+              "ace-win-1": {"status": "active"}}
     reports = {"dev-primary": _report("dev-primary", skills={"repo_skill_count": 407}),
                "dev-secondary": _report("dev-secondary", skills={"repo_skill_count": 407}),
-               "licensed-win-1": _report("licensed-win-1", provenance=_prov(behind_main=85),
+               "ace-win-1": _report("ace-win-1", provenance=_prov(behind_main=85),
                                          skills={"repo_skill_count": 999})}
     assert bem.verdict_for("skills", "dev-primary", reports, {}, roster, TIER1) == "EQUAL"
-    assert bem.verdict_for("skills", "licensed-win-1", reports, {}, roster, TIER1) == "STALE-CHECKOUT"
+    assert bem.verdict_for("skills", "ace-win-1", reports, {}, roster, TIER1) == "STALE-CHECKOUT"
 
 
 def test_matrix_stale_not_in_majority():
     # 2 fresh disagree + 1 stale matching one side → NO-MAJORITY (the stale report must NOT
     # break the tie by lending its vote to one side) (BC4).
     roster = {"dev-primary": {"status": "active"}, "dev-secondary": {"status": "active"},
-              "licensed-win-1": {"status": "active"}}
+              "ace-win-1": {"status": "active"}}
     reports = {"dev-primary": _report("dev-primary", skills={"repo_skill_count": 407}),
                "dev-secondary": _report("dev-secondary", skills={"repo_skill_count": 401}),
-               "licensed-win-1": _report("licensed-win-1", provenance=_prov(dirty=True),
+               "ace-win-1": _report("ace-win-1", provenance=_prov(dirty=True),
                                          skills={"repo_skill_count": 407})}
     assert bem.verdict_for("skills", "dev-primary", reports, {}, roster, TIER1) == "NO-MAJORITY"
 

@@ -1,4 +1,4 @@
-# Golden sample — collect-equality.ps1 → collect-equality.sh emission on licensed-win-1 (#2816).
+# Golden sample — collect-equality.ps1 → collect-equality.sh emission on ace-win-1 (#2816).
 #
 # This is the EXACT shape collect-equality.sh emits when collect-equality.ps1 computes Windows
 # compute via CIM and exports EQ_CORES / EQ_RAM_TOTAL_MIB / EQ_RAM_AVAIL_MIB / EQ_DISK_AVAIL_GB /
@@ -7,12 +7,12 @@
 # tests in test_collect_equality_ps1_schema.py, which PowerShell cannot run on.
 #
 # Provenance is a fresh, clean, current checkout (dirty:false / behind_main:0 / ahead_main:0 /
-# origin_ref_age_h:1) so is_stale()==False. Compute satisfies licensed-win-1's compute_floor
+# origin_ref_age_h:1) so is_stale()==False. Compute satisfies ace-win-1's compute_floor
 # (cores_min:8; ram_gib_min restored in the #2816 W4 follow-up). NOT a live machine report —
 # regenerate by re-running the .sh seam if the schema changes.
 generated_at: "2026-05-30T04:31:07"
 schema_version: 3
-machine: "licensed-win-1"
+machine: "ace-win-1"
 host: "acma-ws002"
 os: windows
 status: active
@@ -40,10 +40,10 @@ dimensions:
     providers: {claude: present, codex: present, gemini: present, hermes: present}
     gh_auth: ok
     python_cmd: python
-    readiness_ref: harness-readiness-licensed-win-1.yaml
+    readiness_ref: harness-readiness-ace-win-1.yaml
     readiness_overall: pass
   skills: {repo_skill_count: 312}
-  kanban: {dispatch_queues: "licensed-win-1"}
+  kanban: {dispatch_queues: "ace-win-1"}
   memory:
     hermes_home: present
     context_md_mtime: "2026-05-29T22:14:03"

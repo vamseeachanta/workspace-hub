@@ -9,6 +9,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCHEDULE_FILE = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 REGISTRY_FILE = REPO_ROOT / "config" / "workstations" / "registry.yaml"
+ROLES_FILE = REPO_ROOT / "config" / "workstations" / "harness-roles.yaml"
 
 REQUIRED_FIELDS = {"id", "label", "schedule", "machines", "command", "description"}
 VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
@@ -20,7 +21,8 @@ def _load_valid_machines() -> set[str]:
         # Fallback if registry is missing
         return {
             "dev-primary", "ace-linux-1", "dev-secondary", "ace-linux-2",
-            "licensed-win-1", "licensed-win-2", "gali-linux-compute-1",
+            "ace-win-1", "ace-win-2", "licensed-win-1", "licensed-win-2",
+            "gali-linux-compute-1",
         }
     with open(REGISTRY_FILE) as f:
         data = yaml.safe_load(f)
@@ -56,6 +58,20 @@ def _load_valid_capabilities() -> set[str]:
 
 
 VALID_CAPABILITIES = _load_valid_capabilities()
+
+
+def _load_valid_roles() -> set[str]:
+    """Build valid role names from the harness-roles catalog (excluding _base)."""
+    if not ROLES_FILE.exists():
+        return set()
+    with open(ROLES_FILE) as f:
+        data = yaml.safe_load(f)
+    roles: set[str] = set(data.get("roles", {}).keys())
+    roles.discard("_base")  # _base is the implicit floor, not a selectable task role
+    return roles
+
+
+VALID_ROLES = _load_valid_roles()
 
 
 def validate_cron_field(value: str) -> bool:
@@ -133,6 +149,10 @@ def main() -> int:
         for cap in task.get("requires", []):
             if VALID_CAPABILITIES and cap not in VALID_CAPABILITIES:
                 errors.append(f"{tid}: unknown capability '{cap}' in requires")
+
+        for role in task.get("roles", []):
+            if VALID_ROLES and role not in VALID_ROLES:
+                errors.append(f"{tid}: unknown role '{role}' in roles")
 
         if scheduler == "cron":
             cron_errors = validate_cron_expression(task.get("schedule", ""))

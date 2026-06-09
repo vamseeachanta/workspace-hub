@@ -53,18 +53,18 @@ workstations:
     compute_floor: {cores_min: 8, ram_gib_min: 8}
     required_data_access: [assetutilities, digitalmodel, worldenergydata, assethold]
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
-  licensed-win-1:
+  ace-win-1:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
     linux_reachable: false
-    report_path: .claude/state/harness-readiness-licensed-win-1.yaml
+    report_path: .claude/state/harness-readiness-ace-win-1.yaml
     notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
     role: licensed-solver
     # ram_gib_min restored (#2816 W4, owner-confirmed 2026-05-31): collect-equality.ps1 now yields a
-    # trustworthy ram_total_mib via CIM. Floor = 12 GiB. Evidence: the paired licensed-win-2
+    # trustworthy ram_total_mib via CIM. Floor = 12 GiB. Evidence: the paired ace-win-2
     # (acma-ws014) measured ram_total_mib 15982 MiB (~16 GB physical; CIM excludes hardware-reserved)
     # on a real `-Stdout` run. 12 GiB gives margin below spec while still flagging a degraded sub-12
-    # GB box. A floor of 16 would false-fail (15982 < 16384). licensed-win-1 is the same
+    # GB box. A floor of 16 would false-fail (15982 < 16384). ace-win-1 is the same
     # licensed-solver class (assumed 16 GB); confirm/retune at its first -Stdout run.
     compute_floor: {cores_min: 8, ram_gib_min: 12}
     required_data_access: [digitalmodel, assetutilities]
@@ -74,17 +74,17 @@ workstations:
     # most `present` (install/import detection only — no real license probe). Until the
     # Windows-side license probe follow-up lands, these cells grade BELOW-BASELINE by design.
     solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
-  licensed-win-2:
+  ace-win-2:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
     linux_reachable: false
-    report_path: .claude/state/harness-readiness-licensed-win-2.yaml
+    report_path: .claude/state/harness-readiness-ace-win-2.yaml
     notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
     role: licensed-solver
     # ram_gib_min restored (#2816 W4, owner-confirmed 2026-05-31): measured ram_total_mib on this box
     # (acma-ws014) = 15982 MiB (~16 GB physical) via collect-equality.ps1 -Stdout on 2026-05-31.
     # Floor = 12 GiB gives margin below the real spec while still catching a degraded box. A floor of
-    # 16 would false-fail (15982 < 16384). See licensed-win-1 note above for the class rationale.
+    # 16 would false-fail (15982 < 16384). See ace-win-1 note above for the class rationale.
     compute_floor: {cores_min: 8, ram_gib_min: 12}
     required_data_access: [digitalmodel, assetutilities]
     # #2849 solvers baseline (cold-dim, STRICT): licensed-solver workstation.

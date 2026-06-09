@@ -178,7 +178,7 @@ class TestScoringLogic:
 
     def test_no_ssh_excludes_non_local(self, registry: dict) -> None:
         """Machines with ssh=null are excluded unless they are the local machine."""
-        # licensed-win-1 has no SSH; running from a non-local host should exclude it
+        # ace-win-1 has no SSH; running from a non-local host should exclude it
         candidates = select_machine(
             registry,
             required={"bash"},
@@ -186,18 +186,18 @@ class TestScoringLogic:
             prefer="",
         )
         selected_names = {c[1] for c in candidates}
-        assert "licensed-win-1" not in selected_names
-        assert "licensed-win-2" not in selected_names
+        assert "ace-win-1" not in selected_names
+        assert "ace-win-2" not in selected_names
 
-        # But if we ARE on licensed-win-1, it should be included
+        # But if we ARE on ace-win-1, it should be included
         candidates_local = select_machine(
             registry,
             required={"bash"},
-            this_host="licensed-win-1",
+            this_host="ace-win-1",
             prefer="",
         )
         selected_names_local = {c[1] for c in candidates_local}
-        assert "licensed-win-1" in selected_names_local
+        assert "ace-win-1" in selected_names_local
 
     def test_claude_gemini_requires_selects_dev_primary(self, registry: dict) -> None:
         """Requiring [claude, gemini] should only match dev-primary among

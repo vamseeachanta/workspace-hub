@@ -2498,3 +2498,45 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#458
+    title: 'fix(lng): enabled lng_terminals_refresh is still a stub and blocks scheduler freshness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/458
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:data
+      - cat:automation
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#459
+    title: 'fix(brazil_anp): scheduler refresh endpoint returns 404 for configured 2025 semester query'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/459
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:data
+      - cat:automation
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#460
+    title: 'fix(scheduler): classify deterministic job failures to avoid full retry backoff'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/460
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:data
+      - cat:automation
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

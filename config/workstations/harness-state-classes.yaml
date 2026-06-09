@@ -52,3 +52,79 @@ hooks_known:
     type: command
     command_contains: [".consolidate-lock", "dream"]
     class: role-managed            # stale dream-lock reaper
+
+# Preserved-external cron lines (#2969, F2) — crontab entries OWNED by another repo.
+# The deckhand repo installs its OWN Telegram client-SLA cron jobs on ace-linux-2. The
+# workspace-hub cron reconciler/cutover (scripts/cron/cron-audit.py + cron_transaction.py)
+# MUST classify any live line matching one of these fingerprints as `preserved_external`
+# and NEVER delete, absorb, or rewrite it. These are read by classify_line() via
+# match_fingerprint(): ALL present fingerprint keys must be substrings of the cron line.
+#
+# Fingerprints intentionally match only STABLE identity bits — the working directory and
+# the script basename — NOT the full command string. This keeps the match valid even if
+# deckhand changes its PATH prefix, log-redirect target, or python wrapper
+# (uv run --with X / python3 / .venv/bin/python). Do NOT add command_contains values that
+# pin volatile flags (e.g. "--with telethon") or they will stop matching on a deckhand bump.
+preserved_external:
+  - owner: deckhand
+    note: >-
+      Daily Telegram member-audit cron (member-audit-cron.py) run from the deckhand
+      checkout. Stable bits: /deckhand cwd + member-audit-cron.py basename.
+    fingerprint:
+      cwd_contains: /deckhand
+      script_basename: member-audit-cron.py
+  - owner: deckhand
+    note: >-
+      15-minute escalation-sweep cron (escalations.py sweep) run from the detached
+      .deckhand-sweep worktree. Stable bits: /.deckhand-sweep cwd + escalations.py basename.
+    fingerprint:
+      cwd_contains: /.deckhand-sweep
+      script_basename: escalations.py
+  - owner: deckhand
+    note: >-
+      Hourly patch-health-check cron (patch-health-check.py) run from the detached
+      .deckhand-guard worktree. Stable bits: /.deckhand-guard cwd + patch-health-check.py basename.
+    fingerprint:
+      cwd_contains: /.deckhand-guard
+      script_basename: patch-health-check.py
+  - owner: llm-wiki
+    note: >-
+      6-hourly O&G-Standards corpus-ingest campaign (cron_ingest.sh) owned by the SEPARATE
+      llm-wiki repo (canonical clone /mnt/local-analysis/llm-wiki), like the deckhand crons.
+      Stable bits: /llm-wiki cwd-path fragment + cron_ingest.sh basename. Does NOT pin the
+      full command, the # campaign comment, or the /bin/bash prefix so the match survives a
+      log-redirect/wrapper/path change. Keep verbatim; the workspace-hub cutover never owns it.
+    fingerprint:
+      cwd_contains: /llm-wiki
+      script_basename: cron_ingest.sh
+
+# Preserved-LOCAL crons (#2988, F2 follow-up) — machine-local workspace-hub maintenance
+# crons that are NOT in the role catalog and NOT externally-owned. Functionally identical
+# to preserved_external (the cron reconciler keeps them verbatim, never manages/deletes
+# them), but semantically these are the host's own workspace-hub scripts run with a
+# machine-specific invocation. Match on stable command bits only.
+preserved_local:
+  - owner: ace-linux-2
+    note: >-
+      a2-local model-ID refresh variant (scripts/maintenance/update-model-ids.sh --hub-only).
+      Distinct from the control-plane `model-ids` task (scripts/cron/update-model-ids.sh,
+      a1-only). a2 self-maintains its model registry; keep verbatim.
+    fingerprint:
+      command_contains: scripts/maintenance/update-model-ids.sh
+  - owner: ace-linux-2
+    note: >-
+      a2-local skills-curation variant (raw `claude --skill skills-curation`). Distinct
+      from the control-plane skills-curation task (scripts/cron/skills-curation.sh). Keep verbatim.
+    fingerprint:
+      command_contains: "--skill skills-curation"
+  - owner: ace-linux-1
+    note: >-
+      a1-local notification-log retention sweep. A machine-specific invocation (absolute
+      `cd /mnt/local-analysis/workspace-hub` rather than the catalog's `$WORKSPACE_HUB`) of the
+      same purge the `notification-purge` catalog task performs, so the 60-char catalog key
+      (`cd $WORKSPACE_HUB && find logs/notifications/...`) does not substring-match it and it
+      would otherwise read as uncataloged. Appears DUPLICATED in a1's crontab; the cutover dedups
+      it — this entry only ensures it classifies preserved. Stable bits: the find target +
+      the -delete action, not the cd path or stderr redirect. Keep verbatim.
+    fingerprint:
+      command_contains: ["find logs/notifications/", "-delete"]

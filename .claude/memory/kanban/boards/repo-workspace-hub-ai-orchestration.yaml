@@ -717,7 +717,7 @@ cards:
     title: 'bug(infra): Codex-under-Claude sandbox nesting blocks broker delegation (#2802 orchestration) — choose a supported execution route'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2804
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:ai-orchestration
       - status:plan-approved
@@ -731,7 +731,7 @@ cards:
     title: Document/automate worktree dispatch for the Codex-under-Claude route (3-layer sandbox requirement)
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2822
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:ai-orchestration
       - status:plan-approved
@@ -751,7 +751,6 @@ cards:
       - cat:infrastructure
       - domain:ai-orchestration
       - status:plan-review
-      - status:plan-approved
       - gate:completeness
     initial_status: triage
     priority: 0
@@ -827,7 +826,7 @@ cards:
     title: 'epic(workstations): consistent experience via dynamic workflows — role-overlay reconciler + workflow catalog + registry dispatch + Telegram venue [extends #2887/#2720]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2967
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:ai-orchestration
@@ -836,6 +835,23 @@ cards:
       - machine:multi
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2998
+    title: 'epic(workstations): extend consistent-experience backbone to Windows / no-SSH ecosystem (licensed-win-1/2, +mac/gali) [extends #2967]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2998
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+      - machine:multi
+      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
