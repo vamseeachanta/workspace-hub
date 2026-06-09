@@ -104,10 +104,12 @@ Rules:
 |---|---|---|
 | `dev-primary` | Coordinator + dispatchable | Primary Linux control plane, workspace-hub source of truth, broad data access. |
 | `dev-secondary` | Worker dispatchable after readiness | Linux OSS simulation worker with reachable SSH and repo-backed sync. |
-| `licensed-win-1` | Desktop/status-only | Licensed solver host; no unattended dispatch until Windows Hermes/gateway parity is proven. |
-| `licensed-win-2` | Desktop/status-only | Same as `licensed-win-1`. |
+| `ace-win-1` | Desktop/status-only | Licensed solver host; no unattended dispatch until Windows Hermes/gateway parity is proven. |
+| `ace-win-2` | Desktop/status-only | Same as `ace-win-1`. |
 | `macbook-portable` | Manual/status-only | Portable/manual machine, no unattended Linux cron/control-plane dependency. |
 | `gali-linux-compute-1` | Not onboarded | GPU node lacks workspace/repo/Hermes setup. |
+
+> **Cross-platform parity:** the no-SSH hosts (`ace-win-1/2`, `macbook-portable`, `gali-linux-compute-1`) move from status-only to dispatch via the **coordinator-routed pull-worker** model — see [`windows-macos-dispatch-parity.md`](windows-macos-dispatch-parity.md) (#2742).
 
 ## Security and token handling
 
@@ -159,7 +161,7 @@ Current MVP target is **dispatch only on `dev-primary` and `dev-secondary`**. Wi
    - Install Hermes CLI/gateway if missing; keep approval mode safe (`manual` or reviewed `smart`, never unguarded destructive execution).
    - Configure the same env-name contract locally (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_ALLOWED_USERS`) without committing values.
    - Generate host-local readiness evidence and make it available to the coordinator via `--evidence-dir`.
-3. Status-only machines (`licensed-win-1`, `licensed-win-2`, `macbook-portable`):
+3. Status-only machines (`ace-win-1`, `ace-win-2`, `macbook-portable`):
    - Keep `dispatch_enabled: false`.
    - Use Telegram Desktop/manual smoke checks only; do not route unattended work there until a Windows/macOS dispatch plan is approved.
 4. Not-onboarded machines (`gali-linux-compute-1`):
