@@ -405,3 +405,27 @@ Keep workspace files on Windows filesystem (`/mnt/c/workspace-hub`) for cross-to
 - Check `.claude/memory/` files exist and are not empty
 - Verify config has `memory.memory_enabled: true`
 - Check the memory bridge script runs on session start
+
+## Harness role-overlay reconciler on Windows (WF1 #2999)
+
+`ace-win-1`/`ace-win-2` are `harness_profile.managed: true` (epic #2998). Run the reconciler **on
+the host** (no SSH) via Git Bash to converge the role-invariant safety deny-list into
+`%USERPROFILE%\.claude\settings.json`:
+
+```bash
+# pyyaml is required; uv is not installed on the Windows hosts:
+python -m pip install --user pyyaml
+# dry-run first (writes nothing, shows the drift):
+python scripts/readiness/harness_reconcile.py --machine ace-win-1
+# converge (additive, backs up settings.json, idempotent — a 2nd run is byte-identical):
+python scripts/readiness/harness_reconcile.py --machine ace-win-1 --apply
+```
+
+Notes:
+- The Windows deny subset (`format`, `del /f /s /q`, `rd /s`, `reg delete`, `diskpart`, …) comes from
+  `_base.deny_required_os.windows` in `config/workstations/harness-roles.yaml`, selected by the
+  machine's `os: windows`; the Linux-only entries (`crontab`/`systemctl`/`sudo`/…) are NOT applied.
+- Host detection resolves the real Windows computer name (e.g. `ACMA-ANSYS05`) via the registry
+  `hostname_aliases`, so `--machine` is usually unnecessary.
+- The write only touches `settings.json` — it never interacts with OrcaFlex/AQWA/ANSYS processes, so
+  it is safe to run while solvers are idle.

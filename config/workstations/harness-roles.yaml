@@ -18,17 +18,14 @@ roles:
   # missing today (probe 2026-06-08: a2 ~/.claude/settings.json had no deny-list).
   _base:
     skill_families: [core]
+    # deny_required = UNIVERSAL guards (apply on any managed host, incl. Git-Bash on Windows).
+    # deny_required_os = per-OS subset selected by the target machine's registry `os` field
+    #   (WF1 #2999). INVARIANT: deny_required ∪ deny_required_os.linux == the pre-WF1 flat 37-set,
+    #   so the already-converged Linux hosts (a1/a2) see zero new drift.
     deny_required:
       - "Bash(rm -rf /)"
       - "Bash(rm -rf ~:*)"
       - "Bash(rm -rf .:*)"
-      - "Bash(dd if=/dev/zero:*)"
-      - "Bash(mkfs:*)"
-      - "Bash(shred:*)"
-      - "Bash(sudo:*)"
-      - "Bash(su :*)"
-      - "Bash(pkexec:*)"
-      - "Bash(doas:*)"
       - "Bash(chmod 777:*)"
       - "Bash(eval:*)"
       - "Bash(sh -c:*)"
@@ -54,8 +51,29 @@ roles:
       - "Bash(git push --force-with-lease:*)"
       - "Bash(git -c core.hooksPath:*)"
       - "Bash(git -c core.hookspath:*)"
-      - "Bash(crontab:*)"
-      - "Bash(systemctl:*)"
+    deny_required_os:
+      linux:    # *nix system tools — present on Linux, absent on Windows
+        - "Bash(dd if=/dev/zero:*)"
+        - "Bash(mkfs:*)"
+        - "Bash(shred:*)"
+        - "Bash(sudo:*)"
+        - "Bash(su :*)"
+        - "Bash(pkexec:*)"
+        - "Bash(doas:*)"
+        - "Bash(crontab:*)"
+        - "Bash(systemctl:*)"
+      macos:    # macOS-appropriate subset (no systemd/pkexec/doas); best-effort until mac onboards
+        - "Bash(dd if=/dev/zero:*)"
+        - "Bash(sudo:*)"
+        - "Bash(su :*)"
+        - "Bash(crontab:*)"
+      windows:  # Git-Bash → cmd /c destructive guards
+        - "Bash(format:*)"
+        - "Bash(rd /s:*)"
+        - "Bash(del /f /s /q:*)"
+        - "Bash(rmdir /s /q:*)"
+        - "Bash(reg delete:*)"
+        - "Bash(diskpart:*)"
     # NOTE (F1 scope): hooks_required is intentionally omitted here. The live Stop/
     # SessionStart hooks carry machine-absolute paths (/home/<user>, /mnt/...), which is
     # the very path-portability hazard tracked by epic #2967. Hook convergence needs a

@@ -87,10 +87,15 @@ def merge_hooks(local: dict, required: dict) -> dict:
     return out
 
 
-def compose_overlay(roles_cfg: dict, role_names: list[str]) -> dict:
+def compose_overlay(roles_cfg: dict, role_names: list[str], machine_os: str | None = None) -> dict:
     """_base ∪ role₁ ∪ role₂…  Scalar key present in 2 overlays with different values
     fails closed (no last-writer-wins). Lists (skill_families, schedule_jobs, deny)
-    are set-unioned."""
+    are set-unioned.
+
+    WF1 #2999: `_base.deny_required_os` is an {os: [deny…]} map. The subset matching
+    `machine_os` is set-unioned into `deny_required`, then the map is popped (config-only —
+    apply_overlay/compute_drift never read it). `machine_os=None` adds no OS subset.
+    """
     roles = roles_cfg.get("roles", {})
     chain = ["_base"] + [r for r in role_names if r != "_base"]
     merged: dict = {}
@@ -115,12 +120,31 @@ def compose_overlay(roles_cfg: dict, role_names: list[str]) -> dict:
             elif merged[k] != v:
                 raise ReconcileError(
                     f"overlay key conflict '{k}': {merged[k]!r} vs {name}:{v!r} (fail-closed)")
+    # WF1: resolve the per-OS deny subset, then drop the config-only map.
+    os_map = merged.pop("deny_required_os", None)
+    if os_map and machine_os:
+        subset = os_map.get(machine_os, [])
+        merged["deny_required"] = sorted(set(merged.get("deny_required", [])) | set(subset))
     return merged
 
 
 # ── drift + apply ─────────────────────────────────────────────────────────────
 def is_managed(profile: dict | None) -> bool:
     return bool(profile and profile.get("managed") is True)
+
+
+def resolve_machine_id(machines: dict, host: str) -> str | None:
+    """Resolve a hostname to its registry key via the canonical idiom: match the key,
+    hostname, OR hostname_aliases (case-insensitive — Windows hostnames are often
+    upper-case, e.g. ACMA-ANSYS05 → ace-win-1). WF1 #2999: without alias resolution the
+    reconciler can't identify a Windows host whose real name is the old alias."""
+    h = host.lower()
+    for mid, e in machines.items():
+        cands = [mid, e.get("hostname", "")] + list(e.get("hostname_aliases") or [])
+        cands = [str(c).lower() for c in cands if c]
+        if h in cands or any(c and c.startswith(h) for c in [str(e.get("hostname", "")).lower()]):
+            return mid
+    return None
 
 
 def compute_drift(current: dict, overlay: dict) -> list[dict]:
@@ -201,9 +225,19 @@ def overlay_changes_hooks(current: dict, overlay: dict) -> bool:
 # ── live-session gating (Codex MAJOR #1) ─────────────────────────────────────
 def detect_live_daemons(pgrep_fn=None) -> list[str]:
     def _default(pat):
-        return subprocess.run(["pgrep", "-f", pat], capture_output=True).returncode == 0
+        try:
+            return subprocess.run(["pgrep", "-f", pat], capture_output=True).returncode == 0
+        except (FileNotFoundError, OSError):
+            return False  # WF1: no pgrep (Windows/Git-Bash) → treat as no live daemon
     probe = pgrep_fn or _default
-    return [p for p in LIVE_DAEMON_PATTERNS if probe(p)]
+    out = []
+    for p in LIVE_DAEMON_PATTERNS:
+        try:
+            if probe(p):
+                out.append(p)
+        except (FileNotFoundError, OSError):
+            continue  # a probe that cannot run is not evidence of a live daemon
+    return out
 
 
 def should_block_apply(daemons_active: bool, changes_hooks: bool, allow_live_reload: bool) -> bool:
@@ -223,7 +257,9 @@ def serialize(settings: dict) -> str:
 # ── CLI ──────────────────────────────────────────────────────────────────────
 def _load_yaml(p: Path) -> dict:
     if yaml is None:
-        raise ReconcileError("pyyaml unavailable — run via `uv run --script`")
+        raise ReconcileError(
+            "pyyaml unavailable — run via `uv run --script`, or on Windows/Git-Bash "
+            "(no uv) `python -m pip install pyyaml` then `python harness_reconcile.py`")
     return yaml.safe_load(p.read_text()) if p.exists() else {}
 
 
@@ -240,8 +276,7 @@ def main(argv=None) -> int:
     state_classes = _load_yaml(STATE_CLASSES)
     machines = registry.get("machines", {})
     host = args.machine or socket.gethostname().split(".")[0]
-    mid = next((m for m, e in machines.items()
-                if e.get("hostname", "").startswith(host) or m == host), None)
+    mid = resolve_machine_id(machines, host)
     if mid is None:
         print(f"harness-reconcile: machine '{host}' not in registry — skipping", file=sys.stderr)
         return 0
@@ -250,7 +285,8 @@ def main(argv=None) -> int:
         print(f"harness-reconcile: {mid} is declare-only (managed!=true) — routing only, no write")
         return 0
 
-    overlay = compose_overlay(roles_cfg, profile.get("roles", []))
+    overlay = compose_overlay(roles_cfg, profile.get("roles", []),
+                              machine_os=machines[mid].get("os"))
     current = json.loads(SETTINGS.read_text()) if SETTINGS.exists() else {}
     drift = compute_drift(current, overlay)
     uncat = find_uncataloged_live(current, state_classes)
