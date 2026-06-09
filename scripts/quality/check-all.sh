@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# check-all.sh — Run ruff + mypy across all 5 tier-1 Python repos (WRK-1056)
+# check-all.sh — Run ruff + mypy across all 4 tier-1 Python repos (WRK-1056)
 # Usage: check-all.sh [--fix] [--repo <name>] [--ruff-only] [--mypy-only] [--help]
 
 set -uo pipefail
@@ -15,9 +15,8 @@ declare -A REPO_MAP=(
   [digitalmodel]="digitalmodel"
   [worldenergydata]="worldenergydata"
   [assethold]="assethold"
-  [ogmanufacturing]="OGManufacturing"
 )
-REPO_ORDER=(assetutilities digitalmodel worldenergydata assethold ogmanufacturing)
+REPO_ORDER=(assetutilities digitalmodel worldenergydata assethold)
 
 # ---------------------------------------------------------------------------
 # Flags
@@ -42,12 +41,12 @@ usage() {
   cat <<'EOF'
 Usage: check-all.sh [OPTIONS]
 
-Run ruff + mypy across all 5 tier-1 Python repos.
+Run ruff + mypy across all 4 tier-1 Python repos.
 
 Options:
   --fix              Pass --fix to ruff (safe auto-fixes)
   --repo <name>      Run only this repo (lowercase: assetutilities, digitalmodel,
-                     worldenergydata, assethold, ogmanufacturing)
+                     worldenergydata, assethold)
   --ruff-only        Skip mypy
   --mypy-only        Skip ruff
   --bandit           Run bandit security scan (MEDIUM+ new findings block)
