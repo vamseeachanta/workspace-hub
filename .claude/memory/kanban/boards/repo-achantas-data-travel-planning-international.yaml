@@ -229,3 +229,143 @@ cards:
       Research Costco Travel deal/package options for **Colombia** as one candidate in the South America trip comparison.
 
       Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'
+  - idempotency_key: gh:vamseeachanta/achantas-data#118
+    title: "Travel Plan: World's Safest Countries 2026 — comparison hub (Global Peace Index Top 10)"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/118
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#119
+    title: 'Travel Plan: Iceland — GPI #1 safest-country family trip'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/119
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#120
+    title: 'Travel Plan: New Zealand — GPI #2 safest-country family trip'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/120
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#121
+    title: 'Travel Plan: Slovenia — GPI #4 safest-country family trip'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/121
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#122
+    title: 'Travel Plan: Ireland — GPI #5 safest-country family trip'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/122
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#123
+    title: 'Travel Plan: Austria — GPI #6 safest-country family trip'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/123
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#124
+    title: 'Travel Plan: Portugal — GPI #7 safest-country family trip'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/124
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#125
+    title: 'Travel Plan: Singapore — GPI #8 safest-country family trip'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/125
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#126
+    title: 'Travel Plan: Finland — GPI #9 safest-country family trip'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/126
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#127
+    title: 'Travel Plan: Japan — GPI #10 safest-country family trip'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/127
+    gh_state: open
+    gh_labels:
+      - documentation
+      - dispatch:ready
+      - machine:dev-primary
+      - domain:travel-planning-international
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

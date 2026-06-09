@@ -56,9 +56,8 @@ cards:
       - wrk-item
       - priority:low
       - cat:engineering
-      - status:plan-approved
+      - status:plan-review
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-batch-extraction
     gh_assignees: []
     initial_status: triage

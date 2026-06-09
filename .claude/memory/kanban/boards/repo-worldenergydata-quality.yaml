@@ -523,6 +523,7 @@ cards:
       - priority:high
       - cat:data
       - cat:automation
+      - status:plan-approved
       - domain:quality
     initial_status: triage
     priority: 1

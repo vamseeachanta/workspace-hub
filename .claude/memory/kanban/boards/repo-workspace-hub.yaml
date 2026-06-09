@@ -20819,7 +20819,7 @@ cards:
     title: 'feat(workstations): WF1 — role-overlay reconciler on Windows (licensed-win-1/2) [#2998]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2999
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:harness
@@ -20833,7 +20833,7 @@ cards:
     title: 'feat(workstations): WF3 — dispatch to no-SSH hosts via pull/poll lease model [#2998]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3000
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:harness
@@ -20853,6 +20853,21 @@ cards:
       - cat:harness
       - machine:multi
       - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3015
+    title: harden attest-plan-claims path extraction for jsonl and template evidence
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3015
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - cat:automation
+      - domain:audit-trail
     initial_status: triage
     priority: 0
     gh_assignees: []
