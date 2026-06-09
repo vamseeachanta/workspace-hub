@@ -55,7 +55,6 @@ REPO_MAP: dict[str, str] = {
     "digitalmodel": "digitalmodel",
     "worldenergydata": "worldenergydata",
     "assethold": "assethold",
-    "OGManufacturing": "OGManufacturing",
 }
 
 DEFAULT_BASELINE = Path("config/quality/config-drift-baseline.yaml")

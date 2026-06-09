@@ -61,7 +61,6 @@ REPOS=(
     "frontierdeepwater"
     "hobbies"
     "investments"
-    "OGManufacturing"
     "predyct"
     "pyproject-starter"
     "rock-oil-field"

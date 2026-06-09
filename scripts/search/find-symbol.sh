@@ -39,7 +39,7 @@ fi
 # Freshness check: warn if any src/ file is newer than the index
 index_mtime=$(stat -c %Y "$SYMBOL_INDEX" 2>/dev/null || stat -f %m "$SYMBOL_INDEX" 2>/dev/null || echo 0)
 stale=false
-for repo in assethold assetutilities digitalmodel OGManufacturing worldenergydata; do
+for repo in assethold assetutilities digitalmodel worldenergydata; do
     src_dir="$REPO_ROOT/$repo/src"
     [[ -d "$src_dir" ]] || continue
     newer=$(find "$src_dir" -name "*.py" -newer "$SYMBOL_INDEX" -print -quit 2>/dev/null || true)

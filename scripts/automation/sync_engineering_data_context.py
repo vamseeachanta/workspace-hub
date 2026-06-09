@@ -17,7 +17,7 @@ REPOS = [
     "achantas-data", "achantas-media", "acma-projects",
     "ai-native-traditional-eng", "assethold", "assetutilities",
     "client_projects", "digitalmodel", "doris", "energy",
-    "frontierdeepwater", "hobbies", "investments", "OGManufacturing",
+    "frontierdeepwater", "hobbies", "investments",
     "pyproject-starter", "rock-oil-field", "sabithaandkrishnaestates",
     "saipem", "sd-work", "seanation", "teamresumes", "worldenergydata"
 ]

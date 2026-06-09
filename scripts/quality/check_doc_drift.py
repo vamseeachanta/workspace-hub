@@ -36,7 +36,6 @@ REPO_MAP: dict[str, str] = {
     "digitalmodel": "digitalmodel",
     "worldenergydata": "worldenergydata",
     "assethold": "assethold",
-    "ogmanufacturing": "OGManufacturing",
 }
 
 # Cache: repo_path str -> set[str]

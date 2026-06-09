@@ -41,7 +41,7 @@ if [[ -n "${BROKEN_WINDOWS_REPOS:-}" ]]; then
         REPO_PATHS+=("${p#*:}")
     done
 else
-    for name in assetutilities digitalmodel worldenergydata assethold OGManufacturing; do
+    for name in assetutilities digitalmodel worldenergydata assethold; do
         REPO_NAMES+=("$name")
         REPO_PATHS+=("${REPO_ROOT}/${name}")
     done

@@ -24,7 +24,6 @@ run_case() {
         digitalmodel)   mkdir -p "${tmpdir}/src/digitalmodel" ;;
         worldenergydata) mkdir -p "${tmpdir}/src/worldenergydata" ;;
         assethold)      mkdir -p "${tmpdir}/src/assethold" ;;
-        OGManufacturing) mkdir -p "${tmpdir}/src/ogmanufacturing" ;;
     esac
     mkdir -p "${tmpdir}/tests" "${tmpdir}/docs"
 
@@ -45,7 +44,6 @@ run_case() {
         digitalmodel)   src_path="${tmpdir}/src/digitalmodel/${module}" ;;
         worldenergydata) src_path="${tmpdir}/src/worldenergydata/${module}" ;;
         assethold)      src_path="${tmpdir}/src/assethold/${module}" ;;
-        OGManufacturing) src_path="${tmpdir}/src/ogmanufacturing/${module}" ;;
         *) fail "$description: unknown repo $repo"; rm -rf "$tmpdir"; return ;;
     esac
 
@@ -86,9 +84,6 @@ run_case "worldenergydata energy module" worldenergydata eia_loader energy
 
 echo "Case 4: assethold --domain marine"
 run_case "assethold marine module" assethold riser_design marine
-
-echo "Case 5: OGManufacturing --domain generic"
-run_case "OGManufacturing generic module" OGManufacturing drilling_metrics generic
 
 echo ""
 echo "Results: ${PASS} PASS, ${FAIL} FAIL"

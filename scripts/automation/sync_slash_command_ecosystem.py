@@ -42,7 +42,7 @@ class SlashCommandEcosystemSync:
             "achantas-data", "achantas-media", "acma-projects",
             "ai-native-traditional-eng", "assethold", "assetutilities",
             "digitalmodel", "energy", "frontierdeepwater",
-            "hobbies", "investments", "OGManufacturing",
+            "hobbies", "investments",
             "rock-oil-field", "sabithaandkrishnaestates", "saipem",
             "sd-work", "seanation", "teamresumes", "worldenergydata",
             "pyproject-starter", "doris", "client_projects"

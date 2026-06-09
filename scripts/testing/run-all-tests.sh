@@ -25,7 +25,6 @@ REPO_CONFIGS=(
     "digitalmodel:digitalmodel:src:"
     "worldenergydata:worldenergydata:src:--noconftest"
     "assethold:assethold::tests/ --noconftest --tb=short -q"
-    "OGManufacturing:OGManufacturing::tests/"
 )
 
 # ── Argument parsing ──────────────────────────────────────────────────────────

@@ -16,7 +16,6 @@ TIER1_REPOS = {
     "assethold": "assethold/src",
     "assetutilities": "assetutilities/src",
     "digitalmodel": "digitalmodel/src",
-    "OGManufacturing": "OGManufacturing/src",
     "worldenergydata": "worldenergydata/src",
 }
 
