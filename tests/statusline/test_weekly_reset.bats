@@ -97,6 +97,34 @@ EOF
   [[ "$output" == *"O:64%·"*"d"* ]]
 }
 
+@test "claude shows days-to-reset from session rate_limits resets_at" {
+  write_quota
+  in='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10},"rate_limits":{"seven_day":{"used_percentage":37,"resets_at":"2099-01-10T00:00:00Z"}}}'
+  run bash -c "printf '%s' '$in' | bash '$SCRIPT'"
+  [ "$status" -eq 0 ]
+  # 100-37=63% remaining, with a day-countdown sourced from the session JSON
+  # (the quota file's claude entry is source:unavailable and must not matter).
+  [[ "$output" == *"C:63%·"*"d"* ]]
+}
+
+@test "claude session weekly pct without resets_at gets no fabricated countdown" {
+  write_quota
+  in='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10},"rate_limits":{"seven_day":{"used_percentage":37}}}'
+  run bash -c "printf '%s' '$in' | bash '$SCRIPT'"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"C:63%"* ]]
+  [[ "$output" != *"C:63%·"* ]]
+}
+
+@test "malformed session resets_at never blanks the statusline" {
+  write_quota
+  in='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10},"rate_limits":{"seven_day":{"used_percentage":37,"resets_at":"not-a-timestamp"}}}'
+  run bash -c "printf '%s' '$in' | bash '$SCRIPT'"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"C:63%"* ]]
+  [[ "$output" != *"C:63%·"* ]]
+}
+
 @test "missing reset fields never blank the statusline" {
   cat > "$STATUSLINE_QUOTA_PRIMARY" <<'EOF'
 {"agents":[{"provider":"codex","pct_remaining":64}]}
