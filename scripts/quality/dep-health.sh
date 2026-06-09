@@ -15,9 +15,8 @@ declare -A REPO_MAP=(
     [digitalmodel]="digitalmodel"
     [worldenergydata]="worldenergydata"
     [assethold]="assethold"
-    [ogmanufacturing]="OGManufacturing"
 )
-REPO_ORDER=(assetutilities digitalmodel worldenergydata assethold ogmanufacturing)
+REPO_ORDER=(assetutilities digitalmodel worldenergydata assethold)
 
 OPT_REPO=""
 

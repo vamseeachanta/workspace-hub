@@ -5,7 +5,7 @@ WORKSPACE_ROOT=$(git -C "$(dirname "$0")" rev-parse --show-toplevel)
 
 usage() {
   echo "Usage: $0 <repo> <version> [--dry-run]"
-  echo "Valid repos: assetutilities digitalmodel worldenergydata assethold OGManufacturing"
+  echo "Valid repos: assetutilities digitalmodel worldenergydata assethold"
   exit 1
 }
 
@@ -23,7 +23,7 @@ for arg in "$@"; do
 done
 
 # Validate repo name
-valid_repos=("assetutilities" "digitalmodel" "worldenergydata" "assethold" "OGManufacturing")
+valid_repos=("assetutilities" "digitalmodel" "worldenergydata" "assethold")
 repo_valid=0
 for r in "${valid_repos[@]}"; do
   if [[ "$r" == "$repo" ]]; then

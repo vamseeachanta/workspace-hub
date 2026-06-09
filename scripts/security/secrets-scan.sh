@@ -22,7 +22,7 @@ GITLEAKS_CONFIG="${REPO_ROOT}/.gitleaks.toml"
 BASELINE_DIR="${REPO_ROOT}/config/quality"
 
 # workspace-hub is included; it scans REPO_ROOT itself
-TIER1_REPOS=(workspace-hub assethold assetutilities digitalmodel OGManufacturing worldenergydata)
+TIER1_REPOS=(workspace-hub assethold assetutilities digitalmodel worldenergydata)
 
 TARGET_REPO=""
 

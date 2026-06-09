@@ -15,7 +15,7 @@
 set -uo pipefail
 
 # === Configuration ===
-TIER1_REPOS=(workspace-hub assetutilities digitalmodel worldenergydata assethold OGManufacturing)
+TIER1_REPOS=(workspace-hub assetutilities digitalmodel worldenergydata assethold)
 WORKSPACE_ROOT=/mnt/local-analysis/workspace-hub
 SIBLING_ROOT=/mnt/local-analysis
 SAFE_BRANCH_RE='^(chore/auto-|bot/|claude-session/)'

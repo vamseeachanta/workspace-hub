@@ -11,9 +11,8 @@ declare -A REPO_MAP=(
   [digitalmodel]="digitalmodel"
   [worldenergydata]="worldenergydata"
   [assethold]="assethold"
-  [ogmanufacturing]="OGManufacturing"
 )
-REPO_ORDER=(assetutilities digitalmodel worldenergydata assethold ogmanufacturing)
+REPO_ORDER=(assetutilities digitalmodel worldenergydata assethold)
 
 OPT_REPO=""
 OPT_SERVE=false
@@ -27,7 +26,7 @@ Build MkDocs API documentation for tier-1 Python repos.
 
 Options:
   --repo <name>   Build only this repo (assetutilities, digitalmodel,
-                  worldenergydata, assethold, ogmanufacturing)
+                  worldenergydata, assethold)
   --serve         Launch mkdocs serve instead of build (first repo only)
   --strict        Pass --strict to mkdocs build (fail on warnings)
   --help          Show this help
