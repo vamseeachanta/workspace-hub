@@ -6,8 +6,11 @@ on:
       - main
     paths:
       - '.claude/skills/**/SKILL.md'
+      - 'scripts/lib/uv-env.sh'
+      - 'scripts/lib/uv-resolver.sh'
       - 'scripts/skills/*.sh'
       - 'scripts/skills/*.py'
+      - 'tests/cron/test_skill_validation_uv_resolution.py'
       - 'tests/enforcement/test_validate_skills_frontmatter.py'
       - '.github/workflows/skills-validation.yml'
   push:
@@ -15,8 +18,11 @@ on:
       - main
     paths:
       - '.claude/skills/**/SKILL.md'
+      - 'scripts/lib/uv-env.sh'
+      - 'scripts/lib/uv-resolver.sh'
       - 'scripts/skills/*.sh'
       - 'scripts/skills/*.py'
+      - 'tests/cron/test_skill_validation_uv_resolution.py'
       - 'tests/enforcement/test_validate_skills_frontmatter.py'
       - '.github/workflows/skills-validation.yml'
   workflow_dispatch:
@@ -41,6 +47,10 @@ jobs:
       - name: Run validator regression tests
         run: |
           UV_CACHE_DIR=.claude/state/uv-cache uv run --no-project --with pytest --with pyyaml pytest tests/enforcement/test_validate_skills_frontmatter.py -v
+
+      - name: Run cron uv resolution tests
+        run: |
+          UV_CACHE_DIR=.claude/state/uv-cache uv run --no-project --with pytest --with pyyaml pytest tests/cron/test_skill_validation_uv_resolution.py -v
 
       - name: Generate skills summary
         if: always()

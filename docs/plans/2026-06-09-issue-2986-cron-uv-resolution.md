@@ -1,6 +1,6 @@
 # Plan for #2986: Harden skill validation uv resolution and diagnostics
 
-> **Status:** plan-review
+> **Status:** implemented (TDD)
 > **Complexity:** T2
 > **Date:** 2026-06-09
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2986
