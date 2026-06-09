@@ -48,8 +48,10 @@ issue_num=$(echo "$branch" | grep -oE '[0-9]{3,5}' | head -1) || true
 # AI usage remaining percentages
 # C: uses Claude.ai 7-day subscription quota (from statusline JSON) as primary,
 # falls back to agent-quota file. O: and G: from agent-quota files.
-quota_primary="$ws_root/config/ai-tools/agent-quota-latest.json"
-quota_cache="${HOME}/.cache/agent-quota.json"
+# Env overrides keep the script testable with fixture quota files (#2992);
+# they fall back to the real locations in normal use.
+quota_primary="${STATUSLINE_QUOTA_PRIMARY:-$ws_root/config/ai-tools/agent-quota-latest.json}"
+quota_cache="${STATUSLINE_QUOTA_CACHE:-${HOME}/.cache/agent-quota.json}"
 
 extract_pct() {
     local provider="$1" val
@@ -66,6 +68,63 @@ extract_pct() {
         jq -r --arg p "$provider" \
             '.agents[] | select(.provider == $p) | .pct_remaining // empty' \
             "$quota_cache" 2>/dev/null
+    fi
+}
+
+# Days until a provider's weekly quota resets, to 1 decimal (e.g. "2.5") so
+# work can be planned around the refill (#2992). Prefers the absolute
+# `resets_at` timestamp — `hours_to_reset` is pre-rounded to whole hours and so
+# loses the decimal — and falls back to `hours_to_reset` only when no timestamp
+# is present. Emits nothing when neither field is available, so a provider with
+# `source: unavailable` (Claude today) never shows a fabricated countdown.
+# date-parse misses and empty substitutions are swallowed so a bad field can't
+# blank the whole statusline under `set -euo pipefail`.
+reset_days() {
+    local provider="$1" file resets_at="" hours="" source=""
+    for file in "$quota_primary" "$quota_cache"; do
+        [[ -f "$file" ]] || continue
+        source=$(jq -r --arg p "$provider" \
+            '.agents[] | select(.provider == $p) | .source // empty' "$file" 2>/dev/null)
+        resets_at=$(jq -r --arg p "$provider" \
+            '.agents[] | select(.provider == $p) | .resets_at // empty' "$file" 2>/dev/null)
+        hours=$(jq -r --arg p "$provider" \
+            '.agents[] | select(.provider == $p) | .hours_to_reset // empty' "$file" 2>/dev/null)
+        [[ -n "$source" || -n "$resets_at" || ( -n "$hours" && "$hours" != "null" ) ]] && break
+    done
+    case "$source" in
+        unavailable|estimated) return ;;
+    esac
+    if [[ -n "$resets_at" ]]; then
+        local reset_epoch
+        reset_epoch=$(
+            python3 - "$resets_at" 2>/dev/null <<'PY'
+import datetime
+import sys
+
+raw = sys.argv[1].strip()
+if raw.endswith("Z"):
+    raw = raw[:-1] + "+00:00"
+try:
+    dt = datetime.datetime.fromisoformat(raw)
+except ValueError:
+    if len(raw) > 5 and raw[-5] in "+-" and raw[-3] != ":":
+        raw = f"{raw[:-2]}:{raw[-2:]}"
+        dt = datetime.datetime.fromisoformat(raw)
+    else:
+        raise
+if dt.tzinfo is None:
+    dt = dt.replace(tzinfo=datetime.timezone.utc)
+print(int(dt.timestamp()))
+PY
+        ) || reset_epoch=""
+        if [[ -n "$reset_epoch" ]]; then
+            awk -v r="$reset_epoch" -v n="$(date +%s)" \
+                'BEGIN { d=(r-n)/86400; if (d<0) d=0; printf "%.1f", d }'
+            return
+        fi
+    fi
+    if [[ -n "$hours" && "$hours" != "null" ]]; then
+        awk -v h="$hours" 'BEGIN { printf "%.1f", h/24 }'
     fi
 }
 
@@ -107,7 +166,17 @@ fi
 
 o_pct=$(extract_pct "codex")
 g_pct=$(extract_pct "gemini")
-ai_usage="$(color_pct C "$c_rem" "$c_suffix")|$(color_pct O "$o_pct")|$(color_pct G "$g_pct")"
+
+# Append a "·N.Nd" weekly-reset countdown (days, 1 decimal) to the weekly-quota
+# providers so delegation can see how long until headroom refills (#2992).
+# Gemini is a daily limit, not weekly — no reset suffix.
+c_days=$(reset_days claude)
+o_days=$(reset_days codex)
+[[ -n "$c_days" ]] && c_suffix="${c_suffix}·${c_days}d"
+o_suffix=""
+[[ -n "$o_days" ]] && o_suffix="·${o_days}d"
+
+ai_usage="$(color_pct C "$c_rem" "$c_suffix")|$(color_pct O "$o_pct" "$o_suffix")|$(color_pct G "$g_pct")"
 
 # Repo module name (basename of workspace root)
 repo_name=$(basename "$ws_root")
