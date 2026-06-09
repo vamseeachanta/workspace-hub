@@ -87,3 +87,23 @@ preserved_external:
     fingerprint:
       cwd_contains: /.deckhand-guard
       script_basename: patch-health-check.py
+
+# Preserved-LOCAL crons (#2988, F2 follow-up) — machine-local workspace-hub maintenance
+# crons that are NOT in the role catalog and NOT externally-owned. Functionally identical
+# to preserved_external (the cron reconciler keeps them verbatim, never manages/deletes
+# them), but semantically these are the host's own workspace-hub scripts run with a
+# machine-specific invocation. Match on stable command bits only.
+preserved_local:
+  - owner: ace-linux-2
+    note: >-
+      a2-local model-ID refresh variant (scripts/maintenance/update-model-ids.sh --hub-only).
+      Distinct from the control-plane `model-ids` task (scripts/cron/update-model-ids.sh,
+      a1-only). a2 self-maintains its model registry; keep verbatim.
+    fingerprint:
+      command_contains: scripts/maintenance/update-model-ids.sh
+  - owner: ace-linux-2
+    note: >-
+      a2-local skills-curation variant (raw `claude --skill skills-curation`). Distinct
+      from the control-plane skills-curation task (scripts/cron/skills-curation.sh). Keep verbatim.
+    fingerprint:
+      command_contains: "--skill skills-curation"

@@ -131,7 +131,11 @@ def catalog_commands(catalog: dict) -> list[str]:
 
 
 def external_fingerprints(state_classes: dict) -> list[dict]:
-    return [e.get("fingerprint", {}) for e in (state_classes.get("preserved_external") or [])]
+    # preserved_external (other-repo-owned, e.g. deckhand) + preserved_local (this host's
+    # own non-catalog workspace-hub crons, #2988) — both are the keep-verbatim bucket.
+    entries = (state_classes.get("preserved_external") or []) + \
+              (state_classes.get("preserved_local") or [])
+    return [e.get("fingerprint", {}) for e in entries]
 
 
 # ── the transaction ──────────────────────────────────────────────────────────

@@ -99,11 +99,15 @@ def load_catalog_commands(path: Path = CATALOG_PATH) -> list[str]:
 
 
 def load_external_fingerprints(path: Path = CLASSES_PATH) -> list[dict]:
-    """Read preserved_external fingerprints from harness-state-classes.yaml."""
+    """Read preserved fingerprints from harness-state-classes.yaml.
+
+    Merges preserved_external (other-repo-owned) + preserved_local (this host's own
+    non-catalog workspace-hub crons, #2988) — both are the keep-verbatim bucket.
+    """
     if not path.exists():
         raise FileNotFoundError(f"state-classes file not found at {path}")
     data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    entries = data.get("preserved_external", []) or []
+    entries = (data.get("preserved_external", []) or []) + (data.get("preserved_local", []) or [])
     fingerprints: list[dict] = []
     for entry in entries:
         fp = entry.get("fingerprint")
