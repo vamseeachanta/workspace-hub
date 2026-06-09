@@ -591,14 +591,12 @@ cards:
     title: 'chore(harness): finish OGManufacturing relocation cleanup — remaining operational refs + single tier-1 source of truth'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3019
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:low
       - cat:harness
-      - status:plan-review
       - status:plan-approved
-      - gate:completeness
       - domain:harness
     initial_status: triage
     priority: 0
