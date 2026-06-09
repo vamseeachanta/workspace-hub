@@ -78,6 +78,37 @@ extract_pct() {
     fi
 }
 
+# Convert an ISO-8601 timestamp into days-from-now, 1 decimal, floored at 0.
+# Emits nothing on a parse failure so a malformed timestamp can't blank the
+# whole statusline under `set -euo pipefail`.
+days_until_iso() {
+    local resets_at="$1" reset_epoch
+    reset_epoch=$(
+        python3 - "$resets_at" 2>/dev/null <<'PY'
+import datetime
+import sys
+
+raw = sys.argv[1].strip()
+if raw.endswith("Z"):
+    raw = raw[:-1] + "+00:00"
+try:
+    dt = datetime.datetime.fromisoformat(raw)
+except ValueError:
+    if len(raw) > 5 and raw[-5] in "+-" and raw[-3] != ":":
+        raw = f"{raw[:-2]}:{raw[-2:]}"
+        dt = datetime.datetime.fromisoformat(raw)
+    else:
+        raise
+if dt.tzinfo is None:
+    dt = dt.replace(tzinfo=datetime.timezone.utc)
+print(int(dt.timestamp()))
+PY
+    ) || reset_epoch=""
+    [[ -n "$reset_epoch" ]] || return 0
+    awk -v r="$reset_epoch" -v n="$(date +%s)" \
+        'BEGIN { d=(r-n)/86400; if (d<0) d=0; printf "%.1f", d }'
+}
+
 # Days until a provider's weekly quota resets, to 1 decimal (e.g. "2.5") so
 # work can be planned around the refill (#2992). Prefers the absolute
 # `resets_at` timestamp — `hours_to_reset` is pre-rounded to whole hours and so
@@ -102,31 +133,10 @@ reset_days() {
         unavailable|estimated) return ;;
     esac
     if [[ -n "$resets_at" ]]; then
-        local reset_epoch
-        reset_epoch=$(
-            python3 - "$resets_at" 2>/dev/null <<'PY'
-import datetime
-import sys
-
-raw = sys.argv[1].strip()
-if raw.endswith("Z"):
-    raw = raw[:-1] + "+00:00"
-try:
-    dt = datetime.datetime.fromisoformat(raw)
-except ValueError:
-    if len(raw) > 5 and raw[-5] in "+-" and raw[-3] != ":":
-        raw = f"{raw[:-2]}:{raw[-2:]}"
-        dt = datetime.datetime.fromisoformat(raw)
-    else:
-        raise
-if dt.tzinfo is None:
-    dt = dt.replace(tzinfo=datetime.timezone.utc)
-print(int(dt.timestamp()))
-PY
-        ) || reset_epoch=""
-        if [[ -n "$reset_epoch" ]]; then
-            awk -v r="$reset_epoch" -v n="$(date +%s)" \
-                'BEGIN { d=(r-n)/86400; if (d<0) d=0; printf "%.1f", d }'
+        local days
+        days=$(days_until_iso "$resets_at") || days=""
+        if [[ -n "$days" ]]; then
+            printf '%s' "$days"
             return
         fi
     fi
@@ -152,6 +162,7 @@ color_pct() {
 
 # Claude: prefer 7-day subscription remaining from API (most accurate)
 week_used=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+week_resets_at=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 c_suffix=""
 if [[ -n "$week_used" ]]; then
     c_rem=$(awk -v u="$week_used" 'BEGIN { printf "%d", 100 - u }')
@@ -176,8 +187,14 @@ g_pct=$(extract_pct "gemini")
 
 # Append a "·N.Nd" weekly-reset countdown (days, 1 decimal) to the weekly-quota
 # providers so delegation can see how long until headroom refills (#2992).
-# Gemini is a daily limit, not weekly — no reset suffix.
-c_days=$(reset_days claude)
+# Claude prefers the session JSON's rate_limits.seven_day.resets_at — the same
+# live source already trusted for the percentage — since the quota file's
+# claude entry is source:unavailable. Gemini is a daily limit, no reset suffix.
+# Both fields must come from the same session snapshot: a resets_at without a
+# used_percentage would pair a countdown with an unknown (or file-sourced) %.
+c_days=""
+[[ -n "$week_used" && -n "$week_resets_at" ]] && c_days=$(days_until_iso "$week_resets_at")
+[[ -z "$c_days" ]] && c_days=$(reset_days claude)
 o_days=$(reset_days codex)
 [[ -n "$c_days" ]] && c_suffix="${c_suffix}·${c_days}d"
 o_suffix=""

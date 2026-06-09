@@ -47,9 +47,9 @@ EOF
   write_quota
   run bash -c "printf '%s' '$INPUT' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
-  # Claude renders dim with no value and no day-suffix appended.
+  # Claude renders dim with no value and no day-suffix appended (any day
+  # suffix would start with "·" immediately after the "%").
   [[ "$output" != *"C:-%·"* ]]
-  [[ "$output" != *"C:-%"*"d "* ]] || true
 }
 
 @test "estimated reset telemetry gets NO fabricated countdown even with stale hours" {
@@ -95,6 +95,45 @@ EOF
   run bash -c "printf '%s' '$INPUT' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   [[ "$output" == *"O:64%·"*"d"* ]]
+}
+
+@test "claude shows days-to-reset from session rate_limits resets_at" {
+  write_quota
+  in='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10},"rate_limits":{"seven_day":{"used_percentage":37,"resets_at":"2099-01-10T00:00:00Z"}}}'
+  run bash -c "printf '%s' '$in' | bash '$SCRIPT'"
+  [ "$status" -eq 0 ]
+  # 100-37=63% remaining, with a day-countdown sourced from the session JSON
+  # (the quota file's claude entry is source:unavailable and must not matter).
+  [[ "$output" == *"C:63%·"*"d"* ]]
+}
+
+@test "claude session weekly pct without resets_at gets no fabricated countdown" {
+  write_quota
+  in='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10},"rate_limits":{"seven_day":{"used_percentage":37}}}'
+  run bash -c "printf '%s' '$in' | bash '$SCRIPT'"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"C:63%"* ]]
+  [[ "$output" != *"C:63%·"* ]]
+}
+
+@test "session resets_at without weekly pct gets no countdown on unknown C" {
+  write_quota
+  # resets_at present but used_percentage absent: pairing a countdown with an
+  # unknown (or quota-file-sourced) percentage would mix telemetry sources, so
+  # the C segment must stay bare (codex r2 finding on PR #3021).
+  in='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10},"rate_limits":{"seven_day":{"resets_at":"2099-01-10T00:00:00Z"}}}'
+  run bash -c "printf '%s' '$in' | bash '$SCRIPT'"
+  [ "$status" -eq 0 ]
+  [[ "$output" != *"C:-%·"* ]]
+}
+
+@test "malformed session resets_at never blanks the statusline" {
+  write_quota
+  in='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10},"rate_limits":{"seven_day":{"used_percentage":37,"resets_at":"not-a-timestamp"}}}'
+  run bash -c "printf '%s' '$in' | bash '$SCRIPT'"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"C:63%"* ]]
+  [[ "$output" != *"C:63%·"* ]]
 }
 
 @test "missing reset fields never blank the statusline" {
