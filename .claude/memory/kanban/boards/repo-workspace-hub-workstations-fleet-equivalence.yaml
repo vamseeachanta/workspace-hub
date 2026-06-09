@@ -419,3 +419,17 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2992
+    title: 'statusline: show time-to-weekly-reset per provider (plan work around quota refill)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2992
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:tooling
+      - domain:workstations-fleet-equivalence
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

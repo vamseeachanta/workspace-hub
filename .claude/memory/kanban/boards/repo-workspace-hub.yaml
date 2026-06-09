@@ -20772,7 +20772,7 @@ cards:
     title: 'fix: make SKILL.md frontmatter YAML-valid for review dispatch'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2981
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - bug
       - cat:automation
@@ -20780,6 +20780,7 @@ cards:
       - status:plan-review
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -20793,6 +20794,7 @@ cards:
       - bug
       - cat:automation
       - domain:review
+      - status:plan-review
     initial_status: triage
     priority: 0
     gh_assignees: []
