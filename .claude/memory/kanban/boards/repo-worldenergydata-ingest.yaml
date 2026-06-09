@@ -167,7 +167,7 @@ cards:
     title: Implement SODIR, Brazil ANP, and UKCS adapters
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/269
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data

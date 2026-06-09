@@ -20789,12 +20789,14 @@ cards:
     title: 'fix(cron): make nightly skill validation resolve uv reliably'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2986
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - bug
       - cat:automation
       - domain:review
-      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 0
     gh_assignees: []
