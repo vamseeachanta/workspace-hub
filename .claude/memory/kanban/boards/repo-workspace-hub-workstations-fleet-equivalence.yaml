@@ -423,13 +423,14 @@ cards:
     title: 'statusline: show time-to-weekly-reset per provider (plan work around quota refill)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2992
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:low
       - cat:tooling
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
       - domain:workstations-fleet-equivalence
     initial_status: triage
     priority: 0
