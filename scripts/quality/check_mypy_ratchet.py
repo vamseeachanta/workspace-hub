@@ -52,7 +52,6 @@ REPOS: dict[str, str] = {
     "digitalmodel": "digitalmodel",
     "worldenergydata": "worldenergydata",
     "assethold": "assethold",
-    "ogmanufacturing": "OGManufacturing",
 }
 
 

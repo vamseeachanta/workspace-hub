@@ -5,7 +5,7 @@
 #   new-module.sh <repo> <module-name> [--domain generic|structural|marine|energy]
 #                                      [--output-root <path>]
 #
-# Repos: assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing
+# Repos: assetutilities, digitalmodel, worldenergydata, assethold
 # Domain default: generic
 set -euo pipefail
 
@@ -84,14 +84,9 @@ case "$REPO" in
         IMPORT_BASE="assethold"
         HAS_PY_TYPED=false
         ;;
-    OGManufacturing)
-        SRC_SUBDIR="src/ogmanufacturing"
-        IMPORT_BASE="ogmanufacturing"
-        HAS_PY_TYPED=false
-        ;;
     *)
         echo "Unknown repo: $REPO" >&2
-        echo "Supported: assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing" >&2
+        echo "Supported: assetutilities, digitalmodel, worldenergydata, assethold" >&2
         exit 1
         ;;
 esac

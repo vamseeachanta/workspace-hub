@@ -36,7 +36,6 @@ REPOSITORIES = [
     "frontierdeepwater",
     "hobbies",
     "investments",
-    "OGManufacturing",
     "rock-oil-field",
     "sabithaandkrishnaestates",
     "saipem",

@@ -76,7 +76,6 @@ def setup_all_commands():
         "assetutilities",
         "digitalmodel",
         "achantas-data",
-        "OGManufacturing",
         "frontierdeepwater",
         "saipem"
     ]

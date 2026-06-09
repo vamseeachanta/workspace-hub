@@ -47,7 +47,7 @@ export -f commit_repo
 export GREEN YELLOW RED BLUE NC
 
 # Get all repos with changes
-repos_with_changes="aceengineer-admin aceengineercode aceengineer-website achantas-data achantas-media acma-projects ai-native-traditional-eng assetutilities client_projects digitalmodel doris energy frontierdeepwater hobbies investments OGManufacturing pyproject-starter rock-oil-field sabithaandkrishnaestates saipem sd-work seanation teamresumes worldenergydata"
+repos_with_changes="aceengineer-admin aceengineercode aceengineer-website achantas-data achantas-media acma-projects ai-native-traditional-eng assetutilities client_projects digitalmodel doris energy frontierdeepwater hobbies investments pyproject-starter rock-oil-field sabithaandkrishnaestates saipem sd-work seanation teamresumes worldenergydata"
 
 # Process in parallel (max 5 at a time to avoid overwhelming git)
 echo "$repos_with_changes" | tr ' ' '\n' | xargs -I {} -P 5 bash -c 'commit_repo "$@"' _ {}

@@ -24,7 +24,6 @@ TIER1_REPOS = [
     "digitalmodel",
     "worldenergydata",
     "assethold",
-    "OGManufacturing",
 ]
 
 

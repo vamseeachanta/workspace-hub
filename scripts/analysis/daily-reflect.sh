@@ -39,7 +39,7 @@ fi
 
     # Summarise commits across hub and known submodule directories
     for repo_dir in "$WORKSPACE" "${WORKSPACE}/digitalmodel" "${WORKSPACE}/assetutilities" \
-                    "${WORKSPACE}/worldenergydata" "${WORKSPACE}/assethold" "${WORKSPACE}/ogmanufacturing"; do
+                    "${WORKSPACE}/worldenergydata" "${WORKSPACE}/assethold"; do
         [[ -d "${repo_dir}/.git" ]] || continue
         repo_name=$(basename "$repo_dir")
         commits=$(git -C "$repo_dir" log \

@@ -34,3 +34,29 @@ GATE_SCRIPTS=(
   [ "$status" -ne 0 ]
   [[ "$output" == *"Unknown repo"* ]]
 }
+
+# --- #3019: the remaining operational scripts must also stay clean ---
+@test "no active operational script references the relocated OGManufacturing repo (#3019)" {
+  # Gate-relevant + active repo-list scripts cleaned in #3019. The 4 documented
+  # LEAVE files (ecosystem-rework-retriage.sh, suggest_model.sh,
+  # quality_gap_report.py, check-tier1-repo-baseline.py) and historical
+  # data-pipeline scripts are intentionally excluded.
+  local cleaned=(
+    scripts/testing/run-all-tests.sh
+    scripts/cron/broken-windows-sweep.sh
+    scripts/cron/coverage-drift-report.sh
+    scripts/onboarding/generate-repo-map.py
+    scripts/analysis/daily-reflect.sh
+    scripts/search/build-symbol-index.py
+    scripts/search/cross-repo-search.sh
+    scripts/search/find-symbol.sh
+    scripts/scaffolding/new-module.sh
+    scripts/scaffolding/tests/test_new_module.sh
+    scripts/development/ai-review/install-codex-hooks.sh
+    scripts/development/ai-review/install-gemini-hooks.sh
+  )
+  for f in "${cleaned[@]}"; do
+    run grep -niE 'ogmanufacturing' "$REPO_ROOT/$f"
+    [ "$status" -ne 0 ] || { echo "FAIL: $f still references OGManufacturing:"; echo "$output"; false; }
+  done
+}

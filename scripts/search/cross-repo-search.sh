@@ -10,7 +10,6 @@ declare -A REPO_PATHS=(
     [assethold]="assethold"
     [assetutilities]="assetutilities"
     [digitalmodel]="digitalmodel"
-    [OGManufacturing]="OGManufacturing"
     [worldenergydata]="worldenergydata"
 )
 

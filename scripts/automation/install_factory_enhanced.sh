@@ -54,7 +54,6 @@ REPO_TYPES=(
     ["pyproject-starter"]="python_analysis:Python Project Starter:Python, UV, pytest"
     ["aceengineercode"]="engineering:Engineering Calculations:Python, NumPy, SciPy"
     ["energy"]="python_analysis:Energy Analysis:Python, Pandas, Plotly"
-    ["OGManufacturing"]="engineering:Oil & Gas Manufacturing:Python, Engineering Calculations"
     ["rock-oil-field"]="engineering:Rock & Oil Field Analysis:Python, NumPy, SciPy"
     ["frontierdeepwater"]="engineering:Frontier Deepwater:Python, Engineering"
     ["saipem"]="engineering:Saipem Engineering:Python, Calculations"

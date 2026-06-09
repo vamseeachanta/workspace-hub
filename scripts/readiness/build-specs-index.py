@@ -20,7 +20,6 @@ SUBMODULE_REPOS = [
     "assetutilities",
     "assethold",
     "doris",
-    "OGManufacturing",
     "saipem",
     "rock-oil-field",
     "acma-projects",
