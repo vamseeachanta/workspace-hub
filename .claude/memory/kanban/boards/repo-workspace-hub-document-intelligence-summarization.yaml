@@ -31,7 +31,7 @@ cards:
     title: 'WRK-542: feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/169
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -69,7 +69,7 @@ cards:
     title: 'WRK-546: feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/171
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -111,7 +111,7 @@ cards:
     title: 'WRK-548: feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/173
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -153,7 +153,7 @@ cards:
     title: 'WRK-550: feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/175
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -195,7 +195,7 @@ cards:
     title: 'WRK-552: feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/177
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -237,7 +237,7 @@ cards:
     title: 'WRK-554: feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/179
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium

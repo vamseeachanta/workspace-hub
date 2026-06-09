@@ -38,7 +38,6 @@ cards:
       - machine:dev-primary
       - cat:data-pipeline
       - domain:marine
-      - dispatch:ready
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -120,7 +119,6 @@ cards:
       - cat:data-pipeline
       - domain:knowledge-management
       - llm-wiki
-      - dispatch:ready
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -194,7 +192,6 @@ cards:
       - cat:documentation
       - domain:knowledge-management
       - agent:codex
-      - dispatch:ready
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -215,7 +212,6 @@ cards:
       - cat:data-pipeline
       - domain:knowledge-management
       - agent:codex
-      - dispatch:ready
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -1486,8 +1482,23 @@ cards:
     gh_state: open
     gh_labels:
       - cat:tooling
-      - dispatch:ready
+      - status:plan-review
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#574
+    title: 'fix(dispatch): require explicit dispatch-ready gate for cockpit implementation prompts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/574
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:tooling
+      - status:plan-review
+      - agent:codex
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

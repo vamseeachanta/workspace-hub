@@ -22,7 +22,6 @@ cards:
       - cat:engineering
       - status:plan-approved
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-batch-extraction
     gh_assignees: []
     initial_status: triage
@@ -40,7 +39,6 @@ cards:
       - cat:engineering
       - status:plan-approved
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-batch-extraction
     gh_assignees: []
     initial_status: triage
@@ -75,7 +73,6 @@ cards:
       - cat:engineering
       - status:plan-approved
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-batch-extraction
     gh_assignees: []
     initial_status: triage
@@ -93,7 +90,6 @@ cards:
       - cat:engineering
       - status:plan-approved
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-batch-extraction
     gh_assignees: []
     initial_status: triage
@@ -111,7 +107,6 @@ cards:
       - cat:data
       - status:plan-approved
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-batch-extraction
     gh_assignees: []
     initial_status: triage
@@ -129,7 +124,6 @@ cards:
       - cat:engineering
       - status:plan-approved
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-batch-extraction
     gh_assignees: []
     initial_status: triage
@@ -150,7 +144,6 @@ cards:
       - cat:engineering
       - status:plan-approved
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-batch-extraction
     gh_assignees: []
     initial_status: triage
@@ -168,7 +161,6 @@ cards:
       - cat:engineering
       - status:plan-approved
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-batch-extraction
     gh_assignees: []
     initial_status: triage
@@ -186,7 +178,6 @@ cards:
       - cat:engineering
       - status:plan-approved
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-batch-extraction
     gh_assignees: []
     initial_status: triage
@@ -204,7 +195,6 @@ cards:
       - cat:engineering
       - status:plan-approved
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-batch-extraction
     gh_assignees: []
     initial_status: triage

@@ -576,10 +576,25 @@ cards:
     title: 'chore(pre-push): remove relocated/archived OGManufacturing from tier-1 repo lists (unblocks pushes)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3012
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - bug
       - priority:medium
+      - cat:harness
+      - status:plan-approved
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3019
+    title: 'chore(harness): finish OGManufacturing relocation cleanup — remaining operational refs + single tier-1 source of truth'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3019
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
       - cat:harness
       - status:plan-review
       - status:plan-approved

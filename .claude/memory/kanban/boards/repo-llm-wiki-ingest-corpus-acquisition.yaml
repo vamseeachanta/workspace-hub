@@ -75,7 +75,6 @@ cards:
       - cat:data
       - status:plan-approved
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
     gh_assignees: []
     initial_status: triage
@@ -134,7 +133,6 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
     gh_assignees: []
     initial_status: triage
@@ -172,7 +170,6 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
     gh_assignees: []
     initial_status: triage
@@ -192,7 +189,6 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
     gh_assignees: []
     initial_status: triage
@@ -309,7 +305,6 @@ cards:
       - cat:data
       - status:plan-approved
       - machine:dev-primary
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
     gh_assignees: []
     initial_status: triage
@@ -360,7 +355,6 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 0
