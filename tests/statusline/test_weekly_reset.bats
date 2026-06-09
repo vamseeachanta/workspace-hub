@@ -47,9 +47,9 @@ EOF
   write_quota
   run bash -c "printf '%s' '$INPUT' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
-  # Claude renders dim with no value and no day-suffix appended.
+  # Claude renders dim with no value and no day-suffix appended (any day
+  # suffix would start with "·" immediately after the "%").
   [[ "$output" != *"C:-%·"* ]]
-  [[ "$output" != *"C:-%"*"d "* ]] || true
 }
 
 @test "estimated reset telemetry gets NO fabricated countdown even with stale hours" {
@@ -114,6 +114,17 @@ EOF
   [ "$status" -eq 0 ]
   [[ "$output" == *"C:63%"* ]]
   [[ "$output" != *"C:63%·"* ]]
+}
+
+@test "session resets_at without weekly pct gets no countdown on unknown C" {
+  write_quota
+  # resets_at present but used_percentage absent: pairing a countdown with an
+  # unknown (or quota-file-sourced) percentage would mix telemetry sources, so
+  # the C segment must stay bare (codex r2 finding on PR #3021).
+  in='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10},"rate_limits":{"seven_day":{"resets_at":"2099-01-10T00:00:00Z"}}}'
+  run bash -c "printf '%s' '$in' | bash '$SCRIPT'"
+  [ "$status" -eq 0 ]
+  [[ "$output" != *"C:-%·"* ]]
 }
 
 @test "malformed session resets_at never blanks the statusline" {

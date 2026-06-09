@@ -190,8 +190,10 @@ g_pct=$(extract_pct "gemini")
 # Claude prefers the session JSON's rate_limits.seven_day.resets_at — the same
 # live source already trusted for the percentage — since the quota file's
 # claude entry is source:unavailable. Gemini is a daily limit, no reset suffix.
+# Both fields must come from the same session snapshot: a resets_at without a
+# used_percentage would pair a countdown with an unknown (or file-sourced) %.
 c_days=""
-[[ -n "$week_resets_at" ]] && c_days=$(days_until_iso "$week_resets_at")
+[[ -n "$week_used" && -n "$week_resets_at" ]] && c_days=$(days_until_iso "$week_resets_at")
 [[ -z "$c_days" ]] && c_days=$(reset_days claude)
 o_days=$(reset_days codex)
 [[ -n "$c_days" ]] && c_suffix="${c_suffix}·${c_days}d"
