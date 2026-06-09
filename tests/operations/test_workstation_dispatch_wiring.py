@@ -168,11 +168,12 @@ def test_lease_aborts_when_held(temp_git_repo):
     """A pre-held lease for the same name causes a clear abort (no double-run),
     and the foreign holder's lease is NOT stolen or deleted."""
     cmd = "echo SHOULD_NOT_RUN"
-    # Compute the lease name the script will use: cmd-<cksum>.
-    cksum = subprocess.run(
-        ["cksum"], input=cmd, capture_output=True, text=True
+    # Compute the lease name the script will use: cmd-<sha256[:16]>
+    # (matches `printf '%s' "$COMMAND" | sha256sum | cut -c1-16`).
+    sha = subprocess.run(
+        ["sha256sum"], input=cmd, capture_output=True, text=True
     ).stdout.split()[0]
-    name = f"cmd-{cksum}"
+    name = f"cmd-{sha[:16]}"
 
     # Pre-hold the lease as a different holder via the real cores.
     pre = subprocess.run(
@@ -222,3 +223,28 @@ def test_lease_requires_git_repo(tmp_path):
 
 if __name__ == "__main__":
     raise SystemExit(pytest.main([__file__, "-v"]))
+
+
+# ── #2970 wiring code-review MAJOR fixes ─────────────────────────────────────
+def test_lease_name_uses_sha256_not_cksum():
+    import pathlib
+    src = (pathlib.Path(__file__).resolve().parents[2] / "scripts/operations/workstation-dispatch.sh").read_text()
+    assert "sha256sum" in src and "| cksum" not in src   # collision-resistant lease name
+
+def test_unique_holder_per_dispatcher():
+    import pathlib
+    src = (pathlib.Path(__file__).resolve().parents[2] / "scripts/operations/workstation-dispatch.sh").read_text()
+    # holder must include pid+token, not be a bare hostname (non-reentrant)
+    assert 'LEASE_HOLDER="${THIS_HOST}-$$-${LEASE_TOKEN}"' in src
+    assert 'WS_LEASE_HOLDER="$LEASE_HOLDER"' in src
+
+def test_pre_exec_fence_present():
+    import pathlib
+    src = (pathlib.Path(__file__).resolve().parents[2] / "scripts/operations/workstation-dispatch.sh").read_text()
+    assert "superseded before execution" in src   # verify_token immediately before exec
+
+def test_release_is_cas_fenced_delete():
+    import pathlib
+    src = (pathlib.Path(__file__).resolve().parents[2] / "scripts/operations/workstation-dispatch.sh").read_text()
+    # delete must pass the exact sha (CAS), not a bare update-ref -d <ref>
+    assert "update-ref', '-d', lease_ref(os.environ['WS_LEASE_NAME']), sha" in src

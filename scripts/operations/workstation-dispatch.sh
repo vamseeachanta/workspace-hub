@@ -294,7 +294,9 @@ if [[ "$USE_LEASE" == "true" ]]; then
   if [[ -n "$TASK_ID" ]]; then
     LEASE_NAME="$TASK_ID"
   else
-    LEASE_NAME="cmd-$(printf '%s' "$COMMAND" | cksum | cut -d' ' -f1)"
+    # sha256 (not cksum) — cksum is collision-prone, so unrelated commands could
+    # share a lease name (#2970 wiring review MAJOR #5).
+    LEASE_NAME="cmd-$(printf '%s' "$COMMAND" | sha256sum | cut -c1-16)"
   fi
   # Lease arbitration repo: defaults to the WORKSPACE_HUB git toplevel; overridable
   # via WS_DISPATCH_LEASE_REPO (e.g. a dedicated coordination repo, or a temp repo
@@ -306,9 +308,13 @@ if [[ "$USE_LEASE" == "true" ]]; then
   fi
   # Fresh fencing token (caller-generated nondeterminism, per dispatch_lease contract).
   LEASE_TOKEN="${THIS_HOST}-$$-$(date +%s)-${RANDOM}"
-  log "Acquiring dispatch lease '${LEASE_NAME}' (holder=${THIS_HOST})..."
+  # UNIQUE holder per dispatcher process (#2970 wiring review MAJOR #1): dispatch_lease
+  # renews/returns success when the holder matches, so a bare hostname would let TWO
+  # dispatchers on the same host both acquire+run. host+pid+token is non-reentrant.
+  LEASE_HOLDER="${THIS_HOST}-$$-${LEASE_TOKEN}"
+  log "Acquiring dispatch lease '${LEASE_NAME}' (holder=${LEASE_HOLDER})..."
   LEASE_RESULT=$(WS_LEASE_REPO="$LEASE_REPO" WS_LEASE_NAME="$LEASE_NAME" \
-    WS_LEASE_HOLDER="$THIS_HOST" WS_LEASE_TOKEN="$LEASE_TOKEN" \
+    WS_LEASE_HOLDER="$LEASE_HOLDER" WS_LEASE_TOKEN="$LEASE_TOKEN" \
     uv run --no-project python -c "
 import os, sys, time
 sys.path.insert(0, '${SCRIPT_DIR}')
@@ -338,12 +344,17 @@ sys.path.insert(0, '${SCRIPT_DIR}')
 from git_ref_lease import GitRefLease, lease_ref
 import dispatch_lease as dl, subprocess
 git = GitRefLease(os.environ['WS_LEASE_REPO'])
-# Fence: only delete the ref if WE still hold it (token unchanged). If another
-# machine validly reclaimed it, leave it alone.
-if dl.verify_token(git, os.environ['WS_LEASE_NAME'], os.environ['WS_LEASE_TOKEN']):
-    ref = lease_ref(os.environ['WS_LEASE_NAME'])
-    subprocess.run(['git', '-C', os.environ['WS_LEASE_REPO'], 'update-ref', '-d', ref],
-                   capture_output=True)
+# ATOMIC fenced delete (#2970 wiring review MAJOR #2): read the ref's current sha+blob,
+# and only delete if (a) the token is still ours AND (b) we delete that EXACT sha
+# (git update-ref -d <ref> <oldvalue> is a compare-and-swap). This closes the TOCTOU
+# where another host reclaims between a bare verify and a bare delete.
+cur = git.read_ref(lease_ref(os.environ['WS_LEASE_NAME']))
+if cur is not None:
+    sha, blob = cur
+    if blob.get('token') == os.environ['WS_LEASE_TOKEN']:
+        subprocess.run(['git', '-C', os.environ['WS_LEASE_REPO'],
+                        'update-ref', '-d', lease_ref(os.environ['WS_LEASE_NAME']), sha],
+                       capture_output=True)
 " 2>/dev/null || true
   log "Lease '${LEASE_NAME}' released."
 }
@@ -360,6 +371,24 @@ for name, m in reg.get('machines', {}).items():
         break
 " 2>/dev/null)
 EXPANDED_CMD="${COMMAND//\$WORKSPACE_HUB/$WS_ROOT}"
+
+# PRE-EXEC FENCE (#2970 wiring review MAJOR #3): if leasing, verify we STILL hold the
+# token immediately before the side effect. If the lease was superseded (validly
+# reclaimed by another host) between acquire and now, abort — do NOT execute.
+if [[ "$USE_LEASE" == "true" && -n "$LEASE_TOKEN" ]]; then
+  if [[ "$(WS_LEASE_REPO="$LEASE_REPO" WS_LEASE_NAME="$LEASE_NAME" WS_LEASE_TOKEN="$LEASE_TOKEN" \
+      uv run --no-project python -c "
+import os, sys
+sys.path.insert(0, '${SCRIPT_DIR}')
+from git_ref_lease import GitRefLease
+import dispatch_lease as dl
+git = GitRefLease(os.environ['WS_LEASE_REPO'])
+print('HOLD' if dl.verify_token(git, os.environ['WS_LEASE_NAME'], os.environ['WS_LEASE_TOKEN']) else 'LOST')
+" 2>/dev/null)" != "HOLD" ]]; then
+    echo "ERROR: dispatch lease '${LEASE_NAME}' was superseded before execution; aborting (no double-run)" >&2
+    exit 1
+  fi
+fi
 
 if [[ "$IS_LOCAL" == "True" ]]; then
   log "Executing locally..."
