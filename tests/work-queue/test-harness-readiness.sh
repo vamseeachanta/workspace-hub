@@ -404,13 +404,13 @@ T19
 
 # ── T20: existing workstation entries unchanged after macOS addition ──────────
 T20() {
-  local existing_stations=("dev-primary" "dev-secondary" "licensed-win-1")
+  local existing_stations=("dev-primary" "dev-secondary" "ace-win-1")
   local missing=()
   for station in "${existing_stations[@]}"; do
     grep -q "^  ${station}:" "${HARNESS_CONFIG}" 2>/dev/null || missing+=("$station")
   done
   if [[ ${#missing[@]} -eq 0 ]]; then
-    ok "T20: existing workstation entries (dev-primary, dev-secondary, licensed-win-1) unchanged"
+    ok "T20: existing workstation entries (dev-primary, dev-secondary, ace-win-1) unchanged"
   else
     fail "T20: missing existing workstations after macOS addition: ${missing[*]}"
   fi

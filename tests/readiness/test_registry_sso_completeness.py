@@ -44,7 +44,7 @@ def test_harness_covers_all_registry_sibling_machines():
 
 def test_windows_sibling_machines_have_explicit_tier1_roots():
     data = yaml.safe_load(Path("config/workstations/registry.yaml").read_text())
-    for name in ("licensed-win-1", "licensed-win-2"):
+    for name in ("ace-win-1", "ace-win-2"):
         machine = data["machines"][name]
         assert machine["repo_layout"] == "sibling"
         assert machine["tier1_repo_root"] == "D:\\"

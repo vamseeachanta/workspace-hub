@@ -71,7 +71,7 @@ tasks:
   - id: win-repository-sync
     label: Repository sync (Windows)
     schedule: "every 4 hours"
-    machines: [licensed-win-1]
+    machines: [ace-win-1]
     scheduler: windows-task-scheduler
     command: "bash.exe -c 'git pull'"
     log: null

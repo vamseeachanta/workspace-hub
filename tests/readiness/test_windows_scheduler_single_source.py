@@ -44,7 +44,7 @@ def test_equality_task_source_is_weekly_monday():
     task = _equality_task()
     minute, hour, day_of_month, month, day_of_week = task["schedule"].split()
     assert (minute, hour, day_of_month, month, day_of_week) == ("30", "4", "*", "*", "1")
-    for machine in ("licensed-win-1", "licensed-win-2"):
+    for machine in ("ace-win-1", "ace-win-2"):
         assert machine in task["machines"]
 
 

@@ -259,7 +259,7 @@ class TestRegistryMacOSEntry:
 
     def test_existing_machines_preserved(self, registry: dict):
         machines = registry.get("machines", {})
-        for expected in ("dev-primary", "dev-secondary", "licensed-win-1"):
+        for expected in ("dev-primary", "dev-secondary", "ace-win-1"):
             assert expected in machines, (
                 f"{expected} missing from registry after macOS addition"
             )

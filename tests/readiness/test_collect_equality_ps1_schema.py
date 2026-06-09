@@ -3,7 +3,7 @@
 PowerShell cannot run on Linux CI, so these tests pin the *contract* the .ps1 must satisfy,
 two ways:
 
-1. A committed golden fixture (tests/readiness/fixtures/equality-licensed-win-1.sample.yaml) —
+1. A committed golden fixture (tests/readiness/fixtures/equality-ace-win-1.sample.yaml) —
    the exact YAML collect-equality.sh emits when the .ps1 exports its CIM-derived EQ_* compute.
    We parse it through the SAME consumers the matrix uses (is_stale, cold_verdict, coerce_to_mib)
    and assert it grades CONFORMS / not-stale, so a schema drift in the .ps1 output is caught.
@@ -28,7 +28,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SH = REPO_ROOT / "scripts" / "readiness" / "collect-equality.sh"
 PS1 = REPO_ROOT / "scripts" / "readiness" / "collect-equality.ps1"
-FIXTURE = REPO_ROOT / "tests" / "readiness" / "fixtures" / "equality-licensed-win-1.sample.yaml"
+FIXTURE = REPO_ROOT / "tests" / "readiness" / "fixtures" / "equality-ace-win-1.sample.yaml"
 CONFIG = REPO_ROOT / "scripts" / "readiness" / "harness-config.yaml"
 BASH_PATH = "/mingw64/bin:/usr/bin:/bin:/usr/local/bin"
 
@@ -51,7 +51,7 @@ def _fixture() -> dict:
 
 def _win1_baseline() -> dict:
     config = yaml.safe_load(CONFIG.read_text())
-    return config["workstations"]["licensed-win-1"]
+    return config["workstations"]["ace-win-1"]
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -65,7 +65,7 @@ def test_ps1_sample_output_parses_schema_v3():
     d = _fixture()
     assert d["schema_version"] == 3
     assert d["os"] == "windows"
-    assert d["machine"] == "licensed-win-1"
+    assert d["machine"] == "ace-win-1"
     # provenance block present with the freshness fields is_stale() consumes
     p = d["provenance"]
     assert set(p) >= {"checkout_sha", "dirty", "behind_main", "ahead_main", "origin_ref_age_h"}
@@ -111,7 +111,7 @@ def test_ps1_ram_total_mib_is_mib_integer():
 
 def test_harness_config_winram_floor_present():
     config = yaml.safe_load(CONFIG.read_text())
-    for machine in ("licensed-win-1", "licensed-win-2"):
+    for machine in ("ace-win-1", "ace-win-2"):
         floor = config["workstations"][machine]["compute_floor"]
         assert floor["cores_min"] == 8
         assert floor["ram_gib_min"] == 12
@@ -136,7 +136,7 @@ def _key_tree(node):
     return out
 
 
-def _sh_stdout(env_extra: dict, tmp_path: Path, machine: str = "licensed-win-1") -> dict:
+def _sh_stdout(env_extra: dict, tmp_path: Path, machine: str = "ace-win-1") -> dict:
     """Run collect-equality.sh --stdout against a minimal non-git WORKSPACE_HUB."""
     ws = tmp_path / "workspace-hub"
     (ws / ".claude" / "state").mkdir(parents=True)
@@ -257,7 +257,7 @@ def test_eq_os_override_ignored_without_test_flag(tmp_path):
     (ws / ".claude" / "memory" / "context.md").write_text("ctx")
     env = {"WORKSPACE_HUB": str(ws), "PATH": BASH_PATH, "HOME": str(tmp_path),
            "EQ_OS_OVERRIDE": "unknown"}  # deliberately NO test-enable flag
-    res = subprocess.run(["bash", str(SH), "--stdout", "--machine", "licensed-win-1"],
+    res = subprocess.run(["bash", str(SH), "--stdout", "--machine", "ace-win-1"],
                          env=env, capture_output=True, text=True, timeout=60)
     assert res.returncode == 0, res.stderr
     d = yaml.safe_load(res.stdout)

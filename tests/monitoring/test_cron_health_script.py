@@ -70,7 +70,7 @@ def test_existing_registry_machines_preserved_after_macos_addition():
     with open(registry_path) as f:
         data = yaml.safe_load(f)
     machines = data.get("machines", {})
-    for expected in ("dev-primary", "dev-secondary", "licensed-win-1", "licensed-win-2"):
+    for expected in ("dev-primary", "dev-secondary", "ace-win-1", "ace-win-2"):
         assert expected in machines, (
             f"{expected} missing from registry after macOS addition"
         )

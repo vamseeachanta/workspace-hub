@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # compare-harness-state.sh — diff harness readiness across workstations
-# Checks ace-linux-2 via SSH; licensed-win-1 via stale-report detection.
+# Checks ace-linux-2 via SSH; ace-win-1 via stale-report detection.
 # Usage: bash scripts/readiness/compare-harness-state.sh [--dry-run] [--force-ssh-fail]
 set -euo pipefail
 
@@ -66,18 +66,18 @@ check_ace2() {
 }
 check_ace2
 
-# ── licensed-win-1: stale-report detection (>25h) ───────────────────────────
+# ── ace-win-1: stale-report detection (>25h) ───────────────────────────
 check_acma() {
-  local report="${STATE_DIR}/harness-readiness-licensed-win-1.yaml"
+  local report="${STATE_DIR}/harness-readiness-ace-win-1.yaml"
   if [[ ! -f "$report" ]]; then
-    log_warn "licensed-win-1: no report found — Windows Task Scheduler may not have run yet"
+    log_warn "ace-win-1: no report found — Windows Task Scheduler may not have run yet"
     return
   fi
 
   local gen_at
   gen_at=$(grep "^generated_at:" "$report" | sed 's/generated_at:[[:space:]]*//' | tr -d '"' | head -1)
   if [[ -z "$gen_at" ]]; then
-    log_deg "licensed-win-1: report missing generated_at field — DEGRADED (stale)"
+    log_deg "ace-win-1: report missing generated_at field — DEGRADED (stale)"
     return
   fi
 
@@ -87,16 +87,16 @@ check_acma() {
   age_hours=$(( (now_epoch - report_epoch) / 3600 ))
 
   if [[ "$age_hours" -gt 25 ]]; then
-    log_deg "licensed-win-1: report is ${age_hours}h old (>25h threshold) — DEGRADED (stale)"
+    log_deg "ace-win-1: report is ${age_hours}h old (>25h threshold) — DEGRADED (stale)"
   else
     local overall fail_count
     overall=$(grep "^overall:" "$report" | awk '{print $2}' | head -1)
     fail_count=$(grep "^fail_count:" "$report" | awk '{print $2}' | head -1)
     fail_count=${fail_count:-0}
     if [[ "$overall" == "pass" ]]; then
-      log_ok "licensed-win-1: report ${age_hours}h old, overall=${overall}, fail_count=${fail_count}"
+      log_ok "ace-win-1: report ${age_hours}h old, overall=${overall}, fail_count=${fail_count}"
     else
-      log_deg "licensed-win-1: report ${age_hours}h old, overall=${overall}, fail_count=${fail_count} — DEGRADED"
+      log_deg "ace-win-1: report ${age_hours}h old, overall=${overall}, fail_count=${fail_count} — DEGRADED"
     fi
   fi
 }

@@ -18,7 +18,7 @@ case "$HOST" in
   ace-linux-2)
     WS_ROOT="/mnt/workspace-hub"
     ;;
-  licensed-win-1|licensed-win-2)
+  ace-win-1|ace-win-2|licensed-win-1|licensed-win-2)
     WS_ROOT="/d/workspace-hub"   # Git Bash path
     ;;
   shoerack)
