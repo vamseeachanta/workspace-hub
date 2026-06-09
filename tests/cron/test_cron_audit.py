@@ -117,3 +117,23 @@ def test_stable_command_fragment_prefers_script_path(audit):
         "bash scripts/testing/run-benchmarks.sh >> $WORKSPACE_HUB/logs/x.log 2>&1"
     )
     assert audit.stable_command_fragment(cmd) == "scripts/testing/run-benchmarks.sh"
+
+
+# ── #2988: preserved_local merges into the keep-verbatim bucket ──────────────
+def test_preserved_local_merged_into_fingerprints(tmp_path):
+    import importlib.util as _u, sys as _s
+    spec = _u.spec_from_file_location("cron_audit_x", REPO_ROOT / "scripts" / "cron" / "cron-audit.py") \
+        if "REPO_ROOT" in dir() else None
+    # load module fresh by path
+    from pathlib import Path as _P
+    root = _P(__file__).resolve().parents[2]
+    spec = _u.spec_from_file_location("cron_audit_x", root / "scripts" / "cron" / "cron-audit.py")
+    m = _u.module_from_spec(spec); _s.modules["cron_audit_x"] = m; spec.loader.exec_module(m)
+    classes = tmp_path / "hsc.yaml"
+    classes.write_text(
+        "preserved_external:\n  - fingerprint: {cwd_contains: /deckhand}\n"
+        "preserved_local:\n  - fingerprint: {command_contains: scripts/maintenance/update-model-ids.sh}\n"
+    )
+    fps = m.load_external_fingerprints(classes)
+    assert len(fps) == 2
+    assert any(fp.get("command_contains") == "scripts/maintenance/update-model-ids.sh" for fp in fps)
