@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-06-08T17:20:14.092969Z
+Generated: 2026-06-08T21:20:19.303910Z
 Current week: 2026-W24
 Recommended provider order: gemini, claude, codex
 
@@ -9,8 +9,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 36
-- Total routed candidates: 177
+- Execution-ready candidates: 35
+- Total routed candidates: 175
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: high
 - Execution-ready candidates: 2
-- Total routed candidates: 19
+- Total routed candidates: 20
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -44,11 +44,12 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: highest
 - Execution-ready candidates: 1
-- Total routed candidates: 4
+- Total routed candidates: 5
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2733 epic: make Hermes agent memory canonical across all AI providers | yes | existing gemini agent label | priority:high, cat:ai-orchestration, machine:dev-primary, agent:gemini, agent:claude, agent:codex |
+| #2498 chore(harness): #2364 plan branch drift recovery decision needed | no | research/triage/audit language | priority:medium, cat:harness, machine:dev-primary, dispatch:ready, gate:completeness, domain:harness |
 | #2501 chore(planning): #2105 governance-lock — handoff vs live-state discrepancy | no | research/triage/audit language | priority:medium, cat:documentation, cat:harness, machine:dev-primary, dispatch:ready, gate:completeness |
 | #2679 R3 — Mooring: Industry practice (Vryhof, Bridon, MIRP, OMAE sessions) | no | research/triage/audit language | priority:medium, cat:engineering, cat:research, machine:dev-primary, dispatch:ready, gate:completeness |
 | #2854 gap(memory): Hermes read-back leg missing — consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex) | no | research/triage/audit language | cat:ai-orchestration, domain:knowledge-management-platform |

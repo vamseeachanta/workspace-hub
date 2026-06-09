@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-08T17:20:16Z
+Generated: 2026-06-08T21:20:21Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,12 +43,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #2975 | standard: ecosystem wiki flywheel manifest, provenance, and routing contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2981 | fix: make SKILL.md frontmatter YAML-valid for review dispatch | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
+| #2975 | standard: ecosystem wiki flywheel manifest, provenance, and routing contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2973 | Compliance alert: W24 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2971 | feat(workstations): Telegram-as-venue consistency — deckhand onboarding/scope-routing/escalation parity across hosts [#2967 F4] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2970 | feat(workstations): registry-driven dispatch + single provider-routing policy [#2967 F3] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2969 | feat(workstations): declarative workflow/cron catalog — role-tagged, materialize per-role subset [#2967 F2] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #2967 | epic(workstations): consistent experience via dynamic workflows — role-overlay reconciler + workflow catalog + registry dispatch + Telegram venue [extends #2887/#2720] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2964 | routing-rules.yaml entries for the 34 new domain: labels (avoid silent dev-primary catch-all) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2963 | Bulk-relabel command + execute the 5 alias renames from routing taxonomy v1 (label-first, kanban-manifest coordinated) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2962 | Domain-coverage guard: nightly check that every open issue has exactly one taxonomy-known domain: label (all 17 repos) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -243,6 +240,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2501 | chore(planning): #2105 governance-lock — handoff vs live-state discrepancy | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2500 | chore(harness): #2476 non-standard approval pattern (no plan branch) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2499 | chore(harness): #2368 missing revision-bound approval marker | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2498 | chore(harness): #2364 plan branch drift recovery decision needed | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2497 | chore(memory): handoff-doc cross-row SHA transcription hazard | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2496 | chore(routines): use $(date -u) substitution in execution-agent prompts (cosmetic) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

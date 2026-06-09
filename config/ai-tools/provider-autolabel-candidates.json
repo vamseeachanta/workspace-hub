@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-08T13:21:40.712768Z",
+  "generated_at": "2026-06-08T21:20:19.429532Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -356,6 +356,37 @@
         "execution-ready",
         "strong-codex-language-match",
         "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2498,
+      "title": "chore(harness): #2364 plan branch drift recovery decision needed",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2498",
+      "labels": [
+        "priority:medium",
+        "cat:harness",
+        "machine:dev-primary",
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:harness"
+      ],
+      "updatedAt": "2026-05-31T22:53:57Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "gemini",
+      "routing_reason": "research/triage/audit language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research"
+      ],
+      "target_label": "agent:gemini",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-gemini-language-match",
+        "provider-highest-priority"
       ],
       "eligible": false
     },
