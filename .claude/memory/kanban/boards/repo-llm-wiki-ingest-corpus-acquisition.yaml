@@ -14,7 +14,7 @@ cards:
     title: 'WRK-280: ABS standards acquisition: create folder + download CP Guidance Notes'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/12
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - wrk-item

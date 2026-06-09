@@ -428,6 +428,8 @@ cards:
       - enhancement
       - priority:low
       - cat:tooling
+      - status:plan-approved
+      - gate:completeness
       - domain:workstations-fleet-equivalence
     initial_status: triage
     priority: 0

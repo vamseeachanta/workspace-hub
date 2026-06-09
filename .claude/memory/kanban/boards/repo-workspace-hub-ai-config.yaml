@@ -722,7 +722,7 @@ cards:
     title: 'chore(infra): roll out Codex-under-Claude sandbox fix (#2804) to remaining ecosystem machines'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2813
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:ai-config
       - status:plan-approved

@@ -2070,7 +2070,7 @@ cards:
     title: 'feat(kanban): #2802 Phase 2 — activate reconciler (cron + GitHub App token + repository_dispatch nudge)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2826
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:work-queue
       - status:plan-approved
@@ -2084,7 +2084,7 @@ cards:
     title: 'hardening(kanban): reconciler fetch via GraphQL pagination (hasNextPage) to structurally eliminate partial fetches'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2828
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:work-queue
       - status:plan-approved

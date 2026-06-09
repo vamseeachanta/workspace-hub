@@ -20543,7 +20543,7 @@ cards:
     title: '[flywheel] Generalize repo-ecosystem work into reusable skills/scripts/tools after every agent wave'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2945
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -20553,6 +20553,7 @@ cards:
       - domain:skill-improvement
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -20810,6 +20811,48 @@ cards:
       - enhancement
       - cat:harness
       - machine:multi
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2999
+    title: 'feat(workstations): WF1 — role-overlay reconciler on Windows (licensed-win-1/2) [#2998]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2999
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - machine:multi
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3000
+    title: 'feat(workstations): WF3 — dispatch to no-SSH hosts via pull/poll lease model [#2998]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3000
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - machine:multi
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3001
+    title: 'chore(workstations): WF0 — Windows rollout prerequisites + decisions (naming, managed-flag readiness) [#2998]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3001
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - machine:multi
+      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []

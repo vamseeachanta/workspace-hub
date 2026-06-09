@@ -528,7 +528,7 @@ cards:
     title: 'chore(relocation): remove relocated wiki content + retarget wiki_health_cron (llm-wiki#118 hub-side)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2835
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - status:plan-approved
       - gate:completeness
