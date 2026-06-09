@@ -931,7 +931,7 @@ cards:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-review
+      - status:plan-approved
       - machine:dev-primary
       - agent:codex
       - dispatch:ready
@@ -949,7 +949,7 @@ cards:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-review
+      - status:plan-approved
       - machine:dev-primary
       - agent:codex
       - dispatch:ready
@@ -967,7 +967,7 @@ cards:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-review
+      - status:plan-approved
       - machine:dev-primary
       - agent:codex
       - dispatch:ready

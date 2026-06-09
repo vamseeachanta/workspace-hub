@@ -294,7 +294,7 @@ cards:
     title: Fix SODIR scheduler runtime endpoint contract
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/273
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high

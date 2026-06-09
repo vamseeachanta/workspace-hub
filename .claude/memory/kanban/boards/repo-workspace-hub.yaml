@@ -20797,3 +20797,16 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2988
+    title: 'feat(cron): preserved_local class for machine-local crons (unblocks F2 a2 cutover, #2967 follow-up)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2988
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - machine:multi
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
