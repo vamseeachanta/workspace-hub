@@ -222,9 +222,9 @@ machines:
     tier1_repo_root: 'D:\'
     repo_layout: sibling
     schedule_variant: contribute-minimal
-    harness_profile:          # #2968 F1 — Q2: declared for F3 routing, NEVER converged
+    harness_profile:          # WF1 #2999 — converged; Windows deny subset from _base.deny_required_os.windows
       roles: [licensed-solver]
-      managed: false
+      managed: true
     ssh: null  # no SSH — physical/GUI access only
     tailscale_ip: null
     capabilities:
@@ -262,9 +262,9 @@ machines:
     tier1_repo_root: 'D:\'
     repo_layout: sibling
     schedule_variant: contribute-minimal
-    harness_profile:          # #2968 F1 — Q2: declared for F3 routing, NEVER converged
+    harness_profile:          # WF1 #2999 — converged; Windows deny subset from _base.deny_required_os.windows
       roles: [licensed-solver]
-      managed: false
+      managed: true
     ssh: null
     tailscale_ip: null
     capabilities:
