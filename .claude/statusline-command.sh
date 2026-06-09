@@ -5,6 +5,13 @@ set -euo pipefail
 
 input=$(cat)
 
+# Optional segment mode (#2893): emit only a sub-part of the statusline so a
+# wrapper can compose this with another statusline (e.g. the vendored GSD one,
+# which has no quota/reset display). Recognized:
+#   --usage-tail  -> AI-usage segment (C:|O:|G: with weekly-reset) + cost + ctx
+# Any other/empty value renders the full statusline unchanged.
+SEGMENT="${1:-}"
+
 # Extract fields (jq with null-safe defaults)
 model=$(echo "$input" | jq -r '.model.display_name // "Claude"')
 cwd=$(echo "$input" | jq -r '.workspace.current_dir // ""')
@@ -23,7 +30,7 @@ branch=$(cd "$ws_root" 2>/dev/null && git rev-parse --abbrev-ref HEAD 2>/dev/nul
 # in long sessions; -uno skips the untracked-file scan to keep this cheap on
 # the ~33K-file workspace-hub checkout.
 git_marker=""
-if [[ "$branch" != "?" ]]; then
+if [[ "$SEGMENT" != "--usage-tail" && "$branch" != "?" ]]; then
     if [[ -n "$(GIT_OPTIONAL_LOCKS=0 git -C "$ws_root" status --porcelain -uno 2>/dev/null | head -1)" ]]; then
         git_marker="\033[1;31m*\033[0m"   # bold red: dirty (tracked changes/staged)
     fi
@@ -196,6 +203,15 @@ elif (( ctx_int > 60 )); then
     ctx="\033[33m${ctx_int}%\033[0m"
 else
     ctx="\033[32m${ctx_int}%\033[0m"
+fi
+
+# Segment mode (#2893): emit just the usage tail (quota/reset + cost + context)
+# and stop. Composed by .claude/statusline-combined.sh onto the GSD statusline,
+# which otherwise shows no AI-usage or weekly-reset info. Emitted after the
+# fields exist but before the host/branch/path assembly the wrapper omits.
+if [[ "$SEGMENT" == "--usage-tail" ]]; then
+    printf "%b %b ctx:%b" "$ai_usage" "$cost_fmt" "$ctx"
+    exit 0
 fi
 
 # Hostname prefix for multi-machine clarity

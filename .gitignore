@@ -156,6 +156,7 @@ data/document-index/*.jsonl.backup-*
 !.claude/knowledge/
 # Status line - portable across machines
 !.claude/statusline-command.sh
+!.claude/statusline-combined.sh
 # Repo-level memory - shared institutional knowledge
 !.claude/memory/
 # Work queue - tracked for cross-machine/user portability
