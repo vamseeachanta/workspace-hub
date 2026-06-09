@@ -1,7 +1,7 @@
 schema_version: "1.0"
 machine:
-  id: licensed-win-1
-  hostname: licensed-win-1
+  id: ace-win-1
+  hostname: ace-win-1
   os: windows
 collected_at: "2026-04-11T04:58:00Z"
 source_writer:

@@ -16,6 +16,12 @@ VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
 VALID_MACHINES = {
     "dev-primary",
     "dev-secondary",
+    # registry hostnames are also valid tokens in schedule-tasks.yaml machines: lists
+    "ace-linux-1",
+    "ace-linux-2",
+    # WF0 #3001: licensed-win-1/2 renamed to ace-win-1/2 (old names kept as back-compat aliases)
+    "ace-win-1",
+    "ace-win-2",
     "licensed-win-1",
     "licensed-win-2",
     "gali-linux-compute-1",
@@ -123,7 +129,7 @@ def test_linux_tasks_have_cron_scheduler(tasks):
 
 def test_windows_tasks_have_windows_scheduler(tasks):
     """Windows-only tasks should use windows-task-scheduler."""
-    windows_machines = {"licensed-win-1", "licensed-win-2"}
+    windows_machines = {"ace-win-1", "ace-win-2", "licensed-win-1", "licensed-win-2"}
     for task in tasks:
         if set(task["machines"]) <= windows_machines:
             assert task.get("scheduler", "cron") == "windows-task-scheduler", (

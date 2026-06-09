@@ -64,7 +64,7 @@ else
   case "$HOSTNAME_SHORT" in
     dev-primary|ace-linux-1)   CRON_VARIANT="full" ;;
     dev-secondary|ace-linux-2) CRON_VARIANT="contribute" ;;
-    licensed-win-1|licensed-win-2) CRON_VARIANT="contribute-minimal" ;;
+    ace-win-1|ace-win-2|licensed-win-1|licensed-win-2) CRON_VARIANT="contribute-minimal" ;;
     *)
       echo "INFO: hostname '${HOSTNAME_SHORT}' not in registry — defaulting to 'contribute'"
       CRON_VARIANT="contribute"

@@ -98,10 +98,10 @@ if (-not $freshness.Fresh) {
 function Resolve-EqualityMachineLabel {
     $hostName = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { "" }
     switch -Wildcard ($hostName) {
-        "licensed-win-1" { return "licensed-win-1" }
-        "acma-ansys05*" { return "licensed-win-1" }
-        "licensed-win-2" { return "licensed-win-2" }
-        "acma-ws014*" { return "licensed-win-2" }
+        "ace-win-1" { return "ace-win-1" }
+        "acma-ansys05*" { return "ace-win-1" }
+        "ace-win-2" { return "ace-win-2" }
+        "acma-ws014*" { return "ace-win-2" }
         default { throw "Unknown Windows equality collector host '$hostName'; pass -Machine explicitly" }
     }
 }

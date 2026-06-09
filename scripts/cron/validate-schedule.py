@@ -21,7 +21,8 @@ def _load_valid_machines() -> set[str]:
         # Fallback if registry is missing
         return {
             "dev-primary", "ace-linux-1", "dev-secondary", "ace-linux-2",
-            "licensed-win-1", "licensed-win-2", "gali-linux-compute-1",
+            "ace-win-1", "ace-win-2", "licensed-win-1", "licensed-win-2",
+            "gali-linux-compute-1",
         }
     with open(REGISTRY_FILE) as f:
         data = yaml.safe_load(f)

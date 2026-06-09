@@ -44,11 +44,11 @@ if [[ -z "$MACHINE" ]]; then
   case "$HOST" in
     ace-linux-1*) MACHINE="dev-primary";; ace-linux-2*) MACHINE="dev-secondary";;
     *macbook*) MACHINE="macbook-portable";;
-    licensed-win-1*|acma-ansys05*) MACHINE="licensed-win-1";;
-    licensed-win-2*|acma-ws014*) MACHINE="licensed-win-2";;
+    ace-win-1*|licensed-win-1*|acma-ansys05*) MACHINE="ace-win-1";;
+    ace-win-2*|licensed-win-2*|acma-ws014*) MACHINE="ace-win-2";;
     *)
       if [[ "$OS" == "windows" ]]; then
-        echo "collect-equality.sh: unknown Windows host '$HOST'; pass --machine licensed-win-1 or licensed-win-2" >&2
+        echo "collect-equality.sh: unknown Windows host '$HOST'; pass --machine ace-win-1 or ace-win-2" >&2
         exit 1
       fi
       MACHINE="$HOST";;
