@@ -20607,7 +20607,7 @@ cards:
     title: 'plan(hermes): Windows and macOS Telegram/Hermes dispatch parity path'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2742
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
