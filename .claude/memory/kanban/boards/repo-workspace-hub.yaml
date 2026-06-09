@@ -13298,7 +13298,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1503
     gh_state: closed
     gh_labels:
-      - machine:licensed-win-1
+      - machine:ace-win-1
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -14055,7 +14055,7 @@ cards:
       - priority:high
       - cat:engineering
       - machine:dev-primary
-      - machine:licensed-win-1
+      - machine:ace-win-1
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -14084,7 +14084,7 @@ cards:
       - priority:high
       - cat:engineering
       - machine:dev-primary
-      - machine:licensed-win-1
+      - machine:ace-win-1
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -14127,7 +14127,7 @@ cards:
       - priority:medium
       - cat:engineering
       - machine:dev-primary
-      - machine:licensed-win-1
+      - machine:ace-win-1
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -15054,7 +15054,7 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - machine:licensed-win-1
+      - machine:ace-win-1
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -15068,7 +15068,7 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - machine:licensed-win-1
+      - machine:ace-win-1
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -15082,7 +15082,7 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - machine:licensed-win-1
+      - machine:ace-win-1
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -15096,7 +15096,7 @@ cards:
       - enhancement
       - priority:medium
       - cat:engineering
-      - machine:licensed-win-1
+      - machine:ace-win-1
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -19127,7 +19127,7 @@ cards:
       - priority:medium
       - cat:engineering
       - domain:marine
-      - machine:licensed-win-1
+      - machine:ace-win-1
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -19719,7 +19719,7 @@ cards:
       - priority:high
       - cat:engineering
       - domain:marine
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - status:plan-approved
     initial_status: triage
     priority: 1
@@ -20279,7 +20279,7 @@ cards:
       - priority:high
       - cat:engineering
       - domain:marine
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - status:plan-approved
     initial_status: triage
     priority: 1
@@ -20518,7 +20518,7 @@ cards:
       - priority:high
       - cat:operations
       - domain:workstations
-      - machine:licensed-win-2
+      - machine:ace-win-2
       - status:needs-plan
       - gate:completeness
     initial_status: triage
@@ -20847,7 +20847,7 @@ cards:
     title: 'chore(workstations): WF0 — Windows rollout prerequisites + decisions (naming, managed-flag readiness) [#2998]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3001
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:harness

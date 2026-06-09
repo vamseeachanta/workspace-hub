@@ -63,7 +63,7 @@ cards:
       - cat:engineering-calculations
       - wrk-item
       - status:working
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - agent:codex
       - status:plan-approved
       - dispatch:ready
@@ -87,7 +87,7 @@ cards:
       - priority:low
       - cat:engineering-calculations
       - wrk-item
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - dispatch:ready
       - gate:completeness
       - domain:marine-orcaflex
@@ -171,7 +171,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - dispatch:ready
       - gate:completeness
       - domain:marine-orcaflex
@@ -236,7 +236,7 @@ cards:
       - priority:medium
       - cat:engineering
       - machine:dev-primary
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - dispatch:ready
       - gate:completeness
       - domain:marine-orcaflex

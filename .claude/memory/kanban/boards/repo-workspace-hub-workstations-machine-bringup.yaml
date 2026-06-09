@@ -127,7 +127,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1509
     gh_state: open
     gh_labels:
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - dispatch:ready
       - gate:completeness
       - domain:workstations-machine-bringup
@@ -445,7 +445,7 @@ cards:
       - priority:high
       - cat:ai-orchestration
       - cat:operations
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - status:needs-plan
       - dispatch:ready
       - gate:completeness
@@ -468,7 +468,7 @@ cards:
       - priority:high
       - cat:ai-orchestration
       - cat:operations
-      - machine:licensed-win-2
+      - machine:ace-win-2
       - status:needs-plan
       - dispatch:ready
       - gate:completeness
@@ -491,7 +491,7 @@ cards:
       - priority:high
       - cat:operations
       - status:blocked
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - dispatch:ready
       - gate:completeness
       - domain:workstations-machine-bringup
@@ -513,7 +513,7 @@ cards:
       - priority:high
       - cat:operations
       - status:blocked
-      - machine:licensed-win-2
+      - machine:ace-win-2
       - dispatch:ready
       - gate:completeness
       - domain:workstations-machine-bringup

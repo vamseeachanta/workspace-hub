@@ -128,7 +128,7 @@ cards:
       - cat:harness
       - domain:cross-platform
       - status:working
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - agent:claude
       - agent:codex
       - status:plan-approved
@@ -152,7 +152,7 @@ cards:
       - priority:medium
       - cat:harness
       - domain:cross-platform
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - dispatch:ready
       - gate:completeness
     gh_assignees: []

@@ -19,7 +19,7 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - dispatch:ready
       - gate:completeness
       - domain:marine-solver-queue
@@ -83,7 +83,7 @@ cards:
       - enhancement
       - priority:medium
       - cat:engineering
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - agent:codex
       - dispatch:ready
       - gate:completeness
@@ -231,7 +231,7 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - dispatch:ready
       - gate:completeness
       - domain:marine-solver-queue
@@ -274,8 +274,8 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - machine:licensed-win-1
-      - machine:licensed-win-2
+      - machine:ace-win-1
+      - machine:ace-win-2
       - dispatch:ready
       - gate:completeness
       - domain:marine-solver-queue

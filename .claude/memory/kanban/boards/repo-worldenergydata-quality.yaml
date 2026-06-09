@@ -513,3 +513,18 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#462
+    title: 'docs(data): define source refresh acceptance criteria contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/462
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:high
+      - cat:data
+      - cat:automation
+      - domain:quality
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

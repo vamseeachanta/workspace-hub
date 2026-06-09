@@ -244,7 +244,7 @@ cards:
     gh_labels:
       - domain:ai-config
       - wrk-item
-      - machine:licensed-win-1
+      - machine:ace-win-1
       - dispatch:ready
       - gate:completeness
     gh_assignees: []
