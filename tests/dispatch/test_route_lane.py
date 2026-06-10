@@ -47,7 +47,11 @@ def route():
 DEFAULTS = {"machine": "dev-primary", "provider": "claude"}
 
 def _resolve(route, labels, assign=None):
-    return route.resolve_provider(labels, assign or {}, DEFAULTS)
+    # #3030 extended resolve_provider to (provider, explicit, source);
+    # these tests pin the first two elements (source pinned in
+    # test_route_quota_gate.py).
+    provider, explicit, _source = route.resolve_provider(labels, assign or {}, DEFAULTS)
+    return provider, explicit
 
 
 # 1. lane alone routes the provider but is NOT explicit (non-sticky).

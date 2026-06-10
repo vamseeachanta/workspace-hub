@@ -18,7 +18,7 @@ Usage:
   route.py --apply         write GH labels (requires gh; Phase B)
 """
 from __future__ import annotations
-import argparse, fnmatch, json, subprocess, sys
+import argparse, fnmatch, json, os, subprocess, sys, time
 from collections import defaultdict
 from pathlib import Path
 
@@ -129,8 +129,11 @@ def match_rule(rules: list[dict], *, repo, domain, gh_labels) -> dict:
 LANE_PROVIDERS = {"codex", "claude"}
 
 
-def resolve_provider(labels: list[str], assign: dict, defaults: dict) -> tuple[str | None, bool]:
-    """Resolve (provider, provider_explicit) for one card.
+def resolve_provider(labels: list[str], assign: dict, defaults: dict) -> tuple[str | None, bool, str]:
+    """Resolve (provider, provider_explicit, source) for one card.
+
+    source is one of "ai" | "rule" | "lane" | "default" — the quota gate
+    (#3030) suspends only the lane-derived codex choice.
 
     Precedence: ai: (human/dispatch override) > rule provider > lane:
     (plan-time preference) > defaults.provider.
@@ -146,11 +149,79 @@ def resolve_provider(labels: list[str], assign: dict, defaults: dict) -> tuple[s
     existing_ai = existing_label_value(labels, "ai:")
     lane = existing_label_value(labels, "lane:")
     accepted_lane = lane if lane in LANE_PROVIDERS else None
-    provider = (existing_ai or assign.get("provider") or accepted_lane
-                or defaults.get("provider"))
+    if existing_ai:
+        provider, source = existing_ai, "ai"
+    elif assign.get("provider"):
+        provider, source = assign["provider"], "rule"
+    elif accepted_lane:
+        provider, source = accepted_lane, "lane"
+    else:
+        provider, source = defaults.get("provider"), "default"
     # provider is "explicit" only if a human or a rule chose it (not lane/default)
-    provider_explicit = bool(existing_ai or assign.get("provider"))
-    return provider, provider_explicit
+    provider_explicit = source in ("ai", "rule")
+    return provider, provider_explicit, source
+
+
+QUOTA_SCRIPT = ROOT / "scripts/ai/assessment/query-codex-usage.sh"
+QUOTA_GATE_PCT = 10  # suspend lane:codex strictly below this weekly remaining %
+
+
+def codex_weekly_remaining(override=None):
+    """Codex weekly remaining % for the dispatch quota gate (#3030), or None.
+
+    None means "unknown" and the gate FAILS OPEN — this gate is an
+    optimization on top of lane routing (#3029); an unreachable quota source
+    must never strand heavy work. The statusline keeps the human informed.
+
+    Window-validity guard: a snapshot may drive demotion only when it provably
+    belongs to the current weekly window — source == "app-server-live", or a
+    fallback source with resets_at_epoch in the future. A fallback snapshot
+    from before the weekly reset would freeze pre-reset numbers (codex #3030
+    plan review MAJOR-1); within a current window, fallback staleness can only
+    understate usage, which errs toward fail-open.
+
+    `override` carries the --codex-remaining CLI value (loud operator escape
+    hatch). Deliberately NO environment-variable override: cron environments
+    inherit env silently (#3030 plan review MAJOR-2).
+    """
+    if override is not None:
+        print(f"\033[1;33m[quota-override] --codex-remaining={override} — "
+              f"live codex quota NOT consulted\033[0m", file=sys.stderr)
+        return float(override)
+    try:
+        timeout = float(os.environ.get("DISPATCH_QUOTA_TIMEOUT", "10"))
+        res = subprocess.run([str(QUOTA_SCRIPT), "--json"],
+                             capture_output=True, text=True, timeout=timeout)
+        data = json.loads(res.stdout)
+        remaining = data.get("pct_remaining")
+        if remaining is None:
+            raise ValueError("no pct_remaining in quota JSON")
+        src = data.get("source")
+        if src != "app-server-live":
+            reset = data.get("resets_at_epoch")
+            if not reset or float(reset) <= time.time():
+                print(f"[quota-gate] stale codex quota snapshot "
+                      f"(source={src}, resets_at_epoch={reset}) — fail open",
+                      file=sys.stderr)
+                return None
+        return float(remaining)
+    except Exception as exc:  # timeout, missing script, bad JSON — fail open
+        print(f"[quota-gate] codex quota unavailable ({exc}) — fail open",
+              file=sys.stderr)
+        return None
+
+
+def lane_quota_demotion(provider, source, remaining_pct, defaults):
+    """Return (provider, demoted). Suspends ONLY the lane-derived codex choice
+    when weekly remaining is strictly below QUOTA_GATE_PCT. ai:/rule codex
+    carries human/rule authority and is never altered; None (unknown quota)
+    fails open. A demoted card keeps provider_explicit=False at the call site,
+    so labels_for() writes no ai: label — demotion leaves no sticky residue.
+    """
+    if (provider == "codex" and source == "lane"
+            and remaining_pct is not None and remaining_pct < QUOTA_GATE_PCT):
+        return defaults.get("provider"), True
+    return provider, False
 
 
 def propose(args) -> list[dict]:
@@ -162,6 +233,8 @@ def propose(args) -> list[dict]:
     routable_states = set(defaults.get("routable_states", ["open"]))
 
     proposals = []
+    _QUOTA_UNSET = object()
+    quota_remaining = _QUOTA_UNSET
     for board, card in iter_cards():
         repo = board.get("repo")
         if args.repo and repo != args.repo:
@@ -180,7 +253,15 @@ def propose(args) -> list[dict]:
         existing_machine = existing_label_value(labels, "machine:")
         machine = existing_machine or assign.get("machine") or defaults.get("machine")
         machine = aliases.get(machine, machine)  # fold acma-ws014 -> licensed-win-2
-        provider, provider_explicit = resolve_provider(labels, assign, defaults)
+        provider, provider_explicit, provider_source = resolve_provider(
+            labels, assign, defaults)
+        quota_demoted = False
+        if provider == "codex" and provider_source == "lane":
+            if quota_remaining is _QUOTA_UNSET:  # one quota read per run
+                quota_remaining = codex_weekly_remaining(
+                    override=getattr(args, "codex_remaining", None))
+            provider, quota_demoted = lane_quota_demotion(
+                provider, provider_source, quota_remaining, defaults)
         routed_by = "manual" if existing_machine else "rule"
 
         proposals.append({
@@ -193,6 +274,7 @@ def propose(args) -> list[dict]:
             "has_machine_label": bool(existing_machine),
             "provider": provider,
             "provider_explicit": provider_explicit,
+            "quota_demoted": quota_demoted,
             "priority": card.get("priority", 0),  # higher = more urgent (SCHEMA)
             "routed_by": routed_by,
             "reason": rule.get("reason", ""),
@@ -265,7 +347,7 @@ def print_detail(proposals: list[dict]):
         print(f"\n\033[1m{machine}\033[0m  ({len(cards)} cards)")
         for p in cards:
             slot = "▶" if p["slot"] == "active-eligible" else "\033[2m·\033[0m"
-            prov = p["provider"]
+            prov = p["provider"] + ("(Q)" if p.get("quota_demoted") else "")
             tag = "\033[35m" if p["routed_by"] == "manual" else ""
             print(f"  {slot} [{prov:<6}] {p['domain'] or '–':<14} "
                   f"{tag}{p['key']}\033[0m  {p['title']}")
@@ -299,9 +381,11 @@ def print_summary(proposals: list[dict]):
         dom_counts[p["domain"] or "(no domain)"] += 1
     no_dom = dom_counts.get("(no domain)", 0)
     manual = sum(1 for p in proposals if p["routed_by"] == "manual")
+    demoted = sum(1 for p in proposals if p.get("quota_demoted"))
     print(f"\n  total open cards routed: \033[1m{total}\033[0m   "
           f"with domain: {total - no_dom}   no domain: {no_dom}   "
-          f"manual-override: {manual}")
+          f"manual-override: {manual}"
+          + (f"   \033[1;33mquota-demoted: {demoted}\033[0m" if demoted else ""))
     print(f"  *active = concurrent slots allowed now per WIP caps; "
           f"the rest sit dispatch:ready in queue.")
     print("\n\033[2mDRY-RUN — no labels written. `--detail` for per-card, "
@@ -465,6 +549,10 @@ def main():
     ap.add_argument("--yes", action="store_true", help="actually write (else apply dry-run)")
     ap.add_argument("--batch", type=int, default=50, help="pace every N writes")
     ap.add_argument("--pace", type=float, default=2.0, help="seconds to sleep per batch")
+    ap.add_argument("--codex-remaining", type=float, default=None,
+                    dest="codex_remaining",
+                    help="override live codex weekly remaining %% for the lane "
+                         "quota gate (loud operator escape hatch, #3030)")
     args = ap.parse_args()
 
     proposals = propose(args)
