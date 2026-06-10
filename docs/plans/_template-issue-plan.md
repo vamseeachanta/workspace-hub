@@ -6,6 +6,7 @@
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/NNN
 > **Client:** N/A | <client-slug>     <!-- required per .claude/rules/wiki-sibling-routing.md (#2778); N/A when plan does not touch wiki content -->
 > **Project:** (optional — populate when plan scopes to a single project under the client; consumed by check-wiki-sibling-frontmatter.py Rule E)
+> **Lane:** lane:claude | lane:codex   <!-- plan-time AI provider lane per the "Compute lane assignment" rule in .claude/memory/agents.md; must match the issue's lane: label — relabel the issue if planning changed the scope class (#3029) -->
 > **Review artifacts:** scripts/review/results/YYYY-MM-DD-plan-NNN-claude.md | ...-codex.md | ...-gemini.md
 
 ---

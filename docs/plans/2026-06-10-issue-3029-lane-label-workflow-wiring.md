@@ -6,6 +6,7 @@
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3029
 > **Client:** N/A
 > **Project:** (none)
+> **Lane:** lane:claude
 > **Review artifacts:** scripts/review/results/2026-06-10-plan-3029-claude.md | ...-codex.md
 
 ---

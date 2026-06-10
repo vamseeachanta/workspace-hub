@@ -124,6 +124,35 @@ def match_rule(rules: list[dict], *, repo, domain, gh_labels) -> dict:
     return {"assign": {}, "reason": "no rule matched"}
 
 
+# lane: vocabulary is fixed to the two auto-routable workhorse providers;
+# unknown lane values (e.g. a future lane:gemini) must never route (#3029).
+LANE_PROVIDERS = {"codex", "claude"}
+
+
+def resolve_provider(labels: list[str], assign: dict, defaults: dict) -> tuple[str | None, bool]:
+    """Resolve (provider, provider_explicit) for one card.
+
+    Precedence: ai: (human/dispatch override) > rule provider > lane:
+    (plan-time preference) > defaults.provider.
+
+    lane: labels are plan-time, agent-or-human-set during the human-gated
+    planning stage (compute-lane rule, .claude/memory/agents.md) — weaker than
+    the human-set ai: override and than specific routing rules (e.g.
+    needs:cross-review -> codex), stronger only than the catch-all default.
+    A lane-derived provider never sets provider_explicit, so labels_for()
+    never materializes an ai: label from a lane — lane stays re-classifiable
+    at planning time (#3029 adversarial review r2).
+    """
+    existing_ai = existing_label_value(labels, "ai:")
+    lane = existing_label_value(labels, "lane:")
+    accepted_lane = lane if lane in LANE_PROVIDERS else None
+    provider = (existing_ai or assign.get("provider") or accepted_lane
+                or defaults.get("provider"))
+    # provider is "explicit" only if a human or a rule chose it (not lane/default)
+    provider_explicit = bool(existing_ai or assign.get("provider"))
+    return provider, provider_explicit
+
+
 def propose(args) -> list[dict]:
     cfg = load_rules()
     rules = cfg.get("rules", [])
@@ -149,12 +178,9 @@ def propose(args) -> list[dict]:
 
         # human-set labels on the issue always override the rule
         existing_machine = existing_label_value(labels, "machine:")
-        existing_ai = existing_label_value(labels, "ai:")
         machine = existing_machine or assign.get("machine") or defaults.get("machine")
         machine = aliases.get(machine, machine)  # fold acma-ws014 -> licensed-win-2
-        provider = existing_ai or assign.get("provider") or defaults.get("provider")
-        # provider is "explicit" only if a human or a rule chose it (not the default)
-        provider_explicit = bool(existing_ai or assign.get("provider"))
+        provider, provider_explicit = resolve_provider(labels, assign, defaults)
         routed_by = "manual" if existing_machine else "rule"
 
         proposals.append({
