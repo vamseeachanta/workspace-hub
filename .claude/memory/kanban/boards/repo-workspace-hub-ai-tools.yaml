@@ -710,7 +710,8 @@ cards:
     gh_state: open
     gh_labels:
       - domain:ai-tools
-      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
       - lane:claude
     initial_status: triage
     priority: 0
@@ -723,6 +724,21 @@ cards:
     gh_state: open
     gh_labels:
       - domain:ai-tools
+      - status:plan-approved
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3034
+    title: 'Quota cache agent-quota-latest.json: stale data, no timestamp, statusline over-reports codex headroom'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3034
+    gh_state: open
+    gh_labels:
+      - domain:ai-tools
+      - status:plan-review
       - lane:claude
     initial_status: triage
     priority: 0

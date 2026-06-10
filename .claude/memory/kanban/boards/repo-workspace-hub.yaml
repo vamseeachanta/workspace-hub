@@ -12401,7 +12401,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1405
     gh_state: closed
-    gh_labels: []
+    gh_labels:
+      - model-rework
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -17590,6 +17591,7 @@ cards:
       - status:done
       - agent:codex
       - maintenance
+      - model-rework
     initial_status: triage
     priority: 0
     gh_assignees: []

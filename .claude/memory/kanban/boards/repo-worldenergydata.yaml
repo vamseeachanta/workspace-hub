@@ -81,6 +81,7 @@ cards:
     gh_state: closed
     gh_labels:
       - wrk-item
+      - model-rework
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -103,6 +104,7 @@ cards:
     gh_state: closed
     gh_labels:
       - wrk-item
+      - model-rework
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -114,6 +116,7 @@ cards:
     gh_state: closed
     gh_labels:
       - wrk-item
+      - model-rework
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -202,6 +205,7 @@ cards:
     gh_state: closed
     gh_labels:
       - wrk-item
+      - model-rework
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -301,6 +305,7 @@ cards:
     gh_state: closed
     gh_labels:
       - wrk-item
+      - model-rework
     initial_status: triage
     priority: 0
     gh_assignees: []

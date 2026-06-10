@@ -715,13 +715,12 @@ cards:
     title: '[electrical-instrumentation] IEC extractable standards page/dataset canary'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/524
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
-      - status:plan-review
+      - status:done
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
       - lane:codex
     initial_status: triage
@@ -820,12 +819,12 @@ cards:
     title: '[production-api] locked/catalog/missing-source handoff plan'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/530
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-review
+      - status:done
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition

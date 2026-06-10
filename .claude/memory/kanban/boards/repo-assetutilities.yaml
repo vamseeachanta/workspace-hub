@@ -517,7 +517,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/assetutilities/issues/21
     gh_state: closed
-    gh_labels: []
+    gh_labels:
+      - model-rework
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -547,7 +548,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/assetutilities/issues/24
     gh_state: closed
-    gh_labels: []
+    gh_labels:
+      - model-rework
     initial_status: triage
     priority: 0
     gh_assignees: []
