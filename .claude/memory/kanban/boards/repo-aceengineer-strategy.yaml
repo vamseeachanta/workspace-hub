@@ -119,6 +119,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/15
     gh_state: open
     gh_labels:
+      - priority:P2
       - strategy
       - status:scoping
       - dispatch:ready
@@ -316,7 +317,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/6
     gh_state: open
     gh_labels:
-      - priority:P1
+      - priority:P2
       - flywheel
       - status:scoping
       - layer:public-data
@@ -338,7 +339,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/5
     gh_state: open
     gh_labels:
-      - priority:P1
+      - priority:P2
       - flywheel
       - status:plan-approved
       - layer:public-data
@@ -382,7 +383,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/3
     gh_state: open
     gh_labels:
-      - priority:P0
+      - priority:P2
       - flywheel
       - strategy
       - status:plan-approved
@@ -404,7 +405,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/2
     gh_state: open
     gh_labels:
-      - priority:P0
+      - priority:P3
       - flywheel
       - strategy
       - status:plan-approved
@@ -426,6 +427,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/1
     gh_state: open
     gh_labels:
+      - priority:P2
       - epic
       - flywheel
       - strategy
@@ -459,6 +461,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/25
     gh_state: open
     gh_labels:
+      - priority:P1
       - domain:pilots-data
       - lane:claude
     initial_status: triage
@@ -616,7 +619,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/44
     gh_state: open
     gh_labels:
-      - priority:P2
+      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
@@ -631,7 +634,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/45
     gh_state: open
     gh_labels:
-      - priority:P2
+      - priority:P1
       - strategy
       - status:scoping
       - domain:commercial
@@ -646,7 +649,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/46
     gh_state: open
     gh_labels:
-      - priority:P3
+      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
@@ -707,6 +710,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/52
     gh_state: open
     gh_labels:
+      - priority:P1
       - strategy
       - domain:operations-governance
       - lane:claude
@@ -814,10 +818,38 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/59
     gh_state: open
     gh_labels:
-      - priority:P2
+      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#69
+    title: Doris (Mo Dessoukey) prospective-client follow-up — post-demo 2026-06-05 outcome capture + BD next steps
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/69
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - domain:gtm
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#70
+    title: HD CFD (Howard Day) paying-client motion — pipeline capture + scope/NDA/delivery follow-through
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/70
+    gh_state: open
+    gh_labels:
+      - priority:P1
+      - strategy
+      - domain:commercial
       - lane:claude
     initial_status: triage
     priority: 0

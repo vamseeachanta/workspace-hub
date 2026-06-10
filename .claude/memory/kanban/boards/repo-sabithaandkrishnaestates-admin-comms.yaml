@@ -16,6 +16,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/33
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:admin-comms
@@ -33,13 +34,14 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/29
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:admin-comms
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Issue
 
       `admin/admin.md` contains plaintext passwords, PINs, and full account numbers in a git-tracked file. This is a security risk even in a private repo.'
@@ -49,6 +51,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/28
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:admin-comms
@@ -65,6 +68,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/19
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:admin-comms
@@ -81,13 +85,14 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/4
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:admin-comms
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Summary
 
 

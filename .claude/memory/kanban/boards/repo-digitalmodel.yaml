@@ -3647,3 +3647,27 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#689
+    title: 'Epic: roll out output-driven pipeline pattern (Q&A+assumption ledger / solver input / sanity-checked output) beyond diffraction'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/689
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#690
+    title: 'bug(tracker): legacy issue bodies overwritten with unrelated WRK content during migration (#13 #17 #18 #19 #20 #23 #28 #29)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/690
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

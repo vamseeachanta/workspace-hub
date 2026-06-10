@@ -133,7 +133,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:engineering-calculations
       - wrk-item
       - machine:dev-primary
@@ -178,6 +178,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - machine:ace-win-1
       - dispatch:ready
       - gate:completeness
@@ -353,7 +354,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1905
     gh_state: open
     gh_labels:
-      - priority:high
+      - priority:medium
       - cat:engineering
       - machine:dev-primary
       - gtm
@@ -363,7 +364,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Scope
 
       Locate, catalog, and prepare the rigid jumper OrcaFlex model and associated Excel workbook for GTM Demo 5 and general reuse.
@@ -376,7 +377,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -385,7 +386,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Validate a flagship generic-track OrcaFlex mooring case — preferably turret-moored FPSO — for semantic equivalence from canonical `spec.yml` to generated native OrcaFlex inputs.
@@ -398,7 +399,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:low
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -407,7 +408,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Add stronger OrcaFlex native YAML -> canonical semantic extraction/equivalence proof so OrcaFlex reaches parity with the OrcaWave roundtrip proof added in PR #528.
@@ -598,6 +599,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1932
     gh_state: open
     gh_labels:
+      - priority:low
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready

@@ -80,8 +80,8 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - cat:engineering
-      - priority:low
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -142,6 +142,7 @@ cards:
     source_url: https://github.com/vamseeachanta/assethold/issues/28
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -160,6 +161,7 @@ cards:
     source_url: https://github.com/vamseeachanta/assethold/issues/27
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -178,6 +180,7 @@ cards:
     source_url: https://github.com/vamseeachanta/assethold/issues/26
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -196,6 +199,7 @@ cards:
     source_url: https://github.com/vamseeachanta/assethold/issues/25
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -234,8 +238,8 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
       - cat:engineering
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -252,6 +256,7 @@ cards:
     source_url: https://github.com/vamseeachanta/assethold/issues/8
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -271,6 +276,7 @@ cards:
     source_url: https://github.com/vamseeachanta/assethold/issues/5
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved

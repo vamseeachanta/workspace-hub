@@ -83,7 +83,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - domain:cross-platform
@@ -106,7 +106,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - domain:cross-platform
@@ -129,7 +129,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:high
       - cat:harness
       - domain:cross-platform
       - status:working
@@ -142,7 +142,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Summary
 
       Now that the repo-side Windows parity hardening is in place (tracked readiness proof path, MemoryBridgeSync scheduler task, bridge script cross-platform updates), run the live validation on `licensed-win-1` and replace the bootstrap placeholder artifact with real machine evidence.

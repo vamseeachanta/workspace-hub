@@ -63,6 +63,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -83,6 +84,7 @@ cards:
     gh_state: open
     gh_labels:
       - documentation
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -103,6 +105,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -123,6 +126,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -142,6 +146,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/686
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:solver-infra
       - lane:claude
     initial_status: triage

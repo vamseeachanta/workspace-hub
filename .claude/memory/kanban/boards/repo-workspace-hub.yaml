@@ -21,6 +21,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2761
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:uncategorised
       - machine:dev-primary
       - dispatch:ready
@@ -1304,7 +1305,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - domain:uncategorised
       - machine:dev-primary
       - dispatch:ready
@@ -20493,6 +20494,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2920
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:machine-setup
       - lane:claude
     initial_status: triage
@@ -20540,7 +20542,6 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2934
     gh_state: open
     gh_labels:
-      - priority:medium
       - priority:critical
       - domain:workflow-compliance
       - compliance-alert
@@ -20666,6 +20667,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2753
     gh_state: open
     gh_labels:
+      - priority:low
       - cat:operations
       - domain:machine-setup
       - machine:dev-primary
@@ -20894,8 +20896,10 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3026
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - priority:high
+      - lane:claude
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

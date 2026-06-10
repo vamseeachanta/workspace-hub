@@ -16,6 +16,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1343
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:ace-win-1
       - dispatch:ready
@@ -37,6 +38,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - cat:engineering
       - machine:ace-win-1
       - dispatch:ready
@@ -127,7 +129,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - machine:dev-primary
@@ -173,7 +175,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - machine:dev-primary
@@ -196,7 +198,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - machine:dev-primary
@@ -219,7 +221,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - machine:dev-primary
@@ -242,6 +244,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - cat:harness
       - machine:ace-win-1
       - status:plan-review
@@ -250,7 +253,7 @@ cards:
       - domain:workstations-windows-readiness
       - lane:claude
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2816
@@ -260,6 +263,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - cat:harness
       - status:plan-review
       - status:plan-approved
@@ -267,7 +271,7 @@ cards:
       - domain:workstations-windows-readiness
       - lane:claude
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2852
@@ -277,10 +281,11 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - cat:operations
       - domain:workstations-windows-readiness
       - lane:claude
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

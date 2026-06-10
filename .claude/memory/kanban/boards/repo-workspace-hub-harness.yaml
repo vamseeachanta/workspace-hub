@@ -104,6 +104,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2064
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -119,6 +120,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2065
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -138,6 +140,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2071
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -157,6 +160,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2073
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -176,6 +180,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2077
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -191,6 +196,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2078
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -207,7 +213,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:documentation
       - cat:harness
       - machine:dev-primary
@@ -298,7 +304,6 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2431
     gh_state: open
     gh_labels:
-      - priority:high
       - priority:critical
       - machine:dev-primary
       - compliance-alert
@@ -308,7 +313,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Compliance Alert — 2026-04-21
 
       **Compliance rate:** 20% | **Severity:** critical
@@ -321,6 +326,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:dev-primary
       - tech-debt
       - dispatch:ready
@@ -426,8 +432,6 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2517
     gh_state: open
     gh_labels:
-      - priority:high
-      - priority:medium
       - priority:critical
       - machine:dev-primary
       - compliance-alert
@@ -437,7 +441,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Compliance Alert — 2026-04-27
 
       **Compliance rate:** 42% | **Severity:** high
@@ -449,7 +453,6 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2634
     gh_state: open
     gh_labels:
-      - priority:high
       - priority:critical
       - machine:dev-primary
       - compliance-alert
@@ -459,7 +462,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Compliance Alert — 2026-05-04
 
       **Compliance rate:** 35% | **Severity:** high
@@ -471,8 +474,6 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2660
     gh_state: open
     gh_labels:
-      - priority:high
-      - priority:medium
       - priority:critical
       - machine:dev-primary
       - compliance-alert
@@ -482,7 +483,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Compliance Alert — 2026-05-11
 
       **Compliance rate:** 0% | **Severity:** critical
@@ -517,8 +518,6 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2749
     gh_state: open
     gh_labels:
-      - priority:high
-      - priority:medium
       - priority:critical
       - machine:dev-primary
       - compliance-alert
@@ -528,7 +527,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Compliance Alert — 2026-05-18
 
       **Compliance rate:** 50% | **Severity:** medium
@@ -561,13 +560,12 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2806
     gh_state: open
     gh_labels:
-      - priority:high
       - priority:critical
       - compliance-alert
       - domain:harness
       - lane:claude
     initial_status: triage
-    priority: 1
+    priority: 0
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2817
@@ -593,11 +591,12 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2911
     gh_state: open
     gh_labels:
+      - priority:high
       - status:plan-review
       - domain:harness
       - lane:claude
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#3012
@@ -656,7 +655,10 @@ cards:
       - priority:low
       - cat:harness
       - status:plan-review
+      - status:plan-approved
+      - gate:completeness
       - domain:harness
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

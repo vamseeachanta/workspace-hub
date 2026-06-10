@@ -17,6 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - machine:dev-secondary
       - dispatch:ready
       - gate:completeness
@@ -81,7 +82,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - machine:dev-secondary
       - dispatch:ready
@@ -90,7 +91,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: 'Frequency-domain dynamics for floating turbines. Pure Python, Apache-2.0.
 
       **Library**: [RAFT](https://github.com/WISDEM/RAFT)
@@ -103,7 +104,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - machine:dev-secondary
       - dispatch:ready
@@ -112,7 +113,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: 'Integrated wind plant cost-of-energy model. Python, Apache-2.0, 172 stars.
 
       **Library**: [WISDEM](https://github.com/WISDEM/WISDEM)
@@ -169,7 +170,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -178,7 +179,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: 'Identified in: docs/reports/orcawave-orcaflex-research-gaps.md (#1575)
 
       ## Problem

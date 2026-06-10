@@ -17,7 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:platform
       - domain:ops
       - wrk-item
@@ -437,10 +437,11 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2878
     gh_state: open
     gh_labels:
+      - priority:high
       - domain:ops
       - lane:claude
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2886
@@ -463,6 +464,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2962
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:ops
       - status:plan-review
       - lane:claude
@@ -476,6 +478,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2963
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:ops
       - lane:codex
     initial_status: triage
@@ -488,6 +491,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2964
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:ops
       - lane:claude
     initial_status: triage

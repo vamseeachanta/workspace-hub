@@ -61,6 +61,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -81,6 +82,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready

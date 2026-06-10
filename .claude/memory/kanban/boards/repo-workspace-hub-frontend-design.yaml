@@ -247,7 +247,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:skills
       - domain:frontend-design
       - machine:dev-primary

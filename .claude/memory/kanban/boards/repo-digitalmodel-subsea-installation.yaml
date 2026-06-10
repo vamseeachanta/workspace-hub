@@ -82,6 +82,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/467
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -102,6 +103,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - priority:high
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -109,7 +111,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '# STORY: Jumper Installation Analysis Pipeline — spec.yml → jumper_lift → OrcaFlex model → analysis → outputs
 
       ## Architecture
@@ -122,6 +124,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -142,6 +145,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -176,10 +180,11 @@ cards:
     gh_labels:
       - enhancement
       - cat:engineering
+      - priority:high
       - domain:subsea-installation
       - lane:codex
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/digitalmodel#636
@@ -190,9 +195,10 @@ cards:
     gh_labels:
       - enhancement
       - cat:engineering
+      - priority:high
       - domain:subsea-installation
       - lane:codex
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

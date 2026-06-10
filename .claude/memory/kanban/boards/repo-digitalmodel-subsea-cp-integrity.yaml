@@ -216,6 +216,7 @@ cards:
     gh_labels:
       - bug
       - cat:engineering
+      - priority:high
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -223,7 +224,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Summary
 
       Sub-issue of [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) cluster R3. Wiki citation surface for DNV-RP-F103 has now landed on workspace-hub main via [vamseeachanta/workspace-hub#2636](https://github.com/vamseeachanta/workspace-hub/pull/2636), unblocking this sub-issue per `.claude/rules/calc-citation-contract.md`.

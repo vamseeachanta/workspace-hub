@@ -19,6 +19,7 @@ cards:
       - machine:dev-primary
       - domain:docs
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -37,6 +38,7 @@ cards:
       - machine:dev-primary
       - domain:ci-packaging
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -52,6 +54,7 @@ cards:
       - machine:dev-primary
       - domain:library-core
       - lane:claude
+      - priority:low
     gh_assignees:
       - samdansk2
     initial_status: triage
@@ -71,6 +74,7 @@ cards:
       - machine:dev-primary
       - domain:library-core
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -86,6 +90,7 @@ cards:
       - machine:dev-primary
       - domain:agent-tooling
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -101,6 +106,7 @@ cards:
       - machine:dev-primary
       - domain:library-core
       - lane:claude
+      - priority:low
     gh_assignees:
       - samdansk2
     initial_status: triage
@@ -121,6 +127,7 @@ cards:
       - machine:dev-primary
       - domain:productivity-ops
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -136,6 +143,7 @@ cards:
       - machine:dev-primary
       - domain:docs
       - lane:claude
+      - priority:low
     gh_assignees:
       - samdansk2
     initial_status: triage
@@ -152,6 +160,7 @@ cards:
       - machine:dev-primary
       - domain:productivity-ops
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -167,6 +176,7 @@ cards:
       - machine:dev-primary
       - domain:productivity-ops
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -182,6 +192,7 @@ cards:
       - machine:dev-primary
       - domain:productivity-ops
       - lane:claude
+      - priority:low
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -198,6 +209,7 @@ cards:
       - machine:dev-primary
       - domain:productivity-ops
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -213,6 +225,7 @@ cards:
       - machine:dev-primary
       - domain:productivity-ops
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -228,6 +241,7 @@ cards:
       - machine:dev-primary
       - domain:productivity-ops
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -243,6 +257,7 @@ cards:
       - machine:dev-primary
       - domain:productivity-ops
       - lane:claude
+      - priority:low
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -260,6 +275,7 @@ cards:
       - machine:dev-primary
       - domain:library-core
       - lane:claude
+      - priority:low
     gh_assignees:
       - getsivakumar
     initial_status: triage
@@ -277,6 +293,7 @@ cards:
       - machine:dev-primary
       - domain:agent-tooling
       - lane:claude
+      - priority:low
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -298,6 +315,7 @@ cards:
       - machine:dev-primary
       - domain:library-core
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -314,6 +332,7 @@ cards:
       - machine:dev-primary
       - domain:library-core
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -333,6 +352,7 @@ cards:
       - machine:dev-primary
       - domain:ci-packaging
       - lane:claude
+      - priority:low
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -705,8 +725,9 @@ cards:
     gh_labels:
       - domain:library-core
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/assetutilities#81
@@ -719,6 +740,7 @@ cards:
       - ce-trial
       - domain:agent-tooling
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -732,6 +754,7 @@ cards:
       - ce-trial
       - domain:agent-tooling
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -745,6 +768,7 @@ cards:
       - ce-trial
       - domain:agent-tooling
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -758,6 +782,7 @@ cards:
       - ce-trial
       - domain:agent-tooling
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -771,6 +796,7 @@ cards:
       - ce-trial
       - domain:agent-tooling
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -784,6 +810,7 @@ cards:
       - ce-trial
       - domain:agent-tooling
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []

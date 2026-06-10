@@ -320,6 +320,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1936
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:subsea-risers
       - machine:dev-primary
       - dispatch:ready
@@ -339,6 +340,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1938
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:subsea-risers
       - machine:dev-primary
       - dispatch:ready
@@ -358,6 +360,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1939
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:subsea-risers
       - machine:dev-primary
       - dispatch:ready
@@ -377,6 +380,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1953
     gh_state: open
     gh_labels:
+      - priority:low
       - cat:engineering
       - domain:subsea-risers
       - machine:dev-primary

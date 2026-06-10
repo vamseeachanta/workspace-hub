@@ -82,7 +82,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1954
     gh_state: open
     gh_labels:
-      - priority:high
+      - priority:medium
       - cat:document-intelligence
       - machine:dev-primary
       - dark-intelligence
@@ -93,7 +93,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Context
 
       The conference indexing lightweight catalog (#1608) completed Phase A — 27,735 files across 30 collections cataloged with metadata only (no full text extraction).
@@ -173,7 +173,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:data-pipeline
       - machine:dev-primary
       - dispatch:ready
@@ -182,7 +182,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Materialize the `wiki_refs` reverse-lookup contract that is already defined in the provenance architecture, so a registry entry or `doc_key` can answer: which LLM-wiki pages cite this source?
@@ -286,7 +286,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:data-pipeline
       - status:blocked
       - machine:dev-primary
@@ -298,7 +298,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Context
 
       Split from vamseeachanta/workspace-hub#2393 (v1 closed after MAJOR×2 cross-provider review flagged scope creep + storage-authority ambiguity + AC-vs-test gaps).
@@ -358,6 +358,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2651
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness

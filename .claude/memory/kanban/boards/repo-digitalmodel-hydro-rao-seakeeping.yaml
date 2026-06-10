@@ -17,6 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - feature
+      - priority:low
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -77,6 +78,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/466
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -119,6 +121,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -139,6 +142,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -159,6 +163,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready

@@ -16,6 +16,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/37
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:hoa-vendors
@@ -33,13 +34,14 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/36
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:hoa-vendors
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Context
 
 
@@ -50,13 +52,14 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/35
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:hoa-vendors
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Context
 
 
@@ -67,6 +70,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/34
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:hoa-vendors
@@ -84,6 +88,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/32
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:hoa-vendors

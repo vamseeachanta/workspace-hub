@@ -132,6 +132,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1351
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:workflow
       - machine:dev-primary
       - dispatch:ready
@@ -151,7 +152,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1899
     gh_state: open
     gh_labels:
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - domain:workflow
       - machine:dev-primary
@@ -161,7 +162,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Workflow Governance — Implementation Sprint
 
       ### Tasks
@@ -709,6 +710,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1324
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:workflow
       - wrk-item
       - machine:dev-primary
@@ -725,6 +727,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1409
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:workflow
       - machine:dev-primary
       - dispatch:ready
@@ -787,7 +790,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - domain:workflow
       - machine:dev-primary
       - agent:claude
@@ -796,7 +799,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Problem
 
       Our workflow lacks enforced hard stops where the user must review and approve before the agent continues. Evidence from session trend data is damning:
@@ -809,7 +812,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:harness
       - domain:workflow
       - machine:dev-primary
@@ -818,7 +821,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: 'Parent: #1839
 
       Created from engineering-issue-workflow skill v1.1.0 deployment.

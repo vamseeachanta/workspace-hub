@@ -610,6 +610,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/615
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:subsea-risers

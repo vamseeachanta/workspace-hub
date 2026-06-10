@@ -86,7 +86,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:harness
       - machine:dev-primary
       - agent:codex
@@ -96,7 +96,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Context
 
       From review of affaan-m/everything-claude-code (50K stars, MIT).
@@ -249,6 +249,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness

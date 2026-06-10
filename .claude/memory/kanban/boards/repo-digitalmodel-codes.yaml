@@ -419,6 +419,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - domain:codes
@@ -460,6 +461,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -480,6 +482,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -500,6 +503,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -520,6 +524,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -562,6 +567,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -582,6 +588,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -598,6 +605,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready

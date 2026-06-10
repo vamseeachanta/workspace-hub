@@ -16,6 +16,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1341
     gh_state: open
     gh_labels:
+      - priority:medium
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -36,6 +37,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1362
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-secondary
       - dispatch:ready
       - gate:completeness
@@ -51,6 +53,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1404
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -88,6 +91,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2142
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -107,7 +111,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2219
     gh_state: open
     gh_labels:
-      - priority:high
+      - priority:low
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -116,7 +120,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Context
 
       workspace-hub main has diverged significantly:
@@ -149,6 +153,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2223
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -212,6 +217,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2331
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -231,6 +237,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2494
     gh_state: open
     gh_labels:
+      - priority:low
       - cat:infrastructure
       - machine:dev-primary
       - maintenance
@@ -384,7 +391,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2784
     gh_state: open
     gh_labels:
-      - priority:medium
+      - priority:low
       - gate:completeness
       - domain:repo-organization-cleanup-migration
       - lane:claude
@@ -465,6 +472,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2662
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - status:needs-plan
       - dispatch:ready
@@ -485,6 +493,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2666
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - status:needs-plan
       - dispatch:ready

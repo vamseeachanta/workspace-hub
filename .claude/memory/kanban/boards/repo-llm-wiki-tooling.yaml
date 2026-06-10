@@ -56,9 +56,10 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/420
     gh_state: open
     gh_labels:
+      - priority:high
       - domain:tooling
       - lane:claude
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

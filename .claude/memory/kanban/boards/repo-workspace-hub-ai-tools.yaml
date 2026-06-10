@@ -293,7 +293,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - archived
       - domain:ai-tools
       - machine:dev-primary
@@ -610,7 +610,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - domain:ai-tools
       - status:plan-review
@@ -618,7 +618,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Problem
 
       `config/ai-tools/subscriptions.yaml` (`last_updated: 2025-12-23`) declares a monthly subscription total of **\$156.75/mo** across 4 services (Claude Max, OpenAI Plus, Google AI Pro, GitHub Copilot Pro). It does **not include the Codex paid plan (\$200/mo)** that has been in active use throughout the 2026-04/05 wave and across multiple plan executions (verified at [#2675](https://github.com/vamseeachanta/workspace-hub/issues/2675), [#2683](https://github.com/vamseeachanta/workspace-hub/issues/2683), [#2684](https://github.com/vamseeachanta/workspace-hub/issues/2684) review cycles).
@@ -691,3 +691,39 @@ cards:
       **Status:** pending | **Priority:** low | **Category:** harness/skills | **Subcategory:** integrations
 
       **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3028
+    title: 'record: ecosystem lane: label rollout — plan-time AI provider assignment (codex/claude)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3028
+    gh_state: closed
+    gh_labels:
+      - domain:ai-tools
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3029
+    title: 'Wire lane: labels into dispatch routing + planning template + planning skill'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3029
+    gh_state: open
+    gh_labels:
+      - domain:ai-tools
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3030
+    title: 'Dispatch-time codex weekly-quota gate: suspend lane:codex routing when available <10%'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3030
+    gh_state: open
+    gh_labels:
+      - domain:ai-tools
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

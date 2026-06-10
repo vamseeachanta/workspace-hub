@@ -48,6 +48,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1360
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:knowledge
       - machine:dev-secondary
       - dispatch:ready
@@ -265,6 +266,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:low
       - domain:knowledge
       - machine:dev-primary
       - dispatch:ready
@@ -377,7 +379,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:documentation
       - cat:harness
       - domain:knowledge
@@ -400,7 +402,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:documentation
       - cat:harness
       - domain:knowledge
@@ -423,7 +425,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:documentation
       - cat:harness
       - domain:knowledge
@@ -446,7 +448,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:documentation
       - cat:harness
       - domain:knowledge
@@ -502,7 +504,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:data-pipeline
       - cat:document-intelligence
       - domain:knowledge
@@ -513,7 +515,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Parent / context
 
       Parent: #2727 — define data layer boundary and llm-wiki data promotion model.

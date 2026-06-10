@@ -17,7 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:engineering
       - domain:hydrodynamics
       - machine:dev-primary
@@ -165,7 +165,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:low
       - archived
       - domain:hydrodynamics
       - machine:dev-primary
@@ -174,7 +174,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## WRK-444: feat(assetutilities/calculations): implement Vandiver, J.K., et al, 1987 - Hydrody... — Vandiver, J.K., et al, 1987   Hydrodynamic Damp...
 
       | Field | Value |
@@ -187,7 +187,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - domain:hydrodynamics
       - machine:dev-secondary
@@ -196,7 +196,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: 'Identified in docs/assessments/hull-library-audit.md (§5.2) and docs/roadmaps/orcawave-orcaflex-capability-roadmap.md (Gap §4.1).
 
       ## Problem

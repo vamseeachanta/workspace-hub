@@ -779,6 +779,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1321
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:session
       - wrk-item
       - machine:dev-primary
@@ -795,6 +796,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1900
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:session
       - machine:dev-primary
       - dispatch:ready
@@ -814,6 +816,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1901
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:session
       - machine:dev-primary
       - dispatch:ready
@@ -833,6 +836,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1902
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:session
       - machine:dev-primary
       - dispatch:ready
@@ -852,6 +856,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1903
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:session
       - machine:dev-primary
       - dispatch:ready
@@ -871,6 +876,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1917
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:session
       - machine:dev-primary
       - dispatch:ready
@@ -890,6 +896,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1918
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:session
       - machine:dev-primary
       - dispatch:ready
@@ -909,6 +916,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1919
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:session
       - machine:dev-primary
       - dispatch:ready
@@ -928,6 +936,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1977
     gh_state: open
     gh_labels:
+      - priority:medium
       - cat:ai-orchestration
       - domain:session
       - machine:dev-primary
@@ -948,6 +957,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2023
     gh_state: open
     gh_labels:
+      - priority:low
       - cat:operations
       - domain:session
       - machine:dev-primary
@@ -969,6 +979,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2033
     gh_state: open
     gh_labels:
+      - priority:low
       - cat:operations
       - domain:session
       - machine:dev-primary
@@ -1037,7 +1048,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:ai-orchestration
       - domain:session
       - machine:dev-primary
@@ -1060,6 +1071,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - domain:session
       - machine:dev-primary
       - dispatch:ready
@@ -1079,6 +1091,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2131
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:session
       - machine:dev-primary
       - dispatch:ready
@@ -1099,7 +1112,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:documentation
       - cat:harness
       - domain:session
@@ -1297,7 +1310,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:documentation
       - cat:harness
       - domain:session
@@ -1308,7 +1321,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       The refreshed provider-session audit (`2026-05-08T11:03:24Z`) escalated Hermes to a red/next-up remediation lane for `llm_wiki_spinout_path_drift`.
@@ -1321,7 +1334,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:harness
       - domain:session
       - machine:dev-primary

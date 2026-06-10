@@ -107,6 +107,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -128,6 +129,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -192,6 +194,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1835
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - gtm
       - dispatch:ready
@@ -212,6 +215,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1836
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - gtm
       - dispatch:ready
@@ -232,6 +236,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1837
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - gtm
       - dispatch:ready

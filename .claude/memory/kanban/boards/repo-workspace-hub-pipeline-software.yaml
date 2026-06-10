@@ -17,7 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -114,6 +114,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -134,6 +135,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -154,6 +156,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -174,6 +177,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -194,6 +198,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -214,6 +219,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -234,6 +240,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness

@@ -54,6 +54,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - domain:refactor
       - machine:dev-primary
       - dispatch:ready
@@ -74,6 +75,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - domain:refactor
       - machine:dev-primary
       - dispatch:ready
@@ -94,6 +96,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - cat:engineering
       - domain:refactor
       - machine:dev-primary
@@ -176,7 +179,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - domain:refactor
@@ -184,7 +187,7 @@ cards:
       - gate:completeness
       - lane:claude
     initial_status: triage
-    priority: 1
+    priority: 0
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2787
@@ -194,7 +197,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - cat:data-pipeline
       - domain:refactor
@@ -202,7 +205,7 @@ cards:
       - gate:completeness
       - lane:claude
     initial_status: triage
-    priority: 1
+    priority: 0
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2788

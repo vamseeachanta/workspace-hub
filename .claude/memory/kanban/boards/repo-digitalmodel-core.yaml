@@ -17,6 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - feature
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -36,6 +37,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/109
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -51,6 +53,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/124
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -67,6 +70,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/125
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -83,6 +87,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/126
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -99,6 +104,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/127
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -139,7 +145,7 @@ cards:
     gh_labels:
       - enhancement
       - cat:engineering
-      - priority:high
+      - priority:medium
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -147,7 +153,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## WRK-1179: 15-day ecosystem sprint — data completeness + calculation coverage
 
       **Status:** coordinating | **Priority:** high | **Category:** engineering | **Subcategory:** ecosystem-vision
@@ -424,6 +430,7 @@ cards:
     gh_state: open
     gh_labels:
       - feature
+      - priority:medium
       - wrk-item
       - machine:licensed-win-1
       - status:plan-approved
@@ -444,6 +451,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/461
     gh_state: open
     gh_labels:
+      - priority:medium
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -464,6 +472,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/469
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -505,6 +514,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -524,6 +534,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/522
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -543,6 +554,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/523
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -606,6 +618,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/620
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:core
       - lane:claude
     initial_status: triage
@@ -618,6 +631,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/54
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready

@@ -18,6 +18,7 @@ cards:
     gh_labels:
       - feature
       - package
+      - priority:low
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -38,6 +39,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/87
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -53,6 +55,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/92
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -68,6 +71,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/95
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -107,6 +111,7 @@ cards:
     gh_state: open
     gh_labels:
       - project
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -125,6 +130,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/89
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready

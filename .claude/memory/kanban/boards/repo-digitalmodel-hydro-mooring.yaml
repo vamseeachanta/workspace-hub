@@ -106,6 +106,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -126,6 +127,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -145,6 +147,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/588
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:licensed-win-1
       - dispatch:ready
       - domain:hydro-mooring

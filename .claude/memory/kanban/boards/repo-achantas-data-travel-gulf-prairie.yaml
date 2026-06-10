@@ -20,6 +20,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -35,6 +36,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -54,6 +56,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -73,6 +76,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -92,6 +96,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -111,6 +116,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -130,6 +136,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -149,6 +156,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -168,6 +176,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -187,6 +196,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -206,6 +216,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -225,6 +236,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -244,6 +256,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -263,6 +276,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -282,6 +296,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -301,6 +316,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -320,6 +336,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -339,6 +356,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -358,6 +376,7 @@ cards:
       - machine:dev-primary
       - domain:travel-gulf-prairie
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0

@@ -18,6 +18,7 @@ cards:
     gh_labels:
       - enhancement
       - package
+      - priority:low
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -36,6 +37,7 @@ cards:
     gh_labels:
       - enhancement
       - package
+      - priority:low
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -57,6 +59,7 @@ cards:
     gh_labels:
       - feature
       - package
+      - priority:low
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -74,6 +77,7 @@ cards:
     gh_labels:
       - enhancement
       - package
+      - priority:low
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -95,6 +99,7 @@ cards:
     gh_labels:
       - enhancement
       - package
+      - priority:low
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -116,6 +121,7 @@ cards:
     gh_labels:
       - bug
       - package
+      - priority:medium
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -132,6 +138,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -149,6 +156,7 @@ cards:
     gh_labels:
       - enhancement
       - package
+      - priority:low
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -165,6 +173,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/96
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -384,6 +393,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - priority:high
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -391,7 +401,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Machine: ace-linux-1
 
       ## Task
@@ -426,6 +436,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - status:working
       - machine:licensed-win-1
       - status:plan-approved
@@ -447,6 +458,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -491,6 +503,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -511,6 +524,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -531,6 +545,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -551,6 +566,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -571,6 +587,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - priority:medium
       - status:plan-review
       - domain:solver-orcaflex
       - lane:codex
@@ -589,6 +606,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - priority:medium
       - status:plan-review
       - domain:solver-orcaflex
       - lane:codex
@@ -607,6 +625,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - priority:medium
       - status:plan-review
       - domain:solver-orcaflex
       - lane:codex
@@ -625,6 +644,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - priority:medium
       - status:plan-review
       - domain:solver-orcaflex
       - lane:codex

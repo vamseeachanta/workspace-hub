@@ -119,8 +119,8 @@ cards:
     gh_state: open
     gh_labels:
       - documentation
-      - priority:high
       - cat:engineering
+      - priority:low
       - cat:data
       - machine:dev-primary
       - status:plan-approved
@@ -129,7 +129,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Build a repo-grounded capability inventory and readiness matrix for `worldenergydata` so overnight agents can understand what the repo can actually do versus what README/MODULE_INDEX/docs claim.'
@@ -159,6 +159,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/328
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -177,6 +178,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/325
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -195,6 +197,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/316
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -213,6 +216,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/315
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -231,6 +235,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/313
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -250,6 +255,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - priority:low
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -270,6 +276,7 @@ cards:
     gh_labels:
       - enhancement
       - cat:engineering
+      - priority:low
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -290,6 +297,7 @@ cards:
     gh_labels:
       - ci
       - cat:engineering
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -329,6 +337,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - cat:data
       - machine:dev-primary
       - status:plan-approved
@@ -392,6 +401,7 @@ cards:
     gh_labels:
       - nightly-failure
       - ci
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -411,6 +421,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/52
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -427,6 +438,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/48
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -443,6 +455,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/46
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -459,6 +472,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/37
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -479,6 +493,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/18
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -498,6 +513,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/2
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -515,6 +531,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/431
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:quality
       - lane:claude
     initial_status: triage

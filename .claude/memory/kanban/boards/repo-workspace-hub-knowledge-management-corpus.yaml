@@ -16,6 +16,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1353
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-secondary
       - dispatch:ready
       - gate:completeness
@@ -31,6 +32,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1354
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:multi
       - dispatch:ready
       - gate:completeness
@@ -38,7 +40,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
   - idempotency_key: gh:vamseeachanta/workspace-hub#1378
     title: 'WRK-PENDING: Review local-analysis folders for relocation to knowledge center'
@@ -46,6 +48,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1378
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:multi
       - dispatch:ready
       - gate:completeness
@@ -62,7 +65,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -70,7 +73,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Data & Resource Intelligence — Epic Tracking Issue
 
       **Plan document:** [`docs/plans/2026-04-01-data-intelligence-feature-plan.md`](docs/plans/2026-04-01-data-intelligence-feature-plan.md)
@@ -140,6 +143,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - cat:harness
       - machine:dev-primary
       - dispatch:ready
@@ -388,7 +392,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:data-pipeline
       - machine:dev-primary
       - dispatch:ready
@@ -397,7 +401,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Build a closed-issue promotion ledger and ranking for engineering/calculation issues so the repo can systematically convert the best completed work into durable wiki knowledge.
@@ -410,7 +414,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:data-pipeline
       - cat:harness
       - machine:dev-primary
@@ -420,7 +424,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Build a transient-promotion candidate queue that extracts durable knowledge candidates from handoffs, review artifacts, and recurring-run outputs, then routes them into wiki/document-intelligence promotion work.
@@ -455,6 +459,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2658
     gh_state: open
     gh_labels:
+      - priority:medium
       - cat:tooling
       - cat:data
       - machine:dev-primary

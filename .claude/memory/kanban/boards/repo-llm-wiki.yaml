@@ -453,6 +453,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:dev-primary
       - cat:harness
       - domain:knowledge-management
@@ -1321,12 +1322,13 @@ cards:
     gh_state: open
     gh_labels:
       - documentation
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:ingest
       - lane:codex
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#123
@@ -1407,6 +1409,7 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/289
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:ingest
       - lane:codex
     initial_status: triage
@@ -1435,10 +1438,11 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/414
     gh_state: open
     gh_labels:
+      - priority:high
       - domain:ingest
       - lane:codex
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#438
@@ -1478,12 +1482,12 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:high
       - cat:research
       - domain:knowledge-management
       - lane:claude
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#444
@@ -1492,6 +1496,7 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/444
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:knowledge-management
       - lane:claude
     initial_status: triage
@@ -1523,5 +1528,27 @@ cards:
       - agent:codex
     initial_status: triage
     priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#586
+    title: '[retrieval] Standard-number registry to eliminate year false-positive citation edges (follow-up to #443 Phase-1 spike)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/586
+    gh_state: open
+    gh_labels:
+      - priority:high
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#587
+    title: '[verification] Deprioritize engineering-standards domain queues in verify-batch selection (#135)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/587
+    gh_state: open
+    gh_labels:
+      - priority:medium
+    initial_status: triage
+    priority: 0
     gh_assignees: []
     body_excerpt: ''

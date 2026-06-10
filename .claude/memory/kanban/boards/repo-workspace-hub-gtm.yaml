@@ -134,6 +134,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1669
     gh_state: open
     gh_labels:
+      - priority:high
       - cat:business
       - cat:strategy
       - domain:gtm
@@ -143,7 +144,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Objective
 
       Prepare and execute a go-to-market (GTM) email outreach campaign targeting **vessel installation contractors** as the first client segment for ACE Engineer consulting and AI-powered engineering services.
@@ -235,6 +236,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1993
     gh_state: open
     gh_labels:
+      - priority:high
       - cat:business
       - cat:strategy
       - domain:gtm
@@ -244,7 +246,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Context
 
       Scraped and scored 13 Rigzone job postings against Vamsee''s profile (23yr PE, offshore/subsea, Chevron 16yr, Python/digital transformation). Chevron Project Manager III (R000065929) was the best fit at 9/10 but confirmed EXPIRED on careers.chevron.com.
@@ -256,6 +258,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1994
     gh_state: open
     gh_labels:
+      - priority:high
       - cat:business
       - cat:strategy
       - domain:gtm
@@ -265,7 +268,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Context
 
       Expert networks are the HIGHEST ROI ad-hoc income channel. Zero application hassle vs. full job applications. 1-hour phone consultations with hedge funds, PE firms, law firms about offshore/marine engineering topics. Your 23yr PE + OrcaFlex + Chevron + BP background is exactly what they seek.
@@ -924,7 +927,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2557
     gh_state: open
     gh_labels:
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - cat:business
       - domain:gtm
@@ -934,7 +937,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Weekly Business Brain issue: review the owner''s full work pattern and recommend productivity hacks that make work flow faster.
@@ -1019,7 +1022,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:low
       - cat:engineering
       - domain:gtm
       - machine:dev-primary
@@ -1028,7 +1031,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Context
 
       Issue [#117](https://github.com/vamseeachanta/workspace-hub/issues/117) acceptance criteria includes:
@@ -1118,6 +1121,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1798
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:gtm
       - machine:dev-primary
       - gtm
@@ -1138,6 +1142,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1799
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:gtm
       - machine:dev-primary
       - gtm
@@ -1158,6 +1163,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1833
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:gtm
       - machine:dev-primary
       - gtm

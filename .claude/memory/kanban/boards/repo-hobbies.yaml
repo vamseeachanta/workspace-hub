@@ -14,6 +14,7 @@ cards:
     gh_labels:
       - domain:code-quality
       - lane:claude
+      - priority:low
     initial_status: triage
     priority: 0
     gh_assignees: []

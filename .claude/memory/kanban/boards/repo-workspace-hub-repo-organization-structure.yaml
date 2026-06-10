@@ -85,7 +85,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -93,7 +93,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Feature: Continuous Repo Architecture Intelligence
 
       ### Problem
@@ -106,6 +106,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -126,6 +127,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -146,6 +148,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -214,6 +217,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2339
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -234,7 +238,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:harness
       - machine:dev-primary
       - dispatch:ready
@@ -243,7 +247,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Create a dedicated follow-up issue for repo-wide structural refactors that are broader than code cleanup alone. The current tier-1 refactor umbrella (#1962) identifies architectural debt and duplicate patterns, but it does not yet break out a canonical folder-structure and repository-layout workstream.
@@ -256,7 +260,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:documentation
       - machine:dev-primary
       - status:plan-approved
@@ -266,7 +270,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Review and revise the mission/objective statements across all active workspace repos so future GitHub issue work can quickly answer:
@@ -301,7 +305,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - cat:harness
       - machine:dev-primary
@@ -312,7 +316,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Objective
 
       Plan a conservative, repo-by-repo folder/file structure normalization for `workspace-hub` under the workspace-hub tier-1 ecosystem workflow.
@@ -325,7 +329,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:data-pipeline
       - machine:dev-primary
       - dispatch:ready
@@ -334,7 +338,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Parent / context
 
       Parent: #2731 — inventory and normalize canonical data/repo locations for llm-wiki promotion.
@@ -393,14 +397,14 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:harness
       - status:needs-plan
       - gate:completeness
       - domain:repo-organization-structure
       - lane:claude
     initial_status: triage
-    priority: 1
+    priority: 0
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2791

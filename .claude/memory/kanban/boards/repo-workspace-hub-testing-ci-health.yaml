@@ -17,6 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -37,6 +38,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - cat:operations
       - machine:dev-primary
       - dispatch:ready
@@ -54,6 +56,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - cat:analysis
       - machine:dev-primary
       - dispatch:ready
@@ -204,6 +207,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2338
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -267,6 +271,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2449
     gh_state: open
     gh_labels:
+      - priority:low
       - cat:infrastructure
       - machine:dev-primary
       - dispatch:ready

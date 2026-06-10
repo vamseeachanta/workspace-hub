@@ -436,6 +436,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1331
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:cross-review
       - wrk-item
       - machine:dev-primary
@@ -470,6 +471,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - domain:cross-review
       - machine:dev-primary
       - dispatch:ready
@@ -556,6 +558,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2012
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:cross-review
       - machine:dev-primary
       - review-backlog
@@ -577,7 +580,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2721
     gh_state: open
     gh_labels:
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - domain:cross-review
@@ -587,7 +590,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Symptom
 
       `scripts/review/submit-to-codex.sh` silently degrades when invoked from any non-TTY context (cron, background processes, Hermes worker, Claude Code''s Bash tool with `run_in_background=true`, any `bash -c ''...''` indirection). The wrapper appears to complete (rc=0, codex-spawn-PID returned) but the codex subprocess hangs at "Reading additional input from stdin..." and never emits the LLM response. Cross-review fanout that depends on Codex''s verdict silently drops to 2-provider consensus (Claude + Gemini only).

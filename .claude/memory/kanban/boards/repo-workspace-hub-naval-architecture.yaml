@@ -217,6 +217,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1314
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:naval-architecture
       - wrk-item
       - machine:dev-primary
@@ -233,6 +234,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1316
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:naval-architecture
       - wrk-item
       - machine:dev-primary
@@ -249,6 +251,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1317
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:naval-architecture
       - wrk-item
       - machine:dev-primary
@@ -265,6 +268,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1318
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:naval-architecture
       - wrk-item
       - machine:dev-primary
@@ -281,6 +285,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1319
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:naval-architecture
       - wrk-item
       - machine:dev-primary
@@ -298,7 +303,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - domain:naval-architecture
       - machine:dev-primary
@@ -309,7 +314,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Epic: Naval Architecture Module Expansion
 
       ### Current State (Strong Foundation)
@@ -322,7 +327,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - domain:naval-architecture
       - machine:dev-primary
@@ -333,7 +338,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Floating Platform Stability Calculations
 
       ### What
@@ -346,7 +351,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - domain:naval-architecture
       - machine:dev-primary
@@ -357,7 +362,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Gyradius (Radius of Gyration) Calculator
 
       ### What
@@ -441,7 +446,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1898
     gh_state: open
     gh_labels:
-      - priority:high
+      - priority:medium
       - cat:engineering
       - domain:naval-architecture
       - machine:dev-primary
@@ -452,7 +457,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Naval Architecture Expansion — Implementation Sprint
 
       ### Claude tasks (implementation)

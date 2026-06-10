@@ -20,6 +20,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -40,6 +41,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -60,6 +62,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -80,6 +83,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -100,6 +104,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -120,6 +125,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -140,6 +146,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -160,6 +167,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -180,6 +188,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -200,6 +209,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -220,6 +230,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -240,6 +251,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -260,9 +272,10 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '**Parent:** #73 · **Horizon:** 90-day immediate action
 
       **Why:** Current wills in `_will/eaphillipslaw/` need to direct devaKrishna''s inheritance to an SNT (Plan A) or provide direct-inheritance fallback (Plan B). The same document must work either way — single update, no rewrites needed later.
@@ -280,9 +293,10 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '**Parent:** #73 (Family 5/10/15/20/25/30-yr goals) · **Horizon:** 90-day immediate action
 
       **Why time-sensitive:** TX Medicaid waiver waitlists run 10–17 years. Each calendar week without enrollment is permanently lost — this item has the worst regret-asymmetry in the whole plan.
@@ -300,9 +314,10 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '# Achanta Family — 5/10/15/20/25/30-Year Goals
 
       **Baseline (2026-05-10):** Vamsee 46 · Sabitha (Bangaram) 40 · Krishna (devaKrishna) 10 (developmental ≈ 5).
@@ -318,6 +333,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -332,6 +348,7 @@ cards:
       - domain:devakrishna
       - machine:dev-primary
       - lane:claude
+      - priority:low
     gh_assignees: []
     initial_status: triage
     priority: 0

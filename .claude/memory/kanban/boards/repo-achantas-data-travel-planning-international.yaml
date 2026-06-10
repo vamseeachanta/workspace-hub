@@ -22,9 +22,10 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Feature: family travel ranking decision matrix
 
       Create and maintain a single review-friendly matrix for the top travel options so family members can compare choices quickly without opening every issue first.
@@ -42,9 +43,10 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Summary
 
       A 7-day, 6-night family trip to Switzerland built around scenic rail rather than driving. We fly into and out of **Zurich (ZRH)**, then chain together three classic Swiss-rail experiences — Lucerne / Jungfrau region / Zermatt (or Engadin) — using the Swiss Travel Pass. The trip mixes one full-service hotel (arrival city, easiest with jet lag) and two Airbnb/Vrbo stays (mountain towns where apartments give space, kitchens, and balcony views). Aimed at May–June or September for green meadows, low avalanche/closure risk, and pre-/post-peak crowds.
@@ -62,9 +64,10 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Feature: digitalize family IDs to streamline travel
 
       > **Companion:** #71 — Travel apps shortlist (which apps hold and activate these credentials end-to-end for a trip).
@@ -82,6 +85,7 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -100,9 +104,10 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Source
 
       - Gmail thread `19e246501cf1a80b` — subject "Colorado Trip itinerary"
@@ -119,6 +124,7 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -138,6 +144,7 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -157,6 +164,7 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -176,6 +184,7 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -195,6 +204,7 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -214,6 +224,7 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -233,6 +244,7 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -252,8 +264,9 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/achantas-data#119
@@ -267,8 +280,9 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/achantas-data#120
@@ -282,8 +296,9 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/achantas-data#121
@@ -297,8 +312,9 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/achantas-data#122
@@ -312,8 +328,9 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/achantas-data#123
@@ -327,8 +344,9 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/achantas-data#124
@@ -342,8 +360,9 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/achantas-data#125
@@ -357,8 +376,9 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/achantas-data#126
@@ -372,8 +392,9 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/achantas-data#127
@@ -387,7 +408,47 @@ cards:
       - machine:dev-primary
       - domain:travel-planning-international
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#131
+    title: 'Travel 2026: confirm traveler count for the safest-countries program (#118)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/131
+    gh_state: open
+    gh_labels:
+      - documentation
+      - domain:travel-planning-international
+      - priority:high
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#132
+    title: 'Travel 2026: pick target travel window(s) for the safest-countries shortlist (#118)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/132
+    gh_state: open
+    gh_labels:
+      - documentation
+      - domain:travel-planning-international
+      - priority:high
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#133
+    title: 'Travel 2026: select and mature 1-2 lead countries from #118 into booking-ready itineraries'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/133
+    gh_state: open
+    gh_labels:
+      - documentation
+      - domain:travel-planning-international
+      - priority:high
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

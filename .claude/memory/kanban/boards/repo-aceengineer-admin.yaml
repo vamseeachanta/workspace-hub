@@ -14,6 +14,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/25
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:records-ops
@@ -32,13 +33,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/23
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Context
 
       AceEngineer currently has a programmatically filled Form 1120 PDF (`taxes/2025/2025-form-1120-filled.pdf`) ready for paper filing. Need to evaluate whether e-filing via TaxAct or similar software is viable and preferable.
@@ -50,6 +52,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/22
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:records-ops
@@ -68,6 +71,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/21
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
@@ -86,6 +90,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/20
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
@@ -104,6 +109,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/18
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:records-ops
@@ -122,6 +128,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/17
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - domain:rd-program
@@ -140,6 +147,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/16
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
@@ -158,6 +166,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/15
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:rd-program
@@ -176,6 +185,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/14
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
@@ -194,13 +204,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/13
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Prevent 2026 Underpayment Penalty
 
       ### Background
@@ -212,6 +223,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/9
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:rd-program
@@ -230,6 +242,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/6
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:records-ops
@@ -248,13 +261,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/5
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Deadline: May 15, 2026
 
       ### Entity
@@ -266,13 +280,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/4
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Deadline: April 15, 2026
 
       ### Entity
@@ -284,13 +299,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/3
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Priority: CRITICAL — blocks 2025 filing
 
       ### Problem
@@ -362,9 +378,10 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/26
     gh_state: open
     gh_labels:
+      - priority:high
       - domain:security
       - lane:claude
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

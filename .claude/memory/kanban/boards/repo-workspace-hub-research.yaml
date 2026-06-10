@@ -88,6 +88,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1393
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:research
       - machine:dev-secondary
       - dispatch:ready
@@ -103,6 +104,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1394
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:research
       - machine:dev-secondary
       - dispatch:ready
@@ -118,6 +120,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1395
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:research
       - machine:dev-secondary
       - dispatch:ready
@@ -134,6 +137,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - cat:engineering
       - domain:research
       - machine:dev-primary
@@ -173,6 +177,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2714
     gh_state: open
     gh_labels:
+      - priority:medium
       - cat:knowledge-domain
       - cat:research
       - domain:research

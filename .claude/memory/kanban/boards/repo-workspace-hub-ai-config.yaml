@@ -232,6 +232,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1432
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:ai-config
       - machine:dev-primary
       - dispatch:ready
@@ -247,6 +248,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1502
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:ai-config
       - wrk-item
       - machine:ace-win-1
@@ -267,6 +269,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1539
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:ai-config
       - machine:dev-primary
       - dispatch:ready
@@ -559,6 +562,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2143
     gh_state: open
     gh_labels:
+      - priority:high
       - domain:ai-config
       - machine:dev-primary
       - dispatch:ready
@@ -566,7 +570,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: 'Summary
 
       A review of work on this machine found a committed cloud credential in the archived `simpledigitalmarketing` repository. That repository is archived/read-only, so a normal repo-local issue could not be created.
@@ -622,6 +626,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2222
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:ai-config
       - machine:dev-primary
       - dispatch:ready
@@ -808,7 +813,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
-      - priority:high
+      - priority:medium
       - cat:harness
       - domain:ai-config
       - machine:dev-primary
@@ -817,7 +822,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Improve Claude and Gemini quota observability so provider utilization can support exact weekly targeting instead of falling back to directional activity heuristics.
@@ -830,7 +835,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - domain:ai-config
@@ -841,7 +846,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Build the operator-facing Kanban approval/control surface that turns underused AI-provider credits into safe, continuous work without bypassing plan gates.
@@ -853,7 +858,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2718
     gh_state: open
     gh_labels:
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - domain:ai-config
@@ -863,7 +868,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Why now
 
       Overnight dispatch on 2026-05-14/15 failed 0-of-6 across two distinct canary runs. Diagnostics reveal **two compounding hazards** in the kanban-worker dispatch path that need addressing before the catalog ([#2695](https://github.com/vamseeachanta/workspace-hub/issues/2695))''s `hermes → claude-code` / `hermes → codex` routing model is safe to use.

@@ -372,6 +372,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - cat:harness/skills
@@ -395,6 +396,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1745
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:ai-orchestration
       - machine:dev-primary
       - agent:claude
@@ -435,7 +437,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - domain:ai-orchestration
       - machine:dev-primary
       - agent:claude
@@ -444,7 +446,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Problem
 
       We pay for 4 AI subscriptions monthly (~$260/mo total):
@@ -477,6 +479,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1885
     gh_state: open
     gh_labels:
+      - priority:low
       - cat:operations
       - cat:infrastructure
       - domain:ai-orchestration
@@ -496,6 +499,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - domain:ai-orchestration
@@ -518,6 +522,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - domain:ai-orchestration
@@ -562,6 +567,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2224
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:ai-orchestration
       - machine:dev-primary
       - dispatch:ready
@@ -604,7 +610,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - domain:ai-orchestration
@@ -614,7 +620,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Document and harden against intermittent `openai-codex` transport failures where Hermes retries `gpt-5.4` calls against `https://chatgpt.com/backend-api/codex`, receives repeated `APIConnectionError`, and never recovers because fallback routing is disabled.
@@ -718,7 +724,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
-      - priority:high
+      - priority:medium
       - cat:operations
       - cat:harness
       - domain:ai-orchestration
@@ -729,7 +735,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Harden `scripts/cron/hermes-session-export.sh` so Hermes session export does not abort on undated session filenames.
@@ -769,6 +775,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2847
     gh_state: open
     gh_labels:
+      - priority:medium
       - cat:ai-orchestration
       - cat:infrastructure
       - domain:ai-orchestration
@@ -873,6 +880,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - cat:ai-orchestration
       - cat:harness
       - domain:ai-orchestration
@@ -880,6 +888,6 @@ cards:
       - status:needs-plan
       - lane:claude
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

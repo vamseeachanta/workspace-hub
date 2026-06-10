@@ -20,6 +20,7 @@ cards:
       - domain:family-planning
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -39,6 +40,7 @@ cards:
       - domain:family-planning
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -59,6 +61,7 @@ cards:
       - domain:family-planning
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -78,6 +81,7 @@ cards:
       - domain:family-planning
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -97,6 +101,7 @@ cards:
       - domain:family-planning
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -116,6 +121,7 @@ cards:
       - domain:family-planning
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -135,6 +141,7 @@ cards:
       - domain:family-planning
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0

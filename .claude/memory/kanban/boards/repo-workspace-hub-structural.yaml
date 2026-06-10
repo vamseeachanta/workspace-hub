@@ -658,6 +658,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1497
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:structural
       - machine:dev-primary
       - dispatch:ready
@@ -677,6 +678,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1498
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:structural
       - machine:dev-primary
       - dispatch:ready
@@ -696,6 +698,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1499
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:structural
       - machine:dev-primary
       - dispatch:ready

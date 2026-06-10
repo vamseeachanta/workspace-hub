@@ -568,10 +568,11 @@ cards:
     gh_labels:
       - enhancement
       - cat:engineering
+      - priority:high
       - domain:subsea-pipelines
       - lane:codex
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/digitalmodel#649
@@ -596,10 +597,11 @@ cards:
     gh_labels:
       - bug
       - cat:engineering
+      - priority:high
       - domain:subsea-pipelines
       - lane:codex
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/digitalmodel#654

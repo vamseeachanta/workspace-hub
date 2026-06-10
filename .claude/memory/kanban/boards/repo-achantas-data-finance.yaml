@@ -19,9 +19,10 @@ cards:
       - domain:finance
       - machine:dev-primary
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Summary
 
       Current electricity provider is offering a renewal at **10.054¢/kWh fixed for 36 months**. Capture the offer, validate against the Texas retail market, and decide whether to accept, counter-shop, or take a shorter term.
@@ -37,6 +38,7 @@ cards:
       - domain:finance
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -55,9 +57,10 @@ cards:
       - domain:finance
       - machine:dev-primary
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Context
 
       FreeTaxUSA session paused at "Phone Number Sent to IRS" page (Final Steps, step 2 of 3). All income, deductions, credits, and payment method have been entered.
@@ -73,9 +76,10 @@ cards:
       - domain:finance
       - machine:dev-primary
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Context
 
       FreeTaxUSA return (issue #22) selected **IRS Direct Pay** as payment method. After e-filing, pay the balance due through the IRS Direct Pay portal.
@@ -92,6 +96,7 @@ cards:
       - domain:finance
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -111,6 +116,7 @@ cards:
       - domain:finance
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -130,9 +136,10 @@ cards:
       - domain:finance
       - machine:dev-primary
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Summary
 
       Track and execute 2026 quarterly estimated federal tax payments for the 2025 personal-return follow-up.
@@ -148,6 +155,7 @@ cards:
       - domain:finance
       - machine:dev-primary
       - lane:claude
+      - priority:medium
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -166,9 +174,10 @@ cards:
       - domain:finance
       - machine:dev-primary
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Deadline: April 15, 2026
 
       Payment is due same day as filing — even if you file an extension, the payment is still due April 15.
@@ -184,9 +193,10 @@ cards:
       - domain:finance
       - machine:dev-primary
       - lane:claude
+      - priority:high
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Deadline: April 15, 2026
 
       ### Entity

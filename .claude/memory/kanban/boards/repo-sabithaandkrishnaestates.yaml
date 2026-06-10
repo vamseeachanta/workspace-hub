@@ -144,9 +144,21 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/38
     gh_state: open
     gh_labels:
+      - priority:high
       - domain:security
       - lane:claude
     initial_status: triage
-    priority: 0
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#39
+    title: 'FD30150 facility-upkeep evidence: close south/east perimeter gap in the video+photo timeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/39
+    gh_state: open
+    gh_labels:
+      - priority:high
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

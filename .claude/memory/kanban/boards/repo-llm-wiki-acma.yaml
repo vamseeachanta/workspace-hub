@@ -19,6 +19,7 @@ cards:
       - documentation
       - domain:governance
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -33,6 +34,7 @@ cards:
       - status:poc-scoped
       - domain:tooling
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -50,6 +52,7 @@ cards:
       - status:artifact-ready
       - domain:tooling
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -66,6 +69,7 @@ cards:
       - status:artifact-ready
       - domain:ingest
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -81,6 +85,7 @@ cards:
       - status:ready-for-scope
       - domain:tooling
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -98,6 +103,7 @@ cards:
       - status:artifact-ready
       - domain:tooling
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -114,6 +120,7 @@ cards:
       - security-review
       - domain:governance
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -129,6 +136,7 @@ cards:
       - status:ready-for-scope
       - domain:content
       - lane:claude
+      - priority:low
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -141,8 +149,9 @@ cards:
     gh_labels:
       - domain:marine
       - lane:codex
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki-acma#10
@@ -153,8 +162,9 @@ cards:
     gh_labels:
       - domain:content
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki-acma#11
@@ -165,8 +175,9 @@ cards:
     gh_labels:
       - domain:ingest
       - lane:codex
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki-acma#12
@@ -177,8 +188,9 @@ cards:
     gh_labels:
       - domain:marine
       - lane:codex
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki-acma#13
@@ -189,6 +201,7 @@ cards:
     gh_labels:
       - domain:tooling
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -201,8 +214,9 @@ cards:
     gh_labels:
       - domain:governance
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki-acma#15
@@ -213,8 +227,9 @@ cards:
     gh_labels:
       - domain:marine
       - lane:codex
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki-acma#16
@@ -225,8 +240,9 @@ cards:
     gh_labels:
       - domain:marine
       - lane:codex
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki-acma#17
@@ -237,8 +253,9 @@ cards:
     gh_labels:
       - domain:marine
       - lane:codex
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki-acma#18
@@ -249,6 +266,7 @@ cards:
     gh_labels:
       - domain:marine
       - lane:codex
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -261,6 +279,7 @@ cards:
     gh_labels:
       - domain:governance
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -273,6 +292,7 @@ cards:
     gh_labels:
       - domain:content
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -285,8 +305,9 @@ cards:
     gh_labels:
       - domain:marine
       - lane:codex
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki-acma#22
@@ -297,6 +318,7 @@ cards:
     gh_labels:
       - domain:content
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []

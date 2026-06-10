@@ -83,7 +83,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -92,7 +92,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: 'Child of #1567. Create 4 domain roadmap docs mapping: implemented modules → test status → open GH issues → gaps. (1) docs/roadmaps/orcawave-orcaflex-capability-roadmap.md, (2) structural-capability-roadmap.md, (3) hydrodynamics-capability-roadmap.md, (4) pipeline-capability-roadmap.md. Cross-ref with GH issues. Related: docs/plans/2026-04-01-orcawave-orcaflex-intensive-plan.md'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1591
     title: Seed hull registry with standard hull forms (barge, tanker, semi-sub, spar, FPSO)
@@ -272,7 +272,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:low
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -281,7 +281,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Add a canonical `spec.yml -> ProjectInputSpec -> ModularModelGenerator -> native OrcaFlex YAML` semantic proof for CALM/SPM buoy systems.
@@ -294,7 +294,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:low
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -303,7 +303,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Add an end-to-end semantic proof for OrcaWave hydrodynamic outputs flowing into OrcaFlex vessel/hydrodynamic native inputs without losing units, headings, frequencies, phase/sign, body axes, damping, or added-mass provenance.

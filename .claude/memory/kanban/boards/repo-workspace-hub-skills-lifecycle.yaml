@@ -198,6 +198,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -213,6 +214,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1478
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -232,6 +234,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1726
     gh_state: open
     gh_labels:
+      - priority:low
       - cat:skills
       - cat:maintenance
       - machine:dev-primary
@@ -414,7 +417,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:harness
       - machine:dev-primary
       - agent:codex
@@ -424,7 +427,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Context
 
       Review of [shanraisshan/claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) (133k+ stars, updated for CC v2.1.90) revealed significant gaps between native Claude Code capabilities and our ecosystem usage. This issue tracks an 8-week adoption cadence.
@@ -436,6 +439,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1834
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - gtm
       - dispatch:ready
@@ -523,7 +527,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:harness
       - cat:automation
       - machine:dev-primary

@@ -75,6 +75,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1680
     gh_state: open
     gh_labels:
+      - priority:medium
       - cat:harness
       - domain:release-management
       - machine:dev-primary
@@ -96,6 +97,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1681
     gh_state: open
     gh_labels:
+      - priority:high
       - cat:harness
       - domain:release-management
       - machine:dev-primary
@@ -105,7 +107,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: 'Both Codex and Gemini flagged supply chain security as CRITICAL during #1668 review.
 
       ## Current state
@@ -233,7 +235,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - domain:release-management
@@ -256,7 +258,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - domain:release-management
@@ -279,7 +281,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - domain:release-management
@@ -302,7 +304,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - domain:release-management
@@ -325,7 +327,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - domain:release-management
@@ -348,7 +350,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - domain:release-management
@@ -371,7 +373,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - domain:release-management
@@ -394,7 +396,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - domain:release-management
@@ -404,7 +406,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Create a repo-ecosystem readiness program for upcoming model/provider releases so new Claude/Codex/Gemini/Hermes capabilities can be adopted without breaking workflow discipline, portability, or review quality.
@@ -434,7 +436,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:harness
       - domain:release-management
       - machine:dev-primary
@@ -443,7 +445,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Create the fixture-backed golden-task corpus for model-release comparisons. This is the evaluation-corpus slice split out of #2399.

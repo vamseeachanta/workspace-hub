@@ -17,7 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:low
       - cat:engineering
       - cat:research
       - cat:career
@@ -28,7 +28,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Create a focused semiconductor / chip-design CAD + FEM career lane in workspace-hub, using ACE Engineer strengths in CAD automation, FEM, document intelligence, and job-market scanning.
@@ -57,7 +57,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2509
     gh_state: open
     gh_labels:
-      - priority:high
+      - priority:low
       - cat:engineering
       - cat:tooling
       - cat:research
@@ -68,7 +68,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Context
 
       Parent: #2507
@@ -119,7 +119,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2512
     gh_state: open
     gh_labels:
-      - priority:medium
+      - priority:low
       - cat:documentation
       - cat:career
       - machine:dev-primary

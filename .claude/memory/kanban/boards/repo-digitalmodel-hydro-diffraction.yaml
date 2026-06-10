@@ -17,6 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -24,7 +25,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Machine: ace-linux-1
 
       ## Problem
@@ -37,12 +38,13 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - status:plan-review
       - domain:hydro-diffraction
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Problem
 
       `diffraction convert-spec --solver orcawave` generates OrcaWave YAML, but it does not yet guarantee the output directory is self-contained and runnable. The backend writes mesh references as basenames, while referenced mesh files and auxiliary meshes may still live beside the source `spec.yml`.
@@ -55,12 +57,13 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - status:plan-review
       - domain:hydro-diffraction
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Problem
 
       The diffraction module has a `MeshPipeline` that can load, validate, and prepare meshes for solvers, but the OrcaWave spec conversion and runner paths do not yet use it to prepare arbitrary mesh inputs.
@@ -73,12 +76,13 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - status:plan-review
       - domain:hydro-diffraction
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Problem
 
       A user with a mesh file should be able to start a diffraction analysis without manually authoring a complete `spec.yml` from scratch. The current path assumes the canonical spec already exists.
@@ -91,12 +95,13 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - status:plan-review
       - domain:hydro-diffraction
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Problem
 
       For arbitrary user-supplied meshes, file existence is not enough. Diffraction solves need mesh quality checks before invoking OrcaWave, otherwise users will hit solver failures or poor hydrodynamic results late in the workflow.
@@ -109,12 +114,13 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - status:plan-review
       - domain:hydro-diffraction
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Problem
 
       Auxiliary mesh handling is inconsistent across the schema, backend, and runner. In particular, the schema supports control surfaces at both `VesselSpec.control_surface` and `BodySpec.control_surface`, while the OrcaWave backend and runner currently read the vessel-level location. This can silently ignore body-level control surface definitions in multi-body specs.
@@ -127,12 +133,13 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - status:plan-review
       - domain:hydro-diffraction
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Problem
 
       Running diffraction from arbitrary meshes requires engineering confidence, not just a single solve. Users need a repeatable workflow for mesh convergence and frequency/heading sensitivity studies.
@@ -145,12 +152,13 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - status:plan-review
       - domain:hydro-diffraction
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Problem
 
       Some OrcaWave documentation and examples still reference older command paths and scripts. The canonical workflow should be clear for users starting from either a `spec.yml` or a mesh-driven workflow.
@@ -163,12 +171,13 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - machine:dev-primary
       - machine:licensed-win-1
       - domain:hydro-diffraction
       - lane:codex
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/digitalmodel#62
@@ -179,6 +188,7 @@ cards:
     gh_labels:
       - feature
       - package
+      - priority:medium
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -330,6 +340,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/465
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -350,6 +361,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -357,7 +369,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Machine: ace-linux-1
 
       ## Problem
@@ -370,13 +382,14 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - machine:licensed-win-1
       - status:plan-review
       - domain:hydro-diffraction
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Problem
 
       There is smoke-test coverage for known OrcaWave inputs, but the future workflow needs proof that an arbitrary mesh-driven DigitalModel spec can run end-to-end on a licensed host.
@@ -389,12 +402,13 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:high
       - status:plan-review
       - domain:hydro-diffraction
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Problem
 
       Users need a quick way to know whether the local machine can actually run OrcaWave diffraction before preparing a large solve. Current behavior can silently fall back to dry-run when OrcFxAPI and OrcaWave executable paths are unavailable.

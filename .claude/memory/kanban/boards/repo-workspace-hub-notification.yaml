@@ -47,6 +47,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1408
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:notification
       - machine:dev-primary
       - dispatch:ready
@@ -62,6 +63,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1411
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:notification
       - machine:dev-primary
       - dispatch:ready
@@ -77,6 +79,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1679
     gh_state: open
     gh_labels:
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - domain:notification
@@ -121,7 +124,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2647
     gh_state: open
     gh_labels:
-      - priority:high
+      - priority:low
       - domain:notification
       - machine:dev-primary
       - dispatch:ready
@@ -129,7 +132,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## What
 
       A spinout migration is **currently executing** to move the engineering wikis (`knowledge/wikis/`) and seeds (`knowledge/seeds/`) from `vamseeachanta/workspace-hub` into a new dedicated public repo at **`vamseeachanta/llm-wiki`**.

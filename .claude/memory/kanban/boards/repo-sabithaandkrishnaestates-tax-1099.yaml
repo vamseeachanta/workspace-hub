@@ -16,6 +16,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/31
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:tax-1099
@@ -33,13 +34,14 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/30
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:tax-1099
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Issue
 
       The 1099-MISC reports $50,085.60 from Family Dollar, which includes September full-month rent of $10,141.67. However, only 3 months of rent deposits (Oct/Nov/Dec) appear on the Novo bank statements, totaling $30,425.01 + $9,518.92 insurance = $39,943.93.'
@@ -49,13 +51,14 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/24
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:tax-1099
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Deadline: May 15, 2026
 
       File via Webfile XT036957. NOT affected by federal extension.'
@@ -65,13 +68,14 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/23
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:tax-1099
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Deadline: April 15, 2026
 
 
@@ -82,6 +86,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/21
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - domain:tax-1099
@@ -99,6 +104,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/20
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - domain:tax-1099
@@ -115,6 +121,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/18
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - domain:tax-1099
@@ -131,6 +138,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/13
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - domain:tax-1099
@@ -148,6 +156,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/10
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:tax-1099
@@ -165,13 +174,14 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/9
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - domain:tax-1099
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Summary
 
 
@@ -182,6 +192,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/5
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - domain:tax-1099
@@ -199,6 +210,7 @@ cards:
     source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/3
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - domain:tax-1099

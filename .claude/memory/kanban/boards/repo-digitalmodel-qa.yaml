@@ -126,6 +126,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/590
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - dispatch:ready
       - domain:qa
@@ -144,6 +145,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/589
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - domain:qa
@@ -163,6 +165,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -182,6 +185,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/514
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -201,6 +205,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/512
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -208,7 +213,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: 'Summary
 
       The last 24h review found a real functional regression in the GTM demo suite and a test-harness flaw that hides environment dependence.
@@ -221,6 +226,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -240,6 +246,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/123
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -257,6 +264,7 @@ cards:
     gh_state: open
     gh_labels:
       - feature
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -276,6 +284,7 @@ cards:
     gh_labels:
       - feature
       - package
+      - priority:medium
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -293,6 +302,7 @@ cards:
     gh_state: open
     gh_labels:
       - feature
+      - priority:medium
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -335,6 +345,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:licensed-win-1
       - status:plan-approved
       - dispatch:ready
@@ -355,6 +366,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -375,6 +387,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready

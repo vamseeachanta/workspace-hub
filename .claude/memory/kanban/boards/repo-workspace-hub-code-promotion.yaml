@@ -48,6 +48,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - domain:code-promotion
       - machine:dev-primary
       - dispatch:ready
@@ -68,6 +69,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - domain:code-promotion
       - machine:dev-primary
       - dispatch:ready
@@ -89,6 +91,7 @@ cards:
     gh_labels:
       - documentation
       - enhancement
+      - priority:low
       - domain:code-promotion
       - machine:dev-primary
       - dispatch:ready
@@ -110,6 +113,7 @@ cards:
     gh_labels:
       - documentation
       - enhancement
+      - priority:low
       - domain:code-promotion
       - machine:dev-primary
       - dispatch:ready
@@ -130,6 +134,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - domain:code-promotion
       - machine:dev-primary
       - dispatch:ready
@@ -150,6 +155,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - domain:code-promotion
       - machine:dev-primary
       - dispatch:ready
@@ -169,6 +175,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1687
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:code-promotion
       - machine:dev-primary
       - dispatch:ready
@@ -189,6 +196,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - cat:engineering
       - domain:code-promotion
       - machine:dev-primary
@@ -211,7 +219,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering-calculations
       - domain:code-promotion
       - machine:dev-primary
@@ -222,7 +230,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Epic: Dark Intelligence Excel-to-Code Promotion
 
       ### Context
@@ -235,7 +243,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - domain:code-promotion
       - machine:dev-primary
@@ -246,7 +254,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Promote SN Curve Extraction to digitalmodel
 
       ### What
@@ -259,7 +267,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - domain:code-promotion
       - machine:dev-primary
@@ -270,7 +278,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Promote Conductor Length Assessment to digitalmodel
 
       ### What
@@ -307,7 +315,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - domain:code-promotion
       - machine:dev-primary
@@ -318,7 +326,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Promote Geotechnical Pile Capacity to digitalmodel (OFFSHORE)
 
       ### Context
@@ -483,7 +491,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - domain:code-promotion
       - machine:dev-primary
@@ -494,7 +502,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Field Development Concept Selection
 
       ### What
@@ -523,7 +531,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - domain:code-promotion
       - machine:dev-primary
@@ -534,7 +542,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Integrate worldenergydata Vessel Data into Naval Architecture
 
       ### Context

@@ -17,7 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:low
       - cat:harness
       - machine:dev-primary
       - agent:codex
@@ -27,7 +27,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## WRK-1331: GitHub Issue body template renderer (update-github-issue.py)
 
       **Status:** done | **Priority:** high | **Category:** harness | **Subcategory:** knowledge-management
@@ -40,7 +40,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:low
       - cat:harness
       - machine:dev-primary
       - agent:codex
@@ -50,7 +50,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## WRK-1332: Archive synthesis + knowledge backfill (synthesize-archive.py)
 
       **Status:** done | **Priority:** high | **Category:** harness | **Subcategory:** knowledge-management
@@ -63,7 +63,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:low
       - cat:harness
       - machine:dev-primary
       - agent:codex
@@ -73,7 +73,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## WRK-1333: Wire Issue updater into stage lifecycle (replace HTML gen)
 
       **Status:** done | **Priority:** high | **Category:** harness | **Subcategory:** knowledge-management
@@ -86,7 +86,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:low
       - cat:harness
       - machine:dev-primary
       - agent:codex
@@ -96,7 +96,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## WRK-1334: Delete HTML infrastructure (generator, sub-skills, files)
 
       **Status:** done | **Priority:** high | **Category:** harness | **Subcategory:** knowledge-management
@@ -109,7 +109,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:low
       - cat:harness
       - machine:dev-primary
       - agent:codex
@@ -119,7 +119,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## WRK-1335: Patch archive-item.sh for ongoing GitHub Issue creation
 
       **Status:** done | **Priority:** high | **Category:** harness | **Subcategory:** knowledge-management
@@ -132,7 +132,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:low
       - cat:harness
       - machine:dev-primary
       - agent:codex
@@ -142,7 +142,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## WRK-1336: Bulk review 38 existing open issues + roadmap update
 
       **Status:** done | **Priority:** high | **Category:** harness | **Subcategory:** knowledge-management
@@ -517,6 +517,7 @@ cards:
     gh_state: open
     gh_labels:
       - documentation
+      - priority:medium
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -537,7 +538,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:data-pipeline
       - cat:documentation
       - status:needs-plan
@@ -545,7 +546,7 @@ cards:
       - domain:knowledge-management-platform
       - lane:claude
     initial_status: triage
-    priority: 1
+    priority: 0
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2835
@@ -591,6 +592,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2854
     gh_state: open
     gh_labels:
+      - priority:medium
       - cat:ai-orchestration
       - domain:knowledge-management-platform
       - lane:claude

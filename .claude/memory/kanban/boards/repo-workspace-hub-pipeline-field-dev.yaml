@@ -17,7 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - status:blocked
       - machine:dev-primary
@@ -34,7 +34,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Build cost-per-equipment-unit benchmark curves (cost/tree, cost/km-flowline, cost/manifold) by water-depth band, correlating SubseaIQ equipment counts against sanctioned project costs.
@@ -47,6 +47,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:medium
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -68,6 +69,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -89,6 +91,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -110,6 +113,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -131,6 +135,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - cat:engineering
       - machine:dev-primary
       - dispatch:ready
@@ -175,6 +180,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - cat:data-pipeline
       - machine:dev-primary
       - dispatch:ready
@@ -196,7 +202,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:engineering
       - machine:dev-primary
       - agent:claude
@@ -207,7 +213,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Backfill the minimum SubseaIQ equipment-count fields required to unblock #2055 subsea cost benchmarking.

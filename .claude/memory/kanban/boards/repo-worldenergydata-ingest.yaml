@@ -59,6 +59,7 @@ cards:
     gh_labels:
       - documentation
       - enhancement
+      - priority:low
       - cat:data
       - machine:dev-primary
       - dispatch:ready
@@ -140,6 +141,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/278
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -159,6 +161,7 @@ cards:
     gh_labels:
       - bug
       - cat:engineering
+      - priority:low
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -216,7 +219,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:data
       - wrk-item
       - machine:dev-primary
@@ -226,7 +229,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## WRK-069: Acquire USCG MISLE bulk dataset
 
 
@@ -279,7 +282,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:data
       - wrk-item
       - machine:dev-primary
@@ -317,8 +320,8 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
       - cat:engineering
+      - priority:medium
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -327,7 +330,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## WRK-1231: Implement CompanyLoader for BOEM company/operator hierarchy'
   - idempotency_key: gh:vamseeachanta/worldenergydata#127
     title: 'WRK-1204: Ingest rig metadata from state railroad commissions and industry sources'
@@ -393,8 +396,8 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
       - cat:engineering
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -403,7 +406,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## WRK-1189: Ingest BOEM lease data'
   - idempotency_key: gh:vamseeachanta/worldenergydata#29
     title: BSEE | APM Data
@@ -411,6 +414,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/29
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -430,6 +434,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/13
     gh_state: open
     gh_labels:
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -449,7 +454,7 @@ cards:
     gh_labels:
       - enhancement
       - cat:engineering
-      - priority:medium
+      - priority:low
       - wrk-item
       - status:plan-review
       - domain:ingest
@@ -464,6 +469,7 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/392
     gh_state: open
     gh_labels:
+      - priority:medium
       - status:plan-review
       - domain:ingest
       - lane:codex

@@ -131,6 +131,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1476
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:automation
       - machine:dev-primary
       - dispatch:ready
@@ -150,6 +151,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1511
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:automation
       - machine:dev-primary
       - dispatch:ready
@@ -169,7 +171,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1985
     gh_state: open
     gh_labels:
-      - priority:medium
+      - priority:low
       - cat:operations
       - domain:automation
       - machine:dev-primary
@@ -187,7 +189,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:data-pipeline
       - domain:automation
       - machine:dev-primary
@@ -196,7 +198,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Parent: #2017 — Email-as-Queue Workflow
 
       ## Objective
@@ -254,6 +256,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - domain:automation
@@ -276,6 +279,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - priority:low
       - domain:automation
       - machine:dev-primary
       - dispatch:ready
@@ -365,7 +369,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - domain:automation
@@ -388,7 +392,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:operations
       - cat:harness
       - domain:automation
@@ -455,7 +459,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
-      - priority:high
+      - priority:medium
       - cat:operations
       - cat:harness
       - domain:automation
@@ -465,7 +469,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Cron health reporting is materially inaccurate in the current repo ecosystem snapshot.
@@ -477,6 +481,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2330
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:automation
       - machine:dev-primary
       - repo-readiness
@@ -497,6 +502,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2335
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:automation
       - machine:dev-primary
       - dispatch:ready
@@ -516,6 +522,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2336
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:automation
       - machine:dev-primary
       - dispatch:ready
@@ -535,6 +542,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2337
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:automation
       - machine:dev-primary
       - dispatch:ready
@@ -576,6 +584,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2572
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:automation
       - machine:dev-primary
       - dispatch:ready
@@ -595,6 +604,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2652
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:automation
       - machine:dev-primary
       - repo-readiness
@@ -616,7 +626,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - cat:operations
       - cat:harness
@@ -628,7 +638,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Create a plan to reconcile workspace-hub scheduled jobs so AI-executing cron work has a clear Hermes Agent routing contract, while deterministic maintenance jobs remain explicitly classified as system-cron jobs.
@@ -641,7 +651,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - cat:operations
       - cat:harness
@@ -653,7 +663,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Plan the migration of `gsd-researcher` from native Claude CLI execution to a Hermes-managed execution path, or explicitly document why it must remain native Claude.

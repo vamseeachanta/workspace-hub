@@ -1702,6 +1702,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1287
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:work-queue
       - wrk-item
       - machine:dev-primary
@@ -1722,6 +1723,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1327
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:work-queue
       - wrk-item
       - machine:dev-primary
@@ -1738,6 +1740,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1348
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:work-queue
       - machine:dev-primary
       - dispatch:ready
@@ -1757,6 +1760,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1349
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:work-queue
       - machine:dev-primary
       - dispatch:ready
@@ -1776,6 +1780,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1350
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:work-queue
       - machine:dev-primary
       - dispatch:ready
@@ -1795,6 +1800,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1352
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:work-queue
       - machine:dev-primary
       - dispatch:ready
@@ -1815,6 +1821,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - domain:work-queue
       - machine:dev-primary
       - dispatch:ready
@@ -1835,6 +1842,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:medium
       - domain:work-queue
       - machine:dev-primary
       - dispatch:ready
@@ -1877,6 +1885,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1744
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:work-queue
       - machine:dev-primary
       - dispatch:ready
@@ -1940,7 +1949,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:documentation
       - cat:harness
       - domain:work-queue
@@ -1963,7 +1972,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:documentation
       - cat:harness
       - domain:work-queue
@@ -2009,6 +2018,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - priority:low
       - domain:work-queue
       - machine:dev-primary
       - dispatch:ready
@@ -2028,6 +2038,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2450
     gh_state: open
     gh_labels:
+      - priority:low
       - cat:infrastructure
       - domain:work-queue
       - machine:dev-primary
@@ -2072,6 +2083,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2795
     gh_state: open
     gh_labels:
+      - priority:low
       - domain:work-queue
       - status:done
       - gate:completeness
@@ -2086,6 +2098,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2797
     gh_state: open
     gh_labels:
+      - priority:medium
       - domain:work-queue
       - gate:completeness
       - lane:claude
@@ -2143,3 +2156,27 @@ cards:
       **Status:** pending | **Priority:** medium | **Category:** skills-improvement | **Subcategory:** work-queue-workflow
 
       **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3031
+    title: 'triage: backfill placeholder bodies on gh-next-id.sh / backfill-github-refs.sh created issues'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3031
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - domain:work-queue
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3032
+    title: 'triage: close-out sweep — migrated WRK issues open on GitHub but body status done/archived (17 found) + duplicate/WRK-ID collisions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3032
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - domain:work-queue
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

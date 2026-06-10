@@ -145,8 +145,8 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
       - cat:engineering
+      - priority:low
       - cat:data
       - machine:dev-primary
       - status:plan-approved
@@ -155,7 +155,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Create a foundation-only v1 disclosure data layer for annual project/operator cost disclosures.'

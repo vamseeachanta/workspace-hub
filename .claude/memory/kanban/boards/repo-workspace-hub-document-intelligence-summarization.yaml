@@ -289,6 +289,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1357
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-secondary
       - dispatch:ready
       - gate:completeness
@@ -304,6 +305,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1399
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-secondary
       - dispatch:ready
       - gate:completeness
@@ -319,6 +321,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1400
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-secondary
       - dispatch:ready
       - gate:completeness
@@ -356,7 +359,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:document-intelligence
       - machine:dev-primary
       - dispatch:ready
@@ -365,7 +368,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: 'Run Phase B (summarization + domain classification) on the 14,180 OTC/OMAE/DOT papers whose metadata was extracted overnight.
 
       ## Context
@@ -377,7 +380,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1923
     gh_state: open
     gh_labels:
-      - priority:high
+      - priority:medium
       - cat:data-pipeline
       - machine:dev-primary
       - dispatch:ready
@@ -386,7 +389,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Problem
 
       The marine taxonomy classification (#1653) revealed that 195,687 of 217,117 marine documents (90.1%) are DWG/DXF CAD drawings. These cannot be classified by filename/path keywords and require CAD metadata extraction.
@@ -398,7 +401,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1924
     gh_state: open
     gh_labels:
-      - priority:high
+      - priority:medium
       - cat:data-pipeline
       - machine:dev-primary
       - dispatch:ready
@@ -407,7 +410,7 @@ cards:
       - lane:codex
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Current summarization: 61.9% (639,585 of 1,033,933 docs)
@@ -440,6 +443,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1929
     gh_state: open
     gh_labels:
+      - priority:low
       - cat:engineering
       - cat:data-pipeline
       - machine:dev-primary
@@ -483,6 +487,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1934
     gh_state: open
     gh_labels:
+      - priority:medium
       - cat:engineering
       - cat:data-pipeline
       - machine:dev-primary

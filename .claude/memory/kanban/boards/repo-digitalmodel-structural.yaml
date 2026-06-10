@@ -17,6 +17,7 @@ cards:
     gh_state: open
     gh_labels:
       - feature
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -33,6 +34,7 @@ cards:
     gh_state: open
     gh_labels:
       - feature
+      - priority:low
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -53,6 +55,7 @@ cards:
     gh_state: open
     gh_labels:
       - feature
+      - priority:low
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -75,6 +78,7 @@ cards:
     gh_state: open
     gh_labels:
       - feature
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -91,6 +95,7 @@ cards:
     gh_state: open
     gh_labels:
       - feature
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -107,6 +112,7 @@ cards:
     gh_state: open
     gh_labels:
       - feature
+      - priority:low
       - wrk-item
       - machine:dev-primary
       - dispatch:ready

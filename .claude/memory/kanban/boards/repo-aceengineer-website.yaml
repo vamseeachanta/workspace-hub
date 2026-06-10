@@ -14,6 +14,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-website/issues/9
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - content
       - design-system
@@ -33,6 +34,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-website/issues/8
     gh_state: open
     gh_labels:
+      - priority:low
       - machine:dev-primary
       - content
       - design-system
@@ -52,6 +54,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-website/issues/7
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - content
       - design-system
@@ -71,6 +74,7 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-website/issues/6
     gh_state: open
     gh_labels:
+      - priority:medium
       - machine:dev-primary
       - content
       - design-system
@@ -90,12 +94,13 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-website/issues/5
     gh_state: open
     gh_labels:
+      - priority:high
       - machine:dev-primary
       - dispatch:ready
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '# GTM Demo 4: Subsea Jumper Installation Analysis
 
       ## Executive Summary
@@ -154,8 +159,9 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-website/issues/16
     gh_state: open
     gh_labels:
+      - priority:high
       - lane:claude
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

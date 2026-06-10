@@ -199,7 +199,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - machine:dev-primary
@@ -209,7 +209,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Implement a machine-aware dispatch ledger and reconciliation loop for the continuous/parallel prompt flow created under #2519. The ledger should record which issue, provider, model, workstation, branch/worktree, evidence artifact, and GitHub authority owns each lane, then reconcile completion state without relying on memory or terminal scrollback.
@@ -222,7 +222,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - cat:harness
       - machine:dev-primary
@@ -232,7 +232,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       Build a Codex-expiring-credit burn-down controller for Hermes orchestration. The controller should turn provider telemetry plus user-visible expiry/remaining-credit signals into a safe, useful queue of Codex-first work lanes while preserving plan gates and workstation readiness.
