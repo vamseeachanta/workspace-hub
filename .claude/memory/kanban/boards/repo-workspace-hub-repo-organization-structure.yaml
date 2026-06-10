@@ -23,6 +23,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -46,6 +47,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -67,6 +69,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -87,6 +90,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -106,6 +110,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -125,6 +130,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -144,6 +150,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -171,6 +178,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -191,6 +199,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -209,6 +218,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -230,6 +240,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -252,6 +263,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -273,6 +285,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -296,6 +309,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -317,6 +331,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -338,6 +353,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -361,6 +377,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -381,6 +398,7 @@ cards:
       - status:needs-plan
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -398,6 +416,7 @@ cards:
       - status:needs-plan
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -414,6 +433,7 @@ cards:
       - status:needs-plan
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

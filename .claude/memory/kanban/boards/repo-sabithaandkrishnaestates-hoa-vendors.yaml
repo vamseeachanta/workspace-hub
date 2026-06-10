@@ -19,6 +19,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:hoa-vendors
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -35,6 +36,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:hoa-vendors
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -51,6 +53,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:hoa-vendors
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -67,6 +70,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:hoa-vendors
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -83,6 +87,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:hoa-vendors
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0

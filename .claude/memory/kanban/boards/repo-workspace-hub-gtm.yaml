@@ -23,6 +23,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -44,6 +45,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -65,6 +67,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -86,6 +89,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -136,6 +140,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -215,6 +220,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -235,6 +241,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -255,6 +262,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -276,6 +284,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -319,6 +328,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -340,6 +350,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -361,6 +372,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -491,6 +503,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -540,6 +553,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -629,6 +643,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -665,6 +680,7 @@ cards:
       - review-backlog
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -698,6 +714,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -717,6 +734,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -737,6 +755,7 @@ cards:
       - claude:design
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -757,6 +776,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -777,6 +797,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -910,6 +931,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -1003,6 +1025,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -1040,6 +1063,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -1061,6 +1085,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -1082,6 +1107,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -1097,6 +1123,7 @@ cards:
       - gtm
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -1116,6 +1143,7 @@ cards:
       - gtm
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -1135,6 +1163,7 @@ cards:
       - gtm
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -1153,6 +1182,7 @@ cards:
       - priority:high
       - cat:business
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 1
     gh_assignees: []

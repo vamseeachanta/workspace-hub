@@ -21,6 +21,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:structural
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -36,6 +37,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:structural
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -55,6 +57,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:structural
+      - lane:codex
     gh_assignees:
       - vamseeachanta
       - samdansk2
@@ -76,6 +79,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:structural
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -91,6 +95,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:structural
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -106,6 +111,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:structural
+      - lane:codex
     gh_assignees:
       - samdansk2
     initial_status: triage
@@ -126,6 +132,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:structural
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -147,6 +154,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:structural
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -165,6 +173,7 @@ cards:
       - cat:engineering
       - priority:medium
       - domain:structural
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []

@@ -3582,6 +3582,7 @@ cards:
       - priority:high
       - cat:business
       - domain:cfd
+      - lane:claude
     initial_status: triage
     priority: 1
     gh_assignees: []

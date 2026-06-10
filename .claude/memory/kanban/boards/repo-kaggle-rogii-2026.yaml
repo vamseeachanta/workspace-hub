@@ -18,6 +18,7 @@ cards:
       - phase-0
       - leaderboard
       - status:plan-review
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -35,6 +36,7 @@ cards:
       - phase-4
       - dispatch:ready
       - machine:dev-primary
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -52,6 +54,7 @@ cards:
       - phase-5
       - dispatch:ready
       - machine:dev-primary
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -69,6 +72,7 @@ cards:
       - phase-0
       - leaderboard
       - status:plan-review
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -85,6 +89,7 @@ cards:
     gh_labels:
       - research
       - status:plan-review
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -102,6 +107,7 @@ cards:
       - phase-3
       - dispatch:ready
       - machine:dev-primary
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -120,6 +126,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -136,6 +143,7 @@ cards:
     gh_labels:
       - phase-2
       - status:plan-review
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -152,6 +160,7 @@ cards:
     gh_labels:
       - phase-1
       - status:plan-review
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0

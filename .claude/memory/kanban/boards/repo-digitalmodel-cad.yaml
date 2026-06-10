@@ -22,6 +22,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:cad
+      - lane:claude
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -41,6 +42,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:cad
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -55,6 +57,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:cad
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -69,6 +72,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:cad
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -87,6 +91,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:cad
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -106,6 +111,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:cad
+      - lane:claude
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -123,6 +129,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:cad
+      - lane:claude
     gh_assignees:
       - bakkiprasad5669
     initial_status: triage

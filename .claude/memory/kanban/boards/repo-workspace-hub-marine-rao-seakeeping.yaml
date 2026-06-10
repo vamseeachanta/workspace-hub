@@ -23,6 +23,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -44,6 +45,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -65,6 +67,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -86,6 +89,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -103,6 +107,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -124,6 +129,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -145,6 +151,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -166,6 +173,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -184,6 +192,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -203,6 +212,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -225,6 +235,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -245,6 +256,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -266,6 +278,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -287,6 +300,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -308,6 +322,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0

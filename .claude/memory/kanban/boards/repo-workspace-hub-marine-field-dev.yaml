@@ -25,6 +25,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -48,6 +49,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -71,6 +73,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -94,6 +97,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -117,6 +121,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -140,6 +145,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -163,6 +169,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -185,6 +192,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -207,6 +215,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -227,6 +236,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:codex
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -246,6 +256,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -264,6 +275,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -282,6 +294,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -300,6 +313,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -321,6 +335,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -344,6 +359,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:marine-field-dev
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1

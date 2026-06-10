@@ -25,6 +25,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -525,6 +526,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -1307,6 +1309,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -1362,6 +1365,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -1383,6 +1387,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -1418,6 +1423,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -18004,6 +18010,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -20487,6 +20494,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:machine-setup
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -20521,6 +20529,7 @@ cards:
       - machine:ace-win-2
       - status:needs-plan
       - gate:completeness
+      - lane:claude
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -20535,6 +20544,7 @@ cards:
       - priority:critical
       - domain:workflow-compliance
       - compliance-alert
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -20572,6 +20582,7 @@ cards:
       - agent:codex
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -20595,6 +20606,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -20639,6 +20651,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -20658,6 +20671,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -20765,6 +20779,7 @@ cards:
     gh_labels:
       - priority:critical
       - compliance-alert
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -20868,6 +20883,18 @@ cards:
       - cat:harness
       - cat:automation
       - domain:audit-trail
+      - status:plan-review
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3026
+    title: 'ace-linux-2: gnome-shell crash recovery (2026-06-10) + /dev/sda end-of-life replacement plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3026
+    gh_state: open
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []

@@ -23,6 +23,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-batch-extraction
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -40,6 +41,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-batch-extraction
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -57,6 +59,7 @@ cards:
       - status:plan-review
       - machine:dev-primary
       - domain:ingest-batch-extraction
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -74,6 +77,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-batch-extraction
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -91,6 +95,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-batch-extraction
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -108,6 +113,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-batch-extraction
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -125,6 +131,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-batch-extraction
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -145,6 +152,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-batch-extraction
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -162,6 +170,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-batch-extraction
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -179,6 +188,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-batch-extraction
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -196,6 +206,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-batch-extraction
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -209,6 +220,7 @@ cards:
       - priority:medium
       - machine:dev-primary
       - domain:ingest-batch-extraction
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -256,6 +268,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:ingest-batch-extraction
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -267,6 +280,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:ingest-batch-extraction
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -278,6 +292,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:ingest-batch-extraction
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -289,6 +304,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:ingest-batch-extraction
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -300,6 +316,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:ingest-batch-extraction
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []

@@ -24,6 +24,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -45,6 +46,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -66,6 +68,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -88,6 +91,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -110,6 +114,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -132,6 +137,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -154,6 +160,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -176,6 +183,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -198,6 +206,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -220,6 +229,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -243,6 +253,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -261,6 +272,7 @@ cards:
       - priority:low
       - cat:tooling
       - domain:workstations-fleet-equivalence
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -275,6 +287,7 @@ cards:
       - priority:low
       - cat:tooling
       - domain:workstations-fleet-equivalence
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -292,6 +305,7 @@ cards:
       - machine:multi
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -309,6 +323,7 @@ cards:
       - status:needs-plan
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -329,6 +344,7 @@ cards:
       - status:needs-plan
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -346,6 +362,7 @@ cards:
       - status:needs-plan
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -363,6 +380,7 @@ cards:
       - status:needs-plan
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -380,6 +398,7 @@ cards:
       - status:needs-plan
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -397,6 +416,7 @@ cards:
       - status:needs-plan
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -415,6 +435,7 @@ cards:
       - status:needs-plan
       - gate:completeness
       - domain:workstations-fleet-equivalence
+      - lane:claude
     initial_status: triage
     priority: 1
     gh_assignees: []

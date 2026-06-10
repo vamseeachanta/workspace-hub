@@ -22,6 +22,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -42,6 +43,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -124,6 +126,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -143,6 +146,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -159,6 +163,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -176,6 +181,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -193,6 +199,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -210,6 +217,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -227,6 +235,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -245,6 +254,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -264,6 +274,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -283,6 +294,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -322,6 +334,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -342,6 +355,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -362,6 +376,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -382,6 +397,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -400,6 +416,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -415,6 +432,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -430,6 +448,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -445,6 +464,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -464,6 +484,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -482,6 +503,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:quality
+      - lane:claude
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -494,6 +516,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:quality
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -509,6 +532,7 @@ cards:
       - cat:engineering
       - cat:data
       - domain:quality
+      - lane:claude
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -525,6 +549,7 @@ cards:
       - cat:automation
       - status:plan-approved
       - domain:quality
+      - lane:claude
     initial_status: triage
     priority: 1
     gh_assignees: []

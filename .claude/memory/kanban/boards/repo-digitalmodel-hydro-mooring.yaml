@@ -23,6 +23,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:hydro-mooring
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -44,6 +45,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:hydro-mooring
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -66,6 +68,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:hydro-mooring
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -87,6 +90,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:hydro-mooring
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -106,6 +110,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:hydro-mooring
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -125,6 +130,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:hydro-mooring
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -142,6 +148,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:hydro-mooring
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0

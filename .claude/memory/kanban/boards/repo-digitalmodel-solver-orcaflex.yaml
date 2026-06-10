@@ -22,6 +22,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -39,6 +40,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -59,6 +61,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -75,6 +78,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -95,6 +99,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -115,6 +120,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -130,6 +136,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -146,6 +153,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -161,6 +169,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -182,6 +191,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -203,6 +213,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -224,6 +235,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -245,6 +257,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -266,6 +279,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -287,6 +301,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -308,6 +323,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -329,6 +345,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -351,6 +368,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -370,6 +388,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -391,6 +410,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -411,6 +431,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -430,6 +451,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -453,6 +475,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -472,6 +495,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -491,6 +515,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -510,6 +535,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -529,6 +555,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:solver-orcaflex
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -546,6 +573,7 @@ cards:
       - cat:engineering
       - status:plan-review
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -563,6 +591,7 @@ cards:
       - cat:engineering
       - status:plan-review
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -580,6 +609,7 @@ cards:
       - cat:engineering
       - status:plan-review
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -597,6 +627,7 @@ cards:
       - cat:engineering
       - status:plan-review
       - domain:solver-orcaflex
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0

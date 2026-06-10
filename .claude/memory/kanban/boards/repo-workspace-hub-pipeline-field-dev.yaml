@@ -31,6 +31,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:pipeline-field-dev
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -51,6 +52,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:pipeline-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -71,6 +73,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:pipeline-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -91,6 +94,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:pipeline-field-dev
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -111,6 +115,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:pipeline-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -131,6 +136,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:pipeline-field-dev
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -153,6 +159,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:pipeline-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -173,6 +180,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:pipeline-field-dev
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -196,6 +204,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:pipeline-field-dev
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1

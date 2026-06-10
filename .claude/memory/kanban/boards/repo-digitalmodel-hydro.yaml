@@ -23,6 +23,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:hydro
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0

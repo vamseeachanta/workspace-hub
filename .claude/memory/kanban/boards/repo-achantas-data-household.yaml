@@ -18,6 +18,7 @@ cards:
       - dispatch:ready
       - domain:household
       - machine:dev-primary
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -36,6 +37,7 @@ cards:
       - dispatch:ready
       - domain:household
       - machine:dev-primary
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -53,6 +55,7 @@ cards:
       - dispatch:ready
       - domain:household
       - machine:dev-primary
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -70,6 +73,7 @@ cards:
       - dispatch:ready
       - domain:household
       - machine:dev-primary
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -87,6 +91,7 @@ cards:
       - dispatch:ready
       - domain:household
       - machine:dev-primary
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -100,6 +105,7 @@ cards:
       - dispatch:ready
       - domain:household
       - machine:dev-primary
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -115,6 +121,7 @@ cards:
       - dispatch:ready
       - domain:household
       - machine:dev-primary
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -132,6 +139,7 @@ cards:
       - dispatch:ready
       - domain:household
       - machine:dev-primary
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -145,6 +153,7 @@ cards:
       - dispatch:ready
       - domain:household
       - machine:dev-primary
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -162,6 +171,7 @@ cards:
       - dispatch:ready
       - domain:household
       - machine:dev-primary
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -175,6 +185,7 @@ cards:
       - dispatch:ready
       - domain:household
       - machine:dev-primary
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -192,6 +203,7 @@ cards:
       - dispatch:ready
       - domain:household
       - machine:dev-primary
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0

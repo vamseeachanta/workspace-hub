@@ -18,6 +18,7 @@ cards:
     gh_labels:
       - documentation
       - domain:governance
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -31,6 +32,7 @@ cards:
       - status:plan-review
       - status:poc-scoped
       - domain:tooling
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -47,6 +49,7 @@ cards:
       - security-review
       - status:artifact-ready
       - domain:tooling
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -62,6 +65,7 @@ cards:
       - status:ready-for-scope
       - status:artifact-ready
       - domain:ingest
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -76,6 +80,7 @@ cards:
       - type:poc
       - status:ready-for-scope
       - domain:tooling
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -92,6 +97,7 @@ cards:
       - security-review
       - status:artifact-ready
       - domain:tooling
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -107,6 +113,7 @@ cards:
       - status:ready-for-scope
       - security-review
       - domain:governance
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -121,6 +128,7 @@ cards:
       - type:poc
       - status:ready-for-scope
       - domain:content
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -132,6 +140,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:marine
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -143,6 +152,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:content
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -154,6 +164,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:ingest
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -165,6 +176,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:marine
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -176,6 +188,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:tooling
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -187,6 +200,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:governance
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -198,6 +212,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:marine
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -209,6 +224,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:marine
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -220,6 +236,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:marine
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -231,6 +248,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:marine
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -242,6 +260,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:governance
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -253,6 +272,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:content
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -264,6 +284,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:marine
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -275,6 +296,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:content
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

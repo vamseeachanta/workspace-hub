@@ -305,6 +305,7 @@ cards:
       - agent:claude
       - dispatch:ready
       - gate:completeness
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -323,6 +324,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -341,6 +343,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -359,6 +362,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -378,6 +382,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0

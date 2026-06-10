@@ -21,6 +21,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -39,6 +40,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -53,6 +55,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -70,6 +73,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -88,6 +92,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -108,6 +113,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -128,6 +134,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -146,6 +153,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -167,6 +175,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -188,6 +197,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -206,6 +216,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -226,6 +237,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -247,6 +259,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -268,6 +281,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -289,6 +303,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -310,6 +325,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -331,6 +347,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -352,6 +369,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -369,6 +387,7 @@ cards:
       - priority:medium
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -387,6 +406,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -408,6 +428,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -429,6 +450,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -448,6 +470,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -467,6 +490,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0

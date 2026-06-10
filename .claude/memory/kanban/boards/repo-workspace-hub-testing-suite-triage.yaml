@@ -24,6 +24,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -44,6 +45,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -64,6 +66,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -84,6 +87,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -102,6 +106,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -122,6 +127,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -140,6 +146,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -159,6 +166,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -181,6 +189,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -202,6 +211,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -223,6 +233,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -243,6 +254,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -264,6 +276,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -285,6 +298,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -302,6 +316,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -323,6 +338,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -344,6 +360,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -364,6 +381,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -383,6 +401,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -404,6 +423,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -425,6 +445,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -443,6 +464,7 @@ cards:
       - priority:high
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -457,6 +479,7 @@ cards:
       - priority:high
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:claude
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -471,6 +494,7 @@ cards:
       - priority:high
       - gate:completeness
       - domain:testing-suite-triage
+      - lane:codex
     initial_status: triage
     priority: 1
     gh_assignees: []

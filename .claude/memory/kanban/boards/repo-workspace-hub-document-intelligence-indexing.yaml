@@ -23,6 +23,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -44,6 +45,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -65,6 +67,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -87,6 +90,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -109,6 +113,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -130,6 +135,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -151,6 +157,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -172,6 +179,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -193,6 +201,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -215,6 +224,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -237,6 +247,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -259,6 +270,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -283,6 +295,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -308,6 +321,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -329,6 +343,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -347,6 +362,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -369,6 +385,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -390,6 +407,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -410,6 +428,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -431,6 +450,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -453,6 +473,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -474,6 +495,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0

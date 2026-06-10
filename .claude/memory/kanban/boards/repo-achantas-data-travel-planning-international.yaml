@@ -21,6 +21,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:travel-planning-international
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -40,6 +41,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:travel-planning-international
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -59,6 +61,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:travel-planning-international
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -78,6 +81,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:travel-planning-international
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0

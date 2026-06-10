@@ -25,6 +25,7 @@ cards:
       - domain:semiconductor
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -64,6 +65,7 @@ cards:
       - domain:semiconductor
       - dispatch:ready
       - gate:completeness
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -86,6 +88,7 @@ cards:
       - domain:semiconductor
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -123,6 +126,7 @@ cards:
       - domain:semiconductor
       - dispatch:ready
       - gate:completeness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0

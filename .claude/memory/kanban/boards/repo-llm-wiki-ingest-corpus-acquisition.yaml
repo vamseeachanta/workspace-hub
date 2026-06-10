@@ -40,6 +40,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:ingest-corpus-acquisition
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -57,6 +58,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:ingest-corpus-acquisition
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -76,6 +78,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-corpus-acquisition
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -134,6 +137,7 @@ cards:
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -171,6 +175,7 @@ cards:
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -190,6 +195,7 @@ cards:
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -208,6 +214,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-corpus-acquisition
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -306,6 +313,7 @@ cards:
       - status:plan-approved
       - machine:dev-primary
       - domain:ingest-corpus-acquisition
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -337,9 +345,9 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:high
+      - status:done
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 1
@@ -356,6 +364,7 @@ cards:
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -385,6 +394,7 @@ cards:
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -398,6 +408,7 @@ cards:
       - priority:medium
       - machine:dev-primary
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -444,6 +455,7 @@ cards:
     gh_labels:
       - priority:high
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -456,6 +468,7 @@ cards:
     gh_labels:
       - priority:high
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -468,6 +481,7 @@ cards:
     gh_labels:
       - priority:low
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -479,6 +493,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -492,6 +507,7 @@ cards:
       - priority:medium
       - cat:data
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -636,6 +652,7 @@ cards:
       - agent:codex
       - dispatch:ready
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -652,6 +669,7 @@ cards:
       - agent:codex
       - dispatch:ready
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -668,6 +686,7 @@ cards:
       - agent:codex
       - dispatch:ready
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -684,6 +703,7 @@ cards:
       - agent:codex
       - dispatch:ready
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -700,6 +720,7 @@ cards:
       - agent:codex
       - dispatch:ready
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -716,6 +737,7 @@ cards:
       - agent:codex
       - dispatch:ready
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -732,6 +754,7 @@ cards:
       - agent:codex
       - dispatch:ready
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -740,15 +763,16 @@ cards:
     title: '[production-api] API RP 14C edition-mismatch reconciliation plan'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/527
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-approved
+      - status:done
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -767,6 +791,7 @@ cards:
       - agent:codex
       - dispatch:ready
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -785,6 +810,7 @@ cards:
       - agent:codex
       - dispatch:ready
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -803,6 +829,7 @@ cards:
       - agent:codex
       - dispatch:ready
       - domain:ingest-corpus-acquisition
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []

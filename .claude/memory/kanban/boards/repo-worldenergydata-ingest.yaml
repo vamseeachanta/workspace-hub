@@ -23,6 +23,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:ingest
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -42,6 +43,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:ingest
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -61,6 +63,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:ingest
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -81,6 +84,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -101,6 +105,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -121,6 +126,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -138,6 +144,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -156,6 +163,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -215,6 +223,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -236,6 +245,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -254,6 +264,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -275,6 +286,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -293,6 +305,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -311,6 +324,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -329,6 +343,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -347,6 +362,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -365,6 +381,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -383,6 +400,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -398,6 +416,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -416,6 +435,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:ingest
+      - lane:codex
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -433,6 +453,7 @@ cards:
       - wrk-item
       - status:plan-review
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -445,6 +466,7 @@ cards:
     gh_labels:
       - status:plan-review
       - domain:ingest
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -463,6 +485,7 @@ cards:
       - priority:medium
       - cat:data
       - domain:ingest
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []

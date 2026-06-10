@@ -21,6 +21,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-windows-readiness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -41,6 +42,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-windows-readiness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -63,6 +65,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-windows-readiness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -85,6 +88,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-windows-readiness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -107,6 +111,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-windows-readiness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -129,6 +134,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-windows-readiness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -151,6 +157,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-windows-readiness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -173,6 +180,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-windows-readiness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -195,6 +203,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-windows-readiness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -217,6 +226,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:workstations-windows-readiness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -238,6 +248,7 @@ cards:
       - status:plan-approved
       - gate:completeness
       - domain:workstations-windows-readiness
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -254,6 +265,7 @@ cards:
       - status:plan-approved
       - gate:completeness
       - domain:workstations-windows-readiness
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -267,6 +279,7 @@ cards:
       - enhancement
       - cat:operations
       - domain:workstations-windows-readiness
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

@@ -24,6 +24,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -44,6 +45,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -65,6 +67,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -86,6 +89,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -104,6 +108,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -118,6 +123,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -136,6 +142,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -154,6 +161,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -172,6 +180,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -186,6 +195,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -204,6 +214,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -226,6 +237,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -248,6 +260,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -270,6 +283,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -291,6 +305,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -311,6 +326,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -331,6 +347,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -351,6 +368,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -371,6 +389,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -392,6 +411,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -414,6 +434,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -435,6 +456,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -457,6 +479,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -479,6 +502,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -501,6 +525,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -521,6 +546,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:harness
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -539,6 +565,7 @@ cards:
       - priority:critical
       - compliance-alert
       - domain:harness
+      - lane:claude
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -568,6 +595,7 @@ cards:
     gh_labels:
       - status:plan-review
       - domain:harness
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -606,14 +634,28 @@ cards:
     title: 'feat(harness): single source of truth for the tier-1 Python-repo list (retire ~15 hardcoded copies)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3023
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
       - cat:harness
-      - status:plan-review
       - status:plan-approved
-      - gate:completeness
+      - domain:harness
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3027
+    title: 'chore(config): purge archived OGManufacturing from config artifacts (regenerate/hand-edit/delete; keep audit trail)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3027
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - status:plan-review
       - domain:harness
     initial_status: triage
     priority: 0

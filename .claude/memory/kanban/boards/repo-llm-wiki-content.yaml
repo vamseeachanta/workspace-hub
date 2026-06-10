@@ -23,6 +23,7 @@ cards:
       - agent:codex
       - dispatch:ready
       - domain:content
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -42,6 +43,7 @@ cards:
       - cat:documentation
       - dispatch:ready
       - domain:content
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0

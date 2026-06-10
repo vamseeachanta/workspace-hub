@@ -21,6 +21,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:hydro-rao-seakeeping
+      - lane:codex
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -39,6 +40,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:hydro-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -60,6 +62,7 @@ cards:
       - machine:licensed-win-1
       - dispatch:ready
       - domain:hydro-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -78,6 +81,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:hydro-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -99,6 +103,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:hydro-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -118,6 +123,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:hydro-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -137,6 +143,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:hydro-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -156,6 +163,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:hydro-rao-seakeeping
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
