@@ -653,7 +653,6 @@ cards:
       - status:plan-review
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
       - lane:codex
     initial_status: triage
@@ -737,7 +736,6 @@ cards:
       - status:plan-review
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
       - lane:codex
     initial_status: triage
@@ -754,7 +752,6 @@ cards:
       - status:plan-review
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
       - lane:codex
     initial_status: triage
