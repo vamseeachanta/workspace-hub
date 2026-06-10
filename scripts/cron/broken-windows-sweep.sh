@@ -31,7 +31,8 @@ PREV="${OUT_DIR}/broken-windows-${PREV_MONTH}.md"
 WARN_COUNT="${BROKEN_WINDOWS_WARN_COUNT:-0}"
 BLOCK_COUNT="${BROKEN_WINDOWS_BLOCK_COUNT:-5}"
 
-# Must match scripts/hooks/pre-push.sh:TIER1_REPOS to stay in sync.
+# Canonical list is config/tier1-python-repos.txt via scripts/lib/tier1-repos.sh (#3023).
+source "${REPO_ROOT}/scripts/lib/tier1-repos.sh"
 declare -a REPO_NAMES=()
 declare -a REPO_PATHS=()
 if [[ -n "${BROKEN_WINDOWS_REPOS:-}" ]]; then
@@ -41,7 +42,7 @@ if [[ -n "${BROKEN_WINDOWS_REPOS:-}" ]]; then
         REPO_PATHS+=("${p#*:}")
     done
 else
-    for name in assetutilities digitalmodel worldenergydata assethold; do
+    for name in "${TIER1_PYTHON_REPOS[@]}"; do
         REPO_NAMES+=("$name")
         REPO_PATHS+=("${REPO_ROOT}/${name}")
     done

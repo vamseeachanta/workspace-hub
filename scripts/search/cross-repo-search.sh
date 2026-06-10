@@ -6,12 +6,10 @@ set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
-declare -A REPO_PATHS=(
-    [assethold]="assethold"
-    [assetutilities]="assetutilities"
-    [digitalmodel]="digitalmodel"
-    [worldenergydata]="worldenergydata"
-)
+# Canonical repo list is config/tier1-python-repos.txt via scripts/lib/tier1-repos.sh (#3023).
+source "${REPO_ROOT}/scripts/lib/tier1-repos.sh"
+declare -A REPO_PATHS=()
+for r in "${TIER1_PYTHON_REPOS[@]}"; do REPO_PATHS[$r]="$r"; done
 
 usage() {
     echo "Usage: $0 <pattern> [--type <ext>] [--repo <repo>]" >&2

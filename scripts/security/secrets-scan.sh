@@ -21,8 +21,10 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 GITLEAKS_CONFIG="${REPO_ROOT}/.gitleaks.toml"
 BASELINE_DIR="${REPO_ROOT}/config/quality"
 
-# workspace-hub is included; it scans REPO_ROOT itself
-TIER1_REPOS=(workspace-hub assethold assetutilities digitalmodel worldenergydata)
+# workspace-hub is included; it scans REPO_ROOT itself. The tier-1 Python set
+# is the canonical config/tier1-python-repos.txt via scripts/lib/tier1-repos.sh (#3023).
+source "${REPO_ROOT}/scripts/lib/tier1-repos.sh"
+TIER1_REPOS=(workspace-hub "${TIER1_PYTHON_REPOS[@]}")
 
 TARGET_REPO=""
 

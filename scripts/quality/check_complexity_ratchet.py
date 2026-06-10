@@ -18,6 +18,9 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root
+from scripts.lib.tier1_repos import tier1_python_repos
+
 try:
     import yaml
     _YAML_AVAILABLE = True
@@ -31,12 +34,8 @@ except ImportError:
 
 DEFAULT_REPO_ROOT = Path(__file__).parents[2]
 
-REPOS: dict[str, str] = {
-    "assetutilities": "assetutilities",
-    "digitalmodel": "digitalmodel",
-    "worldenergydata": "worldenergydata",
-    "assethold": "assethold",
-}
+# Canonical list is config/tier1-python-repos.txt (#3023).
+REPOS: dict[str, str] = {s: s for s in tier1_python_repos()}
 
 # Radon rank thresholds used for -n flag.
 # radon -n D: shows rank D+ (CC >= 11); radon -n E: shows rank E+ (CC >= 16).

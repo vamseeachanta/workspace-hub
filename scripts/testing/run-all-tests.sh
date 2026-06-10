@@ -20,12 +20,15 @@ EF_FILE="${SCRIPT_DIR}/expected-failures.txt"
 # ── Repo config table ─────────────────────────────────────────────────────────
 # Format: "name:rel_dir:PYTHONPATH:pytest_args"
 # rel_dir is relative to REPO_ROOT; PYTHONPATH is relative to repo root (or empty)
-REPO_CONFIGS=(
-    "assetutilities:assetutilities::tests/ --noconftest"
-    "digitalmodel:digitalmodel:src:"
-    "worldenergydata:worldenergydata:src:--noconftest"
-    "assethold:assethold::tests/ --noconftest --tb=short -q"
-)
+# Membership derives from the canonical config/tier1-python-repos.txt via
+# scripts/lib/tier1-repos.sh (#3023); per-repo PYTHONPATH/pytest config kept here.
+source "${REPO_ROOT}/scripts/lib/tier1-repos.sh"
+declare -A _T1_PYTHONPATH=( [digitalmodel]="src" [worldenergydata]="src" )
+declare -A _T1_PYTEST=( [assetutilities]="tests/ --noconftest" [digitalmodel]="" [worldenergydata]="--noconftest" [assethold]="tests/ --noconftest --tb=short -q" )
+REPO_CONFIGS=()
+for _r in "${TIER1_PYTHON_REPOS[@]}"; do
+    REPO_CONFIGS+=("${_r}:${_r}:${_T1_PYTHONPATH[$_r]:-}:${_T1_PYTEST[$_r]:-tests/}")
+done
 
 # ── Argument parsing ──────────────────────────────────────────────────────────
 FILTER_REPO=""
@@ -116,18 +119,17 @@ if [[ "$COVERAGE" == "true" ]]; then
 
     mkdir -p "$COVERAGE_REPORTS_DIR"
 
+    # Build a Python list literal of the canonical tier-1 repos for the heredoc
+    # below, so the coverage repo set stays sourced from the SSoT (#3023).
+    _cov_repos_py="$(printf '"%s", ' "${TIER1_PYTHON_REPOS[@]}")"
+
     # Extract coverage % from each repo's coverage.json and build results mapping
     uv run --no-project python - <<PYEOF2
 import json, sys
 from pathlib import Path
 
 repo_root = Path("${REPO_ROOT}")
-repos = {
-    "assetutilities": repo_root / "assetutilities",
-    "digitalmodel":   repo_root / "digitalmodel",
-    "worldenergydata": repo_root / "worldenergydata",
-    "assethold":      repo_root / "assethold",
-}
+repos = {name: repo_root / name for name in [${_cov_repos_py}]}
 filter_repo = "${FILTER_REPO}"
 results = {}
 for name, repo_dir in repos.items():

@@ -9,14 +9,12 @@ REPO_ROOT="${QUALITY_REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && p
 
 # ---------------------------------------------------------------------------
 # Repo map: lowercase name -> relative path from workspace root
+# Canonical list is config/tier1-python-repos.txt via scripts/lib/tier1-repos.sh (#3023).
 # ---------------------------------------------------------------------------
-declare -A REPO_MAP=(
-  [assetutilities]="assetutilities"
-  [digitalmodel]="digitalmodel"
-  [worldenergydata]="worldenergydata"
-  [assethold]="assethold"
-)
-REPO_ORDER=(assetutilities digitalmodel worldenergydata assethold)
+source "${REPO_ROOT}/scripts/lib/tier1-repos.sh"
+REPO_ORDER=("${TIER1_PYTHON_REPOS[@]}")
+declare -A REPO_MAP=()
+for r in "${TIER1_PYTHON_REPOS[@]}"; do REPO_MAP[$r]="$r"; done
 
 # ---------------------------------------------------------------------------
 # Flags
