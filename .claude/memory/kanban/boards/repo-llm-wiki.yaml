@@ -1479,10 +1479,10 @@ cards:
     title: '[flywheel] Diagnose staged conflict-marker checker timeout'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/488
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:tooling
-      - status:plan-review
+      - status:done
     initial_status: triage
     priority: 0
     gh_assignees: []

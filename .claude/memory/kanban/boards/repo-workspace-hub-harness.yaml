@@ -602,3 +602,20 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3023
+    title: 'feat(harness): single source of truth for the tier-1 Python-repo list (retire ~15 hardcoded copies)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3023
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
