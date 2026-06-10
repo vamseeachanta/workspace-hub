@@ -18,7 +18,7 @@ Usage:
   route.py --apply         write GH labels (requires gh; Phase B)
 """
 from __future__ import annotations
-import argparse, fnmatch, json, os, subprocess, sys, time
+import argparse, fnmatch, json, math, os, subprocess, sys, time
 from collections import defaultdict
 from pathlib import Path
 
@@ -192,10 +192,13 @@ def codex_weekly_remaining(override=None):
         timeout = float(os.environ.get("DISPATCH_QUOTA_TIMEOUT", "10"))
         res = subprocess.run([str(QUOTA_SCRIPT), "--json"],
                              capture_output=True, text=True, timeout=timeout)
+        if res.returncode != 0:
+            raise ValueError(f"quota script exit {res.returncode}")
         data = json.loads(res.stdout)
-        remaining = data.get("pct_remaining")
-        if remaining is None:
-            raise ValueError("no pct_remaining in quota JSON")
+        remaining = float(data.get("pct_remaining"))
+        # malformed numerics (NaN/inf/out-of-range) must never demote
+        if not (math.isfinite(remaining) and 0 <= remaining <= 100):
+            raise ValueError(f"pct_remaining out of range: {remaining}")
         src = data.get("source")
         if src != "app-server-live":
             reset = data.get("resets_at_epoch")
@@ -204,7 +207,7 @@ def codex_weekly_remaining(override=None):
                       f"(source={src}, resets_at_epoch={reset}) — fail open",
                       file=sys.stderr)
                 return None
-        return float(remaining)
+        return remaining
     except Exception as exc:  # timeout, missing script, bad JSON — fail open
         print(f"[quota-gate] codex quota unavailable ({exc}) — fail open",
               file=sys.stderr)

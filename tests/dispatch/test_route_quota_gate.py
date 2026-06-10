@@ -84,13 +84,17 @@ def test_gate_fails_open_on_unknown_quota(route):
 
 # --- quota helper: window validity + fail-open -------------------------------
 
-def _fake_run(payload=None, *, raise_exc=None, stdout=None):
+def _fake_run(payload=None, *, raise_exc=None, stdout=None, returncode=0):
     def run(cmd, **kw):
+        # pin the subprocess contract (codex code-review MINOR): exact command
+        # and an explicit timeout, or these fakes mask integration drift
+        assert cmd[0].endswith("query-codex-usage.sh") and cmd[1:] == ["--json"], cmd
+        assert "timeout" in kw and kw["timeout"] > 0
         if raise_exc:
             raise raise_exc
         r = types.SimpleNamespace()
         r.stdout = stdout if stdout is not None else json.dumps(payload)
-        r.returncode = 0
+        r.returncode = returncode
         return r
     return run
 
@@ -121,6 +125,20 @@ def test_helper_fails_open_on_timeout_and_bad_json(route, monkeypatch):
                         _fake_run(raise_exc=real_subprocess.TimeoutExpired("x", 10)))
     assert route.codex_weekly_remaining() is None
     monkeypatch.setattr(route.subprocess, "run", _fake_run(stdout="not json"))
+    assert route.codex_weekly_remaining() is None
+
+
+def test_helper_rejects_malformed_numerics_and_bad_exit(route, monkeypatch):
+    # out-of-range / non-finite pct_remaining from an ACCEPTED source must
+    # never demote (codex code-review MAJOR): fail open instead
+    for bad in ("-1", 101, float("nan"), float("inf")):
+        monkeypatch.setattr(route.subprocess, "run",
+                            _fake_run({"pct_remaining": bad, "source": "app-server-live"}))
+        assert route.codex_weekly_remaining() is None, f"accepted bad pct {bad!r}"
+    # nonzero exit with parseable stdout must also fail open
+    monkeypatch.setattr(route.subprocess, "run",
+                        _fake_run({"pct_remaining": 5, "source": "app-server-live"},
+                                  returncode=3))
     assert route.codex_weekly_remaining() is None
 
 
