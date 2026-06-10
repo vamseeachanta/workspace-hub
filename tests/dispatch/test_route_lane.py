@@ -46,17 +46,6 @@ def route():
 
 DEFAULTS = {"machine": "dev-primary", "provider": "claude"}
 
-# Live-rule fixture mirroring routing-rules.yaml:90-92 (needs:cross-review ->
-# codex, "Codex strong on adversarial cross-review") plus the catch-all.
-def _rules():
-    return [
-        {"match": {"gh_label": "needs:cross-review"},
-         "assign": {"provider": "codex"},
-         "reason": "Codex strong on adversarial cross-review"},
-        {"match": {}, "assign": {"machine": "dev-primary"}, "reason": "catch-all"},
-    ]
-
-
 def _resolve(route, labels, assign=None):
     return route.resolve_provider(labels, assign or {}, DEFAULTS)
 
@@ -75,12 +64,17 @@ def test_ai_label_wins_over_lane(route):
     assert explicit is True
 
 
-# 3. Live rule fixture: needs:cross-review -> codex outranks lane:claude.
-#    Existing routing intent must never be inverted by a lane label.
+# 3. LIVE rule: needs:cross-review -> codex outranks lane:claude. Loads the
+#    real .claude/memory/kanban/routing-rules.yaml (not a copy) so removing,
+#    reordering, or changing that rule breaks this test (codex code-review
+#    finding, #3029). Existing routing intent must never be inverted by lane.
 def test_cross_review_rule_wins_over_lane(route):
     labels = ["needs:cross-review", "lane:claude"]
-    assign = route.match_rule(_rules(), repo="vamseeachanta/workspace-hub",
+    live_rules = route.load_rules().get("rules", [])
+    assign = route.match_rule(live_rules, repo="vamseeachanta/workspace-hub",
                               domain=None, gh_labels=labels).get("assign")
+    assert assign.get("provider") == "codex", (
+        "live needs:cross-review -> codex rule missing/changed in routing-rules.yaml")
     provider, explicit = _resolve(route, labels, assign)
     assert provider == "codex"
     assert explicit is True  # rule-chosen provider stays explicit (unchanged)
