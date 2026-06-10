@@ -745,10 +745,9 @@ cards:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-review
+      - status:plan-approved
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 0
