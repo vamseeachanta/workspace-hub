@@ -802,12 +802,12 @@ cards:
     title: '[production-api] extractable API standards page/dataset canary plan'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/529
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-review
+      - status:done
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
@@ -828,7 +828,6 @@ cards:
       - status:plan-review
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
       - lane:codex
     initial_status: triage
