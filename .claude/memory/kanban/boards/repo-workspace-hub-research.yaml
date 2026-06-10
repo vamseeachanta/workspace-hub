@@ -177,7 +177,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2714
     gh_state: open
     gh_labels:
-      - priority:medium
+      - priority:low
       - cat:knowledge-domain
       - cat:research
       - domain:research

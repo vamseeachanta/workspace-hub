@@ -653,7 +653,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
-      - priority:high
+      - priority:medium
       - cat:ai-orchestration
       - cat:infrastructure
       - domain:ai-tools
@@ -663,7 +663,7 @@ cards:
       - lane:claude
     gh_assignees: []
     initial_status: triage
-    priority: 1
+    priority: 0
     body_excerpt: '## Summary
 
       `codex-cli 0.130.0` (current installed via `~/.npm-global/bin/codex`) reproduces the v0.124-era stdin-hang regression on **both** stdin and positional invocations, **and** affects Hermes-routed Codex calls because `hermes -z` shells out to `codex exec` subprocess for tool execution. Multiple downstream paths are blocked.
@@ -710,6 +710,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:ai-tools
+      - status:plan-review
       - lane:claude
     initial_status: triage
     priority: 0

@@ -379,7 +379,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:medium
+      - priority:low
       - cat:engineering
       - cat:harness
       - machine:dev-primary

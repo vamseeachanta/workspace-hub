@@ -1185,11 +1185,11 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - priority:high
+      - priority:medium
       - cat:business
       - domain:gtm
       - lane:claude
     initial_status: triage
-    priority: 1
+    priority: 0
     gh_assignees: []
     body_excerpt: ''
