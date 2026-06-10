@@ -32,6 +32,8 @@ BLOCK_PP="${COVERAGE_DRIFT_BLOCK_PP:-5}"
 # ── Repo list ────────────────────────────────────────────────────────────
 # Default: tier-1 repos relative to REPO_ROOT. Overridable via env as
 # "name1:/abs/path1,name2:/abs/path2".
+# Canonical default list is config/tier1-python-repos.txt via scripts/lib/tier1-repos.sh (#3023).
+source "${REPO_ROOT}/scripts/lib/tier1-repos.sh"
 declare -a REPO_NAMES=()
 declare -a REPO_PATHS=()
 if [[ -n "${COVERAGE_DRIFT_REPOS:-}" ]]; then
@@ -41,7 +43,7 @@ if [[ -n "${COVERAGE_DRIFT_REPOS:-}" ]]; then
         REPO_PATHS+=("${p#*:}")
     done
 else
-    for name in assetutilities digitalmodel worldenergydata assethold; do
+    for name in "${TIER1_PYTHON_REPOS[@]}"; do
         REPO_NAMES+=("$name")
         REPO_PATHS+=("${REPO_ROOT}/${name}")
     done

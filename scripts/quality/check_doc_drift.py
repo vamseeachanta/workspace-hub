@@ -22,6 +22,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root
+from scripts.lib.tier1_repos import tier1_python_repos
+
 import yaml
 
 # ---------------------------------------------------------------------------
@@ -31,12 +34,8 @@ import yaml
 DEFAULT_SYMBOL_INDEX = Path("config/search/symbol-index.jsonl")
 DEFAULT_BASELINE = Path("config/quality/doc-drift-baseline.yaml")
 
-REPO_MAP: dict[str, str] = {
-    "assetutilities": "assetutilities",
-    "digitalmodel": "digitalmodel",
-    "worldenergydata": "worldenergydata",
-    "assethold": "assethold",
-}
+# Canonical list is config/tier1-python-repos.txt (#3023).
+REPO_MAP: dict[str, str] = {s: s for s in tier1_python_repos()}
 
 # Cache: repo_path str -> set[str]
 _modified_files_cache: dict[str, set[str]] = {}

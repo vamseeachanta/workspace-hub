@@ -30,6 +30,9 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root
+from scripts.lib.tier1_repos import tier1_python_repos
+
 import yaml
 
 # ---------------------------------------------------------------------------
@@ -49,13 +52,9 @@ AGENTS_REQUIRED_FIELDS = [
     "maturity",
 ]
 
-REPO_MAP: dict[str, str] = {
-    "workspace-hub": "",
-    "assetutilities": "assetutilities",
-    "digitalmodel": "digitalmodel",
-    "worldenergydata": "worldenergydata",
-    "assethold": "assethold",
-}
+# workspace-hub maps to "" (the repo root itself); the tier-1 Python set is the
+# canonical config/tier1-python-repos.txt via scripts.lib.tier1_repos (#3023).
+REPO_MAP: dict[str, str] = {"workspace-hub": "", **{s: s for s in tier1_python_repos()}}
 
 DEFAULT_BASELINE = Path("config/quality/config-drift-baseline.yaml")
 

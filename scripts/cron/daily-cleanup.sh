@@ -15,7 +15,10 @@
 set -uo pipefail
 
 # === Configuration ===
-TIER1_REPOS=(workspace-hub assetutilities digitalmodel worldenergydata assethold)
+# Canonical tier-1 Python set is config/tier1-python-repos.txt via scripts/lib/tier1-repos.sh (#3023).
+REPO_ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]:-$0}")" rev-parse --show-toplevel 2>/dev/null || pwd)"
+source "${REPO_ROOT}/scripts/lib/tier1-repos.sh"
+TIER1_REPOS=(workspace-hub "${TIER1_PYTHON_REPOS[@]}")
 WORKSPACE_ROOT=/mnt/local-analysis/workspace-hub
 SIBLING_ROOT=/mnt/local-analysis
 SAFE_BRANCH_RE='^(chore/auto-|bot/|claude-session/)'

@@ -7,6 +7,9 @@ set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 SYMBOL_INDEX="$REPO_ROOT/config/search/symbol-index.jsonl"
 
+# Canonical repo list is config/tier1-python-repos.txt via scripts/lib/tier1-repos.sh (#3023).
+source "${REPO_ROOT}/scripts/lib/tier1-repos.sh"
+
 usage() {
     echo "Usage: $0 <symbol_name> [--kind <kind>] [--repo <repo>]" >&2
     exit 1
@@ -39,7 +42,7 @@ fi
 # Freshness check: warn if any src/ file is newer than the index
 index_mtime=$(stat -c %Y "$SYMBOL_INDEX" 2>/dev/null || stat -f %m "$SYMBOL_INDEX" 2>/dev/null || echo 0)
 stale=false
-for repo in assethold assetutilities digitalmodel worldenergydata; do
+for repo in "${TIER1_PYTHON_REPOS[@]}"; do
     src_dir="$REPO_ROOT/$repo/src"
     [[ -d "$src_dir" ]] || continue
     newer=$(find "$src_dir" -name "*.py" -newer "$SYMBOL_INDEX" -print -quit 2>/dev/null || true)

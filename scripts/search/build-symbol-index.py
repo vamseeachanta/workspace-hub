@@ -8,16 +8,16 @@ import json
 import os
 import sys
 import warnings
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root
+from scripts.lib.tier1_repos import tier1_python_repos
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 OUTPUT_FILE = os.path.join(REPO_ROOT, "config", "search", "symbol-index.jsonl")
 
-TIER1_REPOS = {
-    "assethold": "assethold/src",
-    "assetutilities": "assetutilities/src",
-    "digitalmodel": "digitalmodel/src",
-    "worldenergydata": "worldenergydata/src",
-}
+# Canonical list is config/tier1-python-repos.txt (#3023).
+TIER1_REPOS = {s: f"{s}/src" for s in tier1_python_repos()}
 
 CONSTANT_RE = __import__("re").compile(r"^[A-Z][A-Z0-9_]{2,}$")
 

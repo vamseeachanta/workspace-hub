@@ -10,13 +10,11 @@ REPO_ROOT="${QUALITY_REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && p
 # Allow tests to override the scripts dir (for mock next-id.sh)
 SCRIPTS_ROOT="${SCRIPTS_OVERRIDE:-$REPO_ROOT}"
 
-declare -A REPO_MAP=(
-    [assetutilities]="assetutilities"
-    [digitalmodel]="digitalmodel"
-    [worldenergydata]="worldenergydata"
-    [assethold]="assethold"
-)
-REPO_ORDER=(assetutilities digitalmodel worldenergydata assethold)
+# Canonical list is config/tier1-python-repos.txt via scripts/lib/tier1-repos.sh (#3023).
+source "${REPO_ROOT}/scripts/lib/tier1-repos.sh"
+REPO_ORDER=("${TIER1_PYTHON_REPOS[@]}")
+declare -A REPO_MAP=()
+for r in "${TIER1_PYTHON_REPOS[@]}"; do REPO_MAP[$r]="$r"; done
 
 OPT_REPO=""
 

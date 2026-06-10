@@ -10,6 +10,9 @@ Re-run after any structural change to an AGENTS.md or pyproject.toml.
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root
+from scripts.lib.tier1_repos import tier1_python_repos
+
 try:
     import yaml
 except ImportError:
@@ -19,12 +22,8 @@ except ImportError:
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = REPO_ROOT / "config" / "onboarding" / "repo-map.yaml"
 
-TIER1_REPOS = [
-    "assetutilities",
-    "digitalmodel",
-    "worldenergydata",
-    "assethold",
-]
+# Canonical list is config/tier1-python-repos.txt (#3023).
+TIER1_REPOS = tier1_python_repos()
 
 
 def parse_frontmatter(path: Path) -> dict:
