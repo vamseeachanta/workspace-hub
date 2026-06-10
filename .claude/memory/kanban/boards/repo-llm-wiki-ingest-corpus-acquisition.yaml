@@ -784,12 +784,12 @@ cards:
     title: '[production-api] API RP 14J canonical page and duplicate-source plan'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/528
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-approved
+      - status:done
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
@@ -810,7 +810,6 @@ cards:
       - status:plan-review
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
       - lane:codex
     initial_status: triage

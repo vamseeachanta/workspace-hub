@@ -1373,3 +1373,21 @@ cards:
       **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** harness | **Subcategory:** uncategorised
 
       **Repo:** [''workspace-hub''] | **Complexity:** high | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3033
+    title: 'triage: incorporate Claude session learnings from 2026-05-20 to 2026-06-10'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3033
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:session
+      - domain:skill-improvement
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
