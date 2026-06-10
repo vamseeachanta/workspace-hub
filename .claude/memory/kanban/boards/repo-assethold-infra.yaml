@@ -22,6 +22,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:infra
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -42,6 +43,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:infra
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -62,6 +64,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:infra
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -81,6 +84,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:infra
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -101,6 +105,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:infra
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -119,6 +124,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:infra
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -138,6 +144,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:infra
+      - lane:claude
     gh_assignees:
       - samdansk2
     initial_status: triage
@@ -154,6 +161,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:infra
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

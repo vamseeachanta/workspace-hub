@@ -18,6 +18,7 @@ cards:
       - content
       - design-system
       - dispatch:ready
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -36,6 +37,7 @@ cards:
       - content
       - design-system
       - dispatch:ready
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -54,6 +56,7 @@ cards:
       - content
       - design-system
       - dispatch:ready
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -72,6 +75,7 @@ cards:
       - content
       - design-system
       - dispatch:ready
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -88,6 +92,7 @@ cards:
     gh_labels:
       - machine:dev-primary
       - dispatch:ready
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -148,7 +153,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-website/issues/16
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

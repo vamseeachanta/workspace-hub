@@ -146,6 +146,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:travel-arkansas
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -164,6 +165,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:travel-arkansas
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -182,6 +184,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:travel-arkansas
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -200,6 +203,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:travel-arkansas
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -218,6 +222,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:travel-arkansas
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -236,6 +241,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:travel-arkansas
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0

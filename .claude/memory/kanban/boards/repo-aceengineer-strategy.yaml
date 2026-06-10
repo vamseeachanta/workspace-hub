@@ -20,6 +20,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:gtm
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -40,6 +41,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:gtm
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -60,6 +62,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:gtm
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -80,6 +83,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:gtm
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -100,6 +104,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:gtm
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -119,6 +124,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:operations-governance
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -139,6 +145,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:product
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -160,6 +167,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:pilots-data
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -181,6 +189,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:pilots-data
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -202,6 +211,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:pilots-data
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -223,6 +233,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:operations-governance
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -244,6 +255,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:commercial
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -266,6 +278,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:product
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -288,6 +301,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:product
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -309,6 +323,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:product
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -330,6 +345,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:product
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -351,6 +367,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:product
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -372,6 +389,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:commercial
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -393,6 +411,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:product
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -414,6 +433,7 @@ cards:
       - dispatch:ready
       - machine:dev-primary
       - domain:product
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -440,6 +460,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:pilots-data
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -454,6 +475,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -468,6 +490,7 @@ cards:
       - strategy
       - status:scoping
       - domain:product
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -482,6 +505,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -496,6 +520,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -510,6 +535,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -524,6 +550,7 @@ cards:
       - strategy
       - status:scoping
       - domain:pilots-data
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -538,6 +565,7 @@ cards:
       - strategy
       - status:scoping
       - domain:pilots-data
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -562,6 +590,7 @@ cards:
       - strategy
       - status:scoping
       - domain:product
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -576,6 +605,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -590,6 +620,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -604,6 +635,7 @@ cards:
       - strategy
       - status:scoping
       - domain:commercial
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -618,6 +650,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -632,6 +665,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -646,6 +680,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -661,6 +696,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -673,6 +709,7 @@ cards:
     gh_labels:
       - strategy
       - domain:operations-governance
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -687,6 +724,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -702,6 +740,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -717,6 +756,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - domain:operations-governance
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -732,6 +772,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -746,6 +787,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -761,6 +803,7 @@ cards:
       - status:scoping
       - dispatch:ready
       - domain:pilots-data
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -775,6 +818,7 @@ cards:
       - strategy
       - status:scoping
       - domain:gtm
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

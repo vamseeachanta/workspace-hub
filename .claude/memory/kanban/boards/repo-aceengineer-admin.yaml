@@ -17,6 +17,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:records-ops
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -34,6 +35,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -51,6 +53,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:records-ops
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -68,6 +71,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -85,6 +89,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -102,6 +107,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:records-ops
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -119,6 +125,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:rd-program
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -136,6 +143,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -153,6 +161,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:rd-program
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -170,6 +179,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -187,6 +197,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -204,6 +215,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:rd-program
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -221,6 +233,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:records-ops
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -238,6 +251,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -255,6 +269,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -272,6 +287,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:tax
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -347,6 +363,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:security
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
