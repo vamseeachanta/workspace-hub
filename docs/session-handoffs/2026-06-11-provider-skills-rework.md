@@ -73,7 +73,21 @@ fully reversible, history preserved, nothing deleted.
   `dspy.Codex(...)` variant). Left as-is; consolidation is a separate decision.
 - **`config/agents/claude/SOUL.delta.md` + SHARED_SOUL.md** — reviewed, current, unchanged.
 
-## Open items / follow-ups
+## ADDENDUM — same-session issue sweep + resolution (later on 2026-06-11)
+
+All open items were converted to GitHub issues and immediately resolved where
+agent-permitted. Tracking epic: [workspace-hub#3040](https://github.com/vamseeachanta/workspace-hub/issues/3040)
+(authoritative status table in its comments). Highlights:
+- [#3037](https://github.com/vamseeachanta/workspace-hub/issues/3037) CLOSED — Gemini live-verified: 2.5-pro primary, 3.1-pro-preview 429s on Pro plan
+- [#3039](https://github.com/vamseeachanta/workspace-hub/issues/3039) CLOSED — `.agents/skills` is a LIVE Gemini CLI surface; KEEP + README
+- [#3038](https://github.com/vamseeachanta/workspace-hub/issues/3038) core shipped — `scripts/lib/model-registry.sh` reader, 2 script migrations, R-MODEL-DRIFT nightly check
+- [#3036](https://github.com/vamseeachanta/workspace-hub/issues/3036) HUMAN-GATED — scanner-allow one-liner posted for owner
+- digitalmodel#695 / worldenergydata#467 / aceengineer-website#17 — implemented on each repo's local `main` via git worktrees (in-flight branches untouched); wed's 12 committed conflict blocks resolved (WAR/APD superset kept)
+- CAD-DEVELOPMENTS phase-2 done (13 stock dirs archived; origin is collaborator-owned — no upstream issue)
+
+The push list now covers **13 repos** (see #3040 comment).
+
+## Open items / follow-ups (original list — see #3040 for live status)
 
 1. **Push the 10 local commits** (blocked for agent; owner runs):
    `for r in workspace-hub assetutilities assethold teamresumes aceengineer-admin achantas-data hobbies sabithaandkrishnaestates achantas-media CAD-DEVELOPMENTS; do git -C /mnt/local-analysis/$r push; done`
