@@ -81,8 +81,8 @@ providers:
   gemini:
     display_name: "Google Gemini"
     model_ids:
-      primary: "gemini-3.1-pro-preview"  # aligned with model-registry.yaml; verify availability on live plan
-      balanced: "gemini-2.5-pro"
+      primary: "gemini-2.5-pro"          # live-verified 2026-06-11 (CLI default); 3.1-pro-preview 429s on Pro plan
+      premium_limited: "gemini-3.1-pro-preview"
       fast: "gemini-2.5-flash"
     context_window:
       primary: 1000000

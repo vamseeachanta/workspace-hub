@@ -24,7 +24,7 @@ latest_models:
   claude_balanced: "claude-sonnet-4-6"
   claude_fast: "claude-haiku-4-5"
   codex_primary: "codex-cli"          # Codex CLI; runs gpt-5.5 under the hood (~/.codex/config.toml)
-  gemini_primary: "gemini-3.1-pro-preview"   # verify availability against live Google AI Pro plan
+  gemini_primary: "gemini-2.5-pro"           # live-verified 2026-06-11: CLI default; 3.1-pro-preview exists but 429s on Pro plan
   gemini_fast: "gemini-2.5-flash"
   openai_primary: "gpt-5.5"
   openai_fast: "gpt-5.4-mini"
@@ -96,21 +96,21 @@ providers:
         capability_tier: COMPLEX
         default_priority: 90
   gemini:
-    default_model: gemini-3-1-pro-preview
+    default_model: gemini-pro
     models:
       gemini-3-1-pro-preview:
         display_name: "Gemini 3.1 Pro Preview"
         model_id: "gemini-3.1-pro-preview"
         cost_tier: premium
         capability_tier: REASONING
-        default_priority: 100
+        default_priority: 60   # demoted 2026-06-11: live probe 429s on Google AI Pro plan — quota-starved, use sparingly
         quota_risk: HIGH
       gemini-pro:
         display_name: "Gemini 2.5 Pro"
         model_id: "gemini-2.5-pro"
         cost_tier: balanced
         capability_tier: COMPLEX
-        default_priority: 90
+        default_priority: 100   # live-verified CLI default 2026-06-11
       gemini-flash:
         display_name: "Gemini 2.5 Flash"
         model_id: "gemini-2.5-flash"
