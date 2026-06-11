@@ -106,7 +106,7 @@ cards:
     title: 'WRK-494: feat(digitalmodel/cathodic_protection): Implement DNV F106 — DNV RP F106 (2003) Factory Applied External Pipeli'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/579
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high

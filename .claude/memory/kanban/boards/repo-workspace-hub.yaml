@@ -20909,7 +20909,7 @@ cards:
     title: 'fix(harness): hermes-model-switching SKILL.md edits blocked by skill-content security scanner'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3036
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - cat:harness
@@ -20958,7 +20958,7 @@ cards:
     title: 'epic(harness): 2026-06-11 provider/skills rework — landing checklist + follow-ups'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3040
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:high
       - cat:ai-orchestration

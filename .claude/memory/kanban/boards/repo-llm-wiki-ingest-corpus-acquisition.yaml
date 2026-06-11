@@ -1087,10 +1087,24 @@ cards:
     title: '[corpus-ingest] O&G document-support local-only path resolver'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/642
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:done
+      - agent:codex
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#647
+    title: '[corpus-ingest] O&G document-support human disposition ledger'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/647
     gh_state: open
     gh_labels:
       - priority:high
-      - status:plan-review
       - agent:codex
       - domain:ingest-corpus-acquisition
       - lane:codex
