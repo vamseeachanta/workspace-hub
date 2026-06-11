@@ -53,6 +53,30 @@ def _report(machine: str, provenance: dict | None = None, **dims) -> dict:
             "skills": {"repo_skill_count": 407},
             "kanban": {"dispatch_queues": "dev-primary,multi"},
             "memory": {"hermes_home": "present", "context_md_mtime": "2026-05-26T02:05:23"},
+            "provider_harness": {
+                "schema_version": 1,
+                "providers": {
+                    "claude": {
+                        "present": True, "installed": True,
+                        "memory:read": {"status": "present", "reason": "claude_memory_context_found"},
+                        "skills:invoke": {"status": "present", "reason": "repo_skill_tree_found"},
+                        "workflow:gates": {"status": "present", "reason": "hard_gates_runtime_found"},
+                    },
+                    "codex": {
+                        "present": True, "installed": True,
+                        "memory:read": {"status": "present", "reason": "codex_memory_runtime_found"},
+                        "skills:invoke": {"status": "present", "reason": "codex_skill_adapter_found"},
+                        "workflow:gates": {"status": "present", "reason": "codex_agents_runtime_active"},
+                    },
+                    "hermes": {
+                        "present": True, "installed": True,
+                        "memory:read": {"status": "present", "reason": "hermes_memory_store_found"},
+                        "skills:invoke": {"status": "expected_divergence",
+                                          "reason": "external_skill_dirs_configured"},
+                        "workflow:gates": {"status": "present", "reason": "hermes_soul_runtime_active"},
+                    },
+                },
+            },
             "behavior": {"enums": {"b1": "deny", "b2": "ok", "b3": "html", "b4": "pass"},
                          "hashes": {"b5": "abc123"}},
             "scheduler": {"has_repo_sync": True, "has_parity_review": True, "job_count": 38},
@@ -61,6 +85,15 @@ def _report(machine: str, provenance: dict | None = None, **dims) -> dict:
     for k, v in dims.items():
         base["dimensions"][k] = v
     return base
+
+
+def _provider_report(machine: str, provider_overrides: dict | None = None, **kwargs) -> dict:
+    rep = _report(machine, **kwargs)
+    rep["schema_version"] = 4
+    if provider_overrides:
+        for provider, fields in provider_overrides.items():
+            rep["dimensions"]["provider_harness"]["providers"][provider].update(fields)
+    return rep
 
 
 # ── roster from config (M1) ─────────────────────────────────────────────────
@@ -282,6 +315,121 @@ def test_solvers_renders_row_in_html(tmp_path, monkeypatch):
     html = next(reports_dir.glob("*-machine-equality-matrix.html")).read_text()
     assert "<th>solvers</th>" in html
     assert "conforms" in html  # the dev-primary all-absent cell
+
+
+def test_provider_rows_are_in_display_dims():
+    assert "harness:claude:memory:read" in bem.DISPLAY_DIMS
+    assert "harness:codex:skills:invoke" in bem.DISPLAY_DIMS
+    assert "harness:hermes:workflow:gates" in bem.DISPLAY_DIMS
+
+
+def test_target_provider_parity_is_reference_based_on_claude_same_machine():
+    roster = {"dev-primary": {"status": "active"}}
+    codex_absent = {
+        "codex": {"memory:read": {"status": "absent", "reason": "runtime_missing"}}
+    }
+    reports = {"dev-primary": _provider_report("dev-primary", codex_absent)}
+    assert bem.verdict_for("harness:codex:memory:read", "dev-primary", reports, {},
+                           roster, TIER1) == "DIVERGES"
+
+    claude_absent = {
+        "claude": {"memory:read": {"status": "absent", "reason": "claude_memory_missing"}},
+        "codex": {"memory:read": {"status": "absent", "reason": "runtime_missing"}},
+    }
+    reports = {"dev-primary": _provider_report("dev-primary", claude_absent)}
+    assert bem.verdict_for("harness:codex:memory:read", "dev-primary", reports, {},
+                           roster, TIER1) == "MISSING-EVIDENCE"
+
+
+def test_provider_absent_yields_absent_not_diverges():
+    roster = {"dev-primary": {"status": "active"}}
+    reports = {"dev-primary": _provider_report("dev-primary", {
+        "codex": {"present": False, "installed": False}
+    })}
+    assert bem.verdict_for("harness:codex:workflow:gates", "dev-primary", reports, {},
+                           roster, TIER1) == "ABSENT"
+
+
+def test_provider_unknown_capability_yields_missing_evidence_not_absent():
+    roster = {"dev-primary": {"status": "active"}}
+    reports = {"dev-primary": _provider_report("dev-primary", {
+        "claude": {
+            "present": False,
+            "installed": False,
+            "memory:read": {"status": "unknown", "reason": "collector_unavailable"},
+        }
+    })}
+
+    assert bem.verdict_for("harness:claude:memory:read", "dev-primary", reports, {},
+                           roster, TIER1) == "MISSING-EVIDENCE"
+
+
+def test_expected_divergence_is_explicit_reason_only():
+    roster = {"dev-primary": {"status": "active"}}
+    reports = {"dev-primary": _provider_report("dev-primary", {
+        "hermes": {"skills:invoke": {"status": "expected_divergence",
+                                     "reason": "external_skill_dirs_configured"}}
+    })}
+    assert bem.verdict_for("harness:hermes:skills:invoke", "dev-primary", reports, {},
+                           roster, TIER1) == "EXPECTED-DIVERGENCE"
+
+    reports = {"dev-primary": _provider_report("dev-primary", {
+        "hermes": {"skills:invoke": {"status": "expected_divergence",
+                                     "reason": "arbitrary_reason"}}
+    })}
+    assert bem.verdict_for("harness:hermes:skills:invoke", "dev-primary", reports, {},
+                           roster, TIER1) == "DIVERGES"
+
+
+def test_legacy_v3_report_provider_rows_missing_evidence():
+    roster = {"dev-primary": {"status": "active"}}
+    rep = _report("dev-primary")
+    rep["schema_version"] = 3
+    rep["dimensions"].pop("provider_harness")
+    reports = {"dev-primary": rep}
+    assert bem.verdict_for("harness:codex:memory:read", "dev-primary", reports, {},
+                           roster, TIER1) == "MISSING-EVIDENCE"
+
+
+def test_stale_checkout_precedence_still_dominates_provider_rows():
+    roster = {"dev-primary": {"status": "active"}}
+    reports = {"dev-primary": _provider_report("dev-primary", provenance=_prov(dirty=True))}
+    assert bem.verdict_for("harness:codex:memory:read", "dev-primary", reports, {},
+                           roster, TIER1) == "STALE-CHECKOUT"
+
+
+def test_matrix_renders_nine_provider_capability_rows_for_four_active_machines(tmp_path, monkeypatch):
+    state = tmp_path / "state"
+    state.mkdir()
+    reports_dir = tmp_path / "reports"
+    cfg = tmp_path / "harness-config.yaml"
+    machines = {m: {"status": "active"} for m in (
+        "dev-primary", "dev-secondary", "ace-win-1", "ace-win-2")}
+    cfg.write_text(yaml.safe_dump({"workstations": machines, "tier1_repos": TIER1}))
+    for machine in machines:
+        (state / f"equality-{machine}.yaml").write_text(
+            yaml.safe_dump(_provider_report(machine)))
+    monkeypatch.setattr(bem, "STATE", state)
+    monkeypatch.setattr(bem, "REPORTS", reports_dir)
+    monkeypatch.setattr(bem, "CONFIG", cfg)
+
+    bem.main()
+
+    html = next(reports_dir.glob("*-machine-equality-matrix.html")).read_text()
+    for row in (
+        "harness:claude:memory:read",
+        "harness:claude:skills:invoke",
+        "harness:claude:workflow:gates",
+        "harness:codex:memory:read",
+        "harness:codex:skills:invoke",
+        "harness:codex:workflow:gates",
+        "harness:hermes:memory:read",
+        "harness:hermes:skills:invoke",
+        "harness:hermes:workflow:gates",
+    ):
+        assert f"<th>{row}</th>" in html
+    assert html.count("PARITY") >= 32
+    assert "EXPECTED-DIVERGENCE" in html
 
 
 # ── uniform-dim equality + ties (C1) ────────────────────────────────────────

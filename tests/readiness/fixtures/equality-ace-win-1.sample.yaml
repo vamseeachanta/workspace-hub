@@ -11,7 +11,7 @@
 # (cores_min:8; ram_gib_min restored in the #2816 W4 follow-up). NOT a live machine report —
 # regenerate by re-running the .sh seam if the schema changes.
 generated_at: "2026-05-30T04:31:07"
-schema_version: 3
+schema_version: 4
 machine: "ace-win-1"
 host: "acma-ws002"
 os: windows
@@ -47,6 +47,27 @@ dimensions:
   memory:
     hermes_home: present
     context_md_mtime: "2026-05-29T22:14:03"
+  provider_harness:
+    schema_version: 1
+    providers:
+      claude:
+        present: true
+        installed: true
+        "memory:read": {status: present, reason: claude_memory_context_found}
+        "skills:invoke": {status: present, reason: repo_skill_tree_found}
+        "workflow:gates": {status: present, reason: hard_gates_runtime_found}
+      codex:
+        present: true
+        installed: true
+        "memory:read": {status: present, reason: codex_memory_runtime_found}
+        "skills:invoke": {status: present, reason: codex_skill_adapter_found}
+        "workflow:gates": {status: present, reason: codex_agents_runtime_active}
+      hermes:
+        present: true
+        installed: true
+        "memory:read": {status: present, reason: hermes_memory_store_found}
+        "skills:invoke": {status: expected_divergence, reason: external_skill_dirs_configured}
+        "workflow:gates": {status: present, reason: hermes_soul_runtime_active}
   behavior:
     enums: {b1: deny, b2: ok, b3: html, b4: pass}
     hashes: {b5: 4f2a9c1e7b0d6385}

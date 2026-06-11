@@ -194,9 +194,13 @@ fi
 # MEASURED-PATH allowlist (BC1): dirty reflects ONLY the paths the collector actually reads,
 # NOT `.claude` wholesale — else unrelated state/memory edits would false-STALE a healthy
 # machine. Keep this in sync with the dimensions probed above.
-MEASURED=(.claude/skills .claude/memory/context.md .claude/dispatch .claude/rules \
+MEASURED=(.claude/skills .claude/memory/context.md .claude/memory/agents.md .codex/skills \
+          .claude/dispatch .claude/rules AGENTS.md \
           .claude/hooks/plan-approval-gate.sh .claude/settings.json \
-          scripts/readiness/harness-config.yaml config/scheduled-tasks/schedule-tasks.yaml)
+          scripts/readiness/harness-config.yaml scripts/readiness/provider_harness_parity.py \
+          config/agents/claude/SOUL.runtime.md config/agents/codex/AGENTS.runtime.md \
+          config/agents/codex/MEMORY.runtime.md config/agents/hermes/SOUL.runtime.md \
+          config/scheduled-tasks/schedule-tasks.yaml)
 checkout_sha="unknown"; dirty=false; behind_main="unknown"; ahead_main="unknown"; origin_ref_age_h="unknown"
 if git -C "$WS" rev-parse --git-dir >/dev/null 2>&1; then
   checkout_sha=$(git -C "$WS" rev-parse --short HEAD 2>/dev/null); : "${checkout_sha:=unknown}"
@@ -248,12 +252,56 @@ if git -C "$WS" rev-parse --git-dir >/dev/null 2>&1; then
   fi
 fi
 
+# ── 9b. PROVIDER HARNESS — provider/capability parity predicates (#2889) ─────
+provider_harness_fallback() {
+  "${provider_py}" "${SCRIPT_DIR}/provider_harness_parity.py" \
+    --workspace "$WS" --home "${HOME:-}" --format yaml 2>/dev/null
+}
+provider_harness_unknown() {
+  cat <<'YAML'
+schema_version: 1
+providers:
+  claude:
+    present: false
+    installed: false
+    "memory:read": {status: unknown, reason: collector_unavailable}
+    "skills:invoke": {status: unknown, reason: collector_unavailable}
+    "workflow:gates": {status: unknown, reason: collector_unavailable}
+  codex:
+    present: false
+    installed: false
+    "memory:read": {status: unknown, reason: collector_unavailable}
+    "skills:invoke": {status: unknown, reason: collector_unavailable}
+    "workflow:gates": {status: unknown, reason: collector_unavailable}
+  hermes:
+    present: false
+    installed: false
+    "memory:read": {status: unknown, reason: collector_unavailable}
+    "skills:invoke": {status: unknown, reason: collector_unavailable}
+    "workflow:gates": {status: unknown, reason: collector_unavailable}
+YAML
+}
+provider_py=""
+if [[ "$OS" == "windows" ]] && have python; then
+  provider_py="python"
+elif have python3; then
+  provider_py="python3"
+elif have python; then
+  provider_py="python"
+fi
+if [[ -n "$provider_py" && -f "${SCRIPT_DIR}/provider_harness_parity.py" ]]; then
+  provider_harness_yaml="$(provider_harness_fallback || provider_harness_unknown)"
+else
+  provider_harness_yaml="$(provider_harness_unknown)"
+fi
+provider_harness_yaml="$(printf '%s\n' "$provider_harness_yaml" | sed 's/^/    /')"
+
 # ── emit (generated_at + headroom + mtime + job_count + checkout_sha are EXCLUDED from the
 #          hash; dirty + behind_main + origin_ref_age_h ARE hashed — A1/BC5: exclude the pure
 #          churn (sha) ONLY, so every freshness-state field stays live in the committed report
 #          and a fresh→stale transition always forces a rewrite) ──
 read -r -d '' BODY <<YAML || true
-schema_version: 3
+schema_version: 4
 machine: "$(yesc "$MACHINE")"
 host: "$(yesc "$HOST")"
 os: ${OS}
@@ -281,6 +329,8 @@ ${solvers_yaml}  harness:
   memory:
     hermes_home: ${hermes_home}
     context_md_mtime: "$(yesc "$ctx_mtime")"
+  provider_harness:
+${provider_harness_yaml}
   behavior:
     enums: {b1: ${b1}, b2: ${b2}, b3: ${b3}, b4: ${b4}}
     hashes: {b5: ${b5}}

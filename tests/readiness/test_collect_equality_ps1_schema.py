@@ -55,22 +55,25 @@ def _win1_baseline() -> dict:
 
 
 # ════════════════════════════════════════════════════════════════════════════
-# 1. Golden fixture parses to schema_version 3 with provenance + all 9 dims
+# 1. Golden fixture parses to schema_version 4 with provenance + all 10 dims
 # ════════════════════════════════════════════════════════════════════════════
 EXPECTED_DIMS = {"compute", "data_access", "solvers", "harness", "skills",
-                 "kanban", "memory", "behavior", "scheduler"}
+                 "kanban", "memory", "behavior", "scheduler", "provider_harness"}
 
 
-def test_ps1_sample_output_parses_schema_v3():
+def test_ps1_sample_output_parses_schema_v4_with_provider_harness():
     d = _fixture()
-    assert d["schema_version"] == 3
+    assert d["schema_version"] == 4
     assert d["os"] == "windows"
     assert d["machine"] == "ace-win-1"
     # provenance block present with the freshness fields is_stale() consumes
     p = d["provenance"]
     assert set(p) >= {"checkout_sha", "dirty", "behind_main", "ahead_main", "origin_ref_age_h"}
-    # all 9 dimensions present
+    # all 10 dimensions present
     assert set(d["dimensions"]) == EXPECTED_DIMS
+    ph = d["dimensions"]["provider_harness"]
+    assert ph["schema_version"] == 1
+    assert set(ph["providers"]) == {"claude", "codex", "hermes"}
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -156,7 +159,7 @@ def _sh_stdout(env_extra: dict, tmp_path: Path, machine: str = "ace-win-1") -> d
     return yaml.safe_load(res.stdout)
 
 
-def test_ps1_field_parity_with_sh_stdout(tmp_path):
+def test_ps1_field_parity_with_sh_stdout_includes_provider_harness(tmp_path):
     # The .ps1's delegation target IS collect-equality.sh, so its emission must carry the same
     # field keys as the live .sh --stdout (minus OS-dependent values). Drive the .sh through the
     # windows EQ_* seam so the compute fields are populated exactly as the .ps1 would populate them.

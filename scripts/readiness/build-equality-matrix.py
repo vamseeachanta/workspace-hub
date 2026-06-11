@@ -47,6 +47,9 @@ SOLVER_OK = {
 }
 # Uniform dims whose cross-machine difference is OS-driven, not a defect:
 EXPECTED_DIFF_DIMS = {"python_cmd"}
+PROVIDERS = ("claude", "codex", "hermes")
+CAPABILITIES = ("memory:read", "skills:invoke", "workflow:gates")
+EXPECTED_DIVERGENCE_REASONS = {"external_skill_dirs_configured"}
 
 # #2851 freshness guard: a report whose origin/main ref hasn't been refreshed within this
 # many hours can't be trusted to have a meaningful behind_main, so we fail closed. repo-sync
@@ -204,6 +207,67 @@ def extract_value(dim: str, report: dict):
     return None
 
 
+def provider_rows() -> list[str]:
+    return [f"harness:{provider}:{capability}"
+            for provider in PROVIDERS for capability in CAPABILITIES]
+
+
+def parse_provider_row(dim: str) -> tuple[str, str] | None:
+    parts = dim.split(":", 2)
+    if len(parts) != 3 or parts[0] != "harness":
+        return None
+    provider, capability = parts[1], parts[2]
+    if provider not in PROVIDERS or capability not in CAPABILITIES:
+        return None
+    return provider, capability
+
+
+def provider_capability_verdict(provider: str, capability: str,
+                                provider_record: dict, claude_record: dict) -> str:
+    if not isinstance(provider_record, dict) or not isinstance(claude_record, dict):
+        return "MISSING-EVIDENCE"
+    provider_present = provider_record.get("present") is True
+    cap = provider_record.get(capability) or {}
+    if cap.get("status") == "unknown":
+        return "MISSING-EVIDENCE"
+    if provider == "claude":
+        if not provider_present:
+            return "ABSENT"
+        return "PARITY" if cap.get("status") == "present" else "MISSING-EVIDENCE"
+
+    claude_cap = claude_record.get(capability) or {}
+    if claude_cap.get("status") == "unknown":
+        return "MISSING-EVIDENCE"
+    if claude_record.get("present") is not True or claude_cap.get("status") != "present":
+        return "MISSING-EVIDENCE"
+    if not provider_present:
+        return "ABSENT"
+    status = cap.get("status")
+    if status == "present":
+        return "PARITY"
+    if status == "expected_divergence":
+        return ("EXPECTED-DIVERGENCE"
+                if cap.get("reason") in EXPECTED_DIVERGENCE_REASONS else "DIVERGES")
+    if status == "absent":
+        return "DIVERGES"
+    return "MISSING-EVIDENCE"
+
+
+def provider_row_verdict(dim: str, report: dict) -> str:
+    parsed = parse_provider_row(dim)
+    if parsed is None:
+        return "MISSING-EVIDENCE"
+    if report.get("schema_version") != 4:
+        return "MISSING-EVIDENCE"
+    provider, capability = parsed
+    harness = report.get("dimensions", {}).get("provider_harness")
+    if not isinstance(harness, dict) or harness.get("schema_version") != 1:
+        return "MISSING-EVIDENCE"
+    providers = harness.get("providers") or {}
+    return provider_capability_verdict(
+        provider, capability, providers.get(provider), providers.get("claude"))
+
+
 # ── precedence orchestrator (C3) ─────────────────────────────────────────────
 def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
                 roster: dict, probed_repos: list[str]) -> str:
@@ -221,6 +285,8 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
     # unreachable/missing-evidence, above the cold/uniform split.
     if is_stale(rep):
         return "STALE-CHECKOUT"
+    if parse_provider_row(dim) is not None:
+        return provider_row_verdict(dim, rep)
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
@@ -245,8 +311,9 @@ def load_reports() -> dict[str, dict]:
     return out
 
 
-DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
-                "kanban", "memory", "behavior", "scheduler"]
+BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
+                     "kanban", "memory", "behavior", "scheduler"]
+DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
 
 def main() -> None:
@@ -271,9 +338,10 @@ def main() -> None:
 <title>Machine-Equality Matrix — #2801</title>
 <style>body{{font:14px/1.5 system-ui,sans-serif;margin:2rem}}table{{border-collapse:collapse}}
 th,td{{border:1px solid #ddd;padding:.4rem .6rem;font-size:.8rem}}thead th{{background:#2d3748;color:#fff}}
-tbody th{{background:#edf2f7}}.conforms,.equal{{background:#c6f6d5}}.below-baseline,.diverges{{background:#fed7d7}}
-.no-majority,.missing-baseline{{background:#feebc8}}.expected-diff{{background:#e9d8fd}}
-.pending,.missing-evidence{{background:#fffaf0}}.unreachable{{background:#f7fafc;color:#a0aec0}}
+tbody th{{background:#edf2f7}}.conforms,.equal,.parity{{background:#c6f6d5}}
+.below-baseline,.diverges{{background:#fed7d7}}.no-majority,.missing-baseline{{background:#feebc8}}
+.expected-diff,.expected-divergence{{background:#e9d8fd}}
+.pending,.missing-evidence{{background:#fffaf0}}.unreachable,.absent{{background:#f7fafc;color:#a0aec0}}
 .stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}</style></head>
 <body><h1>Machine-Equality Matrix</h1>
 <p>#2801 · {date.today().isoformat()} · reporting {reporting}/{active} active machines</p>

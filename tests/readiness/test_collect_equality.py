@@ -60,7 +60,8 @@ def test_collect_emits_valid_yaml(tmp_path):
     d = _run(_fixture(tmp_path))
     assert d["machine"] == "dev-primary"
     assert set(d["dimensions"]) >= {"compute", "data_access", "harness", "skills",
-                                    "kanban", "memory", "behavior", "scheduler"}
+                                    "kanban", "memory", "behavior", "scheduler",
+                                    "provider_harness"}
 
 
 def test_collect_machine_override(tmp_path):
@@ -165,10 +166,67 @@ STATUS_ENUM = {"licensed", "present", "absent", "unknown"}
 EVIDENCE_ENUM = {"import", "env", "root", "absent", "unknown"}
 
 
-def test_collect_emits_schema_v3(tmp_path):
-    # #2849: schema bumped to 3 with the solvers dimension added.
+def test_collect_emits_schema_v4(tmp_path):
+    # #2889: schema bumped to 4 with the provider_harness dimension added.
     d = _run(_fixture(tmp_path))
-    assert d["schema_version"] == 3
+    assert d["schema_version"] == 4
+
+
+def test_collect_emits_schema_v4_with_complete_provider_harness(tmp_path):
+    d = _run(_fixture(tmp_path))
+    harness = d["dimensions"]["provider_harness"]
+    assert harness["schema_version"] == 1
+    assert set(harness["providers"]) == {"claude", "codex", "hermes"}
+    for provider in ("claude", "codex", "hermes"):
+        record = harness["providers"][provider]
+        assert set(record) >= {"present", "installed", "memory:read",
+                               "skills:invoke", "workflow:gates"}
+        for capability in ("memory:read", "skills:invoke", "workflow:gates"):
+            assert set(record[capability]) == {"status", "reason"}
+            assert record[capability]["status"] in {
+                "present", "absent", "expected_divergence", "unknown"}
+            assert isinstance(record[capability]["reason"], str)
+
+
+def test_collect_provider_harness_no_forbidden_fields(tmp_path):
+    ws = _fixture(tmp_path)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        env={
+            "WORKSPACE_HUB": _bash_path(ws),
+            "PATH": BASH_PATH,
+            "HOME": str(tmp_path),
+            "GITHUB_TOKEN": "ghp_should_not_leak",
+            "CRON_EXAMPLE": "* * * * * /secret/path",
+        },
+        capture_output=True,
+        text=True,
+        timeout=60)
+    assert res.returncode == 0, res.stderr
+    provider_block = res.stdout.split("provider_harness:", 1)[1]
+    assert "ghp_should_not_leak" not in provider_block
+    assert "* * *" not in provider_block
+    assert ".codex/auth.json" not in provider_block
+
+
+def test_provider_harness_helper_is_windows_stdlib_safe(tmp_path):
+    ws = _fixture(tmp_path)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "ace-win-1"],
+        env={
+            "WORKSPACE_HUB": _bash_path(ws),
+            "PATH": BASH_PATH,
+            "HOME": str(tmp_path),
+            "EQ_TEST_ENABLE_OS_OVERRIDE": "1",
+            "EQ_OS_OVERRIDE": "windows",
+        },
+        capture_output=True,
+        text=True,
+        timeout=60)
+    assert res.returncode == 0, res.stderr
+    data = yaml.safe_load(res.stdout)
+    assert data["schema_version"] == 4
+    assert "provider_harness" in data["dimensions"]
 
 
 def test_collect_emits_solvers_block(tmp_path):
