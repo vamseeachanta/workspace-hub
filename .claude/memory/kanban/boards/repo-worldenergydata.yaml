@@ -2563,7 +2563,7 @@ cards:
     title: 'chore(harness): retire claude-flow-era .claude scaffolding + resolve bsee-data-extractor SKILL.md merge conflict'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/467
-    gh_state: open
+    gh_state: closed
     gh_labels: []
     initial_status: triage
     priority: 0
