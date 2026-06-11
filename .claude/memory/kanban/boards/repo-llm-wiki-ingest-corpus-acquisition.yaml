@@ -650,7 +650,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - status:plan-review
+      - status:plan-approved
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
