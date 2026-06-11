@@ -3686,3 +3686,13 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#700
+    title: 'CI baseline: Quality Gates and broad domain shards fail on main'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/700
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

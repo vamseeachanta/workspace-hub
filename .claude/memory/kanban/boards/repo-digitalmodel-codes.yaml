@@ -115,7 +115,6 @@ cards:
       - status:working
       - machine:dev-primary
       - status:plan-approved
-      - dispatch:ready
       - domain:codes
       - lane:codex
     gh_assignees: []
