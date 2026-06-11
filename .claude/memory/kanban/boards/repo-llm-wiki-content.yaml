@@ -134,7 +134,7 @@ cards:
     gh_labels:
       - documentation
       - enhancement
-      - status:plan-review
+      - status:working
       - cat:documentation
       - cat:knowledge-domain
       - domain:knowledge-management

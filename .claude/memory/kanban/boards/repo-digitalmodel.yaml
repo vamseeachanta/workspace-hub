@@ -3691,9 +3691,13 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/700
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - priority:high
+      - cat:ci
+      - status:pending
+      - lane:codex
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/digitalmodel#701
