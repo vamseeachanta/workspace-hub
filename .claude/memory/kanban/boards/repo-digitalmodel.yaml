@@ -3696,3 +3696,13 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#701
+    title: Restore Windows workflow automation CI after cx-Oracle dependency isolation
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/701
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
