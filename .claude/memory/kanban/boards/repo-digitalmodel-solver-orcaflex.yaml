@@ -656,3 +656,35 @@ cards:
       Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
 
       Linux can validate `ProjectInputSpec` and generate OrcaFlex YAML, but final `.dat`/`.sim` load-run proof requires an OrcaFlex license. Workspace-hub has a related operational smoke issue for generic OrcaFlex queue validation, but the Ballymore jumper generated model still needs a domain-specific licensed proof once #602/#603 land.'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#691
+    title: Export Orcina L07 OrcaFlex model to YAML on ace-win-1
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/691
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - status:pending
+      - domain:solver-orcaflex
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#692
+    title: Register Orcina L07 YAML export in digitalmodel and ace references
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/692
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:medium
+      - status:pending
+      - domain:solver-orcaflex
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

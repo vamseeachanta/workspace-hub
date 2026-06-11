@@ -2548,3 +2548,14 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#466
+    title: 'ci: optimize PR check time — module-scoped test selection'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/466
+    gh_state: open
+    gh_labels:
+      - priority:medium
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

@@ -332,7 +332,7 @@ cards:
     title: 'feat(workstations): per-provider harness-parity cell (memory/skills/workflow × Claude/Codex/Hermes) [#2887 R2]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2889
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -343,6 +343,7 @@ cards:
       - agent:codex
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
       - domain:workstations-fleet-equivalence
       - lane:claude
     initial_status: triage
