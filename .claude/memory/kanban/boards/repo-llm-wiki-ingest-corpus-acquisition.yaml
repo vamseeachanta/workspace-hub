@@ -647,10 +647,10 @@ cards:
     title: '[materials-mechanical] reconcile #109 ledger with ANSI/ACP #511 decisions'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/520
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
-      - status:plan-approved
+      - status:done
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition

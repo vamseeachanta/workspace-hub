@@ -341,7 +341,7 @@ cards:
       - machine:multi
       - agent:claude
       - agent:codex
-      - status:needs-plan
+      - status:plan-approved
       - gate:completeness
       - domain:workstations-fleet-equivalence
       - lane:claude
