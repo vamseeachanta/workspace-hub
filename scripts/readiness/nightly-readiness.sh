@@ -190,6 +190,30 @@ check_r_registry() {
 } ; check_r_registry || true
 
 # ─────────────────────────────────────────────────────────────────────────────
+# R-MODEL-DRIFT: live runtime configs match model-registry.yaml (#3038)
+# Local runtime config (~/.codex/config.toml, ~/.hermes/config.yaml) is the
+# operational truth; the registry must track it.
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_model_drift() {
+  # shellcheck source=../lib/model-registry.sh
+  source "${WORKSPACE_HUB}/scripts/lib/model-registry.sh" 2>/dev/null || \
+    { log_fail "R-MODEL-DRIFT: model-registry.sh lib missing"; return; }
+  local reg_openai live_codex live_hermes drift=0
+  reg_openai="$(registry_model openai_primary "" 2>/dev/null)"
+  live_codex="$(sed -n -E 's/^model[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p' "${HOME}/.codex/config.toml" 2>/dev/null | head -1)"
+  live_hermes="$(sed -n -E 's/^model[[:space:]]*[=:][[:space:]]*"?([A-Za-z0-9._-]+)"?.*/\1/p' "${HOME}/.hermes/config.yaml" 2>/dev/null | head -1)"
+  if [[ -n "$live_codex" && -n "$reg_openai" && "$live_codex" != "$reg_openai" ]]; then
+    log_fail "R-MODEL-DRIFT: ~/.codex/config.toml model='${live_codex}' vs registry openai_primary='${reg_openai}' — update model-registry.yaml"
+    drift=1
+  fi
+  if [[ -n "$live_hermes" && -n "$reg_openai" && "$live_hermes" != "$reg_openai" ]]; then
+    log_fail "R-MODEL-DRIFT: ~/.hermes/config.yaml model='${live_hermes}' vs registry openai_primary='${reg_openai}' — update model-registry.yaml"
+    drift=1
+  fi
+  [[ "$drift" -eq 0 ]] && log_pass "R-MODEL-DRIFT: live codex/hermes models match registry (openai_primary='${reg_openai}')"
+} ; check_r_model_drift || true
+
+# ─────────────────────────────────────────────────────────────────────────────
 # R-XPROV: CODEX.md + GEMINI.md contain legal + TDD mandates
 # ─────────────────────────────────────────────────────────────────────────────
 check_r_xprov() {

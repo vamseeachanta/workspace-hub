@@ -61,11 +61,24 @@ LABEL_AGENT_MAP: dict[str, str] = {
 
 OVERNIGHT_LABELS = {"overnight", "overnight-batch", "batch"}
 
+MODEL_REGISTRY = REPO_ROOT / "config" / "agents" / "model-registry.yaml"
+
+
+def _registry_model(key: str, fallback: str) -> str:
+    """Read a latest_models id from model-registry.yaml (no yaml dep; #3038)."""
+    try:
+        text = MODEL_REGISTRY.read_text()
+    except OSError:
+        return fallback
+    m = re.search(rf'^\s+{re.escape(key)}:\s*"([^"]+)"', text, re.MULTILINE)
+    return m.group(1) if m else fallback
+
+
 AGENT_MODEL_MAP: dict[str, dict[str, str]] = {
-    "claude":  {"model": "claude-fable-5",         "provider": "anthropic"},
-    "codex":   {"model": "codex-cli",              "provider": "openai-codex"},
-    "gemini":  {"model": "gemini-2.5-pro",         "provider": "copilot"},
-    "hermes":  {"model": "gpt-5.5",                "provider": "openai-codex"},
+    "claude":  {"model": _registry_model("claude_primary", "claude-fable-5"), "provider": "anthropic"},
+    "codex":   {"model": _registry_model("codex_primary", "codex-cli"),       "provider": "openai-codex"},
+    "gemini":  {"model": _registry_model("gemini_primary", "gemini-2.5-pro"), "provider": "copilot"},
+    "hermes":  {"model": _registry_model("openai_primary", "gpt-5.5"),        "provider": "openai-codex"},
 }
 
 AGENT_COMMAND: dict[str, str] = {

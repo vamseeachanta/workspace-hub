@@ -193,8 +193,10 @@ CODEX_QUOTA_EXHAUSTED=false
 CODEX_OPUS_FALLBACK=false
 # Max Codex reviews per WRK before auto-switching to Opus (saves quota)
 CODEX_MAX_REVIEWS_PER_WRK="${CODEX_MAX_REVIEWS_PER_WRK:-2}"
-# Opus model used as Codex substitute when quota exhausted or limit reached
-CODEX_OPUS_MODEL="${CODEX_OPUS_MODEL:-claude-opus-4-8}"
+# Strong Claude model used as Codex substitute when quota exhausted or limit reached
+# Default read from model-registry.yaml (claude_strong) per #3038; env override wins.
+source "${SCRIPT_DIR}/../lib/model-registry.sh"
+CODEX_OPUS_MODEL="${CODEX_OPUS_MODEL:-$(registry_model claude_strong claude-opus-4-8)}"
 
 classify_review_result() {
   local result_file="$1"
