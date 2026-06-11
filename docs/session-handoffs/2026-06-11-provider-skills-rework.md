@@ -73,6 +73,31 @@ fully reversible, history preserved, nothing deleted.
   `dspy.Codex(...)` variant). Left as-is; consolidation is a separate decision.
 - **`config/agents/claude/SOUL.delta.md` + SHARED_SOUL.md** — reviewed, current, unchanged.
 
+## CLOSEOUT — session exit (2026-06-11, final)
+
+**Everything landed. Epic [#3040](https://github.com/vamseeachanta/workspace-hub/issues/3040) CLOSED with all 8 children closed.**
+All 13 repos verified `main == origin/main`. `.codex/skills.bak` deleted by owner.
+
+| Surface | Final state |
+|---|---|
+| Issues | #3036, #3037, #3038, #3039, #3040 (wshub) + digitalmodel#695 + worldenergydata#467 + aceengineer-website#17 — ALL CLOSED |
+| PRs | assetutilities#87, digitalmodel#697, worldenergydata#468 — ALL MERGED (squash; protected mains) |
+| worldenergydata extras | 3 conflict-corrupted skills repaired (bsee-data-extractor, npv-analyzer, production-forecaster); `tests/test_agent_doc_clean.py` generalized to scan all 49 live `.claude` docs |
+| aceengineer-website | overnight branch safe-deleted (0 unique commits); its leftovers stashed — the stash contains a policy-violating `GIT_PRE_PUSH_SKIP` allow rule: **drop it, never restore** |
+| hermes-model-switching skill | gpt-5.5 documented; 4 owner-applied visible-text `scanner-allow:hermes_env_access` sentinels (two human-run rounds — HTML-comment form trips `html_comment_injection`) |
+
+**Dirty-state exceptions left deliberately (not this session's to clean):**
+- workspace-hub: pre-existing tracked modifications from parallel sessions, incl. the live **#2889 session's** plan + signals (its 2 newer files were preserved across this session's 29-commit rebase and restored as tracked modifications; byte backups at `/tmp/wshub-preserve-2889/`); a redundant `autostash` stash entry (content already applied) is safe to drop
+- digitalmodel: `feature/frps-ssr-global-riser-model` checkout, dirty — in-flight FRPS session; local `main` reconciled to origin's squash twin
+- worldenergydata: `rework/bsee-adapters` checkout, dirty — in-flight; rebasing onto updated main will encounter the already-resolved SKILL.md conflicts
+
+**No external/outward actions beyond:** GitHub issues/PRs/comments in the user's own repos and pushes the owner authorized.
+
+**Next steps (none blocking):**
+1. #2889 session: commit its restored plan/signals when it closes out; drop the redundant autostash
+2. After FRPS + bsee-adapters branches merge: nothing claude-flow-related remains to do (already handled on main via worktrees)
+3. Next model release: update `config/agents/model-registry.yaml` (`latest_models` + `context_windows_k`) — scripts now read it; R-MODEL-DRIFT will flag live-config drift nightly
+
 ## ADDENDUM — same-session issue sweep + resolution (later on 2026-06-11)
 
 All open items were converted to GitHub issues and immediately resolved where
