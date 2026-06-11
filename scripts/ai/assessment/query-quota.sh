@@ -42,6 +42,7 @@ usage() {
 Usage:
   query-quota.sh              Show usage summary (uses 15-min cache)
   query-quota.sh --refresh    Force refresh (skip cache)
+  query-quota.sh --cache-only Write only ~/.cache/agent-quota.json (skip repo file; #3034)
   query-quota.sh --json       Output raw JSON
   query-quota.sh --log        Log snapshot to ~/.agent-usage/weekly-log.jsonl
   query-quota.sh --weekly     Show weekly summary (uses ccusage)
@@ -50,11 +51,12 @@ EOF
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 main() {
-    local mode="display" refresh=false
+    local mode="display" refresh=false cache_only=false
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
             --refresh) refresh=true;  shift ;;
+            --cache-only) cache_only=true; shift ;;
             --json)    mode="json";   shift ;;
             --log)     mode="log";    shift ;;
             --weekly)  mode="weekly"; shift ;;
@@ -86,7 +88,10 @@ main() {
             '{timestamp:$ts, agents:[$claude,$codex,$gemini]}')
 
         write_cache "$data"
-        write_repo_quota "$data"
+        # --cache-only (#3034): cron refreshes on non-control-plane machines
+        # write only the HOME cache so the git-tracked repo copy never goes
+        # dirty; the repo file stays the control-plane's committed artifact.
+        [[ "$cache_only" == "true" ]] || write_repo_quota "$data"
     fi
 
     case "$mode" in

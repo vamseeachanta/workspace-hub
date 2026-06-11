@@ -17,6 +17,16 @@ teardown() {
   rm -rf "$TMPDIR"
 }
 
+# #3034: quota files carry a freshness timestamp; stamp fixtures fresh so these
+# pre-staleness tests keep exercising their original (unmarked) rendering.
+stamp_fresh() {
+  local f
+  for f in "$STATUSLINE_QUOTA_PRIMARY" "$STATUSLINE_QUOTA_CACHE"; do
+    [ -f "$f" ] || continue
+    jq --arg ts "$(date -Iseconds)" '. + {timestamp: $ts}' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+  done
+}
+
 # Minimal stdin payload — omit rate_limits so Claude falls through to the quota
 # file (which is `unavailable`), exercising the no-countdown path.
 INPUT='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10}}'
@@ -37,6 +47,7 @@ EOF
 
 @test "codex shows days-to-reset suffix from hours_to_reset (60h -> 2.5d)" {
   write_quota
+  stamp_fresh
   run bash -c "printf '%s' '$INPUT' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   # 60 hours / 24 = 2.5 days, rendered as O:64%·2.5d
@@ -45,6 +56,7 @@ EOF
 
 @test "unavailable provider (claude) gets NO fabricated countdown" {
   write_quota
+  stamp_fresh
   run bash -c "printf '%s' '$INPUT' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   # Claude renders dim with no value and no day-suffix appended (any day
@@ -61,6 +73,7 @@ EOF
 }
 EOF
   cp "$STATUSLINE_QUOTA_PRIMARY" "$STATUSLINE_QUOTA_CACHE"
+  stamp_fresh
   run bash -c "printf '%s' '$INPUT' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   [[ "$output" == *"O:64%"* ]]
@@ -76,6 +89,7 @@ EOF
 }
 EOF
   cp "$STATUSLINE_QUOTA_PRIMARY" "$STATUSLINE_QUOTA_CACHE"
+  stamp_fresh
   run bash -c "printf '%s' '$INPUT' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   # resets_at is far future, so the suffix must NOT be the 1h/24=0.0d fallback.
@@ -92,6 +106,7 @@ EOF
 }
 EOF
   cp "$STATUSLINE_QUOTA_PRIMARY" "$STATUSLINE_QUOTA_CACHE"
+  stamp_fresh
   run bash -c "printf '%s' '$INPUT' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   [[ "$output" == *"O:64%·"*"d"* ]]
@@ -100,6 +115,7 @@ EOF
 @test "claude shows days-to-reset from session rate_limits resets_at" {
   write_quota
   in='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10},"rate_limits":{"seven_day":{"used_percentage":37,"resets_at":"2099-01-10T00:00:00Z"}}}'
+  stamp_fresh
   run bash -c "printf '%s' '$in' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   # 100-37=63% remaining, with a day-countdown sourced from the session JSON
@@ -110,6 +126,7 @@ EOF
 @test "claude session weekly pct without resets_at gets no fabricated countdown" {
   write_quota
   in='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10},"rate_limits":{"seven_day":{"used_percentage":37}}}'
+  stamp_fresh
   run bash -c "printf '%s' '$in' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   [[ "$output" == *"C:63%"* ]]
@@ -122,6 +139,7 @@ EOF
   # unknown (or quota-file-sourced) percentage would mix telemetry sources, so
   # the C segment must stay bare (codex r2 finding on PR #3021).
   in='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10},"rate_limits":{"seven_day":{"resets_at":"2099-01-10T00:00:00Z"}}}'
+  stamp_fresh
   run bash -c "printf '%s' '$in' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   [[ "$output" != *"C:-%·"* ]]
@@ -130,6 +148,7 @@ EOF
 @test "malformed session resets_at never blanks the statusline" {
   write_quota
   in='{"model":{"display_name":"Opus"},"workspace":{"current_dir":"'"$PWD"'"},"cost":{"total_cost_usd":0},"context_window":{"used_percentage":10},"rate_limits":{"seven_day":{"used_percentage":37,"resets_at":"not-a-timestamp"}}}'
+  stamp_fresh
   run bash -c "printf '%s' '$in' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   [[ "$output" == *"C:63%"* ]]
@@ -141,6 +160,7 @@ EOF
 {"agents":[{"provider":"codex","pct_remaining":64}]}
 EOF
   cp "$STATUSLINE_QUOTA_PRIMARY" "$STATUSLINE_QUOTA_CACHE"
+  stamp_fresh
   run bash -c "printf '%s' '$INPUT' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   [[ "$output" == *"O:64%"* ]]   # segment still renders, just no suffix

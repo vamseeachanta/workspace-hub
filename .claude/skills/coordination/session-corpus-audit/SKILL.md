@@ -56,3 +56,10 @@ Output a markdown report with:
 - Weekly quality review
 - After a day with many session restarts
 - When investigating tool-call ceiling hits
+- When a product/chatbot already has rated conversation examples and the user asks to review provider sessions to catch up on inconsistencies
+
+## Conversation-rating provider catch-up
+
+When auditing Claude/Codex/Hermes/Gemini sessions for a chatbot or product with existing conversation ratings, **load the rated baseline first** and treat provider logs as meta-evidence. Do not restart the rubric. Review provider sessions for workflow defects that explain or predict conversation-quality failures: delivery-state overclaims, internal/tool leakage, canary-before-live drift, channel/scope/domain terminology confusion, and user-blame before log inspection.
+
+Use `references/conversation-rating-provider-catchup.md` for the detailed procedure and output shape.

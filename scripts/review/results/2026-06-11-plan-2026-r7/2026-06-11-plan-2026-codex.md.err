@@ -1,0 +1,2989 @@
+Reading additional input from stdin...
+OpenAI Codex v0.139.0
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 019eb8df-811f-7552-9122-519e7b1152c7
+--------
+user
+# Adversarial plan review
+
+You are an **adversarial reviewer**. Your job is to find what is wrong, missing, false, or risky in the plan you are about to read. Assume the plan has defects until you have evidence otherwise.
+
+## Stance — six non-negotiable rules
+
+1. **Opening framing.** You are an adversarial reviewer. Default to assuming the plan is wrong and prove otherwise. A review that ends in APPROVE is the exception, not the rule.
+
+2. **Anti-flatter.** Do not restate the plan. Do not praise. Do not note what the plan does well. Focus exclusively on what is wrong, missing, or risky.
+
+3. **Default to non-approve.** Return APPROVE only if you have affirmatively verified each correctness-critical claim AND can find no gap. When in doubt, return MINOR or MAJOR — being wrong about MINOR is cheap; missing a MAJOR is expensive.
+
+4. **Evidence over opinion.** Each finding must cite a specific file path, plan section, or quoted claim. Statements without citations are not findings and will be stripped.
+
+5. **Retrieval skepticism.** Treat the plan's cited sources as assertions to verify, not facts. If a file path is named, assume it may not exist until checked. If a claim about behavior is made, assume it may be outdated. If a tool or CLI is named, assume the invocation may be wrong.
+
+6. **Silence is failure.** If you have no concrete finding, explicitly say the plan was reviewed against [list checks] and none found — do not return an empty review. An empty review is a failure, not an implicit APPROVE.
+
+## Output shape
+
+Return exactly these sections:
+
+```
+## Verdict
+APPROVE | MINOR | MAJOR
+
+## Retrieval
+[Bullet list of every file/section you actually read or grep'd to verify the plan's claims. Be specific. "Read docs/plans/foo.md lines 40-60" beats "Read the plan".]
+
+## Findings
+[Numbered list. Each finding = one defect. Each finding MUST cite a file path, plan section, or quoted claim. No praise. No restatement. Only what is wrong, missing, or risky.]
+
+## Blockers
+[Subset of findings that must be resolved before the plan can be implemented. Empty list allowed only if every finding is MINOR.]
+```
+
+## What counts as a finding
+
+Good findings (keep):
+- "Plan §Pseudocode line 103 invokes `codex exec "$plan_file"` — passing a path. Codex CLI falls back to GitHub MCP on path args, returning false MAJOR. Verify empirically or fix."
+- "Acceptance criterion #8 is circular: weak-fixture + adversarial-stance → non-APPROVE regardless of wrapper correctness. This tests the fixture, not the code."
+- "Plan references `scripts/foo.sh` — no such file exists at HEAD. Grep returns zero matches."
+
+Bad findings (strip):
+- "The plan is well-structured and covers the main cases." → praise, not a finding.
+- "Consider adding more tests." → no citation, no specific gap.
+- "Looks good to me." → silence-is-failure violation.
+
+## If context is truncated
+
+If the plan is passed to you inline (prompt body) and appears truncated, say so explicitly as your verdict: `UNAVAILABLE (context truncation — plan body appears cut at line N)`. Do not return APPROVE/MINOR/MAJOR against a truncated plan.
+
+--- PLAN (docs/plans/2026-06-11-issue-2026-email-state-tracking.md) ---
+# Plan for #2026: Email state tracking system
+
+> **Status:** draft
+> **Complexity:** T2
+> **Date:** 2026-06-11
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2026
+> **Client:** N/A
+> **Lane:** lane:claude
+> **Review artifacts:** completed failed rounds are preserved at `scripts/review/results/2026-06-11-plan-2026-r1-*`, `scripts/review/results/2026-06-11-plan-2026-r2-*`, `scripts/review/results/2026-06-11-plan-2026-r3/`, `scripts/review/results/2026-06-11-plan-2026-r4/`, `scripts/review/results/2026-06-11-plan-2026-r5/`, and `scripts/review/results/2026-06-11-plan-2026-r6/`. This draft has been patched after R6 and requires a fresh R7 adversarial review before any `status:plan-review` label.
+
+---
+
+## Resource Intelligence Summary
+
+Planning execution mode: `parallel-readonly` for resource intel and plan review; implementation mode after approval should be `single-lane` because the state module, tests, and docs share one narrow write surface.
+
+### Existing repo code
+
+- Found: `docs/design/email-as-queue.md` defines #2017 as the contract source and assigns queue-state storage implementation to #2026. It explicitly says Gmail-side delete/archive automation belongs to #2423, and existing routing does not add new Gmail mutations.
+- Found: `docs/design/email-queue-state-schema.yaml` defines the five states, JSONL entry shape, snapshot key format `{account_id}::{thread_id}`, writer identity, snapshot metadata, and learning-log events.
+- Found: `tests/email/test_state_machine_contract.py` already encodes the missing #2026 storage module as xfailed contract tests for `transition`, `lookup`, `count_entries`, and `reactivate_reply`.
+- Found: `scripts/email/gmail-archive-extract.py`, `scripts/email/gmail-digest.py`, `scripts/email/email-routing.yaml`, `scripts/email/spam-detection-rules.yaml`, and CRE schemas already exist. They are inputs/adjacent tools, not the queue-state implementation.
+- Gap: `scripts/email/queue_state.py` and `scripts/email/state/` do not exist.
+- Gap: no implemented state report currently expresses "mailbox empty" as "no pending work."
+
+### Standards
+
+Not applicable as an engineering standard. Security/legal rules still apply:
+
+- Do not hardcode secrets or OAuth tokens.
+- Do not commit runtime email state containing real thread metadata.
+- Run `scripts/legal/legal-sanity-scan.sh` before any commit containing implementation artifacts.
+
+### LLM Wiki pages consulted
+
+No relevant LLM wiki pages. This is workspace-hub email automation infrastructure, not a client wiki or engineering-domain knowledge issue.
+
+### Documents consulted
+
+- Issue #2026 body and comments: current implementation target is state tracking; user clarified on 2026-06-11 that this automation pass covers only `vamsee.achanta@aceengineer.com` and `achantav@gmail.com`, and that "mailbox empty" means no pending work.
+- Issue #2017: closed as done; #2017 design artifacts are the contract source.
+- Issue #2024: open; extraction pipeline depends on #2026 state storage.
+- Issue #2423: open; Gmail-side archive/delete automation is a follow-on and must not be folded into this issue.
+- `docs/plans/2026-04-24-issue-2026-plan.md`: stale draft. It is useful for prior thinking but is superseded by this plan because it is ace-only, relies on unverified Gmail label mutation, lacks current template fields, and predates the two-account scope clarification.
+- `docs/plans/2026-04-20-issue-2017-plan.md`: design history for R1/R2 defects around dedup and xfail/import behavior.
+- `docs/design/email-as-queue-workflow.md`: older workflow design that still references three accounts, Gmail label source-of-truth behavior, and all-account cleanup rollout. This plan must update or explicitly supersede those stale sections.
+- `docs/document-intelligence/data-intelligence-map.md`: consulted as the required intelligence entry point. It does not add email-specific requirements.
+- `config/agents/codex/MEMORY.runtime.md`: loaded at session start; relevant durable memories include "Check parallel work", "Never offer self-label plan-approved", "Email cross-noise", "Codex needs pushed artifact", and "Pre-completion cleanup audit gate."
+
+### Gaps identified
+
+- Implement the queue-state storage module.
+- Implement state transition validation and persistence.
+- Implement snapshot rebuild and metadata freshness checks.
+- Implement grace-period local purge sweep.
+- Implement reactivation semantics, including missing extraction logging.
+- Implement account allowlist/config so only `ace` and `personal` are in scope for this pass. `skestates` remains out of scope unless a future issue re-authorizes it.
+- Extend the schema contract for `triggering_message_id` and decision-needed reporting metadata.
+- Define the public path-first wrapper API required by the existing #2017 xfail tests.
+- Define the account config and inbox snapshot contracts that let the state report evaluate unknown in-scope Gmail threads.
+- Implement a pending-work report where "empty mailbox" means zero known pending work in local state plus zero in-scope unknowns when the caller supplies an inbox snapshot. Local state alone cannot prove that Gmail has no untracked threads.
+- Implement Gmail label creation/mirroring for queue-state labels only; it must not archive or delete Gmail.
+- Reconcile stale April plan language and design docs that say ace-only, 3 accounts, repo-tracked runtime state, or full-account Gmail mutation.
+
+### Evidence (embedded verification)
+
+**Issue statuses** (verified 2026-06-11T20:21:48Z via `gh issue view`):
+
+```
+#2017 - CLOSED - design: Email-as-Queue workflow - extract data, delete when done, re-activate on reply
+labels: enhancement, priority:high, cat:infrastructure, status:done, agent:codex
+
+#2024 - OPEN - build: gmail-extract-and-act pipeline - rewrite gmail-archive-extract.py for extract-first, delete-later queue model
+labels: enhancement, priority:medium, cat:data-pipeline, domain:automation, machine:dev-primary, dispatch:ready, gate:completeness, lane:claude
+
+#2026 - OPEN - build: Email state tracking system - Gmail labels + local state log + grace period deletion
+labels: enhancement, priority:medium, cat:infrastructure, domain:automation, machine:dev-primary, dispatch:ready, gate:completeness, lane:claude
+
+#2423 - OPEN - feat: automated Gmail-side delete/archive for email-as-queue (follow-on to #2017)
+labels: enhancement, priority:medium, cat:infrastructure, domain:automation, machine:dev-primary, dispatch:ready, gate:completeness, lane:claude
+```
+
+**File existence** (verified 2026-06-11):
+
+```
+EXISTS: docs/design/email-as-queue.md
+EXISTS: docs/design/email-queue-state-schema.yaml
+EXISTS: scripts/email/email-routing.yaml
+EXISTS: scripts/email/gmail-archive-extract.py
+EXISTS: scripts/email/gmail-digest.py
+EXISTS: scripts/email/spam-detection-rules.yaml
+EXISTS: tests/email/test_state_machine_contract.py
+MISSING: scripts/email/queue_state.py
+MISSING: scripts/email/state/
+```
+
+**Line excerpts**:
+
+`docs/design/email-as-queue.md:16-18`
+
+```
+Pipeline orchestration belongs to #2024. Queue-state storage implementation belongs to #2026. New Gmail-side delete/archive automation belongs to #2423.
+
+Existing `gmail-archive-extract.py` routing behavior is grandfathered production infrastructure. This design does not add new Gmail mutations.
+```
+
+`docs/design/email-as-queue.md:37-39`
+
+```
+`completed` threads are retained through a seven-day grace window. After the grace window, local queue state transitions to `purged`; Gmail content is not touched by this contract.
+```
+
+`docs/design/email-as-queue.md:24-29`
+
+```
+Queue state is local-only in v1:
+
+- Append-only event log: `scripts/email/queue-state.jsonl`.
+- Materialized read snapshot: `scripts/email/queue-state-snapshot.yaml`.
+- Snapshot freshness metadata: `scripts/email/queue-state-snapshot.meta.yaml`.
+- Learning/correction log: `scripts/email/queue-learning-log.jsonl`.
+```
+
+This excerpt conflicts with this plan's chosen runtime path under `~/.hermes/email-state/`; implementation must update the design doc to distinguish tracked schema files from private runtime state.
+
+`docs/design/email-queue-state-schema.yaml:22-67`
+
+```
+queue_state_entry:
+  required:
+    - account_id
+    - thread_id
+    - from_state
+    - to_state
+    - ts_utc
+    - writer_identity
+  properties:
+    completed_at:
+      type: string
+      format: iso8601-utc-z
+dedup_key:
+    - account_id
+    - thread_id
+    - from_state
+    - to_state
+```
+
+This excerpt conflicts with D5 until the schema is updated to add `triggering_message_id` and revise dedup semantics.
+
+`docs/design/email-as-queue-workflow.md` (stale-section summary, not a verbatim excerpt):
+
+Older workflow text still references `~/.hermes/email-state.yaml`, `skestates`, and all-account deletion rollout language. This plan will update or mark those sections superseded so future agents do not revive the stale 3-account/delete-first behavior.
+
+`tests/email/test_state_machine_contract.py:6-15`
+
+```
+def require_queue_state():
+    try:
+        return importlib.import_module("scripts.email.queue_state")
+    except ModuleNotFoundError as exc:
+        pytest.fail(f"pending #2026 storage module: {exc}")
+
+@pytest.mark.xfail(reason="pending #2026 storage impl")
+def test_transition_inbound_to_extracted_writes_log(tmp_path):
+```
+
+**Gap proofs**:
+
+```
+$ uv run python -c "import scripts.email.queue_state; print(scripts.email.queue_state)"
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'scripts.email.queue_state'
+```
+
+**Reproduction proofs** (verify-against-repo-state):
+
+```
+$ uv run pytest tests/email/test_state_machine_contract.py -q --runxfail
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+_______________ test_transition_inbound_to_extracted_writes_log ________________
+ModuleNotFoundError: No module named 'scripts.email.queue_state'
+...
+E           Failed: pending #2026 storage module: No module named 'scripts.email.queue_state'
+...
+_____________ test_transition_retry_preserves_dedup_under_fresh_ts _____________
+ModuleNotFoundError: No module named 'scripts.email.queue_state'
+...
+____________ test_purged_reactivates_on_reply_with_extraction_link _____________
+ModuleNotFoundError: No module named 'scripts.email.queue_state'
+```
+
+- Reproduced at: 2026-06-11T20:21:48Z.
+- Failure mode observed matches issue claim: YES. The storage module is absent; contract tests fail under `--runxfail`.
+
+Source count: 9 distinct sources.
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | `docs/plans/2026-06-11-issue-2026-email-state-tracking.md` |
+| Superseded draft marker | `docs/plans/2026-04-24-issue-2026-plan.md` |
+| Plan index | `docs/plans/README.md` |
+| Existing contract docs | `docs/design/email-as-queue.md`, `docs/design/email-as-queue-workflow.md`, `docs/design/email-queue-state-schema.yaml` |
+| Tests | `tests/email/test_state_machine_contract.py`, `tests/email/test_email_queue_state.py` |
+| Implementation | `scripts/email/queue_state.py`, `scripts/email/email-queue-state.py`, `scripts/email/state/*.py` |
+| Runtime state directory | `~/.hermes/email-state/` by default, overrideable via `EMAIL_QUEUE_STATE_DIR` |
+| Optional local runtime config | `~/.hermes/email-state/accounts.yaml` |
+| Implementation notes requested by user | `docs/reports/2026-06-11-issue-2026-implementation-notes.html` |
+| Failed review rounds | `scripts/review/results/2026-06-11-plan-2026-r1-*`, `scripts/review/results/2026-06-11-plan-2026-r2-*`, `scripts/review/results/2026-06-11-plan-2026-r3/`, `scripts/review/results/2026-06-11-plan-2026-r4/`, `scripts/review/results/2026-06-11-plan-2026-r5/`, `scripts/review/results/2026-06-11-plan-2026-r6/` |
+
+---
+
+## Deliverable
+
+A local queue-state storage and reporting module for the two authorized Gmail accounts that can tell whether mailbox work is pending, while keeping Gmail archive/delete automation out of scope.
+
+---
+
+## Design Decisions
+
+### D1 - Runtime State Location
+
+Runtime email state will default to `~/.hermes/email-state/`, not a tracked repo path, because it may contain real thread IDs, sender-derived metadata, and extraction paths. The repo owns schemas, tests, and code; the local runtime owns private state.
+
+Tests will use temp directories through path-first log paths. Higher-level helper tests may also cover `EMAIL_QUEUE_STATE_DIR`.
+
+Implementation must update `docs/design/email-as-queue.md` and `docs/design/email-as-queue-workflow.md` to clarify that the repo-tracked files are schemas/design artifacts, while the live JSONL/snapshot/log files are private runtime artifacts under the configured state directory.
+
+### D2 - Account Scope and Config
+
+This pass supports only two account aliases:
+
+- `ace` for `vamsee.achanta@aceengineer.com`
+- `personal` for `achantav@gmail.com`
+
+Tracked code should not need to hardcode the literal email addresses in tests. Production account email mapping should come from local config/credentials at `~/.hermes/email-state/accounts.yaml` by default, overrideable via `EMAIL_QUEUE_ACCOUNTS_CONFIG`.
+
+Config schema:
+
+```yaml
+accounts:
+  ace:
+    email: vamsee.achanta@aceengineer.com
+    enabled: true
+  personal:
+    email: achantav@gmail.com
+    enabled: true
+  skestates:
+    email: skestatesinc@gmail.com
+    enabled: false
+```
+
+If the local config is absent, the default scope enables aliases `ace` and `personal` only; literal email normalization is unavailable until a local config supplies the email mapping. Tests that normalize literal emails must use a temp config file and set `EMAIL_QUEUE_ACCOUNTS_CONFIG`.
+
+The config may include disabled aliases solely so the report can distinguish "known but out of scope" from "literal email cannot be mapped." Active processing remains limited to enabled `ace` and `personal`. The low-level state store may persist any `account_id` string so existing contract tests using `user@example.com` keep working; account-scope enforcement belongs to the report/ingest/label boundary, not the raw `transition()` primitive. The account-scope layer must reject or report disabled `skestates` and `skestatesinc@gmail.com` as out of scope unless a future issue changes the allowlist. Report counts must normalize local snapshot records through the same account scope: enabled records contribute to pending/tracked counts, disabled or unknown local records are reported in separate warning buckets and cannot make `mailbox_empty` false for #2026.
+
+### D3 - Pending Work Semantics
+
+"Mailbox empty" means there is no pending work for any known in-scope thread and, when an inbox snapshot is supplied, no unknown in-scope Gmail thread. Non-pending tracked threads may be in these durable buckets:
+
+- `awaiting-reply`
+- `completed`
+- `purged`
+- `extracted` with no action pending
+
+Pending work classes are:
+
+- `inbound`
+- any existing contract state carrying `needs_user_decision: true`
+- any existing contract state carrying `needs_schema: true`
+- unknown in-scope Gmail threads present in a supplied inbox snapshot but absent from local state
+
+`needs_user_decision` is not a sixth state. It will be added to the schema as a boolean metadata field on queue entries and snapshots. `needs_schema` already exists in the schema and must count as pending work. Snapshot materialization is last-event-wins: absent boolean metadata on a later state event clears previous `needs_user_decision` and `needs_schema` values unless the event explicitly carries `true`. Completion materialization is also explicit: every `to_state="completed"` transition stamps `completed_at` from an explicit `completed_at` argument when supplied, otherwise from `ts_utc`; non-completed transitions clear `completed_at` unless they intentionally carry it forward for audit history. `pending_work_report()` counts from the snapshot, not from historical log rows. The report must return a structured object with per-account counts, `tracked_empty`, `mailbox_empty`, `unknown_status`, and `unknown_count`.
+
+Local state alone can only prove "no pending work among tracked threads." To prove "no unknown/unclassified in-scope threads", `pending_work_report()` must accept an optional caller-supplied inbox snapshot, such as records from #2024's Gmail read path. Unknown means "present in the supplied in-scope inbox snapshot but absent from local state." If no snapshot is supplied, the report must label the unknown-thread check `not_evaluated` rather than claiming an empty mailbox.
+
+### D4 - Gmail Label Creation and Mirror
+
+Gmail labels are visualization, not source of truth, but #2026 explicitly asks for label creation. This plan keeps queue state local as authoritative and includes one-time Gmail label setup for the two authorized accounts.
+
+Implementation must provide:
+
+- a pure label-operation planner used by tests
+- an `ensure_labels(..., apply=True)` path that creates missing labels from the exact #2026 taxonomy for `ace` and `personal` when Gmail client/credential surfaces are available for both accounts
+- default CLI behavior that prints planned operations unless an explicit `--apply-labels` flag is supplied
+
+The #2026 label taxonomy is:
+
+- `wh-email/extracted`
+- `wh-email/awaiting-reply`
+- `wh-email/completed`
+- `wh-email/noise`
+
+No `inbound` or `purged` Gmail label is created in #2026. `noise` remains a routing/labeling class, not a queue-state enum.
+
+Live label creation is in scope after plan approval. The implementation must select a separate authenticated Gmail client per enabled account, for example through `gmail_client_factory(account_alias)` or an explicit `clients_by_account` map; a single ambient Gmail client is not sufficient evidence that both mailboxes were mutated. Gmail archive/delete remains out of scope and belongs to #2423.
+
+### D5 - Dedup Key Correction
+
+The implementation must correct the #2017 v9 dedup over-correction by adding `cycle_id` plus a computed `dedup_event_id` to the dedup contract.
+
+Rules:
+
+- Every snapshot record carries a `cycle_id`.
+- Initial records default to `cycle_id = "initial"` unless the caller supplies one.
+- Reactivation transitions are exactly `awaiting-reply|completed|purged -> extracted|inbound`. They start a new cycle. `cycle_id` is `msg:<triggering_message_id>` when present, otherwise `reactivation:<reactivation_id>` when the caller supplies a stable fallback id from an inbox snapshot. The reactivation checker must map inbox `latest_message_id` to the public `triggering_message_id` argument on every planned/applied `reactivate_reply()` call; if `latest_message_id` is absent it must supply a stable `reactivation_id` derived from the snapshot record. The cold-start compatibility wrapper may fall back to `bootstrap:<linked_extraction_or_reason>` only for the existing single-call #2017 contract test when no snapshot record exists; production reactivation checkers must pass `triggering_message_id` or a stable `reactivation_id`, otherwise the transition fails with `MissingReactivationId`.
+- Non-reactivation transitions inherit the current snapshot `cycle_id`.
+- If `triggering_message_id` is supplied, `dedup_event_id = "msg:" + triggering_message_id`.
+- If no `triggering_message_id` is supplied, `dedup_event_id = "legacy:no-trigger"` within the current cycle so existing retry tests without a message id still dedup across fresh timestamps, while later cycles do not collapse.
+- Missing-trigger reactivation events must set `warning_no_triggering_message_id: true` on the state entry and any paired learning event.
+- Mixed no-id/id events do not dedup against each other because they have different `cycle_id`, different `dedup_event_id`, or both.
+- Historical retry detection must not rely only on the current snapshot cycle. If the caller supplies `cycle_id`, require an exact six-field historical key match. If the caller lacks `cycle_id` and current state differs from `from_state`, search historical keys with the same `(account_id, thread_id, from_state, to_state, dedup_event_id)` and treat the event as an idempotent retry only when exactly one candidate exists and that candidate's `cycle_id` equals the current snapshot `cycle_id`; otherwise raise `StaleStateError`. This keeps delayed duplicates in the same lifecycle idempotent without silently skipping stale no-trigger events from a previous lifecycle.
+
+`docs/design/email-queue-state-schema.yaml` must be updated so `cycle_id`, `triggering_message_id`, `dedup_event_id`, `needs_user_decision`, `warning_no_triggering_message_id`, and the corrected dedup-key semantics are explicit.
+
+### D6 - Public API Compatibility
+
+`scripts/email/queue_state.py` must keep the path-first API used by `tests/email/test_state_machine_contract.py`:
+
+```python
+transition(log_path, *, account_id, thread_id, from_state, to_state, ts_utc, ...)
+lookup(log_path, account_id, thread_id)
+list_threads(log_path, account_scope=None, include_out_of_scope=False)
+count_entries(log_path)
+reactivate_reply(log_path, *, account_id, thread_id, prior_state, linked_extraction, ts_utc, ...)
+```
+
+When a caller supplies `log_path`, sibling runtime files are derived from that path:
+
+- `queue-state-snapshot.yaml`
+- `queue-state-snapshot.meta.yaml`
+- `queue-learning-log.jsonl`
+
+For the standard log filename `queue-state.jsonl`, the sibling names above are used. For any non-standard log filename, sibling names must derive from the log stem, for example `custom.jsonl` -> `custom-snapshot.yaml`, `custom-snapshot.meta.yaml`, and `custom-learning-log.jsonl`, so two stores in one temp directory cannot collide.
+
+Higher-level helpers and CLI commands may construct the same store from `EMAIL_QUEUE_STATE_DIR`, but they must not replace the path-first public wrapper.
+
+### D7 - Inbox Snapshot Contract
+
+`pending_work_report()` must accept an optional `inbox_snapshot` list with this minimal schema:
+
+```yaml
+- account_id: ace            # canonical alias, or email that maps to one
+  thread_id: string          # Gmail thread id
+  latest_message_id: string  # optional but preferred
+  labels: [string]           # optional
+  received_at_utc: string    # ISO-8601 UTC Z, optional
+  source: gmail              # optional
+```
+
+The report must normalize literal account emails through the account config. Unknown-thread detection only considers enabled aliases in the two-account scope. If an inbox snapshot contains literal email accounts but no config supplies an email-to-alias mapping, the report must fail closed with `unknown_status: "config_missing"` and `mailbox_empty: null`; it must not classify those records as harmless out-of-scope. Records explicitly mapped by config to disabled aliases are counted separately and never make `mailbox_empty` false for this issue.
+
+Snapshot records with `wh-email/noise` are excluded from unknown-thread counts and counted as `noise_excluded`, because noise is intentionally routed outside queue state.
+
+When an inbox snapshot record matches an existing local state record, `pending_work_report()` must still compare `latest_message_id`/`received_at_utc` against `last_seen_message_id`/`last_seen_received_at_utc`. A newer message on a tracked `completed`, `awaiting-reply`, or `purged` thread is counted as `reactivation_pending` and makes `mailbox_empty: false`.
+
+The report must enumerate the enabled in-scope local records it counted, so the CLI can show all tracked threads plus aggregate counts. Disabled/unknown local records may appear only in a warning section when explicitly requested; they do not contribute to `tracked_empty`.
+
+### D8 - State Machine Reactivation Edge
+
+The implementation must reconcile `docs/design/email-as-queue.md` prose with its transition table. Missing-extraction reactivation will be represented as a real transition:
+
+- `awaiting-reply -> inbound` with `reason="missing-extraction"`
+- `completed -> inbound` with `reason="missing-extraction"`
+- `purged -> inbound` with `reason="missing-extraction"`
+
+Existing reactivation edges to `extracted` must remain valid and be covered by tests:
+
+- `awaiting-reply -> extracted`
+- `completed -> extracted`
+- `purged -> extracted`
+
+The inbound edges are only valid for the missing-extraction path. The design doc and transition tests must be updated so `reactivate_reply()` does not rely on an edge the validator rejects.
+
+### D9 - Grace Sweep Semantics
+
+`sweep_grace()` must expose `dry_run=True` by default. In apply mode it must append purge events through the same locked store path as `transition()` and rebuild snapshot/meta before returning. It must not append directly to JSONL without snapshot materialization.
+
+The batch implementation should use a batch-aware locked helper that takes up to `batch_size` events, appends non-deduped rows under one `fcntl` lock, and rebuilds snapshot/meta once per batch. It should not call the one-event helper 100 times while claiming one batch.
+
+Apply mode must be ordered after reactivation detection. `sweep_grace(..., dry_run=False)` must either receive a same-run inbox snapshot/precheck token proving reactivation detection was evaluated for the target accounts, or fail closed with `UnsafeSweepOrderError`. When an inbox snapshot shows a newer reply for a completed thread, sweep apply skips that thread and reports it as `reactivation_pending` instead of appending `completed -> purged`. The scheduled #2026 job remains dry-run/report-only, but this ordering guard prevents future #2423 wiring from deleting a replied-to thread.
+
+### D10 - Issue Task Disposition
+
+Every implementation task in #2026 has an explicit disposition:
+
+| #2026 task | Disposition in this plan |
+|---|---|
+| 1. Create Gmail labels via API | In scope via `ensure_labels()` and CLI `labels --apply-labels`; archive/delete excluded. |
+| 2. Build state log reader/writer | In scope via `queue_state.py` and `scripts/email/state/store.py`. |
+| 3. Build state transition functions | In scope via `state/machine.py`, path-first wrappers, and transition tests. |
+| 4. Grace period checker runs in daily cron | Checker, report command, and a non-destructive daily dry-run scheduled-task entry are in scope for #2026. Destructive deletion scheduling and pipeline orchestration remain #2024/#2423. |
+| 5. Re-activation checker scans for new replies on completed threads | In scope as a snapshot-driven checker that consumes the D7 inbox snapshot contract and calls or plans `reactivate_reply`; live Gmail read orchestration remains #2024. |
+| 6. State report command | In scope via `scripts/email/email-queue-state.py report`, showing all tracked threads plus counts by state/account/pending class. |
+| 7. Migration scans existing inbox and labels current emails | In scope as `scripts/email/email-queue-state.py migrate-labels` consuming an inbox snapshot and planning/applying label operations for current in-scope threads; live Gmail inbox enumeration remains #2024 unless credentials are available in the implementation session. |
+
+### D11 - Ordering, Dedup, and Integration Boundaries
+
+State transitions are guarded by both a static edge table and a dynamic current-state check under the same file lock:
+
+- If no current snapshot record exists, raw `transition()` accepts only initial `from_state="inbound"` transitions.
+- `reactivate_reply()` has a narrow cold-start compatibility path for the existing #2017 contract test: the wrapper passes `allow_bootstrap_reactivation=True`, and the locked append path accepts a missing snapshot record only when `prior_state in {"awaiting-reply", "completed", "purged"}`. The append path stamps `bootstrap_reactivation: true` under the lock and records the assumption in the implementation notes/report. Production reactivation checkers must not depend on cold-start bootstrap; tests must prove they report `baseline_missing` instead of invoking `reactivate_reply()` for threads absent from local state.
+- If a current snapshot record exists and its `state` differs from `event.from_state`, the append is rejected as `StaleStateError` unless the event qualifies as an unambiguous historical dedup retry under D5. Batch sweep may use a `stale_policy="skip"` helper only for preselected candidates, and skipped candidates must be reported; ordinary `transition()` and `reactivate_reply()` stay fail-closed.
+- Dedup keys are checked against a historical dedup index rebuilt from the append-only log under lock, not against the latest snapshot only.
+
+The implementation must store reactivation baselines in snapshots:
+
+- `last_seen_message_id`
+- `last_seen_received_at_utc`
+
+The reactivation checker compares inbox snapshot `latest_message_id`/`received_at_utc` against these stored baselines. If no baseline exists, the checker reports `baseline_missing` rather than claiming a newer reply.
+
+State/learning paired writes must be recoverable across process crashes. The state log is authoritative: paired learning events carry a deterministic `transaction_id`/`learning_event_id`, the state event is appended first with the paired learning id, and the learning log append follows. Snapshot rebuild/recovery scans state events for paired learning ids missing from the learning log and backfills them idempotently. This avoids a durable learning row with no state transition and makes a crash after state append repairable.
+
+Snapshot freshness is part of the read contract. `queue-state-snapshot.meta.yaml` must include enough material to detect missing meta, corrupt meta, stale log size/mtime or offset, and stale/corrupt content hash. `lookup()` and `list_threads()` must return from snapshot only when meta validates; otherwise they acquire the store lock and rebuild snapshot/meta before reading.
+
+The Gmail label API path is in scope. Implementation must provide a real adapter around the available Gmail API/client surface for `users.labels.list` and `users.labels.create` or equivalent; fake-client tests are necessary but not sufficient for closeout. #2026 task 1 is not complete until live labels are verified for `ace` and `personal` through per-account clients. If credentials are unavailable, implementation may land behind tests, but #2026 must remain open with a blocked label-setup comment or a user-approved split.
+
+The scheduled task is in scope as a dry-run safety job: `config/scheduled-tasks/schedule-tasks.yaml` must add a daily dry-run `email-queue-state.py sweep --dry-run`/report entry. Destructive Gmail deletion remains #2423 and live Gmail read orchestration remains #2024.
+
+Tests must not commit real or production-like email addresses under `tests/fixtures/email/`, because `scripts/email/fixture-redaction-check.py` rejects those fixtures. Snapshot tests should build inline records with reserved placeholder domains plus temp account config mapping.
+
+The CLI should have an importable seam: `scripts/email/state/cli.py` exposes `main(argv, gmail_client_factory=None)`, and `scripts/email/email-queue-state.py` is a thin executable wrapper. Unit tests inject fake Gmail clients through `state.cli.main`; subprocess tests only verify the wrapper can dispatch and parse arguments.
+
+---
+
+## Pseudocode
+
+```python
+def resolve_state_dir(env=None):
+    env = env or os.environ
+    return Path(env.get("EMAIL_QUEUE_STATE_DIR", "~/.hermes/email-state")).expanduser()
+
+def default_log_path(env=None):
+    return resolve_state_dir(env) / "queue-state.jsonl"
+
+def store_from_log_path(log_path=None, env=None):
+    log_path = Path(log_path) if log_path is not None else default_log_path(env)
+    if log_path.name == "queue-state.jsonl":
+        snapshot_name = "queue-state-snapshot.yaml"
+        meta_name = "queue-state-snapshot.meta.yaml"
+        learning_name = "queue-learning-log.jsonl"
+    else:
+        snapshot_name = f"{log_path.stem}-snapshot.yaml"
+        meta_name = f"{log_path.stem}-snapshot.meta.yaml"
+        learning_name = f"{log_path.stem}-learning-log.jsonl"
+    return Store(
+        log_path=log_path,
+        snapshot_path=log_path.with_name(snapshot_name),
+        meta_path=log_path.with_name(meta_name),
+        learning_log_path=log_path.with_name(learning_name),
+    )
+
+def load_account_scope(config_path=None, env=None):
+    env = env or os.environ
+    path = config_path or env.get("EMAIL_QUEUE_ACCOUNTS_CONFIG") or "~/.hermes/email-state/accounts.yaml"
+    config = read account config from path if it exists, else alias-only default {"ace", "personal"}
+    build alias/email mapping for enabled accounts only; email mapping is empty without config
+    reject or mark out-of-scope aliases/emails outside {"ace", "personal"}
+    return AccountScope(mapping)
+
+def transition(log_path=None, *, account_id, thread_id, from_state, to_state, ts_utc, **optional_fields):
+    store = store_from_log_path(log_path)
+    event = QueueStateEvent(account_id, thread_id, from_state, to_state, ts_utc, **optional_fields)
+    return _append_events_locked(store, [event])
+
+def prepare_event(store, event, snapshot_before, historical_dedup_index, stale_policy="raise"):
+    validate event.from_state -> event.to_state transition is allowed
+    validate missing-extraction inbound edges include reason="missing-extraction"
+    validate event.ts_utc ends with Z
+    build writer_identity
+    current = snapshot_before.get(event.key)
+    reactivation = event.from_state in {"awaiting-reply", "completed", "purged"} and event.to_state in {"extracted", "inbound"}
+    if current is None:
+        if event.from_state == "inbound":
+            pass
+        elif event.allow_bootstrap_reactivation and reactivation and event.from_state in {"awaiting-reply", "completed", "purged"}:
+            event.bootstrap_reactivation = True
+        else:
+            raise StaleStateError
+    if current is not None and current.state != event.from_state:
+        compute dedup_event_id from event.triggering_message_id or "legacy:no-trigger"
+        if event.cycle_id:
+            duplicate = exact 6-field dedup key exists in historical_dedup_index
+        else:
+            candidates = historical keys matching account_id/thread_id/from_state/to_state/dedup_event_id
+            duplicate = exactly one candidate exists and candidate.cycle_id == current.cycle_id
+        if duplicate:
+            mark event as duplicate retry
+            return event
+        if stale_policy == "skip":
+            mark event as stale skipped
+            return event
+        raise StaleStateError
+    if reactivation:
+        if event.triggering_message_id:
+            event.cycle_id = "msg:" + event.triggering_message_id
+        elif event.reactivation_id:
+            event.cycle_id = "reactivation:" + event.reactivation_id
+        elif event.bootstrap_reactivation:
+            event.cycle_id = "bootstrap:" + stable hash of linked_extraction_or_reason
+        else:
+            raise MissingReactivationId
+        if not event.triggering_message_id:
+            event.warning_no_triggering_message_id = True
+    else:
+        event.cycle_id = event.cycle_id or snapshot_before.get(event.key, {}).get("cycle_id", "initial")
+    if event.triggering_message_id:
+        event.dedup_event_id = "msg:" + event.triggering_message_id
+    else:
+        event.dedup_event_id = "legacy:no-trigger"
+    if event.to_state == "completed":
+        event.completed_at = event.completed_at or event.ts_utc
+    elif event.to_state != "completed":
+        event.completed_at = None
+    event.dedup_key = event.account_id, event.thread_id, event.from_state, event.to_state, event.cycle_id, event.dedup_event_id
+    return event
+
+def _append_events_locked(store, state_events, learning_events=(), stale_policy="raise"):
+    acquire fcntl LOCK_EX on store.log_path
+    snapshot_before = load current snapshot under lock
+    historical_dedup_index = rebuild/read dedup keys from append-only log under lock
+    recover missing paired learning events from prior state rows before appending new rows
+    prepared = [prepare_event(store, event, snapshot_before, historical_dedup_index, stale_policy=stale_policy) for event in state_events]
+    for event in prepared:
+        if event marked stale skipped:
+            record skip in append report
+        elif event marked duplicate retry or event.dedup_key exists in historical_dedup_index:
+            skip event and any paired learning row
+        else:
+            if event has paired learning row:
+                assign deterministic transaction_id/learning_event_id to both rows
+            append state event first
+            append paired learning row after state event when supplied
+    rebuild snapshot and meta via tmpfile + fsync + os.replace
+    return append/rebuild report plus current snapshot records
+
+def lookup(log_path, account_id, thread_id):
+    store = store_from_log_path(log_path)
+    read snapshot only if meta freshness checks pass
+    otherwise acquire lock and rebuild snapshot/meta
+    return snapshot.get(f"{account_id}::{thread_id}")
+
+def list_threads(log_path, account_scope=None, include_out_of_scope=False):
+    store = store_from_log_path(log_path)
+    read snapshot only if meta freshness checks pass, otherwise rebuild under lock
+    normalize records through account_scope when supplied
+    return enabled in-scope records plus optional warning buckets for disabled/unknown local records
+
+def count_entries(log_path):
+    return count persisted JSONL state entries for log_path
+
+def reactivate_reply(log_path=None, *, account_id, thread_id, prior_state, linked_extraction, ts_utc, triggering_message_id=None, reactivation_id=None):
+    store = store_from_log_path(log_path)
+    if linked_extraction exists:
+        return _append_events_locked(
+            store,
+            [QueueStateEvent(
+                account_id=account_id,
+                thread_id=thread_id,
+                from_state=prior_state,
+                to_state="extracted",
+                linked_extraction=linked_extraction,
+                triggering_message_id=triggering_message_id,
+                reactivation_id=reactivation_id,
+                allow_bootstrap_reactivation=True,
+                ts_utc=ts_utc,
+            )],
+        )
+    learning_event = QueueLearningEvent(
+        account_id=account_id,
+        thread_id=thread_id,
+        triggering_event="extraction_missing_on_reactivation",
+        ts_utc=ts_utc,
+        warning_no_triggering_message_id=triggering_message_id is None,
+    )
+    return _append_events_locked(
+        store,
+        [QueueStateEvent(
+            account_id=account_id,
+            thread_id=thread_id,
+            from_state=prior_state,
+            to_state="inbound",
+            reason="missing-extraction",
+            triggering_message_id=triggering_message_id,
+            reactivation_id=reactivation_id,
+            allow_bootstrap_reactivation=True,
+            ts_utc=ts_utc,
+        )],
+        learning_events=[learning_event],
+    )
+
+def sweep_grace(log_path, now_utc, grace_days=7, batch_size=100, dry_run=True, inbox_snapshot=None, reactivation_prechecked=False):
+    store = store_from_log_path(log_path)
+    acquire sweep lockfile
+    if not dry_run and not (inbox_snapshot or reactivation_prechecked):
+        raise UnsafeSweepOrderError
+    if dry_run:
+        acquire store.log_path lock and read completed snapshot records where now - completed_at > grace_days
+        return planned completed -> purged transitions without appending
+    while eligible completed records remain:
+        under one store.log_path lock, select up to batch_size still-completed records
+        skip any selected record with newer inbox_snapshot message and report reactivation_pending
+        append completed -> purged events with stale_policy="skip" and rebuild snapshot/meta once
+        dynamic current-state validation reports records reactivated before the batch lock as skipped
+    return dry-run/apply report
+
+def pending_work_report(log_path=None, account_scope=None, inbox_snapshot=None):
+    store = store_from_log_path(log_path)
+    account_scope = account_scope or load_account_scope()
+    validate/normalize account scope only at this report/ingest boundary
+    local_records = list_threads(log_path, account_scope=account_scope, include_out_of_scope=True)
+    counted_records = enabled in-scope local records only
+    inbound_count = count state == "inbound" by account from counted_records
+    decision_count = count needs_user_decision metadata by account from counted_records
+    needs_schema_count = count needs_schema metadata by account from counted_records
+    per_account_counts = group state, needs_user_decision, needs_schema by account from counted_records
+    out_of_scope_local_count = count disabled/unknown local_records warning bucket
+    tracked_empty = inbound_count == 0 and decision_count == 0 and needs_schema_count == 0
+    if inbox_snapshot is supplied:
+        normalize snapshot records using account_scope
+        if literal-email records cannot be mapped because config is missing:
+            return {
+                "tracked_empty": tracked_empty,
+                "mailbox_empty": None,
+                "unknown_status": "config_missing",
+                "unknown_count": None,
+                "out_of_scope_count": None,
+                "noise_excluded": None,
+                "reactivation_pending_count": None,
+                "out_of_scope_local_count": out_of_scope_local_count,
+                "per_account_counts": per_account_counts,
+                "threads": counted_records,
+            }
+        exclude records labeled wh-email/noise from unknown_count and count as noise_excluded
+        unknown_count = count enabled in-scope snapshot threads missing from local state
+        reactivation_pending_count = count enabled in-scope snapshot threads present in local state but newer than stored message baseline
+        out_of_scope_count = count disabled/out-of-scope snapshot records
+        unknown_status = "evaluated"
+        mailbox_empty = tracked_empty and unknown_count == 0 and reactivation_pending_count == 0
+    else:
+        unknown_count = None
+        out_of_scope_count = None
+        reactivation_pending_count = None
+        unknown_status = "not_evaluated"
+        mailbox_empty = False if not tracked_empty else None
+    return {
+        "tracked_empty": tracked_empty,
+        "mailbox_empty": mailbox_empty,
+        "unknown_status": unknown_status,
+        "unknown_count": unknown_count,
+        "out_of_scope_count": out_of_scope_count,
+        "reactivation_pending_count": reactivation_pending_count,
+        "out_of_scope_local_count": out_of_scope_local_count,
+        "per_account_counts": per_account_counts,
+        "threads": counted_records,
+    }
+
+def ensure_labels(account_scope, gmail_client_factory=None, clients_by_account=None, apply=False):
+    ops = planned create/update operations for wh-email/extracted, awaiting-reply, completed, noise per enabled account
+    if apply:
+        for each enabled account alias:
+            client = clients_by_account[alias] or gmail_client_factory(alias)
+            require client for that alias
+            list/create missing labels only in that mailbox; never archive/delete messages
+    return ops/apply report
+
+def reactivation_candidates(log_path=None, inbox_snapshot=None, apply=False):
+    compare current snapshot with normalized inbox snapshot
+    find completed/awaiting-reply/purged threads with newer messages
+    map snapshot latest_message_id to reactivate_reply(triggering_message_id=latest_message_id)
+    if latest_message_id missing, derive stable reactivation_id from account/thread/received_at/source record
+    return planned reactivate_reply calls including triggering_message_id or reactivation_id, or apply them when explicitly requested
+
+def migrate_labels(log_path=None, inbox_snapshot=None, gmail_client_factory=None, clients_by_account=None, apply_labels=False):
+    normalize current inbox snapshot through account scope
+    map each in-scope thread to wh-email label operations from current state/report
+    if apply_labels:
+        require per-account Gmail clients and apply labels only; never archive/delete
+    return migration plan/apply report
+
+def cli_main(argv, gmail_client_factory=None):
+    subcommands: report, labels, sweep, reactivations, migrate-labels
+    --state-dir resolves default log path under EMAIL_QUEUE_STATE_DIR
+    --inbox-snapshot accepts the D7 snapshot file
+    --apply-labels gates live Gmail label creation/application
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Create | `scripts/email/queue_state.py` | Public API wrapper expected by existing contract tests |
+| Create | `scripts/email/email-queue-state.py` | Operator CLI for report, labels, sweep, reactivation check, and migration-label pass |
+| Create | `scripts/email/state/__init__.py` | Re-export state package API |
+| Create | `scripts/email/state/accounts.py` | Account allowlist and runtime alias validation |
+| Create | `scripts/email/state/machine.py` | State transition table and validation |
+| Create | `scripts/email/state/store.py` | JSONL append, fcntl locking, snapshot rebuild |
+| Create | `scripts/email/state/meta.py` | Snapshot metadata freshness checks |
+| Create | `scripts/email/state/dedup.py` | Cycle-aware dedup key logic with `cycle_id`, `triggering_message_id`, and computed `dedup_event_id` |
+| Create | `scripts/email/state/grace.py` | Seven-day local purge sweep |
+| Create | `scripts/email/state/labels.py` | Gmail label operation planner plus explicit apply path for one-time label creation |
+| Create | `scripts/email/state/gmail_labels_api.py` | Real Gmail label list/create adapter for #2026 label setup |
+| Create | `scripts/email/state/cli.py` | Importable CLI command implementation used by the hyphenated wrapper and unit tests |
+| Create | `scripts/email/state/report.py` | Pending-work report and mailbox-empty semantics |
+| Create | `scripts/email/state/reactivation.py` | Inbox-snapshot-driven reactivation checker for completed/awaiting/purged replies |
+| Create | `scripts/email/state/migration.py` | Inbox-snapshot-driven current-label migration planner/apply helper |
+| Modify | `docs/design/email-queue-state-schema.yaml` | Add `cycle_id`, `triggering_message_id`, `dedup_event_id`, `needs_user_decision`, warning metadata, message-baseline fields, and corrected dedup semantics |
+| Modify | `config/scheduled-tasks/schedule-tasks.yaml` | Add daily dry-run email queue grace/report job; no Gmail delete/archive |
+| Modify | `tests/email/test_state_machine_contract.py` | Expand contract tests and remove xfail markers once implementation lands |
+| Create | `tests/email/test_email_queue_state.py` | TDD coverage for account scope, store, grace, reports, label planning |
+| Modify | `docs/design/email-as-queue.md` | Reconcile runtime state path, two-account scope, pending-work semantics, and missing-extraction transition table |
+| Modify | `docs/design/email-as-queue-workflow.md` | Update or mark stale three-account/Gmail-mutation sections superseded |
+| Create | `docs/reports/2026-06-11-issue-2026-implementation-notes.html` | User-requested implementation notes and deviations log |
+| Already applied | `docs/plans/README.md` | This planning session added the draft row |
+| Already applied | `docs/plans/2026-04-24-issue-2026-plan.md` | This planning session marked the stale April draft superseded |
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| `test_import_queue_state_module` | public module exists | import `scripts.email.queue_state` | import succeeds |
+| `test_account_config_defaults_to_aliases_only` | default scope is two aliases without embedding literal email defaults | missing local config with isolated env | aliases `ace`, `personal` enabled; email mapping empty |
+| `test_rejects_out_of_scope_account_alias_at_report_boundary` | disabled aliases are known out of scope | inline snapshot with placeholder email mapped to disabled `skestates` in temp config | out-of-scope count increments; no mailbox-empty failure |
+| `test_transition_accepts_placeholder_account_for_low_level_store` | low-level state store does not enforce production account allowlist | `account_id="user@example.com"` | transition accepted |
+| `test_path_first_api_derives_snapshot_and_learning_paths` | existing contract API remains stable | `transition(tmp/queue-state.jsonl, ...)` | sibling snapshot/meta/log files used |
+| `test_nonstandard_log_path_derives_noncolliding_siblings` | arbitrary path-first logs do not share snapshot files | `a.jsonl` and `b.jsonl` in one dir | distinct sibling files |
+| `test_transition_inbound_to_extracted_writes_log` | existing contract | inbound -> extracted | lookup state is extracted |
+| `test_transition_retry_preserves_dedup_under_same_triggering_message` | retry idempotency | same triggering message twice | one JSONL row |
+| `test_transition_retry_preserves_legacy_dedup_without_triggering_message` | existing contract compatibility | same transition, no triggering id, different timestamps | one JSONL row |
+| `test_stale_from_state_rejected_unless_historical_dedup_key_exists` | stale caller views cannot regress snapshot state | completed thread receives inbound -> extracted event | `StaleStateError` unless duplicate key exists |
+| `test_dedup_uses_historical_index_not_latest_snapshot_only` | delayed duplicate of earlier transition still dedups | duplicate inbound -> extracted after awaiting state | no appended row |
+| `test_cross_cycle_no_trigger_stale_replay_raises` | no-trigger dedup does not silently skip stale previous lifecycle events | cycle 1 no-id event replayed after cycle 2 reactivation | `StaleStateError` |
+| `test_dedup_preserves_reactivation_cycle` | real repeated replies do not collapse | two triggering message IDs | two JSONL rows with distinct `cycle_id` |
+| `test_multicycle_without_trigger_can_extract_complete_and_purge_twice` | cycle-aware fallback does not swallow second lifecycle | complete/purge/reactivate/extract/complete/purge without message IDs | both purge events persist |
+| `test_no_trigger_reactivation_retry_dedups_with_stable_reactivation_id` | no-id reactivation retry has stable fallback | same `reactivation_id`, fresh timestamps | one row |
+| `test_no_trigger_distinct_reactivation_cycles_require_distinct_reactivation_id` | no-id cycles remain distinguishable | two distinct `reactivation_id` values | two rows |
+| `test_mixed_trigger_and_no_trigger_events_do_not_dedup` | mixed dedup semantics are explicit | one no-id event and one message-id event | two JSONL rows plus warning metadata |
+| `test_snapshot_uses_account_thread_composite_key` | no account collision | same thread ID under ace/personal | two snapshot records |
+| `test_non_utc_timestamp_rejected` | UTC contract | missing `Z` suffix | validation error |
+| `test_invalid_transition_rejected` | state machine guard | inbound -> purged | validation error |
+| `test_missing_extraction_transition_to_inbound_is_allowed_only_with_reason` | D8 state-machine reconciliation | purged -> inbound with/without reason | allowed only for `reason="missing-extraction"` |
+| `test_existing_reactivation_edges_to_extracted_remain_allowed` | D8 does not remove existing valid edges | awaiting/completed/purged -> extracted | allowed |
+| `test_transition_to_completed_stamps_completed_at` | grace sweep has reliable completion timestamp | extracted -> completed without explicit `completed_at` | snapshot has `completed_at == ts_utc` |
+| `test_lookup_unknown_thread_returns_none` | absence checks do not crash | lookup missing account/thread | `None` |
+| `test_list_threads_enumerates_in_scope_records` | report CLI has an enumeration API | mixed in-scope and disabled local records | returns in-scope threads plus warning bucket |
+| `test_completed_grace_7d_exact_boundary_not_purged` | grace boundary | completed at now-7d | remains completed |
+| `test_completed_grace_7d_plus_one_second_purged` | grace purge | completed at now-7d-1s | purged |
+| `test_sweep_chunks_at_batch_cap` | bounded lock hold | 101 eligible records | two batches |
+| `test_sweep_dry_run_does_not_append_or_rebuild` | dry run safety | eligible completed records, dry_run true | report only, entry count unchanged |
+| `test_sweep_apply_requires_reactivation_precheck` | apply cannot purge before reply check | eligible completed record, dry_run false, no snapshot/precheck | `UnsafeSweepOrderError` |
+| `test_sweep_apply_skips_completed_thread_with_new_reply` | new reply during grace is not purged | completed record plus newer inbox snapshot | skipped as `reactivation_pending` |
+| `test_sweep_batch_reports_stale_skips_without_crashing` | batch stale candidates do not crash whole sweep | candidate reactivated before batch append | skip reported; other eligible records append |
+| `test_sweep_apply_rebuilds_snapshot_meta` | sweep apply keeps snapshot materialized | eligible completed record, dry_run false | lookup returns purged |
+| `test_purged_reactivates_on_reply_with_extraction_link` | existing contract | purged + extraction path | extracted + linked path |
+| `test_cold_start_reactivate_reply_bootstrap_preserves_contract` | dynamic validation keeps #2017 xfail contract viable | empty log + `reactivate_reply(prior_state="purged")` | extracted with `bootstrap_reactivation: true` |
+| `test_bootstrap_reactivate_rejects_unbounded_prior_state` | cold-start wrapper only accepts authorized prior states | empty log + `prior_state="inbound"` | `StaleStateError` or validation error |
+| `test_reactivation_checker_never_bootstraps_absent_state` | production checker does not use cold-start compatibility | inbox snapshot thread absent from local state | reports unknown/baseline_missing; no `reactivate_reply` call |
+| `test_missing_extraction_logs_learning_event_and_returns_inbound` | missing extraction recovery | purged + missing path | learning event emitted; state becomes inbound |
+| `test_learning_recovery_backfills_missing_paired_event` | state/learning paired writes are crash-recoverable | state row with paired learning id but missing learning row | rebuild/backfill writes one learning row |
+| `test_no_orphan_learning_row_without_state_transition` | learning log cannot claim transition absent from state log | simulated crash before state append | no durable learning row |
+| `test_pending_work_report_tracked_empty_when_no_inbound_or_decision_needed` | tracked-state emptiness without overclaiming full Gmail state | completed/purged/awaiting only | `tracked_empty: true` |
+| `test_pending_work_report_excludes_disabled_local_rows_from_tracked_counts` | disabled local state does not block two-account mailbox-empty | disabled local inbound row plus empty in-scope state | warning count increments; `tracked_empty: true` |
+| `test_pending_work_report_unknown_not_evaluated_without_snapshot` | local state does not overclaim Gmail emptiness | no inbox snapshot | unknown check is `not_evaluated`; `mailbox_empty: null` |
+| `test_pending_work_report_normalizes_literal_email_snapshot` | #2024/Gmail input can use literal addresses without committing real data | inline placeholder literal email plus temp account config | account normalized to `ace` |
+| `test_pending_work_report_literal_email_without_config_fails_closed` | missing config cannot make mailbox falsely empty | literal-email snapshot, no account config | `unknown_status: config_missing`, `mailbox_empty: null` |
+| `test_pending_work_report_config_missing_uses_unknown_noise_sentinel` | config-missing branch does not claim noise was evaluated | literal-email snapshot, no config | `noise_excluded: null` |
+| `test_pending_work_report_not_empty_for_snapshot_unknown` | untracked Gmail thread is surfaced when snapshot supplied | snapshot thread missing from state | `mailbox_empty: false`, unknown count 1 |
+| `test_pending_work_report_excludes_noise_label_from_unknown` | routed noise does not block mailbox-empty | inbox snapshot labeled `wh-email/noise` and absent from state | `noise_excluded: 1`, unknown unchanged |
+| `test_pending_work_report_counts_new_reply_on_tracked_thread` | tracked completed thread with newer inbox message is pending | completed state + inbox snapshot newer than baseline | `reactivation_pending_count: 1`, `mailbox_empty: false` |
+| `test_pending_work_report_not_empty_for_needs_user_decision_flag` | pending work surfaced via metadata, not state | existing state with `needs_user_decision: true` | `tracked_empty: false`, `mailbox_empty: false` |
+| `test_pending_work_report_not_empty_for_needs_schema_flag` | schema gaps are pending work | existing state with `needs_schema: true` | `tracked_empty: false`, `mailbox_empty: false` |
+| `test_pending_flags_clear_on_later_event_without_flags` | last-event-wins pending metadata clears correctly | flagged record then completed event without flags | `tracked_empty: true` |
+| `test_label_taxonomy_is_exact_issue_set` | label creation uses issue taxonomy | account scope | extracted/awaiting-reply/completed/noise only |
+| `test_label_operations_planned_not_applied_by_default` | Gmail label mutation is off by default in CLI/helper mode | account scope | planned create ops only |
+| `test_ensure_labels_creates_missing_labels_with_apply_flag` | issue-required one-time label creation path exists | fake Gmail client and apply true | missing labels created; no archive/delete calls |
+| `test_ensure_labels_uses_one_client_per_enabled_account` | two-account setup cannot mutate only one mailbox | fake client factory for `ace` and `personal` | list/create called once per account |
+| `test_gmail_label_api_adapter_uses_label_list_and_create_only` | real integration surface exists without delete/archive | fake Google API surface | list/create called; delete/archive never called |
+| `test_cli_report_shows_threads_and_counts` | issue task 6 command exists | temp state log | table/list of threads plus counts by account/state |
+| `test_cli_labels_requires_apply_flag_for_live_create` | D4 CLI safety | fake Gmail client, no flag | no create calls |
+| `test_cli_wrapper_dispatches_to_importable_main` | hyphenated script remains executable while tests use importable seam | subprocess `email-queue-state.py --help` | zero exit and command help |
+| `test_reactivation_checker_plans_completed_thread_reply` | issue task 5 checker exists | completed state + newer inbox snapshot | planned `reactivate_reply` |
+| `test_reactivation_checker_maps_latest_message_to_triggering_message_id` | production checker passes executable reactivation id | completed state + newer inbox snapshot with `latest_message_id` | planned call includes `triggering_message_id` |
+| `test_reactivation_checker_derives_stable_reactivation_id_without_message_id` | no-message snapshots still have stable cycles | newer snapshot without `latest_message_id` | planned call includes deterministic `reactivation_id` |
+| `test_reactivation_checker_requires_message_baseline` | checker does not guess newer replies | no stored baseline | reports `baseline_missing` |
+| `test_migrate_labels_plans_current_inbox_labels` | issue task 7 migration exists | inbox snapshot and current states | planned label operations |
+| `test_schedule_adds_daily_email_queue_dry_run` | issue task 4 scheduling is represented safely | schedule config | daily dry-run sweep/report entry |
+| `test_runtime_state_dir_env_override` | private state does not need repo write | temp `EMAIL_QUEUE_STATE_DIR` | files created under temp dir |
+| `test_snapshot_missing_meta_rebuilds_under_lock` | missing metadata cannot serve stale snapshot | snapshot exists, meta missing | lookup rebuilds meta before returning |
+| `test_snapshot_bad_hash_rebuilds_under_lock` | corrupt snapshot is not trusted | mismatched meta hash | lookup rebuilds from JSONL |
+| `test_snapshot_log_size_or_mtime_change_rebuilds` | appended log invalidates snapshot | log changed after snapshot | lookup/list rebuilds |
+| `test_snapshot_corrupt_meta_rebuilds_or_fails_closed` | corrupt meta cannot produce false state | unparsable meta file | rebuilds under lock or raises explicit corruption error |
+
+TDD order:
+
+1. Add/expand failing tests first.
+2. Implement the minimal module to turn import failure into functional failures.
+3. Implement store/machine/dedup.
+4. Implement report/grace/label planning.
+5. Remove `xfail` markers only when the storage module is real and tests pass.
+
+---
+
+## Acceptance Criteria
+
+- [ ] `scripts/email/queue_state.py` imports and exposes `transition`, `lookup`, `list_threads`, `count_entries`, `reactivate_reply`, `sweep_grace`, and `pending_work_report`.
+- [ ] Public `queue_state` functions preserve the path-first signatures used by the existing #2017 contract tests.
+- [ ] Runtime state defaults to `~/.hermes/email-state/` or `EMAIL_QUEUE_STATE_DIR`; no real runtime state is committed.
+- [ ] Account allowlist covers only `ace` and `personal` at report/ingest boundaries; low-level state store remains testable with placeholder account IDs.
+- [ ] Account config and inbox snapshot schemas are documented and covered by tests.
+- [ ] "Mailbox empty" report uses no-pending-work semantics, includes per-account counts plus enumerated in-scope threads, and distinguishes tracked-state emptiness from inbox-snapshot unknown-thread evaluation.
+- [ ] Disabled/unknown local state rows are warning buckets; they do not affect `tracked_empty` or `mailbox_empty` for the two-account #2026 scope.
+- [ ] Literal-email inbox snapshots without a usable account config fail closed and cannot report `mailbox_empty: true`.
+- [ ] Inbox snapshot records labeled `wh-email/noise` are counted as noise-excluded, not unknown pending work.
+- [ ] `docs/design/email-queue-state-schema.yaml` includes `cycle_id`, `triggering_message_id`, `dedup_event_id`, `needs_user_decision`, warning metadata, message-baseline fields, and the corrected dedup key.
+- [ ] Transitions validate current snapshot state under lock and reject stale `from_state` regressions unless the event is an unambiguous same-cycle historical dedup retry.
+- [ ] `docs/design/email-as-queue.md` transition table includes missing-extraction inbound edges gated by `reason="missing-extraction"`.
+- [ ] Seven-day grace purge transitions only local state to `purged`; it requires reactivation precheck/snapshot before apply and does not archive/delete Gmail.
+- [ ] Gmail label setup can create exactly `wh-email/extracted`, `wh-email/awaiting-reply`, `wh-email/completed`, and `wh-email/noise` for `ace` and `personal` with explicit apply and per-account clients; archive/delete calls are impossible in this module.
+- [ ] Real Gmail label API adapter exists for label list/create; fake-client tests alone are not enough for closeout.
+- [ ] #2026 task 1 closeout verifies live Gmail labels exist for `ace` and `personal`, or the issue remains open/blocked with a user-approved split.
+- [ ] Daily dry-run sweep/report entry is declared in `config/scheduled-tasks/schedule-tasks.yaml`; live Gmail deletion remains #2423.
+- [ ] `scripts/email/email-queue-state.py report` shows all tracked threads and counts by state/account/pending class.
+- [ ] Snapshot-driven reactivation checker identifies completed/awaiting/purged threads with newer messages; live Gmail read orchestration remains #2024.
+- [ ] Reactivation checker maps `latest_message_id` to `triggering_message_id`, derives stable `reactivation_id` when needed, and never uses cold-start bootstrap for absent local state.
+- [ ] Snapshot-driven migration label pass can plan/apply current-thread labels; live Gmail inbox enumeration remains #2024 unless credentials are available in the implementation session.
+- [ ] Snapshot freshness checks cover missing meta, corrupt meta, bad hash, and changed log offset/size before lookup/list reads.
+- [ ] Paired state/learning events use deterministic transaction ids and recover missing learning rows from authoritative state rows.
+- [ ] Existing #2017 contract tests pass without xfail markers.
+- [ ] New state tests pass: `uv run pytest tests/email/test_state_machine_contract.py tests/email/test_email_queue_state.py -v`.
+- [ ] Email contract artifact tests still pass: `uv run pytest tests/email/test_email_queue_contract_artifacts.py tests/email/test_spam_rules.py tests/email/test_fixture_redaction_hook.py -v`.
+- [ ] Legal/security scan passes: `scripts/legal/legal-sanity-scan.sh`.
+- [ ] Implementation notes HTML exists and records interpretations/deviations/tradeoffs/open questions.
+- [ ] Issue comment summarizes implementation, tests, and sources consumed.
+- [ ] Completeness gate is satisfied before close per #2798.
+
+---
+
+## Adversarial Review Summary
+
+| Round | Verdict | Key findings |
+|---|---|---|
+| R1 Claude/Codex/Gemini | MAJOR | Found `needs-user-decision` as undefined state, schema/dedup mismatch, uncomputable unknown-thread report, allowlist conflict with contract tests, unaddressed workflow-doc contradictions, missing-extraction reactivation contradiction, and silent label-scope reduction. |
+| R2 Claude/Codex/Gemini | MAJOR | Found unresolved missing-extraction transition-table edge, path-first API ambiguity, missing inbox snapshot/account config contracts, label creation scope mismatch with issue body, dedup fallback ambiguity, direct log append/sweep snapshot hazards, and dry-run omission. Gemini also repeated sandbox-blind missing-file findings from `/tmp`; those are marked false-positive by local `ls`/`rg` evidence. |
+| R3 Claude/Codex/Gemini | MAJOR | Found cycle-insensitive no-trigger dedup still swallowed second lifecycle purges, #2026 tasks 5/6/7 lacked artifacts, CLI behavior had no file/test, account default mapping was inconsistent, batch sweep locking contradicted batching, warning metadata was not emitted, and exact label taxonomy was missing. Gemini's `completed_at` finding was a plan-excerpt issue; the live schema already contains `completed_at`. |
+| R4 Claude/Codex/Gemini | MAJOR | Found false `mailbox_empty` when literal-email snapshots lack config, missing dynamic `from_state` validation, unspecified historical dedup substrate, no-trigger reactivation retry ambiguity, missing real Gmail label API path, cron dry-run scope not represented, missing reactivation baseline fields, lock target ambiguity, missing pending-flag clear test, and noise-label false unknowns. |
+| R5 Claude/Codex/Gemini | MAJOR | Remaining blockers: cold-start `reactivate_reply` conflicts with dynamic validation and existing #2017 contract test; literal-email fixture would be blocked by the email fixture redaction hook; config-missing vs known out-of-scope literal email behavior is contradictory; scheduling ownership and live label creation closeout remain ambiguous; tracked replies in existing state are not counted as pending by `pending_work_report`; compat reactivation fallback still risks no-trigger cycle collisions. |
+| R6 Claude/Codex/Gemini | MAJOR | Claude returned MINOR; Codex returned MAJOR on production reactivation id mapping, missing `completed_at` stamping, single-client two-account label setup, non-recoverable paired state/learning writes, and untested snapshot freshness. Gemini repeated false missing-file findings from `/tmp`, plus valid pseudocode blockers around sweep stale skip, unlocked bootstrap state check, unbounded bootstrap prior state, missing thread enumeration, `lookup` KeyError, vague historical dedup matching, and undefined reactivation detection. |
+
+**Overall result:** FAIL after R6. This draft now contains post-R6 patches and must receive a fresh R7 adversarial review before any `status:plan-review` label.
+
+Revisions made based on review:
+
+- Added `docs/design/email-queue-state-schema.yaml` and `docs/design/email-as-queue-workflow.md` to implementation scope.
+- Recast `needs_user_decision` as metadata rather than a sixth state.
+- Added optional inbox-snapshot input for unknown-thread reporting; local state alone no longer claims full Gmail emptiness.
+- Moved account-scope enforcement to report/ingest boundaries so existing low-level store contract tests can pass.
+- Added path-first public API compatibility requirements for the existing #2017 contract tests.
+- Added explicit account config and inbox snapshot contracts.
+- Replaced the no-trigger dedup fallback with `cycle_id` + `dedup_event_id` semantics so retries dedup within a cycle but repeated lifecycle cycles can purge/extract/complete again.
+- Added missing-extraction inbound state-machine edges and required design-doc transition-table updates.
+- Replaced direct learning-log/state-log append pseudocode with same-lock append helpers and batch-aware sweep semantics.
+- Added `dry_run=True` grace sweep semantics and snapshot/meta rebuild requirements.
+- Restored one-time Gmail label creation as in-scope setup work for `ace` and `personal`, while keeping Gmail archive/delete out of #2026.
+- Added exact #2026 label taxonomy.
+- Added issue-task disposition table covering all seven #2026 implementation tasks.
+- Added `scripts/email/email-queue-state.py` CLI, reactivation checker, and migration-label pass to file/test/acceptance scope.
+- Made default account config alias-only; literal email normalization now requires local config or temp test config.
+- Defined `needs_user_decision`/`needs_schema` as last-event-wins snapshot metadata.
+- Added fail-closed behavior for literal-email snapshots when account config is missing.
+- Added noise-label exclusion from unknown-thread counts.
+- Added dynamic current-state validation under lock and a historical dedup-index requirement.
+- Added stable `reactivation_id` fallback for no-trigger reactivation retries.
+- Added real Gmail label API adapter scope and daily dry-run schedule entry.
+- Added message-baseline fields for reactivation detection.
+- Marked April plan and README edits as already applied by this planning session.
+- Added a cold-start `reactivate_reply()` compatibility wrapper path that stamps `bootstrap_reactivation: true` while keeping normal production reactivation fail-closed without `latest_message_id` or `reactivation_id`.
+- Removed the committed literal-email fixture proposal; tests must use inline reserved placeholder domains plus temporary account config.
+- Added disabled-alias config semantics so known disabled accounts are reported as out of scope while unmappable literal email snapshots remain `config_missing`.
+- Added `reactivation_pending_count` so replies on already tracked `completed`, `awaiting-reply`, or `purged` threads make `mailbox_empty: false`.
+- Split normal production reactivation from cold-start bootstrap and required `MissingReactivationId` when neither `latest_message_id`, `reactivation_id`, nor bootstrap context exists.
+- Clarified #2026 owns the checker/report command plus a non-destructive daily dry-run scheduled task; destructive deletion remains #2423 and live Gmail read orchestration remains #2024.
+- Required live label existence verification for both in-scope accounts before closing #2026, or a blocked/user-approved split if credentials are unavailable.
+- Added an importable CLI seam at `scripts/email/state/cli.py` so unit tests can inject fake Gmail clients while the hyphenated wrapper stays thin.
+- Added local-state account-scope filtering so disabled/unknown local rows become warning buckets rather than pending work.
+- Added `completed_at` stamping on completion transitions and tests for grace sweep timestamp reliability.
+- Tightened historical dedup so no-trigger stale events from an earlier lifecycle raise instead of silently skipping.
+- Added `list_threads()` and thread enumeration in the report/CLI contract.
+- Moved cold-start bootstrap detection under the store lock and bounded it to allowed prior states.
+- Added reactivation checker id mapping from `latest_message_id` to `triggering_message_id`, with stable `reactivation_id` fallback.
+- Required reactivation precheck or inbox snapshot before sweep apply, and skip/report behavior for completed threads with new replies.
+- Switched Gmail label setup to per-account client selection for `ace` and `personal`.
+- Made state events authoritative for paired learning events with deterministic transaction ids and recovery/backfill.
+- Added snapshot freshness/rebuild contract and tests for missing/corrupt/stale metadata.
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** Existing docs and old plans disagree on runtime state location. This plan chooses local runtime state and requires docs reconciliation because committing raw email state is worse.
+- **Risk:** Gmail label creation depends on available Gmail client credentials. If unavailable during implementation, the code/tests can land, but #2026 closeout must record that production label setup remains blocked rather than claiming full completion.
+- **Risk:** Existing tests currently xfail broadly. Implementation must remove xfail markers only after the real storage module passes the expanded tests.
+- **Risk:** #2024 has its own stale ace-only plan. After #2026 reaches plan-review or approval, #2024 should be revised for the same two-account scope before implementation.
+- **Risk:** The module will use `fcntl` on Linux. Implementation should guard POSIX-only imports or skip platform-specific tests cleanly on Windows; this issue is labeled `machine:dev-primary`.
+- **Risk:** Do not add `scripts/email/__init__.py`. Tests rely on namespace-package behavior; adding that file can shadow Python's stdlib `email` package because `tests/conftest.py` puts `REPO_ROOT/scripts` on `sys.path`.
+- **Open:** Whether production label setup should be run during the same implementation session or as a separate operator step after tests pass. Recommendation: implement and test the apply path, then run only the label-creation command for `ace` and `personal` if credentials are available; do not archive/delete Gmail in #2026.
+
+---
+
+## Complexity: T2
+
+T2 because this creates a new state module with multiple submodules, local runtime persistence, concurrency/idempotency behavior, and tests, but it stays within one feature surface and avoids live Gmail archive/delete automation.
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: SessionStart Completed
+codex
+I’ll verify the plan’s cited repo state rather than treating the inline text as fact. I’m using the workspace adversarial plan-review guidance and will keep the output to the required four sections.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+exec
+/bin/bash -lc "sed -n '1,220p' /mnt/local-analysis/workspace-hub/.claude/skills/software-development/artifact-inline-plan-review/SKILL.md" in /mnt/local-analysis/workspace-hub
+ exited 2 in 0ms:
+sed: can't read /mnt/local-analysis/workspace-hub/.claude/skills/software-development/artifact-inline-plan-review/SKILL.md: No such file or directory
+
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+exec
+/bin/bash -lc "pwd && sed -n '1,220p' config/agents/codex/MEMORY.runtime.md" in /mnt/local-analysis/workspace-hub
+ succeeded in 0ms:
+/mnt/local-analysis/workspace-hub
+<!-- MANAGED by curate_readback_slice.py — do not hand-edit; regenerate via bridge-hermes-claude.sh -->
+
+- [All-provider memory should flow through Hermes](feedback_memory_aspire_to_hermes_level.md) — Hermes is the canonical memory backend; per-provider stores (Claude auto-memory, Codex state, Gemini session) should consolidate to Hermes rather than evolve in parallel. Collapse cross-provider silos (Claude/Codex/Gemini learnings unified, not siloed); aim for Hermes-bar on capture / retrieval / cross-machine + cross-provider sync (2026-05-17)
+- [No local task IDs](feedback_no_reserved_wrk_ids.md) — GitHub issues only
+- [Check parallel work](feedback_check_parallel_work.md) — scan in-flight sessions first
+- [Hermes session grep: journal vs active](feedback_hermes_session_grep_journal_vs_active.md) — `grep -R <path> ~/.hermes/sessions` hits ≠ active use; discriminator is session_id ∩ running pgrep workers, not file existence
+- [Pre-completion cleanup audit gate](feedback_pre_completion_cleanup_audit_gate.md) — run audit skill before "all done"; CLEAN/EXPECTED/UNEXPECTED bucket verdict; never relay completion with UNEXPECTED residue. Hermes flow-through tracked at [#2750](https://github.com/vamseeachanta/workspace-hub/issues/2750)
+- [Discovery-first on stale plan-approved](feedback_discovery_first_on_stale_plan_approved.md) — inventory codebase before writing; prior commits may have completed scope. llm-wiki #41/#42 both validated
+- [Comment on issues](feedback_gh_issue_comment.md) — post summary on every issue
+- [Inline gh issue URLs](feedback_inline_gh_issue_url.md) — render `#NNNN` as Markdown hyperlink in chat (not bare token)
+- [Queue git-tracked](feedback_queue_git_tracked.md) — verify files in git before queue
+- [Worktree gitlink pollution](feedback_worktree_gitlink_pollution.md) — add .claude/worktrees/ to .gitignore before parallel-agent runs
+- [Adversarial review stance](feedback_adversarial_review_stance.md) — every review prompt must force defect-hunting, not charitable reading
+- [Always adversarial review; scale depth](feedback_always_adversarial_review_scale_depth.md) — never skip; dial depth to scope (T1/T2/T3 = 1/2/3 providers)
+- [Doc-counter rules write-time](feedback_doc_counter_rule_writetime.md) — phantom counters as write-time recompute rules, not frozen integers
+- [Cross-provider review payoff](feedback_cross_provider_review_payoff.md) — Codex finds non-overlapping defects vs. Claude; verify Codex GitHub-connector evidence locally
+- [gh issue close drops comments](feedback_gh_issue_close_silent_comment_drop.md) — if CLOSED, --comment silently lost; reopen-comment-close
+- [GitHub addComment "submitted too quickly"](feedback_github_addcomment_submitted_too_quickly.md) — throttle string is "was submitted too quickly", NOT "rate limit"/"abuse"; backoff regex must match it explicitly
+- [Bulk-comment cumulative ceiling](feedback_bulk_comment_cumulative_volume_threshold.md) — ~500 addComment posts on single token in ~25min trips throttle even at 30/min pacing; batch ≤200 + 1hr cooldown
+- [Codex needs pushed artifact](feedback_codex_needs_pushed_artifact.md) — push plan to GH BEFORE `codex exec`; sandbox can't read local files
+- [Codex sandbox model](feedback_codex_sandbox_write_blocked.md) — sandbox blocks fs writes AND shell exec; fallback via js_repl + GH connector. See also: codex_sandbox_no_execution, codex_sandbox_fallback_paths topic files.
+- [Data-format guidelines](data_format_guidelines.md) — default YAML for agent-facing structured data; JSON only when machine-consumed
+- [Cross-machine execution](feedback_cross_machine_execution.md) — per-machine tasks via shared git repo, not SSH/rsync
+- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills under `~/.claude/plugins/cache/`; `git mv` cannot operate
+- [Plan past-tense drift](feedback_plan_past_tense_artifact_claims.md) — plans describing proposed work as committed artifacts trick reviewers; future tense only
+- [Multi-agent commit serialization](feedback_multi_agent_commit_serialization.md) — parallel agents race on git lock; serialize commits OR use worktrees. Umbrella covering: merge-race silent revert, retry-loop reset hazard, git switch --discard-changes, autostash replay, parallel-session staged-change bleedthrough (see topic files; pre-commit `git diff --cached --name-only` is the universal mitigation)
+- [Mock vs live invocation](feedback_mock_vs_live_invocation_divergence.md) — for external-CLI fixes, mocks pass what live CLIs reject; always live-repro before close
+- [Attestation enables contradiction detection](feedback_attestation_enables_contradiction_detection.md) — #2405 unlocks plan-vs-live-state defect finding, not just Class-B silencing
+- [Subagent Write phantom](feedback_subagent_write_phantom.md) — subagent reports Write success while file doesn't land; main session must `ls` before believing
+- [Wait for safety bg task before destructive op](feedback_wait_for_safety_bg_task_before_destructive_op.md) — in-flight "is this safe to delete" bg tasks are blocking deps; "if stale, delete" conditional approval still requires complete evidence first (2026-05-18 digitalmodel premature rm)
+- [Never offer self-label plan-approved](feedback_never_offer_to_self_label_plan_approved.md) — never self-approve, never pre-authorize via handoff-prompt; user-in-loop gate is load-bearing
+- [Recruiter engagement criteria](feedback_recruiter_engagement.md) — consulting-level + credible source only; no drive-by recruiter replies even in active job-search
+- [Email cross-noise](feedback_email_cross_noise.md) — third parties mistakenly using user's Gmail; standard unsubscribe fails; sender-domain DELETE in routing config
+- [Codex sustained-MAJOR loop](feedback_codex_sustained_major_loop.md) — Codex MAJOR 3+ rounds while Claude/Gemini MINOR by v3 → surface consensus-vs-minority, don't auto-cycle (#2045, #2289)
+- [Parallel agent write-only pattern](feedback_parallel_agent_write_only_pattern.md) — agents write files only; main session serializes commits. Avoids git-lock races without worktrees
+- [Parallel subagent shared-target manifest deferral](feedback_parallel_subagent_shared_target_manifest_deferral.md) — partition into unique-target (subagent writes) + shared-target (manifest delta, main applies). For 3 sub-issues use 2-batch + solo trailing (Batch 1 = 2 parallel, Batch 2 = solo on heaviest cross-link). Validated 4 PE epics 2026-05-15 → 2026-05-16
+- [Permission gate blocks cross-review](feedback_permission_gate_blocks_cross_review.md) — planning-only sessions can't dispatch cross-review.sh; fallback is single-author r3 with transparent provenance
+- [Commit attestation narrow scope](feedback_commit_attestation_narrow_scope.md) — "gates passed" covers ONLY that commit's files; re-run live, don't infer from `git log A..B`
+- [GSD](project_gsd_migration.md) — sole workflow, v1.38.1, Node 24+
+_[176 entries omitted: oversize/over-cap]_
+
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+exec
+/bin/bash -lc "sed -n '1,220p' /mnt/local-analysis/workspace-hub/.claude/skills/coordination/pre-completion-cleanup-audit/SKILL.md" in /mnt/local-analysis/workspace-hub
+ succeeded in 0ms:
+---
+name: pre-completion-cleanup-audit
+description: Audit and dispose of session residue (orphan files, scratch dirs, sibling-repo state, locks, trash-stages) BEFORE claiming a task complete. Required gate before any agent says "all done", "task complete", or hands work back to user/orchestrator.
+when_to_use: '- About to report "task complete" / "done" / "ready for review"
+
+  - Hermes receives a completion signal from a Claude/Codex/Gemini sub-agent and is about to relay it upward
+
+  - End of any session that touched files outside the canonical repo working tree
+
+  - After running tools that may leave artifacts (cleanup operations, archive workflows, codex-burn runs, multi-repo fanouts)
+
+  - Before creating a PR or running ``/ship``-style commands
+
+  '
+tags:
+- session-hygiene
+- closeout-gate
+- hermes-orchestration
+- residue-audit
+- post-task-cleanup
+---
+
+# Pre-completion cleanup audit
+
+A required gate before claiming task completion. Surfaces residue that would otherwise accumulate and force later remediation passes (see `operations/mnt-analysis-cleanup` for the heavyweight version that runs after this has been skipped enough times).
+
+## Why this exists
+
+Sessions accumulate four categories of residue that aren't always visible from the immediate task:
+
+1. **In-repo working-tree drift** — uncommitted changes, untracked files, stashes, leftover `.tmp/` or `.partial` artifacts from interrupted operations
+2. **Sibling-of-canonical accumulations** — `/mnt/local-analysis/` siblings, outer-clone duplicates, orphan worktrees
+3. **Scratch artifacts** — `/tmp/<session-id>/` files, ad-hoc patches in unusual locations
+4. **State markers** — `.cleanup-lock`, `.cleanup-trash/`, abandoned `*.partial` files, half-completed two-phase deletes
+
+Each category has its own remediation skill. This skill's job is **detection**, not full disposition — it surfaces what exists, the agent decides what's required.
+
+## The audit (Iron Law: report, don't auto-delete)
+
+Run these in order. Each step is a single grep/find/ls; combined runtime should be under 10 seconds.
+
+**Pipefail pitfall:** if you run the audit inside `set -euo pipefail`, `find ... | head` and similar early-closing pipelines can exit `141` from SIGPIPE even though the audit succeeded. Use `sed -n '1,20p'` or wrap the pipeline with `|| true` for report-only probes; cleanup audit commands should surface residue, not fail the closeout because `head` closed the pipe.
+
+**Nested-repo timeout pitfall:** workspace-hub style checkouts may contain nested tier-1 repos or large data trees. Do not let report-only `find .` scans traverse every nested checkout until they time out. Bound them with `timeout`, prune `.git` and known nested repo directories, and report that the scan was scoped. Example:
+
+```bash
+timeout 8 bash -lc "find . -path ./.git -prune -o -path ./worldenergydata -prune -o -path ./llm-wiki -prune -o -path ./assethold -prune -o -path ./aceengineer-website -prune -o -path ./aceengineer-strategy -prune -o \( -name '*.partial' -o -name '*.tmp' \) -print" | sed -n '1,20p'
+```
+
+### 1. Repo working-tree state
+```bash
+cd <canonical-repo>
+git status --short
+git stash list
+find . -name '*.partial' -o -name '*.tmp' 2>/dev/null | head
+```
+
+### 2. Sibling-of-canonical state (only when canonical repo is under `/mnt/local-analysis/` or analog)
+```bash
+ls -la <repo-parent-dir>
+# Cross-reference each non-canonical entry against the mnt-analysis-cleanup taxonomy
+```
+
+If a repo-location / working-style contract issue is active, do not treat remaining sibling tier-1 checkouts as disposable cleanup residue merely because a cleanup pass was reported. Verify the live parent directory, report the observed set, and classify sibling repos as one of:
+- **EXPECTED** — legitimate adjacent checkout under a pending/approved placement contract, or task-scoped output;
+- **UNEXPECTED** — duplicate/orphan/dirty checkout with no traced role;
+- **DEFER** — needs a repo-location contract plan before any move/delete.
+
+Phrase cleanup evidence precisely: “first-level entries observed are …” rather than “all folders were cleaned except …” when live probes show additional siblings. Repo placement changes require the issue-planning route; this audit reports state and must not opportunistically finish cleanup.
+
+### 3. Scratch artifacts under /tmp
+```bash
+find /tmp -maxdepth 3 -user "$USER" -mmin -240 -type f \
+  ! -path '*/claude-*/tasks/*' \
+  ! -path '*/snapshot-*' \
+  ! -path '*/com.google.Chrome.scoped_dir.*/*' \
+  ! -path '*/playwright-*/*' \
+  2>/dev/null | sed -n '1,40p'
+```
+(Exclude harness/browser-managed paths; surface only user-meaningful scratch.) If browser automation profiles exist, summarize them by top-level directory instead of listing cached files. The useful closeout signal is usually ad-hoc issue/comment drafts, screenshots, downloads, or manually named scratch files — not Chrome cache internals.
+
+If `/tmp` contains the requested deliverable itself (for example: recursive inventory output, exported report, generated media, downloaded attachment, or a helper script the user asked for), classify it as **EXPECTED** residue when it is named, verified, and delivered/linked in the final response. See `references/user-facing-scratch-artifacts.md` for the closeout wording pattern.
+
+### 4. Lock/trash-stage state
+```bash
+ls /mnt/local-analysis/.cleanup-lock 2>/dev/null
+ls -la /mnt/local-analysis/.cleanup-trash/ 2>/dev/null | head
+```
+
+### 5. Session-local handoff/session-doc state
+```bash
+git status --short docs/sessions/ docs/session-handoffs/ docs/handoffs/ 2>/dev/null
+```
+
+When the user says **"document and prepare to exit"**, write a concise handoff before final audit if the session changed repo state or closed an issue. Include: active task, completed actions, verified repo/issue state, uncommitted expected residue, blockers, and exact next checkpoint. If the canonical task repo is clean but the control-plane repo is dirty/divergent with unrelated pre-existing changes, do **not** force a mixed commit; classify the new handoff/skill patch as **EXPECTED** residue and name the unrelated dirty state separately.
+
+## Verdict format
+
+Report to the upstream consumer (user or orchestrator) in three buckets:
+
+| Bucket | Meaning | Required action |
+|---|---|---|
+| **CLEAN** | No residue surfaced | Proceed to "all done" |
+| **EXPECTED** | Residue exists but is expected output of the task (e.g., a new handoff doc not yet committed) | Surface explicitly; "all done" allowed with the residue named |
+| **UNEXPECTED** | Residue exists that doesn't trace to the requested task | Block "all done"; route to remediation (commit, archive, delete, or escalate) |
+
+Never report "all done" with **UNEXPECTED** residue present.
+
+## Hermes flow-through integration
+
+When Hermes orchestrates sub-agents (Claude/Codex/Gemini), Hermes SHOULD run this audit on every sub-agent completion signal before relaying "done" to the user:
+
+1. Sub-agent sends `task_status: complete` over the gateway
+2. Hermes pauses the completion signal
+3. Hermes invokes this skill's audit checklist via `bash -lc '<inline-script>'`
+4. If CLEAN → relay completion
+5. If EXPECTED → relay completion + append a "residue surfaced" annotation
+6. If UNEXPECTED → dispatch back to the sub-agent: "audit found residue; resolve before completion"
+
+The Hermes-side hook is tracked in workspace-hub issue (file follow-up: cleanup-audit-flow-through).
+
+## When NOT to run
+
+- Trivial single-tool-call tasks (e.g., "show me the diff") — overhead exceeds value
+- Mid-task checkpoints — only run before *completion*, not between steps
+- Inside subagent contexts that report back to a main session — let the main session run the audit once, not N times
+
+## Adjacent skills
+
+- `operations/mnt-analysis-cleanup` — heavyweight retroactive cleanup when this audit has been skipped repeatedly
+- `workspace-hub-learned/full-branch-cleanup-and-worktree-hygiene` — branch/worktree-specific
+- `workspace-hub-learned/blocked-branch-preserve-tag-cleanup` — when preservation is needed before cleanup
+- `github/github-issue-closeout-race-safe` — closeout sequencing for GH issues specifically
+
+This skill is the *trigger upstream of all of them*: detect what exists, then route to the right disposition skill.
+
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+codex
+The local `.claude/skills` path named in the runtime index does not contain that exact review skill, so I’m falling back to the available `.agents/skills` copy and direct repository verification.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+exec
+/bin/bash -lc "sed -n '1,240p' /mnt/local-analysis/workspace-hub/.agents/skills/software-development/artifact-inline-plan-review/SKILL.md" in /mnt/local-analysis/workspace-hub
+ exited 2 in 0ms:
+sed: can't read /mnt/local-analysis/workspace-hub/.agents/skills/software-development/artifact-inline-plan-review/SKILL.md: No such file or directory
+
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+exec
+/bin/bash -lc 'rg -n "email-as-queue|queue-state|queue_state|wh-email|skestates|EMAIL_QUEUE|needs_schema|completed_at|gmail" docs/design tests/email scripts/email config/scheduled-tasks docs/plans/2026-04-24-issue-2026-plan.md docs/plans/README.md' in /mnt/local-analysis/workspace-hub
+exec
+/bin/bash -lc "git status --short && rg --files docs/design tests/email scripts/email config/scheduled-tasks docs/plans scripts/review/results 2>/dev/null | sed -n '1,220p'" in /mnt/local-analysis/workspace-hub
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+ succeeded in 121ms:
+scripts/email/templates/cre-listing.yaml:4:# Used by: scripts/email/gmail-extract-and-act.py (planned)
+
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+ succeeded in 10559ms:
+?? .claude/skills/_internal/builders/web-artifacts-builder/templates/
+?? .claude/skills/coordination/agent-work-adversarial-review/references/
+?? .claude/skills/coordination/session-corpus-audit/references/
+?? .claude/state/session-signals/2026-06-11.jsonl
+?? docs/plans/2026-06-11-issue-2026-email-state-tracking.md
+?? docs/session-handoffs/2026-06-10-handoff-lane-system-quota-truth.md
+?? scripts/review/results/2026-06-11-plan-2026-claude.md
+?? scripts/review/results/2026-06-11-plan-2026-codex.md
+?? scripts/review/results/2026-06-11-plan-2026-disagreement.md
+?? scripts/review/results/2026-06-11-plan-2026-gemini.md
+?? scripts/review/results/2026-06-11-plan-2026-r1-claude.md
+?? scripts/review/results/2026-06-11-plan-2026-r1-codex.md
+?? scripts/review/results/2026-06-11-plan-2026-r1-disagreement.md
+?? scripts/review/results/2026-06-11-plan-2026-r1-gemini.md
+?? scripts/review/results/2026-06-11-plan-2026-r2-claude.md
+?? scripts/review/results/2026-06-11-plan-2026-r2-codex.md
+?? scripts/review/results/2026-06-11-plan-2026-r2-disagreement.md
+?? scripts/review/results/2026-06-11-plan-2026-r2-gemini.md
+?? scripts/review/results/2026-06-11-plan-2026-r3/
+?? scripts/review/results/2026-06-11-plan-2026-r4/
+?? scripts/review/results/2026-06-11-plan-2026-r5/
+?? scripts/review/results/2026-06-11-plan-2026-r6/
+?? scripts/review/results/2026-06-11-plan-2026-r7/
+?? tests/statusline/test_quota_staleness.bats
+scripts/review/results/20260324T084918Z-plan.md-plan-claude.md
+scripts/review/results/20260324T084711Z-inline-content-implementation-gemini.raw.md
+scripts/review/results/20260324T084711Z-inline-content-implementation-gemini.md
+scripts/review/results/2026-04-11-plan-2104-final.md
+scripts/review/results/2026-04-11-plan-2104-claude.md
+scripts/review/results/2026-04-11-issue-2209-final-review.md
+scripts/review/results/2026-04-11-issue-2209-claude-review.md
+scripts/review/results/2026-04-11-issue-2207-final-review.md
+scripts/review/results/2026-04-11-issue-2207-claude-review.md
+scripts/review/results/2026-04-11-issue-2206-final-review.md
+scripts/review/results/2026-04-11-issue-2206-claude-review.md
+scripts/review/results/2026-04-11-issue-2096-final-review.md
+scripts/review/results/2026-04-11-issue-2096-claude-review.md
+scripts/review/results/2026-04-02T132222Z-retroactive-review-codex.md
+scripts/review/results/20260324T104117Z-plan.md-plan-codex.md
+scripts/review/results/20260324T104117Z-plan.md-plan-claude.md
+scripts/review/results/20260324T091911Z-cross-review-package.md-plan-gemini.md
+scripts/review/results/20260324T091911Z-cross-review-package.md-plan-codex.md
+scripts/review/results/20260324T091911Z-cross-review-package.md-plan-claude.md
+scripts/review/results/20260324T091601Z-wrk-5139-impl-diff.txt-implementation-gemini.md
+scripts/review/results/20260324T091601Z-wrk-5139-impl-diff.txt-implementation-codex.raw.md
+scripts/review/results/20260324T091601Z-wrk-5139-impl-diff.txt-implementation-codex.md
+scripts/review/results/20260324T091601Z-wrk-5139-impl-diff.txt-implementation-claude.md
+scripts/review/results/20260324T084918Z-plan.md-plan-gemini.md
+scripts/review/results/20260324T084918Z-plan.md-plan-codex.md
+scripts/review/results/20260324T105659Z-plan.md-plan-gemini.raw.md
+scripts/review/results/20260324T105659Z-plan.md-plan-gemini.md
+scripts/review/results/20260324T104318Z-plan.md-plan-gemini.raw.md
+scripts/review/results/20260324T104318Z-plan.md-plan-gemini.md
+scripts/review/results/20260324T104257Z-plan.md-plan-claude.md
+scripts/review/results/2026-04-11-plan-2136-claude.md
+scripts/review/results/20260324T105727Z-plan.md-plan-codex.raw.md
+scripts/review/results/20260324T105727Z-plan.md-plan-codex.md
+scripts/review/results/2026-04-13-plan-2250-hermes.md
+scripts/review/results/2026-04-12-plan-2240-codex-rerun.md
+scripts/review/results/2026-04-12-plan-2227-final.md
+scripts/review/results/2026-04-14-plan-2249-codex.md
+scripts/review/results/2026-04-14-plan-2096-gemini.md
+scripts/review/results/2026-04-15-implementation-2290-claude.md
+scripts/review/results/2026-04-12-plan-2240-gemini.md
+scripts/review/results/2026-04-12-plan-2240-gemini-rerun.md
+scripts/review/results/2026-04-12-plan-2240-gemini-final-rerun.md
+scripts/review/results/2026-04-12-plan-2240-codex.md
+scripts/review/results/2026-04-12-plan-2240-codex-final-rerun.md
+scripts/review/results/2026-04-12-plan-2240-claude.md
+scripts/review/results/2026-04-12-plan-2239-gemini.md
+scripts/review/results/2026-04-12-plan-2239-gemini-rerun.md
+scripts/review/results/2026-04-12-plan-2239-gemini-final-rerun.md
+scripts/review/results/2026-04-12-plan-2239-codex.md
+scripts/review/results/2026-04-12-plan-2239-codex-rerun.md
+scripts/review/results/2026-04-12-plan-2239-codex-final-rerun.md
+scripts/review/results/2026-04-12-plan-2239-claude.md
+scripts/review/results/2026-04-12-plan-2227-review-b.md
+scripts/review/results/2026-04-12-plan-2227-review-a.md
+scripts/review/results/2026-04-11-plan-2226-final.md
+scripts/review/results/2026-04-11-plan-2226-claude.md
+scripts/review/results/2026-04-11-plan-2225-final.md
+scripts/review/results/2026-04-11-plan-2225-claude.md
+scripts/review/results/2026-04-11-plan-2216-final.md
+scripts/review/results/2026-04-11-plan-2216-claude.md
+scripts/review/results/2026-04-11-plan-2208-final.md
+scripts/review/results/2026-04-11-plan-2208-claude.md
+scripts/review/results/2026-04-11-plan-2205-gemini.md
+scripts/review/results/2026-04-11-plan-2205-codex.md
+scripts/review/results/2026-04-11-plan-2205-claude.md
+scripts/review/results/2026-04-11-plan-2136-final.md
+scripts/review/results/2026-04-16-plan-2227-claude-overnight.md
+scripts/review/results/2026-04-15-plan-2294-gemini.md
+scripts/review/results/2026-04-15-plan-2290-claude.md
+scripts/review/results/2026-04-15-plan-2129-codex.md
+scripts/review/results/2026-04-15-plan-2045-codex-rereview18.md
+scripts/review/results/20260213T043516Z-commit-c7848c57-implementation-claude.md
+scripts/review/results/20260212T220743Z-orcawave_plans_for_review.md-plan-gemini.md
+scripts/review/results/20260212T220743Z-orcawave_plans_for_review.md-plan-codex.md
+scripts/review/results/20260212T220743Z-orcawave_plans_for_review.md-plan-claude.md
+scripts/review/results/20260211T201847Z-orcaflex_plans_for_review.md-plan-gemini.md
+scripts/review/results/20260211T201847Z-orcaflex_plans_for_review.md-plan-codex.md
+scripts/review/results/20260211T201847Z-orcaflex_plans_for_review.md-plan-claude.md
+scripts/review/results/20260211T165738Z-WRK-110.md-plan-gemini.md
+scripts/review/results/2026-04-14-plan-2096-codex.md
+scripts/review/results/2026-04-14-plan-2046-gemini.md
+scripts/review/results/2026-04-14-plan-2046-codex.md
+scripts/review/results/2026-04-14-plan-2045-gemini.md
+scripts/review/results/2026-04-14-plan-2045-codex.md
+scripts/review/results/2026-04-14-plan-2024-gemini.md
+scripts/review/results/2026-04-14-plan-2024-codex.md
+scripts/review/results/2026-04-14-plan-2018-gemini.md
+scripts/review/results/2026-04-14-plan-2018-codex.md
+scripts/review/results/2026-04-14-plan-1963-gemini.md
+scripts/review/results/2026-04-14-plan-1963-codex.md
+scripts/review/results/2026-04-13-plan-2250-subagent.md
+scripts/review/results/2026-04-13-plan-2249-subagent.md
+scripts/review/results/2026-04-13-plan-2249-hermes.md
+scripts/review/results/2026-04-13-plan-2229-subagent.md
+scripts/review/results/2026-04-13-plan-2105-subagent.md
+scripts/review/results/2026-04-13-plan-2096-subagent.md
+scripts/review/results/2026-04-13-plan-2046-subagent.md
+scripts/review/results/2026-04-13-plan-2024-subagent.md
+scripts/review/results/2026-04-13-plan-2018-subagent.md
+scripts/review/results/20260213T155221Z-commit-da181dd9-implementation-codex.md
+scripts/review/results/20260213T155221Z-commit-da181dd9-implementation-claude.md
+scripts/review/results/20260213T155215Z-commit-85667331-implementation-gemini.md
+scripts/review/results/20260213T155215Z-commit-85667331-implementation-codex.md
+scripts/review/results/20260213T155215Z-commit-85667331-implementation-claude.md
+scripts/review/results/20260213T151417Z-commit-a8d9e3fe-implementation-gemini.md
+scripts/review/results/20260213T151417Z-commit-a8d9e3fe-implementation-codex.md
+scripts/review/results/20260213T043516Z-commit-c7848c57-implementation-gemini.md
+scripts/review/results/20260324T084711Z-inline-content-implementation-codex.md
+scripts/review/results/20260324T084711Z-inline-content-implementation-claude.md
+scripts/review/results/20260324T080019Z-inline-content-implementation-claude.md
+scripts/review/results/20260324T075129Z-inline-content-implementation-gemini.raw.md
+scripts/review/results/20260324T075129Z-inline-content-implementation-gemini.md
+scripts/review/results/20260324T075008Z-inline-content-implementation-claude.md
+scripts/review/results/20260213T043516Z-commit-c7848c57-implementation-codex.md
+scripts/review/results/20260323T230759Z-anchors.py-implementation-claude.md
+scripts/review/results/20260323T211040Z-plan.md-plan-claude.md
+scripts/review/results/20260323T210945Z-plan.md-plan-claude.md
+scripts/review/results/20260213T180503Z-commit-85667331-implementation-gemini.md
+scripts/review/results/20260213T180503Z-commit-85667331-implementation-codex.md
+scripts/review/results/20260213T180503Z-commit-85667331-implementation-claude.md
+scripts/review/results/20260213T155230Z-commit-318fa23d-implementation-claude.md
+scripts/review/results/20260213T155230Z-commit-318fa23d-implementation-gemini.md
+scripts/review/results/20260213T155226Z-commit-a8d9e3fe-implementation-codex.md
+scripts/review/results/20260213T155226Z-commit-a8d9e3fe-implementation-claude.md
+scripts/review/results/20260213T155221Z-commit-da181dd9-implementation-gemini.md
+scripts/review/results/20260213T180519Z-commit-318fa23d-implementation-claude.md
+scripts/review/results/20260213T180513Z-commit-a8d9e3fe-implementation-gemini.md
+scripts/review/results/20260213T180513Z-commit-a8d9e3fe-implementation-claude.md
+scripts/review/results/20260213T180508Z-commit-da181dd9-implementation-gemini.md
+scripts/review/results/20260213T180508Z-commit-da181dd9-implementation-codex.md
+scripts/review/results/20260213T180508Z-commit-da181dd9-implementation-claude.md
+scripts/review/results/20260213T181721Z-commit-85667331-implementation-codex.md
+scripts/review/results/20260213T181721Z-commit-85667331-implementation-claude.md
+scripts/review/results/20260213T180519Z-commit-318fa23d-implementation-gemini.md
+scripts/review/results/20260213T180519Z-commit-318fa23d-implementation-codex.md
+scripts/review/results/20260213T181726Z-commit-da181dd9-implementation-claude.md
+scripts/review/results/20260213T181721Z-commit-85667331-implementation-gemini.md
+scripts/review/results/20260213T181726Z-commit-da181dd9-implementation-codex.md
+scripts/review/results/20260213T181732Z-commit-a8d9e3fe-implementation-claude.md
+scripts/review/results/20260213T181732Z-commit-a8d9e3fe-implementation-codex.md
+scripts/review/results/20260213T155230Z-commit-318fa23d-implementation-codex.md
+scripts/review/results/20260213T181732Z-commit-a8d9e3fe-implementation-gemini.md
+scripts/review/results/20260213T181737Z-commit-318fa23d-implementation-claude.md
+scripts/review/results/20260217T120555Z-cryptic-hugging-leaf.md-implementation-claude.md
+scripts/review/results/20260213T181737Z-commit-318fa23d-implementation-gemini.md
+scripts/review/results/20260217T120555Z-cryptic-hugging-leaf.md-implementation-codex.md
+scripts/review/results/20260213T181737Z-commit-318fa23d-implementation-codex.md
+scripts/review/results/20260223T045510Z-wrk-129-orcaflex-analysis-reporting.md-implementation-codex.md
+scripts/review/results/20260223T043128Z-wrk-129-orcaflex-analysis-reporting.md-implementation-gemini.md
+scripts/review/results/20260223T043128Z-wrk-129-orcaflex-analysis-reporting.md-implementation-codex.md
+scripts/review/results/20260223T043128Z-wrk-129-orcaflex-analysis-reporting.md-implementation-claude.md
+scripts/review/results/20260223T042536Z-SKILL.md-implementation-gemini.md
+scripts/review/results/20260223T042536Z-SKILL.md-implementation-codex.md
+scripts/review/results/20260223T042536Z-SKILL.md-implementation-claude.md
+scripts/review/results/20260223T042251Z-WRK-307.md-plan-gemini.md
+scripts/review/results/20260223T042251Z-WRK-307.md-plan-codex.md
+scripts/review/results/20260223T042005Z-WRK-304.md-plan-gemini.md
+scripts/review/results/20260223T042005Z-WRK-304.md-plan-codex.md
+scripts/review/results/20260223T042005Z-WRK-304.md-plan-claude.md
+scripts/review/results/20260223T040607Z-SKILL.md-implementation-codex.md
+scripts/review/results/20260223T040507Z-WRK-307.md-plan-codex.md
+scripts/review/results/20260223T040414Z-WRK-304.md-plan-codex.md
+scripts/review/results/20260223T040251Z-settings.json-implementation-codex.md
+scripts/review/results/20260223T040123Z-wrk-129-orcaflex-analysis-reporting.md-implementation-gemini.md
+scripts/review/results/20260223T040123Z-wrk-129-orcaflex-analysis-reporting.md-implementation-codex.md
+scripts/review/results/20260223T040123Z-wrk-129-orcaflex-analysis-reporting.md-implementation-claude.md
+scripts/review/results/20260223T032356Z-wrk-129-orcaflex-analysis-reporting.md-implementation-codex.md
+scripts/review/results/20260223T032356Z-wrk-129-orcaflex-analysis-reporting.md-implementation-claude.md
+scripts/review/results/20260218T044331Z-wrk-129-orcaflex-analysis-reporting.md-plan-gemini.md
+scripts/review/results/20260218T044331Z-wrk-129-orcaflex-analysis-reporting.md-plan-codex.md
+scripts/review/results/20260218T044331Z-wrk-129-orcaflex-analysis-reporting.md-plan-claude.md
+scripts/review/results/20260218T044303Z-wrk-129-orcaflex-analysis-reporting.md-plan-gemini.md
+scripts/review/results/20260218T044303Z-wrk-129-orcaflex-analysis-reporting.md-plan-codex.md
+scripts/review/results/20260218T044303Z-wrk-129-orcaflex-analysis-reporting.md-plan-claude.md
+scripts/review/results/20260217T135105Z-cryptic-hugging-leaf.md-implementation-gemini.md
+scripts/review/results/20260217T120555Z-cryptic-hugging-leaf.md-implementation-gemini.md
+scripts/review/results/20260223T071247Z-wrk-129-orcaflex-analysis-reporting.md-implementation-codex.md
+scripts/review/results/20260223T071247Z-wrk-129-orcaflex-analysis-reporting.md-implementation-claude.md
+scripts/review/results/20260223T065803Z-wrk-129-orcaflex-analysis-reporting.md-implementation-gemini.md
+scripts/review/results/20260223T065803Z-wrk-129-orcaflex-analysis-reporting.md-implementation-codex.md
+scripts/review/results/20260223T064359Z-wrk-129-orcaflex-analysis-reporting.md-implementation-gemini.md
+scripts/review/results/20260223T064359Z-wrk-129-orcaflex-analysis-reporting.md-implementation-codex.md
+scripts/review/results/20260223T064359Z-wrk-129-orcaflex-analysis-reporting.md-implementation-claude.md
+scripts/review/results/20260223T062909Z-wrk-129-orcaflex-analysis-reporting.md-implementation-gemini.md
+scripts/review/results/20260223T062909Z-wrk-129-orcaflex-analysis-reporting.md-implementation-codex.md
+scripts/review/results/20260223T062909Z-wrk-129-orcaflex-analysis-reporting.md-implementation-claude.md
+scripts/review/results/20260223T061619Z-wrk-129-orcaflex-analysis-reporting.md-implementation-gemini.md
+scripts/review/results/20260223T061619Z-wrk-129-orcaflex-analysis-reporting.md-implementation-codex.md
+scripts/review/results/20260223T054947Z-wrk-129-orcaflex-analysis-reporting.md-implementation-gemini.md
+scripts/review/results/20260223T054947Z-wrk-129-orcaflex-analysis-reporting.md-implementation-codex.md
+scripts/review/results/20260223T054947Z-wrk-129-orcaflex-analysis-reporting.md-implementation-claude.md
+scripts/review/results/20260223T052937Z-wrk-129-orcaflex-analysis-reporting.md-implementation-gemini.md
+scripts/review/results/20260223T052937Z-wrk-129-orcaflex-analysis-reporting.md-implementation-codex.md
+scripts/review/results/20260223T052937Z-wrk-129-orcaflex-analysis-reporting.md-implementation-claude.md
+scripts/review/results/20260223T045510Z-wrk-129-orcaflex-analysis-reporting.md-implementation-gemini.md
+scripts/review/results/20260224T162619Z-benchmark_plotter.py-implementation-claude.md
+scripts/review/results/20260224T162424Z-qtf_postprocessing.py-implementation-gemini.md
+scripts/review/results/20260224T162424Z-qtf_postprocessing.py-implementation-codex.md
+scripts/review/results/20260224T162424Z-qtf_postprocessing.py-implementation-claude.md
+scripts/review/results/20260223T162004Z-wrk-309-plan-review-input.md-implementation-codex.md
+scripts/review/results/20260223T162004Z-wrk-309-plan-review-input.md-implementation-claude.md
+scripts/review/results/20260223T154928Z-wrk-312-plan-review-input.md-plan-gemini.md
+scripts/review/results/20260223T154928Z-wrk-312-plan-review-input.md-plan-codex.md
+scripts/review/results/20260223T071247Z-wrk-129-orcaflex-analysis-reporting.md-implementation-gemini.md
+scripts/review/results/20260226T105140Z-WRK-321.md-implementation-claude.md
+scripts/review/results/20260226T104912Z-WRK-321.md-implementation-codex.md
+scripts/review/results/20260226T104912Z-WRK-321.md-implementation-claude.md
+scripts/review/results/20260224T162619Z-benchmark_plotter.py-implementation-gemini.md
+scripts/review/results/20260224T162619Z-benchmark_plotter.py-implementation-codex.md
+scripts/review/results/20260309T205959Z-wrk-1077-phase-1-review-input.md-implementation-claude.raw.md
+scripts/review/results/20260309T205959Z-wrk-1077-phase-1-review-input.md-implementation-claude.md
+scripts/review/results/20260309T205959Z-wrk-1077-phase-1-review-input.md-implementation-codex.md
+scripts/review/results/20260309T205959Z-wrk-1077-phase-1-review-input.md-implementation-codex.raw.md
+docs/plans/2026-01-19-excel-translation.md
+scripts/review/results/20260309T205959Z-wrk-1077-phase-1-review-input.md-implementation-gemini.md
+scripts/review/results/2026-04-14-plan-2281-claude.md
+scripts/review/results/2026-04-14-plan-2280-gemini.md
+scripts/review/results/2026-04-14-plan-2280-codex.md
+scripts/review/results/2026-04-14-plan-2280-claude.md
+scripts/review/results/2026-04-14-plan-2250-gemini.md
+
+codex
+The first verification pass already shows the stale workflow doc still carries delete/trash calls and three-account assumptions. I’m narrowing that against the plan’s claimed fixes and the current test/config surface.
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+exec
+/bin/bash -lc "nl -ba docs/design/email-as-queue.md | sed -n '1,120p'
+nl -ba docs/design/email-queue-state-schema.yaml | sed -n '1,180p'
+nl -ba tests/email/test_state_machine_contract.py | sed -n '1,120p'" in /mnt/local-analysis/workspace-hub
+ succeeded in 0ms:
+     1	# Email-as-Queue Workflow
+     2	
+     3	Issue: #2017
+     4	
+     5	Email is treated as a queue, not a durable archive. The durable record is the structured extraction written to the target repository; the raw email remains an operational input.
+     6	
+     7	## Scope
+     8	
+     9	#2017 defines the contract artifacts used by downstream implementation:
+    10	
+    11	- Local queue state model and schemas.
+    12	- CRE extraction schema.
+    13	- Spam classification rules.
+    14	- Redacted fixture corpus and contract tests.
+    15	
+    16	Pipeline orchestration belongs to #2024. Queue-state storage implementation belongs to #2026. New Gmail-side delete/archive automation belongs to #2423.
+    17	
+    18	Existing `gmail-archive-extract.py` routing behavior is grandfathered production infrastructure. This design does not add new Gmail mutations.
+    19	
+    20	## Decisions
+    21	
+    22	### State Authority
+    23	
+    24	Queue state is local-only in v1:
+    25	
+    26	- Append-only event log: `scripts/email/queue-state.jsonl`.
+    27	- Materialized read snapshot: `scripts/email/queue-state-snapshot.yaml`.
+    28	- Snapshot freshness metadata: `scripts/email/queue-state-snapshot.meta.yaml`.
+    29	- Learning/correction log: `scripts/email/queue-learning-log.jsonl`.
+    30	
+    31	Every thread identity is scoped by `(account_id, thread_id)`. Snapshot keys use `{account_id}::{thread_id}`.
+    32	
+    33	### Extraction Format
+    34	
+    35	Extracted records are YAML. CRE listings use `scripts/email/extraction-schemas/cre-listing-v1.yaml` and target `assethold/data/cre-listings`.
+    36	
+    37	### Deletion Safety
+    38	
+    39	`completed` threads are retained through a seven-day grace window. After the grace window, local queue state transitions to `purged`; Gmail content is not touched by this contract.
+    40	
+    41	### Reactivation
+    42	
+    43	Replies on `awaiting-reply`, `completed`, or `purged` threads transition back to `extracted` and link to the prior extraction when it exists. If a linked extraction is missing, the system emits `extraction_missing_on_reactivation` to both queue-state and learning logs, then treats the message as new inbound.
+    44	
+    45	### Learning Loop
+    46	
+    47	Manual corrections are appended to `queue-learning-log.jsonl`. Quarterly review reports summarize misclassifications, unknown senders, schema gaps, and spam false positives.
+    48	
+    49	### Spam Rules
+    50	
+    51	`scripts/email/spam-detection-rules.yaml` is evaluated before routing. Spam classification skips #2017 queue-state creation. If the sender is unmapped, the pipeline injects a synthetic `DELETE` routing action so the grandfathered routing path has an explicit action.
+    52	
+    53	## State Machine
+    54	
+    55	States: `inbound`, `extracted`, `awaiting-reply`, `completed`, `purged`.
+    56	
+    57	Transitions:
+    58	
+    59	- `inbound -> extracted`: actionable, data extraction, drive document, or archive classification.
+    60	- `extracted -> awaiting-reply`: extracted data exists and a response is pending.
+    61	- `extracted -> completed`: extracted data exists and no response is pending.
+    62	- `awaiting-reply -> extracted`: new reply reactivates the topic.
+    63	- `awaiting-reply -> completed`: user marks complete.
+    64	- `completed -> purged`: seven-day grace has elapsed.
+    65	- `completed -> extracted`: new reply reactivates the topic.
+    66	- `purged -> extracted`: new reply reactivates with prior extraction context when available.
+    67	
+    68	Spam/noise/unsubscribe classifications may produce routing actions but do not create a #2017 queue-state entry.
+    69	
+    70	## Dependency Contract
+    71	
+    72	| Component | Owner |
+    73	|---|---|
+    74	| Design contract, schemas, fixtures, xfail contract tests | #2017 |
+    75	| `scripts/email/queue_state.py` storage implementation | #2026 |
+    76	| Pipeline orchestration and scheduled sweep wiring | #2024 |
+    77	| Gmail-side delete/archive automation | #2423 |
+    78	| Skill consolidation | #2019 |
+    79	
+     1	version: 1
+     2	description: Contract schema for the local email-as-queue state layer.
+     3	states:
+     4	  - inbound
+     5	  - extracted
+     6	  - awaiting-reply
+     7	  - completed
+     8	  - purged
+     9	schemas:
+    10	  writer_identity:
+    11	    type: object
+    12	    required:
+    13	      - process_name
+    14	      - pid
+    15	      - hostname
+    16	      - boot_id
+    17	    properties:
+    18	      process_name: {type: string}
+    19	      pid: {type: integer}
+    20	      hostname: {type: string}
+    21	      boot_id: {type: string}
+    22	  queue_state_entry:
+    23	    type: object
+    24	    required:
+    25	      - account_id
+    26	      - thread_id
+    27	      - from_state
+    28	      - to_state
+    29	      - ts_utc
+    30	      - writer_identity
+    31	    properties:
+    32	      account_id: {type: string}
+    33	      thread_id: {type: string}
+    34	      from_state:
+    35	        type: string
+    36	        enum: [inbound, extracted, awaiting-reply, completed, purged]
+    37	      to_state:
+    38	        type: string
+    39	        enum: [inbound, extracted, awaiting-reply, completed, purged]
+    40	      ts_utc:
+    41	        type: string
+    42	        format: iso8601-utc-z
+    43	      reason: {type: string}
+    44	      linked_extraction: {type: string}
+    45	      primary_classification:
+    46	        type: string
+    47	        enum: [actionable, data_extract, drive_doc, unsubscribe, archive, noise, spam]
+    48	      secondary_classification:
+    49	        type: array
+    50	        items: {type: string}
+    51	      completed_at:
+    52	        type: string
+    53	        format: iso8601-utc-z
+    54	      needs_schema: {type: boolean}
+    55	      writer_identity:
+    56	        $ref: "#/schemas/writer_identity"
+    57	        required:
+    58	          - process_name
+    59	          - pid
+    60	          - hostname
+    61	          - boot_id
+    62	    dedup_key:
+    63	      - account_id
+    64	      - thread_id
+    65	      - from_state
+    66	      - to_state
+    67	  queue_learning_log_entry:
+    68	    type: object
+    69	    required:
+    70	      - account_id
+    71	      - thread_id
+    72	      - ts_utc
+    73	      - triggering_event
+    74	      - writer_identity
+    75	    properties:
+    76	      account_id: {type: string}
+    77	      thread_id: {type: string}
+    78	      ts_utc:
+    79	        type: string
+    80	        format: iso8601-utc-z
+    81	      triggering_event:
+    82	        type: string
+    83	        enum:
+    84	          - manual_state_correction
+    85	          - extraction_missing_on_reactivation
+    86	          - spam_false_positive_override
+    87	      from_state: {type: string}
+    88	      to_state: {type: string}
+    89	      user_reason: {type: string}
+    90	      original_classification: {type: string}
+    91	      corrected_classification: {type: string}
+    92	      rule_matched: {type: string}
+    93	      writer_identity:
+    94	        $ref: "#/schemas/writer_identity"
+    95	  queue_state_snapshot:
+    96	    type: object
+    97	    key_format: "{account_id}::{thread_id}"
+    98	    additionalProperties:
+    99	      type: object
+   100	      required:
+   101	        - account_id
+   102	        - thread_id
+   103	        - state
+   104	        - ts_utc
+   105	      properties:
+   106	        account_id: {type: string}
+   107	        thread_id: {type: string}
+   108	        state:
+   109	          type: string
+   110	          enum: [inbound, extracted, awaiting-reply, completed, purged]
+   111	        ts_utc:
+   112	          type: string
+   113	          format: iso8601-utc-z
+   114	        linked_extraction: {type: string}
+   115	        completed_at:
+   116	          type: string
+   117	          format: iso8601-utc-z
+   118	        primary_classification: {type: string}
+   119	        secondary_classification:
+   120	          type: array
+   121	          items: {type: string}
+   122	        needs_schema: {type: boolean}
+   123	  queue_state_snapshot_meta:
+   124	    type: object
+   125	    required:
+   126	      - last_log_byte_offset
+   127	      - last_log_sha256
+   128	      - snapshot_sha256
+   129	      - written_at_utc
+   130	      - log_generation
+   131	    properties:
+   132	      last_log_byte_offset: {type: integer}
+   133	      last_log_sha256: {type: string}
+   134	      snapshot_sha256: {type: string}
+   135	      written_at_utc:
+   136	        type: string
+   137	        format: iso8601-utc-z
+   138	      log_generation: {type: integer}
+     1	import importlib
+     2	
+     3	import pytest
+     4	
+     5	
+     6	def require_queue_state():
+     7	    try:
+     8	        return importlib.import_module("scripts.email.queue_state")
+     9	    except ModuleNotFoundError as exc:
+    10	        pytest.fail(f"pending #2026 storage module: {exc}")
+    11	
+    12	
+    13	@pytest.mark.xfail(reason="pending #2026 storage impl")
+    14	def test_transition_inbound_to_extracted_writes_log(tmp_path):
+    15	    queue_state = require_queue_state()
+    16	    log = tmp_path / "queue-state.jsonl"
+    17	
+    18	    queue_state.transition(
+    19	        log,
+    20	        account_id="user@example.com",
+    21	        thread_id="thread-1",
+    22	        from_state="inbound",
+    23	        to_state="extracted",
+    24	        ts_utc="2026-04-20T00:00:00Z",
+    25	    )
+    26	
+    27	    assert queue_state.lookup(log, "user@example.com", "thread-1")["state"] == "extracted"
+    28	
+    29	
+    30	@pytest.mark.xfail(reason="pending #2026 storage impl")
+    31	def test_transition_retry_preserves_dedup_under_fresh_ts(tmp_path):
+    32	    queue_state = require_queue_state()
+    33	    log = tmp_path / "queue-state.jsonl"
+    34	    kwargs = {
+    35	        "account_id": "user@example.com",
+    36	        "thread_id": "thread-1",
+    37	        "from_state": "inbound",
+    38	        "to_state": "extracted",
+    39	    }
+    40	
+    41	    queue_state.transition(log, ts_utc="2026-04-20T00:00:00Z", **kwargs)
+    42	    queue_state.transition(log, ts_utc="2026-04-20T00:01:00Z", **kwargs)
+    43	
+    44	    assert queue_state.count_entries(log) == 1
+    45	
+    46	
+    47	@pytest.mark.xfail(reason="pending #2026 storage impl")
+    48	def test_purged_reactivates_on_reply_with_extraction_link(tmp_path):
+    49	    queue_state = require_queue_state()
+    50	    log = tmp_path / "queue-state.jsonl"
+    51	    extraction = tmp_path / "extraction.yaml"
+    52	    extraction.write_text("thread_id: thread-1\n", encoding="utf-8")
+    53	
+    54	    queue_state.reactivate_reply(
+    55	        log,
+    56	        account_id="user@example.com",
+    57	        thread_id="thread-1",
+    58	        prior_state="purged",
+    59	        linked_extraction=str(extraction),
+    60	        ts_utc="2026-04-28T00:00:00Z",
+    61	    )
+    62	
+    63	    state = queue_state.lookup(log, "user@example.com", "thread-1")
+    64	    assert state["state"] == "extracted"
+    65	    assert state["linked_extraction"] == str(extraction)
+
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+exec
+/bin/bash -lc "find /mnt/local-analysis/workspace-hub/.agents/skills /home/vamsee/.agents/skills /home/vamsee/.codex/skills/.system -path '*artifact-inline-plan-review*/SKILL.md' -o -path '*adversarial*plan*review*/SKILL.md' 2>/dev/null | sed -n '1,40p'" in /mnt/local-analysis/workspace-hub
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+ succeeded in 2977ms:
+/mnt/local-analysis/workspace-hub/.agents/skills/workspace-hub-learned/artifact-inline-plan-review-for-local-draft-revisions/SKILL.md
+
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+codex
+The plan file is currently untracked in the worktree, which matches the inline review setup. I’m also checking whether the claimed review artifacts and schedule/test files exist so findings are based on live paths.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+exec
+/bin/bash -lc "nl -ba docs/design/email-as-queue-workflow.md | sed -n '1,180p'
+nl -ba docs/design/email-as-queue-workflow.md | sed -n '220,470p'
+nl -ba docs/design/email-as-queue-workflow.md | sed -n '540,660p'" in /mnt/local-analysis/workspace-hub
+ succeeded in 0ms:
+     1	# Email-as-Queue Workflow Design
+     2	
+     3	> **Issue:** [#2017](https://github.com/vamseeachanta/workspace-hub/issues/2017)
+     4	> **Status:** Design specification
+     5	> **Date:** 2026-04-09
+     6	> **Supersedes:** Archive-everything approach in #1987, raw-email routing in gmail-archive-extract.py
+     7	
+     8	---
+     9	
+    10	## 1. Core Principle
+    11	
+    12	**Email is a queue, not an archive.**
+    13	
+    14	The previous system archived 36,100+ emails across 3 accounts into git repos by sender domain, storing full email bodies as markdown files. This created massive repo noise, inflated git history, and did not match how email should be managed.
+    15	
+    16	The new model treats every email as a transient item in a processing queue. Data enters the queue, gets triaged, has its actionable information extracted into structured form, and then the raw email is deleted. Only the extracted data persists in repositories.
+    17	
+    18	```
+    19	                    +------------------+
+    20	                    |    INBOUND       |
+    21	                    |  (Gmail inbox)   |
+    22	                    +--------+---------+
+    23	                             |
+    24	                    +--------v---------+
+    25	                    |     TRIAGE       |
+    26	                    | classify, route  |
+    27	                    +---+----+----+----+
+    28	                        |    |    |
+    29	              +---------+    |    +----------+
+    30	              |              |               |
+    31	     +--------v---+  +------v------+  +-----v------+
+    32	     |   NOISE    |  |   EXTRACT   |  |   REVIEW   |
+    33	     | (delete)   |  | structured  |  | (hold for  |
+    34	     +------+-----+  |   data      |  |  decision) |
+    35	            |        +------+------+  +-----+------+
+    36	            |               |               |
+    37	            |        +------v------+        |
+    38	            |        |     ACT     |        |
+    39	            |        | commit data |        |
+    40	            |        | to repos    |        |
+    41	            |        +------+------+        |
+    42	            |               |               |
+    43	            |        +------v------+        |
+    44	            |        | TRACK STATE |        |
+    45	            |        | label thread|        |
+    46	            |        +---+----+----+        |
+    47	            |            |    |             |
+    48	            |     +------+    +------+      |
+    49	            |     |               |         |
+    50	            | +---v--------+ +---v-------+  |
+    51	            | | AWAITING   | | COMPLETED |  |
+    52	            | | REPLY      | | (grace    |  |
+    53	            | | (keep)     | |  period)  |  |
+    54	            | +---+--------+ +---+-------+  |
+    55	            |     |               |         |
+    56	            |     | new reply     | 7 days  |
+    57	            |     | arrives       | elapsed |
+    58	            |     v               v         |
+    59	            | RE-ACTIVATE     DELETE        |
+    60	            |  (back to       (email gone,  |
+    61	            |   INBOUND)       data stays)  |
+    62	            +----+---+----+--------+--------+
+    63	                     |
+    64	              all deletions
+    65	              logged locally
+    66	```
+    67	
+    68	---
+    69	
+    70	## 2. Per-Account Rules
+    71	
+    72	### 2.1 ace (vamsee.achanta@aceengineer.com)
+    73	
+    74	| Category | Handling | Extraction Target |
+    75	|---|---|---|
+    76	| Active clients (RIL, DORIS, McDermott, Shell, etc.) | Extract project data, track threads | aceengineer-admin/data/client-{name}/ |
+    77	| Recruiters (DISYS, Steps to Progress, etc.) | Extract role/rate/contact | aceengineer-admin/data/recruiting/ |
+    78	| CRE listings (Sands IG, Marcus Millichap, LoopNet) | Extract property/cap-rate/tenant data | assethold/data/cre-listings/ |
+    79	| Software vendors (ANSYS, DNV, ENGYS) | Extract license/support data only if actionable | aceengineer-admin/data/vendor/ |
+    80	| Industry colleagues | Keep for networking touchbase, extract contact if new | aceengineer-admin/data/colleague/ |
+    81	| Marketing/newsletters | DELETE immediately or after unsubscribe | -- |
+    82	
+    83	VIP domains requiring immediate attention: `ril.com`, `dorisgroup.com`, `mcdermott.com`, `shell.com`, `kbr.com`, `bp.com`, `subsea7.com`, `technipfmc.com`
+    84	
+    85	### 2.2 personal (achantav@gmail.com)
+    86	
+    87	| Category | Handling | Extraction Target |
+    88	|---|---|---|
+    89	| Family (achanta* gmail addresses) | Keep while active, extract key dates/actions | achantas-data/data/family/ |
+    90	| Financial (banks, insurance, tax) | Extract amounts/dates/due-dates | achantas-data/data/finance/ |
+    91	| Tax documents (TurboTax, 1099s, K-1s) | Extract form type/amounts/year | achantas-data/data/tax/ |
+    92	| Alumni / career networking | Extract contact updates | achantas-data/data/networking/ |
+    93	| Social media notifications | DELETE immediately | -- |
+    94	| Marketing / promotions | DELETE after batch unsubscribe | -- |
+    95	
+    96	### 2.3 skestates (skestatesinc@gmail.com)
+    97	
+    98	| Category | Handling | Extraction Target |
+    99	|---|---|---|
+   100	| Tenant (Family Dollar, Dollar Tree) | Extract issue/resolution/dates | sabithaandkrishnaestates/data/tenant/ |
+   101	| Insurance (Marsh, Crown Insurance, Insureon) | Extract policy/claim/premium data | sabithaandkrishnaestates/data/insurance/ |
+   102	| HOA (FS Residential) | Extract dues/violations/dates | sabithaandkrishnaestates/data/hoa/ |
+   103	| Vendors (PHFM, CLH, GDS, Partner ESI) | Extract invoices/work orders | sabithaandkrishnaestates/data/vendor/ |
+   104	| Title company | Extract closing/filing data | sabithaandkrishnaestates/data/title/ |
+   105	| Tax / CPA | Extract filing status/deadlines | sabithaandkrishnaestates/data/tax/ |
+   106	
+   107	VIP domains requiring immediate attention: `familydollar.com`, `dollartree.com`, `marsh.com`
+   108	
+   109	---
+   110	
+   111	## 3. Thread Lifecycle
+   112	
+   113	### 3.1 States
+   114	
+   115	| State | Gmail Label | Meaning | Auto-delete? |
+   116	|---|---|---|---|
+   117	| inbox | (none) | New, untriaged | No |
+   118	| extracted | `wh-email/extracted` | Data pulled, no pending action | No |
+   119	| awaiting-reply | `wh-email/awaiting-reply` | Operator replied, waiting for counterparty | Never |
+   120	| completed | `wh-email/completed` | Topic resolved, grace clock starts | After 7 days |
+   121	| noise | `wh-email/noise` | Spam/newsletter, no extraction needed | Immediately |
+   122	
+   123	### 3.2 Transition Rules
+   124	
+   125	```
+   126	inbox -----------> extracted          (data successfully extracted and committed)
+   127	inbox -----------> noise              (classified as spam/newsletter/promotion)
+   128	inbox -----------> review             (system cannot classify; held for user)
+   129	
+   130	extracted -------> awaiting-reply     (operator sends a response in the thread)
+   131	extracted -------> completed          (no reply needed; topic is resolved)
+   132	
+   133	awaiting-reply --> inbox              (new inbound reply arrives -- RE-ACTIVATE)
+   134	awaiting-reply --> completed          (topic resolved without further reply)
+   135	
+   136	completed ------> inbox              (new inbound reply during grace period -- RE-ACTIVATE)
+   137	completed ------> [DELETED]          (grace period elapsed, no new replies)
+   138	
+   139	noise ----------> [DELETED]          (immediate or batch delete)
+   140	```
+   141	
+   142	### 3.3 Re-activation
+   143	
+   144	When a thread marked `completed` or `awaiting-reply` receives a new inbound message:
+   145	
+   146	1. Gmail automatically surfaces the thread in inbox (unread notification)
+   147	2. The system detects the `wh-email/*` label on the thread plus the new unread message
+   148	3. The existing label is removed and the thread returns to `inbox` state
+   149	4. The local state log is updated with `reactivated_date` and `reactivation_count`
+   150	5. Triage runs again on the thread
+   151	
+   152	### 3.4 Grace Period
+   153	
+   154	- Duration: 7 calendar days from `completed_date`
+   155	- During grace period: thread stays in Gmail with `wh-email/completed` label
+   156	- If new reply arrives: grace timer resets, thread returns to inbox
+   157	- After grace period with no new reply: thread is deleted from Gmail
+   158	- Local state log retains the deletion record permanently (for audit trail)
+   159	
+   160	---
+   161	
+   162	## 4. Data Extraction Targets
+   163	
+   164	### 4.1 What Gets Extracted (structured data only)
+   165	
+   166	| Email Type | Extracted Fields | Destination Repo/Path | Format |
+   167	|---|---|---|---|
+   168	| CRE listing | property_name, tenant, address, state, price, cap_rate, building_sf, lease_years, vpd, broker | assethold/data/cre-listings/ | YAML |
+   169	| Client RFP/SOW | sender, company, project, scope_summary, timeline, budget, contacts | aceengineer-admin/data/prospects/ | YAML |
+   170	| Invoice/payment | invoice_number, vendor, amount, due_date, status, payment_method | per-account finance path | YAML |
+   171	| Tenant communication | store_number, issue_type, date_reported, resolution, vendor, cost_estimate | sabithaandkrishnaestates/data/tenant/ | YAML |
+   172	| Tax document | form_type, entity, tax_year, amounts, due_date, filing_status | achantas-data/data/tax/ | YAML |
+   173	| Recruiter outreach | company, role, rate, location, contact_name, contact_email | aceengineer-admin/data/recruiting/ | YAML |
+   174	| Insurance | policy_number, carrier, premium, coverage_type, renewal_date, claim_number | sabithaandkrishnaestates/data/insurance/ | YAML |
+   175	| New contact | name, email, company, category, source_thread | contact-manager pipeline | CSV row |
+   176	
+   177	### 4.2 Extraction Format
+   178	
+   179	All extracted data uses YAML as the canonical format:
+   180	
+   220	- Automated system notifications with no actionable content
+   221	
+   222	---
+   223	
+   224	## 5. State Tracking System
+   225	
+   226	### 5.1 Dual-Layer Tracking
+   227	
+   228	**Layer 1: Gmail Labels (operational visibility)**
+   229	
+   230	Gmail labels in the `wh-email/` namespace provide real-time visibility inside the Gmail UI and allow Gmail search queries for state-based filtering (e.g., `label:wh-email/completed older_than:7d`).
+   231	
+   232	Labels are created lazily via the Gmail API when first needed. Label operations use `users/me/threads/{id}/modify` to apply labels at the thread level.
+   233	
+   234	**Layer 2: Local State File (authoritative audit trail)**
+   235	
+   236	`~/.hermes/email-state.yaml` is the authoritative state tracker. It records every state transition, extraction event, and deletion. This file survives Gmail label drift and provides the data needed for the learning loop.
+   237	
+   238	```yaml
+   239	# ~/.hermes/email-state.yaml
+   240	threads:
+   241	  - thread_id: "18f3a2b..."
+   242	    account: ace
+   243	    subject: "Dollar General NNN | TX | 7.25% CAP"
+   244	    sender_domain: sandsig.com
+   245	    state: completed
+   246	    extracted_to: "assethold/data/cre-listings/"
+   247	    extracted_date: "2026-04-07"
+   248	    completed_date: "2026-04-08"
+   249	    eligible_for_deletion: "2026-04-15"
+   250	    last_activity: "2026-04-08"
+   251	    reply_count: 0
+   252	    reactivation_count: 0
+   253	
+   254	  - thread_id: "18f3a2c..."
+   255	    account: skestates
+   256	    subject: "Family Dollar Store #30150 HVAC Issue"
+   257	    sender_domain: familydollar.com
+   258	    state: awaiting-reply
+   259	    extracted_to: "sabithaandkrishnaestates/data/tenant/"
+   260	    extracted_date: "2026-04-05"
+   261	    last_activity: "2026-04-07"
+   262	    reply_count: 3
+   263	    reactivation_count: 1
+   264	
+   265	deletions:
+   266	  - thread_id: "18f3a1a..."
+   267	    account: personal
+   268	    deleted_date: "2026-04-08"
+   269	    reason: "noise — marketing newsletter"
+   270	    had_extraction: false
+   271	
+   272	  - thread_id: "18f3a2b..."
+   273	    account: ace
+   274	    deleted_date: "2026-04-15"
+   275	    reason: "completed — grace period elapsed"
+   276	    had_extraction: true
+   277	    extracted_to: "assethold/data/cre-listings/"
+   278	```
+   279	
+   280	### 5.2 State File Operations
+   281	
+   282	| Operation | Trigger | State File Update |
+   283	|---|---|---|
+   284	| New thread scanned | Triage run | Add entry with state=inbox |
+   285	| Data extracted | Extraction pipeline | state -> extracted, set extracted_date and extracted_to |
+   286	| Operator replied | Send/draft detection | state -> awaiting-reply |
+   287	| Topic resolved | User marks complete | state -> completed, set completed_date and eligible_for_deletion |
+   288	| New reply arrives | Unread scan on labeled thread | state -> inbox, increment reactivation_count |
+   289	| Deleted | Deletion sweep | Move to deletions list, remove from threads list |
+   290	
+   291	---
+   292	
+   293	## 6. Routing Configuration Evolution
+   294	
+   295	### 6.1 Current State (archive-first)
+   296	
+   297	`scripts/email/email-routing.yaml` currently maps sender domains to raw archive paths:
+   298	
+   299	```yaml
+   300	"familydollar.com": "sabithaandkrishnaestates/docs/email/tenant"
+   301	"sandsig.com":      "assethold/data/sandsig-cre-listings/email"
+   302	```
+   303	
+   304	### 6.2 Target State (queue-first)
+   305	
+   306	The routing file evolves to specify extraction templates and structured data destinations:
+   307	
+   308	```yaml
+   309	rules:
+   310	  # ---- NOISE (delete, no extraction) ----
+   311	  "collide.io":                     { action: DELETE }
+   312	  "promote.weebly.com":             { action: DELETE }
+   313	
+   314	  # ---- REVIEW (hold for user decision) ----
+   315	  "substack.com":                   { action: REVIEW }
+   316	
+   317	  # ---- EXTRACT (structured data extraction) ----
+   318	  "sandsig.com":
+   319	    action: EXTRACT
+   320	    template: cre-listing
+   321	    destination: assethold/data/cre-listings/
+   322	    account: ace
+   323	
+   324	  "familydollar.com":
+   325	    action: EXTRACT
+   326	    template: tenant-communication
+   327	    destination: sabithaandkrishnaestates/data/tenant/
+   328	    account: skestates
+   329	
+   330	  "marsh.com":
+   331	    action: EXTRACT
+   332	    template: insurance
+   333	    destination: sabithaandkrishnaestates/data/insurance/
+   334	    account: skestates
+   335	
+   336	  # ---- DEFAULT ----
+   337	  "default":
+   338	    action: REVIEW
+   339	    destination: achantas-data/data/unclassified/
+   340	```
+   341	
+   342	### 6.3 Migration Path for Routing
+   343	
+   344	1. Keep current `email-routing.yaml` working during transition (backward compatibility)
+   345	2. Add a `routing-v2.yaml` with the new schema alongside the old file
+   346	3. New extraction pipeline reads `routing-v2.yaml`; old script continues with current file
+   347	4. After parity is confirmed, rename v2 to primary and deprecate old file
+   348	
+   349	---
+   350	
+   351	## 7. Technical Implementation
+   352	
+   353	### 7.1 Tools and APIs
+   354	
+   355	| Component | Tool | Notes |
+   356	|---|---|---|
+   357	| Email reading | Gmail REST API (urllib, no pip deps) | Direct OAuth2 with refresh tokens |
+   358	| Email CLI fallback | himalaya v1.2.0 | For IMAP operations where API is overkill |
+   359	| Token management | `~/.gmail-{ace,personal,skestates}/credentials.json` | Auto-refresh via refresh_token grant |
+   360	| OAuth config | `~/.gmail-mcp/oauth-env.json` | Shared client_id / client_secret |
+   361	| Triage scheduling | Hermes cron | Daily at 7 AM CT (triage), 12 PM CT (digest) |
+   362	| Legal scanning | `scripts/legal/legal-sanity-scan.sh` | Runs before every git commit of extracted data |
+   363	| Contact enrichment | `scripts/email/contact-normalizer.py` outputs | CSV lookup during triage classification |
+   364	| State persistence | `~/.hermes/email-state.yaml` | Local YAML, not in git |
+   365	
+   366	### 7.2 Scripts (new and modified)
+   367	
+   368	| Script | Purpose | Status |
+   369	|---|---|---|
+   370	| `scripts/email/gmail-extract-and-act.py` | Queue-first extraction pipeline | NEW (replaces gmail-archive-extract.py) |
+   371	| `scripts/email/templates/*.yaml` | Per-domain/type extraction field definitions | NEW |
+   372	| `scripts/email/gmail-digest.py` | Daily digest, updated to be state-aware | MODIFY |
+   373	| `scripts/email/email-routing.yaml` | Current routing file | KEEP (backward compat) |
+   374	| `scripts/email/routing-v2.yaml` | New queue-aware routing schema | NEW |
+   375	| `scripts/email/gmail-archive-extract.py` | Archive-first extraction | DEPRECATE after parity |
+   376	
+   377	### 7.3 Gmail Label Management
+   378	
+   379	Labels are managed via the Gmail API:
+   380	
+   381	```
+   382	POST /gmail/v1/users/me/labels       -- create wh-email/* labels (lazy, first use)
+   383	POST /gmail/v1/users/me/threads/{id}/modify  -- add/remove labels on threads
+   384	GET  /gmail/v1/users/me/messages?q=label:wh-email/completed+older_than:7d  -- find deletion candidates
+   385	```
+   386	
+   387	The `wh-email/` prefix namespaces all automation labels to avoid collisions with user labels.
+   388	
+   389	### 7.4 Extraction Pipeline Pseudocode
+   390	
+   391	```
+   392	function run_extraction(account, query, dry_run):
+   393	    token = refresh_oauth_token(account)
+   394	    routing = load_routing_v2()
+   395	    state = load_state_file()
+   396	
+   397	    messages = gmail_search(token, query)
+   398	
+   399	    for each message in messages:
+   400	        domain = extract_sender_domain(message)
+   401	        rule = routing.lookup(domain)
+   402	
+   403	        if rule.action == DELETE:
+   404	            if not dry_run: gmail_trash(message)
+   405	            log_deletion(state, message, reason="noise")
+   406	            continue
+   407	
+   408	        if rule.action == REVIEW:
+   409	            log_review_needed(state, message)
+   410	            continue
+   411	
+   412	        if rule.action == EXTRACT:
+   413	            template = load_template(rule.template)
+   414	            fields = template.parse(message.subject, message.body, message.attachments)
+   415	
+   416	            if not fields.validates():
+   417	                log_extraction_failure(state, message, reason="insufficient fields")
+   418	                continue
+   419	
+   420	            yaml_output = format_yaml(fields)
+   421	            legal_ok = legal_scan(yaml_output)
+   422	
+   423	            if not legal_ok:
+   424	                log_legal_block(state, message)
+   425	                continue
+   426	
+   427	            if not dry_run:
+   428	                write_yaml(rule.destination, yaml_output)
+   429	                git_commit(rule.destination_repo, f"extract: {domain} data")
+   430	                label_thread(message.thread_id, "extracted", token)
+   431	
+   432	            update_state(state, message, new_state="extracted")
+   433	
+   434	    save_state_file(state)
+   435	    return stats
+   436	```
+   437	
+   438	### 7.5 Deletion Sweep Pseudocode
+   439	
+   440	```
+   441	function run_deletion_sweep(account, dry_run):
+   442	    token = refresh_oauth_token(account)
+   443	    state = load_state_file()
+   444	
+   445	    for each thread in state.threads:
+   446	        if thread.account != account:
+   447	            continue
+   448	
+   449	        if thread.state == "noise":
+   450	            if not dry_run: gmail_delete(thread.thread_id, token)
+   451	            move_to_deletions(state, thread, reason="noise")
+   452	
+   453	        if thread.state == "completed":
+   454	            if days_since(thread.completed_date) >= 7:
+   455	                # Check for new replies before deleting
+   456	                has_new = check_for_new_messages(thread.thread_id, token)
+   457	                if has_new:
+   458	                    reactivate(state, thread)
+   459	                    continue
+   460	                if not dry_run: gmail_delete(thread.thread_id, token)
+   461	                move_to_deletions(state, thread, reason="grace period elapsed")
+   462	
+   463	        if thread.state == "awaiting-reply":
+   464	            # NEVER auto-delete
+   465	            pass
+   466	
+   467	    save_state_file(state)
+   468	```
+   469	
+   470	---
+   540	---
+   541	
+   542	## 10. Migration Plan
+   543	
+   544	### 10.1 From Archive-Everything to Queue Model
+   545	
+   546	| Step | Action | Risk | Mitigation |
+   547	|---|---|---|---|
+   548	| 1 | Create `routing-v2.yaml` alongside existing routing file | None | Old file still works |
+   549	| 2 | Build `gmail-extract-and-act.py` with dry-run mode | None | No side effects in dry-run |
+   550	| 3 | Create first 5 extraction templates (CRE, client, tenant, tax, invoice) | Low | Templates are additive |
+   551	| 4 | Run extraction pipeline in dry-run on all 3 accounts | None | Validates templates against real data |
+   552	| 5 | Enable extraction (write YAML to repos) with `wh-email/extracted` labels | Low | Data is additive, no deletions yet |
+   553	| 6 | Enable noise deletion (known spam domains only) | Low | Already identified in current routing |
+   554	| 7 | Enable completed+grace-period deletion on ace account | Medium | 7-day grace + trash (not permanent delete) |
+   555	| 8 | Extend deletion to personal and skestates | Medium | Same safeguards |
+   556	| 9 | Deprecate `gmail-archive-extract.py` | Low | New pipeline has parity |
+   557	| 10 | Retire deprecated active skills (gmail-extract-and-clean, gmail-extract-archive, gmail-email-to-repo-extraction, gmail-touchbase, gmail-unsubscribe) | Low | Active folders removed; archived twins retained under `.claude/skills/email/_archived/` |
+   558	
+   559	### 10.2 Existing Data
+   560	
+   561	Raw email archives already committed to repos are not deleted retroactively. They remain in git history. Going forward, no new raw email bodies are written to repos. Only structured YAML extractions are committed.
+   562	
+   563	### 10.3 Skill Consolidation (per #2019)
+   564	
+   565	| Current Skill | Disposition | Replacement |
+   566	|---|---|---|
+   567	| gmail-extract-and-act | KEEP | Primary extraction skill |
+   568	| gmail-triage | KEEP | Updated to reference queue model |
+   569	| gmail-multi-account | KEEP | Foundation infrastructure |
+   570	| gmail-outreach | KEEP | Merges touchbase + unsubscribe |
+   571	| gmail-attachment-to-document | KEEP | Attachment parsing utility |
+   572	| contact-manager | KEEP | Contact normalization |
+   573	| himalaya | KEEP | CLI reference |
+   574	| gmail-headless-oauth | KEEP | Infra utility |
+   575	| gmail-extract-and-clean | RETIRED from active skills | Replaced by gmail-extract-and-act; archived twin retained |
+   576	| gmail-extract-archive | RETIRED from active skills | Replaced by gmail-extract-and-act; archived twin retained |
+   577	| gmail-email-to-repo-extraction | RETIRED from active skills | Replaced by gmail-extract-and-act; archived twin retained |
+   578	| gmail-data-extraction | KEEP (reference) | Code patterns only, not workflow |
+   579	| gmail-touchbase | RETIRED from active skills | Replaced by gmail-outreach; archived twin retained |
+   580	| gmail-unsubscribe | RETIRED from active skills | Replaced by gmail-outreach; archived twin retained |
+   581	
+   582	---
+   583	
+   584	## 11. Related Issues
+   585	
+   586	| Issue | Relationship | Impact |
+   587	|---|---|---|
+   588	| #2017 | This issue (design specification) | Defines the workflow |
+   589	| #1963 | Parent cluster (multi-account management) | Owns the operating envelope |
+   590	| #2024 | Extraction pipeline rewrite | First implementation issue |
+   591	| #2025 | Per-domain extraction templates | Template registry |
+   592	| #2026 | State tracking system | Gmail labels + local state |
+   593	| #1987 | Legacy cleanup pipeline | SUPERSEDED -- do not follow archive-first approach |
+   594	| #2019 | Skill consolidation | Retire deprecated skills |
+   595	| #1986 | Communication style profiles | Still needed for drafting replies |
+   596	| #1991 | Sands IG flooding | Extraction target: structured CRE data |
+   597	| #1968 | Personal triage | Must follow queue model |
+   598	| #1969 | SKEstates triage | Must follow queue model |
+   599	| #1971 | ACE triage | Must follow queue model |
+   600	
+   601	---
+   602	
+   603	## 12. Implementation Phases
+   604	
+   605	### Phase 1: Workflow Design (this document -- #2017)
+   606	- [x] Define thread state tracking approach (hybrid: Gmail labels + local YAML)
+   607	- [x] Define extraction format (structured YAML)
+   608	- [x] Define deletion policy and safety rules (grace period, trash not delete, dry-run first)
+   609	- [x] Define per-account routing and extraction targets
+   610	- [x] Define learning loop mechanics
+   611	- [x] Document migration plan
+   612	
+   613	### Phase 2: Build Extract-and-Delete Pipeline (#2024)
+   614	- [ ] Create `scripts/email/gmail-extract-and-act.py`
+   615	- [ ] Create `scripts/email/routing-v2.yaml`
+   616	- [ ] Implement template-driven extraction engine
+   617	- [ ] Implement thread state transitions and label management
+   618	- [ ] Add dry-run support for all destructive operations
+   619	- [ ] Write tests: `tests/email/test_gmail_extract_and_act.py`
+   620	
+   621	### Phase 3: Template Registry (#2025)
+   622	- [ ] Create `scripts/email/templates/cre-listing.yaml`
+   623	- [ ] Create `scripts/email/templates/client-email.yaml`
+   624	- [ ] Create `scripts/email/templates/tenant-communication.yaml`
+   625	- [ ] Create `scripts/email/templates/tax-financial.yaml`
+   626	- [ ] Create `scripts/email/templates/invoice-payment.yaml`
+   627	- [ ] Write tests: `tests/email/test_email_templates.py`
+   628	
+   629	### Phase 4: State Tracking (#2026)
+   630	- [ ] Implement `~/.hermes/email-state.yaml` read/write
+   631	- [ ] Implement Gmail label lifecycle (create, apply, remove)
+   632	- [ ] Implement grace period enforcement
+   633	- [ ] Implement re-activation detection
+   634	- [ ] Write tests: `tests/email/test_email_state_machine.py`
+   635	
+   636	### Phase 5: Digest Integration
+   637	- [ ] Update `gmail-digest.py` to show queue state information
+   638	- [ ] Add learning backlog section to digest output
+   639	- [ ] Add exception reporting for unknown domains and extraction failures
+   640	
+   641	### Phase 6: Skill Consolidation (#2019)
+   642	- [x] Retire active `gmail-extract-and-clean`, `gmail-extract-archive`, `gmail-email-to-repo-extraction` folders; preserve archived twins
+   643	- [x] Retire active `gmail-touchbase` + `gmail-unsubscribe` folders after replacement by `gmail-outreach`
+   644	- [x] Update active email workflow docs and wiki frontmatter to reference queue-model skills
+   645	
+   646	### Phase 7: Learning Loop
+   647	- [ ] Track extraction patterns that work well
+   648	- [ ] Flag emails the system cannot classify
+   649	- [ ] User corrections feed back into routing rules and templates
+   650	- [ ] Periodic review of deleted-vs-kept decisions
+   651	
+   652	---
+   653	
+   654	## 13. Agent Assignment
+   655	
+   656	| Agent | Responsibility |
+   657	|---|---|
+   658	| Claude Code | Workflow design (this doc), skill consolidation, pipeline code |
+   659	| Hermes | Cron execution, daily triage runs, digest delivery |
+   660	| Codex | Extraction template patterns, test coverage, regex refinement |
+
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+exec
+/bin/bash -lc "sed -n '1,260p' /mnt/local-analysis/workspace-hub/.agents/skills/workspace-hub-learned/artifact-inline-plan-review-for-local-draft-revisions/SKILL.md" in /mnt/local-analysis/workspace-hub
+ succeeded in 0ms:
+---
+name: artifact-inline-plan-review-for-local-draft-revisions
+description: Prevent false MAJOR plan-review findings when Codex/Gemini review stale remote/main artifacts instead of the revised local draft.
+version: 1.0.0
+category: workspace-hub-learned
+tags: [plan-review, adversarial-review, codex, gemini, local-draft, artifact-packaging]
+---
+
+# Artifact-inline plan review for local draft revisions
+
+Use when:
+- a GitHub issue plan was revised locally after earlier review feedback
+- the canonical file exists only in local/uncommitted state or differs from remote/main
+- a provider review appears to criticize content already removed from the local draft
+
+## Problem signature
+
+A reviewer returns findings against stale content, for example claiming the plan still contains:
+- package-root exports you already removed
+- generic `metric_value` after you replaced it with typed fields
+- helper APIs or broad scope you already deferred
+
+This usually means the provider fetched the remote/main-branch artifact instead of the revised local draft.
+
+## Correct response
+
+Do not treat this as substantive regression yet.
+Treat it as artifact-selection drift.
+
+## Reliable recovery pattern
+
+1. Keep the normal compact review prompt for the first rerun if it is small enough.
+2. If the provider still reviews the wrong version, build an artifact-inline prompt.
+3. Embed the exact revised local sections under review directly in the prompt, typically:
+   - Deliverable
+   - Scope Boundaries
+   - Linkage Strategy
+   - Downstream Integration Surface
+   - Pseudocode
+   - Files to Change
+   - TDD Test List
+   - Acceptance Criteria
+4. Add an explicit instruction:
+   - review ONLY the exact inline artifact below
+   - do NOT substitute any remote/main-branch version
+5. Save the prompt as a durable local artifact such as:
+   - `.planning/quick/review-<issue>-artifact-inline-<provider>-prompt.md`
+6. Rerun the provider using that prompt.
+7. Save the resulting artifact separately from the stale run so governance can distinguish them.
+
+## Why this works
+
+Provider sandboxes or GitHub connectors may prefer remote/main copies even when your summary text describes the revised local state correctly. Inline artifact review removes that ambiguity and forces evaluation of the intended draft.
+
+## Additional guidance
+
+- Use a compact inline subset, not the entire conversation history.
+- Include only the sections needed to decide approval readiness.
+- If the rerun now returns MINOR/APPROVE and explicitly acknowledges the revised bounded scope, supersede the stale artifact in your synthesis.
+- Record in the synthesis that the prior false-MAJOR was caused by stale artifact selection, not by the revised local draft itself.
+
+## Good outcome criteria
+
+The rerun should stop complaining about already-removed scope and instead focus only on real residual contract choices or test gaps.
+
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+exec
+/bin/bash -lc "nl -ba config/scheduled-tasks/schedule-tasks.yaml | sed -n '1,240p'
+nl -ba tests/email/test_email_queue_contract_artifacts.py | sed -n '1,140p'
+nl -ba tests/email/test_fixture_redaction_hook.py | sed -n '1,180p'" in /mnt/local-analysis/workspace-hub
+ succeeded in 0ms:
+     1	# schedule-tasks.yaml — Single source of truth for all scheduled tasks.
+     2	# Read by: scripts/cron/setup-cron.sh, scripts/cron/validate-schedule.py,
+     3	#          scripts/operations/workstation-dispatch.sh
+     4	# HARD RULE: all cron/task-scheduler entries must be declared here.
+     5	# Do NOT add entries directly to crontab or Windows Task Scheduler.
+     6	#
+     7	# Fields:
+     8	#   machines:  explicit machine list (used by cron to decide where to install)
+     9	#   requires:  capability list (used by dispatcher to find best-fit machine)
+    10	#   prefer:    optional machine hint for dispatcher when multiple match
+    11	
+    12	tasks:
+    13	  # ── dev-primary: full variant ─────────────────────────────────────────────
+    14	
+    15	  - id: benchmark-regression
+    16	    label: Performance benchmark regression check
+    17	    schedule: "30 1 * * *"
+    18	    machines: [dev-primary, ace-linux-1]
+    19	    roles: [control-plane]
+    20	    requires: [python3, uv, git]
+    21	    prefer: dev-primary
+    22	    command: >-
+    23	      PATH=$HOME/.local/bin:$PATH;
+    24	      cd $WORKSPACE_HUB &&
+    25	      bash scripts/testing/run-benchmarks.sh
+    26	      >> $WORKSPACE_HUB/logs/quality/benchmark-$(date +\%Y\%m\%d).log 2>&1
+    27	    log: logs/quality/benchmark-*.log
+    28	    is_claude_task: false
+    29	    description: Nightly benchmark run; exits 1 on >20% regression vs committed baseline.
+    30	
+    31	  - id: equality-report
+    32	    label: Machine-equality self-report (#2801)
+    33	    schedule: "30 4 * * 1"
+    34	    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2]
+    35	    roles: [control-plane, comms-dispatch, sim-worker]
+    36	    requires: [bash, python3, uv]
+    37	    command: >-
+    38	      PATH=$HOME/.local/bin:$PATH;
+    39	      cd $WORKSPACE_HUB &&
+    40	      bash scripts/readiness/collect-equality.sh &&
+    41	      uv run --no-project --with pyyaml python scripts/readiness/build-equality-matrix.py
+    42	      >> $WORKSPACE_HUB/logs/quality/equality-$(date +\%Y-\%m-\%d).log 2>&1
+    43	    log: logs/quality/equality-*.log
+    44	    is_claude_task: false
+    45	    description: >-
+    46	      Per-machine weekly (Mon 04:30) cold-dimension self-report + matrix rebuild,
+    47	      commit-on-change (no churn). Hot dims referenced from nightly readiness. Single
+    48	      source for both Linux cron and Windows Task Scheduler per this file's HARD RULE (#2801 DC5).
+    49	
+    50	  - id: gsd-researcher
+    51	    label: Nightly GSD domain researcher
+    52	    schedule: "35 1 * * *"
+    53	    machines: [dev-primary, ace-linux-1]
+    54	    roles: [control-plane]
+    55	    requires: [claude, python3, uv]
+    56	    prefer: dev-primary
+    57	    command: >-
+    58	      PATH=$HOME/.local/bin:$PATH;
+    59	      cd $WORKSPACE_HUB &&
+    60	      bash scripts/cron/gsd-researcher-nightly.sh
+    61	      >> $WORKSPACE_HUB/logs/research/$(date +\%Y-\%m-\%d).log 2>&1
+    62	    log: logs/research/*.log
+    63	    is_claude_task: true
+    64	    description: Weekday domain research rotating standards/python-ecosystem/ai-tooling/competitor-market; Friday synthesis. Sat/Sun off.
+    65	
+    66	  - id: research-staleness
+    67	    label: Research artifact staleness check
+    68	    schedule: "0 6 * * *"
+    69	    machines: [dev-primary, ace-linux-1]
+    70	    roles: [control-plane]
+    71	    requires: [bash]
+    72	    command: >-
+    73	      cd $WORKSPACE_HUB &&
+    74	      bash scripts/cron/research-staleness-check.sh
+    75	      >> $WORKSPACE_HUB/logs/research/staleness-$(date +\%Y-\%m-\%d).log 2>&1
+    76	    log: logs/research/staleness-*.log
+    77	    is_claude_task: false
+    78	    description: Daily 06:00 UTC staleness check; alerts via notify.sh if no research artifact in 60h.
+    79	
+    80	  - id: dep-health
+    81	    label: Dependency health check
+    82	    schedule: "0 1 * * *"
+    83	    machines: [dev-primary, ace-linux-1]
+    84	    roles: [control-plane]
+    85	    requires: [python3, uv, git]
+    86	    command: >-
+    87	      cd $WORKSPACE_HUB &&
+    88	      bash scripts/quality/dep-health.sh
+    89	      >> $WORKSPACE_HUB/logs/quality/dep-health-cron.log 2>&1
+    90	    log: logs/quality/dep-health-cron.log
+    91	    is_claude_task: false
+    92	    description: Nightly uv.lock freshness, outdated packages, CVE advisories across 5 repos.
+    93	
+    94	  - id: harness-update
+    95	    label: AI harness tools daily update (native commands, staggered)
+    96	    schedule_by_machine:
+    97	      dev-primary: "15 1 * * *"      # 01:15 — canary
+    98	      ace-linux-1: "15 1 * * *"
+    99	      dev-secondary: "45 1 * * *"    # 01:45 — after canary
+   100	      ace-linux-2: "45 1 * * *"
+   101	      ace-win-1: "15 2 * * *"   # 02:15 — after Linux
+   102	      ace-win-2: "15 2 * * *"
+   103	    schedule: "15 1 * * *"           # fallback
+   104	    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2]
+   105	    roles: [control-plane, comms-dispatch, sim-worker]
+   106	    requires: [bash, git, npm]
+   107	    prefer: dev-primary
+   108	    command: >-
+   109	      PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
+   110	      cd $WORKSPACE_HUB &&
+   111	      bash scripts/maintenance/update-harness-tools.sh
+   112	      >> $WORKSPACE_HUB/logs/maintenance/update-harness-tools-$(date +\%Y-\%m-\%d).log 2>&1
+   113	    log: logs/maintenance/update-harness-tools-*.log
+   114	    is_claude_task: false
+   115	    description: >-
+   116	      Daily AI harness update via NATIVE updaters — hermes update / claude update /
+   117	      codex update / gemini (npm). Per #2920 decision A: native script is canonical;
+   118	      missing tools are skipped per machine. Staggered: dev-primary 01:15,
+   119	      dev-secondary 01:45, Windows 02:15. NOTE: the prior npm-based
+   120	      scripts/cron/harness-update.sh (health-check/rollback/drift) is retained in-repo
+   121	      but no longer scheduled. Issues: #1668, #1672-#1675, #2920.
+   122	
+   123	  - id: comprehensive-learning
+   124	    label: Comprehensive learning pipeline
+   125	    schedule: "0 2 * * *"
+   126	    machines: [dev-primary, ace-linux-1]
+   127	    roles: [control-plane]
+   128	    requires: [python3, uv, git]
+   129	    command: >-
+   130	      cd $WORKSPACE_HUB &&
+   131	      bash scripts/cron/comprehensive-learning-nightly.sh
+   132	      >> $WORKSPACE_HUB/logs/quality/comprehensive-learning-$(date +\%Y\%m\%d).log 2>&1
+   133	    log: logs/quality/comprehensive-learning-*.log
+   134	    is_claude_task: false
+   135	    description: Nightly 10-phase learning pipeline; runs at 02:00.
+   136	
+   137	  - id: doc-drift
+   138	    label: Documentation drift baseline refresh
+   139	    schedule: "30 2 * * *"
+   140	    machines: [dev-primary, ace-linux-1]
+   141	    roles: [control-plane]
+   142	    requires: [python3, uv]
+   143	    command: >-
+   144	      cd $WORKSPACE_HUB &&
+   145	      uv run --no-project python scripts/quality/check_doc_drift.py --update-baseline
+   146	      >> $WORKSPACE_HUB/logs/quality/doc-drift-$(date +\%Y\%m\%d).yaml 2>&1
+   147	    log: logs/quality/doc-drift-*.yaml
+   148	    is_claude_task: false
+   149	    description: Detects symbol-to-doc drift across repos.
+   150	
+   151	  - id: agent-radar
+   152	    label: Agent capability radar HTML
+   153	    schedule: "30 2 * * *"
+   154	    machines: [dev-primary, ace-linux-1]
+   155	    roles: [control-plane]
+   156	    requires: [python3, uv]
+   157	    command: >-
+   158	      PATH=$HOME/.local/bin:$PATH;
+   159	      cd $WORKSPACE_HUB &&
+   160	      uv run --script scripts/ai/generate-agent-radar.py
+   161	      >> $WORKSPACE_HUB/logs/quality/agent-radar-$(date +\%Y\%m\%d).log 2>&1
+   162	    log: logs/quality/agent-radar-*.log
+   163	    is_claude_task: false
+   164	    description: Daily capability radar HTML regeneration.
+   165	
+   166	  - id: ai-tools-status
+   167	    label: AI CLI version check
+   168	    schedule: "15 3 * * 0"
+   169	    machines: [dev-primary, ace-linux-1]
+   170	    roles: [control-plane]
+   171	    requires: [claude, gemini]
+   172	    command: >-
+   173	      cd $WORKSPACE_HUB &&
+   174	      timeout 60 bash scripts/maintenance/ai-tools-status.sh
+   175	      >> $WORKSPACE_HUB/logs/maintenance/ai-tools-status-$(date +\%Y\%m\%d).log 2>&1
+   176	    log: logs/maintenance/ai-tools-status-*.log
+   177	    is_claude_task: false
+   178	    description: Weekly env parity audit (Sunday 03:15); overwrites ai-tools-status.yaml.
+   179	
+   180	  - id: model-ids
+   181	    label: Model ID refresh
+   182	    schedule: "30 3 * * 0"
+   183	    machines: [dev-primary, ace-linux-1]
+   184	    roles: [control-plane]
+   185	    requires: [bash, git]
+   186	    command: >-
+   187	      cd $WORKSPACE_HUB &&
+   188	      bash scripts/cron/update-model-ids.sh
+   189	      >> $WORKSPACE_HUB/logs/maintenance/model-ids-$(date +\%Y\%m\%d).log 2>&1
+   190	    log: logs/maintenance/model-ids-*.log
+   191	    is_claude_task: false
+   192	    description: Weekly model-ID refresh (Sunday 03:30); updates model-registry.yaml.
+   193	
+   194	  - id: harness-lean-out
+   195	    label: Harness file lean-out audit
+   196	    schedule: "30 3 * * 1"
+   197	    machines: [dev-primary, ace-linux-1]
+   198	    roles: [control-plane]
+   199	    requires: [bash, git]
+   200	    command: >-
+   201	      cd $WORKSPACE_HUB &&
+   202	      bash scripts/cron/harness-lean-out.sh
+   203	      >> $WORKSPACE_HUB/logs/quality/harness-lean-out.log 2>&1
+   204	    log: logs/quality/harness-lean-out.log
+   205	    is_claude_task: false
+   206	    description: Weekly audit (Monday 03:30) of CLAUDE.md, AGENTS.md, memory, rules for bloat; flags line budget violations, stale memory, promotion candidates.
+   207	
+   208	  - id: skills-curation
+   209	    label: Weekly skills audit
+   210	    schedule: "0 4 * * 1"
+   211	    machines: [dev-primary, ace-linux-1]
+   212	    roles: [control-plane]
+   213	    requires: [python3, uv, bash]
+   214	    command: >-
+   215	      PATH=$HOME/.local/bin:$PATH;
+   216	      cd $WORKSPACE_HUB &&
+   217	      bash scripts/cron/skills-curation.sh
+   218	      >> $WORKSPACE_HUB/logs/maintenance/skills-curation-$(date +\%Y\%m\%d).log 2>&1
+   219	    log: logs/maintenance/skills-curation-*.log
+   220	    is_claude_task: false
+   221	    description: >-
+   222	      Weekly skills curation v2 (Monday 04:00): scans .claude/skills/ for
+   223	      duplicate names, leaf collisions, wrapper pairs, and filesystem-only active
+   224	      skill loss-risk inventory. Emits JSON + Markdown artifacts to
+   225	      logs/maintenance/skills-curation/. Local-only/report-only; no network
+   226	      posting. Issues #2281, #2488.
+   227	
+   228	  - id: provider-session-ecosystem-audit
+   229	    label: Provider session ecosystem audit refresh
+   230	    schedule: "15 4 * * 1"
+   231	    machines: [dev-primary, ace-linux-1]
+   232	    roles: [control-plane, comms-dispatch]
+   233	    requires: [bash, python3, uv]
+   234	    prefer: dev-primary
+   235	    command: >-
+   236	      PATH=$HOME/.local/bin:$PATH;
+   237	      cd $WORKSPACE_HUB &&
+   238	      bash scripts/cron/provider-session-ecosystem-audit.sh
+   239	    log: logs/quality/provider-session-ecosystem-audit-*.log
+   240	    is_claude_task: false
+     1	from pathlib import Path
+     2	
+     3	import yaml
+     4	
+     5	
+     6	ROOT = Path(__file__).resolve().parents[2]
+     7	
+     8	
+     9	def load_yaml(path: str):
+    10	    with (ROOT / path).open(encoding="utf-8") as handle:
+    11	        return yaml.safe_load(handle)
+    12	
+    13	
+    14	def test_email_queue_state_schema_defines_required_sections():
+    15	    schema = load_yaml("docs/design/email-queue-state-schema.yaml")
+    16	
+    17	    assert schema["version"] == 1
+    18	    assert set(schema["schemas"]) >= {
+    19	        "queue_state_entry",
+    20	        "queue_learning_log_entry",
+    21	        "queue_state_snapshot",
+    22	        "queue_state_snapshot_meta",
+    23	    }
+    24	
+    25	    state_required = set(schema["schemas"]["queue_state_entry"]["required"])
+    26	    assert {
+    27	        "account_id",
+    28	        "thread_id",
+    29	        "from_state",
+    30	        "to_state",
+    31	        "ts_utc",
+    32	        "writer_identity",
+    33	    } <= state_required
+    34	
+    35	    writer_required = set(
+    36	        schema["schemas"]["queue_state_entry"]["properties"]["writer_identity"][
+    37	            "required"
+    38	        ]
+    39	    )
+    40	    assert {"process_name", "pid", "hostname", "boot_id"} <= writer_required
+    41	
+    42	
+    43	def test_snapshot_schema_uses_account_thread_composite_key():
+    44	    schema = load_yaml("docs/design/email-queue-state-schema.yaml")
+    45	    snapshot = schema["schemas"]["queue_state_snapshot"]
+    46	
+    47	    assert snapshot["type"] == "object"
+    48	    assert snapshot["additionalProperties"]["required"][:2] == [
+    49	        "account_id",
+    50	        "thread_id",
+    51	    ]
+    52	    assert snapshot["key_format"] == "{account_id}::{thread_id}"
+    53	
+    54	
+    55	def test_spam_rules_yaml_contains_letstok_contract():
+    56	    rules = load_yaml("scripts/email/spam-detection-rules.yaml")
+    57	    rule_by_id = {rule["id"]: rule for rule in rules["rules"]}
+    58	
+    59	    letstok = rule_by_id["letstok_web_form_abuse"]
+    60	    assert letstok["classification"] == "spam"
+    61	    assert letstok["action_for_unmapped_sender"] == "DELETE"
+    62	    assert letstok["state_tracking"] == "skip"
+    63	    assert "fatigue analysis" in " ".join(letstok["contains_any"]).lower()
+    64	    assert "offshore engineering" in " ".join(letstok["contains_any"]).lower()
+    65	
+    66	
+    67	def test_cre_listing_schema_covers_required_fields_and_senders():
+    68	    schema = load_yaml("scripts/email/extraction-schemas/cre-listing-v1.yaml")
+    69	
+    70	    assert schema["schema_id"] == "cre-listing-v1"
+    71	    assert schema["target_path"] == "assethold/data/cre-listings"
+    72	    assert {
+    73	        "sandsig.com",
+    74	        "marcusmillichap.com",
+    75	        "partnersrealestate.com",
+    76	        "email.loopnet.com",
+    77	        "ten-x.ccsend.com",
+    78	        "c.costarmail.com",
+    79	    } <= set(schema["sender_domains"])
+    80	
+    81	    fields = {field["name"] for field in schema["fields"]}
+    82	    assert {
+    83	        "property_type",
+    84	        "price",
+    85	        "cap_rate",
+    86	        "square_feet",
+    87	        "location",
+    88	        "sender",
+    89	    } <= fields
+    90	
+    91	
+    92	def test_routing_yaml_sandsig_and_skylineseven_route_to_cre_data():
+    93	    routing = load_yaml("scripts/email/email-routing.yaml")
+    94	
+    95	    assert routing["rules"]["sandsig.com"] == "assethold/data/cre-listings"
+    96	    assert routing["rules"]["skylineseven.ccsend.com"] == (
+    97	        "assethold/data/cre-listings"
+    98	    )
+    99	
+     1	import subprocess
+     2	import sys
+     3	from pathlib import Path
+     4	
+     5	
+     6	ROOT = Path(__file__).resolve().parents[2]
+     7	HOOK = ROOT / "scripts" / "email" / "fixture-redaction-check.py"
+     8	
+     9	
+    10	def run_hook(path: Path):
+    11	    return subprocess.run(
+    12	        [sys.executable, str(HOOK), str(path)],
+    13	        cwd=ROOT,
+    14	        text=True,
+    15	        stdout=subprocess.PIPE,
+    16	        stderr=subprocess.PIPE,
+    17	        check=False,
+    18	    )
+    19	
+    20	
+    21	def test_fixture_redaction_rejects_real_domains(tmp_path):
+    22	    fixture = tmp_path / "bad.yaml"
+    23	    fixture.write_text(
+    24	        "sender: person@aceengineer.com\nphone: 713-555-0181\n",
+    25	        encoding="utf-8",
+    26	    )
+    27	
+    28	    result = run_hook(fixture)
+    29	
+    30	    assert result.returncode == 1
+    31	    assert "real email/domain" in result.stderr
+    32	
+    33	
+    34	def test_fixture_redaction_allows_placeholder_domains(tmp_path):
+    35	    fixture = tmp_path / "good.yaml"
+    36	    fixture.write_text(
+    37	        "sender: client@example.com\nreply_to: broker@test.invalid\n",
+    38	        encoding="utf-8",
+    39	    )
+    40	
+    41	    result = run_hook(fixture)
+    42	
+    43	    assert result.returncode == 0, result.stderr
+
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+exec
+/bin/bash -lc "find scripts/review/results -maxdepth 2 \\( -path '*2026-06-11-plan-2026-r7*' -o -path '*2026-06-11-plan-2026-r6*' -o -path '*2026-06-11-plan-2026-r5*' \\) -print | sort | sed -n '1,160p'
+find scripts/email -maxdepth 3 -type f | sort | sed -n '1,200p'
+find tests/email -maxdepth 2 -type f | sort | sed -n '1,200p'" in /mnt/local-analysis/workspace-hub
+ succeeded in 0ms:
+scripts/review/results/2026-06-11-plan-2026-r5
+scripts/review/results/2026-06-11-plan-2026-r5/2026-06-11-plan-2026-claude.md
+scripts/review/results/2026-06-11-plan-2026-r5/2026-06-11-plan-2026-codex.md
+scripts/review/results/2026-06-11-plan-2026-r5/2026-06-11-plan-2026-disagreement.md
+scripts/review/results/2026-06-11-plan-2026-r5/2026-06-11-plan-2026-gemini.md
+scripts/review/results/2026-06-11-plan-2026-r6
+scripts/review/results/2026-06-11-plan-2026-r6/2026-06-11-plan-2026-claude.md
+scripts/review/results/2026-06-11-plan-2026-r6/2026-06-11-plan-2026-codex.md
+scripts/review/results/2026-06-11-plan-2026-r6/2026-06-11-plan-2026-disagreement.md
+scripts/review/results/2026-06-11-plan-2026-r6/2026-06-11-plan-2026-gemini.md
+scripts/review/results/2026-06-11-plan-2026-r7
+scripts/review/results/2026-06-11-plan-2026-r7/2026-06-11-plan-2026-claude.md
+scripts/review/results/2026-06-11-plan-2026-r7/2026-06-11-plan-2026-claude.md.err
+scripts/review/results/2026-06-11-plan-2026-r7/2026-06-11-plan-2026-codex.md
+scripts/review/results/2026-06-11-plan-2026-r7/2026-06-11-plan-2026-codex.md.err
+scripts/review/results/2026-06-11-plan-2026-r7/2026-06-11-plan-2026-gemini.md
+scripts/review/results/2026-06-11-plan-2026-r7/2026-06-11-plan-2026-gemini.md.err
+scripts/email/batch-unsubscribe.sh
+scripts/email/contact-normalizer.py
+scripts/email/email-routing.yaml
+scripts/email/extraction-schemas/cre-listing-v1.yaml
+scripts/email/fixture-redaction-check.py
+scripts/email/gmail-archive-extract.py
+scripts/email/gmail-digest.py
+scripts/email/spam-detection-rules.yaml
+scripts/email/templates/cre-listing.yaml
+tests/email/__pycache__/test_email_queue_contract_artifacts.cpython-311-pytest-9.0.2.pyc
+tests/email/__pycache__/test_fixture_redaction_hook.cpython-311-pytest-9.0.2.pyc
+tests/email/__pycache__/test_spam_rules.cpython-311-pytest-9.0.2.pyc
+tests/email/__pycache__/test_state_machine_contract.cpython-311-pytest-9.0.2.pyc
+tests/email/test_email_queue_contract_artifacts.py
+tests/email/test_fixture_redaction_hook.py
+tests/email/test_spam_rules.py
+tests/email/test_state_machine_contract.py
+
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed

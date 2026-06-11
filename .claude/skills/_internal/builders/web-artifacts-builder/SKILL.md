@@ -42,6 +42,20 @@ Create self-contained, interactive web applications as single HTML files. These 
 4. **Test locally** by opening file in browser
 5. **Share** as single file attachment
 
+## Human review / rating apps
+
+When the artifact is an interactive review, scoring, calibration, triage, QA, or annotation app, include a one-click **Submit** workflow by default. Manual JSON/CSV export-download-upload is acceptable only as a fallback; it is too convoluted as the primary user path.
+
+Recommended pattern:
+
+- Add localStorage autosave, progress tracking, JSON/CSV export, and JSON import/resume.
+- Add a prominent `Submit` button.
+- Place a tiny localhost receiver next to the HTML artifact (`GET /health`, `POST /submit`) that writes timestamped submissions plus `submissions/latest.json`.
+- The app should POST to `http://127.0.0.1:<port>/submit`; if unavailable, copy JSON to clipboard and show the exact receiver start command.
+- Verify with a browser load, a test edit, a submit POST, and reset test state before handoff.
+
+See `references/interactive-review-submit-pattern.md` for implementation details and pitfalls.
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -66,6 +80,21 @@ Create self-contained, interactive web applications as single HTML files. These 
 </body>
 </html>
 ```
+
+## Interactive Rating / Review Apps
+
+Use this pattern when the user needs to rate, triage, or calibrate a batch of examples in a browser instead of editing Markdown/CSV by hand.
+
+1. Build a single-file HTML app with embedded JSON data, no server dependency, and all CSS/JS inline.
+2. Include per-item navigation, progress tracking, score inputs, defect/checklist toggles, notes, and autosave via `localStorage`.
+3. Provide JSON and CSV export; if the user may resume later, also provide JSON import or copy-to-clipboard.
+4. Verify the artifact before handoff:
+   - extract embedded JavaScript and run `node --check` when Node is available;
+   - open the file in a browser and confirm the expected card/control counts;
+   - exercise one score/checkbox/note update and then reset the test state so the user starts clean.
+5. Watch for JavaScript string-escaping hazards when generating HTML from Python. In particular, CSV export code must use an escaped newline string (`'\\n'`) inside JavaScript; an actual newline inside a quoted JS string will make the page render shell content but fail to initialize.
+
+Starter template: `templates/interactive-rating-app.html`.
 
 ## Related Skills
 
