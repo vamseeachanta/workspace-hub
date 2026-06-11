@@ -1057,6 +1057,21 @@ cards:
     title: '[corpus-ingest] O&G raw quarantine bucket disposition and #134 rerun gate'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/622
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:done
+      - agent:codex
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#638
+    title: '[corpus-ingest] O&G raw document-support manual review routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/638
     gh_state: open
     gh_labels:
       - priority:high
