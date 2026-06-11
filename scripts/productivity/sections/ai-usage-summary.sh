@@ -172,35 +172,39 @@ def read_toml_key(p, key):
         pass
     return None
 
-# Context window map: model alias/id → (full_name, context_k_tokens)
-CTX_MAP = {
-    # Claude
-    "fable":             ("claude-fable-5",      1000),
-    "claude-fable-5":    ("claude-fable-5",      1000),
-    "sonnet":            ("claude-sonnet-4-6",  200),
-    "claude-sonnet-4-6": ("claude-sonnet-4-6",  200),
-    "opus":              ("claude-opus-4-8",     200),
-    "claude-opus-4-8":   ("claude-opus-4-8",     200),
-    "claude-opus-4-6":   ("claude-opus-4-6",     200),
-    "haiku":             ("claude-haiku-4-5",    200),
-    "claude-haiku-4-5":  ("claude-haiku-4-5",    200),
-    # Codex / OpenAI
-    "gpt-5.4":           ("gpt-5.4",             128),
-    "gpt-5.3-codex":     ("gpt-5.3-codex",       128),
-    "gpt-5.2-codex":     ("gpt-5.2-codex",       128),
-    "o4-mini":           ("o4-mini",              200),
-    "o3":                ("o3",                   200),
-    # Gemini
-    "gemini-3.1-pro-preview": ("gemini-3.1-pro-preview", 1000),
-    "gemini-2.5-pro":    ("gemini-2.5-pro",      1000),
-    "gemini-2.5-flash":  ("gemini-2.5-flash",     1000),
+# Context windows from config/agents/model-registry.yaml context_windows_k (#3038)
+ALIAS_MAP = {
+    "fable": "claude-fable-5",
+    "opus": "claude-opus-4-8",
+    "sonnet": "claude-sonnet-4-6",
+    "haiku": "claude-haiku-4-5",
 }
 
+def _load_registry_ctx():
+    fallback = {"claude-fable-5": 1000, "claude-sonnet-4-6": 200,
+                "claude-opus-4-8": 200, "claude-haiku-4-5": 200,
+                "gpt-5.5": 128, "gemini-2.5-pro": 1000}
+    try:
+        text = (ws / "config/agents/model-registry.yaml").read_text(encoding="utf-8")
+    except Exception:
+        return fallback
+    block = re.search(r"^context_windows_k:\n((?:[ \t]+\S+:[ \t]*\d+.*\n)+)", text, re.MULTILINE)
+    if not block:
+        return fallback
+    out = {m.group(1).lower(): int(m.group(2))
+           for m in re.finditer(r"^[ \t]+(\S+):[ \t]*(\d+)", block.group(1), re.MULTILINE)}
+    return out or fallback
+
+CTX_MAP = _load_registry_ctx()
+
 def ctx_label(model_alias):
-    entry = CTX_MAP.get(model_alias.lower() if model_alias else "")
-    if entry:
-        return f"{entry[1]}K"
-    return "?"
+    key = (model_alias or "").lower()
+    suffix = re.search(r"\[(\d+)(k|m)\]$", key)
+    key = re.sub(r"\[[^\]]*\]$", "", key)
+    if suffix:
+        return f"{int(suffix.group(1)) * (1000 if suffix.group(2) == 'm' else 1)}K"
+    key = ALIAS_MAP.get(key, key)
+    return f"{CTX_MAP[key]}K" if key in CTX_MAP else "?"
 
 rows = []
 

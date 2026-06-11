@@ -10,36 +10,57 @@ import sys
 import time
 from pathlib import Path
 
-# Context window map: model alias → K tokens
-CTX_MAP: dict[str, int] = {
-    # Claude
-    "fable": 1000,
+# Context windows read from config/agents/model-registry.yaml context_windows_k
+# (single source per #3038); FALLBACK_CTX_MAP covers registry-absent runs.
+MODEL_REGISTRY = Path(__file__).resolve().parents[2] / "config" / "agents" / "model-registry.yaml"
+
+FALLBACK_CTX_MAP: dict[str, int] = {
     "claude-fable-5": 1000,
-    "sonnet": 200,
     "claude-sonnet-4-6": 200,
-    "opus": 200,
     "claude-opus-4-8": 200,
-    "claude-opus-4-6": 200,
-    "haiku": 200,
     "claude-haiku-4-5": 200,
-    # Codex / OpenAI
     "gpt-5.5": 128,
-    "gpt-5.4": 128,
-    "gpt-5.3-codex": 128,
-    "gpt-5.2-codex": 128,
-    "o4-mini": 200,
-    "o3": 200,
-    # Gemini
-    "gemini-3.1-pro-preview": 1000,
     "gemini-2.5-pro": 1000,
-    "gemini-2.5-flash": 1000,
+}
+
+# Short aliases resolve to full model ids before lookup
+ALIAS_MAP: dict[str, str] = {
+    "fable": "claude-fable-5",
+    "opus": "claude-opus-4-8",
+    "sonnet": "claude-sonnet-4-6",
+    "haiku": "claude-haiku-4-5",
 }
 
 DEFAULT_CTX = 128
 
 
+def _load_registry_ctx() -> dict[str, int]:
+    """Parse the flat context_windows_k map (no yaml dep — runs --no-project)."""
+    try:
+        text = MODEL_REGISTRY.read_text(encoding="utf-8")
+    except OSError:
+        return dict(FALLBACK_CTX_MAP)
+    block = re.search(r"^context_windows_k:\n((?:[ \t]+\S+:[ \t]*\d+.*\n)+)", text, re.MULTILINE)
+    if not block:
+        return dict(FALLBACK_CTX_MAP)
+    out: dict[str, int] = {}
+    for m in re.finditer(r"^[ \t]+(\S+):[ \t]*(\d+)", block.group(1), re.MULTILINE):
+        out[m.group(1).lower()] = int(m.group(2))
+    return out or dict(FALLBACK_CTX_MAP)
+
+
+CTX_MAP: dict[str, int] = _load_registry_ctx()
+
+
 def ctx_k(model_alias: str) -> int:
-    return CTX_MAP.get((model_alias or "").lower(), DEFAULT_CTX)
+    key = (model_alias or "").lower()
+    # Context-variant suffix, e.g. "claude-fable-5[1m]" — explicit window wins
+    suffix = re.search(r"\[(\d+)(k|m)\]$", key)
+    key = re.sub(r"\[[^\]]*\]$", "", key)
+    if suffix:
+        return int(suffix.group(1)) * (1000 if suffix.group(2) == "m" else 1)
+    key = ALIAS_MAP.get(key, key)
+    return CTX_MAP.get(key, DEFAULT_CTX)
 
 
 def read_json(path: Path) -> dict:

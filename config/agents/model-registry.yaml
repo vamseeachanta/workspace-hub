@@ -29,6 +29,23 @@ latest_models:
   openai_primary: "gpt-5.5"
   openai_fast: "gpt-5.4-mini"
 
+# Context windows (K tokens) — single source for session tooling (#3038).
+# Flat map by design: consumed by grep/regex readers in scripts/lib/model-registry.sh,
+# scripts/ai/session-params.py, scripts/productivity/sections/ai-usage-summary.sh.
+context_windows_k:
+  claude-fable-5: 1000
+  claude-opus-4-8: 200
+  claude-sonnet-4-6: 200
+  claude-haiku-4-5: 200
+  gpt-5.5: 128
+  gpt-5.4: 128
+  gpt-5.4-mini: 128
+  gpt-5.3-codex: 128
+  gpt-5.2-codex: 128
+  gemini-3.1-pro-preview: 1000
+  gemini-2.5-pro: 1000
+  gemini-2.5-flash: 1000
+
 providers:
   claude:
     default_model: sonnet-4-6   # Sonnet stays default for routine work; escalate to fable-5 for hardest tasks

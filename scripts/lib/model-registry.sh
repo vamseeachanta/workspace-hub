@@ -22,6 +22,18 @@ _model_registry_path() {
   echo "$candidate"
 }
 
+# registry_ctx_k <model-id> [fallback]
+# Echoes the context window in K tokens from the context_windows_k map.
+registry_ctx_k() {
+  local model="$1" fallback="${2:-128}"
+  local reg; reg="$(_model_registry_path)"
+  local val=""
+  if [[ -f "$reg" ]]; then
+    val="$(sed -n -E "s/^[[:space:]]+${model}:[[:space:]]*([0-9]+).*/\1/p" "$reg" | head -1)"
+  fi
+  echo "${val:-$fallback}"
+}
+
 # registry_model <latest_models key> [fallback]
 # Echoes the model id; falls back (and warns on stderr) if key/file missing.
 registry_model() {
