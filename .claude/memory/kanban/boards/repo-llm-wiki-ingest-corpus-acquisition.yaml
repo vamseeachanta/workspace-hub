@@ -1075,7 +1075,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:high
-      - status:plan-review
+      - status:plan-approved
       - agent:codex
       - domain:ingest-corpus-acquisition
       - lane:codex
