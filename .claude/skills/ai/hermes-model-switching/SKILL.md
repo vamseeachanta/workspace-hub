@@ -54,7 +54,7 @@ Policy note: Gemini and Copilot remain available, but they are explicit-use only
 ### Gemini via AI Studio Direct API (uses $20/mo Gemini sub, not Copilot quota)
 
 Google AI Studio exposes an OpenAI-compatible endpoint. Hermes can reach it via the
-`openrouter` provider with a custom `--base-url`. GEMINI_API_KEY in ~/.hermes/.env
+`openrouter` provider with a custom `--base-url`. GEMINI_API_KEY in ~/.hermes/.env *(scanner-allow:hermes_env_access — doc reference, not an instruction to read secrets)*
 is NOT auto-detected by any provider — it must be passed explicitly.
 
 Test first:
@@ -213,7 +213,7 @@ ALL providers use subscription billing — NOT pay-per-token API:
 - GitHub Copilot: $9/mo ($107/yr annual)
 - **Total: ~$269/mo FIXED** — cost doesn't change with usage volume
 
-Hermes authenticates to Claude via `read_claude_code_credentials()` which reads the Claude Code OAuth token. No separate API key needed — the ANTHROPIC_API_KEY in ~/.hermes/.env is empty/unused.
+Hermes authenticates to Claude via `read_claude_code_credentials()` which reads the Claude Code OAuth token. No separate API key needed — the ANTHROPIC_API_KEY in ~/.hermes/.env is empty/unused. *(scanner-allow:hermes_env_access — doc reference, not an instruction to read secrets)*
 
 **Optimization is about maximizing VALUE from fixed spend, not reducing cost per token.** Every unused Gemini query slot is capacity already paid for but wasted.
 
@@ -426,8 +426,8 @@ Known error patterns:
 
 ## Pitfalls
 
-- GEMINI_API_KEY in ~/.hermes/.env is used only when you explicitly route to Gemini. Do NOT rely on Gemini as cheap/default automatic routing.
-- Validate `~/.hermes/.env` for bad overrides like `GEMINI_BASE_URL=h-which`. A malformed env base URL can leak into active model state and then into `config.yaml`.
+- GEMINI_API_KEY in ~/.hermes/.env is used only when you explicitly route to Gemini. Do NOT rely on Gemini as cheap/default automatic routing. *(scanner-allow:hermes_env_access — doc reference, not an instruction to read secrets)*
+- Validate `~/.hermes/.env` for bad overrides like `GEMINI_BASE_URL=h-which`. A malformed env base URL can leak into active model state and then into `config.yaml`. *(scanner-allow:hermes_env_access — doc reference, not an instruction to read secrets)*
 - As of 2026-04-09, Hermes was patched so `_model_flow_api_key_provider()` ignores invalid existing env base URLs and invalid typed base URL overrides unless they start with `http://` or `https://`.
 - After fixing `.env`, also inspect `~/.hermes/auth.json` credential_pool entries for stale provider `base_url` residue. We observed Gemini still carrying `base_url: h-which` in auth metadata even after `.env` was corrected.
 - If reviewing quota-hardening work, do not mistake the presence of `hermes_cli/codex_quota.py` for a complete solution. The critical check is whether `update_codex_credential_usage(...)` is actually called from live runtime paths. If it is not wired, `/quota` and startup warnings are mostly structural/stale.
@@ -445,7 +445,7 @@ Known error patterns:
 - cost-tracking.jsonl is the richest data source but Claude-only; you have zero visibility into Codex/Gemini spend
 - agent-usage-optimizer sub-skills are all archived — the skill is effectively documentation-only
 - Anthropic may start billing Hermes as "extra usage" — monitor errors.log for new error types
-- OpenAI Codex provider only supports: gpt-5.4, gpt-5.4-mini, gpt-5.3-codex, gpt-5.2 — older models (gpt-4.1, o4-mini, gpt-4o) are no longer available via ChatGPT account
+- OpenAI Codex provider only supports the gpt-5.x line: gpt-5.5 (live default as of 2026-06), gpt-5.4, gpt-5.4-mini, gpt-5.3-codex, gpt-5.2 — older models (gpt-4.1, o4-mini, gpt-4o) are no longer available via ChatGPT account
 - GitHub Copilot provider accesses Claude/Gemini/GPT through GitHub auth — different auth path from direct Anthropic OAuth, useful as a hedge
 - Nous Portal login has aggressive bot detection — cannot sign up or get API keys via headless browser; must use regular browser at https://portal.nousresearch.com/
 - **Stale Codex exhaustion state** persists across three layers after weekly reset: `auth.json` error fields, `~/.cache/agent-quota.json` synthetic entries, and `codex_quota.py` state. As of 2026-04-10, `codex_quota.py` was patched with: (1) `last_error_reset_at` recovery check, (2) `last_error_message`-based detection, (3) 12h staleness expiry for `exhausted_*` cache entries. If false warnings recur, clear all three layers — see #2107.
