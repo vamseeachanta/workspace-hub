@@ -434,6 +434,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
+      - status:plan-review
       - machine:dev-primary
       - cat:data-pipeline
       - cat:harness
