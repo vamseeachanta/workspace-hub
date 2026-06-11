@@ -390,9 +390,10 @@ cards:
     title: '[corpus-ingest] O&G-Standards catalog↔disk reconciliation — uncataloged live dirs (ABS/ASCE/ASME/AWS/NACE)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/134
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:high
+      - status:done
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
@@ -1035,5 +1036,35 @@ cards:
       - domain:ingest-corpus-acquisition
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#617
+    title: '[corpus-ingest] O&G-Standards raw unique content quarantine and routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/617
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:done
+      - agent:codex
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#622
+    title: '[corpus-ingest] O&G raw quarantine bucket disposition and #134 rerun gate'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/622
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - status:plan-review
+      - agent:codex
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

@@ -165,3 +165,13 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#17
+    title: 'chore(harness): land or kill stale overnight branch, then modernize adapter + .claude tree'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/17
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

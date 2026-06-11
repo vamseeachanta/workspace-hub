@@ -217,6 +217,7 @@ cards:
       - bug
       - cat:engineering
       - priority:high
+      - status:working
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready

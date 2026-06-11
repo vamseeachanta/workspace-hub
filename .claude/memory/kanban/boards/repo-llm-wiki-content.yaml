@@ -51,3 +51,40 @@ cards:
 
 
       Parent vamseeachanta/workspace-hub#2205 operating model Section 8.1 (amendment 2026-04-19, [comment](https://github.com/vamseeachanta/workspace-hub/issues/2205#issuecomment-4277238819)) mandates a baseline floor of `{title, last_updated, doc_key}` as required fields in every wiki `CLAUDE.md` schema declaration. No wiki `CLAUDE.md` currently declares `doc_key` as required.'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#619
+    title: Add Salesforce software-ops documentation for Telegram outreach
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/619
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - status:pending
+      - cat:documentation
+      - cat:knowledge-domain
+      - domain:knowledge-management
+      - llm-wiki
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#624
+    title: 'EPIC: Salesforce software-ops documentation for Telegram outreach'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/624
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - status:pending
+      - cat:documentation
+      - cat:knowledge-domain
+      - domain:knowledge-management
+      - llm-wiki
+      - tracker
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

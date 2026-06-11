@@ -20905,3 +20905,65 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3036
+    title: 'fix(harness): hermes-model-switching SKILL.md edits blocked by skill-content security scanner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3036
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3037
+    title: 'chore(ai): verify Gemini model lineup against live Google AI Pro plan (registry claims gemini-3.1-pro-preview)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3037
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:ai-orchestration
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3038
+    title: 'feat(harness): make model-registry.yaml the operational SSoT — scripts still hardcode model IDs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3038
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:ai-orchestration
+      - cat:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3039
+    title: 'chore(harness): decide fate of .agents/skills fork of .claude/skills (provider-parity copy, drifting)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3039
+    gh_state: closed
+    gh_labels:
+      - priority:low
+      - cat:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3040
+    title: 'epic(harness): 2026-06-11 provider/skills rework — landing checklist + follow-ups'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3040
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

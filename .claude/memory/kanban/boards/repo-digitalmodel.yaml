@@ -3676,3 +3676,13 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#695
+    title: 'chore(harness): retire claude-flow-era .claude scaffolding (deferred from 2026-06-11 ecosystem rework)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/695
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
