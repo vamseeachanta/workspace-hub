@@ -679,13 +679,12 @@ cards:
     title: '[materials-mechanical] NACE corrosion materials source/page canary'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/522
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
-      - status:plan-review
+      - status:done
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
       - lane:codex
     initial_status: triage
@@ -696,13 +695,12 @@ cards:
     title: '[materials-mechanical] SAE J755 locked-source metadata lane'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/523
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
-      - status:plan-review
+      - status:done
       - machine:dev-primary
       - agent:codex
-      - dispatch:ready
       - domain:ingest-corpus-acquisition
       - lane:codex
     initial_status: triage
