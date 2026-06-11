@@ -30,7 +30,7 @@
     }
   },
   "agents": {
-    "claude-sonnet-4.5": {
+    "claude-sonnet-4.6": {
       "platform": "claude-code",
       "type": "primary",
       "capabilities": {
@@ -62,7 +62,7 @@
       "limitations": ["complex-architecture", "multi-repo-coordination"],
       "costTier": "medium"
     },
-    "openai-gpt-4.1": {
+    "openai-gpt-5.5": {
       "platform": "openai",
       "type": "primary",
       "capabilities": {
@@ -79,12 +79,12 @@
       "limitations": ["very-long-context", "specialized-domains"],
       "costTier": "medium",
       "modelDetails": {
-        "name": "gpt-4.1",
+        "name": "gpt-5.5",
         "contextWindow": "128K tokens",
         "speed": "fast"
       }
     },
-    "openai-gpt-4.1": {
+    "openai-gpt-5.5": {
       "platform": "openai",
       "type": "specialist",
       "capabilities": {
@@ -101,7 +101,7 @@
       "limitations": ["response-speed", "cost"],
       "costTier": "high",
       "modelDetails": {
-        "name": "gpt-4.1",
+        "name": "gpt-5.5",
         "contextWindow": "128K tokens",
         "speed": "medium"
       }
@@ -121,7 +121,7 @@
       "limitations": ["complex-reasoning", "advanced-architecture"],
       "costTier": "low",
       "modelDetails": {
-        "name": "gpt-4.1-mini",
+        "name": "gpt-5.4-mini",
         "contextWindow": "16K tokens",
         "speed": "very-fast"
       }
@@ -324,7 +324,7 @@
     },
     "pseudocode-phase": {
       "primaryReviewer": "claude-flow-architect",
-      "secondaryReviewer": "claude-sonnet-4.5",
+      "secondaryReviewer": "claude-sonnet-4.6",
       "checkpoints": [
         "algorithm-correctness",
         "complexity-analysis",
@@ -339,7 +339,7 @@
     },
     "architecture-phase": {
       "primaryReviewer": "claude-flow-architect",
-      "secondaryReviewer": "claude-sonnet-4.5",
+      "secondaryReviewer": "claude-sonnet-4.6",
       "checkpoints": [
         "design-patterns",
         "scalability",
@@ -355,7 +355,7 @@
     },
     "implementation-phase": {
       "primaryReviewer": "claude-flow-reviewer",
-      "secondaryReviewer": "claude-sonnet-4.5",
+      "secondaryReviewer": "claude-sonnet-4.6",
       "checkpoints": [
         "code-quality",
         "test-coverage",
@@ -400,7 +400,7 @@
       }
     },
     "completion-phase": {
-      "primaryReviewer": "claude-sonnet-4.5",
+      "primaryReviewer": "claude-sonnet-4.6",
       "secondaryReviewer": "claude-flow-reviewer",
       "checkpoints": [
         "integration-validation",
@@ -417,63 +417,63 @@
   },
   "taskTypeAgentMapping": {
     "code-generation": {
-      "primary": "claude-sonnet-4.5",
+      "primary": "claude-sonnet-4.6",
       "alternatives": ["factory-ai-droid", "claude-flow-coder"],
       "reviewers": ["claude-flow-reviewer"]
     },
     "code-refactoring": {
       "primary": "factory-ai-droid",
-      "alternatives": ["claude-sonnet-4.5", "claude-flow-coder"],
+      "alternatives": ["claude-sonnet-4.6", "claude-flow-coder"],
       "reviewers": ["claude-flow-reviewer"]
     },
     "test-creation": {
       "primary": "claude-flow-tester",
-      "alternatives": ["claude-sonnet-4.5"],
+      "alternatives": ["claude-sonnet-4.6"],
       "reviewers": ["claude-flow-reviewer", "claude-flow-tester"]
     },
     "code-review": {
       "primary": "claude-flow-reviewer",
-      "alternatives": ["claude-sonnet-4.5"],
+      "alternatives": ["claude-sonnet-4.6"],
       "reviewers": ["claude-flow-architect"]
     },
     "architecture-design": {
       "primary": "claude-flow-architect",
-      "alternatives": ["claude-sonnet-4.5"],
-      "reviewers": ["claude-flow-reviewer", "claude-sonnet-4.5"]
+      "alternatives": ["claude-sonnet-4.6"],
+      "reviewers": ["claude-flow-reviewer", "claude-sonnet-4.6"]
     },
     "spec-creation": {
       "primary": "spec-kit-analyzer",
-      "alternatives": ["claude-sonnet-4.5", "agent-os-planner"],
+      "alternatives": ["claude-sonnet-4.6", "agent-os-planner"],
       "reviewers": ["claude-flow-researcher"]
     },
     "requirement-analysis": {
       "primary": "claude-flow-researcher",
-      "alternatives": ["spec-kit-analyzer", "claude-sonnet-4.5"],
-      "reviewers": ["claude-sonnet-4.5"]
+      "alternatives": ["spec-kit-analyzer", "claude-sonnet-4.6"],
+      "reviewers": ["claude-sonnet-4.6"]
     },
     "documentation": {
-      "primary": "claude-sonnet-4.5",
+      "primary": "claude-sonnet-4.6",
       "alternatives": ["factory-ai-droid"],
       "reviewers": ["claude-flow-reviewer"]
     },
     "bug-fixing": {
-      "primary": "claude-sonnet-4.5",
+      "primary": "claude-sonnet-4.6",
       "alternatives": ["factory-ai-droid"],
       "reviewers": ["claude-flow-reviewer", "claude-flow-tester"]
     },
     "migration": {
       "primary": "factory-ai-droid",
-      "alternatives": ["claude-sonnet-4.5"],
+      "alternatives": ["claude-sonnet-4.6"],
       "reviewers": ["claude-flow-reviewer", "claude-flow-architect"]
     },
     "performance-optimization": {
-      "primary": "claude-sonnet-4.5",
+      "primary": "claude-sonnet-4.6",
       "alternatives": ["factory-ai-droid"],
       "reviewers": ["claude-flow-reviewer", "claude-flow-architect"]
     },
     "security-audit": {
       "primary": "claude-flow-reviewer",
-      "alternatives": ["claude-sonnet-4.5"],
+      "alternatives": ["claude-sonnet-4.6"],
       "reviewers": ["claude-flow-architect"]
     },
     "html-report-generation": {
@@ -484,7 +484,7 @@
     "interactive-visualization": {
       "primary": "plotly-visualization-agent",
       "alternatives": ["bokeh-dashboard-agent", "d3js-custom-viz-agent"],
-      "reviewers": ["claude-flow-reviewer", "claude-sonnet-4.5"]
+      "reviewers": ["claude-flow-reviewer", "claude-sonnet-4.6"]
     },
     "dashboard-creation": {
       "primary": "bokeh-dashboard-agent",
@@ -493,7 +493,7 @@
     },
     "data-analysis-report": {
       "primary": "altair-analysis-agent",
-      "alternatives": ["plotly-visualization-agent", "claude-sonnet-4.5"],
+      "alternatives": ["plotly-visualization-agent", "claude-sonnet-4.6"],
       "reviewers": ["claude-flow-researcher"]
     },
     "csv-data-visualization": {
@@ -514,15 +514,15 @@
     "complexityThresholds": {
       "simple": {"primary": "claude-flow-coder", "cost": "low"},
       "moderate": {"primary": "factory-ai-droid", "cost": "medium"},
-      "complex": {"primary": "claude-sonnet-4.5", "cost": "high"}
+      "complex": {"primary": "claude-sonnet-4.6", "cost": "high"}
     },
     "domainSpecialization": {
-      "python": ["claude-sonnet-4.5", "factory-ai-droid", "claude-flow-coder"],
-      "javascript": ["claude-sonnet-4.5", "factory-ai-droid", "claude-flow-coder"],
-      "bash": ["claude-sonnet-4.5"],
-      "architecture": ["claude-flow-architect", "claude-sonnet-4.5"],
-      "testing": ["claude-flow-tester", "claude-sonnet-4.5"],
-      "documentation": ["claude-sonnet-4.5", "factory-ai-droid"]
+      "python": ["claude-sonnet-4.6", "factory-ai-droid", "claude-flow-coder"],
+      "javascript": ["claude-sonnet-4.6", "factory-ai-droid", "claude-flow-coder"],
+      "bash": ["claude-sonnet-4.6"],
+      "architecture": ["claude-flow-architect", "claude-sonnet-4.6"],
+      "testing": ["claude-flow-tester", "claude-sonnet-4.6"],
+      "documentation": ["claude-sonnet-4.6", "factory-ai-droid"]
     }
   },
   "dailyUpdateProcedure": {

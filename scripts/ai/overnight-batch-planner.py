@@ -62,10 +62,10 @@ LABEL_AGENT_MAP: dict[str, str] = {
 OVERNIGHT_LABELS = {"overnight", "overnight-batch", "batch"}
 
 AGENT_MODEL_MAP: dict[str, dict[str, str]] = {
-    "claude":  {"model": "claude-opus-4-6",       "provider": "anthropic"},
+    "claude":  {"model": "claude-fable-5",         "provider": "anthropic"},
     "codex":   {"model": "codex-cli",              "provider": "openai-codex"},
     "gemini":  {"model": "gemini-2.5-pro",         "provider": "copilot"},
-    "hermes":  {"model": "claude-sonnet-4.6",      "provider": "copilot"},
+    "hermes":  {"model": "gpt-5.5",                "provider": "openai-codex"},
 }
 
 AGENT_COMMAND: dict[str, str] = {

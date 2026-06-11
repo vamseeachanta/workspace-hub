@@ -155,8 +155,10 @@ def infer_provider_model(last_msg):
         return "codex", "codex-cli"
     if re.search(r'\bgemini\b', m):
         return "gemini", "gemini-pro"
+    if re.search(r'\bfable\b|\bmythos\b', m):
+        return "claude", "fable-5"
     if re.search(r'\bopus\b', m):
-        return "claude", "opus-4-6"
+        return "claude", "opus-4-8"
     if re.search(r'\bhaiku\b', m):
         return "claude", "haiku-4-5"
     return "claude", "sonnet-4-6"

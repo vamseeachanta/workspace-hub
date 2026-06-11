@@ -368,9 +368,9 @@ Use --force to regenerate all docs, or re-run in Claude Code to get per-file pro
 After all decisions recorded, continue to detect_runtime_capabilities.
 </step>
 
-<!-- If Task tool is unavailable at runtime, skip dispatch/collect waves and use sequential_generation instead. -->
+<!-- If Agent tool is unavailable at runtime, skip dispatch/collect waves and use sequential_generation instead. -->
 
-<step name="dispatch_wave_1" condition="Task tool is available">
+<step name="dispatch_wave_1" condition="Agent tool is available">
 **Read the work manifest first:** `Read .planning/tmp/docs-work-manifest.json` — use `canonical_queue` items with `wave: 1` for this step.
 
 Spawn 3 parallel gsd-doc-writer agents for Wave 1 docs: README, ARCHITECTURE, CONFIGURATION.
@@ -497,7 +497,7 @@ If any agent failed or its file is missing:
 Continue to dispatch_wave_2.
 </step>
 
-<step name="dispatch_wave_2" condition="Task tool is available">
+<step name="dispatch_wave_2" condition="Agent tool is available">
 **Read the work manifest first:** `Read .planning/tmp/docs-work-manifest.json` — use `canonical_queue` items with `wave: 2` for this step.
 
 Spawn agents for all queued Wave 2 docs: GETTING-STARTED, DEVELOPMENT, TESTING, and any conditional docs (API, DEPLOYMENT, CONTRIBUTING) that were queued in build_doc_queue.
@@ -749,12 +749,12 @@ Write {package_dir}/README.md directly. Return confirmation only — do not retu
 
 Collect confirmations via TaskOutput for all package agents. Note failures in the final report.
 
-**Fallback when Task tool is unavailable:** Generate per-package READMEs sequentially inline after the `sequential_generation` step. For each package directory with a `package.json`, construct the equivalent `doc_assignment` block and generate the README following gsd-doc-writer instructions.
+**Fallback when Agent tool is unavailable:** Generate per-package READMEs sequentially inline after the `sequential_generation` step. For each package directory with a `package.json`, construct the equivalent `doc_assignment` block and generate the README following gsd-doc-writer instructions.
 
 Continue to commit_docs.
 </step>
 
-<step name="sequential_generation" condition="Task tool is NOT available (e.g. Antigravity, Gemini CLI, Codex, Copilot)">
+<step name="sequential_generation" condition="Agent tool is NOT available (e.g. Antigravity, Gemini CLI, Codex, Copilot)">
 **Read the work manifest first:** `Read .planning/tmp/docs-work-manifest.json` — use `canonical_queue` items for generation order. Update `status` after each doc is generated. Write the updated manifest back to disk after all docs are complete.
 
 When the `Task` tool is unavailable, generate docs sequentially in the current context. This step replaces dispatch_wave_1, collect_wave_1, dispatch_wave_2, and collect_wave_2.
@@ -824,7 +824,7 @@ Extract `canonical_queue` (items with `status: "completed"`) and `review_queue` 
 
 For each doc in `canonical_queue` that was successfully written to disk:
 
-1. Spawn the `gsd-doc-verifier` agent (or invoke sequentially if Task tool is unavailable) with a `<verify_assignment>` block:
+1. Spawn the `gsd-doc-verifier` agent (or invoke sequentially if Agent tool is unavailable) with a `<verify_assignment>` block:
    ```xml
    <verify_assignment>
    doc_path: {relative path to the doc file, e.g. README.md}
@@ -953,7 +953,7 @@ Continue to scan_for_secrets.
 Invoke the gsd-doc-verifier agent in read-only mode for each file in `existing_docs` from the init JSON:
 
 1. For each doc in `existing_docs`:
-   a. Spawn `gsd-doc-verifier` (or invoke sequentially if Task tool is unavailable) with:
+   a. Spawn `gsd-doc-verifier` (or invoke sequentially if Agent tool is unavailable) with:
       ```xml
       <verify_assignment>
       doc_path: {doc.path}

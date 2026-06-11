@@ -175,9 +175,12 @@ def read_toml_key(p, key):
 # Context window map: model alias/id → (full_name, context_k_tokens)
 CTX_MAP = {
     # Claude
+    "fable":             ("claude-fable-5",      1000),
+    "claude-fable-5":    ("claude-fable-5",      1000),
     "sonnet":            ("claude-sonnet-4-6",  200),
     "claude-sonnet-4-6": ("claude-sonnet-4-6",  200),
-    "opus":              ("claude-opus-4-6",     200),
+    "opus":              ("claude-opus-4-8",     200),
+    "claude-opus-4-8":   ("claude-opus-4-8",     200),
     "claude-opus-4-6":   ("claude-opus-4-6",     200),
     "haiku":             ("claude-haiku-4-5",    200),
     "claude-haiku-4-5":  ("claude-haiku-4-5",    200),

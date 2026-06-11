@@ -13,13 +13,17 @@ from pathlib import Path
 # Context window map: model alias → K tokens
 CTX_MAP: dict[str, int] = {
     # Claude
+    "fable": 1000,
+    "claude-fable-5": 1000,
     "sonnet": 200,
     "claude-sonnet-4-6": 200,
     "opus": 200,
+    "claude-opus-4-8": 200,
     "claude-opus-4-6": 200,
     "haiku": 200,
     "claude-haiku-4-5": 200,
     # Codex / OpenAI
+    "gpt-5.5": 128,
     "gpt-5.4": 128,
     "gpt-5.3-codex": 128,
     "gpt-5.2-codex": 128,

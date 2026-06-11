@@ -40,15 +40,21 @@ NC='\033[0m'
 # by the gpt-4.1 replacement.
 MODEL_PAIRS=(
     # Claude models — specific dated IDs first, then short aliases
-    'claude-sonnet-4-20250514|claude-sonnet-4-5-20250929'
-    'claude-3-haiku-20240307|claude-haiku-4-5-20251001'
-    'claude-3-5-sonnet|claude-sonnet-4-5'
+    'claude-sonnet-4-5-20250929|claude-sonnet-4-6'
+    'claude-sonnet-4-20250514|claude-sonnet-4-6'
+    'claude-3-haiku-20240307|claude-haiku-4-5'
+    'claude-3-5-sonnet|claude-sonnet-4-6'
+    'claude-sonnet-4-5|claude-sonnet-4-6'
+    'claude-opus-4-6|claude-opus-4-8'
+    'claude-opus-4-7|claude-opus-4-8'
     # OpenAI models — order matters: longer suffixed variants before shorter stems
-    # gpt-4o-mini MUST come before gpt-4o to prevent partial match corruption
-    'gpt-3.5-turbo|gpt-4.1-mini'
-    'gpt-4o-mini|gpt-4.1-mini'
-    'gpt-4-turbo|gpt-4.1'
-    'gpt-4o|gpt-4.1'
+    # gpt-4o-mini / gpt-4.1-mini MUST come before their stems to prevent partial-match corruption
+    'gpt-3.5-turbo|gpt-5.4-mini'
+    'gpt-4o-mini|gpt-5.4-mini'
+    'gpt-4.1-mini|gpt-5.4-mini'
+    'gpt-4-turbo|gpt-5.5'
+    'gpt-4o|gpt-5.5'
+    'gpt-4.1|gpt-5.5'
     # Gemini models
     'gemini-2.0-flash|gemini-2.5-flash'
     'gemini-2.0-pro|gemini-2.5-pro'
@@ -56,10 +62,14 @@ MODEL_PAIRS=(
 
 # Display name mappings (for prose/docs)
 DISPLAY_PAIRS=(
-    'GPT-3.5 Turbo|GPT-4.1 Mini'
-    'GPT-4o Mini|GPT-4.1 Mini'
-    'GPT-4 Turbo|GPT-4.1'
-    'GPT-4o|GPT-4.1'
+    'Claude Sonnet 4.5|Claude Sonnet 4.6'
+    'Claude Opus 4.6|Claude Opus 4.8'
+    'GPT-3.5 Turbo|GPT-5.4 Mini'
+    'GPT-4o Mini|GPT-5.4 Mini'
+    'GPT-4.1 Mini|GPT-5.4 Mini'
+    'GPT-4 Turbo|GPT-5.5'
+    'GPT-4o|GPT-5.5'
+    'GPT-4.1|GPT-5.5'
     'Gemini 2.0 Flash|Gemini 2.5 Flash'
     'Gemini 2.0 Pro|Gemini 2.5 Pro'
 )

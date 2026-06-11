@@ -7,28 +7,31 @@
 # scripts, documentation, and assessment tools can reference it without
 # parsing multiple sources.
 
-version: 1.1.0
-last_updated: "2026-02-24"
+version: 1.2.0
+last_updated: "2026-06-11"
 
 # Radar visualization: config/ai-tools/agent-capability-radar.html
 # Scores data: config/ai-tools/agent-capability-scores.yaml
 # Regenerate: uv run --no-project python scripts/ai/generate-agent-radar.py
 #
-# Strategy note (updated 2026-04-03 after observed-behavior audit)
-# - Claude: orchestrator + primary executor across most active workflows
-# - Codex: cross-review hard gate and bounded second-lane implementation helper
+# Strategy note (updated 2026-06-11 after live-config audit)
+# - Claude: orchestrator + primary executor in interactive sessions (Claude Code, Max subscription)
+# - Codex: cross-review hard gate and bounded second-lane implementation helper (CLI runs gpt-5.5)
 # - Gemini: third review lane and overflow/large-context option, but not the observed primary research engine
-# - Hermes: documentation, data analysis, skill management, and agentic orchestration specialist
+# - Hermes: the cron/automation engine on ace-linux-1 — runs gpt-5.5 via the openai-codex provider
+#   (NOT a Claude wrapper; see ~/.hermes/config.yaml). Docs/data/skill specialist + delegation router.
 
 providers:
   claude:
     display_name: "Anthropic Claude"
     model_ids:
-      primary: "claude-opus-4-6"
-      balanced: "claude-sonnet-4-6"  # Updated 2026-02-24: Sonnet 4.6 preferred
-      fast: "claude-haiku-4-5"      # use latest
+      primary: "claude-fable-5"      # Mythos-class tier above Opus; GA on Max
+      strong: "claude-opus-4-8"      # Opus lane; /fast mode available
+      balanced: "claude-sonnet-4-6"
+      fast: "claude-haiku-4-5"
     context_window:
-      primary: 200000
+      primary: 1000000               # Fable 5 ships 1M context
+      strong: 200000
       balanced: 200000
       fast: 200000
     strengths:
@@ -46,7 +49,7 @@ providers:
       - "Sensitive or compliance-gated work"
     horizon_2026_h1:
       trajectory: improving_rapidly
-      gap_to_close: "context window (200K vs 1M Gemini); closing by mid-2026 expected"
+      gap_to_close: "none material — Fable 5 closed the 1M-context gap vs Gemini (2026-06)"
       strategy_role: orchestrator_and_executor
       consolidation_candidate: false  # already primary; not at risk
 
@@ -70,7 +73,7 @@ providers:
       - "Alternative implementation perspective at low cost"
     horizon_2026_h1:
       trajectory: stable
-      unique_value: "Independent cross-review perspective; budget cost tier (o4-mini)"
+      unique_value: "Independent cross-review perspective; budget cost tier (gpt-5.5 via ChatGPT plan)"
       strategy_role: cross_review_hard_gate
       consolidation_candidate: true
       consolidation_trigger: "Codex cross-review verdicts consistently match Claude Sonnet AND cost savings < overhead"
@@ -78,7 +81,8 @@ providers:
   gemini:
     display_name: "Google Gemini"
     model_ids:
-      primary: "gemini-2.5-pro"
+      primary: "gemini-3.1-pro-preview"  # aligned with model-registry.yaml; verify availability on live plan
+      balanced: "gemini-2.5-pro"
       fast: "gemini-2.5-flash"
     context_window:
       primary: 1000000
@@ -128,11 +132,11 @@ providers:
   openai:
     display_name: "OpenAI GPT"
     model_ids:
-      primary: "gpt-4.1"
-      fast: "gpt-4.1-mini"
+      primary: "gpt-5.5"
+      fast: "gpt-5.4-mini"
     context_window:
-      primary: 1000000
-      fast: 1000000
+      primary: 128000
+      fast: 128000
     strengths:
       - general-purpose code generation
       - structured data extraction

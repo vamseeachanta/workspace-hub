@@ -194,7 +194,7 @@ CODEX_OPUS_FALLBACK=false
 # Max Codex reviews per WRK before auto-switching to Opus (saves quota)
 CODEX_MAX_REVIEWS_PER_WRK="${CODEX_MAX_REVIEWS_PER_WRK:-2}"
 # Opus model used as Codex substitute when quota exhausted or limit reached
-CODEX_OPUS_MODEL="${CODEX_OPUS_MODEL:-claude-opus-4-6}"
+CODEX_OPUS_MODEL="${CODEX_OPUS_MODEL:-claude-opus-4-8}"
 
 classify_review_result() {
   local result_file="$1"

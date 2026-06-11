@@ -159,9 +159,9 @@ Display: "✓ Sampled N messages from M projects"
 
 Display: "◆ Analyzing patterns..."
 
-**Spawn gsd-user-profiler agent using Task tool:**
+**Spawn gsd-user-profiler agent using Agent tool:**
 
-Use the Task tool to spawn the `gsd-user-profiler` agent. Provide it with:
+Use the Agent tool to spawn the `gsd-user-profiler` agent. Provide it with:
 - The sampled JSONL file path from profile-sample output
 - The user-profiling reference doc at `/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/user-profiling.md`
 

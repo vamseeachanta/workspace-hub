@@ -88,10 +88,9 @@ cross_modes:
 agents:
   hermes:
     display_name: "Hermes Agent"
-    provider: copilot
+    provider: openai-codex   # live since ~2026-05: copilot's silent mid-session fallback broke context
     models:
-      primary: claude-sonnet-4.6
-      strong: claude-opus-4-6
+      primary: gpt-5.5       # matches ~/.hermes/config.yaml + ~/.codex/config.toml — verify on change
     roles:
       - docs
       - data-analysis
