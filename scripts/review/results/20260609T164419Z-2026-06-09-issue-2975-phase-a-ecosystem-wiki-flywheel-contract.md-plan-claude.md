@@ -1,0 +1,25 @@
+### Verdict: MAJOR
+
+### Summary
+A mature, well-structured Phase-A contract-surfaces plan (correctly narrowed from the r8 omnibus) whose r3 MAJOR findings appear resolved. Remaining concerns are design-seam issues the plan's own structure creates: a completeness-class assertion that may conflict with auto-derivation, a dual-source public-safe policy that undercuts the anti-drift goal, and under-specified JSON-Schema conditional mechanics for the riskiest change. None are show-stoppers, but the completeness-class issue can break closeout.
+
+### Issues Found
+- [P2] Completeness-class conflict: AC line 245 asserts `cls: evidence` (threshold 80), but `.claude/rules/completeness-before-close.md` states class is auto-derived from changed files and is NOT selectable ('no dodging code scoring via the ops path'). Phase A creates a real Python module (`scripts/knowledge/sync-ecosystem-wiki-flywheel-standard.py`) with its own test file (`tests/governance/test_ecosystem_wiki_flywheel_phase_a.py`). If those map to a package, auto-derivation yields CODE class (threshold 90) and the asserted evidence-class record would be rejected by the server-side gate, reopening the issue at closeout.
+- [P2] Dual source-of-truth for public-safety policy: the plan declares `source-classification.yaml` the 'only authoritative policy source,' but the pseudocode and `test_public_safe_flags_match_fixed_policy` validate config flags against a 'fixed public-safe source/license subset.' That fixed subset must be encoded in the sync script, creating a second policy source for public-safety — precisely the config/standard drift the plan is built to eliminate. Canonicalize where the public-safe subset is defined.
+- [P2] Schema conditional modification is the highest-risk change and is under-specified: pseudocode says 'update each existing public_llm_wiki public-output conditional so it also fires for public_federal_wiki' across two JSON Schemas, but never shows how those conditionals are structured (enum-in-list vs per-value if/then/allOf). Whether the change is genuinely additive — and whether existing public_llm_wiki guards are preserved unchanged — cannot be confirmed from the plan.
+- [P3] Templates are created without parseability validation in Phase A: `test_template_family_has_required_example_names` only checks filenames exist. A malformed YAML/JSONL example would ship undetected until Phase B consumers load it. Downstream (#3013) depends on these as canonical examples.
+- [P3] `.jsonl` attestation gap workaround relies on a manual `ls -la` proof at label time (because attestation tooling omits .jsonl per #3015). Manual evidence steps are easy to omit; consider gating it in the sync/check script instead.
+- [P3] Issue-state and file-existence claims (#2975/#3013 OPEN; EXISTS/MISSING lists) are not independently verified in this review (no Attested Evidence block was supplied). The plan correctly defers fresh attestation to label time, so this is informational, not a defect.
+
+### Suggestions
+- Drop the pre-asserted completeness class from the AC; instead require running `scripts/enforcement/check-completeness-before-close.sh 2975` to report the auto-derived class and threshold, and plan to meet whichever class (likely code/90 given the new .py module) is derived.
+- Make the public-safe subset single-sourced: define `public_safe` membership ONLY in `source-classification.yaml` (e.g., explicit per-value flags) and have the sync/test assert internal consistency, rather than comparing config against a script-resident constant.
+- Add an excerpt or reference showing the current `public_llm_wiki` conditional structure in both schemas, and state explicitly that the change appends `public_federal_wiki` to the same construct without altering the existing branch.
+- Add cheap parse/load tests for each of the 7 templates in Phase A (YAML/JSONL deserialization) so broken canonical examples are caught before Phase B depends on them.
+- Consider isolating the two schema modifications (the only changes touching existing public-gate logic) into their own commit/review focus, since the rest of Phase A is purely additive docs/config/templates.
+
+### Questions for Author
+- Given the new `scripts/knowledge/sync-ecosystem-wiki-flywheel-standard.py` and its test file, does the completeness scorer auto-derive Phase A as code class (threshold 90) rather than the asserted evidence class (80)? Have you run the local check to confirm?
+- Where is the 'fixed public-safe source/license subset' canonically defined — in the config, or hardcoded in the sync script? If the latter, how is it kept from drifting against the config it validates?
+- How are the existing `public_llm_wiki` public-output conditionals structured in the two JSON Schemas, and what is the exact edit (enum append vs new if/then branch) that extends them to `public_federal_wiki`?
+- Will Phase A add any structural validation of the 7 templates beyond filename existence, or is malformed-example risk explicitly accepted until Phase B?
