@@ -748,3 +748,18 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#722
+    title: 'feat(orcaflex): M-shaped rigid jumper library entries from published geometries'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/722
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - domain:solver-orcaflex
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
