@@ -1,6 +1,6 @@
 # Plan for #3041: daily read-only repo ecosystem hygiene audit
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-06-12
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3041

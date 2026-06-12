@@ -8,7 +8,7 @@
 
 | Hostname | Aliases | Cron Variant | Scheduler |
 |----------|---------|-------------|-----------|
-| ace-linux-1 | dev-primary | full | cron |
+| ace-linux-1 | dev-primary, vamsee-linux1 | full | cron |
 | ace-linux-2 | dev-secondary | contribute | cron |
 | licensed-win-1 | — | contribute-minimal | Windows Task Scheduler |
 | licensed-win-2 | — | contribute-minimal | Windows Task Scheduler |
@@ -29,6 +29,8 @@
 | 04:30 Mon | weekly-hermes-parity-review | Hermes cross-machine parity review | `logs/weekly-parity/cron-*.log` |
 | 04:30 daily | notification-purge | Delete notification JSONL > 7 days | — |
 | 05:00 daily | claude-memory-backup | rsync memory to dev-secondary | `/tmp/claude-memory-backup.log` |
+| 05:35 daily | repo-ecosystem-hygiene | Read-only repo ecosystem hygiene audit; writes ignored local Markdown/JSON state | `logs/quality/repo-ecosystem-hygiene-*.log` |
+| 05:45 daily | cron-health | Scheduled-task log freshness/error scan | `logs/quality/cron-health-*.log` |
 | 06:00 daily | daily-today | Daily productivity summary | `logs/daily/cron.log` |
 | */4h | repository-sync | Pull/push all repos | `.claude/state/learning-reports/cron.log` |
 
@@ -56,6 +58,24 @@ collector + matrix run.
 The `skills-curation` scheduled task remains the single periodic path for skill ecosystem housekeeping. Its default cron invocation is local-only: it writes deterministic JSON and Markdown artifacts under `logs/maintenance/skills-curation/`, does not call `gh`, does not require network access, and does not mutate `.claude/skills` or `.claude/state/skill-usage-report/`. In v2 it also reports tracked-vs-filesystem inventory, including active filesystem-only `SKILL.md` files that are at risk of loss until dispositioned.
 
 Optional manual operator support may render `github-update-payload.md` in the same audit output directory with `--render-github-payload`; that file is a local payload only and is not posted automatically.
+
+## Repo Ecosystem Hygiene
+
+The `repo-ecosystem-hygiene` task runs daily at 05:35 UTC on `dev-primary` / `ace-linux-1` before `cron-health`. It is read-only: it probes the workstation-registry repo universe, first-level sibling residue, historical registry entries, and selected scheduler health links, then writes ignored local state under `.claude/state/repo-ecosystem-hygiene/`.
+
+Manual operator run:
+
+```bash
+UV_CACHE_DIR=.claude/state/uv-cache bash scripts/cron/repo-ecosystem-hygiene-audit.sh
+```
+
+Primary artifacts:
+
+- `.claude/state/repo-ecosystem-hygiene/latest.md`
+- `.claude/state/repo-ecosystem-hygiene/latest.json`
+- `logs/quality/repo-ecosystem-hygiene-*.log`
+
+The task exits 0 after a completed audit even when repo findings are `WARN` or `ERROR`; execution failures emit the `repo-ecosystem-hygiene execution_failed` marker so `cron-health` can catch broken automation separately from expected drift.
 
 ## Comprehensive Learning Sub-Steps (02:00)
 

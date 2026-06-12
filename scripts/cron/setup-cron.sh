@@ -22,6 +22,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_HUB="${WORKSPACE_HUB:-$(cd "${SCRIPT_DIR}/../.." && pwd)}"
 SCHEDULE_FILE="${WORKSPACE_HUB}/config/scheduled-tasks/schedule-tasks.yaml"
 REGISTRY="${WORKSPACE_HUB}/config/workstations/registry.yaml"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-${WORKSPACE_HUB}/.claude/state/uv-cache}"
+mkdir -p "$UV_CACHE_DIR"
 
 DRY_RUN=false
 REPLACE=false
@@ -46,7 +48,7 @@ with open('${REGISTRY}') as f:
     data = yaml.safe_load(f)
 host = '${HOSTNAME_SHORT}'
 for name, m in data.get('machines', {}).items():
-    candidates = [m['hostname']] + m.get('hostname_aliases', [])
+    candidates = [name, m['hostname']] + m.get('hostname_aliases', [])
     candidates = [c.lower() for c in candidates]
     if host in candidates:
         print(m.get('schedule_variant', 'contribute'))
@@ -95,18 +97,38 @@ done < <(
 import yaml, sys
 with open('${SCHEDULE_FILE}') as f:
     data = yaml.safe_load(f)
+registry = {}
+try:
+    with open('${REGISTRY}') as f:
+        registry = yaml.safe_load(f) or {}
+except Exception:
+    registry = {}
 hub = '${WORKSPACE_HUB}'
 log_full = hub + '/logs/quality/cron-wrapper.log'
 log_contrib = '/tmp/workspace-hub-cron.log'
 hostname = '${HOSTNAME_SHORT}'
+machine_tokens = {hostname}
+for name, machine in registry.get('machines', {}).items():
+    candidates = [name, machine.get('hostname', '')] + machine.get('hostname_aliases', [])
+    lowered = {str(candidate).lower() for candidate in candidates if candidate}
+    if hostname in lowered:
+        machine_tokens.update(lowered)
+        break
 for task in data.get('tasks', []):
     if task.get('scheduler', 'cron') != 'cron':
         continue
-    if hostname not in task.get('machines', []):
+    task_machines = {str(machine).lower() for machine in task.get('machines', [])}
+    if not (machine_tokens & task_machines):
         continue
     # Support per-machine staggered schedules (#1668)
     sbm = task.get('schedule_by_machine', {})
-    schedule = sbm.get(hostname, task.get('schedule', ''))
+    schedule = ''
+    for token in [hostname, *sorted(machine_tokens)]:
+        if token in sbm:
+            schedule = sbm[token]
+            break
+    if not schedule:
+        schedule = task.get('schedule', '')
     if not schedule:
         continue
     command = task['command']

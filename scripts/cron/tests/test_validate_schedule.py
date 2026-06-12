@@ -2,6 +2,7 @@
 
 import subprocess
 import sys
+import os
 from pathlib import Path
 
 import pytest
@@ -10,22 +11,25 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[3]
 SCHEDULE_FILE = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 VALIDATOR = REPO_ROOT / "scripts" / "cron" / "validate-schedule.py"
+SETUP_CRON = REPO_ROOT / "scripts" / "cron" / "setup-cron.sh"
 
 REQUIRED_TASK_FIELDS = {"id", "label", "schedule", "machines", "command", "description"}
 VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
-VALID_MACHINES = {
-    "dev-primary",
-    "dev-secondary",
-    # registry hostnames are also valid tokens in schedule-tasks.yaml machines: lists
-    "ace-linux-1",
-    "ace-linux-2",
-    # WF0 #3001: licensed-win-1/2 renamed to ace-win-1/2 (old names kept as back-compat aliases)
-    "ace-win-1",
-    "ace-win-2",
-    "licensed-win-1",
-    "licensed-win-2",
-    "gali-linux-compute-1",
-}
+REGISTRY_FILE = REPO_ROOT / "config" / "workstations" / "registry.yaml"
+
+
+def _valid_machines_from_registry() -> set[str]:
+    with open(REGISTRY_FILE) as f:
+        data = yaml.safe_load(f)
+    machines: set[str] = set()
+    for name, machine in data.get("machines", {}).items():
+        machines.add(name)
+        machines.add(machine["hostname"])
+        machines.update(machine.get("hostname_aliases", []))
+    return machines
+
+
+VALID_MACHINES = _valid_machines_from_registry()
 
 
 @pytest.fixture(scope="module")
@@ -139,11 +143,14 @@ def test_windows_tasks_have_windows_scheduler(tasks):
 
 def test_validator_script_passes():
     """The validator script itself should exit 0."""
+    env = os.environ.copy()
+    env["UV_CACHE_DIR"] = str(REPO_ROOT / ".claude" / "state" / "uv-cache")
     result = subprocess.run(
         ["uv", "run", "--no-project", "python", str(VALIDATOR)],
         capture_output=True,
         text=True,
         cwd=str(REPO_ROOT),
+        env=env,
     )
     assert result.returncode == 0, f"Validator failed:\n{result.stderr}\n{result.stdout}"
 
@@ -166,3 +173,40 @@ def test_repo_sync_on_all_linux(tasks):
         machines.update(t["machines"])
     assert "dev-primary" in machines
     assert "dev-secondary" in machines
+
+
+def test_repo_ecosystem_hygiene_task_contract(tasks):
+    task = next((t for t in tasks if t["id"] == "repo-ecosystem-hygiene"), None)
+    assert task is not None, "repo-ecosystem-hygiene task not found"
+    ids = [t["id"] for t in tasks]
+    assert ids.index("repo-ecosystem-hygiene") < ids.index("cron-health")
+    assert task["schedule"] == "35 5 * * *"
+    assert set(task["machines"]) >= {"dev-primary", "ace-linux-1", "vamsee-linux1"}
+    assert task["requires"] == ["bash", "python3", "uv", "git", "gh", "timeout"]
+    assert task["log"] == "logs/quality/repo-ecosystem-hygiene-*.log"
+    assert task["stale_after_hours"] == 23
+    assert "PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH" in task["command"]
+    assert "repo-ecosystem-hygiene-audit.sh" in task["command"]
+    assert "logs/quality/repo-ecosystem-hygiene-$(date +\\%Y\\%m\\%d).log" in task["command"]
+    cron_health = next(t for t in tasks if t["id"] == "cron-health")
+    assert set(task["machines"]) <= set(cron_health["machines"])
+
+
+def test_setup_cron_installs_audit_and_health_for_hostname_alias(tmp_path):
+    hostname_shim = tmp_path / "hostname"
+    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'vamsee-linux1\\n'\n")
+    hostname_shim.chmod(0o755)
+    env = os.environ.copy()
+    env["PATH"] = f"{tmp_path}:{env['PATH']}"
+    env["WORKSPACE_HUB"] = str(REPO_ROOT)
+    env["UV_CACHE_DIR"] = str(REPO_ROOT / ".claude" / "state" / "uv-cache")
+    result = subprocess.run(
+        ["bash", str(SETUP_CRON), "--dry-run"],
+        capture_output=True,
+        text=True,
+        cwd=str(REPO_ROOT),
+        env=env,
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    assert "repo-ecosystem-hygiene-audit.sh" in result.stdout
+    assert "cron-health-check.sh" in result.stdout
