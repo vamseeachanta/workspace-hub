@@ -3710,3 +3710,59 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#703
+    title: 'CI: route OrcaFlex-family source and package-data changes to scoped domain shards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/703
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:ci
+      - status:plan-review
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#704
+    title: 'CI: repair tests-orcaflex baseline failures selected by OrcaFlex-scoped PRs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/704
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:ci
+      - status:pending
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#705
+    title: 'CI: repair tests-orcaflex-solver baseline failures selected by conservative OrcaFlex routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/705
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:ci
+      - status:pending
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#706
+    title: 'CI: split domain baseline diagnostics from touched-domain PR routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/706
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:ci
+      - status:pending
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

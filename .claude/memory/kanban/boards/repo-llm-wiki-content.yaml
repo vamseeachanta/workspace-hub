@@ -39,9 +39,9 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
+      - status:plan-approved
       - machine:dev-primary
       - cat:documentation
-      - dispatch:ready
       - domain:content
       - lane:claude
     gh_assignees: []
