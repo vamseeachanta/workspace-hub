@@ -6,7 +6,7 @@
 
 | Metric | Count |
 |--------|-------|
-| Online Resources | 5 |
+| Online Resources | 6 |
 | Standards | 0 |
 | Local Documents | 0 |
 | GitHub Repositories | 0 |
@@ -20,6 +20,7 @@
 | https://www.dnv.com/rules-standards/ | standard_portal | ⬜ not_started | 4 | [https://www.dnv.com/rules-standards/](https://www.dnv.com/rules-standards/) |
 | https://www.orcina.com/SoftwareProducts/OrcaFlex/Documentation/Help/htm/index.htm | tool | 📄 reference_only | 4 | [https://www.orcina.com/SoftwareProducts/OrcaFlex/Documentati...](https://www.orcina.com/SoftwareProducts/OrcaFlex/Documentation/Help/htm/index.htm) |
 | https://www.orcina.com/resources/examples/ | tool | 📄 reference_only | 4 | [https://www.orcina.com/resources/examples/](https://www.orcina.com/resources/examples/) |
+| Orcina L07 Wave drift load analysis | tool | ✅ downloaded | 5 | [https://www.orcina.com/resources/examples/?key=l#50](https://www.orcina.com/resources/examples/?key=l#50) |
 | https://www.orcina.com/resources/papers/ | tool | 📄 reference_only | 4 | [https://www.orcina.com/resources/papers/](https://www.orcina.com/resources/papers/) |
 | https://www.orcina.com/webhelp/OrcaFlex/ | tutorial | 📄 reference_only | 4 | [https://www.orcina.com/webhelp/OrcaFlex/](https://www.orcina.com/webhelp/OrcaFlex/) |
 

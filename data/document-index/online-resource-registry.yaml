@@ -1,8 +1,8 @@
 generated: '2026-04-02T04:28:12'
-total_entries: 247
+total_entries: 248
 summary:
   by_type:
-    tool: 97
+    tool: 98
     github_repo: 56
     data_api: 31
     paper: 31
@@ -23,14 +23,14 @@ summary:
     cfd: 12
     cad: 10
     sustainability: 10
-    orcaflex: 5
+    orcaflex: 6
     materials: 3
     visualization: 2
     subsea: 1
     regulatory: 1
   by_download_status:
     not_started: 221
-    downloaded: 17
+    downloaded: 18
     reference_only: 9
 entries:
 - id: awesome_mcp_servers
@@ -2207,6 +2207,17 @@ entries:
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
   notes: OrcaFlex example models and case studies [orcaflex agent]
+- id: orcina_com_resources_examples_l07_wave_drift_20260608
+  url: https://www.orcina.com/resources/examples/?key=l#50
+  name: Orcina L07 Wave drift load analysis
+  type: tool
+  domain: orcaflex
+  local_backup_path: digitalmodel/docs/orcaflex/data/examples/raw/L07/L07 Wave drift load analysis.zip
+  download_status: downloaded
+  last_checked: '2026-06-10T19:21:24-05:00'
+  relevance_score: 5
+  source_catalog: https://www.orcina.com/news/new-wave-drift-load-analysis-example/
+  notes: New Orcina diffraction example posted 2026-06-08. Uses OrcaWave full QTF wave drift loads for a shallow-water ship-shaped body, then analyses CALM buoy mooring response in OrcaFlex. Description PDF stored at digitalmodel/docs/orcaflex/literature/examples/raw/L07/docs/L07 Wave drift load analysis.pdf.
 - id: orcina_com_resources_papers_9ecd5d
   url: https://www.orcina.com/resources/papers/
   name: https://www.orcina.com/resources/papers/

@@ -60,31 +60,9 @@ issue_num=$(echo "$branch" | grep -oE '[0-9]{3,5}' | head -1) || true
 quota_primary="${STATUSLINE_QUOTA_PRIMARY:-$ws_root/config/ai-tools/agent-quota-latest.json}"
 quota_cache="${STATUSLINE_QUOTA_CACHE:-${HOME}/.cache/agent-quota.json}"
 
-extract_pct() {
-    local provider="$1" val
-    if [[ -f "$quota_primary" ]]; then
-        val=$(jq -r --arg p "$provider" \
-            '.agents[] | select(.provider == $p) | .week_pct // empty' \
-            "$quota_primary" 2>/dev/null)
-        if [[ -n "$val" && "$val" != "null" ]]; then
-            awk -v w="$val" 'BEGIN { printf "%d", 100 - w }'
-            return
-        fi
-    fi
-    if [[ -f "$quota_cache" ]]; then
-        jq -r --arg p "$provider" \
-            '.agents[] | select(.provider == $p) | .pct_remaining // empty' \
-            "$quota_cache" 2>/dev/null
-    fi
-}
-
-# Convert an ISO-8601 timestamp into days-from-now, 1 decimal, floored at 0.
-# Emits nothing on a parse failure so a malformed timestamp can't blank the
-# whole statusline under `set -euo pipefail`.
-days_until_iso() {
-    local resets_at="$1" reset_epoch
-    reset_epoch=$(
-        python3 - "$resets_at" 2>/dev/null <<'PY'
+# Parse an ISO-8601 timestamp to epoch seconds; emits nothing on failure.
+iso_epoch() {
+    python3 - "$1" 2>/dev/null <<'PY'
 import datetime
 import sys
 
@@ -103,7 +81,65 @@ if dt.tzinfo is None:
     dt = dt.replace(tzinfo=datetime.timezone.utc)
 print(int(dt.timestamp()))
 PY
-    ) || reset_epoch=""
+}
+
+# Quota-file freshness (#3034): the repo-tracked primary can be a days-old
+# git-propagated snapshot of another machine's refresh (observed 2026-06-10:
+# primary said codex 79% remaining while live was 29%). Each file's embedded
+# `timestamp` (written by query-quota.sh) is age-gated; values sourced from a
+# stale or undatable file render a `?` marker so the number is never silently
+# trusted. Threshold env is bounds-validated to (0, 168] hours so a local
+# override cannot silently disable the warning; anything else falls back to 6.
+quota_max_age_h=$(awk -v t="${STATUSLINE_QUOTA_MAX_AGE_HOURS:-6}" \
+    'BEGIN { if (t+0 != t || t+0 <= 0 || t+0 > 168) t = 6; printf "%s", t }')
+
+quota_file_state() {   # <file> -> fresh | stale | missing
+    local file="$1" ts epoch
+    [[ -f "$file" ]] || { echo missing; return; }
+    ts=$(jq -r '.timestamp // empty' "$file" 2>/dev/null)
+    [[ -n "$ts" ]] || { echo stale; return; }       # undatable = stale
+    epoch=$(iso_epoch "$ts") || epoch=""
+    [[ -n "$epoch" ]] || { echo stale; return; }
+    awk -v e="$epoch" -v n="$(date +%s)" -v m="$quota_max_age_h" \
+        'BEGIN { print ((n - e) / 3600 <= m) ? "fresh" : "stale" }'
+}
+
+primary_state=$(quota_file_state "$quota_primary")
+cache_state=$(quota_file_state "$quota_cache")
+
+# Emit "<pct> <fresh|stale>" (or "- none" when unknown) for a provider,
+# choosing the freshest file that has a value: fresh primary > fresh cache >
+# stale primary > stale cache. Preserves the historical field-per-file
+# convention (primary: week_pct, cache: pct_remaining).
+extract_pct() {
+    local provider="$1" p_val="" c_val="" v
+    if [[ -f "$quota_primary" ]]; then
+        v=$(jq -r --arg p "$provider" \
+            '.agents[] | select(.provider == $p) | .week_pct // empty' \
+            "$quota_primary" 2>/dev/null)
+        [[ -n "$v" && "$v" != "null" ]] && \
+            p_val=$(awk -v w="$v" 'BEGIN { printf "%d", 100 - w }')
+    fi
+    if [[ -f "$quota_cache" ]]; then
+        v=$(jq -r --arg p "$provider" \
+            '.agents[] | select(.provider == $p) | .pct_remaining // empty' \
+            "$quota_cache" 2>/dev/null)
+        [[ -n "$v" && "$v" != "null" ]] && c_val="$v"
+    fi
+    if [[ -n "$p_val" && "$primary_state" == fresh ]]; then echo "$p_val fresh"
+    elif [[ -n "$c_val" && "$cache_state" == fresh ]]; then echo "$c_val fresh"
+    elif [[ -n "$p_val" ]]; then echo "$p_val stale"
+    elif [[ -n "$c_val" ]]; then echo "$c_val stale"
+    else echo "- none"
+    fi
+}
+
+# Convert an ISO-8601 timestamp into days-from-now, 1 decimal, floored at 0.
+# Emits nothing on a parse failure so a malformed timestamp can't blank the
+# whole statusline under `set -euo pipefail`.
+days_until_iso() {
+    local resets_at="$1" reset_epoch
+    reset_epoch=$(iso_epoch "$resets_at") || reset_epoch=""
     [[ -n "$reset_epoch" ]] || return 0
     awk -v r="$reset_epoch" -v n="$(date +%s)" \
         'BEGIN { d=(r-n)/86400; if (d<0) d=0; printf "%.1f", d }'
@@ -118,8 +154,13 @@ PY
 # date-parse misses and empty substitutions are swallowed so a bad field can't
 # blank the whole statusline under `set -euo pipefail`.
 reset_days() {
-    local provider="$1" file resets_at="" hours="" source=""
-    for file in "$quota_primary" "$quota_cache"; do
+    local provider="$1" file resets_at="" hours="" source="" file_state=""
+    # Freshest file first (#3034) — same selection principle as extract_pct,
+    # so a fresh HOME cache supplies the countdown instead of a stale primary.
+    local -a file_order=("$quota_primary" "$quota_cache")
+    [[ "$primary_state" != fresh && "$cache_state" == fresh ]] && \
+        file_order=("$quota_cache" "$quota_primary")
+    for file in "${file_order[@]}"; do
         [[ -f "$file" ]] || continue
         source=$(jq -r --arg p "$provider" \
             '.agents[] | select(.provider == $p) | .source // empty' "$file" 2>/dev/null)
@@ -127,7 +168,11 @@ reset_days() {
             '.agents[] | select(.provider == $p) | .resets_at // empty' "$file" 2>/dev/null)
         hours=$(jq -r --arg p "$provider" \
             '.agents[] | select(.provider == $p) | .hours_to_reset // empty' "$file" 2>/dev/null)
-        [[ -n "$source" || -n "$resets_at" || ( -n "$hours" && "$hours" != "null" ) ]] && break
+        if [[ -n "$source" || -n "$resets_at" || ( -n "$hours" && "$hours" != "null" ) ]]; then
+            [[ "$file" == "$quota_primary" ]] && file_state="$primary_state" \
+                                              || file_state="$cache_state"
+            break
+        fi
     done
     case "$source" in
         unavailable|estimated) return ;;
@@ -136,12 +181,13 @@ reset_days() {
         local days
         days=$(days_until_iso "$resets_at") || days=""
         if [[ -n "$days" ]]; then
-            printf '%s' "$days"
+            printf '%s %s' "$days" "$file_state"
             return
         fi
     fi
     if [[ -n "$hours" && "$hours" != "null" ]]; then
-        awk -v h="$hours" 'BEGIN { printf "%.1f", h/24 }'
+        printf '%s %s' \
+            "$(awk -v h="$hours" 'BEGIN { printf "%.1f", h/24 }')" "$file_state"
     fi
 }
 
@@ -164,13 +210,15 @@ color_pct() {
 week_used=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 week_resets_at=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 c_suffix=""
+c_mark=""
 if [[ -n "$week_used" ]]; then
     c_rem=$(awk -v u="$week_used" 'BEGIN { printf "%d", 100 - u }')
 else
-    # Fallback to agent-quota file
-    c_rem=$(extract_pct "claude")
+    # Fallback to agent-quota file (stale file -> ? marker on the percentage)
+    read -r c_rem c_state <<< "$(extract_pct "claude")"
+    [[ "$c_state" == stale ]] && c_mark="?"
     # Sonnet sub-bucket: show tighter limit with (S) indicator
-    if [[ -f "$quota_primary" && -n "$c_rem" ]]; then
+    if [[ -f "$quota_primary" && -n "$c_rem" && "$c_rem" != "-" ]]; then
         s_val=$(jq -r '.agents[] | select(.provider == "claude") | .sonnet_pct // empty' \
             "$quota_primary" 2>/dev/null)
         if [[ -n "$s_val" && "$s_val" != "null" ]]; then
@@ -182,8 +230,10 @@ else
     fi
 fi
 
-o_pct=$(extract_pct "codex")
-g_pct=$(extract_pct "gemini")
+read -r o_pct o_state <<< "$(extract_pct "codex")"
+read -r g_pct g_state <<< "$(extract_pct "gemini")"
+o_mark=""; [[ "$o_state" == stale ]] && o_mark="?"
+g_mark=""; [[ "$g_state" == stale ]] && g_mark="?"
 
 # Append a "·N.Nd" weekly-reset countdown (days, 1 decimal) to the weekly-quota
 # providers so delegation can see how long until headroom refills (#2992).
@@ -193,14 +243,23 @@ g_pct=$(extract_pct "gemini")
 # Both fields must come from the same session snapshot: a resets_at without a
 # used_percentage would pair a countdown with an unknown (or file-sourced) %.
 c_days=""
+c_days_mark=""
 [[ -n "$week_used" && -n "$week_resets_at" ]] && c_days=$(days_until_iso "$week_resets_at")
-[[ -z "$c_days" ]] && c_days=$(reset_days claude)
-o_days=$(reset_days codex)
-[[ -n "$c_days" ]] && c_suffix="${c_suffix}·${c_days}d"
-o_suffix=""
-[[ -n "$o_days" ]] && o_suffix="·${o_days}d"
+if [[ -z "$c_days" ]]; then
+    # File-sourced countdown: marked independently of the (possibly live)
+    # percentage so a live percent never lends false freshness to stale
+    # reset telemetry (#3034).
+    read -r c_days c_days_state <<< "$(reset_days claude)"
+    [[ "${c_days_state:-}" == stale && -n "$c_days" ]] && c_days_mark="?"
+fi
+read -r o_days o_days_state <<< "$(reset_days codex)"
+o_days_mark=""; [[ "${o_days_state:-}" == stale && -n "${o_days:-}" ]] && o_days_mark="?"
+[[ -n "$c_days" ]] && c_suffix="${c_suffix}·${c_days}d${c_days_mark}"
+c_suffix="${c_mark}${c_suffix}"
+o_suffix="$o_mark"
+[[ -n "${o_days:-}" ]] && o_suffix="${o_mark}·${o_days}d${o_days_mark}"
 
-ai_usage="$(color_pct C "$c_rem" "$c_suffix")|$(color_pct O "$o_pct" "$o_suffix")|$(color_pct G "$g_pct")"
+ai_usage="$(color_pct C "$c_rem" "$c_suffix")|$(color_pct O "$o_pct" "$o_suffix")|$(color_pct G "$g_pct" "$g_mark")"
 
 # Repo module name (basename of workspace root)
 repo_name=$(basename "$ws_root")

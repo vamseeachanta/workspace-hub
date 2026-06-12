@@ -16,6 +16,10 @@ setup() {
   {"provider":"gemini","pct_remaining":100,"source":"estimated"}
 ]}
 EOF
+  # #3034: stamp the fixture fresh so this pre-staleness test keeps exercising
+  # the original (unmarked) rendering.
+  jq --arg ts "$(date -Iseconds)" '. + {timestamp: $ts}' "$STATUSLINE_QUOTA_PRIMARY" \
+    > "$STATUSLINE_QUOTA_PRIMARY.tmp" && mv "$STATUSLINE_QUOTA_PRIMARY.tmp" "$STATUSLINE_QUOTA_PRIMARY"
   cp "$STATUSLINE_QUOTA_PRIMARY" "$STATUSLINE_QUOTA_CACHE"
 }
 

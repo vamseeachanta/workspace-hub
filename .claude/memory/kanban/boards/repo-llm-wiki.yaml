@@ -430,15 +430,15 @@ cards:
     title: 'feat(knowledge): normalize WRK completions into structured seeds and wiki-candidate corpus'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/38
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
+      - status:done
       - machine:dev-primary
       - cat:data-pipeline
       - cat:harness
       - domain:knowledge-management
-      - dispatch:ready
       - lane:codex
     gh_assignees: []
     initial_status: triage

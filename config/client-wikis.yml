@@ -58,3 +58,16 @@ wikis:
       - /mnt/ace/saipem/
     posture: client-private
     status: planned
+
+  - short_name: hdic
+    repo: vamseeachanta/llm-wiki-hdic
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/hdic/
+    local_working_clone: /mnt/local-analysis/llm-wiki-hdic/
+    posture: client-private
+    status: bootstrapped
+    instantiated_at: 2026-06-10
+    projects:                              # per #2778 — declarative roster of known projects; consumed by check-wiki-sibling-frontmatter.py Rule E
+      - race-car-framework                 # GT1R R35 drag car: chute frame structural + aero/stability CFD (2026-06-11)
+    notes: "HDIC / H-D Independent Consulting bootstrap for Howard Day. Private wiki scaffold pushed at 6432492. Raw bucket/mount `/mnt/ace/hdic/` was not present on ace-linux-2 at bootstrap time; create or mount before ingesting raw source files."

@@ -255,6 +255,26 @@ tasks:
     is_claude_task: false
     description: Refreshes quota snapshots and regenerates weekly provider utilization artifacts every 4 hours.
 
+  - id: quota-snapshot-refresh
+    label: Slim quota snapshot refresh (HOME cache only)
+    schedule: "10 */4 * * *"
+    machines: [dev-secondary, ace-linux-2]
+    roles: [sim-worker]
+    requires: [bash]
+    prefer: ace-linux-2
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/ai/assessment/query-quota.sh --refresh --cache-only --log
+      >> $WORKSPACE_HUB/logs/quality/quota-snapshot-refresh-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/quota-snapshot-refresh-*.log
+    is_claude_task: false
+    description: >-
+      Every 4h on non-control-plane Linux: refresh ~/.cache/agent-quota.json only
+      (never dirties the git-tracked config/ai-tools copy) so the statusline shows
+      live provider quota instead of a stale git-propagated snapshot (#3034).
+      Offset from provider-utilization-refresh (20-past on dev-primary).
+
   - id: weekly-hermes-parity-review
     label: Weekly Hermes cross-machine parity review
     schedule: "30 4 * * 1"
