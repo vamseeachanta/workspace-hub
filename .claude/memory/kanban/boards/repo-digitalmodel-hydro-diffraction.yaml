@@ -418,7 +418,7 @@ cards:
     title: 'OrcaWave: ship canonical runnable diffraction example under examples/hydrodynamics/diffraction/'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/712
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:high
       - status:pending
