@@ -92,11 +92,12 @@ cards:
     title: Plan Salesforce docs information architecture and source policy
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/625
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - enhancement
       - status:plan-approved
+      - status:done
       - cat:documentation
       - cat:knowledge-domain
       - domain:knowledge-management
@@ -111,11 +112,11 @@ cards:
     title: Create Salesforce official-source map and citation freshness standard
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/626
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - enhancement
-      - status:working
+      - status:done
       - cat:documentation
       - cat:knowledge-domain
       - domain:knowledge-management
@@ -130,11 +131,11 @@ cards:
     title: Add Salesforce landscape and software-ops glossary
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/627
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - enhancement
-      - status:working
+      - status:done
       - cat:documentation
       - cat:knowledge-domain
       - domain:knowledge-management

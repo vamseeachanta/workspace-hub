@@ -729,7 +729,7 @@ cards:
       - domain:automation
       - domain:repo-health
       - machine:dev-primary
-      - status:plan-review
+      - status:plan-approved
       - dispatch:ready
       - gate:completeness
       - lane:claude

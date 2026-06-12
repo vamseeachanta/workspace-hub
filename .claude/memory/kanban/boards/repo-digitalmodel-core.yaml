@@ -668,7 +668,7 @@ cards:
     title: 'Durable YAML workflows v1: restore engine base_configs contract, workflow registry, end-to-end tests'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/709
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:core
       - lane:codex
