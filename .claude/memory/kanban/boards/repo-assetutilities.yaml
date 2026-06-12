@@ -817,3 +817,14 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assetutilities#88
+    title: 'Packaging: wheel omits base_configs/modules/** data (visualization templates)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assetutilities/issues/88
+    gh_state: open
+    gh_labels:
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

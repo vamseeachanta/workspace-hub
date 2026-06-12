@@ -676,3 +676,15 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#711
+    title: 'Durable workflows v2: onboard remaining script examples to the workflow registry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/711
+    gh_state: open
+    gh_labels:
+      - domain:core
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
