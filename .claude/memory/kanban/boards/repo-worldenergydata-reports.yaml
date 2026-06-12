@@ -251,3 +251,15 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#470
+    title: 'Durable YAML workflows v1: module engine entry, workflow registry, offline bsee workflows + tests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/470
+    gh_state: open
+    gh_labels:
+      - domain:reports
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

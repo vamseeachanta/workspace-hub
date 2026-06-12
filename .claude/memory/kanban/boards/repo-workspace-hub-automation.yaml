@@ -716,3 +716,24 @@ cards:
       **Status:** blocked | **Priority:** low | **Category:** personal/uncategorised
 
       **Complexity:** simple | **Machine:** ace-linux-1'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3041
+    title: 'feat(automation): daily read-only repo ecosystem hygiene audit'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3041
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:automation
+      - domain:repo-health
+      - machine:dev-primary
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

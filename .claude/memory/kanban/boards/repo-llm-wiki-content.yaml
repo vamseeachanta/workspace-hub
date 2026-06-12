@@ -35,7 +35,7 @@ cards:
     title: 'feat(knowledge): update wiki CLAUDE.md files to declare doc_key in L3 frontmatter required-set'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/23
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
