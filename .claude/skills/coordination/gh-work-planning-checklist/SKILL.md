@@ -55,6 +55,13 @@ Do not use this as a substitute for the full planning route.
 - Capture out-of-scope discoveries as future-issue candidates immediately.
 - Confidence gate: High/Medium can proceed; Low means keep investigating or stop and post blocker.
 
+2b. Scope-guarded repo fallback
+- Some repos intentionally block `git`/`gh` until the user activates an explicit work scope (for example a `/scope <repo>` slash command). If a guarded repo blocks issue creation or label/comment work, do not bypass it and do not keep retrying.
+- Give the user a **standalone exact CTA**: the slash command to send as its own message, followed by `continue`. Avoid vague phrasing like “activate the scope” without the literal command.
+- While blocked, continue only with safe local/read-only planning artifacts: issue packets, pre-issue planning bundles, command previews, and conversion checklists. Do not call those canonical issue-numbered plans until live issue numbers exist.
+- When the user says `continue`, first rerun the guarded operation to verify whether the scope actually took. If the same guard message appears, report the exact blocker and repeat the standalone CTA.
+- Session-specific example and packet shape: `references/scope-guarded-repo-planning-fallback.md`.
+
 3. Draft the plan
 - Write the canonical plan artifact under `docs/plans/YYYY-MM-DD-issue-NNN-<slug>.md`.
 - Include deliverable, file map, tests, acceptance criteria, risks, scope boundaries, and follow-up issues.

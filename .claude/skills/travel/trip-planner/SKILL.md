@@ -63,6 +63,16 @@ If the user asks to compare package deals across multiple countries, regions, re
 
 For Costco Travel, member-only portals, guided vacations, or other package vendors where pricing may require a logged-in session or phone quote, follow `references/member-package-deal-verification.md`: capture the visible CTA, package ID/date season/inclusions, and classify the price as `verified online`, `quote required`, or `lead only` rather than implying an all-in total.
 
+## Trip portfolio / ranking dashboard exception
+
+If the user asks for "all the trips we planned", a grouped portfolio, or a cost-and-comfort ranking across prior trip ideas, do **not** create a new full trip issue by default. Treat it as a portfolio synthesis task:
+
+1. Mine existing trip issues, repo `_travel/**` artifacts, and session handoffs for the planned trip set, costs, durations, and open decision notes.
+2. Group by the user's requested decision axis (for example, local/drive-based vs international) and keep source issue numbers visible for traceability.
+3. Rank by the user's family constraints, not by generic tourism appeal. For this family, comfort-first ranking should weigh travel effort, predictable lodging, quiet fallback time, kitchen/laundry, medical access, cancellation flexibility, sensory load, and easy abort paths ahead of sightseeing density.
+4. When the user asks for HTML, produce a self-contained HTML artifact with embedded CSS/data; for Telegram/Deckhand deliverables, save under the configured deliverables directory when a channel policy specifies one, then verify the file opens and has no browser console errors before reporting the path.
+5. Mark cost ranges as planning estimates unless freshly verified at booking time; use `quote required` / `see plan` instead of inventing all-in totals where the source plan did not contain one.
+
 ## Workflow
 
 1. Detect trip archetype (above), unless this is a lightweight trip-maintenance update.

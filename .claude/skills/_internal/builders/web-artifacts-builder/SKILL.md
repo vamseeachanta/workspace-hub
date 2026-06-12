@@ -49,7 +49,8 @@ When the artifact is an interactive review, scoring, calibration, triage, QA, or
 Recommended pattern:
 
 - Add localStorage autosave, progress tracking, JSON/CSV export, and JSON import/resume.
-- Add a prominent `Submit` button.
+- Add a prominent `Submit` button as the primary completion path; export/copy controls should be visually secondary.
+- Add a visible receiver health/status indicator so the user knows whether Submit will work before investing time in scoring.
 - Place a tiny localhost receiver next to the HTML artifact (`GET /health`, `POST /submit`) that writes timestamped submissions plus `submissions/latest.json`.
 - The app should POST to `http://127.0.0.1:<port>/submit`; if unavailable, copy JSON to clipboard and show the exact receiver start command.
 - Verify with a browser load, a test edit, a submit POST, and reset test state before handoff.

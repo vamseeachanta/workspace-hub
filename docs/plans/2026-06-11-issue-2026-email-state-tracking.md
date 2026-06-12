@@ -7,7 +7,7 @@
 > **Client:** N/A
 > **Project:** N/A
 > **Lane:** lane:claude
-> **Review artifacts:** completed failed rounds are preserved at `scripts/review/results/2026-06-11-plan-2026-r1-*`, `scripts/review/results/2026-06-11-plan-2026-r2-*`, `scripts/review/results/2026-06-11-plan-2026-r3/`, `scripts/review/results/2026-06-11-plan-2026-r4/`, `scripts/review/results/2026-06-11-plan-2026-r5/`, `scripts/review/results/2026-06-11-plan-2026-r6/`, `scripts/review/results/2026-06-11-plan-2026-r7/`, `scripts/review/results/2026-06-11-plan-2026-r8/`, and `scripts/review/results/2026-06-11-plan-2026-r9/`. This draft has been patched after R9 and requires a fresh R10 adversarial review before any `status:plan-review` label.
+> **Review artifacts:** completed rounds are preserved at `scripts/review/results/2026-06-11-plan-2026-r1-*`, `scripts/review/results/2026-06-11-plan-2026-r2-*`, `scripts/review/results/2026-06-11-plan-2026-r3/`, `scripts/review/results/2026-06-11-plan-2026-r4/`, `scripts/review/results/2026-06-11-plan-2026-r5/`, `scripts/review/results/2026-06-11-plan-2026-r6/`, `scripts/review/results/2026-06-11-plan-2026-r7/`, `scripts/review/results/2026-06-11-plan-2026-r8/`, `scripts/review/results/2026-06-11-plan-2026-r9/`, `scripts/review/results/2026-06-11-plan-2026-r10/`, `scripts/review/results/2026-06-11-plan-2026-r11/`, `scripts/review/results/2026-06-11-plan-2026-r12/`, `scripts/review/results/2026-06-11-plan-2026-r13/`, and `scripts/review/results/2026-06-11-plan-2026-r14/`; legacy unsuffixed files under `scripts/review/results/2026-06-11-plan-2026-{claude,codex,gemini,disagreement}.md` are committed R2 duplicates. R14 Claude returned MINOR with no blockers, but Gemini remains quota-exhausted and Codex remains unavailable, so this draft requires another fresh independent provider review before any `status:plan-review` label.
 
 ---
 
@@ -174,6 +174,17 @@ Traceback (most recent call last):
 ModuleNotFoundError: No module named 'scripts.email.queue_state'
 ```
 
+**Runtime credential/config availability** (verified 2026-06-11T21:56:00-05:00 on `machine:dev-primary`):
+
+```
+MISSING: ~/.gmail-mcp/oauth-env.json
+MISSING: ~/.gmail-ace/credentials.json
+MISSING: ~/.gmail-personal/credentials.json
+MISSING: ~/.hermes/email-state/accounts.yaml
+```
+
+This resolves the live-label setup open question for the current machine: the implementation can build and test the label apply path, but #2026 task 1 cannot be closed in-session unless credentials/config are provisioned later or the user approves a split that leaves live Gmail label setup blocked.
+
 **Reproduction proofs** (verify-against-repo-state):
 
 ```
@@ -195,7 +206,7 @@ ModuleNotFoundError: No module named 'scripts.email.queue_state'
 - Reproduced at: 2026-06-11T20:21:48Z.
 - Failure mode observed matches issue claim: YES. The storage module is absent; contract tests fail under `--runxfail`.
 
-Source count: 9 distinct sources.
+Source count: 10 distinct sources/checks, including the runtime credential/config probe on `machine:dev-primary`.
 
 ---
 
@@ -212,7 +223,8 @@ Source count: 9 distinct sources.
 | Runtime state directory | `~/.hermes/email-state/` by default, overrideable via `EMAIL_QUEUE_STATE_DIR` |
 | Optional local runtime config | `~/.hermes/email-state/accounts.yaml` |
 | Implementation notes requested by user | `docs/reports/2026-06-11-issue-2026-implementation-notes.html` |
-| Failed review rounds | `scripts/review/results/2026-06-11-plan-2026-r1-*`, `scripts/review/results/2026-06-11-plan-2026-r2-*`, `scripts/review/results/2026-06-11-plan-2026-r3/`, `scripts/review/results/2026-06-11-plan-2026-r4/`, `scripts/review/results/2026-06-11-plan-2026-r5/`, `scripts/review/results/2026-06-11-plan-2026-r6/`, `scripts/review/results/2026-06-11-plan-2026-r7/`, `scripts/review/results/2026-06-11-plan-2026-r8/`, `scripts/review/results/2026-06-11-plan-2026-r9/` |
+| Review rounds | `scripts/review/results/2026-06-11-plan-2026-r1-*`, `scripts/review/results/2026-06-11-plan-2026-r2-*`, `scripts/review/results/2026-06-11-plan-2026-r3/`, `scripts/review/results/2026-06-11-plan-2026-r4/`, `scripts/review/results/2026-06-11-plan-2026-r5/`, `scripts/review/results/2026-06-11-plan-2026-r6/`, `scripts/review/results/2026-06-11-plan-2026-r7/`, `scripts/review/results/2026-06-11-plan-2026-r8/`, `scripts/review/results/2026-06-11-plan-2026-r9/`, `scripts/review/results/2026-06-11-plan-2026-r10/`, `scripts/review/results/2026-06-11-plan-2026-r11/`, `scripts/review/results/2026-06-11-plan-2026-r12/`, `scripts/review/results/2026-06-11-plan-2026-r13/`, `scripts/review/results/2026-06-11-plan-2026-r14/` |
+| Legacy unsuffixed R2 copies | `scripts/review/results/2026-06-11-plan-2026-claude.md`, `scripts/review/results/2026-06-11-plan-2026-codex.md`, `scripts/review/results/2026-06-11-plan-2026-gemini.md`, `scripts/review/results/2026-06-11-plan-2026-disagreement.md` |
 
 ---
 
@@ -228,6 +240,8 @@ A local queue-state storage and reporting module for the two authorized Gmail ac
 
 Runtime email state will default to `~/.hermes/email-state/`, not a tracked repo path, because it may contain real thread IDs, sender-derived metadata, and extraction paths. The repo owns schemas, tests, and code; the local runtime owns private state.
 
+Issue #2026's original body names a single local state file at `~/.hermes/email-state.yaml` and says replies reactivate by reverting to `inbox`. This plan intentionally replaces the single file with a private runtime directory containing JSONL, snapshot, metadata, learning log, and account config files, and follows #2017's design-doc state model where normal replies reactivate to `extracted` while `inbound` is reserved for missing-extraction recovery. Implementation notes and the issue closeout/comment must record both deviations so future agents do not "repair" the implementation back to the stale issue-body shape.
+
 Tests will use temp directories through path-first log paths. Higher-level helper tests may also cover `EMAIL_QUEUE_STATE_DIR`.
 
 Implementation must update `docs/design/email-as-queue.md` and `docs/design/email-as-queue-workflow.md` to clarify that the repo-tracked files are schemas/design artifacts, while the live JSONL/snapshot/log files are private runtime artifacts under the configured state directory.
@@ -239,7 +253,7 @@ This pass supports only two account aliases:
 - `ace` for `vamsee.achanta@aceengineer.com`
 - `personal` for `achantav@gmail.com`
 
-Tracked code should not need to hardcode the literal email addresses in tests. Production account email mapping should come from local config/credentials at `~/.hermes/email-state/accounts.yaml` by default, overrideable via `EMAIL_QUEUE_ACCOUNTS_CONFIG`.
+New tests and new runtime files should not add more hardcoded literal email addresses. Existing Gmail helper prior art already contains account/email mappings for credential discovery, so production account email mapping for queue-state normalization should come from local config at `~/.hermes/email-state/accounts.yaml` by default, overrideable via `EMAIL_QUEUE_ACCOUNTS_CONFIG`.
 
 Config schema:
 
@@ -275,6 +289,8 @@ Pending work classes are:
 - any existing contract state carrying `needs_user_decision: true`
 - any existing contract state carrying `needs_schema: true`
 - unknown in-scope Gmail threads present in a supplied inbox snapshot but absent from local state
+- any tracked in-scope thread in any state whose supplied inbox snapshot record proves a newer message than the stored baseline, including `extracted`
+- any tracked in-scope thread whose supplied inbox snapshot record cannot be compared because the local baseline or snapshot comparison fields are missing
 
 `needs_user_decision` is not a sixth state. It will be added to the schema as a boolean metadata field on queue entries and snapshots. `needs_schema` already exists in the schema and must count as pending work. Snapshot materialization is last-event-wins: absent boolean metadata on a later state event clears previous `needs_user_decision` and `needs_schema` values unless the event explicitly carries `true`. Completion materialization is also explicit: every `to_state="completed"` transition stamps `completed_at` from an explicit `completed_at` argument when supplied, otherwise from `ts_utc`; non-completed transitions clear `completed_at`. Message-baseline materialization is explicit: when a state event carries `triggering_message_id`, it updates `last_seen_message_id`; when it carries `received_at_utc`, it updates `last_seen_received_at_utc`; if `received_at_utc` is absent but `triggering_message_id` is present, the baseline timestamp falls back to `ts_utc`. Events with no message id leave the prior baseline unchanged and may therefore produce `baseline_missing` in reports/checkers. Cycle materialization is explicit: reactivation events stamp `cycle_started_at = ts_utc`; non-reactivation events must have `ts_utc >= current.cycle_started_at` when the current snapshot has a cycle start. `pending_work_report()` counts from the snapshot, not from historical log rows. The report must return a structured object with per-account counts, `tracked_empty`, `mailbox_empty`, `unknown_status`, and `unknown_count`.
 
@@ -299,7 +315,7 @@ The #2026 label taxonomy is:
 
 No `inbound` or `purged` Gmail label is created in #2026. `noise` remains a routing/labeling class, not a queue-state enum.
 
-Live label creation is in scope after plan approval. The implementation must select a separate authenticated Gmail client per enabled account, for example through `gmail_client_factory(account_alias)` or an explicit `clients_by_account` map; a single ambient Gmail client is not sufficient evidence that both mailboxes were mutated. The Gmail adapter should reuse or wrap the existing per-account credential/REST prior art in `scripts/email/gmail-archive-extract.py` and `scripts/email/gmail-digest.py` rather than adding a third unrelated OAuth layout. `accounts.yaml` remains the queue-state normalization config; credential discovery remains owned by the existing Gmail helper pattern unless implementation documents a user-approved split. Gmail archive/delete remains out of scope and belongs to #2423.
+Live label creation is in scope after plan approval. The implementation must select a separate authenticated Gmail client per enabled account, for example through `gmail_client_factory(account_alias)` or an explicit `clients_by_account` map; a single ambient Gmail client is not sufficient evidence that both mailboxes were mutated. The Gmail adapter should reuse or wrap the existing per-account credential/REST prior art in `scripts/email/gmail-archive-extract.py` and `scripts/email/gmail-digest.py` rather than adding a third unrelated OAuth layout. `accounts.yaml` remains the queue-state normalization config; credential discovery remains owned by the existing Gmail helper pattern unless implementation documents a user-approved split. Before applying labels, the adapter must reconcile any alias/email mapping from `accounts.yaml` with the existing Gmail helper account map and fail closed on disagreement. In a Claude lane that exposes `claude_ai_Gmail` label tools, that MCP surface may be used only after verifying it can address the intended account(s); it does not replace the two-account per-client proof requirement. Gmail archive/delete remains out of scope and belongs to #2423.
 
 ### D5 - Dedup Key Correction
 
@@ -309,13 +325,13 @@ Rules:
 
 - Every snapshot record carries a `cycle_id` and `cycle_started_at`.
 - Initial records default to `cycle_id = "initial"` unless the caller supplies one.
-- Reactivation transitions are exactly `awaiting-reply|completed|purged -> extracted|inbound`. They start a new cycle. `cycle_id` is `msg:<triggering_message_id>` when present, otherwise `reactivation:<reactivation_id>` when the caller supplies a stable fallback id from an inbox snapshot. The reactivation checker must map inbox `latest_message_id` to the public `triggering_message_id` argument on every planned/applied `reactivate_reply()` call; if `latest_message_id` is absent it must supply a stable `reactivation_id` derived from the snapshot record. The cold-start compatibility wrapper may fall back to `bootstrap:<linked_extraction_or_reason>` only for the existing single-call #2017 contract test when no snapshot record exists; production reactivation checkers must pass `triggering_message_id` or a stable `reactivation_id`, otherwise the transition fails with `MissingReactivationId`.
-- Non-reactivation transitions inherit the current snapshot `cycle_id` and must not have `ts_utc` earlier than the current snapshot `cycle_started_at`; this prevents delayed no-trigger events from a previous lifecycle from being applied to a new lifecycle when the state names happen to match.
+- Reactivation transitions are exactly `awaiting-reply|completed|purged -> extracted|inbound`. They start a new cycle. `cycle_id` is `msg:<triggering_message_id>` when present, otherwise `reactivation:<reactivation_id>` when the caller supplies a stable fallback id from an inbox snapshot. The reactivation checker must map inbox `latest_message_id` to the public `triggering_message_id` argument on every planned/applied `reactivate_reply()` call; if `latest_message_id` is absent it must supply a stable `reactivation_id` derived from the snapshot record. The cold-start compatibility wrapper may fall back to `bootstrap:<linked_extraction_or_reason>` only for the existing single-call #2017 contract test when no snapshot record exists; production reactivation checkers must pass `triggering_message_id` or a stable `reactivation_id`, otherwise the transition fails with `MissingReactivationId`. Reactivation events older than the current snapshot `cycle_started_at` are accepted only when they are exact historical duplicates for the derived incoming cycle; a novel old reactivation is rejected to prevent delayed messages from older lifecycles from creating a new stale cycle.
+- Non-reactivation transitions inherit the current snapshot `cycle_id` and must not have `ts_utc` earlier than the current snapshot `cycle_started_at`; this prevents delayed no-trigger events from a previous lifecycle from being applied to a new lifecycle when the state names happen to match. A caller-supplied `cycle_id` is allowed only for an initial record, when it equals the current snapshot cycle, or when its exact six-field dedup key already exists in the historical index. An explicit historical replay whose key already exists is an idempotent duplicate skip, not a new append; an explicit mismatched `cycle_id` with no exact key match is stale and rejected.
 - If `triggering_message_id` is supplied, `dedup_event_id = "msg:" + triggering_message_id`.
 - If no `triggering_message_id` is supplied, `dedup_event_id = "legacy:no-trigger"` within the current cycle so existing retry tests without a message id still dedup across fresh timestamps, while later cycles do not collapse.
 - Missing-trigger reactivation events must set `warning_no_triggering_message_id: true` on the state entry and any paired learning event.
 - Mixed no-id/id events do not dedup against each other because they have different `cycle_id`, different `dedup_event_id`, or both.
-- Historical retry detection must not rely only on the current snapshot cycle. If the caller supplies `cycle_id`, require an exact six-field historical key match. If the caller lacks `cycle_id` and current state differs from `from_state`, search historical keys with the same `(account_id, thread_id, from_state, to_state, dedup_event_id)` and then filter candidates to the current snapshot `cycle_id`. Treat the event as an idempotent retry only when exactly one current-cycle candidate remains; otherwise raise `StaleStateError`. This keeps delayed duplicates in the active lifecycle idempotent even when older lifecycles contain the same no-trigger transition, without silently skipping stale no-trigger events from a previous lifecycle.
+- Historical retry detection must not rely only on the current snapshot cycle. If the caller supplies `cycle_id`, require an exact six-field historical key match and perform that exact duplicate check before the old-timestamp stale guard raises. A supplied `cycle_id` event with no exact historical match is still stale and rejected; it is never applied into the current snapshot cycle. If the caller lacks `cycle_id` and current state differs from `from_state`, reactivation-shaped events (`awaiting-reply|completed|purged -> extracted|inbound`) with `triggering_message_id` or `reactivation_id` must first derive the would-be minted cycle id and require an exact six-field historical match for that incoming cycle. Non-reactivation events, including ordinary message-id retries, search historical keys with the same `(account_id, thread_id, from_state, to_state, dedup_event_id)` and then filter candidates to the current snapshot `cycle_id`; they are idempotent only when exactly one current-cycle candidate remains. This keeps normal retries idempotent while preventing distinct reactivation cycles from collapsing into each other.
 
 `docs/design/email-queue-state-schema.yaml` must be updated so `cycle_id`, `triggering_message_id`, `dedup_event_id`, `needs_user_decision`, `warning_no_triggering_message_id`, and the corrected dedup-key semantics are explicit.
 
@@ -363,7 +379,7 @@ The report must normalize literal account emails through the account config. Unk
 
 Snapshot records with `wh-email/noise` are excluded from unknown-thread counts and counted as `noise_excluded`, because noise is intentionally routed outside queue state.
 
-When an inbox snapshot record matches an existing local state record, `pending_work_report()` must still compare `latest_message_id`/`received_at_utc` against `last_seen_message_id`/`last_seen_received_at_utc`. A newer message on a tracked `completed`, `awaiting-reply`, or `purged` thread is counted as `reactivation_pending` and makes `mailbox_empty: false`. If the tracked local state lacks both baseline fields for a matched in-scope snapshot record, the report increments `baseline_missing_count`, sets `unknown_status: "baseline_missing"` or a paired warning field, and makes `mailbox_empty: false`; it must never report an empty mailbox when a tracked thread cannot be compared against the supplied inbox snapshot.
+When an inbox snapshot record matches an existing local state record, `pending_work_report()` must still compare `latest_message_id`/`received_at_utc` against `last_seen_message_id`/`last_seen_received_at_utc`. A newer message on any tracked in-scope state, including `extracted`, is counted as `newer_message_pending`; for `completed`, `awaiting-reply`, and `purged` it also feeds the reactivation checker path. If the tracked local state lacks both baseline fields for a matched in-scope snapshot record, the report increments `baseline_missing_count`, sets `unknown_status: "baseline_missing"` or a paired warning field, and makes `mailbox_empty: false`. If the supplied inbox snapshot record lacks both `latest_message_id` and `received_at_utc`, the report increments `snapshot_comparison_missing_count` and makes `mailbox_empty: false`; it must never report an empty mailbox when a tracked thread cannot be compared against the supplied inbox snapshot.
 
 The report must enumerate the enabled in-scope local records it counted, so the CLI can show all tracked threads plus aggregate counts. Disabled/unknown local records may appear only in a warning section when explicitly requested; they do not contribute to `tracked_empty`.
 
@@ -389,7 +405,7 @@ The inbound edges are only valid for the missing-extraction path. The design doc
 
 The batch implementation should use a batch-aware locked helper that takes up to `batch_size` events, appends non-deduped rows under one `fcntl` lock, and rebuilds snapshot/meta once per batch. It should not call the one-event helper 100 times while claiming one batch.
 
-Apply mode must be ordered after reactivation detection. `sweep_grace(..., dry_run=False)` must either receive the same inbox snapshot used for the reactivation check or a non-forgeable `ReactivationPrecheck` object returned by `reactivation_candidates()` for the same log path, account set, and snapshot hash. A bare boolean is not acceptable. The precheck object includes `state_log_offset`, `snapshot_hash`, `pending_thread_ids`, and `baseline_missing_thread_ids`. Sweep validates the precheck once under the store lock before its first batch; if the log offset/hash has changed before sweep starts, it fails closed. Subsequent batches in the same sweep transaction do not revalidate against their own appended purge rows. When an inbox snapshot or precheck object shows a newer reply or missing baseline for a completed thread, sweep apply skips that thread and reports it as `reactivation_pending` or `baseline_missing` instead of appending `completed -> purged`. The scheduled #2026 job remains dry-run/report-only, but this ordering guard prevents future #2423 wiring from deleting a replied-to thread.
+Apply mode must be ordered after reactivation detection. `sweep_grace(..., dry_run=False)` must receive a validated `ReactivationPrecheck` object returned by `reactivation_candidates()` for the same log path, enabled account set, and inbox snapshot hash; raw `inbox_snapshot` input alone is acceptable for dry-run/reporting but is not sufficient authorization for apply mode. A bare boolean is not acceptable. The precheck object includes `state_log_offset`, `snapshot_hash`, `checked_account_ids`, `pending_thread_ids`, and `baseline_missing_thread_ids`. `reactivation_candidates()` must fail closed or mark the precheck invalid unless the source snapshot covers every enabled account in the #2026 scope (`ace` and `personal`). Sweep validates the precheck once under the store lock before its first batch; if the log offset/hash has changed before sweep starts, the account set differs, or snapshot coverage is incomplete, it fails closed. Subsequent batches in the same sweep transaction do not revalidate against their own appended purge rows. When the precheck object shows a newer reply or missing baseline for a completed thread, sweep apply skips that thread and reports it as `reactivation_pending` or `baseline_missing` instead of appending `completed -> purged`. The scheduled #2026 job remains dry-run/report-only, but this ordering guard prevents future #2423 wiring from deleting a replied-to thread.
 
 ### D10 - Issue Task Disposition
 
@@ -427,7 +443,7 @@ Snapshot freshness is part of the read contract. `queue-state-snapshot.meta.yaml
 
 The Gmail label API path is in scope. Implementation must provide a real adapter around the available Gmail API/client surface for `users.labels.list` and `users.labels.create` or equivalent; fake-client tests are necessary but not sufficient for closeout. #2026 task 1 is not complete until live labels are verified for `ace` and `personal` through per-account clients. If credentials are unavailable, implementation may land behind tests, but #2026 must remain open with a blocked label-setup comment or a user-approved split.
 
-The scheduled task is in scope as a dry-run safety job: `config/scheduled-tasks/schedule-tasks.yaml` must add a daily dry-run `email-queue-state.py sweep --dry-run`/report entry. Destructive Gmail deletion remains #2423 and live Gmail read orchestration remains #2024.
+The scheduled task is in scope as a dry-run safety job: `config/scheduled-tasks/schedule-tasks.yaml` must add a daily dry-run `email-queue-state.py sweep --dry-run`/report entry scoped to `machines: [dev-primary]`. It must include the validator-required fields `id`, `label`, `schedule`, `machines`, `command`, and `description`, plus existing-convention fields such as `requires`, `log`, and `is_claude_task` when applicable. Destructive Gmail deletion remains #2423 and live Gmail read orchestration remains #2024.
 
 Tests must not commit real or production-like email addresses under `tests/fixtures/email/`, because `scripts/email/fixture-redaction-check.py` rejects those fixtures. Snapshot tests should build inline records with reserved placeholder domains plus temp account config mapping.
 
@@ -464,7 +480,7 @@ def store_from_log_path(log_path=None, env=None):
 
 def load_account_scope(config_path=None, env=None):
     env = env or os.environ
-    path = config_path or env.get("EMAIL_QUEUE_ACCOUNTS_CONFIG") or "~/.hermes/email-state/accounts.yaml"
+    path = config_path or env.get("EMAIL_QUEUE_ACCOUNTS_CONFIG") or (resolve_state_dir(env) / "accounts.yaml")
     config = read account config from path if it exists, else alias-only default {"ace", "personal"}
     build alias/email mapping for enabled accounts only; email mapping is empty without config
     reject or mark out-of-scope aliases/emails outside {"ace", "personal"}
@@ -482,6 +498,19 @@ def prepare_event(store, event, snapshot_before, historical_dedup_index, stale_p
     build writer_identity
     current = snapshot_before.get(event.key)
     reactivation = event.from_state in {"awaiting-reply", "completed", "purged"} and event.to_state in {"extracted", "inbound"}
+    compute dedup_event_id from event.triggering_message_id or "legacy:no-trigger"
+    if reactivation and (event.triggering_message_id or event.reactivation_id):
+        derive incoming_cycle_id from event.triggering_message_id or event.reactivation_id
+    else:
+        incoming_cycle_id = None
+    if current is not None and current.cycle_started_at and event.ts_utc < current.cycle_started_at:
+        if event.cycle_id and exact 6-field dedup key exists in historical_dedup_index:
+            mark event as duplicate retry
+            return event
+        if incoming_cycle_id is supplied and exact 6-field dedup key for incoming_cycle_id exists in historical_dedup_index:
+            mark event as duplicate retry
+            return event
+        raise StaleStateError
     if current is None:
         if event.from_state == "inbound":
             pass
@@ -490,9 +519,10 @@ def prepare_event(store, event, snapshot_before, historical_dedup_index, stale_p
         else:
             raise StaleStateError
     if current is not None and current.state != event.from_state:
-        compute dedup_event_id from event.triggering_message_id or "legacy:no-trigger"
         if event.cycle_id:
             duplicate = exact 6-field dedup key exists in historical_dedup_index
+        elif incoming_cycle_id is supplied:
+            duplicate = exact 6-field dedup key for incoming_cycle_id exists in historical_dedup_index
         else:
             candidates = historical keys matching account_id/thread_id/from_state/to_state/dedup_event_id
             current_cycle_candidates = candidates whose cycle_id == current.cycle_id
@@ -504,6 +534,11 @@ def prepare_event(store, event, snapshot_before, historical_dedup_index, stale_p
             mark event as stale skipped
             return event
         raise StaleStateError
+    if current is not None and not reactivation and event.cycle_id and event.cycle_id != current.cycle_id:
+        if exact 6-field dedup key exists in historical_dedup_index:
+            mark event as duplicate retry
+            return event
+        raise StaleStateError
     if reactivation:
         if event.triggering_message_id:
             event.cycle_id = "msg:" + event.triggering_message_id
@@ -513,10 +548,12 @@ def prepare_event(store, event, snapshot_before, historical_dedup_index, stale_p
             event.cycle_id = "bootstrap:" + stable hash of linked_extraction_or_reason
         else:
             raise MissingReactivationId
+        event.cycle_started_at = event.ts_utc
         if not event.triggering_message_id:
             event.warning_no_triggering_message_id = True
     else:
         event.cycle_id = event.cycle_id or snapshot_before.get(event.key, {}).get("cycle_id", "initial")
+        event.cycle_started_at = snapshot_before.get(event.key, {}).get("cycle_started_at")
     if event.triggering_message_id:
         event.dedup_event_id = "msg:" + event.triggering_message_id
     else:
@@ -533,12 +570,12 @@ def prepare_event(store, event, snapshot_before, historical_dedup_index, stale_p
 
 def _append_events_locked(store, state_events, stale_policy="raise"):
     acquire fcntl LOCK_EX on store.log_path
-    snapshot_before = load current snapshot under lock
+    working_snapshot = load current snapshot under lock
     historical_dedup_index = rebuild/read dedup keys from append-only log under lock
     recover missing paired learning events from prior state rows before appending new rows
-    prepared = [prepare_event(store, event, snapshot_before, historical_dedup_index, stale_policy=stale_policy) for event in state_events]
     batch_dedup_keys = set()
-    for event in prepared:
+    for raw_event in state_events:
+        event = prepare_event(store, raw_event, working_snapshot, historical_dedup_index, stale_policy=stale_policy)
         if event marked stale skipped:
             record skip in append report
         elif event marked duplicate retry or event.dedup_key exists in historical_dedup_index or event.dedup_key in batch_dedup_keys:
@@ -548,7 +585,9 @@ def _append_events_locked(store, state_events, stale_policy="raise"):
                 assign deterministic transaction_id/learning_event_id to state row and attached learning row
             append state event first
             append event.paired_learning_event after state event when supplied
+            fsync appended JSONL files before snapshot/meta replace, or mark snapshot stale so meta validation rebuilds from durable log
             add event.dedup_key to batch_dedup_keys and historical_dedup_index
+            apply event to working_snapshot before preparing the next event in this batch
     rebuild snapshot and meta via tmpfile + fsync + os.replace
     return append/rebuild report plus current snapshot records
 
@@ -612,16 +651,19 @@ def reactivate_reply(log_path=None, *, account_id, thread_id, prior_state, linke
 def sweep_grace(log_path, now_utc, grace_days=7, batch_size=100, dry_run=True, inbox_snapshot=None, reactivation_precheck=None):
     store = store_from_log_path(log_path)
     acquire sweep lockfile
-    if not dry_run and not (inbox_snapshot or valid ReactivationPrecheck for this store/account set/snapshot hash):
+    if not dry_run and not valid ReactivationPrecheck object for this store/enabled account set/snapshot hash/full account coverage:
         raise UnsafeSweepOrderError
+    before first apply batch, validate reactivation_precheck.state_log_offset/snapshot_hash under the store lock
+    processed_or_skipped_thread_ids = set()
     if dry_run:
         acquire store.log_path lock and read completed snapshot records where now - completed_at > grace_days
         return planned completed -> purged transitions without appending
     while eligible completed records remain:
-        under one store.log_path lock, select up to batch_size still-completed records
-        if reactivation_precheck is supplied, skip selected records present in reactivation_precheck.pending_thread_ids
-        if inbox_snapshot is supplied, skip selected records with newer snapshot messages
+        under one store.log_path lock, select up to batch_size still-completed records excluding processed_or_skipped_thread_ids
+        skip selected records present in reactivation_precheck.pending_thread_ids
+        skip selected records present in reactivation_precheck.baseline_missing_thread_ids
         append completed -> purged events with stale_policy="skip" and rebuild snapshot/meta once
+        add appended and skipped thread ids to processed_or_skipped_thread_ids
         dynamic current-state validation reports records reactivated before the batch lock as skipped
     return dry-run/apply report
 
@@ -649,22 +691,28 @@ def pending_work_report(log_path=None, account_scope=None, inbox_snapshot=None):
                 "noise_excluded": None,
                 "reactivation_pending_count": None,
                 "baseline_missing_count": None,
+                "newer_message_pending_count": None,
+                "snapshot_comparison_missing_count": None,
                 "out_of_scope_local_count": out_of_scope_local_count,
                 "per_account_counts": per_account_counts,
                 "threads": counted_records,
             }
         exclude records labeled wh-email/noise from unknown_count and count as noise_excluded
         unknown_count = count enabled in-scope snapshot threads missing from local state
-        reactivation_pending_count = count enabled in-scope snapshot threads present in local state but newer than stored message baseline
+        newer_message_pending_count = count enabled in-scope snapshot threads present in local state and newer than stored message baseline, across all states including extracted
+        reactivation_pending_count = count newer enabled in-scope snapshot threads whose local state is completed/awaiting-reply/purged
         baseline_missing_count = count enabled in-scope snapshot threads present in local state but missing comparable baseline fields
+        snapshot_comparison_missing_count = count enabled in-scope snapshot threads whose inbox record lacks both latest_message_id and received_at_utc
         out_of_scope_count = count disabled/out-of-scope snapshot records
-        unknown_status = "baseline_missing" if baseline_missing_count else "evaluated"
-        mailbox_empty = tracked_empty and unknown_count == 0 and reactivation_pending_count == 0 and baseline_missing_count == 0
+        unknown_status = "comparison_missing" if snapshot_comparison_missing_count else "baseline_missing" if baseline_missing_count else "evaluated"
+        mailbox_empty = tracked_empty and unknown_count == 0 and newer_message_pending_count == 0 and baseline_missing_count == 0 and snapshot_comparison_missing_count == 0
     else:
         unknown_count = None
         out_of_scope_count = None
         reactivation_pending_count = None
         baseline_missing_count = None
+        newer_message_pending_count = None
+        snapshot_comparison_missing_count = None
         unknown_status = "not_evaluated"
         mailbox_empty = False if not tracked_empty else None
         noise_excluded = None
@@ -677,6 +725,8 @@ def pending_work_report(log_path=None, account_scope=None, inbox_snapshot=None):
         "noise_excluded": noise_excluded,
         "reactivation_pending_count": reactivation_pending_count,
         "baseline_missing_count": baseline_missing_count,
+        "newer_message_pending_count": newer_message_pending_count,
+        "snapshot_comparison_missing_count": snapshot_comparison_missing_count,
         "out_of_scope_local_count": out_of_scope_local_count,
         "per_account_counts": per_account_counts,
         "threads": counted_records,
@@ -685,21 +735,29 @@ def pending_work_report(log_path=None, account_scope=None, inbox_snapshot=None):
 def ensure_labels(account_scope, gmail_client_factory=None, clients_by_account=None, apply=False):
     ops = planned create/update operations for wh-email/extracted, awaiting-reply, completed, noise per enabled account
     if apply:
+        clients_by_account = clients_by_account or {}
         for each enabled account alias:
-            client = clients_by_account[alias] or gmail_client_factory(alias)
-            require client for that alias
+            client = clients_by_account.get(alias)
+            if client is None and callable(gmail_client_factory):
+                client = gmail_client_factory(alias)
+            if client is None:
+                raise MissingGmailClient(alias)
             list/create missing labels only in that mailbox; never archive/delete messages
     return ops/apply report
 
 def reactivation_candidates(log_path=None, inbox_snapshot=None, apply=False):
     compare current snapshot with normalized inbox snapshot
+    require normalized inbox snapshot coverage for every enabled account before producing a valid apply precheck
+    record state_log_offset, snapshot_hash, and checked_account_ids used for this comparison
     for each completed/awaiting-reply/purged tracked thread present in snapshot:
         if stored baseline is missing:
             report baseline_missing and do not plan reactivate_reply
+        elif snapshot lacks both latest_message_id and received_at_utc:
+            report snapshot_comparison_missing and do not plan reactivate_reply
         elif snapshot is newer than stored baseline:
             map snapshot latest_message_id to reactivate_reply(triggering_message_id=latest_message_id)
             if latest_message_id missing, derive stable reactivation_id from account/thread/received_at/source record
-    return ReactivationPrecheck plus planned reactivate_reply calls including triggering_message_id or reactivation_id, or apply them when explicitly requested
+    return ReactivationPrecheck(state_log_offset, snapshot_hash, checked_account_ids, pending_thread_ids, baseline_missing_thread_ids) plus planned reactivate_reply calls including triggering_message_id or reactivation_id, or apply them when explicitly requested
 
 def migrate_labels(log_path=None, inbox_snapshot=None, gmail_client_factory=None, clients_by_account=None, apply_labels=False):
     normalize current inbox snapshot through account scope
@@ -736,15 +794,15 @@ def cli_main(argv, gmail_client_factory=None):
 | Create | `scripts/email/state/report.py` | Pending-work report and mailbox-empty semantics |
 | Create | `scripts/email/state/reactivation.py` | Inbox-snapshot-driven reactivation checker for completed/awaiting/purged replies |
 | Create | `scripts/email/state/migration.py` | Inbox-snapshot-driven current-label migration planner/apply helper |
-| Modify | `docs/design/email-queue-state-schema.yaml` | Add `cycle_id`, `triggering_message_id`, `dedup_event_id`, `needs_user_decision`, warning metadata, message-baseline fields, and corrected dedup semantics |
+| Modify | `docs/design/email-queue-state-schema.yaml` | Add `cycle_id`, `cycle_started_at`, `triggering_message_id`, `dedup_event_id`, `needs_user_decision`, warning metadata, message-baseline fields, `transaction_id`, `learning_event_id`, and corrected dedup semantics; append new required snapshot keys after `account_id`, `thread_id` so existing positional artifact tests keep passing |
 | Modify | `config/scheduled-tasks/schedule-tasks.yaml` | Add daily dry-run email queue grace/report job; no Gmail delete/archive |
 | Modify | `tests/email/test_state_machine_contract.py` | Expand contract tests and remove xfail markers once implementation lands |
 | Create | `tests/email/test_email_queue_state.py` | TDD coverage for account scope, store, grace, reports, label planning |
 | Modify | `docs/design/email-as-queue.md` | Reconcile runtime state path, two-account scope, pending-work semantics, and missing-extraction transition table |
 | Modify | `docs/design/email-as-queue-workflow.md` | Update or mark stale three-account/Gmail-mutation sections superseded |
 | Create | `docs/reports/2026-06-11-issue-2026-implementation-notes.html` | User-requested implementation notes and deviations log |
-| Already applied | `docs/plans/README.md` | This planning session added the draft row |
-| Already applied | `docs/plans/2026-04-24-issue-2026-plan.md` | This planning session marked the stale April draft superseded |
+| Planning-session edit | `docs/plans/README.md` | This planning session adds/updates the draft row; must be committed with the plan before any label move |
+| Already committed | `docs/plans/2026-04-24-issue-2026-plan.md` | Supersession marker is already present in git history; keep it as context, not part of the pending label-move commit |
 
 ---
 
@@ -760,10 +818,17 @@ def cli_main(argv, gmail_client_factory=None):
 | `test_nonstandard_log_path_derives_noncolliding_siblings` | arbitrary path-first logs do not share snapshot files | `a.jsonl` and `b.jsonl` in one dir | distinct sibling files |
 | `test_transition_inbound_to_extracted_writes_log` | existing contract | inbound -> extracted | lookup state is extracted |
 | `test_transition_retry_preserves_dedup_under_same_triggering_message` | retry idempotency | same triggering message twice | one JSONL row |
-| `test_transition_retry_preserves_legacy_dedup_without_triggering_message` | existing contract compatibility | same transition, no triggering id, different timestamps | one JSONL row |
+| `test_transition_retry_preserves_dedup_under_fresh_ts` | existing contract compatibility | same transition, no triggering id, different timestamps | one JSONL row |
+| `test_supplied_cycle_id_same_ts_historical_retry_dedups_before_stale_timestamp_guard` | exact explicit-cycle log replay is idempotent even when older than the current cycle | duplicate event from cycle 1 with original `ts_utc` replayed after cycle 2 starts | duplicate skipped; no `StaleStateError`; no new row |
+| `test_supplied_cycle_id_mismatch_rejected_when_states_match_unless_exact_duplicate` | supplied cycle ids cannot write fresh rows into a stale lifecycle | current state matches `from_state`, supplied `cycle_id` differs from current cycle and no exact key exists | `StaleStateError`; no new row |
 | `test_stale_from_state_rejected_unless_historical_dedup_key_exists` | stale caller views cannot regress snapshot state | completed thread receives inbound -> extracted event | `StaleStateError` unless duplicate key exists |
+| `test_batch_sequential_events_use_intermediate_snapshot` | batch helper threads state through events for same thread | inbound -> extracted and extracted -> completed in one batch | both append successfully |
 | `test_dedup_uses_historical_index_not_latest_snapshot_only` | delayed duplicate of earlier transition still dedups | duplicate inbound -> extracted after awaiting state | no appended row |
 | `test_cross_cycle_no_trigger_stale_replay_raises` | no-trigger dedup does not silently skip stale previous lifecycle events | cycle 1 no-id event replayed after cycle 2 reactivation | `StaleStateError` |
+| `test_legacy_no_trigger_retry_with_old_ts_cannot_advance_new_cycle` | delayed legacy retry cannot apply to repeated state name in later cycle | cycle 1 extracted -> completed retry arrives after cycle 2 is extracted with old timestamp | `StaleStateError` |
+| `test_no_trigger_current_cycle_event_after_cycle_start_is_allowed` | cycle-start timestamp does not block real current-cycle work | cycle 2 extracted -> completed with `ts_utc >= cycle_started_at` | completed appends |
+| `test_stale_reactivation_message_before_current_cycle_rejected_unless_exact_duplicate` | delayed old replies cannot create a stale reactivation cycle | completed thread in cycle 2 gets novel cycle-1 reply timestamp | `StaleStateError`; exact duplicate still skips |
+| `test_distinct_reactivation_id_does_not_dedup_against_current_cycle_candidate` | raced no-trigger reactivations do not collapse distinct cycles | stale read plans `reactivation_id=R2` after R1 applied | not treated as R1 duplicate |
 | `test_second_cycle_no_trigger_retry_dedups_with_current_cycle_candidate` | current-cycle no-trigger retry stays idempotent even with older lifecycle history | no-id completed retry in cycle 2 after same transition in cycle 1 | one cycle-2 completion row |
 | `test_batch_dedup_skips_duplicate_events_in_same_batch` | batch helper updates dedup index as it appends | two identical events in one batch | one state row and one skipped duplicate |
 | `test_dedup_preserves_reactivation_cycle` | real repeated replies do not collapse | two triggering message IDs | two JSONL rows with distinct `cycle_id` |
@@ -786,9 +851,14 @@ def cli_main(argv, gmail_client_factory=None):
 | `test_sweep_chunks_at_batch_cap` | bounded lock hold | 101 eligible records | two batches |
 | `test_sweep_dry_run_does_not_append_or_rebuild` | dry run safety | eligible completed records, dry_run true | report only, entry count unchanged |
 | `test_sweep_apply_requires_reactivation_precheck` | apply cannot purge before reply check | eligible completed record, dry_run false, no snapshot/precheck | `UnsafeSweepOrderError` |
-| `test_sweep_apply_rejects_forgeable_boolean_precheck` | sweep proof is not a caller-supplied boolean | `reactivation_precheck=True` | validation error |
+| `test_sweep_apply_rejects_boolean_precheck` | sweep proof is not a caller-supplied boolean | `reactivation_precheck=True` | validation error |
+| `test_sweep_apply_rejects_raw_inbox_snapshot_without_precheck` | raw snapshots cannot authorize destructive local purge apply | eligible completed record, dry_run false, inbox snapshot but no precheck object | `UnsafeSweepOrderError` |
+| `test_reactivation_precheck_requires_full_account_coverage` | partial account snapshots cannot authorize purging other accounts | snapshot covers `ace` only while `personal` is enabled | invalid precheck or fail-closed coverage error |
 | `test_sweep_apply_accepts_matching_reactivation_precheck_object` | checked sweep can run without rereading snapshot | valid precheck object for same log/account/snapshot hash | eligible records processed |
+| `test_sweep_precheck_validated_once_before_multi_batch_transaction` | sweep precheck hash is not invalidated by its own purge rows | valid precheck plus 101 eligible records | two batches complete under one sweep transaction |
 | `test_sweep_apply_skips_completed_thread_with_new_reply` | new reply during grace is not purged | completed record plus newer inbox snapshot | skipped as `reactivation_pending` |
+| `test_sweep_apply_skips_completed_thread_with_baseline_missing` | missing baseline is not purged before operator review | completed record with inbox snapshot but no baseline | skipped as `baseline_missing` |
+| `test_sweep_apply_does_not_reselect_skipped_threads_forever` | skipped records are exhausted from sweep candidate loop | eligible record skipped by precheck | sweep terminates with skipped count |
 | `test_sweep_batch_reports_stale_skips_without_crashing` | batch stale candidates do not crash whole sweep | candidate reactivated before batch append | skip reported; other eligible records append |
 | `test_sweep_apply_rebuilds_snapshot_meta` | sweep apply keeps snapshot materialized | eligible completed record, dry_run false | lookup returns purged |
 | `test_purged_reactivates_on_reply_with_extraction_link` | existing contract | purged + extraction path | extracted + linked path |
@@ -808,15 +878,21 @@ def cli_main(argv, gmail_client_factory=None):
 | `test_pending_work_report_not_empty_for_snapshot_unknown` | untracked Gmail thread is surfaced when snapshot supplied | snapshot thread missing from state | `mailbox_empty: false`, unknown count 1 |
 | `test_pending_work_report_excludes_noise_label_from_unknown` | routed noise does not block mailbox-empty | inbox snapshot labeled `wh-email/noise` and absent from state | `noise_excluded: 1`, unknown unchanged |
 | `test_pending_work_report_counts_new_reply_on_tracked_thread` | tracked completed thread with newer inbox message is pending | completed state + inbox snapshot newer than baseline | `reactivation_pending_count: 1`, `mailbox_empty: false` |
+| `test_pending_work_report_counts_new_reply_on_extracted_thread` | extracted tracked thread with newer message is pending work | extracted state + inbox snapshot newer than baseline | `newer_message_pending_count: 1`, `mailbox_empty: false` |
 | `test_pending_work_report_blocks_empty_on_tracked_baseline_missing` | tracked thread with supplied inbox snapshot and no baseline cannot be declared empty | completed state lacking baseline plus matching inbox snapshot | `baseline_missing_count: 1`, `mailbox_empty: false` |
+| `test_pending_work_report_blocks_empty_when_snapshot_lacks_comparison_fields` | optional snapshot fields cannot silently hide pending work | tracked state with baseline + snapshot lacking message/time | `snapshot_comparison_missing_count: 1`, `mailbox_empty: false` |
 | `test_pending_work_report_not_empty_for_needs_user_decision_flag` | pending work surfaced via metadata, not state | existing state with `needs_user_decision: true` | `tracked_empty: false`, `mailbox_empty: false` |
 | `test_pending_work_report_not_empty_for_needs_schema_flag` | schema gaps are pending work | existing state with `needs_schema: true` | `tracked_empty: false`, `mailbox_empty: false` |
 | `test_pending_flags_clear_on_later_event_without_flags` | last-event-wins pending metadata clears correctly | flagged record then completed event without flags | `tracked_empty: true` |
 | `test_label_taxonomy_is_exact_issue_set` | label creation uses issue taxonomy | account scope | extracted/awaiting-reply/completed/noise only |
 | `test_label_operations_planned_not_applied_by_default` | Gmail label mutation is off by default in CLI/helper mode | account scope | planned create ops only |
 | `test_ensure_labels_creates_missing_labels_with_apply_flag` | issue-required one-time label creation path exists | fake Gmail client and apply true | missing labels created; no archive/delete calls |
+| `test_ensure_labels_accepts_default_none_clients_map` | default apply path does not subscript None | client factory only, no `clients_by_account` | per-account clients created without `TypeError` |
+| `test_ensure_labels_requires_client_factory_or_clients_on_apply` | apply path fails closed before mutating when no clients are supplied | `apply=True`, no factory/map | `MissingGmailClient` |
 | `test_ensure_labels_uses_one_client_per_enabled_account` | two-account setup cannot mutate only one mailbox | fake client factory for `ace` and `personal` | list/create called once per account |
 | `test_gmail_label_api_adapter_uses_label_list_and_create_only` | real integration surface exists without delete/archive | fake Google API surface | list/create called; delete/archive never called |
+| `test_gmail_label_adapter_reuses_existing_credential_surface` | label adapter does not introduce third OAuth layout | fake wrappers for existing Gmail helper pattern | adapter resolves per-account clients through existing credential discovery |
+| `test_gmail_label_apply_fails_on_account_mapping_disagreement` | queue-state config and Gmail helper mapping cannot silently target different mailboxes | temp `accounts.yaml` disagrees with helper mapping for an enabled alias | fail-closed before label mutation |
 | `test_cli_report_shows_threads_and_counts` | issue task 6 command exists | temp state log | table/list of threads plus counts by account/state |
 | `test_cli_labels_requires_apply_flag_for_live_create` | D4 CLI safety | fake Gmail client, no flag | no create calls |
 | `test_cli_wrapper_dispatches_to_importable_main` | hyphenated script remains executable while tests use importable seam | subprocess `email-queue-state.py --help` | zero exit and command help |
@@ -824,13 +900,18 @@ def cli_main(argv, gmail_client_factory=None):
 | `test_reactivation_checker_maps_latest_message_to_triggering_message_id` | production checker passes executable reactivation id | completed state + newer inbox snapshot with `latest_message_id` | planned call includes `triggering_message_id` |
 | `test_reactivation_checker_derives_stable_reactivation_id_without_message_id` | no-message snapshots still have stable cycles | newer snapshot without `latest_message_id` | planned call includes deterministic `reactivation_id` |
 | `test_reactivation_checker_requires_message_baseline` | checker does not guess newer replies | no stored baseline | reports `baseline_missing` and plans no `reactivate_reply` |
+| `test_reactivation_checker_requires_snapshot_comparison_fields` | checker fails closed when snapshot cannot be compared | tracked thread + snapshot missing message/time | reports `snapshot_comparison_missing`; no planned call |
 | `test_migrate_labels_plans_current_inbox_labels` | issue task 7 migration exists | inbox snapshot and current states | planned label operations |
 | `test_schedule_adds_daily_email_queue_dry_run` | issue task 4 scheduling is represented safely | schedule config | daily dry-run sweep/report entry |
 | `test_runtime_state_dir_env_override` | private state does not need repo write | temp `EMAIL_QUEUE_STATE_DIR` | files created under temp dir |
+| `test_account_config_default_path_follows_runtime_state_dir` | state-dir override relocates account config lookup too | temp `EMAIL_QUEUE_STATE_DIR` with `accounts.yaml` | config loaded from temp state dir, not real `~/.hermes` |
 | `test_snapshot_missing_meta_rebuilds_under_lock` | missing metadata cannot serve stale snapshot | snapshot exists, meta missing | lookup rebuilds meta before returning |
 | `test_snapshot_bad_hash_rebuilds_under_lock` | corrupt snapshot is not trusted | mismatched meta hash | lookup rebuilds from JSONL |
 | `test_snapshot_log_size_or_mtime_change_rebuilds` | appended log invalidates snapshot | log changed after snapshot | lookup/list rebuilds |
 | `test_snapshot_corrupt_meta_rebuilds_or_fails_closed` | corrupt meta cannot produce false state | unparsable meta file | rebuilds under lock or raises explicit corruption error |
+| `test_schema_required_snapshot_keys_keep_account_thread_prefix` | schema extension does not break existing positional artifact test | updated `queue_state_snapshot` schema | required keys still start with `account_id`, `thread_id` |
+| `test_existing_contract_test_names_preserved` | existing #2017 contract traceability remains intact | `tests/email/test_state_machine_contract.py` | original three test names still exist when xfail removed |
+| `test_state_log_fsync_precedes_snapshot_replace_or_meta_fails_closed` | snapshot cannot get ahead of durable JSONL silently | simulated crash around append/snapshot replace | lookup rebuilds/fails closed, no false state |
 
 TDD order:
 
@@ -850,23 +931,28 @@ TDD order:
 - [ ] Account allowlist covers only `ace` and `personal` at report/ingest boundaries; low-level state store remains testable with placeholder account IDs.
 - [ ] Account config and inbox snapshot schemas are documented and covered by tests.
 - [ ] "Mailbox empty" report uses no-pending-work semantics, includes per-account counts plus enumerated in-scope threads, and distinguishes tracked-state emptiness from inbox-snapshot unknown-thread evaluation.
+- [ ] Newer inbox messages on any tracked in-scope state, including `extracted`, make `mailbox_empty: false`.
+- [ ] Inbox snapshot records missing both comparison fields (`latest_message_id`, `received_at_utc`) make `mailbox_empty: false` for matched tracked threads.
 - [ ] Disabled/unknown local state rows are warning buckets; they do not affect `tracked_empty` or `mailbox_empty` for the two-account #2026 scope.
 - [ ] Literal-email inbox snapshots without a usable account config fail closed and cannot report `mailbox_empty: true`.
 - [ ] Inbox snapshot records labeled `wh-email/noise` are counted as noise-excluded, not unknown pending work.
-- [ ] `docs/design/email-queue-state-schema.yaml` includes `cycle_id`, `triggering_message_id`, `dedup_event_id`, `needs_user_decision`, warning metadata, message-baseline fields, and the corrected dedup key.
-- [ ] Transitions validate current snapshot state under lock and reject stale `from_state` regressions unless the event is an unambiguous same-cycle historical dedup retry.
+- [ ] `docs/design/email-queue-state-schema.yaml` includes `cycle_id`, `cycle_started_at`, `triggering_message_id`, `dedup_event_id`, `needs_user_decision`, warning metadata, message-baseline fields, `transaction_id`, `learning_event_id`, and the corrected dedup key.
+- [ ] Transitions validate current snapshot state under lock and reject stale `from_state` regressions unless the event is an exact historical dedup retry; explicit `cycle_id` replays may skip idempotently before the old-timestamp guard only when the six-field key already exists.
 - [ ] `docs/design/email-as-queue.md` transition table includes missing-extraction inbound edges gated by `reason="missing-extraction"`.
-- [ ] Seven-day grace purge transitions only local state to `purged`; it requires reactivation precheck/snapshot before apply and does not archive/delete Gmail.
+- [ ] Seven-day grace purge transitions only local state to `purged`; apply mode requires a validated full-account `ReactivationPrecheck` and does not archive/delete Gmail.
 - [ ] Gmail label setup can create exactly `wh-email/extracted`, `wh-email/awaiting-reply`, `wh-email/completed`, and `wh-email/noise` for `ace` and `personal` with explicit apply and per-account clients; archive/delete calls are impossible in this module.
 - [ ] Real Gmail label API adapter exists for label list/create; fake-client tests alone are not enough for closeout.
 - [ ] #2026 task 1 closeout verifies live Gmail labels exist for `ace` and `personal`, or the issue remains open/blocked with a user-approved split.
 - [ ] Daily dry-run sweep/report entry is declared in `config/scheduled-tasks/schedule-tasks.yaml`; live Gmail deletion remains #2423.
+- [ ] Scheduled task entry is scoped to `machines: [dev-primary]` and follows existing schedule file fields (`requires`, `command`, `log`, `is_claude_task`).
 - [ ] `scripts/email/email-queue-state.py report` shows all tracked threads and counts by state/account/pending class.
 - [ ] Snapshot-driven reactivation checker identifies completed/awaiting/purged threads with newer messages; live Gmail read orchestration remains #2024.
 - [ ] Reactivation checker maps `latest_message_id` to `triggering_message_id`, derives stable `reactivation_id` when needed, and never uses cold-start bootstrap for absent local state.
 - [ ] Snapshot-driven migration label pass can plan/apply current-thread labels; live Gmail inbox enumeration remains #2024 unless credentials are available in the implementation session.
 - [ ] Snapshot freshness checks cover missing meta, corrupt meta, bad hash, and changed log offset/size before lookup/list reads.
 - [ ] Paired state/learning events use deterministic transaction ids and recover missing learning rows from authoritative state rows.
+- [ ] Batch append prepares sequential events against an intermediate working snapshot and updates dedup keys within the batch.
+- [ ] Gmail label adapter reuses or wraps the existing per-account Gmail credential/REST helper pattern instead of introducing an unrelated OAuth surface, and fails closed when queue-state alias/email config disagrees with the Gmail helper mapping.
 - [ ] Existing #2017 contract tests pass without xfail markers.
 - [ ] New state tests pass: `uv run pytest tests/email/test_state_machine_contract.py tests/email/test_email_queue_state.py -v`.
 - [ ] Email contract artifact tests still pass: `uv run pytest tests/email/test_email_queue_contract_artifacts.py tests/email/test_spam_rules.py tests/email/test_fixture_redaction_hook.py -v`.
@@ -889,8 +975,14 @@ TDD order:
 | R6 Claude/Codex/Gemini | MAJOR | Claude returned MINOR; Codex returned MAJOR on production reactivation id mapping, missing `completed_at` stamping, single-client two-account label setup, non-recoverable paired state/learning writes, and untested snapshot freshness. Gemini repeated false missing-file findings from `/tmp`, plus valid pseudocode blockers around sweep stale skip, unlocked bootstrap state check, unbounded bootstrap prior state, missing thread enumeration, `lookup` KeyError, vague historical dedup matching, and undefined reactivation detection. |
 | R7 Claude/Codex/Gemini | UNAVAILABLE | Fanout produced Claude and Gemini UNAVAILABLE artifacts. Codex emitted a raw CLI transcript with no parseable structured verdict because the installed Codex CLI streams session transcript output. No R7 verdict was used for plan advancement. |
 | R8 Claude/Gemini, Codex unavailable | MAJOR | Claude and Gemini returned MAJOR. Remaining blockers: D5 current-cycle dedup candidate filtering was wrong for second-lifecycle no-trigger retries; missing baseline write/report rules could still produce false `mailbox_empty`; bootstrap prior-state validation was only in prose; `noise_excluded` was absent from final report returns; `list_threads` was misattributed as an existing contract API; sweep precheck was forgeable and unsafe without snapshot; intra-batch dedup was stale; and paired learning/state rows were positionally ambiguous. |
+| R9 Claude/Gemini, Codex unavailable | MAJOR | Claude returned MINOR; Gemini returned MAJOR. Remaining blockers: batch append prepared all events against the original snapshot, delayed no-trigger legacy retries could apply to a later cycle with the same state name, `ReactivationPrecheck` hash validation was ambiguous across multi-batch sweep, schema edits omitted durable `transaction_id`/`learning_event_id`, and `ensure_labels()` could subscript `None`. Claude also flagged minor governance/prior-art issues around R9 artifacts, existing Gmail credential helpers, schema required-key order, baseline-missing sweep behavior, and planning-session edits needing commit before label movement. |
+| R10 Claude/Gemini, Codex unavailable | MAJOR | Claude and Gemini returned MAJOR. Remaining blockers: newer messages on tracked `extracted` threads could still produce false `mailbox_empty`, raced distinct no-trigger reactivations could dedup against the current cycle, R10 artifacts needed ledger reconciliation, existing #2017 test names were not explicitly preserved, schedule entry fields were underspecified, JSONL append durability was underspecified, sweep skipped records could be reselected forever, `ensure_labels()` could call a missing factory, and inbox snapshot records missing comparison fields were not fail-closed. |
+| R11 Claude, Gemini/Codex unavailable | MAJOR | Claude returned MAJOR; Gemini hit 429 quota and Codex remains unavailable. Remaining blockers: D5/pseudocode incoming-cycle dedup branch was not gated to reactivation-shaped events, D5 prose and pseudocode disagreed on that gate, and the contract-test preservation row claimed four original tests instead of the actual three and omitted the live retry test name. |
+| R12 Claude, Gemini/Codex unavailable | MAJOR | Claude returned MAJOR; Gemini probe hit 429 quota and Codex remains unavailable. Remaining blockers: review ledger did not yet record the attempted R12 artifacts, D5 old-timestamp stale guard still ran before exact supplied-`cycle_id` duplicate detection, sweep apply accepted raw `inbox_snapshot` without account coverage/freshness proof, Gmail credential/config absence was not reflected in plan evidence, `load_account_scope()` ignored `EMAIL_QUEUE_STATE_DIR` for default config, and the issue-body `~/.hermes/email-state.yaml` path divergence needed explicit closeout handling. |
+| R13 Claude, Gemini/Codex unavailable | MAJOR | Claude returned MAJOR; Gemini remained quota-blocked and Codex remains unavailable. Remaining blockers: R13 artifacts needed ledger reconciliation and D5 still allowed a caller-supplied mismatched `cycle_id` to write a fresh non-reactivation row when current state matched `from_state`. Minor findings: live-label setup evidence should mention possible Claude Gmail MCP label surface, account/email mapping sources need reconciliation, and the import-shadowing risk wording misstated the package mechanism. |
+| R14 Claude, Gemini/Codex unavailable | MINOR | Claude returned MINOR with no blockers; Gemini remained unavailable and Codex remains unavailable. Minor findings: committed unsuffixed review files are legacy R2 duplicates and needed ledger naming, stale reactivation timestamps needed either a guard or explicit risk acceptance, `ReactivationPrecheck` should be described as validated rather than non-forgeable, issue-body state-machine deviations need closeout mention, and R14 artifacts needed ledger reconciliation. |
 
-**Overall result:** FAIL after R8. This draft now contains post-R8 patches and must receive a fresh R9 adversarial review before any `status:plan-review` label.
+**Overall result:** INCOMPLETE after R14. Claude R14 found no blockers after the post-R13 patch, but the T2 gate still lacks a fresh independent provider verdict because Gemini is quota-exhausted and Codex is unavailable. This draft now contains post-R14 patches and must receive another fresh independent provider review before any `status:plan-review` label.
 
 Revisions made based on review:
 
@@ -931,7 +1023,7 @@ Revisions made based on review:
 - Added `list_threads()` and thread enumeration in the report/CLI contract.
 - Moved cold-start bootstrap detection under the store lock and bounded it to allowed prior states.
 - Added reactivation checker id mapping from `latest_message_id` to `triggering_message_id`, with stable `reactivation_id` fallback.
-- Required reactivation precheck or inbox snapshot before sweep apply, and skip/report behavior for completed threads with new replies.
+- Required a validated `ReactivationPrecheck` before sweep apply, and skip/report behavior for completed threads with new replies.
 - Switched Gmail label setup to per-account client selection for `ace` and `personal`.
 - Made state events authoritative for paired learning events with deterministic transaction ids and recovery/backfill.
 - Added snapshot freshness/rebuild contract and tests for missing/corrupt/stale metadata.
@@ -943,18 +1035,48 @@ Revisions made based on review:
 - Replaced forgeable sweep precheck booleans with a `ReactivationPrecheck` object tied to log path, account set, and snapshot hash.
 - Updated batch append pseudocode to maintain an in-batch dedup set.
 - Attached paired learning events directly to state events instead of relying on positional parallel lists.
+- Added `cycle_started_at` and timestamp validation so delayed no-trigger legacy events cannot apply to a later lifecycle with the same state name.
+- Changed batch append pseudocode to prepare each event against an intermediate working snapshot.
+- Defined `ReactivationPrecheck` validation as a once-before-sweep transaction check with `state_log_offset`, `snapshot_hash`, `checked_account_ids`, `pending_thread_ids`, and `baseline_missing_thread_ids`.
+- Added schema requirements for durable `transaction_id` and `learning_event_id`.
+- Required baseline-missing sweep candidates to be skipped, not purged.
+- Required the Gmail label adapter to reuse or wrap existing per-account Gmail credential helper patterns.
+- Marked planning-session README/April-plan edits as commit-dependent rather than completed outside the current working tree.
+- Counted newer inbox messages on all tracked states, including `extracted`, as pending work.
+- Added `snapshot_comparison_missing_count` so optional inbox snapshot comparison fields fail closed.
+- Added processed/skipped thread tracking so sweep apply cannot reselect skipped candidates forever.
+- Required `ensure_labels()` to raise `MissingGmailClient` when no map/factory supplies a per-account client.
+- Added JSONL fsync or fail-closed meta rebuild semantics before snapshot/meta replacement.
+- Required the existing #2017 contract test names to remain traceable.
+- Scoped the scheduled dry-run job to `machines: [dev-primary]` and existing schedule file fields.
+- Gated incoming-cycle historical dedup to reactivation-shaped events only so ordinary message-id retries still use the current-cycle retry path.
+- Corrected #2017 contract-test preservation to the actual three test names and restored the live retry test name `test_transition_retry_preserves_dedup_under_fresh_ts`.
+- Aligned the scheduled-task field list with `scripts/cron/validate-schedule.py` required fields.
+- Recorded R12 Claude MAJOR and Gemini quota-exhausted artifacts in the review ledger.
+- Allowed supplied-`cycle_id` historical duplicate replays to skip idempotently before the old-timestamp stale guard only when the exact six-field key already exists.
+- Removed raw `inbox_snapshot` as authorization for sweep apply; apply now requires a validated `ReactivationPrecheck` with full enabled-account coverage.
+- Made default `accounts.yaml` derive from `resolve_state_dir(env)` so `EMAIL_QUEUE_STATE_DIR` relocates config and state together.
+- Recorded current Gmail credential/config absence on `machine:dev-primary` and resolved live label setup as blocked unless credentials are later provisioned or the user approves a split.
+- Recorded R13 Claude MAJOR and unavailable Gemini/Codex artifacts in the review ledger.
+- Rejected caller-supplied non-reactivation `cycle_id` values that differ from the current snapshot cycle unless the exact six-field historical duplicate key already exists.
+- Added Gmail account-mapping reconciliation before label apply, with fail-closed behavior on disagreement between queue-state config and existing Gmail helper mappings.
+- Clarified that Claude Gmail MCP label tools, when available in a Claude lane, may be considered only after verifying account targeting and do not replace the two-account per-client proof requirement.
+- Recorded R14 Claude MINOR and unavailable Gemini/Codex artifacts in the review ledger; named the committed unsuffixed artifacts as legacy R2 duplicates.
+- Added stale-reactivation timestamp rejection unless the derived incoming-cycle key is an exact historical duplicate.
+- Reworded `ReactivationPrecheck` from non-forgeable to validated and renamed the boolean-precheck test accordingly.
+- Extended closeout-deviation notes to cover both the issue-body single-file state path and the issue-body `inbox` reactivation wording.
 
 ---
 
 ## Risks and Open Questions
 
 - **Risk:** Existing docs and old plans disagree on runtime state location. This plan chooses local runtime state and requires docs reconciliation because committing raw email state is worse.
-- **Risk:** Gmail label creation depends on available Gmail client credentials. If unavailable during implementation, the code/tests can land, but #2026 closeout must record that production label setup remains blocked rather than claiming full completion.
+- **Risk:** Gmail label creation depends on available Gmail client credentials. Current `machine:dev-primary` evidence shows the expected Gmail credential/config files are absent, so the code/tests can land but #2026 closeout must record that production label setup remains blocked unless credentials are provisioned or the user approves a split.
 - **Risk:** Existing tests currently xfail broadly. Implementation must remove xfail markers only after the real storage module passes the expanded tests.
 - **Risk:** #2024 has its own stale ace-only plan. After #2026 reaches plan-review or approval, #2024 should be revised for the same two-account scope before implementation.
 - **Risk:** The module will use `fcntl` on Linux. Implementation should guard POSIX-only imports or skip platform-specific tests cleanly on Windows; this issue is labeled `machine:dev-primary`.
-- **Risk:** Do not add `scripts/email/__init__.py`. Tests rely on namespace-package behavior; adding that file can shadow Python's stdlib `email` package because `tests/conftest.py` puts `REPO_ROOT/scripts` on `sys.path`.
-- **Open:** Whether production label setup should be run during the same implementation session or as a separate operator step after tests pass. Recommendation: implement and test the apply path, then run only the label-creation command for `ace` and `personal` if credentials are available; do not archive/delete Gmail in #2026.
+- **Risk:** Do not add `scripts/email/__init__.py`. `scripts` is a regular package, but `scripts.email` is currently a namespace portion; adding `scripts/email/__init__.py` can shadow Python's stdlib `email` package because `tests/conftest.py` puts `REPO_ROOT/scripts` on `sys.path`. Creating `scripts/email/state/__init__.py` remains safe because it does not create the top-level `email` package shadow.
+- **Resolved:** Production label setup cannot be assumed runnable in this implementation session because the expected Gmail credential/config files are currently absent on `machine:dev-primary`. Recommendation: implement and test the apply path, then leave #2026 open with a blocked label-setup comment unless credentials become available or the user explicitly approves a split; do not archive/delete Gmail in #2026.
 
 ---
 

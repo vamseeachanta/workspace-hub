@@ -74,6 +74,18 @@ Two practical gotchas came up in live use:
      - then post with `gh issue comment --body-file ...`
    - If a placeholder accidentally lands in a comment, immediately post a correction comment with the exact issue numbers.
 
+## Scope / authorization guard fallback
+
+If live `gh issue create` is blocked by a repo-specific guard, missing active scope, or authorization precondition, do not bypass it and do not stop with only prose. Prepare a durable issue packet instead:
+
+1. write one Markdown file containing all issue bodies;
+2. write a verified creation script that performs duplicate checks, creates issues, links umbrella/children, and verifies created issue metadata;
+3. run `bash -n` on the script;
+4. document the exact unblock step and command to run once scope is active;
+5. report that live creation is blocked, not completed.
+
+This preserves momentum while respecting repo gates.
+
 ## Critical gotcha
 
 

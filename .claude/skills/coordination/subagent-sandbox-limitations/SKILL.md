@@ -17,6 +17,12 @@ delegate_task subagents run in **isolated sandboxes**. This means:
 
 This was discovered during overnight batch execution on 2026-04-06 when multiple delegate_task calls appeared to complete but produced zero repo changes.
 
+## Gated issue-batch recon pattern
+
+When the user asks to “tackle all of them with subagents” but implementation is blocked by missing live issues, missing plan approval, or a repo `git`/`gh` scope guard, use subagents for **parallel read-only recon** only. Split by independent issue/domain lanes, ask each subagent for implementation-ready findings and TDD-first test lists, then write one synthesis artifact from the main session. Do not describe this as implementation complete; report the exact remaining gate.
+
+See `references/gated-issue-batch-parallel-recon.md` for the artifact shape and prompt pattern.
+
 ## When to use delegate_task
 
 **DO use delegate_task for:**
