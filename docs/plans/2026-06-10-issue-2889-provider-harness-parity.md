@@ -1,12 +1,12 @@
 # Plan for #2889: Per-Provider Harness-Parity Cell
 
-> **Status:** implemented; pending PR/closeout
+> **Status:** draft; r4 Gemini APPROVE, Claude/Codex unavailable; user gates pending
 > **Complexity:** T2
 > **Date:** 2026-06-10
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2889
 > **Client:** N/A
 > **Project:**
-> **Review artifacts:** plan r1: `scripts/review/results/2026-06-10-plan-2889-r1-claude.md`, `scripts/review/results/2026-06-10-plan-2889-r1-codex.md`, `scripts/review/results/2026-06-10-plan-2889-r1-gemini.md`; plan r2: `scripts/review/results/2026-06-10-plan-2889-r2-claude.md`, `scripts/review/results/2026-06-10-plan-2889-r2-codex.md`, `scripts/review/results/2026-06-10-plan-2889-r2-gemini.md`, `scripts/review/results/2026-06-10-plan-2889-r2-disagreement.md`; plan r3: `scripts/review/results/2026-06-10-plan-2889-r3-claude.md`, `scripts/review/results/2026-06-10-plan-2889-r3-codex.md`, `scripts/review/results/2026-06-10-plan-2889-r3-gemini.md`; plan r4: `scripts/review/results/2026-06-10-plan-2889-r4-claude.md`, `scripts/review/results/2026-06-10-plan-2889-r4-codex.md`, `scripts/review/results/2026-06-10-plan-2889-r4-gemini.md`; code r1: `scripts/review/results/2026-06-10-code-2889-r1-codex.md`, `scripts/review/results/2026-06-10-code-2889-r1-gemini.md`; code r2: `scripts/review/results/2026-06-10-code-2889-r2-codex.md`, `scripts/review/results/2026-06-10-code-2889-r2-gemini.md`. User approved implementation on 2026-06-11 with `status:plan-approved` already present on the issue; the degraded review-tooling record is accepted for this measurement-only scope.
+> **Review artifacts:** r1: `scripts/review/results/2026-06-10-plan-2889-r1-claude.md`, `scripts/review/results/2026-06-10-plan-2889-r1-codex.md`, `scripts/review/results/2026-06-10-plan-2889-r1-gemini.md`; r2: `scripts/review/results/2026-06-10-plan-2889-r2-claude.md`, `scripts/review/results/2026-06-10-plan-2889-r2-codex.md`, `scripts/review/results/2026-06-10-plan-2889-r2-gemini.md`, `scripts/review/results/2026-06-10-plan-2889-r2-disagreement.md`; r3: `scripts/review/results/2026-06-10-plan-2889-r3-claude.md`, `scripts/review/results/2026-06-10-plan-2889-r3-codex.md`, `scripts/review/results/2026-06-10-plan-2889-r3-gemini.md`; r4: `scripts/review/results/2026-06-10-plan-2889-r4-claude.md`, `scripts/review/results/2026-06-10-plan-2889-r4-codex.md`, `scripts/review/results/2026-06-10-plan-2889-r4-gemini.md`. Implementation remains blocked until user gates are resolved and the review-tooling gap is accepted or retried.
 
 ---
 
@@ -407,13 +407,11 @@ function display_rows():
 
 ## User Gates Before Plan Approval
 
-Resolved by user approval on 2026-06-11:
-
-1. **[#2894](https://github.com/vamseeachanta/workspace-hub/issues/2894) sequencing:** User approval accepted proceeding with measurement-only [#2889](https://github.com/vamseeachanta/workspace-hub/issues/2889) before the broader substrate revival in [#2894](https://github.com/vamseeachanta/workspace-hub/issues/2894) is complete.
-2. **Review-tooling disposition:** User approval accepted the degraded review record: Gemini r4 `APPROVE`, Claude unavailable after repeated empty timeouts, and Codex r4 timeout without final verdict.
-3. **Missing security rule:** `.claude/rules/security.md` remains outside #2889 scope; this implementation will keep enforcing secrets-safe behavior through tests and `scripts/legal/legal-sanity-scan.sh`.
+1. **[#2894](https://github.com/vamseeachanta/workspace-hub/issues/2894) sequencing:** User approval must explicitly accept proceeding with this measurement-only [#2889](https://github.com/vamseeachanta/workspace-hub/issues/2889) plan before the broader substrate revival in [#2894](https://github.com/vamseeachanta/workspace-hub/issues/2894) is complete.
+2. **Review-tooling disposition:** The latest post-patch review has Gemini r4 `APPROVE`, but Claude r4 was unavailable by prior repeated empty timeouts and Codex r4 timed out before a final verdict. User must either request another fresh review attempt or explicitly accept this degraded review record before `status:plan-review`.
+3. **Missing security rule:** `.claude/rules/security.md` is referenced by the runtime hard gates but is missing in this checkout. Recommendation: keep it out of #2889 and file/fold it into a separate governance cleanup, unless the user wants it as a prerequisite.
 4. **Measurement-only boundary:** This plan will not mutate live provider auth files, memory stores, cron entries, active runtime symlinks, or remote ace-linux-2 state. Remediation of `.codex/skills`, `WORKSPACE_HUB` cron env drift, `/mnt/dde` vs `/mnt/local-analysis`, or runtime symlink installs belongs in [#2755](https://github.com/vamseeachanta/workspace-hub/issues/2755), [#2894](https://github.com/vamseeachanta/workspace-hub/issues/2894), or a follow-up issue.
-5. **Implementation approval:** [#2889](https://github.com/vamseeachanta/workspace-hub/issues/2889) has `status:plan-approved`; the stale lower `status:needs-plan` label was removed on 2026-06-11 without self-applying approval.
+5. **Implementation approval:** Even after plan review is accepted, only the user may apply `status:plan-approved`; the agent must not self-approve or treat a handoff prompt as approval.
 
 ---
 
@@ -436,7 +434,7 @@ R1 was run on 2026-06-10 and all reviewers returned `MAJOR`. R2 was also run on 
 | Codex r4 | UNAVAILABLE | Timed out after 360 seconds before producing a final verdict; partial transcript showed plan inspection but no structured review response. |
 | Gemini r4 | APPROVE | Confirmed r3 blockers and Windows dependency risk were addressed; no required fixes. |
 
-**Overall result:** Gemini r4 APPROVE, Claude/Codex unavailable; user accepted the degraded review-tooling record for this measurement-only implementation.
+**Overall result:** Gemini r4 APPROVE, Claude/Codex unavailable; implementation remains blocked pending user disposition of review-tooling and sequencing gates.
 
 Revisions made based on r1/r2/r3 review:
 

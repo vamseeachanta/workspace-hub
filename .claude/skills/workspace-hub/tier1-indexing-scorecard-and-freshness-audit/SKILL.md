@@ -169,6 +169,7 @@ Latest evidence references:
 - `references/2026-05-21-freshness-audit-lessons.md` — compaction-resume closeout pattern, byte-identical dated/latest verification, status-level drift wording, and sibling-checkout generator path drift handling.
 - `references/2026-05-25-freshness-audit-lessons.md` — stale latest-report correction pattern, sibling-fallback evidence snapshot, latest-only verification shape, and current RED/YELLOW baseline.
 - `references/2026-06-01-freshness-audit-lessons.md` — cron compaction-resume recovery after report write, concise final-delivery evidence shape, and current RED/YELLOW baseline with repo-specific 2026-04-22 assumption revisions.
+- `references/2026-06-10-freshness-audit-lessons.md` — stale latest-report regeneration guardrail, current RED/YELLOW baseline, registry path-scan refinement, and precise 2026-04-22 scorecard assumption-drift wording.
 
 
 ## Daily freshness automation pattern
