@@ -584,7 +584,7 @@ cards:
     title: 'bug(orcaflex): preserve generated jumper line-section YAML in pipeline outputs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/601
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - priority:medium

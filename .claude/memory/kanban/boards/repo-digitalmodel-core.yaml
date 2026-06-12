@@ -692,7 +692,7 @@ cards:
     title: 'CLI: python -m digitalmodel <subcommand> crashes in legacy engine — route subcommands or fail with guidance'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/713
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - status:pending
