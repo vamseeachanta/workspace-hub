@@ -99,6 +99,55 @@ sudo bash system-update.sh -c ./custom-packages.json
 # Windows:
 .\system-update.ps1 -ConfigFile .\custom-packages.json
 ```
+
+## Workstation Input Troubleshooting
+
+### X11: typing is uppercase even though Caps Lock looks off
+
+Observed on `ace-linux-1` with a Logitech K350 receiver attached: a plain text
+editor typed uppercase, `Caps Lock` initially appeared off, and unplugging the
+keyboard left X11 with `Caps Lock: on` but no physical key held. Treat this as
+an XKB latched modifier before assuming an application bug.
+
+Verify state:
+
+```bash
+xset q | sed -n '/Keyboard Control:/,/Pointer Control:/p'
+```
+
+If `Caps Lock: on`, clear the XKB lock directly:
+
+```bash
+python3 - <<'PY'
+import ctypes, ctypes.util
+
+lib = ctypes.cdll.LoadLibrary(ctypes.util.find_library("X11"))
+d = lib.XOpenDisplay(None)
+if not d:
+    raise SystemExit("NO_DISPLAY")
+
+XkbUseCoreKbd = 0x0100
+LockMask = 1 << 1
+lib.XkbLockModifiers(d, XkbUseCoreKbd, LockMask, 0)
+lib.XFlush(d)
+lib.XCloseDisplay(d)
+PY
+```
+
+Verify it cleared:
+
+```bash
+xset q | sed -n '/XKB indicators:/,/auto repeat delay:/p'
+```
+
+If it comes back after reconnecting the keyboard, suspect the keyboard or USB
+receiver is sending a Caps Lock toggle. Tap both Shift keys, then Caps Lock; if
+state still recurs, re-seat or replace the receiver/keyboard before chasing
+editor or accessibility settings. Sticky keys can be checked with:
+
+```bash
+gsettings get org.gnome.desktop.a11y.keyboard stickykeys-enable
+```
 ### Custom Software Config (JSON)
 
 ```json
@@ -110,10 +159,13 @@ sudo bash system-update.sh -c ./custom-packages.json
   },
   "ppas": ["ppa:openfoam/latest"],
   "scripts": [
-    { "name": "custom-tool", "check": "custom-tool --version", "install": "curl -sSL https://example.com/install.sh | bash" }
+    { "name": "custom-tool", "check": "custom-tool --version", "install": "./install-custom-tool.sh" }
   ]
 }
 ```
+
+Keep custom installer scripts checked in or otherwise provenance-verified. Do not
+pipe downloaded installer content directly into a shell in this config.
 
 ## Version History
 
