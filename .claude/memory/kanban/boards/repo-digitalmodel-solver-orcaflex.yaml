@@ -603,7 +603,7 @@ cards:
     title: 'feat(orcaflex): convert Ballymore jumper specs into generator-ready ProjectInputSpec models'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/602
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - priority:medium
@@ -622,7 +622,7 @@ cards:
     title: 'test(orcaflex): add regression coverage for Ballymore spec-to-modular pipeline'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/603
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - priority:medium

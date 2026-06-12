@@ -35,7 +35,7 @@ cards:
     title: 'OrcaWave: produce self-contained solver packages from spec conversion'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/605
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -54,13 +54,13 @@ cards:
     title: 'OrcaWave: integrate MeshPipeline into spec conversion and runner'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/606
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
       - status:plan-review
       - domain:hydro-diffraction
-      - lane:codex
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -98,7 +98,7 @@ cards:
       - priority:high
       - status:plan-review
       - domain:hydro-diffraction
-      - lane:codex
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1

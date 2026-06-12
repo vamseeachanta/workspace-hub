@@ -571,3 +571,15 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#474
+    title: 'CI: module-scoped PR test job (paths-filter) + xdist; full 3-Python matrix on main/nightly only'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/474
+    gh_state: open
+    gh_labels:
+      - domain:quality
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
