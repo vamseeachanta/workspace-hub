@@ -306,7 +306,8 @@ function main():
         represent repository-sync as UNKNOWN schedule_metadata_mismatch until its task command/log glob contract is repaired; include #2572
         attach issue refs: repository-sync -> #2572, daily-cleanup -> #2752, daily-today/daily readiness/report sink -> #2652
     read daily-cleanup health through gh_readonly("daily-cleanup-issue-signal"):
-        make at most two bounded REST reads: first comments request with per_page=1 to discover the last page, then fetch only the last page with per_page=30
+        make at most two bounded REST reads: first comments request uses `gh api --include ...comments?per_page=1` to discover the last page from the Link header, then fetch only `...comments?per_page=30&page=<last_page>`
+        never use `gh api --paginate` for this signal
         scan that bounded newest-comment window backward for the latest daily-cleanup.sh marker
         record marker freshness separately from semantic health
         status UNKNOWN with finding known_path_model_mismatch while daily-cleanup.sh still checks sibling repos under WORKSPACE_ROOT/repo
@@ -335,7 +336,7 @@ function git_readonly(operation):
         default-branch -> timeout PROBE_TIMEOUT_SEC with GIT_OPTIONAL_LOCKS=0 git symbolic-ref --short refs/remotes/origin/HEAD, strip leading origin/, falling back to main/master only when origin/HEAD is absent and the fallback branch exists locally
         remote-worktree-like-refs -> timeout PROBE_TIMEOUT_SEC with GIT_OPTIONAL_LOCKS=0 git for-each-ref --format=... refs/remotes
         local-branches -> timeout PROBE_TIMEOUT_SEC with GIT_OPTIONAL_LOCKS=0 git for-each-ref --format=... refs/heads
-        stash-list -> timeout PROBE_TIMEOUT_SEC with GIT_OPTIONAL_LOCKS=0 git stash list --date=iso-strict --format=%gd%x00%ci%x00%s
+        stash-list -> timeout PROBE_TIMEOUT_SEC with GIT_OPTIONAL_LOCKS=0 git stash list --date=iso-strict --format=%gd%x1f%ci%x1f%s
         recent-local-log -> timeout PROBE_TIMEOUT_SEC with GIT_OPTIONAL_LOCKS=0 git log with bounded local options
     reject every other operation before invoking git
     never invoke git through eval, bash -c, a variable subcommand, or assembled shell strings
@@ -344,7 +345,7 @@ function git_readonly(operation):
 
 function gh_readonly(operation):
     case operation in explicit allowlist:
-        daily-cleanup-issue-signal -> timeout PROBE_TIMEOUT_SEC with bounded gh api read of issue #2652 comments: per_page=1 header discovery, then latest per_page=30 comment page only
+        daily-cleanup-issue-signal -> timeout PROBE_TIMEOUT_SEC with bounded gh api read of issue #2652 comments: first request uses `gh api --include ...comments?per_page=1` and parses the Link header for `rel="last"`; second request fetches only `...comments?per_page=30&page=<last_page>`; never use `--paginate`
     reject every other operation before invoking gh
     never invoke gh issue comment/edit/close, gh pr merge, gh api mutations, or assembled gh command strings
     capture stdout/stderr separately
@@ -367,11 +368,11 @@ function readonly_guard_tests():
     fail if script contains eval, bash -c with git, git "$subcommand", or dynamically assembled git command strings
     fail if mutating live command tokens appear:
         "git add", "git commit", "git push", "git pull", "git merge", "git rebase",
-        "git reset", bare or mutating "git stash" forms except exact timestamped "git stash list --date=iso-strict --format=%gd%x00%ci%x00%s", "git checkout", "git switch", "git branch -d",
+        "git reset", bare or mutating "git stash" forms except exact timestamped "git stash list --date=iso-strict --format=%gd%x1f%ci%x1f%s", "git checkout", "git switch", "git branch -d",
         "git worktree prune", "git clean", "gh issue comment", "gh issue edit", "gh issue close", "gh pr merge",
         "rm -f", "rm -rf", "rm -r", "rm -fr", "rmdir", "unlink", "find ... -delete", "find ... -exec rm", "xargs rm"
     allow read-only subcommands with exact patterns:
-        "git stash list --date=iso-strict --format=%gd%x00%ci%x00%s"
+        "git stash list --date=iso-strict --format=%gd%x1f%ci%x1f%s"
         "git branch --show-current"
         "git worktree list"
         "git status"
@@ -396,6 +397,7 @@ function sanitize_for_cron_log(raw_stderr):
 | Action | Path | Reason |
 |---|---|---|
 | Create | `scripts/cron/repo-ecosystem-hygiene-audit.sh` | read-only audit implementation |
+| Modify | `scripts/cron/setup-cron.sh` | default `UV_CACHE_DIR` to a repo-local path before internal `uv run` calls when unset |
 | Create | `scripts/cron/tests/test_repo_ecosystem_hygiene_audit.py` | TDD coverage for report shape, read-only command guard, fixture behavior |
 | Modify | `scripts/cron/tests/test_validate_schedule.py` | assert the new scheduled task exists, accepts registry hostname aliases such as `vamsee-linux1`, declares valid runtime requirements, and has a stable log path |
 | Modify | `config/scheduled-tasks/schedule-tasks.yaml` | add `repo-ecosystem-hygiene` daily task before `cron-health` |
@@ -425,7 +427,8 @@ function sanitize_for_cron_log(raw_stderr):
 | `test_output_writes_confined_to_output_dir` | required mkdir/temp/mv writes are allowed but cannot touch repo/sibling content | temp `REPO_ECOSYSTEM_HYGIENE_OUTPUT_DIR` plus path traversal attempts | only `mkdir -p OUTPUT_DIR`, temp writes under OUTPUT_DIR, and `mv` from OUTPUT_DIR temp files to OUTPUT_DIR final files are allowed; escaping paths fail closed |
 | `test_repo_root_resolves_without_git` | root discovery does not bypass the git allowlist | script text and fixture script path | `REPO_ROOT` is derived from script location; no root-resolution `git` invocation exists |
 | `test_readonly_guard_rejects_mutating_git_tokens` | secondary static guard rejects live mutating commands | script text | no `git add/commit/push/pull/merge/rebase/reset/checkout/switch`, mutating stash forms, branch delete, worktree prune, `rm -rf`, or `find -delete` outside comments/allowlisted test text |
-| `test_readonly_guard_allows_timestamped_stash_list_only` | stash inventory remains possible without allowing stash mutation | script text | timestamped `git stash list --date=iso-strict --format=%gd%x00%ci%x00%s` is allowed; bare `git stash`, `git stash pop`, `git stash push`, and `git stash drop` are rejected |
+| `test_readonly_guard_allows_timestamped_stash_list_only` | stash inventory remains possible without allowing stash mutation | script text | timestamped `git stash list --date=iso-strict --format=%gd%x1f%ci%x1f%s` is allowed; bare `git stash`, `git stash pop`, `git stash push`, and `git stash drop` are rejected |
+| `test_stash_parser_avoids_bash_nul_loss` | stash parsing does not rely on NUL bytes in Bash variables | fixture stash output using unit-separator `%x1f` delimiter and stash subject containing spaces/shell punctuation | parser preserves stash ref/date/subject fields without Bash `ignored null byte` warnings |
 | `test_registry_sibling_layout_paths` | sibling layout uses `/mnt/local-analysis/<repo>`, not nested `workspace-hub/<repo>` | temp registry with `repo_layout: sibling` and fixture dirs | `digitalmodel` path resolves to `<root>/digitalmodel`; nested path is not used |
 | `test_v1_fails_closed_without_tier1_baseline` | v1 does not silently run on machines lacking governed repo buckets | fixture registry for non-dev-primary machine without `tier1_baseline` | exits nonzero with `configuration_error`; no repo health report claims are emitted |
 | `test_configured_repo_universe_includes_non_python_required_repos` | audit uses workstation registry, not only Python repo list | fixture registry with required `llm-wiki` and Python list without it | repo universe includes `llm-wiki` and classifies it as required |
@@ -471,6 +474,7 @@ function sanitize_for_cron_log(raw_stderr):
 | `test_stale_cron_health_state_does_not_copy_statuses` | health links do not present stale cron-health as current | newest cron-health JSON mtime older than 36 hours | `health_links` status is `UNKNOWN/WARN` with stale source age; task statuses are not copied as current |
 | `test_daily_cleanup_issue_signal_freshness` | daily-cleanup has concrete non-mutating, bounded freshness evidence without pretending semantic health | fixture #2652 last-page comments with daily-cleanup marker ages 35h and 37h while `daily-cleanup.sh` still has the known path-model mismatch | 35h marker reports marker freshness only and overall `daily-cleanup` health `UNKNOWN`/`known_path_model_mismatch`; 37h/missing/gh-unavailable reports WARN/UNKNOWN with issue refs |
 | `test_daily_cleanup_issue_signal_is_bounded` | cron run does not fetch the full #2652 history | gh wrapper fixture with hundreds of older comments and marker inside/outside latest 30 comments | implementation makes at most two `gh api` reads; marker inside latest 30 is evaluated; marker outside the bounded window returns WARN/UNKNOWN `marker_not_in_recent_window` |
+| `test_daily_cleanup_issue_signal_uses_link_header` | bounded latest-page discovery is implementable with `gh api` | gh wrapper fixture for first response with `--include` headers and `Link: ... rel="last"` | first call includes `--include` and `per_page=1`; second call fetches `per_page=30&page=<last_page>`; `--paginate` is rejected |
 | `test_generated_reports_stay_local_only` | unattended cron does not dirty tracked report paths | fixture run with output override and clean git worktree | generated Markdown/JSON are under output dir only; no `docs/reports/repo-ecosystem-hygiene*.md` file is written by the cron script |
 | `test_operator_skill_documents_non_mutating_policy` | skill/runbook preserves the safety boundary | `.claude/skills/workspace-hub/repo-ecosystem-hygiene/SKILL.md` | includes read-only policy and routes remediation to existing repo-sync/worktree hygiene skills |
 
@@ -498,7 +502,7 @@ function sanitize_for_cron_log(raw_stderr):
 - [ ] `config/scheduled-tasks/schedule-tasks.yaml` includes the new daily task at exact schedule `35 5 * * *`, before `cron-health`, with `machines` covering `dev-primary`, `ace-linux-1`, and hostname alias `vamsee-linux1`, `requires: [bash, python3, uv, git, gh, timeout]`, a stable `log:` glob, a PATH prefix for `$HOME/.local/bin` and `$HOME/.npm-global/bin`, a command redirect that writes to the same log path family, and per-task stale threshold metadata that lets the 05:45 `cron-health` check flag a missed 05:35 run by the next day.
 - [ ] `scripts/monitoring/cron-health-check.sh` honors the task-specific stale threshold while preserving existing default threshold behavior for tasks without an override.
 - [ ] The report includes cron-health-sourced status for real scheduled task ID `daily-today` where available, marks `repository-sync` as `UNKNOWN`/`schedule_metadata_mismatch` until its existing command/log mismatch is fixed, and includes bounded read-only #2652 latest-comment-window freshness for `daily-cleanup` while reporting `daily-cleanup` semantic health as `UNKNOWN`/`known_path_model_mismatch` until that routine's sibling path model is fixed, with issue refs to #2572, #2752, and #2652.
-- [ ] `UV_CACHE_DIR=.claude/state/uv-cache uv run --no-project python scripts/cron/validate-schedule.py` passes, and `bash scripts/cron/setup-cron.sh --dry-run` shows the new task when run on the deployed target host whose `hostname -s` is listed in task `machines` (current target evidence: `ace-linux-1`).
+- [ ] `UV_CACHE_DIR=.claude/state/uv-cache uv run --no-project python scripts/cron/validate-schedule.py` passes, and `UV_CACHE_DIR=.claude/state/uv-cache bash scripts/cron/setup-cron.sh --dry-run` shows the new task when run on the deployed target host whose `hostname -s` is listed in task `machines` (current target evidence: `ace-linux-1`). `scripts/cron/setup-cron.sh` also defaults `UV_CACHE_DIR` to the repo-local cache when unset.
 - [ ] `UV_CACHE_DIR=.claude/state/uv-cache uv run --no-project pytest scripts/cron/tests/test_validate_schedule.py scripts/cron/tests/test_repo_ecosystem_hygiene_audit.py -q` passes, and nested `uv` subprocesses in schedule tests preserve the same repo-local cache.
 - [ ] `docs/ops/scheduled-tasks.md` documents the task.
 - [ ] `.claude/skills/workspace-hub/repo-ecosystem-hygiene/SKILL.md` documents report interpretation and explicitly routes remediation to manual/approved workflows.
@@ -533,9 +537,10 @@ function sanitize_for_cron_log(raw_stderr):
 | Codex r19 | MAJOR | Non-default branch inventory was not required unless branches were stale; plan/review artifacts were still local-only untracked during review |
 | Codex r20 | MAJOR | Fixed cron-health daily stale threshold could miss one-day outage; stale risk text contradicted bounded `gh api`; local-only reports needed explicit rationale |
 | Codex r21 | MAJOR | Historical entry `acma-projects` conflicted with unknown-residue classification; pytest/nested validator `uv` paths lacked repo-local cache coverage |
+| Codex r22 | MAJOR | `setup-cron.sh --dry-run` lacked repo-local UV cache; stash parser used Bash-unsafe NUL delimiter; bounded #2652 query lacked `gh api --include` Link-header contract |
 | Gemini | UNAVAILABLE | CLI/API failure before returning a usable review |
 
-**Current gate state:** revised after Codex r21 findings; fresh adversarial review is required before `status:plan-review`.
+**Current gate state:** revised after Codex r22 findings; fresh adversarial review is required before `status:plan-review`.
 
 Revisions made based on review:
 - Corrected the path model to use registry-driven sibling checkouts.
@@ -601,6 +606,9 @@ Revisions made based on review:
 - Documented that generated reports stay local-only to preserve the unattended cron no-dirty-worktree contract.
 - Added historical-entry precedence so live historical names such as `acma-projects` are not double-reported as unknown residue.
 - Required repo-local `UV_CACHE_DIR` for pytest and nested validator subprocesses.
+- Added `setup-cron.sh` repo-local UV cache handling and acceptance coverage.
+- Replaced Bash-unsafe NUL stash delimiters with unit-separator parsing requirements.
+- Specified `gh api --include` Link-header parsing for bounded latest-page #2652 comment reads and banned `--paginate` for that signal.
 
 ---
 
