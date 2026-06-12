@@ -263,3 +263,15 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#472
+    title: 'Durable workflows v2: engine routes + registry rows for fdas field development, pipeline safety FFS, marine safety, forecasting'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/472
+    gh_state: open
+    gh_labels:
+      - domain:reports
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

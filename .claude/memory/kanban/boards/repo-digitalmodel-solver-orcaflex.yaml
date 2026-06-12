@@ -688,3 +688,63 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#716
+    title: 'fix(orcaflex): refresh spec-library audit and clear known generation failures (schema, builders, YAML-strict)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/716
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - machine:dev-primary
+      - domain:solver-orcaflex
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#717
+    title: 'fix(orcaflex): close post-validator reference gaps (constraints, built-in connections, arc-length syntax)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/717
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - domain:solver-orcaflex
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#718
+    title: 'chore(orcaflex): L2 attestation — load attested model-library masters with OrcFxAPI on licensed-win-1'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/718
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - machine:licensed-win-1
+      - domain:solver-orcaflex
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#719
+    title: 'feat(orcaflex): canonical spec.yml runs full OrcaFlex analysis error-free — L3 capstone (a01_catenary_riser)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/719
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - machine:licensed-win-1
+      - domain:solver-orcaflex
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

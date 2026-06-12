@@ -414,3 +414,32 @@ cards:
       Users need a quick way to know whether the local machine can actually run OrcaWave diffraction before preparing a large solve. Current behavior can silently fall back to dry-run when OrcFxAPI and OrcaWave executable paths are unavailable.
 
       ## Required work'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#712
+    title: 'OrcaWave: ship canonical runnable diffraction example under examples/hydrodynamics/diffraction/'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/712
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - status:pending
+      - domain:hydro-diffraction
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#714
+    title: 'OrcaWave: investigate L01 180-case API benchmark timeout + poor AQWA correlation (licensed host)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/714
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - status:pending
+      - machine:licensed-win-1
+      - domain:hydro-diffraction
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
