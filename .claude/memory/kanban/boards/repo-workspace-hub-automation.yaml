@@ -720,7 +720,7 @@ cards:
     title: 'feat(automation): daily read-only repo ecosystem hygiene audit'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3041
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -728,10 +728,10 @@ cards:
       - cat:harness
       - domain:automation
       - domain:repo-health
+      - status:done
       - machine:dev-primary
-      - status:plan-approved
-      - dispatch:ready
       - gate:completeness
+      - status:completeness-verified
       - lane:claude
     initial_status: triage
     priority: 0
