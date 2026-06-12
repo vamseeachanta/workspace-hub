@@ -69,9 +69,10 @@ for task in data.get('tasks', []):
     scheduler = task.get('scheduler', 'cron')
     is_claude = task.get('is_claude_task', False)
     description = task.get('description', '')
+    stale_after_hours = task.get('stale_after_hours', '')
     log_str = str(log_pattern) if log_pattern is not None else 'null'
     machines_str = ','.join(machines)
-    print(f'{tid}\t{label}\t{schedule}\t{machines_str}\t{log_str}\t{scheduler}\t{is_claude}\t{description}')
+    print(f'{tid}\t{label}\t{schedule}\t{machines_str}\t{log_str}\t{scheduler}\t{is_claude}\t{stale_after_hours}\t{description}')
 PY
 )
 if [[ -z "$TASK_RECORDS" ]]; then
@@ -134,7 +135,7 @@ HAS_FAILURES=false
 JSON_TASKS="["
 FIRST_TASK=true
 
-while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is_claude description; do
+while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is_claude stale_after_hours description; do
     # Skip Windows-scheduler tasks on Linux
     if [[ "$scheduler" == "windows-task-scheduler" ]]; then
         continue
@@ -196,7 +197,9 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
         # Heuristic: check day-of-week (field 5) and day-of-month (field 3)
         # to distinguish daily, weekly, and sub-daily jobs.
         EXPECTED_INTERVAL_HOURS=25
-        if [[ -n "$schedule" ]]; then
+        if [[ "$stale_after_hours" =~ ^[0-9]+$ ]]; then
+            EXPECTED_INTERVAL_HOURS="$stale_after_hours"
+        elif [[ -n "$schedule" ]]; then
             hour_field=$(echo "$schedule" | awk '{print $2}')
             dow_field=$(echo "$schedule" | awk '{print $5}')
             dom_field=$(echo "$schedule" | awk '{print $3}')

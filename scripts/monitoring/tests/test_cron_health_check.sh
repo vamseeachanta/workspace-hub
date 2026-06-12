@@ -387,6 +387,36 @@ YAML
     teardown_temp_workspace
 }
 
+test_honors_task_specific_stale_threshold() {
+    echo "TEST: honors task-specific stale threshold"
+    setup_temp_workspace
+    cat >> "${TMPDIR}/config/scheduled-tasks/schedule-tasks.yaml" <<'YAML'
+
+  - id: repo-ecosystem-hygiene
+    label: Repo ecosystem hygiene audit
+    schedule: "35 5 * * *"
+    machines: [dev-primary, ace-linux-1, vamsee-linux1]
+    requires: [bash, python3, uv, git, gh, timeout]
+    command: "bash scripts/cron/repo-ecosystem-hygiene-audit.sh"
+    log: logs/quality/repo-ecosystem-hygiene-*.log
+    stale_after_hours: 23
+    is_claude_task: false
+    description: Daily read-only repo hygiene audit.
+YAML
+    echo "Done" > "${TMPDIR}/logs/research/$(date -u +%Y-%m-%d).log"
+    touch -d "1 hour ago" "${TMPDIR}/logs/research/$(date -u +%Y-%m-%d).log"
+    echo "ok" > "${TMPDIR}/logs/quality/dep-health-cron.log"
+    touch -d "1 hour ago" "${TMPDIR}/logs/quality/dep-health-cron.log"
+    echo "task=repo-ecosystem-hygiene status=OK" > "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log"
+    touch -d "24 hours ago" "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log"
+
+    local output
+    output=$(bash "$SCRIPT_UNDER_TEST" --workspace "$TMPDIR" 2>&1)
+
+    assert_contains "task-specific threshold flags missed daily run" "STALE.*repo-ecosystem-hygiene" "$output"
+    teardown_temp_workspace
+}
+
 # ── Run all tests ────────────────────────────────────────────────────────────
 
 echo "======================================"
@@ -407,6 +437,7 @@ test_exit_code_nonzero_on_failures
 test_exit_code_zero_on_all_healthy
 test_handles_glob_log_patterns
 test_handles_null_log_gracefully
+test_honors_task_specific_stale_threshold
 
 echo ""
 echo "======================================"

@@ -497,10 +497,29 @@ tasks:
     description: Windows Task Scheduler — 15-min dispatch-leader health watcher via Git Bash (alert-only). Issue #2847.
 
 
+  - id: repo-ecosystem-hygiene
+    label: Repo ecosystem hygiene audit
+    schedule: "35 5 * * *"
+    machines: [dev-primary, ace-linux-1, vamsee-linux1]
+    roles: [control-plane]
+    requires: [bash, python3, uv, git, gh, timeout]
+    command: >-
+      PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/repo-ecosystem-hygiene-audit.sh
+      >> $WORKSPACE_HUB/logs/quality/repo-ecosystem-hygiene-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/repo-ecosystem-hygiene-*.log
+    stale_after_hours: 23
+    is_claude_task: false
+    description: >-
+      Daily 05:35 UTC read-only repo ecosystem hygiene audit; writes ignored
+      Markdown/JSON state under .claude/state/repo-ecosystem-hygiene/ and a
+      one-line evidence record for cron-health.
+
   - id: cron-health
     label: Cron health check
     schedule: "45 5 * * *"
-    machines: [dev-primary, ace-linux-1]
+    machines: [dev-primary, ace-linux-1, vamsee-linux1]
     roles: [control-plane]
     requires: [bash, python3, uv]
     command: >-
