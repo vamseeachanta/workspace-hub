@@ -47,6 +47,26 @@ tasks:
       commit-on-change (no churn). Hot dims referenced from nightly readiness. Single
       source for both Linux cron and Windows Task Scheduler per this file's HARD RULE (#2801 DC5).
 
+  - id: equivalence-sentinel
+    label: Machine-equivalence drift sentinel (#3059)
+    schedule: "17 */6 * * *"
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    roles: [control-plane, comms-dispatch]
+    requires: [bash, python3, uv, git, claude]
+    command: >-
+      PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/monitoring/equivalence-sentinel.sh
+      >> $WORKSPACE_HUB/logs/monitoring/equivalence-sentinel-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/monitoring/equivalence-sentinel-*.log
+    is_claude_task: false
+    description: >-
+      Per-box (every 6h) equivalence fingerprint -> publish to the equivalence-state
+      git ref -> compare all boxes -> alert on WARNING/CRITICAL drift (clone-vs-origin,
+      harness version/install, model-registry hash, hub learning-cron freshness).
+      Complements the weekly equality-report (#2801) with focused alerting on the
+      model-parity-critical dimensions. Set EQUIV_ALERT_ISSUE=<n> to post drift to an issue.
+
   - id: gsd-researcher
     label: Nightly GSD domain researcher
     schedule: "35 1 * * *"
