@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-07T09:15:04-05:00",
+  "timestamp": "2026-06-13T12:20:07-05:00",
   "agents": [
     {
       "provider": "claude",
@@ -16,13 +16,13 @@
       "provider": "codex",
       "tier": "subscription",
       "weekly_limit": 1400,
-      "week_messages": 0,
-      "week_pct": 21,
-      "five_hour_pct": 3,
-      "pct_remaining": 79,
-      "hours_to_reset": 90,
-      "resets_at": "2026-06-11T03:30:53-0500",
-      "source": "app-server-live"
+      "week_messages": 211,
+      "week_pct": 23.0,
+      "five_hour_pct": 1.0,
+      "pct_remaining": 77,
+      "hours_to_reset": 133,
+      "resets_at": "2026-06-19T01:32:54-0500",
+      "source": "local-session-rate-limits"
     },
     {
       "provider": "gemini",
