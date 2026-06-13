@@ -918,7 +918,7 @@ cards:
     title: 'Model parity: analyze the Fable-5 session corpus (behavioral learning) — epic #3043'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3056
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:ai-orchestration
       - machine:multi
