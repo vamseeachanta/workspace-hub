@@ -874,3 +874,122 @@ cards:
       Overnight dispatch on 2026-05-14/15 failed 0-of-6 across two distinct canary runs. Diagnostics reveal **two compounding hazards** in the kanban-worker dispatch path that need addressing before the catalog ([#2695](https://github.com/vamseeachanta/workspace-hub/issues/2695))''s `hermes → claude-code` / `hermes → codex` routing model is safe to use.
 
       Filing this now while context is fresh; companion to [#2715](https://github.com/vamseeachanta/workspace-hub/issues/2715) (codex-cli hang) and [#2696](https://github.com/vamseeachanta/workspace-hub/issues/2696) (routing-layer audit).'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3043
+    title: 'Model parity: make the repo ecosystem equivalent for Opus and Fable (run on multiple machines)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3043
+    gh_state: open
+    gh_labels:
+      - domain:ai-config
+      - domain:ai-orchestration
+      - machine:multi
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3044
+    title: 'Model parity audit on ace-linux-1 (Part A) — epic #3043'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3044
+    gh_state: open
+    gh_labels:
+      - domain:ai-config
+      - machine:ace-linux-1
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3045
+    title: 'Model parity audit on ace-linux-2 (Part A) — epic #3043'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3045
+    gh_state: open
+    gh_labels:
+      - domain:ai-config
+      - machine:ace-linux-2
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3046
+    title: 'Model parity audit on ace-win-1 (Part A) — epic #3043'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3046
+    gh_state: open
+    gh_labels:
+      - domain:ai-config
+      - machine:ace-win-1
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3047
+    title: 'Model parity audit on ace-win-2 (Part A) — epic #3043'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3047
+    gh_state: open
+    gh_labels:
+      - domain:ai-config
+      - machine:ace-win-2
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3048
+    title: 'Model parity audit on home-win (Part A) — epic #3043'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3048
+    gh_state: open
+    gh_labels:
+      - domain:ai-config
+      - machine:home-win
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3049
+    title: 'Model parity: synthesize audits → gap report, PRs, Opus playbook (Part B) — epic #3043'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3049
+    gh_state: open
+    gh_labels:
+      - domain:ai-config
+      - domain:ai-orchestration
+      - machine:multi
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3051
+    title: 'Model parity: config flip — registry + propagation — epic #3043'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3051
+    gh_state: open
+    gh_labels:
+      - domain:ai-config
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3052
+    title: 'Model parity: context-window parity (1M lever / opus-4-8[1m]) — epic #3043'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3052
+    gh_state: open
+    gh_labels:
+      - domain:ai-config
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3055
+    title: 'Model parity: model-swap playbook + parity decision ADR — epic #3043'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3055
+    gh_state: open
+    gh_labels:
+      - domain:ai-config
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
