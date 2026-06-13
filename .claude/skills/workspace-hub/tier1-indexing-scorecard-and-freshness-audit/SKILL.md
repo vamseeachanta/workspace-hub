@@ -170,6 +170,7 @@ Latest evidence references:
 - `references/2026-05-25-freshness-audit-lessons.md` — stale latest-report correction pattern, sibling-fallback evidence snapshot, latest-only verification shape, and current RED/YELLOW baseline.
 - `references/2026-06-01-freshness-audit-lessons.md` — cron compaction-resume recovery after report write, concise final-delivery evidence shape, and current RED/YELLOW baseline with repo-specific 2026-04-22 assumption revisions.
 - `references/2026-06-10-freshness-audit-lessons.md` — stale latest-report regeneration guardrail, current RED/YELLOW baseline, registry path-scan refinement, and precise 2026-04-22 scorecard assumption-drift wording.
+- `references/2026-06-13-freshness-audit-lessons.md` — cron-mode fallback when `execute_code` is approval-blocked, current RED/YELLOW baseline, and concise final delivery evidence shape.
 
 
 ## Daily freshness automation pattern
