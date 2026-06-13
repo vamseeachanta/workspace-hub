@@ -210,6 +210,29 @@ jobs:
             exit $EXIT_CODE
           fi
 
+  model-id-sourcing:
+    name: Model-ID Sourcing Guard
+    # Ratchet guard (#3060, epic #3058): flags NEW hardcoded model IDs outside
+    # config/agents/model-registry.yaml vs the grandfathered baseline. ADVISORY
+    # first (does not fail the build) per the #3060 plan; promote to --enforce
+    # once trusted by flipping the run line below.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check for newly hardcoded model IDs (advisory)
+        run: |
+          echo "## Model-ID Sourcing Guard (advisory)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          chmod +x scripts/enforcement/check-model-id-sourcing.sh
+          scripts/enforcement/check-model-id-sourcing.sh 2>&1 | tee /tmp/model-id.log
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat /tmp/model-id.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
   compliance-dashboard:
     name: Compliance Dashboard
     runs-on: ubuntu-latest
