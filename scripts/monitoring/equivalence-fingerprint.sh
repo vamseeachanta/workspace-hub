@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# equivalence-fingerprint.sh — emit THIS box's machine-equivalence fingerprint as JSON.
+#
+# Part of the machine-equivalence drift sentinel (#3059, harden-ecosystem epic #3058).
+# Captures the four dimensions audited manually on 2026-06-13: clone vs origin,
+# harness, model-registry hash, and hub learning-cron freshness.
+#
+# Usage: equivalence-fingerprint.sh [--out <file>]
+#   EQUIV_ROLE env overrides role detection (full | contribute | contribute-minimal).
+# Degrades gracefully: any field it cannot read is emitted as null, never an error.
+set -uo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
+cd "$REPO_ROOT" || exit 1
+
+OUT=""
+[ "${1:-}" = "--out" ] && OUT="${2:-}"
+
+host="$(hostname 2>/dev/null || echo unknown)"
+
+# Role: env override, else map known hosts to setup-cron.sh roles, else unknown.
+role="${EQUIV_ROLE:-}"
+if [ -z "$role" ]; then
+  case "$host" in
+    ace-linux-1) role="full" ;;        # dev-primary / orchestration hub
+    ace-linux-2) role="contribute" ;;  # dev-secondary
+    *) role="unknown" ;;
+  esac
+fi
+
+# Clone position vs origin/main (best-effort fetch; soft on network failure).
+git fetch -q origin main 2>/dev/null
+clone_head="$(git rev-parse --short HEAD 2>/dev/null || echo null)"
+behind=null; ahead=null
+if counts="$(git rev-list --left-right --count origin/main...HEAD 2>/dev/null)"; then
+  behind="$(echo "$counts" | awk '{print $1}')"
+  ahead="$(echo "$counts" | awk '{print $2}')"
+fi
+
+# Harness version + install method.
+hv="$(claude --version 2>/dev/null | awk '{print $1}')"; [ -z "$hv" ] && hv=null
+cpath="$(command -v claude 2>/dev/null || true)"
+case "$cpath" in
+  *.npm-global*) hinstall="npm-global" ;;
+  *.local/share*|*claude/local*) hinstall="native" ;;
+  "") hinstall=null ;;
+  *) hinstall="other" ;;
+esac
+
+# Model-registry hash (the equivalence-critical config).
+reg="config/agents/model-registry.yaml"
+reg_sha="$( [ -f "$reg" ] && sha256sum "$reg" 2>/dev/null | awk '{print $1}' || echo null )"
+
+# Hub learning-cron ages (hours since newest matching log/artifact); null if unknown.
+# Only meaningful on role=full; the comparator ignores these for other roles.
+cron_age() {
+  local pat="$1" newest
+  newest="$(find logs .claude/state/learning-reports -type f -name "*${pat}*" -printf '%T@\n' 2>/dev/null | sort -rn | head -1)"
+  [ -z "$newest" ] && { echo null; return; }
+  python3 -c "import time,sys; print(round((time.time()-float(sys.argv[1]))/3600,1))" "$newest" 2>/dev/null || echo null
+}
+age_learning="$(cron_age comprehensive-learning)"
+age_session="$(cron_age session-analysis)"
+
+# Emit JSON via python for safe quoting.
+python3 - "$role" "$host" "$clone_head" "$behind" "$ahead" "$hv" "$hinstall" "$reg_sha" "$age_learning" "$age_session" <<'PY' > "${OUT:-/dev/stdout}"
+import json, sys
+from datetime import datetime, timezone
+role, host, head, behind, ahead, hv, hinstall, reg, al, as_ = sys.argv[1:11]
+def num(x):
+    if x in ("null", ""): return None
+    try: return int(x)
+    except ValueError:
+        try: return float(x)
+        except ValueError: return None
+def s(x): return None if x in ("null", "") else x
+fp = {
+    "fingerprint_version": 1,
+    "role": role, "hostname": host,
+    "ts": datetime.now(timezone.utc).isoformat(),
+    "clone_head": s(head),
+    "behind_origin": num(behind), "ahead_origin": num(ahead),
+    "harness_version": s(hv), "harness_install": s(hinstall),
+    "registry_sha256": s(reg),
+    "learning_cron_ages_h": {
+        "comprehensive-learning-nightly": num(al),
+        "session-analysis": num(as_),
+    },
+}
+print(json.dumps(fp, indent=1))
+PY
+[ -n "$OUT" ] && echo "wrote fingerprint -> $OUT" >&2
