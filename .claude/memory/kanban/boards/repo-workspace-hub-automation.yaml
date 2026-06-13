@@ -737,3 +737,23 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3057
+    title: 'bug(automation): harden cron cutover env and repo hygiene live probes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3057
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:operations
+      - cat:harness
+      - domain:automation
+      - domain:repo-health
+      - machine:dev-primary
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
