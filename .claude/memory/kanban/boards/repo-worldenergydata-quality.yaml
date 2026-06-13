@@ -575,7 +575,7 @@ cards:
     title: 'CI: module-scoped PR test job (paths-filter) + xdist; full 3-Python matrix on main/nightly only'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/474
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:quality
       - lane:claude

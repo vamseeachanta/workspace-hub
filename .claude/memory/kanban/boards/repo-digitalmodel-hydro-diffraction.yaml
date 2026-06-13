@@ -73,7 +73,7 @@ cards:
     title: 'OrcaWave: add given-mesh CLI workflow for diffraction setup'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/607
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -184,7 +184,7 @@ cards:
     title: engg debt | OrcaWave
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/62
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
       - package
@@ -358,7 +358,7 @@ cards:
     title: 'OrcaWave: expand QTF config + field points + irregular frequency method'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/501
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -439,6 +439,20 @@ cards:
       - machine:licensed-win-1
       - domain:hydro-diffraction
       - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#740
+    title: OrcaWave rejects fixture GDF (multi-line comment header) — fix meshes, add GDF header preflight, non-zero CLI exit on FAILED
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/740
+    gh_state: open
+    gh_labels:
+      - priority:critical
+      - status:pending
+      - domain:hydro-diffraction
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
