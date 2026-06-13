@@ -20985,3 +20985,117 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3059
+    title: 'Harden: machine-equivalence drift sentinel — epic #3058'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3059
+    gh_state: open
+    gh_labels:
+      - domain:tooling
+      - machine:multi
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3062
+    title: 'Harden: skill/state sprawl cleanup + retrieval quality — epic #3058'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3062
+    gh_state: open
+    gh_labels:
+      - domain:skill-improvement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3063
+    title: 'uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3063
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow-standardization
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3064
+    title: 'uv-workflow(worldenergydata): clean-clone verify all 9 + offline fixtures for data loaders'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3064
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow-standardization
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3065
+    title: 'uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3065
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow-standardization
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3066
+    title: 'uv-workflow(assethold): wire portfolio/options/property/risk/dividend/fundamentals into engine + fix substring bug'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3066
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:workflow-standardization
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3067
+    title: 'uv-workflow(workspace-hub): write the canonical UV workflow contract standard doc'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3067
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:workflow-standardization
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
