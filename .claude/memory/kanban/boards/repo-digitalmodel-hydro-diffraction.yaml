@@ -447,7 +447,7 @@ cards:
     title: OrcaWave rejects fixture GDF (multi-line comment header) — fix meshes, add GDF header preflight, non-zero CLI exit on FAILED
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/740
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:critical
       - status:pending
