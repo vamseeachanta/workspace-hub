@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-13T17:20:21.360216Z",
+  "generated_at": "2026-06-13T21:20:12.635873Z",
   "current_week": "2026-W24",
-  "scorecard_generated_at": "2026-06-13T17:20:19.241516Z",
+  "scorecard_generated_at": "2026-06-13T21:20:10.920926Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -4801,7 +4801,7 @@
             "domain:ai-orchestration",
             "machine:multi"
           ],
-          "updatedAt": "2026-06-13T13:20:30Z",
+          "updatedAt": "2026-06-13T17:36:10Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
