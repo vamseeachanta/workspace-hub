@@ -692,7 +692,7 @@ cards:
     title: 'fix(orcaflex): refresh spec-library audit and clear known generation failures (schema, builders, YAML-strict)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/716
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - priority:high

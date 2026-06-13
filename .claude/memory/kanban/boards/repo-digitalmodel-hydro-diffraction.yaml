@@ -92,7 +92,7 @@ cards:
     title: 'OrcaWave: add mesh quality gates before diffraction solve'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/608
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -111,13 +111,13 @@ cards:
     title: 'OrcaWave: normalize auxiliary mesh handling for control surfaces and QTF inputs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/609
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
       - status:plan-review
       - domain:hydro-diffraction
-      - lane:codex
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -399,7 +399,7 @@ cards:
     title: 'OrcaWave: add environment and license doctor command'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/613
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
