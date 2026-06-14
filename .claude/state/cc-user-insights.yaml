@@ -9,7 +9,7 @@ versions_covered: "2.1.20 to 2.1.39"
 review_date: "2026-02-11"
 
 general:
-  - "Claude Opus 4.6 model launch (2.1.32) — new frontier model available in Claude Code"
+  - "Claude Opus 4.8 model launch (2.1.32) — new frontier model available in Claude Code"
   - "Agent Teams research preview (2.1.32) — multi-agent collaboration, requires CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1"
   - "Automatic memory system (2.1.32) — Claude records and recalls memories across sessions"
   - "Fast mode for Opus 4.6 (2.1.36) — same model, faster output, toggle with /fast"

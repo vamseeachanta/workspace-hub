@@ -49,7 +49,7 @@ echo "Harness version: ${HARNESS_VERSION}"
 DEFAULT_MODEL_FILE="${STATE_DIR}/default-model.txt"
 
 # Precedence: ANTHROPIC_MODEL env var > CLAUDE_MODEL env var > parse from version
-# output > fallback to "claude-opus-4-6" (current default as of 2026-02)
+# output > fallback to "claude-opus-4-8" (current default as of 2026-02)
 detect_default_model() {
     # 1. Explicit env overrides
     if [[ -n "${ANTHROPIC_MODEL:-}" ]]; then
@@ -62,7 +62,7 @@ detect_default_model() {
     fi
 
     # 2. Try to parse model from `claude --version` output
-    # Some builds embed the model string, e.g. "Claude Code 1.2.3 (model: claude-opus-4-6)"
+    # Some builds embed the model string, e.g. "Claude Code 1.2.3 (model: claude-opus-4-8)"
     if [[ "$HARNESS_VERSION" != "unknown" ]]; then
         local parsed_model
         parsed_model="$(echo "$HARNESS_VERSION" \
@@ -85,7 +85,7 @@ detect_default_model() {
     fi
 
     # 4. Fallback to known current default
-    echo "claude-opus-4-6"
+    echo "claude-opus-4-8"
 }
 
 DEFAULT_MODEL="$(detect_default_model)"

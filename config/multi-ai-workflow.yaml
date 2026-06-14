@@ -23,7 +23,7 @@ models:
   primary:
     name: "${WRK_PROVIDER:-claude}"
     provider: "${WRK_PROVIDER_VENDOR:-anthropic}"
-    model: "${WRK_PROVIDER_MODEL:-claude-sonnet-4-5-20250929}"
+    model: "${WRK_PROVIDER_MODEL:-claude-sonnet-4-6}"
     purpose: "Code implementation and auto-fix"
     api_env: "${WRK_PROVIDER_API_KEY_ENV:-ANTHROPIC_API_KEY}"
     fallback: "claude-haiku-4-5-20251001"
@@ -32,16 +32,16 @@ models:
   reviewer:
     name: "openai"
     provider: "openai"
-    model: "gpt-4.1"
+    model: "gpt-5.5"
     purpose: "Code review (quality, security, performance)"
     api_env: "OPENAI_API_KEY"
-    fallback: "gpt-4.1-mini"
+    fallback: "gpt-5.4-mini"
     max_tokens: 4096
 
   tester:
     name: "factory"
     provider: "factory.ai"
-    model: "claude-sonnet-4-5"  # Factory.ai uses Claude under the hood
+    model: "claude-sonnet-4-6"  # Factory.ai uses Claude under the hood
     purpose: "Comprehensive testing"
     command: "droid"
     fallback_provider: "gemini"

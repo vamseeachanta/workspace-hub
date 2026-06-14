@@ -8,7 +8,7 @@
 
 meta:
   generated: "2026-04-14"
-  generator: claude-opus-4-6
+  generator: claude-opus-4-8
   issues: [2039, 2042]
   wiki_baseline_pages: 75
   active_engineering_skills: 87

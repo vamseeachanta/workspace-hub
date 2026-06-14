@@ -49,7 +49,7 @@ gates:
     allow_no_output: true
     claude_model: "model-registry.yaml > work_queue_routing.cross_review.route_b/c"
     # Always use best available Claude model for review — never the default/balanced tier.
-    # Today: claude-opus-4-6. Tracks model-registry.yaml > latest_models.claude_primary.
+    # Today: claude-opus-4-8. Tracks model-registry.yaml > latest_models.claude_primary.
     # Rationale: review must have more capability than authoring session (Sonnet) to
     # catch blind spots. When a newer primary model ships, update model-registry.yaml
     # only — behavior-contract inherits automatically via the registry reference.

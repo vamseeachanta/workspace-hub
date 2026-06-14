@@ -5,7 +5,7 @@
 # Update manually when pricing changes.
 version: "2026-03-11"
 models:
-  claude-opus-4-6:
+  claude-opus-4-8:
     provider: claude
     effective_from: "2026-01-01"
     input_per_1m: 5.00

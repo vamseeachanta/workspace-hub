@@ -36,6 +36,42 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "domain:cleanup"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Client-identifier in a public skill slug \u2014 rename or route private (no-client-PII)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3073,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Client-identifier in a public skill slug \u2014 rename or route private (no-client-PII)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3073",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "enhancement",
           "priority:medium",
           "cat:documentation",
@@ -455,52 +491,6 @@
       "title": "Epic: Harden the repo ecosystem \u2014 enforce equivalence, model-sourcing, parity baselines, retrieval",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3058",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "reviews not clean: major_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "priority:medium",
-          "cat:operations",
-          "cat:harness",
-          "domain:automation",
-          "domain:repo-health",
-          "machine:dev-primary",
-          "status:plan-review",
-          "gate:completeness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `scripts/cron/cron_apply.py:145-157` loads raw catalog tasks, calls `cron_transaction.select_tasks(...)`, then sends those task dicts directly into `cron_transaction.plan_cutover(...)`. `select_tasks` already supports exact legacy `machines:` pins and conflict reporting,",
-        "provider_route": "claude",
-        "risks": "**Risk:** Expanding `$WORKSPACE_HUB` and `$LOG` inside transactional cutover could diverge from `setup-cron.sh` if two independent implementations remain. Mitigation: match setup-cron's actual checkout path and `contribute` fallback semantics, and add parity tests for both placeholders. | **Risk:** A shared renderer can still leave setup-cron and cron_apply task-selection semantics intentionally d",
-        "tests": "38 TDD tests defined",
-        "title": "bug(automation): harden cron cutover env and repo hygiene live probes"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3057,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-13-issue-3057-cron-hygiene-hardening.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "bug(automation): harden cron cutover env and repo hygiene live probes",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3057",
-      "warnings": [
-        "legacy_review_no_sha",
-        "major_review"
-      ]
     },
     {
       "approval_blockers": [
@@ -8633,12 +8623,48 @@
       ]
     }
   ],
-  "generated_at": "2026-06-14T01:20:14Z",
+  "generated_at": "2026-06-14T05:20:14Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "domain:cleanup"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Client-identifier in a public skill slug \u2014 rename or route private (no-client-PII)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3073,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Client-identifier in a public skill slug \u2014 rename or route private (no-client-PII)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3073",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -9069,52 +9095,6 @@
         "title": "Epic: Harden the repo ecosystem \u2014 enforce equivalence, model-sourcing, parity baselines, retrieval",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3058",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "reviews not clean: major_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness",
-            "domain:automation",
-            "domain:repo-health",
-            "machine:dev-primary",
-            "status:plan-review",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `scripts/cron/cron_apply.py:145-157` loads raw catalog tasks, calls `cron_transaction.select_tasks(...)`, then sends those task dicts directly into `cron_transaction.plan_cutover(...)`. `select_tasks` already supports exact legacy `machines:` pins and conflict reporting,",
-          "provider_route": "claude",
-          "risks": "**Risk:** Expanding `$WORKSPACE_HUB` and `$LOG` inside transactional cutover could diverge from `setup-cron.sh` if two independent implementations remain. Mitigation: match setup-cron's actual checkout path and `contribute` fallback semantics, and add parity tests for both placeholders. | **Risk:** A shared renderer can still leave setup-cron and cron_apply task-selection semantics intentionally d",
-          "tests": "38 TDD tests defined",
-          "title": "bug(automation): harden cron cutover env and repo hygiene live probes"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3057,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-13-issue-3057-cron-hygiene-hardening.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "bug(automation): harden cron cutover env and repo hygiene live probes",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3057",
-        "warnings": [
-          "legacy_review_no_sha",
-          "major_review"
-        ]
       },
       {
         "approval_blockers": [
@@ -17255,17 +17235,17 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-06-14T01:20:10.624334Z",
+  "scorecard_generated_at": "2026-06-14T05:20:10.960453Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-14T01:20:10.512522Z",
+  "utilization_generated_at": "2026-06-14T05:20:10.846930Z",
   "warning_summary": {
     "approved_no_marker": 22,
     "approved_no_plan": 11,
     "dual_status_labels": 6,
     "empty_review": 2,
-    "legacy_review_no_sha": 24,
-    "major_review": 21,
-    "marker_without_open_approved_issue": 154,
+    "legacy_review_no_sha": 23,
+    "major_review": 20,
+    "marker_without_open_approved_issue": 156,
     "missing_review": 39,
     "unavailable_review": 8
   }

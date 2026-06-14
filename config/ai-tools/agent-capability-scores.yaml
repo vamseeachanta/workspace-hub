@@ -41,10 +41,10 @@ provider_comparison:
       badge: { text: "research", class: "badge-research" }
       scores: [8, 7, 10, 10, 9, 5]
     openai:
-      label: "OpenAI (GPT-4.1)"
+      label: "OpenAI (GPT-5.5)"
       color: "#ef4444"
       role: "General fallback"
-      default_model: "GPT-4.1"
+      default_model: "GPT-5.5"
       cost_display: "~$2/$8 per 1M tok"
       badge: { text: "alt", class: "badge-alt" }
       scores: [8, 8, 10, 7, 7, 5]

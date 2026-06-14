@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-14T01:20:12.460731Z",
+  "generated_at": "2026-06-14T05:20:12.692864Z",
   "current_week": "2026-W24",
-  "scorecard_generated_at": "2026-06-14T01:20:10.624334Z",
+  "scorecard_generated_at": "2026-06-14T05:20:10.960453Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -1880,7 +1880,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-14T00:01:54Z",
+          "updatedAt": "2026-06-14T03:14:31Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2391,7 +2391,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-13T11:08:26Z",
+          "updatedAt": "2026-06-14T04:01:44Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4169,34 +4169,6 @@
           ]
         },
         {
-          "number": 3057,
-          "title": "bug(automation): harden cron cutover env and repo hygiene live probes",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3057",
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness",
-            "domain:automation",
-            "domain:repo-health",
-            "machine:dev-primary",
-            "status:plan-review",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-14T00:11:08Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 3066,
           "title": "uv-workflow(assethold): wire portfolio/options/property/risk/dividend/fundamentals into engine + fix substring bug",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3066",
@@ -4819,6 +4791,26 @@
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3073,
+          "title": "Client-identifier in a public skill slug \u2014 rename or route private (no-client-PII)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3073",
+          "labels": [
+            "domain:cleanup"
+          ],
+          "updatedAt": "2026-06-14T02:39:01Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -5548,7 +5540,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-10T16:25:53Z",
+          "updatedAt": "2026-06-14T04:00:02Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5645,7 +5637,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-10T16:25:53Z",
+          "updatedAt": "2026-06-14T04:00:02Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
