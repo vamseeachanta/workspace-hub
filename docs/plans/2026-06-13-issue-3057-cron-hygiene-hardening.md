@@ -1,6 +1,6 @@
 # Plan for #3057: cron cutover env and repo hygiene live-probe hardening
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-06-13
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3057
@@ -692,7 +692,7 @@ function cron_health_check_task_log(task_id, recent_tail):
 | Claude r17 | MINOR | No blockers; requested notification-purge live-risk clarification, stale harness comment cleanup, hygiene cold-cache closeout discipline, and artifact-map labeling cleanup. |
 | Codex r17 | MINOR | No blockers; requested duplicate failed-review artifact-map row cleanup and commit/push before label promotion. |
 
-**Overall result:** PASS - r17 returned no MAJOR findings. Implementation remains blocked until user approval moves the GitHub issue to `status:plan-approved`.
+**Overall result:** PASS - r17 returned no MAJOR findings. User approved implementation on 2026-06-14 and the GitHub issue carries `status:plan-approved`.
 
 Revisions made based on review:
 - Changed cron-health semantics from "any `status=ERROR` in tail" to "latest matching hygiene evidence line wins".
