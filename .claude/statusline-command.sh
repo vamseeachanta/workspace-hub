@@ -59,6 +59,9 @@ issue_num=$(echo "$branch" | grep -oE '[0-9]{3,5}' | head -1) || true
 # they fall back to the real locations in normal use.
 quota_primary="${STATUSLINE_QUOTA_PRIMARY:-$ws_root/config/ai-tools/agent-quota-latest.json}"
 quota_cache="${STATUSLINE_QUOTA_CACHE:-${HOME}/.cache/agent-quota.json}"
+# Gemini genuine usage: manual /usage snapshot (agy persists no quota to disk —
+# workspace-hub#3087). Written by scripts/ai/assessment/agy-usage-snapshot.py.
+gemini_snapshot="${STATUSLINE_GEMINI_SNAPSHOT:-${HOME}/.cache/agy-usage-snapshot.json}"
 
 # Parse an ISO-8601 timestamp to epoch seconds; emits nothing on failure.
 iso_epoch() {
@@ -191,6 +194,31 @@ reset_days() {
     fi
 }
 
+# Gemini (agy) genuine weekly usage comes from a manual /usage snapshot — agy
+# persists no quota to disk (workspace-hub#3087), so there is no live source and
+# no fixed reset to count down (rolling Weekly + 5h windows). Emit the weekly %
+# AVAILABLE with a freshness verdict, age-gated against a gemini-specific
+# threshold (a weekly reading stays meaningful far longer than the 6h codex/
+# claude gate). "- missing" → color_pct dims G: instead of faking 100%.
+gemini_snapshot_pct() {
+    [[ -f "$gemini_snapshot" ]] || { echo "- missing"; return; }
+    local pct cap max_h epoch now age_h
+    pct=$(jq -r '.gemini.weekly_pct_avail // empty' "$gemini_snapshot" 2>/dev/null)
+    [[ -n "$pct" ]] || { echo "- missing"; return; }
+    pct=$(awk -v p="$pct" 'BEGIN { printf "%d", p }')   # int for color thresholds
+    cap=$(jq -r '.captured_at // empty' "$gemini_snapshot" 2>/dev/null)
+    max_h="${STATUSLINE_GEMINI_SNAPSHOT_MAX_AGE_HOURS:-48}"
+    epoch=$(iso_epoch "$cap") || epoch=""
+    [[ -n "$epoch" ]] || { echo "$pct stale"; return; }   # undatable = stale
+    now=$(date +%s)
+    age_h=$(awk -v e="$epoch" -v n="$now" 'BEGIN { print (n-e)/3600 }')
+    if awk -v a="$age_h" -v m="$max_h" 'BEGIN { exit !(a <= m) }'; then
+        echo "$pct fresh"
+    else
+        echo "$pct stale"
+    fi
+}
+
 # Render a "LABEL:NN%" segment colored by remaining headroom so a throttle is
 # glance-able for delegation: red <20%, yellow <40%, green otherwise, dim when
 # the figure is unknown. Emits literal \033 escapes for the final printf %b.
@@ -231,7 +259,7 @@ else
 fi
 
 read -r o_pct o_state <<< "$(extract_pct "codex")"
-read -r g_pct g_state <<< "$(extract_pct "gemini")"
+read -r g_pct g_state <<< "$(gemini_snapshot_pct)"
 o_mark=""; [[ "$o_state" == stale ]] && o_mark="?"
 g_mark=""; [[ "$g_state" == stale ]] && g_mark="?"
 
