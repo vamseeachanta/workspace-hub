@@ -215,6 +215,7 @@ cards:
       - cat:infrastructure
       - domain:automation
       - machine:dev-primary
+      - status:plan-review
       - dispatch:ready
       - gate:completeness
       - lane:claude
@@ -750,7 +751,7 @@ cards:
       - domain:automation
       - domain:repo-health
       - machine:dev-primary
-      - status:needs-plan
+      - status:plan-review
       - gate:completeness
       - lane:claude
     initial_status: triage
