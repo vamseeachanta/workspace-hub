@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-14T12:20:04-05:00",
+  "timestamp": "2026-06-14T16:20:07-05:00",
   "agents": [
     {
       "provider": "claude",
@@ -16,21 +16,24 @@
       "provider": "codex",
       "tier": "subscription",
       "weekly_limit": 1400,
-      "week_messages": 245,
-      "week_pct": 51,
-      "five_hour_pct": 14,
-      "pct_remaining": 49,
-      "hours_to_reset": 109,
+      "week_messages": 246,
+      "week_pct": 54,
+      "five_hour_pct": 0,
+      "pct_remaining": 46,
+      "hours_to_reset": 105,
       "resets_at": "2026-06-19T01:32:54-0500",
       "source": "app-server-live"
     },
     {
       "provider": "gemini",
       "tier": "google_login",
-      "daily_limit": 1000,
-      "today_messages": 0,
-      "pct_remaining": 100,
-      "source": "estimated"
+      "week_pct": 100,
+      "five_hour_pct": null,
+      "pct_remaining": 0,
+      "hours_to_reset": 0.5,
+      "resets_at": "2026-06-14T16:47:59-05:00",
+      "captured_at": null,
+      "source": "429-throttle"
     }
   ]
 }

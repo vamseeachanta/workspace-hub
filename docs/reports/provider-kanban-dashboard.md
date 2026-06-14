@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-14T17:20:14Z
+Generated: 2026-06-14T21:20:22Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,10 +43,15 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3099 | PII: prevention hardening (CI guard + emitter redaction) — epic #3095 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3098 | PII: hand-authored docs/plans/handoffs scrub — epic #3095 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3097 | PII: generated-artifact / session-log policy + remediation (bulk) — epic #3095 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3096 | PII: full multi-client sweep + categorization (assessment) — epic #3095 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3095 | Epic: Public-repo client-PII remediation (systemic — 43+ files) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3087 | Statusline: make Gemini (agy) usage genuine + add days/hours-to-reset token | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3086 | Standardize agy (Antigravity CLI) default model = Gemini 3.1 Pro (High) across all machines | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3085 | (7) Cadence — schedule the periodic flywheel — epic #3078 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3084 | (6) Context-flow backbone — migrate memory/harness onto flow paths — epic #3078 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3084 | (6) Context-flow backbone — migrate memory/harness onto flow paths — epic #3078 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3083 | (5) Marketing concentration — compounding assets focus list — epic #3078 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3082 | (4) Flywheel outcome metrics / scorecard — epic #3078 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3081 | (3) Workflow hardening (deploy-orchestration gate, cron locks, contention) — epic #3078 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -238,11 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2609 | tracker(digitalmodel-tests): post-#543 main has 244+ broken tests, not 20 as Quality Gates reports | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2585 | tracker(digitalmodel-tests): 26 collect_ignore entries from 2026-03-24 slim-down need real fixes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2572 | Routine: /repo-sync + /mnt/local-analysis cleanup audit (every 2 days) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2563 | Set up Telegram mobile access for Hermes AI control | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
-| #2558 | data(field-dev): primary-source GoM equipment/cost source pack for #2112/#2055 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2557 | chore(productivity): weekly work-pattern review and flow hacks | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2553 | docs(repo-portfolio): reconcile repository overview docs after mission review | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2552 | docs(security): external contributor and unsolicited paid-help response runbook | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,unavailable_review |
 
 ## Lane: blocked (0)
 

@@ -1,8 +1,8 @@
 # Provider routing scorecard
 
-Generated: 2026-06-14T17:20:11.469740Z
+Generated: 2026-06-14T21:20:18.539050Z
 Current week: 2026-W24
-Recommended provider order: gemini, claude, codex
+Recommended provider order: claude, codex, gemini
 
 This scorecard combines provider utilization with session-audit hygiene to decide where the next work packets should go.
 
@@ -39,7 +39,7 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 - Status: needs_cleanup
 - Priority: high
-- Current-week reported utilization: 51.0%
+- Current-week reported utilization: 54.0%
 - Quota basis: quota (app-server-live)
 - Current-week sessions / post records: 310 / 30711
 - Audit post records: 60184
@@ -64,10 +64,10 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 ## gemini
 
-- Status: underused
-- Priority: highest
-- Current-week reported utilization: 0.0%
-- Quota basis: estimated_daily_quota (estimated)
+- Status: needs_cleanup
+- Priority: high
+- Current-week reported utilization: 100.0%
+- Quota basis: quota (429-throttle)
 - Current-week sessions / post records: 0 / 0
 - Audit post records: 6205
 - Missing repo reads: 611
@@ -87,5 +87,4 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 ### Recommended actions
 - Batch 5-6 related research/recon tasks into Gemini sessions.
 - Use Gemini for scouting/risk-analysis packets instead of leaving the lane idle.
-- Telemetry is weak; treat utilization as directional, not exact weekly headroom.
 

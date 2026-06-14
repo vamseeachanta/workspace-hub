@@ -1,48 +1,19 @@
 {
-  "generated_at": "2026-06-14T17:20:13.295319Z",
+  "generated_at": "2026-06-14T21:20:20.341459Z",
   "current_week": "2026-W24",
-  "scorecard_generated_at": "2026-06-14T17:20:11.469740Z",
+  "scorecard_generated_at": "2026-06-14T21:20:18.539050Z",
   "recommended_provider_order": [
-    "gemini",
     "claude",
-    "codex"
+    "codex",
+    "gemini"
   ],
   "provider_queues": {
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 32,
+      "execution_ready_count": 31,
       "total_candidates": 175,
       "top_issues": [
-        {
-          "number": 2563,
-          "title": "Set up Telegram mobile access for Hermes AI control",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2563",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:ai-orchestration",
-            "cat:operations",
-            "domain:integrations",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T12:58:44Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 2628,
           "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
@@ -245,26 +216,25 @@
             "implementation",
             "strategy"
           ]
-        }
-      ],
-      "full_candidates": [
+        },
         {
-          "number": 2563,
-          "title": "Set up Telegram mobile access for Hermes AI control",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2563",
+          "number": 2755,
+          "title": "throughput(workstations): activate ace-linux-2 provider/machine lane",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2755",
           "labels": [
             "enhancement",
             "priority:high",
             "cat:ai-orchestration",
             "cat:operations",
-            "domain:integrations",
-            "machine:dev-primary",
+            "status:working",
+            "machine:ace-linux-2",
             "status:plan-approved",
             "dispatch:ready",
             "gate:completeness",
+            "domain:workstations-machine-bringup",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-10T12:58:44Z",
+          "updatedAt": "2026-06-10T16:29:18Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -276,7 +246,9 @@
             "implementation",
             "strategy"
           ]
-        },
+        }
+      ],
+      "full_candidates": [
         {
           "number": 2628,
           "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
@@ -614,34 +586,6 @@
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
-            "strategy"
-          ]
-        },
-        {
-          "number": 2552,
-          "title": "docs(security): external contributor and unsolicited paid-help response runbook",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2552",
-          "labels": [
-            "documentation",
-            "priority:medium",
-            "cat:documentation",
-            "domain:ops",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T12:58:53Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
             "strategy"
           ]
         },
@@ -1108,6 +1052,30 @@
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3084,
+          "title": "(6) Context-flow backbone \u2014 migrate memory/harness onto flow paths \u2014 epic #3078",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3084",
+          "labels": [
+            "enhancement",
+            "cat:harness",
+            "domain:memory",
+            "status:plan-approved",
+            "gate:completeness"
+          ],
+          "updatedAt": "2026-06-14T21:19:50Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -1930,89 +1898,6 @@
           "updatedAt": "2026-06-13T21:42:39Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2553,
-          "title": "docs(repo-portfolio): reconcile repository overview docs after mission review",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2553",
-          "labels": [
-            "documentation",
-            "priority:medium",
-            "cat:documentation",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:repo-organization-structure",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T12:58:51Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2557,
-          "title": "chore(productivity): weekly work-pattern review and flow hacks",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2557",
-          "labels": [
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:business",
-            "domain:gtm",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:10:39Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2558,
-          "title": "data(field-dev): primary-source GoM equipment/cost source pack for #2112/#2055",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2558",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "cat:data-pipeline",
-            "machine:dev-primary",
-            "status:needs-data",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-field-dev",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-06-10T16:10:46Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4541,7 +4426,7 @@
             "domain:cleanup",
             "status:plan-review"
           ],
-          "updatedAt": "2026-06-14T16:03:43Z",
+          "updatedAt": "2026-06-14T19:28:04Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4604,7 +4489,7 @@
             "enhancement",
             "cat:harness"
           ],
-          "updatedAt": "2026-06-14T16:01:38Z",
+          "updatedAt": "2026-06-14T17:48:04Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4679,28 +4564,6 @@
           ]
         },
         {
-          "number": 3084,
-          "title": "(6) Context-flow backbone \u2014 migrate memory/harness onto flow paths \u2014 epic #3078",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3084",
-          "labels": [
-            "enhancement",
-            "cat:harness",
-            "domain:memory"
-          ],
-          "updatedAt": "2026-06-14T12:46:11Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3085,
           "title": "(7) Cadence \u2014 schedule the periodic flywheel \u2014 epic #3078",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3085",
@@ -4738,6 +4601,103 @@
           "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3095,
+          "title": "Epic: Public-repo client-PII remediation (systemic \u2014 43+ files)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3095",
+          "labels": [
+            "domain:admin",
+            "domain:cleanup"
+          ],
+          "updatedAt": "2026-06-14T19:31:41Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3096,
+          "title": "PII: full multi-client sweep + categorization (assessment) \u2014 epic #3095",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3096",
+          "labels": [
+            "domain:cleanup"
+          ],
+          "updatedAt": "2026-06-14T19:31:05Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3097,
+          "title": "PII: generated-artifact / session-log policy + remediation (bulk) \u2014 epic #3095",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3097",
+          "labels": [
+            "domain:cleanup"
+          ],
+          "updatedAt": "2026-06-14T19:31:10Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3098,
+          "title": "PII: hand-authored docs/plans/handoffs scrub \u2014 epic #3095",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3098",
+          "labels": [
+            "domain:cleanup"
+          ],
+          "updatedAt": "2026-06-14T19:31:14Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3099,
+          "title": "PII: prevention hardening (CI guard + emitter redaction) \u2014 epic #3095",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3099",
+          "labels": [
+            "domain:tooling"
+          ],
+          "updatedAt": "2026-06-14T19:31:20Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
             "strategy"
           ]
         }
@@ -5440,7 +5400,7 @@
             "cat:tooling",
             "domain:agent-ux"
           ],
-          "updatedAt": "2026-06-14T16:08:22Z",
+          "updatedAt": "2026-06-14T18:01:15Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -5455,7 +5415,7 @@
     },
     "gemini": {
       "provider": "gemini",
-      "routing_priority": "highest",
+      "routing_priority": "high",
       "execution_ready_count": 1,
       "total_candidates": 4,
       "top_issues": [
@@ -5481,8 +5441,8 @@
           "priority_rank": 1,
           "suggested_provider": "gemini",
           "routing_reason": "existing gemini agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -5508,8 +5468,8 @@
           "priority_rank": 2,
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research"
           ]
@@ -5529,8 +5489,8 @@
           "priority_rank": 2,
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "general"
           ]
@@ -5548,8 +5508,8 @@
           "priority_rank": 2,
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research"
           ]
@@ -5578,8 +5538,8 @@
           "priority_rank": 1,
           "suggested_provider": "gemini",
           "routing_reason": "existing gemini agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -5605,8 +5565,8 @@
           "priority_rank": 2,
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research"
           ]
@@ -5626,8 +5586,8 @@
           "priority_rank": 2,
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "general"
           ]
@@ -5645,8 +5605,8 @@
           "priority_rank": 2,
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research"
           ]

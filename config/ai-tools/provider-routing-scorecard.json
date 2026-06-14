@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-14T17:20:11.469740Z",
+  "generated_at": "2026-06-14T21:20:18.539050Z",
   "current_week": "2026-W24",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-06-14T17:20:11.345205Z",
+    "utilization_generated_at": "2026-06-14T21:20:18.383551Z",
     "audit_generated_at": "2026-06-10T16:45:32Z"
   },
   "recommended_provider_order": [
-    "gemini",
     "claude",
-    "codex"
+    "codex",
+    "gemini"
   ],
   "recommendations": [
     {
@@ -67,7 +67,7 @@
       "provider": "codex",
       "status": "needs_cleanup",
       "priority": "high",
-      "reported_utilization_pct": 51.0,
+      "reported_utilization_pct": 54.0,
       "quota_basis": "quota",
       "quota_source": "app-server-live",
       "sessions_current_week": 310,
@@ -117,11 +117,11 @@
     },
     {
       "provider": "gemini",
-      "status": "underused",
-      "priority": "highest",
-      "reported_utilization_pct": 0.0,
-      "quota_basis": "estimated_daily_quota",
-      "quota_source": "estimated",
+      "status": "needs_cleanup",
+      "priority": "high",
+      "reported_utilization_pct": 100.0,
+      "quota_basis": "quota",
+      "quota_source": "429-throttle",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
       "audit_post_records": 6205,
@@ -175,13 +175,12 @@
       ],
       "actions": [
         "Batch 5-6 related research/recon tasks into Gemini sessions.",
-        "Use Gemini for scouting/risk-analysis packets instead of leaving the lane idle.",
-        "Telemetry is weak; treat utilization as directional, not exact weekly headroom."
+        "Use Gemini for scouting/risk-analysis packets instead of leaving the lane idle."
       ]
     }
   ],
   "summary": {
-    "highest_priority_provider": "gemini",
-    "highest_priority_reason": "Batch 5-6 related research/recon tasks into Gemini sessions."
+    "highest_priority_provider": "claude",
+    "highest_priority_reason": "Reserve Claude for adversarial review, plan review, and long-context synthesis."
   }
 }
