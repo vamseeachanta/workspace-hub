@@ -89,7 +89,7 @@ def test_sweep_grace_dry_run_does_not_write_snapshot_files(tmp_path):
     assert not (tmp_path / "queue-learning-log.jsonl").exists()
 
 
-def test_sweep_grace_ignores_disabled_accounts(tmp_path):
+def test_sweep_grace_keeps_assist_only_accounts_forever(tmp_path):
     queue_state = load_queue_state()
     config = tmp_path / "accounts.yaml"
     write_accounts(config)
@@ -115,6 +115,34 @@ def test_sweep_grace_ignores_disabled_accounts(tmp_path):
 
     assert applied["purged_count"] == 0
     assert queue_state.lookup(log, "skestates", "old-thread")["state"] == "completed"
+
+
+def test_sweep_grace_precheck_scope_is_cleanup_accounts_only(tmp_path):
+    queue_state = load_queue_state()
+    config = tmp_path / "accounts.yaml"
+    write_accounts(config)
+    scope = queue_state.load_account_scope(config)
+    log = tmp_path / "queue-state.jsonl"
+    queue_state.transition(
+        log,
+        account_id="ace",
+        thread_id="old-thread",
+        from_state="inbound",
+        to_state="completed",
+        ts_utc="2026-06-01T00:00:00Z",
+        completed_at="2026-06-01T00:00:00Z",
+    )
+    precheck = clean_precheck(log)
+    precheck["checked_accounts"] = ["ace", "personal", "skestates"]
+
+    with pytest.raises(queue_state.QueueStateError):
+        queue_state.sweep_grace(
+            log,
+            now_utc="2026-06-14T00:00:00Z",
+            dry_run=False,
+            account_scope=scope,
+            reactivation_precheck=precheck,
+        )
 
 
 def test_sweep_grace_rejects_thread_level_precheck_blockers(tmp_path):

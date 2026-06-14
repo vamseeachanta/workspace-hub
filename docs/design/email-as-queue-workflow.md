@@ -9,9 +9,14 @@
 
 ## 2026 Scope Update
 
-Issue [#2026](https://github.com/vamseeachanta/workspace-hub/issues/2026) implements the local queue-state layer for only two active accounts: `ace` (`vamsee.achanta@aceengineer.com`) and `personal` (`achantav@gmail.com`). No other account is active in this implementation pass.
+Issue [#2026](https://github.com/vamseeachanta/workspace-hub/issues/2026) implements the local queue-state layer with two scopes:
 
-The #2026 state layer can report whether known in-scope mail has pending work and whether a supplied inbox snapshot contains unknown in-scope threads. It does not archive or delete Gmail messages; destructive Gmail cleanup remains follow-on issue [#2423](https://github.com/vamseeachanta/workspace-hub/issues/2423). Durable information extracted from mail belongs in the appropriate repo ecosystem target, not in repo-tracked raw email. Any older deletion examples below are historical context only when they conflict with this boundary.
+- Read/assist scope: `ace` (`vamsee.achanta@aceengineer.com`), `personal` (`achantav@gmail.com`), `skestates` (`skestatesinc@gmail.com`), and any other configured alias unless explicitly disabled.
+- Cleanup scope: only `ace` and `personal`.
+
+`skestates` and other assist-only aliases are read and assisted, but their email is kept forever. Important `skestates` attention is surfaced through the starred method and Telegram `Family - Finance` channel.
+
+The #2026 state layer can report whether known read/assist mail has pending work and whether a supplied inbox snapshot contains unknown read/assist threads. It does not archive or delete Gmail messages; destructive Gmail cleanup remains follow-on issue [#2423](https://github.com/vamseeachanta/workspace-hub/issues/2423). Durable information extracted from mail belongs in the appropriate repo ecosystem target, not in repo-tracked raw email. Any older deletion examples below are historical context only when they conflict with this boundary.
 
 ---
 
@@ -65,8 +70,8 @@ The new model treats every email as a transient item in a processing queue. Data
             |     | arrives       | elapsed |
             |     v               v         |
             | RE-ACTIVATE     PURGE LOCAL   |
-            |  (back to       (email gone,  |
-            |   INBOUND)       data stays)  |
+            |  (back to       (cleanup      |
+            |   INBOUND)       scope only)  |
             +----+---+----+--------+--------+
                      |
               Gmail delete/archive
@@ -101,9 +106,24 @@ VIP domains requiring immediate attention: `ril.com`, `dorisgroup.com`, `mcdermo
 | Social media notifications | Label/no pending extraction; Gmail delete belongs to #2423 | -- |
 | Marketing / promotions | Label/no pending extraction; Gmail delete belongs to #2423 | -- |
 
-### 2.3 Disabled Accounts
+### 2.3 skestates (skestatesinc@gmail.com)
 
-Additional accounts require a future issue and explicit approval before they are added to queue-state processing, label creation, or cleanup reporting.
+| Category | Handling | Extraction Target |
+|---|---|---|
+| Tenant (Family Dollar, Dollar Tree) | Read/assist, extract issue/resolution/dates, star important threads, notify Telegram `Family - Finance` | sabithaandkrishnaestates/data/tenant/ |
+| Insurance (Marsh, Crown Insurance, Insureon) | Read/assist, extract policy/claim/premium data, star important threads, notify Telegram `Family - Finance` | sabithaandkrishnaestates/data/insurance/ |
+| HOA (FS Residential) | Read/assist, extract dues/violations/dates, star important threads, notify Telegram `Family - Finance` | sabithaandkrishnaestates/data/hoa/ |
+| Vendors (PHFM, CLH, GDS, Partner ESI) | Read/assist, extract invoices/work orders, star important threads, notify Telegram `Family - Finance` | sabithaandkrishnaestates/data/vendor/ |
+| Title company | Read/assist, extract closing/filing data, star important threads, notify Telegram `Family - Finance` | sabithaandkrishnaestates/data/title/ |
+| Tax / CPA | Read/assist, extract filing status/deadlines, star important threads, notify Telegram `Family - Finance` | sabithaandkrishnaestates/data/tax/ |
+
+Retention: keep forever. `skestates` is never a local purge candidate and is never in Gmail archive/delete scope.
+
+VIP domains requiring immediate attention: `familydollar.com`, `dollartree.com`, `marsh.com`
+
+### 2.4 Other Assist-Only Aliases
+
+Additional configured aliases are read/assist by default and use keep-forever retention unless explicitly disabled. They may use the starred method for important messages, but they are not cleanup-enabled unless a future issue explicitly expands cleanup scope.
 
 ---
 
@@ -116,7 +136,7 @@ Additional accounts require a future issue and explicit approval before they are
 | inbox | (none) | New, untriaged | Pending work |
 | extracted | `wh-email/extracted` | Data pulled, no pending action | Local state only |
 | awaiting-reply | `wh-email/awaiting-reply` | Operator replied, waiting for counterparty | Not pending by itself |
-| completed | `wh-email/completed` | Topic resolved, grace clock starts | Local `purged` marker after 7 days and clean precheck |
+| completed | `wh-email/completed` | Topic resolved, grace clock starts | Local `purged` marker after 7 days and clean precheck for cleanup-enabled accounts; keep forever for assist-only accounts |
 | noise | `wh-email/noise` | Spam/newsletter, no extraction needed | Local label/state only; Gmail deletion belongs to #2423 |
 
 ### 3.2 Transition Rules
@@ -133,7 +153,7 @@ awaiting-reply --> inbox              (new inbound reply arrives -- RE-ACTIVATE)
 awaiting-reply --> completed          (topic resolved without further reply)
 
 completed ------> inbox              (new inbound reply during grace period -- RE-ACTIVATE)
-completed ------> purged             (local grace marker only in #2026)
+completed ------> purged             (cleanup-enabled accounts only; assist-only keeps forever)
 
 noise ----------> wh-email/noise     (label only in #2026)
 ```
@@ -153,7 +173,8 @@ When a thread marked `completed` or `awaiting-reply` receives a new inbound mess
 - Duration: 7 calendar days from `completed_date`
 - During grace period: thread stays in Gmail with `wh-email/completed` label
 - If new reply arrives: grace timer resets, thread returns to inbox
-- After grace period with no new reply: #2026 can mark local state as `purged` only after a clean reactivation precheck.
+- After grace period with no new reply: #2026 can mark local state as `purged` only for cleanup-enabled accounts and only after a clean reactivation precheck.
+- Assist-only accounts, including `skestates`, use keep-forever retention.
 - Gmail archive/delete remains follow-on #2423.
 
 ---
@@ -480,7 +501,7 @@ The daily digest (gmail-digest.py) should include a "Learning Backlog" section:
 | 1 | Create `routing-v2.yaml` alongside existing routing file | None | Old file still works |
 | 2 | Build `gmail-extract-and-act.py` with dry-run mode | None | No side effects in dry-run |
 | 3 | Create first 5 extraction templates (CRE, client, tenant, tax, invoice) | Low | Templates are additive |
-| 4 | Run extraction pipeline in dry-run on the two approved accounts | None | Validates templates against real data |
+| 4 | Run extraction pipeline in dry-run across read/assist accounts | None | Validates templates against real data; cleanup remains limited to cleanup-enabled accounts |
 | 5 | Enable extraction (write YAML to repos) with `wh-email/extracted` labels | Low | Data is additive, no deletions yet |
 | 6 | Enable queue-state reporting and local grace-sweep dry-run | Low | No Gmail archive/delete |
 | 7 | Plan Gmail archive/delete separately in #2423 | Medium | Separate approval and recovery contract |

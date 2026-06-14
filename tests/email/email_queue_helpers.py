@@ -24,7 +24,10 @@ def write_accounts(path: Path):
                     },
                     "skestates": {
                         "email": "skestatesinc@gmail.com",
-                        "enabled": False,
+                        "enabled": True,
+                        "attention_channel": "Telegram: Family - Finance",
+                        "attention_method": "starred",
+                        "retention_policy": "keep_forever",
                     },
                 }
             },

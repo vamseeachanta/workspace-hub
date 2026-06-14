@@ -8,7 +8,7 @@ import pytest
 from tests.email.email_queue_helpers import load_queue_state, write_accounts
 
 
-def test_label_plan_is_two_account_label_only_and_apply_uses_separate_clients(tmp_path):
+def test_label_plan_covers_read_assist_accounts_and_uses_separate_clients(tmp_path):
     queue_state = load_queue_state()
     config = tmp_path / "accounts.yaml"
     write_accounts(config)
@@ -20,7 +20,7 @@ def test_label_plan_is_two_account_label_only_and_apply_uses_separate_clients(tm
         def ensure_label(self, label):
             self.labels.append(label)
 
-    clients = {"ace": FakeClient(), "personal": FakeClient()}
+    clients = {"ace": FakeClient(), "personal": FakeClient(), "skestates": FakeClient()}
     result = queue_state.ensure_labels(
         account_scope=queue_state.load_account_scope(config),
         clients_by_account=clients,
@@ -29,15 +29,15 @@ def test_label_plan_is_two_account_label_only_and_apply_uses_separate_clients(tm
 
     account_ids = {op["account_id"] for op in result["operations"]}
     labels = {op["label"] for op in result["operations"]}
-    assert account_ids == {"ace", "personal"}
+    assert account_ids == {"ace", "personal", "skestates"}
     assert labels == {
         "wh-email/extracted",
         "wh-email/awaiting-reply",
         "wh-email/completed",
         "wh-email/noise",
     }
-    assert "skestates" not in account_ids
     assert clients["ace"].labels == clients["personal"].labels
+    assert clients["skestates"].labels == clients["personal"].labels
 
 
 def test_label_apply_fails_on_account_mapping_disagreement(tmp_path):

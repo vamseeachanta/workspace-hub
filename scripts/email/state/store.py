@@ -186,7 +186,7 @@ def _sweep_candidates(
     return [
         row for row in snapshot.values()
         if row["state"] == "completed"
-        and scope.normalize(row["account_id"]).status == "enabled"
+        and scope.cleanup_enabled(row["account_id"])
         and row.get("completed_at")
         and _parse_utc(row["completed_at"]) <= cutoff
     ]

@@ -566,7 +566,8 @@ tasks:
     is_claude_task: false
     description: >-
       Daily non-destructive queue-state grace sweep report for #2026. It only
-      plans local completed-to-purged state transitions; Gmail archive/delete
+      plans local completed-to-purged state transitions for cleanup-enabled
+      accounts; assist-only aliases such as skestates are kept forever. Gmail archive/delete
       automation remains out of scope for #2026 and belongs to #2423.
 
   - id: daily-today

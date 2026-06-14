@@ -18,6 +18,7 @@ def pending_work_report(
     scope = account_scope or load_account_scope()
     local = _classify_local_threads(list_threads(log_path), scope)
     snapshot_result = _classify_inbox_snapshot(inbox_snapshot, local["tracked"], scope)
+    per_account = _merge_per_account(local["per_account"], snapshot_result["per_account"])
     tracked_pending = sum(row["pending_work_count"] for row in local["tracked"].values())
     return {
         "tracked_empty": tracked_pending == 0,
@@ -28,7 +29,8 @@ def pending_work_report(
         "config_missing_count": local["config_missing_count"] + snapshot_result["config_missing_count"],
         "newer_message_pending_count": snapshot_result["newer_message_pending_count"],
         "snapshot_comparison_missing_count": snapshot_result["snapshot_comparison_missing_count"],
-        "per_account": local["per_account"],
+        "per_account": per_account,
+        "attention_routes": _attention_routes(per_account),
         "pending_count": tracked_pending + snapshot_result["pending_count"],
     }
 
@@ -48,7 +50,10 @@ def _classify_local_threads(
         pending = _local_pending_count(tracked)
         tracked["pending_work_count"] = pending
         result["tracked"][_snapshot_key(normalized.alias, tracked["thread_id"])] = tracked
-        account = result["per_account"].setdefault(normalized.alias, _account_counts())
+        account = result["per_account"].setdefault(
+            normalized.alias,
+            _account_counts(scope.accounts[normalized.alias]),
+        )
         account["states"][tracked["state"]] = account["states"].get(tracked["state"], 0) + 1
         account["pending_count"] += pending
     return result
@@ -69,18 +74,25 @@ def _classify_inbox_snapshot(
         if normalized.status != "enabled" or normalized.alias is None:
             result[f"{normalized.status}_count"] += 1
             continue
+        account = result["per_account"].setdefault(
+            normalized.alias,
+            _account_counts(scope.accounts[normalized.alias]),
+        )
         key = _snapshot_key(normalized.alias, str(item["thread_id"]))
         current = tracked.get(key)
         if current is None:
             result["unknown_count"] += 1
             result["pending_count"] += 1
+            account["pending_count"] += 1
+            account["snapshot_unknown_count"] += 1
             continue
-        _count_newer_message(result, current, item)
+        _count_newer_message(result, account, current, item)
     return result
 
 
 def _count_newer_message(
     result: dict[str, Any],
+    account: dict[str, Any],
     current: Mapping[str, Any],
     item: Mapping[str, Any],
 ) -> None:
@@ -89,12 +101,16 @@ def _count_newer_message(
     if not msg_id or not received:
         result["snapshot_comparison_missing_count"] += 1
         result["pending_count"] += 1
+        account["pending_count"] += 1
+        account["snapshot_comparison_missing_count"] += 1
         return
     if msg_id != current.get("last_seen_message_id") and received > current.get(
         "last_seen_received_at_utc", ""
     ):
         result["newer_message_pending_count"] += 1
         result["pending_count"] += 1
+        account["pending_count"] += 1
+        account["newer_message_pending_count"] += 1
 
 
 def _mailbox_empty(tracked_empty: bool, snapshot_result: Mapping[str, Any]) -> bool | None:
@@ -127,14 +143,58 @@ def _empty_snapshot_result(not_evaluated: bool) -> dict[str, Any]:
         "unknown_count": 0,
         "out_of_scope_count": 0,
         "config_missing_count": 0,
+        "per_account": {},
         "newer_message_pending_count": 0,
         "snapshot_comparison_missing_count": 0,
         "pending_count": 0,
     }
 
 
-def _account_counts() -> dict[str, Any]:
-    return {"states": {}, "pending_count": 0}
+def _account_counts(account: Any) -> dict[str, Any]:
+    return {
+        "states": {},
+        "pending_count": 0,
+        "snapshot_unknown_count": 0,
+        "newer_message_pending_count": 0,
+        "snapshot_comparison_missing_count": 0,
+        "cleanup_enabled": account.cleanup_enabled,
+        "retention_policy": account.retention_policy,
+        "attention_method": account.attention_method,
+        "attention_channel": account.attention_channel,
+    }
+
+
+def _merge_per_account(
+    local: Mapping[str, dict[str, Any]],
+    snapshot: Mapping[str, dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    merged = {alias: dict(counts) for alias, counts in local.items()}
+    for alias, counts in snapshot.items():
+        target = merged.setdefault(alias, dict(counts))
+        if target == counts:
+            continue
+        for key in (
+            "pending_count",
+            "snapshot_unknown_count",
+            "newer_message_pending_count",
+            "snapshot_comparison_missing_count",
+        ):
+            target[key] = target.get(key, 0) + counts.get(key, 0)
+    return merged
+
+
+def _attention_routes(per_account: Mapping[str, Mapping[str, Any]]) -> list[dict[str, Any]]:
+    return [
+        {
+            "account_id": alias,
+            "pending_count": counts["pending_count"],
+            "attention_method": counts.get("attention_method"),
+            "attention_channel": counts.get("attention_channel"),
+        }
+        for alias, counts in sorted(per_account.items())
+        if counts["pending_count"]
+        and (counts.get("attention_method") or counts.get("attention_channel"))
+    ]
 
 
 def _local_pending_count(row: Mapping[str, Any]) -> int:

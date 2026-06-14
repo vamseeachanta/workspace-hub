@@ -41,20 +41,25 @@ def test_custom_log_path_uses_isolated_sibling_names(tmp_path):
     assert not (tmp_path / "queue-state-snapshot.yaml").exists()
 
 
-def test_account_scope_limits_enabled_accounts_and_marks_skestates_out_of_scope(tmp_path):
+def test_account_scope_reads_skestates_but_excludes_it_from_cleanup(tmp_path):
     queue_state = load_queue_state()
     config = tmp_path / "accounts.yaml"
     write_accounts(config)
 
     scope = queue_state.load_account_scope(config)
 
-    assert scope.enabled_aliases() == {"ace", "personal"}
+    assert scope.enabled_aliases() == {"ace", "personal", "skestates"}
+    assert scope.cleanup_aliases() == {"ace", "personal"}
     assert scope.normalize("vamsee.achanta@aceengineer.com").alias == "ace"
     assert scope.normalize("achantav@gmail.com").alias == "personal"
-    assert scope.normalize("skestatesinc@gmail.com").status == "out_of_scope"
+    assert scope.normalize("skestatesinc@gmail.com").status == "enabled"
+    assert scope.cleanup_enabled("skestatesinc@gmail.com") is False
+    assert scope.accounts["skestates"].retention_policy == "keep_forever"
+    assert scope.accounts["skestates"].attention_method == "starred"
+    assert scope.accounts["skestates"].attention_channel == "Telegram: Family - Finance"
 
 
-def test_account_scope_hard_disables_unapproved_config_aliases(tmp_path):
+def test_account_scope_keeps_extra_aliases_assist_only(tmp_path):
     queue_state = load_queue_state()
     config = tmp_path / "accounts.yaml"
     config.write_text(
@@ -70,6 +75,9 @@ def test_account_scope_hard_disables_unapproved_config_aliases(tmp_path):
                 "  skestates:",
                 "    email: skestatesinc@gmail.com",
                 "    enabled: true",
+                "  other:",
+                "    email: other@example.com",
+                "    enabled: true",
                 "",
             ]
         ),
@@ -78,9 +86,12 @@ def test_account_scope_hard_disables_unapproved_config_aliases(tmp_path):
 
     scope = queue_state.load_account_scope(config)
 
-    assert scope.enabled_aliases() == {"ace", "personal"}
-    assert scope.normalize("skestates").status == "out_of_scope"
-    assert scope.normalize("skestatesinc@gmail.com").status == "out_of_scope"
+    assert scope.enabled_aliases() == {"ace", "personal", "skestates", "other"}
+    assert scope.cleanup_aliases() == {"ace", "personal"}
+    assert scope.normalize("skestates").status == "enabled"
+    assert scope.normalize("other@example.com").status == "enabled"
+    assert scope.cleanup_enabled("skestatesinc@gmail.com") is False
+    assert scope.cleanup_enabled("other@example.com") is False
 
 
 def test_pending_work_report_requires_inbox_snapshot_to_claim_mailbox_empty(tmp_path):
@@ -128,7 +139,7 @@ def test_pending_work_report_blocks_empty_for_unknown_in_scope_inbox_thread(tmp_
     assert report["mailbox_empty"] is False
 
 
-def test_pending_work_report_ignores_disabled_account_for_two_account_cleanup(tmp_path):
+def test_pending_work_report_routes_skestates_attention_without_cleanup(tmp_path):
     queue_state = load_queue_state()
     config = tmp_path / "accounts.yaml"
     write_accounts(config)
@@ -146,9 +157,19 @@ def test_pending_work_report_ignores_disabled_account_for_two_account_cleanup(tm
         ],
     )
 
-    assert report["out_of_scope_count"] == 1
-    assert report["unknown_count"] == 0
-    assert report["mailbox_empty"] is True
+    assert report["out_of_scope_count"] == 0
+    assert report["unknown_count"] == 1
+    assert report["mailbox_empty"] is False
+    assert report["per_account"]["skestates"]["cleanup_enabled"] is False
+    assert report["per_account"]["skestates"]["retention_policy"] == "keep_forever"
+    assert report["attention_routes"] == [
+        {
+            "account_id": "skestates",
+            "pending_count": 1,
+            "attention_method": "starred",
+            "attention_channel": "Telegram: Family - Finance",
+        }
+    ]
 
 
 def test_pending_work_report_counts_newer_reply_on_tracked_thread(tmp_path):

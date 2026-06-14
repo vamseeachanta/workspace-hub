@@ -17,12 +17,16 @@ Pipeline orchestration belongs to #2024. Queue-state storage implementation belo
 
 Existing `gmail-archive-extract.py` routing behavior is grandfathered production infrastructure. This design does not add new Gmail mutations.
 
-#2026 implements the local state layer for the two approved accounts only:
+#2026 separates read/assist scope from cleanup scope. Read/assist scope includes:
 
 - `ace` (`vamsee.achanta@aceengineer.com`)
 - `personal` (`achantav@gmail.com`)
+- `skestates` (`skestatesinc@gmail.com`)
+- any other configured alias, unless explicitly disabled
 
-`skestates` remains out of scope until a future issue explicitly adds it. In #2026, "mailbox empty" means no pending work among known in-scope threads and, when a caller supplies an inbox snapshot, no unknown in-scope Gmail threads. Local state alone reports unknown-thread coverage as `not_evaluated` rather than claiming the mailbox is empty.
+Cleanup scope is narrower: only `ace` and `personal` are eligible for local completed-to-`purged` transitions. `skestates` and other assist-only aliases are read and assisted, but their email is kept forever. Important `skestates` attention is surfaced through the starred method and Telegram `Family - Finance` channel.
+
+In #2026, "mailbox empty" means no pending work among known read/assist threads and, when a caller supplies an inbox snapshot, no unknown read/assist Gmail threads. Local state alone reports unknown-thread coverage as `not_evaluated` rather than claiming the mailbox is empty.
 
 ## Decisions
 
@@ -46,7 +50,7 @@ Extracted records are YAML. CRE listings use `scripts/email/extraction-schemas/c
 
 ### Deletion Safety
 
-`completed` threads are retained through a seven-day grace window. After the grace window, local queue state transitions to `purged`; Gmail content is not touched by this contract.
+For cleanup-enabled accounts, `completed` threads are retained through a seven-day grace window. After the grace window, local queue state transitions to `purged`; Gmail content is not touched by this contract. Assist-only accounts use `keep_forever` retention and are never local purge candidates.
 
 ### Reactivation
 
@@ -71,7 +75,7 @@ Transitions:
 - `extracted -> completed`: extracted data exists and no response is pending.
 - `awaiting-reply -> extracted`: new reply reactivates the topic.
 - `awaiting-reply -> completed`: user marks complete.
-- `completed -> purged`: seven-day grace has elapsed.
+- `completed -> purged`: seven-day grace has elapsed on a cleanup-enabled account.
 - `completed -> extracted`: new reply reactivates the topic.
 - `purged -> extracted`: new reply reactivates with prior extraction context when available.
 

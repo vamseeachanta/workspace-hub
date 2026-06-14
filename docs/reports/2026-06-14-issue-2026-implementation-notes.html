@@ -16,9 +16,11 @@
   <p>
     This report records the implementation scope for
     <a href="https://github.com/vamseeachanta/workspace-hub/issues/2026">workspace-hub #2026</a>.
-    It is constrained to two accounts: <code>ace</code>
-    (<code>vamsee.achanta@aceengineer.com</code>) and <code>personal</code>
-    (<code>achantav@gmail.com</code>). <code>skestates</code> remains out of scope unless a future issue authorizes it.
+    It separates read/assist scope from cleanup scope. Read/assist scope includes
+    <code>ace</code> (<code>vamsee.achanta@aceengineer.com</code>),
+    <code>personal</code> (<code>achantav@gmail.com</code>), <code>skestates</code>
+    (<code>skestatesinc@gmail.com</code>), and other configured aliases unless disabled.
+    Cleanup scope remains limited to <code>ace</code> and <code>personal</code>.
   </p>
 
   <h2>Implemented Surface</h2>
@@ -47,7 +49,7 @@
     <tr>
       <td>Contract docs</td>
       <td><code>docs/design/email-as-queue*.md</code>, <code>docs/design/email-queue-state-schema.yaml</code></td>
-      <td>Records two-account scope, private runtime state, unknown-thread semantics, and #2423 boundary.</td>
+      <td>Records read/assist scope, cleanup-only scope, private runtime state, unknown-thread semantics, and #2423 boundary.</td>
     </tr>
   </table>
 
@@ -61,14 +63,16 @@
   <p>
     <code>awaiting-reply</code> is not pending by itself; a newer inbound Gmail message detected through the supplied
     inbox snapshot is what turns it back into actionable work. <code>sweep --dry-run</code> is read-only. Local
-    completed-to-purged apply requires a clean reactivation precheck covering both enabled accounts.
+    completed-to-purged apply requires a clean reactivation precheck covering cleanup-enabled accounts only.
+    <code>skestates</code> uses keep-forever retention; important messages are surfaced through the starred method
+    and Telegram <code>Family - Finance</code> channel.
   </p>
 
   <h2>Boundaries</h2>
   <p>
-    Gmail label creation/mirroring is implemented as an injectable two-account adapter seam and fails closed if
+    Gmail label creation/mirroring is implemented as an injectable read/assist account adapter seam and fails closed if
     queue-state account mapping disagrees with the Gmail helper mapping. This session did not apply live Gmail labels
-    because the runtime did not expose verified per-account Gmail clients for both approved accounts. Gmail archive
+    because the runtime did not expose verified per-account Gmail clients for the read/assist account set. Gmail archive
     or delete automation remains follow-on issue
     <a href="https://github.com/vamseeachanta/workspace-hub/issues/2423">#2423</a>.
   </p>

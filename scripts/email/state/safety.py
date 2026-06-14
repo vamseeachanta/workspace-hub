@@ -44,7 +44,7 @@ def validate_reactivation_precheck(
     stale = _is_stale_precheck(precheck, log)
     if (
         missing
-        or set(precheck.get("checked_accounts", [])) != scope.enabled_aliases()
+        or set(precheck.get("checked_accounts", [])) != scope.cleanup_aliases()
         or precheck.get("unknown_status") != "evaluated"
         or blockers
         or _thread_blocker_keys(precheck)
