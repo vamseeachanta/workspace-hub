@@ -49,7 +49,7 @@ set_pull_failure_count() {
 
 sync_repo() {
     local output
-    if output=$(cd "${REPO_ROOT}" && git pull origin main 2>&1); then
+    if output=$(cd "${REPO_ROOT}" && git pull --ff-only origin main 2>&1); then
         set_pull_failure_count 0
         return 0
     fi
