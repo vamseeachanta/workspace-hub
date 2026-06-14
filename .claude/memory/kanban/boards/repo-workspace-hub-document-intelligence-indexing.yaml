@@ -505,3 +505,24 @@ cards:
       The Excel inventory scan (#1910, #1909) cataloged 4,125 workbooks but only fully scanned the 193 .xlsx files. The 3,879 .xls files (94% of inventory) are in legacy BIFF binary format and require the `xlrd` library to read sheet contents.
 
       ## Inventory'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1579
+    title: Audit /mnt/ace for undiscovered resources and unknown data-source descriptions
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1579
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - cat:document-intelligence
+      - machine:dev-primary
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+      - domain:document-intelligence-indexing
+      - domain:knowledge-management-corpus
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Child of holistic doc-intel feature. Scan /mnt/ace/ for resources not tracked in any registry: (1) 8 cloned GitHub repos (WEC-Sim, openfast, gmsh, capytaine, HAMS, MoorDyn, MoorPy, opm-common) — are they in the OSS catalog? (2) 30 conference paper collections in docs/conferences/ — are they indexed? (3) 38 GB O&G-Standards/ — cross-check against standards-transfer-ledger.yaml. (4) docs/engineering-refs/ subdirs. Script: scripts/data/ace-resource-audit.py. Output: docs/reports/ace-undiscovered-resources.md. TDD. Use uv run.'

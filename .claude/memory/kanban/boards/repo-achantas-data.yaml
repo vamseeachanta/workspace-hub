@@ -39,3 +39,13 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#134
+    title: Live market data → paper-trading alerts for the Fidelity account (engine in assethold, orchestration here)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/134
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

@@ -828,3 +828,15 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assetutilities#91
+    title: 'engine: routed-but-unreachable + stub basenames block workflow registration'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assetutilities/issues/91
+    gh_state: open
+    gh_labels:
+      - bug
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

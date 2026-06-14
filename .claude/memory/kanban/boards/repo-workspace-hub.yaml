@@ -21103,3 +21103,14 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3073
+    title: Client-identifier in a public skill slug — rename or route private (no-client-PII)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3073
+    gh_state: open
+    gh_labels:
+      - domain:cleanup
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

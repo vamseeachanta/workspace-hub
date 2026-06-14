@@ -3766,3 +3766,14 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#743
+    title: 'registry routing: gis misroutes to time_series; rigging base config declares basename: mooring'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/743
+    gh_state: open
+    gh_labels:
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

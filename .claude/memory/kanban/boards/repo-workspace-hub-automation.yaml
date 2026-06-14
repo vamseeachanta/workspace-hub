@@ -215,7 +215,7 @@ cards:
       - cat:infrastructure
       - domain:automation
       - machine:dev-primary
-      - status:plan-review
+      - status:plan-approved
       - dispatch:ready
       - gate:completeness
       - lane:claude
@@ -742,7 +742,7 @@ cards:
     title: 'bug(automation): harden cron cutover env and repo hygiene live probes'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3057
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - bug
       - priority:medium
@@ -750,9 +750,10 @@ cards:
       - cat:harness
       - domain:automation
       - domain:repo-health
+      - status:done
       - machine:dev-primary
-      - status:plan-review
       - gate:completeness
+      - status:completeness-verified
       - lane:claude
     initial_status: triage
     priority: 0
