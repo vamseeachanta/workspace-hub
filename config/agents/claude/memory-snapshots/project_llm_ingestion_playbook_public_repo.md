@@ -1,6 +1,6 @@
 ---
 name: project-llm-ingestion-playbook-public-repo
-description: "Public methodology playbook distilled from llm-wiki sessions — staged locally, publish decision pending"
+description: "Public raw-to-knowledge methodology playbook (PUBLISHED) — strengthened 2026-06-08 with docs 14-18, skills/ artifacts+validator, runnable example, CI"
 metadata: 
   node_type: memory
   type: project
@@ -23,6 +23,26 @@ ingestion methodology across Claude/Codex/Hermes sessions. Drafted at
 - Sources: 4 parallel Explore agents over llm-wiki repo+issues, Claude memory/
   handoffs/skills, Codex (~80 sessions) + Hermes traces. See
   [[project_llm_wiki_corpus_ingest_cron]] for the underlying campaign.
+
+**2026-06-08 STRENGTHENING PROGRAM DONE+MERGED** (epic #22, now closed): a second
+axis orthogonal to the #1–#12 per-format research — completes the pipeline
+end-to-end. 3 PRs merged: **#23** (skills/ ships the 5 doc-08 skills as
+adaptable SKILL.md templates + `examples/minimal-ingest/` runnable loop +
+QUICKSTART), **#24** (docs 14 chunking/embedding, 15 retrieval-eval), **#25**
+(docs 16 corpus-lifecycle, 17 cost-economics, 18 security/PII egress firewall).
+**PR #27 OPEN+mergeable** = dogfood (evals.json for all 5 skills →
+`validate_skill.py --strict` clean + pre-commit/CI L3). Method: adversarially-
+verified multi-agent Workflow (6 researchers→6 fact-checkers, primary-source-
+grounded, 40/42 claims supported) — findings posted as issue comments on
+#14–#19. KEY verified findings now in docs: late-chunking DEGRADES in-document
+clause lookup (HybridChunker wins for standards; docling-core is MIT not AGPL);
+embedding numeracy gap (~0.54 ≈ random on numbers → pair dense+BM25, keep
+verbatim numeric strings); verify-budget cost model (extraction <$15/1M pages,
+10k-table cell-verify = tens of $ not thousands); NYT-v-OpenAI preservation
+order defeats "30-day deletion" → fail-closed on-prem egress gate; skills
+serialize to open Agent Skills spec (agentskills.io). Skills are status:template
+({{PLACEHOLDERS}}, corpus-agnostic, grep-clean). Branches pruned, local==origin.
+GP numbering untouched (candidate practices in new docs need pilots first).
 
 **2026-06-06 exit handoff doc**: workspace-hub
 `docs/session-handoffs/2026-06-06-raw-to-knowledge-playbook-exit.md` committed
@@ -101,3 +121,38 @@ https://github.com/vamseeachanta/llm-ingestion-playbook (root commit 88e771b,
 11 files incl. dual LICENSE CC-BY-4.0/MIT). Future practices append as GP-NN
 via the CONTRIBUTING format (one evidence-backed practice per PR, never
 renumber).
+
+**2026-06-09 confidence-program learnings (PR #35, open):** first GP mints since
+publication — **GP-40** (containers are formats too: inventory-then-recurse on
+email attachments), **GP-41** (derived filenames unique BY CONSTRUCTION — loop
+exits only on unused name; fail-if-exists breaks idempotent re-runs; single
+ordinal-rewrite provably collides), **GP-42** (verify until PASS; round count is
+a floor — reviewer-built reproducers gate fixes). Next ID GP-43. doc-04 §F:
+formula-loss + attachment-drop marked VALIDATED, new `derived-name-collision`
+mode. NEW skill `adversarial-verify-loop` (L2, 5 evals); format-coverage-ledger
+v1.1 + source-extract-fidelity v1.1. **Scrubbed a pre-existing client-identifier
+leak in format-coverage-ledger** ($FDAS_CORPUS example + "the FDAS campaign") —
+deny-list grep must also cover UNTRACKED new files, `git diff` alone misses
+them. Progress comment on #33. Pilot evidence lives in the PRIVATE wiki (its
+PRs #42/#44 + matrix PR #43).
+
+**2026-06-10 measured-outcomes doc + per-document index.** PR #41 (playbook)
+adds `docs/20-measured-outcomes.md` + README read-first callout: Campaign A
+(llm-wiki tables, NOT named in public doc) = 696 docs / 23,147 tables, 9.8%
+resolved (1,207 verified / 1,068 rejected), ok-bucket verifies ~95%, 2% docs
+fully resolved; Campaign B (53 Office docs) mean ICS 63.8% by format×type.
+Companion llm-wiki PR #581 lands the actual instrument:
+`scripts/ingest/build_document_index.py` (stdlib, idempotent, --check) →
+`wikis/_document-index.csv` (691 docs); next-wave query = sort by
+(structural_ok − verified) desc → top targets mil-5j (410/9), bs-10423
+(418/61), solas-2020 (334/6). Re-run script after every verify-batch merge.
+Note: playbook main moved past memory — GP-46 exists, PR #35 merged.
+
+**2026-06-10 (cont.) index automation.** PR #41 + llm-wiki #581 MERGED. Index
+went stale ONE cron tick later (corpus batch) → llm-wiki PR #583: dispatcher
+now rebuilds+commits wikis/_document-index.csv after each publisher's chunks
+(contained failure, wikis/ passes staged-path guard; effective next cron
+LAUNCH). User-local ~/.claude/skills/verify-batch/SKILL.md gained step 5 =
+rebuild index in batch worktree. Lesson: derived artifacts need a rebuild hook
+at EVERY writer. Progress comment on playbook#33 classifier-denied (outward
+post) — user to post if wanted.
