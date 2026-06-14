@@ -34,3 +34,5 @@
 {"ts":"2026-06-14T12:53:10Z","event":"stop_signal_captured","session_id":"019ec62e-979c-70c3-91ba-87661dff680f"}
 {"ts":"2026-06-14T12:53:19Z","event":"stop_signal_captured","session_id":"8b2785c7-ad69-44a6-90ed-da87e8ea6f58"}
 {"ts":"2026-06-14T12:53:19Z","event":"session_tool_summary","session_id":"8b2785c7-ad69-44a6-90ed-da87e8ea6f58","wrk":"none","tool_calls":440,"edits":4,"reads":36}
+{"ts":"2026-06-14T13:16:08Z","event":"session_tool_summary","session_id":"019ec642-324c-7ab2-ae7b-982695c55c24","wrk":"none","tool_calls":499,"edits":4,"reads":42}
+{"ts":"2026-06-14T13:16:08Z","event":"stop_signal_captured","session_id":"019ec642-324c-7ab2-ae7b-982695c55c24"}

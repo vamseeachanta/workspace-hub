@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-14T09:20:13.577983Z",
+  "generated_at": "2026-06-14T13:20:13.161780Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 6,
@@ -492,6 +492,40 @@
         "lane:codex"
       ],
       "updatedAt": "2026-06-10T12:57:24Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2718,
+      "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
+      "labels": [
+        "priority:medium",
+        "cat:ai-orchestration",
+        "cat:harness",
+        "domain:ai-config",
+        "machine:dev-primary",
+        "dispatch:ready",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-06-10T16:18:13Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",

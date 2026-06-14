@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-06-14T09:20:13.459165Z
+Generated: 2026-06-14T13:20:13.023197Z
 Current week: 2026-W24
 Recommended provider order: gemini, claude, codex
 
@@ -9,8 +9,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 33
-- Total routed candidates: 176
+- Execution-ready candidates: 31
+- Total routed candidates: 175
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -27,18 +27,18 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: high
 - Execution-ready candidates: 1
-- Total routed candidates: 20
+- Total routed candidates: 21
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #3030 Dispatch-time codex weekly-quota gate: suspend lane:codex routing when available <10% | yes | implementation/test/fix language | domain:ai-tools, status:plan-approved, gate:completeness, lane:claude |
 | #2880 feat(codex): make yolo-equivalent permission defaults travel across machines | no | existing codex agent label | enhancement, priority:high, cat:harness, domain:ai-config, machine:multi, agent:codex |
 | #3026 ace-linux-2: gnome-shell crash recovery (2026-06-10) + /dev/sda end-of-life replacement plan | no | implementation/test/fix language | priority:high, lane:claude |
-| #2550 chore(security): codify public repo interaction-limit renewal in scheduled tasks | no | existing codex agent label | enhancement, priority:medium, cat:operations, domain:security, machine:dev-primary, agent:codex |
 | #2572 Routine: /repo-sync + /mnt/local-analysis cleanup audit (every 2 days) | no | implementation/test/fix language | priority:medium, domain:automation, machine:dev-primary, dispatch:ready, gate:completeness, lane:claude |
 | #2623 fix(digitalmodel-tests): Cluster A — sys.modules pollution leaking MagicMock into tests/contracts/ (2 failures) | no | implementation/test/fix language | enhancement, priority:medium, cat:engineering, machine:dev-primary, dispatch:ready, gate:completeness |
 | #2625 investigate(digitalmodel-tests): Cluster E — marine-engineering domain regressions (~60 failures across catenary/wave/ocimf/RAO) | no | implementation/test/fix language | enhancement, priority:medium, cat:engineering, machine:dev-primary, dispatch:ready, gate:completeness |
 | #2671 R3 — Hydrodynamics: Industry practice (conferences, journals, vendor docs) | no | implementation/test/fix language | priority:medium, cat:engineering, cat:research, domain:hydrodynamics, machine:dev-primary, dispatch:ready |
+| #2718 audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | no | implementation/test/fix language | priority:medium, cat:ai-orchestration, cat:harness, domain:ai-config, machine:dev-primary, dispatch:ready |
 
 ## gemini
 

@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-06-14T09:20:13.577983Z
+Generated: 2026-06-14T13:20:13.161780Z
 Apply mode: False
 Threshold: 0.9
 
@@ -21,3 +21,4 @@ Threshold: 0.9
 | #2623 fix(digitalmodel-tests): Cluster A — sys.modules pollution leaking MagicMock into tests/contracts/ (2 failures) | agent:codex | 0.55 | no | priority-labeled, strong-codex-language-match, provider-high-priority |
 | #2625 investigate(digitalmodel-tests): Cluster E — marine-engineering domain regressions (~60 failures across catenary/wave/ocimf/RAO) | agent:codex | 0.55 | no | priority-labeled, strong-codex-language-match, provider-high-priority |
 | #2671 R3 — Hydrodynamics: Industry practice (conferences, journals, vendor docs) | agent:codex | 0.55 | no | priority-labeled, strong-codex-language-match, provider-high-priority |
+| #2718 audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | agent:codex | 0.55 | no | priority-labeled, strong-codex-language-match, provider-high-priority |
