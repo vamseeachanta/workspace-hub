@@ -53,7 +53,11 @@ def audit_archives(root, archive_dirs=ARCHIVE_DIRS):
 
 
 def duplicate_groups(rows):
-    """Group existing trees whose SKILL.md relative-path sets are identical."""
+    """Group existing trees whose SKILL.md relative-path SETS are identical.
+
+    NOTE: matches path structure (relpath set), not byte content — trees in a
+    group can still differ per-file. Run `diff -rq` before consolidating.
+    """
     groups = {}
     for r in rows:
         if r.get("exists"):
@@ -85,9 +89,9 @@ def main(argv=None):
                 print(f"{r['dir']}: absent")
         if dups:
             for g in dups:
-                print(f"DUPLICATE (identical SKILL.md set): {', '.join(g)} -> consolidate")
+                print(f"SAME PATH-SET (content diff before consolidating): {', '.join(g)}")
         else:
-            print("no identical-content duplicate trees")
+            print("no trees share an identical SKILL.md path-set")
     return 0
 
 

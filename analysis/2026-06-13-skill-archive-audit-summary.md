@@ -12,14 +12,14 @@ Non-destructive audit of the skill **archive trees** for consolidation (#3062, h
 ## Archive-tree finding (this tool's contribution)
 | Tree | SKILL.md | fingerprint | note |
 |---|---|---|---|
-| `.claude/skills/_archive` | 2,100 | `7af31e6d…` | **identical content** |
-| `.claude/skills-archive` | 2,100 | `7af31e6d…` | **identical content** |
+| `.claude/skills/_archive` | 2,100 | `7af31e6d…` | same path-set |
+| `.claude/skills-archive` | 2,100 | `7af31e6d…` | same path-set |
 | `_archive/skills` | 88 | `484e0613…` | distinct |
 
-**Confirmed: `.claude/skills/_archive` and `.claude/skills-archive` are a true duplicate** — identical SKILL.md relative-path set, neither a symlink → ~2,100 files duplicated on disk (the archives together hold more than the ~3,113-file live tree).
+**`.claude/skills/_archive` and `.claude/skills-archive` share an identical SKILL.md path-set** (same 2,100 relpaths, neither a symlink). A follow-up `diff -rq` shows they are a **near-duplicate, not byte-identical**: ~2,086/2,100 match, but **14 SKILL.md differ in content** (all newer on `.claude/skills/_archive`) and `.claude/skills-archive` carries an extra `README.md`. So consolidation is **not a blind delete** — it needs reconciliation (carry the 14 newer `_archive` versions into the keeper first), tracked as a follow-up.
 
 ## Recommendation (reviewed follow-up — NOT done here)
-1. Consolidate the two duplicate trees into one convention (proposal: keep `.claude/skills-archive/`, drop `.claude/skills/_archive/`) after a final content diff, with a dated manifest.
+1. Consolidate to one convention (keep `.claude/skills-archive/`) — but **reconcile first**: carry the 14 newer `.claude/skills/_archive` SKILL.md versions into `.claude/skills-archive/`, then drop `_archive/`. Not a blind delete; preserve the newer content + a dated manifest.
 2. Fold `_archive/skills` (88) into the same convention.
 3. Run retirement via `check_retirement_candidates.py` output, archiving (reversible) the confirmed-dead set.
 
