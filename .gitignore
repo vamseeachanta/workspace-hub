@@ -551,3 +551,6 @@ wikis/**/raw/papers/*.pdf
 
 # Local uv/virtualenv (machine-specific, do not track)
 .venv/
+
+# Transient parity-instrumentation live reports (#3061)
+.claude/state/parity/
