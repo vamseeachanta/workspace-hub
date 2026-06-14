@@ -90,7 +90,17 @@ if [[ -f "$CM" ]]; then
     fi
   fi
 else
-  say "WARN: no CLAUDE.md in $REPO — scoped memory exists but no precedence instruction; create CLAUDE.md to activate"
+  repo_name="$(basename "$REPO")"
+  if $DRY_RUN; then
+    echo "[dry-run] would create minimal CLAUDE.md (no existing one) to activate scoping"
+  else
+    {
+      printf '# %s\n' "$repo_name"
+      printf '> Inherits workspace-hub/CLAUDE.md\n'
+      printf '%s\n' "$PRECEDENCE_LINE"
+    } > "$CM"
+    say "created minimal CLAUDE.md to activate scoping"
+  fi
 fi
 
 say "done: $REPO"

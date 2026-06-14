@@ -5,28 +5,23 @@
 # ///
 """agy-usage-snapshot.py — capture Antigravity (`agy`) /usage into a statusline-readable snapshot.
 
-WHY: agy's real Gemini quota is server-fetched into memory and shown ONLY in the
-interactive `/usage` TUI — no subcommand, no JSON, no on-disk persistence (see
-workspace-hub#3087). So genuine usage can only be captured by the human reading
-`/usage` and feeding the text here. This writes a machine-local snapshot that
-`.claude/statusline-command.sh` renders for the `G:` segment (weekly % + a
-staleness `?`). The windows are ROLLING (Weekly + Five-Hour), so there is no
-fixed reset to count down to — the snapshot's age is the planning signal.
+WHY: agy's real Gemini quota is server-fetched and shown ONLY in the interactive
+`/usage` TUI — no subcommand, no JSON, no on-disk persistence (workspace-hub#3087).
+So genuine usage is captured by the human reading `/usage` and feeding the text here.
+
+The panel reports two model groups ("GEMINI MODELS", "CLAUDE AND GPT MODELS"),
+each with a "Weekly Limit" and "Five Hour Limit". For each, the line under the bar
+reads either:
+    "100% remaining · Refreshes in 159h 32m"   (→ pct_remaining + reset countdown)
+    "Quota available"                            (→ full / no countdown shown)
+This captures BOTH the % AVAILABLE (left) and the reset countdown (days/hours-left).
 
 USAGE:
   1. In agy:  /usage   → copy the whole panel text.
-  2. Paste it into this script via stdin:
-       uv run scripts/ai/assessment/agy-usage-snapshot.py <<'EOF'
-       ...paste /usage output...
-       EOF
-     or:  pbpaste | uv run scripts/ai/assessment/agy-usage-snapshot.py
+  2. uv run scripts/ai/assessment/agy-usage-snapshot.py   (paste, then Ctrl-D)
      or:  uv run scripts/ai/assessment/agy-usage-snapshot.py --file /tmp/usage.txt
 
 Writes: ~/.cache/agy-usage-snapshot.json  (override with $AGY_USAGE_SNAPSHOT)
-
-Parses the two model groups agy reports — "GEMINI MODELS" and
-"CLAUDE AND GPT MODELS" — each with a "Weekly Limit" and "Five Hour Limit"
-percentage (shown as % AVAILABLE / remaining).
 """
 from __future__ import annotations
 
@@ -41,26 +36,30 @@ SNAPSHOT_PATH = os.environ.get(
     "AGY_USAGE_SNAPSHOT", os.path.expanduser("~/.cache/agy-usage-snapshot.json")
 )
 
-# Group header -> snapshot key. Match is substring + case-insensitive.
-GROUPS = {
-    "gemini": "GEMINI MODELS",
-    "claude_gpt": "CLAUDE AND GPT MODELS",
-}
-WINDOWS = {
-    "weekly_pct_avail": "WEEKLY LIMIT",
-    "five_hour_pct_avail": "FIVE HOUR LIMIT",
-}
-PCT_RE = re.compile(r"(\d+(?:\.\d+)?)\s*%")
+GROUPS = {"gemini": "GEMINI MODELS", "claude_gpt": "CLAUDE AND GPT MODELS"}
+WINDOWS = {"weekly": "WEEKLY LIMIT", "five_hour": "FIVE HOUR LIMIT"}
+
+_PCT = re.compile(r"(\d+(?:\.\d+)?)\s*%")
+_REMAIN = re.compile(r"(\d+(?:\.\d+)?)\s*%\s*remaining", re.I)
+# "Refreshes in 159h 32m" / "in 3h 12m" / "in 45m" / "in 6d 4h" / "5h51m23s"
+_RESET = re.compile(
+    r"(?:refreshes\s+in|reset(?:s)?\s+(?:in|after))\s+"
+    r"(?:(\d+)\s*d)?\s*(?:(\d+)\s*h)?\s*(?:(\d+)\s*m)?\s*(?:(\d+)\s*s)?",
+    re.I,
+)
+
+
+def _reset_hours(text: str) -> float | None:
+    m = _RESET.search(text)
+    if not m or not any(m.groups()):
+        return None
+    d, h, mi, s = (int(g or 0) for g in m.groups())
+    return round(d * 24 + h + mi / 60 + s / 3600, 2)
 
 
 def parse_usage(text: str) -> dict:
-    """Return {group_key: {window_key: float_pct}} parsed from /usage panel text.
-
-    Walks lines tracking the current group header and current window header; the
-    first percentage seen after a window header is that window's value.
-    """
+    """{group: {window: {pct_remaining: float, reset_hours: float|None}}}."""
     lines = text.splitlines()
-    # Locate each group's line range by its header.
     header_idx: dict[str, int] = {}
     for key, hdr in GROUPS.items():
         for i, ln in enumerate(lines):
@@ -75,26 +74,29 @@ def parse_usage(text: str) -> dict:
     for n, (gkey, start) in enumerate(ordered):
         end = ordered[n + 1][1] if n + 1 < len(ordered) else len(lines)
         block = lines[start:end]
-        gvals: dict[str, float] = {}
-        cur_window: str | None = None
-        for ln in block:
-            up = ln.upper()
-            matched_window = next(
-                (wk for wk, wh in WINDOWS.items() if wh in up), None
-            )
-            if matched_window:
-                cur_window = matched_window
-                # A percentage may sit on the same line as the header.
-                m = PCT_RE.search(ln)
-                if m:
-                    gvals[cur_window] = float(m.group(1))
-                    cur_window = None
-                continue
-            if cur_window:
-                m = PCT_RE.search(ln)
-                if m:
-                    gvals[cur_window] = float(m.group(1))
-                    cur_window = None
+        # find each window header's line index within the block
+        win_idx = {}
+        for wk, wh in WINDOWS.items():
+            for i, ln in enumerate(block):
+                if wh in ln.upper():
+                    win_idx[wk] = i
+                    break
+        gvals: dict[str, dict] = {}
+        wins_ordered = sorted(win_idx.items(), key=lambda kv: kv[1])
+        for j, (wk, wstart) in enumerate(wins_ordered):
+            wend = wins_ordered[j + 1][1] if j + 1 < len(wins_ordered) else len(block)
+            wblock = "\n".join(block[wstart:wend])
+            # pct: prefer the labeled "X% remaining"; else first % (the bar).
+            rm = _REMAIN.search(wblock)
+            if rm:
+                pct = float(rm.group(1))
+            else:
+                pm = _PCT.search(wblock)
+                if not pm:
+                    continue
+                # "Quota available" with a full bar → treat bar % as remaining.
+                pct = float(pm.group(1))
+            gvals[wk] = {"pct_remaining": pct, "reset_hours": _reset_hours(wblock)}
         if gvals:
             result[gkey] = gvals
     return result
@@ -112,10 +114,11 @@ def main() -> int:
         return 2
 
     parsed = parse_usage(text)
-    if "gemini" not in parsed or "weekly_pct_avail" not in parsed.get("gemini", {}):
+    gem = parsed.get("gemini", {})
+    if "weekly" not in gem:
         print(
-            "error: could not find a GEMINI MODELS 'Weekly Limit' percentage in the "
-            "pasted text. Paste the full /usage panel.",
+            "error: could not find a GEMINI MODELS 'Weekly Limit' in the pasted text. "
+            "Paste the full /usage panel.",
             file=sys.stderr,
         )
         return 1
@@ -130,16 +133,20 @@ def main() -> int:
         f.write("\n")
     os.replace(tmp, SNAPSHOT_PATH)
 
-    g = parsed["gemini"]
-    gw = g.get("weekly_pct_avail")
-    g5 = g.get("five_hour_pct_avail")
+    def fmt(w):
+        if not w:
+            return "n/a"
+        r = w.get("reset_hours")
+        rs = "" if r is None else (f" · {r/24:.1f}d left" if r >= 24 else f" · {r:.1f}h left")
+        return f"{w['pct_remaining']:.0f}% left{rs}"
+
     print(f"Captured agy usage @ {captured_at}")
-    print(f"  Gemini   weekly={gw}% avail" + (f"  5h={g5}% avail" if g5 is not None else ""))
+    print(f"  Gemini   weekly: {fmt(gem.get('weekly'))}   5h: {fmt(gem.get('five_hour'))}")
     if "claude_gpt" in parsed:
         c = parsed["claude_gpt"]
-        print(f"  Claude+GPT weekly={c.get('weekly_pct_avail')}% avail  5h={c.get('five_hour_pct_avail')}% avail")
+        print(f"  Claude+GPT weekly: {fmt(c.get('weekly'))}   5h: {fmt(c.get('five_hour'))}")
     print(f"  → {SNAPSHOT_PATH}")
-    print("Statusline G: now shows this weekly %. Re-run after future /usage reads to refresh.")
+    print("Statusline G: now shows genuine weekly % LEFT + days-to-reset. Re-run after future /usage reads.")
     return 0
 
 

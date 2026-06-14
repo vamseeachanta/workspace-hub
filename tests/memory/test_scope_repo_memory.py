@@ -60,6 +60,18 @@ def test_gitignore_no_false_add(tmp_path):
     assert "!.claude/memory/" not in gi  # no blanket memory/ rule → no negation
 
 
+def test_claude_md_created_when_missing(tmp_path):
+    repo = _git_repo(tmp_path)
+    assert not (repo / "CLAUDE.md").exists()
+    _run(repo)
+    cm = repo / "CLAUDE.md"
+    assert cm.exists()
+    text = cm.read_text()
+    assert "Memory: read THIS repo" in text
+    assert "Inherits workspace-hub" in text
+    assert len(text.splitlines()) <= 20  # within harness cap
+
+
 def test_claude_md_precedence_added(tmp_path):
     repo = _git_repo(tmp_path)
     (repo / "CLAUDE.md").write_text("# My Repo\n> some rules\n")
