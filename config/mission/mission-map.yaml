@@ -10,27 +10,34 @@
 #
 # `explicit`  — true if the repo states its own mission in a file (README/CLAUDE.md); false if inferred here.
 # `status`    — active | utility | reference | inferred | archive-candidate
+# `priority`  — OPTIONAL cross-cutting flag (independent of domain tier). `tier-1` = continual-improvement
+#               target that gets a standing improvement loop, regardless of which domain tier it lives in.
+# `scope`     — OPTIONAL narrowing of what within the repo the mission/priority applies to.
+# `serves`    — OPTIONAL per-repo objective override; defaults to its tier's `serves` when absent.
+#               Use when a repo spans more objectives than its domain tier (e.g. knowledge + go-to-market).
 schema_version: 0.1
 
 ecosystem:
   mission: >
     Engineering Intelligence + Knowledge Infrastructure for Professional Practice —
     enable verifiable, data-driven engineering decisions and client delivery, backed by
-    standards-traced calculation libraries, multi-domain knowledge wikis, a go-to-market
-    stack, and personal/finance operations, all coordinated on a shared agent control-plane.
+    standards-traced calculation libraries, multi-domain knowledge wikis, and a go-to-market
+    stack, all coordinated on a shared agent control-plane.
   objectives:
     - O1: Produce engineering results that are traceable to standards and reproducible.
     - O2: Bind source standards/data to practice as queryable knowledge.
     - O3: Convert capability into market position and client delivery.
     - O4: Keep the multi-repo, multi-machine agent system healthy and self-checking.
-    - O5: Run personal/family finance and operations on the same disciplined harness.
+  # VA decision 2026-06-14: personal/family repos are OUT of the ecosystem (business) mission.
+  # They share the control-plane/harness but serve no business objective. EXCEPTION: teamresumes
+  # is a tier-1 continual-improvement target (VA resume only) despite being out of the business mission.
 
 tiers:
   control-plane:   {serves: [O4],        summary: "Orchestration, harness, agent coordination."}
   engineering-ip:  {serves: [O1],        summary: "Standards-traced engineering calculations & FEA."}
   knowledge-wiki:  {serves: [O2],        summary: "Knowledge corpora binding standards/data to practice."}
   gtm-marketing:   {serves: [O3],        summary: "Positioning, pipeline, delivery, business admin."}
-  personal:        {serves: [O5],        summary: "Family finance, data, skills, research (by design separable)."}
+  personal:        {serves: [],          summary: "OUT of the business mission (VA 2026-06-14): shares harness only. Exception: teamresumes is a tier-1 continual-improvement target."}
 
 repos:
   # ---- control-plane (O4) ----
@@ -82,10 +89,11 @@ repos:
     status: active
   - repo: llm-wiki-fdas
     tier: knowledge-wiki
-    mission: "Field Development Analysis System knowledge silo (Frontier Deepwater corpus)."
-    objectives: [domain corpus ingest + analysis]
-    explicit: false   # OPEN: confirm scope vs worldenergydata/aceengineer-strategy
-    status: inferred
+    serves: [O2, O3]   # per-repo override: knowledge AND go-to-market (corpus doubles as marketing material)
+    mission: "Private project wiki for Frontier Deepwater (FDAS): ingest the engineering source corpus into queryable, provenance-tracked knowledge + screening/analysis (riser, mooring, etc.), AND surface it as marketing / capability-showcase material."
+    objectives: [engineering corpus ingest + analysis, marketing/capability showcase from the corpus]
+    explicit: true
+    status: active
   - repo: worldenergydata
     tier: knowledge-wiki
     mission: "Python data library + unified CLI for BSEE/marine-safety/FDAS: economic, safety, production analysis."
@@ -152,10 +160,12 @@ repos:
     status: active
   - repo: teamresumes
     tier: personal
-    mission: "Markdown→HTML/PDF resume automation via GitHub Actions."
-    objectives: [resume builder utility]
+    priority: tier-1               # promoted per VA directive 2026-06-14 — continual-improvement target
+    scope: "VA resume ONLY (cv/va/). Iterate this single resume continually; do not touch the multi-resume system."
+    mission: "Continual improvement of the VA resume (markdown→HTML/PDF build pipeline)."
+    objectives: [continually improve the VA resume, keep the build green]
     explicit: true
-    status: utility
+    status: active
   - repo: achantas-data
     tier: personal
     mission: "Personal/family data collection & knowledge."
@@ -169,10 +179,17 @@ repos:
     explicit: false   # OPEN: no README — confirm purpose/scope
     status: inferred
 
-# Open questions for PR review (resolve before closing #3079):
-#  Q1. Confirm missions for llm-wiki-fdas, achantas-data, achantas-media (explicit:false above).
-#  Q2. Active vs archive for namespace repos seen on disk but not registered here:
-#      2802-pilot-evidence, acma-projects, acma-projects-freeze-work, worktrees.
-#  Q3. Is the `personal` tier IN the ecosystem mission (shared harness, O5) or explicitly OUT?
-#      Current stance: IN via O5, separable by design.
-#  Q4. Does every active repo now ladder up to an ecosystem objective? (orphan check — none found.)
+# Decision log (VA, interactive 2026-06-14):
+#  D1. Ecosystem mission = AceEngineer BUSINESS only; personal repos dropped from the spine. [DONE]
+#  D2. llm-wiki-fdas confirmed: serves O2+O3 (engineering knowledge AND marketing showcase). [DONE]
+#  D4. personal tier is OUT of the business mission (shares harness only). EXCEPTION: teamresumes
+#      is a tier-1 continual-improvement target (VA resume only). [DONE]
+#
+#  D3. Namespace dirs (2802-pilot-evidence, acma-projects, acma-projects-freeze-work, worktrees)
+#      are PLAIN directories (no .git) — non-git working/raw-data staging, NOT repos. Excluded from
+#      this registry by design (e.g. acma-projects is the raw-source root for llm-wiki-acma;
+#      worktrees is git-worktree staging). [DONE]
+#
+# Open questions still to resolve:
+#  Q1. achantas-data, achantas-media missions remain inferred — LOW priority (personal/out-of-scope).
+#  Q4. Orphan check: every IN-SCOPE repo ladders up to an objective (none orphaned).
