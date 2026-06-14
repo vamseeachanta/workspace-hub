@@ -225,6 +225,7 @@ jobs:
           fetch-depth: 0
       - name: Check for newly hardcoded model IDs (advisory)
         run: |
+          set -o pipefail
           echo "## Model-ID Sourcing Guard (advisory)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           chmod +x scripts/enforcement/check-model-id-sourcing.sh

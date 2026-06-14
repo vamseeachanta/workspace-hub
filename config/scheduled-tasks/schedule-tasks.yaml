@@ -76,7 +76,7 @@ tasks:
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
-      bash scripts/ai/parity-sentinel.sh --model claude-opus-4-8 --days 14
+      bash scripts/ai/parity-sentinel.sh --days 14
       >> $WORKSPACE_HUB/logs/ai/parity-sentinel-$(date +\%Y-\%m-\%d).log 2>&1
     log: logs/ai/parity-sentinel-*.log
     is_claude_task: false

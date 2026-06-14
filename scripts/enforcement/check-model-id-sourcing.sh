@@ -17,8 +17,10 @@
 #   check-model-id-sourcing.sh <file>...       # scan only these (pre-commit/tests)
 #   --baseline <path>  (default scripts/enforcement/model-id-baseline.txt)
 #
-# An individual line is exempt if it contains an allow-token:
-#   latest_models | registry_model(...) | # model-id-ok
+# An individual line is exempt only for a narrow documented reference:
+#   # model-id-ok
+#   comment-only lines that reference latest_models
+#   a standalone registry_model(...) lookup expression
 set -uo pipefail
 
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
@@ -42,15 +44,41 @@ done
 
 # model-ID literal pattern; tier aliases (claude_primary, "opus") deliberately excluded
 PAT='(claude-[A-Za-z0-9][A-Za-z0-9._-]*-[0-9][A-Za-z0-9._-]*|gpt-[0-9][A-Za-z0-9._-]*|gemini-[0-9][A-Za-z0-9._-]*|o[0-9][A-Za-z0-9._-]*|codex-mini[A-Za-z0-9._-]*)'
-ALLOW='(^|[^A-Za-z0-9_])latest_models([^A-Za-z0-9_]|$)|(^|[^A-Za-z0-9_])registry_model[[:space:]]*\(|# model-id-ok'
-# self + the registry are never scanned
-SELF='scripts/enforcement/check-model-id-sourcing.sh|scripts/enforcement/model-id-baseline.txt|config/agents/model-registry.yaml'
 
 scope_files() {
   if [ "${#FILES[@]}" -gt 0 ]; then printf '%s\n' "${FILES[@]}"; return; fi
-  git ls-files 'scripts' 'config' '.claude/skills' '.agents/skills' \
+  git ls-files 'scripts' 'config' '.github/workflows' '.claude/skills' '.agents/skills' \
     '.claude/agent-library' '.agents/agent-library' 2>/dev/null |
     grep -E '\.(py|sh|ya?ml|json|md)$'
+}
+
+skip_path() {
+  local rel="$1"
+  case "$rel" in
+    "$ROOT"/*) rel="${rel#"$ROOT"/}" ;;
+  esac
+  rel="${rel#./}"
+
+  case "$rel" in
+    scripts/enforcement/check-model-id-sourcing.sh|scripts/enforcement/model-id-baseline.txt|config/agents/model-registry.yaml)
+      return 0
+      ;;
+    scripts/review/results/*)
+      return 0
+      ;;
+  esac
+  return 1
+}
+
+line_allowed() {
+  local line="$1" token_count
+  if printf '%s\n' "$line" | grep -q '# model-id-ok'; then
+    token_count="$(printf '%s\n' "$line" | grep -oE "$PAT" | wc -l | tr -d '[:space:]')"
+    [ "$token_count" = "1" ] && return 0
+  fi
+  printf '%s\n' "$line" | grep -qE '^[[:space:]]*#.*latest_models([^A-Za-z0-9_]|$)' && return 0
+  printf '%s\n' "$line" | grep -qE '^[[:space:]]*([A-Za-z_][A-Za-z0-9_]*[[:space:]]*=[[:space:]]*)?registry_model[[:space:]]*\([^;#]*\)[[:space:]]*$' && return 0
+  return 1
 }
 
 # emit "path<TAB>token<TAB>line-hash<TAB>ordinal" for every offending occurrence.
@@ -60,9 +88,9 @@ findings() {
   local f line_no line line_hash tok
   while IFS= read -r f; do
     [ -f "$f" ] || continue
-    echo "$f" | grep -qE "$SELF" && continue
+    skip_path "$f" && continue
     grep -nIE "$PAT" "$f" 2>/dev/null | while IFS=: read -r line_no line; do
-      printf '%s\n' "$line" | grep -qE "$ALLOW" && continue
+      line_allowed "$line" && continue
       line_hash="$(printf '%s' "$line" | cksum | awk '{print $1 ":" $2}')"
       # extract every model-id token on the line
       printf '%s\n' "$line" | grep -oE "$PAT" | sort -u | while IFS= read -r tok; do

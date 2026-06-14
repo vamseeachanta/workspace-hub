@@ -1,9 +1,12 @@
 """Tests for the model-ID sourcing ratchet guard (#3060, epic #3058)."""
 import os
+import re
 import subprocess
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SCRIPT = os.path.join(REPO, "scripts", "enforcement", "check-model-id-sourcing.sh")
+WORKFLOW = os.path.join(REPO, ".github", "workflows", "enforcement-gate.yml")
+PRECOMMIT = os.path.join(REPO, ".pre-commit-config.yaml")
 
 
 def run(*args):
@@ -43,10 +46,49 @@ def test_allow_token_sentinel_exempts(tmp_path):
     assert rc == 0
 
 
+def test_model_id_ok_does_not_exempt_neighbor_literal(tmp_path):
+    f = write(tmp_path, "x.py", 'ALLOWED = "claude-opus-4-9"; BAD = "gpt-5.5"  # model-id-ok\n')
+    rc, out = run("--enforce", "--baseline", empty_baseline(tmp_path), f)
+    assert rc == 1
+    assert "gpt-5.5" in out
+
+
 def test_registry_reference_exempts(tmp_path):
     f = write(tmp_path, "x.py", 'm = registry_model("claude_primary", "claude-opus-4-9")\n')
     rc, _ = run("--enforce", "--baseline", empty_baseline(tmp_path), f)
     assert rc == 0
+
+
+def test_latest_models_reference_does_not_exempt_code_literal(tmp_path):
+    f = write(tmp_path, "x.py", 'MODEL = "gpt-5.5"  # latest_models someday\n')
+    rc, out = run("--enforce", "--baseline", empty_baseline(tmp_path), f)
+    assert rc == 1
+    assert "gpt-5.5" in out
+
+
+def test_registry_reference_does_not_exempt_neighbor_literal(tmp_path):
+    f = write(tmp_path, "x.py", 'm = registry_model("claude_primary", "claude-opus-4-9"); BAD = "gpt-5.5"\n')
+    rc, out = run("--enforce", "--baseline", empty_baseline(tmp_path), f)
+    assert rc == 1
+    assert "gpt-5.5" in out
+
+
+def test_self_and_registry_exclusions_require_exact_paths(tmp_path):
+    baseline_like = tmp_path / "scripts" / "enforcement" / "model-id-baseline.txt.py"
+    registry_like = tmp_path / "config" / "agents" / "model-registry.yaml.extra.py"
+    baseline_like.parent.mkdir(parents=True)
+    registry_like.parent.mkdir(parents=True)
+    baseline_like.write_text('MODEL = "gpt-5.5"\n')
+    registry_like.write_text('MODEL = "claude-opus-4-9"\n')
+    files = [str(baseline_like), str(registry_like)]
+
+    rc, out = run("--enforce", "--baseline", empty_baseline(tmp_path), *files)
+
+    assert rc == 1
+    assert "model-id-baseline.txt.py" in out
+    assert "model-registry.yaml.extra.py" in out
+    assert "gpt-5.5" in out
+    assert "claude-opus-4-9" in out
 
 
 def test_baselined_pair_not_flagged(tmp_path):
@@ -142,6 +184,27 @@ def test_default_scope_includes_skill_markdown(tmp_path):
     assert "gpt-5.5" in p.stdout + p.stderr
 
 
+def test_default_scope_includes_github_workflows(tmp_path):
+    repo = tmp_path / "repo"
+    workflow = repo / ".github" / "workflows" / "demo.yml"
+    workflow.parent.mkdir(parents=True)
+    workflow.write_text('run: echo "gpt-5.5"\n')
+    baseline = repo / "baseline.txt"
+
+    subprocess.run(["git", "init"], cwd=repo, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "add", "."], cwd=repo, check=True, capture_output=True, text=True)
+    p = subprocess.run(
+        ["bash", SCRIPT, "--enforce", "--baseline", str(baseline)],
+        capture_output=True,
+        text=True,
+        cwd=repo,
+    )
+
+    assert p.returncode == 1
+    assert ".github/workflows/demo.yml" in p.stdout + p.stderr
+    assert "gpt-5.5" in p.stdout + p.stderr
+
+
 def test_default_scope_enforce_flags_stale_baseline_entries(tmp_path):
     repo = tmp_path / "repo"
     cfg = repo / "config" / "demo.yaml"
@@ -171,3 +234,47 @@ def test_default_scope_enforce_flags_stale_baseline_entries(tmp_path):
     assert p.returncode == 1
     assert "STALE" in p.stdout + p.stderr
     assert "config/missing.yaml" in p.stdout + p.stderr
+
+
+def test_review_results_are_out_of_model_sourcing_scope(tmp_path):
+    repo = tmp_path / "repo"
+    result = repo / "scripts" / "review" / "results" / "provider-review.md"
+    result.parent.mkdir(parents=True)
+    result.write_text('Historical review transcript mentions "gpt-5.5".\n')
+    baseline = repo / "baseline.txt"
+
+    subprocess.run(["git", "init"], cwd=repo, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "add", "."], cwd=repo, check=True, capture_output=True, text=True)
+    p = subprocess.run(
+        ["bash", SCRIPT, "--enforce", "--baseline", str(baseline)],
+        capture_output=True,
+        text=True,
+        cwd=repo,
+    )
+
+    assert p.returncode == 0
+    assert "0 in-scope literal" in p.stdout + p.stderr
+
+
+def test_workflow_preserves_model_guard_pipeline_exit_status():
+    with open(WORKFLOW, encoding="utf-8") as handle:
+        workflow = handle.read()
+
+    start = workflow.index("  model-id-sourcing:")
+    end = workflow.index("  compliance-dashboard:", start)
+    section = workflow[start:end]
+
+    assert "set -o pipefail" in section or "PIPESTATUS[0]" in section
+
+
+def test_precommit_registry_exclusion_is_exact():
+    with open(PRECOMMIT, encoding="utf-8") as handle:
+        config = handle.read()
+
+    hook = re.search(r"id: check-model-id-sourcing.*?exclude: '([^']+)'", config, re.S)
+    assert hook is not None
+    exclude = re.compile(hook.group(1))
+
+    assert exclude.search("config/agents/model-registry.yaml")
+    assert not exclude.search("config/agents/model-registry.yaml.extra.py")
+    assert exclude.search("scripts/review/results/provider-review.md")
