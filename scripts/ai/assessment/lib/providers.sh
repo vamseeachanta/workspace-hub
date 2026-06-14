@@ -243,31 +243,26 @@ PYEOF
 
 # ── Gemini ────────────────────────────────────────────────────────────────────
 
+# Genuine Gemini (agy) usage via the shared source of truth, scripts/ai/assessment/
+# gemini-usage.py (429-throttle → manual /usage snapshot → unavailable). agy
+# persists no quota to disk (workspace-hub#3087), so the legacy file-count
+# "estimated" %/daily_limit:1000 was fabricated — replaced here. Surfaces
+# pct_remaining:null / source:"unavailable" when no genuine signal exists, matching
+# the Claude convention above ("surface N/A rather than an estimated quota").
 query_gemini() {
-    local state="${HOME}/.config/gemini/state.json"
-    local today messages=0
-    today=$(date +%Y-%m-%d)
-
-    if [[ -f "$state" ]]; then
-        local count
-        count=$(jq -r '.dailyRequestCount // 0' "$state" 2>/dev/null)
-        [[ "$count" != "null" && "$count" != "0" ]] && messages=$count
-    fi
-
-    if (( messages == 0 )); then
-        [[ ! -f /tmp/.gemini-day-marker ]] && touch_midnight /tmp/.gemini-day-marker "$today"
-        messages=$(find "${HOME}/.config/gemini/tmp" -maxdepth 1 \
-            -newer /tmp/.gemini-day-marker -type f 2>/dev/null | wc -l)
-    fi
-
-    local limit="${GEMINI_DAILY_REQUESTS:-1000}"
-    local pct_used=0
-    (( limit > 0 )) && pct_used=$(awk -v u="$messages" -v l="$limit" 'BEGIN { printf "%d", (u/l)*100 }')
-    (( pct_used > 100 )) && pct_used=100
-    jq -n \
-        --argjson limit "$limit" \
-        --argjson messages "$messages" \
-        --argjson pct "$(( 100 - pct_used ))" \
-        '{provider:"gemini", tier:"google_login", daily_limit:$limit,
-          today_messages:$messages, pct_remaining:$pct, source:"estimated"}'
+    local helper g
+    helper="$(dirname "${BASH_SOURCE[0]}")/../gemini-usage.py"
+    g=$(python3 "$helper" 2>/dev/null) || g=""
+    [[ -n "$g" ]] || g='{"pct_remaining":null,"five_hour_pct":null,"hours_to_reset":null,"resets_at":null,"captured_at":null,"source":"unavailable"}'
+    echo "$g" | jq '{
+        provider: "gemini",
+        tier: "google_login",
+        week_pct: (if .pct_remaining == null then null else (100 - .pct_remaining) end),
+        five_hour_pct: .five_hour_pct,
+        pct_remaining: .pct_remaining,
+        hours_to_reset: .hours_to_reset,
+        resets_at: (.resets_at // ""),
+        captured_at: .captured_at,
+        source: .source
+    }'
 }
