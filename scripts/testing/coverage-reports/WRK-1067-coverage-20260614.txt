@@ -1,4 +1,4 @@
-coverage-ratchet report — 2026-06-14T17:54:15Z
+coverage-ratchet report — 2026-06-14T19:35:41Z
 ============================================================
   FAIL    no coverage result for 'assethold'
   FAIL    no coverage result for 'assetutilities'
