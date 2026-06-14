@@ -523,7 +523,7 @@ cards:
       - domain:document-intelligence-indexing
       - domain:knowledge-management-corpus
       - domain:repo-organization-cleanup-migration
-      - lane:claude
+      - lane:codex
     gh_assignees: []
     initial_status: triage
     priority: 0

@@ -967,6 +967,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:ai-config
+      - status:plan-review
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -997,13 +998,14 @@ cards:
     title: 'Harden: config/model regression guard — epic #3058'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3060
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:ai-config
       - domain:tooling
       - status:plan-review
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
     initial_status: triage
     priority: 0
     gh_assignees: []
