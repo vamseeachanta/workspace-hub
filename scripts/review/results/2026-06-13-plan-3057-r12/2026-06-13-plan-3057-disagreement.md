@@ -1,0 +1,27 @@
+# Disagreement report — plan #3057 (2026-06-13)
+
+## Verdicts
+
+| Provider | Verdict |
+|---|---|
+| claude | MINOR |
+| codex | MAJOR |
+
+## Findings unique to each provider
+
+A finding is 'unique to X' if its text appears in X's artifact but not
+verbatim in any other provider's artifact.
+
+### claude
+
+- **`plan_cutover` gains a 6th positional argument with no stated backward-compat default; existing callers/tests are not flagged for migration.** Plan §Pseudocode line 445 calls `plan_cutover(current_crontab, rendered_selected, roles, catalog_keys, preserved_entries, selected_task_ids)` — a 6th arg. The live signature (`cron_transaction.py:286–292`) takes exactly 5 params, and `cron_apply.py:157` plus the fixtures at `tests/cron/test_cron_transaction.py:158–236` call it with 5. The plan's "Files to Change" row for `cron_transaction.py` (line 495) describes extending the classifier but never states `selected_task_ids` must be an *optional/defaulted* parameter, and no TDD row asserts the 5-arg call site still works. The `select_tasks` and `classify_line` extensions each got an explicit backward-compat test (`test_select_tasks_accepts_existing_string_machine_id_callers`, `test_classify_line_accepts_existing_bare_fingerprint_dicts...`); `plan_cutover`'s signature change got none. Add an explicit "default to empty set, existing 5-arg callers unchanged" contract + a test. MINOR.
+- **The "completes under 480s" live evidence is internally inconsistent and cold-cache worst case is unproven.** Plan §Evidence shows a *single* `git status` on workspace-hub taking **11.81s** (line 205) and digitalmodel **10.41s** (line 208), yet the *full 17-repo* audit completes in **16.13s total** (line 234). A 17-repo sequential audit cannot finish in 16.13s if one repo alone costs 11.81s — the discrepancy implies the full-set run rode a warm filesystem cache while the standalone probes were cold. The acceptance evidence for AC line 569 ("completes... with zero `git_probe_timeout`") therefore rests on a best-case timing, not the cold-start worst case the 30s/120s/480s budget is meant to survive. This *strengthens* the case for raising the probe timeout (the 11.81s cold probe already exceeds today's 10s default — that is the bug) but it weakens the "16.13s, residual risk is only jitter" claim in Risk line 680. Recommend the closeout capture a cold-cache full-set run. MINOR.
+- **The `[:60]` raw-command fallback constant (plan §Gaps line 50, R6 revision line 649) was not independently verified in this review.** Per retrieval-skepticism, I confirmed `notification-purge` has no `scripts/*.sh|*.py` token (matches the plan's own reproduction at line 223) but did not locate the literal `[:60]` truncation in `catalog_commands()`. The plan changes this to full-command keys regardless, so correctness does not hinge on the exact constant — but the cited "60-character fallback" detail is unverified. MINOR / citation-only.
+- **Header self-describes as superseded ("post-r11 fixes need fresh review before `status:plan-review`", line 9; "Overall result: FAIL", line 614).** This is correct process state, not a defect — flagging only so the gate is explicit: this review *is* the required fresh round; it does not by itself clear the plan to `status:plan-review`, and it must not self-advance the approval gate (never-self-approve).
+- Reviewed against: file/line existence of all cited claims, signature backward-compat for the three extended public functions, the duplicate-`notification-purge` dedupe path through `plan_cutover`→`classify_line`, the dev-primary-vs-ace-linux-1 legacy-pin bug, golden `schedule_by_machine` values, setup-cron hostname-first/token-only parity, the 600s schedule gap vs 480s budget, and the hardcoded `uv` path. **Every correctness-critical factual claim verified TRUE against HEAD.** The plan is unusually well-grounded for its scope; the findings above are tightening items, not correctness blockers.
+
+### codex
+
+- Plan acceptance criteria conflict on preserved-local behavior. `docs/plans/2026-06-13-issue-3057-cron-hygiene-hardening.md:557` requires “Existing external/preserved crontab lines remain preserved,” but line 560 requires the `notification-purge` preserved-local line to be “deduped from out-of-block preserved lines.” The current `notification-purge` exception is explicitly in `config/workstations/harness-state-classes.yaml:120-130` under `preserved_local`, so both acceptance criteria cannot be satisfied as written unless line 557 names the catalog-owned exception.
+- The verification gate omits the repo’s absolute-path enforcement despite this plan directly changing a script to remove a hardcoded absolute path. The plan only requires `bash scripts/legal/legal-sanity-scan.sh --diff-only` at `docs/plans/2026-06-13-issue-3057-cron-hygiene-hardening.md:580`, but the legal scan only scans deny-list patterns (`scripts/legal/legal-sanity-scan.sh:1-8`) and does not enforce hardcoded absolute paths. The actual enforcement is `scripts/enforcement/check-no-abs-paths.sh`, which scans `.sh`/`.py` files for `/home/`, `/mnt/`, `/Users/`, `/opt/`, and drive-letter paths (`scripts/enforcement/check-no-abs-paths.sh:1-26`, `scripts/enforcement/check-no-abs-paths.sh:103-153`). Since the plan modifies `scripts/monitoring/cron-health-check.sh` specifically to remove `/home/vamsee/.local/bin/uv` (`docs/plans/2026-06-13-issue-3057-cron-hygiene-hardening.md:500`, `:575`), the plan should include the absolute-path check or explain why it is intentionally out of scope.
+

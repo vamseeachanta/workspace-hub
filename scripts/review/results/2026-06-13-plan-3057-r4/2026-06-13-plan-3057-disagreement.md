@@ -1,0 +1,26 @@
+# Disagreement report — plan #3057 (2026-06-13)
+
+## Verdicts
+
+| Provider | Verdict |
+|---|---|
+| claude | MAJOR |
+| codex | MAJOR |
+
+## Findings unique to each provider
+
+A finding is 'unique to X' if its text appears in X's artifact but not
+verbatim in any other provider's artifact.
+
+### claude
+
+- **The r3 catalog-key fix is incomplete and its test is shaped to dodge the regression it introduces.** The plan changes key computation to the *rendered* catalog (Pseudocode `:340` `catalog_keys = catalog_commands({"tasks": rendered_catalog})`; Risk `:472`). For `notification-purge` — confirmed the **only** fallback-keyed task — the raw key `cd $WORKSPACE_HUB && find logs/notifications/ -name "*.json` becomes the rendered key `cd /mnt/local-analysis/workspace-hub && find logs/notific`. An out-of-block crontab line still in **unexpanded** `$WORKSPACE_HUB` form (legacy/manual entry) currently classifies as `cataloged` (raw key is a substring) and is dropped as a stale duplicate (`cron_transaction.py:196-198, 340-343`); under rendered-only keys it no longer matches → `uncataloged` → `plan_cutover` **aborts** (`:199, 347-354`). The plan's guard test `test_expanded_placeholder_fallback_catalog_line_is_not_uncataloged` (`:402`) explicitly uses *"an expanded out-of-managed-block legacy line"* — i.e., it exercises only the case that passes, never the unexpanded case that regresses. Correct fix is to key on the **union** of raw ∪ rendered catalog commands, and add a test for the unexpanded `$WORKSPACE_HUB` out-of-block form. (Fail-closed bounds this to a cutover-blocking abort, not data loss — but the shaped test is the disqualifier.)
+- **The "one shared renderer used by both `setup-cron.sh` and `cron_apply.py`" framing oversells parity; the schedule field still diverges and the plan doesn't say so.** `setup-cron.sh:124-133` honors `schedule_by_machine` (3 catalog tasks use it: `schedule-tasks.yaml:96,373,411`), but `cron_transaction.py:278` renders `task['schedule']` unconditionally — the shared renderer (Files-to-Change `:377`) handles only `$WORKSPACE_HUB`/`$LOG` *command* expansion. For those 3 tasks the two installers emit **different schedule fields**, so the crontab lines are not byte-identical line-wise. The parity test asserts only *"Rendered command text is byte-identical"* (`:398`), and the Risk note (`:471`) mentions divergent *selection* semantics but never `schedule_by_machine`. A reader of the Deliverable (`:293`) will reasonably assume the installers now converge; they don't. Add an explicit note that schedule-field divergence persists and is out of scope, or fold `schedule_by_machine` into the renderer.
+- **(MINOR) Acceptance criterion #6 conflates the audit's WARN exit with "completes."** AC `:423` requires completion across the 17-repo governed set with `incomplete_due_to_deadline=false` and zero `git_probe_timeout`. The live evidence (`:221-243`) returns `status=WARN rc=0` — correct, because dirty-worktree/ahead/behind findings are WARN by design (`repo-ecosystem-hygiene-audit.sh:460-490`). This is fine, but the criterion should state that a WARN audit status satisfies "completes" (only `git_probe_timeout`/`incomplete_due_to_deadline` are disqualifying), so the implementer doesn't mistake the expected WARN for a failure.
+
+### codex
+
+- Plan alias handling is applied too late for `cron_apply.py` task selection. Plan pseudocode lines 334-341 says `run_cutover` will “select tasks for machine roles” before `cron_context_for_machine(...)`; current `cron_apply.py:114-117` only looks up roles by exact machine id, while `main` only resolves `hostname` prefix or exact machine name at `cron_apply.py:213-216`, not `hostname_aliases`. Live verification shows `cron_apply.py --machine vamsee-linux1 --json` returns `skip` because `vamsee-linux1` has no roles, even though `config/workstations/registry.yaml:7-17` defines `vamsee-linux1` as an alias for `dev-primary`. The plan tests alias behavior for `setup-cron.sh` at `docs/plans/...:403` and `scripts/cron/tests/test_validate_schedule.py:195-212`, but does not require an alias-selection test for `cron_apply.py`.
+- The “one shared renderer” acceptance is not made falsifiable. The defect came from duplicated placeholder expansion in `setup-cron.sh:106-140`, and the plan’s acceptance at `docs/plans/...:422` requires `setup-cron.sh` and `cron_apply.py` to use one shared renderer. But the listed tests at `docs/plans/...:397-404` only assert output parity/placeholder expansion for selected fixtures; they do not require `setup-cron.sh` to invoke `scripts/cron/cron_render.py` or remove the inline `command.replace(...)` logic. A duplicate implementation could pass the proposed black-box tests and recreate the divergence class.
+- Existing regression coverage for preserved live cron lines is omitted from the focused gate. `tests/cron/test_a1_preserved.py:1-8` explicitly protects the prior ace-linux-1 cutover regression, including `notification-purge` classification at `tests/cron/test_a1_preserved.py:60-68`. The plan changes rendered catalog-key behavior around `notification-purge` at `docs/plans/...:421` and `docs/plans/...:472`, but the focused test command at `docs/plans/...:426` excludes `tests/cron/test_a1_preserved.py`. That leaves an existing directly relevant regression outside the required verification set.
+
