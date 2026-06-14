@@ -8,7 +8,7 @@
 ## Engineering-Critical Labels
 `cat:engineering`, `cat:engineering-calculations`, `cat:engineering-methodology`, `cat:data-pipeline`
 ## Workflow
-- Tasks tracked as GitHub issues via GSD; no local work-queue. Canonical execution is parallel-first gated execution: classify non-trivial work as `single-lane`, `parallel-readonly`, or `parallel-worktree` before starting. Reference: [Parallel-First Execution Standard](docs/standards/PARALLEL_FIRST_EXECUTION.md)
+- Tasks tracked as GitHub issues via GSD; no local work-queue. Canonical execution is parallel-first gated execution: classify non-trivial work as `single-lane`, `parallel-readonly`, or `parallel-worktree` before starting. Reference: [Parallel-First Execution Standard](docs/standards/PARALLEL_FIRST_EXECUTION.md). **Concurrent sessions (any provider): claim a shared autonomous-loop unit before starting** (`scripts/coordination/claim.py` → BLOCKED if held) and write a handoff before stopping — spec: llm-wiki `coordination/AGENT_SESSION_PROTOCOL.md`.
 ## Commands
 - Python: `uv run` always — never bare `python3`
 - Git: commit to `main` + push; branch only for multi-session work

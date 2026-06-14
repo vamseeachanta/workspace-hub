@@ -4,6 +4,7 @@
 - Retrieval first — consult `docs/` for reference maps and domain guides before searching
 - Current workflow surface: `AGENTS.md`, `docs/work-queue-workflow.md`, `docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md`, and `.gemini/` (older wrapper-based entrypoints are deleted legacy paths)
 - Cross-review: `echo content | gemini -p "prompt" -y`
+- Concurrent sessions: before a shared autonomous loop (llm-wiki `/verify-batch`, corpus-ingest), claim the unit first per AGENTS.md → "Concurrent sessions" (`scripts/coordination/claim.py`); write a handoff before stopping. Avoids cross-session collisions.
 - Gate evidence: use current workflow anchors in `AGENTS.md`, `docs/work-queue-workflow.md`, and `docs/governance/SESSION-GOVERNANCE.md` (older legacy references are redirect-only; see `docs/ops/legacy-claude-reference-map.md`)
 
 @config/agents/gemini/SOUL.runtime.md
