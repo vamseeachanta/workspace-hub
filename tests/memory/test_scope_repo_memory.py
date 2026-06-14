@@ -106,3 +106,18 @@ def test_rejects_non_git(tmp_path):
     plain.mkdir()
     r = _run(plain)
     assert r.returncode == 3
+
+
+def test_repo_name_from_origin_not_dirname(tmp_path):
+    # Simulates running against a worktree dir whose basename != repo name.
+    repo = tmp_path / "wt-something"
+    repo.mkdir()
+    subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+    subprocess.run(
+        ["git", "remote", "add", "origin", "https://github.com/acme/realrepo.git"],
+        cwd=repo, check=True,
+    )
+    _run(repo)
+    mem = (repo / ".claude" / "memory" / "MEMORY.md").read_text()
+    assert "realrepo" in mem
+    assert "wt-something" not in mem

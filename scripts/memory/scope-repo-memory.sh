@@ -37,7 +37,12 @@ for arg in "$@"; do
 done
 
 [[ -n "$REPO" ]] || { echo "usage: scope-repo-memory.sh <repo_path> [--force] [--dry-run]" >&2; exit 2; }
-[[ -d "$REPO/.git" ]] || { echo "not a git repo: $REPO" >&2; exit 3; }
+# Accept both a normal checkout (.git dir) and a linked worktree (.git file).
+[[ -d "$REPO/.git" || -f "$REPO/.git" ]] || { echo "not a git repo: $REPO" >&2; exit 3; }
+
+# Derive the canonical repo name from the origin URL, NOT basename($REPO) — the
+# latter yields the worktree dir name (e.g. "wt-digitalmodel") when run in a worktree.
+repo_name="$(basename -s .git "$(git -C "$REPO" remote get-url origin 2>/dev/null || echo "$REPO")")"
 
 say() { echo "[scope-memory] $*"; }
 act() { if $DRY_RUN; then echo "[dry-run] would: $*"; else eval "$2"; say "$1"; fi; }
@@ -48,7 +53,6 @@ MEM_FILE="$MEM_DIR/MEMORY.md"
 if [[ -f "$MEM_FILE" && "$FORCE" != true ]]; then
   say "MEMORY.md already exists — skip (no clobber): $MEM_FILE"
 else
-  repo_name="$(basename "$REPO")"
   if $DRY_RUN; then
     echo "[dry-run] would create: $MEM_FILE (from template, REPO=$repo_name)"
   else
@@ -90,7 +94,6 @@ if [[ -f "$CM" ]]; then
     fi
   fi
 else
-  repo_name="$(basename "$REPO")"
   if $DRY_RUN; then
     echo "[dry-run] would create minimal CLAUDE.md (no existing one) to activate scoping"
   else
