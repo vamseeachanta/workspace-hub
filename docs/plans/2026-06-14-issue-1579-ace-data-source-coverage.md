@@ -7,7 +7,7 @@
 > **Client:** N/A
 > **Project:** workspace-hub data inventory
 > **Lane:** lane:codex
-> **Review artifacts:** output targets after review completion: scripts/review/results/2026-06-14-plan-1579-claude.md | scripts/review/results/2026-06-14-plan-1579-codex.md | scripts/review/results/2026-06-14-plan-1579-gemini.md
+> **Review artifacts:** latest completed review wave is r5 under `scripts/review/results/2026-06-14-plan-1579-r5/`; r6 is required after this revision before `status:plan-review`
 
 ---
 
@@ -37,14 +37,14 @@
 | Wiki sibling routing | active for any `llm-wiki` or `llm-wiki-<client>` mapping, even if this issue only reads wiki repos | `.claude/rules/wiki-sibling-routing.md` |
 | Codes and standards routing | active for standards-derived material; raw vendor PDFs stay off-repo at `/mnt/ace` and wiki holds derived knowledge only | `.claude/rules/codes-standards-data-routing.md` |
 | Legal/security scan | required before code closeout | `scripts/legal/legal-sanity-scan.sh` |
-| Completeness before close | active because [#1579](https://github.com/vamseeachanta/workspace-hub/issues/1579) has `gate:completeness`; class is auto-derived by `completeness_score.classify()` (`code` threshold 90, `evidence` threshold 80) | `.claude/rules/completeness-before-close.md`, `scripts/workflow/completeness_score.py`, `scripts/workflow/render_completeness_html.py` |
+| Completeness before close | active because [#1579](https://github.com/vamseeachanta/workspace-hub/issues/1579) has `gate:completeness`; implementation closeout will build and save a deterministic package map, call `classify(changed_files, path_package_map)`, require `evidence`, then compute the stamped record with `score_evidence()` for owner verification | `.claude/rules/completeness-before-close.md`, `scripts/workflow/completeness_score.py`, `scripts/workflow/render_completeness_html.py`, `scripts/workflow/completeness_gate_runner.py` |
 
 ### LLM Wiki pages and repos consulted
 
 - Live sibling checkouts observed on this machine: `/mnt/local-analysis/llm-wiki`, `/mnt/local-analysis/llm-wiki-acma`, and `/mnt/local-analysis/llm-wiki-fdas`.
-- `llm-wiki` git status can drift between planning and implementation. Implementation must record each wiki checkout's branch, clean/dirty state, and ahead/behind state at run time and must mark mapping evidence stale when the checkout is not current.
+- `llm-wiki` checkout membership and git status can drift between planning and implementation. During r5 review, a transient `llm-wiki-vbatch-165-review` worktree was observed and then disappeared before the next local poll. Implementation must record each observed wiki checkout's branch, clean/dirty state, ahead/behind state, and checkout class at run time. Eligible sibling checkouts feed coverage percentages; transient/non-sibling worktrees are recorded as exclusions and must not create registry-drift decisions.
 - `llm-wiki-acma` is clean at planning time and contains client workflow docs, `projects/sirocco`, `projects/B1546-Noble-Drilling`, `sources/`, and `ledgers/`.
-- `llm-wiki-fdas` is live on disk but not listed in `config/client-wikis.yml`; implementation must treat it as a live observed wiki sibling and a registry-drift candidate rather than ignoring it.
+- `llm-wiki-fdas` is live on disk but not listed in `config/client-wikis.yml`; `config/client-wikis.yml` does list planned `frontierdeepwater` with repo `vamseeachanta/llm-wiki-frontierdeepwater`. Because the live registry has no `fdas` alias or row, implementation must classify the current live state as `observed-unregistered` and queue registry reconciliation. `registered-slug-mismatch` is allowed only when explicit registry or source-manifest alias evidence links the live checkout to a registered client row.
 - `llm-wiki-hdic` is listed as bootstrapped in `config/client-wikis.yml`, but no sibling checkout was observed under `/mnt/local-analysis` during planning while its registered raw root exists under `/mnt/ace`. Implementation must report this reverse drift as `registered-but-not-checked-out` and must not collapse it into the same bucket as live-but-unregistered repos.
 - `llm-wiki` contains source manifests and data-document-index artifacts such as `data/document-index/og-standards-raw-bucket-disposition.jsonl`, `og-standards-raw-unique-quarantine.jsonl`, `conference-candidate-manifest.jsonl`, and multiple source-manifest validators. These are reuse candidates for mapping and dedup/reorg semantics.
 
@@ -89,9 +89,8 @@
 - EXISTS: `.claude/rules/codes-standards-data-routing.md`
 - EXISTS: `.claude/rules/completeness-before-close.md`
 - MISSING (new, this plan will create): `scripts/data/ace_data_source_coverage.py`
-- MISSING (new, this plan will create): `src/data_inventory_scripts/__init__.py`
-- MISSING (new, this plan will create): `src/data_inventory_scripts/ace_data_source_coverage.py`
-- MISSING (new, this plan will create): `tests/data_inventory_scripts/test_ace_data_source_coverage.py`
+- MISSING (new, this plan will create): `scripts/data/ace_data_source_coverage_lib.py`
+- MISSING (new, this plan will create): `tests/data/test_ace_data_source_coverage.py`
 - MISSING (new, this plan will create): `data/inventory/ace-data-source-description-coverage.json`
 - MISSING (new, this plan will create): `data/inventory/ace-data-source-decision-queue.jsonl`
 - MISSING (new, this plan will create): `data/inventory/ace-data-source-relocation-ledger.csv`
@@ -189,9 +188,8 @@ lrwxrwxrwx  1 root   root       8 Mar 13 14:03 /mnt/ace-data -> /mnt/ace
 |---|---|
 | This plan | `docs/plans/2026-06-14-issue-1579-ace-data-source-coverage.md` |
 | Implementation CLI wrapper | `scripts/data/ace_data_source_coverage.py` |
-| Scoreable implementation package | `src/data_inventory_scripts/__init__.py` |
-| Implementation library | `src/data_inventory_scripts/ace_data_source_coverage.py` |
-| Tests | `tests/data_inventory_scripts/test_ace_data_source_coverage.py` |
+| Implementation library | `scripts/data/ace_data_source_coverage_lib.py` |
+| Tests | `tests/data/test_ace_data_source_coverage.py` |
 | Sanitized machine-readable coverage map | `data/inventory/ace-data-source-description-coverage.json` |
 | Full-fidelity local coverage map (ignored, not committed) | `artifacts/private/issue-1579/ace-data-source-description-coverage.full.json` |
 | Private artifact manifest (tracked, sanitized) | `data/inventory/ace-data-source-private-artifact-manifest.json` |
@@ -199,13 +197,23 @@ lrwxrwxrwx  1 root   root       8 Mar 13 14:03 /mnt/ace-data -> /mnt/ace
 | Relocation/deletion proposal ledger | `data/inventory/ace-data-source-relocation-ledger.csv` |
 | Human-facing report | `docs/reports/ace-data-source-description-coverage.html` |
 | Implementation notes | `docs/reports/issue-1579-implementation-notes.html` |
-| Module status matrix support | `scripts/analysis/module_status_matrix.py` |
-| Module status matrix tests | `tests/analysis/test_module_status_matrix.py` |
 | Completeness gate report | `docs/reports/<completion-date>-1579-completeness.html` |
 | Planning index | `docs/plans/README.md` |
 | Plan review - Claude | `scripts/review/results/2026-06-14-plan-1579-claude.md` (output target; valid evidence only after review process completes and file is non-empty) |
 | Plan review - Codex | `scripts/review/results/2026-06-14-plan-1579-codex.md` (output target; valid evidence only after review process completes and file is non-empty) |
 | Plan review - Gemini | `scripts/review/results/2026-06-14-plan-1579-gemini.md` (output target; valid evidence only after review process completes and file is non-empty) |
+| Plan review r3 - Claude | `scripts/review/results/2026-06-14-plan-1579-r3/2026-06-14-plan-1579-claude.md` |
+| Plan review r3 - Codex | `scripts/review/results/2026-06-14-plan-1579-r3/2026-06-14-plan-1579-codex.md` |
+| Plan review r3 - Gemini | `scripts/review/results/2026-06-14-plan-1579-r3/2026-06-14-plan-1579-gemini.md` |
+| Plan review r3 - Disagreement | `scripts/review/results/2026-06-14-plan-1579-r3/2026-06-14-plan-1579-disagreement.md` |
+| Plan review r4 - Claude | `scripts/review/results/2026-06-14-plan-1579-r4/2026-06-14-plan-1579-claude.md` |
+| Plan review r4 - Codex | `scripts/review/results/2026-06-14-plan-1579-r4/2026-06-14-plan-1579-codex.md` |
+| Plan review r4 - Gemini | `scripts/review/results/2026-06-14-plan-1579-r4/2026-06-14-plan-1579-gemini.md` |
+| Plan review r4 - Disagreement | `scripts/review/results/2026-06-14-plan-1579-r4/2026-06-14-plan-1579-disagreement.md` |
+| Plan review r5 - Claude | `scripts/review/results/2026-06-14-plan-1579-r5/2026-06-14-plan-1579-claude.md` |
+| Plan review r5 - Codex | `scripts/review/results/2026-06-14-plan-1579-r5/2026-06-14-plan-1579-codex.md` |
+| Plan review r5 - Gemini | `scripts/review/results/2026-06-14-plan-1579-r5/2026-06-14-plan-1579-gemini.md` |
+| Plan review r5 - Disagreement | `scripts/review/results/2026-06-14-plan-1579-r5/2026-06-14-plan-1579-disagreement.md` |
 
 ---
 
@@ -256,17 +264,23 @@ function classify_duplicate_candidate(record, index_records):
     if best copy is uncertain, queue side-by-side review decision and prohibit deletion
 
 function map_to_llm_wiki(record, wiki_repos):
+    classify every observed llm-wiki* checkout as eligible-sibling, registered-missing-checkout, or transient-non-sibling before coverage math
+    identify transient-non-sibling worktrees by explicit worktree/review naming markers such as *-vbatch-*, *-review, detached worktree metadata, or matching the generic llm-wiki remote under a noncanonical directory name
+    record transient-non-sibling checkouts in run metadata with excluded_reason=transient-non-sibling and exclude them from per-wiki denominators and registry reconciliation queues
     derive eligibility: generic, client, both, not-wiki-eligible, or needs-user-decision
     match registry raw_roots, wiki source manifests, wiki pages, and source folders
     record content-free target_wiki_ref in tracked artifacts; exact repo/path only in ignored full-fidelity artifact
     mark live-but-unregistered repos as observed-unregistered registry drift
+    compare live checkout remote names with registry repo names and explicit registry/source-manifest alias fields
+    when explicit alias evidence links a live repo to a registered client under a different slug, mark registered-slug-mismatch and queue a registry reconciliation decision
+    when no explicit alias evidence exists, keep the conservative observed-unregistered drift status and queue registry reconciliation
     mark registered repos without local checkout as registered-but-not-checked-out registry drift
     when a registered raw root is live but the wiki checkout is absent, record target_wiki_ref, coverage_denominator_status=checkout-unavailable, and queue a follow-up decision
     classify applicability as client, general, both, unknown, or not-applicable
 
 function calculate_coverage(rows):
     compute denominators from rows and explicit denominator_bucket values, not prose
-    compute root-level, selected-recursive, client-work, general-work, and per-wiki-repo percentages
+    compute root-level, selected-recursive, client-work, general-work, and per-eligible-wiki-sibling percentages
     define general-work denominator as rows with client_general_applicability in {general, both} and scope_class in the included root or selected-recursive buckets, excluding partial rows and rows whose denominator_bucket is not-wiki-eligible
     fail if any denominator is zero without an explicit not-applicable reason
     keep tracked artifact diffs aggregate-stable only; path-level cross-run diffs require comparing local full-fidelity artifacts from both runs
@@ -282,14 +296,16 @@ function emit_artifacts(rows, decisions, relocation_proposals):
     render implementation-notes HTML with decisions, deviations, tradeoffs, open questions
 
 function compute_completeness_before_close(changed_files, evidence_items):
-    import completeness_score.classify, score_code, and render_completeness_html.write_html
-    set path_package_map so src/data_inventory_scripts maps to package data_inventory_scripts
-    update module_status_matrix to emit snapshot sha=HEAD and include data_inventory_scripts package evidence
-    derive class with completeness_score.classify(changed_files, path_package_map)
-    require derived class code; if not code, stop because the scoreable package mapping failed
-    call score_code(["data_inventory_scripts"], snapshot, HEAD_SHA, changed_code_coverage, evidence_linked_checklist, issue_number=1579)
+    import completeness_score.classify, score_evidence, and render_completeness_html.write_html
+    build deterministic path_package_map for the issue closeout from repo package roots discovered at implementation time: src/ plus top-level pyproject.toml or package.json roots, excluding node_modules, agent runtime/config folders, tests, docs, data, scripts, and generated artifacts
+    save path_package_map and path_package_map_source in docs/reports/issue-1579-completeness-inputs.json
+    call classify(changed_files, path_package_map) and require it returns evidence before score_evidence is called; if it returns code, stop and revise the plan before owner verification
+    build weighted evidence_items for targeted tests, prior-audit regression tests, generated artifacts, redaction scan, legal scan, T3 code-stage review, no-move/no-delete verification, issue comment, and acceptance checklist
+    call score_evidence(evidence_items, issue_number=1579)
+    require result.passed is true, result.cls == "evidence", and result.threshold == 80 before requesting owner completeness verification
+    write docs/reports/issue-1579-completeness-inputs.json with changed_files, evidence_class_rationale, weighted evidence_items, result.to_dict(), and artifact/test/review/legal evidence refs
     persist the result with hermes kanban complete --metadata '<record-json>' and stamp the issue body; if hermes is unavailable in lane:codex, stop closeout, record the failure in implementation notes and final issue comment, and do not ask for status:completeness-verified or close the issue until Hermes persistence succeeds or the completeness rule is explicitly revised
-    render HTML with render_completeness_html.write_html(result, issue=1579, title="Audit /mnt/ace descriptions, dedup/reorg safety, and llm-wiki coverage mapping") and stamp the resulting completeness JSON on the issue body for owner verification
+    render HTML with render_completeness_html.write_html(result.to_dict(), issue=1579, title="Audit /mnt/ace descriptions, dedup/reorg safety, and llm-wiki coverage mapping") and stamp result.to_dict() on the issue body for owner verification
 ```
 
 ---
@@ -298,10 +314,9 @@ function compute_completeness_before_close(changed_files, evidence_items):
 
 | Action | Path | Reason |
 |---|---|---|
-| Create | `scripts/data/ace_data_source_coverage.py` | Thin read-only CLI wrapper that calls the scoreable implementation package and orchestrates coverage map, dedup/reorg proposal ledger, wiki coverage percentages, decision queue, and HTML report |
-| Create | `src/data_inventory_scripts/__init__.py` | Package marker so module-status matrix and completeness scoring can map this issue as code |
-| Create | `src/data_inventory_scripts/ace_data_source_coverage.py` | Importable pure functions for enumeration, description evidence including summary sidecars, dedup classification, redaction, percentage math, and rendering inputs; split if needed to keep files under coding-style limits |
-| Create | `tests/data_inventory_scripts/test_ace_data_source_coverage.py` | TDD coverage for enumeration, description states, duplicate classification, no-raw-loss guardrails, artifact redaction, relocation ledger integrity, and percentage math |
+| Create | `scripts/data/ace_data_source_coverage.py` | Thin read-only CLI wrapper that orchestrates coverage map, dedup/reorg proposal ledger, wiki coverage percentages, decision queue, and HTML report |
+| Create | `scripts/data/ace_data_source_coverage_lib.py` | Importable pure functions for enumeration, description evidence including summary sidecars, dedup classification, redaction, percentage math, and rendering inputs; split if needed to keep files under coding-style limits |
+| Create | `tests/data/test_ace_data_source_coverage.py` | TDD coverage for enumeration, description states, duplicate classification, no-raw-loss guardrails, artifact redaction, relocation ledger integrity, and percentage math |
 | Create | `data/inventory/ace-data-source-description-coverage.json` | Sanitized tracked source of truth for description/dedup/wiki coverage states; content-free refs only; no exact raw mount paths, private wiki paths, client/project basename tokens, reversible hashes, or free-text descriptions |
 | Create local ignored | `artifacts/private/issue-1579/ace-data-source-description-coverage.full.json` | Durable local full-fidelity join artifact with exact raw paths for same-machine user decisions; must stay untracked |
 | Create | `data/inventory/ace-data-source-private-artifact-manifest.json` | Sanitized tracked manifest containing local artifact path, sha256, run_id, generated_at, and retention note so future transactions can verify the local join artifact without exposing raw paths |
@@ -309,10 +324,8 @@ function compute_completeness_before_close(changed_files, evidence_items):
 | Create | `data/inventory/ace-data-source-relocation-ledger.csv` | Proposed move/delete ledger with zero executed actions in this issue; future transaction plans must regenerate or securely load the full-fidelity artifact and join by content-free `path_ref` before executing any move |
 | Create | `docs/reports/ace-data-source-description-coverage.html` | Sanitized human-facing report for data-source coverage, dedup/reorg candidates, raw preservation risks, and `llm-wiki*` coverage |
 | Create | `docs/reports/issue-1579-implementation-notes.html` | Running implementation notes required by the issue |
-| Create at closeout | `docs/reports/issue-1579-completeness-inputs.json` | Reviewable inputs for `score_code()`: auto-derived class result, package list, module-status snapshot SHA, changed-code coverage, checklist, issue number, and links to tests/artifacts/reviews/legal scan |
+| Create at closeout | `docs/reports/issue-1579-completeness-inputs.json` | Reviewable inputs for completeness scoring: changed files, path package map, map source, evidence-class rationale, weighted evidence items, result dictionary, issue number, and links to tests/artifacts/reviews/legal scan |
 | Create at closeout | `docs/reports/<completion-date>-1579-completeness.html` | Required `gate:completeness` score report before closing [#1579](https://github.com/vamseeachanta/workspace-hub/issues/1579) |
-| Update | `scripts/analysis/module_status_matrix.py` | Add HEAD SHA to module-status snapshots and ensure `src/data_inventory_scripts` is discoverable as a scoreable package |
-| Update | `tests/analysis/test_module_status_matrix.py` | Verify snapshot SHA emission and discovery of the new data inventory package |
 | Update | `docs/plans/README.md` | Add this plan to the issue-plan index |
 | Update if needed | `scripts/data/ace_resource_audit.py` | Only if code reuse requires adding a wrapper or deprecation pointer; the prior Markdown report should remain reproducible |
 
@@ -338,8 +351,10 @@ function compute_completeness_before_close(changed_files, evidence_items):
 | `test_uncertain_best_copy_creates_side_by_side_review` | uncertain quality does not delete | duplicate candidates with tied quality | decision queue item recommends side-by-side review |
 | `test_relocation_ledger_requires_refs_checksum_and_rollback` | every proposed move has source ref, destination ref, checksum ref, reason, and rollback ref | fixture relocation proposal | ledger row validates or test fails |
 | `test_no_executed_move_or_delete_actions` | this issue remains audit/proposal only | generated relocation ledger | all action states are `proposed` or `needs-user-decision` |
-| `test_llm_wiki_live_repo_set_is_recorded` | live `llm-wiki*` clone enumeration is represented | fixture repo list | coverage metadata records exact repo set and stale/clean status |
-| `test_live_unregistered_client_wiki_registry_drift_is_flagged` | live wiki clone not in `config/client-wikis.yml` becomes drift candidate | fixture live `llm-wiki-fdas`, no registry row | row/status flags `observed-unregistered` drift |
+| `test_llm_wiki_live_repo_set_is_recorded` | live `llm-wiki*` clone enumeration is represented | fixture repo list | coverage metadata records exact repo set, checkout class, stale/clean status, and excluded counts |
+| `test_transient_llm_wiki_worktree_is_excluded_from_denominators` | review/batch worktrees cannot pollute wiki coverage or drift queues | fixture `llm-wiki`, `llm-wiki-acma`, and `llm-wiki-vbatch-165-review` with generic wiki remote under noncanonical name | transient checkout is recorded with `excluded_reason=transient-non-sibling`, excluded from per-wiki denominators, and not queued as `observed-unregistered` |
+| `test_live_unregistered_client_wiki_registry_drift_is_flagged` | live wiki clone with no registry or alias evidence becomes drift candidate | fixture live `llm-wiki-fdas` remote, registry `frontierdeepwater` row, no alias row | row/status flags `observed-unregistered` drift and queues registry reconciliation |
+| `test_registered_slug_mismatch_requires_explicit_alias_evidence` | live wiki clone can become slug-mismatch only when the link is represented as data | fixture live wiki remote plus registry row carrying an explicit alias/source-manifest alias | row/status flags `registered-slug-mismatch` and queues registry reconciliation |
 | `test_registered_wiki_without_checkout_is_drift_candidate` | registered wiki with raw root but no local checkout does not disappear from mapping | fixture `config/client-wikis.yml` row, live raw root, missing checkout | row/status flags `registered-but-not-checked-out`, denominator status `checkout-unavailable`, and follow-up decision item |
 | `test_percentage_math_has_explicit_denominators` | coverage percentages are reproducible from rows | fixture rows with mapped/unmapped/not-eligible statuses | percentages match expected denominator arithmetic |
 | `test_general_work_denominator_is_reproducible` | generic coverage denominator does not depend on prose or repo names | fixture rows across `general`, `both`, `client`, `unknown`, partial, and not-eligible buckets | denominator includes only eligible `general`/`both` complete rows in root or selected-recursive scope |
@@ -354,12 +369,15 @@ function compute_completeness_before_close(changed_files, evidence_items):
 | `test_relocation_ledger_is_joinable_but_not_standalone_executable` | sanitized ledger can support future transaction planning without leaking paths | relocation proposal and full-fidelity artifact | ledger has content-free path_ref/full_fidelity_artifact_sha256; exact source/destination paths absent |
 | `test_html_report_contains_required_sections` | human report carries all issue-required sections | generated HTML | sections for unknowns, dedup/reorg, raw preservation, wiki coverage |
 | `test_decision_queue_order_is_deterministic` | user decisions surface one at a time in stable priority order | multiple unknown fixture rows | JSONL order is severity, then path |
+| `test_completeness_path_package_map_derivation_is_saved` | governance audit closeout uses the repo's non-selectable class contract with a deterministic map | fixture repo roots with `src/`, package manifests, scripts, tests, docs, and data changed files | closeout inputs include `path_package_map`, map source, and `classify(changed_files, path_package_map) == "evidence"` |
+| `test_completeness_closeout_stops_if_classify_returns_code` | implementation cannot bypass code-class scoring by rationale | fixture changed file under `src/` plus evidence items | closeout raises a plan-revision error before `score_evidence()` |
+| `test_completeness_closeout_score_evidence_passes_threshold` | evidence-class closeout meets the opted-in completeness gate | weighted evidence fixture for tests/artifacts/legal/review/no-delete/checklist | `score_evidence(..., issue_number=1579)` returns `passed=true`, `cls=evidence`, and `threshold=80` |
+| `test_completeness_inputs_json_is_written` | closeout record is reviewable and issue-bound | fixture closeout run | `docs/reports/issue-1579-completeness-inputs.json` contains changed files, path package map, evidence-class rationale, weighted evidence items, `result.to_dict()`, issue number, and evidence refs |
 
 Run targeted tests with:
 
 ```bash
-uv run pytest tests/data_inventory_scripts/test_ace_data_source_coverage.py -v
-uv run pytest tests/analysis/test_module_status_matrix.py -v
+uv run pytest tests/data/test_ace_data_source_coverage.py -v
 ```
 
 ---
@@ -385,19 +403,19 @@ uv run pytest tests/analysis/test_module_status_matrix.py -v
 - [ ] No move/delete is executed in this issue. `data/inventory/ace-data-source-relocation-ledger.csv` is a proposal ledger only.
 - [ ] The relocation/deletion ledger schema is explicit: `proposal_id`, `source_path_ref`, `destination_ref`, `action`, `reason_code`, `quality_score_bucket`, `checksum_ref`, `rollback_ref`, `full_fidelity_artifact_sha256`, and `decision_status`. It is not a standalone move/delete execution manifest. Future transaction issues must regenerate or securely load the full-fidelity artifact before executing any path-specific action.
 - [ ] Raw/source originals remain recoverable and carry provenance evidence in the coverage artifact.
-- [ ] The live `llm-wiki*` repo set is enumerated and compared with `config/client-wikis.yml`; registry drift is reported.
-- [ ] Wiki coverage percentages include explicit denominators for root-level `/mnt/ace`, selected recursive scope, client-work coverage, general-work coverage, and each live `llm-wiki*` repo. `general-work` denominator is reproducible from rows as `client_general_applicability in {general, both}` plus included root/selected-recursive scope, excluding partial rows and rows whose denominator bucket is `not-wiki-eligible`.
-- [ ] A live `llm-wiki*` repo without registry `raw_roots` receives `coverage_denominator_status=not-applicable-registry-drift` and drift status `observed-unregistered` rather than causing a zero-denominator failure. A registered wiki whose raw root is live but whose checkout is absent receives drift status `registered-but-not-checked-out`, `coverage_denominator_status=checkout-unavailable`, and a queued follow-up decision. Exact private repo names appear only in the full-fidelity artifact and the plan's bounded evidence section; generated tracked artifacts and final issue comments use `target_wiki_ref` plus aggregate counts.
+- [ ] The live `llm-wiki*` repo set is enumerated, each observed checkout is classified as `eligible-sibling`, `registered-missing-checkout`, or `transient-non-sibling`, and eligible siblings are compared with `config/client-wikis.yml`; registry drift is reported only for eligible siblings and registered missing checkouts.
+- [ ] Transient/non-sibling wiki worktrees such as `*-vbatch-*`, `*-review`, detached worktree clones, and noncanonical directories pointing at the generic wiki remote are recorded with `excluded_reason=transient-non-sibling`, excluded from per-wiki coverage denominators, and not emitted as `observed-unregistered` registry reconciliation decisions.
+- [ ] Wiki coverage percentages include explicit denominators for root-level `/mnt/ace`, selected recursive scope, client-work coverage, general-work coverage, and each eligible live wiki sibling repo. `general-work` denominator is reproducible from rows as `client_general_applicability in {general, both}` plus included root/selected-recursive scope, excluding partial rows and rows whose denominator bucket is `not-wiki-eligible`.
+- [ ] A live `llm-wiki*` repo without registry `raw_roots` and without explicit alias evidence receives `coverage_denominator_status=not-applicable-registry-drift` and drift status `observed-unregistered` rather than causing a zero-denominator failure. The current live `llm-wiki-fdas` / registered `frontierdeepwater` state must use this conservative path unless an explicit alias is added to registry/source-manifest data before implementation. A live repo receives drift status `registered-slug-mismatch` only when explicit alias evidence links it to a registered client under a different slug. A registered wiki whose raw root is live but whose checkout is absent receives drift status `registered-but-not-checked-out`, `coverage_denominator_status=checkout-unavailable`, and a queued follow-up decision. Exact private repo names appear only in the full-fidelity artifact and the plan's bounded evidence section; generated tracked artifacts and final issue comments use `target_wiki_ref` plus aggregate counts.
 - [ ] Percentage math is reproducible from `data/inventory/ace-data-source-description-coverage.json`.
 - [ ] `docs/reports/ace-data-source-description-coverage.html` renders the human-facing report and includes unknowns, dedup/reorg candidates, preservation risks, coverage percentages, and next decision item.
 - [ ] The HTML report renders `partial_excluded_count` and `partial_excluded_ref_count` adjacent to every headline percentage whose denominator excludes partial rows.
 - [ ] `docs/reports/issue-1579-implementation-notes.html` records design decisions, deviations, tradeoffs, and open questions.
-- [ ] All targeted tests pass: `uv run pytest tests/data_inventory_scripts/test_ace_data_source_coverage.py -v`.
-- [ ] Module status matrix regression tests pass: `uv run pytest tests/analysis/test_module_status_matrix.py -v`, including HEAD SHA emission and discovery of package `data_inventory_scripts`.
+- [ ] All targeted tests pass: `uv run pytest tests/data/test_ace_data_source_coverage.py -v`.
 - [ ] Regression tests for the prior audit pass continue to pass: `uv run pytest tests/data/test_ace_resource_audit.py -v`.
 - [ ] Legal/security scan passes: `scripts/legal/legal-sanity-scan.sh`.
 - [ ] T3 code-stage cross-review runs after implementation and before completeness/closeout. Required artifacts: `scripts/review/results/<completion-date>-impl-1579-claude.md`, `...-codex.md`, and `...-gemini.md`, or documented provider `UNAVAILABLE` degradation per cross-review routing.
-- [ ] Because [#1579](https://github.com/vamseeachanta/workspace-hub/issues/1579) has `gate:completeness`, implementation closeout derives the class with `completeness_score.classify()` from changed files and the implementation-time path-package map, which must include `src/data_inventory_scripts -> data_inventory_scripts`. Expected class is `code`. Implementation creates `docs/reports/issue-1579-completeness-inputs.json` with package list, module-status snapshot SHA, changed-code coverage, evidence-linked checklist, issue number, and links to tests/artifacts/reviews/legal scan. It then calls `score_code(["data_inventory_scripts"], snapshot, HEAD_SHA, changed_code_coverage, checklist, issue_number=1579)`. The issue-bound record is persisted with `hermes kanban complete --metadata '<record-json>'` and stamped into the issue-body ```completeness {json}``` block. If `hermes` is unavailable in the Codex lane, closeout fails closed: implementation notes and the final issue comment name the persistence failure, no `status:completeness-verified` request is made, and the issue is not closed until Hermes persistence succeeds or the completeness rule is explicitly revised. The record is rendered with `scripts/workflow/render_completeness_html.write_html(result, issue=1579, title="Audit /mnt/ace descriptions, dedup/reorg safety, and llm-wiki coverage mapping")` to `docs/reports/<completion-date>-1579-completeness.html`, and held for owner-applied `status:completeness-verified` before any close attempt.
+- [ ] Because [#1579](https://github.com/vamseeachanta/workspace-hub/issues/1579) has `gate:completeness`, implementation closeout first builds a deterministic `path_package_map` from implementation-time repo package roots (`src/` plus top-level `pyproject.toml`/`package.json` package roots, excluding `node_modules`, agent runtime/config folders, tests, docs, data, scripts, and generated artifacts), records the map and source in `docs/reports/issue-1579-completeness-inputs.json`, and calls `completeness_score.classify(changed_files, path_package_map)`. Expected class is `evidence` because this is a governance/audit script and artifact issue that intentionally adds no package-mapped application code under `src/`. If `classify()` returns `code`, closeout stops and the plan must be revised before owner verification. Only after `classify()` returns `evidence` does implementation call `score_evidence(evidence_items, issue_number=1579)`. Implementation creates `docs/reports/issue-1579-completeness-inputs.json` with changed files, path package map, evidence-class rationale, weighted evidence items, issue number, `result.to_dict()`, and links to tests/artifacts/reviews/legal scan. Closeout requires `result.passed == true`, `result.cls == "evidence"`, and `result.threshold == 80` before any owner verification request. The issue-bound record is persisted with `hermes kanban complete --metadata '<record-json>'` and stamped into the issue-body ```completeness {json}``` block. If `hermes` is unavailable in the Codex lane, closeout fails closed: implementation notes and the final issue comment name the persistence failure, no `status:completeness-verified` request is made, and the issue is not closed until Hermes persistence succeeds or the completeness rule is explicitly revised. The record is rendered with `scripts/workflow/render_completeness_html.write_html(result.to_dict(), issue=1579, title="Audit /mnt/ace descriptions, dedup/reorg safety, and llm-wiki coverage mapping")` to `docs/reports/<completion-date>-1579-completeness.html`, and held for owner-applied `status:completeness-verified` before any close attempt.
 - [ ] Pre-completion cleanup audit runs before any final "done" handoff, using `.claude/skills/coordination/pre-completion-cleanup-audit/SKILL.md`, and reports CLEAN/EXPECTED/UNEXPECTED residue.
 - [ ] Final issue comment summarizes live `/mnt/ace` count, mapped/described/unknown counts, duplicate candidate count, proposed move count, executed move count fixed at zero, proposed deletion count with evidence refs, executed deletion count fixed at zero, live wiki aggregate counts by `target_wiki_ref`, coverage percentages, decision queue locations, artifacts, tests, legal scan, code-stage review artifacts, cleanup audit result, and pending user decisions.
 
@@ -413,23 +431,36 @@ uv run pytest tests/analysis/test_module_status_matrix.py -v
 | Claude r2 | UNAVAILABLE | CLI returned rc=143 before producing a usable current review |
 | Codex r2 | UNAVAILABLE | rerun did not produce a usable current review; stale prior artifact cited text no longer present |
 | Gemini r2 | UNAVAILABLE | rerun did not produce a usable current review; stale prior artifact cited text no longer present |
+| Claude r3 | MAJOR | forced `code` completeness class is structurally near-unpassable for a new audit package; module-status scope and `write_html(result)` call are broken; `llm-wiki-fdas` should be reconciled against registered `frontierdeepwater` as a slug mismatch |
+| Codex r3 | MAJOR | `score_code()` snapshot shape, package import name, threshold requirement, and closeout integration tests were underspecified |
+| Gemini r3 | MAJOR / evidence-disputed | provider reviewed from `/tmp` and falsely reported repo files missing; kept as disagreement evidence, with only generally applicable closeout-schema concerns considered |
+| Claude r4 | MAJOR | package-map class derivation was not wired in the current close gate; `fdas` to `frontierdeepwater` slug mismatch requires explicit alias data; r4 had insufficient usable provider signal |
+| Codex r4 | UNAVAILABLE | Codex CLI returned `Reading additional input from stdin...` before producing a usable review |
+| Gemini r4 | UNAVAILABLE | Gemini CLI failed before producing a usable review |
+| Claude r5 | MAJOR | transient `llm-wiki-vbatch-165-review` worktree can pollute wiki denominators and drift queues without an exclusion policy |
+| Codex r5 | MAJOR | same transient wiki-worktree blocker; completeness closeout must use the non-selectable `classify()` contract or a reviewed rule change |
+| Gemini r5 | UNAVAILABLE | Gemini CLI failed before producing a usable review |
 
-**Overall result:** blocked draft. This revision resolves the accepted r1 blockers, but r2 produced no usable provider signal. A fresh no-MAJOR adversarial review is still required before `status:plan-review`.
+**Overall result:** blocked draft after r5. This revision addresses accepted r5 blockers by adding transient/non-sibling wiki checkout exclusion and restoring deterministic `classify(changed_files, path_package_map)` before evidence scoring. A fresh no-MAJOR r6 adversarial review is required before `status:plan-review`.
 
 Revisions made based on review:
-- Added explicit `gate:completeness` closeout criteria, auto-derived score class, issue-body stamp, HTML report, and owner verification requirement.
+- Added explicit `gate:completeness` closeout criteria, issue-body stamp, HTML report, and owner verification requirement.
 - Replaced tracked exact raw-path outputs with a sanitized tracked artifact plus ignored local full-fidelity join artifact.
 - Clarified `Client: N/A` because the plan reads wiki metadata for coverage mapping but does not write wiki content.
 - Fixed stale [#1579](https://github.com/vamseeachanta/workspace-hub/issues/1579) label evidence to match live `lane:codex` state and included `gate:completeness`.
 - Replaced open recursion question with a fixed recursion policy and explicit denominator buckets.
 - Removed registry policy/provenance as description evidence; it now supports raw preservation only.
-- Added realpath-under-`/mnt/ace` filtering, symlink realpath canonicalization with inode advisory-only handling, traversal budget handling, stronger client/wiki token redaction, join-only relocation ledger semantics, and auto-derived completeness score class.
+- Added realpath-under-`/mnt/ace` filtering, symlink realpath canonicalization with inode advisory-only handling, traversal budget handling, stronger client/wiki token redaction, join-only relocation ledger semantics, and evidence-class completeness record requirements.
 - Reclassified `data/document-index/index.jsonl` and its ignored summary sidecars as machine-local prerequisites, made tracked artifacts positive-allowlist only, kept free-text descriptions local-only, added parent-directory creation, defined live-but-unregistered and registered-but-not-checked-out wiki drift handling, and added required Kanban completeness persistence.
 - Replaced reversible path hashes with content-free sequential refs, made generated tracked artifact redaction distinct from this plan's bounded evidence citations, specified deterministic traversal budgets, added code-stage T3 review, and added the pre-completion cleanup audit gate.
-- Replaced the evidence-class completeness workaround with a scoreable implementation package under `src/data_inventory_scripts`, module-status SHA support, and a required `score_code(["data_inventory_scripts"], ...)` closeout path.
+- Rejected the forced-code completeness path after r3 review showed it creates an impractical closeout gate for a governance audit; restored evidence-class scoring with explicit anti-dodge boundaries and no `src/` package-mapped application code.
 - Moved the full-fidelity ref-to-path join artifact from ephemeral `tmp/` to ignored durable-local `artifacts/private/issue-1579/` and added a tracked sanitized manifest so future transaction work can verify the local artifact without exposing raw paths.
 - Clarified that sanitized tracked artifacts are aggregate/status-bucket diffable only; path-level cross-run diffs require local full-fidelity artifacts from both runs because refs cannot be reversible path hashes.
 - Pinned the `general-work` coverage denominator to row fields and changed Hermes completeness persistence from fallback-equivalent to fail-closed if unavailable.
+- Addressed r3 completeness blockers by removing module-status/`score_code()` dependencies, requiring `score_evidence()` threshold pass evidence, using `result.to_dict()` for HTML/body stamps, and creating `issue-1579-completeness-inputs.json`.
+- Addressed r4/r5 completeness blockers by specifying a deterministic implementation-time `path_package_map`, saving it in the closeout inputs, calling `classify(changed_files, path_package_map)`, and stopping if it returns `code` before evidence scoring.
+- Addressed r4 wiki-drift blocker by requiring explicit registry/source-manifest alias evidence before `registered-slug-mismatch`; absent that evidence, live `llm-wiki-fdas` remains `observed-unregistered` plus queued registry reconciliation.
+- Addressed r5 wiki-denominator blocker by adding `transient-non-sibling` checkout classification for review/batch worktrees and excluding those rows from per-wiki denominators and registry reconciliation queues.
 
 ---
 
@@ -438,8 +469,8 @@ Revisions made based on review:
 - **Risk:** `/mnt/ace` is large enough that full recursive per-file description coverage may be expensive. The implementation will default to exact root-child coverage plus approved selected-recursive surfaces and will make any deeper deferral explicit.
 - **Risk:** filename/path heuristics can leak or misclassify confidential client context. Tracked artifacts will be sanitized beyond mount-prefix removal; exact raw paths, private wiki paths, and client/project basenames remain only in the ignored local full-fidelity artifact, and path-only inference is queued for user decision.
 - **Risk:** symlink aliases and remote/API registry entries can corrupt denominators. The implementation will canonicalize to realpaths, traverse only present filesystem roots under `/mnt/ace`, and count each physical target once.
-- **Risk:** live wiki checkout status can drift after planning. The implementation will record wiki repo status and either refresh the checkout under a separate safe step or mark mapping evidence as stale.
-- **Risk:** wiki registry state has both directions of drift: live `llm-wiki-fdas` is absent from `config/client-wikis.yml`, while registered `llm-wiki-hdic` was not observed as a local checkout during planning. The implementation will report both drift classes rather than silently excluding either side.
+- **Risk:** live wiki checkout status and set membership can drift after planning, including short-lived review/batch worktrees. The implementation will record wiki repo status and checkout class, exclude transient/non-sibling clones from coverage denominators, and either refresh eligible checkouts under a separate safe step or mark mapping evidence as stale.
+- **Risk:** wiki registry state has multiple drift classes: live `llm-wiki-fdas` is currently unregistered because no explicit alias links it to registered planned `frontierdeepwater`, and registered `llm-wiki-hdic` was not observed as a local checkout during planning. The implementation will report observed-unregistered, explicit-alias slug-mismatch, and registered-without-checkout classes separately rather than silently excluding or conflating them.
 - **Risk:** document-index rows can point to ignored summary sidecars not visible in tracked files. The implementation will require and resolve sidecars explicitly, then fail closed if the sidecar convention or file is unavailable.
 - **Risk:** exact duplicate detection depends on available hashes. When hashes are missing, the implementation will classify candidates as near duplicates and prohibit deletion.
 - **Decision:** The first approved implementation will use the fixed recursion policy in Acceptance Criteria: all root children, max-depth-2 for every first-level directory, and full recursion only for registry/wiki/index/dedup-backed roots whose canonical realpath is present under `/mnt/ace`.
