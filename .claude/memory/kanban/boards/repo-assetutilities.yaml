@@ -821,7 +821,7 @@ cards:
     title: 'Packaging: wheel omits base_configs/modules/** data (visualization templates)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/assetutilities/issues/88
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - lane:claude
     initial_status: triage
