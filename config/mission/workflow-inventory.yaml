@@ -1,0 +1,210 @@
+# Workflow → mission mapping
+# Seeded for issue #3080 (epic #3078 — ecosystem mission → workflow → marketing flywheel)
+#
+# Maps each scheduled workflow to the ecosystem objective(s) it serves (O1–O4 in
+# config/mission/mission-map.yaml), the repos it touches, and whether it mutates git.
+#
+# PROVENANCE & TRUST:
+#   - Source of truth for the LIST is config/scheduled-tasks/schedule-tasks.yaml (53 entries,
+#     VERIFIED 2026-06-14) + scripts/cron/*.sh (44 scripts, verified present).
+#   - The `serves:`, `overlaps:`, and cadence annotations below are an AGENT-DRAFTED first pass.
+#     Per the #3081 lesson (an agent "CRITICAL" claim did not survive code inspection), treat
+#     severity/overlap/cadence judgments as DRAFT pending per-item verification — NOT ground truth.
+#   - `mutates:` values especially must be confirmed against each script before any hardening
+#     plan (#3081) relies on them.
+status: draft
+schema_version: 0.1
+
+objectives_legend:
+  O1: traceable/reproducible engineering results
+  O2: bind standards/data into queryable knowledge
+  O3: capability -> market position & client delivery
+  O4: keep the multi-repo/multi-machine agent system healthy & self-checking
+  # O5 (personal) intentionally absent — personal repos are out of the business mission.
+
+workflows:
+  - name: comprehensive-learning
+    schedule: "0 2 * * *"
+    script: scripts/cron/comprehensive-learning-nightly.sh
+    does: Nightly 10-phase learning pipeline; orchestrates session exports, memory bridging, learning-artifact commit
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: commits
+  - name: wiki-ingest-nightly
+    schedule: "15 2 * * *"
+    script: scripts/knowledge/wiki-ingest-cron.sh
+    does: Incremental knowledge-wiki ingest; scans sources, triggers llm_wiki.py, auto-commits
+    serves: [O2]
+    repos_touched: [llm-wiki, llm-wiki-acma, llm-wiki-fdas]
+    mutates: commits
+  - name: gsd-researcher-nightly
+    schedule: "35 1 * * *"
+    script: scripts/cron/gsd-researcher-nightly.sh
+    does: Weekday domain research rotation (standards/python/ai-tooling/market); Friday synthesis
+    serves: [O2]
+    repos_touched: [control-plane]
+    mutates: local-only
+  - name: harness-update
+    schedule: "15 1 * * * (staggered per machine)"
+    script: scripts/maintenance/update-harness-tools.sh
+    does: Daily AI harness tool lifecycle (hermes/claude/codex/gemini) + health checks
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: local-only
+  - name: harness-lean-out
+    schedule: "30 3 * * 1"
+    script: scripts/cron/harness-lean-out.sh
+    does: Weekly bloat audit of CLAUDE.md/AGENTS.md/memory/rules; flags line-budget + stale memory
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: local-only
+  - name: skills-curation
+    schedule: "0 4 * * 1"
+    script: scripts/cron/skills-curation.sh
+    does: Weekly skills audit; dup/leaf-collision/wrapper-pair detection
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: local-only
+  - name: equality-report
+    schedule: "30 4 * * 1"
+    script: scripts/readiness/collect-equality.sh
+    does: Weekly cold-dimension machine self-report + matrix rebuild (commit-on-change)
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: commits
+  - name: equivalence-sentinel
+    schedule: "17 */6 * * *"
+    script: scripts/monitoring/equivalence-sentinel.sh
+    does: Every 6h equivalence fingerprint -> git ref -> cross-box compare -> drift alert
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: commits
+  - name: parity-sentinel
+    schedule: "40 4 * * 1"
+    script: scripts/ai/parity-sentinel.sh
+    does: Weekly transcript sample -> behavioral metrics vs baseline
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: local-only
+  - name: provider-dream-bridge
+    schedule: "0 4 * * * (staggered)"
+    script: scripts/memory/bridge-providers-to-dream.sh
+    does: Distills Codex/Gemini/Hermes sessions into Claude auto-memory
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: local-only
+  - name: hermes-claude-bridge
+    schedule: "20 4 * * * (staggered)"
+    script: scripts/memory/bridge-hermes-claude.sh
+    does: Mirrors Hermes memory facts into repo .claude/memory/ (commit + push)
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: commits
+  - name: agent-memory-backup
+    schedule: "0 5 * * *"
+    script: scripts/cron/memory-backup.sh
+    does: Daily backup of all agent state to ace-linux-2
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: none
+  - name: memory-health-check
+    schedule: "50 5 * * *"
+    script: scripts/memory/eval-memory-quality.py
+    does: Daily memory quality scan (signal density, stale paths, dedup candidates)
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: local-only
+  - name: nightly-smoke-tests
+    schedule: "(invoked by nightly-readiness / composite)"
+    script: scripts/cron/nightly-smoke-tests.sh
+    does: Baseline correctness gate; hard-gates comprehensive-learning
+    serves: [O1, O4]
+    repos_touched: [control-plane, digitalmodel]
+    mutates: local-only
+  - name: dispatch-leader-watch
+    schedule: "*/15 * * * *"
+    script: scripts/cron/dispatch-leader-watch.sh
+    does: Leader heartbeat refresh; secondaries check staleness + alert
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: commits
+  - name: repository-sync
+    schedule: "0 */4 * * *"
+    script: scripts/cron-repository-sync.sh
+    does: Pull from remotes, push derived state; every 4h
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: commits-pushes
+  - name: cron-health
+    schedule: "45 5 * * *"
+    script: scripts/monitoring/cron-health-check.sh
+    does: Daily health check of all cron jobs vs schedule-tasks.yaml; flags stale/missing/erroring
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: local-only
+  - name: consistency-weekly-check
+    schedule: "15 6 * * 0"
+    script: scripts/cron/consistency-weekly-check.sh
+    does: Per-machine probe + SOUL drift + dream dead-letters; renders matrix, upserts drift issue
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: commits
+  - name: provider-utilization-refresh
+    schedule: "20 */4 * * *"
+    script: scripts/cron/provider-utilization-refresh.sh
+    does: Refresh quota snapshots + utilization artifacts every 4h
+    serves: [O4]
+    repos_touched: [control-plane]
+    mutates: local-only
+  - name: solver-watch-results
+    schedule: "0 */4 * * *"
+    script: scripts/solver/watch-results.sh
+    does: Poll completed solver results, run post-process hook
+    serves: [O1]
+    repos_touched: [control-plane]
+    mutates: local-only
+  - name: gemini-nightly-batch
+    schedule: "0 23 * * *"
+    script: scripts/cron/gemini-nightly-batch.sh
+    does: Process open agent:gemini issues by execution mode
+    serves: [O1, O3]
+    repos_touched: [control-plane]
+    mutates: local-only
+  - name: gtm-job-market-scan
+    schedule: "0 5 * * 1"
+    script: scripts/gtm/weekly-scan-refresh.sh
+    does: Weekly GTM scan of job boards + career pages (owner-override per TOS_REVIEW)
+    serves: [O3]
+    repos_touched: [aceengineer-strategy]
+    mutates: commits-pushes
+  - name: email-queue-attention-notify
+    schedule: "57 5 * * *"
+    script: scripts/email/email-queue-state.py
+    does: Daily PII-safe attention notifications for assist-only routes
+    serves: [O3]
+    repos_touched: [control-plane]
+    mutates: local-only
+  # NOTE: ~30 more scheduled + ~10 composite-subordinate workflows exist (session exports,
+  # redaction, compliance, monthly/quarterly reports). They are predominantly O4 (system health).
+  # Full per-item enumeration: see #3080 agent-sweep comment + schedule-tasks.yaml. This file
+  # captures the load-bearing + objective-diverse set; remainder to be folded in during review.
+
+# Suspected overlaps (DRAFT — verify before consolidating):
+overlaps:
+  - group: [equality-report, equivalence-sentinel, parity-sentinel]
+    note: "Three machine-state drift monitors at different cadences/dimensions (infra equality / tool equivalence / behavioral parity). Candidate for a unified readiness probe, but each emits a distinct signal today."
+  - group: [codex-session-export, gemini-session-export, hermes-session-export]
+    note: "Three per-provider exporters, same orchestrator JSONL format. Could unify behind a generic exporter with per-provider adapters."
+  - group: [memory-backup, memory-health-check, memory-health-report]
+    note: "Overlapping memory instrumentation (daily rsync / daily quality scan / monthly report). Candidate for one observability pipeline."
+  - group: [consistency-weekly-check, cron-health]
+    note: "Both surface orchestrator/cron health (drift matrix vs per-job lifecycle)."
+
+# Orphans / dead (DRAFT — verify):
+orphans:
+  - name: update-portfolio-signals
+    reason: "serves [] — personal portfolio (assethold), out of the business mission by 2026-06-14 decision. Accepted orphan, no remediation."
+  - name: crontab-template.sh
+    reason: "Legacy read-only reference; SSoT is schedule-tasks.yaml. Deprecated by design."
+  - name: update_ai_agents_daily.sh
+    reason: "claude-flow-era boilerplate with hardcoded stale path /mnt/github/workspace-hub; effectively dead on this machine (see #3081 verification). Retire candidate."
