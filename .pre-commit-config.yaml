@@ -30,8 +30,8 @@ repos:
         language: system
         # Advisory: reports new literals on staged scripts/config but does not block.
         # Flip to '--enforce' once trusted. The script self-scopes; pass staged files.
-        files: '^((scripts|config)/.*\.(sh|py|ya?ml|json|md)|\.(claude|agents)/(skills|agent-library)/.*\.(md|sh|py|ya?ml|json))$'
-        exclude: '^config/agents/model-registry\.yaml$'
+        files: '^((scripts|config)/.*\.(sh|py|ya?ml|json|md)|\.github/workflows/.*\.ya?ml|\.(claude|agents)/(skills|agent-library)/.*\.(md|sh|py|ya?ml|json))$'
+        exclude: '^(config/agents/model-registry\.yaml$|scripts/review/results/)'
       - id: email-fixture-redaction-check
         name: email fixture redaction check
         entry: python scripts/email/fixture-redaction-check.py

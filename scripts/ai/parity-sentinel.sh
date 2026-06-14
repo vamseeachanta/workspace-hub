@@ -6,14 +6,16 @@
 # digests them (no client content leaves the box), computes behavioral metrics,
 # and compares to analysis/parity-baseline.json (the Fable corpus baseline, #3056).
 #
-# Usage: parity-sentinel.sh [--model claude-opus-4-8] [--days 14]
+# Usage: parity-sentinel.sh [--model <model-id>] [--days 14]
 # Env: EQUIV_ALERT_ISSUE=<n> to post regressions to an issue.
 # Exit: 0 = within bounds, 1 = regression detected.
 set -uo pipefail
 
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
 cd "$ROOT" || exit 1
-MODEL="claude-opus-4-8"; DAYS=14   # model-id-ok (CLI default)
+source "$ROOT/scripts/lib/model-registry.sh"
+MODEL_FALLBACK="claude-opus-4-8"  # model-id-ok (registry fallback)
+MODEL="$(registry_model claude_strong "$MODEL_FALLBACK")"; DAYS=14
 while [ $# -gt 0 ]; do
   case "$1" in
     --model) MODEL="$2"; shift ;;
