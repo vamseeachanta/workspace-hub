@@ -24,6 +24,14 @@ repos:
         # Fire on any staged harness file (excluded dirs handled inside the script).
         files: '(^|/)(CLAUDE|MEMORY|AGENTS|GEMINI)\.md$'
         pass_filenames: false
+      - id: check-model-id-sourcing
+        name: no new hardcoded model IDs (#3060, advisory ratchet)
+        entry: bash scripts/enforcement/check-model-id-sourcing.sh
+        language: system
+        # Advisory: reports new literals on staged scripts/config but does not block.
+        # Flip to '--enforce' once trusted. The script self-scopes; pass staged files.
+        files: '^((scripts|config)/.*\.(sh|py|ya?ml|json|md)|\.(claude|agents)/(skills|agent-library)/.*\.(md|sh|py|ya?ml|json))$'
+        exclude: '^config/agents/model-registry\.yaml$'
       - id: email-fixture-redaction-check
         name: email fixture redaction check
         entry: python scripts/email/fixture-redaction-check.py
