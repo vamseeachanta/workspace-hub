@@ -19,8 +19,8 @@ ewma:
 # Latest model IDs — single source of truth for the entire ecosystem
 # Scripts should read these values, never hardcode model strings
 latest_models:
-  claude_primary: "claude-fable-5"           # Mythos-class tier above Opus; 1M context; GA on Max
-  claude_strong: "claude-opus-4-8"           # Opus lane (fast mode available on 4.6+)
+  claude_primary: "claude-opus-4-8[1m]"      # 1M-context Opus — primary since 2026-06-13 (Fable 5 access lost; #3051/#3043)
+  claude_strong: "claude-opus-4-8"           # 200K Opus lane (fast mode available on 4.6+)
   claude_balanced: "claude-sonnet-4-6"
   claude_fast: "claude-haiku-4-5"
   codex_primary: "codex-cli"          # Codex CLI; runs gpt-5.5 under the hood (~/.codex/config.toml)
@@ -33,7 +33,8 @@ latest_models:
 # Flat map by design: consumed by grep/regex readers in scripts/lib/model-registry.sh,
 # scripts/ai/session-params.py, scripts/productivity/sections/ai-usage-summary.sh.
 context_windows_k:
-  claude-fable-5: 1000
+  claude-opus-4-8[1m]: 1000
+  claude-fable-5: 1000        # deprecated 2026-06-13 (access lost); retained for audit
   claude-opus-4-8: 200
   claude-sonnet-4-6: 200
   claude-haiku-4-5: 200
@@ -48,21 +49,32 @@ context_windows_k:
 
 providers:
   claude:
-    default_model: sonnet-4-6   # Sonnet stays default for routine work; escalate to fable-5 for hardest tasks
+    default_model: sonnet-4-6   # Sonnet stays default for routine work; escalate to opus-4-8-1m for hardest tasks
     models:
-      fable-5:
-        display_name: "Claude Fable 5"
-        model_id: "claude-fable-5"
+      opus-4-8-1m:
+        display_name: "Claude Opus 4.8 (1M context)"
+        model_id: "claude-opus-4-8[1m]"
         cost_tier: premium
         capability_tier: REASONING
         default_priority: 110
         # cost_usd_per_1m: verify against anthropic.com/pricing before using in cost reports
         recommended_use:
           - hardest multi-step reasoning (Route C complex plans)
+          - cross-review (review must out-reason the authoring Sonnet)
           - large codebase/document analysis requiring 1M context
           - complex multi-agent architecture decisions
         avoid_for:
           - Route A/B routine work items (Sonnet sufficient; preserves weekly quota)
+        quota_risk: HIGH
+      fable-5:
+        display_name: "Claude Fable 5"
+        model_id: "claude-fable-5"
+        deprecated: true   # access lost 2026-06-13 (#3043); retained for audit/history; nothing routes here
+        cost_tier: premium
+        capability_tier: REASONING
+        default_priority: 0   # de-prioritized; superseded by opus-4-8-1m
+        recommended_use:
+          - "(deprecated — superseded by opus-4-8-1m)"
         quota_risk: HIGH
       opus-4-8:
         display_name: "Claude Opus 4.8"
@@ -72,7 +84,8 @@ providers:
         default_priority: 100
         cost_usd_per_1m: {input: 5.00, output: 25.00}  # carried from Opus 4.x tier — verify against anthropic.com/pricing
         recommended_use:
-          - heavy reasoning when fable-5 unavailable or fast mode desired (/fast supported on Opus 4.6+)
+          - heavy reasoning at 200K context or when /fast mode desired (/fast supported on Opus 4.6+)
+          - the 200K lane; use opus-4-8-1m when the task needs the 1M window
         avoid_for:
           - iterative engineering workflows (token cost compounds quickly)
           - documentation and technical reports
@@ -151,8 +164,8 @@ providers:
         default_priority: 70
 
 # Work Queue Phase Routing — which Claude model tier to use per phase
-# Rule: Sonnet 4.6 by default; escalate to Fable 5 only for Route C plan/architecture phases
-# Updated: 2026-06-11 (model refresh — Fable 5 / Opus 4.8 generation)
+# Rule: Sonnet 4.6 by default; escalate to 1M-Opus (opus-4-8-1m) only for Route C plan/architecture phases
+# Updated: 2026-06-13 (#3051: Fable 5 access lost; primary flipped to claude-opus-4-8[1m])
 work_queue_routing:
   route_a:
     plan:    sonnet-4-6
@@ -163,7 +176,7 @@ work_queue_routing:
     execute: sonnet-4-6
     review:  sonnet-4-6
   route_c:
-    plan:    fable-5      # Only escalation point — complex multi-repo architecture
+    plan:    opus-4-8-1m  # Only escalation point — complex multi-repo architecture (1M-Opus since #3051)
     execute: sonnet-4-6   # Implementation stays on Sonnet even for Route C
     review:  sonnet-4-6
   # Effort level for Sonnet 4.6 (Anthropic recommendation)
@@ -176,5 +189,5 @@ work_queue_routing:
   # Route B/C: claude_primary — heavier model catches blind spots of authoring Sonnet
   cross_review:
     route_a: sonnet-4-6        # Self-review tier — same model acceptable
-    route_b: claude_primary    # → fable-5 today; tracks latest_models.claude_primary
-    route_c: claude_primary    # → fable-5 today; fresh session, no authoring context
+    route_b: claude_primary    # → claude-opus-4-8[1m] today; tracks latest_models.claude_primary
+    route_c: claude_primary    # → claude-opus-4-8[1m] today; fresh session, no authoring context
