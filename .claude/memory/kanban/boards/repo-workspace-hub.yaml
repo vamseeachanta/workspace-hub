@@ -21111,6 +21111,7 @@ cards:
     gh_state: open
     gh_labels:
       - domain:cleanup
+      - status:plan-review
     initial_status: triage
     priority: 0
     gh_assignees: []
