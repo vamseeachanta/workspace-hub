@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_service_provider_data_routing.md
 
 ---
 name: feedback-service-provider-data-routing
 description: "6-row matrix governing how service-provider/vendor data enters the workspace-hub + llm-wiki ecosystem; vendor brochures stay off-repo, public-record sources go to public wiki, applies across all repos"
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: f3f825a3-b95b-4aef-823b-54cab637c9dd

@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_cross_review_finds_what_self_review_misses.md
 
 ---
 name: cross-review-finds-what-self-review-misses
 description: "Code-stage adversarial cross-review consistently finds defects that the implementing session's self-review misses — never skip the cross-review gate post-implementation, even when feeling confident"
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 301086a5-63fe-4d73-a934-dd43ff2f9c0d

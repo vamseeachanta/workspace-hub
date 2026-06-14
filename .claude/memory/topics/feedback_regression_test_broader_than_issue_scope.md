@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_regression_test_broader_than_issue_scope.md
 
 ---
 name: feedback_regression_test_broader_than_issue_scope
 description: "When writing a regression test for a specific issue, scope the test pattern (glob/regex) BROADER than the named target — sibling files with the same defect class get caught for free at no additional cost."
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 214b6592-b65b-480f-accf-16e6a9761175

@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_codex_bootstrap_untracked_sed_origin.md
 
 ---
 name: feedback_codex_bootstrap_untracked_sed_origin
 description: "~/.codex/AGENTS.md broken-path bug originated from an UNTRACKED sed-derivative of ~/.claude/CLAUDE.md, not from any committed script; symlink-to-runtime-artifact is the durable fix."
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 214b6592-b65b-480f-accf-16e6a9761175

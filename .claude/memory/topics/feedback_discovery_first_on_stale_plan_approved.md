@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_discovery_first_on_stale_plan_approved.md
 
 ---
 name: discovery-first-on-stale-plan-approved
 description: "Before executing a long-standing status:plan-approved issue, run a discovery pass against the codebase first — prior commits may have silently completed most or all of the scope. Skipping discovery wastes effort and risks duplicate-write conflicts."
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 72238262-9b25-493d-9731-fc22b67185aa

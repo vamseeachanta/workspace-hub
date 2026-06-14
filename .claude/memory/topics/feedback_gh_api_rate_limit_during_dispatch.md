@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_gh_api_rate_limit_during_dispatch.md
 
 ---
 name: gh-api-rate-limit-during-dispatch
 description: "GitHub GraphQL API limits to 5,000/hr per user. Batch dispatches of issues + comments + cross-refs hit this fast. Watch quota proactively when creating 10+ issues in a session."
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 37c4fd1d-3784-4903-a5ea-5fe997dd7044

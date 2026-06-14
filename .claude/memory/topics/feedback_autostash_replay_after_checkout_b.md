@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_autostash_replay_after_checkout_b.md
 
 ---
 name: autostash-replay-after-checkout-b
 description: "When `git checkout -b` runs with a leftover autostash in `git stash list`, the stash can auto-apply to the new branch and silently revert tracked state. Always `git stash list` and drop unwanted autostashes BEFORE creating new branches, especially after operations like `git rebase --onto` that produce autostashes."
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 76ab2ab3-ba1e-4c05-b984-b73d97dafefc

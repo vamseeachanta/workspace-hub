@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_n_night_blocker_promote_to_replan.md
 
 ---
 name: n-night-blocker-promote-to-replan
 description: "When a closure-first / overnight agent reports the SAME blocker on the SAME issue 3+ nights in a row, stop re-running and escalate to a design-replan instead of continuing the polling pattern"
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: a90910bc-8382-4ffe-b9d4-7ccfe69c9ce4

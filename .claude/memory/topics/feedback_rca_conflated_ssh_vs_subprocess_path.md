@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_rca_conflated_ssh_vs_subprocess_path.md
 
 ---
 name: rca-conflated-ssh-vs-subprocess-path
 description: "When diagnosing subprocess \"executable not found on PATH\" failures, never substitute the SSH-session $PATH for the subprocess PATH. They are different envs. Read /proc/<pid>/environ for ground truth."
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: c33ac478-fe2b-456e-b884-3c68d71720c2

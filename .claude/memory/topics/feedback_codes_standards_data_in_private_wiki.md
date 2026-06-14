@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_codes_standards_data_in_private_wiki.md
 
 ---
 name: codes-standards-data-in-private-wiki
 description: "Vendor-licensed codes/standards data (OCIMF, API, DNV, ABS, IACS UR, ASCE, ASME) belongs in private vamseeachanta/llm-wiki — verbatim text, digitized tables, figure extracts all permitted in repo"
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 301086a5-63fe-4d73-a934-dd43ff2f9c0d

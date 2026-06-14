@@ -6,7 +6,7 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-05-22)
+## Synced from Hermes Memory (2026-06-14)
 
 ### Environment Facts
 
@@ -16,7 +16,7 @@
 
 ### User Profile
 
-- User requires zero-waste AI spend and throughput-first workstation planning. Repo placement/interactions, memory, skills, artifacts, output formats, and file structure are canonical infrastructure. User prefers tier-1 repo placement decided machine-by-machine via GitHub issues in explicit sequence (ace-linux-1, ace-linux-2, then licensed Windows hosts); keep repo placement independent from delegation/dispatch strategy. In marine/offshore force reviews, user expects component/resultant comparisons side-by-side using existing basecase assumptions and GitHub issue comments as the correction surface.
+- User requires zero-waste AI spend and throughput-first workstation planning. Repo placement/interactions, memory, skills, tools, artifacts, output formats, and file structure are canonical infrastructure; workspace-hub memory/skills/tools are SSoT for sibling repos rather than local-only duplicates. User prefers tier-1 repo placement decided machine-by-machine via GitHub issues in explicit sequence (ace-linux-1, ace-linux-2, then licensed Windows hosts), independent from delegation/dispatch strategy. In marine/offshore force reviews, user expects component/resultant comparisons side-by-side using existing basecase assumptions and GitHub issue comments as the correction surface.
 - User wants private llm-wiki maintained weekly as code-development leverage: store client/project data with key-information abstractions while public repos/docs remain redacted/public-safe; review LLM concepts, assess repo architecture/content gaps, and open actionable GitHub issues. User expects active post-session learning after non-trivial sessions: patch loaded/governing class-level skills first, prefer concise references under umbrellas over one-off skills, and treat “nothing to save” as rare. User expects repo-ecosystem claims about native Claude usage / Hermes Agent routing to be verified against Claude logs and concrete evidence before answering.
 
 
@@ -63,13 +63,13 @@ Context parity = compute parity. Zero waste everywhere.
 ## GSD Workflow
 
 GSD is the sole workflow system since 2026-03-25.
-- Plans live in `.planning/` within each repo *verified: 2026-05-24*
+- Plans live in `.planning/` within each repo
 - Long-duration plans live in `docs/plans/`
 - Use `/gsd:*` commands for task management
 
 ## Skill System (Hermes)
 
-Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1. *stale: 2026-05-24*
+Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1.
 On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures.
 
 
@@ -87,9 +87,9 @@ Establish weekly GTM targets interactively with the owner, then turn them into b
 
 ## ACE Engineer GTM Context
 
-- `aceengineer-strategy/` — private nested repo with full GTM strategy *stale: 2026-05-25*
+- `aceengineer-strategy/` — private nested repo with full GTM strategy
 - 20+ prospects identified; ICP: offshore firms 10-50 engineers
-- Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`) *stale: 2026-05-25*
+- Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`)
 - Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron)
 - GTM control rule: continuous AI work should convert external signals, repo engineering work, and approved issue outputs into client-ready material, but keep engineering evidence boundaries explicit.
 - Public-promotion rule: raw data may feed internal code/wiki preparation, but public `llm-wiki` and artifacts must carry provenance plus data/code/standards/methodology separation and pass legal sanity checks.

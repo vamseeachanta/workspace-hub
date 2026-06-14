@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_label_vs_planbody_gate_inconsistency.md
 
 ---
 name: label-vs-planbody-gate-inconsistency
 description: "When GitHub `status:plan-approved` label disagrees with the plan body's status field (label=approved + body=plan-review/MAJOR-blocked), halt dispatch and surface the gate inconsistency — do not rationalize the label alone as authorization"
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: d4fe73ec-6517-4e58-a943-20b6e6bd30f0

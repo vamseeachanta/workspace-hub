@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_bulk_comment_cumulative_volume_threshold.md
 
 ---
 name: feedback_bulk_comment_cumulative_volume_threshold
 description: "GitHub addComment secondary rate-limit is cumulative-volume-aware, not just rate-aware — ~500 posts on a single token in ~25min trips it even at 30/min pacing"
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: b5c609c4-cd38-41a6-9044-510a56899eb8

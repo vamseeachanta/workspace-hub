@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_hermes_provider_openai_codex_routes_via_codex_exec.md
 
 ---
 name: hermes-provider-openai-codex-routes-via-codex-exec
 description: "Hermes config `Provider: OpenAI Codex` actually shells out to `codex exec` binary subprocess for tool-using prompts (not direct OpenAI API calls); this makes the entire route subject to codex-cli hangs (#2715 / #2479-recurrence)"
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: d4fe73ec-6517-4e58-a943-20b6e6bd30f0

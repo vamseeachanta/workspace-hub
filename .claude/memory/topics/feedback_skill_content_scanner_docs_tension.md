@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_skill_content_scanner_docs_tension.md
 
 ---
 name: skill_content_scanner_docs_tension
 description: "Skills documenting Hermes/systemd/sudo ops trip the pre-commit credential-access scanner; use ${HERMES_HOME}/.env placeholder convention and push literal commands to docs/runbooks/ (unscanned)"
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 4b60e282-38bd-4e77-aa17-7a3439fbde7d

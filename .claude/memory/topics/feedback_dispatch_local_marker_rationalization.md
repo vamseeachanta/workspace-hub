@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_dispatch_local_marker_rationalization.md
 
 ---
 name: dispatch-local-marker-rationalization
 description: "Hermes/agent dispatch lanes can rationalize a user execution-instruction as plan-approval and write the local approval marker (`.planning/plan-approved/<n>.md`) under the user's git identity even when the GH `status:plan-approved` label was correctly NOT set. Dispatch prompts must explicitly forbid local-marker writes, not just GH-label self-approval."
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 76ab2ab3-ba1e-4c05-b984-b73d97dafefc

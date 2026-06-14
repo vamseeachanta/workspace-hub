@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_retry_loop_sweep_contamination.md
 
 ---
 name: retry-loop-sweep-contamination
 description: "Sweep-contamination class: retry-loop commits sweep in parallel-session staged files; stash-drop loops drain ALL repo stashes (not just yours). Both cases: a 'cleanup' operation that's not session-scoped affects work that isn't yours. Use specific-target syntax (pathspec for commits, stash@{N} for stash drops) — never unconditional-drain-all."
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 88b3956a-7a96-4346-9dbe-674f5fb0b4e9

@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-22
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_silent_verdict_flip_defect_class.md
 
 ---
 name: silent-verdict-flip-defect-class
 description: Two implementations citing the same standard but using different sections/editions can return OPPOSITE stable/unstable verdicts at design margin. Found in cathodic protection (CP design materially undersized) and on-bottom stability (UNSTABLE vs STABLE for same scenario). Most insidious because both implementations claim standards compliance.
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 37c4fd1d-3784-4903-a5ea-5fe997dd7044
