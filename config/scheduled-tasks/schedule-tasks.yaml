@@ -67,6 +67,26 @@ tasks:
       Complements the weekly equality-report (#2801) with focused alerting on the
       model-parity-critical dimensions. Set EQUIV_ALERT_ISSUE=<n> to post drift to an issue.
 
+  - id: parity-sentinel
+    label: Behavioral parity instrumentation (#3061)
+    schedule: "40 4 * * 1"
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    roles: [control-plane, comms-dispatch]
+    requires: [bash, python3, uv, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/ai/parity-sentinel.sh --model claude-opus-4-8 --days 14
+      >> $WORKSPACE_HUB/logs/ai/parity-sentinel-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/ai/parity-sentinel-*.log
+    is_claude_task: false
+    description: >-
+      Weekly (Mon 04:40) per-box sample of recent primary-model transcripts ->
+      local digest (no client content leaves the box) -> behavioral metrics
+      (tokens/turn D1, clarification-breaks D2, fan-out D6) vs the Fable baseline
+      analysis/parity-baseline.json (#3056). Alerts on regression; makes "same
+      pace" measured, not asserted. Set EQUIV_ALERT_ISSUE=<n> to post regressions.
+
   - id: gsd-researcher
     label: Nightly GSD domain researcher
     schedule: "35 1 * * *"
