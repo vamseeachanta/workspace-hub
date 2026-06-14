@@ -191,14 +191,16 @@ reset_days() {
     fi
 }
 
-# Gemini (agy) usage for the G: segment, via the shared source of truth
+# Gemini (agy) usage LEFT for the G: segment, via the shared source of truth
 # scripts/ai/assessment/gemini-usage.py (same object the agent-quota collector
-# uses — no logic drift). agy persists no quota to disk (workspace-hub#3087), so
-# the helper resolves, in precedence: live 429 throttle → manual /usage snapshot
-# → unavailable. Emits THREE fields "<pct> <state> <suffix>" (suffix "-" = none):
-#   throttled → "0 throttled ·N.Nh"  (overrides snapshot; real reset countdown)
-#   fresh/stale → "<weekly%> fresh|stale -"  (genuine % AVAILABLE, age-gated)
-#   missing   → "- missing -"  → color_pct dims G: instead of faking 100%.
+# uses — no logic drift). agy persists no quota to disk (workspace-hub#3087). The
+# helper reports the % REMAINING of the BINDING window (weekly or 5h, whichever
+# has least left) plus that window's reset countdown; a 429 NEWER than the last
+# /usage snapshot overrides to 0% (live exhaustion the snapshot can't know yet).
+# Emits THREE fields "<pct> <state> <suffix>" (suffix "-" = none):
+#   "<%left> fresh ·N.Nd"   genuine % LEFT + reset (days, or ·N.Nh sub-day / throttle)
+#   "<%left> stale -"        snapshot older than the age gate → caller adds "?"
+#   "- missing -"            no signal → color_pct dims G: instead of faking 100%.
 gemini_snapshot_pct() {
     local helper line src pct hrs stale suf
     helper="${ws_root}/scripts/ai/assessment/gemini-usage.py"
@@ -208,15 +210,17 @@ gemini_snapshot_pct() {
         | jq -r '[.source, (.pct_remaining|tostring), (.hours_to_reset|tostring), (.stale|tostring)] | join(" ")') \
         || { echo "- missing -"; return; }
     read -r src pct hrs stale <<< "$line"
-    case "$src" in
-        429-throttle)
-            suf=$(awk -v h="$hrs" 'BEGIN { if (h>=24) printf "·%.1fd", h/24; else printf "·%.1fh", h }')
-            echo "0 throttled ${suf}" ;;
-        manual-snapshot)
-            [[ "$stale" == "true" ]] && echo "${pct} stale -" || echo "${pct} fresh -" ;;
-        *)
-            echo "- missing -" ;;
-    esac
+    [[ -z "$src" || "$src" == "unavailable" ]] && { echo "- missing -"; return; }
+    # Reset countdown (days if >=24h else hours) applies to BOTH the snapshot's
+    # binding-window reset and the 429 throttle reset.
+    suf="-"
+    if [[ -n "$hrs" && "$hrs" != "null" ]]; then
+        suf=$(awk -v h="$hrs" 'BEGIN { if (h>=24) printf "·%.1fd", h/24; else printf "·%.1fh", h }')
+    fi
+    # Only a stale manual snapshot earns the "?" — a live 429 is current.
+    local state=fresh
+    [[ "$src" == "manual-snapshot" && "$stale" == "true" ]] && state=stale
+    echo "${pct} ${state} ${suf}"
 }
 
 # Render a "LABEL:NN%" segment colored by remaining headroom so a throttle is
