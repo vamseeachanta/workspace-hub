@@ -42,11 +42,15 @@ if [[ -f "${HOME}/.hermes/memories/MEMORY.md" ]]; then
   cp "${HOME}/.hermes/memories/USER.md" config/agents/hermes/memories/USER.md.snapshot 2>/dev/null || true
 fi
 
-# Claude Code project memory (#1779)
+# Claude Code project memory (#1779) — PII-filtered snapshot (#3073).
+# project_*.md (engagement-specific) is NEVER copied to the public repo; the
+# helper also self-heals any already-present project_*.md. See the helper header.
 CLAUDE_MEM="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
 if [[ -d "$CLAUDE_MEM" ]]; then
-  mkdir -p config/agents/claude/memory-snapshots
-  cp "$CLAUDE_MEM"/*.md config/agents/claude/memory-snapshots/ 2>/dev/null || true
+  _wh_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+  # shellcheck source=scripts/cron/lib/pii-safe-memory-snapshot.sh
+  source "$_wh_root/scripts/cron/lib/pii-safe-memory-snapshot.sh"
+  pii_safe_snapshot "$CLAUDE_MEM" config/agents/claude/memory-snapshots "$_wh_root/.legal-deny-list.yaml"
 fi
 CLAUDE_MEM_WED="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub-worldenergydata/memory"
 if [[ -d "$CLAUDE_MEM_WED" ]]; then
