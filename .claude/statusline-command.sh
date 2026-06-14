@@ -59,9 +59,6 @@ issue_num=$(echo "$branch" | grep -oE '[0-9]{3,5}' | head -1) || true
 # they fall back to the real locations in normal use.
 quota_primary="${STATUSLINE_QUOTA_PRIMARY:-$ws_root/config/ai-tools/agent-quota-latest.json}"
 quota_cache="${STATUSLINE_QUOTA_CACHE:-${HOME}/.cache/agent-quota.json}"
-# Gemini genuine usage: manual /usage snapshot (agy persists no quota to disk —
-# workspace-hub#3087). Written by scripts/ai/assessment/agy-usage-snapshot.py.
-gemini_snapshot="${STATUSLINE_GEMINI_SNAPSHOT:-${HOME}/.cache/agy-usage-snapshot.json}"
 
 # Parse an ISO-8601 timestamp to epoch seconds; emits nothing on failure.
 iso_epoch() {
@@ -194,79 +191,32 @@ reset_days() {
     fi
 }
 
-# Detect an ACTIVE Gemini throttle from the gemini CLI's error reports — FREE,
-# no API call (workspace-hub#3087). On a 429 the gemini CLI writes
-# /tmp/gemini-client-error-*.json whose filename carries the error time and whose
-# `message` says "...reset after XhYmZs". absolute_reset = file_time + duration;
-# if still in the future the shared Google AI Pro Gemini pool (same quota agy
-# draws on) is exhausted. Prints hours-until-reset (float) or nothing. Cheap-
-# guarded: python only runs when a report file actually exists.
-gemini_throttle_hours() {
-    local dir="${GEMINI_ERROR_DIR:-/tmp}"
-    compgen -G "${dir}/gemini-client-error-*.json" >/dev/null 2>&1 || return 0
-    python3 - "$dir" 2>/dev/null <<'PY'
-import glob, os, re, sys
-from datetime import datetime, timezone
-
-d = sys.argv[1]
-now = datetime.now(timezone.utc).timestamp()
-best = None  # latest future reset across all reports
-for path in glob.glob(os.path.join(d, "gemini-client-error-*.json")):
-    m = re.search(r"(\d{4}-\d{2}-\d{2})T(\d{2})-(\d{2})-(\d{2})-(\d{3})Z", os.path.basename(path))
-    if not m:
-        continue
-    try:
-        ferr = datetime.fromisoformat(
-            f"{m.group(1)}T{m.group(2)}:{m.group(3)}:{m.group(4)}.{m.group(5)}+00:00"
-        ).timestamp()
-    except ValueError:
-        continue
-    try:  # raw read — the "reset after" text may be nested (error.message / .stack)
-        msg = open(path, encoding="utf-8", errors="replace").read()
-    except Exception:
-        continue
-    dm = re.search(r"reset after\s+(?:(\d+)\s*h)?\s*(?:(\d+)\s*m)?\s*(?:(\d+)\s*s)?", msg, re.I)
-    if not dm or not any(dm.groups()):
-        continue
-    reset = ferr + int(dm.group(1) or 0)*3600 + int(dm.group(2) or 0)*60 + int(dm.group(3) or 0)
-    if reset > now:
-        best = reset if best is None else max(best, reset)
-if best is not None:
-    print(f"{(best - now)/3600:.1f}")
-PY
-}
-
-# Gemini (agy) usage for the G: segment. Precedence:
-#   1. ACTIVE THROTTLE — a live 429 (gemini_throttle_hours) means 0% NOW with a
-#      real ·N.Nh/·N.Nd reset countdown, regardless of any snapshot.
-#   2. MANUAL SNAPSHOT — genuine weekly % AVAILABLE from /usage (agy persists no
-#      quota to disk), age-gated against a gemini-specific threshold (a weekly
-#      reading stays meaningful far longer than the 6h codex/claude gate).
-#   3. MISSING — "- missing" → color_pct dims G: instead of faking 100%.
-# Emits THREE fields: "<pct> <state> <suffix>" (suffix "-" = none) so the caller
-# can append a reset countdown only when throttled.
+# Gemini (agy) usage for the G: segment, via the shared source of truth
+# scripts/ai/assessment/gemini-usage.py (same object the agent-quota collector
+# uses — no logic drift). agy persists no quota to disk (workspace-hub#3087), so
+# the helper resolves, in precedence: live 429 throttle → manual /usage snapshot
+# → unavailable. Emits THREE fields "<pct> <state> <suffix>" (suffix "-" = none):
+#   throttled → "0 throttled ·N.Nh"  (overrides snapshot; real reset countdown)
+#   fresh/stale → "<weekly%> fresh|stale -"  (genuine % AVAILABLE, age-gated)
+#   missing   → "- missing -"  → color_pct dims G: instead of faking 100%.
 gemini_snapshot_pct() {
-    local thr suf pct cap max_h epoch now age_h
-    thr=$(gemini_throttle_hours)
-    if [[ -n "$thr" ]]; then
-        suf=$(awk -v h="$thr" 'BEGIN { if (h>=24) printf "·%.1fd", h/24; else printf "·%.1fh", h }')
-        echo "0 throttled ${suf}"; return
-    fi
-    [[ -f "$gemini_snapshot" ]] || { echo "- missing -"; return; }
-    pct=$(jq -r '.gemini.weekly_pct_avail // empty' "$gemini_snapshot" 2>/dev/null)
-    [[ -n "$pct" ]] || { echo "- missing -"; return; }
-    pct=$(awk -v p="$pct" 'BEGIN { printf "%d", p }')   # int for color thresholds
-    cap=$(jq -r '.captured_at // empty' "$gemini_snapshot" 2>/dev/null)
-    max_h="${STATUSLINE_GEMINI_SNAPSHOT_MAX_AGE_HOURS:-48}"
-    epoch=$(iso_epoch "$cap") || epoch=""
-    [[ -n "$epoch" ]] || { echo "$pct stale -"; return; }   # undatable = stale
-    now=$(date +%s)
-    age_h=$(awk -v e="$epoch" -v n="$now" 'BEGIN { print (n-e)/3600 }')
-    if awk -v a="$age_h" -v m="$max_h" 'BEGIN { exit !(a <= m) }'; then
-        echo "$pct fresh -"
-    else
-        echo "$pct stale -"
-    fi
+    local helper line src pct hrs stale suf
+    helper="${ws_root}/scripts/ai/assessment/gemini-usage.py"
+    [[ -f "$helper" ]] || { echo "- missing -"; return; }
+    line=$(AGY_USAGE_SNAPSHOT="${STATUSLINE_GEMINI_SNAPSHOT:-${HOME}/.cache/agy-usage-snapshot.json}" \
+        python3 "$helper" 2>/dev/null \
+        | jq -r '[.source, (.pct_remaining|tostring), (.hours_to_reset|tostring), (.stale|tostring)] | join(" ")') \
+        || { echo "- missing -"; return; }
+    read -r src pct hrs stale <<< "$line"
+    case "$src" in
+        429-throttle)
+            suf=$(awk -v h="$hrs" 'BEGIN { if (h>=24) printf "·%.1fd", h/24; else printf "·%.1fh", h }')
+            echo "0 throttled ${suf}" ;;
+        manual-snapshot)
+            [[ "$stale" == "true" ]] && echo "${pct} stale -" || echo "${pct} fresh -" ;;
+        *)
+            echo "- missing -" ;;
+    esac
 }
 
 # Render a "LABEL:NN%" segment colored by remaining headroom so a throttle is
