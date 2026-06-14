@@ -968,6 +968,8 @@ cards:
     gh_labels:
       - domain:ai-config
       - status:plan-review
+      - status:plan-approved
+      - gate:completeness
     initial_status: triage
     priority: 0
     gh_assignees: []

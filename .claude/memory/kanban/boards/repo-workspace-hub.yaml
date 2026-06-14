@@ -21126,3 +21126,127 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3078
+    title: 'Epic: Ecosystem mission → workflow → marketing flywheel, with context-flow backbone'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3078
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - domain:memory
+      - domain:platform-infra
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3079
+    title: '(1) Mission spine — ecosystem mission + per-repo cascade — epic #3078'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3079
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:platform-infra
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3080
+    title: '(2) Workflow & flow-path discovery + mission mapping — epic #3078'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3080
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3081
+    title: '(3) Workflow hardening (deploy-orchestration gate, cron locks, contention) — epic #3078'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3081
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3082
+    title: '(4) Flywheel outcome metrics / scorecard — epic #3078'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3082
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3083
+    title: '(5) Marketing concentration — compounding assets focus list — epic #3078'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3083
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3084
+    title: '(6) Context-flow backbone — migrate memory/harness onto flow paths — epic #3078'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3084
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - domain:memory
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3085
+    title: '(7) Cadence — schedule the periodic flywheel — epic #3078'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3085
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3086
+    title: Standardize agy (Antigravity CLI) default model = Gemini 3.1 Pro (High) across all machines
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3086
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:tooling
+      - domain:platform-infra
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3087
+    title: 'Statusline: make Gemini (agy) usage genuine + add days/hours-to-reset token'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3087
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:tooling
+      - domain:agent-ux
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
