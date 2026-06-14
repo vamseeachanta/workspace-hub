@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from .accounts import load_account_scope, resolve_state_dir
 from .labels import ensure_labels
+from .notifications import attention_notification_events
 from .paths import resolve_log_path
 from .report import pending_work_report
 from .store import QueueStateError, sweep_grace
@@ -26,6 +28,18 @@ def main(argv: list[str] | None = None, gmail_client_factory=None) -> int:
 
     if args.command == "report":
         payload = pending_work_report(log_path, account_scope=scope)
+    elif args.command == "notify-attention":
+        events = attention_notification_events(
+            pending_work_report(log_path, account_scope=scope)
+        )
+        payload = {
+            "applied": args.apply,
+            "event_count": len(events),
+            "emitted_count": _emit_notifications(events, args.notify_script)
+            if args.apply
+            else 0,
+            "events": events,
+        }
     elif args.command == "labels":
         payload = ensure_labels(
             account_scope=scope,
@@ -56,6 +70,17 @@ def _parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("report", help="Show pending work status")
 
+    notify = subparsers.add_parser(
+        "notify-attention",
+        help="Plan or emit PII-safe attention notifications",
+    )
+    notify.add_argument("--apply", action="store_true", help="Append notification JSONL")
+    notify.add_argument(
+        "--notify-script",
+        default=str(Path(__file__).resolve().parents[2] / "notify.sh"),
+        help=argparse.SUPPRESS,
+    )
+
     labels = subparsers.add_parser("labels", help="Plan or create Gmail labels")
     labels.add_argument("--apply", action="store_true", help="Create missing labels")
 
@@ -73,6 +98,25 @@ def _load_precheck(path: str | None):
         return None
     with Path(path).expanduser().open(encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def _emit_notifications(events: list[dict[str, str]], notify_script: str) -> int:
+    emitted = 0
+    for event in events:
+        result = subprocess.run(
+            [
+                "bash",
+                str(Path(notify_script).expanduser()),
+                event["source"],
+                event["job"],
+                event["status"],
+                event["details"],
+            ],
+            check=False,
+        )
+        if result.returncode == 0:
+            emitted += 1
+    return emitted
 
 
 def _now_utc() -> str:

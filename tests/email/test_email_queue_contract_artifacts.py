@@ -94,6 +94,20 @@ def test_schedule_contains_email_queue_state_dry_run_only():
     assert "--apply" not in task["command"]
 
 
+def test_schedule_contains_email_attention_notification_writer():
+    schedule = load_yaml("config/scheduled-tasks/schedule-tasks.yaml")
+    tasks = {task["id"]: task for task in schedule["tasks"]}
+
+    task = tasks["email-queue-attention-notify"]
+    assert task["machines"] == ["dev-primary"]
+    assert task["roles"] == ["control-plane"]
+    assert "mkdir -p $WORKSPACE_HUB/logs/email" in task["command"]
+    assert "email-queue-state.py notify-attention --apply" in task["command"]
+    assert "queue-attention-notify" in task["log"]
+    assert "logs/notifications" in task["description"]
+    assert "Telegram: Family - Finance" in task["description"]
+
+
 def test_spam_rules_yaml_contains_letstok_contract():
     rules = load_yaml("scripts/email/spam-detection-rules.yaml")
     rule_by_id = {rule["id"]: rule for rule in rules["rules"]}

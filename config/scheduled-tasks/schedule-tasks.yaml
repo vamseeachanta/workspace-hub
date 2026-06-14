@@ -590,6 +590,26 @@ tasks:
       accounts; assist-only aliases such as skestates are kept forever. Gmail archive/delete
       automation remains out of scope for #2026 and belongs to #2423.
 
+  - id: email-queue-attention-notify
+    label: Email queue attention notification writer
+    schedule: "57 5 * * *"
+    machines: [dev-primary]
+    roles: [control-plane]
+    requires: [bash, python3, uv]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      mkdir -p $WORKSPACE_HUB/logs/email &&
+      uv run python scripts/email/email-queue-state.py notify-attention --apply
+      >> $WORKSPACE_HUB/logs/email/queue-attention-notify-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/email/queue-attention-notify-*.log
+    is_claude_task: false
+    description: >-
+      Daily PII-safe attention notification writer for #2026 assist-only account
+      routes. It writes account aliases, counts, and route labels such as
+      Telegram: Family - Finance to logs/notifications via scripts/notify.sh;
+      it does not archive/delete Gmail messages or perform live Telegram sends.
+
   - id: daily-today
     label: Daily productivity summary
     schedule: "0 6 * * *"

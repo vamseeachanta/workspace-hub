@@ -172,6 +172,50 @@ def test_pending_work_report_routes_skestates_attention_without_cleanup(tmp_path
     ]
 
 
+def test_attention_notification_events_are_pii_safe_for_skestates(tmp_path):
+    queue_state = load_queue_state()
+    config = tmp_path / "accounts.yaml"
+    write_accounts(config)
+    log = tmp_path / "queue-state.jsonl"
+
+    report = queue_state.pending_work_report(
+        log,
+        account_scope=queue_state.load_account_scope(config),
+        inbox_snapshot=[
+            {
+                "account_id": "skestatesinc@gmail.com",
+                "thread_id": "family-finance-thread",
+                "message_id": "msg-secret",
+                "subject": "Private finance item",
+            }
+        ],
+    )
+
+    events = queue_state.attention_notification_events(report)
+
+    assert events == [
+        {
+            "source": "email",
+            "job": "email-queue-attention",
+            "status": "fail",
+            "details": json.dumps(
+                {
+                    "account": "skestates",
+                    "attention_channel": "Telegram: Family - Finance",
+                    "attention_method": "starred",
+                    "pending_count": 1,
+                },
+                sort_keys=True,
+            ),
+        }
+    ]
+    serialized = json.dumps(events)
+    assert "skestatesinc@gmail.com" not in serialized
+    assert "family-finance-thread" not in serialized
+    assert "msg-secret" not in serialized
+    assert "Private finance item" not in serialized
+
+
 def test_pending_work_report_counts_newer_reply_on_tracked_thread(tmp_path):
     queue_state = load_queue_state()
     log = tmp_path / "queue-state.jsonl"

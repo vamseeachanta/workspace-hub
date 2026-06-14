@@ -122,6 +122,118 @@ def test_cli_apply_requires_precheck_without_traceback(tmp_path):
     assert "Traceback" not in result.stderr
 
 
+def test_cli_notify_attention_dry_run_outputs_skestates_event(tmp_path):
+    root = Path(__file__).resolve().parents[2]
+    script = root / "scripts" / "email" / "email-queue-state.py"
+    queue_state = load_queue_state()
+    write_accounts(tmp_path / "accounts.yaml")
+    queue_state.transition(
+        tmp_path / "queue-state.jsonl",
+        account_id="skestates",
+        thread_id="family-finance-thread",
+        from_state="completed",
+        to_state="inbound",
+        ts_utc="2026-06-14T00:00:00Z",
+        reason="missing-extraction",
+        triggering_message_id="msg-secret",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--state-dir",
+            str(tmp_path),
+            "notify-attention",
+        ],
+        cwd=root,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["applied"] is False
+    assert payload["event_count"] == 1
+    assert payload["events"][0]["source"] == "email"
+    assert payload["events"][0]["job"] == "email-queue-attention"
+    assert payload["events"][0]["status"] == "fail"
+    assert json.loads(payload["events"][0]["details"]) == {
+        "account": "skestates",
+        "attention_channel": "Telegram: Family - Finance",
+        "attention_method": "starred",
+        "pending_count": 1,
+    }
+    assert "family-finance-thread" not in result.stdout
+    assert "msg-secret" not in result.stdout
+
+
+def test_cli_notify_attention_apply_invokes_notify_script(tmp_path):
+    root = Path(__file__).resolve().parents[2]
+    script = root / "scripts" / "email" / "email-queue-state.py"
+    notify_script = tmp_path / "notify.sh"
+    notify_log = tmp_path / "notify-args.txt"
+    notify_script.write_text(
+        "\n".join(
+            [
+                "#!/usr/bin/env bash",
+                f'printf "%s|%s|%s|%s\\n" "$1" "$2" "$3" "$4" >> "{notify_log}"',
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    queue_state = load_queue_state()
+    write_accounts(tmp_path / "accounts.yaml")
+    queue_state.transition(
+        tmp_path / "queue-state.jsonl",
+        account_id="skestates",
+        thread_id="family-finance-thread",
+        from_state="completed",
+        to_state="inbound",
+        ts_utc="2026-06-14T00:00:00Z",
+        reason="missing-extraction",
+        triggering_message_id="msg-secret",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--state-dir",
+            str(tmp_path),
+            "notify-attention",
+            "--apply",
+            "--notify-script",
+            str(notify_script),
+        ],
+        cwd=root,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["applied"] is True
+    assert payload["event_count"] == 1
+    assert payload["emitted_count"] == 1
+    source, job, status, details = notify_log.read_text(encoding="utf-8").split("|", 3)
+    assert (source, job, status) == ("email", "email-queue-attention", "fail")
+    assert json.loads(details) == {
+        "account": "skestates",
+        "attention_channel": "Telegram: Family - Finance",
+        "attention_method": "starred",
+        "pending_count": 1,
+    }
+    assert "family-finance-thread" not in details
+    assert "msg-secret" not in details
+    assert "skestatesinc@gmail.com" not in details
+
+
 def test_missing_extraction_reactivation_links_state_and_learning_events(tmp_path):
     queue_state = load_queue_state()
     log = tmp_path / "queue-state.jsonl"

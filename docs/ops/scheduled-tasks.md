@@ -31,6 +31,7 @@
 | 05:00 daily | claude-memory-backup | rsync memory to dev-secondary | `/tmp/claude-memory-backup.log` |
 | 05:35 daily | repo-ecosystem-hygiene | Read-only repo ecosystem hygiene audit; writes ignored local Markdown/JSON state | `logs/quality/repo-ecosystem-hygiene-*.log` |
 | 05:45 daily | cron-health | Scheduled-task log freshness/error scan | `logs/quality/cron-health-*.log` |
+| 05:57 daily | email-queue-attention-notify | PII-safe email attention route notification writer | `logs/email/queue-attention-notify-*.log` |
 | 06:00 daily | daily-today | Daily productivity summary | `logs/daily/cron.log` |
 | */4h | repository-sync | Pull/push all repos | `.claude/state/learning-reports/cron.log` |
 
