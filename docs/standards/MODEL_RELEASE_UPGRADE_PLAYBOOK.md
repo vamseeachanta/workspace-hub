@@ -84,6 +84,32 @@ If a release triggers regressions:
 
 ---
 
+## Primary Model Swap — Checklist (worked example: #3051, Fable 5 → Opus 4.8 1M)
+
+When the **default Claude model changes** (a provider deprecates one, or a better tier ships), the swap is a single-source registry edit + its readers. Follow in order; everything keys off `config/agents/model-registry.yaml`. Decision record: [`docs/governance/2026-06-14-model-parity-decision.md`](../governance/2026-06-14-model-parity-decision.md).
+
+1. **Registry — `config/agents/model-registry.yaml`** (the single source):
+   - Add the new tier block under `providers.claude.models` (`model_id`, `capability_tier`, context, `recommended_use`). For a context variant, the id carries a suffix, e.g. `claude-opus-4-8[1m]`.
+   - Set `latest_models.claude_primary` to the new id.
+   - Add the new id to `context_windows_k`.
+   - Mark the outgoing model `deprecated: true` + `default_priority: 0` — **keep the entry** for audit; do not delete.
+   - Point `work_queue_routing.route_c.plan` at the new tier; refresh `cross_review` comments (it tracks `claude_primary`, no logic change).
+   - Leave `default_model: sonnet-4-6` (routine work) unless that too is changing.
+2. **Propagate to the readers** (verified set):
+   - `scripts/ai/session-params.py` — `FALLBACK_CTX_MAP` + `ALIAS_MAP` (add the new alias; forward deprecated aliases to the new primary). The `[Nm]` suffix parser already yields the window.
+   - `scripts/ai/overnight-batch-planner.py` — the `_registry_model(..., "<fallback>")` literal.
+   - `config/agents/behavior-contract.yaml` — the `# Today: <id>` comment.
+   - `config/agents/provider-capabilities.yaml` — `model_ids.primary` + `context_window.primary`.
+3. **Verify (gate 2):**
+   - `python -c "import yaml; yaml.safe_load(open('config/agents/model-registry.yaml'))"` parses (bracketed ids are fine as quoted strings).
+   - `source scripts/lib/model-registry.sh && registry_model claude_primary` returns the new id (the `sed` extracts `[^"]+`, so `[1m]` is safe).
+   - `session-params.py` `ctx_k(<new id>)` returns the right window.
+   - The #3060 model-id-sourcing guard is green — annotate any new literal with `# model-id-ok` (it's a deliberate registry fallback/alias).
+4. **DO NOT add the old→new pair to `scripts/maintenance/update-model-ids.sh`.** That script does a blanket `sed` across the whole tree (no `config/agents` or `analysis/` exclusion), so it would corrupt the *intentional* references to the deprecated id: the deprecated registry block, `analysis/parity-baseline.json`, and `scripts/ai/transcript-digest.py` model-tagging. Reintroduction of a stale hardcode is already caught **non-destructively** by the #3060 ratchet guard.
+5. **Sentinel inheritance:** the equivalence sentinel (#3059) hashes `model-registry.yaml` + each provider's `SOUL.runtime.md` (#3074) across machines — no change needed; it will flag if a box doesn't pick up the swap. The behavioral baseline (#3061, `analysis/parity-baseline.json`) is the *old* model's profile — leave it as the comparison reference; regenerate only when establishing a new baseline.
+
+---
+
 ## Reference
 
 - Contract dimensions — [MODEL_RELEASE_READINESS_CONTRACT.md](MODEL_RELEASE_READINESS_CONTRACT.md)
