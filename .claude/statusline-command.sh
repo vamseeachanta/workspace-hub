@@ -194,28 +194,78 @@ reset_days() {
     fi
 }
 
-# Gemini (agy) genuine weekly usage comes from a manual /usage snapshot — agy
-# persists no quota to disk (workspace-hub#3087), so there is no live source and
-# no fixed reset to count down (rolling Weekly + 5h windows). Emit the weekly %
-# AVAILABLE with a freshness verdict, age-gated against a gemini-specific
-# threshold (a weekly reading stays meaningful far longer than the 6h codex/
-# claude gate). "- missing" → color_pct dims G: instead of faking 100%.
+# Detect an ACTIVE Gemini throttle from the gemini CLI's error reports — FREE,
+# no API call (workspace-hub#3087). On a 429 the gemini CLI writes
+# /tmp/gemini-client-error-*.json whose filename carries the error time and whose
+# `message` says "...reset after XhYmZs". absolute_reset = file_time + duration;
+# if still in the future the shared Google AI Pro Gemini pool (same quota agy
+# draws on) is exhausted. Prints hours-until-reset (float) or nothing. Cheap-
+# guarded: python only runs when a report file actually exists.
+gemini_throttle_hours() {
+    local dir="${GEMINI_ERROR_DIR:-/tmp}"
+    compgen -G "${dir}/gemini-client-error-*.json" >/dev/null 2>&1 || return 0
+    python3 - "$dir" 2>/dev/null <<'PY'
+import glob, os, re, sys
+from datetime import datetime, timezone
+
+d = sys.argv[1]
+now = datetime.now(timezone.utc).timestamp()
+best = None  # latest future reset across all reports
+for path in glob.glob(os.path.join(d, "gemini-client-error-*.json")):
+    m = re.search(r"(\d{4}-\d{2}-\d{2})T(\d{2})-(\d{2})-(\d{2})-(\d{3})Z", os.path.basename(path))
+    if not m:
+        continue
+    try:
+        ferr = datetime.fromisoformat(
+            f"{m.group(1)}T{m.group(2)}:{m.group(3)}:{m.group(4)}.{m.group(5)}+00:00"
+        ).timestamp()
+    except ValueError:
+        continue
+    try:  # raw read — the "reset after" text may be nested (error.message / .stack)
+        msg = open(path, encoding="utf-8", errors="replace").read()
+    except Exception:
+        continue
+    dm = re.search(r"reset after\s+(?:(\d+)\s*h)?\s*(?:(\d+)\s*m)?\s*(?:(\d+)\s*s)?", msg, re.I)
+    if not dm or not any(dm.groups()):
+        continue
+    reset = ferr + int(dm.group(1) or 0)*3600 + int(dm.group(2) or 0)*60 + int(dm.group(3) or 0)
+    if reset > now:
+        best = reset if best is None else max(best, reset)
+if best is not None:
+    print(f"{(best - now)/3600:.1f}")
+PY
+}
+
+# Gemini (agy) usage for the G: segment. Precedence:
+#   1. ACTIVE THROTTLE — a live 429 (gemini_throttle_hours) means 0% NOW with a
+#      real ·N.Nh/·N.Nd reset countdown, regardless of any snapshot.
+#   2. MANUAL SNAPSHOT — genuine weekly % AVAILABLE from /usage (agy persists no
+#      quota to disk), age-gated against a gemini-specific threshold (a weekly
+#      reading stays meaningful far longer than the 6h codex/claude gate).
+#   3. MISSING — "- missing" → color_pct dims G: instead of faking 100%.
+# Emits THREE fields: "<pct> <state> <suffix>" (suffix "-" = none) so the caller
+# can append a reset countdown only when throttled.
 gemini_snapshot_pct() {
-    [[ -f "$gemini_snapshot" ]] || { echo "- missing"; return; }
-    local pct cap max_h epoch now age_h
+    local thr suf pct cap max_h epoch now age_h
+    thr=$(gemini_throttle_hours)
+    if [[ -n "$thr" ]]; then
+        suf=$(awk -v h="$thr" 'BEGIN { if (h>=24) printf "·%.1fd", h/24; else printf "·%.1fh", h }')
+        echo "0 throttled ${suf}"; return
+    fi
+    [[ -f "$gemini_snapshot" ]] || { echo "- missing -"; return; }
     pct=$(jq -r '.gemini.weekly_pct_avail // empty' "$gemini_snapshot" 2>/dev/null)
-    [[ -n "$pct" ]] || { echo "- missing"; return; }
+    [[ -n "$pct" ]] || { echo "- missing -"; return; }
     pct=$(awk -v p="$pct" 'BEGIN { printf "%d", p }')   # int for color thresholds
     cap=$(jq -r '.captured_at // empty' "$gemini_snapshot" 2>/dev/null)
     max_h="${STATUSLINE_GEMINI_SNAPSHOT_MAX_AGE_HOURS:-48}"
     epoch=$(iso_epoch "$cap") || epoch=""
-    [[ -n "$epoch" ]] || { echo "$pct stale"; return; }   # undatable = stale
+    [[ -n "$epoch" ]] || { echo "$pct stale -"; return; }   # undatable = stale
     now=$(date +%s)
     age_h=$(awk -v e="$epoch" -v n="$now" 'BEGIN { print (n-e)/3600 }')
     if awk -v a="$age_h" -v m="$max_h" 'BEGIN { exit !(a <= m) }'; then
-        echo "$pct fresh"
+        echo "$pct fresh -"
     else
-        echo "$pct stale"
+        echo "$pct stale -"
     fi
 }
 
@@ -259,7 +309,8 @@ else
 fi
 
 read -r o_pct o_state <<< "$(extract_pct "codex")"
-read -r g_pct g_state <<< "$(gemini_snapshot_pct)"
+read -r g_pct g_state g_suffix <<< "$(gemini_snapshot_pct)"
+[[ "$g_suffix" == "-" ]] && g_suffix=""
 o_mark=""; [[ "$o_state" == stale ]] && o_mark="?"
 g_mark=""; [[ "$g_state" == stale ]] && g_mark="?"
 
@@ -287,7 +338,7 @@ c_suffix="${c_mark}${c_suffix}"
 o_suffix="$o_mark"
 [[ -n "${o_days:-}" ]] && o_suffix="${o_mark}·${o_days}d${o_days_mark}"
 
-ai_usage="$(color_pct C "$c_rem" "$c_suffix")|$(color_pct O "$o_pct" "$o_suffix")|$(color_pct G "$g_pct" "$g_mark")"
+ai_usage="$(color_pct C "$c_rem" "$c_suffix")|$(color_pct O "$o_pct" "$o_suffix")|$(color_pct G "$g_pct" "${g_mark}${g_suffix}")"
 
 # Repo module name (basename of workspace root)
 repo_name=$(basename "$ws_root")
