@@ -24,6 +24,7 @@ def _fp(role="full", **kw):
         "harness_install": "npm-global",
         "registry_sha256": "deadbeef" * 8,
         "learning_cron_ages_h": {"comprehensive-learning-nightly": 12.0, "session-analysis": 8.0},
+        "provider_soul_hashes": {"hermes": "h1", "claude": "c1", "codex": "x1", "gemini": "g1"},
     }
     base.update(kw)
     return base
@@ -95,6 +96,36 @@ def test_stale_fingerprint_detected():
     d = next(d for d in divs if d["code"] == "stale-fingerprint")
     assert d["severity"] == ec.WARNING
     assert "contribute" in d["boxes"]
+
+
+def test_provider_soul_identical_no_divergence():
+    divs = ec.compare([_fp("full"), _fp("contribute")])
+    assert "provider-soul-divergence" not in _codes(divs)
+
+
+def test_provider_soul_divergence_flagged():
+    b = _fp("contribute")
+    b["provider_soul_hashes"] = {"hermes": "h1", "claude": "c1", "codex": "x1", "gemini": "DIFFERENT"}
+    divs = ec.compare([_fp("full"), b])
+    d = next(d for d in divs if d["code"] == "provider-soul-divergence")
+    assert d["severity"] == ec.WARNING
+    assert "gemini" in d["detail"]
+
+
+def test_provider_on_single_box_not_flagged():
+    # a provider reported by only one box is not a cross-machine divergence
+    a = _fp("full")
+    b = _fp("contribute")
+    b["provider_soul_hashes"] = {"hermes": "h1", "claude": "c1", "codex": "x1"}  # gemini absent here
+    divs = ec.compare([a, b])
+    assert "provider-soul-divergence" not in _codes(divs)
+
+
+def test_provider_null_hash_ignored():
+    b = _fp("contribute")
+    b["provider_soul_hashes"] = {"hermes": "h1", "claude": "c1", "codex": "x1", "gemini": None}
+    divs = ec.compare([_fp("full"), b])
+    assert "provider-soul-divergence" not in _codes(divs)
 
 
 def test_empty_input_safe():

@@ -64,9 +64,25 @@ age_session="$(cron_age session-analysis)"
 
 # Emit JSON via python for safe quoting.
 python3 - "$role" "$host" "$clone_head" "$behind" "$ahead" "$hv" "$hinstall" "$reg_sha" "$age_learning" "$age_session" <<'PY' > "${OUT:-/dev/stdout}"
-import json, sys
+import json, sys, hashlib, os
 from datetime import datetime, timezone
 role, host, head, behind, ahead, hv, hinstall, reg, al, as_ = sys.argv[1:11]
+def fhash(path):
+    try:
+        with open(path, "rb") as fh:
+            return hashlib.sha256(fh.read()).hexdigest()[:16]
+    except OSError:
+        return None
+# Per-provider built-runtime behavior hashes (#3074): equivalent provider
+# behavior across machines means these match box-to-box. Behavior files only —
+# never secrets/auth.
+provider_soul = {
+    "hermes": fhash("config/agents/hermes/SOUL.runtime.md"),
+    "claude": fhash("config/agents/claude/SOUL.runtime.md"),
+    "codex": fhash("config/agents/codex/SOUL.runtime.md"),
+    "codex_agents": fhash("config/agents/codex/AGENTS.runtime.md"),
+    "gemini": fhash("config/agents/gemini/SOUL.runtime.md"),
+}
 def num(x):
     if x in ("null", ""): return None
     try: return int(x)
@@ -86,6 +102,7 @@ fp = {
         "comprehensive-learning-nightly": num(al),
         "session-analysis": num(as_),
     },
+    "provider_soul_hashes": provider_soul,
 }
 print(json.dumps(fp, indent=1))
 PY

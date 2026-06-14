@@ -95,6 +95,21 @@ def compare(fps, *, behind_warn=10, stale_h=6.0, learning_max_h=48.0):
                                 f"{r}: learning cron '{cron}' last ran {age:.0f}h ago (> {learning_max_h:.0f}h)",
                                 {r: round(age, 1)}))
 
+    # 5b. per-provider SOUL.runtime divergence across machines -> WARNING (#3074).
+    # Equivalent provider behavior across all machines means each provider's
+    # built runtime hash matches box-to-box. Only providers reported by >1 box
+    # are checked (a provider absent on a box is handled by hub/role config, not here).
+    prov_seen = {}  # provider -> {box: hash}
+    for r, f in zip(roles, fps):
+        for prov, h in (f.get("provider_soul_hashes") or {}).items():
+            if h:
+                prov_seen.setdefault(prov, {})[r] = h
+    for prov, by_box in sorted(prov_seen.items()):
+        if len(by_box) > 1 and len(set(by_box.values())) > 1:
+            out.append(_div(WARNING, "provider-soul-divergence",
+                            f"provider '{prov}' SOUL.runtime differs across boxes — behavior not equivalent",
+                            {b: h[:8] for b, h in by_box.items()}))
+
     # 6. stale fingerprint (a box stopped reporting) -> WARNING, vs newest ts
     valid = [(r, _parse_ts(f.get("ts"))) for r, f in zip(roles, fps)]
     valid = [(r, t) for r, t in valid if t]
