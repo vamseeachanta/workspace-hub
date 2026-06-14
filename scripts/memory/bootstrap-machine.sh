@@ -203,6 +203,24 @@ if [[ -f "${HARNESS_UPDATER}" && "${OS}" != "windows" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
+# 2.10. Pin the Antigravity CLI (`agy`) default model (ecosystem-canonical lane)
+#       Standardizes `agy` on ONE default model so every machine + every repo
+#       opened with agy behaves identically. agy is the Gemini delegation lane
+#       (Google AI Pro). The setter MERGES a single `model` key into agy's
+#       user-global settings (never clobbers machine-local prefs like
+#       colorScheme), and runs UNCONDITIONALLY so a machine converges even
+#       before agy is installed (agy reads the file on first launch). The model
+#       value is declared in the setter; change it there to retarget the fleet.
+#       Idempotent. Skips gracefully if no python is present.
+# ---------------------------------------------------------------------------
+SET_AGY_MODEL="${REPO_ROOT}/scripts/agents/set-antigravity-default-model.sh"
+if [[ -x "${SET_AGY_MODEL}" ]]; then
+    echo ""
+    echo -e "${CYAN}Pinning Antigravity CLI default model...${NC}"
+    bash "${SET_AGY_MODEL}" || true
+fi
+
+# ---------------------------------------------------------------------------
 # 3. Remind about bridge script (Linux/Hermes machines only)
 # ---------------------------------------------------------------------------
 if [[ -d "${HOME}/.hermes" ]]; then
