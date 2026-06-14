@@ -173,6 +173,13 @@ done
 if (( REAPPLY_FAILED )); then
   echo
   echo "ERROR: deckhand Hermes enforcement patches were not re-applied — see above."
+  # Emit an ACTIVE alert, not just this cron log + the daily cron-health snapshot.
+  # That passive surfacing let an UNPATCHED gateway (client-leak risk) sit unnoticed
+  # for ~6 days (deckhand#354). notify.sh appends a fail event consumed by the email
+  # attention-notify path. Fail-closed is preserved — we still exit 1 below.
+  _repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+  bash "${_repo_root}/scripts/notify.sh" cron hermes-patches fail \
+    "deckhand enforcement patches did not re-apply — gateway attachment gate may be DOWN (client-leak risk); see deckhand#354" 2>/dev/null || true
   exit 1
 fi
 for s in "${STATUS[@]}"; do
