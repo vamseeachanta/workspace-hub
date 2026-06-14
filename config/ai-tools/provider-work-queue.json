@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-14T13:20:13.023197Z",
+  "generated_at": "2026-06-14T17:20:13.295319Z",
   "current_week": "2026-W24",
-  "scorecard_generated_at": "2026-06-14T13:20:10.832055Z",
+  "scorecard_generated_at": "2026-06-14T17:20:11.469740Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 31,
+      "execution_ready_count": 32,
       "total_candidates": 175,
       "top_issues": [
         {
@@ -1008,7 +1008,7 @@
             "status:plan-approved",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-14T12:43:29Z",
+          "updatedAt": "2026-06-14T15:30:07Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1016,6 +1016,29 @@
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3055,
+          "title": "Model parity: model-swap playbook + parity decision ADR \u2014 epic #3043",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3055",
+          "labels": [
+            "domain:ai-config",
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness"
+          ],
+          "updatedAt": "2026-06-14T15:31:24Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -4490,26 +4513,6 @@
           ]
         },
         {
-          "number": 3055,
-          "title": "Model parity: model-swap playbook + parity decision ADR \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3055",
-          "labels": [
-            "domain:ai-config"
-          ],
-          "updatedAt": "2026-06-13T21:39:56Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3058,
           "title": "Epic: Harden the repo ecosystem \u2014 enforce equivalence, model-sourcing, parity baselines, retrieval",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3058",
@@ -4535,9 +4538,10 @@
           "title": "Client-identifier in a public skill slug \u2014 rename or route private (no-client-PII)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3073",
           "labels": [
-            "domain:cleanup"
+            "domain:cleanup",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-06-14T02:39:01Z",
+          "updatedAt": "2026-06-14T16:03:43Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4580,7 +4584,7 @@
             "enhancement",
             "domain:platform-infra"
           ],
-          "updatedAt": "2026-06-14T12:46:03Z",
+          "updatedAt": "2026-06-14T15:42:26Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4600,7 +4604,7 @@
             "enhancement",
             "cat:harness"
           ],
-          "updatedAt": "2026-06-14T12:46:05Z",
+          "updatedAt": "2026-06-14T16:01:38Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4621,7 +4625,7 @@
             "enhancement",
             "cat:harness"
           ],
-          "updatedAt": "2026-06-14T12:46:06Z",
+          "updatedAt": "2026-06-14T15:58:59Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4725,7 +4729,7 @@
             "cat:tooling",
             "domain:platform-infra"
           ],
-          "updatedAt": "2026-06-14T12:48:34Z",
+          "updatedAt": "2026-06-14T15:44:09Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -5436,7 +5440,7 @@
             "cat:tooling",
             "domain:agent-ux"
           ],
-          "updatedAt": "2026-06-14T13:02:23Z",
+          "updatedAt": "2026-06-14T16:08:22Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

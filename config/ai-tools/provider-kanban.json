@@ -482,16 +482,16 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
-          "domain:cleanup"
+          "domain:cleanup",
+          "status:plan-review"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -514,7 +514,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Client-identifier in a public skill slug \u2014 rename or route private (no-client-PII)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3073",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -860,16 +862,19 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
-          "domain:ai-config"
+          "domain:ai-config",
+          "status:plan-review",
+          "status:plan-approved",
+          "gate:completeness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -892,7 +897,12 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Model parity: model-swap playbook + parity decision ADR \u2014 epic #3043",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3055",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "dual_status_labels",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8554,7 +8564,7 @@
       ]
     }
   ],
-  "generated_at": "2026-06-14T13:20:14Z",
+  "generated_at": "2026-06-14T17:20:14Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -9017,16 +9027,16 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
-            "domain:cleanup"
+            "domain:cleanup",
+            "status:plan-review"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9049,7 +9059,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Client-identifier in a public skill slug \u2014 rename or route private (no-client-PII)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3073",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -9395,16 +9407,19 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
-            "domain:ai-config"
+            "domain:ai-config",
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9427,7 +9442,12 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Model parity: model-swap playbook + parity decision ADR \u2014 epic #3043",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3055",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "dual_status_labels",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -17097,18 +17117,18 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-06-14T13:20:10.832055Z",
+  "scorecard_generated_at": "2026-06-14T17:20:11.469740Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-14T13:20:10.719409Z",
+  "utilization_generated_at": "2026-06-14T17:20:11.345205Z",
   "warning_summary": {
-    "approved_no_marker": 21,
-    "approved_no_plan": 11,
-    "dual_status_labels": 7,
+    "approved_no_marker": 22,
+    "approved_no_plan": 12,
+    "dual_status_labels": 8,
     "empty_review": 2,
     "legacy_review_no_sha": 21,
     "major_review": 19,
     "marker_without_open_approved_issue": 157,
-    "missing_review": 37,
+    "missing_review": 39,
     "unavailable_review": 7
   }
 }

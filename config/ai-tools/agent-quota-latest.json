@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-14T08:20:04-05:00",
+  "timestamp": "2026-06-14T12:20:04-05:00",
   "agents": [
     {
       "provider": "claude",
@@ -16,11 +16,11 @@
       "provider": "codex",
       "tier": "subscription",
       "weekly_limit": 1400,
-      "week_messages": 242,
-      "week_pct": 47,
-      "five_hour_pct": 80,
-      "pct_remaining": 53,
-      "hours_to_reset": 113,
+      "week_messages": 245,
+      "week_pct": 51,
+      "five_hour_pct": 14,
+      "pct_remaining": 49,
+      "hours_to_reset": 109,
       "resets_at": "2026-06-19T01:32:54-0500",
       "source": "app-server-live"
     },

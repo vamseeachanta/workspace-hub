@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-14T13:20:14Z
+Generated: 2026-06-14T17:20:14Z
 Mode: static (read-only)
 
 ## How to approve
@@ -55,7 +55,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3078 | Epic: Ecosystem mission → workflow → marketing flywheel, with context-flow backbone | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3077 | Orchestrator consistency drift (2026-06-14) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3074 | Harden: provider-behavior parity across machines (SOUL.runtime per provider) — epic #3058 | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
-| #3073 | Client-identifier in a public skill slug — rename or route private (no-client-PII) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3073 | Client-identifier in a public skill slug — rename or route private (no-client-PII) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3067 | uv-workflow(workspace-hub): write the canonical UV workflow contract standard doc | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3066 | uv-workflow(assethold): wire portfolio/options/property/risk/dividend/fundamentals into engine + fix substring bug | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3065 | uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -64,7 +64,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3062 | Harden: skill/state sprawl cleanup + retrieval quality — epic #3058 | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
 | #3061 | Harden: continuous parity instrumentation — epic #3058 | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
 | #3058 | Epic: Harden the repo ecosystem — enforce equivalence, model-sourcing, parity baselines, retrieval | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3055 | Model parity: model-swap playbook + parity decision ADR — epic #3043 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3055 | Model parity: model-swap playbook + parity decision ADR — epic #3043 | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
 | #3054 | Model parity: skills + learning/signal loops + memory re-baselining — epic #3043 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3053 | Model parity: dynamic workflows, orchestration & cadence/quota economics — epic #3043 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3052 | Model parity: context-window parity (1M lever / opus-4-8[1m]) — epic #3043 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
