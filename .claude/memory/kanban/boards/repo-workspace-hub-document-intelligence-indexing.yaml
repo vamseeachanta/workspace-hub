@@ -506,13 +506,14 @@ cards:
 
       ## Inventory'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1579
-    title: Audit /mnt/ace for undiscovered resources and unknown data-source descriptions
+    title: Audit /mnt/ace descriptions, dedup/reorg safety, and llm-wiki coverage mapping
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1579
     gh_state: open
     gh_labels:
       - enhancement
       - priority:medium
+      - cat:data-pipeline
       - cat:data
       - cat:document-intelligence
       - machine:dev-primary
@@ -521,6 +522,7 @@ cards:
       - gate:completeness
       - domain:document-intelligence-indexing
       - domain:knowledge-management-corpus
+      - domain:repo-organization-cleanup-migration
       - lane:claude
     gh_assignees: []
     initial_status: triage

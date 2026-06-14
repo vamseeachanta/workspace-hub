@@ -954,3 +954,16 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3074
+    title: 'Harden: provider-behavior parity across machines (SOUL.runtime per provider) — epic #3058'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3074
+    gh_state: open
+    gh_labels:
+      - domain:ai-orchestration
+      - machine:multi
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
