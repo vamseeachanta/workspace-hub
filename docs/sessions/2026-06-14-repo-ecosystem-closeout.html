@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Repo Ecosystem Closeout - 2026-06-14</title>
+  <style>
+    body { font: 14px/1.45 system-ui, sans-serif; margin: 32px; color: #202124; }
+    h1, h2 { margin: 0 0 12px; }
+    h2 { margin-top: 28px; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0 20px; }
+    th, td { border: 1px solid #d0d7de; padding: 6px 8px; text-align: left; }
+    th { background: #f6f8fa; }
+    code { background: #f6f8fa; padding: 1px 4px; border-radius: 3px; }
+    .ok { color: #116329; font-weight: 600; }
+    .warn { color: #8a4600; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <h1>Repo Ecosystem Closeout</h1>
+  <p><strong>Timestamp:</strong> 2026-06-14 13:15:06 CDT</p>
+
+  <h2>Verified Repo State</h2>
+  <p class="ok">Clean across 21 local repositories under <code>/mnt/local-analysis</code>.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Check</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Current branch</td><td>All 21 repositories on <code>main</code></td></tr>
+      <tr><td>Dirty files</td><td>0 in every repository</td></tr>
+      <tr><td>Untracked files</td><td>0 in every repository</td></tr>
+      <tr><td>Stashes</td><td>0 in every repository</td></tr>
+      <tr><td>Ahead/behind</td><td><code>0/0</code> in every repository</td></tr>
+      <tr><td>Local branches</td><td>1 in every repository</td></tr>
+      <tr><td>Registered worktrees</td><td>1 in every repository</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Key SHAs</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Repository</th>
+        <th>Local/remote main</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>workspace-hub</code></td>
+        <td><code>9747755b3</code></td>
+        <td>Cleanup manifests and provider-state/statusline work pushed.</td>
+      </tr>
+      <tr>
+        <td><code>llm-wiki</code></td>
+        <td><code>771bee527</code></td>
+        <td>Includes merged PR <a href="https://github.com/vamseeachanta/llm-wiki/pull/695">#695</a>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Preserved Work</h2>
+  <ul>
+    <li><a href="https://github.com/vamseeachanta/llm-wiki/pull/695">llm-wiki #695</a> merged batch 169 CSV normalizations into <code>main</code>.</li>
+    <li><a href="https://github.com/vamseeachanta/llm-wiki/pull/696">llm-wiki #696</a> is a draft PR preserving recovered batch 169 asset-management residue at <code>e8cb35fc3</code>.</li>
+    <li>Local stale worktree <code>/tmp/wt-vbatch-169</code> is gone; no registered stale worktrees remain.</li>
+  </ul>
+
+  <h2>Archive Verification</h2>
+  <p class="ok">The following ignored tarballs were verified with <code>tar tzf</code> and have committed manifests/checksums:</p>
+  <ul>
+    <li><code>docs/sessions/archives/2026-06-14-repo-sync-tmp-scratch.tar.gz</code></li>
+    <li><code>docs/sessions/archives/2026-06-14-llm-wiki-pr692-png-scratch.tar.gz</code></li>
+    <li><code>docs/sessions/archives/2026-06-14-llm-wiki-batches-168-169-tmp-scratch.tar.gz</code></li>
+  </ul>
+
+  <h2>Residual State</h2>
+  <p><span class="ok">Expected:</span> ignored preservation tarballs under <code>docs/sessions/archives/</code>.</p>
+  <p><span class="warn">Not cleaned:</span> broad historical scratch still exists under <code>/tmp</code>. It is outside registered git worktrees and was not removed because remaining cleanup tiers after Tier 0 still require explicit tier approval.</p>
+</body>
+</html>
