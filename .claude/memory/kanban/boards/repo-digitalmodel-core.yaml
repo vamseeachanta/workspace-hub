@@ -702,3 +702,14 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#756
+    title: 'Reorg debt: 8 modules import the deleted digitalmodel.custom.* namespace (blocks rigging, vertical_riser, aqwa subpaths)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/756
+    gh_state: open
+    gh_labels:
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
