@@ -25,12 +25,12 @@ providers:
   claude:
     display_name: "Anthropic Claude"
     model_ids:
-      primary: "claude-fable-5"      # Mythos-class tier above Opus; GA on Max
-      strong: "claude-opus-4-8"      # Opus lane; /fast mode available
+      primary: "claude-opus-4-8[1m]" # 1M-context Opus — primary since 2026-06-13 (#3051; Fable 5 access lost)
+      strong: "claude-opus-4-8"      # 200K Opus lane; /fast mode available
       balanced: "claude-sonnet-4-6"
       fast: "claude-haiku-4-5"
     context_window:
-      primary: 1000000               # Fable 5 ships 1M context
+      primary: 1000000               # 1M-Opus primary
       strong: 200000
       balanced: 200000
       fast: 200000

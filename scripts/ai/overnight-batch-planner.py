@@ -75,7 +75,7 @@ def _registry_model(key: str, fallback: str) -> str:
 
 
 AGENT_MODEL_MAP: dict[str, dict[str, str]] = {
-    "claude":  {"model": _registry_model("claude_primary", "claude-fable-5"), "provider": "anthropic"},
+    "claude":  {"model": _registry_model("claude_primary", "claude-opus-4-8[1m]"), "provider": "anthropic"},  # model-id-ok (registry fallback)
     "codex":   {"model": _registry_model("codex_primary", "codex-cli"),       "provider": "openai-codex"},
     "gemini":  {"model": _registry_model("gemini_primary", "gemini-2.5-pro"), "provider": "copilot"},
     "hermes":  {"model": _registry_model("openai_primary", "gpt-5.5"),        "provider": "openai-codex"},

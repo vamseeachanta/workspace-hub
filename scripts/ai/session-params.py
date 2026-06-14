@@ -15,7 +15,8 @@ from pathlib import Path
 MODEL_REGISTRY = Path(__file__).resolve().parents[2] / "config" / "agents" / "model-registry.yaml"
 
 FALLBACK_CTX_MAP: dict[str, int] = {
-    "claude-fable-5": 1000,
+    "claude-opus-4-8[1m]": 1000,  # model-id-ok — primary since #3051 (the [1m] suffix parser also yields 1000)
+    "claude-fable-5": 1000,       # model-id-ok — deprecated 2026-06-13; retained as a soft fallback
     "claude-sonnet-4-6": 200,
     "claude-opus-4-8": 200,
     "claude-haiku-4-5": 200,
@@ -25,7 +26,8 @@ FALLBACK_CTX_MAP: dict[str, int] = {
 
 # Short aliases resolve to full model ids before lookup
 ALIAS_MAP: dict[str, str] = {
-    "fable": "claude-fable-5",
+    "opus-1m": "claude-opus-4-8[1m]",  # model-id-ok — 1M-Opus primary
+    "fable": "claude-opus-4-8[1m]",    # model-id-ok — deprecated alias, forwarded to the new primary
     "opus": "claude-opus-4-8",
     "sonnet": "claude-sonnet-4-6",
     "haiku": "claude-haiku-4-5",
