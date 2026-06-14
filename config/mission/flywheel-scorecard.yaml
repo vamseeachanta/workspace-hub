@@ -1,0 +1,67 @@
+# Flywheel outcome scorecard
+# Seeded for issue #3082 (epic #3078 — ecosystem mission → workflow → marketing flywheel)
+#
+# The few metrics that tell us whether the flywheel is turning. Each metric names its
+# SOURCE so a periodic job (#3085) can recompute it rather than re-assert it.
+#
+# baseline_2026_06_14 = value measured this session (cite how). `pending` = not yet
+# measurable; names the sub-issue/instrument that will populate it.
+schema_version: 0.1
+generated: baseline-only            # a real run (#3085) stamps an ISO date here
+
+metrics:
+  # ── Workflow health (serves O4) ──
+  - id: workflow_total
+    question: "How many scheduled workflows exist?"
+    source: config/scheduled-tasks/schedule-tasks.yaml (count of schedule entries)
+    baseline_2026_06_14: 53
+  - id: workflow_objective_skew
+    question: "What share of workflows serve harness-self-health (O4) vs business objectives (O1-O3)?"
+    source: config/mission/workflow-inventory.yaml (group by serves)
+    baseline_2026_06_14: "O4 ~42/53 (~79%); O1-O3 combined ~11 — business objectives under-automated"
+    note: "KEY FLYWHEEL SIGNAL — the ecosystem mostly automates maintaining itself, not producing engineering/knowledge/market output. Watch this ratio shift toward O1-O3 as the flywheel matures."
+  - id: unguarded_workflows
+    question: "How many mutating workflows lack a guard/approval?"
+    source: "workflow-inventory.yaml mutates field + per-script verification (#3081)"
+    pending: "#3081 — verify mutates: column per script; the one alleged CRITICAL (deploy-orchestration) was disproven"
+
+  # ── Mission coverage (serves all) ──
+  - id: repos_laddered
+    question: "What share of repos have a mission that ladders up to an objective?"
+    source: config/mission/mission-map.yaml (orphan check)
+    baseline_2026_06_14: "21/21 in-scope repos ladder up; 0 orphans (personal tier explicitly out-of-scope by design)"
+  - id: orphan_workflows
+    question: "How many workflows serve no objective / are dead?"
+    source: "workflow-inventory.yaml orphans section"
+    baseline_2026_06_14: "3 flagged (update-portfolio-signals=personal/out-of-scope; crontab-template=legacy; update_ai_agents_daily.sh=dead stale-path)"
+
+  # ── Context hygiene (serves O4) ──
+  - id: repos_scoped_memory
+    question: "How many repos carry their own scoped .claude/memory/ (vs inheriting the global blob)?"
+    source: "filesystem scan: count of /mnt/local-analysis/*/.claude/memory"
+    baseline_2026_06_14: "3/21 (workspace-hub, llm-wiki, kaggle-rogii-2026)"
+    target: "all in-scope business-tier repos"
+    pending_mechanism: "#3084 — cwd-relative memory pointer + per-repo scaffolds"
+  - id: memory_blob_size
+    question: "How large is the always-loaded memory footprint?"
+    source: "wc -l .claude/memory/claude-auto-memory.md (+ topics/, kanban/)"
+    baseline_2026_06_14: "auto-memory ~266 lines; total .claude/memory/ ~4 MB (kanban ~3 MB) — leaks into every non-scoped session"
+
+  # ── Throughput (serves O4) ──
+  - id: dispatch_throughput
+    question: "Issues completed/week vs WIP cap?"
+    source: scripts/dispatch/ queue state + gh issue close events
+    pending: "wire from dispatch metrics; not yet collected here"
+
+  # ── Marketing reach (serves O3) ──
+  - id: marketing_reach
+    question: "Engagement per compounding asset; demo runs; inbound?"
+    source: aceengineer-strategy scorecard (#3083)
+    pending: "#3083 — marketing concentration defines the assets + their metrics"
+
+reuse:
+  note: >
+    Do not build new collectors where instrumentation exists. The equality-matrix,
+    equivalence-sentinel, and parity-sentinel already emit per-machine reports on a
+    cadence (verified present 2026-06-14). #3085's periodic job should aggregate THIS
+    scorecard from those + the mission-map/workflow-inventory, not re-measure from scratch.
