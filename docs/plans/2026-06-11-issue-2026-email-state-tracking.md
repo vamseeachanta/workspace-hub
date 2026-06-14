@@ -1,13 +1,13 @@
 # Plan for #2026: Email state tracking system
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T2
 > **Date:** 2026-06-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2026
 > **Client:** N/A
 > **Project:** N/A
 > **Lane:** lane:claude
-> **Review artifacts:** completed rounds are preserved at `scripts/review/results/2026-06-11-plan-2026-r1-*`, `scripts/review/results/2026-06-11-plan-2026-r2-*`, `scripts/review/results/2026-06-11-plan-2026-r3/`, `scripts/review/results/2026-06-11-plan-2026-r4/`, `scripts/review/results/2026-06-11-plan-2026-r5/`, `scripts/review/results/2026-06-11-plan-2026-r6/`, `scripts/review/results/2026-06-11-plan-2026-r7/`, `scripts/review/results/2026-06-11-plan-2026-r8/`, `scripts/review/results/2026-06-11-plan-2026-r9/`, `scripts/review/results/2026-06-11-plan-2026-r10/`, `scripts/review/results/2026-06-11-plan-2026-r11/`, `scripts/review/results/2026-06-11-plan-2026-r12/`, `scripts/review/results/2026-06-11-plan-2026-r13/`, and `scripts/review/results/2026-06-11-plan-2026-r14/`; legacy unsuffixed files under `scripts/review/results/2026-06-11-plan-2026-{claude,codex,gemini,disagreement}.md` are committed R2 duplicates. R14 Claude returned MINOR with no blockers, but Gemini remains quota-exhausted and Codex remains unavailable, so this draft requires another fresh independent provider review before any `status:plan-review` label.
+> **Review artifacts:** completed rounds are preserved at `scripts/review/results/2026-06-11-plan-2026-r1-*`, `scripts/review/results/2026-06-11-plan-2026-r2-*`, `scripts/review/results/2026-06-11-plan-2026-r3/`, `scripts/review/results/2026-06-11-plan-2026-r4/`, `scripts/review/results/2026-06-11-plan-2026-r5/`, `scripts/review/results/2026-06-11-plan-2026-r6/`, `scripts/review/results/2026-06-11-plan-2026-r7/`, `scripts/review/results/2026-06-11-plan-2026-r8/`, `scripts/review/results/2026-06-11-plan-2026-r9/`, `scripts/review/results/2026-06-11-plan-2026-r10/`, `scripts/review/results/2026-06-11-plan-2026-r11/`, `scripts/review/results/2026-06-11-plan-2026-r12/`, `scripts/review/results/2026-06-11-plan-2026-r13/`, `scripts/review/results/2026-06-11-plan-2026-r14/`, and `scripts/review/results/2026-06-13-plan-2026-codex.md`; legacy unsuffixed files under `scripts/review/results/2026-06-11-plan-2026-{claude,codex,gemini,disagreement}.md` are committed R2 duplicates. R14 Claude returned MINOR with no blockers, and the 2026-06-13 Codex review returned MINOR with no blockers, satisfying the T2 plan-review gate. Implementation remains blocked until USER approval and `status:plan-approved`.
 
 ---
 
@@ -223,7 +223,7 @@ Source count: 10 distinct sources/checks, including the runtime credential/confi
 | Runtime state directory | `~/.hermes/email-state/` by default, overrideable via `EMAIL_QUEUE_STATE_DIR` |
 | Optional local runtime config | `~/.hermes/email-state/accounts.yaml` |
 | Implementation notes requested by user | `docs/reports/2026-06-11-issue-2026-implementation-notes.html` |
-| Review rounds | `scripts/review/results/2026-06-11-plan-2026-r1-*`, `scripts/review/results/2026-06-11-plan-2026-r2-*`, `scripts/review/results/2026-06-11-plan-2026-r3/`, `scripts/review/results/2026-06-11-plan-2026-r4/`, `scripts/review/results/2026-06-11-plan-2026-r5/`, `scripts/review/results/2026-06-11-plan-2026-r6/`, `scripts/review/results/2026-06-11-plan-2026-r7/`, `scripts/review/results/2026-06-11-plan-2026-r8/`, `scripts/review/results/2026-06-11-plan-2026-r9/`, `scripts/review/results/2026-06-11-plan-2026-r10/`, `scripts/review/results/2026-06-11-plan-2026-r11/`, `scripts/review/results/2026-06-11-plan-2026-r12/`, `scripts/review/results/2026-06-11-plan-2026-r13/`, `scripts/review/results/2026-06-11-plan-2026-r14/` |
+| Review rounds | `scripts/review/results/2026-06-11-plan-2026-r1-*`, `scripts/review/results/2026-06-11-plan-2026-r2-*`, `scripts/review/results/2026-06-11-plan-2026-r3/`, `scripts/review/results/2026-06-11-plan-2026-r4/`, `scripts/review/results/2026-06-11-plan-2026-r5/`, `scripts/review/results/2026-06-11-plan-2026-r6/`, `scripts/review/results/2026-06-11-plan-2026-r7/`, `scripts/review/results/2026-06-11-plan-2026-r8/`, `scripts/review/results/2026-06-11-plan-2026-r9/`, `scripts/review/results/2026-06-11-plan-2026-r10/`, `scripts/review/results/2026-06-11-plan-2026-r11/`, `scripts/review/results/2026-06-11-plan-2026-r12/`, `scripts/review/results/2026-06-11-plan-2026-r13/`, `scripts/review/results/2026-06-11-plan-2026-r14/`, `scripts/review/results/2026-06-13-plan-2026-codex.md` |
 | Legacy unsuffixed R2 copies | `scripts/review/results/2026-06-11-plan-2026-claude.md`, `scripts/review/results/2026-06-11-plan-2026-codex.md`, `scripts/review/results/2026-06-11-plan-2026-gemini.md`, `scripts/review/results/2026-06-11-plan-2026-disagreement.md` |
 
 ---
@@ -981,8 +981,9 @@ TDD order:
 | R12 Claude, Gemini/Codex unavailable | MAJOR | Claude returned MAJOR; Gemini probe hit 429 quota and Codex remains unavailable. Remaining blockers: review ledger did not yet record the attempted R12 artifacts, D5 old-timestamp stale guard still ran before exact supplied-`cycle_id` duplicate detection, sweep apply accepted raw `inbox_snapshot` without account coverage/freshness proof, Gmail credential/config absence was not reflected in plan evidence, `load_account_scope()` ignored `EMAIL_QUEUE_STATE_DIR` for default config, and the issue-body `~/.hermes/email-state.yaml` path divergence needed explicit closeout handling. |
 | R13 Claude, Gemini/Codex unavailable | MAJOR | Claude returned MAJOR; Gemini remained quota-blocked and Codex remains unavailable. Remaining blockers: R13 artifacts needed ledger reconciliation and D5 still allowed a caller-supplied mismatched `cycle_id` to write a fresh non-reactivation row when current state matched `from_state`. Minor findings: live-label setup evidence should mention possible Claude Gmail MCP label surface, account/email mapping sources need reconciliation, and the import-shadowing risk wording misstated the package mechanism. |
 | R14 Claude, Gemini/Codex unavailable | MINOR | Claude returned MINOR with no blockers; Gemini remained unavailable and Codex remains unavailable. Minor findings: committed unsuffixed review files are legacy R2 duplicates and needed ledger naming, stale reactivation timestamps needed either a guard or explicit risk acceptance, `ReactivationPrecheck` should be described as validated rather than non-forgeable, issue-body state-machine deviations need closeout mention, and R14 artifacts needed ledger reconciliation. |
+| 2026-06-13 Codex | MINOR | Codex returned MINOR with no blockers. Findings were procedural: the fresh review artifact and R9-R14 artifacts needed to be committed/pushed, and the plan/index needed to move from "awaiting independent review" to `plan-review` before the label move. |
 
-**Overall result:** INCOMPLETE after R14. Claude R14 found no blockers after the post-R13 patch, but the T2 gate still lacks a fresh independent provider verdict because Gemini is quota-exhausted and Codex is unavailable. This draft now contains post-R14 patches and must receive another fresh independent provider review before any `status:plan-review` label.
+**Overall result:** COMPLETE for plan-review after the 2026-06-13 Codex review. Claude R14 found no blockers after the post-R13 patch, and the fresh Codex review found no MAJOR blockers. This plan may move to `status:plan-review` after the plan, index, and review artifacts are committed, pushed, and linked from the issue. Implementation remains blocked until USER approval and `status:plan-approved`.
 
 Revisions made based on review:
 
@@ -1063,6 +1064,7 @@ Revisions made based on review:
 - Clarified that Claude Gmail MCP label tools, when available in a Claude lane, may be considered only after verifying account targeting and do not replace the two-account per-client proof requirement.
 - Recorded R14 Claude MINOR and unavailable Gemini/Codex artifacts in the review ledger; named the committed unsuffixed artifacts as legacy R2 duplicates.
 - Added stale-reactivation timestamp rejection unless the derived incoming-cycle key is an exact historical duplicate.
+- Recorded the 2026-06-13 Codex MINOR/no-blocker review and moved the plan/index to `plan-review`.
 - Reworded `ReactivationPrecheck` from non-forgeable to validated and renamed the boolean-precheck test accordingly.
 - Extended closeout-deviation notes to cover both the issue-body single-file state path and the issue-body `inbox` reactivation wording.
 
