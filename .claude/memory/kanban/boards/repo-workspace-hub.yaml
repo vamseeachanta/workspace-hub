@@ -21209,6 +21209,8 @@ cards:
       - enhancement
       - cat:harness
       - domain:memory
+      - status:plan-approved
+      - gate:completeness
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -21247,6 +21249,62 @@ cards:
       - enhancement
       - cat:tooling
       - domain:agent-ux
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3095
+    title: 'Epic: Public-repo client-PII remediation (systemic — 43+ files)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3095
+    gh_state: open
+    gh_labels:
+      - domain:admin
+      - domain:cleanup
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3096
+    title: 'PII: full multi-client sweep + categorization (assessment) — epic #3095'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3096
+    gh_state: open
+    gh_labels:
+      - domain:cleanup
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3097
+    title: 'PII: generated-artifact / session-log policy + remediation (bulk) — epic #3095'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3097
+    gh_state: open
+    gh_labels:
+      - domain:cleanup
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3098
+    title: 'PII: hand-authored docs/plans/handoffs scrub — epic #3095'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3098
+    gh_state: open
+    gh_labels:
+      - domain:cleanup
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3099
+    title: 'PII: prevention hardening (CI guard + emitter redaction) — epic #3095'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3099
+    gh_state: open
+    gh_labels:
+      - domain:tooling
     initial_status: triage
     priority: 0
     gh_assignees: []
