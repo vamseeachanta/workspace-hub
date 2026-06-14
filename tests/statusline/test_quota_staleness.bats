@@ -13,6 +13,17 @@ setup() {
   TMPDIR=$(mktemp -d)
   export STATUSLINE_QUOTA_PRIMARY="$TMPDIR/agent-quota-latest.json"
   export STATUSLINE_QUOTA_CACHE="$TMPDIR/agent-quota-cache.json"
+  export STATUSLINE_GEMINI_SNAPSHOT="$TMPDIR/agy-usage-snapshot.json"
+  export GEMINI_ERROR_DIR="$TMPDIR"
+  cat > "$STATUSLINE_GEMINI_SNAPSHOT" <<EOF
+{
+  "captured_at": "$(iso_at_age_hours 0.1)",
+  "gemini": {
+    "weekly": {"pct_remaining": 100, "reset_hours": 159.5},
+    "five_hour": {"pct_remaining": 100, "reset_hours": 3.2}
+  }
+}
+EOF
 }
 
 teardown() {
@@ -45,13 +56,14 @@ EOF
 CODEX_GEMINI='[{"provider":"codex","week_pct":21,"pct_remaining":79,"hours_to_reset":60,"resets_at":"","source":"app-server-live"},{"provider":"gemini","week_pct":0,"pct_remaining":100,"source":"app-server-live"}]'
 CACHE_FRESH_CODEX='[{"provider":"codex","pct_remaining":29,"hours_to_reset":12,"resets_at":"","source":"local-session-rate-limits"}]'
 
-@test "stale primary, no cache: codex and gemini carry the ? marker" {
+@test "stale primary, no cache: file-sourced codex carries the ? marker" {
   write_file "$STATUSLINE_QUOTA_PRIMARY" 72 "$CODEX_GEMINI"
   rm -f "$STATUSLINE_QUOTA_CACHE"
   run bash -c "printf '%s' '$INPUT_NO_LIVE' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   [[ "$output" == *"O:79%?"* ]]
-  [[ "$output" == *"G:100%?"* ]]
+  [[ "$output" == *"G:100%·6.6d"* ]]  # Gemini is independently sourced from fresh agy snapshot
+  [[ "$output" != *"G:100%?"* ]]
 }
 
 @test "fresh primary: no markers, rendering matches pre-change shape" {
@@ -95,7 +107,8 @@ PY
   [[ "$output" == *"O:29%·0.5d"* ]]   # value AND countdown from the fresh cache (12h/24)
   [[ "$output" != *"O:29%?"* ]]       # percentage unmarked
   [[ "$output" != *"O:29%·0.5d?"* ]]  # countdown unmarked too (freshest-file-first)
-  [[ "$output" == *"G:100%?"* ]]      # gemini only exists in stale primary → marked
+  [[ "$output" == *"G:100%·6.6d"* ]]  # Gemini is independently sourced from fresh agy snapshot
+  [[ "$output" != *"G:100%?"* ]]
 }
 
 @test "claude live percentage stays unmarked while file-sourced countdown is marked" {
