@@ -69,6 +69,22 @@ def test_duplicated_notification_purge_line_also_preserved():
     assert _classify(A1_NOTIFICATION_PURGE_LINE) == "preserved_external"
 
 
+def test_notification_purge_catalog_owned_line_is_deduped_without_apply_rollback(monkeypatch, tmp_path):
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "bk")
+    state = {"crontab": A1_NOTIFICATION_PURGE_LINE + "\n" + A1_NOTIFICATION_PURGE_LINE + "\n"}
+    res = ca.run_cutover(
+        "dev-primary",
+        apply=True,
+        ts="notification-purge",
+        _read=lambda: state["crontab"],
+        _write=lambda txt: state.update(crontab=txt),
+        _daemons=lambda pat: False,
+    )
+    assert res["status"] == "applied"
+    assert state["crontab"].count("find logs/notifications/") == 1
+    assert "rolled-back" not in res["status"]
+
+
 def test_state_classes_still_parses_with_expected_counts():
     classes = yaml.safe_load((REPO / "config" / "workstations" / "harness-state-classes.yaml").read_text())
     # 5 classes unchanged

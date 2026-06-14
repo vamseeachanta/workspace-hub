@@ -68,11 +68,15 @@ def test_external_with_catalog_substring_preserved(monkeypatch, tmp_path):
     assert line in state["crontab"]              # external line survived despite catalog substring
 
 
-def _patch_configs(monkeypatch, tasks, roles, ext_fps):
+def _patch_configs(monkeypatch, tasks, roles, ext_fps, registry=None):
+    if registry is None:
+        registry = {"machines": {"m1": {"hostname": "m1", "harness_profile": {"roles": roles}}}}
     monkeypatch.setattr(ca, "_load", lambda p: (
         {"tasks": tasks} if "schedule-tasks" in str(p)
-        else {"preserved_external": [{"fingerprint": fp} for fp in ext_fps]} if "state-classes" in str(p)
-        else {"machines": {"m1": {"hostname": "m1", "harness_profile": {"roles": roles}}}}))
+        else {"preserved_external": [
+            fp if "fingerprint" in fp else {"fingerprint": fp} for fp in ext_fps
+        ]} if "state-classes" in str(p)
+        else registry))
 
 
 def test_dry_run_writes_nothing(monkeypatch):
@@ -151,3 +155,260 @@ def test_skip_when_no_roles(monkeypatch):
         else {"machines": {"m1": {"hostname": "m1"}}}))   # no harness_profile
     res = ca.run_cutover("m1", apply=True, ts="t", _read=lambda: "", _write=lambda txt: None)
     assert res["status"] == "skip"
+
+
+def test_cron_apply_resolves_hostname_alias_before_role_selection(monkeypatch):
+    registry = {
+        "machines": {
+            "dev-primary": {
+                "hostname": "ace-linux-1",
+                "hostname_aliases": ["vamsee-linux1"],
+                "schedule_variant": "full",
+                "harness_profile": {"roles": ["control-plane"]},
+            }
+        }
+    }
+    _patch_configs(
+        monkeypatch,
+        [{"id": "a", "schedule": "0 1 * * *", "command": "scripts/x.sh", "roles": ["control-plane"]}],
+        ["control-plane"],
+        [],
+        registry=registry,
+    )
+    res = ca.run_cutover("vamsee-linux1", apply=False, ts="t", _read=lambda: "")
+    assert res["status"] == "dry-run"
+    assert res["machine"] == "dev-primary"
+    assert res["selected"] == ["a"]
+
+
+def test_cron_apply_alias_apply_uses_canonical_backup_name(monkeypatch, tmp_path):
+    registry = {
+        "machines": {
+            "dev-primary": {
+                "hostname": "ace-linux-1",
+                "hostname_aliases": ["vamsee-linux1"],
+                "schedule_variant": "full",
+                "harness_profile": {"roles": ["control-plane"]},
+            }
+        }
+    }
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "bk")
+    state = {"crontab": ""}
+    _patch_configs(
+        monkeypatch,
+        [{"id": "a", "schedule": "0 1 * * *", "command": "scripts/x.sh", "roles": ["control-plane"]}],
+        ["control-plane"],
+        [],
+        registry=registry,
+    )
+
+    res = ca.run_cutover(
+        "vamsee-linux1",
+        apply=True,
+        ts="alias",
+        _read=lambda: state["crontab"],
+        _write=lambda txt: state.update(crontab=txt),
+        _daemons=lambda pat: False,
+    )
+
+    assert res["status"] == "applied"
+    assert res["machine"] == "dev-primary"
+    assert res["backup"].endswith("dev-primary-alias.crontab")
+
+
+def test_cron_apply_selects_machine_pinned_tasks_for_hostname_tokens(monkeypatch):
+    registry = {
+        "machines": {
+            "dev-primary": {
+                "hostname": "ace-linux-1",
+                "hostname_aliases": ["vamsee-linux1"],
+                "schedule_variant": "full",
+                "harness_profile": {"roles": []},
+            }
+        }
+    }
+    _patch_configs(
+        monkeypatch,
+        [{"id": "machine-only", "schedule": "0 1 * * *", "command": "scripts/x.sh", "machines": ["ace-linux-1"]}],
+        [],
+        [],
+        registry=registry,
+    )
+    res = ca.run_cutover("dev-primary", apply=False, ts="t", _read=lambda: "")
+    assert res["status"] == "dry-run"
+    assert res["selected"] == ["machine-only"]
+
+
+def test_cron_apply_does_not_select_machine_excluded_role_matches(monkeypatch):
+    _patch_configs(
+        monkeypatch,
+        [{"id": "excluded", "schedule": "0 1 * * *", "command": "scripts/x.sh", "roles": ["control-plane"], "machines": ["other-host"]}],
+        ["control-plane"],
+        [],
+    )
+    res = ca.run_cutover("m1", apply=False, ts="t", _read=lambda: "")
+    assert res["status"] == "dry-run"
+    assert res["selected"] == []
+    assert res["conflicts"]
+
+
+def test_cron_apply_filters_non_cron_schedulers_before_role_selection(monkeypatch):
+    _patch_configs(
+        monkeypatch,
+        [
+            {
+                "id": "windows-only",
+                "schedule": "daily 04:40",
+                "scheduler": "windows-task-scheduler",
+                "command": "bash.exe -c echo hi",
+                "roles": ["control-plane"],
+                "machines": ["m1"],
+            }
+        ],
+        ["control-plane"],
+        [],
+    )
+    res = ca.run_cutover("m1", apply=False, ts="t", _read=lambda: "")
+    assert res["status"] == "dry-run"
+    assert res["selected"] == []
+
+
+def test_run_cutover_renders_applied_new_text_without_unresolved_workspace_placeholders(monkeypatch, tmp_path):
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "bk")
+    monkeypatch.setenv("WORKSPACE_HUB", str(REPO))
+    state = {"crontab": ""}
+    _patch_configs(
+        monkeypatch,
+        [
+            {
+                "id": "repo-sync",
+                "schedule": "0 */4 * * *",
+                "command": "cd $WORKSPACE_HUB && bash scripts/cron-repository-sync.sh >> $LOG 2>&1",
+                "roles": ["control-plane"],
+            }
+        ],
+        ["control-plane"],
+        [],
+    )
+    res = ca.run_cutover(
+        "m1",
+        apply=True,
+        ts="t",
+        _read=lambda: state["crontab"],
+        _write=lambda txt: state.update(crontab=txt),
+        _daemons=lambda pat: False,
+    )
+    assert res["status"] == "applied"
+    assert "$WORKSPACE_HUB" not in state["crontab"]
+    assert "$LOG" not in state["crontab"]
+    assert str(REPO) in state["crontab"]
+    assert "/tmp/workspace-hub-cron.log" in state["crontab"]
+
+
+def test_run_cutover_second_pass_is_idempotent_after_expansion(monkeypatch, tmp_path):
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "bk")
+    state = {"crontab": ""}
+    _patch_configs(
+        monkeypatch,
+        [
+            {
+                "id": "repo-sync",
+                "schedule": "0 */4 * * *",
+                "command": "cd $WORKSPACE_HUB && bash scripts/cron-repository-sync.sh >> $LOG 2>&1",
+                "roles": ["control-plane"],
+            }
+        ],
+        ["control-plane"],
+        [],
+    )
+
+    first = ca.run_cutover(
+        "m1",
+        apply=True,
+        ts="first",
+        _read=lambda: state["crontab"],
+        _write=lambda txt: state.update(crontab=txt),
+        _daemons=lambda pat: False,
+    )
+    after_first = state["crontab"]
+    second = ca.run_cutover(
+        "m1",
+        apply=True,
+        ts="second",
+        _read=lambda: state["crontab"],
+        _write=lambda txt: state.update(crontab=txt),
+        _daemons=lambda pat: False,
+    )
+    assert first["status"] == "applied"
+    assert second["status"] == "applied"
+    assert state["crontab"] == after_first
+    assert "$WORKSPACE_HUB" not in state["crontab"]
+
+
+def test_json_dry_run_includes_actual_rendered_new_text(monkeypatch):
+    _patch_configs(
+        monkeypatch,
+        [
+            {
+                "id": "repo-sync",
+                "schedule": "0 */4 * * *",
+                "command": "cd $WORKSPACE_HUB && bash scripts/cron-repository-sync.sh >> $LOG 2>&1",
+                "roles": ["control-plane"],
+            }
+        ],
+        ["control-plane"],
+        [],
+    )
+    res = ca.run_cutover("m1", apply=False, ts="t", _read=lambda: "")
+    encoded = __import__("json").loads(__import__("json").dumps(res))
+    assert encoded["status"] == "dry-run"
+    assert "new_text" in encoded
+    assert "scripts/cron-repository-sync.sh" in encoded["new_text"]
+    assert "$WORKSPACE_HUB" not in encoded["new_text"]
+
+
+def test_real_dev_primary_cutover_selects_ace_linux_1_machine_pinned_tasks():
+    res = ca.run_cutover("dev-primary", apply=False, ts="t", _read=lambda: "")
+    assert res["status"] == "dry-run"
+    assert "solver-watch-results" in res["selected"]
+    assert "solver-dashboard" in res["selected"]
+    assert "scripts/solver/watch-results.sh" in res["new_text"]
+    assert "scripts/cron/solver-dashboard-daily.sh" in res["new_text"]
+
+
+def test_real_dev_primary_cutover_keeps_bridge_schedule_staggers():
+    res = ca.run_cutover("dev-primary", apply=False, ts="t", _read=lambda: "")
+    assert res["status"] == "dry-run"
+    lines = res["new_text"].splitlines()
+    provider = next(line for line in lines if "bridge-providers-to-dream.sh" in line)
+    hermes = next(line for line in lines if "bridge-hermes-claude.sh" in line)
+    assert provider.startswith("5 4 * * * ")
+    assert hermes.startswith("25 4 * * * ")
+
+
+def test_real_dev_secondary_preview_does_not_use_ace_linux_1_bridge_staggers():
+    res = ca.run_cutover("dev-secondary", apply=False, ts="t", _read=lambda: "")
+    assert res["status"] == "dry-run"
+    lines = res["new_text"].splitlines()
+    provider = next(line for line in lines if "bridge-providers-to-dream.sh" in line)
+    hermes = next(line for line in lines if "bridge-hermes-claude.sh" in line)
+    assert provider.startswith("15 4 * * * ")
+    assert hermes.startswith("35 4 * * * ")
+
+
+def test_real_linux_cutover_filters_named_windows_scheduler_tasks_and_dev_secondary_solver_pins():
+    primary = ca.run_cutover("dev-primary", apply=False, ts="t", _read=lambda: "")
+    secondary = ca.run_cutover("dev-secondary", apply=False, ts="t", _read=lambda: "")
+    windows_task_ids = {
+        "provider-dream-bridge-win",
+        "hermes-claude-bridge-win",
+        "win-repository-sync",
+        "win-session-state-commit",
+    }
+
+    assert primary["status"] == "dry-run"
+    assert secondary["status"] == "dry-run"
+    assert windows_task_ids.isdisjoint(primary["selected"])
+    assert windows_task_ids.isdisjoint(secondary["selected"])
+    assert "solver-watch-results" not in secondary["selected"]
+    assert "solver-dashboard" not in secondary["selected"]

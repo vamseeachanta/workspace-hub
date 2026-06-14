@@ -216,6 +216,21 @@ def test_select_sorted_by_id():
     assert [t["id"] for t in sel] == ["alpha", "mid", "zeta"]
 
 
+def test_select_accepts_machine_token_set_and_filters_non_cron_schedulers():
+    tasks = [
+        {"id": "cron-pinned", "machines": ["alias-one"], "scheduler": "cron"},
+        {
+            "id": "windows-role",
+            "roles": ["w"],
+            "machines": ["alias-one"],
+            "scheduler": "windows-task-scheduler",
+        },
+    ]
+    sel, conf = ct.select_tasks(tasks, ["w"], {"host1", "alias-one"})
+    assert [t["id"] for t in sel] == ["cron-pinned"]
+    assert conf == []
+
+
 # --- render_block ----------------------------------------------------------
 
 def test_render_block_sorted_and_markers():
@@ -327,3 +342,80 @@ def test_plan_cutover_existing_block_replaced_in_place():
     assert EXTERNAL_LINE in p["after"]
     # Stale cataloged line is gone.
     assert "0 9 * * * stale-run-a" not in plan["new_text"]
+
+
+def test_plan_cutover_accepts_existing_five_argument_callers_after_selected_task_ids_extension():
+    plan = ct.plan_cutover(
+        "",
+        [{"id": "a", "schedule": "0 1 * * *", "command": "run-a"}],
+        ["worker"],
+        ["run-a"],
+        [],
+    )
+    assert plan["abort_reason"] is None
+    assert "0 1 * * * run-a" in plan["new_text"]
+
+
+def test_plan_cutover_preserves_workspace_hub_and_log_env_lines_verbatim():
+    current = "\n".join(
+        [
+            "WORKSPACE_HUB=/custom/workspace-hub",
+            "LOG=/tmp/custom-cron.log",
+            "",
+        ]
+    )
+    plan = ct.plan_cutover(
+        current,
+        [{"id": "a", "schedule": "0 1 * * *", "command": "run-a"}],
+        ["worker"],
+        ["run-a"],
+        [],
+    )
+    assert plan["abort_reason"] is None
+    assert plan["new_text"].splitlines()[:2] == [
+        "WORKSPACE_HUB=/custom/workspace-hub",
+        "LOG=/tmp/custom-cron.log",
+    ]
+
+
+def test_preserved_fingerprint_entries_retain_catalog_task_id_metadata():
+    line = (
+        "30 4 * * * cd /mnt/local-analysis/workspace-hub && "
+        'find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true'
+    )
+    entries = [
+        {
+            "owner": "ace-linux-1",
+            "catalog_task_id": "notification-purge",
+            "fingerprint": {
+                "command_contains": ["find logs/notifications/", "-delete"],
+            },
+        }
+    ]
+
+    normalized = ct.normalize_preserved_entries(entries)
+    assert normalized[0]["catalog_task_id"] == "notification-purge"
+    detail = ct.classify_line_detail(
+        line,
+        catalog_commands=[],
+        external_fingerprints=entries,
+        selected_task_ids={"notification-purge"},
+    )
+    assert detail["class"] == "cataloged"
+    assert detail["catalog_task_id"] == "notification-purge"
+
+
+def test_all_fallback_catalog_keys_are_unique_nonempty_and_full_command_based():
+    long_command = "printf '" + ("x" * 90) + "' >> /tmp/no-script-path.log 2>&1"
+    tasks = [
+        {"id": "a", "command": "echo    one    two"},
+        {"id": "b", "command": long_command},
+        {"id": "c", "command": "bash scripts/cron/example-task.sh --flag"},
+    ]
+    keys = ct.catalog_command_keys(tasks)
+    assert len(keys) == len(set(keys))
+    assert all(keys)
+    assert "echo one two" in keys
+    assert long_command in keys
+    assert "scripts/cron/example-task.sh" in keys
+    assert all(len(key) > 60 for key in keys if key.startswith("printf"))

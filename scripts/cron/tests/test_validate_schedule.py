@@ -3,6 +3,7 @@
 import subprocess
 import sys
 import os
+import importlib.util
 from pathlib import Path
 
 import pytest
@@ -12,6 +13,8 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 SCHEDULE_FILE = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 VALIDATOR = REPO_ROOT / "scripts" / "cron" / "validate-schedule.py"
 SETUP_CRON = REPO_ROOT / "scripts" / "cron" / "setup-cron.sh"
+CRON_RENDER = REPO_ROOT / "scripts" / "cron" / "cron_render.py"
+CRON_APPLY = REPO_ROOT / "scripts" / "cron" / "cron_apply.py"
 
 REQUIRED_TASK_FIELDS = {"id", "label", "schedule", "machines", "command", "description"}
 VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
@@ -210,3 +213,123 @@ def test_setup_cron_installs_audit_and_health_for_hostname_alias(tmp_path):
     assert result.returncode == 0, result.stderr + result.stdout
     assert "repo-ecosystem-hygiene-audit.sh" in result.stdout
     assert "cron-health-check.sh" in result.stdout
+
+
+def _load_module(name: str, path: Path):
+    spec = importlib.util.spec_from_file_location(name, str(path))
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_setup_cron_and_cron_apply_use_shared_renderer_for_same_task(tmp_path):
+    hostname_shim = tmp_path / "hostname"
+    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-2\\n'\n")
+    hostname_shim.chmod(0o755)
+    env = os.environ.copy()
+    env["PATH"] = f"{tmp_path}:{env['PATH']}"
+    env["WORKSPACE_HUB"] = str(REPO_ROOT)
+    env["UV_CACHE_DIR"] = str(REPO_ROOT / ".claude" / "state" / "uv-cache")
+
+    result = subprocess.run(
+        ["bash", str(SETUP_CRON), "--dry-run"],
+        capture_output=True,
+        text=True,
+        cwd=str(REPO_ROOT),
+        env=env,
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+
+    render = _load_module("cron_render_validate", CRON_RENDER)
+    cron_apply = _load_module("cron_apply_validate", CRON_APPLY)
+    catalog = yaml.safe_load(SCHEDULE_FILE.read_text(encoding="utf-8"))
+    registry = yaml.safe_load(REGISTRY_FILE.read_text(encoding="utf-8"))
+    repo_sync = next(task for task in catalog["tasks"] if task["id"] == "repository-sync")
+    context = render.build_context("ace-linux-2", registry=registry, workspace_hub=REPO_ROOT)
+    expected_line = render.render_task(repo_sync, context)["line"]
+    apply_plan = cron_apply.run_cutover("ace-linux-2", apply=False, ts="t", _read=lambda: "")
+
+    assert expected_line in result.stdout
+    assert expected_line in apply_plan["new_text"]
+
+
+def test_setup_cron_delegates_placeholder_rendering_to_shared_renderer():
+    source = SETUP_CRON.read_text(encoding="utf-8")
+    assert "cron_render.py" in source
+    assert ".replace('\\$WORKSPACE_HUB'" not in source
+    assert ".replace('\\$LOG'" not in source
+
+
+def test_setup_cron_dry_run_expands_workspace_hub_and_log(tmp_path):
+    hostname_shim = tmp_path / "hostname"
+    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-2\\n'\n")
+    hostname_shim.chmod(0o755)
+    env = os.environ.copy()
+    env["PATH"] = f"{tmp_path}:{env['PATH']}"
+    env["WORKSPACE_HUB"] = str(REPO_ROOT)
+    env["UV_CACHE_DIR"] = str(REPO_ROOT / ".claude" / "state" / "uv-cache")
+
+    result = subprocess.run(
+        ["bash", str(SETUP_CRON), "--dry-run"],
+        capture_output=True,
+        text=True,
+        cwd=str(REPO_ROOT),
+        env=env,
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    assert "$WORKSPACE_HUB" not in result.stdout
+    assert "$LOG" not in result.stdout
+    assert str(REPO_ROOT) in result.stdout
+    assert "/tmp/workspace-hub-cron.log" in result.stdout
+
+
+def test_setup_cron_renderer_failure_aborts_before_crontab_write(tmp_path):
+    hostname_shim = tmp_path / "hostname"
+    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-1\\n'\n")
+    hostname_shim.chmod(0o755)
+
+    crontab_marker = tmp_path / "crontab-invoked"
+    crontab_shim = tmp_path / "crontab"
+    crontab_shim.write_text(
+        "#!/usr/bin/env bash\n"
+        f"printf '%s\\n' \"$*\" >> {crontab_marker}\n"
+        "if [[ \"${1:-}\" == \"-l\" ]]; then exit 0; fi\n"
+        "if [[ \"${1:-}\" == \"-\" ]]; then cat >/dev/null; exit 0; fi\n"
+        "exit 0\n"
+    )
+    crontab_shim.chmod(0o755)
+
+    uv_count = tmp_path / "uv-count"
+    uv_shim = tmp_path / "uv"
+    uv_shim.write_text(
+        "#!/usr/bin/env bash\n"
+        f"count_file={uv_count}\n"
+        "count=0\n"
+        "[[ -f \"$count_file\" ]] && count=$(cat \"$count_file\")\n"
+        "count=$((count + 1))\n"
+        "printf '%s' \"$count\" > \"$count_file\"\n"
+        "if [[ \"$count\" == \"1\" ]]; then printf 'full\\n'; exit 0; fi\n"
+        "printf 'partial cron line\\n'\n"
+        "printf 'renderer exploded\\n' >&2\n"
+        "exit 3\n"
+    )
+    uv_shim.chmod(0o755)
+
+    env = os.environ.copy()
+    env["PATH"] = f"{tmp_path}:{env['PATH']}"
+    env["WORKSPACE_HUB"] = str(REPO_ROOT)
+    env["UV_CACHE_DIR"] = str(REPO_ROOT / ".claude" / "state" / "uv-cache")
+
+    result = subprocess.run(
+        ["bash", str(SETUP_CRON)],
+        capture_output=True,
+        text=True,
+        cwd=str(REPO_ROOT),
+        env=env,
+    )
+
+    assert result.returncode != 0
+    assert "renderer exploded" in result.stderr
+    assert "partial cron line" not in result.stdout
+    assert not crontab_marker.exists()

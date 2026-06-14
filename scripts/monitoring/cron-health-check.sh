@@ -50,7 +50,7 @@ fi
 
 # ── Parse schedule YAML ──────────────────────────────────────────────────────
 # Use Python to parse YAML and emit task records as tab-separated lines
-TASK_RECORDS=$(/home/vamsee/.local/bin/uv run --no-project python - "$SCHEDULE_FILE" <<'PY'
+TASK_RECORDS=$(uv run --no-project python - "$SCHEDULE_FILE" <<'PY'
 import sys
 from pathlib import Path
 
@@ -98,7 +98,7 @@ resolve_machine_names() {
     host=$(printf '%s' "$HOSTNAME_SHORT" | tr '[:upper:]' '[:lower:]')
     # Try to resolve from registry
     local names
-    names=$(/home/vamsee/.local/bin/uv run --no-project python - "${WS_HUB}/config/workstations/registry.yaml" "$host" <<'PY'
+    names=$(uv run --no-project python - "${WS_HUB}/config/workstations/registry.yaml" "$host" <<'PY'
 import sys
 from pathlib import Path
 
@@ -233,9 +233,46 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
             # (for example logs/daily/cron.log); old transient failures must not keep a
             # currently successful job red forever.
             RECENT_LOG_TAIL=$(tail -n 100 "$NEWEST_LOG" 2>/dev/null || true)
+            SCAN_LOG_TAIL="$RECENT_LOG_TAIL"
+
+            if [[ "$tid" == "repo-ecosystem-hygiene" ]]; then
+                LATEST_HYGIENE_MARKER=""
+                while IFS= read -r log_line; do
+                    if [[ "$log_line" =~ ^task=repo-ecosystem-hygiene[[:space:]]+status=(OK|WARN|ERROR)([[:space:]]|$) ]]; then
+                        LATEST_HYGIENE_MARKER="${BASH_REMATCH[1]}"
+                    elif [[ "$log_line" =~ ^ERROR:[[:space:]]+repo-ecosystem-hygiene[[:space:]]+execution_failed([[:space:]]|$) ]]; then
+                        LATEST_HYGIENE_MARKER="ERROR"
+                    fi
+                done <<< "$RECENT_LOG_TAIL"
+
+                SCAN_LOG_TAIL=$(printf '%s\n' "$RECENT_LOG_TAIL" | grep -Ev '^(task=repo-ecosystem-hygiene[[:space:]]+status=(OK|WARN|ERROR)([[:space:]]|$)|ERROR:[[:space:]]+repo-ecosystem-hygiene[[:space:]]+execution_failed([[:space:]]|$))' 2>/dev/null || true)
+
+                if [[ "$LATEST_HYGIENE_MARKER" == "ERROR" ]]; then
+                    if [[ "$STATUS" == "OK" ]]; then
+                        STATUS="ERROR"
+                        DETAILS="latest hygiene marker: ERROR"
+                        HAS_FAILURES=true
+                        PROBLEM_TASKS=$((PROBLEM_TASKS + 1))
+                    else
+                        DETAILS+="; latest hygiene marker: ERROR"
+                    fi
+                elif [[ "$LATEST_HYGIENE_MARKER" == "WARN" ]]; then
+                    if [[ "$STATUS" == "OK" ]]; then
+                        STATUS="WARN"
+                        DETAILS="latest hygiene marker: WARN"
+                    else
+                        DETAILS+="; latest hygiene marker: WARN"
+                    fi
+                elif [[ "$LATEST_HYGIENE_MARKER" == "OK" ]]; then
+                    if [[ "$STATUS" != "OK" ]]; then
+                        DETAILS+="; latest hygiene marker: OK"
+                    fi
+                fi
+            fi
+
             for pattern in "${ERROR_PATTERNS[@]}"; do
-                if grep -Eq "$pattern" <<<"$RECENT_LOG_TAIL" 2>/dev/null; then
-                    match_count=$(grep -Ec "$pattern" <<<"$RECENT_LOG_TAIL" 2>/dev/null || echo 0)
+                if grep -Eq "$pattern" <<<"$SCAN_LOG_TAIL" 2>/dev/null; then
+                    match_count=$(grep -Ec "$pattern" <<<"$SCAN_LOG_TAIL" 2>/dev/null || echo 0)
                     ERRORS_FOUND=$((ERRORS_FOUND + match_count))
                     ERROR_MATCHES+="${pattern} (${match_count}), "
                 fi
@@ -243,7 +280,7 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
 
             if [[ $ERRORS_FOUND -gt 0 ]]; then
                 ERROR_MATCHES="${ERROR_MATCHES%, }"
-                if [[ "$STATUS" == "OK" ]]; then
+                if [[ "$STATUS" == "OK" || "$STATUS" == "WARN" ]]; then
                     STATUS="ERROR"
                     DETAILS="errors: ${ERROR_MATCHES}"
                     HAS_FAILURES=true
@@ -257,6 +294,9 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
         if [[ "$STATUS" == "OK" ]]; then
             HEALTHY_TASKS=$((HEALTHY_TASKS + 1))
             DETAILS="last-run: ${LAST_RUN_AGO}, errors: 0"
+        elif [[ "$STATUS" == "WARN" ]]; then
+            HEALTHY_TASKS=$((HEALTHY_TASKS + 1))
+            DETAILS="${DETAILS}; last-run: ${LAST_RUN_AGO}, errors: 0"
         fi
     fi
 

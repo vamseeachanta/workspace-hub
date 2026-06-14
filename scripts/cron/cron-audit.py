@@ -36,6 +36,7 @@ REPO_ROOT = THIS_DIR.parent.parent  # scripts/cron/ -> scripts/ -> repo root
 CATALOG_PATH = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 CLASSES_PATH = REPO_ROOT / "config" / "workstations" / "harness-state-classes.yaml"
 CRON_TRANSACTION_PATH = THIS_DIR / "cron_transaction.py"
+CRON_RENDER_PATH = THIS_DIR / "cron_render.py"
 
 
 # --- cron_transaction import (by file path) --------------------------------
@@ -61,6 +62,18 @@ def load_cron_transaction(path: Path = CRON_TRANSACTION_PATH):
     return module
 
 
+def load_cron_render(path: Path = CRON_RENDER_PATH):
+    if not path.exists():
+        raise FileNotFoundError(f"cron_render.py not found at {path}")
+    spec = importlib.util.spec_from_file_location("cron_render", str(path))
+    if spec is None or spec.loader is None:
+        raise ImportError(f"could not build import spec for {path}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["cron_render"] = module
+    spec.loader.exec_module(module)
+    return module
+
+
 # --- Catalog / classes loading ---------------------------------------------
 
 # A script path like "scripts/foo/bar.sh" or "scripts/foo/bar.py" is the stable,
@@ -76,26 +89,70 @@ def stable_command_fragment(command: str) -> str:
     machines). Falls back to the whole single-spaced command when no script
     path is present.
     """
-    flat = " ".join(command.split())
-    m = _SCRIPT_PATH_RE.search(flat)
-    if m:
-        return m.group(0)
-    return flat
+    ct = load_cron_transaction()
+    keys = ct.catalog_command_keys([{"command": command}])
+    return keys[0] if keys else ""
 
 
-def load_catalog_commands(path: Path = CATALOG_PATH) -> list[str]:
+def _combine_keys(*groups: list[str]) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for group in groups:
+        for key in group:
+            if key and key not in seen:
+                out.append(key)
+                seen.add(key)
+    return out
+
+
+def _machine_roles(registry: dict, machine_id: str) -> list[str]:
+    machine = (registry.get("machines") or {}).get(machine_id, {})
+    return ((machine.get("harness_profile") or {}).get("roles")) or []
+
+
+def _selected_for_machine(catalog: dict, registry: dict, machine_id: str) -> dict:
+    ct = load_cron_transaction()
+    render = load_cron_render()
+    context = render.build_context(machine_id, registry=registry)
+    roles = _machine_roles(registry, context["machine_id"])
+    selected_raw, conflicts = ct.select_tasks(
+        catalog.get("tasks", []) or [],
+        roles,
+        context.get("tokens", {context["machine_id"]}),
+    )
+    selected = [render.render_task(task, context) for task in selected_raw]
+    return {
+        "context": context,
+        "roles": roles,
+        "selected_raw": selected_raw,
+        "selected": selected,
+        "selected_task_ids": {task.get("id") for task in selected_raw if task.get("id")},
+        "conflicts": conflicts,
+    }
+
+
+def load_catalog_commands(
+    path: Path = CATALOG_PATH,
+    *,
+    registry_path: Path | None = None,
+    machine_id: str | None = None,
+) -> list[str]:
     """Build catalog_commands: a stable substring per catalog task command."""
     if not path.exists():
         raise FileNotFoundError(f"catalog not found at {path}")
     data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     tasks = data.get("tasks", []) or []
-    fragments: list[str] = []
-    for task in tasks:
-        command = task.get("command")
-        if not command:
-            continue
-        fragments.append(stable_command_fragment(command))
-    return fragments
+    ct = load_cron_transaction()
+    if machine_id is None:
+        return ct.catalog_command_keys(tasks)
+
+    registry_file = registry_path or (REPO_ROOT / "config" / "workstations" / "registry.yaml")
+    registry = yaml.safe_load(registry_file.read_text(encoding="utf-8")) if registry_file.exists() else {}
+    selected = _selected_for_machine(data, registry or {}, machine_id)
+    return _combine_keys(
+        ct.catalog_command_keys(selected["selected_raw"]),
+        ct.catalog_command_keys(selected["selected"]),
+    )
 
 
 def load_external_fingerprints(path: Path = CLASSES_PATH) -> list[dict]:
@@ -108,15 +165,19 @@ def load_external_fingerprints(path: Path = CLASSES_PATH) -> list[dict]:
         raise FileNotFoundError(f"state-classes file not found at {path}")
     data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     entries = (data.get("preserved_external", []) or []) + (data.get("preserved_local", []) or [])
-    fingerprints: list[dict] = []
-    for entry in entries:
-        fp = entry.get("fingerprint")
-        if fp:
-            fingerprints.append(fp)
-    return fingerprints
+    ct = load_cron_transaction()
+    return ct.normalize_preserved_entries(entries)
 
 
 # --- Live crontab ----------------------------------------------------------
+
+
+class CronReadError(RuntimeError):
+    def __init__(self, returncode: int, stderr: str, stdout: str = ""):
+        self.returncode = returncode
+        self.stderr = stderr
+        self.stdout = stdout
+        super().__init__(f"`crontab -l` failed (exit {returncode}): {stderr.strip()}")
 
 
 def read_live_crontab() -> str:
@@ -136,12 +197,10 @@ def read_live_crontab() -> str:
         return ""
     if proc.returncode != 0:
         stderr = (proc.stderr or "").lower()
-        if "no crontab" in stderr or proc.stdout.strip() == "":
+        if "no crontab" in stderr:
             return ""
         # A genuine failure (permissions etc.) — surface it.
-        raise RuntimeError(
-            f"`crontab -l` failed (exit {proc.returncode}): {proc.stderr.strip()}"
-        )
+        raise CronReadError(proc.returncode, proc.stderr or "", proc.stdout or "")
     return proc.stdout
 
 
@@ -153,6 +212,7 @@ def audit_crontab(
     catalog_commands: list[str],
     external_fingerprints: list[dict],
     classify_line,
+    selected_task_ids: set[str] | None = None,
 ) -> dict:
     """Classify every line; return a structured result."""
     results: list[dict] = []
@@ -163,15 +223,55 @@ def audit_crontab(
         "ignore": 0,
     }
     for line in crontab_text.split("\n"):
-        cls = classify_line(line, catalog_commands, external_fingerprints)
+        try:
+            detail = classify_line(
+                line,
+                catalog_commands,
+                external_fingerprints,
+                selected_task_ids=selected_task_ids,
+            )
+            if isinstance(detail, str):
+                detail = {"line": line, "class": detail}
+        except TypeError:
+            detail = {"line": line, "class": classify_line(line, catalog_commands, external_fingerprints)}
+        cls = detail["class"]
         counts[cls] = counts.get(cls, 0) + 1
         if cls == "ignore":
             continue
-        results.append({"line": line, "class": cls})
+        result = {"line": line, "class": cls}
+        for key in ("reason", "catalog_task_id", "catalog_key"):
+            if detail.get(key) is not None:
+                result[key] = detail[key]
+        results.append(result)
     return {
         "lines": results,
         "counts": counts,
         "uncataloged": [r["line"] for r in results if r["class"] == "uncataloged"],
+    }
+
+
+def build_audit_context(machine_id: str | None = None) -> dict:
+    catalog = yaml.safe_load(CATALOG_PATH.read_text(encoding="utf-8")) if CATALOG_PATH.exists() else {}
+    registry_path = REPO_ROOT / "config" / "workstations" / "registry.yaml"
+    registry = yaml.safe_load(registry_path.read_text(encoding="utf-8")) if registry_path.exists() else {}
+    target_machine = machine_id
+    if target_machine is None:
+        render = load_cron_render()
+        target_machine = render.build_context(None, registry=registry or {})["machine_id"]
+
+    selected = _selected_for_machine(catalog or {}, registry or {}, target_machine)
+    ct = load_cron_transaction()
+    catalog_commands = _combine_keys(
+        ct.catalog_command_keys(selected["selected_raw"]),
+        ct.catalog_command_keys(selected["selected"]),
+    )
+    selected_task_ids = selected["selected_task_ids"]
+    machine = selected["context"]["machine_id"]
+    return {
+        "machine": machine,
+        "catalog_commands": catalog_commands,
+        "external_fingerprints": load_external_fingerprints(),
+        "selected_task_ids": selected_task_ids,
     }
 
 
@@ -213,19 +313,36 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     ct = load_cron_transaction()
-    catalog_commands = load_catalog_commands()
-    external_fingerprints = load_external_fingerprints()
-    crontab_text = read_live_crontab()
+    context = build_audit_context(args.machine)
+    try:
+        crontab_text = read_live_crontab()
+    except CronReadError as exc:
+        payload = {
+            "machine": context.get("machine") or args.machine,
+            "ok": False,
+            "reason": "crontab-read-failed",
+            "returncode": exc.returncode,
+            "stderr": exc.stderr,
+        }
+        if args.json:
+            print(json.dumps(payload, indent=2))
+        else:
+            print(f"FAIL: {payload['reason']}: {payload['stderr']}")
+        return 2
 
     audit = audit_crontab(
-        crontab_text, catalog_commands, external_fingerprints, ct.classify_line
+        crontab_text,
+        context["catalog_commands"],
+        context["external_fingerprints"],
+        ct.classify_line_detail,
+        selected_task_ids=context["selected_task_ids"],
     )
 
     if args.json:
         print(
             json.dumps(
                 {
-                    "machine": args.machine,
+                    "machine": context.get("machine") or args.machine,
                     "counts": audit["counts"],
                     "lines": audit["lines"],
                     "uncataloged": audit["uncataloged"],

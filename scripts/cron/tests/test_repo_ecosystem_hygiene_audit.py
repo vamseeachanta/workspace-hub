@@ -17,6 +17,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[3]
 SCRIPT = REPO_ROOT / "scripts" / "cron" / "repo-ecosystem-hygiene-audit.sh"
 REGISTRY = REPO_ROOT / "config" / "workstations" / "registry.yaml"
+SCHEDULE = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 
 
 def run(cmd: list[str], cwd: Path, **kwargs) -> subprocess.CompletedProcess[str]:
@@ -64,9 +65,39 @@ def old_git_env() -> dict[str, str]:
     return env
 
 
-def required_repos() -> list[str]:
+def tier1_baseline() -> dict:
     data = yaml.safe_load(REGISTRY.read_text())
-    return data["machines"]["dev-primary"]["tier1_baseline"]["required"]
+    return data["machines"]["dev-primary"]["tier1_baseline"]
+
+
+def required_repos() -> list[str]:
+    return tier1_baseline()["required"]
+
+
+def governed_repos_from_registry() -> tuple[list[str], dict[str, str]]:
+    baseline = tier1_baseline()
+    classes: dict[str, str] = {}
+    ordered: list[str] = []
+    for cls in ("required", "optional", "non_tier1_machine_access_current"):
+        for name in baseline.get(cls, []) or []:
+            if name not in classes:
+                classes[name] = cls
+                ordered.append(name)
+    return ordered, classes
+
+
+def schedule_by_id(task_id: str) -> str:
+    data = yaml.safe_load(SCHEDULE.read_text())
+    for task in data["tasks"]:
+        if task.get("id") == task_id:
+            return task["schedule"]
+    raise AssertionError(f"missing scheduled task: {task_id}")
+
+
+def daily_cron_second(schedule: str) -> int:
+    minute, hour, dom, month, dow = schedule.split()
+    assert dom == month == dow == "*"
+    return int(hour) * 3600 + int(minute) * 60
 
 
 def audit_env(tmp_path: Path) -> tuple[dict[str, str], Path, Path]:
@@ -165,6 +196,42 @@ def test_static_readonly_contract() -> None:
         assert not re.search(pattern, text), f"forbidden token matched: {pattern}"
 
 
+def test_repo_hygiene_timeout_defaults_are_production_safe() -> None:
+    text = SCRIPT.read_text()
+    probe = re.search(r'PROBE_TIMEOUT_SEC = int\(os\.environ\.get\("REPO_ECOSYSTEM_HYGIENE_PROBE_TIMEOUT_SEC", "(\d+)"\)\)', text)
+    repo = re.search(r'REPO_TIMEOUT_SEC = int\(os\.environ\.get\("REPO_ECOSYSTEM_HYGIENE_REPO_TIMEOUT_SEC", "(\d+)"\)\)', text)
+    total_shell = re.search(r'TOTAL_TIMEOUT="\$\{REPO_ECOSYSTEM_HYGIENE_TOTAL_TIMEOUT_SEC:-(\d+)\}"', text)
+    total_python = re.search(r'TOTAL_TIMEOUT_SEC = int\(os\.environ\.get\("REPO_ECOSYSTEM_HYGIENE_TOTAL_TIMEOUT_SEC", "(\d+)"\)\)', text)
+    assert probe and int(probe.group(1)) == 30
+    assert repo and int(repo.group(1)) == 120
+    assert total_shell and int(total_shell.group(1)) == 480
+    assert total_python and int(total_python.group(1)) == 480
+
+    hygiene_time = daily_cron_second(schedule_by_id("repo-ecosystem-hygiene"))
+    health_time = daily_cron_second(schedule_by_id("cron-health"))
+    schedule_gap = (health_time - hygiene_time) % (24 * 3600)
+    assert schedule_gap > 0
+    assert int(total_shell.group(1)) < schedule_gap
+
+
+def test_governed_repo_names_includes_required_optional_and_non_tier1(tmp_path: Path) -> None:
+    env, ecosystem, output = audit_env(tmp_path)
+    names, classes = governed_repos_from_registry()
+    for repo in names:
+        if repo != "workspace-hub":
+            make_git_repo(ecosystem / repo)
+
+    result = run(["bash", str(SCRIPT)], REPO_ROOT, env=env)
+    assert result.returncode == 0, result.stderr + result.stdout
+    state = load_latest_state(output)
+    actual_classes = {repo["name"]: repo["class"] for repo in state["repos"]}
+    assert set(tier1_baseline()["required"]).issubset(actual_classes)
+    assert set(tier1_baseline()["optional"]).issubset(actual_classes)
+    assert set(tier1_baseline()["non_tier1_machine_access_current"]).issubset(actual_classes)
+    for repo, cls in classes.items():
+        assert actual_classes[repo] == cls
+
+
 def test_top_level_timeout_emits_execution_failure_marker(tmp_path: Path) -> None:
     uv_shim = tmp_path / "uv"
     uv_shim.write_text("#!/usr/bin/env bash\nsleep 3\n")
@@ -207,6 +274,43 @@ def test_probe_timeout_is_bounded_and_reported(tmp_path: Path) -> None:
     assert elapsed < 20
     state = load_latest_state(output)
     assert state["status"] == "ERROR"
+    assert any(
+        finding["code"] == "git_probe_timeout"
+        for repo in state["repos"]
+        for finding in repo.get("findings", [])
+    )
+
+
+def test_status_short_probe_uses_default_timeout_budget(tmp_path: Path) -> None:
+    env, _ecosystem, output = audit_env(tmp_path)
+    env.pop("REPO_ECOSYSTEM_HYGIENE_PROBE_TIMEOUT_SEC")
+    env.pop("REPO_ECOSYSTEM_HYGIENE_REPO_TIMEOUT_SEC")
+    env["REPO_ECOSYSTEM_HYGIENE_TOTAL_TIMEOUT_SEC"] = "70"
+
+    real_git = shutil.which("git")
+    assert real_git
+    git_shim = tmp_path / "git"
+    git_shim.write_text(
+        "#!/usr/bin/env bash\n"
+        "if [[ \"$1\" == \"status\" ]]; then sleep 12; exit 0; fi\n"
+        f"exec {real_git} \"$@\"\n"
+    )
+    git_shim.chmod(0o755)
+    env["PATH"] = f"{tmp_path}:{env['PATH']}"
+
+    result = run(["bash", str(SCRIPT)], REPO_ROOT, env=env, timeout=80)
+    assert result.returncode == 0, result.stderr + result.stdout
+    state = load_latest_state(output)
+    assert not any(
+        finding["code"] == "git_probe_timeout"
+        for repo in state["repos"]
+        for finding in repo.get("findings", [])
+    )
+
+    env["REPO_ECOSYSTEM_HYGIENE_PROBE_TIMEOUT_SEC"] = "1"
+    result = run(["bash", str(SCRIPT)], REPO_ROOT, env=env, timeout=30)
+    assert result.returncode == 0, result.stderr + result.stdout
+    state = load_latest_state(output)
     assert any(
         finding["code"] == "git_probe_timeout"
         for repo in state["repos"]

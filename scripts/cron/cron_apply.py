@@ -42,6 +42,12 @@ LOCKFILE = Path.home() / ".cron-reconcile.lock"
 BACKUP_DIR = REPO / "logs" / "cron-backups"
 
 # load the pure core by file path (kebab-safe; module name has underscores)
+_render_spec = importlib.util.spec_from_file_location(
+    "cron_render", REPO / "scripts" / "cron" / "cron_render.py")
+cr = importlib.util.module_from_spec(_render_spec)
+sys.modules["cron_render"] = cr
+_render_spec.loader.exec_module(cr)
+
 _spec = importlib.util.spec_from_file_location(
     "cron_transaction", REPO / "scripts" / "cron" / "cron_transaction.py")
 ct = importlib.util.module_from_spec(_spec)
@@ -116,18 +122,51 @@ def machine_roles(registry: dict, machine_id: str) -> list[str]:
     return ((m.get("harness_profile") or {}).get("roles")) or []
 
 
-def catalog_commands(catalog: dict) -> list[str]:
-    out = []
-    for t in catalog.get("tasks", []):
-        cmd = t.get("command", "")
-        # a stable script-path fragment is a better catalog key than the full command
-        for tok in cmd.split():
-            if tok.startswith("scripts/") and (tok.endswith(".sh") or tok.endswith(".py")):
-                out.append(tok)
-                break
-        else:
-            out.append(cmd.strip()[:60])
+def _combine_keys(*groups: list[str]) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for group in groups:
+        for key in group:
+            if key and key not in seen:
+                out.append(key)
+                seen.add(key)
     return out
+
+
+def _selection_context(catalog: dict, registry: dict, machine_id: str) -> dict:
+    context = cr.build_context(machine_id, registry=registry)
+    canonical_id = context["machine_id"]
+    roles = machine_roles(registry, canonical_id)
+    selected_raw, conflicts = ct.select_tasks(
+        catalog.get("tasks", []) or [],
+        roles,
+        context.get("tokens", {canonical_id}),
+    )
+    rendered = [cr.render_task(task, context) for task in selected_raw]
+    selected_ids = {task.get("id") for task in selected_raw if task.get("id")}
+    return {
+        "context": context,
+        "machine_id": canonical_id,
+        "roles": roles,
+        "selected_raw": selected_raw,
+        "selected": rendered,
+        "selected_task_ids": selected_ids,
+        "conflicts": conflicts,
+    }
+
+
+def catalog_commands(
+    catalog: dict,
+    registry: dict | None = None,
+    machine_id: str | None = None,
+) -> list[str]:
+    if registry is None or machine_id is None:
+        return ct.catalog_command_keys(catalog.get("tasks", []) or [])
+    selection = _selection_context(catalog, registry, machine_id)
+    return _combine_keys(
+        ct.catalog_command_keys(selection["selected_raw"]),
+        ct.catalog_command_keys(selection["selected"]),
+    )
 
 
 def external_fingerprints(state_classes: dict) -> list[dict]:
@@ -135,7 +174,7 @@ def external_fingerprints(state_classes: dict) -> list[dict]:
     # own non-catalog workspace-hub crons, #2988) — both are the keep-verbatim bucket.
     entries = (state_classes.get("preserved_external") or []) + \
               (state_classes.get("preserved_local") or [])
-    return [e.get("fingerprint", {}) for e in entries]
+    return ct.normalize_preserved_entries(entries)
 
 
 # ── the transaction ──────────────────────────────────────────────────────────
@@ -145,24 +184,41 @@ def run_cutover(machine_id: str, apply: bool, ts: str,
     catalog = _load(CATALOG)
     classes = _load(STATE_CLASSES)
     registry = _load(REGISTRY)
-    roles = machine_roles(registry, machine_id)
-    if not roles:
-        return {"status": "skip", "reason": f"{machine_id} has no harness_profile.roles"}
+    selection = _selection_context(catalog, registry, machine_id)
+    canonical_id = selection["machine_id"]
+    roles = selection["roles"]
+    selected = selection["selected"]
+    selected_ids = selection["selected_task_ids"]
+    conflicts = selection["conflicts"]
+    if not roles and not selected:
+        return {"status": "skip", "reason": f"{canonical_id} has no harness_profile.roles or machine-pinned cron tasks"}
 
-    selected, conflicts = ct.select_tasks(catalog.get("tasks", []), roles, machine_id)
-    cat_cmds = catalog_commands(catalog)
+    cat_cmds = _combine_keys(
+        ct.catalog_command_keys(selection["selected_raw"]),
+        ct.catalog_command_keys(selected),
+    )
     ext_fps = external_fingerprints(classes)
 
     A = _read()
-    plan = ct.plan_cutover(A, selected, roles, cat_cmds, ext_fps)
+    plan = ct.plan_cutover(
+        A,
+        selected,
+        roles,
+        cat_cmds,
+        ext_fps,
+        selected_task_ids=selected_ids,
+    )
     if plan.get("abort_reason"):
         return {"status": "abort", "reason": plan["abort_reason"],
-                "uncataloged": plan.get("uncataloged", []), "conflicts": conflicts}
+                "uncataloged": plan.get("uncataloged", []), "conflicts": conflicts,
+                "machine": canonical_id}
 
     result = {"status": "planned", "preserved": plan.get("preserved", []),
-              "conflicts": conflicts, "selected": [t["id"] for t in selected]}
+              "conflicts": conflicts, "selected": [t["id"] for t in selected],
+              "machine": canonical_id}
     if not apply:
         result["status"] = "dry-run"
+        result["new_text"] = plan["new_text"]
         return result
 
     # live-comms gate: refuse hot change on a host running comms daemons unless allowed
@@ -171,7 +227,7 @@ def run_cutover(machine_id: str, apply: bool, ts: str,
         return {"status": "abort", "reason": f"live comms daemons {daemons} — pass --allow-live-reload"}
 
     BACKUP_DIR.mkdir(parents=True, exist_ok=True)
-    backup = BACKUP_DIR / f"{machine_id}-{ts}.crontab"
+    backup = BACKUP_DIR / f"{canonical_id}-{ts}.crontab"
 
     # Hold an exclusive process lock across the read→write critical section so a concurrent
     # cron-apply / setup-cron cannot interleave (#2969 code-review MAJOR #2). A writer that
@@ -190,7 +246,12 @@ def run_cutover(machine_id: str, apply: bool, ts: str,
     after_counts = Counter(after.splitlines())
     need = Counter(ln for ln in A.splitlines()
                    if ln.strip()
-                   and ct.classify_line(ln, cat_cmds, ext_fps) in ("preserved_external", "ignore"))
+                   and ct.classify_line_detail(
+                       ln,
+                       cat_cmds,
+                       ext_fps,
+                       selected_task_ids=selected_ids,
+                   )["class"] in ("preserved_external", "ignore"))
     for line, n in need.items():
         if after_counts[line] < n:
             with _flock(LOCKFILE):
@@ -212,8 +273,7 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
     host = args.machine or socket.gethostname().split(".")[0]
     registry = _load(REGISTRY)
-    mid = next((m for m, e in (registry.get("machines") or {}).items()
-                if e.get("hostname", "").startswith(host) or m == host), host)
+    mid = cr.build_context(host, registry=registry)["machine_id"]
     res = run_cutover(mid, args.apply, args.ts, allow_live_reload=args.allow_live_reload)
     if args.json:
         print(json.dumps(res, indent=2))

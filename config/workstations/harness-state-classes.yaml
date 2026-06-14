@@ -118,13 +118,15 @@ preserved_local:
     fingerprint:
       command_contains: "--skill skills-curation"
   - owner: ace-linux-1
+    catalog_task_id: notification-purge
     note: >-
       a1-local notification-log retention sweep. A machine-specific invocation (absolute
       `cd /mnt/local-analysis/workspace-hub` rather than the catalog's `$WORKSPACE_HUB`) of the
       same purge the `notification-purge` catalog task performs, so the 60-char catalog key
       (`cd $WORKSPACE_HUB && find logs/notifications/...`) does not substring-match it and it
-      would otherwise read as uncataloged. Appears DUPLICATED in a1's crontab; the cutover dedups
-      it — this entry only ensures it classifies preserved. Stable bits: the find target +
-      the -delete action, not the cd path or stderr redirect. Keep verbatim.
+      would otherwise read as uncataloged. Appears DUPLICATED in a1's crontab; the cutover treats
+      it as catalog-owned when `notification-purge` is selected, deduping old live copies into the
+      managed block. Stable bits: the find target + the -delete action, not the cd path or stderr
+      redirect.
     fingerprint:
       command_contains: ["find logs/notifications/", "-delete"]

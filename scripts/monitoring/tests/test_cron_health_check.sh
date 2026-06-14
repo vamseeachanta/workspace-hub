@@ -82,6 +82,29 @@ YAML
     export WORKSPACE_HUB="$TMPDIR"
 }
 
+write_clean_base_logs() {
+    echo "[gsd-researcher] Done" > "${TMPDIR}/logs/research/$(date -u +%Y-%m-%d).log"
+    touch -d "1 hour ago" "${TMPDIR}/logs/research/$(date -u +%Y-%m-%d).log"
+    echo "ok" > "${TMPDIR}/logs/quality/dep-health-cron.log"
+    touch -d "1 hour ago" "${TMPDIR}/logs/quality/dep-health-cron.log"
+}
+
+add_repo_hygiene_task() {
+    cat >> "${TMPDIR}/config/scheduled-tasks/schedule-tasks.yaml" <<'YAML'
+
+  - id: repo-ecosystem-hygiene
+    label: Repo ecosystem hygiene audit
+    schedule: "35 5 * * *"
+    machines: [dev-primary, ace-linux-1, vamsee-linux1]
+    requires: [bash, python3, uv, git, gh, timeout]
+    command: "bash scripts/cron/repo-ecosystem-hygiene-audit.sh"
+    log: logs/quality/repo-ecosystem-hygiene-*.log
+    stale_after_hours: 23
+    is_claude_task: false
+    description: Daily read-only repo hygiene audit.
+YAML
+}
+
 teardown_temp_workspace() {
     rm -rf "$TMPDIR"
 }
@@ -417,6 +440,149 @@ YAML
     teardown_temp_workspace
 }
 
+test_cron_health_detects_latest_repo_hygiene_status_error() {
+    echo "TEST: detects latest repo hygiene status=ERROR marker"
+    setup_temp_workspace
+    add_repo_hygiene_task
+    write_clean_base_logs
+    cat > "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log" <<'LOG'
+task=repo-ecosystem-hygiene status=OK artifact=latest.md state=latest.json ts=2026-06-13T05:35:00Z
+task=repo-ecosystem-hygiene status=ERROR artifact=latest.md state=latest.json ts=2026-06-13T05:36:00Z
+LOG
+    touch -d "1 hour ago" "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log"
+
+    local output
+    output=$(bash "$SCRIPT_UNDER_TEST" --workspace "$TMPDIR" 2>&1)
+
+    assert_contains "latest status=ERROR makes hygiene task error" "ERROR.*repo-ecosystem-hygiene" "$output"
+    teardown_temp_workspace
+}
+
+test_cron_health_latest_warn_clears_older_status_error() {
+    echo "TEST: latest repo hygiene status=WARN clears older status=ERROR"
+    setup_temp_workspace
+    add_repo_hygiene_task
+    write_clean_base_logs
+    cat > "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log" <<'LOG'
+task=repo-ecosystem-hygiene status=ERROR artifact=latest.md state=latest.json ts=2026-06-13T05:35:00Z
+task=repo-ecosystem-hygiene status=WARN artifact=latest.md state=latest.json ts=2026-06-13T05:36:00Z
+LOG
+    touch -d "1 hour ago" "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log"
+
+    local output
+    output=$(bash "$SCRIPT_UNDER_TEST" --workspace "$TMPDIR" 2>&1)
+
+    assert_contains "latest status=WARN is surfaced" "WARN.*repo-ecosystem-hygiene" "$output"
+    assert_not_contains "older status=ERROR does not keep task red" "ERROR.*repo-ecosystem-hygiene" "$output"
+    teardown_temp_workspace
+}
+
+test_cron_health_latest_status_clears_older_execution_failed_marker() {
+    echo "TEST: latest repo hygiene status marker clears older execution_failed"
+    setup_temp_workspace
+    add_repo_hygiene_task
+    write_clean_base_logs
+    cat > "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log" <<'LOG'
+ERROR: repo-ecosystem-hygiene execution_failed code=1 reason=python_or_uv_failure
+task=repo-ecosystem-hygiene status=OK artifact=latest.md state=latest.json ts=2026-06-13T05:36:00Z
+LOG
+    touch -d "1 hour ago" "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log"
+
+    local output
+    output=$(bash "$SCRIPT_UNDER_TEST" --workspace "$TMPDIR" 2>&1)
+
+    assert_contains "latest status=OK is surfaced" "OK.*repo-ecosystem-hygiene" "$output"
+    assert_not_contains "older execution_failed does not keep task red" "ERROR.*repo-ecosystem-hygiene" "$output"
+    teardown_temp_workspace
+}
+
+test_cron_health_latest_execution_failed_marker_still_fails() {
+    echo "TEST: latest repo hygiene execution_failed marker fails"
+    setup_temp_workspace
+    add_repo_hygiene_task
+    write_clean_base_logs
+    cat > "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log" <<'LOG'
+task=repo-ecosystem-hygiene status=OK artifact=latest.md state=latest.json ts=2026-06-13T05:35:00Z
+ERROR: repo-ecosystem-hygiene execution_failed code=1 reason=python_or_uv_failure
+LOG
+    touch -d "1 hour ago" "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log"
+
+    local output
+    output=$(bash "$SCRIPT_UNDER_TEST" --workspace "$TMPDIR" 2>&1)
+
+    assert_contains "latest execution_failed makes hygiene task error" "ERROR.*repo-ecosystem-hygiene" "$output"
+    teardown_temp_workspace
+}
+
+test_cron_health_hygiene_error_respects_existing_stale_or_missing_status() {
+    echo "TEST: repo hygiene marker error does not clobber stale status"
+    setup_temp_workspace
+    add_repo_hygiene_task
+    write_clean_base_logs
+    echo "task=repo-ecosystem-hygiene status=ERROR artifact=latest.md state=latest.json" > "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log"
+    touch -d "24 hours ago" "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log"
+
+    local output
+    output=$(bash "$SCRIPT_UNDER_TEST" --workspace "$TMPDIR" 2>&1)
+
+    assert_contains "stale status remains primary" "STALE.*repo-ecosystem-hygiene" "$output"
+    assert_not_contains "stale task is not clobbered to error" "ERROR.*repo-ecosystem-hygiene" "$output"
+    teardown_temp_workspace
+}
+
+test_cron_health_marker_filter_preserves_unrelated_generic_errors() {
+    echo "TEST: hygiene marker filter preserves unrelated generic errors"
+    setup_temp_workspace
+    add_repo_hygiene_task
+    write_clean_base_logs
+    cat > "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log" <<'LOG'
+ERROR: repo-ecosystem-hygiene execution_failed code=1 reason=old_failure
+task=repo-ecosystem-hygiene status=OK artifact=latest.md state=latest.json ts=2026-06-13T05:36:00Z
+ERROR: unrelated post-processing failure
+LOG
+    touch -d "1 hour ago" "${TMPDIR}/logs/quality/repo-ecosystem-hygiene-$(date -u +%Y%m%d).log"
+
+    local output
+    output=$(bash "$SCRIPT_UNDER_TEST" --workspace "$TMPDIR" 2>&1)
+
+    assert_contains "unrelated generic error still fails hygiene task" "ERROR.*repo-ecosystem-hygiene" "$output"
+    teardown_temp_workspace
+}
+
+test_cron_health_generic_error_patterns_still_work() {
+    echo "TEST: generic error patterns still work"
+    setup_temp_workspace
+    echo "Done" > "${TMPDIR}/logs/research/$(date -u +%Y-%m-%d).log"
+    touch -d "1 hour ago" "${TMPDIR}/logs/research/$(date -u +%Y-%m-%d).log"
+    cat > "${TMPDIR}/logs/quality/dep-health-cron.log" <<'LOG'
+dep health start
+Traceback (most recent call last):
+LOG
+    touch -d "1 hour ago" "${TMPDIR}/logs/quality/dep-health-cron.log"
+
+    local output
+    output=$(bash "$SCRIPT_UNDER_TEST" --workspace "$TMPDIR" 2>&1)
+
+    assert_contains "Traceback still makes generic task error" "ERROR.*dep-health" "$output"
+    teardown_temp_workspace
+}
+
+test_cron_health_uses_path_uv_not_user_absolute_path() {
+    echo "TEST: cron health uses PATH uv, not user absolute uv path"
+    if grep -q "/home/vamsee/.local/bin/uv" "$SCRIPT_UNDER_TEST"; then
+        FAIL=$((FAIL + 1))
+        ERRORS+="  FAIL: script contains hardcoded user uv path\n"
+    else
+        PASS=$((PASS + 1))
+    fi
+    if grep -q "uv run --no-project python" "$SCRIPT_UNDER_TEST"; then
+        PASS=$((PASS + 1))
+    else
+        FAIL=$((FAIL + 1))
+        ERRORS+="  FAIL: script does not invoke uv through PATH\n"
+    fi
+}
+
 # ── Run all tests ────────────────────────────────────────────────────────────
 
 echo "======================================"
@@ -438,6 +604,14 @@ test_exit_code_zero_on_all_healthy
 test_handles_glob_log_patterns
 test_handles_null_log_gracefully
 test_honors_task_specific_stale_threshold
+test_cron_health_detects_latest_repo_hygiene_status_error
+test_cron_health_latest_warn_clears_older_status_error
+test_cron_health_latest_status_clears_older_execution_failed_marker
+test_cron_health_latest_execution_failed_marker_still_fails
+test_cron_health_hygiene_error_respects_existing_stale_or_missing_status
+test_cron_health_marker_filter_preserves_unrelated_generic_errors
+test_cron_health_generic_error_patterns_still_work
+test_cron_health_uses_path_uv_not_user_absolute_path
 
 echo ""
 echo "======================================"

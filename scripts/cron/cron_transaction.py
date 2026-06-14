@@ -14,6 +14,14 @@ See issue #2969 — "F2: role-tagged cron catalog + safe cutover".
 from __future__ import annotations
 
 import re
+import sys
+from pathlib import Path
+
+THIS_DIR = Path(__file__).resolve().parent
+if str(THIS_DIR) not in sys.path:
+    sys.path.insert(0, str(THIS_DIR))
+
+from cron_render import render_cron_line
 
 # --- Marker constants ------------------------------------------------------
 
@@ -27,6 +35,13 @@ MARKER_END = "# <<< workspace-hub managed <<<"
 
 # An env/header line such as MAILTO=, SHELL=, PATH= at the start of the line.
 _ENV_LINE_RE = re.compile(r"^[A-Z_]+=")
+_SCRIPT_PATH_RE = re.compile(r"scripts/[\w./-]+\.(?:sh|py)")
+_FINGERPRINT_KEYS = {
+    "command_contains",
+    "cwd_contains",
+    "script_basename",
+    "owner_repo",
+}
 
 
 def marker_begin(roles: list[str]) -> str:
@@ -159,6 +174,33 @@ def match_fingerprint(line: str, fp: dict) -> bool:
     return checked_any
 
 
+def normalize_preserved_entries(entries: list[dict] | None) -> list[dict]:
+    """Return preserved-entry records while retaining owner/catalog metadata.
+
+    Callers historically passed a bare fingerprint list. Newer state-class rows
+    carry metadata beside a nested `fingerprint`. This normalizer accepts both
+    forms and duplicates fingerprint keys at top level for older tests/callers
+    that inspect them directly.
+    """
+    normalized: list[dict] = []
+    for entry in entries or []:
+        if not entry:
+            continue
+        if "fingerprint" in entry:
+            fp = entry.get("fingerprint") or {}
+            record = dict(entry)
+        else:
+            fp = {key: entry[key] for key in _FINGERPRINT_KEYS if key in entry}
+            record = {key: value for key, value in entry.items() if key not in _FINGERPRINT_KEYS}
+        if not fp:
+            continue
+        record["fingerprint"] = dict(fp)
+        for key, value in fp.items():
+            record.setdefault(key, value)
+        normalized.append(record)
+    return normalized
+
+
 def _is_ignore_line(line: str) -> bool:
     stripped = line.strip()
     if stripped == "":
@@ -168,6 +210,47 @@ def _is_ignore_line(line: str) -> bool:
     if _ENV_LINE_RE.match(line):
         return True
     return False
+
+
+def classify_line_detail(
+    line: str,
+    catalog_commands: list[str],
+    external_fingerprints: list[dict],
+    selected_task_ids: set[str] | None = None,
+) -> dict:
+    """Classify a crontab line with metadata for audit/cutover callers."""
+    if _is_ignore_line(line):
+        return {"line": line, "class": "ignore", "reason": "ignore"}
+
+    selected = set(selected_task_ids or set())
+    for entry in normalize_preserved_entries(external_fingerprints):
+        if match_fingerprint(line, entry.get("fingerprint", {})):
+            catalog_task_id = entry.get("catalog_task_id")
+            if catalog_task_id and catalog_task_id in selected:
+                return {
+                    "line": line,
+                    "class": "cataloged",
+                    "reason": "catalog-owned-preserved-entry",
+                    "catalog_task_id": catalog_task_id,
+                    "preserved_entry": entry,
+                }
+            return {
+                "line": line,
+                "class": "preserved_external",
+                "reason": "preserved-fingerprint",
+                "catalog_task_id": catalog_task_id,
+                "preserved_entry": entry,
+            }
+
+    for cmd in catalog_commands or []:
+        if cmd and cmd in line:
+            return {
+                "line": line,
+                "class": "cataloged",
+                "reason": "catalog-command",
+                "catalog_key": cmd,
+            }
+    return {"line": line, "class": "uncataloged", "reason": "no-match"}
 
 
 def classify_line(
@@ -188,15 +271,7 @@ def classify_line(
     contain a catalog script-path substring must still be PRESERVED, never pulled into the
     managed block and dropped. Ownership (fingerprint) dominates substring coincidence.
     """
-    if _is_ignore_line(line):
-        return "ignore"
-    for fp in external_fingerprints or []:
-        if match_fingerprint(line, fp):
-            return "preserved_external"
-    for cmd in catalog_commands or []:
-        if cmd in line:
-            return "cataloged"
-    return "uncataloged"
+    return classify_line_detail(line, catalog_commands, external_fingerprints)["class"]
 
 
 # --- Task selection --------------------------------------------------------
@@ -205,7 +280,7 @@ def classify_line(
 def select_tasks(
     tasks: list[dict],
     machine_roles: list[str],
-    machine_id: str,
+    machine_id: str | set[str] | list[str] | tuple[str, ...],
 ) -> tuple[list[dict], list[dict]]:
     """Select catalog tasks for this machine by role and/or legacy machine pin.
 
@@ -221,18 +296,26 @@ def select_tasks(
     {"id": ..., "reason": ...}.
     """
     role_set = set(machine_roles or [])
+    if isinstance(machine_id, str):
+        machine_tokens = {machine_id}
+    else:
+        machine_tokens = set(machine_id or set())
+    machine_tokens = {str(token).lower() for token in machine_tokens if str(token).strip()}
     selected_by_id: dict = {}
     conflicts: list[dict] = []
 
     for task in tasks or []:
+        if task.get("scheduler", "cron") != "cron":
+            continue
         tid = task.get("id")
         task_roles = set(task.get("roles", []) or [])
         machines = task.get("machines", None)
         has_machines = isinstance(machines, list) and len(machines) > 0
+        machine_pin_tokens = {str(machine).lower() for machine in machines or []}
 
         role_match = bool(task_roles & role_set)
-        legacy_match = bool(machines) and machine_id in machines
-        legacy_excludes = has_machines and machine_id not in machines
+        legacy_match = bool(machine_pin_tokens & machine_tokens)
+        legacy_excludes = has_machines and not legacy_match
 
         if role_match and legacy_excludes:
             # Conflict: roles say yes, legacy pin says no.
@@ -263,6 +346,34 @@ def select_tasks(
     return selected, conflicts
 
 
+def _normalize_command(command: str) -> str:
+    return " ".join(str(command).split())
+
+
+def catalog_command_keys(
+    tasks: list[dict],
+    fallback_mode: str = "full-command",
+) -> list[str]:
+    """Return stable catalog keys for matching live cron lines.
+
+    Prefer a repository-relative script token. When no script token exists, use
+    the full normalized command. Do not truncate fallback keys: truncated keys
+    collide and misclassify unrelated live lines.
+    """
+    keys: list[str] = []
+    seen: set[str] = set()
+    for task in tasks or []:
+        command = _normalize_command(task.get("command", ""))
+        if not command:
+            continue
+        match = _SCRIPT_PATH_RE.search(command)
+        key = match.group(0) if match else command if fallback_mode == "full-command" else ""
+        if key and key not in seen:
+            keys.append(key)
+            seen.add(key)
+    return keys
+
+
 # --- Rendering -------------------------------------------------------------
 
 
@@ -275,7 +386,7 @@ def render_block(tasks: list[dict], roles: list[str]) -> list[str]:
     sorted_tasks = sorted(tasks or [], key=lambda t: t.get("id"))
     lines = [marker_begin(roles)]
     for task in sorted_tasks:
-        lines.append(f"{task['schedule']} {task['command']}")
+        lines.append(render_cron_line(task["schedule"], task["command"]))
     lines.append(MARKER_END)
     return lines
 
@@ -289,6 +400,7 @@ def plan_cutover(
     roles: list[str],
     catalog_commands: list[str],
     external_fingerprints: list[dict],
+    selected_task_ids: set[str] | None = None,
 ) -> dict:
     """Plan a fail-closed crontab cutover.
 
@@ -332,7 +444,12 @@ def plan_cutover(
     uncataloged: list[str] = []
     preserved: list[str] = []
     for line in non_managed:
-        cls = classify_line(line, catalog_commands, external_fingerprints)
+        cls = classify_line_detail(
+            line,
+            catalog_commands,
+            external_fingerprints,
+            selected_task_ids=selected_task_ids,
+        )["class"]
         if cls == "ignore":
             preserved.append(line)
         elif cls == "preserved_external":
@@ -360,7 +477,12 @@ def plan_cutover(
     def _filter(lines: list[str]) -> list[str]:
         out = []
         for line in lines:
-            cls = classify_line(line, catalog_commands, external_fingerprints)
+            cls = classify_line_detail(
+                line,
+                catalog_commands,
+                external_fingerprints,
+                selected_task_ids=selected_task_ids,
+            )["class"]
             if cls == "cataloged":
                 continue
             out.append(line)

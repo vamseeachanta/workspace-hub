@@ -34,8 +34,8 @@ TASK_ID = "repo-ecosystem-hygiene"
 REPO_ROOT = Path(os.environ["REPO_ROOT"]).resolve()
 REGISTRY_PATH = REPO_ROOT / "config" / "workstations" / "registry.yaml"
 STAMPED_STASH_LIST = "git stash list --date=iso-strict --format=%gd%x1f%ci%x1f%s"
-PROBE_TIMEOUT_SEC = int(os.environ.get("REPO_ECOSYSTEM_HYGIENE_PROBE_TIMEOUT_SEC", "10"))
-REPO_TIMEOUT_SEC = int(os.environ.get("REPO_ECOSYSTEM_HYGIENE_REPO_TIMEOUT_SEC", "45"))
+PROBE_TIMEOUT_SEC = int(os.environ.get("REPO_ECOSYSTEM_HYGIENE_PROBE_TIMEOUT_SEC", "30"))
+REPO_TIMEOUT_SEC = int(os.environ.get("REPO_ECOSYSTEM_HYGIENE_REPO_TIMEOUT_SEC", "120"))
 TOTAL_TIMEOUT_SEC = int(os.environ.get("REPO_ECOSYSTEM_HYGIENE_TOTAL_TIMEOUT_SEC", "480"))
 START = time.monotonic()
 TRIGGER_REPLACEMENTS = {

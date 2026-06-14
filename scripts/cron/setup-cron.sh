@@ -88,59 +88,68 @@ if [[ "$CRON_VARIANT" == "contribute-minimal" ]]; then
 fi
 
 # ── Read cron entries from schedule-tasks.yaml for this hostname ─────────────
-# Uses a small Python one-liner to parse YAML and emit cron lines.
+# Delegate machine resolution, schedule selection, and placeholder expansion to
+# cron_render.py so setup-cron and cron_apply share one renderer.
 ENTRIES=()
-while IFS= read -r line; do
-  [[ -n "$line" ]] && ENTRIES+=("$line")
-done < <(
-  uv run --no-project python -c "
-import yaml, sys
-with open('${SCHEDULE_FILE}') as f:
-    data = yaml.safe_load(f)
-registry = {}
+RENDER_STDOUT="$(mktemp)"
+RENDER_STDERR="$(mktemp)"
+cleanup_render_files() {
+  rm -f "$RENDER_STDOUT" "$RENDER_STDERR"
+}
+trap cleanup_render_files EXIT
+
+if ! SCHEDULE_FILE="$SCHEDULE_FILE" \
+     REGISTRY="$REGISTRY" \
+     HOSTNAME_SHORT="$HOSTNAME_SHORT" \
+     WORKSPACE_HUB="$WORKSPACE_HUB" \
+     uv run --no-project python - >"$RENDER_STDOUT" 2>"$RENDER_STDERR" <<'PY'
+import importlib.util
+import os
+import sys
+from pathlib import Path
+
+import yaml
+
+workspace_hub = Path(os.environ["WORKSPACE_HUB"])
+renderer_path = workspace_hub / "scripts" / "cron" / "cron_render.py"
+spec = importlib.util.spec_from_file_location("cron_render", renderer_path)
+if spec is None or spec.loader is None:
+    raise RuntimeError(f"could not load cron renderer at {renderer_path}")
+cron_render = importlib.util.module_from_spec(spec)
+sys.modules["cron_render"] = cron_render
+spec.loader.exec_module(cron_render)
+
+schedule_file = Path(os.environ["SCHEDULE_FILE"])
+registry_file = Path(os.environ["REGISTRY"])
+with schedule_file.open() as f:
+    data = yaml.safe_load(f) or {}
 try:
-    with open('${REGISTRY}') as f:
+    with registry_file.open() as f:
         registry = yaml.safe_load(f) or {}
 except Exception:
     registry = {}
-hub = '${WORKSPACE_HUB}'
-log_full = hub + '/logs/quality/cron-wrapper.log'
-log_contrib = '/tmp/workspace-hub-cron.log'
-hostname = '${HOSTNAME_SHORT}'
-machine_tokens = {hostname}
-for name, machine in registry.get('machines', {}).items():
-    candidates = [name, machine.get('hostname', '')] + machine.get('hostname_aliases', [])
-    lowered = {str(candidate).lower() for candidate in candidates if candidate}
-    if hostname in lowered:
-        machine_tokens.update(lowered)
-        break
-for task in data.get('tasks', []):
-    if task.get('scheduler', 'cron') != 'cron':
-        continue
-    task_machines = {str(machine).lower() for machine in task.get('machines', [])}
-    if not (machine_tokens & task_machines):
-        continue
-    # Support per-machine staggered schedules (#1668)
-    sbm = task.get('schedule_by_machine', {})
-    schedule = ''
-    for token in [hostname, *sorted(machine_tokens)]:
-        if token in sbm:
-            schedule = sbm[token]
-            break
-    if not schedule:
-        schedule = task.get('schedule', '')
-    if not schedule:
-        continue
-    command = task['command']
-    # Expand \$WORKSPACE_HUB and \$LOG variables
-    command = command.replace('\$WORKSPACE_HUB', hub)
-    if '${CRON_VARIANT}' == 'full':
-        command = command.replace('\$LOG', log_full)
-    else:
-        command = command.replace('\$LOG', log_contrib)
-    print(f'{schedule}  {command}')
-" 2>&1
+
+context = cron_render.build_context(
+    os.environ["HOSTNAME_SHORT"],
+    registry=registry,
+    workspace_hub=workspace_hub,
 )
+for line in cron_render.render_machine_cron_lines(data.get("tasks", []) or [], context):
+    print(line)
+PY
+then
+  echo "ERROR: failed to render cron entries" >&2
+  cat "$RENDER_STDERR" >&2
+  exit 1
+fi
+
+if [[ -s "$RENDER_STDERR" ]]; then
+  cat "$RENDER_STDERR" >&2
+fi
+
+while IFS= read -r line; do
+  [[ -n "$line" ]] && ENTRIES+=("$line")
+done < "$RENDER_STDOUT"
 
 echo "Found ${#ENTRIES[@]} task(s) for ${HOSTNAME_SHORT}"
 
