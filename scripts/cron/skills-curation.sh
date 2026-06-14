@@ -39,7 +39,7 @@ WORKSPACE_HUB="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 export WORKSPACE_HUB
 
 AUDIT_SCRIPT="${WORKSPACE_HUB}/scripts/skills/weekly_skills_audit.py"
-AUDIT_CMD=(uv run --no-project python "$AUDIT_SCRIPT")
+AUDIT_CMD=(uv run --no-project --with pyyaml python "$AUDIT_SCRIPT")
 
 # Forward output root if set
 if [[ -n "${SKILLS_AUDIT_OUTPUT_ROOT:-}" ]]; then
@@ -50,7 +50,7 @@ cd "$WORKSPACE_HUB"
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
   printf 'Working directory: %s\n' "$WORKSPACE_HUB"
-  printf 'Command: uv run --no-project python %s' "$AUDIT_SCRIPT"
+  printf 'Command: uv run --no-project --with pyyaml python %s' "$AUDIT_SCRIPT"
   if [[ -n "${SKILLS_AUDIT_OUTPUT_ROOT:-}" ]]; then
     printf ' --output-dir %s' "$SKILLS_AUDIT_OUTPUT_ROOT"
   fi
