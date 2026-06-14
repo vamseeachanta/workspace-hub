@@ -42,6 +42,21 @@ schemas:
         format: iso8601-utc-z
       reason: {type: string}
       linked_extraction: {type: string}
+      cycle_id: {type: string}
+      cycle_started_at:
+        type: string
+        format: iso8601-utc-z
+      triggering_message_id: {type: string}
+      received_at_utc:
+        type: string
+        format: iso8601-utc-z
+      dedup_event_id: {type: string}
+      transaction_id: {type: string}
+      paired_learning_event_id: {type: string}
+      last_seen_message_id: {type: string}
+      last_seen_received_at_utc:
+        type: string
+        format: iso8601-utc-z
       primary_classification:
         type: string
         enum: [actionable, data_extract, drive_doc, unsubscribe, archive, noise, spam]
@@ -52,6 +67,8 @@ schemas:
         type: string
         format: iso8601-utc-z
       needs_schema: {type: boolean}
+      needs_user_decision: {type: boolean}
+      warning_no_triggering_message_id: {type: boolean}
       writer_identity:
         $ref: "#/schemas/writer_identity"
         required:
@@ -64,6 +81,8 @@ schemas:
       - thread_id
       - from_state
       - to_state
+      - cycle_id
+      - dedup_event_id
   queue_learning_log_entry:
     type: object
     required:
@@ -86,6 +105,8 @@ schemas:
           - spam_false_positive_override
       from_state: {type: string}
       to_state: {type: string}
+      transaction_id: {type: string}
+      learning_event_id: {type: string}
       user_reason: {type: string}
       original_classification: {type: string}
       corrected_classification: {type: string}
@@ -112,6 +133,14 @@ schemas:
           type: string
           format: iso8601-utc-z
         linked_extraction: {type: string}
+        cycle_id: {type: string}
+        cycle_started_at:
+          type: string
+          format: iso8601-utc-z
+        last_seen_message_id: {type: string}
+        last_seen_received_at_utc:
+          type: string
+          format: iso8601-utc-z
         completed_at:
           type: string
           format: iso8601-utc-z
@@ -120,6 +149,7 @@ schemas:
           type: array
           items: {type: string}
         needs_schema: {type: boolean}
+        needs_user_decision: {type: boolean}
   queue_state_snapshot_meta:
     type: object
     required:

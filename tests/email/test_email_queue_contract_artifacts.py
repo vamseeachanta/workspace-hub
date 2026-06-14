@@ -52,6 +52,48 @@ def test_snapshot_schema_uses_account_thread_composite_key():
     assert snapshot["key_format"] == "{account_id}::{thread_id}"
 
 
+def test_queue_state_schema_covers_issue_2026_runtime_fields():
+    schema = load_yaml("docs/design/email-queue-state-schema.yaml")
+    entry_props = schema["schemas"]["queue_state_entry"]["properties"]
+    snapshot_props = schema["schemas"]["queue_state_snapshot"]["additionalProperties"][
+        "properties"
+    ]
+    learning_props = schema["schemas"]["queue_learning_log_entry"]["properties"]
+
+    assert {
+        "cycle_id",
+        "cycle_started_at",
+        "triggering_message_id",
+        "dedup_event_id",
+        "needs_user_decision",
+        "warning_no_triggering_message_id",
+        "last_seen_message_id",
+        "last_seen_received_at_utc",
+        "transaction_id",
+        "paired_learning_event_id",
+    } <= set(entry_props)
+    assert {
+        "cycle_id",
+        "cycle_started_at",
+        "last_seen_message_id",
+        "last_seen_received_at_utc",
+        "needs_user_decision",
+    } <= set(snapshot_props)
+    assert {"transaction_id", "learning_event_id"} <= set(learning_props)
+
+
+def test_schedule_contains_email_queue_state_dry_run_only():
+    schedule = load_yaml("config/scheduled-tasks/schedule-tasks.yaml")
+    tasks = {task["id"]: task for task in schedule["tasks"]}
+
+    task = tasks["email-queue-state-dry-run"]
+    assert task["machines"] == ["dev-primary"]
+    assert "mkdir -p $WORKSPACE_HUB/logs/email" in task["command"]
+    assert "email-queue-state.py sweep" in task["command"]
+    assert "--dry-run" in task["command"]
+    assert "--apply" not in task["command"]
+
+
 def test_spam_rules_yaml_contains_letstok_contract():
     rules = load_yaml("scripts/email/spam-detection-rules.yaml")
     rule_by_id = {rule["id"]: rule for rule in rules["rules"]}
@@ -96,4 +138,3 @@ def test_routing_yaml_sandsig_and_skylineseven_route_to_cre_data():
     assert routing["rules"]["skylineseven.ccsend.com"] == (
         "assethold/data/cre-listings"
     )
-

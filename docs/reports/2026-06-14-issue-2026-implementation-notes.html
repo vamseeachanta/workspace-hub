@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Issue 2026 Email Queue-State Implementation Notes</title>
+  <style>
+    body { font-family: system-ui, sans-serif; line-height: 1.5; margin: 2rem auto; max-width: 960px; padding: 0 1rem; }
+    code { background: #f3f4f6; padding: 0.1rem 0.25rem; border-radius: 3px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #d1d5db; padding: 0.45rem; text-align: left; vertical-align: top; }
+    th { background: #f9fafb; }
+  </style>
+</head>
+<body>
+  <h1>Issue 2026 Email Queue-State Implementation Notes</h1>
+  <p>
+    This report records the implementation scope for
+    <a href="https://github.com/vamseeachanta/workspace-hub/issues/2026">workspace-hub #2026</a>.
+    It is constrained to two accounts: <code>ace</code>
+    (<code>vamsee.achanta@aceengineer.com</code>) and <code>personal</code>
+    (<code>achantav@gmail.com</code>). <code>skestates</code> remains out of scope unless a future issue authorizes it.
+  </p>
+
+  <h2>Implemented Surface</h2>
+  <table>
+    <tr><th>Area</th><th>Artifact</th><th>Purpose</th></tr>
+    <tr>
+      <td>State API</td>
+      <td><code>scripts/email/queue_state.py</code>, <code>scripts/email/state/</code></td>
+      <td>Path-first transition, lookup, list, reactivation, read-only dry-run sweep, guarded apply sweep, and pending-work report API.</td>
+    </tr>
+    <tr>
+      <td>Runtime state</td>
+      <td><code>~/.hermes/email-state/</code> or <code>EMAIL_QUEUE_STATE_DIR</code></td>
+      <td>Private append-only state log, snapshot, metadata, learning log, and optional account config.</td>
+    </tr>
+    <tr>
+      <td>Operator CLI</td>
+      <td><code>scripts/email/email-queue-state.py</code></td>
+      <td>Report, label planning/application seam, non-destructive grace-sweep dry run, and precheck-gated apply mode.</td>
+    </tr>
+    <tr>
+      <td>Scheduled safety job</td>
+      <td><code>config/scheduled-tasks/schedule-tasks.yaml</code></td>
+      <td>Daily <code>email-queue-state-dry-run</code> job on <code>dev-primary</code>; no Gmail archive/delete.</td>
+    </tr>
+    <tr>
+      <td>Contract docs</td>
+      <td><code>docs/design/email-as-queue*.md</code>, <code>docs/design/email-queue-state-schema.yaml</code></td>
+      <td>Records two-account scope, private runtime state, unknown-thread semantics, and #2423 boundary.</td>
+    </tr>
+  </table>
+
+  <h2>Operational Semantics</h2>
+  <p>
+    <code>pending_work_report()</code> treats an account as clean only when tracked in-scope threads have no pending
+    inbound states or decision/schema flags and a supplied inbox snapshot contains no unknown in-scope thread. Without an
+    inbox snapshot, the report returns <code>unknown_status: not_evaluated</code> and <code>mailbox_empty: null</code>.
+    This avoids falsely claiming that Gmail is empty when only local state was inspected.
+  </p>
+  <p>
+    <code>awaiting-reply</code> is not pending by itself; a newer inbound Gmail message detected through the supplied
+    inbox snapshot is what turns it back into actionable work. <code>sweep --dry-run</code> is read-only. Local
+    completed-to-purged apply requires a clean reactivation precheck covering both enabled accounts.
+  </p>
+
+  <h2>Boundaries</h2>
+  <p>
+    Gmail label creation/mirroring is implemented as an injectable two-account adapter seam and fails closed if
+    queue-state account mapping disagrees with the Gmail helper mapping. This session did not apply live Gmail labels
+    because the runtime did not expose verified per-account Gmail clients for both approved accounts. Gmail archive
+    or delete automation remains follow-on issue
+    <a href="https://github.com/vamseeachanta/workspace-hub/issues/2423">#2423</a>.
+  </p>
+
+  <h2>Verification</h2>
+  <ul>
+    <li><code>uv run pytest tests/email/test_state_machine_contract.py tests/email/test_email_queue_state.py tests/email/test_email_queue_contract_artifacts.py -q</code></li>
+    <li><code>uv run python scripts/cron/validate-schedule.py</code></li>
+  </ul>
+</body>
+</html>

@@ -10,7 +10,6 @@ def require_queue_state():
         pytest.fail(f"pending #2026 storage module: {exc}")
 
 
-@pytest.mark.xfail(reason="pending #2026 storage impl")
 def test_transition_inbound_to_extracted_writes_log(tmp_path):
     queue_state = require_queue_state()
     log = tmp_path / "queue-state.jsonl"
@@ -27,7 +26,6 @@ def test_transition_inbound_to_extracted_writes_log(tmp_path):
     assert queue_state.lookup(log, "user@example.com", "thread-1")["state"] == "extracted"
 
 
-@pytest.mark.xfail(reason="pending #2026 storage impl")
 def test_transition_retry_preserves_dedup_under_fresh_ts(tmp_path):
     queue_state = require_queue_state()
     log = tmp_path / "queue-state.jsonl"
@@ -44,7 +42,6 @@ def test_transition_retry_preserves_dedup_under_fresh_ts(tmp_path):
     assert queue_state.count_entries(log) == 1
 
 
-@pytest.mark.xfail(reason="pending #2026 storage impl")
 def test_purged_reactivates_on_reply_with_extraction_link(tmp_path):
     queue_state = require_queue_state()
     log = tmp_path / "queue-state.jsonl"

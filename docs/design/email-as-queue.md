@@ -17,16 +17,26 @@ Pipeline orchestration belongs to #2024. Queue-state storage implementation belo
 
 Existing `gmail-archive-extract.py` routing behavior is grandfathered production infrastructure. This design does not add new Gmail mutations.
 
+#2026 implements the local state layer for the two approved accounts only:
+
+- `ace` (`vamsee.achanta@aceengineer.com`)
+- `personal` (`achantav@gmail.com`)
+
+`skestates` remains out of scope until a future issue explicitly adds it. In #2026, "mailbox empty" means no pending work among known in-scope threads and, when a caller supplies an inbox snapshot, no unknown in-scope Gmail threads. Local state alone reports unknown-thread coverage as `not_evaluated` rather than claiming the mailbox is empty.
+
 ## Decisions
 
 ### State Authority
 
 Queue state is local-only in v1:
 
-- Append-only event log: `scripts/email/queue-state.jsonl`.
-- Materialized read snapshot: `scripts/email/queue-state-snapshot.yaml`.
-- Snapshot freshness metadata: `scripts/email/queue-state-snapshot.meta.yaml`.
-- Learning/correction log: `scripts/email/queue-learning-log.jsonl`.
+- Append-only event log: `~/.hermes/email-state/queue-state.jsonl` by default, overrideable with `EMAIL_QUEUE_STATE_DIR`.
+- Materialized read snapshot: `queue-state-snapshot.yaml` next to the event log.
+- Snapshot freshness metadata: `queue-state-snapshot.meta.yaml` next to the event log.
+- Learning/correction log: `queue-learning-log.jsonl` next to the event log.
+- Account normalization config: `accounts.yaml` next to the event log by default, overrideable with `EMAIL_QUEUE_ACCOUNTS_CONFIG`.
+
+Runtime state is private machine state and must not be committed. Durable extracted facts belong in the appropriate repository ecosystem target, not in raw email archives.
 
 Every thread identity is scoped by `(account_id, thread_id)`. Snapshot keys use `{account_id}::{thread_id}`.
 
@@ -76,4 +86,3 @@ Spam/noise/unsubscribe classifications may produce routing actions but do not cr
 | Pipeline orchestration and scheduled sweep wiring | #2024 |
 | Gmail-side delete/archive automation | #2423 |
 | Skill consolidation | #2019 |
-

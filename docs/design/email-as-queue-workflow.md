@@ -7,13 +7,21 @@
 
 ---
 
+## 2026 Scope Update
+
+Issue [#2026](https://github.com/vamseeachanta/workspace-hub/issues/2026) implements the local queue-state layer for only two active accounts: `ace` (`vamsee.achanta@aceengineer.com`) and `personal` (`achantav@gmail.com`). No other account is active in this implementation pass.
+
+The #2026 state layer can report whether known in-scope mail has pending work and whether a supplied inbox snapshot contains unknown in-scope threads. It does not archive or delete Gmail messages; destructive Gmail cleanup remains follow-on issue [#2423](https://github.com/vamseeachanta/workspace-hub/issues/2423). Durable information extracted from mail belongs in the appropriate repo ecosystem target, not in repo-tracked raw email. Any older deletion examples below are historical context only when they conflict with this boundary.
+
+---
+
 ## 1. Core Principle
 
 **Email is a queue, not an archive.**
 
 The previous system archived 36,100+ emails across 3 accounts into git repos by sender domain, storing full email bodies as markdown files. This created massive repo noise, inflated git history, and did not match how email should be managed.
 
-The new model treats every email as a transient item in a processing queue. Data enters the queue, gets triaged, has its actionable information extracted into structured form, and then the raw email is deleted. Only the extracted data persists in repositories.
+The new model treats every email as a transient item in a processing queue. Data enters the queue, gets triaged, has its actionable information extracted into structured form, and the durable record moves into the appropriate repository. Gmail archive/delete automation is outside #2026.
 
 ```
                     +------------------+
@@ -30,7 +38,7 @@ The new model treats every email as a transient item in a processing queue. Data
               |              |               |
      +--------v---+  +------v------+  +-----v------+
      |   NOISE    |  |   EXTRACT   |  |   REVIEW   |
-     | (delete)   |  | structured  |  | (hold for  |
+     | (label)    |  | structured  |  | (hold for  |
      +------+-----+  |   data      |  |  decision) |
             |        +------+------+  +-----+------+
             |               |               |
@@ -56,13 +64,13 @@ The new model treats every email as a transient item in a processing queue. Data
             |     | new reply     | 7 days  |
             |     | arrives       | elapsed |
             |     v               v         |
-            | RE-ACTIVATE     DELETE        |
+            | RE-ACTIVATE     PURGE LOCAL   |
             |  (back to       (email gone,  |
             |   INBOUND)       data stays)  |
             +----+---+----+--------+--------+
                      |
-              all deletions
-              logged locally
+              Gmail delete/archive
+              remains #2423
 ```
 
 ---
@@ -78,7 +86,7 @@ The new model treats every email as a transient item in a processing queue. Data
 | CRE listings (Sands IG, Marcus Millichap, LoopNet) | Extract property/cap-rate/tenant data | assethold/data/cre-listings/ |
 | Software vendors (ANSYS, DNV, ENGYS) | Extract license/support data only if actionable | aceengineer-admin/data/vendor/ |
 | Industry colleagues | Keep for networking touchbase, extract contact if new | aceengineer-admin/data/colleague/ |
-| Marketing/newsletters | DELETE immediately or after unsubscribe | -- |
+| Marketing/newsletters | Label/no pending extraction; Gmail delete belongs to #2423 | -- |
 
 VIP domains requiring immediate attention: `ril.com`, `dorisgroup.com`, `mcdermott.com`, `shell.com`, `kbr.com`, `bp.com`, `subsea7.com`, `technipfmc.com`
 
@@ -90,21 +98,12 @@ VIP domains requiring immediate attention: `ril.com`, `dorisgroup.com`, `mcdermo
 | Financial (banks, insurance, tax) | Extract amounts/dates/due-dates | achantas-data/data/finance/ |
 | Tax documents (TurboTax, 1099s, K-1s) | Extract form type/amounts/year | achantas-data/data/tax/ |
 | Alumni / career networking | Extract contact updates | achantas-data/data/networking/ |
-| Social media notifications | DELETE immediately | -- |
-| Marketing / promotions | DELETE after batch unsubscribe | -- |
+| Social media notifications | Label/no pending extraction; Gmail delete belongs to #2423 | -- |
+| Marketing / promotions | Label/no pending extraction; Gmail delete belongs to #2423 | -- |
 
-### 2.3 skestates (skestatesinc@gmail.com)
+### 2.3 Disabled Accounts
 
-| Category | Handling | Extraction Target |
-|---|---|---|
-| Tenant (Family Dollar, Dollar Tree) | Extract issue/resolution/dates | sabithaandkrishnaestates/data/tenant/ |
-| Insurance (Marsh, Crown Insurance, Insureon) | Extract policy/claim/premium data | sabithaandkrishnaestates/data/insurance/ |
-| HOA (FS Residential) | Extract dues/violations/dates | sabithaandkrishnaestates/data/hoa/ |
-| Vendors (PHFM, CLH, GDS, Partner ESI) | Extract invoices/work orders | sabithaandkrishnaestates/data/vendor/ |
-| Title company | Extract closing/filing data | sabithaandkrishnaestates/data/title/ |
-| Tax / CPA | Extract filing status/deadlines | sabithaandkrishnaestates/data/tax/ |
-
-VIP domains requiring immediate attention: `familydollar.com`, `dollartree.com`, `marsh.com`
+Additional accounts require a future issue and explicit approval before they are added to queue-state processing, label creation, or cleanup reporting.
 
 ---
 
@@ -112,13 +111,13 @@ VIP domains requiring immediate attention: `familydollar.com`, `dollartree.com`,
 
 ### 3.1 States
 
-| State | Gmail Label | Meaning | Auto-delete? |
+| State | Gmail Label | Meaning | #2026 cleanup behavior |
 |---|---|---|---|
-| inbox | (none) | New, untriaged | No |
-| extracted | `wh-email/extracted` | Data pulled, no pending action | No |
-| awaiting-reply | `wh-email/awaiting-reply` | Operator replied, waiting for counterparty | Never |
-| completed | `wh-email/completed` | Topic resolved, grace clock starts | After 7 days |
-| noise | `wh-email/noise` | Spam/newsletter, no extraction needed | Immediately |
+| inbox | (none) | New, untriaged | Pending work |
+| extracted | `wh-email/extracted` | Data pulled, no pending action | Local state only |
+| awaiting-reply | `wh-email/awaiting-reply` | Operator replied, waiting for counterparty | Not pending by itself |
+| completed | `wh-email/completed` | Topic resolved, grace clock starts | Local `purged` marker after 7 days and clean precheck |
+| noise | `wh-email/noise` | Spam/newsletter, no extraction needed | Local label/state only; Gmail deletion belongs to #2423 |
 
 ### 3.2 Transition Rules
 
@@ -134,9 +133,9 @@ awaiting-reply --> inbox              (new inbound reply arrives -- RE-ACTIVATE)
 awaiting-reply --> completed          (topic resolved without further reply)
 
 completed ------> inbox              (new inbound reply during grace period -- RE-ACTIVATE)
-completed ------> [DELETED]          (grace period elapsed, no new replies)
+completed ------> purged             (local grace marker only in #2026)
 
-noise ----------> [DELETED]          (immediate or batch delete)
+noise ----------> wh-email/noise     (label only in #2026)
 ```
 
 ### 3.3 Re-activation
@@ -154,8 +153,8 @@ When a thread marked `completed` or `awaiting-reply` receives a new inbound mess
 - Duration: 7 calendar days from `completed_date`
 - During grace period: thread stays in Gmail with `wh-email/completed` label
 - If new reply arrives: grace timer resets, thread returns to inbox
-- After grace period with no new reply: thread is deleted from Gmail
-- Local state log retains the deletion record permanently (for audit trail)
+- After grace period with no new reply: #2026 can mark local state as `purged` only after a clean reactivation precheck.
+- Gmail archive/delete remains follow-on #2423.
 
 ---
 
@@ -233,48 +232,11 @@ Labels are created lazily via the Gmail API when first needed. Label operations 
 
 **Layer 2: Local State File (authoritative audit trail)**
 
-`~/.hermes/email-state.yaml` is the authoritative state tracker. It records every state transition, extraction event, and deletion. This file survives Gmail label drift and provides the data needed for the learning loop.
+`~/.hermes/email-state/queue-state.jsonl` is the authoritative state tracker by default. It records every state transition and extraction event. This private runtime directory survives Gmail label drift and provides the data needed for the learning loop.
 
 ```yaml
-# ~/.hermes/email-state.yaml
-threads:
-  - thread_id: "18f3a2b..."
-    account: ace
-    subject: "Dollar General NNN | TX | 7.25% CAP"
-    sender_domain: sandsig.com
-    state: completed
-    extracted_to: "assethold/data/cre-listings/"
-    extracted_date: "2026-04-07"
-    completed_date: "2026-04-08"
-    eligible_for_deletion: "2026-04-15"
-    last_activity: "2026-04-08"
-    reply_count: 0
-    reactivation_count: 0
-
-  - thread_id: "18f3a2c..."
-    account: skestates
-    subject: "Family Dollar Store #30150 HVAC Issue"
-    sender_domain: familydollar.com
-    state: awaiting-reply
-    extracted_to: "sabithaandkrishnaestates/data/tenant/"
-    extracted_date: "2026-04-05"
-    last_activity: "2026-04-07"
-    reply_count: 3
-    reactivation_count: 1
-
-deletions:
-  - thread_id: "18f3a1a..."
-    account: personal
-    deleted_date: "2026-04-08"
-    reason: "noise — marketing newsletter"
-    had_extraction: false
-
-  - thread_id: "18f3a2b..."
-    account: ace
-    deleted_date: "2026-04-15"
-    reason: "completed — grace period elapsed"
-    had_extraction: true
-    extracted_to: "assethold/data/cre-listings/"
+# ~/.hermes/email-state/queue-state.jsonl
+{"account_id":"ace","thread_id":"18f3a2b","from_state":"inbound","to_state":"extracted","ts_utc":"2026-06-14T00:00:00Z","cycle_id":"initial","dedup_event_id":"msg:18f3a2b-1"}
 ```
 
 ### 5.2 State File Operations
@@ -284,9 +246,9 @@ deletions:
 | New thread scanned | Triage run | Add entry with state=inbox |
 | Data extracted | Extraction pipeline | state -> extracted, set extracted_date and extracted_to |
 | Operator replied | Send/draft detection | state -> awaiting-reply |
-| Topic resolved | User marks complete | state -> completed, set completed_date and eligible_for_deletion |
+| Topic resolved | User marks complete | state -> completed, set completed_at |
 | New reply arrives | Unread scan on labeled thread | state -> inbox, increment reactivation_count |
-| Deleted | Deletion sweep | Move to deletions list, remove from threads list |
+| Grace elapsed | Clean reactivation precheck | state -> purged locally; Gmail untouched in #2026 |
 
 ---
 
@@ -307,9 +269,9 @@ The routing file evolves to specify extraction templates and structured data des
 
 ```yaml
 rules:
-  # ---- NOISE (delete, no extraction) ----
-  "collide.io":                     { action: DELETE }
-  "promote.weebly.com":             { action: DELETE }
+  # ---- NOISE (label, no extraction) ----
+  "collide.io":                     { action: NOISE }
+  "promote.weebly.com":             { action: NOISE }
 
   # ---- REVIEW (hold for user decision) ----
   "substack.com":                   { action: REVIEW }
@@ -320,18 +282,6 @@ rules:
     template: cre-listing
     destination: assethold/data/cre-listings/
     account: ace
-
-  "familydollar.com":
-    action: EXTRACT
-    template: tenant-communication
-    destination: sabithaandkrishnaestates/data/tenant/
-    account: skestates
-
-  "marsh.com":
-    action: EXTRACT
-    template: insurance
-    destination: sabithaandkrishnaestates/data/insurance/
-    account: skestates
 
   # ---- DEFAULT ----
   "default":
@@ -356,12 +306,12 @@ rules:
 |---|---|---|
 | Email reading | Gmail REST API (urllib, no pip deps) | Direct OAuth2 with refresh tokens |
 | Email CLI fallback | himalaya v1.2.0 | For IMAP operations where API is overkill |
-| Token management | `~/.gmail-{ace,personal,skestates}/credentials.json` | Auto-refresh via refresh_token grant |
+| Token management | Existing per-account Gmail helper credentials for `ace` and `personal` | Auto-refresh via refresh_token grant |
 | OAuth config | `~/.gmail-mcp/oauth-env.json` | Shared client_id / client_secret |
 | Triage scheduling | Hermes cron | Daily at 7 AM CT (triage), 12 PM CT (digest) |
 | Legal scanning | `scripts/legal/legal-sanity-scan.sh` | Runs before every git commit of extracted data |
 | Contact enrichment | `scripts/email/contact-normalizer.py` outputs | CSV lookup during triage classification |
-| State persistence | `~/.hermes/email-state.yaml` | Local YAML, not in git |
+| State persistence | `~/.hermes/email-state/queue-state.jsonl` | Local JSONL, not in git |
 
 ### 7.2 Scripts (new and modified)
 
@@ -381,7 +331,7 @@ Labels are managed via the Gmail API:
 ```
 POST /gmail/v1/users/me/labels       -- create wh-email/* labels (lazy, first use)
 POST /gmail/v1/users/me/threads/{id}/modify  -- add/remove labels on threads
-GET  /gmail/v1/users/me/messages?q=label:wh-email/completed+older_than:7d  -- find deletion candidates
+GET  /gmail/v1/users/me/messages?q=label:wh-email/completed+older_than:7d  -- optional read-only precheck input
 ```
 
 The `wh-email/` prefix namespaces all automation labels to avoid collisions with user labels.
@@ -400,9 +350,9 @@ function run_extraction(account, query, dry_run):
         domain = extract_sender_domain(message)
         rule = routing.lookup(domain)
 
-        if rule.action == DELETE:
-            if not dry_run: gmail_trash(message)
-            log_deletion(state, message, reason="noise")
+        if rule.action == NOISE:
+            if not dry_run: label_thread(message.thread_id, "noise", token)
+            update_state(state, message, new_state="noise")
             continue
 
         if rule.action == REVIEW:
@@ -435,33 +385,23 @@ function run_extraction(account, query, dry_run):
     return stats
 ```
 
-### 7.5 Deletion Sweep Pseudocode
+### 7.5 Local Grace Sweep Pseudocode
 
 ```
-function run_deletion_sweep(account, dry_run):
-    token = refresh_oauth_token(account)
+function run_local_grace_sweep(account, dry_run, reactivation_precheck):
     state = load_state_file()
+    require_clean(reactivation_precheck)
 
     for each thread in state.threads:
         if thread.account != account:
             continue
 
-        if thread.state == "noise":
-            if not dry_run: gmail_delete(thread.thread_id, token)
-            move_to_deletions(state, thread, reason="noise")
-
         if thread.state == "completed":
             if days_since(thread.completed_date) >= 7:
-                # Check for new replies before deleting
-                has_new = check_for_new_messages(thread.thread_id, token)
-                if has_new:
-                    reactivate(state, thread)
-                    continue
-                if not dry_run: gmail_delete(thread.thread_id, token)
-                move_to_deletions(state, thread, reason="grace period elapsed")
+                if not dry_run: mark_local_state(thread, "purged")
 
         if thread.state == "awaiting-reply":
-            # NEVER auto-delete
+            # Not pending work by itself; new replies are detected by snapshot comparison.
             pass
 
     save_state_file(state)
@@ -469,34 +409,26 @@ function run_deletion_sweep(account, dry_run):
 
 ---
 
-## 8. Deletion Safety Rules
+## 8. Gmail Mutation Boundary
 
-### 8.1 Safety Hierarchy
+### 8.1 #2026 Safety Hierarchy
 
-1. **Never auto-delete `awaiting-reply` threads.** These represent open conversations.
-2. **Grace period is mandatory.** Completed threads wait 7 days before deletion.
-3. **Check for new replies before deleting.** Even after grace period, verify no new messages arrived.
-4. **Dry-run by default.** First production runs of any new domain/template should use `--dry-run`.
-5. **Log every deletion.** The local state file records what was deleted, when, and why.
-6. **Legal scan before commit.** Extracted data is scanned against the legal deny list before git commit.
+1. **No Gmail archive/delete in #2026.** This issue writes local state and optional labels only.
+2. **Grace period is mandatory.** Completed threads wait 7 days before a local `purged` marker.
+3. **Clean reactivation precheck required before local purge apply.** Dry-run can list candidates, but apply must prove no unknown or newer in-scope Gmail thread.
+4. **Dry-run by default.** Scheduled automation runs with `--dry-run`.
+5. **Legal scan before commit.** Extracted data is scanned against the legal deny list before git commit.
 
-### 8.2 Rollout Safety
+### 8.2 Follow-On Gmail Cleanup
 
-| Phase | Delete behavior | Scope |
+| Phase | Behavior | Scope |
 |---|---|---|
-| Week 1 | Dry-run only, no actual deletions | All accounts |
-| Week 2 | Delete noise only (known spam domains) | All accounts |
-| Week 3 | Delete completed with grace period | 1 account (ace first) |
-| Week 4+ | Full pipeline, all accounts | All accounts |
+| #2026 | Local state + labels + dry-run local grace sweep | `ace`, `personal` |
+| #2423 | Gmail archive/delete automation design and implementation | Requires separate approval |
 
 ### 8.3 Recovery
 
-If an email is deleted that should not have been:
-- Gmail Trash retains messages for 30 days (API `DELETE` is permanent; use `trash` instead for safety)
-- Local state file records the thread_id, which can be used to search Trash
-- Extracted data in repos provides the structured content even after email deletion
-
-**Decision: use `users/me/messages/{id}/trash` (recoverable) rather than `users/me/messages/{id}` DELETE (permanent) for all automated deletions during the first 90 days of operation.**
+If local state is marked incorrectly, append a corrective state transition and learning-log entry. If Gmail content is ever moved by a future #2423 workflow, that workflow must carry its own recovery contract.
 
 ---
 
@@ -508,7 +440,7 @@ If an email is deleted that should not have been:
 |---|---|---|
 | Unknown domain in triage | No routing rule exists | Surface in digest; user adds rule or template |
 | Extraction failure | Template could not parse required fields | Log failure with sample data; user refines template |
-| User marks thread as noise | False negative in noise detection | Add domain to DELETE list in routing |
+| User marks thread as noise | False negative in noise detection | Add domain to noise routing and label taxonomy |
 | User re-activates a completed thread | Grace period or completion was premature | Adjust completion heuristics |
 | High reactivation_count on a domain | Threads from this domain are often re-opened | Increase grace period or change handling |
 | User corrects extracted data | Template parsed incorrectly | Fix template regex/field definitions |
@@ -521,7 +453,7 @@ The daily digest (gmail-digest.py) should include a "Learning Backlog" section:
 === LEARNING BACKLOG ===
   Unknown domains (no routing rule):
     - newclient@unknowndomain.com (ace, 3 messages)
-    - vendor@newcompany.io (skestates, 1 message)
+    - vendor@newcompany.io (disabled account, 1 message)
   Extraction failures:
     - sandsig.com: 2 messages failed CRE template (missing cap_rate)
   Reactivated threads (consider longer grace):
@@ -548,11 +480,10 @@ The daily digest (gmail-digest.py) should include a "Learning Backlog" section:
 | 1 | Create `routing-v2.yaml` alongside existing routing file | None | Old file still works |
 | 2 | Build `gmail-extract-and-act.py` with dry-run mode | None | No side effects in dry-run |
 | 3 | Create first 5 extraction templates (CRE, client, tenant, tax, invoice) | Low | Templates are additive |
-| 4 | Run extraction pipeline in dry-run on all 3 accounts | None | Validates templates against real data |
+| 4 | Run extraction pipeline in dry-run on the two approved accounts | None | Validates templates against real data |
 | 5 | Enable extraction (write YAML to repos) with `wh-email/extracted` labels | Low | Data is additive, no deletions yet |
-| 6 | Enable noise deletion (known spam domains only) | Low | Already identified in current routing |
-| 7 | Enable completed+grace-period deletion on ace account | Medium | 7-day grace + trash (not permanent delete) |
-| 8 | Extend deletion to personal and skestates | Medium | Same safeguards |
+| 6 | Enable queue-state reporting and local grace-sweep dry-run | Low | No Gmail archive/delete |
+| 7 | Plan Gmail archive/delete separately in #2423 | Medium | Separate approval and recovery contract |
 | 9 | Deprecate `gmail-archive-extract.py` | Low | New pipeline has parity |
 | 10 | Retire deprecated active skills (gmail-extract-and-clean, gmail-extract-archive, gmail-email-to-repo-extraction, gmail-touchbase, gmail-unsubscribe) | Low | Active folders removed; archived twins retained under `.claude/skills/email/_archived/` |
 
@@ -603,14 +534,14 @@ Raw email archives already committed to repos are not deleted retroactively. The
 ## 12. Implementation Phases
 
 ### Phase 1: Workflow Design (this document -- #2017)
-- [x] Define thread state tracking approach (hybrid: Gmail labels + local YAML)
+- [x] Define thread state tracking approach (hybrid: Gmail labels + local JSONL)
 - [x] Define extraction format (structured YAML)
-- [x] Define deletion policy and safety rules (grace period, trash not delete, dry-run first)
+- [x] Route Gmail deletion/archive policy to #2423; define local grace-state safety rules
 - [x] Define per-account routing and extraction targets
 - [x] Define learning loop mechanics
 - [x] Document migration plan
 
-### Phase 2: Build Extract-and-Delete Pipeline (#2024)
+### Phase 2: Build Extract-and-Act Pipeline (#2024)
 - [ ] Create `scripts/email/gmail-extract-and-act.py`
 - [ ] Create `scripts/email/routing-v2.yaml`
 - [ ] Implement template-driven extraction engine
@@ -627,9 +558,9 @@ Raw email archives already committed to repos are not deleted retroactively. The
 - [ ] Write tests: `tests/email/test_email_templates.py`
 
 ### Phase 4: State Tracking (#2026)
-- [ ] Implement `~/.hermes/email-state.yaml` read/write
-- [ ] Implement Gmail label lifecycle (create, apply, remove)
-- [ ] Implement grace period enforcement
+- [ ] Implement `~/.hermes/email-state/queue-state.jsonl` read/write
+- [ ] Implement Gmail label taxonomy and optional label creation
+- [ ] Implement local grace period state enforcement
 - [ ] Implement re-activation detection
 - [ ] Write tests: `tests/email/test_email_state_machine.py`
 
@@ -647,7 +578,7 @@ Raw email archives already committed to repos are not deleted retroactively. The
 - [ ] Track extraction patterns that work well
 - [ ] Flag emails the system cannot classify
 - [ ] User corrections feed back into routing rules and templates
-- [ ] Periodic review of deleted-vs-kept decisions
+- [ ] Periodic review of noise-vs-kept decisions
 
 ---
 
@@ -666,9 +597,9 @@ Raw email archives already committed to repos are not deleted retroactively. The
 
 1. **Routing schema migration**: Should `routing-v2.yaml` use a completely new schema or extend the current flat format? Decision: new schema (Section 6.2) for clarity; old file kept for backward compatibility.
 
-2. **Immediate noise deletion confidence**: Should noise deletion be enabled from day one, or only after a dry-run confidence period? Decision: dry-run first week, noise deletion starting week 2 (Section 8.2).
+2. **Noise deletion confidence**: Should Gmail deletion be enabled from day one, or only after a dry-run confidence period? Decision: no Gmail deletion in #2026; archive/delete automation requires #2423 approval.
 
-3. **State file location**: `~/.hermes/email-state.yaml` is not in git. Should state be git-tracked? Decision: No. State is local and ephemeral. The extracted data in repos is the durable artifact.
+3. **State file location**: `~/.hermes/email-state/queue-state.jsonl` is not in git. Should state be git-tracked? Decision: No. State is local and ephemeral. The extracted data in repos is the durable artifact.
 
 4. **Attachment handling**: Large attachments (PDFs, spreadsheets) need their own extraction path. Should the extraction pipeline handle them inline or delegate to `gmail-attachment-to-document` skill? Decision: delegate to existing skill for complex parsing; inline only for simple metadata extraction.
 
