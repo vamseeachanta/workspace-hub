@@ -6,6 +6,11 @@ remote divergence, or git worktrees; those were handled separately.
 
 Manifest: `docs/sessions/2026-06-14-untracked-residue-manifest.tsv`
 
+Tier 0 execution artifacts:
+
+- Removed manifest: `docs/sessions/2026-06-14-tier0-empty-dir-removed.tsv`
+- Verification: `docs/sessions/2026-06-14-tier0-empty-dir-cleanup-verification.json`
+
 ## Current Verified Context
 
 - All known stale `llm-wiki` and `workspace-hub` worktrees discovered in this wave were removed or preserved first.
@@ -16,11 +21,14 @@ Manifest: `docs/sessions/2026-06-14-untracked-residue-manifest.tsv`
   - `2fd0d071b` — provider ASCP pointer docs.
   - `6b96f1739` — #2421 draft plan and r1 review artifacts.
 - Issue comments were posted on #3087, #3079, #3057, and #2421.
+- Tier 0 empty-directory cleanup ran after user approval. It removed 43 empty
+  untracked directory trees and restored the three `teamresumes` source/test
+  placeholder directories that this proposal had classified as Tier 3 deferred.
 
 ## Residue Summary
 
-The manifest contains 79 untracked entries after excluding this proposal and the
-manifest itself.
+The manifest now contains 36 remaining untracked entries after excluding this
+proposal, the manifest itself, and the Tier 0 cleanup artifacts.
 
 Main material entries:
 
@@ -33,12 +41,14 @@ Main material entries:
 - `workspace-hub/config/search/` — 3.8M, 1 file.
 - `workspace-hub/data/document-index/logs/` — 975K, 69 files.
 
-Most remaining entries are empty local state directories, placeholder directories,
-or small provider/runtime-local files.
+Other remaining entries are deferred source/project placeholders, symlink-only
+data structure, or small provider/runtime-local files.
 
 ## Proposed Tiers
 
 ### Tier 0 - Safe Empty-Directory Deletes
+
+Status: executed.
 
 Delete entries whose manifest `file_count` is `0` after a fresh pre-delete check.
 These have no file payload to preserve. Examples:
@@ -52,6 +62,11 @@ These have no file payload to preserve. Examples:
 
 Execution rule: use a cleanup lock, re-run `find <path> -type f -print -quit`,
 then remove only paths still reporting no files.
+
+Result: 43 entries were removed. The three `teamresumes` source/test placeholder
+directories were restored and remain deferred. `kaggle-rogii-2026/data/` remains
+because the live path contains symlinks and should be inspected with data-tree
+context rather than treated as an empty directory.
 
 ### Tier 1 - Archive Then Remove Evidence/Data Outputs
 
@@ -106,10 +121,9 @@ currently empty.
 
 ## Approval Needed
 
-Approve one or more tiers explicitly:
+Tier 0 is complete. Approve one or more remaining tiers explicitly:
 
-- "Approve Tier 0 only"
-- "Approve Tier 0 and Tier 1 archive/remove"
+- "Approve Tier 1 archive/remove"
 - "Approve Tier 2 inspection"
 - "Leave Tier 3 deferred"
 
