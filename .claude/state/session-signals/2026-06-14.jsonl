@@ -36,3 +36,7 @@
 {"ts":"2026-06-14T12:53:19Z","event":"session_tool_summary","session_id":"8b2785c7-ad69-44a6-90ed-da87e8ea6f58","wrk":"none","tool_calls":440,"edits":4,"reads":36}
 {"ts":"2026-06-14T13:16:08Z","event":"session_tool_summary","session_id":"019ec642-324c-7ab2-ae7b-982695c55c24","wrk":"none","tool_calls":499,"edits":4,"reads":42}
 {"ts":"2026-06-14T13:16:08Z","event":"stop_signal_captured","session_id":"019ec642-324c-7ab2-ae7b-982695c55c24"}
+{"ts":"2026-06-14T15:35:41Z","event":"session_tool_summary","session_id":"019ec6c3-892c-7980-99a8-f5c36f99c444","wrk":"none","tool_calls":10,"edits":0,"reads":10}
+{"ts":"2026-06-14T15:35:41Z","event":"stop_signal_captured","session_id":"019ec6c3-892c-7980-99a8-f5c36f99c444"}
+{"ts":"2026-06-14T15:37:40Z","event":"session_tool_summary","session_id":"7147726d-1ade-4f87-8508-f127b2a4b8f3","wrk":"none","tool_calls":12,"edits":2,"reads":12}
+{"ts":"2026-06-14T15:37:40Z","event":"stop_signal_captured","session_id":"7147726d-1ade-4f87-8508-f127b2a4b8f3"}
