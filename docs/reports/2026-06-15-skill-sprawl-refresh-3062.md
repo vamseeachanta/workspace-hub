@@ -2,11 +2,10 @@
 
 > 2026-06-15. Companion to the model-parity work (#3043). Read-only analysis; no skills retired. Feeds #3062.
 
-## What changed
-The skill telemetry (`.claude/state/skill-scores.yaml`) was **2 months stale** (generated 2026-04-03, `total_skills: 402`) — unreliable for any traffic-ranked decision. Regenerated via the existing deterministic, no-LLM tool `scripts/skills/skill-usage-report.py`:
+## What changed — and a correction
+**Canonical telemetry is NOT stale.** `origin/main`'s `.claude/state/skill-scores.yaml` is current: `total_skills: 830`, generated **2026-06-14** (cadence running, last touched by #1725/#1742). The `402` / `2026-04-03` file initially observed was the **working copy of an unrelated feature branch** (`fix/cron-render…`, branched from an old base) checked out in this session's primary clone — a checkout artifact, not a cadence failure. Regenerating via `scripts/skills/skill-usage-report.py` produced **831 skills** — effectively identical to canonical (830), confirming the cadence is healthy.
 
-- **Now: 831 active skills scored** (was 402) — the snapshot had been missing ~half the tree.
-- `generated_at: 2026-06-15T14:20:07Z`.
+So the telemetry "refresh" was a no-op against canonical. The valuable output is the **sprawl picture below**, which matches origin/main.
 
 ## Fresh picture
 
@@ -32,7 +31,7 @@ Repo memory records the exact failure mode of acting on this kind of metric: *"s
 2. **Exclude direct-use domains.** Whitelist HOT-domain neighbours: engineering (orcaflex/aqwa/mooring/fatigue/hydrodynamics), email, data — DEAD skills *inside* an active domain are likely direct-use, not dead.
 3. **Confirm zero-signal independently** per candidate: no cross-ref AND no git mention AND no invocation trace in session transcripts (the `~/.claude/projects` corpus) before archiving.
 4. **Batch + verify each batch's artifact**, not the report — per the parallel-agent over-removal lesson.
-5. **Stand up the eval cadence** so telemetry never goes 2 months stale again (the root cause here).
+5. **Verify eval-cadence machine coverage.** The cadence is running on canonical (telemetry was fresh as of 2026-06-14); confirm it covers all machines and that feature-branch checkouts don't mislead operators reading stale working copies (the trap this report initially fell into).
 
 ## Governance flags
 - **#3062 approval drift:** carries `status:plan-approved` but has **no plan doc in `docs/plans/` and no `.planning/plan-approved/3062.md` marker**. Per `issue-planning-mode`, that's approval-state drift — not a clean approve-and-implement. A real plan should precede any deletion/archival.
