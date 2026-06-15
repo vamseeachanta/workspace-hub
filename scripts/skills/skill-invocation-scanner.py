@@ -102,13 +102,62 @@ def discover_skills(skills_root: Path):
     return sorted(skills)
 
 
+def derive_short_name(skill_md_path) -> str:
+    """Canonical skill key = frontmatter `name` lowercased, else dir basename.
+
+    Mirrors skill-usage-report.py:150-153 (`canonical_name = fm.get("name",
+    parent.name); short_name = canonical_name.lower()`) so the scanner's OUTPUT
+    keys join the report's tier keys (#3112 BUG-2). Minimal frontmatter parse —
+    the scanner has no yaml dep; only the single-line `name:` field is needed.
+    """
+    p = Path(skill_md_path)
+    basename = p.parent.name
+    name = None
+    try:
+        text = p.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return basename.lower()
+    if text.startswith("---"):
+        end = text.find("\n---", 3)
+        block = text[3:end] if end != -1 else ""
+        for line in block.splitlines():
+            s = line.strip()
+            if s.startswith("name:"):
+                name = s[len("name:"):].strip().strip('"').strip("'")
+                break
+    return ((name or basename).strip() or basename).lower()
+
+
 def classify(event_ts, session_ts, coverage_days: int, skills_root: Path):
-    """Produce one row per discovered skill. Zero-invocation rows included."""
+    """Produce one row per discovered skill, keyed by short_name (#3112 BUG-2).
+
+    Events are emitted/joined on the rel-path (internal), but rows are OUTPUT
+    keyed by short_name so skill-usage-report.apply_invocation_demotion's
+    short_name lookup matches. short_name collisions across distinct rel-paths
+    are aggregated (conservative: a skill used under either path counts as used,
+    so it is not wrongly demoted) and warned.
+    """
     now = datetime.now(timezone.utc)
+    root = Path(skills_root)
+    agg: dict[str, dict] = {}
+    collisions: set[str] = set()
+    for skill_rel in discover_skills(skills_root):
+        short = derive_short_name(root / skill_rel / "SKILL.md")
+        ts_list = list(event_ts.get(skill_rel, []))
+        sessions = set(session_ts.get(skill_rel, set()))
+        if short in agg:
+            collisions.add(short)
+            agg[short]["ts"].extend(ts_list)
+            agg[short]["sessions"] |= sessions
+        else:
+            agg[short] = {"ts": ts_list, "sessions": sessions}
+    if collisions:
+        print(f"[scanner] WARN: short_name collisions aggregated (#3112): "
+              f"{sorted(collisions)}", file=sys.stderr)
     rows = []
-    for skill in discover_skills(skills_root):
-        ts_list = event_ts.get(skill, [])
-        sessions = session_ts.get(skill, set())
+    for short, d in agg.items():
+        ts_list = d["ts"]
+        sessions = d["sessions"]
         last_used = max(ts_list) if ts_list else None
         days_since = None
         if last_used:
@@ -117,7 +166,7 @@ def classify(event_ts, session_ts, coverage_days: int, skills_root: Path):
                 days_since = (now - dt).days
         rows.append(
             {
-                "skill": skill,
+                "skill": short,
                 "invocations_available_days": len(ts_list),
                 "session_count_available_days": len(sessions),
                 "coverage_days": coverage_days,
