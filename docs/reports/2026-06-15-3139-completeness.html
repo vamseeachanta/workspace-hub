@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Completeness — #3139 Skill-invocation: reconcile scanner-vs-report skill universe</title>
+<style>
+body{margin:0;background:#0f1419;color:#e6edf3;font:15px/1.6 -apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:30px 20px}
+h1{font-size:23px} .muted{color:#9aa7b2;font-size:13px}
+.big{font-size:42px;font-weight:800}
+.pass{color:#3fb950}.fail{color:#f85149}
+table{width:100%;border-collapse:collapse;margin:14px 0}
+td,th{border:1px solid #2d3742;padding:8px 10px;text-align:left}
+code,pre{background:#0b0f14;border:1px solid #2d3742;border-radius:5px;padding:2px 6px;
+ font:12.5px ui-monospace,Menlo,monospace;color:#c9d6e0}
+pre{padding:12px;overflow-x:auto;white-space:pre-wrap}
+</style></head><body><div class="wrap">
+<h1>Completeness — #3139: Skill-invocation: reconcile scanner-vs-report skill universe</h1>
+<div class="muted">class: evidence · threshold: 80 · generated 2026-06-15</div>
+<p class="big pass">89% — <span class="pass">PASS</span></p>
+<h2>Evidence</h2>
+<table><thead><tr><th>Item</th></tr></thead><tbody><tr><td>PR #3147 merged at 81ecd5c54 with shared _skill_identity.py, scanner/report imports, and parity tests: met (w=2)</td></tr><tr><td>GitHub checks for PR #3147 passed: Run Tests, Code Quality, Governance Checks, Review Evidence Check, Plan Approval Check, Marker-Label Parity Check, Client-PII Gate, Validate SKILL.md frontmatter, Model-ID Sourcing Guard, Compliance Dashboard, GitGuardian: met (w=2)</td></tr><tr><td>Focused TDD coverage added: tests/skills/test_skill_identity.py and tests/skills/test_skill_universe_parity.py: met (w=2)</td></tr><tr><td>Acceptance behavior met per PR evidence: scanner universe equals report universe, _archived excluded, gmail-data-extraction archive collision removed: met (w=2)</td></tr><tr><td>Advisory claude-review workflow was still in progress after PR merge; no blocking required check failure observed: UNMET (w=1)</td></tr></tbody></table>
+<h2>Authoritative record (gate-read)</h2>
+<pre>```completeness {"completeness_pct": 89, "cls": "evidence", "threshold": 80, "passed": true, "snapshot_sha": null, "issue_number": 3139, "generated_at": "2026-06-15T19:22:17.980286+00:00", "evidence": ["PR #3147 merged at 81ecd5c54 with shared _skill_identity.py, scanner/report imports, and parity tests: met (w=2)", "GitHub checks for PR #3147 passed: Run Tests, Code Quality, Governance Checks, Review Evidence Check, Plan Approval Check, Marker-Label Parity Check, Client-PII Gate, Validate SKILL.md frontmatter, Model-ID Sourcing Guard, Compliance Dashboard, GitGuardian: met (w=2)", "Focused TDD coverage added: tests/skills/test_skill_identity.py and tests/skills/test_skill_universe_parity.py: met (w=2)", "Acceptance behavior met per PR evidence: scanner universe equals report universe, _archived excluded, gmail-data-extraction archive collision removed: met (w=2)", "Advisory claude-review workflow was still in progress after PR merge; no blocking required check failure observed: UNMET (w=1)"]}```</pre>
+<div class="muted">This block is the exact record persisted to the issue + kanban; the close gate reads it.</div>
+</div></body></html>
