@@ -12,14 +12,9 @@ This directory contains the **master agent registry** for workspace-hub, central
 ## Quick Start
 
 ```bash
-# Navigate to any repository
-cd <workspace-hub>/<repo-name>
-
-# Use agent orchestrator for intelligent agent selection
-./modules/automation/agent_orchestrator.sh code-generation "Create REST API"
-
-# Or use Factory AI with centralized config
-droid  # Automatically loads .claude/CLAUDE.md with agent references
+# Load an agent directly by its definition (the live pattern):
+#   @.claude/agent-library/core/coder.md   (see .claude/workflows/standard-development.yaml)
+# Or invoke a devops skill that loads its agent: /database /infrastructure /observability /security-audit
 ```
 
 ## Directory Structure
@@ -163,23 +158,12 @@ droid  # Automatically loads .claude/CLAUDE.md with agent references
 
 ## Agent Selection & Orchestration
 
-### Intelligent Agent Selection
+### Agent Selection
 
-Use the agent orchestrator for automatic agent selection based on task type and complexity:
-
-```bash
-# Basic usage
-./modules/automation/agent_orchestrator.sh <task-type> "<description>"
-
-# With review
-./modules/automation/agent_orchestrator.sh code-generation "Create API" --with-review
-
-# Specify complexity
-./modules/automation/agent_orchestrator.sh architecture-design "Design microservices" --complexity complex
-
-# Force specific agent
-./modules/automation/agent_orchestrator.sh code-review "Review auth module" --agent code-review-swarm
-```
+> **Note (#3103):** the legacy `agent_orchestrator.sh` runner was retired (claude-flow-era, never scheduled).
+> Agents are loaded **directly** via `@.claude/agent-library/<category>/<agent>.md` references — see
+> `.claude/workflows/standard-development.yaml` and the `/database` `/infrastructure` `/observability`
+> `/security-audit` devops skills for the live pattern. The agent definitions below remain current.
 
 ### Task Types & Primary Agents
 
@@ -284,13 +268,6 @@ bash modules/automation/sync_agent_configs.sh --push
 bash modules/automation/sync_agent_configs.sh --validate
 ```
 
-### Daily Updates
-
-```bash
-# Auto-run daily at 00:00 UTC
-bash modules/automation/update_ai_agents_daily.sh
-```
-
 ### Validation
 
 ```bash
@@ -321,24 +298,14 @@ agents:
     - "@assetutilities/agents/registry/sub-agents/visualization-automation"
 ```
 
-### Example 3: Workflow Automation
+### Example 3: Direct agent loading (live pattern)
 
-```bash
-# Use shared workflow automation from hub
-./modules/automation/agent_orchestrator.sh spec-creation "Design payment API" \
-  --agent workflow-automation \
-  --domain python
+```text
+# Reference the agent definition directly (as standard-development.yaml does):
+@.claude/agent-library/core/coder.md
+@.claude/agent-library/devops/database.md   # or invoke /database
 ```
-
-### Example 4: Intelligent Selection
-
-```bash
-# Let orchestrator choose best agent
-./modules/automation/agent_orchestrator.sh architecture-design \
-  "Design microservices for e-commerce platform" \
-  --complexity complex \
-  --with-review
-```
+> The legacy `agent_orchestrator.sh` selection examples were removed in #3103 — see the note under "Agent Selection".
 
 ## Migration & Rollback
 
@@ -372,8 +339,6 @@ bash modules/automation/rollback_agent_configs.sh
 
 - **Registry:** `registry.yaml` (master reference)
 - **Best Practices:** `BEST_PRACTICES.md`
-- **Orchestrator:** `modules/automation/agent_orchestrator.sh`
-- **MCP Registry:** `modules/config/ai-agents-registry.json`
 
 ## Version History
 

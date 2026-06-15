@@ -13,7 +13,7 @@ meta:
   last_updated: "2025-10-05T13:45:00Z"
   total_agents: 78
   update_frequency: "daily"
-  orchestrator: "@modules/automation/agent_orchestrator.sh"
+  orchestrator: "RETIRED-in-#3103 (agent_orchestrator.sh removed; agents load directly via @.claude/agent-library/<cat>/<agent>.md refs)"
   best_practices: "@.claude/agents/BEST_PRACTICES.md"
 
 # ==========================================
@@ -263,7 +263,7 @@ repositories:
 
 agent_selection:
   orchestrator:
-    path: "@modules/automation/agent_orchestrator.sh"
+    path: "RETIRED-in-#3103 (agent_orchestrator.sh removed; agents load directly via @.claude/agent-library/<cat>/<agent>.md refs)"
     description: "Intelligent agent selection based on task type and complexity"
 
   registry:
@@ -466,7 +466,7 @@ automation:
       - validate: "Validate all agent configurations"
 
   update_script:
-    path: "@modules/automation/update_ai_agents_daily.sh"
+    path: "RETIRED-in-#3103 (update_ai_agents_daily.sh removed; was claude-flow-era, never scheduled)"
     description: "Daily update of agent capabilities and registry"
     schedule: "daily at 00:00 UTC"
     operations:
@@ -485,7 +485,7 @@ automation:
       - performance_benchmark
 
   orchestrator:
-    path: "@modules/automation/agent_orchestrator.sh"
+    path: "RETIRED-in-#3103 (agent_orchestrator.sh removed; agents load directly via @.claude/agent-library/<cat>/<agent>.md refs)"
     description: "Intelligent agent selection and task delegation"
     features:
       - task_type_classification
