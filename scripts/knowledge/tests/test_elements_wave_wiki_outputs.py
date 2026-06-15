@@ -9,26 +9,26 @@ def read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def test_2543_doris_codes_metadata_pages_exist_and_are_no_extraction():
+def test_2543_lng_a_codes_metadata_pages_exist_and_are_no_extraction():
     pages = [
-        ENG_STD / "sources/doris-codes-specs-faceted-index.md",
-        ENG_STD / "sources/doris-techstreet-drop.md",
-        ENG_STD / "sources/doris-company-specs.md",
-        ENG_STD / "sources/doris-deepstar.md",
+        ENG_STD / "sources/lng_a-codes-specs-faceted-index.md",
+        ENG_STD / "sources/lng_a-techstreet-drop.md",
+        ENG_STD / "sources/lng_a-company-specs.md",
+        ENG_STD / "sources/lng_a-deepstar.md",
     ]
     for page in pages:
         assert page.exists(), page
         text = read(page)
         assert "extraction_policy: metadata-only" in text
         assert "raw_copy_allowed: false" in text
-        assert "/mnt/ace/doris/codes" in text
+        assert "/mnt/ace/lng_a/codes" in text
         assert "No raw standards text" in text or "no raw standards text" in text.lower()
 
 
 def test_2543_bv_stub_is_public_metadata_only_if_present():
     page = ENG_STD / "standards/bv-ship-offshore-rules.md"
     if not page.exists():
-        deferred = ENG_STD / "sources/doris-codes-specs-faceted-index.md"
+        deferred = ENG_STD / "sources/lng_a-codes-specs-faceted-index.md"
         assert "BV publisher stub deferred" in read(deferred)
         return
     text = read(page)
@@ -37,15 +37,15 @@ def test_2543_bv_stub_is_public_metadata_only_if_present():
     assert "clause" not in text.lower()
 
 
-def test_2542_doris_university_metadata_pages_exist_without_fulltext_or_ocr():
+def test_2542_lng_a_university_metadata_pages_exist_without_fulltext_or_ocr():
     pages = [
-        ENG / "sources/doris-university-module-1-00-subsea-production-systems-overview.md",
-        ENG / "sources/doris-university-module-1-01-production-control-systems.md",
-        ENG / "sources/doris-university-module-1-02-umbilical-systems.md",
-        ENG / "sources/doris-university-module-1-03-installation-workover-control.md",
-        ENG / "sources/doris-university-lunch-and-learn-control-systems.md",
-        ENG / "sources/doris-university-lunch-and-learn-umbilical-systems.md",
-        ENG / "sources/doris-university-syllabus-snapshot.md",
+        ENG / "sources/lng_a-university-module-1-00-subsea-production-systems-overview.md",
+        ENG / "sources/lng_a-university-module-1-01-production-control-systems.md",
+        ENG / "sources/lng_a-university-module-1-02-umbilical-systems.md",
+        ENG / "sources/lng_a-university-module-1-03-installation-workover-control.md",
+        ENG / "sources/lng_a-university-lunch-and-learn-control-systems.md",
+        ENG / "sources/lng_a-university-lunch-and-learn-umbilical-systems.md",
+        ENG / "sources/lng_a-university-syllabus-snapshot.md",
     ]
     for page in pages:
         assert page.exists(), page
@@ -53,7 +53,7 @@ def test_2542_doris_university_metadata_pages_exist_without_fulltext_or_ocr():
         assert "extraction_policy: metadata-first" in text
         assert "raw_copy_allowed: false" in text
         assert "ocr_allowed: false" in text
-        assert "/mnt/ace/doris/training" in text
+        assert "/mnt/ace/lng_a/training" in text
         assert "Full text was not extracted" in text
 
 
@@ -80,8 +80,8 @@ def test_2542_training_concepts_and_standard_links_are_bounded():
 def test_elements_execution_updates_indexes_and_logs():
     std_index = read(ENG_STD / "index.md")
     eng_index = read(ENG / "index.md")
-    assert "doris-codes-specs-faceted-index" in std_index
-    assert "doris-university-module-1-00" in eng_index
+    assert "lng_a-codes-specs-faceted-index" in std_index
+    assert "lng_a-university-module-1-00" in eng_index
     assert "umbilical-tube-sizing-api-17e" in eng_index
-    assert "DORIS Codes metadata-only standards pointer pass" in read(ENG_STD / "log.md")
-    assert "Doris University metadata-first tranche 1" in read(ENG / "log.md")
+    assert "lng_a Codes metadata-only standards pointer pass" in read(ENG_STD / "log.md")
+    assert "lng_a University metadata-first tranche 1" in read(ENG / "log.md")

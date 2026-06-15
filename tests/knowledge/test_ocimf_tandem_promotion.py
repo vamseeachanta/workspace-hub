@@ -14,7 +14,7 @@ import yaml
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-HANDOFF_PATH = REPO_ROOT / "docs/reports/acma-wiki-unblock-2245-handoff.yaml"
+HANDOFF_PATH = REPO_ROOT / "docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml"
 OCIMF_SUMMARY_PATH = (
     REPO_ROOT
     / "data/document-index/summaries/"

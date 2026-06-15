@@ -68,7 +68,7 @@ class TestTablesPromoterSourceDocKey:
         )
 
         rec = _table_record(
-            project_root=tmp_dir, doc_key="/mnt/ace/acma-codes/x.csv",
+            project_root=tmp_dir, doc_key="/mnt/ace/mkt-a-codes/x.csv",
         )
         result = promote_tables([rec], tmp_dir)
         assert result.errors

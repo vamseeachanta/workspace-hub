@@ -29,7 +29,7 @@ def test_render_with_signals():
     )
     out = render_digest(
         signals_by_repo={"digitalmodel": [sig]},
-        skipped={"doris": "fetch timeout"},
+        skipped={"lng-a": "fetch timeout"},
         date="2026-04-20",
         duration_s=47,
         repos_total=6,

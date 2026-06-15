@@ -26,12 +26,12 @@ echo ""
 # Target repositories (excluding digitalmodel - already installed)
 REPOS=(
     "worldenergydata"
-    "rock-oil-field"
+    "client-b"
     "assetutilities"
     "assethold"
-    "saipem"
+    "client-d"
     "teamresumes"
-    "acma-projects"
+    "mkt-a"
 )
 
 INSTALLED_COUNT=0

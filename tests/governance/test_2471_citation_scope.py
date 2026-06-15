@@ -175,7 +175,7 @@ def test_allowlist_catches_bypass_paraphrases(tmp_path: Path):
 #       {marine-engineering, engineering, naval-architecture}
 #       PLUS {engineering-standards, asset-management} — formally sanctioned
 #       2026-05-03 via #2615 (W5-D umbrella).
-#   - Any other wiki (e.g. lng-projects, acma-projects, maritime-law,
+#   - Any other wiki (e.g. lng-projects, mkt-a, maritime-law,
 #     personal, health-reports) cited with the ``wiki/standards/<code-id>.md``
 #     routing must accompany an explicit sanction-issue ``#NNNN`` reference
 #     anywhere in the same plan file.

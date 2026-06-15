@@ -294,11 +294,11 @@ fi
 # --- C7: Symmetric overlap_notes for every #2533 body overlap pair. ---
 declare -a pairs=(
   "investments:assethold"
-  "client_projects:acma-projects"
-  "client_projects:seanation"
-  "client_projects:saipem"
-  "client_projects:frontierdeepwater"
-  "client_projects:doris"
+  "client-c:mkt-a"
+  "client-c:client-f"
+  "client-c:client-d"
+  "client-c:client-a"
+  "client-c:lng-a"
   "aceengineer-website:aceengineer-strategy"
 )
 check_symmetry() {
@@ -316,10 +316,10 @@ check_symmetry() {
 # Tier-1 ↔ per-repo execution docs pair from issue body
 check_symmetry workspace-hub digitalmodel
 check_symmetry assetutilities digitalmodel
-check_symmetry digitalmodel acma-projects
-check_symmetry digitalmodel seanation
-check_symmetry digitalmodel saipem
-check_symmetry digitalmodel frontierdeepwater
+check_symmetry digitalmodel mkt-a
+check_symmetry digitalmodel client-f
+check_symmetry digitalmodel client-d
+check_symmetry digitalmodel client-a
 for pair in "${pairs[@]}"; do
   a="${pair%%:*}"
   b="${pair##*:}"

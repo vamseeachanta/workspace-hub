@@ -8,10 +8,10 @@ this test module enforces:
 - frontmatter contract (``title``, ``tags``, ``added``, ``last_updated``,
   ``see_also`` >= 2)
 - per-page presence of >= 1 named standards body
-- noun-phrase reservation for #2541 (SESA / Doris-62092) and #2544
-  (Woodfibre / ACMA-31522) — both literal and generalized regex forms
+- noun-phrase reservation for #2541 (SESA / lng-a-62092) and #2544
+  (Woodfibre / mkt-a-31522) — both literal and generalized regex forms
 - positive-list assertion that workspace-hub-internal corpus identifiers
-  (ACMA project codes, Doris project codes) are NEVER referenced in the
+  (mkt-a project codes, lng-a project codes) are NEVER referenced in the
   new concept pages
 - word-count discipline (<= 400 words/page)
 - ``index.md`` lists the new pages and ``page_count`` is bumped
@@ -52,16 +52,16 @@ NEW_CONCEPT_PATHS: tuple[Path, ...] = tuple(
 
 # Per dispatch: BLOCK these literal noun-phrases (reserved for #2541 / #2544
 # and other modules / specs). Plus the plan's generalized regexes for any
-# future ACMA / Doris project code.
+# future mkt-a / lng-a project code.
 RESERVED_LITERAL_PHRASES: tuple[str, ...] = (
     "SESA",
     "Woodfibre",
-    "ACMA-31522",
-    "Doris-62092",
+    "mkt-a-31522",
+    "lng-a-62092",
 )
 
 RESERVED_GENERALIZED_PATTERN = re.compile(
-    r"\b(SESA|Woodfibre|ACMA[- ]?(?:project[- ]?)?\d{4,6}|Doris[- ]?(?:project[- ]?)?\d{4,6})\b",
+    r"\b(SESA|Woodfibre|mkt-a[- ]?(?:project[- ]?)?\d{4,6}|lng-a[- ]?(?:project[- ]?)?\d{4,6})\b",
     re.IGNORECASE,
 )
 
@@ -70,7 +70,7 @@ INTERNAL_CORPUS_PATTERNS: tuple[re.Pattern[str], ...] = (
     re.compile(r"\b31522\b"),
     re.compile(r"\b62092\b"),
     re.compile(r"\bACMA[- _]?project\b", re.IGNORECASE),
-    re.compile(r"\bDoris[- _]?project\b", re.IGNORECASE),
+    re.compile(r"\blng-a[- _]?project\b", re.IGNORECASE),
 )
 
 STANDARDS_BODY_NAMES: tuple[str, ...] = (
@@ -222,7 +222,7 @@ def test_word_count_under_400(path: Path):
 
 def test_no_reserved_noun_phrases_literal():
     """BLOCK the four literal noun-phrases per dispatch:
-    SESA, Woodfibre, ACMA-31522, Doris-62092 — reserved for other modules/specs.
+    SESA, Woodfibre, mkt-a-31522, lng-a-62092 — reserved for other modules/specs.
     """
     failures: list[str] = []
     for path in NEW_CONCEPT_PATHS:
@@ -236,7 +236,7 @@ def test_no_reserved_noun_phrases_literal():
 
 
 def test_no_reserved_noun_phrases_generalized():
-    """Generalized regex blocking any ACMA-NNNN / Doris-NNNN / SESA / Woodfibre form."""
+    """Generalized regex blocking any mkt-a-NNNN / lng-a-NNNN / SESA / Woodfibre form."""
     failures: list[str] = []
     for path in NEW_CONCEPT_PATHS:
         text = path.read_text(encoding="utf-8")
@@ -248,7 +248,7 @@ def test_no_reserved_noun_phrases_generalized():
 
 
 def test_no_internal_corpus_identifiers():
-    """Workspace-hub-internal corpus identifiers (ACMA-project / Doris-project / 31522 / 62092)
+    """Workspace-hub-internal corpus identifiers (mkt-a-project / lng-a-project / 31522 / 62092)
     must never appear in new concept-page bodies."""
     failures: list[str] = []
     for path in NEW_CONCEPT_PATHS:

@@ -1,4 +1,4 @@
-"""Tests for the ACMA private-wiki promotion ledger (issue #2747).
+"""Tests for the mkt-a private-wiki promotion ledger (issue #2747).
 
 The tests exercise:
 - schema/field validation (fail-closed)

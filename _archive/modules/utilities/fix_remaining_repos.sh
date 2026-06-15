@@ -26,16 +26,16 @@ git checkout main 2>/dev/null
 git branch -D $(git branch | grep -v main | xargs) 2>/dev/null
 cd ..
 
-# Fix rock-oil-field (has extra local branch)
-echo "📍 Fixing rock-oil-field..."
-cd rock-oil-field  
+# Fix client-b (has extra local branch)
+echo "📍 Fixing client-b..."
+cd client-b  
 git checkout master 2>/dev/null
 git branch -D $(git branch | grep -v master | xargs) 2>/dev/null
 cd ..
 
-# Fix saipem (has extra local branch)
-echo "📍 Fixing saipem..."
-cd saipem
+# Fix client-d (has extra local branch)
+echo "📍 Fixing client-d..."
+cd client-d
 git checkout main 2>/dev/null
 git branch -D $(git branch | grep -v main | xargs) 2>/dev/null
 cd ..

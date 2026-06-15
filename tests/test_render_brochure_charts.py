@@ -173,7 +173,7 @@ def test_render_chart_pack_writes_manifest_sidecars_and_three_formats(tmp_path: 
             assert path.stat().st_size > 0
         caption = (output_dir / Path(chart["caption_sidecar"]).name).read_text(encoding="utf-8")
         assert "representative" in caption.lower()
-        assert "client_projects" not in caption
+        assert "client-c" not in caption
 
 
 def test_renderer_refuses_missing_asset_directory_gate(tmp_path: Path) -> None:
