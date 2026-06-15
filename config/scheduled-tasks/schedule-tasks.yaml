@@ -712,7 +712,7 @@ tasks:
   # + README). U5 dry-run cycle verified both legs on 2026-04-21:
   # (a) linkedin + indeed via --skip-career-pages: 19 jobs, no policy violations;
   # (b) full 30-site career_page run: 48 jobs, robots fail-closed working on
-  # real disallowed sites (Aker Solutions, Saipem, Orsted, Talos, Bollinger,
+  # real disallowed sites (Aker Solutions, client-d, Orsted, Talos, Bollinger,
   # Huntington Ingalls), unreachable → DENY fired on VT Halter. Owner override
   # active for LinkedIn per TOS_REVIEW.md. Cron resumes its Monday 5AM UTC cadence.
   # Governance gate: removing the `Owner override:` block in TOS_REVIEW.md
