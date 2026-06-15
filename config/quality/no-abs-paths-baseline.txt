@@ -30,7 +30,6 @@ coordination/tests/unit/test_reflect_state_schema.py:146
 docs/templates/deploy_pytest_config.sh:333
 docs/templates/deploy_pytest_config.sh:35
 pylib/requests/utils.py:444
-scripts/automation/agent_orchestrator.sh:15
 scripts/automation/consolidate_commands.py:189
 scripts/automation/consolidate_commands.py:288
 scripts/automation/consolidate_commands.py:385
@@ -40,8 +39,6 @@ scripts/automation/consolidate_commands.py:51
 scripts/automation/consolidate_commands.py:518
 scripts/automation/consolidate_commands.py:540
 scripts/automation/consolidate_commands.py:643
-scripts/automation/deploy_orchestration_all_repos.sh:14
-scripts/automation/gate_pass_review.sh:14
 scripts/automation/install_factory_all_repos.sh:16
 scripts/automation/install_factory_enhanced.sh:16
 scripts/automation/propagate-slash-commands.sh:23
@@ -80,7 +77,6 @@ scripts/automation/sync_slash_command_ecosystem.py:418
 scripts/automation/sync_uv_commands.py:146
 scripts/automation/sync_uv_commands.py:33
 scripts/automation/sync_uv_commands.py:46
-scripts/automation/update_ai_agents_daily.sh:14
 scripts/batch-gemini-20-issues.sh:112
 scripts/batch-gemini-20-issues.sh:121
 scripts/batch-gemini-20-issues.sh:128
@@ -116,7 +112,6 @@ scripts/coordination/git/setup-trunk-flow.sh:31
 scripts/coordination/git/sync-all-repos.sh:133
 scripts/coordination/git/sync_all_repos.sh:100
 scripts/coordination/git/sync_and_commit_all.sh:15
-scripts/coordination/git/sync_orchestration_all_repos.sh:14
 scripts/cron/comprehensive-learning-nightly.sh:156
 scripts/cron/comprehensive-learning-nightly.sh:30
 scripts/cron/comprehensive-learning-nightly.sh:33
