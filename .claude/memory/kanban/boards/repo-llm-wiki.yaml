@@ -1552,3 +1552,17 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#699
+    title: 'feat(theory): strengthen the first-principles theory layer — coverage audit, fill starved domains, standardize concept-node template'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/699
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:engineering-methodology
+      - domain:knowledge-management
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
