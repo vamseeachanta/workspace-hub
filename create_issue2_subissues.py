@@ -1,5 +1,5 @@
 import json, os, subprocess, textwrap, pathlib
-repo='vamseeachanta/llm-wiki-acma'
+repo='vamseeachanta/llm-wiki-mkt-a'
 out=pathlib.Path('C:/workspace-hub/issue2_subissues_created.json')
 labels=['area:teams-bot','type:poc','status:ready-for-scope','security-review']
 # create labels if absent
@@ -60,7 +60,7 @@ Create an HTML permissions checklist under `reports/teams-bot/issue-2/` with:
  'body':'''Parent: #2
 
 ## Objective
-Create a small, approved, cited knowledge pack from the `llm-wiki-acma` repo ecosystem for the first Oil & Gas Q&A POC.
+Create a small, approved, cited knowledge pack from the `llm-wiki-mkt-a` repo ecosystem for the first Oil & Gas Q&A POC.
 
 ## Scope
 - Inventory approved Markdown/HTML/report/manifests in the repo.

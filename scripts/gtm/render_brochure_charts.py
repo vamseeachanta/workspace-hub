@@ -21,10 +21,10 @@ from PIL import Image, ImageDraw, ImageFont
 
 ISSUE_NUMBER = 2555
 FORBIDDEN_PATTERNS = (
-    "client_projects",
-    "acma-projects",
-    "seanation",
-    "frontierdeepwater",
+    "client-c",
+    "mkt-a",
+    "client-f",
+    "client-a",
 )
 REPRESENTATIVE_DISCLOSURE = (
     "Vessel parameters are representative classes only; not measured telemetry "

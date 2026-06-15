@@ -91,7 +91,7 @@ RULES = [
 
     # ── Data: general ingestion / index ──
     (r"(data (collection|index|pipeline|source)|refresh pipeline|"
-     r"document.index|saipem.*index|acma.projects.*index|"
+     r"document.index|client-d.*index|mkt-a.projects.*index|"
      r"content index|discoverability|module.*index|"
      r"navigation layer|legacy root)", "data", "ingestion"),
 
@@ -106,7 +106,7 @@ RULES = [
     (r"(aceengineer.website|website.*data card)", "website", "aceengineer"),
 
     # ── Platform / ops / machine setup ──
-    (r"(ace.linux|acma.ansys|install.*suite|gemini cli|"
+    (r"(ace.linux|mkt-a.ansys|install.*suite|gemini cli|"
      r"node 18|portable python|cross.machine|workstation|"
      r"filesystem naming|naming cleanup)", "platform", "ops"),
 

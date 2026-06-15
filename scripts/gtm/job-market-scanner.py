@@ -103,7 +103,7 @@ for i, kw in enumerate(KEYWORDS):
 # Known target companies for priority scoring
 PRIORITY_COMPANIES = {
     # Tier 1 — EPIC / Installation
-    "subsea7", "technipfmc", "saipem", "mcdermott", "allseas", "heerema",
+    "subsea7", "technipfmc", "client-d", "mcdermott", "allseas", "heerema",
     "boskalis", "van oord", "deme",
     # Tier 2 — Operators
     "energy transfer", "crescent energy", "shell", "bp", "chevron",
@@ -498,7 +498,7 @@ COMPANY_CAREER_URLS = {
     "DNV": "https://www.dnv.com/careers/",
     "Bureau Veritas": "https://group.bureauveritas.com/careers",
     "Aker Solutions": "https://www.akersolutions.com/careers/",
-    "Saipem": "https://www.saipem.com/en/work-us",
+    "client-d": "https://www.client-d.com/en/work-us",
     "Allseas": "https://allseas.com/careers/",
     "DOF Subsea": "https://www.dofsubsea.com/careers",
     "Chart Industries": "https://www.chartindustries.com/careers",

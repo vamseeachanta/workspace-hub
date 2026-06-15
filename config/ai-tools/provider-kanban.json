@@ -3401,7 +3401,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "Doris demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata"
+        "title": "lng-a demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -3414,7 +3414,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "Doris demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata",
+      "title": "lng-a demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2859",
       "warnings": []
     },
@@ -4241,7 +4241,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "Confirm and delete acma-projects-freeze-work snapshot"
+        "title": "Confirm and delete mkt-a-freeze-work snapshot"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -4254,7 +4254,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "Confirm and delete acma-projects-freeze-work snapshot",
+      "title": "Confirm and delete mkt-a-freeze-work snapshot",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2784",
       "warnings": []
     },
@@ -4940,7 +4940,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates"
+        "title": "revise(naval-arch): B1528 proj-a force calculation review updates"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -4953,7 +4953,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates",
+      "title": "revise(naval-arch): B1528 proj-a force calculation review updates",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2760",
       "warnings": [
         "approved_no_marker",
@@ -6866,7 +6866,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/Saipem, OrcaFlex/SAGE Profile)"
+        "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/client-d, OrcaFlex/SAGE Profile)"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -6879,7 +6879,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/Saipem, OrcaFlex/SAGE Profile)",
+      "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/client-d, OrcaFlex/SAGE Profile)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2690",
       "warnings": []
     },
@@ -11880,7 +11880,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "Doris demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata"
+          "title": "lng-a demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -11893,7 +11893,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "Doris demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata",
+        "title": "lng-a demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2859",
         "warnings": []
       },
@@ -12720,7 +12720,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "Confirm and delete acma-projects-freeze-work snapshot"
+          "title": "Confirm and delete mkt-a-freeze-work snapshot"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -12733,7 +12733,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "Confirm and delete acma-projects-freeze-work snapshot",
+        "title": "Confirm and delete mkt-a-freeze-work snapshot",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2784",
         "warnings": []
       },
@@ -13419,7 +13419,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates"
+          "title": "revise(naval-arch): B1528 proj-a force calculation review updates"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -13432,7 +13432,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates",
+        "title": "revise(naval-arch): B1528 proj-a force calculation review updates",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2760",
         "warnings": [
           "approved_no_marker",
@@ -15345,7 +15345,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/Saipem, OrcaFlex/SAGE Profile)"
+          "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/client-d, OrcaFlex/SAGE Profile)"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -15358,7 +15358,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/Saipem, OrcaFlex/SAGE Profile)",
+        "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/client-d, OrcaFlex/SAGE Profile)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2690",
         "warnings": []
       },

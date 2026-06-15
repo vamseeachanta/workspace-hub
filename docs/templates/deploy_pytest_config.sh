@@ -41,14 +41,14 @@ LOG_FILE="pytest_deployment_${TIMESTAMP}.log"
 declare -A TIER_1=(
     [digitalmodel]=true
     [energy]=true
-    [frontierdeepwater]=true
+    [client-a]=true
 )
 
 declare -A TIER_2=(
     [aceengineercode]=true
     [assetutilities]=true
     [worldenergydata]=true
-    [rock-oil-field]=true
+    [client-b]=true
     [teamresumes]=true
 )
 

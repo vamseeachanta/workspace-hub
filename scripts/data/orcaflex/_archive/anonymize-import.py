@@ -5,18 +5,18 @@
 """
 Anonymize raw OrcaFlex YAML extracts and import clean versions to digitalmodel.
 
-Stage 2: Pull from client_projects/data/raw/orcaflex-extracted/
+Stage 2: Pull from client-c/data/raw/orcaflex-extracted/
           → replace all non-numeric string values with generic labels
           → run legal scan to verify no client identifiers remain
 Stage 3: Write clean YAMLs to digitalmodel/data/orcaflex/
 
 Usage:
-    python3 anonymize-import.py --input client_projects/data/raw/orcaflex-extracted/ \\
+    python3 anonymize-import.py --input client-c/data/raw/orcaflex-extracted/ \\
                                  --output digitalmodel/data/orcaflex/ \\
                                  --deny-list .legal-deny-list.yaml \\
                                  --dry-run
 
-    python3 anonymize-import.py --input client_projects/data/raw/orcaflex-extracted/ \\
+    python3 anonymize-import.py --input client-c/data/raw/orcaflex-extracted/ \\
                                  --output digitalmodel/data/orcaflex/
 """
 
@@ -194,7 +194,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Anonymize OrcaFlex YAML extracts and import to digitalmodel"
     )
-    parser.add_argument("--input", required=True, help="Source dir (client_projects staging)")
+    parser.add_argument("--input", required=True, help="Source dir (client-c staging)")
     parser.add_argument("--output", required=True, help="Destination dir (digitalmodel/data/orcaflex)")
     parser.add_argument(
         "--deny-list",

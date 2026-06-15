@@ -2,7 +2,7 @@
 # Validates config/client-wikis.yml against on-disk + GitHub reality.
 # Exit non-zero on any failure. Machine-aware: skip mount checks when not present.
 #
-# Implements §Pseudocode of docs/plans/2026-05-20-issue-2746-llm-wiki-acma.md
+# Implements §Pseudocode of docs/plans/2026-05-20-issue-2746-llm-wiki-mkt-a.md
 # with three carry-forward fixes from T2/T3 adversarial reviews:
 #   Fix 1 — Firewall-grep errexit hazard: use `if grep -qE ... then ... fi`
 #           instead of `grep -E ... && { ...; FAILED=1; }` which crashes under

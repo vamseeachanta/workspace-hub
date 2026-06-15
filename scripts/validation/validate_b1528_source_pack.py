@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Validate the B1528 SIROCCO source pack artifacts."""
+"""Validate the B1528 proj-a source pack artifacts."""
 from __future__ import annotations
 from pathlib import Path
 import math
 import sys
 import yaml
 ROOT = Path(__file__).resolve().parents[2]
-PACK = ROOT / "docs/projects/acma/B1528/sirocco-rudder-source-pack.md"
-BENCH = ROOT / "docs/projects/acma/B1528/sirocco-turning-benchmark.yaml"
+PACK = ROOT / "docs/projects/mkt-a/B1528/proj-a-rudder-source-pack.md"
+BENCH = ROOT / "docs/projects/mkt-a/B1528/proj-a-turning-benchmark.yaml"
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
