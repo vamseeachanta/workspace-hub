@@ -124,7 +124,7 @@
 - [Reflog as ground truth](feedback_reflog_as_ground_truth.md) — `[rejected]` pushes and "lock failed" rebase errors can mask successful ops; check reflog + status before retrying
 - [Stash `^3` for untracked extraction](feedback_stash_caret_3_for_untracked.md) — `git checkout stash@{0} -- <path>` fails for untracked-when-stashed; use `stash@{0}^3`
 - [Auto-sync as silent pusher](feedback_autosync_silent_pusher.md) — auto-sync resolves push contention by quietly pushing local-ahead; wait+verify after `[rejected]` not retry
-- [Sweep-contamination class (commit + stash variants)](feedback_retry_loop_sweep_contamination.md) — retry-loop commits sweep parallel-session staged files; `while git stash drop` loops drain ALL repo stashes (not just yours, repo-wide scope). Use specific-target syntax: `git commit -m "..." -- <file>` pathspec for commits; `git stash drop stash@{N}` after grep-verifying description for stashes. Never unconditional-drain-all. Recovery via `git stash store/apply <sha>` within ~14d gc window.
+- [Sweep-contamination class (commit + stash variants)](feedback_retry_loop_sweep_contamination.md) — retry-loop commits sweep parallel-session staged files; `while git stash drop` loops drain ALL repo stashes (not just yours, repo-wide scope). Use specific-target syntax: `git commit -m "..." -- <file>` pathspec for commits; `git stash drop stash@{N}` after grep-verifying description for stashes. Never unconditional-drain-all. Recovery via `git stash store/apply <sha>` within ~14d gc window. *stale: 2026-06-15*
 - [r1 review trust hazard](feedback_r1_review_trust_hazard.md) — before applying r1 fix asserting a gap, independently verify the asserted-missing surface; reviewers have constrained retrieval and selectively quote (Plan #2710 r1 missed submit-job.sh:18-23 existing check)
 - [CI baseline red ≠ PR broken](feedback_ci_baseline_red_not_pr_broken.md) — pre-existing main-branch CI failures inherit to new PRs; always check upstream baseline via `gh run list --branch main` before assuming the PR caused the red state
 - [llm-wiki hyphen-path pattern](feedback_llm_wiki_hyphen_module_path_pattern.md) — `scripts/data/llm-wiki/` poisons Python dotted-paths; grep plans for `llm-wiki\.` as P1 smell
@@ -138,7 +138,7 @@
 - [Hermes-active preflight check](feedback_hermes_active_preflight_check.md) — Hermes cleanup loops on main revert parallel commits in minutes; preflight pgrep, use worktree+branch if active
 - [NTFS dirty-volume mount path](feedback_ntfs_dirty_volume_mount_path.md) — `ntfs3` refuses dirty volumes; use `ntfs-3g` (FUSE) auto-replays journal; explicit uid/gid for ownership
 - [ntfs3 breaks IntxLNK symlinks](feedback_ntfs3_symlink_intxlnk.md) — in-kernel ntfs3 reads ntfs-3g symlinks as raw `IntxLNK`; stay on ntfs-3g for git repos. Verified 2026-05-01.
-- [Lane result path outside sandbox](feedback_lane_result_path_outside_sandbox.md) — provider-autofeed `agent-logs/...` paths blocked Read/Write/stat; fall back to `docs/sessions/` + ENV-MISMATCH banner
+- [Lane result path outside sandbox](feedback_lane_result_path_outside_sandbox.md) — provider-autofeed `agent-logs/...` paths blocked Read/Write/stat; fall back to `docs/sessions/` + ENV-MISMATCH banner *stale: 2026-06-15*
 - [Sparse-checkout: add not disable](feedback_sparse_checkout_add_not_disable.md) — acma-projects sparse only; `git sparse-checkout add <path>` not `disable` (hung 22min materializing ~329K files)
 - [Naive secret-scan FP cascade](feedback_naive_secret_scan_false_positive_cascade.md) — regex matches `secrets-scan.sh` paths, "tokens used" prose, argon2 comments; trust hardened pre-commit hook
 - [Origin committed with unresolved markers](feedback_origin_committed_with_unresolved_markers.md) — parallel sessions land half-resolved files; pull double-nests markers; `git checkout --ours` if HEAD clean
@@ -164,7 +164,7 @@
 - [ChatGPT share DOM duplicates](feedback_chatgpt_share_dom_duplication.md) — `chatgpt.com/s/<id>` renders each turn twice (a11y + display); dedupe by innerText; user prompt often absent
 - [Local venv pytest import hang](feedback_local_venv_pytest_import_hang.md) — `import pytest` hangs >30s at digitalmodel/.venv; rely on CI; verify syntax via `py_compile` not pytest
 - [Git status lock storm](feedback_git_status_lock_storm.md) — long sessions accumulate 10+ zombie `git status -z -uall` blocking commits; `GIT_OPTIONAL_LOCKS=0 git commit` bypasses
-- [Orphan-lock doom-loop + monitor reap](feedback_orphan_lock_doom_loop_monitor_reap.md) — wedged session: detect live git via `pgrep -x git` (not `-f`); clear stale .git/index.lock (guarded) then reap scoped `<sid>/tasks` bash monitors; lets session self-resume
+- [Orphan-lock doom-loop + monitor reap](feedback_orphan_lock_doom_loop_monitor_reap.md) — wedged session: detect live git via `pgrep -x git` (not `-f`); clear stale .git/index.lock (guarded) then reap scoped `<sid>/tasks` bash monitors; lets session self-resume *stale: 2026-06-15*
 - [HTML default for rich artifacts](feedback_html_default_artifact.md) — HTML for human-facing plans/specs/reports/PR-explainers; markdown for harness/skill/rule files. workspace-hub#2663 codifies
 - [PDF OCR fallback chain](feedback_pdf_ocr_fallback_chain.md) — pdftotext+PyMuPDF=0 chars → PDF is image-rendered; fall back PyMuPDF 300 DPI → tesseract --psm 6
 - [Parallel branch checkout reverts working dir](feedback_parallel_branch_checkout_working_dir.md) — parallel `git checkout`-ing feature branch reverts your dir; verify reflog + `git branch --show-current`
@@ -231,7 +231,7 @@
 - [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — SUPERSEDED 2026-05-20 by privacy flip; historical context only
 - [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — partial supersede; "public + legally-sanitized" replaced by "private + full-fidelity"
 - [Codes/standards data in private llm-wiki](feedback_codes_standards_data_in_private_wiki.md) — OCIMF/API/DNV/ABS/IACS/ASCE/ASME → private llm-wiki; verbatim+tables allowed; raw PDFs stay `/mnt/ace/acma-codes/`
-- [Wiki sibling naming + factory IMPLEMENTED](project_wiki_sibling_naming_locked.md) — suffix `llm-wiki-<client>` decided #2731 D4, factory + registry + acma instance landed via #2746 (closed); one-per-CLIENT (SIROCCO→`llm-wiki-acma/projects/sirocco/`); retrieval-time rule pending #2778
+- [Wiki sibling naming + factory IMPLEMENTED](project_wiki_sibling_naming_locked.md) — suffix `llm-wiki-<client>` decided #2731 D4, factory + registry + acma instance landed via #2746 (closed); one-per-CLIENT (SIROCCO→`llm-wiki-acma/projects/sirocco/`); retrieval-time rule pending #2778 *stale: 2026-06-15*
 - [Cross-review finds what self-review misses](feedback_cross_review_finds_what_self_review_misses.md) — code-stage adversarial cross-review consistently surfaces public-repo leaks, LICENSE-detection bugs, duplicated-resolver drift, asymmetric error handling, OR-disjunction test fences. Single-provider multi-angle dispatch works as fallback. 2026-05-21 verdict: 4 MAJOR + multiple MINOR on #617+#429 close-out.
 - [llm-wiki external-post ingest workflow](project_llm_wiki_external_post_ingest_workflow.md) — 8-step LinkedIn/blog → wiki ingest; first-run 2026-05-07 (Sherwood, Rötzer); 14-URL 2026-05-18 batch added 2 domains + AskUserQuestion-pivot pattern
 - [llm-wiki geotechnical-engineering founded](project_llm_wiki_geotechnical_engineering_founded.md) — 13th domain 2026-05-18; soil constitutive models, foundations, earthquake-geotech; founding source Xu SoilModelsPy
@@ -253,7 +253,7 @@
 - [devaKrishna videos canonical source](reference_krishna_videos_youtube.md) — all progress videos on YouTube `achantav@gmail.com`; grounds skill-analysis evidence
 - [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json`
 - [achantas-data](reference_achantas_data.md) — personal data + travel as GitHub issues
-- [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06
+- [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06 *stale: 2026-06-15*
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access
 - [Gmail MCP scope](reference_gmail_mcp_scope.md) — read+compose only, no modify; archive/label/delete require browser or user UI
 - [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`

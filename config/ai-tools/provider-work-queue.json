@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-15T01:20:12.525891Z",
+  "generated_at": "2026-06-15T05:20:12.733307Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-15T01:20:10.928764Z",
+  "scorecard_generated_at": "2026-06-15T05:20:11.014998Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -1067,7 +1067,7 @@
             "status:plan-approved",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-14T21:38:09Z",
+          "updatedAt": "2026-06-15T03:02:02Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -2053,7 +2053,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-14T11:07:52Z",
+          "updatedAt": "2026-06-15T04:02:31Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -5436,7 +5436,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-14T04:00:02Z",
+          "updatedAt": "2026-06-15T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5533,7 +5533,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-14T04:00:02Z",
+          "updatedAt": "2026-06-15T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
