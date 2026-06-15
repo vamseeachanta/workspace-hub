@@ -79,17 +79,17 @@
     },
     {
       "sha": "sha256:04c6368293fe47ee9b8c85354199a2dc06361c4a3cec349e10b36511950f0a24",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/B1535/specs/2025-08-06-offshore-drilling-rig-cost-analysis/preliminary-rig-sales-data.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/B1535/specs/2025-08-06-offshore-drilling-rig-cost-analysis/preliminary-rig-sales-data.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:d9c81d667bdcf9bba5612828319f0ceec09b1b9bded049ad6b8a065b990a0b88",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/B1535/specs/2025-08-07-offshore-msiv-shallow-water-research/sub-specs/crane-capacity-spec.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/B1535/specs/2025-08-07-offshore-msiv-shallow-water-research/sub-specs/crane-capacity-spec.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:b6fe51bd109d44c80b0c94383bb2bdf8f29b6e6faf281daf9737983f1cb6feec",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/specs/README.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/specs/README.md",
       "source": "workspace_spec"
     },
     {
@@ -134,7 +134,7 @@
     },
     {
       "sha": "sha256:f3b229a62988e264d12c732a25b1848fd4270a8f7aab0ed5f75a9aca4a9aa2a8",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client_projects/modules/agent-os/slash-commands/create-spec/spec.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-c/modules/agent-os/slash-commands/create-spec/spec.md",
       "source": "workspace_spec"
     },
     {
@@ -609,12 +609,12 @@
     },
     {
       "sha": "sha256:91e2573978be27b074cfcd71c9abd5ea7c3953fa015d446b70cdcbb6dff17e63",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/doris/modules/agent-os/slash-commands/create-module-agent/sub-specs/context-optimization.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/lng-a/modules/agent-os/slash-commands/create-module-agent/sub-specs/context-optimization.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:33e2acae6de23e45004ce767373a1e748bb58dc301cf382e7619737aa6c2ba9b",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/frontierdeepwater/2025-07-31-agent-os-integration/sub-specs/technical-spec.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-a/2025-07-31-agent-os-integration/sub-specs/technical-spec.md",
       "source": "workspace_spec"
     },
     {
@@ -634,12 +634,12 @@
     },
     {
       "sha": "sha256:608777f9b82fad0f2fd8b106c5a364e482b889d1332c4c1ef2a42341d161ff09",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/rock-oil-field/.agent-os/specs/README.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-b/.agent-os/specs/README.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:fbed3daa1926ac8bb19d2c7affc210c5825a39fbc36703cabed9c00363c345f9",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/rock-oil-field/templates/plan-template.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-b/templates/plan-template.md",
       "source": "workspace_spec"
     },
     {

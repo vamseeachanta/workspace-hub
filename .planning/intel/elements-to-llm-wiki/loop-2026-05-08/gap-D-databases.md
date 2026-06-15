@@ -30,7 +30,7 @@ The llm-wiki ecosystem rests on **~25 registries/databases** spread across six s
 | `conference-index.jsonl` | JSONL | 7.4 MB | `phase-a-index.py` | `conference-stats.py` | 2026-04-05 | Per-paper records |
 | `conference-index-batch.jsonl` | JSONL | 3.4 MB | `phase-a-index.py` | none in tree | 2026-04-04 | Batch checkpoint (orphan) |
 | `conference-phase-a-results.jsonl` | JSONL | 11 MB | `phase-a-index.py` | none in tree | 2026-04-04 | Phase-a output (likely orphan) |
-| `dde-literature-catalog.yaml` | YAML | 87 items, 5,456 PDFs | `dde-migration-report.py`, `build-ledger.py` | priority-queue.yaml; `cross-reference-registries.py` (indirect) | 2026-04-03 | Doris DDE drive lit catalog |
+| `dde-literature-catalog.yaml` | YAML | 87 items, 5,456 PDFs | `dde-migration-report.py`, `build-ledger.py` | priority-queue.yaml; `cross-reference-registries.py` (indirect) | 2026-04-03 | lng-a DDE drive lit catalog |
 | `dde-standards-inventory.yaml` | YAML | 20 KB | `phase-a-index.py` | `cross-reference-registries.py` (indirect) | 2026-04-03 | DDE-drive standards listing |
 | `dde-oil-gas-codes-scan.yaml` | YAML | 6 KB | `phase-a-index.py` | none direct | 2026-04-03 | Oil-gas codes scan output |
 | `dde-migration-report.yaml` | YAML | 2 KB | `dde-migration-report.py` | none direct | 2026-04-04 | Migration audit report |
@@ -172,7 +172,7 @@ The llm-wiki ecosystem rests on **~25 registries/databases** spread across six s
 - `conference-index.jsonl` vs. `conference-index-batch.jsonl` vs. `conference-phase-a-results.jsonl` (three views of the same phase-a output)
 - `resource-intelligence-maturity.yaml` vs. `resource-intelligence-maturity.md` (twin policy)
 - `llm-wiki-external-source-priority-queue.yaml` vs. `llm-wiki-external-source-priority-queue.md` (twin)
-- `dde-standards-inventory.yaml` vs. `standards-transfer-ledger.yaml` (overlap on Doris-DDE drive standards)
+- `dde-standards-inventory.yaml` vs. `standards-transfer-ledger.yaml` (overlap on lng-a-DDE drive standards)
 - `weekly-utilization.json` superseded by `provider-utilization-weekly.json`
 
 ## 5. Elements Ingest Durability Check

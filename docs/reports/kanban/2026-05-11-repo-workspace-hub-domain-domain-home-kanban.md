@@ -20,4 +20,4 @@ Open issues: **1**
 
 | Issue | Lane | Domain | AI provider / review owner | Machine | Labels |
 | --- | --- | --- | --- | --- | --- |
-| [#190 WRK-626: feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3)](https://github.com/vamseeachanta/workspace-hub/issues/190) | Planning Needed | domain:home | Claude planner; Gemini research support | ace-linux-1 | enhancement, priority:high, cat:personal, domain:home |
+| [#190 WRK-626: feat(client-a): engineering AI demo — calculation templates + data processing (Days 2-3)](https://github.com/vamseeachanta/workspace-hub/issues/190) | Planning Needed | domain:home | Claude planner; Gemini research support | ace-linux-1 | enhancement, priority:high, cat:personal, domain:home |

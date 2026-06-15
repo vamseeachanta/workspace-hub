@@ -2,7 +2,7 @@
 /mnt/ace/assethold/casa-grande-77017/MOVE-LOG.md
 /mnt/ace/digitalmodel/tools/qgis/MOVE-LOG.md
 /mnt/ace/digitalmodel/references/riser-toolbox/MOVE-LOG.md
-/mnt/ace/doris/62092_sesa/MOVE-LOG.md
-/mnt/ace/doris/training/MOVE-LOG.md
-/mnt/ace/doris/codes/_from_elements/MOVE-LOG.md
-/mnt/ace/acma-projects/31522-woodfibre-lng/MOVE-LOG.md
+/mnt/ace/lng-a/62092_sesa/MOVE-LOG.md
+/mnt/ace/lng-a/training/MOVE-LOG.md
+/mnt/ace/lng-a/codes/_from_elements/MOVE-LOG.md
+/mnt/ace/mkt-a/31522-woodfibre-lng/MOVE-LOG.md

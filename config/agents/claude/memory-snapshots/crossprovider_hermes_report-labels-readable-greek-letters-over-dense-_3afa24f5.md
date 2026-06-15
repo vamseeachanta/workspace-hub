@@ -5,7 +5,7 @@ metadata:
   type: reference
   source: hermes
   bridged: 2026-05-26
-  tags: [reporting, accessibility, sirocco, ux, hydrodynamics]
+  tags: [reporting, accessibility, proj-a, ux, hydrodynamics]
 ---
 
 For client-facing naval-architecture reports, use plain-text readable labels with simple Greek letters (e.g., `Current heading θ (deg)`, `Rudder angle α (deg)`) instead of HTML entities or dense subscript notation. Improves accessibility and avoids encoding errors.

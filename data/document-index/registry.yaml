@@ -24,7 +24,7 @@ by_domain:
   naval-architecture: 144
   regulatory: 73
 repos:
-  acma-projects:
+  mkt-a:
     standards_count: 110
     gaps: 0
     implemented: 0
@@ -40,11 +40,11 @@ repos:
     standards_count: 183
     gaps: 14
     implemented: 2
-  doris:
+  lng-a:
     standards_count: 92
     gaps: 0
     implemented: 0
-  frontierdeepwater:
+  client-a:
     standards_count: 0
     gaps: 0
     implemented: 0
@@ -56,11 +56,11 @@ repos:
     standards_count: 0
     gaps: 0
     implemented: 0
-  rock-oil-field:
+  client-b:
     standards_count: 35
     gaps: 0
     implemented: 0
-  saipem:
+  client-d:
     standards_count: 35
     gaps: 0
     implemented: 0

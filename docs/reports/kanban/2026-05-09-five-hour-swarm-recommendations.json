@@ -475,7 +475,7 @@
       "board_url": "https://github.com/vamseeachanta/digitalmodel/issues/598",
       "live": {
         "live_ok": true,
-        "title": "feat(naval-architecture): SIROCCO current-heading/rudder force component chart set",
+        "title": "feat(naval-architecture): proj-a current-heading/rudder force component chart set",
         "url": "https://github.com/vamseeachanta/digitalmodel/issues/598",
         "state": "OPEN",
         "labels": [
@@ -538,7 +538,7 @@
     {
       "repo": "llm-wiki",
       "number": 46,
-      "rationale": "Plan-review batch: Frontier Deepwater clearance checklist.",
+      "rationale": "Plan-review batch: client-a clearance checklist.",
       "board_lane": "Plan Review / Needs Approval",
       "board_priority": "priority:unspecified",
       "board_has_plan": true,
@@ -546,7 +546,7 @@
       "board_url": "https://github.com/vamseeachanta/llm-wiki/issues/46",
       "live": {
         "live_ok": true,
-        "title": "governance(llm-wiki): prepare Frontier Deepwater source-family clearance checklist",
+        "title": "governance(llm-wiki): prepare client-a source-family clearance checklist",
         "url": "https://github.com/vamseeachanta/llm-wiki/issues/46",
         "state": "OPEN",
         "labels": [

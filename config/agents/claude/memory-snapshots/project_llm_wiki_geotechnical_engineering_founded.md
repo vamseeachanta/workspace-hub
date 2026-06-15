@@ -7,7 +7,7 @@ metadata:
   originSessionId: 578c6ffe-2428-405f-9435-a7eebec611a4
 ---
 
-The `wikis/geotechnical-engineering/` domain at `vamseeachanta/llm-wiki` was founded on 2026-05-18 (commit `bbc21cb7` pre-rebase, `c6f76539` post-rebase). It is the 13th domain wiki in the llm-wiki ecosystem (sibling set as of this date: acma-projects, asset-management, drilling-engineering, engineering, engineering-standards, geotechnical-engineering, lng-projects, marine-engineering, maritime-law, naval-architecture, production-engineering, reservoir-engineering, trends-and-strategies).
+The `wikis/geotechnical-engineering/` domain at `vamseeachanta/llm-wiki` was founded on 2026-05-18 (commit `bbc21cb7` pre-rebase, `c6f76539` post-rebase). It is the 13th domain wiki in the llm-wiki ecosystem (sibling set as of this date: mkt-a, asset-management, drilling-engineering, engineering, engineering-standards, geotechnical-engineering, lng-projects, marine-engineering, maritime-law, naval-architecture, production-engineering, reservoir-engineering, trends-and-strategies).
 
 **Why:** Soil mechanics and soil constitutive modeling (PM4Sand, PM4Silt, NorSand, Modified Cam-Clay, MIT-S1, Hujeux, UBCSAND, hypoplasticity) are a distinct sub-discipline of continuum mechanics that does not fit cleanly under `engineering/` (which has offshore soil-structure-interaction pages — `pile-capacity-alpha-method`, `pipeline-soil-interaction`, `riser-soil-interaction` — that are the offshore-application surface, not the constitutive-modeling-and-soil-physics surface). Forcing geotech into `engineering/` would have created sunk-cost migration debt later. Founding decision was authorized via AskUserQuestion at routing time.
 

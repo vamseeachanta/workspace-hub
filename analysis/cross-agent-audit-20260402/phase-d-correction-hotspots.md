@@ -15,10 +15,10 @@
 | 4 | scripts/work-queue/whats-next.sh | 66 | 0.74% |
 | 5 | assetutilities/src/.../common/data.py | 59 | 0.66% |
 | 6 | specs/wrk/WRK-658/plan.md | 58 | 0.65% |
-| 7 | frontierdeepwater/.../pipelay-parameters.csv | 57 | 0.64% |
+| 7 | client-a/.../pipelay-parameters.csv | 57 | 0.64% |
 | 8 | scripts/work-queue/verify-gate-evidence.py | 50 | 0.56% |
 | 9 | digitalmodel/src/.../wall_thickness_mt_report.py | 48 | 0.54% |
-| 10 | frontierdeepwater/.../heavy-lift-parameters.csv | 44 | 0.49% |
+| 10 | client-a/.../heavy-lift-parameters.csv | 44 | 0.49% |
 | 11 | .claude/skills/.../work-queue/SKILL.md | 43 | 0.48% |
 | 12 | .claude/work-queue/assets/WRK-1028/plan-draft-review.html | 42 | 0.47% |
 | 13 | data/oss-engineering-catalog.yaml | 41 | 0.46% |
@@ -45,7 +45,7 @@
 | 7 | .claude/ (other: docs, hooks, state) | 288 | 3.2% |
 | 8 | assethold/ | 174 | 1.9% |
 | 9 | tests/ | 173 | 1.9% |
-| 10 | frontierdeepwater/ | 141 | 1.6% |
+| 10 | client-a/ | 141 | 1.6% |
 
 > **The work-queue subsystem** (.claude/work-queue/ + scripts/work-queue/) accounts for **55.3% of all corrections** (4,959 of 8,965). This is the single biggest quality improvement target.
 

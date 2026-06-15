@@ -21,4 +21,4 @@ Generated: 2026-05-09
 
 | Issue | Title | Lane | Domain routes | Priority | 5-hour Hermes swarm route | Labels |
 | --- | --- | --- | --- | --- | --- | --- |
-| [workspace-hub #190](https://github.com/vamseeachanta/workspace-hub/issues/190) | WRK-626: feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3) | Planning Needed / Future Backlog | category:personal, domain:home | priority:high | planning factory: 1-2 high-priority issues/window through resource intel + draft plan | `cat:personal`, `domain:home`, `enhancement`, `priority:high` |
+| [workspace-hub #190](https://github.com/vamseeachanta/workspace-hub/issues/190) | WRK-626: feat(client-a): engineering AI demo — calculation templates + data processing (Days 2-3) | Planning Needed / Future Backlog | category:personal, domain:home | priority:high | planning factory: 1-2 high-priority issues/window through resource intel + draft plan | `cat:personal`, `domain:home`, `enhancement`, `priority:high` |

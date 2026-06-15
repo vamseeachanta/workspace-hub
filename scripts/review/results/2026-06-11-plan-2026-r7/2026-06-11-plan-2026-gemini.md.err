@@ -1,6 +1,0 @@
-Warning: Basic terminal detected (TERM=dumb). Visual rendering will be limited. For the best experience, use a terminal emulator with truecolor support.
-Warning: 256-color support not detected. Using a terminal with at least 256-color support is recommended for a better visual experience.
-Ripgrep is not available. Falling back to GrepTool.
-Error executing tool run_shell_command: Tool "run_shell_command" not found. Did you mean one of: "update_topic", "grep_search", "invoke_agent"?
-Error executing tool glob: Path not in workspace: Attempted path "/home" resolves outside the allowed workspace directories: /tmp or the project temp directory: /home/vamsee/.gemini/tmp/tmp
-Error executing tool glob: Path not in workspace: Attempted path "/home" resolves outside the allowed workspace directories: /tmp or the project temp directory: /home/vamsee/.gemini/tmp/tmp

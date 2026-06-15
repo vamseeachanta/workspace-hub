@@ -1,8 +1,8 @@
 ---
 title: "SESA candidate dossier (issue #2541)"
 domain: lng-projects
-bucket: doris-62092-sesa
-parent_root: /mnt/ace/doris/62092_sesa
+bucket: lng-a-62092-sesa
+parent_root: /mnt/ace/lng-a/62092_sesa
 generated: 2026-04-28
 generator: terminal-1 overnight Elements wave (planning-only)
 inputs:
@@ -10,7 +10,7 @@ inputs:
   - .planning/intel/elements-to-llm-wiki/elements-wiki-classification.tsv
   - .planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv
   - .planning/intel/elements-deep-extraction/elements-deep-extraction-report.md
-  - knowledge/wikis/lng-projects/wiki/sources/elements-doris-62092-sesa.md
+  - knowledge/wikis/lng-projects/wiki/sources/elements-lng-a-62092-sesa.md
 related_issues:
   - workspace-hub#2541 (this plan)
   - workspace-hub#2540 (umbrella)
@@ -23,7 +23,7 @@ related_issues:
 # SESA FLNG Terminal — curated extraction dossier
 
 > Planning-only artifact. No raw bulk data is copied into git or wiki by this dossier.
-> All paths reference `/mnt/ace/doris/62092_sesa` and are read-only for this terminal.
+> All paths reference `/mnt/ace/lng-a/62092_sesa` and are read-only for this terminal.
 
 ## 1. Corpus shape (from intel)
 
@@ -39,9 +39,9 @@ related_issues:
 
 ## 2. Project context (inferred from path tokens — to confirm in plan review)
 
-- **SESA** = San Antonio Este, Argentine Patagonia FLNG terminal proposal under DORIS engineering.
+- **SESA** = San Antonio Este, Argentine Patagonia FLNG terminal proposal under lng-a engineering.
 - Two FLNG vessel options surface in path tokens: `Hilli`, `MKII`, plus a third `LYOS` referent.
-- DORIS document numbering: `GSM-AO-<discipline>-<doc-type>-NNNNN-<seq>-<rev>`.
+- lng-a document numbering: `GSM-AO-<discipline>-<doc-type>-NNNNN-<seq>-<rev>`.
   Discipline letters seen: `G` (general), `L` (logistics/marine), `C` (civil/structural), `M` (maritime), `Q` (quality).
   Document type codes seen: `ITE` (engineering technical report / "informe técnico"), `MCA` (marine/method calc analysis), `LYO` (layout), `HDS` (hydrostatic data sheet), `ETC` (engineering technical communication), `PRO` (procedure).
 - CTR (Change/Task Request) decomposition under `999 Work Space/`:
@@ -53,7 +53,7 @@ related_issues:
   - CTR-09 — Civil ITE
   - CTR-10 — Marine MCA
   - CTR-11 — Maritime PRO
-- Path tokens are bilingual Spanish/English (`Estudios de referencia`, `Metaoceánicos`, `Válvulas Offshore`, `Envío a DORIS`); UTF-8 round-trip is required.
+- Path tokens are bilingual Spanish/English (`Estudios de referencia`, `Metaoceánicos`, `Válvulas Offshore`, `Envío a lng-a`); UTF-8 round-trip is required.
 
 ## 3. Theme groups (with evidence)
 
@@ -73,9 +73,9 @@ related_issues:
 
 ### 3.3 Material specs / datasheets
 **Folder:** `000 Client Supplied/03-Material Specs and DS/Flanges/` and `999 Work Space/CTR-04/`
-**Pattern:** flange data sheets with two parallel tracks — client-supplied baseline vs. DORIS markup ("w comments CODE B").
-**Why high value:** client-supplied flange HDS plus DORIS engineering review comments form a natural "baseline + verification" pair that maps directly into a `wiki/concepts/flange-data-sheet-review-codes.md` and a vendor cross-walk.
-**Notable artifacts:** GSM-AO-L-HDS-10016-0000 - B.pdf (4.95 MB, client-supplied baseline); GSM-AO-L-HDS-10016-0000 Flange Data Sheets w comments CODE B.pdf (6.07 MB, DORIS review markup).
+**Pattern:** flange data sheets with two parallel tracks — client-supplied baseline vs. lng-a markup ("w comments CODE B").
+**Why high value:** client-supplied flange HDS plus lng-a engineering review comments form a natural "baseline + verification" pair that maps directly into a `wiki/concepts/flange-data-sheet-review-codes.md` and a vendor cross-walk.
+**Notable artifacts:** GSM-AO-L-HDS-10016-0000 - B.pdf (4.95 MB, client-supplied baseline); GSM-AO-L-HDS-10016-0000 Flange Data Sheets w comments CODE B.pdf (6.07 MB, lng-a review markup).
 **Risk:** The "w comments CODE B" PDFs use overlay annotations — `pdftotext` will dump comments inline but may collide with body text; consider pdfminer.six layout mode as fallback.
 
 ### 3.4 Subsea valves TBE
@@ -100,9 +100,9 @@ The most expensive cross-cut for the future implementation phase is canonical-pa
 |---|---|---|
 | Same artifact in client transmittal + work folder + JWhipple personal copy | GSM-AO-Q-PRO-10066-0000-A.doc appears in 3 paths at byte-identical 23,694,848 | Prefer `002 Project Filing/Deliverables/` (final), else `000 Client Supplied/` newest dated subfolder, else first `999 Work Space/CTR-NN/` |
 | Same artifact across format triplet .doc/.docx/.pdf | GSM-AO-Q-PRO-10066-0000-A in all three | Extract from .pdf (final-form) for content, retain .docx as editable provenance link only |
-| Rev variants `Rev JRA`, `Rev JW`, `Rev JW JRA` | GSM-AO-Q-PRO-10066-0000-A Rev JW JRA.pdf | Keep `Rev JRA` (DORIS senior reviewer markup) when present; treat as separate page only if comments add engineering content |
+| Rev variants `Rev JRA`, `Rev JW`, `Rev JW JRA` | GSM-AO-Q-PRO-10066-0000-A Rev JW JRA.pdf | Keep `Rev JRA` (lng-a senior reviewer markup) when present; treat as separate page only if comments add engineering content |
 | `Old/` shadow copies | `999 Work Space/CTR-09/Old/GSM-AO-C-ITE-10011-0000-A Rev JRA.pdf` | Always exclude `Old/` from the tranche |
-| Dated transmittal folders for the same doc | `2025-12-18-DORIS/`, `19-Dec-25/`, `2026-01-06/` | Pick most recent dated folder for the canonical path |
+| Dated transmittal folders for the same doc | `2025-12-18-lng-a/`, `19-Dec-25/`, `2026-01-06/` | Pick most recent dated folder for the canonical path |
 
 The first-tranche TSV applies these rules; the implementation phase will need a scripted path-canonicalization pass before extraction begins.
 
@@ -114,7 +114,7 @@ The first-tranche TSV applies these rules; the implementation phase will need a 
 4. **OCR fallback**: at least one large reference study is suspected to contain scanned plates. First-pass extraction is `pdftotext -layout` only; OCR (`tesseract`) is deferred and explicitly out-of-scope for the first tranche.
 5. **Bilingual content**: extracted text must preserve Spanish accents and ñ. Validation step in the implementation phase should grep extracted output for replacement-character `?` or `�` to flag encoding loss.
 6. **Vendor confidentiality**: TBE vendor brochures may carry NDA-style markings. Wiki source pages should link `/mnt/ace` paths but avoid uploading brochure text wholesale until a redistribution policy is confirmed. Open question for plan review.
-7. **#2534 retention boundary**: this dossier and the future implementation phase do NOT delete or move anything under `/mnt/ace/doris/62092_sesa/_from_elements`. That cleanup remains gated by #2534.
+7. **#2534 retention boundary**: this dossier and the future implementation phase do NOT delete or move anything under `/mnt/ace/lng-a/62092_sesa/_from_elements`. That cleanup remains gated by #2534.
 8. **Bytes selected vs total**: the proposed first tranche covers ~276 MB of raw source — roughly 19% of bucket size, ~5% of file count, but is expected to capture the majority of high-signal engineering content because the tail is dominated by working-folder duplicates and CAD.
 
 ## 6. Uncertainties to surface in plan review (do not resolve in dossier)
@@ -122,6 +122,6 @@ The first-tranche TSV applies these rules; the implementation phase will need a 
 - Are LYOS / MKII / Hilli the three competing FLNG vessel candidates, or is one of them a topside identifier? (Affects whether free-span pages are `entities/` or `comparisons/`.)
 - Is the SESA project still active and confidential, or freely citeable inside the wiki? (Affects vendor-text policy in §5.6.)
 - Should the `Rev JRA` markup-only PDFs be merged into the base-rev source page, or kept as separate review pages? (Affects extracted-page count and dedup rules.)
-- Is there a ratified project-document-ID convention page elsewhere in DORIS internal wikis that should be cross-linked rather than redocumented? (Affects whether the GSM-AO numbering scheme gets its own concept page.)
+- Is there a ratified project-document-ID convention page elsewhere in lng-a internal wikis that should be cross-linked rather than redocumented? (Affects whether the GSM-AO numbering scheme gets its own concept page.)
 
 These uncertainties are intentionally written here rather than asked of the user mid-overnight, per the run boundary.

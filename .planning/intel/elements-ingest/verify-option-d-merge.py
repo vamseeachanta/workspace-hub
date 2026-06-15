@@ -27,10 +27,10 @@ BUCKETS = [
     Bucket(2, "assethold-casa-grande-77017", Path("/mnt/ace/assethold/casa-grande-77017"), Path("/mnt/ace/assethold/casa-grande-77017/_from_elements")),
     Bucket(3, "digitalmodel-qgis", Path("/mnt/ace/digitalmodel/tools/qgis"), Path("/mnt/ace/digitalmodel/tools/qgis/_from_elements")),
     Bucket(4, "digitalmodel-riser-toolbox", Path("/mnt/ace/digitalmodel/references/riser-toolbox"), Path("/mnt/ace/digitalmodel/references/riser-toolbox/_from_elements")),
-    Bucket(5, "doris-62092-sesa", Path("/mnt/ace/doris/62092_sesa"), Path("/mnt/ace/doris/62092_sesa/_from_elements")),
-    Bucket(6, "doris-university", Path("/mnt/ace/doris/training"), Path("/mnt/ace/doris/training/_from_elements")),
-    Bucket(7, "doris-codes-specs", Path("/mnt/ace/doris/codes"), Path("/mnt/ace/doris/codes/_from_elements/codes-doris")),
-    Bucket(8, "acma-projects-31522-woodfibre", Path("/mnt/ace/acma-projects/31522-woodfibre-lng"), Path("/mnt/ace/acma-projects/31522-woodfibre-lng/_from_elements")),
+    Bucket(5, "lng-a-62092-sesa", Path("/mnt/ace/lng-a/62092_sesa"), Path("/mnt/ace/lng-a/62092_sesa/_from_elements")),
+    Bucket(6, "lng-a-university", Path("/mnt/ace/lng-a/training"), Path("/mnt/ace/lng-a/training/_from_elements")),
+    Bucket(7, "lng-a-codes-specs", Path("/mnt/ace/lng-a/codes"), Path("/mnt/ace/lng-a/codes/_from_elements/codes-lng-a")),
+    Bucket(8, "mkt-a-31522-woodfibre", Path("/mnt/ace/mkt-a/31522-woodfibre-lng"), Path("/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements")),
 ]
 
 def iter_stage_files(stage: Path):

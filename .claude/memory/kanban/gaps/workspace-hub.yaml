@@ -65,9 +65,9 @@ cards:
   priority: 0
   body_excerpt: Ad-hoc log files at repo root; add nohup.out and claude_smoke*.log to .gitignore.
 - idempotency_key: gap:repo-workspace-hub-engineering:010
-  title: acma-projects sparse overlay status undocumented
+  title: mkt-a sparse overlay status undocumented
   source: detected_gap
-  detection_basis: acma-projects/ is a sparse-checkout overlay (per memory feedback_sparse_checkout_add_not_disable) but no top-level README documents which subdirs are materialized vs sparse
+  detection_basis: mkt-a/ is a sparse-checkout overlay (per memory feedback_sparse_checkout_add_not_disable) but no top-level README documents which subdirs are materialized vs sparse
   needs_issue: true
   priority: 0
-  body_excerpt: 'Document the acma-projects sparse-checkout policy: which subdirs are materialized by default, the add (not disable) workflow, and gotchas.'
+  body_excerpt: 'Document the mkt-a sparse-checkout policy: which subdirs are materialized by default, the add (not disable) workflow, and gotchas.'

@@ -8,10 +8,10 @@ ROOT = Path(__file__).resolve().parents[3]
 PAGES = [
     ("knowledge/wikis/asset-management/wiki/sources/elements-assethold-casa-grande-77017.md", "/mnt/ace/assethold/casa-grande-77017"),
     ("knowledge/wikis/engineering/wiki/sources/elements-digitalmodel-qgis.md", "/mnt/ace/digitalmodel/tools/qgis"),
-    ("knowledge/wikis/engineering/wiki/sources/elements-doris-university.md", "/mnt/ace/doris/training"),
-    ("knowledge/wikis/engineering-standards/wiki/sources/elements-doris-codes-specs.md", "/mnt/ace/doris/codes"),
-    ("knowledge/wikis/lng-projects/wiki/sources/elements-acma-projects-31522-woodfibre.md", "/mnt/ace/acma-projects/31522-woodfibre-lng"),
-    ("knowledge/wikis/lng-projects/wiki/sources/elements-doris-62092-sesa.md", "/mnt/ace/doris/62092_sesa"),
+    ("knowledge/wikis/engineering/wiki/sources/elements-lng-a-university.md", "/mnt/ace/lng-a/training"),
+    ("knowledge/wikis/engineering-standards/wiki/sources/elements-lng-a-codes-specs.md", "/mnt/ace/lng-a/codes"),
+    ("knowledge/wikis/lng-projects/wiki/sources/elements-mkt-a-31522-woodfibre.md", "/mnt/ace/mkt-a/31522-woodfibre-lng"),
+    ("knowledge/wikis/lng-projects/wiki/sources/elements-lng-a-62092-sesa.md", "/mnt/ace/lng-a/62092_sesa"),
     ("knowledge/wikis/marine-engineering/wiki/sources/elements-digitalmodel-riser-toolbox.md", "/mnt/ace/digitalmodel/references/riser-toolbox"),
     ("knowledge/wikis/marine-engineering/wiki/sources/elements-digitalmodel-suction-pile-sizing.md", "/mnt/ace/digitalmodel/references/suction-pile-sizing"),
 ]

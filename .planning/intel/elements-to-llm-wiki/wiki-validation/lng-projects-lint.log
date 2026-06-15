@@ -3,8 +3,8 @@
 Found 3 issue(s):
 
   [WARNING] cross-refs: Low link density (0.4 avg/page)
-  [WARNING] frontmatter: 'sources/elements-acma-projects-31522-woodfibre.md' missing recommended field 'sources'
-  [WARNING] frontmatter: 'sources/elements-doris-62092-sesa.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/elements-mkt-a-31522-woodfibre.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/elements-lng-a-62092-sesa.md' missing recommended field 'sources'
 
 Summary:
   Orphan pages:     0

@@ -23,10 +23,10 @@ Generated: `2026-04-28 19:23 UTC`
 | 2 | `assethold-casa-grande-77017` | `asset-management` | `/mnt/ace/assethold/casa-grande-77017` | 3 | 16,703,705 | low | missing=0, size_mismatch=0, not_hardlinked=0 |
 | 3 | `digitalmodel-qgis` | `engineering` | `/mnt/ace/digitalmodel/tools/qgis` | 3 | 398,492,107 | high | missing=0, size_mismatch=0, not_hardlinked=0 |
 | 4 | `digitalmodel-riser-toolbox` | `marine-engineering` | `/mnt/ace/digitalmodel/references/riser-toolbox` | 8 | 510,241,677 | high | missing=0, size_mismatch=0, not_hardlinked=0 |
-| 5 | `doris-62092-sesa` | `lng-projects` | `/mnt/ace/doris/62092_sesa` | 418 | 1,465,267,463 | medium | missing=0, size_mismatch=0, not_hardlinked=0 |
-| 6 | `doris-university` | `engineering` | `/mnt/ace/doris/training` | 564 | 11,060,962,662 | medium | missing=0, size_mismatch=0, not_hardlinked=0 |
-| 7 | `doris-codes-specs` | `engineering-standards` | `/mnt/ace/doris/codes` | 35,197 | 26,411,658,490 | metadata-only | missing=0, size_mismatch=0, not_hardlinked=0 |
-| 8 | `acma-projects-31522-woodfibre` | `lng-projects` | `/mnt/ace/acma-projects/31522-woodfibre-lng` | 5,364 | 1,879,405,139,855 | metadata-only | missing=0, size_mismatch=0, not_hardlinked=0 |
+| 5 | `lng-a-62092-sesa` | `lng-projects` | `/mnt/ace/lng-a/62092_sesa` | 418 | 1,465,267,463 | medium | missing=0, size_mismatch=0, not_hardlinked=0 |
+| 6 | `lng-a-university` | `engineering` | `/mnt/ace/lng-a/training` | 564 | 11,060,962,662 | medium | missing=0, size_mismatch=0, not_hardlinked=0 |
+| 7 | `lng-a-codes-specs` | `engineering-standards` | `/mnt/ace/lng-a/codes` | 35,197 | 26,411,658,490 | metadata-only | missing=0, size_mismatch=0, not_hardlinked=0 |
+| 8 | `mkt-a-31522-woodfibre` | `lng-projects` | `/mnt/ace/mkt-a/31522-woodfibre-lng` | 5,364 | 1,879,405,139,855 | metadata-only | missing=0, size_mismatch=0, not_hardlinked=0 |
 
 ## Per-wiki batch files
 

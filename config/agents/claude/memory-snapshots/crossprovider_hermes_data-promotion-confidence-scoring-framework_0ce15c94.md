@@ -5,7 +5,7 @@ metadata:
   type: reference
   source: hermes
   bridged: 2026-05-26
-  tags: [data-pipeline, quality-gates, client-projects]
+  tags: [data-pipeline, quality-gates, client-c]
 ---
 
 Require completion/confidence scoring before raw data promotion to private wiki with fields: raw source presence, readability/OCR quality, extraction completeness, metadata completeness, citation quality, privacy classification, domain confidence, report-readiness. Score triggers revision as models improve. This enables incremental quality gates.

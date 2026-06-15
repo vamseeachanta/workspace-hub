@@ -1,13 +1,13 @@
 SUCTION PILE SIZING PROGRAM
 INTRODUCTION
 
-A suction pile program was developed and placed on the Doris T: drive {T:\Subsea\3-UFR\09-
+A suction pile program was developed and placed on the lng-a T: drive {T:\Subsea\3-UFR\09-
 Suction_Pile_Sizing\....xlsm} for execution.
 
 The program executes in Excel, however it will not run successfully with correct results if executed
-outside the T: drive location since it uses miscellaneous resources of the Doris system.
+outside the T: drive location since it uses miscellaneous resources of the lng-a system.
 
-The program is the proprietary property of Doris Inc. / Houston. The author and administrator for the
+The program is the proprietary property of lng-a Inc. / Houston. The author and administrator for the
 software is R. Haun.
 
 SUCTION PILE DEFLECTION CONSIDERATIONS AND ASSUMPTIONS

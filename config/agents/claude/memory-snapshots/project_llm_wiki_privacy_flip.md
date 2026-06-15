@@ -13,7 +13,7 @@ metadata:
 
 **How to apply:**
 - All codes/standards data (OCIMF, API, DNV, ABS, IACS UR, ASCE, ASME, ISO, BS EN, SOLAS, MARPOL) routes to private llm-wiki per [[codes-standards-data-in-private-wiki]]
-- Client project names (B1528, SIROCCO, acma-projects) no longer require abstraction inside llm-wiki — the abstraction gate (Skill D) only applies when promoting to a public surface, and there is no public llm-wiki anymore
+- Client project names (B1528, proj-a, mkt-a) no longer require abstraction inside llm-wiki — the abstraction gate (Skill D) only applies when promoting to a public surface, and there is no public llm-wiki anymore
 - Cross-repo references from workspace-hub/digitalmodel to llm-wiki will 404 for unauthenticated readers; intentional, by design
 - `digitalmodel`-pip-install users get `CitationResolutionError` for citation lookups unless they configure `LLM_WIKI_PATH` to a local clone; intentional gating
 - Forks/stars at flip time: 0 each; no external dependents to coordinate

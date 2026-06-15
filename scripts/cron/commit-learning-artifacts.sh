@@ -79,6 +79,28 @@ if [[ -x "$REDACT_SCRIPT" ]]; then
   bash "$REDACT_SCRIPT" 2>&1 || log "WARNING: session-signal redaction had errors"
 fi
 
+# ── Codename-redact client identifiers from learning state (#3097) ─────
+# Defense-in-depth: the learning pipeline emits client names into committed
+# state. Codename-redact them using a PRIVATE local map (the real names live
+# only in the private aceengineer-strategy archive — never in this public repo).
+# Provision per cron host: copy
+#   aceengineer-strategy/pii-remediation/3097-2026-06-14/client-codename-map.yaml
+# to $PII_CODENAME_MAP (default below). If absent, warn — the #3099 legal scan
+# is the hard backstop gate.
+PII_MAP="${PII_CODENAME_MAP:-${WORKSPACE_HUB}/config/agents/.client-codename-map.local.yaml}"
+PII_REDACTOR="${WORKSPACE_HUB}/scripts/legal/redact-client-pii.py"
+if [[ -f "$PII_MAP" && -f "$PII_REDACTOR" ]]; then
+  log "Codename-redacting client identifiers from learning state..."
+  uv run python "$PII_REDACTOR" --map "$PII_MAP" --root "$WORKSPACE_HUB" \
+    .claude/state/corrections .claude/state/patterns .claude/state/reflect-history \
+    .claude/state/cc-insights .claude/state/candidates .claude/state/trends \
+    .claude/state/session-signals .claude/state/skill-eval-results \
+    config/agents/claude/memory-snapshots config/agents/codex/state-snapshots \
+    config/agents/gemini/state-snapshots 2>&1 || log "WARNING: client redaction had errors"
+else
+  log "WARNING: PII codename map not found ($PII_MAP) — skipping client redaction (#3099 legal scan is the backstop)"
+fi
+
 # ── Stage learning artifacts ──────────────────────────────────────────
 log "Staging learning artifacts..."
 

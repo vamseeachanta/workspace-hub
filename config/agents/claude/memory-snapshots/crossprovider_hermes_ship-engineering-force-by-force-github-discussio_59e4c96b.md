@@ -8,6 +8,6 @@ metadata:
   tags: [github-workflow, naval-architecture, engineering-review, issue-driven]
 ---
 
-Naval architecture work (SIROCCO #2760) uses issue-threaded clarifications—one force at a time with schematics showing sign conventions, CoG moments, and rudder angle increments every 2°. User posts corrections and questions as comments, not chat.
+Naval architecture work (proj-a #2760) uses issue-threaded clarifications—one force at a time with schematics showing sign conventions, CoG moments, and rudder angle increments every 2°. User posts corrections and questions as comments, not chat.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

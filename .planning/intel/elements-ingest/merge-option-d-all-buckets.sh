@@ -15,10 +15,10 @@ BUCKETS=(
   "02|assethold-casa-grande-77017|/mnt/ace/assethold/casa-grande-77017|/mnt/ace/assethold/casa-grande-77017/_from_elements"
   "03|digitalmodel-qgis|/mnt/ace/digitalmodel/tools/qgis|/mnt/ace/digitalmodel/tools/qgis/_from_elements"
   "04|digitalmodel-riser-toolbox|/mnt/ace/digitalmodel/references/riser-toolbox|/mnt/ace/digitalmodel/references/riser-toolbox/_from_elements"
-  "05|doris-62092-sesa|/mnt/ace/doris/62092_sesa|/mnt/ace/doris/62092_sesa/_from_elements"
-  "06|doris-university|/mnt/ace/doris/training|/mnt/ace/doris/training/_from_elements"
-  "07|doris-codes-specs|/mnt/ace/doris/codes|/mnt/ace/doris/codes/_from_elements/codes-doris"
-  "08|acma-projects-31522-woodfibre|/mnt/ace/acma-projects/31522-woodfibre-lng|/mnt/ace/acma-projects/31522-woodfibre-lng/_from_elements"
+  "05|lng-a-62092-sesa|/mnt/ace/lng-a/62092_sesa|/mnt/ace/lng-a/62092_sesa/_from_elements"
+  "06|lng-a-university|/mnt/ace/lng-a/training|/mnt/ace/lng-a/training/_from_elements"
+  "07|lng-a-codes-specs|/mnt/ace/lng-a/codes|/mnt/ace/lng-a/codes/_from_elements/codes-lng-a"
+  "08|mkt-a-31522-woodfibre|/mnt/ace/mkt-a/31522-woodfibre-lng|/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements"
 )
 
 printf 'timestamp\torder\tbucket\tparent\tstage\tstatus\tlog\n' > "$LOG_SUMMARY"

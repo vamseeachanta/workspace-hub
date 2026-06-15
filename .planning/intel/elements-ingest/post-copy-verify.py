@@ -22,14 +22,14 @@ class Bucket:
     dest: Path
 
 BUCKETS = [
-    Bucket('doris-62092-sesa', '62092  SESA FLNG Terminal Project', Path('/mnt/ace/doris/62092_sesa/_from_elements')),
+    Bucket('lng-a-62092-sesa', '62092  SESA FLNG Terminal Project', Path('/mnt/ace/lng-a/62092_sesa/_from_elements')),
     Bucket('assethold-casa-grande-77017', 'casa_grande_77017', Path('/mnt/ace/assethold/casa-grande-77017/_from_elements')),
-    Bucket('doris-codes-specs', 'Codes and Specs', Path('/mnt/ace/doris/codes/_from_elements/codes-doris')),
-    Bucket('doris-university', 'Doris University', Path('/mnt/ace/doris/training/_from_elements')),
+    Bucket('lng-a-codes-specs', 'Codes and Specs', Path('/mnt/ace/lng-a/codes/_from_elements/codes-lng-a')),
+    Bucket('lng-a-university', 'lng-a University', Path('/mnt/ace/lng-a/training/_from_elements')),
     Bucket('digitalmodel-qgis', 'qgis', Path('/mnt/ace/digitalmodel/tools/qgis/_from_elements')),
     Bucket('digitalmodel-riser-toolbox', 'Riser Toolbox', Path('/mnt/ace/digitalmodel/references/riser-toolbox/_from_elements')),
     Bucket('digitalmodel-suction-pile-sizing', 'Suction Pile Sizing', Path('/mnt/ace/digitalmodel/references/suction-pile-sizing/_from_elements')),
-    Bucket('acma-projects-31522-woodfibre', 'Woodfibre', Path('/mnt/ace/acma-projects/31522-woodfibre-lng/_from_elements')),
+    Bucket('mkt-a-31522-woodfibre', 'Woodfibre', Path('/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements')),
 ]
 
 

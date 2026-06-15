@@ -8,6 +8,6 @@ metadata:
   tags: [cross-repo, deliverables, engineering-reports]
 ---
 
-Engineering calculation packages (SIROCCO ship forces) split deliverables: Markdown + HTML in `digitalmodel/`, Word + PDF in `acma-projects/`. This deliberate split separates analysis code from polished client-facing documents.
+Engineering calculation packages (proj-a ship forces) split deliverables: Markdown + HTML in `digitalmodel/`, Word + PDF in `mkt-a/`. This deliberate split separates analysis code from polished client-facing documents.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

@@ -228,8 +228,8 @@ docs/ops/scheduled-tasks.md,10
 docs/research/engineering-capability-map.md,10
 scripts/_core/sync-agent-configs.sh,10
 skeleton-test-coverage-uplift,10
-client_projects/energy_engineering/ecs/ecs_clients.md,10
-client_projects/ecs/proj/ecs_clients.md,10
+client-c/energy_engineering/ecs/ecs_clients.md,10
+client-c/ecs/proj/ecs_clients.md,10
 docs/BUSINESS_BRAIN.md,10
 scripts/operations/connection/vnc-dev-secondary.sh,9
 scripts/session/detect-drift.sh,9
@@ -1095,7 +1095,7 @@ digitalmodel/src/digitalmodel/hydrodynamics/hull_library/catalog.py,3
 .claude/work-queue/wrk-status-index.json,3
 knowledge/seeds/maritime-law-cases.yaml,3
 .claude/skills/data/documents/knowledge-base-builder/SKILL.md,3
-acma-projects/B1522/ctr-2/ref/proj/2100-RPT-4005-06 Cathodic Protection Design Report _Approved_.pdf,3
+mkt-a/B1522/ctr-2/ref/proj/2100-RPT-4005-06 Cathodic Protection Design Report _Approved_.pdf,3
 .claude/work-queue/pending/WRK-5035.md,3
 .claude/skills/engineering/drilling/SKILL.md,3
 scripts/data/document-index/tests/test_mark_exhausted.py,3
@@ -1675,7 +1675,7 @@ scripts/agents/lib/session-store.sh,2
 .claude/work-queue/pending/WRK-1127.md,2
 .claude/work-queue/assets/WRK-1125/evidence/stage-evidence.yaml,2
 .claude/work-queue/assets/WRK-1127/evidence/resource-intelligence.yaml,2
-frontierdeepwater/docs/gtm-offshore-contractors-2026.md,2
+client-a/docs/gtm-offshore-contractors-2026.md,2
 .claude/work-queue/pending/WRK-1112.md,2
 .claude/work-queue/pending/WRK-1119.md,2
 data/document-index/index.jsonl,2
@@ -1728,7 +1728,7 @@ specs/wrk/WRK-1113/selection-matrix.md,2
 knowledge/seeds/maritime-liabilities.yaml,2
 specs/wrk/WRK-1113/doc-extracts/_template.yaml,2
 .claude/work-queue/pending/WRK-1152.md,2
-acma-projects/B1522/ctr-2/ref/proj/3824-TNE-0008-2 (Cathodic Protection Design).pdf,2
+mkt-a/B1522/ctr-2/ref/proj/3824-TNE-0008-2 (Cathodic Protection Design).pdf,2
 /tmp/tmp.OdgiQXfYN4/review-content.md,2
 digitalmodel/src/digitalmodel/drilling_riser/operability.py,2
 digitalmodel/src/digitalmodel/drilling_riser/tool_passage.py,2
@@ -3426,7 +3426,7 @@ scripts/lib/uv-env.sh,1
 /mnt/remote/dev-secondary/dde/Personal/Ace Drilling Riser/API SPEC 16F 1st Ed Addendum 2.pdf,1
 /mnt/remote/dev-secondary/dde/Personal/Ace Drilling Riser/2H-TNE-0050-03 Drilling Riser Analysis Guidelines (Draft - Houston).pdf,1
 /tmp/claude-1000/-mnt-local-analysis-workspace-hub/2e47e96f-ec3c-49ae-b37b-78b492578f2a/tasks/bdy6kv09y.output,1
-acma-projects/B1522/ctr-2/ref/proj/2271-470-01_r1 (Anode Arrangement).pdf,1
+mkt-a/B1522/ctr-2/ref/proj/2271-470-01_r1 (Anode Arrangement).pdf,1
 /tmp/tmp.Xbd6yShCqk/review-content.md,1
 /tmp/claude-1000/-mnt-local-analysis-workspace-hub/2e47e96f-ec3c-49ae-b37b-78b492578f2a/tasks/b8pfcuc3i.output,1
 /tmp/tmp.Hb52RlNGmp/review-content.md,1
@@ -4038,8 +4038,8 @@ achantas-data/_finance/tax/2024/2024_FEDERAL_RETURN_2025-04-14_054953.pdf,1
 .claude/work-queue/working/WRK-1183.md,1
 aceengineer-admin/admin/payroll/payroll.md,1
 aceengineer-admin/Tax/2023/f1120_filled.pdf,1
-aceengineer-admin/invoices/seanation/SN-INV-2025-02 Engineering Support.pdf,1
-aceengineer-admin/invoices/seanation/SN-INV-2025-05 Engineering Support.pdf,1
+aceengineer-admin/invoices/client-f/SN-INV-2025-02 Engineering Support.pdf,1
+aceengineer-admin/invoices/client-f/SN-INV-2025-05 Engineering Support.pdf,1
 aceengineer-admin/invoices/acma/2025/ACMA-INV-2025-01 Engineering Support.pdf,1
 aceengineer-admin/invoices/acma/2025/ACMA-INV-2025-02 Engineering Support.pdf,1
 aceengineer-admin/invoices/acma/2025/ACMA-INV-2025-03 Engineering Support.pdf,1

@@ -12,12 +12,12 @@ llm-wiki sibling naming and structure — **already implemented** for instantiat
 ## Naming convention (locked)
 
 - Generic sibling: `vamseeachanta/llm-wiki` (PRIVATE since 2026-05-20).
-- Client siblings: **`vamseeachanta/llm-wiki-<client>` (suffix form)** — decided in [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4, implemented via [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746). Examples: `llm-wiki-acma`, `llm-wiki-rock-oil-field`, `llm-wiki-doris`.
-- **One sibling per CLIENT, not per project.** Projects nest as folders, e.g., `llm-wiki-acma/projects/sirocco/`. User-confirmed 2026-05-22; SIROCCO does NOT get its own `llm-wiki-sirocco` repo.
+- Client siblings: **`vamseeachanta/llm-wiki-<client>` (suffix form)** — decided in [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4, implemented via [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746). Examples: `llm-wiki-acma`, `llm-wiki-client-b`, `llm-wiki-lng-a`.
+- **One sibling per CLIENT, not per project.** Projects nest as folders, e.g., `llm-wiki-acma/projects/proj-a/`. User-confirmed 2026-05-22; proj-a does NOT get its own `llm-wiki-proj-a` repo.
 
 ## Already-existing artifacts (do not re-propose)
 
-- Registry: [`config/client-wikis.yml`](file:///mnt/local-analysis/workspace-hub/config/client-wikis.yml) — 1 bootstrapped (`acma`), 5 planned (`rock-oil-field`, `client-projects`, `doris`, `frontierdeepwater`, `saipem`).
+- Registry: [`config/client-wikis.yml`](file:///mnt/local-analysis/workspace-hub/config/client-wikis.yml) — 1 bootstrapped (`acma`), 5 planned (`client-b`, `client-c`, `lng-a`, `client-a`, `client-d`).
 - Factory skill (instantiation-time): [`.claude/skills/coordination/client-llm-wiki-factory/SKILL.md`](file:///mnt/local-analysis/workspace-hub/.claude/skills/coordination/client-llm-wiki-factory/SKILL.md).
 - Privacy firewall templates: [`templates/client-llm-wiki/`](file:///mnt/local-analysis/workspace-hub/templates/client-llm-wiki/).
 - Registry enforcement test: `tests/enforcement/test_client_wiki_registry.sh` (8/0 pass).
@@ -38,7 +38,7 @@ The **retrieval-time** routing rule and cross-layer plumbing are NOT yet codifie
 
 - When planning any new client wiki repo: use the factory skill above. Naming is automatic from the registry.
 - When choosing which sibling to retrieve from during agent work: until [#2778](https://github.com/vamseeachanta/workspace-hub/issues/2778) lands its rule, default to `generic` for sanitized public knowledge and the registered client sibling for client-private content. Per the OCIMF handoff: client work CITES generic, never duplicates.
-- The 2026-05-20 OCIMF handoff (`docs/session-handoffs/2026-05-20-handoff-digitalmodel-616-ocimf-to-llm-wiki.md`) speculated `llm-wiki-sirocco` as a per-project repo — that speculation is **superseded** by the one-wiki-per-client decision.
+- The 2026-05-20 OCIMF handoff (`docs/session-handoffs/2026-05-20-handoff-digitalmodel-616-ocimf-to-llm-wiki.md`) speculated `llm-wiki-proj-a` as a per-project repo — that speculation is **superseded** by the one-wiki-per-client decision.
 - [#2744](https://github.com/vamseeachanta/workspace-hub/issues/2744) parent epic body still recommends prefix-form `acma-llm-wiki` in its "Current naming / residency decision" section — out of sync with the executed reality but not time-critical (one-line doc hygiene, separate from #2778).
 
 ## Lessons (this session)

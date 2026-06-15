@@ -16,7 +16,7 @@ User directives 2026-05-27 governing the whole /mnt/ace → llm-wiki program (re
 - Client wiki ← client-confidential project specifics only.
 - Resource-intelligence (online research) also UPKEEPS references when problems arise (e.g. the OpenFAST/WEC-Sim "National Laboratory of the Rockies" attribution anomaly — maintain the canonical NREL/Sandia reference, fix as needed; don't block).
 
-**One-canonical-source rule** (resolves the recurring double/triple-ingest risk): same content reachable from multiple roots (acma-codes vs O&G-Standards; `/mnt/ace/<client>` vs `client_projects` vs `docs/disciplines/<proj#>`) → pick ONE canonical source per spec/component by quality (unencrypted, newest, most complete). Decision 2a: **O&G-Standards is canonical for ASTM** (#124); #109 = SAE/ANSI + ASTM-absent-from-O&G.
+**One-canonical-source rule** (resolves the recurring double/triple-ingest risk): same content reachable from multiple roots (acma-codes vs O&G-Standards; `/mnt/ace/<client>` vs `client-c` vs `docs/disciplines/<proj#>`) → pick ONE canonical source per spec/component by quality (unencrypted, newest, most complete). Decision 2a: **O&G-Standards is canonical for ASTM** (#124); #109 = SAE/ANSI + ASTM-absent-from-O&G.
 
 **All data is important** — nothing dropped. Catalog/disk gaps (e.g. O&G-Standards `_catalog.json` omitting ABS/ASCE/ASME/AWS/NACE) get their own tracking issue (llm-wiki #134) and are tackled via reconciliation + dedup, not ignored.
 

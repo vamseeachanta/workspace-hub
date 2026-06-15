@@ -9,7 +9,7 @@ Found 11 issue(s):
   [WARNING] frontmatter: 'sources/closed-engineering-issues.md' missing recommended field 'sources'
   [WARNING] frontmatter: 'sources/compound-engineering-methodology.md' missing recommended field 'sources'
   [WARNING] frontmatter: 'sources/elements-digitalmodel-qgis.md' missing recommended field 'sources'
-  [WARNING] frontmatter: 'sources/elements-doris-university.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/elements-lng-a-university.md' missing recommended field 'sources'
   [WARNING] frontmatter: 'sources/mooring-failures-seed.md' missing recommended field 'sources'
   [WARNING] frontmatter: 'sources/research-outputs.md' missing recommended field 'sources'
   [INFO] frontmatter: ... and 1 more frontmatter issues (showing first 10)

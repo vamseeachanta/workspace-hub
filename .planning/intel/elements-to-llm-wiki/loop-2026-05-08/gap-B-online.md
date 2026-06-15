@@ -8,17 +8,17 @@
 
 ## Executive Summary (≈200 words)
 
-Across the eight wiki domains, the largest external-resource gaps sit in **acma-projects (8 pages, 2 sources)**, **lng-projects (15 pages, 0 standards directory)**, and **maritime-law (33 pages, 2 sources)**. These are sparse scaffolds with foundational concept pages but almost no provenance-grounded standards or authoritative datasets. The next-tier gap is **engineering-standards (82 pages)** which is rich on ABS/API/ASME but missing whole regulator surfaces (BSEE, PHMSA, USCG, NTSB) and **naval-architecture (74 pages)** missing live data feeds (NCEI/GEBCO bathymetry, USACE CEM, ITTC procedures, NTSB CAROL). Marine-engineering's 19,221 pages are mostly raw-source page-imports — selective targeted additions, not a build-out, are the right move. asset-management (27 pages) already has the ISO 55000 spine; gaps are practitioner-frameworks (IAM endorsement scheme, Reliabilityweb Uptime Elements registry) and government RBI/RBM sources.
+Across the eight wiki domains, the largest external-resource gaps sit in **mkt-a (8 pages, 2 sources)**, **lng-projects (15 pages, 0 standards directory)**, and **maritime-law (33 pages, 2 sources)**. These are sparse scaffolds with foundational concept pages but almost no provenance-grounded standards or authoritative datasets. The next-tier gap is **engineering-standards (82 pages)** which is rich on ABS/API/ASME but missing whole regulator surfaces (BSEE, PHMSA, USCG, NTSB) and **naval-architecture (74 pages)** missing live data feeds (NCEI/GEBCO bathymetry, USACE CEM, ITTC procedures, NTSB CAROL). Marine-engineering's 19,221 pages are mostly raw-source page-imports — selective targeted additions, not a build-out, are the right move. asset-management (27 pages) already has the ISO 55000 spine; gaps are practitioner-frameworks (IAM endorsement scheme, Reliabilityweb Uptime Elements registry) and government RBI/RBM sources.
 
-**Highest-impact single ingest target:** the **BSEE Data Center (data.bsee.gov)** — a federal open-data portal that simultaneously feeds engineering-standards (incidents, regulatory enforcement), lng-projects (offshore terminal production), naval-architecture (drilling rig casualties), and acma-projects (mooring failures, the ACMA seed already cites Sirocco). Authoritative, free, machine-queryable, multi-domain.
+**Highest-impact single ingest target:** the **BSEE Data Center (data.bsee.gov)** — a federal open-data portal that simultaneously feeds engineering-standards (incidents, regulatory enforcement), lng-projects (offshore terminal production), naval-architecture (drilling rig casualties), and mkt-a (mooring failures, the ACMA seed already cites proj-a). Authoritative, free, machine-queryable, multi-domain.
 
 ---
 
 ## Per-domain sections
 
-### 1. acma-projects (8 pages, sources/=2)
+### 1. mkt-a (8 pages, sources/=2)
 
-Sparsest scaffold. Existing seeds are NTSB/MAIB Sirocco-style breakaway incident reports. Anchor and mooring code/standards work belongs here.
+Sparsest scaffold. Existing seeds are NTSB/MAIB proj-a-style breakaway incident reports. Anchor and mooring code/standards work belongs here.
 
 | # | Source | Publisher | Authority | Scope cover | Access | Ingest difficulty |
 |---|---|---|---|---|---|---|
@@ -108,16 +108,16 @@ Strong textbook coverage (PNA series, Newman, Bertram, Tupper). Missing **live d
 
 | Rank | Source | Domains served | Authority | Access | Score note |
 |---:|---|---|---|---|---|
-| 1 | **BSEE Data Center (data.bsee.gov)** | engineering-standards, lng-projects, naval-architecture, acma-projects | gov | free / structured | Multi-domain, free, queryable, regulator-authoritative |
+| 1 | **BSEE Data Center (data.bsee.gov)** | engineering-standards, lng-projects, naval-architecture, mkt-a | gov | free / structured | Multi-domain, free, queryable, regulator-authoritative |
 | 2 | **UN DOALOS UNCLOS portal** | maritime-law, lng-projects (treaty status), engineering-standards (jurisdiction) | gov (intergov) | free | Foundational treaty text used by every maritime-law concept page |
-| 3 | **NAVFAC DM-26.5/DM-26.6 + UFC 4-159-03** | acma-projects, naval-architecture, engineering-standards | gov / military | free | Public-release, fills entire acma-projects standards/ surface |
+| 3 | **NAVFAC DM-26.5/DM-26.6 + UFC 4-159-03** | mkt-a, naval-architecture, engineering-standards | gov / military | free | Public-release, fills entire mkt-a standards/ surface |
 | 4 | **ITTC Recommended Procedures register** | naval-architecture, marine-engineering | standards body | free | Canonical test procedures; procedures already structured |
 | 5 | **PHMSA Pipeline Incident dataset** | engineering-standards, lng-projects | gov | free / CSV | Time-series 1970-present, machine-queryable |
 | 6 | **IGU World LNG Report 2025** | lng-projects, marine-engineering | industry body | free PDF | 168 pp, single-PDF foundation page for lng-projects |
 | 7 | **IMO GISIS public modules** | maritime-law, engineering-standards, naval-architecture | gov (intergov) | free w/ registration | Treaty status + casualty case index + ship registry |
-| 8 | **NTSB CAROL marine accident docket** | acma-projects, naval-architecture, maritime-law | gov | free | Per-incident structured records; already feeding seeds |
+| 8 | **NTSB CAROL marine accident docket** | mkt-a, naval-architecture, maritime-law | gov | free | Per-incident structured records; already feeding seeds |
 | 9 | **FERC LNG terminal page + eLibrary** | lng-projects, engineering-standards | gov | free; some hard | List page trivial; deep dockets hard but high-evidence |
-| 10 | **USACE EM 1110-2-1100 Coastal Engineering Manual** | engineering-standards, naval-architecture, acma-projects | gov / engineering manual | free PDF | Bridges coastal hydrodynamics → naval-arch + mooring siting |
+| 10 | **USACE EM 1110-2-1100 Coastal Engineering Manual** | engineering-standards, naval-architecture, mkt-a | gov / engineering manual | free PDF | Bridges coastal hydrodynamics → naval-arch + mooring siting |
 
 **Honorable mentions (close cuts at 11–13):** NOAA NCEI/GEBCO_2026 bathymetry; CMI Rotterdam-Rules + CML database; IAM Subject-Specific Guidelines.
 
@@ -126,7 +126,7 @@ Strong textbook coverage (PNA series, Newman, Bertram, Tupper). Missing **live d
 ## Notes on exclusions and confidence
 
 - **CSA Z276**: covered separately by issues #2227/#2283 (in-flight per W1-W3 references) — not re-listed.
-- **OCIMF MEG4**: listed once for acma-projects only because #2284 already targets it for marine-engineering mooring wiki.
+- **OCIMF MEG4**: listed once for mkt-a only because #2284 already targets it for marine-engineering mooring wiki.
 - **API RP 2SK**: excluded — already listed as standards/api-rp-2sk.md in engineering-standards.
 - **All recommendations verified 2026-05-08** via WebSearch; URLs were live at search time. Re-verify before ingest.
 - **"Hard" ingest difficulty** items (PIANC, OCIMF MEG4, most SIGTTO titles) should be tagged `paywalled` and held in registry-only state per the established do-not-process-yet pattern, except for the small set of free SIGTTO PDFs already on sigtto.org/media.

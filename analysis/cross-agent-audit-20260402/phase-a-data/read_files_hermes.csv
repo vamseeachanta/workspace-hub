@@ -29,8 +29,8 @@ scripts/cron/setup-cron.sh,10
 docs/research/engineering-capability-map.md,10
 scripts/_core/sync-agent-configs.sh,10
 skeleton-test-coverage-uplift,10
-client_projects/energy_engineering/ecs/ecs_clients.md,10
-client_projects/ecs/proj/ecs_clients.md,10
+client-c/energy_engineering/ecs/ecs_clients.md,10
+client-c/ecs/proj/ecs_clients.md,10
 docs/BUSINESS_BRAIN.md,10
 docs/strategy/engineering-chatbot-oilgas-pitch.md,10
 scripts/cron-repository-sync.sh,9

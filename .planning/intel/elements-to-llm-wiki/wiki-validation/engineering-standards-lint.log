@@ -3,7 +3,7 @@
 Found 2 issue(s):
 
   [WARNING] cross-refs: Low link density (0.2 avg/page)
-  [WARNING] frontmatter: 'sources/elements-doris-codes-specs.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/elements-lng-a-codes-specs.md' missing recommended field 'sources'
 
 Summary:
   Orphan pages:     0

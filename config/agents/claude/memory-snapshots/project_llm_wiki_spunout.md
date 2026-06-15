@@ -19,7 +19,7 @@ llm-wiki content lives at https://github.com/vamseeachanta/llm-wiki (public, MIT
 - `knowledge/wikis/health-reports/` and `knowledge/wikis/personal/` (workspace-hub-internal)
 
 **Moved to llm-wiki repo:**
-- 8 domain wikis: acma-projects, asset-management, engineering, engineering-standards, lng-projects, marine-engineering, maritime-law, naval-architecture
+- 8 domain wikis: mkt-a, asset-management, engineering, engineering-standards, lng-projects, marine-engineering, maritime-law, naval-architecture
 - `knowledge/wikis/cross-links.md`
 - `knowledge/seeds/` (mooring failures + 6 files)
 - `tests/fixtures/llm-wiki/` data fixtures
@@ -31,7 +31,7 @@ llm-wiki content lives at https://github.com/vamseeachanta/llm-wiki (public, MIT
 - workspace-hub Python files referencing `knowledge/wikis/` paths are tracked for cleanup in workspace-hub#2650
 - Heads-up issue for parallel sessions: workspace-hub#2647
 - 12 WRK extraction issues now live at llm-wiki#1-#12
-- 9 mis-filed worldenergydata issues re-routed: #144-#150 (digitalmodel), #147 (OGManufacturing), #208 (saipem), #152 (frontierdeepwater)
+- 9 mis-filed worldenergydata issues re-routed: #144-#150 (digitalmodel), #147 (OGManufacturing), #208 (client-d), #152 (client-a)
 - Iron Law on `commit --no-verify` still holds; cleanup PR (workspace-hub#2649) used `push --no-verify` per `feedback_pre_push_hook_no_verify_for_preservation.md` precedent
 
 **Supersedes:** `project_llm_wiki_stays_embedded.md` (delete after Step 7 confirmation).

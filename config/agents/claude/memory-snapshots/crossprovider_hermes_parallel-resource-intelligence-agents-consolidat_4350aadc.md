@@ -8,6 +8,6 @@ metadata:
   tags: [parallelism, resource-intel, pattern]
 ---
 
-Multiple agents spawn independently to gather resource intel from acma-projects artifacts, digitalmodel code/tests, and planning docs, then results synthesized into single canonical plan. Reduces planning latency compared to serial investigation.
+Multiple agents spawn independently to gather resource intel from mkt-a artifacts, digitalmodel code/tests, and planning docs, then results synthesized into single canonical plan. Reduces planning latency compared to serial investigation.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

@@ -298,7 +298,7 @@ cards:
 
       - analysis/code/model/reporting artifacts -> `assethold`'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2539
-    title: 'chore(rock-oil-field): sanity-check and migrate useful code/data/analysis to Tier-1 repos'
+    title: 'chore(client-b): sanity-check and migrate useful code/data/analysis to Tier-1 repos'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2539
     gh_state: open
@@ -316,11 +316,11 @@ cards:
     priority: 0
     body_excerpt: '## Summary
 
-      `rock-oil-field` should be treated as a temporary triage/archive repository, not a durable execution home. Sanity-check all code, data, engineering methods, and analysis, then migrate useful artifacts to the appropriate Tier-1 repositories.
+      `client-b` should be treated as a temporary triage/archive repository, not a durable execution home. Sanity-check all code, data, engineering methods, and analysis, then migrate useful artifacts to the appropriate Tier-1 repositories.
 
       ## Scope'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2545
-    title: 'chore(saipem): extract useful installation-project information and archive or retire repo'
+    title: 'chore(client-d): extract useful installation-project information and archive or retire repo'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2545
     gh_state: open
@@ -338,11 +338,11 @@ cards:
     priority: 0
     body_excerpt: '## Summary
 
-      `saipem` should be treated as a temporary engineering-installation contractor project repository, similar to Rock Oil Field, ACMA, and Doris client/project repositories. The objective is to extract useful Saipem installation-project information, migrate durable code/data/analysis to the appropriate Tier-1 repositories, and archive or retire the repo over time.
+      `client-d` should be treated as a temporary engineering-installation contractor project repository, similar to Rock Oil Field, ACMA, and lng-a client/project repositories. The objective is to extract useful client-d installation-project information, migrate durable code/data/analysis to the appropriate Tier-1 repositories, and archive or retire the repo over time.
 
       ## Scope'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2547
-    title: 'chore(seanation): extract useful client information and archive repo'
+    title: 'chore(client-f): extract useful client information and archive repo'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2547
     gh_state: open
@@ -360,7 +360,7 @@ cards:
     priority: 0
     body_excerpt: '## Summary
 
-      `seanation` belongs to another client and should be treated as a client-specific extraction/archive repository. The objective is to review the repo, extract any useful data or information, preserve context/provenance, migrate reusable artifacts to the appropriate durable destination if needed, and then archive the repo.
+      `client-f` belongs to another client and should be treated as a client-specific extraction/archive repository. The objective is to review the repo, extract any useful data or information, preserve context/provenance, migrate reusable artifacts to the appropriate durable destination if needed, and then archive the repo.
 
       ## Scope'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2549
@@ -386,7 +386,7 @@ cards:
 
       ## Scope'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2784
-    title: Confirm and delete acma-projects-freeze-work snapshot
+    title: Confirm and delete mkt-a-freeze-work snapshot
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2784
     gh_state: open

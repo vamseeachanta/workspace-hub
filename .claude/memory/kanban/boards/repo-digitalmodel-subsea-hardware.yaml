@@ -33,7 +33,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#223
-    title: 'WRK-516: feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C'
+    title: 'WRK-516: feat(lng-a/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/223
     gh_state: open
@@ -49,11 +49,11 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 1
-    body_excerpt: '## WRK-516: feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C
+    body_excerpt: '## WRK-516: feat(lng-a/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C
 
       **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
 
-      **Repo:** [''doris''] | **Complexity:** high | **Machine:** dev-primary'
+      **Repo:** [''lng-a''] | **Complexity:** high | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#480
     title: 'BUG: Verify PLET-PLEM jumper segment lengths from SZ_Ballymore_Jumper_MF.xlsm'
     source: github_issue

@@ -2763,7 +2763,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#372
-    title: 'WRK-329: Formalise doris calculation workflow — migrate ad-hoc calcs to Python modules'
+    title: 'WRK-329: Formalise lng-a calculation workflow — migrate ad-hoc calcs to Python modules'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/372
     gh_state: closed
@@ -3168,7 +3168,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#416
-    title: 'WRK-329: Formalise doris calculation workflow — migrate ad-hoc calcs to Python modules'
+    title: 'WRK-329: Formalise lng-a calculation workflow — migrate ad-hoc calcs to Python modules'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/416
     gh_state: closed
@@ -5091,7 +5091,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#612
-    title: 'WRK-564: docs(doris): add calc_examples mapping — pipeline design calcs'
+    title: 'WRK-564: docs(lng-a): add calc_examples mapping — pipeline design calcs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/612
     gh_state: closed
@@ -5586,7 +5586,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#653
-    title: 'WRK-564: docs(doris): add calc_examples mapping — pipeline design calcs'
+    title: 'WRK-564: docs(lng-a): add calc_examples mapping — pipeline design calcs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/653
     gh_state: closed
@@ -6112,7 +6112,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#718
-    title: 'WRK-007: Upload videos from Doris computer to YouTube'
+    title: 'WRK-007: Upload videos from lng-a computer to YouTube'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/718
     gh_state: closed
@@ -6269,7 +6269,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#731
-    title: 'WRK-007: Upload videos from Doris computer to YouTube'
+    title: 'WRK-007: Upload videos from lng-a computer to YouTube'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/731
     gh_state: closed
@@ -18439,7 +18439,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2745
-    title: 'feat(acma): freeze acma-projects and move to local-only archive posture'
+    title: 'feat(acma): freeze mkt-a and move to local-only archive posture'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2745
     gh_state: closed
@@ -18483,7 +18483,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2769
-    title: 'chore(data-disposition): plan disposition of /mnt/ace/acma-projects.preexisting-* 1.8 TB pre-move backup'
+    title: 'chore(data-disposition): plan disposition of /mnt/ace/mkt-a.preexisting-* 1.8 TB pre-move backup'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2769
     gh_state: closed
@@ -19904,7 +19904,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2542
-    title: 'feat(llm-wiki): plan Doris University training corpus extraction'
+    title: 'feat(llm-wiki): plan lng-a University training corpus extraction'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2542
     gh_state: closed
@@ -19919,7 +19919,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2543
-    title: 'feat(llm-wiki): plan DORIS codes/specs standards metadata promotion'
+    title: 'feat(llm-wiki): plan lng-a codes/specs standards metadata promotion'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2543
     gh_state: closed
@@ -20216,7 +20216,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2615
-    title: 'meta(governance): umbrella sanction — wiki/standards/ routing for engineering-standards / asset-management / lng-projects / acma-projects (W5-D follow-up)'
+    title: 'meta(governance): umbrella sanction — wiki/standards/ routing for engineering-standards / asset-management / lng-projects / mkt-a (W5-D follow-up)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2615
     gh_state: closed

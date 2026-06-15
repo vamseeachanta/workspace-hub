@@ -74,17 +74,17 @@
     },
     {
       "sha": "sha256:ff2b1feda41bd08c2a8f0d1fe2bcb3bbcc3011be318ef643648e4ba98517fd9c",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/B1522/ctr-7/_src/rev_a08/postproc/specs/modules/gmsh/api/api_design.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/B1522/ctr-7/_src/rev_a08/postproc/specs/modules/gmsh/api/api_design.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:d5b10f0fff82960cbb9d2cf3525cc06160e7d744d6196261d1d7c53e68cff459",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/B1535/specs/2025-08-06-offshore-drilling-rig-cost-analysis/sub-specs/visualization-spec.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/B1535/specs/2025-08-06-offshore-drilling-rig-cost-analysis/sub-specs/visualization-spec.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:89825a14c23b698b946e34483871af3a88b5611ecf271d0d937b166578f5db8a",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/modules/agent-os/slash-commands/create-module-agent/sub-specs/implementation.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/modules/agent-os/slash-commands/create-module-agent/sub-specs/implementation.md",
       "source": "workspace_spec"
     },
     {
@@ -129,7 +129,7 @@
     },
     {
       "sha": "sha256:91e2573978be27b074cfcd71c9abd5ea7c3953fa015d446b70cdcbb6dff17e63",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client_projects/modules/agent-os/slash-commands/create-module-agent/sub-specs/context-optimization.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-c/modules/agent-os/slash-commands/create-module-agent/sub-specs/context-optimization.md",
       "source": "workspace_spec"
     },
     {
@@ -609,12 +609,12 @@
     },
     {
       "sha": "sha256:f3b229a62988e264d12c732a25b1848fd4270a8f7aab0ed5f75a9aca4a9aa2a8",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/doris/modules/agent-os/slash-commands/create-spec/spec.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/lng-a/modules/agent-os/slash-commands/create-spec/spec.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:10727eebdae8f56e18b043804e1eaa086f005b5dcbae6e8d47c72023ad0e391a",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/frontierdeepwater/modules/agent-os/slash-commands/create-module-agent/sub-specs/integration.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-a/modules/agent-os/slash-commands/create-module-agent/sub-specs/integration.md",
       "source": "workspace_spec"
     },
     {
@@ -634,7 +634,7 @@
     },
     {
       "sha": "sha256:1f27fe97f4f00b7ae8a9af299650f3172c1e28533fb69ab07ee261af35975e05",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/rock-oil-field/modules/agent-os/slash-commands/create-module-agent/sub-specs/templates.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-b/modules/agent-os/slash-commands/create-module-agent/sub-specs/templates.md",
       "source": "workspace_spec"
     },
     {

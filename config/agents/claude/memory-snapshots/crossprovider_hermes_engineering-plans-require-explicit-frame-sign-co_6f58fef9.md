@@ -8,6 +8,6 @@ metadata:
   tags: [engineering-planning, maritime-simulation, design-documentation]
 ---
 
-SIROCCO force calculation planning showed: when specifying sweeps (current, heading, rudder angles) and force outputs, document coordinate frames, sign conventions (e.g., alpha = rudder_angle - heading_offset), and rotations to ship-fixed axes in plan artifact before implementation.
+proj-a force calculation planning showed: when specifying sweeps (current, heading, rudder angles) and force outputs, document coordinate frames, sign conventions (e.g., alpha = rudder_angle - heading_offset), and rotations to ship-fixed axes in plan artifact before implementation.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

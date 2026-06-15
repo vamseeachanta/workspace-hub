@@ -31,7 +31,7 @@ The `wiki/standards/<code-id>.md` routing principle is formally extended via wor
 - **asset-management** — formally sanctioned 2026-05-03 (W3-C re-anchor target for W1-B, #2587). `Sanctioned-by: #2615` reference appended to `knowledge/wikis/asset-management/CLAUDE.md`.
 
 **Status of remaining out-of-principle wikis (as of 2026-05-03):**
-- **lng-projects** and **acma-projects** — auto-generated `wiki/standards/` schema via `llm-wiki init` exists, but user did NOT separately approve formal codification at #2615 approval time; status remains *pending user decision*. Do NOT cite #2615 as sanction for these two wikis.
+- **lng-projects** and **mkt-a** — auto-generated `wiki/standards/` schema via `llm-wiki init` exists, but user did NOT separately approve formal codification at #2615 approval time; status remains *pending user decision*. Do NOT cite #2615 as sanction for these two wikis.
 - **maritime-law, personal, health-reports** — reaffirmed OUT OF SCOPE per the original memory body above; no `Sanctioned-by` reference applies.
 
 **Enforcement:** governance test `tests/governance/test_2471_citation_scope.py::test_out_of_principle_wiki_routing_requires_sanction_citation` flags any plan that cites `wiki/standards/<code-id>.md` routing for a wiki outside {marine-engineering, engineering, naval-architecture, engineering-standards, asset-management} without an explicit sanction-issue (`#NNNN`) reference in the plan body.

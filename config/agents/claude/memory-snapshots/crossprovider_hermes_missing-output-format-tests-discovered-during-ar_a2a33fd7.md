@@ -8,6 +8,6 @@ metadata:
   tags: [output-formats, test-coverage, artifact-routes, acceptance-criteria]
 ---
 
-SIROCCO tests validated HTML/PDF output but did not cover DOCX. When artifact-generation phase arrived, DOCX route was unimplemented and untested. Acceptance tests must enumerate ALL required output formats upfront, not defer format coverage to implementation phase.
+proj-a tests validated HTML/PDF output but did not cover DOCX. When artifact-generation phase arrived, DOCX route was unimplemented and untested. Acceptance tests must enumerate ALL required output formats upfront, not defer format coverage to implementation phase.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

@@ -263,7 +263,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#614
-    title: 'WRK-565: docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field)'
+    title: 'WRK-565: docs: add calc_examples mapping — installation/umbilical calcs (client-d + client-b)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/614
     gh_state: closed
@@ -277,7 +277,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#655
-    title: 'WRK-565: docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field)'
+    title: 'WRK-565: docs: add calc_examples mapping — installation/umbilical calcs (client-d + client-b)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/655
     gh_state: closed

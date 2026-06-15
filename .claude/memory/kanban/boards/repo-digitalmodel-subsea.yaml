@@ -34,7 +34,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#268
-    title: 'WRK-628: feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme'
+    title: 'WRK-628: feat(client-a): client AI roadshow — phased engineering AI adoption programme'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/268
     gh_state: open
@@ -50,13 +50,13 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 1
-    body_excerpt: '## WRK-628: feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme
+    body_excerpt: '## WRK-628: feat(client-a): client AI roadshow — phased engineering AI adoption programme
 
       **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
 
-      **Repo:** [''frontierdeepwater'', ''aceengineer-website''] | **Complexity:** complex | **Machine:** dev-primary'
+      **Repo:** [''client-a'', ''aceengineer-website''] | **Complexity:** complex | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#267
-    title: 'WRK-625: feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1)'
+    title: 'WRK-625: feat(client-a): engineering AI demo — system prompts + knowledge base (Day 1)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/267
     gh_state: open
@@ -72,11 +72,11 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 1
-    body_excerpt: '## WRK-625: feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1)
+    body_excerpt: '## WRK-625: feat(client-a): engineering AI demo — system prompts + knowledge base (Day 1)
 
       **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** pipeline
 
-      **Repo:** [''frontierdeepwater''] | **Complexity:** medium | **Machine:** dev-primary'
+      **Repo:** [''client-a''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#256
     title: 'WRK-598: feat(product): build engineering chatbot for oil & gas clients'
     source: github_issue
@@ -100,7 +100,7 @@ cards:
 
       **Repo:** [''workspace-hub''] | **Complexity:** complex | **Machine:** [''dev-primary'', ''dev-secondary'']'
   - idempotency_key: gh:vamseeachanta/digitalmodel#271
-    title: 'WRK-631: feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients'
+    title: 'WRK-631: feat(client-a): Microsoft Teams chatbot integration — Phase 2 deployment for both clients'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/271
     gh_state: open
@@ -117,11 +117,11 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## WRK-631: feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients
+    body_excerpt: '## WRK-631: feat(client-a): Microsoft Teams chatbot integration — Phase 2 deployment for both clients
 
       **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
 
-      **Repo:** [''frontierdeepwater'', ''TBD-client2-repo''] | **Complexity:** complex | **Machine:** dev-primary'
+      **Repo:** [''client-a'', ''TBD-client2-repo''] | **Complexity:** complex | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#264
     title: 'WRK-621: feat(geotechnical): shallow foundation bearing capacity (gravity base, mudmat)'
     source: github_issue

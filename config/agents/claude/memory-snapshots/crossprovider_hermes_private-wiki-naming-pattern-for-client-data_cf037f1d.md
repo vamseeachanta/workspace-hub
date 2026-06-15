@@ -8,6 +8,6 @@ metadata:
   tags: [multi-tenant, llm-wiki, naming-convention]
 ---
 
-Use pattern `<client>-projects-llm-wiki` for client-specific private wikis (e.g., `acma-projects-llm-wiki`). Keep separate from public `llm-wiki` and from raw data repos. This prevents accidental cross-client or public data leakage.
+Use pattern `<client>-projects-llm-wiki` for client-specific private wikis (e.g., `mkt-a-llm-wiki`). Keep separate from public `llm-wiki` and from raw data repos. This prevents accidental cross-client or public data leakage.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*
