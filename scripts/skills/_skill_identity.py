@@ -69,3 +69,78 @@ def derive_short_name(skill_md_path) -> str:
     basename = p.parent.name
     name = _read_frontmatter_name(p)
     return ((name or basename).strip() or basename).lower()
+
+
+# --------------------------------------------------------------------------- #
+# #3137: resolve a Skill-tool id to the canonical short_name + a source flag.
+# --------------------------------------------------------------------------- #
+
+# Namespaces that exist as external plugins under ~/.claude/plugins/cache/ and
+# are NOT mirrored in the workspace-hub .claude/skills tree (verified #3137:
+# codex 815, superpowers 97, gsd 32, data 1 invocations). A namespaced id that
+# fails to resolve is flagged `plugin` (still a real skill, just off-repo) vs a
+# bare/workspace-hub-namespaced miss which is flagged `unresolved` (likely a
+# slash-command, not a SKILL.md). Both preserve the raw id — never dropped.
+KNOWN_PLUGIN_NAMESPACES = frozenset({"codex", "superpowers", "gsd", "data"})
+# The namespace under which the repo exposes its OWN skills/commands.
+WORKSPACE_NAMESPACE = "workspace-hub"
+
+
+def _build_shortname_index(skills_root, exclusions=DEFAULT_EXCLUSIONS):
+    """Map every resolvable lookup key -> canonical short_name.
+
+    Two keys point at each skill so a Skill-tool id resolves whether it carries
+    the dir basename or the frontmatter name: the lowercased dir basename AND
+    the canonical short_name itself (frontmatter `name` lowercased). Uses the
+    SAME discover_skills + derive_short_name the scanner keys rows by, so a
+    resolved short_name JOINS the scanner/report tier rows.
+    """
+    root = Path(skills_root)
+    index = {}
+    for skill_rel in discover_skills(root, exclusions=exclusions):
+        skill_md = root / skill_rel / "SKILL.md"
+        short = derive_short_name(skill_md)
+        basename = Path(skill_rel).name.lower()
+        # short_name wins as the canonical join key; basename is a secondary
+        # alias. Insert basename first so short_name (set last) is authoritative
+        # if they ever collide on the same string.
+        index.setdefault(basename, short)
+        index[short] = short
+    return index
+
+
+def normalize_skill_id(raw_id, skills_root, exclusions=DEFAULT_EXCLUSIONS):
+    """Resolve a Skill-tool id to {skill_name, skill_source, skill_id}.
+
+    `raw_id` is the value of `.tool_input.skill` (e.g. 'superpowers:test-driven-
+    development', 'codex:rescue', 'corporate-tax-form-fill', 'workspace-hub:repo-sync').
+
+    Resolution (pure, no side effects):
+      1. split `<namespace>:<name>` on the first ':' (bare id -> empty namespace)
+      2. look the lowercased `<name>` up against the workspace-hub skill universe
+         (dir basename OR frontmatter-name, _archive/_core/_internal excluded)
+      3. classify:
+         - resolved                  -> skill_source='workspace-hub', skill_name=<short_name>
+         - unresolved + plugin ns    -> skill_source='plugin',        skill_name=''
+         - unresolved + bare/wshub ns -> skill_source='unresolved',    skill_name=''
+      `skill_id` always preserves the raw id verbatim (never dropped, the
+      canonical short_name is NEVER fabricated for an id absent from the tree).
+    """
+    raw = raw_id or ""
+    if ":" in raw:
+        namespace, name = raw.split(":", 1)
+    else:
+        namespace, name = "", raw
+    namespace = namespace.strip().lower()
+    name_l = name.strip().lower()
+
+    index = _build_shortname_index(skills_root, exclusions=exclusions)
+    short = index.get(name_l, "")
+
+    if short:
+        return {"skill_name": short, "skill_source": "workspace-hub", "skill_id": raw}
+    if namespace and namespace != WORKSPACE_NAMESPACE:
+        # A namespaced id that didn't resolve: an external plugin skill (logged + flagged).
+        return {"skill_name": "", "skill_source": "plugin", "skill_id": raw}
+    # Bare or workspace-hub-namespaced miss (likely a slash-command, not a SKILL.md).
+    return {"skill_name": "", "skill_source": "unresolved", "skill_id": raw}

@@ -39,6 +39,41 @@ case "$FILE" in
     ;;
 esac
 
+# #3137 emit: capture Skill-TOOL invocations (distinct from the Read-of-SKILL.md
+# path above). The id lives at .tool_input.skill (empirically confirmed
+# 1080/1080 transcript records; .tool_input.skill_name kept only as a defensive
+# fallback in case a future harness renames it). Resolve <plugin>:<name> or a
+# bare id against the .claude/skills tree by DIRECTORY BASENAME (fast, no Python
+# spawn on the hot path; the batch scanner does the authoritative frontmatter-
+# name canonicalization via _skill_identity.normalize_skill_id). Plugin-only /
+# unresolved ids are recorded-and-flagged (skill_source set, raw skill_id
+# preserved) — NEVER silently dropped, NEVER fabricated.
+SKILL_ID=""
+SKILL_SOURCE=""
+if [ "$TOOL" = "Skill" ]; then
+    SKILL_ID=$(echo "$INPUT" | jq -r '.tool_input.skill // .tool_input.skill_name // ""' 2>/dev/null) || SKILL_ID=""
+    if [ -n "$SKILL_ID" ]; then
+        NAME="${SKILL_ID#*:}"                 # strip "<plugin>:" prefix if present
+        NAMESPACE=""
+        case "$SKILL_ID" in *:*) NAMESPACE="${SKILL_ID%%:*}";; esac
+        # basename resolve against the skills tree (exclude _archive*/_core/_internal)
+        HIT=$(find "$WS/.claude/skills" \
+                \( -path '*/_archive/*' -o -path '*/_archived/*' \
+                   -o -path '*/_core/*' -o -path '*/_internal/*' \) -prune -o \
+                -type d -name "$NAME" -print 2>/dev/null | head -1)
+        if [ -n "$HIT" ]; then
+            SKILL_NAME="$NAME"                 # report joins on short_name; basename==short_name common case
+            SKILL_SOURCE="workspace-hub"
+        elif [ -n "$NAMESPACE" ] && [ "$NAMESPACE" != "workspace-hub" ]; then
+            SKILL_NAME=""                      # external plugin skill (off-repo)
+            SKILL_SOURCE="plugin"
+        else
+            SKILL_NAME=""                      # bare/workspace-hub miss (likely a command)
+            SKILL_SOURCE="unresolved"
+        fi
+    fi
+fi
+
 # Get context
 TS=$(date -Iseconds)
 EPOCH=$(date +%s)
@@ -57,11 +92,15 @@ ENTRY=$(jq -cn \
   --arg cmd "${CMD:-}" \
   --arg session_id "${SESSION_ID:-}" \
   --arg skill_name "${SKILL_NAME:-}" \
+  --arg skill_id "${SKILL_ID:-}" \
+  --arg skill_source "${SKILL_SOURCE:-}" \
   '{ts:$ts, epoch:$epoch, hook:$hook, tool:$tool, project:$project, repo:$repo}
    + if ($file != "") then {file:$file} else {} end
    + if ($cmd != "") then {cmd:$cmd} else {} end
    + if ($session_id != "") then {session_id:$session_id} else {} end
-   + if ($skill_name != "") then {skill_name:$skill_name} else {} end' \
+   + if ($skill_name != "") then {skill_name:$skill_name} else {} end
+   + if ($skill_id != "") then {skill_id:$skill_id} else {} end
+   + if ($skill_source != "") then {skill_source:$skill_source} else {} end' \
   2>/dev/null) \
   || ENTRY="{\"ts\":\"${TS}\",\"hook\":\"${HOOK_TYPE}\",\"tool\":\"${TOOL}\"}"
 
