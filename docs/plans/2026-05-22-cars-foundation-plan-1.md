@@ -66,7 +66,7 @@ Every file in the Artifact Map is a gap (Plan 1 = greenfield foundation). No exi
 **Issue statuses** (verified 2026-05-22T14:30:00Z via `gh issue view`):
 
 - `#2778` — OPEN — "feat(architecture): lock data/knowledge/result search routing across llm-wiki + llm-wiki-<client> siblings"
-- `#2744` — OPEN — "epic(acma): client project data-cycle readiness and private llm-wiki launch"
+- `#2744` — OPEN — "epic(mkt-a): client project data-cycle readiness and private llm-wiki launch"
 - `#2775` — OPEN — "fix(harness): restore workspace-hub SSoT flow across sibling repos"
 - `#2685` — OPEN (LIVE) — calc-citation pilot
 
@@ -1073,7 +1073,7 @@ def test_result_entry_missing_client_when_private_client_fails(result_schema):
             "ran_at": "2026-05-22T14:30:00Z",
         },
         "visibility": "private-client-llm-wiki",     # client tier but no client field
-        "source_sibling": "llm-wiki-acma",
+        "source_sibling": "llm-wiki-mkt-a",
         "created": "2026-05-22T14:30:00Z",
         "created_by": "test",
         "authored_in_issue": "x#1",

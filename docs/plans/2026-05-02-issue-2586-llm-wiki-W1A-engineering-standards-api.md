@@ -45,7 +45,7 @@
 - `/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering-standards/wiki/standards/api-17e.md` — only existing API standards page; metadata stub with `code_id: api-17e`, `publisher: API`, `revision: public-metadata-required-before-citation-use`. Pattern this plan will replicate ten times for the priority codes.
 - `/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering-standards/wiki/index.md` — page_count=5, source_count=5; will need an "## Standards" section appended.
 - `/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering-standards/CLAUDE.md` — defines the standards-page extra fields (`code_id`, `publisher`, `revision` required at L0 prose); the new pages will all comply.
-- `/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering-standards/wiki/sources/elements-doris-codes-specs.md` — Elements ingest catalog already references the broader DORIS standards corpus; this plan's API subset is a complementary path through `/mnt/ace/O&G-Standards/API/` (146 entries top-level; 517 PDFs total at depth 3).
+- `/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering-standards/wiki/sources/elements-lng-a-codes-specs.md` — Elements ingest catalog already references the broader lng-a standards corpus; this plan's API subset is a complementary path through `/mnt/ace/O&G-Standards/API/` (146 entries top-level; 517 PDFs total at depth 3).
 - `/mnt/local-analysis/workspace-hub/knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md` — cross-domain precedent (OCIMF page in engineering wiki, not engineering-standards) for bounded summary structure under #2559.
 
 ### Documents consulted
@@ -74,8 +74,8 @@
 **Issue statuses** (verified 2026-05-02 via `gh issue view`):
 - `#2471` — CLOSED — "feat(knowledge): decide sanctioned CSA Z276 wiki routing and durability contract"
 - `#2540` — OPEN — "epic(llm-wiki): overnight Elements corpus planning wave after #2536"
-- `#2559` — OPEN — "feat(acma-codes): promote OCIMF Tandem preview into LLM-wiki source summary"
-- `#2373` — OPEN — "feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion"
+- `#2559` — OPEN — "feat(mkt-a-codes): promote OCIMF Tandem preview into LLM-wiki source summary"
+- `#2373` — OPEN — "feat(knowledge): execute Batch Pack 4 for non-mkt-a standards summary promotion"
 
 **File existence** (`ls` 2026-05-02):
 - EXISTS: `/mnt/ace/O&G-Standards/API/` (146 top-level entries; 517 PDFs at depth 3 via `find -maxdepth 3 -type f \( -name "*.pdf" -o -name "*.PDF" \)`)

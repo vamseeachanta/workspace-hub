@@ -27,8 +27,8 @@ Material drift since the 2026-04-28 freshness run:
 - `workspace-hub` now has tracked runtime/log artifacts under trusted routing-adjacent paths, which weakens routing trust further:
   - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/README.md`
   - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-1-sesa.pid`
-  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-2-doris-university.pid`
-  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-3-doris-codes.pid`
+  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-2-lng-a-university.pid`
+  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-3-lng-a-codes.pid`
   - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-4-woodfibre.pid`
   - `scripts/coordination/routing/logs/agent-ratings.jsonl`
   - `scripts/coordination/routing/logs/provider_recommendations.jsonl`
@@ -75,8 +75,8 @@ Legacy navigation references found in canonical surfaces:
 Trusted-path backup/cache/runtime noise:
 - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/README.md`
 - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-1-sesa.pid`
-- `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-2-doris-university.pid`
-- `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-3-doris-codes.pid`
+- `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-2-lng-a-university.pid`
+- `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-3-lng-a-codes.pid`
 - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-4-woodfibre.pid`
 - `scripts/coordination/routing/logs/agent-ratings.jsonl`
 - `scripts/coordination/routing/logs/provider_recommendations.jsonl`

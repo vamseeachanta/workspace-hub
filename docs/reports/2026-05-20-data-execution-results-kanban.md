@@ -31,7 +31,7 @@
 
 ```mermaid
 flowchart LR
-  A[Data foundation\n#2731 #2732] --> B[ACMA raw/archive posture\n#2745 #2767 #2769]
+  A[Data foundation\n#2731 #2732] --> B[mkt-a raw/archive posture\n#2745 #2767 #2769]
   B --> C[Private wiki target\n#2746]
   C --> D[Promotion provenance + scoring\n#2389 #2747]
   D --> E[Output contracts\n#2748]
@@ -54,13 +54,13 @@ flowchart LR
 |---:|---|---|---|---|---|
 | [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) | Inventory and normalize canonical data/repo locations for llm-wiki promotion | `status:needs-plan` | Core location contract for raw data, repo placement, promotion routing | Foundation for #2732, #2745/#2746/#2747 | **Claude** |
 | [#2767](https://github.com/vamseeachanta/workspace-hub/issues/2767) | Unionise preexisting data folders with content dedup | `status:needs-plan` | Generalized dedup/data-layout cleanup across preexisting folders | Should follow #2731/#2732 taxonomy | **Gemini** |
-| [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769) | Plan disposition of `/mnt/ace/acma-projects.preexisting-*` 1.8 TB backup | `status:needs-plan` | ACMA-specific raw storage pressure issue | Adjacent to #2745; may be subsumed by #2767 | **Gemini** |
+| [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769) | Plan disposition of `/mnt/ace/mkt-a.preexisting-*` 1.8 TB backup | `status:needs-plan` | mkt-a-specific raw storage pressure issue | Adjacent to #2745; may be subsumed by #2767 | **Gemini** |
 
 ### Planning / missing explicit status
 
 | Issue | Title | Current gate | Why it matters | Dependencies / blockers | Route |
 |---:|---|---|---|---|---|
-| [#2744](https://github.com/vamseeachanta/workspace-hub/issues/2744) | ACMA client project data-cycle readiness and private llm-wiki launch | none | Parent epic for current ACMA data→execution→results flow | Child issues need gate/state alignment | **Claude** |
+| [#2744](https://github.com/vamseeachanta/workspace-hub/issues/2744) | mkt-a client project data-cycle readiness and private llm-wiki launch | none | Parent epic for current mkt-a data→execution→results flow | Child issues need gate/state alignment | **Claude** |
 | [#2732](https://github.com/vamseeachanta/workspace-hub/issues/2732) | Canonical first/second-level mount and folder taxonomy | none | Makes data locations searchable/routable by agents | Depends on #2731 contract | **Claude** |
 | [#2747](https://github.com/vamseeachanta/workspace-hub/issues/2747) | Raw-to-private-wiki promotion ledger with completion confidence scoring | none | Promotion ledger and confidence scoring for raw→wiki step | Depends on #2746, #2389 | **Codex after plan**, Claude for contract |
 | [#2748](https://github.com/vamseeachanta/workspace-hub/issues/2748) | Client output scaffolding for reports, chatbots, evidence packs | none | Bridges data products into result/output layer | Depends on #2747 scoring and #2389 provenance | **Codex after plan** |
@@ -71,8 +71,8 @@ flowchart LR
 
 | Issue | Title | Current gate | Why it matters | Dependencies / blockers | Route |
 |---:|---|---|---|---|---|
-| [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) | Freeze `acma-projects` and move to local-only archive posture | `status:plan-approved` | Immediate source archive/freeze guardrail | Coordinate with #2769 storage disposition | **Codex** |
-| [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) | Create private llm-wiki repo target | `status:plan-approved` | Establishes private wiki target for ACMA | Naming mismatch: title says `llm-wiki-acma`, body says `acma-llm-wiki` | **Claude** |
+| [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) | Freeze `mkt-a` and move to local-only archive posture | `status:plan-approved` | Immediate source archive/freeze guardrail | Coordinate with #2769 storage disposition | **Codex** |
+| [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) | Create private llm-wiki repo target | `status:plan-approved` | Establishes private wiki target for mkt-a | Naming mismatch: title says `llm-wiki-mkt-a`, body says `mkt-a-llm-wiki` | **Claude** |
 | [#2403](https://github.com/vamseeachanta/workspace-hub/issues/2403) | Embeddings model-selection spike | `status:working`, `status:plan-approved`, `agent:codex` | Selects model for doc-intel retrieval | Blocks #2402 | **Codex** |
 | [#2402](https://github.com/vamseeachanta/workspace-hub/issues/2402) | Build embeddings index L2+L3 + query CLI | `status:blocked`, `status:plan-approved`, `agent:codex` | Retrieval/index layer over document corpus | Hard-blocked by #2403 | **Codex** |
 

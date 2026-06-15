@@ -294,9 +294,9 @@ line below. Failures are *blockers* — bounce back to the lane.
 2. **Class-typical disclaimer present.** If the report references vessel
    data, the canonical-vessel disclaimer block must be visible (the
    report template already does this).
-3. **No project-confidential data.** No mention of client-named ACMA
+3. **No project-confidential data.** No mention of client-named mkt-a
    projects (Woodfibre, SESA, etc.). The Elements-wave outputs are
-   `metadata-only` and gated by ACMA / project-owner clearance — see
+   `metadata-only` and gated by mkt-a / project-owner clearance — see
    `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/`.
 4. **Evidence boundary line present.** Every email ends with a one-line
    "Evidence boundary:" disclaimer naming what the artifact does NOT

@@ -115,9 +115,9 @@ This package contains 5 complete files for setting up pytest and coverage in any
 
 | Tier | fail_under | Example Repos |
 |------|-----------|---------------|
-| Tier 1 (Production) | 85 | digitalmodel, energy, frontierdeepwater |
+| Tier 1 (Production) | 85 | digitalmodel, energy, client-a |
 | Tier 2 (Active Dev) | 80 | aceengineer-website, hobbies |
-| Tier 3 (Maintenance) | 80 | doris, saipem, OGManufacturing |
+| Tier 3 (Maintenance) | 80 | lng-a, client-d, OGManufacturing |
 
 ---
 

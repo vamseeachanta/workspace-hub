@@ -56,7 +56,7 @@ scripts_exempt: true
 
 ## Pre-Conversion Assembly: Multi-Source Workbook Transfer
 
-Before converting, you need all target workbooks collected into a single git repo (typically `client_projects`) that can be transferred to the Windows machine running Claude Desktop.
+Before converting, you need all target workbooks collected into a single git repo (typically `client-c`) that can be transferred to the Windows machine running Claude Desktop.
 
 ### Step 0: Inventory and Rank
 
@@ -69,18 +69,18 @@ Before converting, you need all target workbooks collected into a single git rep
 3. Rank by: GTM value, reusability across projects, complexity (Low/Med/High sheets), and estimated token cost (Low ~500K, Med ~1.5M, High ~3-5M tokens)
 4. Create a tracking document with: `INVENTORY -> ANALYZED -> CONVERTED -> VERIFIED` status per workbook
 
-### Step 1: Copy into `client_projects` Repo
+### Step 1: Copy into `client-c` Repo
 
-The `client_projects` repo is the transfer vehicle to Windows. Workbooks are scattered across `/mnt/ace/` (raw workspace) and workspace-hub sub-repos. Use `rsync` to copy only Excel files while preserving directory structure:
+The `client-c` repo is the transfer vehicle to Windows. Workbooks are scattered across `/mnt/ace/` (raw workspace) and workspace-hub sub-repos. Use `rsync` to copy only Excel files while preserving directory structure:
 
 ```bash
 # Use rsync -- preserve directory tree, copy ONLY xlsx/xls/xlsm
 rsync -av --include='*/' --include='*.xlsx' --include='*.xls' --include='*.xlsm' --exclude='*' \
-  /mnt/ace/rock-oil-field/s7/ballymore/ client_projects/engineering_workbooks/ballymore/
+  /mnt/ace/client-b/s7/ballymore/ client-c/engineering_workbooks/ballymore/
 ```
 
 Key findings:
-- **client_projects `.gitattributes`** marks `*.xlsx`, `*.xls`, `*.xlsm` as `binary` (not LFS). Large repos will grow proportionally to total file size.
+- **client-c `.gitattributes`** marks `*.xlsx`, `*.xls`, `*.xlsm` as `binary` (not LFS). Large repos will grow proportionally to total file size.
 - **/mnt/ace/** is the raw workspace where files are physically present — workspace-hub sub-repos may have sparse overlays where xlsx files are on-disk but not git-tracked.
 - **Already-in-repo workbooks**: Check `git ls-files '*.xlsx' '*.xls' '*.xlsm'` to avoid duplicating what's already tracked.
 - **Organize under `engineering_workbooks/`** in the repo to avoid path collisions with existing data directories.
@@ -95,7 +95,7 @@ bash scripts/legal/legal-sanity-scan.sh  # from workspace-hub root
 ### Step 3: Commit and Push
 
 ```bash
-cd client_projects
+cd client-c
 git add engineering_workbooks/
 git commit -m "feat(doc-intelligence): add #N engineering workbooks for Excel-to-code conversion"
 git push
@@ -105,7 +105,7 @@ git push
 
 After each batch is converted on Windows (ws014), validate before accepting:
 
-1. **Pull the converted code** from `client_projects` repo back to Linux
+1. **Pull the converted code** from `client-c` repo back to Linux
 2. **Run the full test suite** — all tests must pass (zero failures)
 3. **Fix bugs before accepting** — Claude-in-Excel often produces code with:
    - Missing `return` statements in factory functions (common pattern: `if props is None: props = ClassName()` without `return props`)
@@ -123,7 +123,7 @@ Maintain two docs in `docs/document-intelligence/`:
 
 The **execution machine is ws014** (Windows). Transfer via:
 ```bash
-git clone git@github.com:vamseeachanta/client_projects.git  # on ws014
+git clone git@github.com:vamseeachanta/client-c.git  # on ws014
 ```
 
 **The conversion prompt runs in Claude Code on ws014** — NOT the Copilot in Excel add-in and NOT Cowork. Copilot in Excel can only read cell values and explain formulas; it cannot write Python files, create tests, or organize code into repos. Claude Code has full filesystem access and can use openpyxl to read Excel files, extract formula logic, write Python modules, and create PRs.
@@ -132,7 +132,7 @@ git clone git@github.com:vamseeachanta/client_projects.git  # on ws014
 
 If git hooks block files > 5MB:
 ```bash
-git commit --no-verify  # bypasses size check hooks in client_projects
+git commit --no-verify  # bypasses size check hooks in client-c
 ```
 This is safe for intentional Excel workbook staging in `engineering_workbooks/`.
 

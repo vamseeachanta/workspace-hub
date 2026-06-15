@@ -5,7 +5,7 @@ milestone_name: milestone
 status: Executing Phase 07
 stopped_at: context exhaustion at 90% (2026-04-21)
 last_updated: "2026-04-21T19:26:27.845Z"
-last_activity: "2026-04-13 - Completed quick task 260413-kqe: Execute #2263 Wave 3 ACMA metadata-only wiki sweep"
+last_activity: "2026-04-13 - Completed quick task 260413-kqe: Execute #2263 Wave 3 mkt-a metadata-only wiki sweep"
 progress:
   total_phases: 6
   completed_phases: 0
@@ -54,7 +54,7 @@ See: .planning/PROJECT.md (updated 2026-03-30)
 
 ## Session
 
-Last activity: 2026-04-13 - Completed quick task 260413-kqe: Execute #2263 Wave 3 ACMA metadata-only wiki sweep
+Last activity: 2026-04-13 - Completed quick task 260413-kqe: Execute #2263 Wave 3 mkt-a metadata-only wiki sweep
 Stopped at: context exhaustion at 90% (2026-04-21)
 
 ### Quick Tasks Completed
@@ -62,4 +62,4 @@ Stopped at: context exhaustion at 90% (2026-04-21)
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 260331-rmt | Refresh ecosystem vision documents with 8 post-v1.0 improvements | 2026-04-01 | e2c34b96 | [260331-rmt-refresh-ecosystem-vision-documents-with-](./quick/260331-rmt-refresh-ecosystem-vision-documents-with-/) |
-| 260413-kqe | Execute #2263 Wave 3 ACMA metadata-only wiki sweep for ISO Standards, ASTM, IACS | 2026-04-13 | b0dfa8ff4 | [260413-kqe-execute-2263-wave-3-acma-metadata-only-w](./quick/260413-kqe-execute-2263-wave-3-acma-metadata-only-w/) |
+| 260413-kqe | Execute #2263 Wave 3 mkt-a metadata-only wiki sweep for ISO Standards, ASTM, IACS | 2026-04-13 | b0dfa8ff4 | [260413-kqe-execute-2263-wave-3-mkt-a-metadata-only-w](./quick/260413-kqe-execute-2263-wave-3-mkt-a-metadata-only-w/) |

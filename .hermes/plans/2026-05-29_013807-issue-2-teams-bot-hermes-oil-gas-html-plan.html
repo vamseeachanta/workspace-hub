@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Plan for llm-wiki-acma Issue #2 — Teams Bot via Hermes Agent</title>
+  <title>Plan for llm-wiki-mkt-a Issue #2 — Teams Bot via Hermes Agent</title>
   <style>
     :root {
       --bg: #0b1020;
@@ -125,10 +125,10 @@
   <main class="shell">
     <header class="hero">
       <div class="eyebrow">Plan artifact · HTML first · draft for review</div>
-      <h1>Teams Bot via Hermes Agent for Oil &amp; Gas Q&amp;A over <code>llm-wiki-acma</code></h1>
+      <h1>Teams Bot via Hermes Agent for Oil &amp; Gas Q&amp;A over <code>llm-wiki-mkt-a</code></h1>
       <p class="subtitle">Concrete plan for GitHub issue #2. The work should produce reviewable HTML artifacts at every stage: research matrix, architecture recommendation, permissions checklist, and POC validation report.</p>
       <div class="meta-grid">
-        <div class="card"><div class="meta-label">Issue</div><div class="meta-value"><a href="https://github.com/vamseeachanta/llm-wiki-acma/issues/2">llm-wiki-acma #2</a></div></div>
+        <div class="card"><div class="meta-label">Issue</div><div class="meta-value"><a href="https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/2">llm-wiki-mkt-a #2</a></div></div>
         <div class="card"><div class="meta-label">Status</div><div class="meta-value">draft / plan-review</div></div>
         <div class="card"><div class="meta-label">Complexity</div><div class="meta-value">T2 research + POC design</div></div>
         <div class="card"><div class="meta-label">Generated</div><div class="meta-value">2026-05-29 01:38 UTC</div></div>
@@ -172,7 +172,7 @@
       <div class="grid two">
         <div class="card">
           <h3>Primary deliverable</h3>
-          <p>A self-contained HTML research and recommendation artifact that compares Teams bot options, documents organization permission requirements, and recommends a POC path for Hermes-backed Oil &amp; Gas Q&amp;A over the private ACMA wiki ecosystem.</p>
+          <p>A self-contained HTML research and recommendation artifact that compares Teams bot options, documents organization permission requirements, and recommends a POC path for Hermes-backed Oil &amp; Gas Q&amp;A over the private mkt-a wiki ecosystem.</p>
         </div>
         <div class="card">
           <h3>Optional follow-on deliverable</h3>
@@ -201,7 +201,7 @@
           </tr>
           <tr>
             <td><code>README.md</code></td>
-            <td>Repo is a private ACMA LLM wiki and evidence workspace; raw data remains under <code>/mnt/ace/acma-projects/</code>; repo is the curated bridge to reports/chatbots.</td>
+            <td>Repo is a private mkt-a LLM wiki and evidence workspace; raw data remains under <code>/mnt/ace/mkt-a/</code>; repo is the curated bridge to reports/chatbots.</td>
             <td>Bot must not query raw data directly unless explicitly approved; default retrieval scope should be curated repo artifacts and approved derivatives.</td>
           </tr>
           <tr>
@@ -244,16 +244,16 @@
       <table>
         <thead><tr><th>Field</th><th>Value for this plan artifact</th></tr></thead>
         <tbody>
-          <tr><td><code>issue</code></td><td><a href="https://github.com/vamseeachanta/llm-wiki-acma/issues/2">https://github.com/vamseeachanta/llm-wiki-acma/issues/2</a></td></tr>
-          <tr><td><code>artifact_class</code></td><td><code>private-acma-plan-review-html</code></td></tr>
+          <tr><td><code>issue</code></td><td><a href="https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/2">https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/2</a></td></tr>
+          <tr><td><code>artifact_class</code></td><td><code>private-mkt-a-plan-review-html</code></td></tr>
           <tr><td><code>privacy_classification</code></td><td><code>client-private</code></td></tr>
-          <tr><td><code>publishability_decision</code></td><td><code>not public; ACMA private repo only unless sanitized review + ledger approval occurs</code></td></tr>
+          <tr><td><code>publishability_decision</code></td><td><code>not public; mkt-a private repo only unless sanitized review + ledger approval occurs</code></td></tr>
           <tr><td><code>source_ids</code></td><td><code>ISSUE-2</code>, <code>README</code>, <code>DATA-CYCLE</code>, <code>CLIENT-WORKFLOW</code>, <code>REPORTS-README</code>, <code>B1528-ISSUE-2760-MANIFEST</code>, <code>REDACTION-POSTURE</code></td></tr>
           <tr><td><code>repo_revision</code></td><td><code>3fb41023d1d777dcb7b405cc16830eb665de241b</code></td></tr>
           <tr><td><code>execution_tool</code></td><td><code>Hermes Agent plan + browser render verification + adversarial review subagents</code></td></tr>
           <tr><td><code>compute_environment</code></td><td><code>Windows host via Hermes terminal/browser tools; local artifact generated under C:/workspace-hub</code></td></tr>
           <tr><td><code>raw_output_path</code></td><td><code>C:/workspace-hub/.hermes/plans/2026-05-29_013807-issue-2-teams-bot-hermes-oil-gas-html-plan.html</code></td></tr>
-          <tr><td><code>final_output_path</code></td><td><code>llm-wiki-acma:reports/teams-bot/issue-2/2026-05-29_013807-plan-review.html</code></td></tr>
+          <tr><td><code>final_output_path</code></td><td><code>llm-wiki-mkt-a:reports/teams-bot/issue-2/2026-05-29_013807-plan-review.html</code></td></tr>
           <tr><td><code>evidence_manifest</code></td><td>Embedded source table plus future <code>reports/teams-bot/issue-2/manifest.json</code>.</td></tr>
         </tbody>
       </table>
@@ -274,7 +274,7 @@
           <ul>
             <li>Teams user sends message to bot.</li>
             <li>Bot service calls a Hermes API/gateway endpoint.</li>
-            <li>Hermes profile performs retrieval over approved ACMA knowledge pack.</li>
+            <li>Hermes profile performs retrieval over approved mkt-a knowledge pack.</li>
             <li>Bot returns answer with citations and manifest link.</li>
           </ul>
         </div>
@@ -366,7 +366,7 @@
         </ul></div>
         <div class="card"><h3>Repo credential policy</h3><ul>
           <li><strong>Preferred:</strong> prebuilt, approved knowledge pack generated from a pinned repo commit; bot runtime reads the pack, not the full repository.</li>
-          <li>If runtime repo access is needed, use a read-only deploy key or fine-grained token restricted to <code>vamseeachanta/llm-wiki-acma</code>; avoid broad personal access tokens.</li>
+          <li>If runtime repo access is needed, use a read-only deploy key or fine-grained token restricted to <code>vamseeachanta/llm-wiki-mkt-a</code>; avoid broad personal access tokens.</li>
           <li>Credentials must live only in an approved secret store or platform secret facility, never in HTML artifacts, repo files, Hermes memory, logs, or prompts.</li>
           <li>Define rotation cadence, secret owner, revocation command/path, emergency disable procedure, and audit evidence before pilot.</li>
           <li>Hermes tools must be configured so token values and private snippets cannot be echoed into Teams or persisted to unapproved logs.</li>
@@ -387,8 +387,8 @@
         <div class="step"><div class="card"><h3>Design retrieval and answer provenance contract</h3><ul><li>Define an answer schema: question, answer, source citations, confidence, private/public classification, retrieved files, manifest path, follow-up suggestions, refusal/escalation notes, and user authorization basis.</li><li>Reuse the report-layer manifest model from <code>reports/B1528/issue-2760/</code>.</li><li>Specify how generated answer HTML should cite evidence and expose links for review.</li></ul></div></div>
         <div class="step"><div class="card"><h3>Research Teams/Azure integration choices</h3><ul><li>Compare Bot Framework, Teams app + messaging extension, Graph/webhook bridge, and incoming webhook/workflow-only POC. Also research existing Hermes Gateway/Teams/Graph support, profile configuration, skills/tools, memory posture, retrieval/indexing options, and locked-down toolset design.</li><li>For each option, document hosting, auth, tenant admin requirements, Graph permissions, operational complexity, auditability, and data-leakage risk.</li><li>Generate the comparison as a single HTML decision matrix.</li></ul></div></div>
         <div class="step"><div class="card"><h3>Review organization Teams settings and permission path</h3><ul><li>Check whether custom Teams apps are allowed, whether sideloading is disabled/enabled, and whether org app catalog publishing is available.</li><li>Check app permission policies, app setup policies, bot installation policies, and whether external/custom apps require admin approval.</li><li>Identify Azure app registration owner, Graph permission approver, Teams admin owner, repo/content owner, and hosting/network owner.</li></ul></div></div>
-        <div class="step"><div class="card"><h3>Draft the POC architecture</h3><ul><li>Recommended default: Teams Bot Framework bot → Hermes API/gateway endpoint → dedicated Hermes profile → read-only retrieval over approved ACMA knowledge pack → cited Teams answer.</li><li>Define secrets: bot app ID/secret, tenant ID, Graph credentials if needed, Hermes provider key, repo token/read-only deploy key.</li><li>Define rollback: uninstall Teams app, disable bot endpoint, revoke app secret, remove Graph subscription, disable Hermes profile/cron/webhook.</li></ul></div></div>
-        <div class="step"><div class="card"><h3>Plan POC tests and validation</h3><ul><li>Use 5–10 representative oil and gas / ACMA project questions.</li><li>Validate answer grounding: every factual claim links to a repo source or says insufficient evidence.</li><li>Validate access controls: unauthorized Teams users cannot retrieve private content.</li><li>Validate HTML artifacts render locally and include manifest/provenance sections.</li></ul></div></div>
+        <div class="step"><div class="card"><h3>Draft the POC architecture</h3><ul><li>Recommended default: Teams Bot Framework bot → Hermes API/gateway endpoint → dedicated Hermes profile → read-only retrieval over approved mkt-a knowledge pack → cited Teams answer.</li><li>Define secrets: bot app ID/secret, tenant ID, Graph credentials if needed, Hermes provider key, repo token/read-only deploy key.</li><li>Define rollback: uninstall Teams app, disable bot endpoint, revoke app secret, remove Graph subscription, disable Hermes profile/cron/webhook.</li></ul></div></div>
+        <div class="step"><div class="card"><h3>Plan POC tests and validation</h3><ul><li>Use 5–10 representative oil and gas / mkt-a project questions.</li><li>Validate answer grounding: every factual claim links to a repo source or says insufficient evidence.</li><li>Validate access controls: unauthorized Teams users cannot retrieve private content.</li><li>Validate HTML artifacts render locally and include manifest/provenance sections.</li></ul></div></div>
         <div class="step"><div class="card"><h3>Run adversarial review before implementation</h3><ul><li>Review the plan against security, privacy, Teams policy, and repo evidence standards.</li><li>Mark plan as <code>status:plan-review</code>.</li><li>Proceed to implementation only after user approval changes status to <code>status:plan-approved</code>.</li></ul></div></div>
       </div>
     </section>
@@ -439,7 +439,7 @@
         <div class="card">
           <h3>POC acceptance, if approved</h3>
           <ul>
-            <li>Bot answers a representative set of ACMA/Oil &amp; Gas questions.</li>
+            <li>Bot answers a representative set of mkt-a/Oil &amp; Gas questions.</li>
             <li>Every answer includes citations to approved repo artifacts, follow-up suggestions, and/or says insufficient evidence.</li>
             <li>Unauthorized content is not exposed.</li>
             <li>HTML validation report captures prompts, responses, citations, failures, and follow-ups.</li>
@@ -462,7 +462,7 @@
           <ul>
             <li><strong>Tenant policy risk:</strong> Teams custom app or bot installation may be restricted by admin policy.</li>
             <li><strong>Graph permission risk:</strong> Graph application permissions may require admin consent and security review.</li>
-            <li><strong>Data leakage risk:</strong> private ACMA content must not be returned to unauthorized Teams users or public channels.</li>
+            <li><strong>Data leakage risk:</strong> private mkt-a content must not be returned to unauthorized Teams users or public channels.</li>
             <li><strong>Grounding risk:</strong> oil and gas answers can be technically consequential; bot must cite sources and refuse when evidence is weak.</li>
             <li><strong>Operational risk:</strong> endpoint hosting, secrets rotation, logs, and incident response need an owner.</li>
           </ul>

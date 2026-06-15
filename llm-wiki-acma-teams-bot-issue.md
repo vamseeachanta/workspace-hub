@@ -1,13 +1,13 @@
 # Research options for a Microsoft Teams bot powered by Hermes Agent for Oil & Gas Q&A
 
 ## Background
-We want to evaluate whether the `llm-wiki-acma` repo ecosystem can expose a Microsoft Teams bot, backed by Hermes Agent, that answers oil and gas domain questions and returns grounded results from the repo ecosystem.
+We want to evaluate whether the `llm-wiki-mkt-a` repo ecosystem can expose a Microsoft Teams bot, backed by Hermes Agent, that answers oil and gas domain questions and returns grounded results from the repo ecosystem.
 
 ## Goal
 Research and propose viable implementation options for a Teams bot that can:
 - Accept oil and gas questions from users in Microsoft Teams.
 - Route questions through Hermes Agent and/or repo-specific retrieval/query services.
-- Search and cite relevant content from the `llm-wiki-acma` repo ecosystem.
+- Search and cite relevant content from the `llm-wiki-mkt-a` repo ecosystem.
 - Return concise answers, source references, and follow-up suggestions in Teams.
 - Operate within the organization’s Microsoft Teams / Azure / Microsoft Graph governance model.
 

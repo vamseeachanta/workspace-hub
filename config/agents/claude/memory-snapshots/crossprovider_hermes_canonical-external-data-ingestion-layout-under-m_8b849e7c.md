@@ -8,6 +8,6 @@ metadata:
   tags: [data-management, storage-layout, external-drives]
 ---
 
-External drives ingest to `/mnt/ace/<repo-name>/<domain>/` with repo-aligned buckets (lng-a, digitalmodel, achantas-data, acma-codes). Ask disposition questions upfront before file operations to avoid rework and naming conflicts with existing structures.
+External drives ingest to `/mnt/ace/<repo-name>/<domain>/` with repo-aligned buckets (lng-a, digitalmodel, achantas-data, mkt-a-codes). Ask disposition questions upfront before file operations to avoid rework and naming conflicts with existing structures.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

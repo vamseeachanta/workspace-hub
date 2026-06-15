@@ -30,7 +30,7 @@ This is the load-bearing reason why `collide.io` is already filtered yet still a
 | 2 | `is:spam` | Delete it | Standard spam autopurge |
 | 3 | `from:(collide.io)` | Apply label "O&G Industry" | **MISCONFIGURED** — collide.io is marketing per `ace-noise-domains.yaml` line 16; no Skip Inbox; mislabeled as O&G |
 | 4 | `from:privateinvestorclub` | Skip Inbox + Apply label "Investments" | Drives the 193-unread Investments label |
-| 5 | `from:(@frontierdeepwater.com)` | Star it + Mark as important | Client VIP — already good |
+| 5 | `from:(@client-a.com)` | Star it + Mark as important | Client VIP — already good |
 | 6 | `from:(nextdoor.com)` | Skip Inbox + Apply label "Neighborhood" | Drives the 446-unread Neighborhood label |
 
 ## Blocked senders (1)

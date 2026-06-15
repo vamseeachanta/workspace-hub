@@ -15,7 +15,7 @@
 | SESA #2541 adversarial review | **BLOCKED** | No `scripts/review/results/2026-04-28-plan-2541-{claude,codex,gemini}.md` exist. Adversarial review was never dispatched. |
 | Woodfibre #2544 adversarial review | **BLOCKED** | Same — no review artifacts exist. |
 | SESA extraction / wiki-page emission | **HARD BLOCKED** | `docs/governance/sesa-extraction-clearance-2026.md` does not exist. 2026-04-29 addendum makes this a fail-closed prerequisite. |
-| Woodfibre extraction / wiki-page emission | **HARD BLOCKED** | `docs/governance/woodfibre-extraction-clearance-2026.md` does not exist. Addendum requires named ACMA/project-owner sign-off. |
+| Woodfibre extraction / wiki-page emission | **HARD BLOCKED** | `docs/governance/woodfibre-extraction-clearance-2026.md` does not exist. Addendum requires named mkt-a/project-owner sign-off. |
 | SESA planning artifacts (dossier + TSV) | **SAFE — already landed** | `.planning/intel/elements-overnight-wave/sesa-candidate-dossier.md` and `sesa-first-tranche.tsv` exist on disk. |
 | Woodfibre planning artifacts (scout + TSV) | **SAFE — already landed** | `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md` and `woodfibre-first-tranche.tsv` exist on disk. |
 | Adversarial review dispatch (read-only review agents) | **SAFE to dispatch** | Review agents only read the plan + write review result files. Can proceed now. |
@@ -42,7 +42,7 @@
 
 ### Approver Role Choices (acceptable)
 
-- `project-owner` — the person accountable for DORIS 62092 SESA deliverables
+- `project-owner` — the person accountable for lng-a 62092 SESA deliverables
 - `data-owner` — the custodian of the Elements archive with disposition authority
 - `client-authorized-reviewer` — a downstream client representative who owns the IP
 - `legal-IP-delegate` — legal counsel authorized to grant redistribution rights
@@ -67,7 +67,7 @@ A generic "project lead" or "engineer" is **insufficient** per the 2026-04-29 ad
 Each row in `sesa-first-tranche.tsv` (20 rows) must appear in the clearance record with:
 - `row_number` (1-20)
 - `absolute_path` (pointer only — the path from the TSV)
-- `document_identifier` (filename or DORIS doc-number)
+- `document_identifier` (filename or lng-a doc-number)
 - `allowed_extraction_level` (one of the four enums above)
 - `prohibited_content` (row-specific overrides to the default deny-list)
 - `approver` (may reference a blanket approver or per-row name)
@@ -84,7 +84,7 @@ The clearance record must NOT contain: file content, quotes, table data, figure 
 | Field | Description |
 |-------|-------------|
 | `approver_name` | Must be explicitly named (not role-generic) |
-| `approver_role` | One of: `ACMA-project-owner`, `client-authorized-reviewer`, `legal-IP-delegate` |
+| `approver_role` | One of: `mkt-a-project-owner`, `client-authorized-reviewer`, `legal-IP-delegate` |
 | `approval_date` | ISO 8601 |
 | `allowed_extraction_level` | Per-row enum: `metadata-only` \| `curated-fields` \| `short-quote-approved` \| `abstract-approved` |
 | `prohibited_content` | Per-row list |
@@ -93,7 +93,7 @@ The clearance record must NOT contain: file content, quotes, table data, figure 
 
 ### Named Approver Requirement
 
-The 2026-04-29 addendum is explicit: "Accepted approvers must be explicitly named by role: ACMA project owner, client-authorized reviewer, or legal/IP delegate. A generic 'project lead' is insufficient." The clearance document must include the individual's name, not just a role title.
+The 2026-04-29 addendum is explicit: "Accepted approvers must be explicitly named by role: mkt-a project owner, client-authorized reviewer, or legal/IP delegate. A generic 'project lead' is insufficient." The clearance document must include the individual's name, not just a role title.
 
 ### Excluded Subdirs/Classes (never extract, regardless of clearance)
 
@@ -121,9 +121,9 @@ Per the addendum, #2544's approval-ready subset is **metadata pointer/scout outp
 
 ### Before any extraction can proceed:
 
-2. **Identify the SESA data owner** — Who is the person with disposition authority over the DORIS 62092 SESA corpus on the Elements drive? What is their role relationship to the workspace-hub project?
+2. **Identify the SESA data owner** — Who is the person with disposition authority over the lng-a 62092 SESA corpus on the Elements drive? What is their role relationship to the workspace-hub project?
 
-3. **Identify the Woodfibre (ACMA 31522) data owner** — Is this the same person or a different authority? The plan references "ACMA project owner" — is there a specific individual?
+3. **Identify the Woodfibre (mkt-a 31522) data owner** — Is this the same person or a different authority? The plan references "mkt-a project owner" — is there a specific individual?
 
 4. **Decide vendor/TBE brochure policy for SESA** — The plan flags PIETRO and RMT VALVOMECCANICA material. Should vendor brochure rows be permanently excluded from tranche-1, or is there a clearance path?
 

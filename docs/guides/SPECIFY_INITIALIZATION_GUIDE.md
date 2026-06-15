@@ -14,7 +14,7 @@ The `specify-cli` tool from GitHub's Spec Kit has been successfully installed. T
 ## Repositories to Initialize
 The following repositories in `D:\github` are ready for Specify initialization:
 
-1. **acma-projects** - Git repository
+1. **mkt-a** - Git repository
 2. **assethold** - Git repository
 3. **assetutilities** - Git repository
 4. **digitalmodel** - Git repository

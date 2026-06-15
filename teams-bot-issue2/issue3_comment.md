@@ -3,7 +3,7 @@
 Completed the local Teams/Hermes feasibility checks for the POC route.
 
 HTML artifact:
-https://github.com/vamseeachanta/llm-wiki-acma/blob/main/reports/teams-bot/issue-2/issue3-teams-permission-checklist.html
+https://github.com/vamseeachanta/llm-wiki-mkt-a/blob/main/reports/teams-bot/issue-2/issue3-teams-permission-checklist.html
 
 ### Findings
 - Local Teams desktop is installed and running: `MSTeams_26120.3106.4722.3411_x64__8wekyb3d8bbwe` / `ms-teams.exe`.

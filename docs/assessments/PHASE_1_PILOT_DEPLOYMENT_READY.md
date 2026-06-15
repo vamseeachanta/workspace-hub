@@ -508,7 +508,7 @@ Execute Phase 1 deployment following the 13-step process documented above for bo
 - May need database fixtures in conftest.py
 - May need additional workflow steps for build/test separation
 
-### Large Projects (energy, rock-oil-field, saipem)
+### Large Projects (energy, client-b, client-d)
 - May benefit from test segmentation (fast vs. slow)
 - May need marker-based execution to reduce CI time
 - May need separate coverage thresholds by module

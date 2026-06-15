@@ -17,7 +17,7 @@ Umbrella: https://github.com/vamseeachanta/workspace-hub/issues/2540
 Completed upstream: #2526, #2534, #2535, #2536.
 
 Raw corpus source of record:
-`/mnt/ace/doris/62092_sesa`
+`/mnt/ace/lng-a/62092_sesa`
 
 Wiki domain target:
 `lng-projects`
@@ -51,7 +51,7 @@ Do not write to:
 ## Required work
 
 1. Re-read issue #2541 with `gh issue view 2541`.
-2. Inspect the candidate TSV and source tree metadata for `/mnt/ace/doris/62092_sesa` using read-only commands only.
+2. Inspect the candidate TSV and source tree metadata for `/mnt/ace/lng-a/62092_sesa` using read-only commands only.
 3. Group likely high-value files into themes: reference studies, free-span/metocean, material specs/datasheets, subsea valves/TBE, logistics/project deliverables.
 4. Produce `sesa-candidate-dossier.md` with evidence-backed observations and risks.
 5. Produce `sesa-first-tranche.tsv` with no more than 20 candidate artifacts. Columns: priority, theme, content_kind, bytes, absolute_path, rationale, extraction_method, target_wiki_page, risk_note.

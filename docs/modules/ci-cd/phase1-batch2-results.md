@@ -58,7 +58,7 @@ Successfully deployed baseline testing infrastructure to **5 repositories** in p
   - Security: Bandit scanning
   - Coverage: Baseline 0%, ready for development
 
-### 4. doris ✅
+### 4. lng-a ✅
 - **Tests:** 16 passing
 - **Coverage:** 0% (baseline - infrastructure only)
 - **Files Created:** 8
@@ -119,7 +119,7 @@ Additional repository-specific tests:
 - **achantas-data:** Unit tests for utility functions
 - **coordination:** Coordination service mocks, data structure tests
 - **memory:** File system operations, JSON serialization, logging
-- **doris:** Environment tests, coverage validation
+- **lng-a:** Environment tests, coverage validation
 - **energy:** Mock logging, temporary directories
 
 ## Technical Approach
@@ -133,7 +133,7 @@ Used Claude Code's Task tool to spawn 5 specialized testing agents concurrently:
   Task("achantas-data tester", "Deploy testing infrastructure...", "tester")
   Task("coordination tester", "Deploy testing infrastructure...", "tester")
   Task("memory tester", "Deploy testing infrastructure...", "tester")
-  Task("doris tester", "Deploy testing infrastructure...", "tester")
+  Task("lng-a tester", "Deploy testing infrastructure...", "tester")
   Task("energy tester", "Deploy testing infrastructure...", "tester")
 ```
 
@@ -204,7 +204,7 @@ dev-dependencies = [
 2. ✅ achantas-data (Batch 2) - 20 tests, 92.31% coverage
 3. ✅ coordination (Batch 2) - 13 tests, infrastructure ready
 4. ✅ memory (Batch 2) - 11 tests, infrastructure ready
-5. ✅ doris (Batch 2) - 16 tests, infrastructure ready
+5. ✅ lng-a (Batch 2) - 16 tests, infrastructure ready
 6. ✅ energy (Batch 2) - 18 tests, infrastructure ready
 
 **Combined metrics:**
@@ -216,16 +216,16 @@ dev-dependencies = [
 
 **Batch 3 candidates:**
 - achantas-media
-- acma-projects
+- mkt-a
 - ai-native-traditional-eng
 - assethold
-- frontierdeepwater
+- client-a
 
 **Batch 4 candidates:**
 - hobbies
 - sabithaandkrishnaestates
 - sd-work
-- seanation
+- client-f
 - teamresumes
 - worldenergydata
 
@@ -233,7 +233,7 @@ dev-dependencies = [
 
 ### Immediate Actions
 
-1. **Push commits** for achantas-data, doris, energy
+1. **Push commits** for achantas-data, lng-a, energy
 2. **Investigate** coordination and memory git status
 3. **Initialize git** if needed for coordination and memory
 

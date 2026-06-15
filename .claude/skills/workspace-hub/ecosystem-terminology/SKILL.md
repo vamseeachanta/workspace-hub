@@ -64,20 +64,20 @@ type: reference
 | aceengineer-admin | `aceengineer-admin` | admin | aceengineer_admin |
 | achantas-data | `achantas-data` | data | achantas_data |
 | achantas-media | `achantas-media` | media | achantas_media |
-| acma-projects | `acma-projects` | projects | acma_projects |
-| client_projects | `client_projects` | client | client-projects, clientprojects |
+| mkt-a | `mkt-a` | projects | mkt-a_projects |
+| client-c | `client-c` | client | client-c, clientprojects |
 | CAD-DEVELOPMENTS | `CAD-DEVELOPMENTS` | cad | cad-developments, cad_developments |
-| doris | `doris` | tools | — |
-| frontierdeepwater | `frontierdeepwater` | data | frontier_deepwater, FrontierDeepwater |
+| lng-a | `lng-a` | tools | — |
+| client-a | `client-a` | data | frontier_deepwater, client-a |
 | hobbies | `hobbies` | personal | — |
 | investments | `investments` | finance | — |
 | pdf/large-reader | `pdf/large-reader` | tools | pdf_large_reader |
 | pyproject-starter | `pyproject-starter` | template | pyproject_starter |
-| rock-oil-field | `rock-oil-field` | data | rock_oil_field |
+| client-b | `client-b` | data | rock_oil_field |
 | sabithaandkrishnaestates | `sabithaandkrishnaestates` | personal | sabithaandkrishna-estates |
-| saipem | `saipem` | client | — |
+| client-d | `client-d` | client | — |
 | sd-work | `sd-work` | work | sd_work |
-| seanation | `seanation` | data | — |
+| client-f | `client-f` | data | — |
 | teamresumes | `teamresumes` | hr | team_resumes, team-resumes |
 
 ## 2 — Relationship Vocabulary
@@ -152,8 +152,8 @@ type: reference
 |-----------|---------------------------|-----------|-------|
 | `dev-primary` | primary, ace1-machine | ace1, linux-1, machine1 | Primary orchestration machine |
 | `dev-secondary` | secondary, ace2-machine | ace2, linux-2, machine2 | Secondary Linux / CFD-FEA dev |
-| `licensed-win-1` | ansys-machine, orcaflex-machine | ansys5, acma5 | Windows, OrcaFlex license-locked |
-| `licensed-win-2` | windows-machine | ws14, acma14 | Windows 11 workstation |
+| `licensed-win-1` | ansys-machine, orcaflex-machine | ansys5, mkt-a5 | Windows, OrcaFlex license-locked |
+| `licensed-win-2` | windows-machine | ws14, mkt-a14 | Windows 11 workstation |
 | `gali-linux-compute-1` | gali-compute | gali1, compute1 | Heavy-compute Linux (planned) |
 | vamsee | — | user (in evidence `reviewer` field use `vamsee`) | Repo owner |
 

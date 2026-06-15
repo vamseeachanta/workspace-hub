@@ -174,7 +174,7 @@ The cronjob must NOT launch any of the following without an explicit, user-typed
 4. **`gh pr create`**, **`gh pr merge`**, **`gh pr review --approve`**, or any PR mutation.
 5. **`git push`** to any non-`workspace-hub` remote, or **`git push --force`** to anything.
 6. **`scripts/review/plan-review-fanout.sh`** — invokes Codex and Gemini CLIs which spend external credits and (per `feedback_codex_cli_0_124_upstream_regression.md`) may stdin-hang. Run only on operator command.
-7. **Any write to `digitalmodel/`, `assethold/`, `worldenergydata/`, `frontierdeepwater/`, `ai-orchestrator-template/`** sub-repos.
+7. **Any write to `digitalmodel/`, `assethold/`, `worldenergydata/`, `client-a/`, `ai-orchestrator-template/`** sub-repos.
 8. **Any mutation to `.planning/plan-approved/*` markers.** Approval marker creation is human-only.
 9. **Implementation lanes** — anything that edits source files referenced by an issue plan, even if the issue is `status:plan-approved`. Implementation requires the marker file AND the operator's authorization-bound sequence (`#2460` revision-bound contract).
 10. **Outreach** — any email send, Slack message, or external network call to an operator-uncontrolled endpoint.

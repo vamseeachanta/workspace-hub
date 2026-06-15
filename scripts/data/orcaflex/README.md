@@ -8,7 +8,7 @@ components, pipe schedules). All stages run on **licensed-win-1**.
 
 ```
 Stage 1  Extract    .dat + OrcFxAPI → raw YAML
-Stage 2  Enrich     raw YAML + worldenergydata → enriched YAML → client_projects/ (staging)
+Stage 2  Enrich     raw YAML + worldenergydata → enriched YAML → client-c/ (staging)
 Stage 3  Clean      strip client names → legal scan → digitalmodel/data/orcaflex/
 ```
 
@@ -19,7 +19,7 @@ Requires OrcaFlex Python API (`pip install OrcFxAPI` with valid license on licen
 ```cmd
 python scripts\data\orcaflex\dat-to-yaml.py ^
     --input "\\dev-secondary\dde\Orcaflex\0000 Drilling Riser Development\Latest" ^
-    --output "client_projects\data\raw\orcaflex-extracted\drilling-riser-development" ^
+    --output "client-c\data\raw\orcaflex-extracted\drilling-riser-development" ^
     --project drilling-riser-development
 ```
 
@@ -33,13 +33,13 @@ pip install -e path\to\worldenergydata
 ```cmd
 # Preview
 python scripts\data\orcaflex\enrich-and-clean.py ^
-    --input  client_projects\data\raw\orcaflex-extracted\ ^
+    --input  client-c\data\raw\orcaflex-extracted\ ^
     --output digitalmodel\data\orcaflex\ ^
     --dry-run
 
 # Run for real
 python scripts\data\orcaflex\enrich-and-clean.py ^
-    --input  client_projects\data\raw\orcaflex-extracted\ ^
+    --input  client-c\data\raw\orcaflex-extracted\ ^
     --output digitalmodel\data\orcaflex\
 
 # Legal scan + commit

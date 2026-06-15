@@ -12,7 +12,7 @@
 - **Per #2540 epic**: raw data stays in `/mnt/ace`; wiki/git receive only summaries + metadata after separate approval per gap
 - **Codex blocked** since 2026-04-23 (CLI 0.124 stdin-hang upstream regression #2479); reviewers = Gemini + Claude-internal
 - **Future tense only** in plan files (memory `feedback_plan_past_tense_artifact_claims.md`)
-- **No overlap** with existing in-flight work: #2540 (Elements epic), #2541 SESA, #2542 Doris University, #2543 Doris codes, #2544 Woodfibre LNG, #2559 OCIMF Tandem
+- **No overlap** with existing in-flight work: #2540 (Elements epic), #2541 SESA, #2542 lng-a University, #2543 lng-a codes, #2544 Woodfibre LNG, #2559 OCIMF Tandem
 
 ## Gap-priority queue (rotating, gap-prioritized)
 
@@ -32,7 +32,7 @@
 | P3 | online-resource registry refresh | latest standards revisions | W5 |
 | P4 | personal wiki content audit | 5 files; verify scope intent | later |
 | P4 | health-reports wiki scope | 0 raw / 0 wiki — what is this? | later |
-| P4 | acma-projects beyond Elements wave | non-Elements raw | later |
+| P4 | mkt-a beyond Elements wave | non-Elements raw | later |
 
 ## Cycle log
 

@@ -20,7 +20,7 @@ Policy posture:
 - **Wiki receives metadata.** Source pointer pages, faceted family indices, and provenance back-links — same shape as #2535 already established at `wiki/sources/elements-lng-a-codes-specs.md`.
 - **Frontmatter contract from #2471 is forward-adopted.** Any standards page emitted under `wiki/standards/` carries `code_id`, `publisher`, `revision`. Where revision is unknown, the page is not emitted; we keep the family at `wiki/sources/` instead until a verified revision is in hand.
 - **License risk is conservative.** When in doubt, classify HIGH and skip text promotion. We do not assert a copyright opinion. We do not extract content under fair-use rationale. We do not re-host standards.
-- **Boundary against #2227 / #2471 is explicit.** OCIMF Tandem Mooring and CSA Z276 (the #2227 promotion candidates) are **not** present in the lng-a Codes & Specs corpus by token search and remain governed by the `acma-codes` workflow. `acma-codes` is not displaced by this plan.
+- **Boundary against #2227 / #2471 is explicit.** OCIMF Tandem Mooring and CSA Z276 (the #2227 promotion candidates) are **not** present in the lng-a Codes & Specs corpus by token search and remain governed by the `mkt-a-codes` workflow. `mkt-a-codes` is not displaced by this plan.
 
 ---
 
@@ -71,7 +71,7 @@ Pulled from `.planning/intel/elements-to-llm-wiki/elements-ingested-files.jsonl`
 | OCIMF | 0 |
 | CSA (\bCSA\b) | 0 |
 
-OCIMF and CSA are absent from this corpus, confirming the `acma-codes` boundary — the #2227 promotion source lives elsewhere.
+OCIMF and CSA are absent from this corpus, confirming the `mkt-a-codes` boundary — the #2227 promotion source lives elsewhere.
 
 ---
 
@@ -84,7 +84,7 @@ The TSV groups 17 families/buckets with `family / approximate_count_or_sample_co
 - **CRITICAL risk (no extraction, no clause copy, sometimes no wiki page):** TechStreet Drop, Company Specs, Perry's Chemical Engineers Handbook.
 - **HIGH risk (metadata-only landing page allowed when volume justifies):** BV Ship and Offshore Rules, API, ASME, DnV/DNV, DeepStar, ISO, ASTM, ABS, IEC, NACE/AMPP, AWS/AWWA.
 - **LOW risk (publicly free):** NORSOK (volume too low here to merit a page).
-- **Out of scope:** OCIMF and CSA — covered by #2227 / #2471 inside `acma-codes`.
+- **Out of scope:** OCIMF and CSA — covered by #2227 / #2471 inside `mkt-a-codes`.
 
 ---
 
@@ -119,10 +119,10 @@ Pages **explicitly NOT proposed** in this pass:
 - **#2534 (retention cleanup):** Perry's Chemical Engineers Handbook and any clearly infringing scanned content should be flagged for #2534's retention review. This plan does not delete anything.
 - **#2535 (metadata indexing):** the existing `sources/elements-lng-a-codes-specs.md` is preserved; the faceted index extends rather than replaces it.
 - **#2536 (first-pass deep extraction):** lng-a codes is intentionally NOT in #2536's extraction scope; this plan keeps that boundary.
-- **#2227 (OCIMF + CSA promotion):** the corpus does not contain those organizations; #2227 work continues against `acma-codes`.
+- **#2227 (OCIMF + CSA promotion):** the corpus does not contain those organizations; #2227 work continues against `mkt-a-codes`.
 - **#2471 (CSA-Z276 wiki standards/ pages):** this plan forward-adopts the frontmatter contract (`code_id`, `publisher`, `revision`) for the single BV stub page proposed.
 - **#2482 (vendor-derivative deny-list):** no `wiki/sources/` entries inside this plan are proposed for citation in calc modules; this stays a one-way pointer.
-- **`acma-codes` boundary:** "Codes & Regulations" remains verify-only and out of scope; this plan does not propose displacing or duplicating `acma-codes`.
+- **`mkt-a-codes` boundary:** "Codes & Regulations" remains verify-only and out of scope; this plan does not propose displacing or duplicating `mkt-a-codes`.
 
 ---
 
@@ -132,7 +132,7 @@ Pages **explicitly NOT proposed** in this pass:
 2. Do not copy raw PDFs/images/scans into git or wiki.
 3. Do not assert a copyright or fair-use opinion in wiki page bodies; describe license posture only with conservative qualifiers ("paid copyrighted", "members-only JIP", etc.).
 4. Do not emit a `wiki/standards/<code_id>.md` page without a verified `revision` value.
-5. Do not modify `acma-codes` content; do not modify Terminal 1/2/4 scoped paths.
+5. Do not modify `mkt-a-codes` content; do not modify Terminal 1/2/4 scoped paths.
 6. Do not delete or move any file under `/mnt/ace`; #2534 governs retention.
 7. Do not self-approve. The plan is left at `status:plan-review`.
 

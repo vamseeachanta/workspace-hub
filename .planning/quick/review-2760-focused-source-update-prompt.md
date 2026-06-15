@@ -3,21 +3,21 @@
 You are an independent adversarial engineering-plan reviewer. Be strict. Do not rubber-stamp.
 
 ## Context
-Issue #2760 is an engineering-calculation plan for revising the B1528 SIROCCO moored-current ship/rudder force calculation package. It is currently in `status:plan-review`; implementation is still blocked pending explicit user approval and `status:plan-approved`.
+Issue #2760 is an engineering-calculation plan for revising the B1528 proj-a moored-current ship/rudder force calculation package. It is currently in `status:plan-review`; implementation is still blocked pending explicit user approval and `status:plan-approved`.
 
 The plan previously had a blocker: OCIMF coefficient source unresolved (`ocimf_coefficients_production.csv` not found). After reviewing related issue #2768, the plan was patched to use a licensed off-repo source route:
-- `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx`
+- `/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx`
 - `/mnt/local-analysis/digitalmodel/docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html`
 - `/mnt/local-analysis/digitalmodel/docs/data/OCIMF_CORPUS_README.md`
 - `/mnt/local-analysis/digitalmodel/scripts/python/digitalmodel/ocimf/build_coefficient_explorer.py`
 
-Verified decision-ledger facts now included in the plan: parser extracts 1033 rows across A5-A14 and A16-A19; A15 absent; current-relevant families are A5-A11 loaded tanker current, A12-A14 ballast 40%T tanker current, and A16 current velocity correction. The plan says this is generic/reference OCIMF tanker-current basis, not ship-specific SIROCCO coefficients; implementation must fail closed if workbook/provenance/citation is unavailable; licensed workbook/PDFs must not be committed.
+Verified decision-ledger facts now included in the plan: parser extracts 1033 rows across A5-A14 and A16-A19; A15 absent; current-relevant families are A5-A11 loaded tanker current, A12-A14 ballast 40%T tanker current, and A16 current velocity correction. The plan says this is generic/reference OCIMF tanker-current basis, not ship-specific proj-a coefficients; implementation must fail closed if workbook/provenance/citation is unavailable; licensed workbook/PDFs must not be committed.
 
 ## Your focused review scope
 Review ONLY whether the patched plan below is approval-ready after the OCIMF-source update. Do not require implementation work now. Evaluate:
 1. Does the plan truthfully replace the old unresolved-source blocker without creating new licensing/provenance risk?
 2. Are fail-closed gates and citation sidecar requirements sufficient for standards-derived coefficients?
-3. Does the generic/reference OCIMF limitation remain clear enough for client-facing SIROCCO output?
+3. Does the generic/reference OCIMF limitation remain clear enough for client-facing proj-a output?
 4. Are TDD tests/source-locking steps specific enough for implementation to avoid placeholder coefficients?
 5. Does any change require keeping this out of `status:plan-review`, or can it remain there pending user approval?
 
@@ -30,7 +30,7 @@ Return format:
 ## Plan under review
 
 ```markdown
-# Plan for #2760: B1528 SIROCCO force calculation review updates
+# Plan for #2760: B1528 proj-a force calculation review updates
 
 > **Status:** ready-for-plan-review; implementation blocked pending explicit user approval.
 > **Complexity:** T3
@@ -54,15 +54,15 @@ The first adversarial review returned three MAJOR verdicts against a draft that 
 ### Approval-scope assumptions for user review
 
 1. **OCIMF MEG3/MEG4 coefficient source and citation gate**
-   - The earlier `ocimf_coefficients_production.csv` blocker is resolved for planning: the approved source route is the licensed off-repo workbook `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx`, with generated/research artifacts at `/mnt/local-analysis/digitalmodel/docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html`, `/mnt/local-analysis/digitalmodel/docs/data/OCIMF_CORPUS_README.md`, and `/mnt/local-analysis/digitalmodel/scripts/python/digitalmodel/ocimf/build_coefficient_explorer.py`.
-   - Treat this as a generic/reference OCIMF tanker-current coefficient basis for B1528 SIROCCO, not as ship-specific SIROCCO coefficients. The report must state that limitation explicitly.
+   - The earlier `ocimf_coefficients_production.csv` blocker is resolved for planning: the approved source route is the licensed off-repo workbook `/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx`, with generated/research artifacts at `/mnt/local-analysis/digitalmodel/docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html`, `/mnt/local-analysis/digitalmodel/docs/data/OCIMF_CORPUS_README.md`, and `/mnt/local-analysis/digitalmodel/scripts/python/digitalmodel/ocimf/build_coefficient_explorer.py`.
+   - Treat this as a generic/reference OCIMF tanker-current coefficient basis for B1528 proj-a, not as ship-specific proj-a coefficients. The report must state that limitation explicitly.
    - Citation/provenance must follow `.claude/rules/calc-citation-contract.md`; implementation must emit a fail-closed `Citation` sidecar tied to the workbook/provenance route and must never commit the licensed workbook or licensed PDFs into a repo.
    - Known extracted coverage from #2768/#2760 decision ledger: 1033 rows across figures `A5-A14` and `A16-A19`; `A15` is absent. Current-relevant families are loaded tanker current `A5-A11`, ballast 40%T tanker current `A12-A14`, and current velocity correction `A16`.
    - Implementation may add only repo-safe derived fixtures/metadata if they record figure/source identity, extraction provenance, licensing/limitation text, and a fail-closed `Citation` sidecar. It must not freehand, synthesize, or silently fall back to placeholder trigonometric coefficients.
    - If the workbook/provenance route or required derived fixture/citation cannot be read and verified during implementation, implementation stops and posts a blocker rather than producing report numbers.
 
 2. **Generic OCIMF curve/class basis**
-   - Because no ship-specific coefficients exist, the report will use a clearly labeled **generic/reference OCIMF MEG4 basis** for B1528 SIROCCO.
+   - Because no ship-specific coefficients exist, the report will use a clearly labeled **generic/reference OCIMF MEG4 basis** for B1528 proj-a.
    - Selection rule: choose the nearest available generic MEG4 curve/class by documented geometry fit to existing B1528 dimensions (`LBP/LOA`, beam, draft/projected areas); record the selected class, interpolation domain, and limitation in the report metadata and limitations section.
    - This is an owner-approved reference assumption, not hidden implementation discretion.
 
@@ -86,7 +86,7 @@ The first adversarial review returned three MAJOR verdicts against a draft that 
 
 6. **Presentation/output assumptions**
    - Remove resultant-force calculations from the main report, remove heatmap, keep charts single-variable, use kN/kN·m rounded to 0 decimals for result values with magnitude `>= 1.0`, use 2 decimals for smaller displayed force/moment values if any, render all angle columns/labels to 1 decimal, and use readable labels such as `Current heading θ (deg)` and `Rudder angle α (deg)` instead of dense subscript notation.
-   - Markdown + generated HTML land in sibling repo `digitalmodel`; generated Word + PDF land under `workspace-hub/acma-projects/B1528/output` unless live implementation preflight finds a different canonical location.
+   - Markdown + generated HTML land in sibling repo `digitalmodel`; generated Word + PDF land under `workspace-hub/mkt-a/B1528/output` unless live implementation preflight finds a different canonical location.
 
 ---
 
@@ -96,16 +96,16 @@ The first adversarial review returned three MAJOR verdicts against a draft that 
 
 | Artifact | Status | Notes |
 |---|---:|---|
-| `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_moored_current_report.py` | Found | Existing bounded rudder-only report generator for the previous 3.5 kn / ±1–5° package; reports `Z`, `K`, and `M` as zero; excludes hull current loads because no current coefficients were available. |
-| `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py` | Found | Existing current-heading/rudder comparison generator; writes CSV/JSON/Markdown/HTML/PDF but uses placeholder “OCIMF-inspired” coefficient functions and includes resultants that #2760 requires removing from the main presentation. |
-| `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_sirocco_moored_current.yml` | Found | Existing B1528 geometry/rudder config for old report. |
-| `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_sirocco_current_heading_rudder.yml` | Found | Existing current-heading/rudder config; defaults/ranges need revision. |
-| `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_moored_current.py` | Found | Existing regression coverage for symmetry, `Cr=1.0`, sample points, and report content. |
-| `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_current_heading_rudder.py` | Found | Existing current-heading/rudder regression and report content checks. |
+| `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_moored_current_report.py` | Found | Existing bounded rudder-only report generator for the previous 3.5 kn / ±1–5° package; reports `Z`, `K`, and `M` as zero; excludes hull current loads because no current coefficients were available. |
+| `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_current_heading_rudder_report.py` | Found | Existing current-heading/rudder comparison generator; writes CSV/JSON/Markdown/HTML/PDF but uses placeholder “OCIMF-inspired” coefficient functions and includes resultants that #2760 requires removing from the main presentation. |
+| `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_proj-a_moored_current.yml` | Found | Existing B1528 geometry/rudder config for old report. |
+| `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_proj-a_current_heading_rudder.yml` | Found | Existing current-heading/rudder config; defaults/ranges need revision. |
+| `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_proj-a_moored_current.py` | Found | Existing regression coverage for symmetry, `Cr=1.0`, sample points, and report content. |
+| `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_proj-a_current_heading_rudder.py` | Found | Existing current-heading/rudder regression and report content checks. |
 | `/mnt/local-analysis/digitalmodel/src/digitalmodel/marine_ops/marine_engineering/environmental_loading/ocimf.py` | Found | OCIMF database/interpolation module with `OCIMFDatabase`, `OCIMFCoefficients`, `VesselGeometry`, and current force/moment structures for `CXc`, `CYc`, `CMc`. |
-| `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-sirocco-moored-current-report.md` | Found | Existing durable Markdown report; stale for #2760 because it reflects prior scenario/presentation. |
-| `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output/b1528_sirocco_moored_current_report.pdf` | Found | Existing ACMA PDF package; confirms old 3.5 kn / ±1–5° report basis. |
-| `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx` | Found off-repo/licensed | Approved source route from #2768/#2760 decision ledger. Do not commit workbook/PDFs; implementation must read/derive repo-safe fixtures with citation sidecars and fail closed if unavailable. |
+| `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-proj-a-moored-current-report.md` | Found | Existing durable Markdown report; stale for #2760 because it reflects prior scenario/presentation. |
+| `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output/b1528_proj-a_moored_current_report.pdf` | Found | Existing mkt-a PDF package; confirms old 3.5 kn / ±1–5° report basis. |
+| `/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx` | Found off-repo/licensed | Approved source route from #2768/#2760 decision ledger. Do not commit workbook/PDFs; implementation must read/derive repo-safe fixtures with citation sidecars and fail closed if unavailable. |
 | `/mnt/local-analysis/digitalmodel/docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html` | Found | Generated explorer: `OCIMF MEG3/MEG4 Coefficient Explorer`, 15 Plotly figures, extracted coverage `A5-A14` and `A16-A19`; `A15` absent. |
 | `/mnt/local-analysis/digitalmodel/docs/data/OCIMF_CORPUS_README.md` | Found | Data-routing/provenance map for licensed OCIMF corpus. |
 | `/mnt/local-analysis/digitalmodel/scripts/python/digitalmodel/ocimf/build_coefficient_explorer.py` | Found | Parser/prototype route; current verified extraction count is 1033 rows. |
@@ -115,7 +115,7 @@ The first adversarial review returned three MAJOR verdicts against a draft that 
 
 | Source | Use | Gate |
 |---|---|---|
-| OCIMF MEG3/MEG4 current coefficient method | Required current-on-ship force/moment model | Source route resolved to licensed off-repo workbook `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx` plus repo-safe derived artifacts/citation sidecar; fail closed if unavailable. |
+| OCIMF MEG3/MEG4 current coefficient method | Required current-on-ship force/moment model | Source route resolved to licensed off-repo workbook `/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx` plus repo-safe derived artifacts/citation sidecar; fail closed if unavailable. |
 | `digitalmodel/docs/domains/project-docs/PHASE3_OCIMF_FINDINGS.md` | Existing OCIMF dataset notes and coefficient ranges (`CXc`, `CYc`, `CMc`) | Useful for bounds/tests, but not sufficient by itself as coefficient source unless backed by source data/citation. |
 | Existing B1528/Barrass rudder force family | Retain as alternate comparison model only | Must not become the hidden default if user asked for simple area/drag default. |
 | Workspace engineering gate | Issue → resource intel → plan → adversarial review → user approval → TDD implementation | Applies because issue is labeled `cat:engineering-calculations`. |
@@ -126,7 +126,7 @@ The first adversarial review returned three MAJOR verdicts against a draft that 
 - `pypandoc` is not installed under the `digitalmodel` environment; do not plan on `pypandoc` unless explicitly added.
 - Repository boundary is mixed:
   - `digitalmodel` is a sibling Git repository under `/mnt/local-analysis/digitalmodel`.
-  - `acma-projects/B1528/output` currently appears under `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output`, not as `/mnt/local-analysis/acma-projects`.
+  - `mkt-a/B1528/output` currently appears under `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output`, not as `/mnt/local-analysis/mkt-a`.
   - Closeout must serialize commits/pushes per actual repo boundary after live preflight.
 
 ### Resource-intelligence comment
@@ -147,14 +147,14 @@ Posted: https://github.com/vamseeachanta/workspace-hub/issues/2760#issuecomment-
 | Rudder default | 28° port w.r.t. ship | Confirmed |
 | Propeller | rpm = 0; neutral `Cr=1.0` unless a future model explicitly changes it | Confirmed |
 | Retired old sweep | Previous 3.5 kn / ±1–5° rudder sweep removed from main report | Confirmed |
-| Current on ship | Use generic/reference OCIMF MEG3/MEG4 tanker-current coefficients through the licensed off-repo workbook route `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx`; no ship-specific coefficients exist; report limitation explicitly; fail closed if workbook/provenance/citation cannot be resolved | Approval-scope assumption updated after #2768 review |
+| Current on ship | Use generic/reference OCIMF MEG3/MEG4 tanker-current coefficients through the licensed off-repo workbook route `/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx`; no ship-specific coefficients exist; report limitation explicitly; fail closed if workbook/provenance/citation cannot be resolved | Approval-scope assumption updated after #2768 review |
 | Ship geometry | Reuse existing B1528 geometry; CoG longitudinal datum = midship; vertical CoG = 6.1 m above keel | Confirmed |
 | Current force/moment display | OCIMF direct yaw moment default; include side-by-side explanatory chart against force × lever-arm method; not an equality criterion | Approval-scope assumption |
 | Rudder sweep | 0° to 28° port in 2° increments | Confirmed |
 | Rudder models | Show cited screening-level simple area/drag or normal-force calculation as default and existing/alternate hydrodynamic model side-by-side | Approval-scope assumption |
 | Schematics | Plan views using transparent/small ship outline; each calculation section shows default values, `X`, `Y`, and `N` about CoG | Confirmed |
 | Results | Remove resultant force calculations from main presentation; remove heatmap; single-variable charts; kN/kN·m rounded to 0 decimals for values with magnitude `>= 1.0`, 2 decimals for smaller displayed values if any, and angles to 1 decimal | Approval-scope assumption |
-| Output split | Markdown + HTML in `digitalmodel`; Word + PDF in `acma-projects` output | Confirmed |
+| Output split | Markdown + HTML in `digitalmodel`; Word + PDF in `mkt-a` output | Confirmed |
 
 ---
 
@@ -165,7 +165,7 @@ Do not execute this section until the user explicitly approves this `status:plan
 ### Phase 0 — Preflight and source locking
 
 1. Re-check `workspace-hub` and `digitalmodel` worktree states; identify unrelated dirty files before any write.
-2. Verify the licensed off-repo OCIMF workbook/provenance route (`/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx` plus explorer/README/parser artifacts) or stop with a blocker; no placeholder fallback and no committing licensed source documents.
+2. Verify the licensed off-repo OCIMF workbook/provenance route (`/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx` plus explorer/README/parser artifacts) or stop with a blocker; no placeholder fallback and no committing licensed source documents.
 3. Add or identify repo-safe derived coefficient fixture/citation source page/artifact and `Citation` sidecar for OCIMF coefficients.
 4. Add or identify citation/model source and provenance sidecar for the default rudder model.
 5. Define exact output filenames and supersession policy for old Markdown/HTML/Word/PDF outputs.
@@ -215,7 +215,7 @@ Write failing tests before implementation. Required tests include:
 2. Add per-section plan-view schematics with stable SVG/metadata IDs.
 3. Remove main-presentation resultant force sections/tables/charts and heatmap.
 4. Include coefficient plots, sample default calculation, current-speed plots, rudder-sweep plots, and the approved yaw comparison chart.
-5. Emit Markdown/HTML in `digitalmodel` and DOCX/PDF in the approved `acma-projects/B1528/output` location.
+5. Emit Markdown/HTML in `digitalmodel` and DOCX/PDF in the approved `mkt-a/B1528/output` location.
 6. Include a supersession note in revised outputs naming the old package basis and issue #2760.
 
 ### Phase 4 — Verification, review, and closeout
@@ -236,14 +236,14 @@ Exact filenames must be finalized before implementation. Proposed names pending 
 
 | Artifact | Proposed path | Tracked? |
 |---|---|---:|
-| Revised Markdown report | `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-sirocco-current-rudder-force-report.md` | Yes |
-| Revised HTML report | `/mnt/local-analysis/digitalmodel/outputs/b1528_sirocco/current_rudder_force/b1528_sirocco_current_rudder_force_report.html` | TBD by repo artifact policy |
-| Revised DOCX | `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output/b1528_sirocco_current_rudder_force_report.docx` | Yes if ACMA package tracks outputs |
-| Revised PDF | `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output/b1528_sirocco_current_rudder_force_report.pdf` | Yes if ACMA package tracks outputs |
-| Data/manifest | `.../b1528_sirocco_current_rudder_force_manifest.json` | Yes |
+| Revised Markdown report | `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-proj-a-current-rudder-force-report.md` | Yes |
+| Revised HTML report | `/mnt/local-analysis/digitalmodel/outputs/b1528_proj-a/current_rudder_force/b1528_proj-a_current_rudder_force_report.html` | TBD by repo artifact policy |
+| Revised DOCX | `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output/b1528_proj-a_current_rudder_force_report.docx` | Yes if mkt-a package tracks outputs |
+| Revised PDF | `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output/b1528_proj-a_current_rudder_force_report.pdf` | Yes if mkt-a package tracks outputs |
+| Data/manifest | `.../b1528_proj-a_current_rudder_force_manifest.json` | Yes |
 | Schematic SVGs | `.../schematics/*.svg` | Yes or embedded, but must be testable |
 
-Supersession policy to approve: keep old `b1528_sirocco_moored_current_report.*` artifacts as prior package, and create new `current_rudder_force` artifacts rather than overwriting old files in place.
+Supersession policy to approve: keep old `b1528_proj-a_moored_current_report.*` artifacts as prior package, and create new `current_rudder_force` artifacts rather than overwriting old files in place.
 
 ---
 
@@ -264,7 +264,7 @@ First review round completed 2026-05-20. All reviewers returned MAJOR against th
 - Added citation/fail-closed requirements for standards-derived coefficients/model constants.
 - Replaced label-only test language with numeric sign/unit/golden-oracle tests.
 - Added DOCX parsing and SVG/metadata schematic test requirements.
-- Clarified repo boundary: `digitalmodel` is a sibling Git repo; `acma-projects/B1528/output` is under this `workspace-hub` checkout unless live preflight proves otherwise.
+- Clarified repo boundary: `digitalmodel` is a sibling Git repo; `mkt-a/B1528/output` is under this `workspace-hub` checkout unless live preflight proves otherwise.
 - Clarified that old report artifacts should be superseded with new filenames unless the user approves overwrite-in-place.
 
 ### Round 2 readiness synthesis

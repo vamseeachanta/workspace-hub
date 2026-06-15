@@ -1,6 +1,6 @@
 # CLAUDE CODE PROMPT FOR WS014
 # Save this file and paste into Claude Code on Windows
-# Or just use CLAUDE.md in the client_projects repo root
+# Or just use CLAUDE.md in the client-c repo root
 
 ---
 
@@ -83,7 +83,7 @@ PROMPT END =================================================
 
 ## HOW TO USE ON WS014
 
-1. Open Claude Code in the client_projects repo directory
+1. Open Claude Code in the client-c repo directory
 2. Run for each workbook:
 
    Claude Code, convert this workbook to Python:

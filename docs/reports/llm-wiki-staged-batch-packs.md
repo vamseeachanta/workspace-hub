@@ -385,7 +385,7 @@ Run 1-2 sub-slices per overnight session, prioritizing domains with highest gap 
 
 #### Related Issues
 
-- #2216 — ACMA integration (related standards work)
+- #2216 — mkt-a integration (related standards work)
 - #2207 — provenance/reuse contract
 - #2039 — engineering wiki ingest
 

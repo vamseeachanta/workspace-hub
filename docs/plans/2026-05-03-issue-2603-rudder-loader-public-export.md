@@ -107,7 +107,7 @@ No test changes (the test is already in place and failing — that's the whole p
 
 ### Implementation diff (precise)
 
-Insert this import block alphabetically ordered against existing blocks. Anchor: after line 50 (`)` closing the `b1528_sirocco_time_trace` block), before line 51 (`from digitalmodel.naval_architecture.yaw_moment import (`).
+Insert this import block alphabetically ordered against existing blocks. Anchor: after line 50 (`)` closing the `b1528_proj-a_time_trace` block), before line 51 (`from digitalmodel.naval_architecture.yaw_moment import (`).
 
 Per r1 P3-1: writer export removed from this plan (strict YAGNI — only test-required names). File `write_rudder_stock_torque_results` parity as a separate follow-up if external consumers need it.
 

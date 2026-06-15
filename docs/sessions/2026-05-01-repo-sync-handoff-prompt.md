@@ -11,7 +11,7 @@ I am resuming `/repo-sync` from session 2026-04-30/05-01. Read `docs/sessions/20
 - **No** `git commit --no-verify` unless user types `bypass`. The prior session hardened the scanner so a clean commit should pass.
 - **Skip** `assethold` (3-day-old codex branch with merge conflicts) and `aceengineer-website` (3-day-old branch with `[gone]` upstream) — both fall outside the 8-hour merge-to-main window. Note them; do not touch them.
 - **Skip** `aceengineer-admin` — already committed and pushed last session. The user is rotating the Telegram token via `@BotFather` separately. Do not re-edit `aceengineer-admin/admin/software.md`.
-- **Skip** `acma-projects/` working-tree edits — its sparse-checkout disable left ~368K files unmaterialized; rematerialization runs in background, do not block on it.
+- **Skip** `mkt-a/` working-tree edits — its sparse-checkout disable left ~368K files unmaterialized; rematerialization runs in background, do not block on it.
 - Each worktree has its own `.git/index`; parallel commits across worktrees are safe. Do NOT run parallel commits on the same workspace-hub root.
 
 ## Phase 0 — Preflight (sequential, fast)
@@ -64,10 +64,10 @@ git log --oneline -1
 
 Three independent long jobs. Launch all three in background; do NOT block on any.
 
-### 2A. acma-projects rematerialization (~30 min)
+### 2A. mkt-a rematerialization (~30 min)
 ```bash
-nohup bash -c 'cd /mnt/local-analysis/workspace-hub/acma-projects && git checkout HEAD -- .' > /tmp/acma-rematerialize.log 2>&1 &
-echo "acma PID $!"
+nohup bash -c 'cd /mnt/local-analysis/workspace-hub/mkt-a && git checkout HEAD -- .' > /tmp/mkt-a-rematerialize.log 2>&1 &
+echo "mkt-a PID $!"
 ```
 
 ### 2B. Encoding health check (~2 min)
@@ -83,7 +83,7 @@ nohup bash -c '
 git worktree list --porcelain | awk "/^worktree/{print \$2}" | while read wt; do
   case "$wt" in
     /mnt/local-analysis/workspace-hub|/mnt/local-analysis/workspace-hub-issue-2515-planning) continue ;;
-    *acma-projects*) continue ;;
+    *mkt-a*) continue ;;
   esac
   branch=$(timeout 10 git -C "$wt" branch --show-current 2>/dev/null)
   [ -z "$branch" ] && branch="(detached)"
@@ -102,8 +102,8 @@ While the long jobs run, dispatch 4 subagents in a single message. Each owns a s
 
 **Agent slices** (sized for balance):
 - Agent S1: `achantas-data achantas-media hobbies investments sabithaandkrishnaestates`
-- Agent S2: `sd-work assetutilities client_projects digitalmodel doris`
-- Agent S3: `frontierdeepwater OGManufacturing rock-oil-field saipem seanation`
+- Agent S2: `sd-work assetutilities client-c digitalmodel lng-a`
+- Agent S3: `client-a OGManufacturing client-b client-d client-f`
 - Agent S4: `teamresumes worldenergydata`
 
 **Each agent prompt template** (substitute `{REPOS}`):
@@ -123,7 +123,7 @@ For each repo:
 
 Iron Law: no force-push, no reset --hard, no auto-merge-conflict-resolve.
 
-DO NOT touch: aceengineer-admin (already done), assethold (conflicts), aceengineer-website ([gone] upstream), acma-projects (sparse transition).
+DO NOT touch: aceengineer-admin (already done), assethold (conflicts), aceengineer-website ([gone] upstream), mkt-a (sparse transition).
 
 Report a JSON line per repo: {"repo":"X","action":"committed|pushed|clean|secret-risk|blocked","sha":"<sha>","note":"<short>"}.
 ```
@@ -157,7 +157,7 @@ For each path:
 9. If push rejected: git pull --no-rebase ; git push. If still rejected, report PUSH-BLOCKED.
 
 Each worktree has its own .git/index, so no cross-lock contention with parallel agents.
-DO NOT touch: /mnt/local-analysis/workspace-hub itself, workspace-hub-issue-2515-planning, anything under acma-projects.
+DO NOT touch: /mnt/local-analysis/workspace-hub itself, workspace-hub-issue-2515-planning, anything under mkt-a.
 
 Iron Law: no force-push, no reset --hard, no auto-resolve.
 
@@ -188,17 +188,17 @@ These need user decisions, not automation:
 ## Phase 7 — Drain background jobs
 
 ```bash
-# acma rematerialize
-ps -p $(cat /tmp/acma-pid 2>/dev/null) 2>&1 | tail -1 || echo "acma done or never launched"
-tail -5 /tmp/acma-rematerialize.log
-cd /mnt/local-analysis/workspace-hub/acma-projects && ls | wc -l   # expect ~368K dirs visible after success
+# mkt-a rematerialize
+ps -p $(cat /tmp/mkt-a-pid 2>/dev/null) 2>&1 | tail -1 || echo "mkt-a done or never launched"
+tail -5 /tmp/mkt-a-rematerialize.log
+cd /mnt/local-analysis/workspace-hub/mkt-a && ls | wc -l   # expect ~368K dirs visible after success
 
 # Encoding
 cat /tmp/encoding-check.log
 # fix any UTF-16/CRLF flagged: iconv -f UTF-16 -t UTF-8 <file> | sed 's/\r//' > /tmp/fixed.md && mv /tmp/fixed.md <file>
 ```
 
-If acma rematerialization is still running at this point, leave it; it will complete on its own and `git status` will show 0 dirty when done.
+If mkt-a rematerialization is still running at this point, leave it; it will complete on its own and `git status` will show 0 dirty when done.
 
 ## Phase 8 — Final report
 
@@ -211,7 +211,7 @@ Rows:
 - Worktrees (per-status counts from agent team)
 - 2515-planning worktree (decision pending or applied)
 - Encoding check
-- acma-projects rematerialize (running / done)
+- mkt-a rematerialize (running / done)
 - aceengineer-admin (DONE — prior session)
 - assethold + aceengineer-website (SKIPPED — outside 8h window)
 

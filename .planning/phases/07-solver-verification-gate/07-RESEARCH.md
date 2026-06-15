@@ -18,7 +18,7 @@ Remote execution from dev-primary to licensed-win-1 is the foundational architec
 ## User Constraints (from CONTEXT.md)
 
 ### Locked Decisions
-- **D-01:** Three-machine architecture: licensed-win-1 (acma-ansys05, OrcaFlex/OrcaWave license), win-2 (ws014, backup/overflow), dev-primary (Linux, orchestration/processing)
+- **D-01:** Three-machine architecture: licensed-win-1 (mkt-a-ansys05, OrcaFlex/OrcaWave license), win-2 (ws014, backup/overflow), dev-primary (Linux, orchestration/processing)
 - **D-02:** dev-primary is the primary processing machine for all non-license work. win-2 is backup/overflow only -- not part of the primary pipeline
 - **D-03:** Direct network path exists between licensed-win-1 and win-2
 - **D-04:** Git push through all three machines -- licensed-win-1 commits and pushes solver results (.owr + Excel), dev-primary and win-2 pull. Versioned and traceable

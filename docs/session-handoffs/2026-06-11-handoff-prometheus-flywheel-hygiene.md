@@ -16,8 +16,8 @@
 - **Cross-ref comment** on the flywheel epic: https://github.com/vamseeachanta/aceengineer-strategy/issues/1#issuecomment-4685781047
 
 ### Hygiene sweep (all under /mnt/local-analysis)
-- **workspace-hub:** 5 commits pushed (3 orphaned hdic-onboarding commits + WIP sweep + Prometheus analysis). Root cause of the rebase failures found and recorded.
-- **deckhand:** 100 dirty files → 0; pushed hdic scope-onboarding commit + content sweep; **81 tracked `__pycache__/*.pyc` untracked + gitignored** (permanent churn fix). Live bot unaffected.
+- **workspace-hub:** 5 commits pushed (3 orphaned client-e-onboarding commits + WIP sweep + Prometheus analysis). Root cause of the rebase failures found and recorded.
+- **deckhand:** 100 dirty files → 0; pushed client-e scope-onboarding commit + content sweep; **81 tracked `__pycache__/*.pyc` untracked + gitignored** (permanent churn fix). Live bot unaffected.
 - **aceengineer-strategy:** roster relocation update committed/pushed (PII stays in this private repo).
 - **digitalmodel:** synced to main (picked up DNV F106 helpers); `uv.lock` re-resolve drift parked in stash@{0} (regen with `uv lock` if wanted); stale March whole-tree-churn stash dropped (sha `099021b9...` recoverable until gc).
 - **Fast-forwarded:** aceengineer-admin, achantas-data, assethold, assetutilities, hobbies, teamresumes, worldenergydata, llm-wiki-fdas, sabithaandkrishnaestates.

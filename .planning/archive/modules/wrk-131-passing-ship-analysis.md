@@ -71,9 +71,9 @@ links:
   pr: ""
   issues: ["WRK-131"]
   docs:
-    - "acma-projects/_engineering/passing_ship/Nick Version/modPassingShip.bas"
-    - "acma-projects/_engineering/passing_ship/Nick Version/PassingShipForces.pdf"
-    - "acma-projects/B1512/data/passing_ship/passing_ship.md"
+    - "mkt-a/_engineering/passing_ship/Nick Version/modPassingShip.bas"
+    - "mkt-a/_engineering/passing_ship/Nick Version/PassingShipForces.pdf"
+    - "mkt-a/B1512/data/passing_ship/passing_ship.md"
 
 history:
   - date: "2026-02-15"
@@ -253,7 +253,7 @@ Validate Python implementation against Wang's published reference calculations a
 - Wang, S. (1975). "Hydrodynamic Forces on a Vessel Moving Along a Bank or in a Narrow Channel." *Journal of Ship Research*, Vol. 19, No. 4, pp. 200-213. (Verify exact citation from MathCAD PDFs)
 - MathCAD PDF: `digitalmodel/docs/modules/ship-design/passing_ship/Calculation of forces and moments from Wang.pdf` — Page/cell refs for each extracted value
 - MathCAD PDF: `digitalmodel/docs/modules/ship-design/passing_ship/Wang Paper calculations 3.pdf`
-- VBA reference: `acma-projects/_engineering/passing_ship/Nick Version/modPassingShip.bas`
+- VBA reference: `mkt-a/_engineering/passing_ship/Nick Version/modPassingShip.bas`
 
 **Unit system for benchmark table**: Imperial (ft, slug/ft³, lbf) — matching source documents. Python tests convert to SI before calling calculator, then convert results back for comparison.
 
@@ -467,7 +467,7 @@ The Wang calculator outputs forces in the Wang coordinate system. These must be 
 **Objective**: Validate against 5-7 historical projects from archive.
 
 **Tasks**:
-- [ ] Survey `acma-projects/` for suitable benchmark cases
+- [ ] Survey `mkt-a/` for suitable benchmark cases
 - [ ] For each case:
   - Create sanitized `spec.yml` (no client identifiers — legal compliance)
   - Run through pipeline
@@ -526,7 +526,7 @@ The Wang calculator outputs forces in the Wang coordinate system. These must be 
 | Perpendicular passing is a formulation gap | Medium | Medium | Phase 2: investigate coordinate rotation approach; document limitations if not fully solvable |
 | OrcaFlex license unavailable in CI | Medium | Medium | Dry-run mode, mock fixtures, CI gate split (with/without OrcaFlex) |
 | Migration breakage (old import paths) | Low | Medium | Phase 1a: staged migration with compatibility shim, scan all consumers |
-| Archive projects inaccessible (R: drive) | Medium | Medium | Use local cases from `acma-projects/`; reduce benchmark count if needed |
+| Archive projects inaccessible (R: drive) | Medium | Medium | Use local cases from `mkt-a/`; reduce benchmark count if needed |
 | Legal compliance violations in benchmark data | Medium | High | Legal scan on every benchmark file; sanitize before commit; verify "B1512" against deny list |
 | Numerical instability at small separations | Low | Medium | Phase 1d: edge case tests at η→0; guard with error/warning |
 | Large scope — incomplete delivery | Medium | Medium | Phases are independent; partial delivery is useful |
@@ -614,12 +614,12 @@ The Wang calculator outputs forces in the Wang coordinate system. These must be 
 
 | Document | Location |
 |----------|----------|
-| Wang formulations (VBA) | `acma-projects/_engineering/passing_ship/Nick Version/modPassingShip.bas` |
-| Quadrature engine (VBA) | `acma-projects/_engineering/passing_ship/Nick Version/modQuadrature.bas` |
-| PassingShipForces.pdf | `acma-projects/_engineering/passing_ship/Nick Version/PassingShipForces.pdf` |
-| MathCAD: Deep water | `acma-projects/B1512/data/passing_ship/PassShip FandM Deep.xmcd` |
-| MathCAD: Wang calcs | `acma-projects/B1512/data/passing_ship/Calculation of forces and moments from Wang.xmcd` |
-| AQWA tutorial | `acma-projects/_aqwa/passing_ship_tutorial.pdf` |
+| Wang formulations (VBA) | `mkt-a/_engineering/passing_ship/Nick Version/modPassingShip.bas` |
+| Quadrature engine (VBA) | `mkt-a/_engineering/passing_ship/Nick Version/modQuadrature.bas` |
+| PassingShipForces.pdf | `mkt-a/_engineering/passing_ship/Nick Version/PassingShipForces.pdf` |
+| MathCAD: Deep water | `mkt-a/B1512/data/passing_ship/PassShip FandM Deep.xmcd` |
+| MathCAD: Wang calcs | `mkt-a/B1512/data/passing_ship/Calculation of forces and moments from Wang.xmcd` |
+| AQWA tutorial | `mkt-a/_aqwa/passing_ship_tutorial.pdf` |
 | DiffractionSpec pattern | `digitalmodel/src/digitalmodel/hydrodynamics/diffraction/input_schemas.py` |
 
 ### C. Change History

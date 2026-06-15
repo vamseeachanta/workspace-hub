@@ -77,13 +77,13 @@ YAML, per the `data_format_guidelines` memory (agent-facing structured data defa
 | Document type | Destination |
 |---|---|
 | Public O&G standards (API, DNV, ISO) | `/mnt/ace/O&G-Standards/` |
-| Client / proprietary project docs | `/mnt/ace/client_projects/` (gitignored per ecosystem) |
+| Client / proprietary project docs | `/mnt/ace/client-c/` (gitignored per ecosystem) |
 | Personal finance, tax, HOA, pest, 1099 | `/mnt/ace/achantas-data/` |
 | ACE business (CFP, strategy, admin) | `/mnt/ace/aceengineer-admin/` |
 | Engineering calc artifacts | `/mnt/ace/digitalmodel/` (separate git repo — commits from inside) |
 | Can't classify | leave in Drive; flag for user decision |
 
-**Legal guard:** `scripts/legal/legal-sanity-scan.sh` runs on anything destined for a public-origin repo (`digitalmodel/`, `O&G-Standards/`, `aceengineer-admin/`) before any copy executes. `client_projects/` and `achantas-data/` are private/gitignored and skip the scan.
+**Legal guard:** `scripts/legal/legal-sanity-scan.sh` runs on anything destined for a public-origin repo (`digitalmodel/`, `O&G-Standards/`, `aceengineer-admin/`) before any copy executes. `client-c/` and `achantas-data/` are private/gitignored and skip the scan.
 
 **Classification precedence when multiple apply:** `actionable` > `data_extract` > `drive_doc` > `unsubscribe` > `archive` > `noise`. An invoice that needs a reply classifies as `actionable` (primary) with `data_extract_fields` populated (secondary). Primary drives routing; secondary drives record-keeping.
 

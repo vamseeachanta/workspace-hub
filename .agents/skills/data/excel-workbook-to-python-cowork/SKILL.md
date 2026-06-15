@@ -20,7 +20,7 @@ Windows also produced: COG calculations (both insulated and uninsulated variants
 
 - ws014 (licensed-win-2) with Codex Desktop cowork mode and MCP
 - Excel and openpyxl installed, pytest for testing
-- client_projects repo cloned
+- client-c repo cloned
 
 ## Prompt Template for Cowork
 
@@ -67,7 +67,7 @@ RULES:
 After cowork produces code:
 
 1. Verify all tests pass on ws014 with pytest
-2. Commit to client_projects repo under engineering_workbooks
+2. Commit to client-c repo under engineering_workbooks
 3. Copy module to digitalmodel src digitalmodel marine ops installation
 4. Copy tests to digitalmodel tests marine ops installation
 5. Update module imports to use digitalmodel package path

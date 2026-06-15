@@ -1,4 +1,4 @@
-repo: doris
+repo: mkt-a
 generated: '2026-02-23'
 standards:
 - id: 1-api-rp2a-2007
@@ -820,573 +820,708 @@ standards:
   - pressure vessels
   - flaw assessment
   - ASME
-- id: API Insp 570
-  title: API_Insp_570_(2001)
+- id: API RP 582
+  title: API_RP_582_(2001)
   org: ''
   index_ref: ''
   status: reference
-  domain: pipeline
-  summary: Provides requirements for the inspection, repair, alteration, and rerating of in-service metallic and fiberglass-reinforced
-    plastic piping systems.
-  keywords:
-  - API 570
-  - piping inspection
-  - in-service piping
-  - repair
-  - rerating
-- id: API RP 17B 5th Ed
-  title: API_RP_17B_5th_Ed_(2014)_Flexible_Pipe
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: Recommended practice for the design, analysis, testing, and operation of flexible pipe systems in offshore applications.
-  keywords:
-  - flexible pipe
-  - subsea
-  - riser
-  - flowline
-  - offshore
-- id: API RP 574, Second Edition
-  title: API RP 574 (1998) - Inspection Practices for Piping System Components
-  org: American Petroleum Institute
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: This recommended practice describes inspection practices for piping system components in the petroleum and petrochemical
-    industries. It is intended to supplement the API 570 Piping Inspection Code by providing detailed guidance on component
-    assessment. The document covers the knowledge and experience required for inspectors to maintain piping integrity and
-    safety.
-  keywords:
-  - piping
-  - inspection
-  - refinery
-  - maintenance
-  - API 570
-- id: API RP 1114 (1994)
-  title: Design of Solution-Mined Underground Storage Facilities
-  org: American Petroleum Institute
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: This recommended practice provides basic guidance on the design and development of new solution-mined underground
-    storage facilities in salt formations. It covers essential aspects including site selection, cavern development, testing,
-    and commissioning of the storage unit. The document also details requirements for infrastructure such as tubing strings,
-    wellhead equipment, and surface facilities.
-  keywords:
-  - solution-mining
-  - underground storage
-  - salt caverns
-  - cavern development
-  - wellhead
-- id: DNV-RP-F105
-  title: Free-spanning pipelines
-  org: DNV
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: This recommended practice provides criteria for the structural design and assessment of pipeline free spans subjected
-    to wave and current loading. It addresses both fatigue and ultimate limit state design formats, with a primary focus on
-    predicting Vortex Induced Vibrations (VIV). The document establishes safety levels and calculation methods to ensure the
-    integrity of subsea pipelines against environmental forces.
-  keywords:
-  - free-span
-  - VIV
-  - fatigue
-  - vortex-induced vibrations
-  - hydrodynamics
-- id: '[Welding] Welding Of Pipelines'
-  title: '[Welding]_Welding_Of_Pipelines_And_Related_Facilities_-_Api_Standard_1104_(Ebook,_86_Pages)'
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: API Standard 1104 establishes the requirements for welding procedures, welder qualification, and inspection methods
-    for pipelines and related facilities used in the petroleum and gas industries.
+  domain: materials
+  summary: API RP 582 provides supplementary welding guidelines for the chemical, oil, and gas industries, specifically addressing
+    the downstream segment.
   keywords:
   - welding
-  - API 1104
-  - pipeline
-  - inspection
-  - qualification
-- id: API Spec 5LC
-  title: API_Spec_5LC_(1998)
+  - fabrication
+  - metallurgy
+  - downstream
+- id: ISO 4200 4th Ed
+  title: ISO_4200_4th_Ed_(1991)_Plain_end_steel_tubes,_welded_and_seamless_-_General_tables_of_dimensions_and_masses_per_unit_length
   org: ''
   index_ref: ''
   status: reference
-  domain: pipeline
-  summary: API Spec 5LC provides requirements for the manufacture and testing of corrosion-resistant alloy (CRA) line pipe
-    used in the petroleum and natural gas industries.
+  domain: materials
+  summary: This international standard specifies dimensions and masses per unit length for welded and seamless plain end steel
+    tubes for general purpose and precision applications.
   keywords:
-  - CRA
-  - line pipe
-  - API Spec 5LC
-  - corrosion resistant alloy
-- id: API RP 1111 Draft
-  title: API_RP_1111_Draft_(1998)_Design,_Construction,_Operation,_and_Maintenance_of_Offshore_Hydrocarbon_Pipelines_(Limit_State_Design)
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: This API recommended practice establishes criteria for the design, construction, operation, and maintenance of
-    offshore steel pipelines using a limit state design approach.
-  keywords:
-  - API RP 1111
-  - offshore pipelines
-  - limit state design
-  - hydrocarbon
-  - burst pressure
-- id: API RP 2201
-  title: API_RP_2201_(1995)
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: Procedures and safety guidelines for performing welding or hot tapping on equipment and piping systems while they
-    remain in service.
-  keywords:
-  - hot tapping
-  - welding
-  - in-service
-  - safety
-  - pressure containment
-- id: API RP 1111 Errata
-  title: API_RP_1111_Errata_(2011)_Design,_Construction,_Operation,_and_Maintenance_of_Offshore_Hydrocarbon_Pipelines_(Limit_State_Design)
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: Errata for API RP 1111 Fourth Edition correcting pipeline collapse factors, SCR fatigue analysis requirements for
-    extreme events, and burst pressure equations.
-  keywords:
-  - Offshore Pipelines
-  - Steel Catenary Riser
-  - Fatigue
-  - Limit State Design
-  - Vortex Induced Vibration
-- id: Pub123 Guide to Colors
-  title: Pub123_Guide_to_Colors
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: A guide for the building and classing of subsea riser systems, including color-coding conventions for tracking
-    rule changes and corrigenda.
-  keywords:
-  - subsea
-  - riser
-  - classing
-  - offshore
-  - rules
-- id: Pub123 Riser RCN2
-  title: Pub123_Riser_RCN2
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: Technical guide and rule changes for the classification, construction, and survey of subsea riser systems as defined
-    by ABS standards.
-  keywords:
-  - subsea riser
-  - classification
-  - ABS Guide
-  - offshore units
-  - pipeline systems
-- id: API RP 1111
-  title: API_RP_1111_(1999)
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: API RP 1111 provides criteria for the design, construction, operation, and maintenance of offshore hydrocarbon
-    pipelines using limit state design.
-  keywords:
-  - offshore
-  - hydrocarbon pipeline
-  - limit state design
-  - subsea
-  - burst pressure
-- id: API RP 5UE 2nd Ed Addendum
-  title: API_RP_5UE_2nd_Ed_Addendum_(2009)_Ultrasonic_Evaluation_of_Pipe_Imperfections
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: Procedure for the ultrasonic evaluation and sizing of planar non-surface breaking pipe imperfections from the outside
-    surface.
-  keywords:
-  - ultrasonic
-  - pipe
-  - imperfections
-  - sizing
-  - API 5UE
-- id: API SPEC 17J 4rd Ed
-  title: API_SPEC_17J_4rd_Ed_(2014)_Unbonded_Flexible_Pipe
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: Specification for the design, material selection, manufacture, testing, and packaging of unbonded flexible pipe
-    systems for subsea and marine applications.
-  keywords:
-  - API 17J
-  - unbonded flexible pipe
-  - subsea pipeline
-  - offshore engineering
-  - material selection
-- id: API RP 17B 2nd Ed
-  title: API_RP_17B_2nd_Ed_(1998)_Flexible_Pipe
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: Guidelines for the design, material selection, testing, and operation of unbonded and bonded flexible pipe systems
-    for subsea and marine applications.
-  keywords:
-  - flexible pipe
-  - unbonded
-  - subsea
-  - riser
-  - flowline
-  - API 17B
-- id: API RP 1109 Marking Liquid Pet
-  title: API_RP_1109_Marking_Liquid_Petroleum_Pipeline_Facilities_(2nd_1993_19p)
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: This recommended practice provides guidelines for the design, fabrication, installation, and maintenance of markers
-    and signs used to identify liquid petroleum pipeline facilities and alert the public to their presence.
-  keywords:
-  - pipeline markers
-  - warning signs
-  - liquid petroleum
-  - right-of-way
-  - public safety
-- id: API RP 1111 3rd Ed
-  title: API_RP_1111_3rd_Ed_(1999)_Design,_Construction,_Operation,_and_Maintenance_of_Offshore_Hydrocarbon_Pipelines_(Limit_State_Design)
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: Guidelines for the design, construction, operation, and maintenance of offshore hydrocarbon pipelines using limit
-    state design criteria.
-  keywords:
-  - offshore pipelines
-  - limit state design
-  - hydrocarbon
-  - API RP 1111
-  - pipeline engineering
-- id: API RP 1117
-  title: API_RP_1117_(1996)
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: API RP 1117 provides guidelines for the design, execution, and safety of moving in-service pipelines to ensure
-    structural integrity during relocation or adjustment.
-  keywords:
-  - pipeline movement
-  - in-service
-  - relocation
-  - lowering
-  - structural integrity
-- id: Api Spec 17K, SPECIFICATION FO
-  title: Api_Spec_17K,_SPECIFICATION_FOR_BONDED_FLEXIBLE_PIPE
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: This specification defines the requirements for the design, material selection, manufacture, testing, marking,
-    and packaging of bonded flexible pipes for offshore and upstream applications.
-  keywords:
-  - bonded flexible pipe
-  - API Spec 17K
-  - subsea pipelines
-  - manufacturing standards
-  - material testing
-- id: API STANDART 1102 Steel Pipeli
-  title: API_STANDART_1102_Steel_Pipelines_Crossing_Railroads_and_Highways
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: Guidelines for the design, installation, and inspection of steel pipelines crossing under railroads and highways.
-  keywords:
-  - API 1102
-  - pipelines
-  - crossings
-  - railroads
-  - highways
-- id: DNV Guideline No 14 - Free Spa
-  title: DNV_Guideline_No_14_-_Free_Spanning_Pipelines
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: Technical guidelines for the analysis, assessment, and management of free spanning submarine pipelines.
-  keywords:
-  - free span
-  - pipeline
-  - subsea
-  - VIV
-  - fatigue
-- id: API Spec 5L
-  title: API_Spec_5L_(2000)
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: This specification provides standards for seamless and welded steel line pipe used for conveying gas, water, and
-    oil in the petroleum and natural gas industries.
-  keywords:
-  - API 5L
-  - Line Pipe
-  - Steel Pipe
-  - Seamless
-  - Welded
-  - Petroleum
-  - Natural Gas
-- id: api.1104.1999
-  title: api.1104.1999
-  org: ''
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: This standard specifies requirements for welding methods, welder qualification, and inspection techniques for the
-    production of high-quality welds in pipelines and related facilities.
-  keywords:
-  - welding
-  - pipeline
-  - API 1104
-  - inspection
-  - nondestructive testing
-- id: 5L
-  title: API Specification 5L for Line Pipe
-  org: American Petroleum Institute
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: This standard specifies requirements for the manufacture of seamless and welded steel pipe for use in pipeline
-    transportation systems within the petroleum and natural gas industries. It provides detailed tables for pipe dimensions,
-    weights, and wall thicknesses across various nominal sizes and designations. The document serves as the primary technical
-    benchmark for ensuring the structural integrity of line pipe used globally.
-  keywords:
-  - line pipe
-  - steel pipe
+  - ISO 4200
+  - steel tubes
   - dimensions
-  - wall thickness
-  - API 5L
-- id: 5L
-  title: Specification for Line Pipe
+  - masses
+  - welded
+  - seamless
+- id: API Std 589
+  title: API_Std_589_(1998)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API 589 establishes testing requirements and performance criteria for evaluating the fire resistance of valve stem
+    packing.
+  keywords:
+  - valve stem packing
+  - fire test
+  - API 589
+  - sealing
+  - performance evaluation
+- id: API VT-2 Corrosion of Oil- and
+  title: API_VT-2_Corrosion_of_Oil-_and_Gas-Well_Equipment_
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This book provides field operating personnel with practical knowledge to recognize, report, and mitigate corrosion
+    in oil and gas well equipment.
+  keywords:
+  - corrosion
+  - well equipment
+  - petroleum
+  - maintenance
+  - API
+- id: ISO 148
+  title: ISO_148
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: ISO 148 specifies the Charpy pendulum impact test method for determining the energy absorbed in an impact test
+    of metallic materials.
+  keywords:
+  - Charpy
+  - impact test
+  - metallic materials
+  - absorbed energy
+  - V-notch
+- id: 2016-API579-Part2a
+  title: 2016-API579-Part2a
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Standardized procedures for performing Fitness-For-Service (FFS) assessments on pressurized equipment to evaluate
+    structural integrity and remaining life.
+  keywords:
+  - API 579
+  - Fitness-For-Service
+  - structural integrity
+- id: Sect 07
+  title: Sect_07
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Assessment procedures for hydrogen blisters and laminations in pressurized steel components according to API 579
+    Fitness-For-Service standards.
+  keywords:
+  - hydrogen blistering
+  - laminations
+  - fitness-for-service
+  - API 579
+  - pressure vessels
+- id: API RP 687
+  title: API_RP_687_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Recommended practices for the inspection and repair of rotors used in downstream refinery equipment including compressors,
+    turbines, and gears.
+  keywords:
+  - rotor repair
+  - centrifugal compressor
+  - steam turbine
+- id: ISO DIS 1099
+  title: ISO_DIS_1099
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies conditions for constant-amplitude axial force-controlled fatigue testing of metallic specimens
+    at ambient temperature to determine stress-life relationships.
+  keywords:
+  - fatigue testing
+  - metallic materials
+  - axial force
+  - stress cycle
+  - S-N curve
+- id: API Spec 12GDU
+  title: API_Spec_12GDU_(1990)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This specification covers the minimum requirements for the design, materials, fabrication, and testing of glycol-type
+    gas dehydration units used in the petroleum industry.
+  keywords:
+  - glycol
+  - dehydration
+  - gas
+  - absorber
+  - reboiler
+- id: ASTM E103
+  title: ASTM_E103_(2002)_Std_Test_Method_for_Rapid_Indentation_Hardness_Testing_of_Metallic_Materials
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies procedures for rapid indentation hardness testing of metallic materials as an alternative
+    to the standard Brinell hardness test, including machine verification and reference block calibration.
+  keywords:
+  - hardness testing
+  - indentation
+  - metallic materials
+  - Brinell
+  - ASTM E103
+- id: API Std 603
+  title: API_Std_603_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies requirements for corrosion-resistant bolted bonnet gate valves with flanged or butt-welding
+    ends, primarily intended for downstream applications.
+  keywords:
+  - Corrosion-Resistant
+  - Gate Valves
+  - API 603
+  - Bolted Bonnet
+  - Flanged Ends
+- id: API RP 2Z
+  title: Recommended Practice for Preproduction Qualification for Steel Plates for Offshore Structures
+  org: American Petroleum Institute
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This recommended practice provides guidelines for the preproduction qualification of steelmaking procedures for
+    plates used in welded offshore structures. It specifically addresses requirements for Heat Affected Zone (HAZ) toughness
+    through CTOD testing and evaluations of delayed cracking. The standard ensures that manufacturing processes consistently
+    produce steel capable of meeting stringent performance criteria for offshore environments.
+  keywords:
+  - steel plates
+  - offshore structures
+  - HAZ toughness
+  - CTOD testing
+  - weldability
+- id: ISO 11881 Corrigendum 1
+  title: ISO_11881_Corrigendum_1_(1999)_Corrosion_of_metals_and_alloys_-_Exfoliation_corrosion_testing_of_aluminum
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Technical corrigendum providing corrections to ISO 11881:1999 regarding exfoliation corrosion testing procedures
+    and rating systems for aluminium alloys.
+  keywords:
+  - corrosion
+  - aluminum alloys
+  - ISO 11881
+  - exfoliation
+  - testing
+- id: AWS A5.10
+  title: AWS A5.10 Specification for Bare Aluminum and Aluminum-Alloy Welding Electrodes and Rods
   org: API
   index_ref: ''
   status: reference
-  domain: pipeline
-  summary: This specification establishes requirements for the manufacture of seamless and welded steel line pipe for use
-    in pipeline transportation systems in the petroleum and natural gas industries. It defines two product specification levels,
-    PSL 1 and PSL 2, which specify different levels of technical requirements for chemical composition, mechanical properties,
-    and testing. The standard ensures the suitability of pipe for conveying gas, water, and oil in both onshore and offshore
-    environments.
+  domain: materials
+  summary: This specification establishes requirements for the classification of bare aluminum and aluminum-alloy welding
+    electrodes and rods used in various arc welding processes. It mandates strict chemical composition limits for filler metals
+    and prescribes testing methods to verify usability and radiographic soundness. The document also defines manufacturing
+    standards for sizes, surface finish, and packaging to ensure consistent quality in industrial applications.
   keywords:
-  - line pipe
-  - steel pipe
-  - PSL 1
-  - PSL 2
-  - seamless
-  - welded
-- id: API RP 1110
-  title: API_RP_1110_(1991)
+  - aluminum welding
+  - filler metals
+  - electrodes
+  - chemical composition
+  - GMAW
+  - GTAW
+- id: API RP 591
+  title: API_RP_591_(1998)
   org: ''
   index_ref: ''
   status: reference
-  domain: pipeline
-  summary: Recommended practices for the pressure testing of liquid petroleum pipelines to ensure structural integrity and
-    leak-free operation.
+  domain: materials
+  summary: API RP 591 defines the requirements for a valve user quality assurance program, focusing on the qualification of
+    valve designs and manufacturing processes.
   keywords:
-  - pressure testing
-  - liquid petroleum
-  - pipelines
-- id: API Std 599 (1994)
-  title: "Metal Plug Valves\u2014Flanged and Welding Ends"
+  - API 591
+  - valve qualification
+  - quality assurance
+  - testing procedures
+  - manufacturer qualification
+- id: API RP 578
+  title: API_RP_578_(1999)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Guidelines for a material verification program to ensure alloy piping system components match design specifications
+    for new and existing assets.
+  keywords:
+  - API RP 578
+  - material verification
+  - alloy piping
+  - PMI
+  - positive material identification
+- id: API Spec 12L
+  title: API_Spec_12L_(1994)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This specification establishes the minimum requirements for the design, material selection, and fabrication of
+    vertical and horizontal emulsion treaters used in oil and gas production.
+  keywords:
+  - Emulsion Treaters
+  - API Spec 12L
+  - ASME Code
+  - Firetube
+  - Heat Flux
+- id: API Std 560
+  title: API_Std_560_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies the requirements for the design, materials, fabrication, inspection, testing, and preparation
+    for shipment of fired heaters for general refinery service.
+  keywords:
+  - fired heaters
+  - refinery service
+  - tube design
+  - refractory
+  - combustion
+- id: API Spec 2H, Eighth Edition
+  title: Specification for Carbon Manganese Steel Plate for Offshore Platform Tubular Joints
   org: American Petroleum Institute
   index_ref: ''
   status: reference
-  domain: pipeline
-  summary: This standard provides a purchase specification for metal plug valves with flanged or butt-welding ends and ductile
-    iron plug valves with flanged ends. It establishes requirements for design, materials, and testing to ensure reliability
-    in petroleum and chemical processing applications. The document serves as a guide for procurement while allowing for specific
-    purchaser modifications and technical supplements.
+  domain: materials
+  summary: This specification provides standards for carbon manganese steel plates intended for use in welded tubular joints
+    on offshore platforms. It specifies requirements for two strength levels, Grade 42 and Grade 50, focusing on material
+    suitability for critical structural applications. The document defines essential chemical composition limits, mechanical
+    property benchmarks, and ordering guidelines for manufacturers and purchasers.
   keywords:
-  - plug valves
-  - flanged ends
-  - welding ends
-  - API 599
-  - specification
-- id: API RP 1111 (Third Edition)
-  title: Design, Construction, Operation, and Maintenance of Offshore Hydrocarbon Pipelines (Limit State Design)
-  org: American Petroleum Institute
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: This recommended practice sets forth criteria for the design, construction, operation, and maintenance of offshore
-    hydrocarbon pipelines using limit state design principles. It specifically addresses the structural integrity and safety
-    requirements for both subsea pipelines and risers throughout their lifecycle. The document serves to standardize engineering
-    and operating practices within the offshore petroleum industry.
-  keywords:
-  - offshore
-  - hydrocarbon pipeline
-  - limit state design
-  - subsea
-  - risers
-- id: API RP 1163 1st Ed
-  title: API_RP_1163_1st_Ed_(2005)_In-line_Inspection_Systems_Qualification_Standard
+  - carbon manganese steel
+  - offshore platforms
+  - tubular joints
+  - steel plate
+  - API 2H
+- id: API Std 608
+  title: API_Std_608_(1995)
   org: ''
   index_ref: ''
   status: reference
-  domain: pipeline
-  summary: API RP 1163 provides a standard for qualifying in-line inspection (ILI) systems used to assess the integrity of
-    gas and liquid pipelines.
+  domain: materials
+  summary: Standard specifying design and performance requirements for metal ball valves in petroleum and petrochemical process
+    applications.
   keywords:
-  - in-line inspection
-  - pipeline integrity
-  - ILI
-  - qualification
-  - standard
-- id: OTC 8494
-  title: Code Conflicts for High Pressure Flowlines and Steel Catenary Risers
-  org: OnePetro
-  index_ref: ''
-  status: reference
-  domain: pipeline
-  summary: This paper addresses concerns that current pipeline codes result in overly conservative designs for high-pressure
-    subsea flowlines and steel catenary risers. It highlights the limitations of the traditional Barlow formula for thick-walled
-    pipe and the resulting economic penalties in deepwater projects. It advocates for a shift toward limit state design based
-    on actual burst strength to achieve cost-effective and reliable offshore infrastructure.
-  keywords:
-  - subsea flowlines
-  - steel catenary risers
-  - burst strength
-  - limit state design
-  - Barlow formula
-- id: API Std 594
-  title: API_Std_594_(1997)
+  - ball valves
+  - API 608
+  - anti-static
+  - blowout-proof stem
+  - ASME B16.34
+- id: append g
+  title: append_g
   org: ''
   index_ref: ''
   status: reference
-  domain: pipeline
-  summary: API Standard 594 specifies the requirements for design, materials, dimensions, and testing of wafer, wafer-lug,
-    and double-flanged check valves for various flange classes.
+  domain: materials
+  summary: This document provides an overview of pre-service deficiencies and in-service deterioration mechanisms, such as
+    corrosion, erosion, and cracking, to support Fitness-For-Service (FFS) assessments of petrochemical equipment.
   keywords:
-  - check valves
-  - wafer
-  - API 594
-  - flanges
+  - deterioration
+  - failure modes
+  - Fitness-For-Service
+  - corrosion
+  - metallurgy
+- id: Append i
+  title: Append_i
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Glossary of terms and definitions supporting fitness-for-service assessments for pressure vessels, piping, and
+    storage tanks per API 579.
+  keywords:
+  - API 579
+  - Fitness-For-Service
+  - glossary
+  - corrosion
+  - damage mechanisms
+- id: ISO DIS 1099 1st Ed DRAFT
+  title: ISO_DIS_1099_1st_Ed_DRAFT_(2002)_Metallic_materials-fatigue_testing-axial_force_controlled_method
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This document specifies the conditions for performing axial constant amplitude force-controlled fatigue tests on
+    metallic specimens to determine the relationship between applied stress and number of cycles to failure.
+  keywords:
+  - fatigue testing
+  - axial force
+  - metallic materials
+  - S-N curve
+  - ambient temperature
+- id: Sect 11
+  title: Sect_11
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Procedures for Fitness-For-Service assessments of pressure boundary components exposed to fire damage to evaluate
+    mechanical property degradation and structural integrity.
+  keywords:
+  - API 579
+  - fire damage
+  - Fitness-For-Service
+  - pressure vessels
+  - structural integrity
+- id: ISO 13665 1st Ed
+  title: ISO_13665_1st_Ed_(1997)_Seamless_and_Welded_Steel_Tubes_for_Pressure_Purposes
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Specifies requirements for magnetic particle inspection of seamless and welded ferromagnetic steel tubes for pressure
+    purposes to detect surface imperfections.
+  keywords:
+  - ISO 13665
+  - steel tubes
+  - magnetic particle inspection
+  - pressure purposes
+  - surface imperfections
+- id: Table of contents
+  title: Table_of_contents
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Guidelines for Fitness-For-Service engineering assessments to evaluate the structural integrity and remaining life
+    of industrial equipment, specifically addressing brittle fracture.
+  keywords:
+  - fitness-for-service
+  - brittle fracture
+  - remaining life evaluation
+- id: append f 1
+  title: append_f_1
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Technical guidance and data for material properties, fracture toughness, and fatigue/creep life estimation used
+    in Fitness-For-Service assessments according to API 579.
+  keywords:
+  - API 579
+  - Fitness-For-Service
+  - Fracture Toughness
+  - Creep Analysis
+  - Fatigue Crack Growth
+- id: API Std 526
+  title: API_Std_526_(2002)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API Standard 526 specifies the requirements for flanged steel pressure relief valves, including dimensions, pressure-temperature
+    ratings, and testing for direct spring-loaded and pilot-operated types.
+  keywords:
+  - pressure relief valves
+  - API 526
+  - flanged steel
+- id: sect 03
+  title: sect_03
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Guidelines for evaluating brittle fracture resistance in existing carbon and low alloy steel pressure equipment
+    including vessels, piping, and tanks per API 579.
+  keywords:
+  - brittle fracture
+  - API 579
+  - pressure vessels
+  - fitness-for-service
+  - critical exposure temperature
+- id: Sect 06
+  title: Sect_06
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Procedures for evaluating metal loss from pitting corrosion in pressurized components and tanks to determine fitness-for-service
+    according to API 579 standards.
+  keywords:
+  - pitting corrosion
+  - fitness-for-service
+  - API 579
+  - metal loss
+  - MAWP
+- id: API RP 652
+  title: API_RP_652_(1997)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API RP 652 provides guidance on the selection, installation, and maintenance of internal lining systems for the
+    bottoms of aboveground petroleum storage tanks to prevent corrosion.
+  keywords:
+  - tank bottom
+  - internal lining
+  - corrosion control
+  - aboveground storage tank
+  - petroleum storage
+- id: ISO 15653 1st Ed
+  title: ISO_15653_1st_Ed_(2010)_Metallic_materials_-Method_for_test_for_the_determination_of_quasistatic_fracture_toughness
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies methods for determining the quasistatic fracture toughness of welds in metallic materials.
+  keywords:
+  - fracture toughness
+  - welds
+  - metallic materials
+  - ISO 15653
+  - quasistatic
+- id: SPE-163884-MS
+  title: SPE-163884-MS
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: A new process for tracking coiled tubing fatigue life and diametrical expansion using manufacturer-provided material
+    models and cloud-based data synchronization.
+  keywords:
+  - coiled tubing
+  - fatigue life
+  - material modeling
+  - life tracking
+  - well intervention
+- id: API RP 578
+  title: API_RP_578_(1996)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API RP 578 provides guidelines for a material verification program to ensure that the nominal composition of alloy
+    components in new and existing piping systems is consistent with design specifications.
+  keywords:
+  - PMI
+  - alloy piping
+  - material verification
+  - Positive Material Identification
+  - API RP 578
+- id: append f
+  title: append_f
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Guidance and equations for determining material properties such as yield strength, tensile strength, and flow stress
+    for Fitness-For-Service assessments of pressure vessels and piping.
+  keywords:
+  - FFS
+  - yield strength
+  - tensile strength
+  - flow stress
+  - API 579
+- id: API Std 602
+  title: API_Std_602_(1998)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard specifies the requirements for compact steel gate valves with flanged, threaded, welding, and extended-body
+    ends for use in petroleum and natural gas applications.
+  keywords:
+  - gate valves
+  - API 602
+  - steel valves
+- id: ISO 14921
+  title: ISO_14921
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Specifies the general procedures and requirements for the application of thermally sprayed coatings to engineering
+    components for surface modification or dimensional restoration.
+  keywords:
+  - thermal-spraying
+  - coatings
+  - surface-engineering
+- id: API Spec 12P
+  title: API_Spec_12P_(1995)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This specification covers the material, design, fabrication, and testing requirements for fiberglass reinforced
+    plastic tanks used for the storage of crude oil and other liquids in petroleum production.
+  keywords:
+  - fiberglass
+  - FRP
+  - tanks
+  - API 12P
+  - composite
+- id: ISO 14919
+  title: ISO_14919
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Specifies the classification and technical supply conditions for wires, rods, and cords used in flame and arc thermal
+    spraying.
+  keywords:
+  - thermal spraying
+  - wires
+  - rods
+- id: Sect 03
+  title: Sect_03
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Guidelines for assessing the resistance to brittle fracture of existing carbon and low alloy steel pressure vessels,
+    piping, and storage tanks according to API 579.
+  keywords:
+  - brittle fracture
+  - pressure vessels
+  - API 579
+  - carbon steel
   - piping
-- id: API Std 609
-  title: API_Std_609_(1997)
+- id: ISO 1099 1st Ed
+  title: ISO_1099_1st_Ed_(1975)_Axial_load_fatigue_testing
   org: ''
   index_ref: ''
   status: reference
-  domain: pipeline
-  summary: API Standard 609 provides requirements for the design, materials, and testing of double-flanged, lug-type, and
-    wafer-type butterfly valves for use in piping systems.
+  domain: materials
+  summary: This standard specifies conditions for axial load fatigue testing of metals at room temperature to determine properties
+    like S/N curves.
   keywords:
-  - butterfly valves
-  - API 609
-  - flange specifications
-  - wafer-type
-  - lug-type
-
-# =============================================================================
-# Calculation Examples
-# Real project calculation files that serve as reference implementations
-# when coding pipeline design checks in the doris repo.
-# =============================================================================
-calc_examples:
-
-# --- Pipeline pressure containment and wall thickness ---
-- standard: DNV-OS-F101
-  domain: pipeline
-  description: >
-    Wall thickness, burst/collapse, and installation load checks per DNV OS F101.
-    Multiple project workbooks provide reference pressure containment calculations.
-  files:
-  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-01 List of Pipelines Installed.xlsx
-    description: Pipeline inventory — OD, WT, grade, MAOP for DNV OS F101 Sec 5 wall thickness basis
-    type: xlsx
-    host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0003-01 Mecor Pipeline Installation DNV WT Sizing.xlsm
-    description: DNV OS F101 wall thickness sizing — burst (SC-High) and collapse (SC-Low) checks
-    type: xlsm
-    host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0004-01 Mecor Pipeline Installation Pipe Checks (Dnv-OS-F101).xlsx
-    description: Full DNV-OS-F101 pipe checks — combined loading, installation and operational cases
-    type: xlsx
-    host: dev-primary
-
-# --- Propagation buckle ---
-- standard: API-RP-1111
-  domain: pipeline
-  description: >
-    Propagation buckle initiation and arrest checks per API RP 1111 for deepwater pipelines.
-  files:
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0005-01 Mecor Pipeline Propagation Checks (Dnv and API).xlsx
-    description: Propagation buckle check per API RP 1111 and DNV OS F101 — transition water depth
-    type: xlsx
-    host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0002-01 API-1111 Mecor Pipeline Installation API WT Sizing.xlsm
-    description: API RP 1111 wall thickness sizing — explicit API-1111 burst and collapse checks
-    type: xlsm
-    host: dev-primary
-
-# --- On-bottom stability ---
-- standard: DNV-RP-F109
-  domain: pipeline
-  description: >
-    On-bottom stability hydrodynamic load inputs per DNV RP F109.
-    Environmental data, submerged weight, and pipeline geometry inputs.
-  files:
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0007-01 Metaocean information.xlsx
-    description: Metocean data — design current profiles, wave heights, return periods (F109 inputs)
-    type: xlsx
-    host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Pipeline Weights/Weight Matching.xlsx
-    description: Pipeline weight matching — submerged weight per unit length, coating breakdown
-    type: xlsx
-    host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/06_review/611 Mecor Pipeline Installation Analysis/Weight Verification/0611-Cal-0001-01 (Weight Verification).xlsx
-    description: Weight verification — cross-check of submerged weight against vendor data
-    type: xlsx
-    host: dev-primary
-
-# --- Upheaval buckling ---
-- standard: DNV-RP-F110
-  domain: pipeline
-  description: >
-    Upheaval buckling and pipeline expansion analysis per DNV RP F110.
-    Pipelay tension and sagbend analysis provides installation load inputs.
-  files:
-  - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis.xlsx
-    description: TJG pipelay analysis — S-lay tension, sagbend bending strain, stinger loads (DNV-RP-F110 input data)
-    type: xlsx
-    host: dev-primary
-
-# --- Pipelay installation ---
-- standard: DNV-OS-F101-installation
-  domain: pipeline
-  description: >
-    S-lay pipelay installation checks per DNV OS F101 installation section.
-    Sagbend and overbend checks, abandonment and recovery analysis.
-  files:
-  - path: /mnt/ace/docs/disciplines/production/projects/0175_tjg_pipelay_analysis/00_inbox/0175 TJG Pipelay Analysis/ANL/0611-RES-0175-01 TJG Pipelay Analysis (Clean & Release).xlsx
-    description: Released TJG pipelay analysis — clean copy with final results for installation design basis
-    type: xlsx
-    host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-05 List of Pipelines Installed.xlsx
-    description: Updated pipeline inventory — revised wall thicknesses after FEA validation
-    type: xlsx
-    host: dev-primary
-
+  - fatigue testing
+  - axial load
+  - metals
+  - S/N curve
+  - cyclic stress
+- id: API RP 571 1st Ed
+  title: API_RP_571_1st_Ed_(2003)_Damage_Mechanisms_Affecting_Fixed_Equipment_in_the_Refining_Industry
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Recommended practice providing a description of damage mechanisms affecting fixed equipment in the refining and
+    petrochemical industries to support inspection and risk management.
+  keywords:
+  - damage mechanisms
+  - refining
+  - fixed equipment
+  - API 571
+  - corrosion
+- id: API Std 530
+  title: API_Std_530_(1996)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard provides calculation procedures for determining the required wall thickness of fired-heater tubes
+    in petroleum refinery services.
+  keywords:
+  - API 530
+  - heater-tube thickness
+  - refinery service
+  - fired heaters
+  - wall thickness calculation
+- id: API RP 621
+  title: API_RP_621_(2002)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Guidelines for the reconditioning of metallic gate, globe, and check valves used in the downstream segment of the
+    petroleum industry.
+  keywords:
+  - gate valves
+  - globe valves
+  - check valves
+  - reconditioning
+  - API RP 621
+- id: API RP 1631
+  title: API_RP_1631_(2001)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API Standard 1631 provides recommendations for the interior lining of existing steel and fiberglass underground
+    storage tanks and the periodic inspection of lined tanks.
+  keywords:
+  - underground storage tanks
+  - interior lining
+  - inspection
+  - petroleum
+  - UST
+- id: append h
+  title: append_h
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Appendix H provides validation procedures for the API 579 Fitness-For-Service standard regarding the structural
+    integrity and assessment of pressure equipment.
+  keywords:
+  - API 579
+  - Fitness-For-Service
+  - Validation
+  - structural integrity
+  - pressure equipment
+- id: 2016-API579-Part5
+  title: 2016-API579-Part5
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Assessment procedures for local metal loss in pressure-containing equipment to evaluate fitness-for-service.
+  keywords:
+  - API 579
+  - Fitness-For-Service
+  - Local Metal Loss
+  - Corrosion
+- id: API Std 598
+  title: API_Std_598_(1996)
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: This standard covers the requirements for inspection, examination, and pressure testing of resilient-seated, nonmetallic-seated,
+    and metal-to-metal-seated valves.
+  keywords:
+  - valve
+  - inspection
+  - testing
+  - leakage
+  - pressure
+- id: ISO 11881-1999
+  title: ISO_11881-1999
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: Technical corrigendum for ISO 11881:1999 specifying procedures for exfoliation corrosion testing of aluminium alloys.
+  keywords:
+  - ISO 11881
+  - corrosion
+  - aluminium alloys
+  - exfoliation
+  - testing
+- id: cover
+  title: cover
+  org: ''
+  index_ref: ''
+  status: reference
+  domain: materials
+  summary: API RP 579 provides standardized procedures for performing fitness-for-service assessments to evaluate the structural
+    integrity and remaining life of pressurized equipment containing flaws or damage.
+  keywords:
+  - fitness-for-service
+  - structural integrity
+  - API 579
+  - material degradation
+  - pressure vessels
 apis: []
 gaps: []

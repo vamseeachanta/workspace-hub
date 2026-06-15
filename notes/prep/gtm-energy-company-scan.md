@@ -15,7 +15,7 @@ Data sourced from ACE Engineer's automated job market scanner (scripts/gtm/job-m
 ### Tier 1 - EPC/Installation Leaders (Highest Priority)
 - **Subsea7**: Consistent hiring for offshore installation engineers, pipeline specialists, and subsea construction roles
 - **TechnipFMC**: Strong demand for subsea engineers, flexibles specialists, and umbilical design engineers
-- **Saipem**: Active recruitment for pipelay engineers, offshore construction managers, and offshore installation leads
+- **client-d**: Active recruitment for pipelay engineers, offshore construction managers, and offshore installation leads
 - **McDermott**: Seeking offshore structural engineers, jackup specialists, and decommissioning engineers
 - **Allseas**: Heavy lift specialists, pipelay engineers, and offshore installation managers
 - **Heerema**: Crane operators, offshore installation engineers, and heavy lift planning engineers
@@ -102,7 +102,7 @@ Data sourced from ACE Engineer's automated job market scanner (scripts/gtm/job-m
   - Corrosion monitoring and inspection techniques
   - ISO 15589, DNV-RP-B401, NACE standards knowledge
   - Field experience with ROV surveys and potential measurements
-- **Hiring Companies**: TechnipFMC, Subsea7, Saipem, Wood Group, Worley, BV, LR
+- **Hiring Companies**: TechnipFMC, Subsea7, client-d, Wood Group, Worley, BV, LR
 - **Salary Range**: $80,000 - $120,000 base
 
 #### 4. API 579/Fitness-for-Service Specialists
@@ -158,7 +158,7 @@ Data sourced from ACE Engineer's automated job market scanner (scripts/gtm/job-m
 
 ### Immediate Opportunities (0-3 months)
 1. **Target Tier 1 EPCs for Overflow Work**: 
-   - Subsea7, TechnipFMC, Saipem often overflow specialist work to consultancies during peak periods
+   - Subsea7, TechnipFMC, client-d often overflow specialist work to consultancies during peak periods
    - Focus: OrcaFlex riser analysis, mooring design, fatigue assessments
    - Approach: Direct business development to engineering managers via LinkedIn
 

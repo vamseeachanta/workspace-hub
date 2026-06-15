@@ -1,4 +1,4 @@
-# B1528 SIROCCO yaw-moment / time-trace exit handoff — 2026-05-01
+# B1528 proj-a yaw-moment / time-trace exit handoff — 2026-05-01
 
 ## Executive status
 
@@ -6,14 +6,14 @@ B1528 execution wave is complete for the project-specific source pack, static ya
 
 | Issue | State | Terminal label | Result |
 |---|---:|---|---|
-| #2569 | CLOSED | `status:done` | B1528 SIROCCO source pack and benchmark extraction completed. |
+| #2569 | CLOSED | `status:done` | B1528 proj-a source pack and benchmark extraction completed. |
 | #2570 | CLOSED | `status:done` | Static yaw-moment input/report completed and published to `digitalmodel` `main`. |
 | #2571 | CLOSED | `status:done` | Time-trace benchmark report with rudder-local inflow feedback completed and published to `digitalmodel` `main`. |
 
 `digitalmodel` `main` verification from GitHub API:
 
 - HEAD at verification time: `9008e102ff98d5465ef043c7f7466edb76e28668`
-- HEAD message: `feat: add B1528 SIROCCO time-trace report for issue 2571`
+- HEAD message: `feat: add B1528 proj-a time-trace report for issue 2571`
 - HEAD date: `2026-05-01T09:46:40Z`
 
 Local `git status`/worktree commands in `workspace-hub` and nested `digitalmodel` repeatedly timed out during the session, so final publication and verification used GitHub Contents/API against `main`.
@@ -24,12 +24,12 @@ Local `git status`/worktree commands in `workspace-hub` and nested `digitalmodel
 
 Verified on `vamseeachanta/digitalmodel@main`:
 
-- `src/digitalmodel/naval_architecture/b1528_sirocco_yaw_report.py`
-- `src/digitalmodel/naval_architecture/data/b1528_sirocco_yaw_moment.yml`
-- `tests/naval_architecture/test_b1528_sirocco_yaw_moment.py`
-- `docs/domains/marine-engineering/b1528-sirocco-yaw-moment-report.md`
-- `outputs/b1528_sirocco/b1528_sirocco_yaw_moment_report.html`
-- generated CSV/JSON/provenance/Markdown/manifest under `outputs/b1528_sirocco/`
+- `src/digitalmodel/naval_architecture/b1528_proj-a_yaw_report.py`
+- `src/digitalmodel/naval_architecture/data/b1528_proj-a_yaw_moment.yml`
+- `tests/naval_architecture/test_b1528_proj-a_yaw_moment.py`
+- `docs/domains/marine-engineering/b1528-proj-a-yaw-moment-report.md`
+- `outputs/b1528_proj-a/b1528_proj-a_yaw_moment_report.html`
+- generated CSV/JSON/provenance/Markdown/manifest under `outputs/b1528_proj-a/`
 - `scripts/review/results/2026-05-01-implementation-2570-hermes.md`
 
 Key workbook-regression operating points at `2.5 kn`:
@@ -52,12 +52,12 @@ Scope caveat: static rudder-induced yaw moment only; not a full MMG simulation, 
 
 Verified on `vamseeachanta/digitalmodel@main`:
 
-- `src/digitalmodel/naval_architecture/b1528_sirocco_time_trace.py`
-- `src/digitalmodel/naval_architecture/data/b1528_sirocco_time_trace.yml`
-- `tests/naval_architecture/test_b1528_sirocco_time_trace.py`
-- `docs/domains/marine-engineering/b1528-sirocco-time-trace-report.md`
-- `outputs/b1528_sirocco/time_trace/b1528_sirocco_time_trace_report.html`
-- generated CSV/JSON/provenance/Markdown/manifest under `outputs/b1528_sirocco/time_trace/`
+- `src/digitalmodel/naval_architecture/b1528_proj-a_time_trace.py`
+- `src/digitalmodel/naval_architecture/data/b1528_proj-a_time_trace.yml`
+- `tests/naval_architecture/test_b1528_proj-a_time_trace.py`
+- `docs/domains/marine-engineering/b1528-proj-a-time-trace-report.md`
+- `outputs/b1528_proj-a/time_trace/b1528_proj-a_time_trace_report.html`
+- generated CSV/JSON/provenance/Markdown/manifest under `outputs/b1528_proj-a/time_trace/`
 - `scripts/review/results/2026-05-01-implementation-2571-hermes.md`
 
 Implemented governing model:
@@ -94,7 +94,7 @@ Environment caveat: later pytest reruns timed out after successful validation; n
 
 #2569 source-pack evidence is narrative benchmark context, not an instrumented validation dataset:
 
-- B1528 canonical spelling: `SIROCCO`; alias captured: `Sorrocco`.
+- B1528 canonical spelling: `proj-a`; alias captured: `Sorrocco`.
 - `LBP = 225.5 m`.
 - `rudder_area = 44.93956319369854 m²`.
 - legacy workbook yaw lever: `0.6 * LBP = 135.3 m`.
@@ -118,7 +118,7 @@ Recommended next wave after exit: execute #2566 first as a quality/packaging gat
 ## Fresh-session copy/paste prompt
 
 ```text
-Resume from the B1528 SIROCCO exit handoff:
+Resume from the B1528 proj-a exit handoff:
 /mnt/local-analysis/workspace-hub/docs/session-handoffs/2026-05-01-b1528-yaw-moment-time-trace-exit-handoff.md
 
 Do not redo #2569/#2570/#2571 unless verification finds a real remote regression. They are closed with status:done and their artifacts are published to vamseeachanta/digitalmodel@main. First verify remote issue/file state via GitHub API because local git status/worktree commands have timed out in workspace-hub and nested digitalmodel.

@@ -45,7 +45,7 @@ links:
 
 ## Summary
 
-Port the ENIGMA project's safety analysis codebase (NLP classification, incident correlation, feature engineering, hypothesis testing) from `/mnt/github/workspace-hub/client_projects/energy_firm_sd_support/xom/000 ENIGMA/` into a generalized, configurable module at `src/worldenergydata/modules/safety_analysis/`. All client-specific code is abstracted; no Databricks dependency; optional heavy ML deps (torch/transformers) gated behind extras.
+Port the ENIGMA project's safety analysis codebase (NLP classification, incident correlation, feature engineering, hypothesis testing) from `/mnt/github/workspace-hub/client-c/energy_firm_sd_support/xom/000 ENIGMA/` into a generalized, configurable module at `src/worldenergydata/modules/safety_analysis/`. All client-specific code is abstracted; no Databricks dependency; optional heavy ML deps (torch/transformers) gated behind extras.
 
 ---
 

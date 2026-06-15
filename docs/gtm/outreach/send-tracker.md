@@ -31,7 +31,7 @@ This artifact closes acceptance criterion 3 of [#2556](https://github.com/vamsee
 
 Run this before clicking send on any of the matrix rows. Failing any item = do NOT send; remediate first.
 
-- [ ] Matrix row's evidence URL returns HTTP 200 in a real browser today (not just at original commit time). Probe for known WAF/TLS-strict rows (Subsea7, McDermott, TechnipFMC, Saipem, Hornbeck, Cadeler, Woodside per matrix §3a) is the *human* clicking the link, not an HTTP probe.
+- [ ] Matrix row's evidence URL returns HTTP 200 in a real browser today (not just at original commit time). Probe for known WAF/TLS-strict rows (Subsea7, McDermott, TechnipFMC, client-d, Hornbeck, Cadeler, Woodside per matrix §3a) is the *human* clicking the link, not an HTTP probe.
 - [ ] All demo links in the email body return HTTP 200 (`curl -sLo /dev/null -w "%{http_code}" <url>` per link).
 - [ ] Capability-summary PDF attaches at full size (~315 KB; verify hash against `assets/capability-summary-v1.pdf.sha256`).
 - [ ] Email body re-read once for the prospect's industry — every claim supported by the linked page (no done-tense overclaim against worked-example pages, especially FOWT).

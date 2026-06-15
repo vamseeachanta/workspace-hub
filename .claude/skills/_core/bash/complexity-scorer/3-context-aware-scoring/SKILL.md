@@ -20,11 +20,11 @@ Adjust scores based on context (repository, domain, etc.):
 # ABOUTME: Adjusts based on repository tier, domain
 
 # Repository tiers
-TIER1_REPOS="workspace-hub|digitalmodel|energy|frontierdeepwater"
-TIER2_REPOS="assetutilities|worldenergydata|rock-oil-field"
-TIER3_REPOS="doris|saipem|OGManufacturing|seanation"
+TIER1_REPOS="workspace-hub|digitalmodel|energy|client-a"
+TIER2_REPOS="assetutilities|worldenergydata|client-b"
+TIER3_REPOS="lng-a|client-d|OGManufacturing|client-f"
 PERSONAL_ACTIVE="aceengineer-admin|aceengineer-website"
-PERSONAL_EXPERIMENTAL="hobbies|sd-work|acma-projects"
+PERSONAL_EXPERIMENTAL="hobbies|sd-work|mkt-a"
 
 # Get repository tier
 get_repo_tier() {

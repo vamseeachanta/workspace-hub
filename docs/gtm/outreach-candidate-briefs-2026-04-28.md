@@ -320,7 +320,7 @@ labeled as such.
   - QRA, hazardous-area classification, or process-safety final design.
   - Vendor-certified loading-arm / transfer-system design.
   - Specific named-client terminal projects (Woodfibre and SESA-related
-    work is corpus-confidential and gated by ACMA / project-owner
+    work is corpus-confidential and gated by mkt-a / project-owner
     clearance — `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md`,
     `terminal-1-sesa.md`).
 - **Missing proof.**

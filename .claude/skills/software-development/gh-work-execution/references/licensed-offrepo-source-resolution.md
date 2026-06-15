@@ -27,6 +27,6 @@ Use this reference when an approved issue was blocked by an unresolved source ar
 - Do not let a generated HTML/report title be the only proof; pair it with extracted row/figure/section counts or parser evidence.
 - Do not bury source-boundary decisions only in local notes; post the decision to the governing GitHub issue.
 
-## Session example: SIROCCO OCIMF coefficients
+## Session example: proj-a OCIMF coefficients
 
-In workspace-hub issue #2760, the unresolved `ocimf_coefficients_production.csv` blocker was resolved by finding the licensed workbook at `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx`. Safe tracked derivatives included an HTML explorer, corpus README, and parser prototype in `digitalmodel`; the raw workbook/PDFs remained off-repo. The GitHub comment recorded that the data is a generic/reference OCIMF tanker-current coefficient basis, not ship-specific SIROCCO coefficients, and that downstream calculations must fail closed if provenance/citation source is unavailable.
+In workspace-hub issue #2760, the unresolved `ocimf_coefficients_production.csv` blocker was resolved by finding the licensed workbook at `/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx`. Safe tracked derivatives included an HTML explorer, corpus README, and parser prototype in `digitalmodel`; the raw workbook/PDFs remained off-repo. The GitHub comment recorded that the data is a generic/reference OCIMF tanker-current coefficient basis, not ship-specific proj-a coefficients, and that downstream calculations must fail closed if provenance/citation source is unavailable.

@@ -3,7 +3,7 @@ name: llm-wiki-public-private-routing
 description: >-
   Firewall between the public llm-wiki repo (vamseeachanta/llm-wiki, MIT + CC-BY-4.0)
   and per-client private wikis (vamseeachanta/llm-wiki-<client>, e.g.
-  llm-wiki-acma per #2746). Use when (1) deciding whether a converted wiki
+  llm-wiki-mkt-a per #2746). Use when (1) deciding whether a converted wiki
   page lands in public or private surface, (2) applying the project-name
   abstraction rule to public-bound content, (3) evaluating the public-
   availability exception that lets actual project names pass through unmodified,
@@ -86,8 +86,8 @@ only in routing rules.
 **By default, abstract client project names** in public-wiki content.
 
 Examples:
-- `B1528 SIROCCO` → `Project Alpha` (or `a deepwater FSO project`)
-- `acma-projects/<specific project>` → `a marine engineering project`
+- `B1528 proj-a` → `Project Alpha` (or `a deepwater FSO project`)
+- `mkt-a/<specific project>` → `a marine engineering project`
 - specific platform name → generic platform-class descriptor
 
 ### What is NOT in the abstraction surface
@@ -190,7 +190,7 @@ opt-out.
 - [ ] If public domain: is all key data publicly available? (cite sources, otherwise abstract)
 - [ ] If exception applies: public sources cited explicitly in the page's `## Sources` section
 - [ ] No raw numerical results that would identify a specific asset (sanitize to ranges or remove)
-- [ ] No filenames / paths referencing client-private directories (`acma-projects/`, `<client>-projects/`)
+- [ ] No filenames / paths referencing client-private directories (`mkt-a/`, `<client>-projects/`)
 - [ ] Client identity (operator company) check passes `.legal-deny-list.yaml`
 - [ ] `bash scripts/legal/legal-sanity-scan.sh --diff-only` returns PASS
 - [ ] Page's commit message records abstraction verdict: `abstraction: applied | not-needed-exception-met | not-applicable-public-standard-only`
@@ -219,7 +219,7 @@ private page is the audit-trail; the public copy is the share-out.
 
 ## Anti-patterns
 
-- **Name-substitution without data-substitution** — replacing "B1528 SIROCCO" with "Project Alpha" while keeping a specific tension envelope from B1528. The number identifies the asset.
+- **Name-substitution without data-substitution** — replacing "B1528 proj-a" with "Project Alpha" while keeping a specific tension envelope from B1528. The number identifies the asset.
 - **"Public domain" by hand-wave** — "I think it's been mentioned somewhere" doesn't qualify. Cite the source.
 - **Per-page abstraction without checklist** — judgment calls drift across pages. Use the decision tree.
 - **Abstracted page in private wiki** — abstraction has no purpose in the private surface; just write the actual name. (Private→public copies are the exception.)

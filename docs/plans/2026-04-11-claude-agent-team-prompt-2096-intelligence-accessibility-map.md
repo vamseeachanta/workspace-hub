@@ -20,7 +20,7 @@ Repo/workflow constraints:
 - Child contracts from `#2207` and `#2209` now exist locally and should be consumed, not redefined.
 - This run is for `#2096` only.
 - Stay within the approved scope for `#2096`: create the intelligence accessibility map covering llm-wikis, resource intelligence, and document intelligence so weekly review `#2089` can verify discoverability and usability.
-- Do NOT implement registry schemas (`#2136`), canonical entry-point design details (`#2104`), workflow retrieval policy (`#2208`), conformance tooling (`#2206`), or `/mnt/ace/acma-codes` integration (`#2216`).
+- Do NOT implement registry schemas (`#2136`), canonical entry-point design details (`#2104`), workflow retrieval policy (`#2208`), conformance tooling (`#2206`), or `/mnt/ace/mkt-a-codes` integration (`#2216`).
 - Do NOT redefine the parent pyramid/layer model from `#2205`.
 
 Primary issue:

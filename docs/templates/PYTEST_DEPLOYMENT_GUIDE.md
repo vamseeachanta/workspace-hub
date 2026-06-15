@@ -21,7 +21,7 @@ This guide explains how to deploy the standardized pytest.ini template across al
 Repositories requiring the highest quality standards:
 - **digitalmodel** - Full-stack application
 - **energy** - Energy analytics platform
-- **frontierdeepwater** - Marine engineering analysis
+- **client-a** - Marine engineering analysis
 
 **Characteristics:** Strict coverage, conservative timeouts, limited parallelization
 
@@ -30,14 +30,14 @@ Actively developed repositories with good quality standards:
 - **aceengineercode** - Engineering code library
 - **assetutilities** - Asset management utilities
 - **worldenergydata** - Energy data analysis
-- **rock-oil-field** - Oil field analysis
+- **client-b** - Oil field analysis
 - **teamresumes** - Resume management
 
 **Characteristics:** Balanced coverage, moderate timeouts, good parallelization
 
 ### Tier 3: Maintenance (75% coverage)
 Maintenance and experimental repositories:
-- **All others** - Includes: doris, saipem, OGManufacturing, seanation, hobbies, investments, sabithaandkrishnaestates, sd-work, acma-projects, achantas-data, achantas-media, achantas-training, aceengineer-admin, aceengineer-website, client_projects, pyproject-starter, etc.
+- **All others** - Includes: lng-a, client-d, OGManufacturing, client-f, hobbies, investments, sabithaandkrishnaestates, sd-work, mkt-a, achantas-data, achantas-media, achantas-training, aceengineer-admin, aceengineer-website, client-c, pyproject-starter, etc.
 
 **Characteristics:** Relaxed coverage, flexible timeouts, full parallelization
 

@@ -8,7 +8,7 @@
 Translate a set of engineering calculation Excel files located in `62092_sesa/data/calculations` from Spanish to English to facilitate international collaboration and review.
 
 ## Scope
-- **Source Directory:** `/mnt/github/workspace-hub/doris/62092_sesa/data/calculations`
+- **Source Directory:** `/mnt/github/workspace-hub/lng-a/62092_sesa/data/calculations`
 - **Target Files:** All `.xlsx` files in the source directory.
 - **Output:** New files with `_en.xlsx` suffix (non-destructive).
 

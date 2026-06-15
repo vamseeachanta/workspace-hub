@@ -11,16 +11,16 @@
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `data/document-index/index.jsonl` has no records under the selected `/mnt/ace-data/client_projects/energy_bsee/raw_data`, `/mnt/ace-data/worldenergydata/data/modules/hse/raw`, or `/mnt/ace-data/frontierdeepwater/data/raw` prefixes, so these families are not yet represented in the current index by those local raw-like paths.
+- Found: `data/document-index/index.jsonl` has no records under the selected `/mnt/ace-data/client-c/energy_bsee/raw_data`, `/mnt/ace-data/worldenergydata/data/modules/hse/raw`, or `/mnt/ace-data/client-a/data/raw` prefixes, so these families are not yet represented in the current index by those local raw-like paths.
 - Found: `docs/document-intelligence/data-intelligence-map.md` provides the document-intelligence artifact map that future source summaries should reference.
 - Gap to address after approval: no current plan or issue will directly scope the three offshore raw-source families as bounded, approval-gated llm-wiki backfill candidates.
 
 ### Standards
 | Source family | Status | Source |
 |---|---|---|
-| BSEE/offshore local raw data | Gap / candidate package | `/mnt/ace-data/client_projects/energy_bsee/raw_data`; focused issue search found no direct duplicate |
+| BSEE/offshore local raw data | Gap / candidate package | `/mnt/ace-data/client-c/energy_bsee/raw_data`; focused issue search found no direct duplicate |
 | HSE/safety datasets | Gap / candidate package | `/mnt/ace-data/worldenergydata/data/modules/hse/raw`; focused issue search found no direct duplicate |
-| Frontier Deepwater offshore operations PDFs | Gap / candidate package | `/mnt/ace-data/frontierdeepwater/data/raw`; focused issue search found no direct duplicate |
+| client-a offshore operations PDFs | Gap / candidate package | `/mnt/ace-data/client-a/data/raw`; focused issue search found no direct duplicate |
 
 ### LLM Wiki pages consulted
 - `knowledge/wikis/engineering/` — candidate target for BSEE/HSE/offshore operations source summaries and concepts.
@@ -28,7 +28,7 @@
 - `knowledge/wikis/engineering-standards/` — not the primary target for this issue; standards raw work is explicitly routed elsewhere.
 
 ### Documents consulted
-- Issue #2644 — asks for an approval-ready plan for the BSEE, HSE, and Frontier Deepwater raw-source family candidates.
+- Issue #2644 — asks for an approval-ready plan for the BSEE, HSE, and client-a raw-source family candidates.
 - Issue #2643 — companion routing issue that will classify all raw-like roots and keep this issue from becoming a global raw-data umbrella.
 - Issue #2390 — open llm-wiki roadmap umbrella.
 - Issue #2392 — open coverage-gap detector; future implementation should consume/emit compatible source-family gap metadata.
@@ -39,7 +39,7 @@
 ### Gaps identified
 - No BSEE/offshore raw-source family package plan exists.
 - No HSE/safety raw-source family package plan exists.
-- No Frontier Deepwater/offshore operations raw-source family package plan exists.
+- No client-a/offshore operations raw-source family package plan exists.
 - No approval-gated sequencing matrix currently states which derived pages/summaries would be proposed for these families and which raw/project-sensitive inputs remain excluded.
 
 ### Evidence (embedded verification)
@@ -53,16 +53,16 @@
 
 **Metadata-only source family findings**:
 ```text
-/mnt/ace-data/client_projects/energy_bsee/raw_data: files=10 dirs=0 ext=.pdf/.xlsx/.zip/.docx
+/mnt/ace-data/client-c/energy_bsee/raw_data: files=10 dirs=0 ext=.pdf/.xlsx/.zip/.docx
 /mnt/ace-data/worldenergydata/data/modules/hse/raw: files=97 dirs=7 ext=.csv/.zip/.txt/.md/.sh
-/mnt/ace-data/frontierdeepwater/data/raw: files=4 dirs=1 ext=.pdf/.md/.gitkeep
+/mnt/ace-data/client-a/data/raw: files=4 dirs=1 ext=.pdf/.md/.gitkeep
 ```
 
 **Focused duplicate search proof**:
 ```text
 gh issue list --search 'energy_bsee raw_data' -> no results
 gh issue list --search 'worldenergydata hse llm-wiki' -> no results
-gh issue list --search 'frontierdeepwater llm-wiki' -> no direct duplicate; returned portfolio/adjacent issues only
+gh issue list --search 'client-a llm-wiki' -> no direct duplicate; returned portfolio/adjacent issues only
 ```
 
 **Out-of-scope overlap proof**:
@@ -90,7 +90,7 @@ gh issue list --search 'orcaflex examples raw llm-wiki' -> #2103, #2124, #2034, 
 
 ## Deliverable
 
-An approval-gated offshore raw-source family package spec will define safe BSEE, HSE/safety, and Frontier Deepwater llm-wiki backfill candidates, including target domains, proposed derived summary/page types, exclusions, provenance gates, and sequencing without importing raw data.
+An approval-gated offshore raw-source family package spec will define safe BSEE, HSE/safety, and client-a llm-wiki backfill candidates, including target domains, proposed derived summary/page types, exclusions, provenance gates, and sequencing without importing raw data.
 
 ---
 
@@ -99,12 +99,12 @@ An approval-gated offshore raw-source family package spec will define safe BSEE,
 ```text
 load #2643 output data/document-index/raw-like-source-routing.yaml as a hard prerequisite
 fail if #2643 routing artifact is missing, not approved/implemented, or lacks the three selected family rows
-select only BSEE, HSE/safety, and Frontier Deepwater family rows; do not rescan /mnt/ace-data
+select only BSEE, HSE/safety, and client-a family rows; do not rescan /mnt/ace-data
 for each family:
     define target wiki domains and candidate page/source-summary types
     record allowed metadata fields and forbidden raw-content fields
     set sensitivity and approval_required fields explicitly
-    default BSEE/client_projects family to sensitivity=client_project and approval_required=true
+    default BSEE/client-c family to sensitivity=client_project and approval_required=true
     list exclusions and approval gates for project/client-sensitive material
     define follow-up package sequencing and acceptance checks
 write package markdown and YAML sidecar
@@ -131,10 +131,10 @@ validate schema, source-family uniqueness, no raw text, and no overlap with #210
 |---|---|---|---|
 | `test_offshore_packages_schema_valid` | YAML package spec has required fields | package sidecar | all packages validate |
 | `test_offshore_packages_requires_2643_routing` | implementation consumes #2643 routing and does not rescan raw mounts | missing/stale routing artifact | validation fails |
-| `test_offshore_packages_only_selected_families` | scope is limited to BSEE, HSE, Frontier Deepwater | package sidecar | exactly those three families |
+| `test_offshore_packages_only_selected_families` | scope is limited to BSEE, HSE, client-a | package sidecar | exactly those three families |
 | `test_offshore_packages_no_raw_content` | no extracted file content, tables, or raw text appears | docs + YAML | only metadata/routing fields |
 | `test_offshore_packages_have_approval_gates` | every family states approval requirement before promotion | package sidecar | all package rows include approval gate |
-| `test_bsee_defaults_to_client_sensitive` | BSEE under `client_projects` is explicitly client/project-sensitive | BSEE package row | `sensitivity=client_project`, `approval_required=true` |
+| `test_bsee_defaults_to_client_sensitive` | BSEE under `client-c` is explicitly client/project-sensitive | BSEE package row | `sensitivity=client_project`, `approval_required=true` |
 | `test_offshore_packages_do_not_overlap_existing_marine_ingestion` | AQWA/OrcaFlex/O&G standards are excluded from this issue | package sidecar | excluded refs point to #2103/#2124/#2364/#2373 |
 
 ---
@@ -142,7 +142,7 @@ validate schema, source-family uniqueness, no raw text, and no overlap with #210
 ## Acceptance Criteria
 
 - [ ] The implementation treats #2643's routing artifact as a hard prerequisite and does not rescan `/mnt/ace-data` for this issue.
-- [ ] The offshore package spec covers BSEE, HSE/safety, and Frontier Deepwater families only.
+- [ ] The offshore package spec covers BSEE, HSE/safety, and client-a families only.
 - [ ] Every package defines target domains, proposed derived outputs, exclusions, provenance requirements, sensitivity, and approval gate.
 - [ ] No raw data, raw excerpts, or raw document contents are copied into git/wiki.
 - [ ] The spec explicitly excludes AQWA, OrcaFlex examples, O&G standards, Elements/client-sensitive material, generated outputs, and code/vendor internals.
@@ -173,7 +173,7 @@ Revisions made based on review:
 ## Risks and Open Questions
 
 - **Risk:** BSEE and HSE material may be better handled as datasets than wiki prose; implementation should propose metadata/source pages first and defer deeper extraction to separate approved issues.
-- **Risk:** Frontier Deepwater source files may include copyrighted magazine content; derived summaries must remain bounded and provenance-safe.
+- **Risk:** client-a source files may include copyrighted magazine content; derived summaries must remain bounded and provenance-safe.
 - **Open:** user should decide after plan approval whether these package specs become execution work directly or spawn separate per-family extraction/backfill issues.
 
 ---

@@ -158,9 +158,9 @@ source = ["src"]  # Change to "app", "lib", etc. if different
 
 | Tier | Coverage | Examples |
 |------|----------|----------|
-| **Tier 1** (Production) | 85% | digitalmodel, energy, frontierdeepwater |
+| **Tier 1** (Production) | 85% | digitalmodel, energy, client-a |
 | **Tier 2** (Active Dev) | 80% | aceengineer-website, hobbies, sd-work |
-| **Tier 3** (Maintenance) | 80% | doris, saipem, OGManufacturing |
+| **Tier 3** (Maintenance) | 80% | lng-a, client-d, OGManufacturing |
 
 ---
 

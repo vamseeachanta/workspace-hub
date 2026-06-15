@@ -42,11 +42,11 @@ Plan:
 | `CAD-DEVELOPMENTS` | non-tier-1 machine-access/current | main | 0/0 | 0 | 641ee137 | `https://github.com/bakkiprasad5669/CAD-DEVELOPMENTS` |
 | `hobbies` | non-tier-1 machine-access/current | main | 0/0 | 0 | 408399d3 | `https://github.com/vamseeachanta/hobbies.git` |
 | `kaggle-rogii-2026` | non-tier-1 machine-access/current | main | 0/0 | 1 | d23e2608 | `https://github.com/vamseeachanta/kaggle-rogii-2026.git` |
-| `llm-wiki-acma` | non-tier-1 machine-access/current | main | 0/0 | 0 | 1d813086 | `https://github.com/vamseeachanta/llm-wiki-acma.git` |
+| `llm-wiki-mkt-a` | non-tier-1 machine-access/current | main | 0/0 | 0 | 1d813086 | `https://github.com/vamseeachanta/llm-wiki-mkt-a.git` |
 | `sabithaandkrishnaestates` | non-tier-1 machine-access/current | main | 0/0 | 0 | 941b96c3 | `https://github.com/vamseeachanta/sabithaandkrishnaestates` |
 | `teamresumes` | non-tier-1 machine-access/current | main | 0/0 | 0 | e09c0eb9 | `https://github.com/vamseeachanta/teamresumes` |
 
-Issue-comment-only repos from #2766 that were earlier reported as moved-to-sibling but were absent from the latest top-level git inventory: `acma-projects`, `client_projects`, `doris`, `frontierdeepwater`, `OGManufacturing`, `rock-oil-field`, `saipem`, `sd-work`, `seanation`. This is an explicit **state contradiction/anomaly**: prior issue comments say `sibling=git`; current probe says absent. The implementation must not hide this. It must classify them under `historically_moved_not_currently_present`, preserve source-comment provenance, and emit `historical_state_changed_since_prior_comment` warnings in checker/readiness/report output. `OGManufacturing` is additionally a deliberate runtime-access cleanup: it is currently in `machines.dev-primary.repos` and `telegram_hermes.data_access_profile.repos` but absent on disk and not tier-1 per #2770; this plan removes it from current local/runtime sets only while preserving it as a historical/anomaly entry.
+Issue-comment-only repos from #2766 that were earlier reported as moved-to-sibling but were absent from the latest top-level git inventory: `mkt-a`, `client-c`, `lng-a`, `client-a`, `OGManufacturing`, `client-b`, `client-d`, `sd-work`, `client-f`. This is an explicit **state contradiction/anomaly**: prior issue comments say `sibling=git`; current probe says absent. The implementation must not hide this. It must classify them under `historically_moved_not_currently_present`, preserve source-comment provenance, and emit `historical_state_changed_since_prior_comment` warnings in checker/readiness/report output. `OGManufacturing` is additionally a deliberate runtime-access cleanup: it is currently in `machines.dev-primary.repos` and `telegram_hermes.data_access_profile.repos` but absent on disk and not tier-1 per #2770; this plan removes it from current local/runtime sets only while preserving it as a historical/anomaly entry.
 
 ### R1/R2 review evidence
 
@@ -108,7 +108,7 @@ machines:
       - CAD-DEVELOPMENTS
       - hobbies
       - kaggle-rogii-2026
-      - llm-wiki-acma
+      - llm-wiki-mkt-a
       - sabithaandkrishnaestates
       - teamresumes
     tier1_baseline:
@@ -138,29 +138,29 @@ machines:
         - CAD-DEVELOPMENTS
         - hobbies
         - kaggle-rogii-2026
-        - llm-wiki-acma
+        - llm-wiki-mkt-a
         - sabithaandkrishnaestates
         - teamresumes
       historically_moved_not_currently_present:
-        acma-projects:
+        mkt-a:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
           latest_probe: absent
           warning: historical_state_changed_since_prior_comment
-        client_projects:
+        client-c:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
           latest_probe: absent
           warning: historical_state_changed_since_prior_comment
-        doris:
+        lng-a:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
           latest_probe: absent
           warning: historical_state_changed_since_prior_comment
-        frontierdeepwater:
+        client-a:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
@@ -173,13 +173,13 @@ machines:
           latest_probe: absent
           warning: historical_state_changed_since_prior_comment
           runtime_access_change: remove_from_data_access_profile
-        rock-oil-field:
+        client-b:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
           latest_probe: absent
           warning: historical_state_changed_since_prior_comment
-        saipem:
+        client-d:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
@@ -191,7 +191,7 @@ machines:
           prior_claim: sibling=git
           latest_probe: absent
           warning: historical_state_changed_since_prior_comment
-        seanation:
+        client-f:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git

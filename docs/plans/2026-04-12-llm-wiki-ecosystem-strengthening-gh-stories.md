@@ -8,9 +8,9 @@ Context basis:
 - Entry-point implementation `#2104` (closed)
 - Accessibility registry `#2136` (closed)
 - Retrieval contract `#2208` (closed)
-- ACMA umbrella `#2216` (open, plan-approved)
-- ACMA source registration `#2225` (closed)
-- ACMA ledger/provenance backfill `#2226` (closed)
+- mkt-a umbrella `#2216` (open, plan-approved)
+- mkt-a source registration `#2225` (closed)
+- mkt-a ledger/provenance backfill `#2226` (closed)
 
 ## Current grounded review
 
@@ -18,7 +18,7 @@ Completed already:
 1. `#2104` landed the intelligence entry-point surfaces.
 2. `#2136` landed `data/document-index/intelligence-accessibility-registry.yaml`.
 3. `#2208` landed the issue-workflow retrieval contract and tightened plan docs.
-4. `#2225` registered `/mnt/ace/acma-codes` as `acma_codes_local`.
+4. `#2225` registered `/mnt/ace/mkt-a-codes` as `mkt-a_codes_local`.
 5. `#2226` backfilled ledger/provenance for OCIMF and CSA entries.
 
 Still missing in repo state:
@@ -41,7 +41,7 @@ Important scope note:
 ## Story A — approve existing #2227 for direct execution
 
 Issue: `#2227`
-Title: `feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis`
+Title: `feat(mkt-a-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis`
 
 Why approve now:
 - It is the main missing L3 durable-knowledge step under approved umbrella `#2216`.
@@ -71,7 +71,7 @@ Approval checklist:
 ## Story B — approve existing #2228 for direct execution
 
 Issue: `#2228`
-Title: `chore(acma-codes): update accessibility and entry-point surfaces after source integration`
+Title: `chore(mkt-a-codes): update accessibility and entry-point surfaces after source integration`
 
 Why approve now:
 - The entry-point and registry layers already landed, but the accessibility map still reflects stale pre-landing assumptions.
@@ -82,10 +82,10 @@ Recommended approved scope:
   - `docs/README.md` now includes knowledge/intelligence links
   - `docs/document-intelligence/README.md` exists
   - accessibility registry exists
-  - ACMA source registration + ledger backfill have landed
+  - mkt-a source registration + ledger backfill have landed
   - new wiki pages should be referenced if Story A is also executed
 - Keep changes minimal and inventory-focused
-- Only touch `docs/document-intelligence/README.md` if a small ACMA-source mention is clearly warranted
+- Only touch `docs/document-intelligence/README.md` if a small mkt-a-source mention is clearly warranted
 - Do not redesign architecture, registry schema, or workflow policy
 
 Approval checklist:
@@ -96,7 +96,7 @@ Approval checklist:
 ## Story C — recommended NEW follow-on issue for explicit user decision
 
 Suggested title:
-`feat(acma-codes): triage newly discovered CSA/API breadth beyond approved wiki-promotion scope`
+`feat(mkt-a-codes): triage newly discovered CSA/API breadth beyond approved wiki-promotion scope`
 
 Why this should be separate:
 - `#2226` uncovered materially more standards than the parent plan originally named.
@@ -114,7 +114,7 @@ Suggested scope:
   - `CSA-B625-13`
   - `CSA-C22.1-12`
   - API RP 2SK 3rd edition + addendum
-  - remaining API-family documents found in acma-codes
+  - remaining API-family documents found in mkt-a-codes
 - decide whether any belong in:
   - marine-engineering wiki
   - engineering wiki

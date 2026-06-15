@@ -86,13 +86,13 @@
 ### Work Repos (Higher Quality)
 
 **Tier 1** (Production): Use **60% Opus**, 30% Sonnet, 10% Haiku
-- digitalmodel, energy, frontierdeepwater
+- digitalmodel, energy, client-a
 
 **Tier 2** (Active): Use **30% Opus**, 50% Sonnet, 20% Haiku
 - aceengineercode, assetutilities, worldenergydata
 
 **Tier 3** (Maintenance): Use **10% Opus**, 30% Sonnet, 60% Haiku
-- doris, saipem, OGManufacturing
+- lng-a, client-d, OGManufacturing
 
 ### Personal Repos (Efficiency Focus)
 
@@ -100,7 +100,7 @@
 - aceengineer-admin, aceengineer-website
 
 **Tier 2** (Experimental): Use 5% Opus, 25% Sonnet, **70% Haiku**
-- hobbies, sd-work, acma-projects
+- hobbies, sd-work, mkt-a
 
 **Tier 3** (Archive): Use 0% Opus, 20% Sonnet, **80% Haiku**
 - investments, sabithaandkrishnaestates

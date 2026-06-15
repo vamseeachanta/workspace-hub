@@ -39,24 +39,24 @@ tags:
 
 The template tree contains four placeholders. The operator MUST set all four shell variables before running step 6. Substitution is single-pass via `find ... -exec sed -i`; verification uses a `grep` that must return 0 hits.
 
-| Placeholder | Substitute for `acma` | Notes |
+| Placeholder | Substitute for `mkt-a` | Notes |
 |---|---|---|
-| `<CLIENT_SHORT_NAME>` | `acma` | Lowercase, hyphenated short-name; matches repo-name suffix in `llm-wiki-<short_name>`. |
-| `<CLIENT_SHORT_NAME_UPPER>` | `ACMA` | Uppercase variant; used as ledger source-ID prefix (e.g., `ACMA-SOURCE-0001`) in `ledgers/promotion-ledger.example.yml`. |
-| `<CLIENT_PRIVATE_REPO>` | `vamseeachanta/llm-wiki-acma` | Full GH `org/repo` slug; used in `DATA-CYCLE.md` and any cross-link prose. |
-| `<CLIENT_RAW_ROOT>` | `acma-projects` | Bucket name under `/mnt/ace/`. Often differs from `<short_name>` — see edge cases below. |
+| `<CLIENT_SHORT_NAME>` | `mkt-a` | Lowercase, hyphenated short-name; matches repo-name suffix in `llm-wiki-<short_name>`. |
+| `<CLIENT_SHORT_NAME_UPPER>` | `mkt-a` | Uppercase variant; used as ledger source-ID prefix (e.g., `mkt-a-SOURCE-0001`) in `ledgers/promotion-ledger.example.yml`. |
+| `<CLIENT_PRIVATE_REPO>` | `vamseeachanta/llm-wiki-mkt-a` | Full GH `org/repo` slug; used in `DATA-CYCLE.md` and any cross-link prose. |
+| `<CLIENT_RAW_ROOT>` | `mkt-a` | Bucket name under `/mnt/ace/`. Often differs from `<short_name>` — see edge cases below. |
 
 ### Per-client invocations (5 remaining wikis)
 
-Examples for the other planned clients in `config/client-wikis.yml`. Note the bucket-name edge cases per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D5 (`client_projects` is underscore-separated, not hyphen) and [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D6 (`frontierdeepwater` is one word, no hyphen).
+Examples for the other planned clients in `config/client-wikis.yml`. Note the bucket-name edge cases per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D5 (`client-c` is underscore-separated, not hyphen) and [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D6 (`client-a` is one word, no hyphen).
 
 | `<short_name>` | `<CLIENT_RAW_ROOT>` | `<CLIENT_PRIVATE_REPO>` |
 |---|---|---|
-| `rock-oil-field` | `rock-oil-field` | `vamseeachanta/llm-wiki-rock-oil-field` |
-| `client-projects` | `client_projects` (underscore per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D5) | `vamseeachanta/llm-wiki-client-projects` |
-| `doris` | `doris` | `vamseeachanta/llm-wiki-doris` |
-| `frontierdeepwater` | `frontierdeepwater` (no hyphen per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D6) | `vamseeachanta/llm-wiki-frontierdeepwater` |
-| `saipem` | `saipem` | `vamseeachanta/llm-wiki-saipem` |
+| `client-b` | `client-b` | `vamseeachanta/llm-wiki-client-b` |
+| `client-c` | `client-c` (underscore per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D5) | `vamseeachanta/llm-wiki-client-c` |
+| `lng-a` | `lng-a` | `vamseeachanta/llm-wiki-lng-a` |
+| `client-a` | `client-a` (no hyphen per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D6) | `vamseeachanta/llm-wiki-client-a` |
+| `client-d` | `client-d` | `vamseeachanta/llm-wiki-client-d` |
 
 ## Step 0 + 13-step checklist
 
@@ -64,14 +64,14 @@ Run these in order. Step 0 sets the shell variables referenced throughout; steps
 
 ### 0. Set variables
 
-Set these once at the start — referenced throughout the checklist. `RAW` differs from `$SHORT` for `acma` (`acma-projects`) and `client-projects` (`client_projects`, underscore per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D5); see Step 2 + per-client table above for edge cases.
+Set these once at the start — referenced throughout the checklist. `RAW` differs from `$SHORT` for `mkt-a` (`mkt-a`) and `client-c` (`client-c`, underscore per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D5); see Step 2 + per-client table above for edge cases.
 
 ```bash
 # Set these once at the start — referenced throughout the checklist.
-SHORT="acma"                                    # lowercase short_name (replace with your client)
-UPPER=$(echo "$SHORT" | tr '[:lower:]' '[:upper:]')   # e.g., ACMA
+SHORT="mkt-a"                                    # lowercase short_name (replace with your client)
+UPPER=$(echo "$SHORT" | tr '[:lower:]' '[:upper:]')   # e.g., mkt-a
 PRIV="vamseeachanta/llm-wiki-$SHORT"            # full GH slug
-RAW="acma-projects"                             # bucket name under /mnt/ace/ — see Step 2 for edge cases (D5/D6)
+RAW="mkt-a"                             # bucket name under /mnt/ace/ — see Step 2 for edge cases (D5/D6)
 ```
 
 ### 1. Pre-flight: confirm registry entry
@@ -126,7 +126,7 @@ For each project currently active under this client, copy the `_template-project
 
 ```bash
 # Per-project loop — repeat for each PROJECT in this client's roster:
-PROJECT="sirocco"   # example project slug; substitute per actual engagement
+PROJECT="proj-a"   # example project slug; substitute per actual engagement
 
 cp -a /mnt/local-analysis/workspace-hub/templates/client-llm-wiki/projects/_template-project/. \
       /mnt/local-analysis/llm-wiki-$SHORT/projects/$PROJECT/
@@ -150,10 +150,10 @@ Variables `SHORT` / `UPPER` / `PRIV` / `RAW` were set in Step 0 — re-shown her
 
 ```bash
 # Already set in Step 0 — re-shown here for context:
-#   SHORT="acma"
-#   UPPER="ACMA"
+#   SHORT="mkt-a"
+#   UPPER="mkt-a"
 #   PRIV="vamseeachanta/llm-wiki-$SHORT"
-#   RAW="acma-projects"
+#   RAW="mkt-a"
 
 find /mnt/local-analysis/llm-wiki-$SHORT -type f -exec sed -i \
   -e "s|<CLIENT_SHORT_NAME>|$SHORT|g" \
@@ -242,7 +242,7 @@ Then post a comment on the parent client-wiki tracking issue (or [#2746](https:/
 - **`cp -r SRC/*` skips dotfiles** — silently omits `.gitignore` and `.claude/CLAUDE.md`. Always use `cp -a SRC/.`. Step 8 is the catch.
 - **Missing placeholder substitution** — if a variable is unset, sed substitutes nothing and leaves `<CLIENT_…>` in the file. The step-6 verify-grep is the catch; do not skip it.
 - **Public repo creation** — `gh repo create` defaults vary by org. Always pass `--private` explicitly.
-- **Bucket-name drift** — `<CLIENT_RAW_ROOT>` is NOT always equal to `<CLIENT_SHORT_NAME>`. See per-client table above; [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D5 (`client_projects`, underscore) and D6 (`frontierdeepwater`, no hyphen) are the documented edge cases.
+- **Bucket-name drift** — `<CLIENT_RAW_ROOT>` is NOT always equal to `<CLIENT_SHORT_NAME>`. See per-client table above; [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D5 (`client-c`, underscore) and D6 (`client-a`, no hyphen) are the documented edge cases.
 - **Cross-repo commit semantics** — steps 9 and 12 commit to DIFFERENT repositories (new client wiki vs workspace-hub). The `cd` in step 10 is load-bearing; without it, step 12 commits to the wrong repo.
 - **Parallel-agent sweep on workspace-hub commit** — step 12 uses pathspec form for this reason. If you forget, you may sweep an unrelated agent's staged work into the registry commit.
 
@@ -258,7 +258,7 @@ A successful run produces:
 
 ## References
 
-- Plan: `docs/plans/2026-05-20-issue-2746-llm-wiki-acma.md`
+- Plan: `docs/plans/2026-05-20-issue-2746-llm-wiki-mkt-a.md`
 - Naming convention: workspace-hub [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4 (amended); raw-root canonical D3; bucket-name edge cases D5, D6
 - Privacy firewall pattern: `feedback_per_repo_metadata_is_firewall`
 - Commit serialization: `feedback_multi_agent_commit_serialization`

@@ -80,7 +80,7 @@ Categories:
 
 **Ace client domains:**
 ```
-ril.com, dorisgroup.com, mcdermott.com, shell.com, kbr.com,
+ril.com, lng-agroup.com, mcdermott.com, shell.com, kbr.com,
 technip.com, technipfmc.com, subsea7.com, nov.com, aker.com,
 bp.com, awilcodrilling.com, eagle.org, vulcanoffshore.com,
 boptechnologies.com, risersinc.com, sandsig.com,

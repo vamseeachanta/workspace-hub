@@ -150,7 +150,7 @@ After the first gap-to-issues pass, the following additional themes also produce
      - source corpus dominates the domain
      - source-page titles are mostly filenames or numeric IDs
 2. Batch-pack execution children beyond Pack 1
-   - Examples: Batch Pack 2 indexed conference-summary promotion, Batch Pack 3 Tier A external engineering software profiles, Batch Pack 4 non-ACMA standards-summary promotion.
+   - Examples: Batch Pack 2 indexed conference-summary promotion, Batch Pack 3 Tier A external engineering software profiles, Batch Pack 4 non-mkt-a standards-summary promotion.
    - Important lesson: treat each pack as a separate issue only when the source family, execution mode, and duplicate boundaries are clean.
 3. Policy-to-enforcement follow-ons
    - Examples: promotion audit-trail checker, GUARD-1 invented-layer detector, recurring-run output pruner, handoff expiration metadata.

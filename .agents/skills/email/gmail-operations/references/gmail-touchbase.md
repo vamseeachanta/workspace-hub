@@ -139,7 +139,7 @@ echo "target@email.com,FirstName LastName,ace,quarterly,$(date +%Y-%m-%d),$(date
 
 ### ace — Engineering Network
 Priority contacts:
-- Former colleagues at DORIS, McDermott, Trendsetter, etc.
+- Former colleagues at lng-a, McDermott, Trendsetter, etc.
 - GTM prospect pipeline (link to aceengineer-strategy/)
 - SPE/OTC conference connections
 - Cadence: monthly for active prospects, quarterly for network

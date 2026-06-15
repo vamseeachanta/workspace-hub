@@ -21,7 +21,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org**: Issuing organization
 - **domain**: marine / offshore / materials / safety / etc.
 - **year**: Publication year (from filename, if visible)
-- **local_doc_path**: Source file path on `/mnt/ace/acma-codes/`
+- **local_doc_path**: Source file path on `/mnt/ace/mkt-a-codes/`
 - **fragments**: Files merged into this parent (if any)
 - **status**: `blocked-metadata-only` (all stubs)
 - **confidence**: `low` (all stubs)
@@ -37,7 +37,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / propulsion
 - **year:** 1981
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/1981 484-2 Propellers of diameter between .80 - 2.5m inclusive.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/1981 484-2 Propellers of diameter between .80 - 2.5m inclusive.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -47,7 +47,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / HVAC
 - **year:** 1987
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/1987 8862 AC & vent of machinery control rooms onboard ships.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/1987 8862 AC & vent of machinery control rooms onboard ships.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -57,7 +57,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / HVAC
 - **year:** 1987
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/1987 8864 AC & vent of wheelhouse onboard ships.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/1987 8864 AC & vent of wheelhouse onboard ships.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -67,7 +67,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** offshore / mooring
 - **year:** 1989
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/1989 9089 Mobile Offshore Units-Anchor Winches.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/1989 9089 Mobile Offshore Units-Anchor Winches.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -77,9 +77,9 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / vibration
 - **year:** 1997
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/1997 2631-1 Mechanical Vibration and Shock Part 1.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/1997 2631-1 Mechanical Vibration and Shock Part 1.pdf`
 - **fragments:**
-  - `/mnt/ace/acma-codes/ISO Standards/2010 2631-1 Amendment 1.pdf` (Amendment 1)
+  - `/mnt/ace/mkt-a-codes/ISO Standards/2010 2631-1 Amendment 1.pdf` (Amendment 1)
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -90,7 +90,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / HVAC
 - **year:** 1998
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/1998 8861 Engine-room ventilation in diesel-engined ships.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/1998 8861 Engine-room ventilation in diesel-engined ships.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -100,7 +100,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** quality / management
 - **year:** 2000
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2000 9001 Final Draft of Quality Management System Requirements.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2000 9001 Final Draft of Quality Management System Requirements.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -111,7 +111,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / performance
 - **year:** 2002
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2002 15016 Guidelines for the assessment of speed and power performance by analysis of speed trial data.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2002 15016 Guidelines for the assessment of speed and power performance by analysis of speed trial data.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -121,7 +121,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / machinery
 - **year:** 2002
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2002 15550 Internal Combustion Engines.PDF`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2002 15550 Internal Combustion Engines.PDF`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -131,7 +131,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / machinery
 - **year:** 2002
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2002 3046-1 Reciprocating Internal Combustion Engines.PDF`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2002 3046-1 Reciprocating Internal Combustion Engines.PDF`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -141,7 +141,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / HVAC
 - **year:** 2002
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2002 7547-Ships and marine technology-Air-conditioning and ventilation of accommodation spaces-Design conditions and basis of calculations.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2002 7547-Ships and marine technology-Air-conditioning and ventilation of accommodation spaces-Design conditions and basis of calculations.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -152,7 +152,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / fire safety
 - **year:** 2003
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/ISO17338-2003-DwgsForFireProtection-FireRatingDiv.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/ISO17338-2003-DwgsForFireProtection-FireRatingDiv.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -162,7 +162,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** offshore / structural
 - **year:** 2005
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2005 19901-1 Petroleum and natural gas industries Part 1.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2005 19901-1 Petroleum and natural gas industries Part 1.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -172,9 +172,9 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / vibration
 - **year:** 2005
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2005 8041 Human Response to Vibration - Measuring Instrumentation 2nd ed.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2005 8041 Human Response to Vibration - Measuring Instrumentation 2nd ed.pdf`
 - **fragments:**
-  - `/mnt/ace/acma-codes/ISO Standards/2007 8041 Technical Corrigendum 1 Human Response to Vibration - Measuring Instrumentation.pdf` (TC1)
+  - `/mnt/ace/mkt-a-codes/ISO Standards/2007 8041 Technical Corrigendum 1 Human Response to Vibration - Measuring Instrumentation.pdf` (TC1)
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -185,7 +185,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / machinery
 - **year:** 2005
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2005 8528-1 Reciprocating internal combustion engine.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2005 8528-1 Reciprocating internal combustion engine.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -195,10 +195,10 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** offshore / structural
 - **year:** 2008
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/Jackup Site Assessment/2008 Jackup Site Assessment DRAFT-19905-1_(E)_CD_G.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/Jackup Site Assessment/2008 Jackup Site Assessment DRAFT-19905-1_(E)_CD_G.pdf`
 - **fragments:**
-  - `/mnt/ace/acma-codes/ISO Standards/Jackup Site Assessment/2008 Initial Benchmarking of Clause 12 (Draft G).pdf`
-  - `/mnt/ace/acma-codes/ISO Standards/Jackup Site Assessment/2009 Phase 1 Benchmarking of ISO 19905-1.9-completeness check.pdf`
+  - `/mnt/ace/mkt-a-codes/ISO Standards/Jackup Site Assessment/2008 Initial Benchmarking of Clause 12 (Draft G).pdf`
+  - `/mnt/ace/mkt-a-codes/ISO Standards/Jackup Site Assessment/2009 Phase 1 Benchmarking of ISO 19905-1.9-completeness check.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -209,7 +209,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / HVAC
 - **year:** 2009
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2009 9943 Vent & air-treatment of galleys and pantries with cooking appliances.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2009 9943 Vent & air-treatment of galleys and pantries with cooking appliances.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -219,7 +219,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** offshore / structural
 - **year:** 2010
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/19906_2010 Petro & Gas Ind-Arctic Offshore Struct.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/19906_2010 Petro & Gas Ind-Arctic Offshore Struct.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -229,7 +229,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / safety
 - **year:** 2014
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/ISO_24409-3_2014-Ship Signs-Code of Practice.PDF`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/ISO_24409-3_2014-Ship Signs-Code of Practice.PDF`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -239,7 +239,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** safety / hydrogen
 - **year:** 2015
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2015 15916 Safety of Hydrogen Systems.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2015 15916 Safety of Hydrogen Systems.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -249,7 +249,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / mooring
 - **year:** 2020
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2020 13713 Mooring chocks.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2020 13713 Mooring chocks.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -259,7 +259,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / mooring
 - **year:** 2020
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2020 13728 Panama chocks.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2020 13728 Panama chocks.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -269,7 +269,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / mooring
 - **year:** 2020
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2020 13729 Closed chocks.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2020 13729 Closed chocks.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -279,7 +279,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / mooring
 - **year:** 2020
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2020 13776 Pedestal Fairleads.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2020 13776 Pedestal Fairleads.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -289,7 +289,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / mooring
 - **year:** 2020
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2020 13795  Welded steel bollards.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2020 13795  Welded steel bollards.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -299,7 +299,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / safety
 - **year:** 2020
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2020 24409-1-Safety Signs.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2020 24409-1-Safety Signs.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -309,7 +309,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ISO
 - **domain:** marine / HVAC
 - **year:** 2022
-- **local_doc_path:** `/mnt/ace/acma-codes/ISO Standards/2022 ISO_7547-AC & vent-design cond and basis of calcs.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ISO Standards/2022 ISO_7547-AC & vent-design cond and basis of calcs.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -324,7 +324,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** marine / stability
 - **year:** 1991
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/1991 F1321-92 Guidelines for Conducting Stability Tests.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/1991 F1321-92 Guidelines for Conducting Stability Tests.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -334,7 +334,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** marine / human factors
 - **year:** 1996
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/1996 F 1166 Human Engineering Design.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/1996 F 1166 Human Engineering Design.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -345,7 +345,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** materials / piping
 - **year:** 2003
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/2003 B466 & B466M Seamless Copper-Nickel Pipe & Tube.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/2003 B466 & B466M Seamless Copper-Nickel Pipe & Tube.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -355,7 +355,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** marine / piping
 - **year:** 2004
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/2004 F1155-98R04 Piping System Materials.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/2004 F1155-98R04 Piping System Materials.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -365,7 +365,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** marine / piping
 - **year:** 2006
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/2006 F707 Modular Gage Boards.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/2006 F707 Modular Gage Boards.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -375,7 +375,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** marine / piping
 - **year:** 2008
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/2008 F708 Rigid Pipe Hangers.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/2008 F708 Rigid Pipe Hangers.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -385,7 +385,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** marine / piping
 - **year:** 2008
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/2008 F721 Gaged Piping Assemblies.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/2008 F721 Gaged Piping Assemblies.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -395,7 +395,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** marine / piping
 - **year:** 2008
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/2008 F986 Suction Strainer Boxes.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/2008 F986 Suction Strainer Boxes.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -405,7 +405,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** marine / human factors
 - **year:** 2013
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/2013 F 1166 Human Engineering Design.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/2013 F 1166 Human Engineering Design.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -416,7 +416,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** marine / outfitting
 - **year:** 2013
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/2013 F1244 Standard Specification for Berths.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/2013 F1244 Standard Specification for Berths.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -426,7 +426,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** materials / fuel
 - **year:** 2014
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/2014 D975 Standard Specification for Diesel Fuel Oils.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/2014 D975 Standard Specification for Diesel Fuel Oils.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -436,7 +436,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** marine / stability
 - **year:** 2014
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/ASTM F3052−14, Air Incline Procedure.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/ASTM F3052−14, Air Incline Procedure.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -446,7 +446,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** ASTM
 - **domain:** marine / electrical
 - **year:** 2019
-- **local_doc_path:** `/mnt/ace/acma-codes/ASTM/F3353 − 19 Shipboard use of Li-ion batteries.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/ASTM/F3353 − 19 Shipboard use of Li-ion batteries.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -460,7 +460,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** IACS
 - **domain:** marine / stability
 - **year:** 2004
-- **local_doc_path:** `/mnt/ace/acma-codes/IACS/2004 Jan REC_31_Inclining Test.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/IACS/2004 Jan REC_31_Inclining Test.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -470,7 +470,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** IACS
 - **domain:** marine / structural
 - **year:** 2005
-- **local_doc_path:** `/mnt/ace/acma-codes/IACS/2005 Guidelines for Surveys and Repair of Hull Structure-Containers.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/IACS/2005 Guidelines for Surveys and Repair of Hull Structure-Containers.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -480,7 +480,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** IACS
 - **domain:** marine / structural
 - **year:** 2006
-- **local_doc_path:** `/mnt/ace/acma-codes/IACS/2006 Jan Common Strucutral Rules for Double Hull Oil Tankers.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/IACS/2006 Jan Common Strucutral Rules for Double Hull Oil Tankers.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -490,7 +490,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** IACS
 - **domain:** marine / structural
 - **year:** 2007
-- **local_doc_path:** `/mnt/ace/acma-codes/IACS/2007 April Guidelines for Surveys and Repair of Hull Structure-DH Tankers.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/IACS/2007 April Guidelines for Surveys and Repair of Hull Structure-DH Tankers.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -500,7 +500,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** IACS
 - **domain:** marine / structural
 - **year:** 2007
-- **local_doc_path:** `/mnt/ace/acma-codes/IACS/2007 Sept Guidelines for Surveys and Repair of Hull Structure-Bulk Carriers.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/IACS/2007 Sept Guidelines for Surveys and Repair of Hull Structure-Bulk Carriers.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -510,7 +510,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** IACS
 - **domain:** marine / load lines
 - **year:** 2008
-- **local_doc_path:** `/mnt/ace/acma-codes/IACS/2008 Interpretation of the International Convention on Load Lines.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/IACS/2008 Interpretation of the International Convention on Load Lines.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -521,7 +521,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** IACS
 - **domain:** marine / polar
 - **year:** 2010
-- **local_doc_path:** `/mnt/ace/acma-codes/IACS/2010 IACS Unified Rules Polar Code.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/IACS/2010 IACS Unified Rules Polar Code.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -531,7 +531,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** IACS
 - **domain:** marine / navigation
 - **year:** 2011
-- **local_doc_path:** `/mnt/ace/acma-codes/IACS/2011-IACS-rec_95_BridgeDesEqArrProc-pdf688.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/IACS/2011-IACS-rec_95_BridgeDesEqArrProc-pdf688.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -541,7 +541,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** IACS
 - **domain:** marine / classification
 - **year:** 2011
-- **local_doc_path:** `/mnt/ace/acma-codes/IACS/2011 Requirements Concerning Survey and Certification.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/IACS/2011 Requirements Concerning Survey and Certification.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -551,7 +551,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** IACS
 - **domain:** marine / load lines
 - **year:** 2022
-- **local_doc_path:** `/mnt/ace/acma-codes/IACS/2022-IACS-Interpr. of ICLL 66 .pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/IACS/2022-IACS-Interpr. of ICLL 66 .pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only

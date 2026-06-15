@@ -165,9 +165,9 @@
    165|  - Recovery factors: primary 8%, secondary 12%, enhanced 15%
    166|
    167|### 2.7 Client Project FDAS Data (Historical)
-   168|- `client_projects/energy_fdas/` — Cascade/Chinook field development visualizations
+   168|- `client-c/energy_fdas/` — Cascade/Chinook field development visualizations
    169|  - Production profiles, well paths, east-north plots
-   170|- `client_projects/energy_bsee/` — BigFoot, Jack, St. Malo, Stones, Julia
+   170|- `client-c/energy_bsee/` — BigFoot, Jack, St. Malo, Stones, Julia
    171|  - Field development production & well plots
    172|
    173|---

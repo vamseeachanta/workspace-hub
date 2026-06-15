@@ -51,16 +51,16 @@ This document provides a structured deployment plan to distribute updated `pytes
 ```
 ✅ aceengineer-admin          - Personal admin dashboard
 ✅ aceengineer-website        - Personal website (Work, Personal)
-✅ acma-projects              - Project management tools
+✅ mkt-a              - Project management tools
 ✅ ai-native-traditional-eng  - Engineering knowledge base
 ✅ assethold                  - Asset holding system
 ✅ energy                      - Energy analytics
-✅ frontierdeepwater          - Marine engineering analysis
-✅ rock-oil-field             - Oil field data analysis
-✅ saipem                      - Saipem project data
-✅ seanation                   - Ship data analysis
+✅ client-a          - Marine engineering analysis
+✅ client-b             - Oil field data analysis
+✅ client-d                      - client-d project data
+✅ client-f                   - Ship data analysis
 ✅ OGManufacturing            - Oil & gas manufacturing
-✅ client_projects            - Client work repositories
+✅ client-c            - Client work repositories
 ```
 
 **Characteristics:**
@@ -75,7 +75,7 @@ This document provides a structured deployment plan to distribute updated `pytes
 ```
 ✅ achantas-data              - Personal data projects
 ✅ achantas-media             - Personal media projects
-✅ doris                       - Legacy project
+✅ lng-a                       - Legacy project
 ✅ hobbies                     - Personal hobby projects
 ✅ investments                 - Personal finance tracking
 ✅ pyproject-starter          - Project template
@@ -516,16 +516,16 @@ minversion = 3.11
 TIER2_REPOS=(
   "aceengineer-admin"
   "aceengineer-website"
-  "acma-projects"
+  "mkt-a"
   "ai-native-traditional-eng"
   "assethold"
   "energy"
-  "frontierdeepwater"
-  "rock-oil-field"
-  "saipem"
-  "seanation"
+  "client-a"
+  "client-b"
+  "client-d"
+  "client-f"
   "OGManufacturing"
-  "client_projects"
+  "client-c"
 )
 
 WORKSPACE_ROOT="/mnt/github/workspace-hub"
@@ -685,9 +685,9 @@ cat > "$REPORT_FILE" << 'EOF'
 |-----------|--------|----------|-------|--------|
 EOF
 
-for repo in aceengineer-admin aceengineer-website acma-projects \
-            ai-native-traditional-eng assethold energy frontierdeepwater \
-            rock-oil-field saipem seanation OGManufacturing client_projects; do
+for repo in aceengineer-admin aceengineer-website mkt-a \
+            ai-native-traditional-eng assethold energy client-a \
+            client-b client-d client-f OGManufacturing client-c; do
 
   REPO_PATH="/mnt/github/workspace-hub/$repo"
   cd "$REPO_PATH"
@@ -726,20 +726,20 @@ echo "✓ Report generated: $REPORT_FILE"
 |------|-----------|----------------|----------|-------|--------|
 | aceengineer-admin | ✅ | ✅ | 82% | 156 | ✅ PASS |
 | aceengineer-website | ✅ | ✅ | 85% | 234 | ✅ PASS |
-| acma-projects | ✅ | ✅ | 78% | 89 | ⚠️ WARN |
+| mkt-a | ✅ | ✅ | 78% | 89 | ⚠️ WARN |
 | ai-native-traditional-eng | ✅ | ✅ | 81% | 234 | ✅ PASS |
 | assethold | ✅ | ✅ | 79% | 145 | ⚠️ WARN |
 | energy | ✅ | ✅ | 86% | 567 | ✅ PASS |
-| frontierdeepwater | ✅ | ✅ | 80% | 445 | ✅ PASS |
-| rock-oil-field | ✅ | ✅ | 84% | 234 | ✅ PASS |
-| saipem | ✅ | ✅ | 77% | 156 | ⚠️ WARN |
-| seanation | ✅ | ✅ | 89% | 345 | ✅ PASS |
+| client-a | ✅ | ✅ | 80% | 445 | ✅ PASS |
+| client-b | ✅ | ✅ | 84% | 234 | ✅ PASS |
+| client-d | ✅ | ✅ | 77% | 156 | ⚠️ WARN |
+| client-f | ✅ | ✅ | 89% | 345 | ✅ PASS |
 | OGManufacturing | ✅ | ✅ | 82% | 234 | ✅ PASS |
-| client_projects | ✅ | ✅ | 83% | 456 | ✅ PASS |
+| client-c | ✅ | ✅ | 83% | 456 | ✅ PASS |
 
 ### Issues Found
 
-1. **acma-projects** - Coverage 78% (2% below threshold)
+1. **mkt-a** - Coverage 78% (2% below threshold)
    - Action: Add 3-4 tests to reach 80%
    - Timeline: End of week
    - Owner: TBD
@@ -749,7 +749,7 @@ echo "✓ Report generated: $REPORT_FILE"
    - Timeline: By end of week
    - Owner: TBD
 
-3. **saipem** - Coverage 77% (3% below threshold)
+3. **client-d** - Coverage 77% (3% below threshold)
    - Action: Significant work needed
    - Timeline: 2-3 days
    - Owner: TBD
@@ -820,7 +820,7 @@ minversion = 3.9
 TIER3_REPOS=(
   "achantas-data"
   "achantas-media"
-  "doris"
+  "lng-a"
   "hobbies"
   "investments"
   "pyproject-starter"
@@ -912,7 +912,7 @@ echo "Phase 3 Complete!"
 |------|-----------|----------------|--------|-------|
 | achantas-data | ✅ | ✅ | ✅ | 45 tests |
 | achantas-media | ✅ | ✅ | ✅ | 23 tests |
-| doris | ✅ | ✅ | ✅ | 78 tests |
+| lng-a | ✅ | ✅ | ✅ | 78 tests |
 | hobbies | ✅ | ✅ | ✅ | 12 tests |
 | investments | ✅ | ✅ | ✅ | 34 tests |
 | pyproject-starter | ✅ | ✅ | ⊘ | Template only |
@@ -1027,10 +1027,10 @@ DEPLOYMENT_REPORT="/mnt/github/workspace-hub/reports/deployment-verification-$(d
   echo "|-----------|--------|-------|------|------|----------|-------|"
 
   for repo in digitalmodel worldenergydata assetutilities teamresumes \
-              aceengineer-admin aceengineer-website acma-projects \
-              ai-native-traditional-eng assethold energy frontierdeepwater \
-              rock-oil-field saipem seanation OGManufacturing client_projects \
-              achantas-data achantas-media doris hobbies investments \
+              aceengineer-admin aceengineer-website mkt-a \
+              ai-native-traditional-eng assethold energy client-a \
+              client-b client-d client-f OGManufacturing client-c \
+              achantas-data achantas-media lng-a hobbies investments \
               pyproject-starter sabithaandkrishnaestates sd-work; do
 
     REPO_PATH="/mnt/github/workspace-hub/$repo"
@@ -1127,10 +1127,10 @@ case $PHASE in
     REPOS=("digitalmodel" "worldenergydata" "assetutilities" "teamresumes")
     ;;
   2)
-    REPOS=("aceengineer-admin" "aceengineer-website" "acma-projects" \
+    REPOS=("aceengineer-admin" "aceengineer-website" "mkt-a" \
            "ai-native-traditional-eng" "assethold" "energy" \
-           "frontierdeepwater" "rock-oil-field" "saipem" "seanation" \
-           "OGManufacturing" "client_projects")
+           "client-a" "client-b" "client-d" "client-f" \
+           "OGManufacturing" "client-c")
     ;;
   *)
     echo "Invalid phase"
@@ -1247,7 +1247,7 @@ Phase 1: Tier 1 Repositories (4/4 Complete)
 Phase 2: Tier 2 Repositories ([X]/12 In Progress)
 🔄 aceengineer-admin - Testing
 🔄 aceengineer-website - Testing
-✅ acma-projects - Complete
+✅ mkt-a - Complete
 ...
 
 Status: On Schedule

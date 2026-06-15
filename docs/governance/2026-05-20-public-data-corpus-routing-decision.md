@@ -72,7 +72,7 @@ This decision is revisited if:
 ## Out of scope
 
 - Vendor-licensed standards routing — settled by routing rule §1–§5 (private llm-wiki).
-- Client-project content (B1528, SIROCCO, acma-projects) — separate epic under client-engagement issues.
+- Client-project content (B1528, proj-a, mkt-a) — separate epic under client-engagement issues.
 - License-drift detection cron script — follow-on issue, not built here.
 - New public-domain data sources beyond BSEE / NOAA / USGS / MMS (EIA, IEA-public, IRENA, etc.) — applies the same rule once landed; not enumerated.
 

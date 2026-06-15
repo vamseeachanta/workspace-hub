@@ -126,7 +126,7 @@ pytest --tb=short             # Show full output
 
 | Tier | Threshold | Repos |
 |------|-----------|-------|
-| **1** | 85% | digitalmodel, energy, frontierdeepwater |
+| **1** | 85% | digitalmodel, energy, client-a |
 | **2** | 80% | aceengineercode, assetutilities, worldenergydata |
 | **3** | 75% | All others |
 

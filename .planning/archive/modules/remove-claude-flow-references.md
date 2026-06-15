@@ -115,7 +115,7 @@ Files in: `commands/agents/`, `commands/analysis/`, `commands/automation/`, `com
 
 ## Phase 3: Submodule Tracked Files
 
-### acma-projects (6 tracked files)
+### mkt-a (6 tracked files)
 ```
 git rm -rf .claude-flow/
 git rm claude-flow
@@ -169,7 +169,7 @@ rm -rf .claude-flow/ memory/
 ## Phase 5: Git Commits
 
 ### Commit order (submodules first, then workspace-hub):
-1. Commit inside each affected submodule (acma-projects, digitalmodel, teamresumes, worldenergydata, and any with .gitignore changes)
+1. Commit inside each affected submodule (mkt-a, digitalmodel, teamresumes, worldenergydata, and any with .gitignore changes)
 2. Update submodule pointers at workspace-hub level
 3. Commit workspace-hub changes (all .claude/ edits + .gitignore + pointer updates)
 

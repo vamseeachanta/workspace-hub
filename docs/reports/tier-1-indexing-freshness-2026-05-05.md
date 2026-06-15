@@ -64,8 +64,8 @@ Broken/stale references in active canonical surfaces:
 Noise/hygiene drift:
 - tracked runtime/temp artifact: 4
   - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-4-woodfibre.pid`
-  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-3-doris-codes.pid`
-  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-2-doris-university.pid`
+  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-3-lng-a-codes.pid`
+  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-2-lng-a-university.pid`
   - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-1-sesa.pid`
 - tracked workspace root/index noise weakening routing trust:
   - `**Complexity:**`

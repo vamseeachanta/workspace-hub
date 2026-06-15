@@ -7,7 +7,7 @@ Global rules for this next-wave autofeed worker:
 - Do not apply status:plan-approved. Do not apply status:plan-review.
 - Do not create/edit .planning/plan-approved/* markers.
 - Do not run scripts/review/plan-review-fanout.sh, codex, gemini, or mutating Hermes commands.
-- Do not edit digitalmodel/, assethold/, worldenergydata/, frontierdeepwater/, ai-orchestrator-template/.
+- Do not edit digitalmodel/, assethold/, worldenergydata/, client-a/, ai-orchestrator-template/.
 - Write exactly one primary result artifact at docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2554-20260429-1446.md.
 - If evidence is insufficient, write the result artifact with BLOCKED and stop.
 

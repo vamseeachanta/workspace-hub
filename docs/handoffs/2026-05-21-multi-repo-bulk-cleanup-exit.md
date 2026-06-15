@@ -32,24 +32,24 @@ worldenergydata uses a repository ruleset (`protect_repo`, ID `6547740`) with 13
 ## Final state across all repos
 
 **Clean & in sync with origin (15 repos):**
-aceengineer-admin, aceengineer-strategy, aceengineer-website, achantas-media, assethold, assetutilities, CAD-DEVELOPMENTS, hobbies, kaggle-rogii-2026, llm-wiki (one parallel-session edit, see below), llm-wiki-acma (parallel-session work, see below), sabithaandkrishnaestates, teamresumes, worldenergydata, worldenergydata-wiki.
+aceengineer-admin, aceengineer-strategy, aceengineer-website, achantas-media, assethold, assetutilities, CAD-DEVELOPMENTS, hobbies, kaggle-rogii-2026, llm-wiki (one parallel-session edit, see below), llm-wiki-mkt-a (parallel-session work, see below), sabithaandkrishnaestates, teamresumes, worldenergydata, worldenergydata-wiki.
 
 **Deliberately untouched — EXPECTED residue:**
 
 | Repo | Residue | Disposition |
 |---|---|---|
 | achantas-data | `da/education/login.md` (1 untracked file) | **Plaintext LearningA-Z credentials.** Do NOT commit. Recommended actions: (1) move secret to password manager (1Password/Bitwarden), (2) delete the file or move outside repo tree, (3) add `da/education/**` to `.gitignore`, (4) **rotate the `Sabi@krishna2016` password regardless** — it has been in working tree where any agent/backup could see it. Separate pre-existing exposure noted in already-tracked `da/resources.md` (passwords `Hisd1216` and `krisabi@2016`); rotation recommended for the second since it has no "not valid anymore" annotation. |
-| acma-projects-freeze-work | Detached worktree, no branch, dirty=0 | Intentional frozen reference. |
+| mkt-a-freeze-work | Detached worktree, no branch, dirty=0 | Intentional frozen reference. |
 
 **Parallel-session activity in flight (NOT my work, do not trample):**
 
-Active processes at exit-time: another `claude` (PID 2019255) and an active `codex --yolo` session running pytest in digitalmodel against `tests/naval_architecture/test_issue_2760_sirocco_current_rudder_revision.py`. That session is producing coherent multi-repo work for issue [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) (b1528 sirocco current-heading rudder force review):
+Active processes at exit-time: another `claude` (PID 2019255) and an active `codex --yolo` session running pytest in digitalmodel against `tests/naval_architecture/test_issue_2760_proj-a_current_rudder_revision.py`. That session is producing coherent multi-repo work for issue [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) (b1528 proj-a current-heading rudder force review):
 
 | Repo | Dirty count (mine: 0; theirs: shown) | Their work |
 |---|---|---|
-| digitalmodel | 13 | Sirocco rudder report code/test/data + report artifacts + cross-review outputs + session handoff |
-| llm-wiki | 1 | `wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md` concept edit |
-| llm-wiki-acma | 7 | New report artifacts under `reports/B1528/issue-2760/` (citations json, manifest json, report in html/md/docx/pdf) |
+| digitalmodel | 13 | proj-a rudder report code/test/data + report artifacts + cross-review outputs + session handoff |
+| llm-wiki | 1 | `wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md` concept edit |
+| llm-wiki-mkt-a | 7 | New report artifacts under `reports/B1528/issue-2760/` (citations json, manifest json, report in html/md/docx/pdf) |
 | workspace-hub | 29 | Provider-routing dashboard regenerations (config/ai-tools, docs/reports), state-correction markers, ai-tools dashboards — auto-orchestration output that runs continuously |
 
 These four sets are the SAME logical work (issue #2760 execution by parallel codex session). They will land via their own commit path; the next session should respect that and not bulk-stage them.
@@ -65,14 +65,14 @@ These four sets are the SAME logical work (issue #2760 execution by parallel cod
 Per `feedback_pre_completion_cleanup_audit_gate`:
 
 - **CLEAN:** repo dirty state for everything I worked on (achantas-data exception is named EXPECTED, see above).
-- **EXPECTED:** parallel-session dirty in digitalmodel, llm-wiki, llm-wiki-acma, workspace-hub — same #2760 work in flight, not mine.
+- **EXPECTED:** parallel-session dirty in digitalmodel, llm-wiki, llm-wiki-mkt-a, workspace-hub — same #2760 work in flight, not mine.
 - **UNEXPECTED:** none.
 - **My pre-rebase stash** (`pre-rebase workspace-hub bulk-push triage 2026-05-21`): cleanly dropped after stash-pop completed successfully — confirmed not in `git stash list`. The 4 remaining workspace-hub stashes (`pre-bridge-stash`, `autostash`, `git-safe-auto-stash`, `pre-bridge-stash`) are pre-existing from other sessions and were not touched.
 - **/tmp scratch** from this session (`session-signals-2026-05-21.local.jsonl`, `dirty_files.txt`, `incoming_files.txt`, `union.jsonl`): removed at exit.
 
 ## Next session — recommended order
 
-1. **Verify codex --yolo session for #2760 completed cleanly** before doing anything else in digitalmodel, llm-wiki, or llm-wiki-acma. Check `pgrep -af 'codex --yolo'` and the working state in those repos.
+1. **Verify codex --yolo session for #2760 completed cleanly** before doing anything else in digitalmodel, llm-wiki, or llm-wiki-mkt-a. Check `pgrep -af 'codex --yolo'` and the working state in those repos.
 2. **Address `achantas-data/da/education/login.md` credentials** — rotate password, move to password manager, delete file, add `.gitignore` rule.
 3. **(Optional) Filing for the underlying issue:** worldenergydata's `temporary_exceptions` `allowed_paths` allowlist in `config/repo_structure.yml` requires an explicit entry per new tracked file under `logs/`. This will silently break CI every time a new `logs/*` file is added until the planned generated-evidence migration (referenced as worldenergydata#394) lands. Worth raising the priority.
 4. **Stale stashes worth pruning:** `teamresumes` has 3 stashes (oldest from 2025-08-18); `workspace-hub` has 4 (`pre-bridge-stash` x2, `autostash`, `git-safe-auto-stash`); `worldenergydata` has 2 (`issue-348-pre-switch` x2). All pre-date this session — pruning is optional cleanup, not required.

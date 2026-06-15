@@ -8,7 +8,7 @@
 ## User update folded into scope
 
 - `llm-wiki` is now private.
-- ACMA/client data can be stored more fully than originally assumed, with key-information abstractions and less restrictive redaction than public-wiki routing required.
+- mkt-a/client data can be stored more fully than originally assumed, with key-information abstractions and less restrictive redaction than public-wiki routing required.
 - This changes `#2746/#2747/#2748` from “private target with conservative minimized data” to “private target with maximized useful data, provenance, and abstraction boundaries.”
 
 ## Hard gate stance
@@ -109,7 +109,7 @@ Every worker prompt must include:
 
 | Packet | Provider | Outcome |
 |---|---|---|
-| `#2745` data freeze | Codex | Verified already executed in live state: `vamseeachanta/acma-projects` private+archived, `STATUS-FROZEN.md`, freeze commit `a7727671`, existing closeout comment `#issuecomment-4503822028`. No new implementation commit made. |
+| `#2745` data freeze | Codex | Verified already executed in live state: `vamseeachanta/mkt-a` private+archived, `STATUS-FROZEN.md`, freeze commit `a7727671`, existing closeout comment `#issuecomment-4503822028`. No new implementation commit made. |
 | `#2746` private llm-wiki | Claude | Verified main already contains target artifacts and user privacy update. Blocked on run approval for local validation commands in that worker context; no new commit. |
 | Execution backbone `#2665/#2738/#2739/#2754` | Claude | Posted evidence comments. `#2665` verified complete/tests pass. `#2738` repo verifier landed but 2 host-side gates remain. `#2739` deferred on `#2755` tier-1 baseline flux. `#2754` partially landed, remaining work blocked by worker worktree-IO mismatch. |
 | Result planning `#2389/#2747/#2748/#2122/#2147/#2154/#2165/#2171` | Codex | Sandbox/write path failed; no artifacts created by Codex. Hermes created first-pass plan artifacts for `#2389/#2747/#2748/#2767/#2769` and ran 3-agent adversarial review. |
@@ -118,10 +118,10 @@ Every worker prompt must include:
 ### Plan artifacts created and hardened
 
 - `docs/plans/2026-05-21-issue-2389-source-doc-key-promotion-pipeline.md`
-- `docs/plans/2026-05-21-issue-2747-acma-private-wiki-promotion-ledger.md`
-- `docs/plans/2026-05-21-issue-2748-acma-client-output-scaffolding.md`
+- `docs/plans/2026-05-21-issue-2747-mkt-a-private-wiki-promotion-ledger.md`
+- `docs/plans/2026-05-21-issue-2748-mkt-a-client-output-scaffolding.md`
 - `docs/plans/2026-05-21-issue-2767-unionise-preexisting-data-folders.md`
-- `docs/plans/2026-05-21-issue-2769-acma-premove-backup-disposition.md`
+- `docs/plans/2026-05-21-issue-2769-mkt-a-premove-backup-disposition.md`
 
 Initial adversarial review returned MAJOR/MINOR findings. The plans were hardened with:
 

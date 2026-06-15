@@ -20,15 +20,33 @@ set -euo pipefail
 # env-override path works even when invoked from outside the repo (e.g., /tmp).
 SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(git -C "$SELF_DIR" rev-parse --show-toplevel 2>/dev/null || echo "$SELF_DIR")"
-# Registry path is overridable for tests; defaults to canonical location.
-REGISTRY="${REGISTRY_PATH:-${REPO_ROOT}/config/client-wikis.yml}"
+# Registry path is overridable for tests. The real registry is PRIVATE (#3098);
+# resolution: $REGISTRY_PATH → $WIKI_SIBLING_REGISTRY_PATH → local private copy
+# → public stub (which is intentionally empty and triggers degrade-open below).
+REGISTRY="${REGISTRY_PATH:-${WIKI_SIBLING_REGISTRY_PATH:-}}"
+if [[ -z "$REGISTRY" ]]; then
+  if [[ -f "${REPO_ROOT}/config/.client-wikis.local.yml" ]]; then
+    REGISTRY="${REPO_ROOT}/config/.client-wikis.local.yml"
+  else
+    REGISTRY="${REPO_ROOT}/config/client-wikis.yml"
+  fi
+fi
 
 # Precheck dependencies before doing any work.
 command -v yq >/dev/null || { echo >&2 "FAIL: yq v4+ required (https://github.com/mikefarah/yq)"; exit 1; }
 command -v gh >/dev/null || { echo >&2 "FAIL: gh CLI required"; exit 1; }
 
-# 1. Registry file exists
-[[ -f "$REGISTRY" ]] || { echo >&2 "FAIL: registry missing at $REGISTRY"; exit 1; }
+# 1. Registry file exists (degrade-open: real registry is private; #3098)
+[[ -f "$REGISTRY" ]] || { echo >&2 "WARN: registry not found at $REGISTRY — skipping (real registry is private, #3098)"; exit 0; }
+
+# 1b. Relocated public stub (relocated:true / empty wikis) → degrade-open: the
+#     real entries live private and aren't provisioned in this environment.
+RELOCATED=$(yq '.relocated // false' "$REGISTRY" 2>/dev/null || echo "false")
+WIKIS_LEN=$(yq '.wikis | length' "$REGISTRY" 2>/dev/null || echo "0")
+if [[ "$RELOCATED" == "true" || "$WIKIS_LEN" == "0" ]]; then
+  echo "INFO: registry at $REGISTRY is the relocated public stub (no entries) — skipping validation (#3098)."
+  exit 0
+fi
 
 # 2. Schema validation: `wikis` must be a list and parse cleanly.
 WIKIS_TYPE=$(yq '.wikis | tag' "$REGISTRY" 2>/dev/null || echo "")

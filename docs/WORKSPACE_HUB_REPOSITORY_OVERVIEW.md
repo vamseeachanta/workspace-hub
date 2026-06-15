@@ -58,13 +58,13 @@ Repositories are organized into **Work** (professional/client) and **Personal** 
 | **worldenergydata** | Comprehensive Python data library for energy industry (BSEE, production data, etc.) | Energy Data |
 | **assetutilities** | Utilities for day-to-day business task automation | Utilities/Tools |
 | **assethold** | Asset portfolio financial analysis (stocks, real estate) | Finance/Business |
-| **frontierdeepwater** | Frontier Deepwater company documents and projects | Client Work |
-| **doris** | Doris project work and documentation | Client Work |
-| **saipem** | Saipem project work (umbilical installation analysis) | Client Work |
-| **acma-projects** | ACMA Inc. high-level project data and action lists | Project Management |
-| **seanation** | SeaNation project work | Client Work |
-| **rock-oil-field** | Rock oil field analysis and documentation | Oil & Gas |
-| **client_projects** | Client project management and documentation | Project Management |
+| **client-a** | client-a company documents and projects | Client Work |
+| **lng-a** | lng-a project work and documentation | Client Work |
+| **client-d** | client-d project work (umbilical installation analysis) | Client Work |
+| **mkt-a** | mkt-a Inc. high-level project data and action lists | Project Management |
+| **client-f** | client-f project work | Client Work |
+| **client-b** | Rock oil field analysis and documentation | Oil & Gas |
+| **client-c** | Client project management and documentation | Project Management |
 | **teamresumes** | Team resume management | HR/Admin |
 | **OGManufacturing** | Oil & Gas manufacturing documentation | Manufacturing |
 | **CAD-DEVELOPMENTS** | CAD development work and documentation | Engineering/CAD |
@@ -107,11 +107,11 @@ workspace-hub (Central Hub)
     │   └── worldenergydata → Energy data library
     │
     └── Client Projects
-        ├── frontierdeepwater
-        ├── doris
-        ├── saipem
-        ├── seanation
-        └── rock-oil-field
+        ├── client-a
+        ├── lng-a
+        ├── client-d
+        ├── client-f
+        └── client-b
 ```
 
 ### Data Flow Relationships

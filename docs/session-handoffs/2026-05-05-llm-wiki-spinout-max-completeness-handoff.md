@@ -64,7 +64,7 @@ The following issues were transferred from `workspace-hub` to `llm-wiki` and ver
 
 Important currently approval-ready / plan-review issues in `llm-wiki`:
 - `llm-wiki#14` — curated SESA LNG corpus extraction from Elements
-- `llm-wiki#15` — standards-routing for maritime-law / lng-projects / acma-projects
+- `llm-wiki#15` — standards-routing for maritime-law / lng-projects / mkt-a
 - `llm-wiki#16` — engineering classification-society entity pages
 - `llm-wiki#17` — marine-engineering P1 standards/concept backfill
 - `llm-wiki#18` — marine-engineering P2 platform/entity overview refresh
@@ -73,7 +73,7 @@ Important currently approval-ready / plan-review issues in `llm-wiki`:
 Important working / plan-approved issues in `llm-wiki`:
 - `llm-wiki#22` — faceted portal pages for large LLM-wiki domains
 - `llm-wiki#25` — Batch Pack 1 API/standards-portal metadata promotion
-- `llm-wiki#26` — Batch Pack 4 non-ACMA standards summary promotion
+- `llm-wiki#26` — Batch Pack 4 non-mkt-a standards summary promotion
 
 Important harness/scorecard issue:
 - `llm-wiki#37` — llm-wiki strengthening scorecard and prioritized action queue

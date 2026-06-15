@@ -22,7 +22,7 @@ Use this when an engineering/data-pipeline GitHub issue is already `status:plan-
 
 1. Reconcile the parent issue and its explicit unblocker issue(s) before executing the parent. Verify live GitHub labels, local approval marker, latest comments, and prerequisite issues.
 2. Convert the user's clarification into durable GitHub comments on both the parent and unblocker issue so future workers do not re-ask the same source/data question.
-3. For local standards/code corpora such as `/mnt/ace/acma-codes`, treat the mounted corpus as source-of-record and keep raw PDFs/files out of git/wiki. Produce metadata-first or curated summary/wiki artifacts with provenance back-links to the source path.
+3. For local standards/code corpora such as `/mnt/ace/mkt-a-codes`, treat the mounted corpus as source-of-record and keep raw PDFs/files out of git/wiki. Produce metadata-first or curated summary/wiki artifacts with provenance back-links to the source path.
 4. For online engineering dataset backfills, state the minimum unblock schema explicitly: required fields, source URLs, confidence, and conflict handling. Keep the parent `status:needs-data` until validation proves the threshold is met.
 5. Separate source-readiness from implementation readiness: do not remove `status:needs-data` or start parent implementation until the unblocker artifact exists and a small validation check passes.
 6. If prerequisites split scope (for example standards routing vs source content), keep completed blockers documented but focus execution on the remaining live blocker.

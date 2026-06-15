@@ -1,4 +1,4 @@
-# Plan for #2245: Prepare Summary/Classification Artifacts to Unblock Bounded ACMA Wiki Promotion
+# Plan for #2245: Prepare Summary/Classification Artifacts to Unblock Bounded mkt-a Wiki Promotion
 
 > **Status:** draft
 > **Complexity:** T2
@@ -13,8 +13,8 @@
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `scripts/data/document-index/phase-b-extract.py` — Phase B extractor/summarizer can process `--source acma_codes`, but it writes summary files using a derived 16-character key and targets the configured summaries directory.
-- Found: `scripts/data/document-index/phase-b-claude-worker.py` — writes richer summary JSON keyed by full `content_hash`, but its CLI source choices currently do not include `acma_codes`.
+- Found: `scripts/data/document-index/phase-b-extract.py` — Phase B extractor/summarizer can process `--source mkt-a_codes`, but it writes summary files using a derived 16-character key and targets the configured summaries directory.
+- Found: `scripts/data/document-index/phase-b-claude-worker.py` — writes richer summary JSON keyed by full `content_hash`, but its CLI source choices currently do not include `mkt-a_codes`.
 - Found: `scripts/data/document-index/phase-c-classify.py` — classifies records using available summaries and writes domain/status into planning outputs; current logic expects summary files by SHA-named JSON under the configured summaries directory.
 - Found: `scripts/data/document-index/config.yaml` — `output.summaries_dir` points to `/mnt/remote/ace-linux-1/ace/data/document-index/summaries`, which is currently unavailable on this machine.
 - Gap: there is no existing targeted command or script for preparing bounded summary/classification artifacts for exactly the three #2245/#2227 target documents.
@@ -42,8 +42,8 @@
 ### Gaps identified
 - The configured summaries directory is currently unavailable on this machine (`/mnt/remote/ace-linux-1/...` missing).
 - The three bounded targets have index records but `summary: null` and `domain: null`.
-- Existing Phase B / Phase C tooling is not obviously set up for a bounded three-document ACMA-only unblock pass without either a targeted override or a small helper path.
-- Without an explicit bounded path, running broad `--source acma_codes` processing risks touching many out-of-scope ACMA docs.
+- Existing Phase B / Phase C tooling is not obviously set up for a bounded three-document mkt-a-only unblock pass without either a targeted override or a small helper path.
+- Without an explicit bounded path, running broad `--source mkt-a_codes` processing risks touching many out-of-scope mkt-a docs.
 
 <!-- Verification: distinct sources consulted = 7+ (issue #2245, #2227 plan, #2226 plan, #2207 contract, config.yaml, phase-b-extract.py, phase-b-claude-worker.py, phase-c-classify.py, index.jsonl, ledger). -->
 
@@ -53,12 +53,12 @@
 
 | Artifact | Path |
 |---|---|
-| This plan | `docs/plans/2026-04-12-issue-2245-acma-summary-classification-unblock.md` |
+| This plan | `docs/plans/2026-04-12-issue-2245-mkt-a-summary-classification-unblock.md` |
 | Plan review A | `scripts/review/results/2026-04-12-plan-2245-review-a.md` |
 | Plan review B | `scripts/review/results/2026-04-12-plan-2245-review-b.md` |
 | Review synthesis | `scripts/review/results/2026-04-12-plan-2245-final.md` |
 | Likely implementation script changes | `scripts/data/document-index/phase-b-claude-worker.py`, `scripts/data/document-index/phase-c-classify.py` |
-| Possible helper/runner | `scripts/data/document-index/prepare-acma-wiki-unblock.py` (new, only if needed) |
+| Possible helper/runner | `scripts/data/document-index/prepare-mkt-a-wiki-unblock.py` (new, only if needed) |
 | Config/doc references | `scripts/data/document-index/config.yaml`, `data/document-index/index.jsonl`, `data/document-index/standards-transfer-ledger.yaml` |
 | Bounded output artifacts | summary/classification artifacts for the three target docs, plus #2227 handoff note/comment |
 | Plan index update | `docs/plans/README.md` |
@@ -81,7 +81,7 @@ A bounded, reproducible path that produces or explicitly blocks the required sum
 - If the configured summary path is unavailable, implement the minimum bounded workaround or else document a blocker.
 
 ### Explicitly out of scope
-- Broad Phase B/Phase C processing for all `acma_codes` documents.
+- Broad Phase B/Phase C processing for all `mkt-a_codes` documents.
 - Processing `CSA-Z276.2-19`, `CSA-B625-13`, `CSA-22.1-12`, or broader API breadth.
 - Wiki page creation or updates (#2227 scope).
 - Ledger/schema redesign.
@@ -131,9 +131,9 @@ if any prerequisite still cannot be produced safely:
 |---|---|---|
 | Modify | `scripts/data/document-index/phase-b-claude-worker.py` | allow bounded processing of the exact three target docs if this is the smallest safe path |
 | Modify | `scripts/data/document-index/phase-c-classify.py` | support bounded/local summary resolution if needed for the three targets |
-| Create (only if smaller/cleaner than broad patching) | `scripts/data/document-index/prepare-acma-wiki-unblock.py` | one bounded runner for target record selection + summary/classification prep |
+| Create (only if smaller/cleaner than broad patching) | `scripts/data/document-index/prepare-mkt-a-wiki-unblock.py` | one bounded runner for target record selection + summary/classification prep |
 | Update | `docs/plans/README.md` | add canonical plan row for #2245 |
-| Possibly create bounded artifact note | `docs/plans/2026-04-12-issue-2245-acma-summary-classification-unblock.md` follow-up sections / GitHub comment refs | handoff to #2227 |
+| Possibly create bounded artifact note | `docs/plans/2026-04-12-issue-2245-mkt-a-summary-classification-unblock.md` follow-up sections / GitHub comment refs | handoff to #2227 |
 
 ---
 
@@ -142,7 +142,7 @@ if any prerequisite still cannot be produced safely:
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
 | verify_target_identity_resolution | each target resolves from ledger to index record | target IDs | exact content_hash/path/title for 3 docs |
-| verify_bounded_processing_only | implementation touches only the three bounded targets | target list | no extra ACMA docs processed |
+| verify_bounded_processing_only | implementation touches only the three bounded targets | target list | no extra mkt-a docs processed |
 | verify_summary_artifacts_exist | each target gets a non-empty summary artifact | 3 target records | 3 non-empty summary JSON artifacts |
 | verify_domain_classification_present | each target gets a valid domain classification | 3 target records | valid domain values suitable for #2227 |
 | verify_handoff_refs_documented | #2227 can see the exact artifact refs to consume | output note/comment | explicit refs for all 3 targets |
@@ -178,7 +178,7 @@ Revisions made based on review:
 ## Risks and Open Questions
 
 - **Risk:** the configured summaries path is unavailable on this machine; implementation may need a bounded local override instead of the default path.
-- **Risk:** broad `acma_codes` processing would violate scope discipline; the implementation must stay target-list-bounded.
+- **Risk:** broad `mkt-a_codes` processing would violate scope discipline; the implementation must stay target-list-bounded.
 - **Risk:** existing Phase B/Phase C tool contracts may not cleanly support targeted operation without a small helper or patch.
 - **Open:** is the preferred fix a local summaries-dir override or a one-off bounded helper that writes the artifacts explicitly for these three docs?
 - **Open:** should classification be written back into the main index directly or materialized in a separate bounded handoff artifact if index mutation is too broad?

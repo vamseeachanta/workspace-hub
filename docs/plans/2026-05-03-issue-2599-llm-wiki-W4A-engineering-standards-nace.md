@@ -52,7 +52,7 @@ The most-internally-cited NACE codes (`SP0169`, `SP0176`, `TM0497`) are NOT prom
 - `knowledge/wikis/engineering-standards/wiki/standards/api-17e.md` — only existing engineering-standards code page; metadata-stub frontmatter pattern this plan replicates. Confirms lowercase-kebab `code_id` convention (`code_id: api-17e`) and the `revision: public-metadata-required-before-citation-use` placeholder convention when the on-disk edition cannot be pinned to a publisher-verifiable revision.
 - `knowledge/wikis/engineering-standards/wiki/index.md` — currently `page_count: 5`, `source_count: 5`. **Arithmetic AC** (per W2-A and W3-A pattern): `page_count` after this plan = (current `page_count` at implementation time) + 4 (or +3 if AMPP Knowledge Hub stub rejected). The plan does NOT pin a fixed final number, since W1-A/W2-A/W3-A may have landed by W4-A implementation time.
 - `knowledge/wikis/engineering-standards/CLAUDE.md` — defines the standards-page extra fields (`code_id`, `publisher`, `revision`); the new pages will all comply. Schema example values use lowercase-kebab. **This is the path-sanction authority** for engineering-standards domain (NOT #2471).
-- `knowledge/wikis/engineering-standards/wiki/sources/elements-doris-codes-specs.md` — Elements ingest catalog already references the broader DORIS standards corpus. The NACE subset of `/mnt/ace/O&G-Standards/NACE/` is a complementary path through that corpus.
+- `knowledge/wikis/engineering-standards/wiki/sources/elements-lng-a-codes-specs.md` — Elements ingest catalog already references the broader lng-a standards corpus. The NACE subset of `/mnt/ace/O&G-Standards/NACE/` is a complementary path through that corpus.
 - No pre-existing NACE or AMPP pages exist in any wiki (verified by `ls knowledge/wikis/*/wiki/standards/ | grep -iE "nace|ampp"` returning no matches).
 
 ### Documents consulted
@@ -165,7 +165,7 @@ Plus the Standards page extra-fields table (`code_id`, `publisher`, `revision` a
 **Issue #2471 body excerpt** (verifies CSA-Z276-only scope):
 ```
 Decide and codify the sanctioned durable-wiki routing/schema for CSA Z276 pages
-before CSA coverage is promoted from ACMA/standards metadata into LLM-wiki content.
+before CSA coverage is promoted from mkt-a/standards metadata into LLM-wiki content.
 ```
 
 **Public-revision evidence (web)**:

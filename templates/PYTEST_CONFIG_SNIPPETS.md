@@ -491,7 +491,7 @@ fail_under = 80
 fail_under = 85
 ```
 
-Examples: digitalmodel, energy, frontierdeepwater, aceengineercode
+Examples: digitalmodel, energy, client-a, aceengineercode
 
 **Tier 2 (Active Development)**: Use `fail_under = 80`
 ```toml
@@ -507,7 +507,7 @@ Examples: aceengineer-website, hobbies, sd-work
 fail_under = 80
 ```
 
-Examples: doris, saipem, OGManufacturing
+Examples: lng-a, client-d, OGManufacturing
 
 ---
 

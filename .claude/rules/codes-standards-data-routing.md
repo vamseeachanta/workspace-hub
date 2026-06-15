@@ -12,13 +12,13 @@
    - Drop `extraction_policy: metadata-only` — no longer applicable.
    - Drop `raw_copy_allowed: false` — no longer applicable.
    - DO add `visibility: private-llm-wiki` so the page declares its hosting tier explicitly. Forward-compatible if some pages later move back to public.
-   - DO add a `sources:` field pointing to the off-repo PDF at `/mnt/ace/acma-codes/<code>/` for provenance traceability.
+   - DO add a `sources:` field pointing to the off-repo PDF at `/mnt/ace/mkt-a-codes/<code>/` for provenance traceability.
 
 3. **Body content is unrestricted within copyright fair use**:
    - Verbatim convention/clause text quoted with attribution — fine.
    - Digitized coefficient tables (re-emitted as CSV under `wikis/<domain>/wiki/datasets/<standard>/`) — fine.
    - Figure captions and per-figure descriptions — fine.
-   - **Do NOT** commit the raw vendor PDF itself to the repo, even though the repo is private. Keep the canonical PDF at `/mnt/ace/acma-codes/<code>/` so the off-repo path remains the single source of truth for the published artifact. The wiki holds the digitized derivation; `/mnt/ace/` holds the source.
+   - **Do NOT** commit the raw vendor PDF itself to the repo, even though the repo is private. Keep the canonical PDF at `/mnt/ace/mkt-a-codes/<code>/` so the off-repo path remains the single source of truth for the published artifact. The wiki holds the digitized derivation; `/mnt/ace/` holds the source.
 
 4. **Calc-citation contract** ([`.claude/rules/calc-citation-contract.md`](calc-citation-contract.md)) is unchanged. Citation modules in public repos (e.g., MIT-licensed `digitalmodel`) still bind to wiki slugs; the resolver fails closed for unauthenticated external users since the wiki is now private. This is by design — `pip install digitalmodel` users see `CitationResolutionError` and must configure `LLM_WIKI_PATH` to a local clone they have authorized access to.
 

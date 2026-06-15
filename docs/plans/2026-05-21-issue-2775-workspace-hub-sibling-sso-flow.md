@@ -83,7 +83,7 @@
 /mnt/local-analysis/aceengineer-website
 /mnt/local-analysis/achantas-data
 /mnt/local-analysis/achantas-media
-/mnt/local-analysis/acma-projects-freeze-work
+/mnt/local-analysis/mkt-a-freeze-work
 /mnt/local-analysis/assethold
 /mnt/local-analysis/assetutilities
 /mnt/local-analysis/CAD-DEVELOPMENTS
@@ -91,7 +91,7 @@
 /mnt/local-analysis/hobbies
 /mnt/local-analysis/kaggle-rogii-2026
 /mnt/local-analysis/llm-wiki
-/mnt/local-analysis/llm-wiki-acma
+/mnt/local-analysis/llm-wiki-mkt-a
 /mnt/local-analysis/sabithaandkrishnaestates
 /mnt/local-analysis/teamresumes
 /mnt/local-analysis/workspace-hub

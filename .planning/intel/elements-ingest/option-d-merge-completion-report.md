@@ -33,4 +33,4 @@ No `/mnt/elements` source data or `_from_elements/` staging folders were deleted
 
 - Keep `/mnt/elements` source for the agreed minimum retention period.
 - Keep `_from_elements/` staging folders until an explicit source/staging cleanup issue or command is approved.
-- `Codes & Regulations` remains skipped/verify-only against `/mnt/ace/acma-codes/`.
+- `Codes & Regulations` remains skipped/verify-only against `/mnt/ace/mkt-a-codes/`.

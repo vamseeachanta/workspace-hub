@@ -106,22 +106,22 @@ All 12 repositories: **3.9+** ✅ (100% consistent)
 
 ### Tier 2: HIGH PRIORITY (Days 3-8)
 
-3. **frontierdeepwater** (85%) - Production-critical, smallest work repo (490 MB)
+3. **client-a** (85%) - Production-critical, smallest work repo (490 MB)
 4. **energy** (85%) - Important energy domain (5.4 GB)
-5. **seanation** (85%) - Drilling-specialized (1.5 GB)
-6. **doris** (85%) - Marine domain (521 MB)
+5. **client-f** (85%) - Drilling-specialized (1.5 GB)
+6. **lng-a** (85%) - Marine domain (521 MB)
 
 ### Tier 3: MEDIUM PRIORITY (Days 9-22)
 
-7. **rock-oil-field** (75%) - No tests, large (5.2 GB)
-8. **saipem** (75%) - No tests, large (4.1 GB)
+7. **client-b** (75%) - No tests, large (5.2 GB)
+8. **client-d** (75%) - No tests, large (4.1 GB)
 9. **aceengineer-website** (65%) - Branch issue, web app
 10. **aceengineer-admin** (70%) - No tests, office automation
 
 ### Tier 4: INVESTIGATION REQUIRED (Days 25+)
 
 11. **OGManufacturing** (70%) - 🚩 Meta-repo with submodules
-12. **client_projects** (65%) - 🚩 Multi-project (13 GB)
+12. **client-c** (65%) - 🚩 Multi-project (13 GB)
 
 ---
 
@@ -137,7 +137,7 @@ All 12 repositories: **3.9+** ✅ (100% consistent)
 - **Complexity**: Unclear project boundaries, submodule complications
 - **Action**: Investigate architecture before deployment
 
-### 🚩 client_projects
+### 🚩 client-c
 - **Issue**: LARGEST repository (13 GB) with multiple project types
 - **Complexity**: Multi-project aggregate, unclear boundaries
 - **Action**: Clarify project structure before deployment
@@ -199,19 +199,19 @@ Contents:
 
 ### Phase 2: High Priority Rollout
 - **Days**: 3-8
-- **Repos**: 4 (frontierdeepwater, energy, seanation, doris)
+- **Repos**: 4 (client-a, energy, client-f, lng-a)
 - **Objective**: Deploy to high-readiness repos, validate patterns
 - **Effort**: ~6 days
 
 ### Phase 3: Medium Priority & Gaps
 - **Days**: 9-22
-- **Repos**: 4 (rock-oil-field, saipem, aceengineer-website, aceengineer-admin)
+- **Repos**: 4 (client-b, client-d, aceengineer-website, aceengineer-admin)
 - **Objective**: Address gaps, bootstrap tests, handle special cases
 - **Effort**: ~14 days
 
 ### Phase 4: Investigation & Complex Cases
 - **Days**: 25+
-- **Repos**: 2 (OGManufacturing, client_projects)
+- **Repos**: 2 (OGManufacturing, client-c)
 - **Objective**: Resolve architectural questions, plan selective testing
 - **Effort**: ~12+ days
 
@@ -293,7 +293,7 @@ Contents:
 
 ### Phase 4 (Complex Cases)
 - ✓ OGManufacturing architecture clarified
-- ✓ client_projects boundaries defined
+- ✓ client-c boundaries defined
 - ✓ Testing strategy for complex repos established
 - ✓ Both repos with deployment plan
 

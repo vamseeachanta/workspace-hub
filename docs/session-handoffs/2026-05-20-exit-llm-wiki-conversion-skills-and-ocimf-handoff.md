@@ -33,7 +33,7 @@
    `docs/session-handoffs/2026-05-20-handoff-digitalmodel-616-ocimf-to-llm-wiki.md`
    — self-contained executor prompt to promote OCIMF methodology from
    [digitalmodel#616](https://github.com/vamseeachanta/digitalmodel/issues/616)
-   to public `llm-wiki/wikis/naval-architecture/`. SIROCCO/B1528 specifics
+   to public `llm-wiki/wikis/naval-architecture/`. proj-a/B1528 specifics
    routed to private surface per the abstraction gate.
 
 ---
@@ -87,7 +87,7 @@ posture; do not delete without consulting the owning session.
 | `.claude/state/corrections/.edit_sequence_counter` + `.recent_edits` | Harness-managed; do not hand-edit |
 | `.claude/state/session-signals/2026-05-20.jsonl` | Harness signals; auto-updated |
 | `config/ai-tools/provider-*.json` (5 files) | Provider routing / kanban / utilization — auto-refreshed by daily scheduled tasks |
-| `docs/plans/2026-05-20-issue-2746-llm-wiki-acma.md`, `docs/plans/2026-05-20-issue-2760-b1528-sirocco-force-review-revision.md` | Active plan drafts from [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) / [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) — NOT mine |
+| `docs/plans/2026-05-20-issue-2746-llm-wiki-mkt-a.md`, `docs/plans/2026-05-20-issue-2760-b1528-proj-a-force-review-revision.md` | Active plan drafts from [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) / [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) — NOT mine |
 | `docs/reports/provider-*.{md,html}` (6 files) | Auto-generated provider dashboards from scheduled tasks |
 | `logs/orchestrator/hermes/skill-patches.jsonl` + `logs/orchestrator/hermes/session_20260520.jsonl` + `logs/quality/memory-health-20260520.md` | Orchestrator-managed logs |
 | `scripts/review/results/*-plan-{2762,2763,2764,2765,2766}-*.md` + various plan-review artifacts | Concurrent cross-review runs in flight |
@@ -125,12 +125,12 @@ before the executor can proceed. Encoded inline in the hand-off doc; mirrored he
    `digitalmodel/.../_convention.py:OCIMF_CONVENTION_AUTHORITY` cite?
    Needed for the standards-page `revision:` frontmatter (and required by
    [#2471](https://github.com/vamseeachanta/workspace-hub/issues/2471) calc-citation-contract).
-2. **SIROCCO public-availability** — is the SIROCCO project name disclosed
+2. **proj-a public-availability** — is the proj-a project name disclosed
    in any public source (OTC paper, press release, regulator filing) AND
    is the cited data also publicly available? Yes → Rule 8 exception
    applies, project name preserved; No → abstract.
-3. **Private wiki target** — when SIROCCO-specific content does need to
-   land, is the target `llm-wiki-acma`, a new `llm-wiki-<sirocco-operator>`,
+3. **Private wiki target** — when proj-a-specific content does need to
+   land, is the target `llm-wiki-mkt-a`, a new `llm-wiki-<proj-a-operator>`,
    or another existing private wiki?
 4. **OCIMF MEG PDF availability** — do we hold an authoritative copy to
    ingest into `sources/refs/` with the Skill C extraction-coverage
@@ -144,7 +144,7 @@ before the executor can proceed. Encoded inline in the hand-off doc; mirrored he
 > `docs/session-handoffs/2026-05-20-handoff-digitalmodel-616-ocimf-to-llm-wiki.md`
 > and execute its 12 steps in `naval-architecture` domain wiki. Before
 > starting, resolve the four open questions at the bottom of that prompt
-> (MEG3-vs-MEG4 edition, SIROCCO public-availability, private-wiki target,
+> (MEG3-vs-MEG4 edition, proj-a public-availability, private-wiki target,
 > MEG PDF availability). Apply the four llm-wiki skills shipped in
 > `8bfc06db4`: page-shape-contract, audit-feedback-loop,
 > source-extraction-coverage, public-private-routing.
@@ -159,7 +159,7 @@ chat history that built these skills.
 - Karpathy pattern: [gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
 - Reference implementations: [Astro-Han/karpathy-llm-wiki](https://github.com/Astro-Han/karpathy-llm-wiki) (881★), [lewislulu/llm-wiki-skill](https://github.com/lewislulu/llm-wiki-skill) (526★)
 - Source for hand-off: [digitalmodel#616](https://github.com/vamseeachanta/digitalmodel/issues/616) (CLOSED, status:plan-approved)
-- Related governance: [#2374](https://github.com/vamseeachanta/workspace-hub/issues/2374) candidate queue, [#2727](https://github.com/vamseeachanta/workspace-hub/issues/2727) data-layer boundary (CLOSED), [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) llm-wiki-acma private, [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) SIROCCO, [#2471](https://github.com/vamseeachanta/workspace-hub/issues/2471) standards-page frontmatter
+- Related governance: [#2374](https://github.com/vamseeachanta/workspace-hub/issues/2374) candidate queue, [#2727](https://github.com/vamseeachanta/workspace-hub/issues/2727) data-layer boundary (CLOSED), [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) llm-wiki-mkt-a private, [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) proj-a, [#2471](https://github.com/vamseeachanta/workspace-hub/issues/2471) standards-page frontmatter
 - User directive captured in Skill D: 2026-05-20 — "Only client project names are to be abstracted. If project name is available public AND all key data is publicly available, name can be used as-is in public llm-wiki."
 
 ---

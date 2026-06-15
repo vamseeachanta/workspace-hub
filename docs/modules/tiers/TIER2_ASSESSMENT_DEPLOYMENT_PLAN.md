@@ -83,7 +83,7 @@ All 12 Tier 2 repositories have been systematically assessed for:
 
 ---
 
-### 2. ROCK-OIL-FIELD (Work - Tier 2)
+### 2. client-b (Work - Tier 2)
 
 **Readiness Level: 75% - NEEDS WORK**
 
@@ -113,7 +113,7 @@ All 12 Tier 2 repositories have been systematically assessed for:
 
 ---
 
-### 3. FRONTIERDEEPWATER (Work - Tier 1 candidate)
+### 3. client-a (Work - Tier 1 candidate)
 
 **Readiness Level: 85% - GOOD**
 
@@ -145,7 +145,7 @@ All 12 Tier 2 repositories have been systematically assessed for:
 
 ---
 
-### 4. SEANATION (Work - Tier 2)
+### 4. client-f (Work - Tier 2)
 
 **Readiness Level: 85% - GOOD**
 
@@ -175,7 +175,7 @@ All 12 Tier 2 repositories have been systematically assessed for:
 
 ---
 
-### 5. DORIS (Work - Tier 2)
+### 5. lng-a (Work - Tier 2)
 
 **Readiness Level: 85% - GOOD**
 
@@ -205,7 +205,7 @@ All 12 Tier 2 repositories have been systematically assessed for:
 
 ---
 
-### 6. SAIPEM (Work - Tier 2)
+### 6. client-d (Work - Tier 2)
 
 **Readiness Level: 75% - NEEDS WORK**
 
@@ -228,7 +228,7 @@ All 12 Tier 2 repositories have been systematically assessed for:
 **Deployment Considerations:**
 - NO EXISTING TESTS - requires bootstrap
 - Large repository (4.1 GB)
-- Saipem (construction/engineering company) domain
+- client-d (construction/engineering company) domain
 - May contain complex construction calculation logic
 - Business logic analysis required before testing
 
@@ -252,7 +252,7 @@ All 12 Tier 2 repositories have been systematically assessed for:
 
 **Special Considerations:**
 - ⚠️ CONTAINS SUBMODULE REFERENCES TO OTHER REPOS
-- Lists: aceengineer-admin, aceengineercode, aceengineer-website, achantas-data, achantas-media, acma-projects, ai-native-traditional-eng, assethold, assetutilities, and others
+- Lists: aceengineer-admin, aceengineercode, aceengineer-website, achantas-data, achantas-media, mkt-a, ai-native-traditional-eng, assethold, assetutilities, and others
 - This is a META-REPOSITORY or AGGREGATE
 
 **Deployment Considerations:**
@@ -379,7 +379,7 @@ All 12 Tier 2 repositories have been systematically assessed for:
 
 ---
 
-### 11. CLIENT_PROJECTS (Mixed - Tier 3)
+### 11. client-c (Mixed - Tier 3)
 
 **Readiness Level: 65% - NEEDS WORK**
 
@@ -455,23 +455,23 @@ All 12 Tier 2 repositories have been systematically assessed for:
 Can proceed to deployment with 2-3 days per repo:
 
 1. **energy** (85%) - Smoke test exists, large but manageable
-2. **frontierdeepwater** (85%) - Smallest work repo, production-critical
-3. **seanation** (85%) - Smoke test exists, moderate size
-4. **doris** (85%) - Smaller work repo, good test candidate
+2. **client-a** (85%) - Smallest work repo, production-critical
+3. **client-f** (85%) - Smoke test exists, moderate size
+4. **lng-a** (85%) - Smaller work repo, good test candidate
 5. **ai-native-traditional-eng** (85%) - ✅ BEST PILOT, smallest (12 MB)
 6. **pyproject-starter** (90%) - ✅ BEST REFERENCE, already has tests
 
 **Recommended Pilot Order:**
 1. pyproject-starter (reference implementation)
 2. ai-native-traditional-eng (smallest, establishes patterns)
-3. frontierdeepwater (smallest work repo, production-critical)
+3. client-a (smallest work repo, production-critical)
 
 ### 🟡 MEDIUM READINESS (70-79%) - 4 Repositories
 
 Require test bootstrap (4-5 days per repo):
 
-1. **rock-oil-field** (75%) - No tests, large (5.2 GB)
-2. **saipem** (75%) - No tests, large (4.1 GB)
+1. **client-b** (75%) - No tests, large (5.2 GB)
+2. **client-d** (75%) - No tests, large (4.1 GB)
 3. **aceengineer-website** (65%) - Branch mismatch issue, web app
 4. **aceengineer-admin** (70%) - No tests, Office automation
 
@@ -480,7 +480,7 @@ Require test bootstrap (4-5 days per repo):
 Need architecture clarification before deployment:
 
 1. **OGManufacturing** (70%) - Meta-repository with submodules 🚩
-2. **client_projects** (65%) - Multi-project aggregate (13 GB) 🚩
+2. **client-c** (65%) - Multi-project aggregate (13 GB) 🚩
 
 ---
 
@@ -502,7 +502,7 @@ Need architecture clarification before deployment:
 ### Phase 2: Roll Out (Weeks 2-3)
 
 **High Readiness Group (3 repos):**
-3. **frontierdeepwater** (2-3 days)
+3. **client-a** (2-3 days)
    - Production-critical work repo
    - Smallest work repo (490 MB)
    - Use patterns from Phase 1
@@ -511,14 +511,14 @@ Need architecture clarification before deployment:
    - Large (5.4 GB) but structured
    - Important energy domain repo
 
-5. **doris** (2-3 days)
+5. **lng-a** (2-3 days)
    - Moderate size (521 MB)
    - Good consolidation test
 
 ### Phase 3: Address Gaps (Weeks 3-4)
 
 **Medium Readiness Group (4 repos):**
-6. **seanation** (2-3 days)
+6. **client-f** (2-3 days)
    - Moderate size (1.5 GB)
    - Specialized drilling domain
 
@@ -530,16 +530,16 @@ Need architecture clarification before deployment:
    - Address branch issue first
    - Web application testing
 
-9. **rock-oil-field** (4-5 days)
+9. **client-b** (4-5 days)
    - No tests, large (5.2 GB)
    - Requires business logic analysis
 
 ### Phase 4: Complex Cases (Week 4+)
 
 **Investigation & Special Cases:**
-10. **saipem** (4-5 days) - No tests, large (4.1 GB)
+10. **client-d** (4-5 days) - No tests, large (4.1 GB)
 11. **OGManufacturing** (5-7 days) - Meta-repo investigation needed 🚩
-12. **client_projects** (6-8 days) - Multi-project aggregate needs clarity 🚩
+12. **client-c** (6-8 days) - Multi-project aggregate needs clarity 🚩
 
 ---
 
@@ -601,7 +601,7 @@ pytest-asyncio>=0.21.0   # Async test support
 |------------|--------------------------|
 | aceengineer-website | flask>=2.3.0, pytest-flask>=1.2.0 |
 | aceengineer-admin | pytest-datafiles, openpyxl |
-| client_projects | pytest-benchmark (if performance tests) |
+| client-c | pytest-benchmark (if performance tests) |
 | pyproject-starter | (none - already has base framework) |
 
 ---
@@ -630,21 +630,21 @@ pytest-asyncio>=0.21.0   # Async test support
 ### HIGH RISK 🔴
 
 - **OGManufacturing** - Unknown project boundaries, submodules
-- **client_projects** - Very large (13 GB), multiple project types
+- **client-c** - Very large (13 GB), multiple project types
 - **aceengineer-website** - On non-main branch, web application complexity
 
 ### MEDIUM RISK 🟡
 
-- **rock-oil-field** - No tests, large size (5.2 GB)
-- **saipem** - No tests, large size (4.1 GB)
+- **client-b** - No tests, large size (5.2 GB)
+- **client-d** - No tests, large size (4.1 GB)
 - **aceengineer-admin** - Complex Office automation domain
 
 ### LOW RISK 🟢
 
 - **energy** - Has smoke test, well-structured
-- **frontierdeepwater** - Has smoke test, smallest work repo
-- **seanation** - Has smoke test, moderate size
-- **doris** - Has smoke test, smaller size
+- **client-a** - Has smoke test, smallest work repo
+- **client-f** - Has smoke test, moderate size
+- **lng-a** - Has smoke test, smaller size
 - **ai-native-traditional-eng** - Has smoke test, smallest overall
 - **pyproject-starter** - Already has tests, reference implementation
 
@@ -665,7 +665,7 @@ pytest-asyncio>=0.21.0   # Async test support
 
 3. **Week 4+ - Medium/Low Readiness + Investigation**
    - Address medium readiness repos
-   - Investigate complex cases (OGManufacturing, client_projects)
+   - Investigate complex cases (OGManufacturing, client-c)
 
 ---
 
@@ -686,15 +686,15 @@ When deployment is approved, the following will be created per repository:
 ### Repository Size Comparison
 
 ```
-Largest:  client_projects      13.0 GB (multi-project)
+Largest:  client-c      13.0 GB (multi-project)
 Large:    energy                5.4 GB (work - energy domain)
-Large:    rock-oil-field        5.2 GB (work - O&G domain)
-Medium:   saipem                4.1 GB (work - construction)
+Large:    client-b        5.2 GB (work - O&G domain)
+Medium:   client-d                4.1 GB (work - construction)
 Medium:   OGManufacturing       2.4 GB (meta-repository)
-Medium:   seanation             1.5 GB (work - drilling)
+Medium:   client-f             1.5 GB (work - drilling)
 Small:    aceengineer-admin     821 MB (personal - automation)
-Small:    doris                 521 MB (work - marine)
-Small:    frontierdeepwater     490 MB (work - marine)
+Small:    lng-a                 521 MB (work - marine)
+Small:    client-a     490 MB (work - marine)
 Tiny:     aceengineer-website   281 MB (personal - web)
 Tiny:     pyproject-starter     7.7 MB (reference template)
 Tiny:     ai-native-traditional 12 MB  (work - reference)
@@ -706,34 +706,34 @@ Tiny:     ai-native-traditional 12 MB  (work - reference)
 Has Tests:
 - pyproject-starter:           2 test files ✅
 - energy:                      1 test file (smoke)
-- frontierdeepwater:           1 test file (smoke)
-- seanation:                   1 test file (smoke)
-- doris:                       1 test file (smoke)
+- client-a:           1 test file (smoke)
+- client-f:                   1 test file (smoke)
+- lng-a:                       1 test file (smoke)
 - ai-native-traditional-eng:   1 test file (smoke)
 
 No Tests:
-- rock-oil-field               ❌
-- saipem                       ❌
+- client-b               ❌
+- client-d                       ❌
 - OGManufacturing              ❌
 - aceengineer-website          ❌
 - aceengineer-admin            ❌
-- client_projects              ❌
+- client-c              ❌
 ```
 
 ### Python File Distribution
 
 ```
-Most Files:        client_projects          106 files
+Most Files:        client-c          106 files
 Well Developed:    aceengineer-admin         85 files
 Well Developed:    aceengineer-website       73 files
 Well Developed:    energy                    64 files
 Well Developed:    ai-native-traditional-eng 65 files
-Moderate:          seanation                 62 files
-Moderate:          frontierdeepwater         61 files
-Moderate:          rock-oil-field            56 files
-Moderate:          saipem                    59 files
+Moderate:          client-f                 62 files
+Moderate:          client-a         61 files
+Moderate:          client-b            56 files
+Moderate:          client-d                    59 files
 Moderate:          OGManufacturing           56 files
-Minimal:           doris                     48 files
+Minimal:           lng-a                     48 files
 Minimal:           pyproject-starter         51 files
 ```
 

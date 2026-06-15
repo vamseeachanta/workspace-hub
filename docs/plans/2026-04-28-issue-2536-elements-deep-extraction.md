@@ -16,7 +16,7 @@ A controlled first-pass deep extraction for high-value, small Elements-ingested 
 ## Boundaries
 - No deletion or cleanup of `_from_elements/` or `/mnt/elements`; #2534 remains retention-gated.
 - No raw bulk files copied into git/wiki raw folders.
-- Do not process Woodfibre/Doris large corpora in this first pass except as future candidates.
+- Do not process Woodfibre/lng-a large corpora in this first pass except as future candidates.
 
 ## Validation
 - Extracted artifact report exists under `.planning/intel/elements-deep-extraction/`.

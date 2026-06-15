@@ -11,11 +11,11 @@ Deploying pytest.ini to: ai-native-traditional-eng
   ✓ pytest.ini deployed
 Deploying pytest.ini to: achantas-data
   ✓ pytest.ini deployed
-Deploying pytest.ini to: seanation
+Deploying pytest.ini to: client-f
   ✓ pytest.ini deployed
-Deploying pytest.ini to: saipem
+Deploying pytest.ini to: client-d
   ✓ pytest.ini deployed
-Deploying pytest.ini to: acma-projects
+Deploying pytest.ini to: mkt-a
   ✓ pytest.ini deployed
 
 STEP 2: Checking/updating pyproject.toml files...
@@ -24,9 +24,9 @@ STEP 2: Checking/updating pyproject.toml files...
 ✓ pyproject-starter: pytest dependencies already configured
 ✓ ai-native-traditional-eng: pytest dependencies already configured
 ✓ achantas-data: pytest dependencies already configured
-✓ seanation: pytest dependencies already configured
-✓ saipem: pytest dependencies already configured
-✓ acma-projects: pytest dependencies already configured
+✓ client-f: pytest dependencies already configured
+✓ client-d: pytest dependencies already configured
+✓ mkt-a: pytest dependencies already configured
 
 STEP 3: Running Test Collection Baseline...
 
@@ -50,22 +50,22 @@ Testing achantas-data...
 ===================== 10 tests collected, 1 error in 0.58s =====================
   ✓ Test collection successful
 
-Testing seanation...
+Testing client-f...
   Test Files Found: 1
 ========================= 16 tests collected in 0.45s ==========================
   ✓ Test collection successful
 
-Testing saipem...
+Testing client-d...
   Test Files Found: 0
 
-Testing acma-projects...
+Testing mkt-a...
   Test Files Found: 1
 ========================= 22 tests collected in 0.46s ==========================
   ✓ Test collection successful
 
 STEP 4: Archive Repository Documentation...
 
-✓ ARCHIVE: client_projects (No new tests required)
+✓ ARCHIVE: client-c (No new tests required)
 ✓ ARCHIVE: OGManufacturing (No new tests required)
 ✓ ARCHIVE: achantas-media (No new tests required)
 

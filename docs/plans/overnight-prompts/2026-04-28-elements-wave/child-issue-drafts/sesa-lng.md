@@ -2,7 +2,7 @@
 
 > **Status:** draft (file as a new issue ONLY if user instructs; existing tracker is [#2541](https://github.com/vamseeachanta/workspace-hub/issues/2541))
 > **Wave:** 2026-04-28 Elements overnight planning wave (umbrella [#2540](https://github.com/vamseeachanta/workspace-hub/issues/2540))
-> **Corpus:** `/mnt/ace/doris/62092_sesa` — 1.7 GB / 889 files (excluding `_from_elements/` provenance staging)
+> **Corpus:** `/mnt/ace/lng-a/62092_sesa` — 1.7 GB / 889 files (excluding `_from_elements/` provenance staging)
 
 ## Title
 
@@ -30,13 +30,13 @@ Predecessors [#2535](https://github.com/vamseeachanta/workspace-hub/issues/2535)
 ### Out-of-scope
 - Raw bulk copy of any SESA file into git, wiki `raw/`, or `_from_elements/` mirroring.
 - Broad OCR / full-text extraction.
-- Wiki page authoring beyond `wiki/sources/elements-doris-62092-sesa.md` (already present from #2535).
-- Any deletion or movement under `/mnt/ace/doris/62092_sesa`.
+- Wiki page authoring beyond `wiki/sources/elements-lng-a-62092-sesa.md` (already present from #2535).
+- Any deletion or movement under `/mnt/ace/lng-a/62092_sesa`.
 - Any retention-cleanup activity ([#2534](https://github.com/vamseeachanta/workspace-hub/issues/2534) remains gated until 2026-05-28).
 
 ## Allowed paths (read-only)
 
-- `/mnt/ace/doris/62092_sesa/**` — read-only inspection (`ls`, `find`, `stat`, `du`)
+- `/mnt/ace/lng-a/62092_sesa/**` — read-only inspection (`ls`, `find`, `stat`, `du`)
 - `.planning/intel/elements-to-llm-wiki/**` — predecessor inventory
 - `.planning/intel/elements-deep-extraction/**` — predecessor extraction report
 - `knowledge/wikis/lng-projects/**` — reference for naming conventions
@@ -46,7 +46,7 @@ Predecessors [#2535](https://github.com/vamseeachanta/workspace-hub/issues/2535)
 - Any write under `/mnt/ace/**` — source drive is immutable for this work
 - Any write under `knowledge/wikis/**/raw/` or `knowledge/wikis/**/sources/` beyond the existing Elements page
 - Any persisted full-text dump under `.planning/`, `docs/`, or `knowledge/`
-- Any cross-stream artifact path (Doris University, DORIS Codes, Woodfibre)
+- Any cross-stream artifact path (lng-a University, lng-a Codes, Woodfibre)
 
 ## Deliverable (planning artifact, not raw extraction)
 

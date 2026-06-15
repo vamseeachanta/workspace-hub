@@ -1,4 +1,4 @@
-# Plan for #2746: create private llm-wiki repo target llm-wiki-acma
+# Plan for #2746: create private llm-wiki repo target llm-wiki-mkt-a
 
 > **Status:** draft (r1 + r2 review applied; r2-codex MAJOR resolved inline)
 > **Complexity:** T2
@@ -7,8 +7,8 @@
 > - 2026-05-20 r1-claude — MINOR; blockers 1/2/3 (TDD fixture design, factory-skill step 9 commit semantics, NTFS sync verification depth) resolved inline
 > - 2026-05-20 r2-codex — MAJOR; 6 blockers resolved inline: (1) `cp -r */*` glob excluding dotfiles (privacy-firewall failure), (2) DATA-CYCLE.md client-agnostic-ness, (3) existing scaffold stale after D4 rename, (4) TDD test 9 ordering inconsistency, (5) checker missing `isArchived` + remote-URL-match validations, (6) yq python-fallback false comment removed
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2746
-> **Paired plan:** [`docs/plans/2026-05-20-issue-2745-acma-projects-freeze.md`](2026-05-20-issue-2745-acma-projects-freeze.md)
-> **Brainstorming spec:** [`docs/governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md`](../governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md) (commit `277a855ee`)
+> **Paired plan:** [`docs/plans/2026-05-20-issue-2745-mkt-a-freeze.md`](2026-05-20-issue-2745-mkt-a-freeze.md)
+> **Brainstorming spec:** [`docs/governance/2026-05-20-client-llm-wiki-feature-and-mkt-a-instance-design.md`](../governance/2026-05-20-client-llm-wiki-feature-and-mkt-a-instance-design.md) (commit `277a855ee`)
 > **Review artifacts:** `scripts/review/results/2026-05-20-plan-2746-claude.md` | `...-codex.md` (Gemini optional per T2)
 
 ---
@@ -16,7 +16,7 @@
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `/mnt/local-analysis/llm-wiki-acma/` — bootstrap scaffold (`README.md`, `DATA-CYCLE.md`, `sources/README.md`, `pages/README.md`, `reports/README.md`, `ledgers/promotion-ledger.example.yml`); 2 commits; pushed to `vamseeachanta/llm-wiki-acma` (PRIVATE, `main`, not archived)
+- Found: `/mnt/local-analysis/llm-wiki-mkt-a/` — bootstrap scaffold (`README.md`, `DATA-CYCLE.md`, `sources/README.md`, `pages/README.md`, `reports/README.md`, `ledgers/promotion-ledger.example.yml`); 2 commits; pushed to `vamseeachanta/llm-wiki-mkt-a` (PRIVATE, `main`, not archived)
 - Found: `/mnt/local-analysis/workspace-hub/scripts/enforcement/` — has `check-no-abs-paths.sh`, `check-harness-file-size.sh`, `check-no-conflict-markers.sh` (pattern reference for new checker)
 - Found: `/mnt/local-analysis/workspace-hub/.claude/skills/coordination/` — has 40+ coordination skills; `llm-wiki-roadmap-integration` is closest analog for the new factory skill
 - Found: `/mnt/local-analysis/workspace-hub/docs/plans/_template-issue-plan.md` — required plan structure (this file)
@@ -24,7 +24,7 @@
 - Gap: no `config/client-wikis.yml` registry exists
 - Gap: no `scripts/enforcement/check-client-wiki-registry.sh` checker exists
 - Gap: no `coordination/client-llm-wiki-factory/SKILL.md` skill exists
-- Gap: scaffold at `/mnt/local-analysis/llm-wiki-acma/` is missing `LICENSE`, `.gitignore`, `.claude/CLAUDE.md`, `REDACTION-POSTURE.md`
+- Gap: scaffold at `/mnt/local-analysis/llm-wiki-mkt-a/` is missing `LICENSE`, `.gitignore`, `.claude/CLAUDE.md`, `REDACTION-POSTURE.md`
 
 ### Standards
 Not applicable (governance/data-pipeline issue; no engineering calculation standards).
@@ -33,7 +33,7 @@ Not applicable (governance/data-pipeline issue; no engineering calculation stand
 No relevant pages (this issue creates infrastructure, doesn't consume wiki content).
 
 ### Documents consulted
-- `docs/governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md` — user-accepted brainstorming spec; Approach B locked
+- `docs/governance/2026-05-20-client-llm-wiki-feature-and-mkt-a-instance-design.md` — user-accepted brainstorming spec; Approach B locked
 - Parent epic [#2744](https://github.com/vamseeachanta/workspace-hub/issues/2744) — 4-child decomposition; non-negotiable boundaries
 - Sibling [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) — paired freeze plan
 - Dependency [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) — data-location D1–D8 seed (D4 amendment proposal at [issuecomment-4500952654](https://github.com/vamseeachanta/workspace-hub/issues/2731#issuecomment-4500952654))
@@ -47,24 +47,24 @@ No relevant pages (this issue creates infrastructure, doesn't consume wiki conte
 - Registry YAML must be built from scratch (6-row initial registry)
 - Checker script must be built from scratch (9 test conditions per spec §7)
 - Factory skill must be built from scratch (11-step operator checklist)
-- ACMA scaffold needs 4 firewall files added (LICENSE, .gitignore, .claude/CLAUDE.md, REDACTION-POSTURE.md)
+- mkt-a scaffold needs 4 firewall files added (LICENSE, .gitignore, .claude/CLAUDE.md, REDACTION-POSTURE.md)
 
 ### Evidence (embedded verification)
 
 **Issue statuses** (verified 2026-05-20T18:30Z via `gh issue view`):
-- `#2744` — OPEN — epic(acma): client project data-cycle readiness and private llm-wiki launch
-- `#2745` — OPEN, `status:needs-plan` — feat(acma): freeze acma-projects and move to local-only archive posture
-- `#2746` — OPEN, `status:needs-plan` — feat(acma): create private llm-wiki repo target llm-wiki-acma
+- `#2744` — OPEN — epic(mkt-a): client project data-cycle readiness and private llm-wiki launch
+- `#2745` — OPEN, `status:needs-plan` — feat(mkt-a): freeze mkt-a and move to local-only archive posture
+- `#2746` — OPEN, `status:needs-plan` — feat(mkt-a): create private llm-wiki repo target llm-wiki-mkt-a
 - `#2731` — OPEN, `status:needs-plan` — feat(data-governance): inventory and normalize canonical data/repo locations
 - `#2732` — OPEN — feat(data-governance): canonical first/second-level mount and folder taxonomy
 - `#2727` — CLOSED `status:done` — feat(architecture): define data layer boundary and llm-wiki data promotion model
 
-**File existence** (`ls -la /mnt/local-analysis/llm-wiki-acma/` 2026-05-20T12:50Z):
+**File existence** (`ls -la /mnt/local-analysis/llm-wiki-mkt-a/` 2026-05-20T12:50Z):
 - EXISTS: `README.md`, `DATA-CYCLE.md`, `ledgers/promotion-ledger.example.yml`, `sources/README.md`, `pages/README.md`, `reports/README.md`
 - MISSING: `LICENSE`, `.gitignore`, `.claude/CLAUDE.md`, `REDACTION-POSTURE.md`
 
-**GH repo state** (`gh repo view vamseeachanta/llm-wiki-acma` 2026-05-20T18:30Z):
-- visibility: PRIVATE; isArchived: false; defaultBranchRef: `main`; url: https://github.com/vamseeachanta/llm-wiki-acma
+**GH repo state** (`gh repo view vamseeachanta/llm-wiki-mkt-a` 2026-05-20T18:30Z):
+- visibility: PRIVATE; isArchived: false; defaultBranchRef: `main`; url: https://github.com/vamseeachanta/llm-wiki-mkt-a
 
 **Workspace-hub artifact gaps** (`ls` 2026-05-20T18:30Z):
 - MISSING: `templates/client-llm-wiki/`
@@ -78,7 +78,7 @@ No relevant pages (this issue creates infrastructure, doesn't consume wiki conte
 | Path | Purpose |
 |---|---|
 | `templates/client-llm-wiki/README.md` | Per-wiki README with `<CLIENT_SHORT_NAME>` placeholders |
-| `templates/client-llm-wiki/DATA-CYCLE.md` | Client-agnostic version using `<CLIENT_SHORT_NAME>` placeholder; sed-substituted during factory step 6. NOT a verbatim copy of the existing acma DATA-CYCLE.md (which hardcodes ACMA + pre-rename repo name `acma-llm-wiki`). |
+| `templates/client-llm-wiki/DATA-CYCLE.md` | Client-agnostic version using `<CLIENT_SHORT_NAME>` placeholder; sed-substituted during factory step 6. NOT a verbatim copy of the existing mkt-a DATA-CYCLE.md (which hardcodes mkt-a + pre-rename repo name `mkt-a-llm-wiki`). |
 | `templates/client-llm-wiki/LICENSE` | Proprietary marker — NOT OSS |
 | `templates/client-llm-wiki/.gitignore` | Blocks raw/, private/, large binaries, secrets |
 | `templates/client-llm-wiki/.claude/CLAUDE.md` | Private-posture override for instantiated wikis |
@@ -86,45 +86,45 @@ No relevant pages (this issue creates infrastructure, doesn't consume wiki conte
 | `templates/client-llm-wiki/sources/README.md` | Source-card conventions |
 | `templates/client-llm-wiki/pages/README.md` | Wiki-page conventions |
 | `templates/client-llm-wiki/reports/README.md` | Output-provenance conventions |
-| `templates/client-llm-wiki/ledgers/promotion-ledger.example.yml` | Schema template (copy from acma scaffold) |
+| `templates/client-llm-wiki/ledgers/promotion-ledger.example.yml` | Schema template (copy from mkt-a scaffold) |
 | `templates/client-llm-wiki/ledgers/README.md` | Ledger usage rules |
-| `config/client-wikis.yml` | 6-row registry (acma `bootstrapped`, 5 `planned`) |
+| `config/client-wikis.yml` | 6-row registry (mkt-a `bootstrapped`, 5 `planned`) |
 | `scripts/enforcement/check-client-wiki-registry.sh` | Validator with 9 fail conditions |
 | `tests/enforcement/test_client_wiki_registry.sh` | TDD test suite for the checker (uses `REGISTRY_PATH` env override) |
 | `tests/enforcement/fixtures/client-wikis-*.yml` | Per-test fixture registries (consistent/duplicate-short-name/missing-repo/wrong-visibility/firewall-violation variants) |
 | `.claude/skills/coordination/client-llm-wiki-factory/SKILL.md` | 11-step operator checklist |
 
-### New files in `vamseeachanta/llm-wiki-acma` (separate repo)
+### New files in `vamseeachanta/llm-wiki-mkt-a` (separate repo)
 | Path | Purpose |
 |---|---|
 | `LICENSE` | Proprietary marker |
 | `.gitignore` | Raw/private/secret guards |
 | `.claude/CLAUDE.md` | Private-posture override |
-| `REDACTION-POSTURE.md` | ACMA-specific redaction rules |
+| `REDACTION-POSTURE.md` | mkt-a-specific redaction rules |
 
-### Existing files preserved (in `vamseeachanta/llm-wiki-acma`)
-- `sources/README.md`, `pages/README.md`, `reports/README.md`, `ledgers/promotion-ledger.example.yml` — kept as-is (no naming references that diverge from `acma`)
-- `README.md` + `DATA-CYCLE.md` — **MUST be updated** in T6 to reflect the D4-amended repo name (`llm-wiki-acma`, not `acma-llm-wiki`). Per r2-codex finding 3, the current acma `README.md` still says "Recommended repo name `acma-llm-wiki`" and `DATA-CYCLE.md` still names `vamseeachanta/acma-llm-wiki`. T6 substitutes these references; checker T7 verifies no stale `acma-llm-wiki` strings remain.
+### Existing files preserved (in `vamseeachanta/llm-wiki-mkt-a`)
+- `sources/README.md`, `pages/README.md`, `reports/README.md`, `ledgers/promotion-ledger.example.yml` — kept as-is (no naming references that diverge from `mkt-a`)
+- `README.md` + `DATA-CYCLE.md` — **MUST be updated** in T6 to reflect the D4-amended repo name (`llm-wiki-mkt-a`, not `mkt-a-llm-wiki`). Per r2-codex finding 3, the current mkt-a `README.md` still says "Recommended repo name `mkt-a-llm-wiki`" and `DATA-CYCLE.md` still names `vamseeachanta/mkt-a-llm-wiki`. T6 substitutes these references; checker T7 verifies no stale `mkt-a-llm-wiki` strings remain.
 
 ## Deliverable
 
-A reusable feature for instantiating per-client private llm-wiki repos under [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4 (amended) — concretely the template + registry + checker + skill — and the ACMA instance ([#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746)) ratified against it.
+A reusable feature for instantiating per-client private llm-wiki repos under [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4 (amended) — concretely the template + registry + checker + skill — and the mkt-a instance ([#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746)) ratified against it.
 
 ## Scope Boundaries
 
 **IN scope:**
 - Build template tree, registry, checker, factory skill in workspace-hub
-- Add 4 firewall files to existing `vamseeachanta/llm-wiki-acma` scaffold
-- Register acma in `config/client-wikis.yml` with `status: bootstrapped`
-- Delete NTFS clone at `/mnt/ace/llm-wiki-acma/` after confirming ext4 clone is fully synced (spec §5.1 step 4)
+- Add 4 firewall files to existing `vamseeachanta/llm-wiki-mkt-a` scaffold
+- Register mkt-a in `config/client-wikis.yml` with `status: bootstrapped`
+- Delete NTFS clone at `/mnt/ace/llm-wiki-mkt-a/` after confirming ext4 clone is fully synced (spec §5.1 step 4)
 - TDD: write all 9 tests in `tests/enforcement/test_client_wiki_registry.sh` BEFORE implementing the checker
 
 **OUT of scope:**
 - Raw-data import into the wiki (deferred to post-approval implementation under [#2747](https://github.com/vamseeachanta/workspace-hub/issues/2747)/[#2748](https://github.com/vamseeachanta/workspace-hub/issues/2748))
-- Other 5 wiki instances (rock-oil-field, client-projects, doris, frontierdeepwater, saipem) — Phase 4–5 follow-on issues
+- Other 5 wiki instances (client-b, client-c, lng-a, client-a, client-d) — Phase 4–5 follow-on issues
 - Promotion ledger schema beyond the existing example file — that's [#2747](https://github.com/vamseeachanta/workspace-hub/issues/2747)'s scope
 - Pre-commit hook promotion of the checker — Level 3 enforcement deferred to follow-on issue
-- acma-projects freeze (archive GH remote, etc.) — that's the paired [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) plan
+- mkt-a freeze (archive GH remote, etc.) — that's the paired [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) plan
 
 ## Patch Shape
 
@@ -137,8 +137,8 @@ Each task is self-contained, TDD-first, single-pathspec commits. Approximate siz
 | T3 — Checker test suite (RED) | 1 new file | ~120 | workspace-hub |
 | T4 — Checker implementation (GREEN) | 1 new file | ~150 | workspace-hub |
 | T5 — Factory skill | 1 new file | ~120 | workspace-hub |
-| T6 — Firewall files in llm-wiki-acma | 4 new files | ~80 | llm-wiki-acma |
-| T7 — Registry: mark acma `bootstrapped` | 1 modified | ~3 | workspace-hub |
+| T6 — Firewall files in llm-wiki-mkt-a | 4 new files | ~80 | llm-wiki-mkt-a |
+| T7 — Registry: mark mkt-a `bootstrapped` | 1 modified | ~3 | workspace-hub |
 | T8 — NTFS-clone disposition | 0 new, 1 rm-dir | n/a | local FS |
 
 ## Pseudocode
@@ -254,18 +254,18 @@ Requires user-approved plan per SHARED_SOUL.md gates before invocation.
 
 **T1 — Template tree scaffold** (workspace-hub, single commit)
 - Create `templates/client-llm-wiki/README.md` with `<CLIENT_SHORT_NAME>` placeholders
-- Create `templates/client-llm-wiki/DATA-CYCLE.md` as a **client-agnostic version** with `<CLIENT_SHORT_NAME>` placeholder replacing every ACMA/acma reference and `<CLIENT_PRIVATE_REPO>` placeholder replacing `vamseeachanta/acma-llm-wiki` (per r2-codex finding 2; NOT a verbatim copy of `/mnt/local-analysis/llm-wiki-acma/DATA-CYCLE.md`). Preserve the 4-layer table structure (raw → readable → private wiki → public llm-wiki) and gate-rule from the original.
+- Create `templates/client-llm-wiki/DATA-CYCLE.md` as a **client-agnostic version** with `<CLIENT_SHORT_NAME>` placeholder replacing every mkt-a/mkt-a reference and `<CLIENT_PRIVATE_REPO>` placeholder replacing `vamseeachanta/mkt-a-llm-wiki` (per r2-codex finding 2; NOT a verbatim copy of `/mnt/local-analysis/llm-wiki-mkt-a/DATA-CYCLE.md`). Preserve the 4-layer table structure (raw → readable → private wiki → public llm-wiki) and gate-rule from the original.
 - Create `templates/client-llm-wiki/LICENSE` (proprietary marker; no OSS keywords)
 - Create `templates/client-llm-wiki/.gitignore` (raw/, private/, *.dwg, *.sim, *.dat>10MB, credential patterns)
 - Create `templates/client-llm-wiki/.claude/CLAUDE.md` (private-posture override; explicit no-public-promotion clause)
 - Create `templates/client-llm-wiki/REDACTION-POSTURE.md` with 6-row default table (client legal name=REDACT, project IDs=REDACT, personal names=FLAG, geo coords=FLAG, vessel names=FLAG, financial figures=REDACT)
-- Create `templates/client-llm-wiki/sources/README.md`, `pages/README.md`, `reports/README.md` (copy from acma scaffold)
-- Create `templates/client-llm-wiki/ledgers/promotion-ledger.example.yml` (copy from acma scaffold)
+- Create `templates/client-llm-wiki/sources/README.md`, `pages/README.md`, `reports/README.md` (copy from mkt-a scaffold)
+- Create `templates/client-llm-wiki/ledgers/promotion-ledger.example.yml` (copy from mkt-a scaffold)
 - Create `templates/client-llm-wiki/ledgers/README.md` (ledger usage)
 - Commit: `git commit -m "feat(client-wiki-factory): template tree for per-client private wikis" -- templates/client-llm-wiki/`
 
 **T2 — Registry YAML** (workspace-hub, single commit)
-- Create `config/client-wikis.yml` with `registry_version: 0.1` and 6 wiki entries per spec §4.2; acma `status: bootstrapped` (instance #1); other 5 `status: planned`
+- Create `config/client-wikis.yml` with `registry_version: 0.1` and 6 wiki entries per spec §4.2; mkt-a `status: bootstrapped` (instance #1); other 5 `status: planned`
 - Commit: `git commit -m "feat(client-wiki-factory): seed registry config/client-wikis.yml" -- config/client-wikis.yml`
 
 **T3 — Checker test suite (RED)** (workspace-hub, single commit, MUST FAIL before T4)
@@ -277,7 +277,7 @@ Requires user-approved plan per SHARED_SOUL.md gates before invocation.
 - Create `scripts/enforcement/check-client-wiki-registry.sh` matching the pseudocode above
 - Make executable: `chmod +x scripts/enforcement/check-client-wiki-registry.sh`
 - Run: `bash tests/enforcement/test_client_wiki_registry.sh` → expect PASS
-- Run: `scripts/enforcement/check-client-wiki-registry.sh` → expect PASS (acma row passes against live state)
+- Run: `scripts/enforcement/check-client-wiki-registry.sh` → expect PASS (mkt-a row passes against live state)
 - Commit: `git commit -m "feat(client-wiki-factory): checker implementation (TDD green)" -- scripts/enforcement/check-client-wiki-registry.sh`
 
 **T5 — Factory skill** (workspace-hub, single commit)
@@ -285,29 +285,29 @@ Requires user-approved plan per SHARED_SOUL.md gates before invocation.
 - Include front-matter (`name`, `description`, `version`, `category: coordination`, `tags`, `related_skills`)
 - Commit: `git commit -m "feat(client-wiki-factory): operator-checklist skill" -- .claude/skills/coordination/client-llm-wiki-factory/SKILL.md`
 
-**T6 — Firewall files + post-rename text updates in llm-wiki-acma** (separate repo, single commit there)
-- Per r2-codex finding 3: existing `README.md` + `DATA-CYCLE.md` still contain pre-rename name `acma-llm-wiki`. Must be updated here.
-- `cd /mnt/local-analysis/llm-wiki-acma/`
-- `sed -i 's|acma-llm-wiki|llm-wiki-acma|g' README.md DATA-CYCLE.md` (single-G substitution; verify no over-match on legitimate uses)
-- Verify post-edit: `grep -n 'acma-llm-wiki' README.md DATA-CYCLE.md` → 0 hits
-- `cd /mnt/local-analysis/llm-wiki-acma/`
-- Copy `LICENSE`, `.gitignore`, `.claude/CLAUDE.md`, `REDACTION-POSTURE.md` from `workspace-hub/templates/client-llm-wiki/` — substitute `<CLIENT_SHORT_NAME>` with `acma`
-- Customize `REDACTION-POSTURE.md` with acma-specific rules (defaults stand if no customization needed)
+**T6 — Firewall files + post-rename text updates in llm-wiki-mkt-a** (separate repo, single commit there)
+- Per r2-codex finding 3: existing `README.md` + `DATA-CYCLE.md` still contain pre-rename name `mkt-a-llm-wiki`. Must be updated here.
+- `cd /mnt/local-analysis/llm-wiki-mkt-a/`
+- `sed -i 's|mkt-a-llm-wiki|llm-wiki-mkt-a|g' README.md DATA-CYCLE.md` (single-G substitution; verify no over-match on legitimate uses)
+- Verify post-edit: `grep -n 'mkt-a-llm-wiki' README.md DATA-CYCLE.md` → 0 hits
+- `cd /mnt/local-analysis/llm-wiki-mkt-a/`
+- Copy `LICENSE`, `.gitignore`, `.claude/CLAUDE.md`, `REDACTION-POSTURE.md` from `workspace-hub/templates/client-llm-wiki/` — substitute `<CLIENT_SHORT_NAME>` with `mkt-a`
+- Customize `REDACTION-POSTURE.md` with mkt-a-specific rules (defaults stand if no customization needed)
 - Verify dotfile firewall artifacts present: `[[ -f .gitignore && -f .claude/CLAUDE.md ]]` → both must be true. If not, the `cp -a SRC/. DEST/` form failed and the privacy firewall is broken — ABORT before commit. (Defends r2-codex finding 1.)
-- Commit (in llm-wiki-acma repo): `git add LICENSE .gitignore .claude/ REDACTION-POSTURE.md && git commit -m "feat: add firewall files per workspace-hub#2746 spec"`
-- Push to `vamseeachanta/llm-wiki-acma`
+- Commit (in llm-wiki-mkt-a repo): `git add LICENSE .gitignore .claude/ REDACTION-POSTURE.md && git commit -m "feat: add firewall files per workspace-hub#2746 spec"`
+- Push to `vamseeachanta/llm-wiki-mkt-a`
 
-**T7 — Registry: mark acma bootstrapped** (workspace-hub, single commit)
-- Update `config/client-wikis.yml`: confirm acma row matches reality after T6 (already `bootstrapped` from T2; verify dates)
+**T7 — Registry: mark mkt-a bootstrapped** (workspace-hub, single commit)
+- Update `config/client-wikis.yml`: confirm mkt-a row matches reality after T6 (already `bootstrapped` from T2; verify dates)
 - Run `scripts/enforcement/check-client-wiki-registry.sh` — MUST pass
-- Commit: `git commit -m "chore(client-wiki-factory): finalize acma registry entry post-firewall-files" -- config/client-wikis.yml`
+- Commit: `git commit -m "chore(client-wiki-factory): finalize mkt-a registry entry post-firewall-files" -- config/client-wikis.yml`
 
 **T8 — NTFS-clone disposition** (local FS only, no commit)
 
 Pre-delete invariants (ALL must pass; ABORT if any fails):
 
 ```bash
-cd /mnt/ace/llm-wiki-acma   # the NTFS clone being deleted (NOT the ext4 clone)
+cd /mnt/ace/llm-wiki-mkt-a   # the NTFS clone being deleted (NOT the ext4 clone)
 
 # Invariant 1: no uncommitted changes (staged or unstaged) and no untracked files
 [[ -z "$(git status --porcelain)" ]] || { echo "ABORT: NTFS clone has uncommitted/untracked changes"; exit 1; }
@@ -327,11 +327,11 @@ done
 [[ -z "$(git stash list)" ]] || { echo "ABORT: NTFS clone has stash entries (would be lost)"; exit 1; }
 
 # Invariant 4: GitHub remote reachable and matches expected repo
-gh repo view vamseeachanta/llm-wiki-acma --json visibility,defaultBranchRef >/dev/null \
+gh repo view vamseeachanta/llm-wiki-mkt-a --json visibility,defaultBranchRef >/dev/null \
   || { echo "ABORT: GitHub remote unreachable"; exit 1; }
 ```
 
-If ALL invariants pass: `rm -rf /mnt/ace/llm-wiki-acma/`
+If ALL invariants pass: `rm -rf /mnt/ace/llm-wiki-mkt-a/`
 
 Rationale per `feedback_ntfs3_symlink_intxlnk`: NTFS-backed clone is a corruption hazard, not a backup; GitHub remote is the durable backup. The 4 invariants address the r1 finding that the original `git diff origin/main..main --quiet` only caught tracked-commit divergence on main, missing uncommitted changes, untracked files, non-main unpushed branches, and stash entries — all real data-loss vectors.
 
@@ -343,7 +343,7 @@ All tests use `REGISTRY_PATH` env override to load per-test fixture YAMLs from `
 
 | # | Test | Fixture | Expected |
 |---|---|---|---|
-| 1 | Registry consistent → checker passes | `fixtures/client-wikis-consistent.yml` (acma bootstrapped, others planned) | Exit 0; no stderr |
+| 1 | Registry consistent → checker passes | `fixtures/client-wikis-consistent.yml` (mkt-a bootstrapped, others planned) | Exit 0; no stderr |
 | 2 | Registry missing `repo` field on entry | `fixtures/client-wikis-missing-repo-field.yml` | Exit non-zero, name offending `short_name` |
 | 3 | GH repo for `bootstrapped` entry doesn't exist | `fixtures/client-wikis-fake-repo.yml` (points at `vamseeachanta/nonexistent-fake-repo`) | Exit non-zero |
 | 4 | `client-private` posture but visibility != PRIVATE | `fixtures/client-wikis-wrong-visibility.yml` (points at a PUBLIC repo, e.g., `vamseeachanta/workspace-hub`) | Exit non-zero |
@@ -351,7 +351,7 @@ All tests use `REGISTRY_PATH` env override to load per-test fixture YAMLs from `
 | 6 | `local_working_clone` missing when mount root ABSENT | `fixtures/client-wikis-missing-mount.yml` (clone path under `/mnt/nonexistent-mount/`) | Exit 0 (machine-aware skip) |
 | 7 | Duplicate `short_name` across two entries | `fixtures/client-wikis-duplicate-shortname.yml` | Exit non-zero |
 | 8 | **Firewall guard:** `client-private` `raw_roots` contains a public llm-wiki path | `fixtures/client-wikis-firewall-violation.yml` (raw_root = `/mnt/local-analysis/llm-wiki/`) | Exit non-zero |
-| 9 | Instantiated wiki repo: `grep` for OSS-license boilerplate in `LICENSE` | n/a (template-instantiation test, not registry test); run on `/mnt/local-analysis/llm-wiki-acma/LICENSE` after T6 | Tightened regex per r1 finding #4: grep for `'Licensed under the MIT'\|'Apache License, Version 2.0'\|'BSD 3-Clause'\|'Creative Commons'` → 0 hits AND `grep -i 'All rights reserved\|Proprietary\|Confidential'` → ≥1 hit |
+| 9 | Instantiated wiki repo: `grep` for OSS-license boilerplate in `LICENSE` | n/a (template-instantiation test, not registry test); run on `/mnt/local-analysis/llm-wiki-mkt-a/LICENSE` after T6 | Tightened regex per r1 finding #4: grep for `'Licensed under the MIT'\|'Apache License, Version 2.0'\|'BSD 3-Clause'\|'Creative Commons'` → 0 hits AND `grep -i 'All rights reserved\|Proprietary\|Confidential'` → ≥1 hit |
 
 Test runner shape (one test per `test_*` function in shell):
 
@@ -371,15 +371,15 @@ main() {
 ## Acceptance Criteria
 
 - [ ] **Registry-suite tests (1–8)** in `tests/enforcement/test_client_wiki_registry.sh` all pass at T3 RED → T4 GREEN; this is the suite gated before T4 implementation
-- [ ] **Instantiation-suite test (9)** runs as a post-T6 verification check (not part of T3 RED) — `grep` for OSS-license boilerplate AND proprietary markers in `/mnt/local-analysis/llm-wiki-acma/LICENSE` per r2-codex finding 4 (tests cannot run before LICENSE file exists)
-- [ ] `scripts/enforcement/check-client-wiki-registry.sh` exits 0 against the seeded registry (acma `bootstrapped`)
+- [ ] **Instantiation-suite test (9)** runs as a post-T6 verification check (not part of T3 RED) — `grep` for OSS-license boilerplate AND proprietary markers in `/mnt/local-analysis/llm-wiki-mkt-a/LICENSE` per r2-codex finding 4 (tests cannot run before LICENSE file exists)
+- [ ] `scripts/enforcement/check-client-wiki-registry.sh` exits 0 against the seeded registry (mkt-a `bootstrapped`)
 - [ ] `templates/client-llm-wiki/` contains all 11 files (README, DATA-CYCLE, LICENSE, .gitignore, .claude/CLAUDE.md, REDACTION-POSTURE, 3 sub-READMEs, ledger example, ledger README)
 - [ ] `config/client-wikis.yml` contains 6 wiki entries with correct posture, raw_roots, status
-- [ ] `vamseeachanta/llm-wiki-acma` has 4 added firewall files committed and pushed
-- [ ] `/mnt/ace/llm-wiki-acma/` directory removed after sync verification
+- [ ] `vamseeachanta/llm-wiki-mkt-a` has 4 added firewall files committed and pushed
+- [ ] `/mnt/ace/llm-wiki-mkt-a/` directory removed after sync verification
 - [ ] Factory skill committed at `.claude/skills/coordination/client-llm-wiki-factory/SKILL.md` with proper frontmatter
-- [ ] `LICENSE` in instantiated `llm-wiki-acma` does NOT contain OSS license keywords (grep -i for MIT|Apache|BSD|CC-BY returns 0 hits)
-- [ ] No `<CLIENT_SHORT_NAME>` placeholders remain in instantiated `llm-wiki-acma` (grep returns 0 hits)
+- [ ] `LICENSE` in instantiated `llm-wiki-mkt-a` does NOT contain OSS license keywords (grep -i for MIT|Apache|BSD|CC-BY returns 0 hits)
+- [ ] No `<CLIENT_SHORT_NAME>` placeholders remain in instantiated `llm-wiki-mkt-a` (grep returns 0 hits)
 - [ ] Adversarial review (T2: Claude + Codex) produces APPROVE on both code and plan stages
 - [ ] Legal-sanity scan passes on all new commits per `coordination/legal-sanity-scan` skill
 - [ ] Spec ratification criterion: re-run checker after [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) lands `status:plan-approved`; if D4 final differs from D4', file a reconciliation issue (no scope expansion in this plan)
@@ -413,11 +413,11 @@ Plan must reach APPROVE or APPROVE-MINOR-NITS from both T2 reviewers before labe
 
 ## Complexity: T2
 
-T2 justification: multi-file (15+ new files) + cross-repo (workspace-hub + llm-wiki-acma) + privacy-firewall stakes warrant 2-provider review (Claude + Codex). T3 (Gemini) optional escalation reserved for if privacy-firewall defect surfaces in adversarial review.
+T2 justification: multi-file (15+ new files) + cross-repo (workspace-hub + llm-wiki-mkt-a) + privacy-firewall stakes warrant 2-provider review (Claude + Codex). T3 (Gemini) optional escalation reserved for if privacy-firewall defect surfaces in adversarial review.
 
 ## Implementation Notes for Future Approved Work
 
 - The factory skill is the unit-test for the template — Phase 4 (second-wiki validation) will exercise it. If Phase 1 implementation discovers that step 6 (sed placeholder substitution) corrupts non-ASCII placeholders, fix BEFORE Phase 4.
 - The 11-step checklist in T5 includes pathspec-form commits. Operators MUST follow per `feedback_multi_agent_commit_serialization`.
-- The 1.8 TB pre-move backup at `/mnt/ace/acma-projects.preexisting-*` is OUT of this plan's scope; [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) plan picks its disposition.
+- The 1.8 TB pre-move backup at `/mnt/ace/mkt-a.preexisting-*` is OUT of this plan's scope; [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) plan picks its disposition.
 - After T7 (registry finalize) the plan is implementation-complete for [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746). [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) (freeze) runs as a separate, paired execution.

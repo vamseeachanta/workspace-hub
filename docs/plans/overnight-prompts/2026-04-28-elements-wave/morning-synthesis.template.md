@@ -15,8 +15,8 @@ For each stream, read the result summary and confirm the artifacts exist on disk
 | Stream | Issue | Result file | Plan file | Intel artifacts | All paths exist? |
 |---|---|---|---|---|---|
 | sesa-lng | [#2541](https://github.com/vamseeachanta/workspace-hub/issues/2541) | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-1-sesa.md` | `docs/plans/2026-04-28-issue-2541-elements-sesa-curated-extraction-plan.md` | `.planning/intel/elements-overnight-wave/sesa-*` | YES / NO |
-| doris-university | [#2542](https://github.com/vamseeachanta/workspace-hub/issues/2542) | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-2-doris-university.md` | `docs/plans/2026-04-28-issue-2542-elements-doris-university-training-plan.md` | `.planning/intel/elements-overnight-wave/doris-university-*` | YES / NO |
-| doris-codes | [#2543](https://github.com/vamseeachanta/workspace-hub/issues/2543) | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-3-doris-codes.md` | `docs/plans/2026-04-28-issue-2543-elements-doris-codes-standards-plan.md` | `.planning/intel/elements-overnight-wave/doris-codes-*` | YES / NO |
+| lng-a-university | [#2542](https://github.com/vamseeachanta/workspace-hub/issues/2542) | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-2-lng-a-university.md` | `docs/plans/2026-04-28-issue-2542-elements-lng-a-university-training-plan.md` | `.planning/intel/elements-overnight-wave/lng-a-university-*` | YES / NO |
+| lng-a-codes | [#2543](https://github.com/vamseeachanta/workspace-hub/issues/2543) | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-3-lng-a-codes.md` | `docs/plans/2026-04-28-issue-2543-elements-lng-a-codes-standards-plan.md` | `.planning/intel/elements-overnight-wave/lng-a-codes-*` | YES / NO |
 | woodfibre-lng | [#2544](https://github.com/vamseeachanta/workspace-hub/issues/2544) | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md` | `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md` | `.planning/intel/elements-overnight-wave/woodfibre-*` | YES / NO |
 
 ### Per-stream evidence
@@ -54,8 +54,8 @@ Each stream advances to one of: `approval-candidate`, `needs-rereview`, `blocked
 | Stream | Codex verdict | Gemini verdict | Claude verdict | Synthesis | Recommendation |
 |---|---|---|---|---|---|
 | sesa-lng | <APPROVE / MINOR / MAJOR> | <verdict> | <verdict> | <one-line> | approval-candidate / needs-rereview / blocked / redo |
-| doris-university | <verdict> | <verdict> | <verdict> | <one-line> | <recommendation> |
-| doris-codes | <verdict> | <verdict> | <verdict> | <one-line> | <recommendation> |
+| lng-a-university | <verdict> | <verdict> | <verdict> | <one-line> | <recommendation> |
+| lng-a-codes | <verdict> | <verdict> | <verdict> | <one-line> | <recommendation> |
 | woodfibre-lng | <verdict> | <verdict> | <verdict> | <one-line> | <recommendation> |
 
 Hardening criteria checklist (must be satisfied before any `approval-candidate`):

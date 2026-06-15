@@ -66,7 +66,7 @@ Two-level hierarchy: **Domain** > **Capability Area**
 
 | Domain ID | Domain Name | Example Repos |
 |-----------|-------------|---------------|
-| `ENG` | Engineering Analysis | digitalmodel, seanation, frontierdeepwater |
+| `ENG` | Engineering Analysis | digitalmodel, client-f, client-a |
 | `DATA` | Data & Analytics | worldenergydata, energy |
 | `WEB` | Web & Frontend | aceengineer-website |
 | `BIZ` | Business Operations | aceengineer-admin |
@@ -95,7 +95,7 @@ Assessment based on observable artifacts (files exist, tests present, skills def
 WORKSPACE CAPABILITY MAP | 2026-01-29 | Repos: 25
 
 DOMAIN: Engineering Analysis (ENG)
-  Repos: digitalmodel, seanation, doris, saipem
+  Repos: digitalmodel, client-f, lng-a, client-d
   | Capability Area        | Maturity    | Lead Repo     |
   | OrcaFlex Modeling      | Mature      | digitalmodel  |
   | Mooring Design         | Mature      | digitalmodel  |

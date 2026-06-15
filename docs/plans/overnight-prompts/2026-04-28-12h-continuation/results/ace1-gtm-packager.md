@@ -18,7 +18,7 @@
 >
 > **Cross-lane discipline.** No edits to other lanes' files. No GitHub
 > mutations. No client-confidential corpora referenced by name (Woodfibre
-> #2544 + SESA #2541 are gated by ACMA / project-owner clearance and were
+> #2544 + SESA #2541 are gated by mkt-a / project-owner clearance and were
 > deliberately excluded from the GTM material per the lane's
 > "preserve engineering evidence boundaries" rule).
 
@@ -157,7 +157,7 @@ Candidate 2).**
 - *Effect.* Unblocks Snippet 3.3 (LNG terminal lead). Without this
   artifact, Snippet 3.3 cannot ship.
 - *Boundary.* Stay strictly in the public-source corpus. Do **not**
-  reference Woodfibre, SESA, or any ACMA-corpus content.
+  reference Woodfibre, SESA, or any mkt-a-corpus content.
 - *Issue.* Open new issue with this scope; cross-link
   `lng-berth-operability-framing.md` and the seed YAML.
 
@@ -215,9 +215,9 @@ This lane respected a strict evidence boundary. The following were all
 visible in the repo:
 
 1. **Woodfibre LNG (#2544) and SESA (#2541) corpora.** Both are
-   ACMA-clearance-gated, metadata-only, and explicitly out-of-scope for
+   mkt-a-clearance-gated, metadata-only, and explicitly out-of-scope for
    any GTM material. Per the prior lane's `terminal-4-woodfibre.md`:
-   "every confidentiality call is left for ACMA / project-owner
+   "every confidentiality call is left for mkt-a / project-owner
    review."
 2. **Semiconductor lanes (#2507, #2509, #2510).** Plans only — no proof
    path. Listed as Candidate 10 with "PLAN-ONLY" warning, not
@@ -246,7 +246,7 @@ visible in the repo:
 | `docs/gtm/overnight-client-ready-material-2026-04-28.md` exists, non-empty | yes |
 | This result file exists, non-empty | yes (this file) |
 | No edits to other lanes' result files (`ace1-control-reconciler.md`, `ace1-plan-review-hardener.md`) | confirmed (only own result file written) |
-| No edits to `/mnt/ace/**` or any ACMA-corpus paths | confirmed (no /mnt/ace access) |
+| No edits to `/mnt/ace/**` or any mkt-a-corpus paths | confirmed (no /mnt/ace access) |
 | No GitHub mutations (no `gh issue comment`, no label changes) | confirmed (only `gh issue view` reads were used) |
 | No `status:plan-approved` self-label hint in any output | confirmed |
 | Each shipped-artifact reference cross-checked against actual file path | yes — five demo HTML files at `digitalmodel/examples/demos/gtm/output/*.html` confirmed via `ls -la` (sizes: 118 KB / 85 KB / 72 KB / 85 KB / 66 KB) |

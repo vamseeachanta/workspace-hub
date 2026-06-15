@@ -15,8 +15,8 @@
 | 150 | Vessel Senior Project Engineer | McDermott International, Ltd | Houston, TX | linkedin | mooring engineer offshore |
 | 150 | Engineer, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | mooring engineer offshore |
 | 135 | Engineer II | American Bureau of Shipping (A | Houston, TX | linkedin | riser engineer offshore |
-| 135 | Offshore Operations Engineer | Saipem | Houston, TX | linkedin | mooring engineer offshore |
-| 135 | Offshore Methods Engineer | Saipem | Houston, TX | linkedin | mooring engineer offshore |
+| 135 | Offshore Operations Engineer | client-d | Houston, TX | linkedin | mooring engineer offshore |
+| 135 | Offshore Methods Engineer | client-d | Houston, TX | linkedin | mooring engineer offshore |
 | 135 | Engineer II | American Bureau of Shipping (A | Houston, TX | linkedin | mooring engineer offshore |
 | 135 | Lead Field Service Dynamic Positioning Engineer | GE Vernova | Louisiana, United St | linkedin | mooring engineer offshore |
 | 130 | Pipeline & Riser Engineer | ExxonMobil | Spring, TX | linkedin | OrcaFlex engineer |
@@ -50,8 +50,8 @@
 | 130 | Plan Approval Manager | Bureau Veritas | Houston, TX | linkedin | naval architect Houston |
 | 125 | Technology Protection Engineer III (TPE III/Senior Engineer) | Absolute Business Solutions Co | Remote | indeed | cathodic protection engineer |
 | 120 | Engineering Consultant - Metallurgy | Stress Engineering Services, I | Mason, OH | linkedin | API 579 fitness for service |
-| 115 | Offshore Operations Engineer | Saipem | Houston, TX | linkedin | subsea engineer |
-| 115 | Offshore Methods Engineer | Saipem | Houston, TX | linkedin | subsea engineer |
+| 115 | Offshore Operations Engineer | client-d | Houston, TX | linkedin | subsea engineer |
+| 115 | Offshore Methods Engineer | client-d | Houston, TX | linkedin | subsea engineer |
 | 115 | Engineer II | American Bureau of Shipping (A | Houston, TX | linkedin | subsea engineer |
 | 115 | Lead Field Service Dynamic Positioning Engineer | GE Vernova | Louisiana, United St | linkedin | subsea engineer |
 
@@ -446,7 +446,7 @@
 - **SOGECLAIR** (1 roles)
 - **Saab, Inc.** (1 roles)
 - **Safran** (1 roles)
-- **Saipem** (4 roles) ✅ PRIORITY
+- **client-d** (4 roles) ✅ PRIORITY
 - **Sandia National Laboratories** (2 roles)
 - **Sargent & Lundy** (5 roles)
 - **Saronic Technologies** (9 roles)

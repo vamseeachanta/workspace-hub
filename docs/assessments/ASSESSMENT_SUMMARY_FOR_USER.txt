@@ -24,7 +24,7 @@ TIMELINE: ~30 calendar days for complete 12-repository rollout
 🔴 CRITICAL ISSUES IDENTIFIED:
    • aceengineer-website: On flask-backup branch, not main
    • OGManufacturing: Meta-repo with 10+ submodule references
-   • client_projects: Largest repo (13 GB), multi-project boundaries
+   • client-c: Largest repo (13 GB), multi-project boundaries
 
 ================================================================================
                         DEPLOYMENT STRATEGY
@@ -36,15 +36,15 @@ PHASE 1 - PILOT (2-3 days) - READY FOR IMMEDIATE DEPLOYMENT
   └─ Objective: Establish patterns, validate configurations
 
 PHASE 2 - HIGH PRIORITY (6 days)
-  └─ Repositories: 4 (frontierdeepwater, energy, seanation, doris)
+  └─ Repositories: 4 (client-a, energy, client-f, lng-a)
   └─ Risk: LOW
 
 PHASE 3 - MEDIUM PRIORITY (14 days)
-  └─ Repositories: 4 (rock-oil-field, saipem, aceengineer-website, admin)
+  └─ Repositories: 4 (client-b, client-d, aceengineer-website, admin)
   └─ Risk: MEDIUM (need test bootstrap)
 
 PHASE 4 - INVESTIGATION (12+ days)
-  └─ Repositories: 2 (OGManufacturing, client_projects)
+  └─ Repositories: 2 (OGManufacturing, client-c)
   └─ Risk: HIGH (complex architectures)
 
 TOTAL: ~30 calendar days for complete rollout
@@ -115,7 +115,7 @@ All templates are included in: PHASE_1_PILOT_DEPLOYMENT_READY.md
    Issue: Meta-repository with 10+ submodule references
    Action: Investigate architecture before deployment
 
-🚩 client_projects
+🚩 client-c
    Issue: Largest repo (13 GB), unclear project boundaries
    Action: Clarify project structure before deployment
 

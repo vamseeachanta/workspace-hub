@@ -58,7 +58,7 @@ Not applicable — no wiki content is touched by this plan.
 - MISSING (this plan creates): `tests/docs/test_2471_citation_scope.py`
 
 **#2471 issue body excerpt** (`gh issue view 2471 --json body`):
-> Decide and codify the sanctioned durable-wiki routing/schema for CSA Z276 pages before CSA coverage is promoted from ACMA/standards metadata into LLM-wiki content.
+> Decide and codify the sanctioned durable-wiki routing/schema for CSA Z276 pages before CSA coverage is promoted from mkt-a/standards metadata into LLM-wiki content.
 >
 > ## Scope
 > - Decide the canonical durable destination for CSA Z276 pages.

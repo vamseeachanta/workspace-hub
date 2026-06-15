@@ -44,7 +44,7 @@
 ```
 digitalmodel
 energy
-frontierdeepwater
+client-a
 
 Use: pytest.tier1.ini
 Characteristics: Strict quality, conservative parallelization
@@ -56,7 +56,7 @@ Philosophy: Every production change must include tests
 aceengineercode
 assetutilities
 worldenergydata
-rock-oil-field
+client-b
 teamresumes
 
 Use: pytest.tier2.ini
@@ -66,7 +66,7 @@ Philosophy: Good coverage without slowing iteration
 
 ### Tier 3: Maintenance & Experimental (75% Coverage)
 ```
-All others (doris, saipem, hobbies, investments, sd-work, etc.)
+All others (lng-a, client-d, hobbies, investments, sd-work, etc.)
 
 Use: pytest.tier3.ini
 Characteristics: Pragmatic quality, maximum parallelization

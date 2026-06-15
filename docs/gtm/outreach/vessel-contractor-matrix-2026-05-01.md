@@ -15,7 +15,7 @@ prospects_total: 26
 >
 > **Scope discipline.** Public-source evidence only (corporate root + a fleet/service
 > deep link). Never includes individual contact data, private routes, or
-> ACMA / project-confidential references. Demo references map to the five
+> mkt-a / project-confidential references. Demo references map to the five
 > shipped demos in `digitalmodel/examples/demos/gtm/`.
 >
 > **Demo legend.** D1=freespan/VIV (680 cases), D2=multi-code wall thickness (72),
@@ -31,7 +31,7 @@ prospects_total: 26
 |---|---------|---------|------|--------|--------------------|--------------------|------------------------|-------------------|-------------------|-----------|
 | 1 | Subsea7 | multi (heavy-lift + pipelay + construction) | 1 | global (active GoM, North Sea, Brazil, WAfrica) | Seven Borealis (heavy-lift + J-lay 5,000te crane) and Seven Arctic (heavy-construction) — public class-typical RAOs already proxy our `seven-borealis.yaml` canonical vessel | Fleet-wide deepwater installation screening across pad sizes / jumper lengths; tie-in alignment cost on rigid jumpers (D5) | https://www.subsea7.com/en/our-business/assets.html | company researched only | P1 | subsea-installation, heavy-lift-construction |
 | 2 | TechnipFMC | pipelay (flex/rigid) + subsea | 1 | global (GoM, North Sea, Brazil) | Deep Energy and Deep Blue — flex/rigid pipelay vessels for subsea tiebacks and deepwater flex pipe | Multi-code wall-thickness reconciliation across DNV/API/PD8010 portfolios (D2); rigid-jumper installation envelopes (D5) | https://www.technipfmc.com/en/what-we-do/subsea/ | company researched only | P1 | subsea-installation, pipelay |
-| 3 | Saipem | heavy-lift + pipelay | 1 | global (Middle East, WAfrica, Mediterranean) | Castorone (S-lay 600te tension), S7000 (heavy-lift semi-sub), FDS-2 — large-pipe S-lay and heavy-lift combo | Catenary screening before Orcaflex on shallow-water S-lay candidates (D4); freespan VIV on long routes (D1) | https://www.saipem.com/en/our-business/asset-base | company researched only | P1 | pipelay, heavy-lift-construction |
+| 3 | client-d | heavy-lift + pipelay | 1 | global (Middle East, WAfrica, Mediterranean) | Castorone (S-lay 600te tension), S7000 (heavy-lift semi-sub), FDS-2 — large-pipe S-lay and heavy-lift combo | Catenary screening before Orcaflex on shallow-water S-lay candidates (D4); freespan VIV on long routes (D1) | https://www.client-d.com/en/our-business/asset-base | company researched only | P1 | pipelay, heavy-lift-construction |
 | 4 | McDermott International | pipelay + heavy-lift | 1 | global (GoM, Middle East, Asia-Pacific) | Amazon (S-lay/heavy-lift) and DLV 2000 (deepwater pipelay) — GoM deepwater pipelay focus is the public hook | GoM deepwater wall-thickness reconciliation (D2) + S-lay screening (D4); freespan VIV on tieback routes (D1) | https://www.mcdermott.com/solutions/subsea-floating-facilities | company researched only | P1 | pipelay, subsea-installation |
 | 5 | Allseas | pipelay (S-lay/J-lay) + ultra-heavy lift | 1 | global (North Sea, GoM, Mediterranean) | Pioneering Spirit (largest installation vessel; 48,000t topside lift), Solitaire and Audacia (S-lay) — ultra-heavy-lift and platform removal | Multi-code wall-thickness for export pipeline portfolios (D2); shallow-water S-lay barge-vs-Solitaire selection (D4) | https://allseas.com/en/who-we-are/our-fleet | company researched only | P1 | pipelay, heavy-lift-construction |
 | 6 | Heerema Marine Contractors | heavy-lift (semi-sub crane) | 1 | global (North Sea, GoM, Asia-Pacific) | Sleipnir (20,000t dual-crane SSCV, world's largest), Thialf (14,200t) — deepwater heavy-lift campaigns | Deepwater mudmat / structure installation envelopes (D3); splash-zone slamming on 200te+ structures (D3) | https://www.heerema.com/heerema-marine-contractors/fleet | company researched only | P1 | heavy-lift-construction, subsea-installation |
@@ -79,7 +79,7 @@ campaign-narrative alignment with `docs/gtm/email-outreach-templates.md`.
    public-evidence MPSVs that map cleanly to Demo 3 mudmat and Demo 5 jumper.
 6. **TechnipFMC (#2)** — Deep Blue + Deep Energy cover both flex/rigid pipelay
    and subsea tiebacks; Demo 5 jumper installation has the highest fit.
-7. **Saipem (#3)** — Castorone/S7000 cover both tier-1 demos; outreach should
+7. **client-d (#3)** — Castorone/S7000 cover both tier-1 demos; outreach should
    lead with Demo 4 catenary-screening because S-lay is their public hook.
 8. **McDermott (#4)** — GoM deepwater pipelay overlap with our portfolio
    narrative; Demo 2 multi-code reconciliation is the clean entry.
@@ -152,7 +152,7 @@ report flagging them as broken is a false positive.
 |---|---|---|---|
 | 1 | Subsea7 | JS challenge across `subsea7.com` host (vessel datasheet PDFs also blocked) | VALID — works in browsers; no clean alternative |
 | 2 | TechnipFMC | Returns 403 to bot User-Agents | VALID |
-| 3 | Saipem | Returns 403 to bot User-Agents | VALID |
+| 3 | client-d | Returns 403 to bot User-Agents | VALID |
 | 4 | McDermott | Returns 403 to bot User-Agents | VALID — `WebFetch` confirms full content |
 | 15 | Hornbeck | Broken TLS chain (server omits Thawte intermediate); works with `-k` or browser-bundled CAs | TENTATIVE — Helix-Hornbeck merger announced 2026-04-23 may obviate |
 | 19 | Cadeler | Simply.com host returns 451/455 to many probe IPs; works in browsers | VALID |
@@ -186,7 +186,7 @@ by company. This matrix introduces **company-level rows** for the first time
 and pulls 14 names directly from the Tier table in
 `docs/gtm/email-outreach-templates.md`:
 
-- **Tier 1 (6):** Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema
+- **Tier 1 (6):** Subsea7, TechnipFMC, client-d, McDermott, Allseas, Heerema
 - **Tier 2 (5):** DOF, Solstad, Boskalis, DEME, Seaway7
 - **Tier 3 (3):** Cal Dive/Helix, DeepOcean, Bourbon Offshore (post-SPP)
 

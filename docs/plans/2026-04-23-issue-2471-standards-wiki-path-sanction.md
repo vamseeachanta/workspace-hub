@@ -54,7 +54,7 @@ Plan-time live checks performed against the tree anchor above:
 - #2471 comment 2026-04-23 — user routing decision "Add sanctioned `wiki/standards/`".
 - r1 and r2 adversarial reviews (2026-04-23, 2026-04-24) — findings tracked inline below.
 - Issue #2227 — blocked CSA portion; will cite this plan as unblocking artifact.
-- Issue #2216 — ACMA-codes umbrella.
+- Issue #2216 — mkt-a-codes umbrella.
 
 ---
 

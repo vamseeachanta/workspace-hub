@@ -38,7 +38,7 @@ Maritime-law standards-tier page production is **bootstrapping from zero**. Per 
 |---|---|---|
 | MARPOL 73/78 (IMO consolidated, six annexes incl. 2020 sulphur cap) | gap (not codified — only mentioned in `mv-wakashio-2020.md` body) | https://www.imo.org/en/about/Conventions/Pages/International-Convention-for-the-Prevention-of-Pollution-from-Ships-(MARPOL).aspx |
 | SOLAS 1974 as amended | gap | https://www.imo.org/en/About/Conventions/Pages/International-Convention-for-the-Safety-of-Life-at-Sea-(SOLAS),-1974.aspx |
-| MLC 2006 (Maritime Labour Convention, ILO) | gap; corpus exists at `/mnt/ace/acma-codes/ABS Rules/ILO Maritime Labour Convention/` | https://www.ilo.org/global/standards/maritime-labour-convention/lang--en/index.htm |
+| MLC 2006 (Maritime Labour Convention, ILO) | gap; corpus exists at `/mnt/ace/mkt-a-codes/ABS Rules/ILO Maritime Labour Convention/` | https://www.ilo.org/global/standards/maritime-labour-convention/lang--en/index.htm |
 | COLREGs 1972 | gap | https://www.imo.org/en/About/Conventions/Pages/COLREG.aspx |
 | ISM Code (incorporated SOLAS Ch IX) | mentioned only in pre-existing case bodies | https://www.imo.org/en/OurWork/HumanElement/Pages/ISMCode.aspx |
 | ISPS Code | gap | https://www.imo.org/en/OurWork/Security/Pages/SOLAS-XI-2%20ISPS%20Code.aspx |
@@ -68,9 +68,9 @@ Maritime-law standards-tier page production is **bootstrapping from zero**. Per 
 - #2471 — CLOSED, "feat(knowledge): decide sanctioned CSA Z276 wiki routing and durability contract" — sanctioned `wiki/standards/<code-id>.md` routing **for CSA-Z276 specifically** per memory `project_wiki_standards_path_decision.md`; **does NOT generalize** to maritime-law publishers (IMO/ILO). Cited here only as historical origin of the `code_id`/`publisher`/`revision` frontmatter triple via the calc-citation-contract. (Amended 2026-05-02 per W3-C erratum.)
 - GH issue search `maritime-law in:title --state open` returns only `#51 — WRK-1126: Add maritime law domain: skill, data, public cases, liabilities` (the original migration ticket; CLOSED-class work). **No parallel maritime-law content issue is open** — confirms no overlap risk.
 - `find /mnt/ace -maxdepth 3 -type d -iname "*maritime*" -o -iname "*law*"` returns:
-  - `/mnt/ace/acma-codes/IMO/` (full IMO PDF corpus — SOLAS, MARPOL, ISM, ISPS, Polar Code, BWM, COLREGs subdirs visible)
-  - `/mnt/ace/acma-codes/Bahamas Maritime Auth/`
-  - `/mnt/ace/acma-codes/ABS Rules/ILO Maritime Labour Convention/` (MLC 2006 ABS guidance notes — single PDF)
+  - `/mnt/ace/mkt-a-codes/IMO/` (full IMO PDF corpus — SOLAS, MARPOL, ISM, ISPS, Polar Code, BWM, COLREGs subdirs visible)
+  - `/mnt/ace/mkt-a-codes/Bahamas Maritime Auth/`
+  - `/mnt/ace/mkt-a-codes/ABS Rules/ILO Maritime Labour Convention/` (MLC 2006 ABS guidance notes — single PDF)
   - Plan does NOT extract from these PDFs (per #2482 deny-list); standards pages will cite them by reference and link to the IMO/ILO canonical URLs.
 - WebSearch — IMO conventions list active 2026: SOLAS-1974, MARPOL-73-78, STCW, COLREGs-1972, ISM-Code, ISPS-Code, MLC-2006 confirmed active; recent amendments entered force 1 January 2026 (https://www.imo.org/en/about/conventions/pages/listofconventions.aspx, https://wwwcdn.imo.org/localresources/en/About/Conventions/StatusOfConventions/List%20of%20the%20Conventions%20and%20their%20amendments%20May%202024.pdf, https://safety4sea.com/imo-key-regulatory-updates-coming-into-force-in-january-2026/).
 - WebSearch — Aleka Mandaraka-Sheppard *Modern Maritime Law* 3e Vol 2 chapter list: ISM/ISPS Codes, Ship Ownership, Mortgage, Shipbuilding Contracts, Sale & Purchase, Collisions, Salvage, Towage, General Average, Harbour Authorities, Limitation of Liability, Passenger Compensation, Marine Pollution & Nuclear Damage (https://www.routledge.com/Modern-Maritime-Law-Volume-2-Managing-Risks-and-Liabilities/Mandaraka-Sheppard/p/book/9781032931357). This is the canonical UK/EU academic curriculum — anchors concept-page topic selection.
@@ -119,7 +119,7 @@ Coverage matrix vs. canonical Mandaraka-Sheppard + Schoenbaum + IMO-active-conve
 9. `concepts/mlc-2006.md`
 10. `concepts/ism-code.md`
 
-Selection rationale: each doctrine-concept page is foundational (named in BOTH Mandaraka-Sheppard and Schoenbaum chapter lists) and has ≥1 existing case entity to cross-link from (general-average → ever-given; salvage → ever-given; limitation → prestige + llmc-1996; port-state-control → wakashio + erika; flag-state-jurisdiction → prestige; charterparties → eurasian-dream + msc-flaminia). Each standards-tier page has either an active IMO/ILO website citation OR a /mnt/ace acma-codes corpus reference for the publisher/edition metadata.
+Selection rationale: each doctrine-concept page is foundational (named in BOTH Mandaraka-Sheppard and Schoenbaum chapter lists) and has ≥1 existing case entity to cross-link from (general-average → ever-given; salvage → ever-given; limitation → prestige + llmc-1996; port-state-control → wakashio + erika; flag-state-jurisdiction → prestige; charterparties → eurasian-dream + msc-flaminia). Each standards-tier page has either an active IMO/ILO website citation OR a /mnt/ace mkt-a-codes corpus reference for the publisher/edition metadata.
 
 ### Evidence (embedded verification)
 
@@ -190,7 +190,7 @@ see_also:
   (1) wiki index/CLAUDE.md schema/existing pages,
   (2) #2540, (3) #2589, (4) #2471,
   (5) GH parallel-work search,
-  (6) /mnt/ace acma-codes/IMO inventory,
+  (6) /mnt/ace mkt-a-codes/IMO inventory,
   (7) /mnt/ace ABS-Rules/ILO MLC corpus,
   (8) WebSearch IMO active conventions list,
   (9) WebSearch Mandaraka-Sheppard chapter list,

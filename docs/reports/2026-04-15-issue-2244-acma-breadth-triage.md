@@ -1,4 +1,4 @@
-# ACMA Breadth Triage — Issue #2244
+# mkt-a Breadth Triage — Issue #2244
 
 > **Issue:** [#2244](https://github.com/vamseeachanta/workspace-hub/issues/2244)
 > **Parent umbrella:** [#2216](https://github.com/vamseeachanta/workspace-hub/issues/2216)
@@ -10,7 +10,7 @@
 
 ## 1. Purpose and Scope
 
-Issue #2226 (ledger/provenance backfill) discovered materially broader content in `/mnt/ace/acma-codes/` than what #2227 was scoped to promote. The current wiki-promotion target (#2227) is intentionally bounded to three documents:
+Issue #2226 (ledger/provenance backfill) discovered materially broader content in `/mnt/ace/mkt-a-codes/` than what #2227 was scoped to promote. The current wiki-promotion target (#2227) is intentionally bounded to three documents:
 
 - **OCIMF-TANDEM-MOORING** — Tandem Mooring and Offloading Guidelines
 - **CSA-Z276.1-20** — Marine Structures Associated with LNG Facilities
@@ -232,9 +232,9 @@ Based on the triage above, the following bounded follow-on issues are proposed:
 
 ## 7. Linkage to #2216 and #2227
 
-### Relationship to #2216 (ACMA Umbrella)
+### Relationship to #2216 (mkt-a Umbrella)
 
-Issue #2216 is the umbrella tracking all ACMA-related work. This triage report (#2244) is a direct child of #2216 and fulfills the umbrella's requirement that all newly discovered breadth be explicitly classified rather than left implicit. The follow-on issues proposed above (A through E) would each become new children of #2216.
+Issue #2216 is the umbrella tracking all mkt-a-related work. This triage report (#2244) is a direct child of #2216 and fulfills the umbrella's requirement that all newly discovered breadth be explicitly classified rather than left implicit. The follow-on issues proposed above (A through E) would each become new children of #2216.
 
 **Chain:** #2216 (umbrella) → #2226 (discovery) → #2244 (triage) → Issues A-E (implementation)
 

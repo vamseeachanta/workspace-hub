@@ -8,7 +8,7 @@ Corporate firewalls block inbound connections to licensed solver machines (e.g.,
 
 ## Architecture
 
-dev-primary submits a YAML job file to `queue/pending/` and pushes to GitHub. licensed-win-1 (ACMA-ANSYS05) polls via `git pull` every 30 minutes using Windows Task Scheduler. The queue processor runs each pending job with OrcFxAPI, moves results to `queue/completed/` or `queue/failed/`, and pushes back.
+dev-primary submits a YAML job file to `queue/pending/` and pushes to GitHub. licensed-win-1 (mkt-a-ANSYS05) polls via `git pull` every 30 minutes using Windows Task Scheduler. The queue processor runs each pending job with OrcFxAPI, moves results to `queue/completed/` or `queue/failed/`, and pushes back.
 
 ### Data Flow
 

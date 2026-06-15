@@ -102,10 +102,10 @@ Phase 1e validation has completed successfully, establishing baseline pytest inf
 |------------|--------|-------|----------|-------|
 | **pyproject-starter** | ✅ READY | 42 | ✅ Available | Template repo - gold standard |
 | **ai-native-traditional-eng** | ✅ READY | 16 | ✅ Available | Small, well-organized |
-| **frontierdeepwater** | ✅ READY | 14 | ✅ Available | Production-critical marine domain |
+| **client-a** | ✅ READY | 14 | ✅ Available | Production-critical marine domain |
 | **energy** | ✅ READY | 18 | ✅ Available | Energy analytics system |
-| **seanation** | ✅ READY | 16 | ✅ Available | Drilling specialized |
-| **doris** | ✅ READY | 16 | ✅ Available | Marine domain |
+| **client-f** | ✅ READY | 16 | ✅ Available | Drilling specialized |
+| **lng-a** | ✅ READY | 16 | ✅ Available | Marine domain |
 
 **Total Tests in READY repos**: 122 tests
 
@@ -115,10 +115,10 @@ Phase 1e validation has completed successfully, establishing baseline pytest inf
 |------------|-------|-----------|-----------------|
 | **aceengineer-admin** | Collection failed | Office automation dependencies | 1 day |
 | **aceengineer-website** | Collection failed | Flask web framework dependencies | 1 day |
-| **client_projects** | Collection failed | Multi-project structure | 2-3 days |
+| **client-c** | Collection failed | Multi-project structure | 2-3 days |
 | **OGManufacturing** | Collection failed | Meta-repo with submodules | 2-3 days |
-| **rock-oil-field** | Collection failed | Domain-specific dependencies | 1-2 days |
-| **saipem** | Collection failed | Domain-specific dependencies | 1-2 days |
+| **client-b** | Collection failed | Domain-specific dependencies | 1-2 days |
+| **client-d** | Collection failed | Domain-specific dependencies | 1-2 days |
 
 **Action Required for Tier 2**: Resolve configuration issues in 6 repositories
 **Estimated Time**: 6-10 days
@@ -133,7 +133,7 @@ Phase 1e validation has completed successfully, establishing baseline pytest inf
 |------------|--------|-------|----------|-------|
 | **hobbies** | ✅ READY | 17 | ✅ Available | Personal projects |
 | **sd-work** | ✅ READY | 17 | ✅ Available | Stable, ready |
-| **acma-projects** | ✅ READY | 22 | ✅ Available | Well-structured |
+| **mkt-a** | ✅ READY | 22 | ✅ Available | Well-structured |
 | **investments** | ✅ READY | 24 | ✅ Available | Data-driven |
 | **sabithaandkrishnaestates** | ✅ READY | 22 | ✅ Available | Stable |
 
@@ -180,14 +180,14 @@ Tier 1 Repositories (0 tests collected - config issues):
 Tier 2 Ready (122 tests):
   - pyproject-starter:          42 tests ⭐ HIGHEST
   - energy:                     18 tests
-  - frontierdeepwater:          14 tests
-  - doris:                      16 tests
+  - client-a:          14 tests
+  - lng-a:                      16 tests
   - ai-native-traditional-eng:  16 tests
-  - seanation:                  16 tests
+  - client-f:                  16 tests
 
 Tier 3 Ready (102 tests):
   - investments:                 24 tests
-  - acma-projects:               22 tests
+  - mkt-a:               22 tests
   - sabithaandkrishnaestates:    22 tests
   - hobbies:                     17 tests
   - sd-work:                     17 tests
@@ -249,9 +249,9 @@ All 6 failing Tier 2 repositories need similar investigation and fixes:
 
 1. **aceengineer-admin**: Office automation dependencies
 2. **aceengineer-website**: Flask app dependencies  
-3. **rock-oil-field**: Domain-specific dependencies
-4. **saipem**: Domain-specific dependencies
-5. **client_projects**: Multi-project structure (complex)
+3. **client-b**: Domain-specific dependencies
+4. **client-d**: Domain-specific dependencies
+5. **client-c**: Multi-project structure (complex)
 6. **OGManufacturing**: Meta-repo with submodules (complex)
 
 **Typical Fix Pattern**:
@@ -291,7 +291,7 @@ These repositories don't have pytest.ini or require similar fixes.
    - **Timeline**: After other fixes
 
 4. **Multi-Project Repository Structure**
-   - **Impact**: client_projects and OGManufacturing have complex structures
+   - **Impact**: client-c and OGManufacturing have complex structures
    - **Severity**: 🟡 HIGH
    - **Recommendation**: Clarify project boundaries, create separate test configurations
    - **Timeline**: Investigation required
@@ -401,12 +401,12 @@ These repositories don't have pytest.ini or require similar fixes.
 - digitalmodel, worldenergydata, assetutilities, teamresumes
 
 **Tier 2 (12 repos - High Priority Work)**:
-- pyproject-starter, ai-native-traditional-eng, frontierdeepwater, energy
-- seanation, doris, rock-oil-field, saipem
-- aceengineer-website, aceengineer-admin, OGManufacturing, client_projects
+- pyproject-starter, ai-native-traditional-eng, client-a, energy
+- client-f, lng-a, client-b, client-d
+- aceengineer-website, aceengineer-admin, OGManufacturing, client-c
 
 **Tier 3 (5 repos - Lower Priority)**:
-- hobbies, sd-work, acma-projects, investments, sabithaandkrishnaestates
+- hobbies, sd-work, mkt-a, investments, sabithaandkrishnaestates
 
 ### B. Test Distribution by Category
 

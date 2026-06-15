@@ -21,12 +21,12 @@ classification pipeline for unsorted files.
 │   ├── projects/
 │   └── tests/
 ├── worldenergydata/                   # Repo overflow
-├── frontierdeepwater/                 # Repo overflow
-├── client_projects/                   # Repo overflow
-├── rock-oil-field/                    # Repo overflow
-├── saipem/                            # Repo overflow
-├── doris/                             # Repo overflow
-├── seanation/                         # Repo overflow
+├── client-a/                 # Repo overflow
+├── client-c/                   # Repo overflow
+├── client-b/                    # Repo overflow
+├── client-d/                            # Repo overflow
+├── lng-a/                             # Repo overflow
+├── client-f/                         # Repo overflow
 ├── aceengineer-admin/                 # Repo overflow
 ├── OGManufacturing/                   # Repo overflow
 ├── 2H/                                # Repo overflow
@@ -146,8 +146,8 @@ that should feed into digitalmodel — not just be archived.
 
 | Item | Size | Action |
 |------|------|--------|
-| `008 GoM Wells` | 109 MB | Merge CAL/, MAN/, REF/, test/ → `/mnt/ace/client_projects/energy_engineering/008 GoM Wells/` |
-| `0113 Drilling Riser Dev` + offsets.xlsx | 7 MB | Copy Rev5/ + offsets.xlsx → `/mnt/ace/client_projects/energy_engineering/0113 Orc DR/` |
+| `008 GoM Wells` | 109 MB | Merge CAL/, MAN/, REF/, test/ → `/mnt/ace/client-c/energy_engineering/008 GoM Wells/` |
+| `0113 Drilling Riser Dev` + offsets.xlsx | 7 MB | Copy Rev5/ + offsets.xlsx → `/mnt/ace/client-c/energy_engineering/0113 Orc DR/` |
 
 After merge, delete `_ss_repo/008*` and `_ss_repo/0113*`.
 

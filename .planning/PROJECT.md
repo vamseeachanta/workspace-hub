@@ -12,9 +12,9 @@ Engineering workspace orchestrating a portfolio of Python packages, data reposit
 - **Tier-1 Python packages** — `assetutilities`, `digitalmodel`, `worldenergydata`, `assethold`, `OGManufacturing` — each with `pyproject.toml`, `uv.lock`, full test suites
 - **Web properties** — `aceengineer-website` (public site)
 - **Corporate** — `aceengineer-admin` (corporate administration)
-- **Data repos** — `frontierdeepwater`, `rock-oil-field`, `seanation`, `worldenergydata`
+- **Data repos** — `client-a`, `client-b`, `client-f`, `worldenergydata`
 - **Personal** — `achantas-data`, `achantas-media`
-- **Specialty** — `CAD-DEVELOPMENTS`, `doris`, `client_projects`
+- **Specialty** — `CAD-DEVELOPMENTS`, `lng-a`, `client-c`
 
 ## Tech Stack
 

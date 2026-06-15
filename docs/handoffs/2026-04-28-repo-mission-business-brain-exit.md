@@ -12,15 +12,15 @@ Generated: 2026-04-28T21:10:17-05:00
 - Subrepo state checked at exit:
   - `sabithaandkrishnaestates`: clean but `main` is ahead of `origin/main` by 1 pre-existing commit.
   - `sd-work`: mission edit committed and pushed to `vamseeachanta/sd-work` as `c4e3bea` (`docs(mission): restrict sd-work to bio-pharmacy reference`).
-  - `seanation`: mission edit committed and pushed to `vamseeachanta/seanation` as `a95b5f8` (`docs(mission): mark seanation for extraction archive`).
+  - `client-f`: mission edit committed and pushed to `vamseeachanta/client-f` as `a95b5f8` (`docs(mission): mark client-f for extraction archive`).
   - Other reviewed subrepos checked in this exit pass were clean at their current local HEADs.
 
 ## GitHub issues created during the review wave
 
 - #2537 — investments sanity-check/migration/retirement: https://github.com/vamseeachanta/workspace-hub/issues/2537
-- #2539 — rock-oil-field Tier-1 migration/archive: https://github.com/vamseeachanta/workspace-hub/issues/2539
-- #2545 — saipem useful-information extraction/archive-retirement: https://github.com/vamseeachanta/workspace-hub/issues/2545
-- #2547 — seanation client-information extraction/archive: https://github.com/vamseeachanta/workspace-hub/issues/2547
+- #2539 — client-b Tier-1 migration/archive: https://github.com/vamseeachanta/workspace-hub/issues/2539
+- #2545 — client-d useful-information extraction/archive-retirement: https://github.com/vamseeachanta/workspace-hub/issues/2545
+- #2547 — client-f client-information extraction/archive: https://github.com/vamseeachanta/workspace-hub/issues/2547
 - #2548 — machine/software/auth inventory and OrcaFlex/AQWA dispatch to `licensed-win-1`: https://github.com/vamseeachanta/workspace-hub/issues/2548
 - #2549 — periodic Business Brain refresh from completed repo work: https://github.com/vamseeachanta/workspace-hub/issues/2549
 - #2553 — repository overview docs reconciliation after mission review: https://github.com/vamseeachanta/workspace-hub/issues/2553
@@ -35,7 +35,7 @@ Minimum scope:
 - Review/update `docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md`.
 - Review/update or mark historical `docs/reports/2026-04-21-repo-mission-revision-sequence.md`.
 - Align stale overview/report content with the updated `docs/BUSINESS_BRAIN.md` classifications.
-- Keep Business Brain archive/extraction candidates consistent: `investments`, `rock-oil-field`, `seanation`, `saipem`.
+- Keep Business Brain archive/extraction candidates consistent: `investments`, `client-b`, `client-f`, `client-d`.
 - Keep Hermes/`ace-linux-1` control-plane and `licensed-win-1` OrcaFlex/AQWA dispatch assumptions consistent with #2548.
 
 ## #2533 plan-review governance state
@@ -77,19 +77,19 @@ Reviewed/no-change or changed during this wave:
 - `docs/plans/2026-04-27-issue-2533-repo-portfolio-mission-objective-review.md` — user said no changes to opened plan, but plan remains in rev-5 governance work.
 - `OGManufacturing/.agent-os/product/mission.md` — reusable code should primarily live in `digitalmodel`; OGManufacturing remains manufacturing/domain/project context.
 - `aceengineer-admin/.agent-os/product/mission.md` — no changes.
-- `acma-projects/.agent-os/product/mission.md` — ACMA naval architecture consulting/client project data and delivery context.
+- `mkt-a/.agent-os/product/mission.md` — mkt-a naval architecture consulting/client project data and delivery context.
 - `assethold/.agent-os/product/mission.md` — no changes.
 - `assetutilities/.agent-os/product/mission.md` — no changes.
-- `client_projects/.agent-os/product/mission.md` — no changes.
-- `doris/.agent-os/product/mission.md` — Doris engineering consulting client/project repo.
-- `frontierdeepwater/.agent-os/product/mission.md` — startup project data; AceEngineer 5% shareholder stake.
+- `client-c/.agent-os/product/mission.md` — no changes.
+- `lng-a/.agent-os/product/mission.md` — lng-a engineering consulting client/project repo.
+- `client-a/.agent-os/product/mission.md` — startup project data; AceEngineer 5% shareholder stake.
 - `hobbies/.agent-os/product/mission.md` — no changes.
 - `investments/.agent-os/product/mission.md` — private short-lived triage/migration repo; route to `assethold`/`achantasdata`; retire within 3 months only after verified no-loss migration.
-- `rock-oil-field/.agent-os/product/mission.md` — active triage only; sanity-check and migrate useful code/data/analysis to Tier-1 repos; archive/retire if possible.
+- `client-b/.agent-os/product/mission.md` — active triage only; sanity-check and migrate useful code/data/analysis to Tier-1 repos; archive/retire if possible.
 - `sabithaandkrishnaestates/.agent-os/product/mission.md` — investment management plus admin/finance/tax/entity records.
-- `saipem/.agent-os/product/mission.md` — engineering installation contractor project repo; extract useful info and archive/retire over time.
+- `client-d/.agent-os/product/mission.md` — engineering installation contractor project repo; extract useful info and archive/retire over time.
 - `sd-work/.agent-os/product/mission.md` — Sabitha Deepthimahanti bio/pharmacy work docs only; restricted/on-demand.
-- `seanation/.agent-os/product/mission.md` — client repo; extract useful data/information then archive.
+- `client-f/.agent-os/product/mission.md` — client repo; extract useful data/information then archive.
 - `teamresumes/.agent-os/product/mission.md` — opened then skipped/no changes unless revisited.
 
 ## Recommended next session sequence

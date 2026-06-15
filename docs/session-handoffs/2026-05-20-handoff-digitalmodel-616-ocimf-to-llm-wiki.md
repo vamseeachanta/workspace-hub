@@ -5,7 +5,7 @@
 > **Filed by**: claude main session (vamsee)
 > **Target executor**: any provider (Claude / Codex / Hermes / Gemini) — prompt is self-contained
 > **Source work**: [digitalmodel#616](https://github.com/vamseeachanta/digitalmodel/issues/616) (CLOSED, status:plan-approved)
-> **Downstream consumer**: [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) (OPEN, B1528 SIROCCO review)
+> **Downstream consumer**: [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) (OPEN, B1528 proj-a review)
 
 ---
 
@@ -13,11 +13,11 @@
 
 Promote the OCIMF coefficient methodology + reusable polar-plot capability
 delivered by [digitalmodel#616](https://github.com/vamseeachanta/digitalmodel/issues/616)
-into the llm-wiki ecosystem, so future projects (SIROCCO and beyond) can
+into the llm-wiki ecosystem, so future projects (proj-a and beyond) can
 retrieve the canonical OCIMF reference and convention authority from the
 wiki instead of re-discovering them per project.
 
-This hand-off does NOT cover SIROCCO project-specific calc results — those
+This hand-off does NOT cover proj-a project-specific calc results — those
 stay in the client-private surface and are governed by
 [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760).
 This hand-off is the **methodology and reference-data promotion** only.
@@ -42,7 +42,7 @@ This hand-off is the **methodology and reference-data promotion** only.
 **Reused**: `src/digitalmodel/hydrodynamics/hull_library/profile_schema.py` (`HullProfile`)
 
 **Explicit no-client-identifier constraint** (acceptance criterion #9):
-The module code and tests carry NO B1528 / SIROCCO / acma-projects references.
+The module code and tests carry NO B1528 / proj-a / mkt-a references.
 Client-side application stays caller-side. Verified by legal-sanity scan.
 
 ---
@@ -55,7 +55,7 @@ Client-side application stays caller-side. Verified by legal-sanity scan.
 | OCIMF coefficient methodology (polar-plot interpretation, sign convention) | **public** `llm-wiki/wikis/naval-architecture/methodology/ocimf-coefficient-interpretation.md` | Generic methodology, no client data |
 | Reusable polar-plot capability (algorithm + parameter shape) | **public** `llm-wiki/wikis/naval-architecture/methodology/polar-force-overlay-visualization.md` | Module is open in digitalmodel; methodology is reusable |
 | Generic vessel-silhouette convention (tanker / gas-carrier / generic-hull, bow-up) | **public** `llm-wiki/wikis/naval-architecture/concepts/vessel-silhouette-convention.md` | No client tie |
-| B1528 SIROCCO-specific calc results (rudder angle ±5° X/Y/Z/K/M/N envelopes) | **PRIVATE** llm-wiki-sirocco (or whichever private wiki is the SIROCCO target) | Client + project specific |
+| B1528 proj-a-specific calc results (rudder angle ±5° X/Y/Z/K/M/N envelopes) | **PRIVATE** llm-wiki-proj-a (or whichever private wiki is the proj-a target) | Client + project specific |
 | OCIMF coefficient explorer HTML (no client overlay) | **public** as a screenshot reference in the methodology page; do NOT promote the live HTML | Avoid bundling generated artifacts in wiki |
 
 ### Abstraction gate decision
@@ -63,20 +63,20 @@ Client-side application stays caller-side. Verified by legal-sanity scan.
 Per `research/llm-wiki-public-private-routing` skill (Skill D):
 
 - **OCIMF MEG3/MEG4** is a public standard — no abstraction needed.
-- **SIROCCO** is a client project name. Per the latest user rule (2026-05-20):
+- **proj-a** is a client project name. Per the latest user rule (2026-05-20):
   > "Only client project names are to be abstracted. If project name is
   > available public, can be used in the llm-wiki public repo provided
   > all key data is publicly available."
 
-  → SIROCCO must be ABSTRACTED for public-wiki content unless verified
+  → proj-a must be ABSTRACTED for public-wiki content unless verified
   publicly available with all key data also public. **Verify before
-  promoting any SIROCCO-referenced content to public wiki**. If unclear,
+  promoting any proj-a-referenced content to public wiki**. If unclear,
   file as candidate per [workspace-hub#2374](https://github.com/vamseeachanta/workspace-hub/issues/2374)
   and defer to user.
 
 - **B1528** is a client project code — abstract by default in public content.
 
-If you encounter a SIROCCO / B1528 / acma reference in source material
+If you encounter a proj-a / B1528 / mkt-a reference in source material
 during this hand-off, STOP and confirm routing with the user. Do not
 guess.
 
@@ -85,7 +85,7 @@ guess.
 ## Skills to apply (all four on disk in `.claude/skills/research/`)
 
 1. **`llm-wiki-public-private-routing`** (Skill D) — clear the abstraction gate before any public commit.
-   - Walk the decision tree in `references/abstraction-decision-tree.md` for SIROCCO / B1528 references
+   - Walk the decision tree in `references/abstraction-decision-tree.md` for proj-a / B1528 references
    - For OCIMF / MEG content: gate clears as `not-applicable-public-standard-only`
    - Record verdict in commit message: `abstraction: <verdict>`
 
@@ -121,7 +121,7 @@ guess.
 ```bash
 # Parallel-work scan (per feedback_check_parallel_work)
 ls ~/.hermes/sessions 2>/dev/null | head
-ps aux | grep -iE "llm-wiki|ocimf|sirocco" | grep -v grep
+ps aux | grep -iE "llm-wiki|ocimf|proj-a" | grep -v grep
 
 # Confirm llm-wiki repo location and dirty state
 cd /mnt/local-analysis/llm-wiki
@@ -227,7 +227,7 @@ Covers:
 - Reference implementation: `digitalmodel/.../polar_force_overlay.py`
 
 This page is NOT OCIMF-specific. It's the reusable methodology that
-SIROCCO and future consumers also use.
+proj-a and future consumers also use.
 
 ### Step 7 — Create the vessel silhouette concept page
 
@@ -265,8 +265,8 @@ Fix any reported issues. Re-run until clean.
 
 ```bash
 cd /mnt/local-analysis/llm-wiki
-# Spot-check: no B1528 / SIROCCO / acma references in the new public-wiki pages
-grep -riE "b1528|sirocco|acma" wikis/naval-architecture/standards/ocimf-meg.md \
+# Spot-check: no B1528 / proj-a / mkt-a references in the new public-wiki pages
+grep -riE "b1528|proj-a|mkt-a" wikis/naval-architecture/standards/ocimf-meg.md \
     wikis/naval-architecture/methodology/ocimf-coefficient-interpretation.md \
     wikis/naval-architecture/methodology/polar-force-overlay-visualization.md \
     wikis/naval-architecture/concepts/vessel-silhouette-convention.md
@@ -289,7 +289,7 @@ wiki(naval-architecture): OCIMF MEG + polar-force-overlay methodology
 
 Promotes the methodology and standards reference delivered by
 digitalmodel#616 (CLOSED). Public-domain content only — no client/project
-identifiers per Rule 8 abstraction gate. SIROCCO-specific calc results
+identifiers per Rule 8 abstraction gate. proj-a-specific calc results
 stay in private surface per workspace-hub#2760.
 
 abstraction: not-applicable-public-standard-only
@@ -317,7 +317,7 @@ gh issue comment 616 --repo vamseeachanta/digitalmodel --body "$(cat <<'EOF'
 - [methodology/polar-force-overlay-visualization.md](https://github.com/vamseeachanta/llm-wiki/blob/main/wikis/naval-architecture/methodology/polar-force-overlay-visualization.md)
 - [concepts/vessel-silhouette-convention.md](https://github.com/vamseeachanta/llm-wiki/blob/main/wikis/naval-architecture/concepts/vessel-silhouette-convention.md)
 
-Client/project-specific content (B1528 SIROCCO) stays in private surface per [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760).
+Client/project-specific content (B1528 proj-a) stays in private surface per [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760).
 
 Skills applied:
 - `research/llm-wiki-page-shape-contract` (Rules 1–8)
@@ -338,7 +338,7 @@ EOF
 - [ ] `wikis/naval-architecture/index.md` lists the four new pages
 - [ ] `wikis/naval-architecture/log/YYYYMMDD.md` has the ingest entry
 - [ ] `llm_wiki.py lint --wiki naval-architecture` passes
-- [ ] No `B1528` / `SIROCCO` / `acma` substring in any new public-wiki page
+- [ ] No `B1528` / `proj-a` / `mkt-a` substring in any new public-wiki page
 - [ ] Commit message uses pathspec form (per `feedback_multi_agent_commit_serialization`)
 - [ ] Closeout comment posted on [digitalmodel#616](https://github.com/vamseeachanta/digitalmodel/issues/616)
 
@@ -349,13 +349,13 @@ EOF
 1. **MEG3 vs MEG4 canonical edition**: which revision does
    `_convention.py:OCIMF_CONVENTION_AUTHORITY` actually cite? Confirm
    before writing the `revision:` frontmatter field.
-2. **SIROCCO public-status**: is the SIROCCO project name publicly
+2. **proj-a public-status**: is the proj-a project name publicly
    disclosed (e.g., in operator press releases or regulatory filings)?
-   If yes AND all key data referenced is public, SIROCCO can be named
+   If yes AND all key data referenced is public, proj-a can be named
    in public wiki per Rule 8 exception. If unclear: abstract.
-3. **Private wiki target for SIROCCO follow-up**: which private repo —
-   `llm-wiki-acma`, `llm-wiki-sirocco-operator`, or another? Required
-   before any SIROCCO-specific content gets promoted.
+3. **Private wiki target for proj-a follow-up**: which private repo —
+   `llm-wiki-mkt-a`, `llm-wiki-proj-a-operator`, or another? Required
+   before any proj-a-specific content gets promoted.
 4. **OCIMF MEG PDF ingestion**: do we hold an authoritative copy of MEG3
    or MEG4? If yes: ingest into `wikis/naval-architecture/sources/refs/`
    per Skill C ref-pointer pattern. If no: cite the standard without
@@ -365,19 +365,19 @@ EOF
 
 ## What this hand-off does NOT cover
 
-- SIROCCO-specific calc results (governed by [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760))
+- proj-a-specific calc results (governed by [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760))
 - The companion fix concerning CYw=-3.56 out-of-envelope ([digitalmodel#556](https://github.com/vamseeachanta/digitalmodel/issues/556))
 - OCIMFExcelAdapter ingestion ([digitalmodel#563](https://github.com/vamseeachanta/digitalmodel/issues/563))
 - Resolving `marine_engineering/ocimf.py` vs `marine_analysis/ocimf.py` duplication ([workspace-hub#2768](https://github.com/vamseeachanta/workspace-hub/issues/2768))
-- The B1528 SIROCCO downstream consumer hook (gated by [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) approval)
-- Per-claim cross-walk of every SIROCCO/B1528 reference in any source under acma-projects/ — out of scope; only the methodology promotion is covered here
+- The B1528 proj-a downstream consumer hook (gated by [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) approval)
+- Per-claim cross-walk of every proj-a/B1528 reference in any source under mkt-a/ — out of scope; only the methodology promotion is covered here
 
 ---
 
 ## Provenance
 
 - digitalmodel#616 body: title, scope, deliverables, acceptance criteria (CLOSED, status:plan-approved)
-- workspace-hub#2760: SIROCCO downstream consumer (OPEN)
+- workspace-hub#2760: proj-a downstream consumer (OPEN)
 - Skills applied: see "Skills to apply" section above
 - Routing rule: latest user directive 2026-05-20 — "only client project names are to be abstracted; if project name is available public AND all key data is publicly available, name can be used as-is"
 - Hand-off prompt template basis: `feedback_hermes_active_preflight_check`, `feedback_check_parallel_work`, `feedback_multi_agent_commit_serialization`, `feedback_gh_issue_comment`, `feedback_inline_gh_issue_url`

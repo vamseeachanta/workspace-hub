@@ -86,14 +86,14 @@ The new model treats every email as a transient item in a processing queue. Data
 
 | Category | Handling | Extraction Target |
 |---|---|---|
-| Active clients (RIL, DORIS, McDermott, Shell, etc.) | Extract project data, track threads | aceengineer-admin/data/client-{name}/ |
+| Active clients (RIL, lng-a, McDermott, Shell, etc.) | Extract project data, track threads | aceengineer-admin/data/client-{name}/ |
 | Recruiters (DISYS, Steps to Progress, etc.) | Extract role/rate/contact | aceengineer-admin/data/recruiting/ |
 | CRE listings (Sands IG, Marcus Millichap, LoopNet) | Extract property/cap-rate/tenant data | assethold/data/cre-listings/ |
 | Software vendors (ANSYS, DNV, ENGYS) | Extract license/support data only if actionable | aceengineer-admin/data/vendor/ |
 | Industry colleagues | Keep for networking touchbase, extract contact if new | aceengineer-admin/data/colleague/ |
 | Marketing/newsletters | Label/no pending extraction; Gmail delete belongs to #2423 | -- |
 
-VIP domains requiring immediate attention: `ril.com`, `dorisgroup.com`, `mcdermott.com`, `shell.com`, `kbr.com`, `bp.com`, `subsea7.com`, `technipfmc.com`
+VIP domains requiring immediate attention: `ril.com`, `lng-agroup.com`, `mcdermott.com`, `shell.com`, `kbr.com`, `bp.com`, `subsea7.com`, `technipfmc.com`
 
 ### 2.2 personal (achantav@gmail.com)
 

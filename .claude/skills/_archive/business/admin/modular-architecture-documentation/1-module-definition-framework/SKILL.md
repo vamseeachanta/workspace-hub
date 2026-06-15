@@ -80,7 +80,7 @@ Each module provides a dedicated CLI command configured in pyproject.toml:
 invoice-gen [options]
 
 # Generate invoice for single client
-invoice-gen --client ACMA --month 2025-01 --template monthly
+invoice-gen --client mkt-a --month 2025-01 --template monthly
 
 # Generate invoices for all clients
 

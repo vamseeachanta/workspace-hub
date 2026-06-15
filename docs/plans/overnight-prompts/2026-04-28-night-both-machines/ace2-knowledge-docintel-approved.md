@@ -29,7 +29,7 @@ Labels: `priority:high`, `cat:documentation`, `domain:knowledge-management`, `st
 URL: https://github.com/vamseeachanta/workspace-hub/issues/2369
 Labels: `priority:high`, `cat:data-pipeline`, `domain:knowledge-management`, `status:working`, `agent:codex`, `status:plan-approved`.
 
-### 4. #2373 — Batch Pack 4: non-ACMA standards summary promotion
+### 4. #2373 — Batch Pack 4: non-mkt-a standards summary promotion
 URL: https://github.com/vamseeachanta/workspace-hub/issues/2373
 Labels: `priority:high`, `cat:data-pipeline`, `domain:knowledge-management`, `status:working`, `agent:codex`, `status:plan-approved`.
 

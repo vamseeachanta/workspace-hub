@@ -1,7 +1,7 @@
 # Wave 2 Validation — #2262
 
 Issue
-- #2262 — feat(acma-codes): Wave 2 metadata-only wiki sweep — API, Lloyd's Register, SIGTTO, Noble Denton
+- #2262 — feat(mkt-a-codes): Wave 2 metadata-only wiki sweep — API, Lloyd's Register, SIGTTO, Noble Denton
 - Parent: #2260
 - Generated: 2026-04-13
 

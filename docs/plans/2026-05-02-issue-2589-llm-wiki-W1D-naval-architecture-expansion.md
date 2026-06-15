@@ -59,7 +59,7 @@ Standards-page production for naval-architecture is still bootstrapping. Per `.c
 - #2566 — OPEN, "test(naval-arch): full CI and package validation for yaw and rudder-stock sweep workflows" — operational gate on #2564/#2565, no wiki content overlap.
 - #2568 — OPEN, "feat(naval-arch): preliminary turning-circle and tactical-diameter estimator input workflow" — RESERVES turning-circle, tactical-diameter, advance, transfer, Nomoto-style maneuvering-input-workflow concepts.
 - #2540 — OPEN, "epic(llm-wiki): overnight Elements corpus planning wave after #2536" — wave epic; this plan is W1-D under that wave (naval-architecture domain).
-- /mnt/ace inventory: `acma-codes/IMO/{Passenger Ships, Cargo Ships, Ship Security}`, `acma-codes/ABS Rules/{International Naval Ships, Naval Vessels, Propulsion, Wind Assisted Propulsion, Ice Class, Conditions of Classification}`, `acma-codes/DNV Rules/{2018 DNVGL Ship Rules, DNVGL-Class_2017-07}`, `O&G-Standards/SNAME/ship-plans`, `digitalmodel/docs/ship-design`, `digitalmodel/docs/naval_architecture`, `doris/codes/BV Ship and Offshore Rules` — confirms classification-society raw material is locally citable. Plan does not extract from these PDFs (per #2482 deny-list); concept pages will cite them by reference.
+- /mnt/ace inventory: `mkt-a-codes/IMO/{Passenger Ships, Cargo Ships, Ship Security}`, `mkt-a-codes/ABS Rules/{International Naval Ships, Naval Vessels, Propulsion, Wind Assisted Propulsion, Ice Class, Conditions of Classification}`, `mkt-a-codes/DNV Rules/{2018 DNVGL Ship Rules, DNVGL-Class_2017-07}`, `O&G-Standards/SNAME/ship-plans`, `digitalmodel/docs/ship-design`, `digitalmodel/docs/naval_architecture`, `lng-a/codes/BV Ship and Offshore Rules` — confirms classification-society raw material is locally citable. Plan does not extract from these PDFs (per #2482 deny-list); concept pages will cite them by reference.
 - WebSearch — Tupper "Introduction to Naval Architecture" 5e chapter list: Introduction, Definition & regulation, Ship-form calculations, Flotation, Stability, Launching/docking/grounding, Resistance, Propulsion, Ship environments, Seakeeping, Vibration/noise/shock, Manoeuvring, Structures, Ship design, Ship types (https://shop.elsevier.com/books/introduction-to-naval-architecture/tupper/978-0-08-098237-3).
 - WebSearch — SNAME PNA Second Revision: Vol I Stability & Strength (chapters: hull-form description, intact stability, damage stability, hull structural design); Vol II Resistance, Propulsion, Vibration; Vol III Motions in Waves, Controllability (https://sname.org/principles-naval-architecture).
 - WebSearch — ITTC Recommended Procedures index at https://ittc.info/ (specific procedure numbers e.g. `7.5-02-*`, `7.5-03-*`, `7.5-02-07-021` are NOT independently verified from the landing page — review m8 marked these as to-be-verified-at-implementation; pages will cite the homepage URL only until the procedure-number prefixes are confirmed against the ITTC downloads index).
@@ -149,7 +149,7 @@ This plan's selected topics avoid every reserved noun-phrase: no page on turning
   (2) wiki index,
   (3) wiki CLAUDE.md schema,
   (4) #2566, (5) #2568, (6) #2540,
-  (7) /mnt/ace acma-codes inventory,
+  (7) /mnt/ace mkt-a-codes inventory,
   (8) WebSearch Tupper,
   (9) WebSearch PNA + ITTC.
   Minimum 3 met. -->

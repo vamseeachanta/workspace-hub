@@ -73,13 +73,13 @@ NEW TASK
 ### Work Repositories
 
 **Tier 1 (Production):** 60% Opus, 30% Sonnet, 10% Haiku
-- digitalmodel, energy, frontierdeepwater
+- digitalmodel, energy, client-a
 
 **Tier 2 (Active):** 30% Opus, 50% Sonnet, 20% Haiku
 - assetutilities, worldenergydata
 
 **Tier 3 (Maintenance):** 10% Opus, 30% Sonnet, 60% Haiku
-- doris, saipem, OGManufacturing
+- lng-a, client-d, OGManufacturing
 
 ### Personal Repositories
 

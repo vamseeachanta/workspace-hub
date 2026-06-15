@@ -79,10 +79,10 @@ They follow client project conventions and are exempt from the `src/` Python lay
 
 | Repo | Type | Convention | Notes |
 |------|------|------------|-------|
-| `frontierdeepwater` | Project coordination | Domain folders, minimal code | `src/` empty; data + coordination focus |
-| `doris` | Engineering project portfolio | Project IDs (61850_zama, 61863_lakach) | Each project: calculations/, data/, dwg/, rep/ |
-| `saipem` | Offshore engineering docs | `general/` domain folders (cp/, engg/, flexible/) | YAML modular pattern |
-| `acma-projects` | Marine engineering portfolio | Project IDs (B1512, B1516, B1535) | Embedded assetutilities copy → needs WRK to migrate to git dep |
+| `client-a` | Project coordination | Domain folders, minimal code | `src/` empty; data + coordination focus |
+| `lng-a` | Engineering project portfolio | Project IDs (61850_zama, 61863_lakach) | Each project: calculations/, data/, dwg/, rep/ |
+| `client-d` | Offshore engineering docs | `general/` domain folders (cp/, engg/, flexible/) | YAML modular pattern |
+| `mkt-a` | Marine engineering portfolio | Project IDs (B1512, B1516, B1535) | Embedded assetutilities copy → needs WRK to migrate to git dep |
 
 **Indexing strategy**: These repos require good navigation/indexing rather than API surface.
 Document intelligence pipeline (parallel story) owns this. Cross-reference: `docs/research/`.

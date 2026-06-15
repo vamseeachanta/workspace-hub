@@ -382,7 +382,7 @@ The following features are fully implemented and operational:
 
 ## Domain-Specific Initiatives
 
-### Energy & O&G Domain (worldenergydata, energy, rock-oil-field)
+### Energy & O&G Domain (worldenergydata, energy, client-b)
 
 - [ ] **O&G Knowledge System Enhancement** - Expand RAG capabilities `L`
   - Additional document ingestion sources
@@ -399,7 +399,7 @@ The following features are fully implemented and operational:
   - Well economics templates
   - Production forecasting
 
-### Marine Engineering Domain (frontierdeepwater, seanation, doris, saipem)
+### Marine Engineering Domain (client-a, client-f, lng-a, client-d)
 
 - [ ] **Marine Analysis Standardization** - Unified calculation framework `L`
   - Stress analysis modules

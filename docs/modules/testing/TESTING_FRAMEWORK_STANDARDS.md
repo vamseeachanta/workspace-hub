@@ -1081,7 +1081,7 @@ Coverage is measured by code coverage tools (pytest-cov) and enforced in CI/CD.
 | Tier | Minimum | Target | Repository Examples |
 |------|---------|--------|---------------------|
 | **Tier 1** (Production Critical) | 85% | 95%+ | digitalmodel, worldenergydata, assetutilities, teamresumes |
-| **Tier 2** (Active Development) | 80% | 90%+ | aceengineercode, energy, frontierdeepwater, seanation, doris, saipem, rock-oil-field |
+| **Tier 2** (Active Development) | 80% | 90%+ | aceengineercode, energy, client-a, client-f, lng-a, client-d, client-b |
 | **Tier 3** (Maintenance) | 80% | 85%+ | aceengineer-website, aceengineer-admin, hobbies, investments, ai-native-traditional-eng |
 | **Personal** (Individual Projects) | 75% | 80%+ | All personal repositories |
 
@@ -1783,7 +1783,7 @@ def test_email_validation_accepts_valid_emails(email):
 
 ### Tier 2 Repositories (Active Development)
 
-**Repositories:** aceengineercode, energy, frontierdeepwater, seanation, doris, saipem, rock-oil-field
+**Repositories:** aceengineercode, energy, client-a, client-f, lng-a, client-d, client-b
 
 **Requirements:**
 - 80% minimum coverage
@@ -2016,7 +2016,7 @@ def test_well_analysis_by_type(well_type, expected):
     pass
 ```
 
-### Example 2: Marine Engineering Repository (frontierdeepwater)
+### Example 2: Marine Engineering Repository (client-a)
 
 **Test Structure:**
 ```

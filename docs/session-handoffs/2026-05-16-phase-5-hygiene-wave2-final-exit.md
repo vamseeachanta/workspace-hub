@@ -32,11 +32,11 @@ This handoff covers everything after Phase 5 execution: hygiene loop closure + m
 
 ## Load-bearing findings worth carrying forward
 
-### 1. `/mnt/ace/rock-oil-field/` is wrong-domain for reservoir-eng / formation-eval
+### 1. `/mnt/ace/client-b/` is wrong-domain for reservoir-eng / formation-eval
 
 **Most important finding from Wave 2.** The directory is the user's Subsea-7 (S7) marine/subsea offshore engineering working directory — Ballymore, Talos Venice, Shell Perdido South, BP MD2/FJR client project work + Subsea-7 internal training (pipelines, risers, SCRs, umbilicals, OrcaFlex). Keyword scans across 383 PDFs for `log|well|reservoir|formation|porosity|permeability|petrophys|geosteer|wireline|MWD|LWD|core|stratig|sedim|fluid|PVT|recovery|EOR|simul|machine|neural|classif` returned **zero in-scope hits**. The plan body's "top candidate by name" framing was pure-name reasoning; actual content invalidates the assumption.
 
-**Implication**: any future reservoir-engineering / formation-evaluation local-corpus walks should TREAT `/mnt/ace/rock-oil-field/` as deny-listed, not as a candidate. Wave 2 Phase B's 14 SKIP rows document the traversal transparently so this isn't re-discovered.
+**Implication**: any future reservoir-engineering / formation-evaluation local-corpus walks should TREAT `/mnt/ace/client-b/` as deny-listed, not as a candidate. Wave 2 Phase B's 14 SKIP rows document the traversal transparently so this isn't re-discovered.
 
 **Recommendation** (filed below as forward-reference sub-issue #4): write a one-page `docs/governance/` note in llm-wiki recording this finding durably — prevents the re-discovery cost.
 
@@ -80,7 +80,7 @@ First-run result: 617 files / 11 domains / 14 patterns / **zero violations**. Th
 1. **License-verification sub-issue** for the 10 `defer` rows in the Wave 2 manifest (closes ≥30 high-quality target)
 2. **arXiv expansion sub-issue** to close mixed-quality gap to ≥50 via targeted physics.geo-ph + stat.ML searches (`well log`, `geosteering`, `lithology classification`, `NMR petrophysics`)
 3. **Kansas Geological Survey reuse-permission request** (low-effort email; may yield permissive licence confirmation for ~5 sources)
-4. **`docs/governance/` note in llm-wiki** documenting that `/mnt/ace/rock-oil-field/` is wrong-domain for reservoir-engineering / formation-evaluation local corpus walks (prevents re-discovery cost — see load-bearing finding #1 above)
+4. **`docs/governance/` note in llm-wiki** documenting that `/mnt/ace/client-b/` is wrong-domain for reservoir-engineering / formation-evaluation local corpus walks (prevents re-discovery cost — see load-bearing finding #1 above)
 
 ### #40 Waves 3-5 ahead
 
@@ -119,7 +119,7 @@ These are durable on this machine; cross-machine propagation depends on whatever
 
 - **`docs/research/` corpus manifests are inventory, not content**: `/mnt/ace/...` paths are acceptable in the manifest because the deliverable is paths + metadata + license-triage decisions. No source content is reproduced. This is a distinct discipline from wiki content (`wikis/*/`) where `/mnt/ace/` references would violate the agent-context firewall.
 - **License-fail-closed posture is the right default** when triaging license-ambiguous sources. Better to under-include and document the `defer` than to over-include and have a post-publication license incident. Wave 2's 22 `skip` + 10 `defer` rows are the empirical evidence — most "I think this is CC" guesses were wrong on closer inspection.
-- **Partial deliverables with honest gap analysis > artificial target-hitting**: Wave 2 hit 24/30 high-quality, 34/50 mixed-quality. The plan target was missed by a measurable amount. The honest commit message + #40 comment frame the gap with reasoning ("rock-oil-field assumption was wrong; closeable in Wave 3 via 2 sub-issues") rather than manufacturing additional rows to hit the number.
+- **Partial deliverables with honest gap analysis > artificial target-hitting**: Wave 2 hit 24/30 high-quality, 34/50 mixed-quality. The plan target was missed by a measurable amount. The honest commit message + #40 comment frame the gap with reasoning ("client-b assumption was wrong; closeable in Wave 3 via 2 sub-issues") rather than manufacturing additional rows to hit the number.
 - **Bash backtick escaping in heredocs is fragile**: when `gh issue comment --body "..."` body content contains backticks for code-formatting and the body references file paths or commands inside those backticks, bash's command-substitution parsing can fire unexpectedly. The post may still succeed (content gets sent before the error fires), but `wc -c` on the returned comment is the verification that should follow any backtick-heavy heredoc body. Caught and recovered this session at the Wave 2 #40 comment post.
 
 ## Next-session first-step recommendation
@@ -145,8 +145,8 @@ The 4 forward-reference recommendations listed above as "NOT yet filed" have sin
 | [#96](https://github.com/vamseeachanta/llm-wiki/issues/96) | License-verification for the 10 `defer` rows | #1 above |
 | [#97](https://github.com/vamseeachanta/llm-wiki/issues/97) | arXiv expansion to close mixed-quality gap to ≥50 | #2 above |
 | [#98](https://github.com/vamseeachanta/llm-wiki/issues/98) | Kansas Geological Survey reuse-permission email | #3 above |
-| [#99](https://github.com/vamseeachanta/llm-wiki/issues/99) | `docs/governance/` note on `/mnt/ace/rock-oil-field/` wrong-domain | #4 above |
+| [#99](https://github.com/vamseeachanta/llm-wiki/issues/99) | `docs/governance/` note on `/mnt/ace/client-b/` wrong-domain | #4 above |
 
 All 4 carry `status:plan-review`; awaiting user approval to flip to `status:plan-approved` before implementation. Cross-referenced from parent [#40](https://github.com/vamseeachanta/llm-wiki/issues/40) via comment with sequencing recommendation (#98 first by lowest effort, #96 + #97 close the corpus target, #99 parallelizable). Wave 3 should not begin until at least #96 + #97 land.
 
-**Update 2026-05-17**: see `2026-05-17-sub-issue-approvals-phase-b-redact-exit.md` for continuation — #96/#97/#98 approved, #99 CLOSED as not-planned per user reframing (`/mnt/ace/rock-oil-field/` is client-data infrastructure, not wrong-domain), Phase B redaction applied to corpus manifest.
+**Update 2026-05-17**: see `2026-05-17-sub-issue-approvals-phase-b-redact-exit.md` for continuation — #96/#97/#98 approved, #99 CLOSED as not-planned per user reframing (`/mnt/ace/client-b/` is client-data infrastructure, not wrong-domain), Phase B redaction applied to corpus manifest.

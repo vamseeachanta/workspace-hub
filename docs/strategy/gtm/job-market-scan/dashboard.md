@@ -74,8 +74,8 @@
 | 150 | Vessel Senior Project Engineer | McDermott International, Ltd | Houston, TX | linkedin | mooring engineer offshore |
 | 150 | Engineer, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | mooring engineer offshore |
 | 135 | Engineer II | American Bureau of Shipping (A | Houston, TX | linkedin | riser engineer offshore |
-| 135 | Offshore Operations Engineer | Saipem | Houston, TX | linkedin | mooring engineer offshore |
-| 135 | Offshore Methods Engineer | Saipem | Houston, TX | linkedin | mooring engineer offshore |
+| 135 | Offshore Operations Engineer | client-d | Houston, TX | linkedin | mooring engineer offshore |
+| 135 | Offshore Methods Engineer | client-d | Houston, TX | linkedin | mooring engineer offshore |
 | 135 | Engineer II | American Bureau of Shipping (A | Houston, TX | linkedin | mooring engineer offshore |
 | 135 | Lead Field Service Dynamic Positioning Engineer | GE Vernova | Louisiana, United St | linkedin | mooring engineer offshore |
 | 130 | Pipeline & Riser Engineer | ExxonMobil | Spring, TX | linkedin | OrcaFlex engineer |

@@ -141,5 +141,5 @@ graph.to_dict()   # JSON-serializable dict
 ## Related
 
 - Full guide: `assetutilities/docs/units-guide.md`
-- Tests: `assetutilities/tests/units/`, `rock-oil-field/tests/unit/`
-- S7 reference scripts: `rock-oil-field/s7/analysis_general/`
+- Tests: `assetutilities/tests/units/`, `client-b/tests/unit/`
+- S7 reference scripts: `client-b/s7/analysis_general/`

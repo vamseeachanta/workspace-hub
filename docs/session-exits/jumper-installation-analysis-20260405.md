@@ -14,7 +14,7 @@
 | `digitalmodel/.../ballymore_plet_plem/spec.yml` | 110+ | Committed & pushed |
 | `aceengineer-website/demos/jumper-installation.html` | GTM demo | Committed & pushed |
 | `aceengineer-website/docs/marketing/PORTFOLIO_CAPABILITIES.md` | Updated | Committed & pushed |
-| `client_projects/engineering_workbooks/ballymore/...` | Full workbook comparison | Committed & pushed |
+| `client-c/engineering_workbooks/ballymore/...` | Full workbook comparison | Committed & pushed |
 
 ### Key Decision: Windows Cowork > Linux Headless
 
@@ -53,7 +53,7 @@ Two jumper models from one code path:
 | Status | Count | Details |
 |--------|-------|---------|
 | Converted | 1 workbook | Ballymore MF-PLET (81 tests) |
-| Ready in repo | 100+ workbooks | client_projects/engineering_workbooks/ |
+| Ready in repo | 100+ workbooks | client-c/engineering_workbooks/ |
 | Remaining | 99 workbooks | 6 batches (#1935-1940) |
 
 ### Next Session Should
@@ -76,5 +76,5 @@ Two jumper models from one code path:
 | Repo | SHA | Message |
 |------|-----|---------|
 | digitalmodel | e659d980 | 81 tests passing + jumper pipeline |
-| client_projects | feb00d3d | Workbooks organized: hermes_openpyxl vs claude_excel_addin |
+| client-c | feb00d3d | Workbooks organized: hermes_openpyxl vs claude_excel_addin |
 | aceengineer-website | c185d5e | GTM demo page + portfolio update |

@@ -23,7 +23,7 @@ Started as a recall query ("where is the GTM material from 3 days ago / last wee
 
 | Date | Bundle | Path |
 |---|---|---|
-| 2026-05-08 | Doris client follow-up + ecosystem flowchart | `docs/gtm/sendable-bundles/2026-05-08/` |
+| 2026-05-08 | lng-a client follow-up + ecosystem flowchart | `docs/gtm/sendable-bundles/2026-05-08/` |
 | 2026-05-04 | worldenergydata GTM reports (FDAS, decline, BSEE) | `worldenergydata/reports/gtm/2026-05-04-*.html` |
 
 ### Full picture after user correction
@@ -34,7 +34,7 @@ Four distinct GTM-artifact directory roots verified on disk under `/mnt/local-an
 |---|---|---|---|---|
 | 1 | `worldenergydata` | `reports/gtm/` | filename prefix `YYYY-MM-DD-foo.html` | `2026-05-04-bsee-field-analysis-comprehensive.html` |
 | 2 | `digitalmodel` | `examples/demos/gtm/output/<bundle>/` | dir suffix `client_pdf_pack_YYYY-MM-DD/`; HTML+PDF pairs + ZIP + index | `client_pdf_pack_2026-05-07/00_vessel_capability_gtm_pdf_pack_index.{html,pdf}` |
-| 3 | workspace-hub (sendable) | `docs/gtm/sendable-bundles/<YYYY-MM-DD>/` | nested date directory; MD + HTML + PDF mix; no index | `2026-05-08/repo-ecosystem-flowchart.{html,pdf}` + `doris-follow-up-email-and-links.md` |
+| 3 | workspace-hub (sendable) | `docs/gtm/sendable-bundles/<YYYY-MM-DD>/` | nested date directory; MD + HTML + PDF mix; no index | `2026-05-08/repo-ecosystem-flowchart.{html,pdf}` + `lng-a-follow-up-email-and-links.md` |
 | 4 | workspace-hub (analysis) | `docs/reports/gtm/` | filename prefix; overlaps #1 convention but at hub level | `2026-04-29-vessel-capability-chart-storyboard.md` |
 
 Additional GTM-adjacent (tooling, not artifacts): `docs/gtm/` (strategy planning), `scripts/gtm/`, `tests/gtm/`, `logs/gtm/`.
@@ -121,7 +121,7 @@ User asked: "there are repos outside in /mnt/local-analysis and also inside repo
 
 ### Inconsistency discovered
 
-Four repos existed BOTH at `/mnt/local-analysis/<repo>` (outer clone) AND nested at `/mnt/local-analysis/workspace-hub/<repo>` (inner clone): `assetutilities`, `digitalmodel`, `llm-wiki`, `worldenergydata`. Twenty-two-plus other repos (`achantas-data`, `doris`, `acma-projects`, `kaggle-rogii-2026`, etc.) lived only as nested copies. The 4 outer clones were the exception, not the rule — vestigial standby copies from an earlier workflow that adopted nesting later.
+Four repos existed BOTH at `/mnt/local-analysis/<repo>` (outer clone) AND nested at `/mnt/local-analysis/workspace-hub/<repo>` (inner clone): `assetutilities`, `digitalmodel`, `llm-wiki`, `worldenergydata`. Twenty-two-plus other repos (`achantas-data`, `lng-a`, `mkt-a`, `kaggle-rogii-2026`, etc.) lived only as nested copies. The 4 outer clones were the exception, not the rule — vestigial standby copies from an earlier workflow that adopted nesting later.
 
 ### Pre-delete verification
 

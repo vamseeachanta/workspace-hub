@@ -81,9 +81,9 @@ spec.yml -> jumper_lift.run_jumper_analysis() -> go_no_go.evaluate_go_no_go() ->
 |------|-----|---------|
 | digitalmodel | d4e0b6ed | Go/No-Go decision logic + 21 tests (CLOSED #472) |
 | aceengineer-website | c185d5e | GTM demo page + portfolio update |
-| client_projects | feb00d3d | Workbooks organized (hermes vs claude) |
-| client_projects | 7a28e429 | Linux conversion (53 tests) |
-| client_projects | 23e36373 | Stage 100 workbooks for conversion |
+| client-c | feb00d3d | Workbooks organized (hermes vs claude) |
+| client-c | 7a28e429 | Linux conversion (53 tests) |
+| client-c | 23e36373 | Stage 100 workbooks for conversion |
 
 ### What Needs to be Committed Next (Immediate)
 - digitalmodel: jumper_installation.py (updated with Go/No-Go integration)

@@ -19,7 +19,7 @@ Critical repo/workflow constraints:
 - Issue `#2226` is not implementation-approved yet.
 - Treat this run as planning-only.
 - Do NOT modify the ledger, code registry, wiki pages, or pipeline code in this run.
-- Your goal is to produce the planning package for `#2226`, grounded in the real indexed results now available from `acma_codes`, and move the issue to `status:plan-review` only if the plan is review-ready.
+- Your goal is to produce the planning package for `#2226`, grounded in the real indexed results now available from `mkt-a_codes`, and move the issue to `status:plan-review` only if the plan is review-ready.
 - If a blocking uncertainty remains after review, post a blocker summary and stop without applying `status:plan-review`.
 
 Primary issue:
@@ -33,7 +33,7 @@ Parent / related issues to consume, not redefine:
 - Downstream follow-ons from split: `#2227`, `#2228`
 
 Primary repo artifacts to read first:
-- `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md`
+- `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md`
 - `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md`
 - `docs/document-intelligence/standards-codes-provenance-reuse-contract.md`
 - `data/document-index/standards-transfer-ledger.yaml`
@@ -44,8 +44,8 @@ Primary repo artifacts to read first:
 - `docs/plans/_template-issue-plan.md`
 
 Use live indexed evidence from the completed #2225 work:
-- `acma_codes` source is now registered and indexed
-- `index.jsonl` contains `acma_codes` records
+- `mkt-a_codes` source is now registered and indexed
+- `index.jsonl` contains `mkt-a_codes` records
 - use real indexed results to reason about API overlap, OCIMF net-new content, CSA additions, and duplicate/alias behavior
 
 Allowed write paths for this run:
@@ -78,7 +78,7 @@ Git safety rule:
 Success condition:
 By the end of this run, the repo should contain a review-ready plan for `#2226` that:
 - identifies exactly which OCIMF and CSA standards should be added to the transfer ledger
-- uses real indexed `acma_codes` evidence and real existing ledger state
+- uses real indexed `mkt-a_codes` evidence and real existing ledger state
 - defines provenance/doc-key linkage expectations consistent with `#2207`
 - defines how overlapping API records should be treated as aliases or distinct editions
 - defines whether `data/design-codes/code-registry.yaml` should change and why
@@ -100,7 +100,7 @@ Required outputs:
 The plan must include these core sections:
 - Resource Intelligence Summary
 - Existing ledger/code-registry/index artifacts consulted
-- Real indexed findings from `acma_codes`
+- Real indexed findings from `mkt-a_codes`
 - Candidate ledger entries / updates
 - Proposed alias vs new-entry treatment for API overlaps
 - Proposed provenance/doc-key linkage rules for this issue’s implementation
@@ -128,7 +128,7 @@ Execution steps:
 STEP 1 — Live intake and resource intelligence
 - Read `#2226` live from GitHub.
 - Read the parent #2216 plan and the completed #2225 implementation evidence.
-- Inspect current ledger entries, code-registry entries, and real `acma_codes` records in `index.jsonl`.
+- Inspect current ledger entries, code-registry entries, and real `mkt-a_codes` records in `index.jsonl`.
 - Ground all major claims in current data.
 
 STEP 2 — Draft the plan

@@ -182,7 +182,7 @@ machines:
     cron_variant: lightweight
 
   licensed-win-2:
-    hostname: ACMA-WS014
+    hostname: mkt-a-WS014
     programs: [office, windows-tools]
     exclusive: []
     shares_hub: null

@@ -55,7 +55,7 @@ This comprehensive analysis examined testing infrastructure across 27 repositori
   - conftest.py for test configuration
   - pyproject.toml with test dependencies
 
-#### 4. client_projects
+#### 4. client-c
 - **Status:** Partial
 - **Framework:** pytest + jest
 - **Test Count:** 50+ test files
@@ -66,7 +66,7 @@ This comprehensive analysis examined testing infrastructure across 27 repositori
   - Energy firm data analytics has comprehensive structure
   - Mixed Python and JavaScript testing
 
-#### 5. rock-oil-field
+#### 5. client-b
 - **Status:** Partial
 - **Framework:** pytest
 - **Test Count:** 20+ test files
@@ -77,7 +77,7 @@ This comprehensive analysis examined testing infrastructure across 27 repositori
   - Structural analysis testing
   - Mudmat tool testing across multiple projects
 
-#### 6. saipem
+#### 6. client-d
 - **Status:** Partial
 - **Framework:** pytest
 - **Test Count:** 5+ test files
@@ -148,19 +148,19 @@ This comprehensive analysis examined testing infrastructure across 27 repositori
 The following 16 repositories (59.3%) have no testing infrastructure:
 
 1. **achantas-media** - Media/content repository
-2. **acma-projects** - Project management
+2. **mkt-a** - Project management
 3. **ai-native-traditional-eng** - Documentation/research
 4. **assethold** - Asset management
 5. **coordination** - Coordination scripts
-6. **doris** - Project repository
+6. **lng-a** - Project repository
 7. **energy** - Energy analysis
-8. **frontierdeepwater** - Engineering project
+8. **client-a** - Engineering project
 9. **hobbies** - Personal projects
 10. **investments** - Investment analysis
 11. **memory** - Memory/storage
 12. **sabithaandkrishnaestates** - Real estate
 13. **sd-work** - Work repository
-14. **seanation** - Personal repository
+14. **client-f** - Personal repository
 15. **teamresumes** - Resume repository
 16. **worldenergydata** - Energy data
 
@@ -194,7 +194,7 @@ The following 16 repositories (59.3%) have no testing infrastructure:
 - **digitalmodel:** Most comprehensive with 2 workflows
   - Fatigue analysis verification
   - OrcaWave MCP CI/CD pipeline
-- **saipem:** Basic CI/CD setup
+- **client-d:** Basic CI/CD setup
 
 ### Missing CI/CD
 - **9 repositories with tests** lack automated testing
@@ -204,7 +204,7 @@ The following 16 repositories (59.3%) have no testing infrastructure:
 
 ### High Priority
 1. **Implement CI/CD for existing tested repositories**
-   - aceengineer-website, aceengineercode, client_projects
+   - aceengineer-website, aceengineercode, client-c
    - Add GitHub Actions workflows for automated testing
 
 2. **Add coverage measurement**
@@ -239,7 +239,7 @@ Based on this analysis, repositories fall into these maturity levels:
 
 ### Level 3 - Partial (6 repositories)
 - Tests + Some infrastructure
-- **aceengineer-website, aceengineercode, client_projects, rock-oil-field, saipem, assetutilities**
+- **aceengineer-website, aceengineercode, client-c, client-b, client-d, assetutilities**
 
 ### Level 2 - Basic (4 repositories)
 - Basic tests only

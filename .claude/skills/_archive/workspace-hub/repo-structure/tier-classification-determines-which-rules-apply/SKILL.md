@@ -17,7 +17,7 @@ scripts_exempt: true
 |------|-------|-------|
 | **Python package** | assetutilities, digitalmodel, worldenergydata, assethold, pdf-large-reader | Full src/ layout — ALL rules below apply |
 | **Admin/tooling** | aceengineer-admin, aceengineer-website, pyproject-starter | src/ layout applies to Python; website = content/ not src/ |
-| **Client/portfolio** | frontierdeepwater, doris, saipem, acma-projects | EXEMPT — follow client conventions; indexing not API surface |
+| **Client/portfolio** | client-a, lng-a, client-d, mkt-a | EXEMPT — follow client conventions; indexing not API surface |
 
 Client/portfolio repos must NOT be refactored to the Python layout. Do not open WRK items
 for structural changes in those repos.

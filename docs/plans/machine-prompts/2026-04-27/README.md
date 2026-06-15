@@ -43,7 +43,7 @@ Paste the ace-linux-2 prompt into a login shell-backed AI session on ace-linux-2
 Codex-ready issues from latest provider work queue:
 
 - #2462 — `feat(digitalmodel): repo-wide operator map and canonical routing surfaces beyond OrcaWave/OrcaFlex`
-- #2227 — `feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis`
+- #2227 — `feat(mkt-a-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis`
 - #2458 — `feat(canonical-spec): promote named OrcaWave multi-body benchmark fixture for roundtrip and handoff readiness`
 - #2464 — `chore(workspace-hub): split curated tier-1 routing index from raw inventory and clean routing noise`
 

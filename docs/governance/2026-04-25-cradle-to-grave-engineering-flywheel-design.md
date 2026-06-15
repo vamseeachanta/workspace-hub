@@ -32,7 +32,7 @@ Locked 2026-04-25.
 | 2 | Program code | Engineering analysis libraries that cite (1) | `digitalmodel/` (OrcaFlex, OrcaWave, mooring, riser) — separate git repo |
 | 3 | Parametric analysis | Precomputed reference scenarios across (2) | Solver queue + nightly batch (5 terminals) |
 | 4 | Public datasets | Public calculators, browsers, atlas outputs (default-public) | `knowledge/seeds/mooring-failures-lng-terminals.yaml` and adjacent corpora; aceengineer-website |
-| 5 | Custom client inputs | Site-specific client data (private only by client opt-out) | `client_projects/` (consulting only — not productized) |
+| 5 | Custom client inputs | Site-specific client data (private only by client opt-out) | `client-c/` (consulting only — not productized) |
 | 6 | Real-time assistance | Live copilot for design/construction/maintenance | Greenfield |
 | 7 | Feedback loop | Field measurements → atlas/code/standards updates; **public loop-closure log by default** | Unformalized |
 

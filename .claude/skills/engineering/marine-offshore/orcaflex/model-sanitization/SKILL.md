@@ -141,7 +141,7 @@ The sanitization mapping should be mirrored in `.legal-deny-list.yaml`:
 ### Run sanitization
 ```bash
 uv run python scripts/sanitize_s7_models.py \
-  --s7-root D:/workspace-hub/rock-oil-field/s7 \
+  --s7-root D:/workspace-hub/client-b/s7 \
   --output-root docs/modules/orcaflex \
   --dry-run  # Preview first
 ```
@@ -149,7 +149,7 @@ uv run python scripts/sanitize_s7_models.py \
 ### Run without OrcFxAPI (.yml only)
 ```bash
 uv run python scripts/sanitize_s7_models.py \
-  --s7-root D:/workspace-hub/rock-oil-field/s7 \
+  --s7-root D:/workspace-hub/client-b/s7 \
   --output-root docs/modules/orcaflex \
   --skip-dat
 ```
@@ -169,7 +169,7 @@ The sanitization script generates `sanitization_audit.json`:
 ```json
 {
   "timestamp": "2026-02-11T10:00:00",
-  "source_root": "D:/workspace-hub/rock-oil-field/s7",
+  "source_root": "D:/workspace-hub/client-b/s7",
   "files_processed": 180,
   "files_skipped_dedup": 45,
   "files_skipped_excluded": 12,

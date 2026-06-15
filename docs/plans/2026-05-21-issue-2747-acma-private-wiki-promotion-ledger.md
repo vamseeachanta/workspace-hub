@@ -1,4 +1,4 @@
-# Issue #2747 Plan — feat(acma): raw-to-private-wiki promotion ledger with completion confidence scoring
+# Issue #2747 Plan — feat(mkt-a): raw-to-private-wiki promotion ledger with completion confidence scoring
 
 ## Metadata
 - **Issue:** #2747
@@ -8,19 +8,19 @@
 - **Execution class:** parallel-worktree after approval
 
 ## Resource Intel
-- GitHub issue #2747: `feat(acma): raw-to-private-wiki promotion ledger with completion confidence scoring`.
+- GitHub issue #2747: `feat(mkt-a): raw-to-private-wiki promotion ledger with completion confidence scoring`.
 - Parent/dependency chain: #2747 depends on #2746 private wiki target and should consume #2389 `source_doc_key`; blocks #2748 unscored-output prevention.
 - Workspace hard gates: issue → resource intel → plan → adversarial review → `status:plan-review` → USER APPROVES → `status:plan-approved` → TDD implementation → close.
-- User update: private `llm-wiki` posture allows fuller ACMA/client data capture with key-information abstractions; public-safe constraints still apply to public repos/docs.
+- User update: private `llm-wiki` posture allows fuller mkt-a/client data capture with key-information abstractions; public-safe constraints still apply to public repos/docs.
 
 ## Problem
-ACMA private wiki promotion needs a computable ledger so raw data becomes auditable, scoreable knowledge rather than a pile of extracted text.
+mkt-a private wiki promotion needs a computable ledger so raw data becomes auditable, scoreable knowledge rather than a pile of extracted text.
 
 ## Scope
 ### Owned paths
 - `schemas/` or config paths for promotion ledger schema
 - `scripts/` validation/report helpers for ledger entries
-- ACMA/private-wiki docs/templates that define scoring categories
+- mkt-a/private-wiki docs/templates that define scoring categories
 
 ### Read-only paths
 - `docs/standards/`

@@ -4,7 +4,7 @@ Use this reference when planning or reviewing GitHub issues that request enginee
 
 ## Why this exists
 
-A 2026-05 Sirocco/current-force chart task exposed a recurring planning risk: chart/UI requirements can look straightforward while hiding engineering-contract ambiguities. In that case the requested current sweep was discrete (`1.0` to `4.5` kn), the UI default was `4.56` kn, and the plotted dimensions mixed heading/rudder sweeps with current-speed selection. A good plan must make these contracts explicit before implementation.
+A 2026-05 proj-a/current-force chart task exposed a recurring planning risk: chart/UI requirements can look straightforward while hiding engineering-contract ambiguities. In that case the requested current sweep was discrete (`1.0` to `4.5` kn), the UI default was `4.56` kn, and the plotted dimensions mixed heading/rudder sweeps with current-speed selection. A good plan must make these contracts explicit before implementation.
 
 ## Mandatory plan checks
 

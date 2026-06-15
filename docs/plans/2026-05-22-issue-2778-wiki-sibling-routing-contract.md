@@ -18,7 +18,7 @@
 - **Found:** `.claude/rules/calc-citation-contract.md` — defines `Citation` sidecar emission for standards-derived constants; pilot LIVE at digitalmodel#2685. **Gap:** sidecar schema has no `source_sibling:` field, so a citation can't tell whether it originated from `llm-wiki` or `llm-wiki-<client>`.
 - **Found:** `.claude/skills/research/llm-wiki-public-private-routing/SKILL.md` (Skill D) — encodes the 2026-05-20 user routing directive (exact client results → private; abstracted → public; public-availability exception for verified-public project names). This skill defines the abstraction-gate decision tree the new rule will reference.
 - **Found:** `.claude/skills/coordination/client-llm-wiki-factory/SKILL.md` v1.0.0 — 13-step operator checklist for bootstrapping `llm-wiki-<client>` repos. Already uses suffix-form naming. Plan must update its checklist to instantiate the new `projects/<slug>/` skeleton automatically.
-- **Found:** `config/client-wikis.yml` — registry with 6 client entries (`acma` bootstrapped 2026-05-18; `rock-oil-field`, `client-projects`, `doris`, `frontierdeepwater`, `saipem` planned). Plan extends the schema to declare project-nesting layout per client.
+- **Found:** `config/client-wikis.yml` — registry with 6 client entries (`mkt-a` bootstrapped 2026-05-18; `client-b`, `client-c`, `lng-a`, `client-a`, `client-d` planned). Plan extends the schema to declare project-nesting layout per client.
 - **Found:** `templates/client-llm-wiki/` — existing scaffolding tree (`DATA-CYCLE.md`, `ledgers/`, `LICENSE`, `pages/`, `README.md`, `REDACTION-POSTURE.md`, `reports/`, `sources/`). **Gap:** no `projects/` subtree — the per-project skeleton is what #2778 adds.
 - **Found:** `scripts/readiness/check-sibling-sso-flow.py` and `scripts/readiness/repair-sibling-sso-flow.py` (added in commit `326ada4cd` for #2775). Checker sections: `memory`, `skills`, `harness_contracts`, `registry`. **Gap:** no wiki-routing section — the new Level-2 enforcement script for frontmatter consistency will be a sibling, not an extension.
 - **Found:** `tests/readiness/test_sibling_agents_contract.py`, `test_sibling_sso_repair_dry_run.py`, `test_sync_agent_configs_pyyaml_fallback.py`, plus 5 more (#2775 landing). Plan adds parallel tests for the new enforcement script.
@@ -32,14 +32,14 @@ Not applicable for plan drafting — this issue defines the routing contract tha
 
 ### Documents consulted
 
-- **`docs/session-handoffs/2026-05-20-handoff-digitalmodel-616-ocimf-to-llm-wiki.md`** — operational precedent. OCIMF MEG3/MEG4 routing matrix: public methodology pages → `llm-wiki`; SIROCCO-specific calc results → `llm-wiki-acma`. Cited by #2778 body as the speculated `llm-wiki-sirocco` source that #2778 explicitly *corrects* (one sibling per client, not per project).
-- **`docs/session-handoffs/2026-05-22-issue-2760-sirocco-pass-h-exit.md`** — confirms B1528 SIROCCO is a project under client ACMA, and the OCIMF workbook is at `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx`. Validates the project-as-folder pattern with a live example.
+- **`docs/session-handoffs/2026-05-20-handoff-digitalmodel-616-ocimf-to-llm-wiki.md`** — operational precedent. OCIMF MEG3/MEG4 routing matrix: public methodology pages → `llm-wiki`; proj-a-specific calc results → `llm-wiki-mkt-a`. Cited by #2778 body as the speculated `llm-wiki-proj-a` source that #2778 explicitly *corrects* (one sibling per client, not per project).
+- **`docs/session-handoffs/2026-05-22-issue-2760-proj-a-pass-h-exit.md`** — confirms B1528 proj-a is a project under client mkt-a, and the OCIMF workbook is at `/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx`. Validates the project-as-folder pattern with a live example.
 - **`docs/plans/_template-issue-plan.md`** — plan template requiring `client:` field is the modification target.
 - **#2778 issue body** (the issue itself) — convention locked by user 2026-05-22; 4 open questions; 6 acceptance criteria.
-- **#2744 epic body** — first client-sibling pilot. Currently references `acma-llm-wiki` (prefix) in the body text, but the live repo `vamseeachanta/llm-wiki-acma` exists in suffix form (created 2026-05-18, registered `bootstrapped`). #2778 body's first AC ("rename before repo creation") is OBE; plan handles this explicitly.
+- **#2744 epic body** — first client-sibling pilot. Currently references `mkt-a-llm-wiki` (prefix) in the body text, but the live repo `vamseeachanta/llm-wiki-mkt-a` exists in suffix form (created 2026-05-18, registered `bootstrapped`). #2778 body's first AC ("rename before repo creation") is OBE; plan handles this explicitly.
 - **#2776 issue body** — cross-wiki linking discipline follow-on from worldenergydata#429. #2778 extends with client→generic / generic→client / client→client rules.
 - **#2774 issue body** — generic ingest umbrella; routes vendor-licensed standards content to `llm-wiki`. Validates that the routing-target field in writer config (`LLM_WIKI_TARGET=generic`) is the right shape.
-- **#2731 issue body** — data-location inventory parent (`status:needs-plan`). Captures the `client_projects` (underscore) and `frontierdeepwater` (no hyphen) bucket-name edge cases that #2778's enforcement script must accommodate.
+- **#2731 issue body** — data-location inventory parent (`status:needs-plan`). Captures the `client-c` (underscore) and `client-a` (no hyphen) bucket-name edge cases that #2778's enforcement script must accommodate.
 
 ### Gaps identified
 
@@ -57,15 +57,15 @@ What does not exist today and this plan creates:
 
 **Issue statuses** (verified 2026-05-22 via `gh issue view`):
 - `#2778` — OPEN, status:needs-plan, priority:high, cat:data-pipeline, cat:harness, domain:knowledge, domain:repo-organization — "feat(architecture): lock data/knowledge/result search routing across llm-wiki + llm-wiki-<client> siblings"
-- `#2744` — OPEN — "epic(acma): client project data-cycle readiness and private llm-wiki launch"
+- `#2744` — OPEN — "epic(mkt-a): client project data-cycle readiness and private llm-wiki launch"
 - `#2774` — OPEN — "Private llm-wiki corpus-ingest program (post-2026-05-20 privacy flip)"
 - `#2775` — CLOSED 2026-05-22T18:52:37Z, status:done — "fix(harness): restore workspace-hub SSoT flow across sibling repos"
 - `#2776` — OPEN — "Cross-wiki linking discipline — supersede stale governance + add enforcement script"
 - `#2731` — OPEN, status:needs-plan — "feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion"
 - `#2400` — OPEN, priority:medium — "feat(doc-intel): MCP server core — doc_key_lookup, wiki_search, registry_query"
 
-**Repo existence** (verified 2026-05-22 via `gh repo view vamseeachanta/llm-wiki-acma --json name,visibility,createdAt`):
-- EXISTS: `vamseeachanta/llm-wiki-acma` — PRIVATE — created 2026-05-18T09:36:50Z
+**Repo existence** (verified 2026-05-22 via `gh repo view vamseeachanta/llm-wiki-mkt-a --json name,visibility,createdAt`):
+- EXISTS: `vamseeachanta/llm-wiki-mkt-a` — PRIVATE — created 2026-05-18T09:36:50Z
 - EXISTS: `vamseeachanta/llm-wiki` — PRIVATE since 2026-05-20 (per `project_llm_wiki_privacy_flip` memory)
 - EXISTS: `vamseeachanta/worldenergydata-wiki` — public sibling for federal public-domain data (covered by codes-standards-data-routing.md §6, out of scope for #2778)
 
@@ -96,11 +96,11 @@ What does not exist today and this plan creates:
 - `grep -r "client:" docs/plans/_template-issue-plan.md 2>&1 | wc -l` → 0 (only `<repo>` placeholder appears) → confirms the planning template has no `client:` field today.
 - `ls templates/client-llm-wiki/projects/ 2>&1` → "No such file or directory" → confirms the project-folder skeleton does not exist today.
 
-**Line excerpts** (verifying issue body's #2744 stale-AC claim, `gh repo view vamseeachanta/llm-wiki-acma`):
+**Line excerpts** (verifying issue body's #2744 stale-AC claim, `gh repo view vamseeachanta/llm-wiki-mkt-a`):
 ```
-{"createdAt":"2026-05-18T09:36:50Z","name":"llm-wiki-acma","visibility":"PRIVATE"}
+{"createdAt":"2026-05-18T09:36:50Z","name":"llm-wiki-mkt-a","visibility":"PRIVATE"}
 ```
-→ The repo already exists in suffix form. The #2778 body AC "rename `acma-llm-wiki` → `llm-wiki-acma` BEFORE any repo creation" is OBE. Plan addresses by replacing with the still-open work: project-nesting layout + #2744 AC text refresh (see Acceptance Criteria below).
+→ The repo already exists in suffix form. The #2778 body AC "rename `mkt-a-llm-wiki` → `llm-wiki-mkt-a` BEFORE any repo creation" is OBE. Plan addresses by replacing with the still-open work: project-nesting layout + #2744 AC text refresh (see Acceptance Criteria below).
 
 **Reproduction proofs:** `N/A — governance/architecture issue, no runtime failure asserted` (per Step 1.5 skip-allowed exception of `coordination/issue-planning-mode`).
 
@@ -185,8 +185,8 @@ Do not apply when:
   - The wiki target is worldenergydata-wiki (public-domain federal-data
     sibling) — that surface is covered by codes-standards-data-routing.md §6.
 
-Pilot reference: client `acma` (status:bootstrapped in config/client-wikis.yml);
-project `sirocco` under acma (live in #2760).
+Pilot reference: client `mkt-a` (status:bootstrapped in config/client-wikis.yml);
+project `proj-a` under mkt-a (live in #2760).
 
 Related: codes-standards-data-routing.md (vendor-licensed standards),
 calc-citation-contract.md (sidecar emission), llm-wiki-public-private-routing
@@ -333,7 +333,7 @@ projects/_template-project/
 └── results/.gitkeep            # client-specific calc results + reports
 ```
 
-The `_template-project` slug is intentional — when `client-llm-wiki-factory` step 5 copies the template tree, the operator subsequently runs `cp -a projects/_template-project/. projects/<actual-project-slug>/` for each project (e.g., `projects/sirocco/`).
+The `_template-project` slug is intentional — when `client-llm-wiki-factory` step 5 copies the template tree, the operator subsequently runs `cp -a projects/_template-project/. projects/<actual-project-slug>/` for each project (e.g., `projects/proj-a/`).
 
 ### Planning template change (`docs/plans/_template-issue-plan.md`)
 
@@ -381,13 +381,13 @@ Update `digitalmodel/src/digitalmodel/citations/schema.py` (sidecar dataclass) t
 | Modify | `.claude/skills/coordination/client-llm-wiki-factory/SKILL.md` | add Step 5b (after template copy) instantiating per-project skeletons |
 | Modify | `.claude/skills/coordination/issue-planning-mode/SKILL.md` | require `client:` context in the planning template reference |
 | Modify | `config/client-wikis.yml` | add optional `projects:` list per client (declarative roster of known projects); consumed by Rule E of the enforcement script |
-| Modify | `scripts/agents/install-pre-commit-hook-cross-repo.sh` | extend the existing #2722 cross-repo installer to also install `check-wiki-sibling-frontmatter.{sh,py}` into each wiki sibling (`llm-wiki`, `llm-wiki-acma`, plus the 5 planned per `config/client-wikis.yml`); vendor a copy of `config/client-wikis.yml` into each wiki repo's `.workspace-hub/` at install time; ensure each wiki repo's `.gitignore` carries a `.workspace-hub/` entry (r2-F7 fix — prevents perpetual dirty state from the vendored registry); document re-sync procedure as **manual `git pull` of workspace-hub then re-run install script** rather than a cron (r2-F3 fix — cron deliverable explicitly out of scope for #2778) |
+| Modify | `scripts/agents/install-pre-commit-hook-cross-repo.sh` | extend the existing #2722 cross-repo installer to also install `check-wiki-sibling-frontmatter.{sh,py}` into each wiki sibling (`llm-wiki`, `llm-wiki-mkt-a`, plus the 5 planned per `config/client-wikis.yml`); vendor a copy of `config/client-wikis.yml` into each wiki repo's `.workspace-hub/` at install time; ensure each wiki repo's `.gitignore` carries a `.workspace-hub/` entry (r2-F7 fix — prevents perpetual dirty state from the vendored registry); document re-sync procedure as **manual `git pull` of workspace-hub then re-run install script** rather than a cron (r2-F3 fix — cron deliverable explicitly out of scope for #2778) |
 | Update | `docs/plans/README.md` | add this plan to the index |
 | Modify | `digitalmodel/src/digitalmodel/citations/schema.py` (CROSS-REPO) | extend `Citation` dataclass with `source_sibling`, `source_project` — committed in digitalmodel repo, not workspace-hub |
 
 **Cross-repo notes:**
 - The `digitalmodel/src/digitalmodel/citations/schema.py` modification is in a sibling repo. Per `feedback_multi_agent_commit_serialization`, the implementation phase will execute that change in `/mnt/local-analysis/digitalmodel/` separately and reference both commit SHAs in the closeout comment.
-- The `llm-wiki-acma` and `llm-wiki` repos themselves do NOT receive write traffic from this plan — they consume the new contract. They do receive frontmatter migration in a separate follow-on (see Out of Scope below).
+- The `llm-wiki-mkt-a` and `llm-wiki` repos themselves do NOT receive write traffic from this plan — they consume the new contract. They do receive frontmatter migration in a separate follow-on (see Out of Scope below).
 
 ---
 
@@ -396,7 +396,7 @@ Update `digitalmodel/src/digitalmodel/citations/schema.py` (sidecar dataclass) t
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
 | `test_enforcement_passes_on_valid_generic_frontmatter` | a wiki page with `visibility: private-llm-wiki` and no `client:` passes | staged: `wikis/marine-engineering/wiki/concepts/foo.md` with valid frontmatter | exit 0, no stderr |
-| `test_enforcement_passes_on_valid_private_client_frontmatter` | a wiki page with `visibility: private-client-llm-wiki`, `client: acma`, `project: sirocco` passes | staged: `projects/sirocco/methodology/foo.md` with valid frontmatter | exit 0, no stderr |
+| `test_enforcement_passes_on_valid_private_client_frontmatter` | a wiki page with `visibility: private-client-llm-wiki`, `client: mkt-a`, `project: proj-a` passes | staged: `projects/proj-a/methodology/foo.md` with valid frontmatter | exit 0, no stderr |
 | `test_enforcement_fails_when_visibility_invalid` | unknown visibility tier fails | `visibility: public-wiki` (invalid) | exit 1, stderr names the file + invalid value |
 | `test_enforcement_fails_when_private_client_missing_client` | `private-client-llm-wiki` without `client:` fails | frontmatter has visibility but no client | exit 1, stderr explains rule B |
 | `test_enforcement_fails_when_client_not_in_registry` | `client: nonexistent` (not in config/client-wikis.yml) fails | client slug unknown | exit 1, stderr names the unregistered client |
@@ -405,17 +405,17 @@ Update `digitalmodel/src/digitalmodel/citations/schema.py` (sidecar dataclass) t
 | `test_enforcement_skips_non_wiki_paths` | staged file outside wiki path globs is ignored | staged: `docs/reports/foo.md` | exit 0, no inspection |
 | `test_enforcement_skips_unstaged_files` | only staged files trigger check; working-tree-only changes don't | unstaged wiki file with bad frontmatter | exit 0 |
 | `test_enforcement_skips_when_not_in_wiki_repo` | repo identity check bails early outside wiki repos — Finding 1 of plan-r1 | run from a repo named `workspace-hub` | exit 0, no inspection |
-| `test_enforcement_fails_when_client_slug_mismatches_repo_identity` | `client:` value must match the wiki repo's identity (suffix after `llm-wiki-`) — Finding 1 of plan-r1 | client: `acma` inside repo `llm-wiki-doris` | exit 1, stderr names the mismatch |
+| `test_enforcement_fails_when_client_slug_mismatches_repo_identity` | `client:` value must match the wiki repo's identity (suffix after `llm-wiki-`) — Finding 1 of plan-r1 | client: `mkt-a` inside repo `llm-wiki-lng-a` | exit 1, stderr names the mismatch |
 | `test_enforcement_ci_mode_uses_base_ref_diff` | CI mode auto-detection (`CI=true`) uses `${BASE_REF}..HEAD` instead of `--cached` — Finding 2 of plan-r1 | `CI=true` env, committed change between base and HEAD | exit 1 (wiki file with bad frontmatter detected via committed diff) |
 | `test_enforcement_pre_commit_mode_uses_cached_diff` | pre-commit mode (no CI env) uses `git diff --cached` | no `CI` env, staged change | exit 1 (wiki file with bad frontmatter detected via staged diff) |
-| `test_enforcement_handles_bucket_name_edge_cases` | `client_projects` (underscore raw-root) and `frontierdeepwater` (no hyphen) resolve via registry inside their respective repo names | runs inside repo `llm-wiki-client-projects` and `llm-wiki-frontierdeepwater` | exit 0 |
-| `test_enforcement_fails_when_project_not_in_registry_projects_list` | Rule E — when client.projects list is populated, project must be enumerated — Finding 5 of plan-r1 | client: acma with `projects: [sirocco]`; staged file claims `project: unknown` | exit 1, stderr names the missing project |
+| `test_enforcement_handles_bucket_name_edge_cases` | `client-c` (underscore raw-root) and `client-a` (no hyphen) resolve via registry inside their respective repo names | runs inside repo `llm-wiki-client-c` and `llm-wiki-client-a` | exit 0 |
+| `test_enforcement_fails_when_project_not_in_registry_projects_list` | Rule E — when client.projects list is populated, project must be enumerated — Finding 5 of plan-r1 | client: mkt-a with `projects: [proj-a]`; staged file claims `project: unknown` | exit 1, stderr names the missing project |
 | `test_enforcement_warns_when_registry_projects_list_absent` | Rule E forward-compat — empty/absent projects list disables hard fail, warn only | client has no projects: key in registry | exit 0, warning to stderr |
 | `test_planning_template_carries_client_field` | `docs/plans/_template-issue-plan.md` contains the required `Client:` marker | parse template markdown | assertion: `> **Client:**` present |
 | `test_planning_template_carries_project_field` | `docs/plans/_template-issue-plan.md` contains the optional `Project:` marker | parse template markdown | assertion: `> **Project:**` present |
 | `test_citation_sidecar_schema_has_source_sibling` | digitalmodel `Citation` dataclass has `source_sibling` field | import + reflect | assertion: field present and required |
 | `test_citation_sidecar_schema_has_source_project` | digitalmodel `Citation` dataclass has `source_project` field | import + reflect | assertion: field present and optional (default None) |
-| `test_citation_resolver_fails_on_source_sibling_mismatch` | citation pointing to `llm-wiki-acma` slug with `source_sibling: generic` fails fast | construct invalid Citation | raises `CitationResolutionError` referencing the mismatch |
+| `test_citation_resolver_fails_on_source_sibling_mismatch` | citation pointing to `llm-wiki-mkt-a` slug with `source_sibling: generic` fails fast | construct invalid Citation | raises `CitationResolutionError` referencing the mismatch |
 
 All tests must FAIL before implementation begins (red→green→refactor TDD). Implementation order: enforcement script → planning template → citation contract → templates → skill updates. Tests precede each.
 
@@ -426,14 +426,14 @@ All tests must FAIL before implementation begins (red→green→refactor TDD). I
 Per #2778 issue body, plus corrections for OBE items:
 
 - [ ] Rule documented at `.claude/rules/wiki-sibling-routing.md` with When-To-Apply / Do-Not-Apply blocks and the suffix-form locked. **(per #2778 AC #1)**
-- [ ] ~~#2744 updated to use `llm-wiki-acma` (suffix) BEFORE any repo creation~~ → **REPLACED:** verify suffix-form `vamseeachanta/llm-wiki-acma` exists and is registered as `bootstrapped` (already true at plan time, evidence above); post comment on #2744 confirming OBE; add new #2744 AC for project-nesting layout to be applied to `llm-wiki-acma` after this plan's templates land. **(corrects #2778 AC #2)**
+- [ ] ~~#2744 updated to use `llm-wiki-mkt-a` (suffix) BEFORE any repo creation~~ → **REPLACED:** verify suffix-form `vamseeachanta/llm-wiki-mkt-a` exists and is registered as `bootstrapped` (already true at plan time, evidence above); post comment on #2744 confirming OBE; add new #2744 AC for project-nesting layout to be applied to `llm-wiki-mkt-a` after this plan's templates land. **(corrects #2778 AC #2)**
 - [ ] Planning template captures `client:` (required) and `project:` (optional) context. **(per #2778 AC #3)**
 - [ ] Citation contract updated to include `source_sibling:` and optional `source_project:` in sidecar schema. **(per #2778 AC #4)**
 - [ ] Frontmatter schema extended for `private-client-llm-wiki` visibility tier with required `client:` and optional `project:`. **(per #2778 AC #5)**
 - [ ] Cross-sibling link discipline added to #2776 (post comment with proposed text) — client→generic allowed; generic→client forbidden; client→client forbidden. **(per #2778 AC #6)**
 - [ ] Level-2 enforcement script verifies frontmatter visibility/client/project consistency on staged content AND on `${BASE_REF}..HEAD` diffs (CI mode); auto-detects mode via `CI` env var; runs only inside wiki repos (early bail by `git rev-parse --show-toplevel` + basename matching `llm-wiki` or `llm-wiki-*`); installable into each wiki repo via `scripts/agents/install-pre-commit-hook-cross-repo.sh` (prior art from #2722); all 20 TDD tests pass. **(per #2778 AC #7)**
 - [ ] Memory entries `feedback_wiki_sibling_routing` and `project_wiki_sibling_pattern` land after issue closes (post-implementation, not part of this plan). **(per #2778 AC #8)**
-- [ ] First-client pilot validation: instantiate `templates/client-llm-wiki/projects/_template-project/` into `llm-wiki-acma/projects/sirocco/` as the end-to-end smoke test; record commit SHA in closeout. **(per #2778 AC #9)**
+- [ ] First-client pilot validation: instantiate `templates/client-llm-wiki/projects/_template-project/` into `llm-wiki-mkt-a/projects/proj-a/` as the end-to-end smoke test; record commit SHA in closeout. **(per #2778 AC #9)**
 - [ ] All new tests pass: `uv run pytest tests/contract/ tests/enforcement/ -v` (where applicable; shell tests run via `bash tests/enforcement/...`).
 - [ ] No regression: `uv run pytest tests/readiness/ -q` returns the same pre-plan pass rate (currently 30 passed per briefing).
 - [ ] Review artifacts posted to `scripts/review/results/` for Claude + Codex + Gemini per T3 cross-review policy.
@@ -472,7 +472,7 @@ Per #2778 issue body, plus corrections for OBE items:
 
 **Round 2 → r3 inline patches applied (in this commit):**
 - **r2-F1 (Python-in-Bash):** Script renamed `check-wiki-sibling-frontmatter.sh` → `check-wiki-sibling-frontmatter.py`; 4-line `.sh` wrapper retained for hook callers that exec by `.sh` name. Pseudocode rewritten as Python. Dependency footprint matches `scripts/readiness/check-sibling-sso-flow.py` (#2775 prior art).
-- **r2-F2 (Edge-case bucket slug — REJECTED):** Gemini conflated `raw_root` (`/mnt/ace/client_projects/`, underscore) with `short_name` (`client-projects`, hyphen). My derivation `repo_name[len("llm-wiki-"):]` from repo `llm-wiki-client-projects` yields `client-projects` (hyphen) which matches `short_name` in registry. The underscore is exclusively in `raw_roots[0]` (a #2731 D5 quirk), never in the slug or the repo name. Documented in Risk #9 with verification evidence. No pseudocode change.
+- **r2-F2 (Edge-case bucket slug — REJECTED):** Gemini conflated `raw_root` (`/mnt/ace/client-c/`, underscore) with `short_name` (`client-c`, hyphen). My derivation `repo_name[len("llm-wiki-"):]` from repo `llm-wiki-client-c` yields `client-c` (hyphen) which matches `short_name` in registry. The underscore is exclusively in `raw_roots[0]` (a #2731 D5 quirk), never in the slug or the repo name. Documented in Risk #9 with verification evidence. No pseudocode change.
 - **r2-F3 (Missing cron):** Cron claim dropped from Risk #8. Replaced with **manual re-sync procedure** documented in install script — operator runs `git -C workspace-hub pull && scripts/agents/install-pre-commit-hook-cross-repo.sh` to refresh vendored registry. Cron explicitly OOS for #2778.
 - **r2-F4 (README frontmatter loop):** Pseudocode filter excludes `basename(path) == "README.md"` from `projects/**/*.md` validation. README is a navigation aid in the project skeleton, not a content page subject to frontmatter rules. Template ships without strict frontmatter, copies cleanly into new project folders.
 - **r2-F5 (CI shallow clone):** Pseudocode adds `git fetch --depth=1 origin "$base_ref" 2>/dev/null || true` before the CI-mode diff. If the ref remains unreachable, the script exits 0 with stderr warning (degrades open by design — does not break builds). Recommends `fetch-depth: 0` in CI workflows for hard-enforcement.
@@ -494,22 +494,22 @@ Per `feedback_codex_sustained_major_loop` precedent, single-provider MAJOR is no
 1. **#2776 dependency.** This plan extends the cross-wiki linking rules introduced by #2776. #2776 is OPEN with no plan yet, so the "generic→client forbidden" addition may conflict with whatever #2776's plan ultimately specifies. **Mitigation:** post the proposed addition as a comment on #2776 rather than directly modifying its body; defer to #2776's plan-author for final wording.
 2. **Cross-repo schema change (digitalmodel `Citation`).** The new `source_sibling:` field is a breaking change to the `Citation` dataclass — any code constructing `Citation(...)` without it would break unless we provide a sensible default. **Mitigation:** make `source_sibling` default to `"generic"` for backward compatibility; emit a `DeprecationWarning` when default is used; bump the citation-contract minor version.
 3. **Sparse-checkout overlay blindness.** Per `feedback_gemini_sandbox_overlay_blindness`, Gemini reviews may not see sparse-checkout overlays. The new rule file + enforcement script live in workspace-hub, not in overlay paths — confirm by `git ls-files` before dispatching Gemini review.
-4. **Bucket-name edge cases.** `config/client-wikis.yml` already documents `client_projects` (underscore raw-root) and `frontierdeepwater` (no hyphen) per #2731 D5/D6. The post-r1 redesign uses **repo identity from `basename(git rev-parse --show-toplevel)`** rather than path-prefix derivation, so the underscore/no-hyphen edge cases resolve naturally as long as the repo names themselves are `llm-wiki-client-projects` and `llm-wiki-frontierdeepwater` (verified by `test_enforcement_handles_bucket_name_edge_cases`).
-5. **Frontmatter migration scope creep.** Existing wiki pages on `llm-wiki` and `llm-wiki-acma` may not carry the new `visibility:` / `client:` / `project:` fields. **Mitigation:** the enforcement script acts on STAGED content (pre-commit mode) or `${BASE_REF}..HEAD` (CI mode) only — legacy pages don't trip it until edited. A separate audit issue (post-#2778) handles backfill.
+4. **Bucket-name edge cases.** `config/client-wikis.yml` already documents `client-c` (underscore raw-root) and `client-a` (no hyphen) per #2731 D5/D6. The post-r1 redesign uses **repo identity from `basename(git rev-parse --show-toplevel)`** rather than path-prefix derivation, so the underscore/no-hyphen edge cases resolve naturally as long as the repo names themselves are `llm-wiki-client-c` and `llm-wiki-client-a` (verified by `test_enforcement_handles_bucket_name_edge_cases`).
+5. **Frontmatter migration scope creep.** Existing wiki pages on `llm-wiki` and `llm-wiki-mkt-a` may not carry the new `visibility:` / `client:` / `project:` fields. **Mitigation:** the enforcement script acts on STAGED content (pre-commit mode) or `${BASE_REF}..HEAD` (CI mode) only — legacy pages don't trip it until edited. A separate audit issue (post-#2778) handles backfill.
 6. ~~**Self-blocking enforcement.**~~ ✓ **RESOLVED in r1→r2 revision.** The post-Finding-4 redesign scopes the script to **run only inside wiki repos** (early bail via `git rev-parse --show-toplevel` + basename match). Workspace-hub paths (rules, plans, tests, templates) are out-of-scope by construction — no allowlist needed. The script's tests run against fixture wiki repos under `tmp_path/`, not against workspace-hub itself.
 7. **Planning-template churn.** Changing `_template-issue-plan.md` mid-flight affects every in-progress plan. **Mitigation:** make `Client:` accept `"N/A"` for plans that don't touch wiki content; document migration in `docs/plans/README.md`.
 8. **Registry path resolution inside wiki repos.** The script needs `config/client-wikis.yml` from workspace-hub to validate client/project. Wiki repos don't ship with workspace-hub; install-time the hook installer must either (a) vendor a copy of the registry into the wiki repo, or (b) require `$WIKI_SIBLING_REGISTRY_PATH` env pointing to a sibling workspace-hub checkout. **Mitigation (r2-F3 + r2-F7 patches):** the install script (1) vendors the registry to `$wiki_repo/.workspace-hub/client-wikis.yml`, (2) adds `.workspace-hub/` to the wiki repo's `.gitignore` so the vendored copy doesn't appear as dirty state, and (3) documents the **manual re-sync procedure** (`git -C workspace-hub pull && scripts/agents/install-pre-commit-hook-cross-repo.sh`) rather than promising a cron deliverable that this plan does not deliver. Stale-registry behavior is `warn-only` so an out-of-date copy doesn't block all wiki commits; a cron deliverable is explicitly OOS for #2778 and can be filed as a follow-on if churn warrants.
-9. **Reviewer-rejection record (Gemini r2-F2, REJECTED with evidence).** Gemini r2 flagged a MAJOR finding claiming `expected_client_slug = repo_name[len("llm-wiki-"):]` from `llm-wiki-client-projects` yields `client-projects` (hyphen) which mismatches the registry's `client_projects` (underscore). **Verification:** `grep -A 3 "short_name: client-projects" config/client-wikis.yml` returns `short_name: client-projects` (hyphen). The underscore-form `client_projects` is exclusively the `raw_roots[0]` path under `/mnt/ace/` — a #2731 D5 quirk documented as a bucket-name edge case, never used as a slug. The script validates against `short_name` (hyphen-form), not `raw_root`. My derivation is correct: `llm-wiki-client-projects` → `client-projects` → matches registry. Reviewers should treat `raw_roots` and `short_name` as distinct fields per the registry schema. Per `feedback_r1_review_trust_hazard`, verified before rejecting — Gemini r2-F2 absorbed-as-clarification (no pseudocode change), tracked here for traceability.
+9. **Reviewer-rejection record (Gemini r2-F2, REJECTED with evidence).** Gemini r2 flagged a MAJOR finding claiming `expected_client_slug = repo_name[len("llm-wiki-"):]` from `llm-wiki-client-c` yields `client-c` (hyphen) which mismatches the registry's `client-c` (underscore). **Verification:** `grep -A 3 "short_name: client-c" config/client-wikis.yml` returns `short_name: client-c` (hyphen). The underscore-form `client-c` is exclusively the `raw_roots[0]` path under `/mnt/ace/` — a #2731 D5 quirk documented as a bucket-name edge case, never used as a slug. The script validates against `short_name` (hyphen-form), not `raw_root`. My derivation is correct: `llm-wiki-client-c` → `client-c` → matches registry. Reviewers should treat `raw_roots` and `short_name` as distinct fields per the registry schema. Per `feedback_r1_review_trust_hazard`, verified before rejecting — Gemini r2-F2 absorbed-as-clarification (no pseudocode change), tracked here for traceability.
 
 ### Open Questions (recommendations for user at plan-approval review)
 
 These mirror the 4 questions in #2778 body. I recommend a verdict for each so the user can confirm or override at approval rather than blocking on a discuss-then-plan cycle.
 
 **Q1. Client-slug discipline** — public-name form when public, vs always-abstracted regardless of public status?
-> **Recommendation:** Default to public-name when the client name is publicly known and the user explicitly opts in; abstracted form when in doubt. **Rationale:** the 2026-05-20 user directive (per `research/llm-wiki-public-private-routing`) sets this exact pattern for project names; consistency across project/client surfaces is the cleanest mental model. `acma` is fine as-is because ACMA is a real client engagement and the operator has opted in (evidenced by registry entry as `bootstrapped`). For future clients, the planning template's `client:` field documents the chosen form per-client at registry time.
+> **Recommendation:** Default to public-name when the client name is publicly known and the user explicitly opts in; abstracted form when in doubt. **Rationale:** the 2026-05-20 user directive (per `research/llm-wiki-public-private-routing`) sets this exact pattern for project names; consistency across project/client surfaces is the cleanest mental model. `mkt-a` is fine as-is because mkt-a is a real client engagement and the operator has opted in (evidenced by registry entry as `bootstrapped`). For future clients, the planning template's `client:` field documents the chosen form per-client at registry time.
 
 **Q2. Project-folder schema** — normative skeleton or starting point?
-> **Recommendation:** **Normative for the four standard subdirs** (`raw/`, `extracted/`, `methodology/`, `results/`); flexible above that. **Rationale:** the four subdirs match the data-cycle promotion model already in #2744 (DATA-CYCLE.md) and SIROCCO's operational pattern. Per-client extensions (e.g., a `vendor-correspondence/` subdir for clients with heavy off-repo traffic) are allowed but live as documented add-ons in the client's `DATA-CYCLE.md`, not as deviations from the skeleton.
+> **Recommendation:** **Normative for the four standard subdirs** (`raw/`, `extracted/`, `methodology/`, `results/`); flexible above that. **Rationale:** the four subdirs match the data-cycle promotion model already in #2744 (DATA-CYCLE.md) and proj-a's operational pattern. Per-client extensions (e.g., a `vendor-correspondence/` subdir for clients with heavy off-repo traffic) are allowed but live as documented add-ons in the client's `DATA-CYCLE.md`, not as deviations from the skeleton.
 
 **Q3. Existing generic content with client lineage** — retroactive classification?
 > **Recommendation:** **Forward-only** (the #2778 out-of-scope default). **Rationale:** existing `llm-wiki` content under `wikis/` was authored under the public-only license assumption; bulk back-migration introduces audit risk and is its own scope. Flag the question for a follow-on audit issue if any client-derived content is suspected in `llm-wiki` today; the abstraction-gate skill already covers per-page promotion decisions for new content.
@@ -524,7 +524,7 @@ From #2775's known blocker list — classification of how each relates to #2778:
 | Sibling | Blocker | Classification for #2778 |
 |---|---|---|
 | `llm-wiki` | missing `AGENTS.md` | **In-scope** (the new routing contract should reference workspace-hub SSoT via this sibling's AGENTS.md; plan delivers the AGENTS.md content as a pilot validation step alongside the contract landing) |
-| `llm-wiki-acma` | missing `AGENTS.md` | **In-scope** (same reason; pilot includes both `llm-wiki` and `llm-wiki-acma` AGENTS.md) |
+| `llm-wiki-mkt-a` | missing `AGENTS.md` | **In-scope** (same reason; pilot includes both `llm-wiki` and `llm-wiki-mkt-a` AGENTS.md) |
 | `aceengineer-strategy` | missing `AGENTS.md` | **Separate child issue** (not a wiki sibling; generic SSoT harness gap, belongs under #2775's residual cleanup) |
 | `kaggle-rogii-2026` | missing `AGENTS.md` | **Separate child issue** (not a wiki sibling; same as above) |
 | `CAD-DEVELOPMENTS` | missing workspace-hub contract | **Separate child issue** (not a wiki sibling; structural workspace-hub-contract gap, distinct from routing concern) |

@@ -25,8 +25,8 @@ The cron never edits site content (HTML/assets/blog) and never writes to the 6 s
   - `assethold`
   - `assetutilities`
   - `CAD-DEVELOPMENTS`
-  - `doris`
-  - `frontierdeepwater`
+  - `lng-a`
+  - `client-a`
 - Local cron on `ace-linux-1`, daily at 6:00 AM CT.
 - Four signal detectors (release tags, new case studies, README capability diffs, labeled closed issues).
 - Idempotent digest writes + deduped issue filing via `gh` CLI.
@@ -36,7 +36,7 @@ The cron never edits site content (HTML/assets/blog) and never writes to the 6 s
 
 - Automated draft PRs that edit site HTML or case-studies directly (Approach 3 from brainstorm).
 - Public-facing digest (current design keeps digest inside workspace-hub).
-- Private or client repos (`client_projects`, `achantas-data`, `investments`, etc.).
+- Private or client repos (`client-c`, `achantas-data`, `investments`, etc.).
 - Signal detectors for commit volume or new top-level modules (too noisy for v1).
 - Non-daily cadence (weekly summaries, on-demand runs beyond `--dry-run` / `--doctor`).
 
@@ -112,11 +112,11 @@ repos:
   - name: CAD-DEVELOPMENTS
     path: /mnt/local-analysis/workspace-hub/CAD-DEVELOPMENTS
     readme_sections: ["Capabilities", "Features"]
-  - name: doris
-    path: /mnt/local-analysis/workspace-hub/doris
+  - name: lng-a
+    path: /mnt/local-analysis/workspace-hub/lng-a
     readme_sections: ["Capabilities", "Features"]
-  - name: frontierdeepwater
-    path: /mnt/local-analysis/workspace-hub/frontierdeepwater
+  - name: client-a
+    path: /mnt/local-analysis/workspace-hub/client-a
     readme_sections: ["Capabilities", "Features"]
 issue_repo: vamseeachanta/aceengineer-website
 digest_dir: docs/sync-reports

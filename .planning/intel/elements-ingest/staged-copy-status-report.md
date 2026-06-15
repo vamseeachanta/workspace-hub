@@ -6,7 +6,7 @@
 - Scope: staged copy into `_from_elements/` directories only.
 - Source deletion: none.
 - Parent-folder dedupe/merge: not performed.
-- `Codes & Regulations`: intentionally not copied; verify-only against `/mnt/ace/acma-codes/` unless missing content is proven.
+- `Codes & Regulations`: intentionally not copied; verify-only against `/mnt/ace/mkt-a-codes/` unless missing content is proven.
 
 ## Verification result
 

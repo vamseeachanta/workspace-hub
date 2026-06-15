@@ -23,7 +23,7 @@ These repos now have only their default branch locally:
 - teamresumes -> main
 - aceengineer-website -> main
 
-rock-oil-field remains on its default branch `master` and now has only that local branch.
+client-b remains on its default branch `master` and now has only that local branch.
 
 ## Blocked branches handled conservatively
 

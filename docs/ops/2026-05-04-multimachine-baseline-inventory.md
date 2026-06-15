@@ -39,8 +39,8 @@
 
 | Repo/bucket | Preferred home | ace-linux-2 policy |
 |---|---|---|
-| `client_projects` | `/mnt/ace/client_projects` | NFS read/write only with explicit project scope; do not clone/mirror wholesale. |
-| `acma-projects` | `/mnt/ace/acma-projects` | NFS read/write only for assigned project; large at ~1.8T. |
+| `client-c` | `/mnt/ace/client-c` | NFS read/write only with explicit project scope; do not clone/mirror wholesale. |
+| `mkt-a` | `/mnt/ace/mkt-a` | NFS read/write only for assigned project; large at ~1.8T. |
 | `docs` | `/mnt/ace/docs` | NFS read/write only; large at ~3.4T. |
 | `data` | `/mnt/ace/data` | NFS read/write only; large at ~772G. |
 | `O&G-Standards` | `/mnt/ace/O&G-Standards` | NFS read-only/default; standards/licensing sensitivity. |
@@ -49,7 +49,7 @@
 ### Current observed repo state
 
 - `ace-linux-1` local workspace: `/mnt/local-analysis/workspace-hub`.
-- `ace-linux-1` `/mnt/ace` contains Git repos including `aceengineercode`, `capytaine`, `frontierdeepwater`, `gmsh`, `HAMS`, `MoorDyn`, `MoorPy`, `openfast`, `opm-common`, `WEC-Sim` and large data/project buckets.
+- `ace-linux-1` `/mnt/ace` contains Git repos including `aceengineercode`, `capytaine`, `client-a`, `gmsh`, `HAMS`, `MoorDyn`, `MoorPy`, `openfast`, `opm-common`, `WEC-Sim` and large data/project buckets.
 - `ace-linux-2` currently has Git repos under `/mnt/local-analysis`: `workspace-hub`, `cli-anything-repo`.
 - Earlier readiness showed `ace-linux-2` can see many repo buckets through `/mnt/remote/ace-linux-1/ace`, but local clones for Tier 1 repos still need normalization if we want fast direct work there.
 
@@ -125,9 +125,9 @@ Treat `/mnt/ace` on `ace-linux-1` as the canonical knowledge/raw-data center. Fr
 | Bucket | Size observed | Role |
 |---|---:|---|
 | `/mnt/ace/docs` | ~3.4T | Document corpus / likely raw docs and knowledge artifacts. |
-| `/mnt/ace/acma-projects` | ~1.8T | Project bucket; use project-scoped access only. |
+| `/mnt/ace/mkt-a` | ~1.8T | Project bucket; use project-scoped access only. |
 | `/mnt/ace/data` | ~772G | Raw and processed data bucket. |
-| `/mnt/ace/client_projects` | ~250G | Client/project data; scope and confidentiality required. |
+| `/mnt/ace/client-c` | ~250G | Client/project data; scope and confidentiality required. |
 | `/mnt/ace/digitalmodel` | ~106G | Engineering repo/data/docs. |
 | `/mnt/ace/O&G-Standards` | ~43G | Standards corpus; default read-only. |
 

@@ -24,7 +24,7 @@
 
 | Standard / registry surface | Status | Source | Finding |
 |---|---|---|---|
-| DNV-ST-F101 | current | `data/design-codes/code-registry.yaml` | Registered as `Submarine Pipeline Systems`, disciplines `[pipeline, subsea]`, repos `[digitalmodel, doris]`; relevant to rigid pipeline family and provenance metadata. |
+| DNV-ST-F101 | current | `data/design-codes/code-registry.yaml` | Registered as `Submarine Pipeline Systems`, disciplines `[pipeline, subsea]`, repos `[digitalmodel, lng-a]`; relevant to rigid pipeline family and provenance metadata. |
 | API 5L / API RP 1111 entries | indexed | `data/document-index/standards-transfer-ledger.yaml` | Ledger contains pipeline standards, including API line pipe and offshore hydrocarbon pipeline entries; use as provenance anchors where examples cite line pipe/pressure-containment concepts. |
 | Online resource registry | partial | `data/document-index/online-resource-registry.yaml` | Contains O&G/pipeline public data surfaces, but not yet a complete offshore cable/umbilical vendor catalogue. That broader catalogue remains #2513 scope. |
 

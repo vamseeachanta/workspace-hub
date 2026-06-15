@@ -27,7 +27,7 @@ Optional arguments:
 - `/repo-sync pull` — Pull all repos (default)
 - `/repo-sync status` — Status check only, no pulls
 - `/repo-sync push` — Push all repos with unpushed commits
-- `repository_sync pull <repo-name>` — Pull one configured repository (for example `./scripts/repository_sync pull acma-projects`)
+- `repository_sync pull <repo-name>` — Pull one configured repository (for example `./scripts/repository_sync pull mkt-a`)
 
 CLI syntax pitfall: `repository_sync <repo-name>` is not valid and returns `Unknown command`. If the user gives a bare repo name with `repository_sync`, infer the intended default operation as a single-repo pull and run `./scripts/repository_sync pull <repo-name>` after a quick status check.
 

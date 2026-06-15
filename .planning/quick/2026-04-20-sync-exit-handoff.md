@@ -11,7 +11,7 @@
   - achantas-data -> main tracking origin/main
   - assetutilities -> main tracking origin/main
   - digitalmodel -> removed stale index.lock, switched to main, pulled latest
-  - rock-oil-field -> preserved unrelated local main as preserve/pre-sync-main-20260420, switched to tracked master
+  - client-b -> preserved unrelated local main as preserve/pre-sync-main-20260420, switched to tracked master
 - Committed/pushed aceengineer-website Inter font assets.
 - Repeatedly ran `./scripts/repository_sync status all`.
 
@@ -24,17 +24,17 @@ As of the latest successful full verification:
 - investments
 - sabithaandkrishnaestates
 - sd-work
-- acma-projects
+- mkt-a
 - assethold
 - assetutilities
-- client_projects
+- client-c
 - digitalmodel
-- doris
-- frontierdeepwater
+- lng-a
+- client-a
 - OGManufacturing
-- rock-oil-field
-- saipem
-- seanation
+- client-b
+- client-d
+- client-f
 - teamresumes
 - worldenergydata
 - aceengineer-website

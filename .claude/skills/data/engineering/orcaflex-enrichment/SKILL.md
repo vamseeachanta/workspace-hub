@@ -13,7 +13,7 @@ triggers:
   - "extract orcaflex model"
   - "orcaflex pipeline fixtures"
 computer: licensed-win-1
-repos: [workspace-hub, worldenergydata, digitalmodel, client_projects]
+repos: [workspace-hub, worldenergydata, digitalmodel, client-c]
 related_wrk: [WRK-589, WRK-593, WRK-594, WRK-595]
 tags: []
 category: data
@@ -28,7 +28,7 @@ test fixtures** using worldenergydata public databases.
 
 ```
 Stage 1  Extract    .dat + OrcFxAPI → raw YAML params
-Stage 2  Enrich     raw YAML + worldenergydata lookups → enriched YAML → client_projects/
+Stage 2  Enrich     raw YAML + worldenergydata lookups → enriched YAML → client-c/
 Stage 3  Clean      enriched YAML → strip client names → legal scan → digitalmodel/
 ```
 
@@ -37,17 +37,17 @@ Stage 3  Clean      enriched YAML → strip client names → legal scan → digi
 ```cmd
 python scripts\data\orcaflex\dat-to-yaml.py ^
     --input "\\dev-secondary\dde\Orcaflex\0000 Drilling Riser Development\Latest" ^
-    --output "client_projects\data\raw\orcaflex-extracted\drilling-riser-development" ^
+    --output "client-c\data\raw\orcaflex-extracted\drilling-riser-development" ^
     --project drilling-riser-development
 ```
 
 Extracts: `general`, `environment`, `lines[]`, `vessels[]` per .dat file.
 
-## Stage 2 — Enrich + Stage (client_projects)
+## Stage 2 — Enrich + Stage (client-c)
 
 ```cmd
 python scripts\data\orcaflex\enrich-and-clean.py ^
-    --input  client_projects\data\raw\orcaflex-extracted\ ^
+    --input  client-c\data\raw\orcaflex-extracted\ ^
     --output digitalmodel\data\orcaflex\ ^
     --dry-run
 ```

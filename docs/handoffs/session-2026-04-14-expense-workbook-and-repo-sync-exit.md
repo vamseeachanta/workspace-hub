@@ -27,7 +27,7 @@
 ### Repo synchronization
 - Ran `./scripts/repository_sync pull all` from `workspace-hub`
 - `worldenergydata` pull failure was due to stale `.git/index.lock`; removed lock and completed pull successfully
-- `rock-oil-field` remains unresolved:
+- `client-b` remains unresolved:
   - local branch: `main`
   - remote default branch: `master`
   - status at exit: `ahead 4, behind 31`
@@ -96,7 +96,7 @@
 - HEAD after successful pull: `9d729b0`
 - Status: clean / up to date
 
-### rock-oil-field
+### client-b
 - Status at exit: `## main...origin/master [ahead 4, behind 31]`
 - Needs dedicated non-destructive reconciliation later; do not force-push or reset
 
@@ -104,5 +104,5 @@
 1. Use the canonical 2025 analysis copy for tax/expense analysis:
    - `/mnt/local-analysis/workspace-hub/aceengineer-admin/taxes/review-workbooks/latest-expenses-sheet-2025-annual-expenses-112459.74.ods`
 2. If resuming tax work in `aceengineer-admin`, start from the existing 2025 filing artifacts already present in `taxes/2025/`
-3. If resuming repo-hygiene work, handle `rock-oil-field` separately with a branch/default-branch reconciliation workflow
+3. If resuming repo-hygiene work, handle `client-b` separately with a branch/default-branch reconciliation workflow
 4. Treat current `workspace-hub` dirt as session-generated state, not as repo-sync failure

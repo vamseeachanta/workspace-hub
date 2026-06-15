@@ -57,14 +57,14 @@ pass |
 
 ```
 
-  - 010ae9c0 Add B1528/SIROCCO planning artifact: docs/plans/2026-05-01-issue-2570-b1528-sirocco-yaw-moment-report.md
+  - 010ae9c0 Add B1528/proj-a planning artifact: docs/plans/2026-05-01-issue-2570-b1528-proj-a-yaw-moment-report.md
   - 0138d29b feat: add batch pack 2 DOT promotion runner
   - 05ae3d61 plan: prepare issue expansion plans 2566-2568 (README.md)
   - 08b5ff5b docs: close yaw moment plan and prep next calculation
   - 09f32a79 feat(automation): generalize autoresearch runner (#2417)
   - 0e9efe03 docs: index rudder stock torque sweep plan
   - 0ea6a42d fix(orchestration): harden ace2 continuation launch quoting
-  - 0fe8714b complete issue 2569 B1528 source pack: docs/projects/acma/B1528/sirocco-rudder-source-pack.md
+  - 0fe8714b complete issue 2569 B1528 source pack: docs/projects/mkt-a/B1528/proj-a-rudder-source-pack.md
   - 129ca8c7 planning: approve issue 2564 yaw moment sweep
   - 1330ca23 docs: add issue 2565 closeout handoff
   - 1380739e fix(state): wire session-signal size guards for issue 2070
@@ -72,8 +72,8 @@ pass |
   - 15c26388 chore: weekly staleness scan freshness dashboard
   - 178d6567 fix(#2582): reconcile docs/plans/README.md plan index post-#2495 squash
   - 1862e004 feat(llm-wiki): close Tier B Batch 3 — 14 standards pages for #2595/#2611
-  - 18e81966 Add B1528/SIROCCO planning artifact: docs/plans/2026-05-01-issue-2569-b1528-sirocco-source-pack.md
-  - 24856840 Add B1528/SIROCCO planning artifact: knowledge/wikis/acma-projects/wiki/entities/b1528-sirocco-breakaway.md
+  - 18e81966 Add B1528/proj-a planning artifact: docs/plans/2026-05-01-issue-2569-b1528-proj-a-source-pack.md
+  - 24856840 Add B1528/proj-a planning artifact: knowledge/wikis/mkt-a/wiki/entities/b1528-proj-a-breakaway.md
   - 269c4a36 plan: prepare issue expansion plans 2566-2568 (2026-04-30-plan-2568-claude.md)
   - 28677cc7 feat(audits): engineering wiki gap audit deliverable for #2588 (W1-C)
 ```

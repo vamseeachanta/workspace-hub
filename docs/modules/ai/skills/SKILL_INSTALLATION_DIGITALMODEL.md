@@ -287,7 +287,7 @@ validation:
 
 The skill can now be easily copied to:
 - worldenergydata
-- rock-oil-field
+- client-b
 - assetutilities
 - Any repository processing CSV/DataFrame data
 

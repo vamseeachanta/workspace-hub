@@ -38,7 +38,7 @@ Path placeholders used in the rows below (see canonical values in the reference 
 |---|---|
 | Programs / licenses | python3, bash, uv, git, gh, npm, claude CLI, gemini CLI, hermes; NFS server for `<ace-knowledge-root>`; no GPU; no OrcaFlex/ANSYS/AQWA (open-source engineering stack lives on ace-linux-2) |
 | AI-provider auth | claude (Claude Max, primary planning/orchestration), gemini (Google AI Pro), codex (verify per `docs/BUSINESS_BRAIN.md` §AI Provider Accounts before allocating load), hermes (control plane) — all confirmed authenticated per 2026-05-04 baseline §4 |
-| Repos | `worldenergydata`, `digitalmodel`, `assetutilities`, `assethold`, `workspace-hub`, `OGManufacturing` (registry `dev-primary.repos`); plus `<ace-knowledge-root>` clones of `aceengineercode`, `capytaine`, `frontierdeepwater`, `gmsh`, `HAMS`, `MoorDyn`, `MoorPy`, `openfast`, `opm-common`, `WEC-Sim` (NFS-exported) |
+| Repos | `worldenergydata`, `digitalmodel`, `assetutilities`, `assethold`, `workspace-hub`, `OGManufacturing` (registry `dev-primary.repos`); plus `<ace-knowledge-root>` clones of `aceengineercode`, `capytaine`, `client-a`, `gmsh`, `HAMS`, `MoorDyn`, `MoorPy`, `openfast`, `opm-common`, `WEC-Sim` (NFS-exported) |
 | Smoke / run command | `ssh ace-linux-1 'cd <linux-workspace-root> && git status -sb'` |
 | Dispatch readiness | **ready** — primary control plane; runs all nightly scheduled tasks; sources of truth for cron + queue + skills + plans |
 
@@ -116,13 +116,13 @@ Path placeholders used in the rows below (see canonical values in the reference 
 
 ---
 
-### acma-ws014 (Windows, on-site ACMA workstation)
+### mkt-a-ws014 (Windows, on-site mkt-a workstation)
 
 | Dimension | Value |
 |---|---|
 | Programs / licenses | **unknown** — registry entry: **none**; not in `config/workstations/registry.yaml` |
 | AI-provider auth | **unverified** — not in registry |
-| Repos | **unknown** — not in registry; likely `acma-projects` per machine name |
+| Repos | **unknown** — not in registry; likely `mkt-a` per machine name |
 | Smoke / run command | N/A — no registry entry, no SSH configuration |
 | Dispatch readiness | **blocked** — **add to `config/workstations/registry.yaml` before scheduling work**. Appears only in BUSINESS_BRAIN.md §Machines table |
 

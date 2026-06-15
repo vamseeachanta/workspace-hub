@@ -1,7 +1,7 @@
 # Wave 1 Validation — #2261
 
 Issue
-- #2261 — feat(acma-codes): Wave 1 metadata-only wiki sweep — OCIMF (MEG 4), OCIMF, CSA
+- #2261 — feat(mkt-a-codes): Wave 1 metadata-only wiki sweep — OCIMF (MEG 4), OCIMF, CSA
 - Parent: #2260
 - Generated: 2026-04-13
 
@@ -21,9 +21,9 @@ Validation summary
 ### 1. Inventory completed for all target roots
 
 Directories processed:
-- `/mnt/ace/acma-codes/OCIMF (MEG 4)/` (59 files, including 6 subdirectories)
-- `/mnt/ace/acma-codes/OCIMF/` (22 files, including Figures/ subdirectory)
-- `/mnt/ace/acma-codes/CSA/` (5 files)
+- `/mnt/ace/mkt-a-codes/OCIMF (MEG 4)/` (59 files, including 6 subdirectories)
+- `/mnt/ace/mkt-a-codes/OCIMF/` (22 files, including Figures/ subdirectory)
+- `/mnt/ace/mkt-a-codes/CSA/` (5 files)
 - **Total: 86 files inventoried**
 - Result: **PASS**
 
@@ -56,7 +56,7 @@ Directories processed:
 ### 5. No out-of-scope directories processed
 
 - Grep for references to API, Lloyd's, SIGTTO, Noble Denton, DNV, ABS, IMO, USCG, ISO, ASTM, IACS directories: 0 matches
-- All paths reference only `/mnt/ace/acma-codes/OCIMF (MEG 4)/`, `/mnt/ace/acma-codes/OCIMF/`, `/mnt/ace/acma-codes/CSA/`
+- All paths reference only `/mnt/ace/mkt-a-codes/OCIMF (MEG 4)/`, `/mnt/ace/mkt-a-codes/OCIMF/`, `/mnt/ace/mkt-a-codes/CSA/`
 - Result: **PASS**
 
 ### 6. Family consolidation applied

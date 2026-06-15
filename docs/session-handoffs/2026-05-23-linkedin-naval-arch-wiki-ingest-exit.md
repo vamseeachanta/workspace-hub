@@ -38,7 +38,7 @@ Filename-only survey produced **false gaps**; content grep corrected them:
 ### llm-wiki (`/mnt/local-analysis/llm-wiki`)
 - **Local commit made:** `df5241f2` — `docs(naval-architecture): extend ship structural design loads with operational stress taxonomy` (1 file, +8/−1, pathspec-scoped).
 - **NOT PUSHED.** Remote `origin/main` = `35fa0b6d3a392ea28d539ff3f54e81050f574f62`. Local main was ~11 ahead of origin (10 prior commits from other sessions + mine).
-- **Foreign staged file (NOT mine):** `wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md` (status `M`). Active parallel-session work — **left untouched**, not swept into my commit (verified pathspec commit `-- <file>` excluded it).
+- **Foreign staged file (NOT mine):** `wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md` (status `M`). Active parallel-session work — **left untouched**, not swept into my commit (verified pathspec commit `-- <file>` excluded it).
 - **Untracked:** `.codex/`, `.gemini/` (agent artifact dirs — expected residue).
 
 ### digitalmodel
@@ -62,7 +62,7 @@ This matches prior memory: slow `/mnt/local-analysis` overlay/mount behavior for
 ## Next steps (for next session / faster context)
 
 1. **Complete the llm-wiki push.** From a faster git context, or allow autosync to carry it: `cd /mnt/local-analysis/llm-wiki && git push origin main`. Note this will publish **all ~11 commits ahead** (10 are prior-session work — confirm they're intended for publish). My commit is `df5241f2`.
-2. **Reconcile the foreign staged `b1528-sirocco` file** — owned by a parallel SIROCCO session ([#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760)). Do not commit it on its behalf; let that session finish.
+2. **Reconcile the foreign staged `b1528-proj-a` file** — owned by a parallel proj-a session ([#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760)). Do not commit it on its behalf; let that session finish.
 3. **Verify push landed:** `git ls-remote origin refs/heads/main` should show `df5241f2` (or a descendant) once pushed.
 4. digitalmodel #619 is ready for the standard planning gate when ship-class capability becomes a priority (each sub-gap → its own TDD implementation issue).
 
@@ -73,4 +73,4 @@ This matches prior memory: slow `/mnt/local-analysis` overlay/mount behavior for
 ## Residue audit (pre-completion gate)
 - **CLEAN:** /tmp scratch pages removed; no stale git locks.
 - **EXPECTED:** llm-wiki local commit awaiting push; `.codex`/`.gemini` untracked dirs.
-- **UNEXPECTED-but-not-mine:** foreign staged `b1528-sirocco` file (parallel session) — flagged, untouched. 10 prior unpushed llm-wiki commits — pre-existing.
+- **UNEXPECTED-but-not-mine:** foreign staged `b1528-proj-a` file (parallel session) — flagged, untouched. 10 prior unpushed llm-wiki commits — pre-existing.

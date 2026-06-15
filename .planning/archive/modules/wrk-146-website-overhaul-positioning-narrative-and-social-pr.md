@@ -34,7 +34,7 @@ This is a child of **WRK-148: A&CE Go-to-Market Strategy Stream**. The website m
 
 **Target company tiers** (website must credibly support outreach to):
 - Tier 1: Subsea7, Wood Group, Worley, TechnipFMC
-- Tier 2: 2H Offshore, McDermott, Saipem
+- Tier 2: 2H Offshore, McDermott, client-d
 - Tier 3: DNV Digital, ABS, Bureau Veritas
 - Tier 4: Akselos, Cognite (tech partnership)
 - Tier 5: Orsted, Equinor, Shell, Chevron (direct operator)

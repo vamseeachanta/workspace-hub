@@ -11,19 +11,19 @@ All repositories received the complete CI/CD suite:
 1. **ai-native-traditional-eng** - AI/ML and traditional engineering tools
 2. **assethold** - Asset management and financial tools
 3. **energy** - Energy sector analysis and tools
-4. **frontierdeepwater** - Deepwater engineering solutions
+4. **client-a** - Deepwater engineering solutions
 5. **hobbies** - Personal hobby and recreational projects
 6. **OGManufacturing** - Oil & Gas manufacturing tools
-7. **rock-oil-field** - Rock and oil field analysis
+7. **client-b** - Rock and oil field analysis
 8. **sabithaandkrishnaestates** - Real estate management
-9. **saipem** - Engineering project tools
+9. **client-d** - Engineering project tools
 10. **sd-work** - Quality control and compliance tools
-11. **seanation** - Maritime and ocean engineering
-12. **doris** - Documentation and research tools
+11. **client-f** - Maritime and ocean engineering
+12. **lng-a** - Documentation and research tools
 
 ### Special Cases
 13. **investments** - Complex investment analysis with custom workflows
-14. **client_projects** - Multi-language client project support
+14. **client-c** - Multi-language client project support
 
 ## Workflow Types Implemented
 
@@ -131,9 +131,9 @@ All repositories received the complete CI/CD suite:
 
 ### Special Configurations:
 - **investments/ci.yml**: Custom data validation workflows
-- **client_projects/ci.yml**: Multi-language support workflows
+- **client-c/ci.yml**: Multi-language support workflows
 - **investments/release.yml**: Financial analysis release notes
-- **client_projects/release.yml**: Client project release notes
+- **client-c/release.yml**: Client project release notes
 
 ## Next Steps
 

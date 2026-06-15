@@ -21,7 +21,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org**: Issuing organization
 - **domain**: marine / offshore / safety / electrical / structural
 - **year**: Publication year (from filename, if visible)
-- **local_doc_path**: Source file path on `/mnt/ace/acma-codes/`
+- **local_doc_path**: Source file path on `/mnt/ace/mkt-a-codes/`
 - **fragments**: Files merged into this parent (if any)
 - **status**: `blocked-metadata-only` (all stubs)
 - **confidence**: `low` (all stubs)
@@ -37,7 +37,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / mooring
 - **year:** 1996
-- **local_doc_path:** `/mnt/ace/acma-codes/API/1996 Dec RP 2SK Stationkeeping Systems for Floating Structures 2nd ed.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/1996 Dec RP 2SK Stationkeeping Systems for Floating Structures 2nd ed.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -48,7 +48,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / electrical
 - **year:** 1997
-- **local_doc_path:** `/mnt/ace/acma-codes/API/1997 API RP 505 Electrical Inst. Class 1 Zone 0 Zone 1 Zone 2.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/1997 API RP 505 Electrical Inst. Class 1 Zone 0 Zone 1 Zone 2.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -58,7 +58,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / electrical
 - **year:** 1997
-- **local_doc_path:** `/mnt/ace/acma-codes/API/1997 RP500 Electrical Classifications.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/1997 RP500 Electrical Classifications.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -68,7 +68,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / pipelines
 - **year:** 1999
-- **local_doc_path:** `/mnt/ace/acma-codes/API/1999 July RP 1111 Offshore Hydrocarbon Pipelines 3rd ed.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/1999 July RP 1111 Offshore Hydrocarbon Pipelines 3rd ed.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -78,7 +78,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / safety
 - **year:** 2001
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2001 Mar RP-14C Basic Surface Safety Systems for Offshore Production Platforms 7th ed.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2001 Mar RP-14C Basic Surface Safety Systems for Offshore Production Platforms 7th ed.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -88,7 +88,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / drilling
 - **year:** 2001
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2001 Oct Specification for Drilling and Well Servicing Eqpt - 7K.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2001 Oct Specification for Drilling and Well Servicing Eqpt - 7K.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -98,7 +98,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / safety
 - **year:** 2002
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2002 Dec API RP 14J.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2002 Dec API RP 14J.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -109,7 +109,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / cranes
 - **year:** 2003
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2003 June RP 2D Offshore Cranes Fifth Edition.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2003 June RP 2D Offshore Cranes Fifth Edition.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -120,7 +120,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / structural
 - **year:** 2004
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2004 Jun BULL 2U bulletin on Stability Design of Cylindrical Shells 3rd ed.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2004 Jun BULL 2U bulletin on Stability Design of Cylindrical Shells 3rd ed.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -130,7 +130,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / cranes
 - **year:** 2004
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2004 RP 2C Offshore Pedestal Mounted Cranes.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2004 RP 2C Offshore Pedestal Mounted Cranes.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -140,7 +140,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / mooring
 - **year:** 2005
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2005 RP 2SK with 2008 Add/2005 Oct RP 2SK.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2005 RP 2SK with 2008 Add/2005 Oct RP 2SK.pdf`
 - **fragments:**
   - `API/2005 RP 2SK with 2008 Add/API 2SK 3rd edition.pdf` (alternate copy)
   - `API/2005 RP 2SK with 2008 Add/RP 2SK_Addendum 2008.pdf` (2008 addendum)
@@ -153,7 +153,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / materials
 - **year:** 2006
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2006 July RP 2H Carbon Manganese Steel Plate for Offshore Structures 9th ed.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2006 July RP 2H Carbon Manganese Steel Plate for Offshore Structures 9th ed.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -163,7 +163,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / metocean
 - **year:** 2007
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2007 API.2int-met GOM Metocean.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2007 API.2int-met GOM Metocean.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -173,7 +173,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / structural
 - **year:** 2007
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2007 API RP 2A-WSD Fixed Offshore Platforms - Working Stress Design.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2007 API RP 2A-WSD Fixed Offshore Platforms - Working Stress Design.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -183,7 +183,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / safety
 - **year:** 2007
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2007 April API RP 14G Fire Prevention and Control Fixed Platforms.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2007 April API RP 14G Fire Prevention and Control Fixed Platforms.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -193,7 +193,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / cranes
 - **year:** 2007
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2007 May RP 2D Offshore Cranes Sixth Edition.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2007 May RP 2D Offshore Cranes Sixth Edition.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -203,7 +203,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / electrical
 - **year:** 2008
-- **local_doc_path:** `/mnt/ace/acma-codes/API/API RP 14 F 2008 Electrical Systems Offshore Petroleum Facitilies.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/API RP 14 F 2008 Electrical Systems Offshore Petroleum Facitilies.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -213,7 +213,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / structural
 - **year:** 2013
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2013 API 4F.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2013 API 4F.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -223,7 +223,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / safety
 - **year:** 2013
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2013 API RP 14J Design&Hazards Analysis.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2013 API RP 14J Design&Hazards Analysis.pdf`
 - **fragments:**
   - `API/API_RP_14J.pdf` (undated duplicate)
 - **status:** blocked-metadata-only
@@ -235,7 +235,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / safety
 - **year:** 2013
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2013 API RP 54 Occupational Safety.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2013 API RP 54 Occupational Safety.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -245,7 +245,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / safety
 - **year:** 2013
-- **local_doc_path:** `/mnt/ace/acma-codes/API/2013 API RP 75 Safety & Enviro Mngmt.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/2013 API RP 75 Safety & Enviro Mngmt.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -255,7 +255,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** API
 - **domain:** offshore / operations
 - **year:** 2013
-- **local_doc_path:** `/mnt/ace/acma-codes/API/API RP 95J R2013.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/API/API RP 95J R2013.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -269,7 +269,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** offshore / classification
 - **year:** 1999
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/1999 Rules and Regs for the Classification of a Floating Offshore Installation at a Fixed Location.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/1999 Rules and Regs for the Classification of a Floating Offshore Installation at a Fixed Location.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -279,7 +279,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** offshore / cranes
 - **year:** 2002
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2002 Crane Dynamics B784.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2002 Crane Dynamics B784.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -289,7 +289,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / classification
 - **year:** 2002
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2002 July Part 7 Ship Rules.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2002 July Part 7 Ship Rules.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -299,7 +299,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / lifting
 - **year:** 2003
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2003 Jan Code_for_Lifting_Appliances_in_a_Marine_Environment.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2003 Jan Code_for_Lifting_Appliances_in_a_Marine_Environment.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -309,7 +309,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / quality
 - **year:** 2004
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2004 Rev 2 No 47 Shipbuilding and repair quality standard.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2004 Rev 2 No 47 Shipbuilding and repair quality standard.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -320,7 +320,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / stability
 - **year:** 2005
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2005 Checklist for Intact Stability and corresponding documentation_rev 03.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2005 Checklist for Intact Stability and corresponding documentation_rev 03.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -330,7 +330,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / classification
 - **year:** 2005
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2005 Jul Ship Rules.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2005 Jul Ship Rules.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -340,7 +340,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / classification
 - **year:** 2006
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2006 July Part 3 Ship Rules.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2006 July Part 3 Ship Rules.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -350,7 +350,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / classification
 - **year:** 2006
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2006 July Part 4 Ship Rules.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2006 July Part 4 Ship Rules.pdf`
 - **fragments:**
   - `Lloyds Register/2008 Errata Note Part 4 -Chapter 2.pdf` (errata)
 - **status:** blocked-metadata-only
@@ -362,7 +362,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / quality
 - **year:** 2006
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2006 Rev 3 No 47 shipbuilding and repair quality standard.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2006 Rev 3 No 47 shipbuilding and repair quality standard.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -372,7 +372,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** offshore / classification
 - **year:** 2007
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2007 CAPbook Offshore OG Rev0.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2007 CAPbook Offshore OG Rev0.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -382,7 +382,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** offshore / classification
 - **year:** 2008
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2008 Apr Floating Offshore Installation at a Fixed Location.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2008 Apr Floating Offshore Installation at a Fixed Location.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -392,7 +392,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / load line
 - **year:** 2009
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2009 Load Line Sheer Correction (LR).pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2009 Load Line Sheer Correction (LR).pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -402,7 +402,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / classification
 - **year:** 2010
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2010 Dec Classification News No 44.pdf` (series anchor)
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2010 Dec Classification News No 44.pdf` (series anchor)
 - **fragments:**
   - `2010 Dec Classification News No 44.pdf`
   - `2010 Dec Classification News No 45.pdf`
@@ -421,7 +421,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** offshore / safety
 - **year:** 2013
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2013 FOIFL_Explosion Load Guidance_COMPLETE.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2013 FOIFL_Explosion Load Guidance_COMPLETE.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -431,7 +431,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** offshore / classification
 - **year:** 2013
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2013 FOIFL JUNE 2013_Complete 221113.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2013 FOIFL JUNE 2013_Complete 221113.pdf`
 - **fragments:**
   - `2013 FOIFL Notice 1 (Corrigenda) 021213pe.pdf` (corrigenda)
 - **status:** blocked-metadata-only
@@ -443,7 +443,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / classification
 - **year:** 2013
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2013 Rules and Regulations for the Classification of Ships.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2013 Rules and Regulations for the Classification of Ships.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -453,7 +453,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** offshore / classification
 - **year:** 2014
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/Rules for Offshore Units 2014/Rules_for_Offshore_Units_2014___Complete_Set.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/Rules for Offshore Units 2014/Rules_for_Offshore_Units_2014___Complete_Set.pdf`
 - **fragments:**
   - `Rules for Offshore Units 2014/Notice_No.1_to_Rules_for_Offshore_Units___July_2014.pdf`
   - `Rules for Offshore Units 2014/Notice_No.2_to_Rules_for_Offshore_Units___July_2014.pdf`
@@ -469,7 +469,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / classification
 - **year:** 2015
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2015 Rules_and_Regulations_for_the_Classification_of_Ships__July_2015_with_prelims.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2015 Rules_and_Regulations_for_the_Classification_of_Ships__July_2015_with_prelims.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -479,7 +479,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / classification
 - **year:** 2019
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2019 Rules_and_Regulations_for_the_Classification_of_Ships.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2019 Rules_and_Regulations_for_the_Classification_of_Ships.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -489,7 +489,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / LNG
 - **year:** 2022
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2022-Rules_and_Regs_for_Class_Ships_Liquified_Gases-July_2022.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2022-Rules_and_Regs_for_Class_Ships_Liquified_Gases-July_2022.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -499,7 +499,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** offshore / classification
 - **year:** 2022
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2022 Rules_and_Regulations_for_the_Classification_of_Offshore_Units_July_2022.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2022 Rules_and_Regulations_for_the_Classification_of_Offshore_Units_July_2022.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -509,7 +509,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Lloyd's Register
 - **domain:** marine / classification
 - **year:** 2022
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/2022 Rules_and_Regulations_for_the_Classification_of_Ships__July_2022.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/2022 Rules_and_Regulations_for_the_Classification_of_Ships__July_2022.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -518,7 +518,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **title:** LR Rules — Classification of Offshore Units (truncated filename, likely 2014 or 2020)
 - **org:** Lloyd's Register
 - **domain:** offshore / classification
-- **local_doc_path:** `/mnt/ace/acma-codes/Lloyds Register/Rules_and_Regulations_for_the_Classification_of_Offshore_Units_July_20.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Lloyds Register/Rules_and_Regulations_for_the_Classification_of_Offshore_Units_July_20.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -532,7 +532,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **title:** SIGTTO DAM-QRH-01 — Quick Release Hooks and Capstans (Ver 3.0)
 - **org:** SIGTTO
 - **domain:** marine / mooring equipment
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/DAM-QRH-01 Ver 3.0 - Quick Release Hooks and Capstans.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/DAM-QRH-01 Ver 3.0 - Quick Release Hooks and Capstans.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -541,7 +541,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **title:** SIGTTO — Guidance for the Prevention of Rollover on LNG Ships
 - **org:** SIGTTO
 - **domain:** marine / LNG
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/guidance-for-the-prevention-of-rollover-on-lng_ships.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/guidance-for-the-prevention-of-rollover-on-lng_ships.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -551,7 +551,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** SIGTTO
 - **domain:** marine / mooring
 - **year:** 2014
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/guide-to-purchasing-high-modulus-synthetic-fibre-mooring-lines-february-2014.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/guide-to-purchasing-high-modulus-synthetic-fibre-mooring-lines-february-2014.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -561,7 +561,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** SIGTTO
 - **domain:** marine / LNG
 - **year:** 2006
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/HCB Nov 06.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/HCB Nov 06.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -570,7 +570,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **title:** SIGTTO — Lifeboat
 - **org:** SIGTTO
 - **domain:** marine / safety
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/Lifeboat.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/Lifeboat.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -580,7 +580,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **title:** SIGTTO — LNG Shipping at 50
 - **org:** SIGTTO
 - **domain:** marine / LNG
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/lng-shipping-at-50compressed.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/lng-shipping-at-50compressed.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -589,7 +589,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **title:** SIGTTO — Personal Life-Saving Appliances Handbook
 - **org:** SIGTTO
 - **domain:** marine / safety
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/Personal LSA Hand Book.doc`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/Personal LSA Hand Book.doc`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -598,7 +598,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **title:** SIGTTO — Purging and Disconnection of LNG Hard Arms
 - **org:** SIGTTO
 - **domain:** marine / LNG
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/Purging and Disconnection of LNG Hard Arms.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/Purging and Disconnection of LNG Hard Arms.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -607,7 +607,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **title:** SIGTTO — Risk Mitigation in LNG Operations
 - **org:** SIGTTO
 - **domain:** marine / LNG / safety
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/Risk Mitigation LNG.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/Risk Mitigation LNG.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -616,7 +616,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **title:** SIGTTO — Report on the Effects of Fire on LNG Containment Systems
 - **org:** SIGTTO
 - **domain:** marine / LNG / safety
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/SIGTTO-Report-On-The-Effects-Of-Fire-LNG-Containment-Systems.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/SIGTTO-Report-On-The-Effects-Of-Fire-LNG-Containment-Systems.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -625,7 +625,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **title:** SIGTTO — Training Record Book: Cargo Equipment
 - **org:** SIGTTO
 - **domain:** marine / training
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/sigtto-training-record-book-cargo-equipment.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/sigtto-training-record-book-cargo-equipment.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -634,7 +634,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **title:** SIGTTO WSIL 099 — Selection and Testing of Valves
 - **org:** SIGTTO
 - **domain:** marine / equipment
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/WSIL 099 - Selection and testing of valves.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/WSIL 099 - Selection and testing of valves.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -643,7 +643,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **title:** SIGTTO WSIL 687C — Insulation Flanges
 - **org:** SIGTTO
 - **domain:** marine / equipment
-- **local_doc_path:** `/mnt/ace/acma-codes/SIGTTO/wsil-687c-sigtto-insulation-flanges.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/SIGTTO/wsil-687c-sigtto-insulation-flanges.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -657,7 +657,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Noble Denton (DNV GL)
 - **domain:** marine / projects
 - **year:** 2016
-- **local_doc_path:** `/mnt/ace/acma-codes/Noble Denton Guidelines/0001-nd rev 1.1 28-jun-16 general guidelines for marine projects.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Noble Denton Guidelines/0001-nd rev 1.1 28-jun-16 general guidelines for marine projects.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -667,7 +667,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Noble Denton (DNV GL)
 - **domain:** marine / transportation
 - **year:** 2016
-- **local_doc_path:** `/mnt/ace/acma-codes/Noble Denton Guidelines/0030-nd rev 6.1 28-jun-16 guidelines for marine transportations.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Noble Denton Guidelines/0030-nd rev 6.1 28-jun-16 guidelines for marine transportations.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -677,7 +677,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Noble Denton (DNV GL)
 - **domain:** marine / towage
 - **year:** 2002
-- **local_doc_path:** `/mnt/ace/acma-codes/Noble Denton Guidelines/2002 Apr ocean tow criteria 0014-1.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Noble Denton Guidelines/2002 Apr ocean tow criteria 0014-1.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -687,7 +687,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Noble Denton (DNV GL)
 - **domain:** marine / towage
 - **year:** 2002
-- **local_doc_path:** `/mnt/ace/acma-codes/Noble Denton Guidelines/2002 Apr Tow Vessels 0021-5.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Noble Denton Guidelines/2002 Apr Tow Vessels 0021-5.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -697,7 +697,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Noble Denton (DNV GL)
 - **domain:** marine / transportation
 - **year:** 2004
-- **local_doc_path:** `/mnt/ace/acma-codes/Noble Denton Guidelines/2004 Sept General Guidelines for Marine Transportations 0030-1.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Noble Denton Guidelines/2004 Sept General Guidelines for Marine Transportations 0030-1.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -708,7 +708,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Noble Denton (DNV GL)
 - **domain:** marine / projects
 - **year:** 2014
-- **local_doc_path:** `/mnt/ace/acma-codes/Noble Denton Guidelines/2014 GL ND General Guidlines for Marine Projects.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Noble Denton Guidelines/2014 GL ND General Guidlines for Marine Projects.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -718,7 +718,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Noble Denton (DNV GL)
 - **domain:** marine / lifting
 - **year:** 2014
-- **local_doc_path:** `/mnt/ace/acma-codes/Noble Denton Guidelines/2014 GL ND Guidlines for Marine Lifting & Lowering Operations.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Noble Denton Guidelines/2014 GL ND Guidlines for Marine Lifting & Lowering Operations.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only
@@ -728,7 +728,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **org:** Noble Denton (DNV GL)
 - **domain:** marine / transportation
 - **year:** 2013
-- **local_doc_path:** `/mnt/ace/acma-codes/Noble Denton Guidelines/GL ND Guidelines for Marine Transportations 2013.pdf`
+- **local_doc_path:** `/mnt/ace/mkt-a-codes/Noble Denton Guidelines/GL ND Guidelines for Marine Transportations 2013.pdf`
 - **status:** blocked-metadata-only
 - **confidence:** low
 - **source_quality:** title-and-metadata-only

@@ -92,7 +92,7 @@ Phase 1 Foundation Strengthening has been completed with comprehensive assessmen
 ### Priority 2: HIGH (Tier 2 - 6 Repos)
 
 All 6 failing Tier 2 repositories require similar configuration fixes:
-- aceengineer-admin, aceengineer-website, rock-oil-field, saipem, client_projects, OGManufacturing
+- aceengineer-admin, aceengineer-website, client-b, client-d, client-c, OGManufacturing
 - **Timeline**: 5-7 days for all 6
 
 ### Priority 3: MEDIUM (Other - 12 Repos)
@@ -312,8 +312,8 @@ The pytest baseline infrastructure is now operational. While Tier 1 and some Tie
 
 **Total Repositories**: 47
 - **Tier 1**: 4 (digitalmodel, worldenergydata, assetutilities, teamresumes)
-- **Tier 2**: 12 (pyproject-starter, ai-native-traditional-eng, frontierdeepwater, energy, seanation, doris, rock-oil-field, saipem, aceengineer-website, aceengineer-admin, OGManufacturing, client_projects)
-- **Tier 3**: 5 (hobbies, sd-work, acma-projects, investments, sabithaandkrishnaestates)
+- **Tier 2**: 12 (pyproject-starter, ai-native-traditional-eng, client-a, energy, client-f, lng-a, client-b, client-d, aceengineer-website, aceengineer-admin, OGManufacturing, client-c)
+- **Tier 3**: 5 (hobbies, sd-work, mkt-a, investments, sabithaandkrishnaestates)
 - **Other**: 25 (various utilities and experimental repositories)
 
 ### C. Key Learnings

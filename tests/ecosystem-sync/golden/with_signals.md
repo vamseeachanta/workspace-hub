@@ -9,7 +9,7 @@
 
 ## Skipped repos
 
-- ⚠ `doris`: fetch timeout
+- ⚠ `lng-a`: fetch timeout
 
 ---
 

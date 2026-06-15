@@ -1,14 +1,14 @@
 # Adversarial Plan Review Request: workspace-hub issue #2760
 
-You are an independent adversarial reviewer for an engineering-critical plan. Do NOT rubber-stamp. Find missing gates, flawed assumptions, bad scope boundaries, incorrect engineering/calculation risk handling, inadequate TDD, weak artifact/output handling, and anything that could cause wrong B1528 SIROCCO force results or bad repo governance.
+You are an independent adversarial reviewer for an engineering-critical plan. Do NOT rubber-stamp. Find missing gates, flawed assumptions, bad scope boundaries, incorrect engineering/calculation risk handling, inadequate TDD, weak artifact/output handling, and anything that could cause wrong B1528 proj-a force results or bad repo governance.
 
 ## Context
 - Repo root: /mnt/local-analysis/workspace-hub
-- Plan file under review: docs/plans/2026-05-20-issue-2760-b1528-sirocco-force-review-revision.md
+- Plan file under review: docs/plans/2026-05-20-issue-2760-b1528-proj-a-force-review-revision.md
 - Issue: https://github.com/vamseeachanta/workspace-hub/issues/2760
 - Issue is engineering-critical and implementation is blocked until plan review and explicit user approval.
 - Parent/source issue: #2642.
-- Target implementation repo is sibling /mnt/local-analysis/digitalmodel; final Word/PDF outputs also go under workspace-hub/acma-projects/B1528/output per confirmed user comments.
+- Target implementation repo is sibling /mnt/local-analysis/digitalmodel; final Word/PDF outputs also go under workspace-hub/mkt-a/B1528/output per confirmed user comments.
 - User-requested output removes resultant force calculations from the main report and requires OCIMF MEG4 generic/digitized current coefficients, separate current/rudder sections, plan-view schematics, and TDD.
 
 ## Review questions — answer all
@@ -30,7 +30,7 @@ If MAJOR, list blockers that must be fixed before plan-review. If MINOR, list ch
 
 ## Plan under review
 
-# Plan for #2760: B1528 SIROCCO force calculation review updates
+# Plan for #2760: B1528 proj-a force calculation review updates
 
 > **Status:** draft
 > **Complexity:** T3
@@ -43,12 +43,12 @@ If MAJOR, list blockers that must be fixed before plan-review. If MINOR, list ch
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_moored_current_report.py` — existing bounded rudder-only report generator for the previous 3.5 kn / ±1–5° package; it reports `Z`, `K`, and `M` as zero and excludes hull current loads without current coefficients.
-- Found: `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py` — existing current-heading/rudder comparison report generator; it already computes current + rudder rows and writes CSV/JSON/Markdown/HTML/PDF, but it uses placeholder “OCIMF-inspired” current coefficient functions and includes resultants that #2760 requires removing from the main presentation.
-- Found: `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_sirocco_moored_current.yml` — existing B1528 geometry/rudder config for the old moored-current report.
-- Found: `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_sirocco_current_heading_rudder.yml` — existing current-heading/rudder config, but current speed/rudder angle validations do not match #2760 requested default/ranges.
-- Found: `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_moored_current.py` — existing regression coverage for symmetry, `Cr=1.0`, sample points, and report content.
-- Found: `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_current_heading_rudder.py` — existing current-heading/rudder regression and report content checks.
+- Found: `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_moored_current_report.py` — existing bounded rudder-only report generator for the previous 3.5 kn / ±1–5° package; it reports `Z`, `K`, and `M` as zero and excludes hull current loads without current coefficients.
+- Found: `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_current_heading_rudder_report.py` — existing current-heading/rudder comparison report generator; it already computes current + rudder rows and writes CSV/JSON/Markdown/HTML/PDF, but it uses placeholder “OCIMF-inspired” current coefficient functions and includes resultants that #2760 requires removing from the main presentation.
+- Found: `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_proj-a_moored_current.yml` — existing B1528 geometry/rudder config for the old moored-current report.
+- Found: `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_proj-a_current_heading_rudder.yml` — existing current-heading/rudder config, but current speed/rudder angle validations do not match #2760 requested default/ranges.
+- Found: `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_proj-a_moored_current.py` — existing regression coverage for symmetry, `Cr=1.0`, sample points, and report content.
+- Found: `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_proj-a_current_heading_rudder.py` — existing current-heading/rudder regression and report content checks.
 - Found: `/mnt/local-analysis/digitalmodel/src/digitalmodel/marine_ops/marine_engineering/environmental_loading/ocimf.py` — OCIMF database/interpolation module with `OCIMFDatabase`, `OCIMFCoefficients`, `VesselGeometry`, and current force/moment structures for `CXc`, `CYc`, `CMc`.
 - Gap: no issue-specific `#2760` local plan existed before this plan.
 - Gap: no live checkout copy of the documented `data/mooring/raw/ocimf/ocimf_coefficients_production.csv` was found during resource intelligence; the plan must either locate it before implementation or create a bounded in-repo digitized generic coefficient fixture with provenance/limitations.
@@ -58,7 +58,7 @@ If MAJOR, list blockers that must be fixed before plan-review. If MINOR, list ch
 | Standard/source | Status | Source |
 |---|---|---|
 | OCIMF MEG4 current force/moment coefficient method | Required for #2760 current-on-ship default calculation | Issue #2760 comments; `digitalmodel/docs/domains/project-docs/PHASE3_OCIMF_FINDINGS.md`; `digitalmodel/src/digitalmodel/marine_ops/marine_engineering/environmental_loading/ocimf.py` |
-| Existing B1528/Barrass rudder workbook force family | Retained as existing/alternate rudder hydrodynamic model; simple area/drag-style model becomes default per comments | `digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_moored_current_report.py`; existing tests |
+| Existing B1528/Barrass rudder workbook force family | Retained as existing/alternate rudder hydrodynamic model; simple area/drag-style model becomes default per comments | `digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_moored_current_report.py`; existing tests |
 | Workspace engineering gate | Applies; implementation blocked until plan review and user approval | `workspace-hub/AGENTS.md`; `coordination/engineering-issue-workflow`; `docs/plans/README.md` |
 
 ### LLM Wiki pages consulted
@@ -67,8 +67,8 @@ If MAJOR, list blockers that must be fixed before plan-review. If MINOR, list ch
 ### Documents consulted
 - Issue #2760 — open interactive engineering review issue; comments define updated defaults, sign conventions, output split, chart/schematic/report presentation, and implementation gate.
 - Issue #2642 — closed parent/source issue for the existing moored-current report package.
-- `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-sirocco-moored-current-report.md` — durable existing Markdown report; current scenario is stale for #2760.
-- `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output/b1528_sirocco_moored_current_report.pdf` — existing ACMA packaged PDF; confirms old package content and 3.5 kn / ±1–5° report basis.
+- `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-proj-a-moored-current-report.md` — durable existing Markdown report; current scenario is stale for #2760.
+- `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output/b1528_proj-a_moored_current_report.pdf` — existing mkt-a packaged PDF; confirms old package content and 3.5 kn / ±1–5° report basis.
 - `/mnt/local-analysis/digitalmodel/docs/domains/project-docs/PHASE3_OCIMF_FINDINGS.md` — OCIMF dataset summary and coefficient ranges, including `CXc`, `CYc`, `CMc`.
 - Resource-intelligence issue comment posted: https://github.com/vamseeachanta/workspace-hub/issues/2760#issuecomment-4497406319
 
@@ -91,11 +91,11 @@ If MAJOR, list blockers that must be fixed before plan-review. If MINOR, list ch
 | Rudder models | Show simple area/drag-style calculation as default and existing/alternate hydrodynamic model side-by-side; cite references/model basis |
 | Schematics | Plan views using transparent/small ship outline; each calculation section shows default values, `X`, `Y`, and `N` about CoG |
 | Results | Remove resultant force calculations from main presentation; remove heatmap; single-variable charts; kN/kN·m rounded to 0 decimals for large values; angles may use 1 decimal |
-| Output split | Markdown + HTML in `digitalmodel`; Word + PDF in `acma-projects` |
+| Output split | Markdown + HTML in `digitalmodel`; Word + PDF in `mkt-a` |
 
 ### Gaps identified
 - Need actual generic OCIMF current coefficient source for #2760. Existing code has a database interface and docs mention production CSV, but the named CSV was not found in this checkout.
-- Need to replace `b1528_sirocco_current_heading_rudder_report.py` placeholder current coefficient functions with a real coefficient lookup/table path, or explicitly introduce a bounded digitized generic coefficient fixture with source/provenance limitations.
+- Need to replace `b1528_proj-a_current_heading_rudder_report.py` placeholder current coefficient functions with a real coefficient lookup/table path, or explicitly introduce a bounded digitized generic coefficient fixture with source/provenance limitations.
 - Need to retire/result hide old resultant fields from the report contract while preserving internal calculations only if required for QA.
 - Need to regenerate/extend schematics; existing PDF extraction confirms arrows/old schematics are insufficient.
 - Need Word output generation in addition to existing Markdown/HTML/PDF generation.
@@ -104,21 +104,21 @@ If MAJOR, list blockers that must be fixed before plan-review. If MINOR, list ch
 ### Evidence (embedded verification)
 
 **Issue statuses** (verified 2026-05-20T10:27:47Z via `gh issue view`):
-- `#2760` — OPEN — `revise(naval-arch): B1528 SIROCCO force calculation review updates`
+- `#2760` — OPEN — `revise(naval-arch): B1528 proj-a force calculation review updates`
 - `#2642` — verified via `gh issue view`; parent/source issue for existing package.
 
 **File existence / absence checks**:
-- EXISTS: `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-sirocco-moored-current-report.md`
-- EXISTS: `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_moored_current_report.py`
-- EXISTS: `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py`
-- EXISTS: `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_moored_current.py`
-- EXISTS: `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_current_heading_rudder.py`
-- EXISTS: `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output/b1528_sirocco_moored_current_report.pdf`
+- EXISTS: `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-proj-a-moored-current-report.md`
+- EXISTS: `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_moored_current_report.py`
+- EXISTS: `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_current_heading_rudder_report.py`
+- EXISTS: `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_proj-a_moored_current.py`
+- EXISTS: `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_proj-a_current_heading_rudder.py`
+- EXISTS: `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output/b1528_proj-a_moored_current_report.pdf`
 - NOT FOUND in checkout: `ocimf_coefficients_production.csv` via `search_files(pattern="ocimf_coefficients*", path="/mnt/local-analysis/digitalmodel")` → total count 0.
 
 **Line excerpts / source claims**:
 ```text
-/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py
+/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_current_heading_rudder_report.py
 37|OCIMF_CURRENT_CX_BASE = 1.05
 38|OCIMF_CURRENT_CM_SCALE = 0.55
 40|... first-cut OCIMF-inspired hull current review loads ... using transparent placeholder heading functions ...
@@ -148,18 +148,18 @@ If MAJOR, list blockers that must be fixed before plan-review. If MINOR, list ch
 
 | Artifact | Path |
 |---|---|
-| This plan | `docs/plans/2026-05-20-issue-2760-b1528-sirocco-force-review-revision.md` |
+| This plan | `docs/plans/2026-05-20-issue-2760-b1528-proj-a-force-review-revision.md` |
 | Issue thread / decision ledger | https://github.com/vamseeachanta/workspace-hub/issues/2760 |
 | Resource-intel comment | https://github.com/vamseeachanta/workspace-hub/issues/2760#issuecomment-4497406319 |
-| Existing digitalmodel Markdown report | `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-sirocco-moored-current-report.md` |
-| Existing ACMA PDF | `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output/b1528_sirocco_moored_current_report.pdf` |
-| Implementation candidate | `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py` |
-| Config candidate | `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_sirocco_current_heading_rudder.yml` |
+| Existing digitalmodel Markdown report | `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-proj-a-moored-current-report.md` |
+| Existing mkt-a PDF | `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output/b1528_proj-a_moored_current_report.pdf` |
+| Implementation candidate | `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_current_heading_rudder_report.py` |
+| Config candidate | `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_proj-a_current_heading_rudder.yml` |
 | OCIMF module candidate | `/mnt/local-analysis/digitalmodel/src/digitalmodel/marine_ops/marine_engineering/environmental_loading/ocimf.py` |
-| Tests to extend | `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_current_heading_rudder.py` |
-| Tests to preserve/possibly extend | `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_moored_current.py` |
-| Generated digitalmodel outputs | `/mnt/local-analysis/digitalmodel/outputs/b1528_sirocco/` |
-| Generated ACMA outputs | `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output/` |
+| Tests to extend | `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_proj-a_current_heading_rudder.py` |
+| Tests to preserve/possibly extend | `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_proj-a_moored_current.py` |
+| Generated digitalmodel outputs | `/mnt/local-analysis/digitalmodel/outputs/b1528_proj-a/` |
+| Generated mkt-a outputs | `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output/` |
 | Plan review — Claude | `scripts/review/results/2026-05-20-plan-2760-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-05-20-plan-2760-codex.md` |
 | Plan review — Gemini | `scripts/review/results/2026-05-20-plan-2760-gemini.md` |
@@ -168,7 +168,7 @@ If MAJOR, list blockers that must be fixed before plan-review. If MINOR, list ch
 
 ## Deliverable
 
-A revised B1528 SIROCCO current/rudder force calculation package that uses the approved #2760 defaults and sign conventions, separates current-on-ship and rudder-load sections, uses generic OCIMF MEG4 current coefficients with provenance, removes main-presentation resultant force calculations, includes simple section-specific plan-view schematics, and regenerates Markdown/HTML/Word/PDF deliverables with TDD-backed regression coverage.
+A revised B1528 proj-a current/rudder force calculation package that uses the approved #2760 defaults and sign conventions, separates current-on-ship and rudder-load sections, uses generic OCIMF MEG4 current coefficients with provenance, removes main-presentation resultant force calculations, includes simple section-specific plan-view schematics, and regenerates Markdown/HTML/Word/PDF deliverables with TDD-backed regression coverage.
 
 ---
 
@@ -233,16 +233,16 @@ function build_report(result):
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_current_heading_rudder.py` | TDD tests for #2760 defaults, signs, ranges, OCIMF coefficient source, report content, no-resultant presentation, charts, and output manifest |
-| Possibly modify | `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_moored_current.py` | Preserve old bounded rudder regression or update only if shared contracts change |
-| Modify/refactor | `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py` | Main report/calculation implementation path for revised package |
-| Modify | `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_sirocco_current_heading_rudder.yml` | Encode new scenario defaults/ranges/sign conventions/output contract |
+| Modify | `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_proj-a_current_heading_rudder.py` | TDD tests for #2760 defaults, signs, ranges, OCIMF coefficient source, report content, no-resultant presentation, charts, and output manifest |
+| Possibly modify | `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_proj-a_moored_current.py` | Preserve old bounded rudder regression or update only if shared contracts change |
+| Modify/refactor | `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_current_heading_rudder_report.py` | Main report/calculation implementation path for revised package |
+| Modify | `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_proj-a_current_heading_rudder.yml` | Encode new scenario defaults/ranges/sign conventions/output contract |
 | Create or locate | `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/ocimf_meg4_current_coefficients.yml` or `.csv` | Bounded generic/digitized OCIMF MEG4 current coefficient fixture if production CSV remains unavailable |
 | Possibly modify | `/mnt/local-analysis/digitalmodel/src/digitalmodel/marine_ops/marine_engineering/environmental_loading/ocimf.py` | Reuse coefficient lookup if stable; avoid broad changes unless required by tests |
-| Update/regenerate | `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-sirocco-moored-current-report.md` | Durable revised Markdown report |
-| Update/regenerate | `/mnt/local-analysis/digitalmodel/outputs/b1528_sirocco/...` | HTML/CSV/JSON/provenance/manifest outputs |
-| Create/update | `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output/...docx` | Confirmed Word deliverable location |
-| Update/regenerate | `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output/...pdf` | Confirmed PDF deliverable location |
+| Update/regenerate | `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-proj-a-moored-current-report.md` | Durable revised Markdown report |
+| Update/regenerate | `/mnt/local-analysis/digitalmodel/outputs/b1528_proj-a/...` | HTML/CSV/JSON/provenance/manifest outputs |
+| Create/update | `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output/...docx` | Confirmed Word deliverable location |
+| Update/regenerate | `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output/...pdf` | Confirmed PDF deliverable location |
 | Update | `docs/plans/README.md` | Add #2760 plan index entry after adversarial review passes |
 
 ---
@@ -264,7 +264,7 @@ Write/adjust these tests before implementation.
 | `test_issue_2760_yaw_verification_chart_present` | OCIMF yaw default plus force×arm comparison chart exists | default current cases | one side-by-side verification chart/table exists and is clearly not the default calculation basis |
 | `test_issue_2760_schematic_contract` | Schematic requirements are represented | generated HTML/Markdown | transparent/simple ship outline, CoG marker, default values, X/Y/N arrows for current and rudder sections |
 | `test_issue_2760_rounding_contract` | Result formatting follows user preference | generated report | kN/kN·m display rounded to 0 decimals for large values; angles use 1 decimal where needed |
-| `test_issue_2760_output_manifest_split` | Outputs land in confirmed locations | write report | Markdown/HTML in digitalmodel output; Word/PDF paths under acma-projects output included in manifest |
+| `test_issue_2760_output_manifest_split` | Outputs land in confirmed locations | write report | Markdown/HTML in digitalmodel output; Word/PDF paths under mkt-a output included in manifest |
 | `test_issue_2760_parent_traceability` | Traceability to #2760 and #2642 is explicit | generated report/provenance | report includes #2760, #2642, source file paths, coefficient source/provenance |
 | Existing regression tests | Preserve prior core math where still applicable | existing sample points/Cr tests | all previously applicable tests pass or are intentionally retired with replacement tests |
 
@@ -281,8 +281,8 @@ Write/adjust these tests before implementation.
 - [ ] Rudder section includes 0° to 28° port sweep in 2° increments and side-by-side simple/default vs alternate/existing hydrodynamic model comparison.
 - [ ] Report has separate sections for current load and rudder load, with section-specific plan-view schematics showing ship outline, CoG, actual angles, `X`, `Y`, and `N` signs/magnitudes.
 - [ ] Resultant force calculations are removed from main report presentation; heatmap removed; charts are single-variable except the one approved yaw verification comparison.
-- [ ] Markdown and HTML outputs regenerate in `digitalmodel`; Word and PDF outputs regenerate in `acma-projects`.
-- [ ] Tests pass for targeted files: `uv run pytest tests/naval_architecture/test_b1528_sirocco_current_heading_rudder.py tests/naval_architecture/test_b1528_sirocco_moored_current.py -v` from `/mnt/local-analysis/digitalmodel`.
+- [ ] Markdown and HTML outputs regenerate in `digitalmodel`; Word and PDF outputs regenerate in `mkt-a`.
+- [ ] Tests pass for targeted files: `uv run pytest tests/naval_architecture/test_b1528_proj-a_current_heading_rudder.py tests/naval_architecture/test_b1528_proj-a_moored_current.py -v` from `/mnt/local-analysis/digitalmodel`.
 - [ ] Broader relevant regression passes or failures are documented as unrelated/pre-existing.
 - [ ] Final issue comment links updated deliverables back to #2760 and parent #2642.
 
@@ -306,7 +306,7 @@ Pending. Do not request approval until review artifacts are filled.
 
 - **Risk: OCIMF source gap.** The documented production CSV was not found in this checkout. The implementation must not silently use placeholder coefficients. It must locate the source or add a small bounded digitized generic coefficient fixture with provenance.
 - **Risk: standards citation/provenance.** Engineering calc constants/coefficients need a citation/provenance sidecar per workspace calc-citation expectations. This plan must be reviewed for whether generic OCIMF digitized data can be carried with enough provenance without embedding copyrighted material beyond acceptable derived values.
-- **Risk: cross-repo output writes.** Markdown/HTML in `digitalmodel` and Word/PDF in `acma-projects` require clean worktree handling and serialized commit/push across repos. Implementation should use an isolated worktree for write-capable changes after approval.
+- **Risk: cross-repo output writes.** Markdown/HTML in `digitalmodel` and Word/PDF in `mkt-a` require clean worktree handling and serialized commit/push across repos. Implementation should use an isolated worktree for write-capable changes after approval.
 - **Risk: old report compatibility.** Old moored-current report tests may encode retired 3.5 kn / ±1–5° expectations. Do not delete useful regression blindly; move retired scenario into legacy regression only if it remains valuable and does not appear in the main revised report.
 - **Open: exact OCIMF generic vessel class/dataset row.** Since no ship-specific coefficients exist, the implementation must choose and document the generic curve basis before calculations are finalized.
 - **Open: exact simple area/drag rudder model coefficient/reference.** The model must cite its basis and remain clearly separated from the existing B1528/Barrass force family.
@@ -315,5 +315,5 @@ Pending. Do not request approval until review artifacts are filled.
 
 ## Complexity: T3
 
-**T3** — engineering calculation revision crossing standards-derived coefficients, sign conventions, schematics/visual reporting, TDD regression updates, and cross-repo deliverables (`digitalmodel` + `acma-projects`).
+**T3** — engineering calculation revision crossing standards-derived coefficients, sign conventions, schematics/visual reporting, TDD regression updates, and cross-repo deliverables (`digitalmodel` + `mkt-a`).
 

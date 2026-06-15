@@ -8,6 +8,6 @@ metadata:
   tags: [worktree-discipline, scope-isolation, commit-safety]
 ---
 
-When working on issue-scoped ingests, document and isolate edits to specific domain paths (e.g., wikis/engineering-standards/). Leave unrelated worktree changes (acma, .codex, .gemini) untouched. Prevents silent commits of out-of-scope work.
+When working on issue-scoped ingests, document and isolate edits to specific domain paths (e.g., wikis/engineering-standards/). Leave unrelated worktree changes (mkt-a, .codex, .gemini) untouched. Prevents silent commits of out-of-scope work.
 
 *(Distilled from codex sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

@@ -4,9 +4,9 @@ Use this reference when a follow-up request starts from an existing HTML enginee
 
 ## Discovery pattern
 
-1. Search for the report by tolerant tokens, not just the user's spelling. Engineering/vessel names are easy to mistype (`sorroco` vs `sirocco`), so try case-insensitive variants and nearby directory names before concluding the artifact is absent.
+1. Search for the report by tolerant tokens, not just the user's spelling. Engineering/vessel names are easy to mistype (`sorroco` vs `proj-a`), so try case-insensitive variants and nearby directory names before concluding the artifact is absent.
 2. If the first exact filename glob returns no hits, do not stop or report absence. Immediately broaden across likely report extensions/directories using multiple axes:
-   - spelling/case variants (`sorroco`, `sirocco`, `Sirocco`);
+   - spelling/case variants (`sorroco`, `proj-a`, `proj-a`);
    - numeric condition variants (`30`, `30deg`, `30_deg`, `30-degree`, `30°`);
    - artifact type variants (`*.html`, `*report*`, `outputs/**`, `docs/**`, `results/**`).
 3. Prefer the canonical repo artifact under `outputs/.../*_report.html` over transient `/tmp` or generated preview copies.

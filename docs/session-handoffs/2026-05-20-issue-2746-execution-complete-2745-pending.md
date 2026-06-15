@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-20 (afternoon → evening)
 **Working repo:** `vamseeachanta/workspace-hub` (at `/mnt/local-analysis/workspace-hub`)
-**Cross-repo:** `vamseeachanta/llm-wiki-acma` (PRIVATE; T6 commit pushed)
+**Cross-repo:** `vamseeachanta/llm-wiki-mkt-a` (PRIVATE; T6 commit pushed)
 **Branch:** `main` (in sync with origin: 0/0)
 **Status:** Plan #2746 execution complete (all 8 tasks + final-fix); Plan #2745 NOT started. Pause for fresh-context handoff to avoid mid-execution context exhaustion.
 
@@ -17,11 +17,11 @@ All tasks completed via `superpowers:subagent-driven-development`. Per task: imp
 | Task | Commit | Spec | Code | Notes |
 |---|---|---|---|---|
 | T1 — Template tree (11 files) | `e0b193abf` | ✅ | APPROVE_WITH_MINOR | Templates at `templates/client-llm-wiki/` |
-| T2 — Registry YAML | `bd458b9572` | ✅ | APPROVE_WITH_MINOR | 6 wiki entries; acma bootstrapped |
+| T2 — Registry YAML | `bd458b9572` | ✅ | APPROVE_WITH_MINOR | 6 wiki entries; mkt-a bootstrapped |
 | T3 — TDD RED | `5faaa442a` | ✅ | APPROVE_WITH_MINOR | Test runner + 8 fixtures; 8/8 SKIP exit 8 |
 | T4 — TDD GREEN | `88c5ddb7e` + `08e8978dc` | ✅ | APPROVE (after fix) | Checker; cwd-anchor fix mirrors `check-no-abs-paths.sh:33-34` |
 | T5 — Factory skill | `7628c304e` + `12b95cf8a` | ✅ | APPROVE (after fix) | Step 0 + 13-step checklist; I1+I2+I3 fixes |
-| T6 — Firewall files | `1d81308` (in `llm-wiki-acma`) | ✅ | APPROVE_WITH_MINOR | Cross-repo commit; pushed |
+| T6 — Firewall files | `1d81308` (in `llm-wiki-mkt-a`) | ✅ | APPROVE_WITH_MINOR | Cross-repo commit; pushed |
 | T7 — Registry finalize | `6b46a276b` | ✅ | APPROVE | Notes updated post-T6 |
 | T8 — NTFS disposition | `0d9f2ba64` | ✅ | APPROVE | 4-invariant safety check; `rm -rf` clean |
 | Final integration review | — | — | REQUEST_CHANGES → fixed | Caught C1 + C2 |
@@ -32,14 +32,14 @@ All tasks completed via `superpowers:subagent-driven-development`. Per task: imp
 
 - **Claude r1**: 13 findings (3 blockers #2746, 10 findings #2745)
 - **Codex r1**: 14 ADDITIONAL findings Claude missed (6 blockers #2746, 7 blockers #2745, 1 verdict change). Surfaced `cp -r */*` privacy-firewall failure.
-- **Final integration review**: 2 Criticals. The most valuable catch — codex r1 #3 (template-README naming `<CLIENT_SHORT_NAME>-llm-wiki` vs `llm-wiki-<CLIENT_SHORT_NAME>`) was fixed in the LIVE acma repo (T6) but NEVER back-propagated to template. Final reviewer caught the template residue that would have shipped wrong-name-order READMEs to all 5 future wikis.
+- **Final integration review**: 2 Criticals. The most valuable catch — codex r1 #3 (template-README naming `<CLIENT_SHORT_NAME>-llm-wiki` vs `llm-wiki-<CLIENT_SHORT_NAME>`) was fixed in the LIVE mkt-a repo (T6) but NEVER back-propagated to template. Final reviewer caught the template residue that would have shipped wrong-name-order READMEs to all 5 future wikis.
 
 ## Commits this session (chronological, all in workspace-hub except T6)
 
 ```
 56109de54 fix(client-wiki-factory): template README naming D4'-amended (llm-wiki-<client>)
 0d9f2ba64 chore(client-wiki-factory): T8 completion — NTFS secondary clone deleted, registry updated
-6b46a276b chore(client-wiki-factory): finalize acma registry entry post-firewall-files
+6b46a276b chore(client-wiki-factory): finalize mkt-a registry entry post-firewall-files
 12b95cf8a fix(client-wiki-factory): add Step 0 variable-set + hyperlink issue refs
 7628c304e feat(client-wiki-factory): operator-checklist skill
 08e8978dc fix(client-wiki-factory): anchor REPO_ROOT to script location for non-repo-cwd invocation
@@ -48,7 +48,7 @@ All tasks completed via `superpowers:subagent-driven-development`. Per task: imp
 bd458b9572 feat(client-wiki-factory): seed registry config/client-wikis.yml
 e0b193abf feat(client-wiki-factory): template tree for per-client private wikis
 
-# Cross-repo (llm-wiki-acma):
+# Cross-repo (llm-wiki-mkt-a):
 1d81308 feat: add firewall files + apply post-rename text fixes per workspace-hub#2746 spec
 ```
 
@@ -63,13 +63,13 @@ $ bash tests/enforcement/test_client_wiki_registry.sh
 $ bash scripts/enforcement/check-client-wiki-registry.sh
 exit=0
 
-$ gh repo view vamseeachanta/llm-wiki-acma --json visibility,isArchived
+$ gh repo view vamseeachanta/llm-wiki-mkt-a --json visibility,isArchived
 {"visibility":"PRIVATE","isArchived":false}
 
-$ ls /mnt/ace/llm-wiki-acma 2>&1
-ls: cannot access '/mnt/ace/llm-wiki-acma': No such file or directory   # deleted in T8
+$ ls /mnt/ace/llm-wiki-mkt-a 2>&1
+ls: cannot access '/mnt/ace/llm-wiki-mkt-a': No such file or directory   # deleted in T8
 
-$ git -C /mnt/local-analysis/llm-wiki-acma rev-parse HEAD
+$ git -C /mnt/local-analysis/llm-wiki-mkt-a rev-parse HEAD
 1d813086aaf04afb43198df469076ad93886b056   # T6, matches origin/main
 
 $ grep -c '<CLIENT_SHORT_NAME>-llm-wiki' templates/client-llm-wiki/README.md
@@ -86,20 +86,20 @@ $ git rev-list --left-right --count origin/main...main
 1. **Close [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746)** — closeout comment posted at issuecomment-4503183867; user decides when to close. (Per `feedback_never_offer_to_self_label_plan_approved`, agent does not close issues that crossed the plan-approval gate.)
 2. **Optionally close** the OPEN brainstorming-spec section in [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) tracking if any.
 
-### Plan #2745 (acma-projects freeze) — `status:plan-approved`, NOT STARTED
+### Plan #2745 (mkt-a freeze) — `status:plan-approved`, NOT STARTED
 
-11 tasks T0–T10 per `docs/plans/2026-05-20-issue-2745-acma-projects-freeze.md` (commit `f60d274bc`):
+11 tasks T0–T10 per `docs/plans/2026-05-20-issue-2745-mkt-a-freeze.md` (commit `f60d274bc`):
 
 | Task | Scope |
 |---|---|
 | T0 | Parallel-work precondition check |
 | T0.5 | Backup pre-snapshot (file count + top-dir listing) — captures invariants for T7 strict diff |
 | T1 | RED: verify pre-state (`STATUS-FROZEN.md` absent, GH not archived, no pushurl) |
-| T2 | Write `STATUS-FROZEN.md` in `vamseeachanta/acma-projects` repo |
+| T2 | Write `STATUS-FROZEN.md` in `vamseeachanta/mkt-a` repo |
 | T3 | Commit + push `STATUS-FROZEN.md` (must happen BEFORE archive) |
 | T4 | Local push-disable + verify push-blocked (re-ordered BEFORE archive per r2-codex finding 7) |
-| T5 | Add freeze pre-commit hook in acma-projects (`.git/hooks/pre-commit`) |
-| T6 | Archive GH remote (`gh repo archive vamseeachanta/acma-projects --yes`) |
+| T5 | Add freeze pre-commit hook in mkt-a (`.git/hooks/pre-commit`) |
+| T6 | Archive GH remote (`gh repo archive vamseeachanta/mkt-a --yes`) |
 | T7 | Verification + strict backup-unchanged diff (file count + top-dir match T0.5) |
 | T8 | Legal-sanity scan |
 | T9 | Execution-stage adversarial review (T2 default Claude + Codex); outputs at `scripts/review/results/2026-05-20-execute-2745-*.md` |
@@ -117,7 +117,7 @@ $ git rev-list --left-right --count origin/main...main
 If picking up to execute Plan #2745:
 
 1. `gh issue view 2745 --json state,labels` — confirm `status:plan-approved` still set
-2. `cat docs/plans/2026-05-20-issue-2745-acma-projects-freeze.md` — read the 11-task spec
+2. `cat docs/plans/2026-05-20-issue-2745-mkt-a-freeze.md` — read the 11-task spec
 3. Invoke `superpowers:subagent-driven-development` skill (same as #2746 execution)
 4. Per task: implementer → spec reviewer → code quality reviewer → fix loop if needed
 5. T9 explicitly requires a NEW T2 adversarial review on the *executed work* (post-T0-T8); outputs at `scripts/review/results/2026-05-20-execute-2745-{claude,codex}.md`
@@ -135,10 +135,10 @@ If picking up for a different track (e.g., close #2746 manually):
 | Residue class | State | Verdict |
 |---|---|---|
 | Workspace-hub commits | 10 commits this session, all pathspec form, all plan-gate PASS | CLEAN |
-| Cross-repo commit | T6 commit `1d81308` pushed to `vamseeachanta/llm-wiki-acma` | CLEAN |
-| NTFS clone `/mnt/ace/llm-wiki-acma/` | Deleted in T8 per 4-invariant safety | CLEAN |
-| Ext4 clone `/mnt/local-analysis/llm-wiki-acma/` | Intact at T6 SHA; durable replacement | CLEAN |
-| GitHub `vamseeachanta/llm-wiki-acma` | PRIVATE, not archived, main = T6 SHA | CLEAN |
+| Cross-repo commit | T6 commit `1d81308` pushed to `vamseeachanta/llm-wiki-mkt-a` | CLEAN |
+| NTFS clone `/mnt/ace/llm-wiki-mkt-a/` | Deleted in T8 per 4-invariant safety | CLEAN |
+| Ext4 clone `/mnt/local-analysis/llm-wiki-mkt-a/` | Intact at T6 SHA; durable replacement | CLEAN |
+| GitHub `vamseeachanta/llm-wiki-mkt-a` | PRIVATE, not archived, main = T6 SHA | CLEAN |
 | Auto-sync push | All commits pushed; origin/main == main (0/0) | CLEAN |
 | Subagent dispatches | ~20 spawned this session (implementer + reviewers + fixes per task); all completed and reported | CLEAN |
 | `/tmp/` scratch | Comment-draft files; outside workspace tree | EXPECTED |

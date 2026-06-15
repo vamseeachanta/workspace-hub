@@ -39,7 +39,7 @@ python3 scripts/python/translate_excel.py
 
 ### Configuration
 The script is currently configured to target:
-`/mnt/github/workspace-hub/doris/62092_sesa/data/calculations`
+`/mnt/github/workspace-hub/lng-a/62092_sesa/data/calculations`
 
 To change the target, modify the `target_dir` variable in the `main()` function of the script.
 

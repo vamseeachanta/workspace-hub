@@ -5,7 +5,7 @@ Use when an approved issue changes implementation in one sibling repo but must a
 ## Trigger
 
 - Implementation files live in a tier-1 sibling repo such as `/mnt/local-analysis/digitalmodel`.
-- Final deliverables must land in a different checkout or embedded output path, for example `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output`.
+- Final deliverables must land in a different checkout or embedded output path, for example `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output`.
 - The orchestration repo is dirty, ahead/behind, or contains unrelated generated state.
 
 ## Pattern
@@ -31,7 +31,7 @@ Use when an approved issue changes implementation in one sibling repo but must a
 
 ## Pitfalls
 
-- A directory named like a repo (`/mnt/local-analysis/acma-projects`) may not be a Git checkout. Do not assume; verify the owning repository.
+- A directory named like a repo (`/mnt/local-analysis/mkt-a`) may not be a Git checkout. Do not assume; verify the owning repository.
 - `workspace-hub` can be dirty from agent state, memory snapshots, provider dashboards, review artifacts, or unrelated planning work. Path-scope every stage/commit.
 - A generated PDF/DOCX existing on disk is not sufficient. Parse/extract text before reporting it as client-ready.
 - Do not close the GitHub issue until every promised repo/output surface is landed or explicitly documented as local-only/untracked by design.

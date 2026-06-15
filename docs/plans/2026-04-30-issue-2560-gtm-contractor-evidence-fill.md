@@ -104,7 +104,7 @@ update the #2554 scaffold/blocker summary and rerun at least one live adversaria
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
 | evidence_fill_high_priority_coverage | Every High-priority target named by #2560 has a row in the evidence-fill appendix | Target list from issue body | No missing target names |
-| official_deeplink_or_boundary | Each row has official deep-link evidence or explicit no-public-proof-found | Subsea7 / TechnipFMC / Saipem / McDermott / Allseas / Heerema / Boskalis / DOF / Sapura / Seaway7 / Van Oord / DEME | No PENDING deep_link_evidence in High rows; target-specific pain points without public proof use the exact internal-only boundary |
+| official_deeplink_or_boundary | Each row has official deep-link evidence or explicit no-public-proof-found | Subsea7 / TechnipFMC / client-d / McDermott / Allseas / Heerema / Boskalis / DOF / Sapura / Seaway7 / Van Oord / DEME | No PENDING deep_link_evidence in High rows; target-specific pain points without public proof use the exact internal-only boundary |
 | no_private_contact_fields | Public artifact excludes person names, email, phone, LinkedIn profile URLs, role+name combinations, and private routes | grep plus manual row scan for `@`, phone-like patterns, `linkedin.com/in`, person-name fields, and `private_route` details | 0 private-contact/private-route findings |
 | legal_scan | scripts/legal/legal-sanity-scan.sh --diff-only passes | diff containing evidence artifact | exit 0 |
 

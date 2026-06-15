@@ -74,7 +74,7 @@ Do not answer “Telegram + WhatsApp + Teams simultaneously” as a simple yes/n
 
 1. **Inbound bot adapters** — Telegram, WhatsApp, Teams, Signal, Slack, Discord etc. each have separate setup and auth requirements.
 2. **Proactive delivery targets** — Hermes cron/gateway delivery supports multi-target strings conceptually, but each platform target must be configured and verified.
-3. **Named fanout groups / Deckhand channels** — the desired operator UX needs a repo-side policy and probably implementation/docs work: e.g., `all`, `deckhand-primary`, `ecosystem`, `acma`, `doris`, with deletion explicitly disallowed for broad scopes.
+3. **Named fanout groups / Deckhand channels** — the desired operator UX needs a repo-side policy and probably implementation/docs work: e.g., `all`, `deckhand-primary`, `ecosystem`, `mkt-a`, `lng-a`, with deletion explicitly disallowed for broad scopes.
 
 Known local state from this session:
 

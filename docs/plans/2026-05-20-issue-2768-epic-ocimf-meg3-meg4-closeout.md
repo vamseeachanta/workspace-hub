@@ -65,14 +65,14 @@
 - `digitalmodel#563` — OPEN — "fix(marine_ops): test_marine_eng_performance.py::test_ocimf_database_performance — needs investigation"
 - `digitalmodel#564` — OPEN — "fix(marine_ops): test_ocimf_mooring_integration.py::test_environmental_forces_to_mooring_tension — needs investigation"
 - `workspace-hub#2284` — OPEN — "feat(wiki): promote OCIMF MEG3 and MEG4 to mooring wiki domain"
-- `workspace-hub#2278` — **OPEN** — "chore(acma-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave" → **contradicts epic body's "closed 2026-05-20" claim; flag for plan-review.**
+- `workspace-hub#2278` — **OPEN** — "chore(mkt-a-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave" → **contradicts epic body's "closed 2026-05-20" claim; flag for plan-review.**
 - `workspace-hub#2625` — OPEN — "investigate(digitalmodel-tests): Cluster E — marine-engineering domain regressions (~60 failures across catenary/wave/ocimf/RAO)"
 - `workspace-hub#2685` — CLOSED — "Citation pilot contradiction: rule names orcaflex/mooring_design.py but file emits no Citation"
 - `workspace-hub#2481` — CLOSED — "feat(llm-wiki): calculation-output citation contract — engineering modules cite wiki-backed provenance"
 
 **File existence** (`ls -la` 2026-05-20T19:35:00Z):
 
-- EXISTS: `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx` (master digitization, 17 sheets)
+- EXISTS: `/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx` (master digitization, 17 sheets)
 - EXISTS: `/mnt/local-analysis/digitalmodel/docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html` (committed `9796effa`)
 - EXISTS: `/mnt/local-analysis/digitalmodel/src/digitalmodel/marine_ops/marine_engineering/environmental_loading/ocimf.py` (826 LOC)
 - EXISTS: `/mnt/local-analysis/digitalmodel/src/digitalmodel/marine_ops/marine_analysis/environmental_loading/ocimf.py` (825 LOC — duplicate)
@@ -238,7 +238,7 @@ Epic plans do not introduce new test code. Their "tests" are **acceptance gates 
 - **Risk (mirror-vs-symlink ambiguity):** workspace-hub#2284 has not yet decided whether `knowledge/wikis/engineering/wiki/standards/ocimf-meg{3,4}.md` should be a content-copy mirror, a symlink to the sibling llm-wiki repo, or a resolver-extension that reads from the llm-wiki tree. This is a meaningful design choice (affects standalone-package mode behavior — see `.claude/rules/calc-citation-contract.md` "standalone-package mode degrades gracefully" pilot note). The Phase A child plan must surface this as a domain decision for user approval, not pick silently.
 - **Open:** Should #2625 (marine-engineering domain regressions umbrella, ~60 failures) be cross-linked back to this epic? Overlaps with #556/#557/#561 but is a broader cluster.
 - **Open:** Should Figure A15's absence be tracked as a separate sub-issue or accepted as a permanent data gap?
-- **Open:** Does the legal/source classification of `OCIMF Coef.xlsx` (vendor-licensed under `/mnt/ace/acma-codes/`) permit mirroring its derived metadata into a workspace-hub `knowledge/wikis/` mirror? Per `.claude/rules/calc-citation-contract.md`, vendor-derivative content under `knowledge/wikis/*/wiki/sources/` is deny-list; the standards-page (under `standards/`) is allowed, but the mirror decision must respect this boundary.
+- **Open:** Does the legal/source classification of `OCIMF Coef.xlsx` (vendor-licensed under `/mnt/ace/mkt-a-codes/`) permit mirroring its derived metadata into a workspace-hub `knowledge/wikis/` mirror? Per `.claude/rules/calc-citation-contract.md`, vendor-derivative content under `knowledge/wikis/*/wiki/sources/` is deny-list; the standards-page (under `standards/`) is allowed, but the mirror decision must respect this boundary.
 
 ---
 

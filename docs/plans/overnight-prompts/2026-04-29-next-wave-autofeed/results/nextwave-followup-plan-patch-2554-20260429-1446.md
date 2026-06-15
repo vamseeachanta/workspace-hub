@@ -29,7 +29,7 @@
 - `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` — wave prompt forbids scaffold edits in this lane.
 - `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md` — lane-summary reconciliation (9 → 10) is a permitted-lane responsibility, not a plan-file edit.
 - `scripts/review/results/2026-04-29-plan-2554-nextwave-{claude,codex,gemini}.md` — review artifacts are historical record; not edited.
-- All production code paths (`digitalmodel/`, `assethold/`, `worldenergydata/`, `frontierdeepwater/`, `ai-orchestrator-template/`).
+- All production code paths (`digitalmodel/`, `assethold/`, `worldenergydata/`, `client-a/`, `ai-orchestrator-template/`).
 - All `.planning/plan-approved/*` markers.
 - All GitHub state (no `gh issue edit/comment/close`, no `gh pr` commands, no fanout invocation).
 
@@ -100,7 +100,7 @@ The plan stays at `Status: draft` (per plan frontmatter line 3); no status field
 | No `.planning/plan-approved/*` create/edit | ✅ Untouched |
 | No `scripts/review/plan-review-fanout.sh` invocation | ✅ Not invoked |
 | No `codex` / `gemini` / mutating Hermes commands | ✅ Not invoked |
-| No edits to `digitalmodel/`, `assethold/`, `worldenergydata/`, `frontierdeepwater/`, `ai-orchestrator-template/` | ✅ Untouched |
+| No edits to `digitalmodel/`, `assethold/`, `worldenergydata/`, `client-a/`, `ai-orchestrator-template/` | ✅ Untouched |
 | No outreach drafts, sends, or contact-list staging | ✅ No outreach content authored; existing scaffold/templates referenced by path only |
 | No public claims from private/raw data | ✅ Plan-file edits are structural (Test List + AC); no contractor names, contact data, or evidence URLs introduced |
 | Single primary result artifact at the prescribed path | ✅ This file at `docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2554-20260429-1446.md` |

@@ -21,7 +21,7 @@ origin/main is clean across all repos; every mergeable piece of work landed thro
 - Closed as superseded: **#395, #396** (#394 plan/marker already on main).
 
 ### digitalmodel
-- Retired an abandoned `issue-2760-sirocco` worktree (no index, stale `initializing` lock; its only real content verified byte-identical on origin/main first).
+- Retired an abandoned `issue-2760-proj-a` worktree (no index, stale `initializing` lock; its only real content verified byte-identical on origin/main first).
 
 ## Repo states at exit
 - **origin/main clean across all repos** (verified by fetch + `rev-list --left-right`).

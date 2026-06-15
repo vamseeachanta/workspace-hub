@@ -1,73 +1,23 @@
-# Client wiki registry — seeded for issue #2746 (llm-wiki-acma rename + factory)
-# Schema: see docs/plans/2026-05-20-issue-2746-llm-wiki-acma.md §4.2
-# T2 of #2746 — instance #1 (acma) is bootstrapped; remaining 5 are planned.
+# Client wiki registry — RELOCATED PRIVATE (epic #3095, sub-issue #3098).
+#
+# This registry maps client short_names → private llm-wiki-<client> repos and
+# their /mnt/ace/<client>/ raw roots. Those are client-confidential, so the real
+# registry no longer lives in this PUBLIC repo (it listed every client name +
+# bucket — the same deny-list paradox the rest of #3095 fixes).
+#
+# Canonical copy:  vamseeachanta/aceengineer-strategy : config/client-wikis.yml  (PRIVATE)
+#
+# Consumers resolve the real registry by this precedence (all private/local):
+#   1. $WIKI_SIBLING_REGISTRY_PATH (or $REGISTRY_PATH for the bash validator)
+#   2. config/.client-wikis.local.yml   (gitignored; provision per host)
+#   3. .workspace-hub/client-wikis.yml  (vendored into wiki repos by the installer)
+#   4. none → registry-dependent checks degrade to warn-only
+#
+# Provision a host:
+#   cp <aceengineer-strategy>/config/client-wikis.yml config/.client-wikis.local.yml
+#
+# Schema (unchanged) — see docs/governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md
+# and .claude/rules/wiki-sibling-routing.md.
 registry_version: 0.1
-wikis:
-  - short_name: acma
-    repo: vamseeachanta/llm-wiki-acma
-    visibility: PRIVATE
-    raw_roots:
-      - /mnt/ace/acma-projects/
-    archived_raw_remotes:
-      - vamseeachanta/acma-projects        # frozen per #2745 (after #2745 executes)
-    local_working_clone: /mnt/local-analysis/llm-wiki-acma/
-    # secondary_clone: removed in T8 2026-05-20 (legacy NTFS clone deleted; ext4 clone + GitHub remote are durable)
-    posture: client-private
-    status: bootstrapped
-    instantiated_at: 2026-05-18
-    projects:                              # per #2778 — declarative roster of known projects; consumed by check-wiki-sibling-frontmatter.py Rule E
-      - sirocco                            # B1528 SIROCCO project (live engagement, #2760)
-    notes: "Instance #1. Firewall files (LICENSE/.gitignore/.claude/CLAUDE.md/REDACTION-POSTURE.md) + post-rename text fixes landed at llm-wiki-acma commit 1d813086a (2026-05-20). NTFS secondary clone deleted in T8 of #2746 (2026-05-20)."
-
-  - short_name: rock-oil-field
-    repo: vamseeachanta/llm-wiki-rock-oil-field
-    visibility: PRIVATE
-    raw_roots:
-      - /mnt/ace/rock-oil-field/
-    posture: client-private
-    status: planned
-
-  - short_name: client-projects
-    repo: vamseeachanta/llm-wiki-client-projects
-    visibility: PRIVATE
-    raw_roots:
-      - /mnt/ace/client_projects/    # NOTE: underscore per #2731 D5
-    posture: client-private
-    status: planned
-
-  - short_name: doris
-    repo: vamseeachanta/llm-wiki-doris
-    visibility: PRIVATE
-    raw_roots:
-      - /mnt/ace/doris/
-    posture: client-private
-    status: planned
-
-  - short_name: frontierdeepwater
-    repo: vamseeachanta/llm-wiki-frontierdeepwater
-    visibility: PRIVATE
-    raw_roots:
-      - /mnt/ace/frontierdeepwater/   # NOTE: no hyphen per #2731 D6
-    posture: client-private
-    status: planned
-
-  - short_name: saipem
-    repo: vamseeachanta/llm-wiki-saipem
-    visibility: PRIVATE
-    raw_roots:
-      - /mnt/ace/saipem/
-    posture: client-private
-    status: planned
-
-  - short_name: hdic
-    repo: vamseeachanta/llm-wiki-hdic
-    visibility: PRIVATE
-    raw_roots:
-      - /mnt/ace/hdic/
-    local_working_clone: /mnt/local-analysis/llm-wiki-hdic/
-    posture: client-private
-    status: bootstrapped
-    instantiated_at: 2026-06-10
-    projects:                              # per #2778 — declarative roster of known projects; consumed by check-wiki-sibling-frontmatter.py Rule E
-      - race-car-framework                 # GT1R R35 drag car: chute frame structural + aero/stability CFD (2026-06-11)
-    notes: "HDIC / H-D Independent Consulting bootstrap for Howard Day. Private wiki scaffold pushed at 6432492. Raw bucket/mount `/mnt/ace/hdic/` was not present on ace-linux-2 at bootstrap time; create or mount before ingesting raw source files."
+relocated: true
+wikis: []   # intentionally empty in the public repo; real entries live private

@@ -450,13 +450,13 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `workspace-hub` — 432275
 
 ### hermes top reads
-- `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py` — 5175
-- `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_current_heading_rudder.py` — 1950
-- `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_issue_2760_sirocco_current_rudder_revision.py` — 1908
-- `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_sirocco_current_heading_rudder.yml` — 1832
+- `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_current_heading_rudder_report.py` — 5175
+- `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_proj-a_current_heading_rudder.py` — 1950
+- `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_issue_2760_proj-a_current_rudder_revision.py` — 1908
+- `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_proj-a_current_heading_rudder.yml` — 1832
 - `docs/plans/README.md` — 1659
 - `/mnt/local-analysis/worktrees/workspace-hub-2720/scripts/readiness/telegram_hermes_readiness.py` — 1438
-- `docs/plans/2026-05-20-issue-2760-b1528-sirocco-force-review-revision.md` — 1277
+- `docs/plans/2026-05-20-issue-2760-b1528-proj-a-force-review-revision.md` — 1277
 - `/mnt/local-analysis/worktrees/workspace-hub-2720/tests/readiness/test_telegram_hermes_readiness.py` — 1033
 - `docs/plans/_template-issue-plan.md` — 1020
 - `config/workstations/registry.yaml` — 786
@@ -543,7 +543,7 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `scripts/review/results/2026-05-16-plan-2720-claude.md` — 36
 - `knowledge/wikis/engineering/wiki/log.md` — 35
 - `scripts/review/results/2026-05-16-plan-2720-disagreement.md` — 34
-- `client_projects/engineering_workbooks/ballymore/jumper_manifold_to_plet/claude_excel_addin/jumper_lift.py` — 32
+- `client-c/engineering_workbooks/ballymore/jumper_manifold_to_plet/claude_excel_addin/jumper_lift.py` — 32
 - `knowledge/wikis/marine-engineering/wiki/index.md` — 28
 - `knowledge/wikis/engineering/wiki/workflows/orcawave-to-orcaflex-pipeline.md` — 25
 
@@ -630,7 +630,7 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `digitalmodel/src` — 9
 - `config` — 8
 - `scripts` — 8
-- `doris` — 8
+- `lng-a` — 8
 - `src` — 7
 
 ### gemini top sibling-repo reads

@@ -12,7 +12,7 @@
 
 ## Goal
 
-Bulk-ingest the 13 marine-engineering publishers from `/mnt/ace/acma-codes/` into the private `vamseeachanta/llm-wiki` repo at the same fidelity demonstrated by the OCIMF MEG3/MEG4 Annex A pilot (llm-wiki commit `707af307`). "Ingest complete" for this epic means:
+Bulk-ingest the 13 marine-engineering publishers from `/mnt/ace/mkt-a-codes/` into the private `vamseeachanta/llm-wiki` repo at the same fidelity demonstrated by the OCIMF MEG3/MEG4 Annex A pilot (llm-wiki commit `707af307`). "Ingest complete" for this epic means:
 
 1. Each publisher in scope has at least one canonical standards page under `wikis/marine-engineering/wiki/standards/<code-id>.md` with the required frontmatter (`code_id`, `publisher`, `revision`, `visibility: private-llm-wiki`, `sources:`) per [.claude/rules/codes-standards-data-routing.md](https://github.com/vamseeachanta/workspace-hub/blob/main/.claude/rules/codes-standards-data-routing.md).
 2. Where the publisher PDFs contain digitizable tabular data (coefficient tables, scantling tables, equipment-number tables, sign-convention figures), that data lands as CSV (or YAML where appropriate) under `wikis/marine-engineering/wiki/datasets/<code-id>/` with a per-dataset `README.md`.
@@ -34,7 +34,7 @@ This is a content-ingest epic, not a code-change epic. Relevant existing surface
 - **EXISTS** `/mnt/local-analysis/llm-wiki/wikis/marine-engineering/wiki/standards/TEMPLATE.md` — standards-page skeleton.
 - **EXISTS** `/mnt/local-analysis/llm-wiki/wikis/marine-engineering/wiki/datasets/ocimf-meg4-annex-a/` — 3 CSVs (`data-5a-9a.csv`, `data-10a-14a.csv`, `data-16a-19a.csv`) + `README.md` — the dataset-page pattern reference (108×26, 110×35, 82×45 wide-block layout).
 - **EXISTS** `/mnt/local-analysis/digitalmodel/src/digitalmodel/citations/registry.py` — citation resolver. Standards pages from this epic become resolver targets.
-- **EXISTS** `/mnt/local-analysis/digitalmodel/src/digitalmodel/orcaflex/mooring_design.py:check_mbl_with_safety_factor` — live DNV-OS-E301 citation pilot per [workspace-hub#2685](https://github.com/vamseeachanta/workspace-hub/issues/2685). DNV-OS-E301 is in the DNV Rules folder (`/mnt/ace/acma-codes/DNV Rules/`); the standards page for it must align with this pilot's slug expectations.
+- **EXISTS** `/mnt/local-analysis/digitalmodel/src/digitalmodel/orcaflex/mooring_design.py:check_mbl_with_safety_factor` — live DNV-OS-E301 citation pilot per [workspace-hub#2685](https://github.com/vamseeachanta/workspace-hub/issues/2685). DNV-OS-E301 is in the DNV Rules folder (`/mnt/ace/mkt-a-codes/DNV Rules/`); the standards page for it must align with this pilot's slug expectations.
 
 ### Standards
 
@@ -55,12 +55,12 @@ Verified existing wiki coverage at `/mnt/local-analysis/llm-wiki/wikis/marine-en
 - [.claude/rules/codes-standards-data-routing.md](https://github.com/vamseeachanta/workspace-hub/blob/main/.claude/rules/codes-standards-data-routing.md) — post-2026-05-20 routing rule; private llm-wiki is canonical target; PDFs stay at `/mnt/ace/`.
 - [.claude/rules/calc-citation-contract.md](https://github.com/vamseeachanta/workspace-hub/blob/main/.claude/rules/calc-citation-contract.md) — citation emission for standards-derived constants; wiki pages from this epic are the resolver targets.
 - `docs/plans/2026-05-20-issue-616-ocimf-polar-vessel-force-overlay.md` (digitalmodel) — structural reference for plans that touch OCIMF-class data.
-- `docs/plans/2026-05-20-issue-2746-llm-wiki-acma.md` (workspace-hub) — sibling plan in the same 2026-05-20 corpus-ingest wave.
+- `docs/plans/2026-05-20-issue-2746-llm-wiki-mkt-a.md` (workspace-hub) — sibling plan in the same 2026-05-20 corpus-ingest wave.
 - `docs/plans/2026-05-20-issue-2768-epic-ocimf-meg3-meg4-closeout.md` — OCIMF closeout plan (downstream consumer of the OCIMF pilot).
 
-### Resource intel — publisher inventory at `/mnt/ace/acma-codes/`
+### Resource intel — publisher inventory at `/mnt/ace/mkt-a-codes/`
 
-Verified 2026-05-20 via `find /mnt/ace/acma-codes/<publisher>/ -type f | wc -l`:
+Verified 2026-05-20 via `find /mnt/ace/mkt-a-codes/<publisher>/ -type f | wc -l`:
 
 | Publisher | Files | Top-level shape | Digitizable tables/figures? | Notes |
 |---|---:|---|---|---|
@@ -72,7 +72,7 @@ Verified 2026-05-20 via `find /mnt/ace/acma-codes/<publisher>/ -type f | wc -l`:
 | **IACS** | 11 | Flat directory + 1 `Thumbs.db` | YES — CSR Common Structural Rules for Double Hull Oil Tankers and Bulk Carriers have extensive parametric tables; UR (Unified Requirements) PDFs contain digitizable equation tables | Medium. CSR is the high-value content; UR documents are short and dense. |
 | **MARPOL** | 2 | Flat directory | LIMITED — only 2 PDFs (Oil Fuel Tank Protection §12A; EIAPP Certification Fact Sheet) | **THIN at `/mnt/ace/`.** Real MARPOL corpus (Annexes I–VI) is not present; must be sourced from IMO publication catalogue or treated as a gap. Flag as a Phase 2 blocker. |
 | **IMO** | 463 | 40 subdirectories (Automated Identification System, Ballast Water Management, Bulk Carriers, …) + top-level Assembly Resolution / MSC Circular PDFs | YES — Resolution numerical tables, MSC Circular performance standards, Assembly Resolution amendments | Large surface, well-organized. Includes SOLAS-adjacent material indirectly via MSC Resolutions. |
-| **MSC** | 1 | Flat directory | NO — single PDF is a US Navy MSC (Military Sealift Command) general technical requirements doc, **not IMO MSC** | **MISLABELED in `/mnt/ace/`.** The folder named "MSC" is US Navy MSC, not IMO MSC. Real IMO MSC Resolutions/Circulars live under `/mnt/ace/acma-codes/IMO/` (top-level PDFs and `Annex` subdirectories). Note this in the plan; treat "IMO MSC circulars" as IMO-folder content, not MSC-folder content. |
+| **MSC** | 1 | Flat directory | NO — single PDF is a US Navy MSC (Military Sealift Command) general technical requirements doc, **not IMO MSC** | **MISLABELED in `/mnt/ace/`.** The folder named "MSC" is US Navy MSC, not IMO MSC. Real IMO MSC Resolutions/Circulars live under `/mnt/ace/mkt-a-codes/IMO/` (top-level PDFs and `Annex` subdirectories). Note this in the plan; treat "IMO MSC circulars" as IMO-folder content, not MSC-folder content. |
 | **IMCA** | 2 | Flat directory | LIMITED — workboat inspection template + Common Marine Inspection Document | THIN. May need supplemental sourcing from IMCA publication index for guidance documents (M-series, D-series). |
 | **SIGTTO** | 14 | Flat directory | YES — guidance documents (Quick Release Hooks, LNG rollover prevention, Purging Hard Arms, HM-fibre mooring lines, etc.); LSA Hand Book is a `.doc` file (not PDF) | Small but high-value. SIGTTO covers LNG/LPG operational guidance. |
 | **USCG** | 520 | 13 subdirectories (`ADA Rules`, `CFR`, `Load Lines`, `Manuals & Plans`, `Marine Safety Manual`, `Military Standards`, `MSC Guidelines`, `MTN`, `Nav Rules`, `NVIC's`, `Reports & Miscellaneous`, `Small Boat regulations`) + 2 top-level PDFs | YES — CFR cites are tabular, NVIC's have numerical tables, MSC Guidelines have stability and load-line tables | Large. **Routing nuance:** USCG NVICs post-2010 and CFR 33/46 are arguably public-domain per [routing rule §6](https://github.com/vamseeachanta/workspace-hub/blob/main/.claude/rules/codes-standards-data-routing.md); confirm visibility tier per-document during the USCG subissue plan rather than blanket private. |
@@ -83,8 +83,8 @@ Verified 2026-05-20 via `find /mnt/ace/acma-codes/<publisher>/ -type f | wc -l`:
 ### Gaps identified
 
 1. **DNV-OS-E301 wiki page** likely missing (the pilot citation slug at [#2685](https://github.com/vamseeachanta/workspace-hub/issues/2685) may bind to a non-yet-existing wiki page). **Verify in Phase 1 first action; if missing, the DNV subissue's first deliverable is creating it to backfill the live citation resolver.**
-2. **MARPOL corpus is thin at `/mnt/ace/`** (2 files only). Real MARPOL Annexes I-VI are not present; either source from IMO publication catalogue (which is in `/mnt/ace/acma-codes/IMO/`) or treat as a Phase 2 publisher-gap that needs supplemental PDF acquisition before ingest.
-3. **IMO MSC folder mislabel** — `/mnt/ace/acma-codes/MSC/` is US Navy MSC, not IMO MSC. IMO MSC content lives at `/mnt/ace/acma-codes/IMO/`. Don't ingest the MSC folder under marine-engineering — route the single USN MSC doc to maritime-regulatory (issue #105 territory) or out-of-scope.
+2. **MARPOL corpus is thin at `/mnt/ace/`** (2 files only). Real MARPOL Annexes I-VI are not present; either source from IMO publication catalogue (which is in `/mnt/ace/mkt-a-codes/IMO/`) or treat as a Phase 2 publisher-gap that needs supplemental PDF acquisition before ingest.
+3. **IMO MSC folder mislabel** — `/mnt/ace/mkt-a-codes/MSC/` is US Navy MSC, not IMO MSC. IMO MSC content lives at `/mnt/ace/mkt-a-codes/IMO/`. Don't ingest the MSC folder under marine-engineering — route the single USN MSC doc to maritime-regulatory (issue #105 territory) or out-of-scope.
 4. **IMCA and Bahamas Maritime Auth are sparse** at `/mnt/ace/`. Acceptance for these publishers will be "everything at `/mnt/ace/` is ingested; further coverage is out-of-scope-for-this-epic and flagged as supplemental-source gaps for future enhancement."
 5. **Edition drift:** several DNV/ABS PDFs in `/mnt/ace/` are years out of date (e.g., DNV 2003 hull structures, ABS 2013 IMO Regulatory Matrix). Standards pages must record the `revision:` frontmatter for the edition of the PDF actually on disk, NOT the current latest edition. Per-document subissue plans need to flag known-stale editions and decide whether to seek a current edition before ingest.
 6. **No existing per-publisher subissues yet.** This epic spawns them; they currently do not exist on the llm-wiki repo.
@@ -104,7 +104,7 @@ Verified 2026-05-20 via `find /mnt/ace/acma-codes/<publisher>/ -type f | wc -l`:
 - EXISTS: `/mnt/local-analysis/llm-wiki/wikis/marine-engineering/wiki/standards/ocimf-meg4.md`
 - EXISTS: `/mnt/local-analysis/llm-wiki/wikis/marine-engineering/wiki/standards/TEMPLATE.md`
 - EXISTS: `/mnt/local-analysis/llm-wiki/wikis/marine-engineering/wiki/datasets/ocimf-meg4-annex-a/` (4 files: 3 CSVs + README.md)
-- EXISTS: `/mnt/ace/acma-codes/{ABS Rules, DNV Rules, Bureau Veritas, Germanischer Lloyd, Lloyds Register, IACS, MARPOL, IMO, MSC, IMCA, SIGTTO, USCG, Bahamas Maritime Auth}/` (13 publisher directories — file counts above)
+- EXISTS: `/mnt/ace/mkt-a-codes/{ABS Rules, DNV Rules, Bureau Veritas, Germanischer Lloyd, Lloyds Register, IACS, MARPOL, IMO, MSC, IMCA, SIGTTO, USCG, Bahamas Maritime Auth}/` (13 publisher directories — file counts above)
 - MISSING (this epic does NOT create directly — spawned subissues create): `wikis/marine-engineering/wiki/standards/dnv-os-e301.md`, `…/abs-*.md`, `…/dnv-*.md`, …
 - MISSING (spawned per per-publisher subissue): `wikis/marine-engineering/wiki/datasets/<code-id>/` directories.
 
@@ -155,14 +155,14 @@ Publishers: **DNV Rules** (priority 1 — citation-resolver backfill), **SIGTTO*
 - Per-publisher subissue spawn rule (Phase 2): one subissue per coherent publisher segment. ABS has 82 subdirectories — Phase 2 ABS subissues are scoped by subdirectory cluster (e.g., "ABS Bulk Carriers", "ABS Tankers", "ABS Mooring & Equipment"), not per-PDF. Bureau Veritas, GL, Lloyd's, IACS are small enough that 1–3 subissues per publisher suffice.
 - Subissues in Phase 2 are eligible for parallel-readonly planning (multiple per-publisher plans can be drafted concurrently by different providers/sessions) but each subissue's implementation still gates on its own `status:plan-approved` per the standard workflow.
 - **GL caveat:** GL was merged into DNV GL (2013) — record this in the GL publisher-overview page and note that current GL-as-publisher work is mostly legacy. Don't replicate DNV content under a GL slug.
-- **CSR caveat:** IACS Common Structural Rules for Double Hull Oil Tankers and Bulk Carriers are jointly authored with class societies; the CSR PDFs in `/mnt/ace/acma-codes/IACS/` are the authoritative IACS-slug source. If those CSRs also live under ABS/DNV/BV trees, cross-link from each class-society page to the IACS CSR page; don't duplicate the content.
+- **CSR caveat:** IACS Common Structural Rules for Double Hull Oil Tankers and Bulk Carriers are jointly authored with class societies; the CSR PDFs in `/mnt/ace/mkt-a-codes/IACS/` are the authoritative IACS-slug source. If those CSRs also live under ABS/DNV/BV trees, cross-link from each class-society page to the IACS CSR page; don't duplicate the content.
 
 ### Phase 3 — IMO regulatory (sequence: IMO → MARPOL [if sourceable])
 
 Publishers: **IMO** (priority — large, well-organized, contains SOLAS-adjacent MSC Resolutions), **MARPOL** (THIN at `/mnt/ace/` — Phase 3 second priority).
 
 - Per-publisher subissue spawn rule (Phase 3): one subissue per IMO publication class. IMO has 40 subdirectories — scope subissues by topical cluster: "IMO SOLAS-MSC Resolutions", "IMO Ballast Water Management", "IMO Bulk Carriers", etc.
-- MARPOL is thin at `/mnt/ace/`; Phase 3 MARPOL subissue first deliverable is a publisher-overview page that flags the source gap explicitly and proposes either (a) using IMO publication catalogue (already at `/mnt/ace/acma-codes/IMO/`) for the MARPOL Annex resolutions, or (b) treating MARPOL as a corpus-gap to be closed in a future enhancement issue.
+- MARPOL is thin at `/mnt/ace/`; Phase 3 MARPOL subissue first deliverable is a publisher-overview page that flags the source gap explicitly and proposes either (a) using IMO publication catalogue (already at `/mnt/ace/mkt-a-codes/IMO/`) for the MARPOL Annex resolutions, or (b) treating MARPOL as a corpus-gap to be closed in a future enhancement issue.
 
 ### Phase 4 — Industry guidance + flag-state (sequence: USCG marine portions → IMCA → Bahamas Maritime Auth)
 
@@ -212,7 +212,7 @@ Per-publisher subissue plans inherit this test surface and add publisher-specifi
 - [ ] Each publisher with digitizable tabular data has at least one dataset directory under `wikis/marine-engineering/wiki/datasets/<code-id>/` containing CSV (or YAML) files and a `README.md` describing the schema and provenance.
 - [ ] Verbatim convention/clause text quoted (with attribution to publisher + section) wherever an interpretive section depends on the standard's exact wording (OCIMF §A2 pattern).
 - [ ] DNV-OS-E301 wiki page exists and resolves correctly against the live citation pilot at [workspace-hub#2685](https://github.com/vamseeachanta/workspace-hub/issues/2685) — i.e., `digitalmodel.citations.registry.get_mooring_safety_factor()` does not raise `CitationResolutionError` when `LLM_WIKI_PATH` points to a clone of llm-wiki.
-- [ ] No raw vendor PDF has been committed to the llm-wiki repo. PDFs remain canonical at `/mnt/ace/acma-codes/<publisher>/`.
+- [ ] No raw vendor PDF has been committed to the llm-wiki repo. PDFs remain canonical at `/mnt/ace/mkt-a-codes/<publisher>/`.
 - [ ] `wikis/marine-engineering/wiki/index.md` lists one entry per landed publisher with a brief topical summary.
 - [ ] All per-publisher subissues spawned by this epic are either closed (landed) or explicitly deferred with a Phase 5 note.
 - [ ] Adversarial review of THIS plan has APPROVE / MINOR verdicts (no unresolved MAJOR) across Claude / Codex / Gemini before user approval.
@@ -240,7 +240,7 @@ These are defects the plan author has already considered and addressed inline so
 4. **Missing cross-references:** OCIMF MEG4 §A2 sign convention is identical to MEG3 §A1; the MEG4 page cross-links to MEG3. The same cross-link discipline must apply to other publishers' edition-pairs (e.g., ABS Rules editions year-over-year). Per-publisher subissue plans must enumerate edition cross-links explicitly.
 5. **Edition mismatch between `/mnt/ace/` PDFs and the citation resolver expectations:** if `digitalmodel.citations.registry` expects a 2018 DNV-OS-E301 but `/mnt/ace/` has only a 2008 copy, the resolver test fails. Mitigation: each per-publisher subissue's first action is `pdfinfo` on the source PDF to record the edition, and the standards page's `revision:` frontmatter must match exactly.
 6. **MARPOL/IMCA/Bahamas thin coverage** is acknowledged explicitly as a gap rather than fabricating coverage from absent PDFs. Per-publisher subissue plans must close-as-incomplete with a supplemental-source follow-on issue rather than hallucinating content.
-7. **`/mnt/ace/acma-codes/MSC/` mislabel:** the folder is US Navy MSC, not IMO MSC. This epic does NOT ingest the MSC folder under marine-engineering. The single USN MSC PDF either routes to maritime-regulatory (issue #105) or is treated as out-of-scope.
+7. **`/mnt/ace/mkt-a-codes/MSC/` mislabel:** the folder is US Navy MSC, not IMO MSC. This epic does NOT ingest the MSC folder under marine-engineering. The single USN MSC PDF either routes to maritime-regulatory (issue #105) or is treated as out-of-scope.
 
 ---
 
@@ -261,10 +261,10 @@ These are defects the plan author has already considered and addressed inline so
 
 - Per-publisher implementation details — deferred to subissue plans (one plan per subissue, gated by `status:plan-approved` independently).
 - Non-marine publishers — those have their own domain epics (civil-structural [llm-wiki #104], drilling-engineering [#107], etc., per [workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774) subissue tree).
-- Raw vendor PDF redistribution — PDFs ALWAYS stay at `/mnt/ace/acma-codes/<publisher>/`.
-- Client-project content — handled separately under client-engagement issues (B1528, SIROCCO, acma-projects).
+- Raw vendor PDF redistribution — PDFs ALWAYS stay at `/mnt/ace/mkt-a-codes/<publisher>/`.
+- Client-project content — handled separately under client-engagement issues (B1528, proj-a, mkt-a).
 - Frontmatter migration of pre-privacy-flip existing wiki pages — out of scope; tracked separately if surfaced during this epic.
-- The single US Navy MSC PDF at `/mnt/ace/acma-codes/MSC/` — folder is mislabeled; routes to maritime-regulatory ([llm-wiki #105](https://github.com/vamseeachanta/llm-wiki/issues/105)) or out-of-scope entirely.
+- The single US Navy MSC PDF at `/mnt/ace/mkt-a-codes/MSC/` — folder is mislabeled; routes to maritime-regulatory ([llm-wiki #105](https://github.com/vamseeachanta/llm-wiki/issues/105)) or out-of-scope entirely.
 - Supplemental sourcing of missing MARPOL Annexes from non-`/mnt/ace/` sources — flagged as a gap, not closed in this epic.
 
 ---
@@ -277,7 +277,7 @@ These are defects the plan author has already considered and addressed inline so
 - DNV-OS-E301 citation pilot (LIVE): [workspace-hub#2685](https://github.com/vamseeachanta/workspace-hub/issues/2685) — calc-citation contract pilot
 - Routing rule: [.claude/rules/codes-standards-data-routing.md](https://github.com/vamseeachanta/workspace-hub/blob/main/.claude/rules/codes-standards-data-routing.md)
 - Calc-citation contract: [.claude/rules/calc-citation-contract.md](https://github.com/vamseeachanta/workspace-hub/blob/main/.claude/rules/calc-citation-contract.md)
-- Sibling plan (same 2026-05-20 wave): `docs/plans/2026-05-20-issue-2746-llm-wiki-acma.md`
+- Sibling plan (same 2026-05-20 wave): `docs/plans/2026-05-20-issue-2746-llm-wiki-mkt-a.md`
 - OCIMF closeout: `docs/plans/2026-05-20-issue-2768-epic-ocimf-meg3-meg4-closeout.md`
 - Structural reference plan: `digitalmodel/docs/plans/2026-05-20-issue-616-ocimf-polar-vessel-force-overlay.md`
 - Memory: `project_llm_wiki_privacy_flip`, `feedback_codes_standards_data_in_private_wiki`

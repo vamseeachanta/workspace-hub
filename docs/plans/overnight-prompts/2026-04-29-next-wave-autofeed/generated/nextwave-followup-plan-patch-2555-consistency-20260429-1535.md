@@ -6,7 +6,7 @@ Global rules for this next-wave autofeed worker:
 - Do NOT apply status:plan-approved or status:plan-review to any GitHub issue.
 - Do NOT run gh issue edit, gh issue comment, gh issue close, gh pr *, scripts/review/plan-review-fanout.sh, codex, gemini, hermes, or git push.
 - Do NOT create or edit .planning/plan-approved/* markers.
-- Do NOT touch digitalmodel/, assethold/, worldenergydata/, frontierdeepwater/, ai-orchestrator-template/, or any production/source code.
+- Do NOT touch digitalmodel/, assethold/, worldenergydata/, client-a/, ai-orchestrator-template/, or any production/source code.
 - Do NOT commit. Leave any plan/report edits in the working tree for user review.
 - Write exactly one primary result artifact: docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2555-consistency-20260429-1535.md
 - Do NOT overwrite any existing nextwave result file.

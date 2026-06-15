@@ -351,7 +351,7 @@ python scripts/testing/unified_test_runner.py --work-only
 
 ```bash
 python scripts/testing/unified_test_runner.py \
-  --repos digitalmodel energy frontierdeepwater \
+  --repos digitalmodel energy client-a \
   --verbose
 ```
 

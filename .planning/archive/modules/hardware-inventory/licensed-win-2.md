@@ -1,13 +1,13 @@
 ---
-title: "ACMA-WS014 Hardware Assessment"
-device: ACMA-WS014
-hostname: ACMA-WS014
+title: "mkt-a-WS014 Hardware Assessment"
+device: mkt-a-WS014
+hostname: mkt-a-WS014
 assessed_date: 2026-02-20
 assessed_by: hardware-assess.ps1 v1.0.0
 work_item: WRK-050
 ---
 
-# ACMA-WS014 — Hardware Assessment
+# mkt-a-WS014 — Hardware Assessment
 
 > Assessed 2026-02-20 using `hardware-assess.ps1 v1.0.0` on Windows 11 Pro
 

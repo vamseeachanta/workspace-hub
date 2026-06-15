@@ -12,7 +12,7 @@ Canonical policy for data governance across all repositories in the workspace-hu
 |------|------|------------|-------------|
 | 1 | Collection Data | `worldenergydata` | Raw data collected from external public sources via APIs, web scraping, or downloads |
 | 2 | Engineering Reference Data | `digitalmodel` | Industry standard lookup tables, material properties, and design code parameters consumed by engineering analysis |
-| 3 | Project Data | `rock-oil-field`, `client_projects` | Project-specific configurations, analysis inputs/outputs, and client deliverables |
+| 3 | Project Data | `client-b`, `client-c` | Project-specific configurations, analysis inputs/outputs, and client deliverables |
 
 ### Tier 1 — Collection Data (`worldenergydata`)
 
@@ -59,7 +59,7 @@ Downloaded academic papers, conference proceedings, ITTC guidelines, classificat
 
 ### Tier 3 — Project Data (project repos)
 
-Project-specific configurations, analysis inputs/outputs, and client deliverables. Never stored in `worldenergydata` or `digitalmodel`. Always in the project repo (`rock-oil-field`, `client_projects`, or equivalent).
+Project-specific configurations, analysis inputs/outputs, and client deliverables. Never stored in `worldenergydata` or `digitalmodel`. Always in the project repo (`client-b`, `client-c`, or equivalent).
 
 ---
 

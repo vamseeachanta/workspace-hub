@@ -14,23 +14,23 @@
 
 ## Critical prior art — reconcile before locking any naming
 
-- **workspace-hub#1544** (CLOSED) — ratified `/mnt/ace/<repo-name>/<domain>/` as canonical layout. `doris`, `digitalmodel`, `achantas-data`, `acma-codes` are repo-aligned buckets; `client_projects/` is NOT a repo and needs an explicit carve-out or rename.
+- **workspace-hub#1544** (CLOSED) — ratified `/mnt/ace/<repo-name>/<domain>/` as canonical layout. `lng-a`, `digitalmodel`, `achantas-data`, `mkt-a-codes` are repo-aligned buckets; `client-c/` is NOT a repo and needs an explicit carve-out or rename.
 - **workspace-hub#1355, #1540, #1757, #1904** — ace-drive consolidation, dedup audit, OrcaFlex inventory. Cross-link the new issue to all four.
-- `vamseeachanta/doris` is a private GitHub repo, so `/mnt/ace/doris/` aligns with #1544.
+- `vamseeachanta/lng-a` is a private GitHub repo, so `/mnt/ace/lng-a/` aligns with #1544.
 
 ## Source folders and prior-session decisions
 
 | Source on /mnt/elements/         | Disposition decided                                                                                |
 |----------------------------------|----------------------------------------------------------------------------------------------------|
-| `62092  SESA FLNG Terminal Project` | stage under `doris/62092_sesa/_from_elements_2026-04-27/`, then dedupe-merge — likely overlaps existing `doris/62092_sesa/` |
+| `62092  SESA FLNG Terminal Project` | stage under `lng-a/62092_sesa/_from_elements_2026-04-27/`, then dedupe-merge — likely overlaps existing `lng-a/62092_sesa/` |
 | `casa_grande_77017`              | `achantas-data/assethold/casa-grande-77017/` — **CONFIRM with user**                               |
-| `Codes and Specs`                | rename to `codes-doris` and stage to `doris/codes/_from_elements_2026-04-27/`; overlaps existing `doris/codes/` — `diff -rq` before merge |
-| `Codes & Regulations`            | **SKIP** — already at `acma-codes`                                                                 |
-| `Doris University`               | `doris/training/`                                                                                  |
+| `Codes and Specs`                | rename to `codes-lng-a` and stage to `lng-a/codes/_from_elements_2026-04-27/`; overlaps existing `lng-a/codes/` — `diff -rq` before merge |
+| `Codes & Regulations`            | **SKIP** — already at `mkt-a-codes`                                                                 |
+| `lng-a University`               | `lng-a/training/`                                                                                  |
 | `qgis`                           | **NEEDS CLARIFICATION** — billable client (which #?) or `digitalmodel/tools/qgis/` if reusable     |
 | `Riser Toolbox`                  | `digitalmodel/references/riser-toolbox/`                                                           |
 | `Suction Pile Sizing`            | `digitalmodel/references/suction-pile-sizing/`                                                     |
-| `Woodfibre`                      | `client_projects/<NNNN>-woodfibre-lng/` — **NEEDS PROJECT NUMBER**                                 |
+| `Woodfibre`                      | `client-c/<NNNN>-woodfibre-lng/` — **NEEDS PROJECT NUMBER**                                 |
 
 ## Open questions — ask the user up front
 
@@ -38,7 +38,7 @@
 2. `Woodfibre`: 4-digit AceEngineer project code?
 3. `casa_grande_77017`: confirm `achantas-data/assethold/casa-grande-77017/` target, or relocate under a new top-level `/mnt/ace/assets/` bucket?
 4. Staging pattern: per-destination `_from_elements_2026-04-27/` subdir, OR single top-level mirror at `/mnt/ace/_inbox/elements_2026-04-27/` that we triage?
-5. Should `client_projects/` be renamed to fit #1544's repo-name convention, or formally exempted as a category bucket?
+5. Should `client-c/` be renamed to fit #1544's repo-name convention, or formally exempted as a category bucket?
 
 ## Safety strategy — lock these in the issue
 

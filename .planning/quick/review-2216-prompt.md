@@ -22,16 +22,16 @@ Context:
 
 GitHub issue metadata:
 - Issue: #2216
-- Title: feat(naval-architecture): integrate /mnt/ace/acma-codes into llm-wiki and repo intelligence ecosystem
+- Title: feat(naval-architecture): integrate /mnt/ace/mkt-a-codes into llm-wiki and repo intelligence ecosystem
 - URL: https://github.com/vamseeachanta/workspace-hub/issues/2216
 - Labels: enhancement, priority:medium, cat:data-pipeline, cat:documentation, status:plan-approved
 
 GitHub issue body:
 ## Summary
-Integrate the naval-architecture-focused codes now copied to `/mnt/ace/acma-codes` into the workspace-hub intelligence ecosystem so they become discoverable, reusable, and promotable into llm-wikis and related repo workflows.
+Integrate the naval-architecture-focused codes now copied to `/mnt/ace/mkt-a-codes` into the workspace-hub intelligence ecosystem so they become discoverable, reusable, and promotable into llm-wikis and related repo workflows.
 
 ## Why
-A new code/source collection is now available at `/mnt/ace/acma-codes`. If it remains only as a filesystem drop, the ecosystem loses most of its value:
+A new code/source collection is now available at `/mnt/ace/mkt-a-codes`. If it remains only as a filesystem drop, the ecosystem loses most of its value:
 - it will not be discoverable through resource/document intelligence
 - it will not participate in provenance-aware promotion into llm-wikis
 - future issues will not benefit from it during planning/execution/review
@@ -40,7 +40,7 @@ A new code/source collection is now available at `/mnt/ace/acma-codes`. If it re
 This needs to be integrated into the same emerging operating model being defined in #2205 and related child issues.
 
 ## Scope
-- inventory the contents of `/mnt/ace/acma-codes`
+- inventory the contents of `/mnt/ace/mkt-a-codes`
 - classify what the collection contains:
   - raw standards/codes
   - notes/summaries
@@ -57,14 +57,14 @@ This needs to be integrated into the same emerging operating model being defined
 - create follow-on implementation tasks if ingestion, indexing, deduplication, or wiki promotion must be split
 
 ## Key questions
-1. What exactly is in `/mnt/ace/acma-codes` and how should it be classified?
+1. What exactly is in `/mnt/ace/mkt-a-codes` and how should it be classified?
 2. How should these codes be represented in document/resource intelligence without duplicating existing corpus entries?
 3. Which parts should be promoted into llm-wikis, and through what provenance-aware path?
 4. How should future issue-planning/resource-intelligence workflows discover and use this collection?
 5. Are these codes primarily inputs, derived artifacts, or a mixture that must be separated before ingestion?
 
 ## Deliverables
-- inventory and classification of `/mnt/ace/acma-codes`
+- inventory and classification of `/mnt/ace/mkt-a-codes`
 - recommendation for canonical integration path into repo intelligence layers
 - dedup/provenance guidance relative to existing registries and corpora
 - llm-wiki promotion approach for relevant naval-architecture knowledge
@@ -81,15 +81,15 @@ This needs to be integrated into the same emerging operating model being defined
 - Upstream context: #1575, #1563, #2034
 
 ## Acceptance criteria
-- [ ] `/mnt/ace/acma-codes` contents are inventoried and classified
+- [ ] `/mnt/ace/mkt-a-codes` contents are inventoried and classified
 - [ ] integration path into repo intelligence layers is recommended
 - [ ] provenance/dedup expectations are defined
 - [ ] llm-wiki promotion candidates and boundaries are identified
 - [ ] follow-on implementation issues are proposed if needed
 
 
-Plan under review (docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md):
-# Plan for #2216: Integrate /mnt/ace/acma-codes into LLM-Wiki and Repo Intelligence Ecosystem
+Plan under review (docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md):
+# Plan for #2216: Integrate /mnt/ace/mkt-a-codes into LLM-Wiki and Repo Intelligence Ecosystem
 
 > **Status:** adversarial-reviewed
 > **Complexity:** T2
@@ -105,10 +105,10 @@ Plan under review (docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-int
 
 | Artifact | Path | Relevance |
 |---|---|---|
-| Mounted source registry | `data/document-index/mounted-source-registry.yaml` | `/mnt/ace/acma-codes` is NOT registered — gap |
+| Mounted source registry | `data/document-index/mounted-source-registry.yaml` | `/mnt/ace/mkt-a-codes` is NOT registered — gap |
 | Standards transfer ledger | `data/document-index/standards-transfer-ledger.yaml` | API RP 2SK (done), API RP 1111 (done, multiple editions) already tracked; OCIMF and CSA are NOT in the ledger |
 | Design code registry | `data/design-codes/code-registry.yaml` | Contains API-RP-1111 and API-RP-2A-WSD; no OCIMF or CSA entries |
-| Corpus index | `data/document-index/index.jsonl` | 1,033,933 records across 8 sources; acma-codes not indexed |
+| Corpus index | `data/document-index/index.jsonl` | 1,033,933 records across 8 sources; mkt-a-codes not indexed |
 | 7-phase pipeline | `scripts/data/document-index/phase-a-index.py` through `phase-g-*.py` | Existing indexing infrastructure for new source onboarding |
 | Provenance dedup | `scripts/data/document-index/provenance.py` | Content-hash-based dedup — will identify API overlaps automatically |
 | Cross-drive dedup report | `data/document-index/cross-drive-dedup-report.json` | Existing dedup analysis — should be consulted for overlap detection |
@@ -124,7 +124,7 @@ Plan under review (docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-int
 | OCIMF Tandem Mooring Guidelines | NOT in transfer ledger | No wiki or registry coverage |
 | CSA Z276.1-20 (marine structures for LNG) | NOT in any registry | Entirely new to ecosystem |
 | CSA Z276.18 (LNG production/storage) | NOT in any registry | Entirely new to ecosystem |
-| Mounted source registry | `/mnt/ace/acma-codes` NOT registered | 8 sources registered; acma-codes is absent |
+| Mounted source registry | `/mnt/ace/mkt-a-codes` NOT registered | 8 sources registered; mkt-a-codes is absent |
 
 ### LLM Wiki pages consulted
 
@@ -149,21 +149,21 @@ Plan under review (docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-int
 
 ### Gaps identified
 
-1. **No mounted source registration** — `/mnt/ace/acma-codes` is not in `mounted-source-registry.yaml`; the pipeline cannot discover it
+1. **No mounted source registration** — `/mnt/ace/mkt-a-codes` is not in `mounted-source-registry.yaml`; the pipeline cannot discover it
 2. **OCIMF not in transfer ledger** — OCIMF standards exist only as wiki content (ocimf-meg4.md), with no L2 provenance records
 3. **CSA entirely absent** — CSA Z276 series not in any registry, ledger, wiki, or code-registry; completely undiscovered by the ecosystem
 4. **OCIMF Tandem Mooring not in wiki** — only MEG4 has a wiki page; tandem mooring guidelines are untracked
-5. **API RP 2SK edition mismatch** — transfer ledger tracks 2nd Ed (1996) matching acma-codes; wiki references 4th Ed (2024)
-6. **No doc_key hashing** — acma-codes files have never been hashed; dedup against existing corpus is unverified
+5. **API RP 2SK edition mismatch** — transfer ledger tracks 2nd Ed (1996) matching mkt-a-codes; wiki references 4th Ed (2024)
+6. **No doc_key hashing** — mkt-a-codes files have never been hashed; dedup against existing corpus is unverified
 7. **Non-document artifacts present** — `Thumbs.db`, possibly `.xlsx` data files and `.txt` notes mixed with standards PDFs
 
 ---
 
-## Real Inventory and Classification of `/mnt/ace/acma-codes`
+## Real Inventory and Classification of `/mnt/ace/mkt-a-codes`
 
 ### Known contents (from live inspection prior to this session)
 
-**Sandbox limitation:** Direct filesystem access to `/mnt/ace/acma-codes` was denied by the Claude Code sandbox during this session. The inventory below is based on contents observed during pre-session live inspection and recorded in the planning prompt. This is a **known limitation** — the inventory should be verified by a human or an unrestricted agent before implementation.
+**Sandbox limitation:** Direct filesystem access to `/mnt/ace/mkt-a-codes` was denied by the Claude Code sandbox during this session. The inventory below is based on contents observed during pre-session live inspection and recorded in the planning prompt. This is a **known limitation** — the inventory should be verified by a human or an unrestricted agent before implementation.
 
 | Top-level folder | Standards family | Known files | File types | Domain |
 |---|---|---|---|---|
@@ -196,7 +196,7 @@ Plan under review (docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-int
 
 | Artifact | Path |
 |---|---|
-| This plan | `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md` |
+| This plan | `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md` |
 | Plan review — Claude | `scripts/review/results/2026-04-11-plan-2216-claude.md` |
 | Plan review — Final synthesis | `scripts/review/results/2026-04-11-plan-2216-final.md` |
 | Mounted source registry (to update) | `data/document-index/mounted-source-registry.yaml` |
@@ -209,7 +209,7 @@ Plan under review (docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-int
 
 ## Deliverable
 
-A registered, deduplicated, and classified integration of `/mnt/ace/acma-codes` into the intelligence ecosystem, with new standards families (OCIMF tandem mooring, CSA Z276) tracked in the transfer ledger, indexed by the pipeline, and promoted into LLM-wikis where appropriate.
+A registered, deduplicated, and classified integration of `/mnt/ace/mkt-a-codes` into the intelligence ecosystem, with new standards families (OCIMF tandem mooring, CSA Z276) tracked in the transfer ledger, indexed by the pipeline, and promoted into LLM-wikis where appropriate.
 
 ---
 
@@ -219,14 +219,14 @@ This is planning-level pseudocode. No implementation code should be written in t
 
 ### Source registration
 ```
-1. Add source_id "acma_codes_local" to mounted-source-registry.yaml
-   - mount_root: /mnt/ace/acma-codes
-   - document_intelligence_bucket: acma_codes
+1. Add source_id "mkt-a_codes_local" to mounted-source-registry.yaml
+   - mount_root: /mnt/ace/mkt-a-codes
+   - document_intelligence_bucket: mkt-a_codes
    - provenance_rule: staging area; dedup against og_standards first
    - dedup_rule: prefer /mnt/ace/0000 O&G for overlapping content
 
 2. Run phase-a-index.py with new source root
-   - Scans /mnt/ace/acma-codes recursively
+   - Scans /mnt/ace/mkt-a-codes recursively
    - Hashes all files (SHA-256 → doc_key)
    - Writes records to index.jsonl
    - Filters Thumbs.db and non-document artifacts
@@ -235,7 +235,7 @@ This is planning-level pseudocode. No implementation code should be written in t
 ### Dedup pass
 ```
 3. Run provenance.py merge against existing index
-   - For each doc_key from acma-codes:
+   - For each doc_key from mkt-a-codes:
      - If doc_key exists in og_standards or ace_standards → link as alias
      - If doc_key is new → mark as new_source for pipeline processing
    - Expected results:
@@ -252,8 +252,8 @@ This is planning-level pseudocode. No implementation code should be written in t
    - OCIMF-TANDEM-MOORING (Tandem Mooring and Offloading Guidelines)
    - CSA-Z276.1-20 (Marine structures for LNG facilities)
    - CSA-Z276.18 (LNG production, storage, and handling)
-   - Verify API RP 2SK entry has acma-codes path as alias
-   - Verify API RP 1111 entry has acma-codes path as alias
+   - Verify API RP 2SK entry has mkt-a-codes path as alias
+   - Verify API RP 1111 entry has mkt-a-codes path as alias
 ```
 
 ### Pipeline processing
@@ -281,7 +281,7 @@ These are the files that will be modified during **future implementation**. This
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `data/document-index/mounted-source-registry.yaml` | Add `acma_codes_local` source entry |
+| Modify | `data/document-index/mounted-source-registry.yaml` | Add `mkt-a_codes_local` source entry |
 | Modify | `data/document-index/standards-transfer-ledger.yaml` | Add OCIMF and CSA entries; add alias paths for API entries |
 | Modify | `data/design-codes/code-registry.yaml` | Add OCIMF and CSA code-family entries if warranted |
 | Run | `scripts/data/document-index/phase-a-index.py` | Index new source |
@@ -292,8 +292,8 @@ These are the files that will be modified during **future implementation**. This
 | Create | `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md` | New wiki page for tandem mooring guidelines |
 | Create | `knowledge/wikis/marine-engineering/wiki/standards/csa-z276-1.md` | New wiki page for CSA Z276.1 (LNG marine structures) |
 | Create | `knowledge/wikis/marine-engineering/wiki/standards/csa-z276-18.md` | New wiki page for CSA Z276.18 (LNG operations) |
-| Modify | `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` | Add historical MEG3/2008 edition context and acma-codes source reference |
-| Modify | `docs/document-intelligence/intelligence-accessibility-map.md` | Add acma-codes source to accessibility inventory |
+| Modify | `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` | Add historical MEG3/2008 edition context and mkt-a-codes source reference |
+| Modify | `docs/document-intelligence/intelligence-accessibility-map.md` | Add mkt-a-codes source to accessibility inventory |
 | Update | `docs/plans/README.md` | Add this plan to the index |
 
 ---
@@ -302,9 +302,9 @@ These are the files that will be modified during **future implementation**. This
 
 | Test | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| verify_acma_source_registered | mounted-source-registry includes acma_codes_local | `mounted-source-registry.yaml` | Entry with mount_root `/mnt/ace/acma-codes` |
-| verify_index_includes_acma | Phase A indexed acma-codes files | `index.jsonl` filtered by source=acma_codes | Records for OCIMF, API, CSA PDFs |
-| verify_thumbsdb_excluded | Non-document artifacts filtered | `index.jsonl` filtered by source=acma_codes | No Thumbs.db records |
+| verify_mkt-a_source_registered | mounted-source-registry includes mkt-a_codes_local | `mounted-source-registry.yaml` | Entry with mount_root `/mnt/ace/mkt-a-codes` |
+| verify_index_includes_mkt-a | Phase A indexed mkt-a-codes files | `index.jsonl` filtered by source=mkt-a_codes | Records for OCIMF, API, CSA PDFs |
+| verify_thumbsdb_excluded | Non-document artifacts filtered | `index.jsonl` filtered by source=mkt-a_codes | No Thumbs.db records |
 | verify_api_dedup | API RP 1111 and 2SK deduplicated against existing | `provenance.py` merge output | Existing doc_keys with new alias paths |
 | verify_ocimf_new_dockeys | OCIMF PDFs have unique doc_keys | `index.jsonl` for OCIMF source | New doc_keys not matching existing records |
 | verify_csa_new_dockeys | CSA PDFs have unique doc_keys | `index.jsonl` for CSA source | New doc_keys not matching existing records |
@@ -317,14 +317,14 @@ These are the files that will be modified during **future implementation**. This
 
 ## Acceptance Criteria
 
-- [ ] `/mnt/ace/acma-codes` is registered as a mounted source in `mounted-source-registry.yaml`
-- [ ] Phase A index includes all valid documents from `/mnt/ace/acma-codes` (Thumbs.db excluded)
+- [ ] `/mnt/ace/mkt-a-codes` is registered as a mounted source in `mounted-source-registry.yaml`
+- [ ] Phase A index includes all valid documents from `/mnt/ace/mkt-a-codes` (Thumbs.db excluded)
 - [ ] Dedup pass confirms API RP 1111 and RP 2SK are aliases of existing records (or documents them as distinct editions)
 - [ ] OCIMF and CSA standards families are added to `standards-transfer-ledger.yaml`
 - [ ] Phase B summaries exist for all new (non-duplicate) doc_keys
 - [ ] Wiki pages created for: OCIMF Tandem Mooring, CSA Z276.1, CSA Z276.18
 - [ ] Existing `ocimf-meg4.md` wiki page updated with historical edition context
-- [ ] Intelligence accessibility map updated to include acma-codes source
+- [ ] Intelligence accessibility map updated to include mkt-a-codes source
 - [ ] No regression in existing registries or pipeline outputs
 - [ ] All new wiki pages include `doc_key` back-link in frontmatter per #2207 contract
 
@@ -352,17 +352,17 @@ Revisions made based on review:
 
 1. **Sandbox access limitation** — This plan's inventory is based on pre-session observation, not live filesystem traversal during planning. The full file listing and exact file count are unverified. **Mitigation:** Verify inventory during implementation with unrestricted access.
 
-2. **Edition mismatch for API RP 2SK** — The acma-codes copy is "2nd ed (1996)". The transfer ledger tracks `API-RP-2SK-2ND-ED` as `done`. These may be the same file (same doc_key) or different scans. **Mitigation:** Hash comparison during dedup pass will resolve.
+2. **Edition mismatch for API RP 2SK** — The mkt-a-codes copy is "2nd ed (1996)". The transfer ledger tracks `API-RP-2SK-2ND-ED` as `done`. These may be the same file (same doc_key) or different scans. **Mitigation:** Hash comparison during dedup pass will resolve.
 
-3. **Unknown additional content** — The inventory only covers known sample files. The actual `/mnt/ace/acma-codes` directory may contain additional folders or files (e.g., ABS, BV, Lloyd's, NORSOK standards). **Mitigation:** Phase A indexing will discover all files; plan should be updated if materially more content exists.
+3. **Unknown additional content** — The inventory only covers known sample files. The actual `/mnt/ace/mkt-a-codes` directory may contain additional folders or files (e.g., ABS, BV, Lloyd's, NORSOK standards). **Mitigation:** Phase A indexing will discover all files; plan should be updated if materially more content exists.
 
-4. **OCIMF 2008 vs MEG4 (2018) relationship** — The acma-codes OCIMF MEG is 2008 edition (likely 3rd Ed). The wiki covers MEG4 (2018, 4th Ed). These are distinct editions, not duplicates. **Mitigation:** Link via `superseded_by` provenance rather than dedup.
+4. **OCIMF 2008 vs MEG4 (2018) relationship** — The mkt-a-codes OCIMF MEG is 2008 edition (likely 3rd Ed). The wiki covers MEG4 (2018, 4th Ed). These are distinct editions, not duplicates. **Mitigation:** Link via `superseded_by` provenance rather than dedup.
 
 5. **CSA Z276 domain assignment** — CSA Z276 covers LNG marine structures and operations. Current taxonomy has 12 domains but no dedicated `LNG` domain. **Mitigation:** Classify under `marine` domain; consider whether a future taxonomy expansion is warranted.
 
 ### Open Questions
 
-1. **Should `/mnt/ace/acma-codes` remain a permanent mounted source or be absorbed into `/mnt/ace/0000 O&G/`?** — If the content is eventually moved into the org-structured O&G standards tree, the mounted source entry should be updated to reflect the new location. Recommend: register as-is now, decide on physical reorganization separately.
+1. **Should `/mnt/ace/mkt-a-codes` remain a permanent mounted source or be absorbed into `/mnt/ace/0000 O&G/`?** — If the content is eventually moved into the org-structured O&G standards tree, the mounted source entry should be updated to reflect the new location. Recommend: register as-is now, decide on physical reorganization separately.
 
 2. **Are there more folders beyond OCIMF/, API/, CSA/?** — The sandbox prevented full enumeration. If additional standards families exist (e.g., ABS, BV, IMO), the scope of follow-on work increases significantly.
 
@@ -378,7 +378,7 @@ This issue should **split into 4 follow-on implementation issues** after plan ap
 
 | # | Follow-on title | Scope | Depends on |
 |---|---|---|---|
-| 1 | Register `/mnt/ace/acma-codes` as mounted source and run Phase A indexing | Source registration + initial indexing + dedup pass | Nothing (entry point) |
+| 1 | Register `/mnt/ace/mkt-a-codes` as mounted source and run Phase A indexing | Source registration + initial indexing + dedup pass | Nothing (entry point) |
 | 2 | Add OCIMF and CSA to standards-transfer-ledger with provenance backfill | Ledger entries + doc_key hashing + path alias linking for API overlaps | Follow-on #1 |
 | 3 | Promote OCIMF Tandem Mooring and CSA Z276 into LLM-wikis | Wiki page creation + existing page updates + frontmatter back-links | Follow-on #2 |
 | 4 | Update accessibility entry points and intelligence map | Accessibility map update + entry-point additions per #2096/#2104 | Follow-on #3 |

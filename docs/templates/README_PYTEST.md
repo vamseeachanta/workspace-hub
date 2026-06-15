@@ -37,10 +37,10 @@ This directory contains a complete, production-ready pytest configuration system
 
 ```bash
 # Tier 1 (Production Critical - 85% coverage required)
-# - digitalmodel, energy, frontierdeepwater
+# - digitalmodel, energy, client-a
 
 # Tier 2 (Active Development - 80% coverage required)
-# - aceengineercode, assetutilities, worldenergydata, rock-oil-field, teamresumes
+# - aceengineercode, assetutilities, worldenergydata, client-b, teamresumes
 
 # Tier 3 (Maintenance/Experimental - 75% coverage required)
 # - All others
@@ -90,7 +90,7 @@ git push origin feature-branch
 **Repositories requiring strictest quality standards:**
 - `digitalmodel` - Full-stack application
 - `energy` - Energy analytics platform
-- `frontierdeepwater` - Marine engineering analysis
+- `client-a` - Marine engineering analysis
 
 **Use:** `pytest.tier1.ini`
 **Characteristics:** Strict coverage, conservative parallelization, production-grade quality
@@ -100,7 +100,7 @@ git push origin feature-branch
 - `aceengineercode` - Engineering code library
 - `assetutilities` - Asset management utilities
 - `worldenergydata` - Energy data analysis
-- `rock-oil-field` - Oil field analysis
+- `client-b` - Oil field analysis
 - `teamresumes` - Resume management
 
 **Use:** `pytest.tier2.ini`
@@ -109,7 +109,7 @@ git push origin feature-branch
 ### Tier 3: Maintenance & Experimental (75% Coverage)
 **Maintenance mode and experimental repositories:**
 - All repositories not in Tier 1 or Tier 2
-- Includes: doris, saipem, hobbies, sd-work, investments, etc.
+- Includes: lng-a, client-d, hobbies, sd-work, investments, etc.
 
 **Use:** `pytest.tier3.ini`
 **Characteristics:** Pragmatic coverage, maximum parallelization, flexible constraints

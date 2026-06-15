@@ -93,7 +93,7 @@ can use this as a reference.
 
 ACE Engineering's engagement value proposition to competing teams:
 - **Drilling domain expertise**: `drilling-expert` agent and O&G client project experience
-  (ACMA, Saipem, Doris) provides real-world context for module validation
+  (mkt-a, client-d, lng-a) provides real-world context for module validation
 - **AI orchestration architecture**: The workspace-hub multi-agent framework is directly
   applicable to the multi-module Drillbotics system architecture (each module as an agent)
 - **Open-source contribution**: H1 capability builds (ROP model, hydraulics) contributed

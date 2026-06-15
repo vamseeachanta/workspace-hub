@@ -48,7 +48,7 @@
 
 ### Other scheduled follow-ups
 
-- `967058f7b5aa` — `acma-projects-morning-claude-sync-learning`, one-shot at `2026-05-01T07:30:00-05:00`.
+- `967058f7b5aa` — `mkt-a-morning-claude-sync-learning`, one-shot at `2026-05-01T07:30:00-05:00`.
 - `7b73aee6e819` — `overnight-6lane-status-monitor-20260501`, every 60m x6, read-only monitor.
 
 ## Provider / usage artifact state
@@ -73,7 +73,7 @@ Exit process snapshot found no active provider processes matching `claude -p|cod
 The working tree is dirty and conflicted. Do not run destructive cleanup. Notable conflict markers/status from `git status --short --branch`:
 
 - Earlier broad status showed `UU docs/plans/README.md`; a later path-scoped check showed `M  docs/plans/README.md`. Treat it as a conflict-adjacent modified planning file and inspect before any merge/push.
-- `AA docs/plans/2026-05-01-issue-2570-b1528-sirocco-yaw-moment-report.md`
+- `AA docs/plans/2026-05-01-issue-2570-b1528-proj-a-yaw-moment-report.md`
 - Local branch is behind `origin/main` by 2 commits:
   - `dde5d0a01 docs: close out issue 2570 plan state`
   - `52c1cf09a docs: close out issue 2570 plan state`
@@ -82,7 +82,7 @@ The working tree is dirty and conflicted. Do not run destructive cleanup. Notabl
   - `.claude/state/corrections/session_20260501.jsonl`
   - `.planning/you-are-claude-1-control-luminous-balloon.md`
   - `.planning/you-are-claude-3-marker-readiness-eager-wand.md`
-  - `docs/sessions/2026-05-01-acma-projects-sparse-checkout-b1528.md`
+  - `docs/sessions/2026-05-01-mkt-a-sparse-checkout-b1528.md`
 
 Because of the `UU`/`AA` conflicts and broad staged/untracked state, this exit handoff was intentionally written but not committed/pushed.
 
@@ -95,9 +95,9 @@ Local recent commits at exit:
 1380739ed fix(state): wire session-signal size guards for issue 2070
 db4d6f383 chore(planning): record approved marker for issue 2070
 84d5787e2 complete issue 2569 B1528 source pack: docs/plans/README.md
-f12d3ee14 complete issue 2569 B1528 source pack: docs/plans/2026-05-01-issue-2569-b1528-sirocco-source-pack.md
+f12d3ee14 complete issue 2569 B1528 source pack: docs/plans/2026-05-01-issue-2569-b1528-proj-a-source-pack.md
 315bfbaac complete issue 2569 B1528 source pack: scripts/review/results/2026-05-01-implementation-2569-hermes.md
-5a25c9797 complete issue 2569 B1528 source pack: knowledge/wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md
+5a25c9797 complete issue 2569 B1528 source pack: knowledge/wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md
 3c8e45292 complete issue 2569 B1528 source pack: scripts/validation/validate_b1528_source_pack.py
 ```
 
@@ -107,7 +107,7 @@ However, latest `git status` says local branch is behind `origin/main` by two co
 
 1. **Salvage current dirty/conflicted work first** per user preference.
    - Do not reset/clean.
-   - Inspect `docs/plans/README.md` and `docs/plans/2026-05-01-issue-2570-b1528-sirocco-yaw-moment-report.md` conflicts.
+   - Inspect `docs/plans/README.md` and `docs/plans/2026-05-01-issue-2570-b1528-proj-a-yaw-moment-report.md` conflicts.
    - Fetch and compare `HEAD...origin/main`.
    - Decide whether to preserve local changes, accept remote closeout, or create a narrow reconciliation commit.
 2. **Inspect nightly-batch-2 error** (`91252d4f37a0`) before relying on plan-review hardening output.
@@ -121,7 +121,7 @@ However, latest `git status` says local branch is behind `origin/main` by two co
 Resume from /mnt/local-analysis/workspace-hub.
 Read docs/session-handoffs/2026-05-01-exit-provider-throughput-and-repo-state.md first.
 Priority order:
-1. Salvage current dirty/conflicted work first. Do not reset/clean. Inspect `git status --short --branch`, `git log --oneline --decorate --left-right HEAD...origin/main`, `docs/plans/README.md`, and `docs/plans/2026-05-01-issue-2570-b1528-sirocco-yaw-moment-report.md`.
+1. Salvage current dirty/conflicted work first. Do not reset/clean. Inspect `git status --short --branch`, `git log --oneline --decorate --left-right HEAD...origin/main`, `docs/plans/README.md`, and `docs/plans/2026-05-01-issue-2570-b1528-proj-a-yaw-moment-report.md`.
 2. Reconcile local `main` vs `origin/main` (local HEAD 1aa2f6f47c64, origin/main dde5d0a01ba4 at exit) without losing local staged/untracked artifacts.
 3. Inspect cron job `91252d4f37a0` last error and provider capacity cron `a0c7a42428d9` outputs/log dirs.
 4. Continue capacity-aware provider work: check usage telemetry about every 6h; Claude had ~40% weekly capacity left with ~36h to reset as of 2026-04-30 18:59 CDT; use Claude/Codex appropriately; Gemini mostly review/recon unless reliable capacity is available.

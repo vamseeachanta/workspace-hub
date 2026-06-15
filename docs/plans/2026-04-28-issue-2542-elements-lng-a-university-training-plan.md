@@ -1,4 +1,4 @@
-# Plan — workspace-hub#2542: Doris University training corpus, bounded extraction
+# Plan — workspace-hub#2542: lng-a University training corpus, bounded extraction
 
 > **Status:** plan-review (NOT plan-approved)
 > **Author:** Terminal 2 of overnight Elements wave 2026-04-28 (Claude planning-only)
@@ -11,17 +11,17 @@
 
 ### 1.1 In scope
 
-This plan will define a **bounded first-tranche extraction** of the Doris University training corpus into the `engineering` LLM-wiki, using only Doris-authored artifacts that carry no third-party IP or licensed-standard text.
+This plan will define a **bounded first-tranche extraction** of the lng-a University training corpus into the `engineering` LLM-wiki, using only lng-a-authored artifacts that carry no third-party IP or licensed-standard text.
 
 The first tranche will cover 18 artifacts grouped as:
 - 8 canonical curriculum decks (Modules 1.00, 1.01, 1.02, 1.03 — current versions only)
-- 4 Doris-authored embedded calculations (`Embedded Charts/`)
-- 5 Doris-authored Lunch and Learn PDFs (`ADMIN-FORM-02 - * Lunch and Learn ...`)
+- 4 lng-a-authored embedded calculations (`Embedded Charts/`)
+- 5 lng-a-authored Lunch and Learn PDFs (`ADMIN-FORM-02 - * Lunch and Learn ...`)
 - 1 syllabus snapshot for taxonomy validation
 
 Each artifact will be converted to wiki text content (slide text + speaker notes for .pptx; text-layer extract for .pdf; structured table extract for .xls/.xlsx). Embedded vendor figures will not be copied into git/wiki raw folders; they will remain metadata-referenced from the source pages.
 
-For each Doris-authored calculation that references a published standard (API 17E, API 17G, etc.), this plan will require the corresponding `wiki/standards/<code-id>.md` page to exist with #2471 frontmatter (`code_id`, `publisher`, `revision`) **before** the calc's wiki concept page is emitted. This satisfies the calc-output citation contract (`.claude/rules/calc-citation-contract.md`) and the #2481 fail-closed rule.
+For each lng-a-authored calculation that references a published standard (API 17E, API 17G, etc.), this plan will require the corresponding `wiki/standards/<code-id>.md` page to exist with #2471 frontmatter (`code_id`, `publisher`, `revision`) **before** the calc's wiki concept page is emitted. This satisfies the calc-output citation contract (`.claude/rules/calc-citation-contract.md`) and the #2481 fail-closed rule.
 
 ### 1.2 Out of scope
 
@@ -36,7 +36,7 @@ For each Doris-authored calculation that references a published standard (API 17
 ### 1.3 Non-goals (explicit)
 
 - Will **not** copy any raw bulk file into git or wiki raw folders.
-- Will **not** mutate the existing `wiki/sources/elements-doris-university.md` catalog page beyond adding cross-references.
+- Will **not** mutate the existing `wiki/sources/elements-lng-a-university.md` catalog page beyond adding cross-references.
 - Will **not** create the entire `wiki/standards/` substrate; only the standards pages strictly needed by the four calc artifacts in tranche 1.
 
 ## 2. Resource intelligence
@@ -45,10 +45,10 @@ For each Doris-authored calculation that references a published standard (API 17
 
 | Asset | Path | Notes |
 |---|---|---|
-| Raw corpus | `/mnt/ace/doris/training` | Read-only; source-of-record per #2526 ingest |
-| Retained staging | `/mnt/ace/doris/training/_from_elements/` | Provenance, do not delete (#2534) |
-| Existing metadata page | `knowledge/wikis/engineering/wiki/sources/elements-doris-university.md` | Created by #2535 batch-ingest 2026-04-28 19:24 UTC |
-| Candidate TSV | `.planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv` | 322 doris-university rows |
+| Raw corpus | `/mnt/ace/lng-a/training` | Read-only; source-of-record per #2526 ingest |
+| Retained staging | `/mnt/ace/lng-a/training/_from_elements/` | Provenance, do not delete (#2534) |
+| Existing metadata page | `knowledge/wikis/engineering/wiki/sources/elements-lng-a-university.md` | Created by #2535 batch-ingest 2026-04-28 19:24 UTC |
+| Candidate TSV | `.planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv` | 322 lng-a-university rows |
 | Domain summary | `.planning/intel/elements-to-llm-wiki/elements-wiki-domain-summary.md` | 564 files, 11.06 GB |
 | Wiki schema | `knowledge/wikis/engineering/SCHEMA.md` | source → entity/concept → index → log |
 | Wiki source classes | `knowledge/wikis/engineering/SOURCE_INVENTORY.md` | This corpus is a new Class 9 (Elements ingest) |
@@ -66,8 +66,8 @@ For each Doris-authored calculation that references a published standard (API 17
 
 | Artifact | Path | Why relevant |
 |---|---|---|
-| Taxonomy | `.planning/intel/elements-overnight-wave/doris-university-taxonomy.md` | Group A–K classification of 564 files; this plan's reasoning basis |
-| First-tranche TSV | `.planning/intel/elements-overnight-wave/doris-university-first-tranche.tsv` | The 18 artifacts this plan will extract |
+| Taxonomy | `.planning/intel/elements-overnight-wave/lng-a-university-taxonomy.md` | Group A–K classification of 564 files; this plan's reasoning basis |
+| First-tranche TSV | `.planning/intel/elements-overnight-wave/lng-a-university-first-tranche.tsv` | The 18 artifacts this plan will extract |
 | #2536 deep-extraction report | `.planning/intel/elements-deep-extraction/elements-deep-extraction-report.md` | Tooling pattern to follow (per master-plan.md) |
 
 ### 2.4 Anti-references (do NOT pull from)
@@ -81,10 +81,10 @@ For each Doris-authored calculation that references a published standard (API 17
 
 | Path | Purpose |
 |---|---|
-| `.planning/intel/elements-overnight-wave/doris-university-taxonomy.md` | Taxonomy of all 564 files into Groups A–K with routing decisions |
-| `.planning/intel/elements-overnight-wave/doris-university-first-tranche.tsv` | 18-row tranche-1 extraction list (priority/topic/content_kind/bytes/path/rationale/method/target/risk) |
-| `docs/plans/2026-04-28-issue-2542-elements-doris-university-training-plan.md` | This plan |
-| `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-2-doris-university.md` | Terminal-2 result summary |
+| `.planning/intel/elements-overnight-wave/lng-a-university-taxonomy.md` | Taxonomy of all 564 files into Groups A–K with routing decisions |
+| `.planning/intel/elements-overnight-wave/lng-a-university-first-tranche.tsv` | 18-row tranche-1 extraction list (priority/topic/content_kind/bytes/path/rationale/method/target/risk) |
+| `docs/plans/2026-04-28-issue-2542-elements-lng-a-university-training-plan.md` | This plan |
+| `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-2-lng-a-university.md` | Terminal-2 result summary |
 
 ### 3.2 Wiki pages this plan will create when executed (NOT yet created)
 
@@ -92,13 +92,13 @@ Planned source pages under `knowledge/wikis/engineering/wiki/sources/`:
 
 | Page | Backed by tranche-1 row(s) |
 |---|---|
-| `doris-university-module-1-00-subsea-production-systems-overview.md` | Row 1 |
-| `doris-university-module-1-01-production-control-systems.md` | Rows 2, 3 |
-| `doris-university-module-1-02-umbilical-systems.md` | Rows 4, 5, 6 |
-| `doris-university-module-1-03-installation-workover-control.md` | Rows 7, 8 |
-| `doris-university-lunch-and-learn-control-systems.md` | Rows 13, 14 |
-| `doris-university-lunch-and-learn-umbilical-systems.md` | Rows 15, 16, 17 |
-| `doris-university-syllabus-snapshot.md` | Row 18 |
+| `lng-a-university-module-1-00-subsea-production-systems-overview.md` | Row 1 |
+| `lng-a-university-module-1-01-production-control-systems.md` | Rows 2, 3 |
+| `lng-a-university-module-1-02-umbilical-systems.md` | Rows 4, 5, 6 |
+| `lng-a-university-module-1-03-installation-workover-control.md` | Rows 7, 8 |
+| `lng-a-university-lunch-and-learn-control-systems.md` | Rows 13, 14 |
+| `lng-a-university-lunch-and-learn-umbilical-systems.md` | Rows 15, 16, 17 |
+| `lng-a-university-syllabus-snapshot.md` | Row 18 |
 
 Planned concept pages under `knowledge/wikis/engineering/wiki/concepts/`:
 
@@ -127,8 +127,8 @@ Updates to the existing index/log per `SCHEMA.md`:
 | File | Change |
 |---|---|
 | `wiki/index.md` | Append new pages to Sources + Concepts tables |
-| `wiki/log.md` | Append `[2026-MM-DD] ingest \| Doris University tranche 1` block |
-| `wiki/sources/elements-doris-university.md` | Append "Tranche 1 children" cross-link section |
+| `wiki/log.md` | Append `[2026-MM-DD] ingest \| lng-a University tranche 1` block |
+| `wiki/sources/elements-lng-a-university.md` | Append "Tranche 1 children" cross-link section |
 
 ### 3.3 Files this plan will NOT touch
 
@@ -153,7 +153,7 @@ Updates to the existing index/log per `SCHEMA.md`:
     d. Build/extend concept page in `wiki/concepts/...` (multiple rows may share a concept page).
     e. For calc rows: emit `Citation` instance, validate against the standards page; raise `CitationResolutionError` with `code_id` if resolution fails (per #2481 D2).
     f. Update `wiki/index.md` and `wiki/log.md`.
-    g. `git add` only the new wiki pages + index + log; commit with `feat(llm-wiki): doris-university tranche-1 row N` message; push.
+    g. `git add` only the new wiki pages + index + log; commit with `feat(llm-wiki): lng-a-university tranche-1 row N` message; push.
 7. **Post-extraction lint**: `uv run scripts/knowledge/llm_wiki.py lint --wiki engineering`. Fix orphans/broken refs before opening a PR.
 8. **Comment summary on #2542** with row-by-row results (extracted / skipped / blocked) and a recommendation for tranche-2 scope.
 
@@ -165,12 +165,12 @@ Per `superpowers:test-driven-development` and the wiki SCHEMA, the executing pha
 
 | Validation | Tool | Pass criterion |
 |---|---|---|
-| Source page exists for each tranche-1 group | `find knowledge/wikis/engineering/wiki/sources/ -name 'doris-university-*.md'` | All 7 source pages present |
+| Source page exists for each tranche-1 group | `find knowledge/wikis/engineering/wiki/sources/ -name 'lng-a-university-*.md'` | All 7 source pages present |
 | Concept page exists for each backed concept | `find knowledge/wikis/engineering/wiki/concepts/ -name '<slug>.md'` | All 8 concept pages present |
 | Standards-page precondition holds for calc rows | grep `code_id` in `wiki/standards/api-17e.md` (and any other emitted standards page) | Frontmatter parses, `code_id`/`publisher`/`revision` non-empty |
 | Citation resolves at calc time | Pilot resolver `digitalmodel/src/digitalmodel/citations/schema.py` | `CitationResolutionError` not raised for any tranche-1 calc |
 | Wiki index updated | grep new page paths in `wiki/index.md` | Each new page listed with summary + last_updated |
-| Log entry appended | grep `[2026-MM-DD] ingest \| Doris University tranche 1` in `wiki/log.md` | Single log block present |
+| Log entry appended | grep `[2026-MM-DD] ingest \| lng-a University tranche 1` in `wiki/log.md` | Single log block present |
 | No raw bulk in git | `git ls-files knowledge/wikis/engineering/raw/` | No new files added |
 | No cross-terminal write | `git diff --name-only` against allowed-write list | Empty intersection with Terminal 1/3/4 paths |
 | Lint clean | `uv run scripts/knowledge/llm_wiki.py lint --wiki engineering` | Exit 0, zero orphan/broken-ref findings on new pages |
@@ -181,8 +181,8 @@ Verification before close per `superpowers:verification-before-completion`: each
 
 Mirroring the issue body:
 
-- [x] **Taxonomy groups training artifacts into coherent engineering/training themes** — written to `.planning/intel/elements-overnight-wave/doris-university-taxonomy.md` (Groups A–K).
-- [x] **Proposed tranche is bounded to ≤25 artifacts** — 18 artifacts in `doris-university-first-tranche.tsv`.
+- [x] **Taxonomy groups training artifacts into coherent engineering/training themes** — written to `.planning/intel/elements-overnight-wave/lng-a-university-taxonomy.md` (Groups A–K).
+- [x] **Proposed tranche is bounded to ≤25 artifacts** — 18 artifacts in `lng-a-university-first-tranche.tsv`.
 - [x] **Plan separates reusable training knowledge from project/client-specific content** — Group A/B/C in tranche, Group F (client packs) and Group G (project residue) explicitly held.
 - [x] **Raw-data policy and #2534 retention boundary are explicit** — Section 1.2, Section 4 step 1.
 - [x] **Issue is left at plan-review, not self-approved** — see Section 8.
@@ -231,7 +231,7 @@ Terminal 2 will not add either label.
 - Citation schema pilot: `digitalmodel/src/digitalmodel/citations/schema.py`
 - Wiki schema: `knowledge/wikis/engineering/SCHEMA.md`
 - Wiki source classes: `knowledge/wikis/engineering/SOURCE_INVENTORY.md`
-- Existing source page (#2535): `knowledge/wikis/engineering/wiki/sources/elements-doris-university.md`
+- Existing source page (#2535): `knowledge/wikis/engineering/wiki/sources/elements-lng-a-university.md`
 - Vendor-derivative deny-list: vamseeachanta/aceengineer-strategy#15 governance tracker (referenced from #2482)
 - LLM-wiki CLI: `scripts/knowledge/llm_wiki.py`
 

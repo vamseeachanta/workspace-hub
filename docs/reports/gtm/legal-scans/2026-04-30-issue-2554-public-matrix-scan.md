@@ -38,7 +38,7 @@ The r1 post-fill review found that `scripts/legal/legal-sanity-scan.sh --diff-on
 |---:|---:|---|---|---|---|
 | 1 | 1 | Subsea7 | High | counted | none |
 | 2 | 2 | TechnipFMC (Subsea) | High | counted | none |
-| 3 | 3 | Saipem | High | counted | none |
+| 3 | 3 | client-d | High | counted | none |
 | 4 | 4 | McDermott International | High | counted | none |
 | 5 | 5 | Allseas | High | counted | none |
 | 6 | 6 | Heerema Marine Contractors | High | counted | none |

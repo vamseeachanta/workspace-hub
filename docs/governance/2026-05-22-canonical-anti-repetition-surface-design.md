@@ -563,12 +563,12 @@ methods:
 
   # Client-method entries live in registry (visible) but point to
   # llm-wiki-<client> (gated by sibling's auth boundary)
-  sirocco-mooring-fatigue-customization:
-    canonical_page: projects/sirocco/methods/sirocco-mooring-fatigue-customization
-    canonical_sibling: llm-wiki-acma
+  proj-a-mooring-fatigue-customization:
+    canonical_page: projects/proj-a/methods/proj-a-mooring-fatigue-customization
+    canonical_sibling: llm-wiki-mkt-a
     current_version: 0.1.0
-    client: acma
-    project: sirocco
+    client: mkt-a
+    project: proj-a
     references_generic_methods: [dnv-os-e301-mooring-safety-factor]
 ```
 
@@ -799,7 +799,7 @@ Cross-Review T3 → Close → Wiki entries land
 ```
 BEFORE this design's implementation can start:
    #2778 (wiki-sibling routing) — provides layer-routing.yaml seed content
-   #2744 (llm-wiki-acma) — first client sibling; tests private-client-llm-wiki tier
+   #2744 (llm-wiki-mkt-a) — first client sibling; tests private-client-llm-wiki tier
 
 IN PARALLEL with this design:
    #2775 (harness SSoT) — orthogonal layer; coordinates via SHARED_SOUL.md
@@ -828,7 +828,7 @@ AFTER this design (consumes it):
 - **Decisions locked:** D1-D15 above; each captured at the point of user selection
 - **References consulted during design:**
   - [#2778](https://github.com/vamseeachanta/workspace-hub/issues/2778) (wiki-sibling routing lock)
-  - [#2744](https://github.com/vamseeachanta/workspace-hub/issues/2744) (ACMA epic; comment locking suffix-form naming)
+  - [#2744](https://github.com/vamseeachanta/workspace-hub/issues/2744) (mkt-a epic; comment locking suffix-form naming)
   - [#2775](https://github.com/vamseeachanta/workspace-hub/issues/2775) (harness SSoT)
   - [#2685](https://github.com/vamseeachanta/workspace-hub/issues/2685) (calc-citation pilot LIVE)
   - `AGENTS.md` (current 20-line Hard Gates)
@@ -840,7 +840,7 @@ AFTER this design (consumes it):
   - `.claude/rules/patterns.md` (enforcement gradient)
   - `.claude/rules/coding-style.md` (20-line cap on AGENTS.md/CLAUDE.md)
   - `config/agents/SHARED_SOUL.md` (must-fire rules surface)
-  - `docs/governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md` (sibling design precedent)
+  - `docs/governance/2026-05-20-client-llm-wiki-feature-and-mkt-a-instance-design.md` (sibling design precedent)
   - Memory: `feedback_superpowers_specs_gitignored`, `feedback_html_default_artifact`, `feedback_subagent_write_phantom`, `feedback_codex_sustained_major_loop`, `feedback_n_night_blocker_promote_to_replan`, `feedback_attestation_enables_contradiction_detection`
 - **User motivation captured verbatim:**
   > "every data, every execution result, every result should be added to the llm-wiki (except client info). this information should be stored in a canonical form such that it handles the data inputs, analysis type and result such that.. we can look up the same class of result without repeating work; This will help QA new result, also not unnecessarily repeat work etc. Potentially maintaining the used execution code version and current code version etc."

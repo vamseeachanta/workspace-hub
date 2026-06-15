@@ -80,20 +80,20 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **outreach_priority.** **High** — Tier-1 fit; even without a vessel-anchored demo match, Demo 1 + Demo 2 are credible anchors.
 - **private_route.** omitted-public-artifact.
 
-### Target 3 — Saipem
+### Target 3 — client-d
 
-- **company.** Saipem (Italy)
+- **company.** client-d (Italy)
 - **tier_seed.** T1
 - **tier_revised.** T1
 - **segment.** Subsea EPIC, pipelay (deep + shallow), heavy lift, drilling
 - **relevant_fleet.** Castorone (PLV — [#1799](https://github.com/vamseeachanta/workspace-hub/issues/1799) seed; deep + shallow capable), FDS-2 HLV
 - **demo_anchor.** Demo 4 (shallow-water S-lay — Castorone shallow envelope), Demo 3 (deepwater installation — FDS-2 analogue), Demo 5 (rigid-jumper)
 - **pain_point_hypothesis.** Cross-water-depth fleet flexibility is a competitive lever; concept-stage screening that compares small-barge vs. larger-vessel feasibility frees engineering bandwidth on portfolio bidding.
-- **corporate_root_evidence.** https://www.saipem.com/ (corporate root)
-- **deep_link_evidence.** https://www.saipem.com/en/solutions-energy-transition/offshore — official offshore E&C page; https://www.saipem.com/en/solutions-energy-transition/offshore/subsea-pipelines — official subsea pipelines page; https://www.saipem.com/en/solutions-energy-transition/offshore/oil-platform-decommissioning — official decommissioning page.
-- **pain_point_evidence.** Saipem official pages state it has laid over 30,000 km of subsea pipelines, works in deepest/difficult seas, and has completed over 30 major decommissioning projects; supports multi-country offshore execution, subsea coordination, and decommissioning-complexity hooks.
+- **corporate_root_evidence.** https://www.client-d.com/ (corporate root)
+- **deep_link_evidence.** https://www.client-d.com/en/solutions-energy-transition/offshore — official offshore E&C page; https://www.client-d.com/en/solutions-energy-transition/offshore/subsea-pipelines — official subsea pipelines page; https://www.client-d.com/en/solutions-energy-transition/offshore/oil-platform-decommissioning — official decommissioning page.
+- **pain_point_evidence.** client-d official pages state it has laid over 30,000 km of subsea pipelines, works in deepest/difficult seas, and has completed over 30 major decommissioning projects; supports multi-country offshore execution, subsea coordination, and decommissioning-complexity hooks.
 - **can_say_now.** "60-case shallow-water S-lay screening across 2 barge classes × 5 pipe sizes × 6 depths" (Demo 4); "180-case deepwater mudmat installation against Large-CSV / Medium-CSV envelopes" (Demo 3).
-- **cannot_claim_yet.** Castorone-specific RAOs; named-Saipem project case studies.
+- **cannot_claim_yet.** Castorone-specific RAOs; named-client-d project case studies.
 - **outreach_priority.** **High**.
 - **private_route.** omitted-public-artifact.
 
@@ -450,7 +450,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **Live countable vessel/operator targets:** 20. This excludes Acteon (partner-shape / non-counted service firm) and excludes deferred/deprecated rows. Owner approved the default to add fully populated GoM vessel/operator targets rather than accepting 19+3 as sufficient.
 - **Live rows (priority High / Medium / Low plus non-counted partner-shape):** 22. Countable vessel/operator targets: 20. Deprecated/deferred: 3 (Solstad, EMAS, Cadeler-deferred).
 - **Countable targets with at least one shipped-demo anchor:** 19 of 20 live countable vessel/operator targets (Demo 3 / 4 / 5 mapping).
-- **Targets in `outreach_priority: High`:** 12 (Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura Energy, Helix, Hornbeck Offshore Services, Edison Chouest Offshore). Each carries a named-vessel/fleet anchor and a demo-mapping.
+- **Targets in `outreach_priority: High`:** 12 (Subsea7, TechnipFMC, client-d, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura Energy, Helix, Hornbeck Offshore Services, Edison Chouest Offshore). Each carries a named-vessel/fleet anchor and a demo-mapping.
 - **High-priority evidence state:** 12 of 12 now have `corporate_root_evidence`, `deep_link_evidence`, and `pain_point_evidence` populated with official-domain deep links or explicit `no-public-proof-found` boundaries from [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560). Remaining blocker for #2554 promotion is live re-review / owner approval; #2556 remains blocked until #2554 clears or the owner explicitly waives the dependency and approves send.
 - **Targets in `outreach_priority: Medium`:** 7 (Van Oord, DEME, Bourbon, Seaway7, DeepOcean, Jan De Nul, Acteon). Acteon is explicitly partner-shape / non-counted for the vessel-contractor minimum unless owner later approves it as countable.
 - **Targets in `outreach_priority: Low`:** 2 (Eidesvik, Otto Candies). Otto Candies remains low until GoM-niche expansion evidence is refreshed under [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562).

@@ -48,7 +48,7 @@
 - `repo-worldenergydata` (0 cards): GTM-readiness gate (wraps wed#364/#363), marketing-pipeline epic (wed#423), data-quality gate, revenue-first roadmap, worldenergydata-wiki corpus.
 - `repo-digitalmodel` (legacy WRK cards): CI/test-debt epic (wh#2628), catenary canonicalization (wh#2686/#2694), solver-queue multi-machine, calc-citation coverage (wh#2685), sweep→product consolidation.
 
-**Empty-parent disposition:** DELETE boards `repo-hobbies` + `repo-llm-wiki-acma` (no software/children; content repos). SEED `repo-achantas-data` (2: data policy + devaKrishna milestones), `repo-assethold` (1: product phase), `repo-llm-wiki` (2: private-corpus rollout wh#2774 + sibling-routing wh#2778), `repo-sabithaandkrishnaestates` (1: annual closeout gate), `repo-worldenergydata` (5, above).
+**Empty-parent disposition:** DELETE boards `repo-hobbies` + `repo-llm-wiki-mkt-a` (no software/children; content repos). SEED `repo-achantas-data` (2: data policy + devaKrishna milestones), `repo-assethold` (1: product phase), `repo-llm-wiki` (2: private-corpus rollout wh#2774 + sibling-routing wh#2778), `repo-sabithaandkrishnaestates` (1: annual closeout gate), `repo-worldenergydata` (5, above).
 
 ---
 

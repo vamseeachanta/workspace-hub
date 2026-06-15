@@ -9,9 +9,9 @@
 
 ## Resource Intel
 - GitHub issue #2767: `chore(data-layout): unionise preexisting data folders with content dedup`.
-- Parent/dependency chain: #2767 depends on #2731 data-repo contracts and #2732 mount taxonomy; #2769 is the high-pressure ACMA child case.
+- Parent/dependency chain: #2767 depends on #2731 data-repo contracts and #2732 mount taxonomy; #2769 is the high-pressure mkt-a child case.
 - Workspace hard gates: issue → resource intel → plan → adversarial review → `status:plan-review` → USER APPROVES → `status:plan-approved` → TDD implementation → close.
-- User update: private `llm-wiki` posture allows fuller ACMA/client data capture with key-information abstractions; public-safe constraints still apply to public repos/docs.
+- User update: private `llm-wiki` posture allows fuller mkt-a/client data capture with key-information abstractions; public-safe constraints still apply to public repos/docs.
 
 ## Problem
 Multiple preexisting-before-repo-move folders exist under `/mnt/ace`; unreviewed movement/deletion risks data loss, but ignoring them preserves disk pressure and ambiguity.

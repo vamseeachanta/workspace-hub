@@ -32,7 +32,7 @@ Live `curl -sIL` results (2026-05-01):
 |---|---|---|
 | 1 | Subsea7 | **404** subsea7.com/en/our-fleet.html |
 | 2 | TechnipFMC | 403 (likely WAF, may resolve in browser) |
-| 3 | Saipem | 403 (WAF) |
+| 3 | client-d | 403 (WAF) |
 | 4 | McDermott | **404** mcdermott.com/What-We-Do/Subsea-and-Floating-Facilities |
 | 5 | Allseas | **404** allseas.com/equipment/ |
 | 6 | Heerema | 200 (verified Sleipnir + Thialf in page meta) |

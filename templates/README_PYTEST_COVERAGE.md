@@ -124,7 +124,7 @@ High-level overview and navigation guide.
 Your repository tier determines the coverage threshold:
 
 ### Tier 1: Work/Production Repositories
-**Examples**: digitalmodel, energy, frontierdeepwater, aceengineercode
+**Examples**: digitalmodel, energy, client-a, aceengineercode
 
 ```toml
 [tool.coverage.report]
@@ -150,7 +150,7 @@ fail_under = 80
 - Can defer comprehensive testing initially
 
 ### Tier 3: Maintenance Repositories
-**Examples**: doris, saipem, OGManufacturing
+**Examples**: lng-a, client-d, OGManufacturing
 
 ```toml
 [tool.coverage.report]

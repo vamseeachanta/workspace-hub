@@ -45,7 +45,7 @@ Do not use this as a substitute for the full planning route.
 - First response shape: issue link, current known decisions, unresolved prompts grouped in the order the user should comment, and explicit implementation block status.
 - Keep resource intelligence read-only and bounded; avoid launching broad code/doc/test reads in the same turn if the user only asked for the issue/commenting surface.
 - After each user comment batch, update the issue-plan assumptions and unresolved-blockers list before continuing resource intelligence.
-- See `references/interactive-review-thread-mode.md` for an example pattern from the B1528 SIROCCO force-calculation planning thread.
+- See `references/interactive-review-thread-mode.md` for an example pattern from the B1528 proj-a force-calculation planning thread.
 
 2. Resource intelligence
 - Stay read-only.

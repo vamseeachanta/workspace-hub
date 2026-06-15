@@ -16,12 +16,12 @@ Successfully installed the `data-validation-reporter` skill to **8 repositories*
 |------------|--------|--------|-----------------|
 | **digitalmodel** | eeb2ee20 | ✅ Complete + Tested | 6 files (1,161 lines) |
 | **worldenergydata** | a4f486e | ✅ Complete | 5 files (766 lines) |
-| **rock-oil-field** | 2688aa5 | ✅ Complete | 5 files (766 lines) |
+| **client-b** | 2688aa5 | ✅ Complete | 5 files (766 lines) |
 | **assetutilities** | dd47758 | ✅ Complete | 5 files (766 lines) |
 | **assethold** | 5489ca7 | ✅ Complete | 5 files (766 lines) |
-| **saipem** | 9f57145 | ✅ Complete | 5 files (766 lines) |
+| **client-d** | 9f57145 | ✅ Complete | 5 files (766 lines) |
 | **teamresumes** | ed9438f | ✅ Complete | 5 files (766 lines) |
-| **acma-projects** | a6dab6d | ✅ Complete | 5 files (766 lines) |
+| **mkt-a** | a6dab6d | ✅ Complete | 5 files (766 lines) |
 
 **Total Lines Deployed**: 6,287 lines across 8 repositories
 
@@ -213,7 +213,7 @@ validation:
     - consumption_value
 ```
 
-**Example for rock-oil-field**:
+**Example for client-b**:
 ```yaml
 validation:
   required_fields:
@@ -298,12 +298,12 @@ All 8 repositories have uncommitted local changes ready to be pushed to GitHub.
 ```bash
 cd digitalmodel && git push origin main
 cd ../worldenergydata && git push origin main
-cd ../rock-oil-field && git push origin master  # Note: master branch
+cd ../client-b && git push origin master  # Note: master branch
 cd ../assetutilities && git push origin main
 cd ../assethold && git push origin main
-cd ../saipem && git push origin main
+cd ../client-d && git push origin main
 cd ../teamresumes && git push origin main
-cd ../acma-projects && git push origin main
+cd ../mkt-a && git push origin main
 ```
 
 ---

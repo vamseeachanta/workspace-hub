@@ -62,7 +62,7 @@ From 1,281 contacts, build three lists:
 - **Tier 1** (20 contacts): Installation engineering managers at vessel contractors — these are the buyers
   - Research each one: company fleet, recent project wins, publicly known pain points
   - Find their LinkedIn profile, note recent posts or activity
-- **Tier 2** (30 contacts): Engineering managers at EPIC firms (Subsea 7, McDermott, Saipem, Technip, etc.)
+- **Tier 2** (30 contacts): Engineering managers at EPIC firms (Subsea 7, McDermott, client-d, Technip, etc.)
   - These buy through project-specific POs, longer sales cycle
 - **Tier 3** (50 contacts): Individual subsea/marine engineers — influencers and referrers
   - They won't buy directly but will forward your content to their managers

@@ -88,7 +88,7 @@ All 4 deliverables landed in commit \`246704527\` (push race resolved 2026-05-03
 1. ✅ **CLAUDE.md edits** — appended \`Sanctioned-by: #2615\` to:
    - \`knowledge/wikis/engineering-standards/CLAUDE.md\` (codifies W3-C re-anchor for W1-A)
    - \`knowledge/wikis/asset-management/CLAUDE.md\` (codifies W3-C re-anchor for W1-B)
-   - lng-projects + acma-projects DEFERRED (W5-D's conditional Open Question; user did not separately approve)
+   - lng-projects + mkt-a DEFERRED (W5-D's conditional Open Question; user did not separately approve)
 
 2. ✅ **Governance test extension** — \`tests/governance/test_2471_citation_scope.py\` now 7 tests (was 6); new \`test_out_of_principle_wiki_routing_requires_sanction_citation\` enforces sanction-issue citation for any plan routing to \`wiki/standards/<code-id>.md\` outside the in-principle wiki set {marine-engineering, engineering, naval-architecture, engineering-standards, asset-management}
 
@@ -149,7 +149,7 @@ These 6 plans all produce **concept pages**, NOT standards pages. The wikis alre
 ### #2612 W5-C lng-projects
 - Plan: `docs/plans/2026-05-03-issue-2612-llm-wiki-W5C-lng-projects-expansion.md`
 - Output: 8 pages — concepts + entities at `knowledge/wikis/lng-projects/wiki/concepts/` and `wiki/entities/`
-- **Routing**: lng-projects NOT in routing-principle scope; stays in concepts/+entities/. Reservation regex blocks SESA/Woodfibre/ACMA-31522/Doris-62092 noun-phrases (per plan).
+- **Routing**: lng-projects NOT in routing-principle scope; stays in concepts/+entities/. Reservation regex blocks SESA/Woodfibre/mkt-a-31522/lng-a-62092 noun-phrases (per plan).
 
 ---
 

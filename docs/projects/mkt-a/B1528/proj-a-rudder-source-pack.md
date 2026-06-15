@@ -1,13 +1,13 @@
-# B1528 SIROCCO Rudder Source Pack and Benchmark Extraction
+# B1528 proj-a Rudder Source Pack and Benchmark Extraction
 
 > Issue: https://github.com/vamseeachanta/workspace-hub/issues/2569  
-> Repo source: https://github.com/vamseeachanta/acma-projects/tree/main/B1528  
+> Repo source: https://github.com/vamseeachanta/mkt-a/tree/main/B1528  
 > Extraction date: 2026-05-01  
-> Vessel aliases: `SIROCCO`, `Sirocco`, user spelling `Sorrocco`.
+> Vessel aliases: `proj-a`, `proj-a`, user spelling `Sorrocco`.
 
 ## Purpose
 
-This source pack records the B1528/SIROCCO rudder geometry, yaw-moment workbook inputs, and available turning/track benchmark evidence before downstream static-yaw and time-trace calculations are implemented.
+This source pack records the B1528/proj-a rudder geometry, yaw-moment workbook inputs, and available turning/track benchmark evidence before downstream static-yaw and time-trace calculations are implemented.
 
 The pack deliberately separates:
 
@@ -22,11 +22,11 @@ The pack deliberately separates:
 |---|---|---|---|
 | Rudder workbook | `B1528/excel_to_py/Rudder Force & Yaw Moments.xlsx` | authoritative workbook source for this pack | geometry, Barrass/PNA sheet formulas, source values |
 | Converted workbook script | `B1528/excel_to_py/rudder_force_yaw_moment.py` | derived/convenience script | formula reconnaissance only; not treated as canonical over workbook |
-| Breakaway notes | `B1528/ref/SIROCCO breakaway notes.docx` | narrative evidence | VDR/Rosepoint time-heading-speed benchmark extraction |
+| Breakaway notes | `B1528/ref/proj-a breakaway notes.docx` | narrative evidence | VDR/Rosepoint time-heading-speed benchmark extraction |
 | ECDIS context note | `B1528/ref/ECDIS Mar 26 Midnight LT.docx` | context only | riverbank/depth context; not a numeric track dataset |
-| GA plan | `B1528/excel_to_py/27. SIROCCO-000272-GA Plan.pdf` | referenced drawing | rudder scale/geometry source named by workbook |
+| GA plan | `B1528/excel_to_py/27. proj-a-000272-GA Plan.pdf` | referenced drawing | rudder scale/geometry source named by workbook |
 
-Local `acma-projects` checkout was verified current with origin but sparse; `B1528/` was not materialized locally. Extraction therefore used GitHub API/raw downloads into `/tmp/b1528/`.
+Local `mkt-a` checkout was verified current with origin but sparse; `B1528/` was not materialized locally. Extraction therefore used GitHub API/raw downloads into `/tmp/b1528/`.
 
 ## Workbook sheets and key cells
 
@@ -84,11 +84,11 @@ These values are regression targets for #2570 workbook-regression mode. They are
 
 Structured benchmark evidence is stored in:
 
-- `docs/projects/acma/B1528/sirocco-turning-benchmark.yaml`
+- `docs/projects/mkt-a/B1528/proj-a-turning-benchmark.yaml`
 
 Extracted source families:
 
-1. **VDR narrative points** from `SIROCCO breakaway notes.docx`, parsed with docx paragraph-index traceability (including empty paragraphs). These include UTC time, ship heading, SOG, sometimes COG, and later rudder/engine commands.
+1. **VDR narrative points** from `proj-a breakaway notes.docx`, parsed with docx paragraph-index traceability (including empty paragraphs). These include UTC time, ship heading, SOG, sometimes COG, and later rudder/engine commands.
 2. **Rosepoint salvage video narrative points** from the same notes, parsed with docx paragraph-index traceability. These include local time, approximate speed in mph, and qualitative/relative heading to river current.
 
 The benchmark YAML intentionally marks this as a narrative benchmark, not an original telemetry export. There are no x/y track coordinates in the extracted notes, and tug/current/propulsion/anchor/bank effects mean these points are context for qualitative comparison and time-trace sanity checking, not validation of an isolated rudder-only model.
@@ -104,4 +104,4 @@ The benchmark YAML intentionally marks this as a narrative benchmark, not an ori
 ## Downstream issue use
 
 - #2570 should cite this pack for B1528 geometry and workbook-regression targets.
-- #2571 should cite `sirocco-turning-benchmark.yaml` for benchmark/source-gap behavior and must not invent missing trajectory coordinates or `K/T` coefficients.
+- #2571 should cite `proj-a-turning-benchmark.yaml` for benchmark/source-gap behavior and must not invent missing trajectory coordinates or `K/T` coefficients.

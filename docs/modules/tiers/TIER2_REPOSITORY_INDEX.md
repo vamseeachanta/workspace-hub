@@ -36,10 +36,10 @@ Notes:             Energy domain data now consolidated under worldenergydata
 
 ---
 
-### 2. Rock-Oil-Field
+### 2. client-b
 
 ```
-Repo:              rock-oil-field
+Repo:              client-b
 Category:          Work (Tier 2)
 Current Branch:    main ✅
 Repository Size:   5.2 GB
@@ -56,17 +56,17 @@ Deployment Ready:  YES (Phase 3 - after high priority)
 
 **Deployment Details:**
 - Python files: 56
-- Project name: "rock-oil-field"
+- Project name: "client-b"
 - Key dependencies: gitpython, python-certifi-win32
 - Special notes: No tests, will need business logic analysis
 - Risk: Medium - requires test scaffolding
 
 ---
 
-### 3. Frontierdeepwater
+### 3. client-a
 
 ```
-Repo:              frontierdeepwater
+Repo:              client-a
 Category:          Work (Tier 1 candidate)
 Current Branch:    main ✅
 Repository Size:   490 MB ⭐ (SMALLEST WORK)
@@ -83,17 +83,17 @@ Deployment Ready:  YES (Phase 2)
 
 **Deployment Details:**
 - Python files: 61
-- Project name: "frontierdeepwater"
+- Project name: "client-a"
 - Key dependencies: gitpython, python-certifi-win32
 - Special notes: Marine engineering domain, smallest work repo
 - Production status: YES - use with care
 
 ---
 
-### 4. Seanation
+### 4. client-f
 
 ```
-Repo:              seanation
+Repo:              client-f
 Category:          Work (Tier 2)
 Current Branch:    main ✅
 Repository Size:   1.5 GB
@@ -110,17 +110,17 @@ Deployment Ready:  YES (Phase 2)
 
 **Deployment Details:**
 - Python files: 62
-- Project name: "seanation"
+- Project name: "client-f"
 - Key dependencies: gitpython, python-certifi-win32
 - Special notes: Drilling-specific domain (0122_ct_drilling directory)
 - Risk: Low - specialized domain but structured
 
 ---
 
-### 5. Doris
+### 5. lng-a
 
 ```
-Repo:              doris
+Repo:              lng-a
 Category:          Work (Tier 2)
 Current Branch:    main ✅
 Repository Size:   521 MB
@@ -137,17 +137,17 @@ Deployment Ready:  YES (Phase 2)
 
 **Deployment Details:**
 - Python files: 48
-- Project name: "doris"
+- Project name: "lng-a"
 - Key dependencies: gitpython, python-certifi-win32
 - Special notes: Marine domain, has documentation (charlie.md)
 - Risk: Low - well-organized structure
 
 ---
 
-### 6. Saipem
+### 6. client-d
 
 ```
-Repo:              saipem
+Repo:              client-d
 Category:          Work (Tier 2)
 Current Branch:    main ✅
 Repository Size:   4.1 GB
@@ -164,7 +164,7 @@ Deployment Ready:  YES (Phase 3 - after high priority)
 
 **Deployment Details:**
 - Python files: 59
-- Project name: "saipem"
+- Project name: "client-d"
 - Key dependencies: gitpython, python-certifi-win32
 - Special notes: Construction/engineering company domain
 - Risk: Medium - no tests, large codebase, business logic needed
@@ -195,7 +195,7 @@ Deployment Ready:  NO - Requires architecture investigation first
 - Key dependencies: gitpython, python-certifi-win32
 - ⚠️ SPECIAL ISSUE: Contains references to multiple repositories:
   - aceengineer-admin, aceengineercode, aceengineer-website
-  - achantas-data, achantas-media, acma-projects
+  - achantas-data, achantas-media, mkt-a
   - ai-native-traditional-eng, assethold, assetutilities
   - and others
 - Risk: High - unclear project boundaries, submodule complications
@@ -269,10 +269,10 @@ Notes:             Content likely merged into digitalmodel or docs/modules/ai-na
 
 ---
 
-### 11. Client_Projects 🚩
+### 11. client-c 🚩
 
 ```
-Repo:              client_projects
+Repo:              client-c
 Category:          Mixed (Tier 3)
 Current Branch:    main ✅
 Repository Size:   13 GB 🚩 (LARGEST - REQUIRES CARE)
@@ -289,7 +289,7 @@ Deployment Ready:  NO - Requires architecture clarity first
 
 **Deployment Details:**
 - Python files: 106 (most of any repo)
-- Project name: "client_projects"
+- Project name: "client-c"
 - Key dependencies: gitpython, python-certifi-win32
 - 🚩 SPECIAL ISSUES:
   - LARGEST repository (13 GB)
@@ -354,10 +354,10 @@ Deployment Ready:  YES (Phase 1 - FIRST)
 
 | Order | Repository | Time | Reason |
 |-------|-----------|------|--------|
-| 3️⃣ | frontierdeepwater | 2-3 days | Production-critical |
+| 3️⃣ | client-a | 2-3 days | Production-critical |
 | ~~4️⃣~~ | ~~energy~~ | — | ⚠️ REMOVED; consolidated into worldenergydata (as of 2026-04-02) |
-| 5️⃣ | seanation | 2-3 days | Domain-specific |
-| 6️⃣ | doris | 2-3 days | Consolidation test |
+| 5️⃣ | client-f | 2-3 days | Domain-specific |
+| 6️⃣ | lng-a | 2-3 days | Consolidation test |
 
 **Phase 2 Objectives:**
 - Deploy to high-readiness repos
@@ -371,8 +371,8 @@ Deployment Ready:  YES (Phase 1 - FIRST)
 
 | Order | Repository | Time | Reason |
 |-------|-----------|------|--------|
-| 7️⃣ | rock-oil-field | 4-5 days | No tests, needs bootstrap |
-| 8️⃣ | saipem | 4-5 days | No tests, large |
+| 7️⃣ | client-b | 4-5 days | No tests, needs bootstrap |
+| 8️⃣ | client-d | 4-5 days | No tests, large |
 | 9️⃣ | aceengineer-website | 3-4 days | Web app, branch issue |
 | 🔟 | aceengineer-admin | 3-4 days | Office automation |
 
@@ -389,7 +389,7 @@ Deployment Ready:  YES (Phase 1 - FIRST)
 | Order | Repository | Time | Action Required |
 |-------|-----------|------|-----------------|
 | 1️⃣1️⃣ | OGManufacturing | 5-7 days | Investigate meta-repo structure 🚩 |
-| 1️⃣2️⃣ | client_projects | 6-8 days | Clarify multi-project boundaries 🚩 |
+| 1️⃣2️⃣ | client-c | 6-8 days | Clarify multi-project boundaries 🚩 |
 
 **Phase 4 Objectives:**
 - Resolve architectural questions
@@ -447,9 +447,9 @@ Deployment Ready:  YES (Phase 1 - FIRST)
 | Repo | Risk Level | Reason | Mitigation |
 |------|-----------|--------|-----------|
 | OGManufacturing | 🔴 HIGH | Meta-repo, unclear structure | Investigate first |
-| client_projects | 🔴 HIGH | Multi-project, 13 GB | Clarify boundaries |
-| rock-oil-field | 🟡 MEDIUM | No tests, large | Bootstrap tests |
-| saipem | 🟡 MEDIUM | No tests, large | Domain analysis |
+| client-c | 🔴 HIGH | Multi-project, 13 GB | Clarify boundaries |
+| client-b | 🟡 MEDIUM | No tests, large | Bootstrap tests |
+| client-d | 🟡 MEDIUM | No tests, large | Domain analysis |
 | aceengineer-website | 🟡 MEDIUM | Branch mismatch, web app | Fix branch first |
 | aceengineer-admin | 🟡 MEDIUM | No tests, automation | Business logic review |
 | All others | 🟢 LOW | Smoke tests exist | Standard deployment |

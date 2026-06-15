@@ -114,7 +114,7 @@ done
 WORKSPACE_ROOT="/mnt/github/workspace-hub"
 SOURCE_DIR="$WORKSPACE_ROOT/modules/automation"
 
-for repo in aceengineer-admin digitalmodel energy frontierdeepwater ...; do
+for repo in aceengineer-admin digitalmodel energy client-a ...; do
   TARGET_DIR="$WORKSPACE_ROOT/$repo/modules/automation"
 
   if [ -d "$TARGET_DIR" ]; then
@@ -298,7 +298,7 @@ PYTHON_VERSION=$2
 - **18 repositories** have `.github/workflows/`
 - Variation in workflows:
   - digitalmodel: 11 workflows (most comprehensive)
-  - energy, frontierdeepwater: 1 workflow each (python-tests.yml)
+  - energy, client-a: 1 workflow each (python-tests.yml)
   - Others: 0-11 workflows
 
 **Common Workflow:**
@@ -463,9 +463,9 @@ jobs:
 **Python Projects (27):**
 ```
 aceengineer-admin, aceengineercode, aceengineer-website, achantas-data, achantas-media,
-acma-projects, ai-native-traditional-eng, assethold, assetutilities, client_projects,
-digitalmodel, doris, energy, frontierdeepwater, hobbies, investments, OGManufacturing,
-pyproject-starter, rock-oil-field, sabithaandkrishnaestates, saipem, sd-work, seanation,
+mkt-a, ai-native-traditional-eng, assethold, assetutilities, client-c,
+digitalmodel, lng-a, energy, client-a, hobbies, investments, OGManufacturing,
+pyproject-starter, client-b, sabithaandkrishnaestates, client-d, sd-work, client-f,
 teamresumes, worldenergydata
 ```
 

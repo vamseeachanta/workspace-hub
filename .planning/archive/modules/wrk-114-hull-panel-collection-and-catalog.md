@@ -26,10 +26,10 @@ Hull panel meshes for diffraction/hydrodynamic analysis are scattered across 5 d
 | Source | Location | Files | Formats | Hull Types |
 |--------|----------|-------|---------|------------|
 | a) OrcaWave | `digitalmodel/docs/modules/orcawave/` | 86 GDF/OWD | GDF, OWD, YAML | Cylinders, spheres, ellipsoids, barges, semi-subs, spars, FPSO, ships |
-| b) Hull collection | `acma-projects/_hulls/` | 8 files | .3dm, .xlsx, .pdf | Aframax tanker, 3 semi-sub types (Q4000, SDP 3500, Uncle John) |
-| c) Rock Oil Field | `rock-oil-field/s7/analysis_general/` | 3 files | .rao, .hst, .dat | Training vessel, Seven Seas mesh |
-| d) AQWA FST/LNGC | `acma-projects/B1522/ctr-7/_src/aqwa/rev_a08/` | 135 files | AQWA DAT/DECK | FST (~204m), LNGC (125/180 km3) |
-| e) Saipem FPSO | `saipem/yellowtail/code/rev2/03_Vessels_host/` | ~18 YAML | OrcaFlex YAML | FPSO variants (dims only, no panels) |
+| b) Hull collection | `mkt-a/_hulls/` | 8 files | .3dm, .xlsx, .pdf | Aframax tanker, 3 semi-sub types (Q4000, SDP 3500, Uncle John) |
+| c) Rock Oil Field | `client-b/s7/analysis_general/` | 3 files | .rao, .hst, .dat | Training vessel, Seven Seas mesh |
+| d) AQWA FST/LNGC | `mkt-a/B1522/ctr-7/_src/aqwa/rev_a08/` | 135 files | AQWA DAT/DECK | FST (~204m), LNGC (125/180 km3) |
+| e) client-d FPSO | `client-d/yellowtail/code/rev2/03_Vessels_host/` | ~18 YAML | OrcaFlex YAML | FPSO variants (dims only, no panels) |
 
 **Estimated catalog**: ~40-46 entries. **Copied GDF files**: ~12-15, total ~5-10 MB.
 
@@ -85,7 +85,7 @@ Hull panel meshes for diffraction/hydrodynamic analysis are scattered across 5 d
 |--------|---------|---------|-----------------|
 | a) OrcaWave GDF | `scan_gdf_directory` | `GDFHandler.read()` | panel_count, vertices, bounding box → L/B/T |
 | b) _hulls | `scan_metadata_hulls` | Filename only | hull_type, name, format (panel_count=None) |
-| c) rock-oil-field | `scan_metadata_hulls` | Filename only | hull_type, format, notes |
+| c) client-b | `scan_metadata_hulls` | Filename only | hull_type, format, notes |
 | d) AQWA DAT | `scan_aqwa_dat_directory` | `DATHandler.read()` | panel_count, vertices, bounding box |
 | e) yellowtail YAML | `scan_orcaflex_vessels` | YAML parse | length, beam, draft from vessel definition |
 

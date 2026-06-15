@@ -24,7 +24,7 @@ context: 7/12/10
 
 - **ws014** (licensed-win-2): Claude Desktop with cowork mode + MCP
 - Excel installed, openpyxl and pytest available in Python environment
-- `client_projects` repo cloned to ws014
+- `client-c` repo cloned to ws014
 
 ## Step-by-Step Workflow
 
@@ -34,8 +34,8 @@ Open the workbook in Excel. Launch Claude Desktop cowork session.
 
 ### Step 2: Copy workbook path
 
-Locate workbook path in `client_projects/engineering_workbooks/`.
-Copy full Windows path (e.g., `C:\path\to\client_projects\engineering_workbooks\ballymore\...`).
+Locate workbook path in `client-c/engineering_workbooks/`.
+Copy full Windows path (e.g., `C:\path\to\client-c\engineering_workbooks\ballymore\...`).
 
 ### Step 3: Prompt in Claude Desktop cowork
 
@@ -95,10 +95,10 @@ RULES:
 python -m pytest test_{module_name}.py -v
 ```
 
-### Step 5: Save workbook to client_projects repo
+### Step 5: Save workbook to client-c repo
 
 ```bash
-cd client_projects
+cd client-c
 git add engineering_workbooks/path/to/{module_name}.py
 git add engineering_workbooks/path/to/test_{module_name}.py
 git commit -m "feat: {workbook_name} — cowork conversion, N tests passing"
@@ -181,7 +181,7 @@ For each workbook:
 ## Integration Pattern
 
 After conversion:
-1. Commit to client_projects repo
+1. Commit to client-c repo
 2. Copy to digitalmodel (update imports)
 3. Create/update digitalmodel `__init__.py` exports
 4. Create spec.yml in `docs/domains/orcaflex/subsea/`

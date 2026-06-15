@@ -56,7 +56,7 @@ from:(substack.com OR info.marineinsight.com OR rigzonemail.com OR news.ogj.com)
 ### Filter D — VIP (clients + colleagues)
 
 ```
-from:(@mcdermott.com OR @shell.com OR @bp.com OR @ril.com OR @kbr.com OR @technipfmc.com OR @technip.com OR @subsea7.com OR @nov.com OR @aker.com OR @vulcanoffshore.com OR @dorisgroup.com OR @frontierdeepwater.com OR @2hoffshore.com OR @2hoffshoreinc.com OR @eagle.org OR @engineeredcustomsolutions.com OR @km.kongsberg.com OR @boptechnologies.com OR @awilcodrilling.com OR @aceengineer.com)
+from:(@mcdermott.com OR @shell.com OR @bp.com OR @ril.com OR @kbr.com OR @technipfmc.com OR @technip.com OR @subsea7.com OR @nov.com OR @aker.com OR @vulcanoffshore.com OR @lng-agroup.com OR @client-a.com OR @2hoffshore.com OR @2hoffshoreinc.com OR @eagle.org OR @engineeredcustomsolutions.com OR @km.kongsberg.com OR @boptechnologies.com OR @awilcodrilling.com OR @aceengineer.com)
 ```
 
 **Action:** Star + Mark as important + Never to Spam + Apply to existing.

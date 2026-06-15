@@ -108,7 +108,7 @@ Format:
 
 ### ace
 - VIP: anyone in GTM prospect list, active clients
-- URGENT: anything from @ril.com, @dorisgroup.com, @mcdermott.com (known clients)
+- URGENT: anything from @ril.com, @lng-agroup.com, @mcdermott.com (known clients)
 - NEWSLETTER: LinkedIn notifications, industry digests (keep subscribed but low priority)
 
 ### personal

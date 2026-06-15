@@ -357,7 +357,7 @@ Repository                     Category        Git Status       URL
 digitalmodel                   Work            Clean           git@github.com:user/digitalmodel.git
 aceengineer-admin              Personal        Uncommitted     git@github.com:user/aceengineer-admin.git
 energy                         Work            Unpushed        git@github.com:user/energy.git
-frontierdeepwater              Work            Behind remote   git@github.com:user/frontierdeepwater.git
+client-a              Work            Behind remote   git@github.com:user/client-a.git
 ```
 
 **Status Indicators:**

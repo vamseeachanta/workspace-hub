@@ -67,7 +67,7 @@ Validation run in clean worktree:
 Execution decision: do not launch.
 
 Reason:
-- `docs/reports/acma-wiki-unblock-2245-handoff.yaml` still reports `ready_for_2227: false`
+- `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml` still reports `ready_for_2227: false`
 - all 3 bounded targets remain blocked by missing usable reusable summary artifacts on this machine/toolchain
 - #2246 and #2247 improved mechanics, but they do not themselves create readable source-text-grounded promotion evidence for the blocked PDFs
 

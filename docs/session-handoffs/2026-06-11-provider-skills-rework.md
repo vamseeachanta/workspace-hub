@@ -63,7 +63,7 @@ fully reversible, history preserved, nothing deleted.
   skills (22 OrcaFlex/OrcaWave/mooring skills; 18 energy-data skills) are the crown
   jewels and must be preserved in any future sweep.
 - **aceengineer-website** — sitting on stale branch `overnight/deepening-2026-05-24`; fix after it lands/dies.
-- **acma-projects-freeze-work** — frozen snapshot; left untouched on purpose.
+- **mkt-a-freeze-work** — frozen snapshot; left untouched on purpose.
 - **wshub-phase0 / wshub-wt-3027** — worktree copies of workspace-hub; canonical fix lives in workspace-hub.
 - **Vendored third-party repos** (CAD-DEVELOPMENTS/{claude-flow,ruv-swarm,flow-nexus}) — not ours to edit.
 - **Library reference docs** in hub skills (dspy/pandasai/lm-eval `references/`) — old model IDs

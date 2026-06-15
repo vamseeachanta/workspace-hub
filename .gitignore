@@ -1,29 +1,26 @@
 # Individual Git Repositories - Exclude all subdirectory repos
+# NOTE (#3098): client-named sibling-repo ignores (the confidential ones) were
+# relocated to local .git/info/exclude so this PUBLIC file names no clients.
+# Provision a host: add those client dirs to .git/info/exclude (see the private
+# aceengineer-strategy archive for the list).
 heavyequipemnt-rag/
 aceengineer-admin/
 aceengineer-strategy/
 aceengineer-website/
 achantas-data/
 achantas-media/
-acma-projects/
 ai-native-traditional-eng/
 assethold/
 assetutilities/
 CAD-DEVELOPMENTS/
-client_projects/
 digitalmodel/
-doris/
 energy/
-frontierdeepwater/
 hobbies/
 investments/
 OGManufacturing/
 pyproject-starter/
-rock-oil-field/
 sabithaandkrishnaestates/
-saipem/
 sd-work/
-seanation/
 simpledigitalmarketing/
 teamresumes/
 worldenergydata/
@@ -571,3 +568,6 @@ scripts/review/results/
 # the learning cron. The real client names live ONLY in the private
 # aceengineer-strategy archive; provision a local copy here per host. Never track.
 config/agents/.client-codename-map.local.yaml
+
+# PII #3098: real client registry relocated private; local copy provisioned per host
+config/.client-wikis.local.yml

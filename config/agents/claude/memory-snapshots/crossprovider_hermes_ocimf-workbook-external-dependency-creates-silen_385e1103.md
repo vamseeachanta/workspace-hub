@@ -8,6 +8,6 @@ metadata:
   tags: [external-dependency, test-brittleness, licensing]
 ---
 
-Licensed workbook at `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx` is a hard gate for test passage; missing file causes test failure without clear error message. Off-repo path creates cross-machine deployment risk and makes tests environment-dependent. Consider mock or error-handling for missing licensed resources.
+Licensed workbook at `/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx` is a hard gate for test passage; missing file causes test failure without clear error message. Off-repo path creates cross-machine deployment risk and makes tests environment-dependent. Consider mock or error-handling for missing licensed resources.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

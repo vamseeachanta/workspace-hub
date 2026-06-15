@@ -10,7 +10,7 @@
 
 Across the eight wiki domains, the largest external-resource gaps sit in **mkt-a (8 pages, 2 sources)**, **lng-projects (15 pages, 0 standards directory)**, and **maritime-law (33 pages, 2 sources)**. These are sparse scaffolds with foundational concept pages but almost no provenance-grounded standards or authoritative datasets. The next-tier gap is **engineering-standards (82 pages)** which is rich on ABS/API/ASME but missing whole regulator surfaces (BSEE, PHMSA, USCG, NTSB) and **naval-architecture (74 pages)** missing live data feeds (NCEI/GEBCO bathymetry, USACE CEM, ITTC procedures, NTSB CAROL). Marine-engineering's 19,221 pages are mostly raw-source page-imports — selective targeted additions, not a build-out, are the right move. asset-management (27 pages) already has the ISO 55000 spine; gaps are practitioner-frameworks (IAM endorsement scheme, Reliabilityweb Uptime Elements registry) and government RBI/RBM sources.
 
-**Highest-impact single ingest target:** the **BSEE Data Center (data.bsee.gov)** — a federal open-data portal that simultaneously feeds engineering-standards (incidents, regulatory enforcement), lng-projects (offshore terminal production), naval-architecture (drilling rig casualties), and mkt-a (mooring failures, the ACMA seed already cites proj-a). Authoritative, free, machine-queryable, multi-domain.
+**Highest-impact single ingest target:** the **BSEE Data Center (data.bsee.gov)** — a federal open-data portal that simultaneously feeds engineering-standards (incidents, regulatory enforcement), lng-projects (offshore terminal production), naval-architecture (drilling rig casualties), and mkt-a (mooring failures, the mkt-a seed already cites proj-a). Authoritative, free, machine-queryable, multi-domain.
 
 ---
 

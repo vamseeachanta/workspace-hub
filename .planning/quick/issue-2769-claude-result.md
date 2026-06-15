@@ -1,11 +1,11 @@
 # Issue #2769 — Claude execution result
 
 ## Status
-Implementation complete on branch `issue-2769-backup-disposition-claude`. Phase A dry-run only. No live ACMA scan invoked. No data mutated. Issue intentionally left open.
+Implementation complete on branch `issue-2769-backup-disposition-claude`. Phase A dry-run only. No live mkt-a scan invoked. No data mutated. Issue intentionally left open.
 
 ## Workflow followed
 1. Verified `status:plan-approved` label on [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769) and local marker `.planning/plan-approved/2769.md`.
-2. Read approved plan `docs/plans/2026-05-21-issue-2769-acma-premove-backup-disposition.md`.
+2. Read approved plan `docs/plans/2026-05-21-issue-2769-mkt-a-premove-backup-disposition.md`.
 3. Inspected #2767 implementation now on `main` at `86149e5e4` (`scripts/data/preexisting_inventory.py` + 11 tests).
 4. Parallel-work check via `ps -ef | grep -E "(claude|codex|gemini|hermes)"` and `git worktree list`: only #2747 codex session active; no overlap with #2769.
 5. RED: authored `tests/test_backup_disposition.py` (16 tests). Confirmed collection-level `FileNotFoundError` for missing module.
@@ -16,7 +16,7 @@ Implementation complete on branch `issue-2769-backup-disposition-claude`. Phase 
 ## Files changed (new only)
 - `scripts/data/backup_disposition.py` — Phase A module.
 - `tests/test_backup_disposition.py` — 16 tests (RED → GREEN).
-- `docs/reports/issue-2769-acma-premove-backup-disposition.md` — Phase A contract / runbook.
+- `docs/reports/issue-2769-mkt-a-premove-backup-disposition.md` — Phase A contract / runbook.
 - `.planning/quick/issue-2769-claude-result.md` — this file.
 
 ## Commands run
@@ -48,8 +48,8 @@ Implementation complete on branch `issue-2769-backup-disposition-claude`. Phase 
 Even at "ready", recommendation is `deferred:awaiting_approved_execution_issue` — destructive execution always requires a separately approved issue.
 
 ## Blockers / open items
-- #2731 / #2732 raw/source bucket placement still open — live disposition for the 1.8 TB ACMA backup remains blocked by upstream taxonomy decisions, as the plan required.
-- Live scan against `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/` deliberately NOT executed; it is an operator action gated on a separate execution issue.
+- #2731 / #2732 raw/source bucket placement still open — live disposition for the 1.8 TB mkt-a backup remains blocked by upstream taxonomy decisions, as the plan required.
+- Live scan against `/mnt/ace/mkt-a.preexisting-before-repo-move-20260520-075928/` deliberately NOT executed; it is an operator action gated on a separate execution issue.
 
 ## Out of scope (deliberate)
 - Merge to `main` (not requested).

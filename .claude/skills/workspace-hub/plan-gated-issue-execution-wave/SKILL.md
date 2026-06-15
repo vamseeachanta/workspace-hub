@@ -141,7 +141,7 @@ Use this rule:
 
 Good example:
 - source registration/config changes were completed in-repo
-- actual Phase A indexing against `/mnt/ace/acma-codes` remained blocked by sandbox access
+- actual Phase A indexing against `/mnt/ace/mkt-a-codes` remained blocked by sandbox access
 - issue stayed open instead of falsely claiming completion
 
 ## Hook false-positive lesson

@@ -8,7 +8,7 @@ session:
   agent: claude-opus-4.6
 review: pending
 work_item: WRK-121
-target_repos: [acma-projects, assetutilities]
+target_repos: [mkt-a, assetutilities]
 complexity: medium
 route: B
 ---
@@ -17,11 +17,11 @@ route: B
 
 ## Context
 
-ACMA uses licensed engineering software (OrcaFlex, ANSYS) on shared workstations accessed via remote desktop (TightVNC). Current documentation is scattered across two repos and has critical gaps:
+mkt-a uses licensed engineering software (OrcaFlex, ANSYS) on shared workstations accessed via remote desktop (TightVNC). Current documentation is scattered across two repos and has critical gaps:
 
-- `acma-projects/admin/orcaflex/use_instructions.md` -- Only contains a troubleshooting email exchange, not actual usage instructions
-- `acma-projects/admin/orcaflex_license.md` -- Historical note about obtaining the license, not operational
-- `acma-projects/admin/acma_vpn.md` -- Contains PLAINTEXT PASSWORDS (security risk, must fix)
+- `mkt-a/admin/orcaflex/use_instructions.md` -- Only contains a troubleshooting email exchange, not actual usage instructions
+- `mkt-a/admin/orcaflex_license.md` -- Historical note about obtaining the license, not operational
+- `mkt-a/admin/mkt-a_vpn.md` -- Contains PLAINTEXT PASSWORDS (security risk, must fix)
 - `assetutilities/docs/sub_hardware/server_remote_desktop.md` -- Shared vs simultaneous login diagram, needs consolidation
 - `assetutilities/docs/sub_hardware/remote_desktop.md` -- Q&A about resource sharing, unanswered questions
 
@@ -43,7 +43,7 @@ Create `pending/WRK-121.md` in the work queue.
 
 ### Step 2: OrcaFlex License Usage Guide (standalone)
 
-**File**: `acma-projects/admin/orcaflex/use_instructions.md` (overhaul existing)
+**File**: `mkt-a/admin/orcaflex/use_instructions.md` (overhaul existing)
 
 Self-contained document covering:
 
@@ -86,7 +86,7 @@ ORCAFLEX LICENSE USAGE GUIDE
 
 ### Step 3: Fix credential security (BLOCKING)
 
-**File**: `acma-projects/admin/acma_vpn.md`
+**File**: `mkt-a/admin/mkt-a_vpn.md`
 
 - REMOVE all plaintext passwords immediately
 - Replace with: "Credentials stored in company password manager. Contact IT for access."
@@ -126,7 +126,7 @@ Answer open questions from `remote_desktop.md`:
 
 ### Step 5: Licensed Software Audit & Recommendations (standalone)
 
-**File**: `acma-projects/admin/licensed_software_review.md` (new)
+**File**: `mkt-a/admin/licensed_software_review.md` (new)
 
 Self-contained document for management:
 
@@ -134,7 +134,7 @@ Self-contained document for management:
 LICENSED SOFTWARE REVIEW & RECOMMENDATIONS
 ============================================
 Date: 2026-02-11
-Prepared for: ACMA Management / IT Department
+Prepared for: mkt-a Management / IT Department
 
 1. SOFTWARE INVENTORY
    +-------------+------------------+----------+------------------+
@@ -148,7 +148,7 @@ Prepared for: ACMA Management / IT Department
    +-------------+------------------+----------+------------------+
 
 2. CURRENT ACCESS METHOD
-   - OrcaFlex: TightVNC to dedicated workstation (ACMA-ANSYS machine)
+   - OrcaFlex: TightVNC to dedicated workstation (mkt-a-ANSYS machine)
    - ANSYS: Direct login or RDP to licensed machines
 
 3. KNOWN ISSUES
@@ -199,10 +199,10 @@ Each document includes a "Related Documents" section at the bottom listing the o
 | File                                         | Action   | Repo           |
 +----------------------------------------------+----------+----------------+
 | .claude/work-queue/pending/WRK-121.md        | Create   | workspace-hub  |
-| admin/orcaflex/use_instructions.md           | Overhaul | acma-projects  |
-| admin/acma_vpn.md                            | SECURITY | acma-projects  |
+| admin/orcaflex/use_instructions.md           | Overhaul | mkt-a  |
+| admin/mkt-a_vpn.md                            | SECURITY | mkt-a  |
 |                                              | FIX      |                |
-| admin/licensed_software_review.md            | Create   | acma-projects  |
+| admin/licensed_software_review.md            | Create   | mkt-a  |
 | docs/sub_hardware/server_remote_desktop.md   | Update   | assetutilities |
 +----------------------------------------------+----------+----------------+
 ```
@@ -210,8 +210,8 @@ Each document includes a "Related Documents" section at the bottom listing the o
 ### Step 7: Generate PDF copies
 
 For each standalone document, generate a PDF copy in the same directory:
-- `acma-projects/admin/orcaflex/use_instructions.pdf`
-- `acma-projects/admin/licensed_software_review.pdf`
+- `mkt-a/admin/orcaflex/use_instructions.pdf`
+- `mkt-a/admin/licensed_software_review.pdf`
 
 Method: Use `pandoc` (markdown to PDF) or Python `markdown` + `weasyprint` if pandoc unavailable. ASCII tables render cleanly in monospace PDF output.
 
