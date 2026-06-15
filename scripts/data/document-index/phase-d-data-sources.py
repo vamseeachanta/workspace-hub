@@ -33,7 +33,7 @@ DEFAULT_CONFIG = SCRIPT_DIR / "config.yaml"
 LEGAL_SCAN = HUB_ROOT / "scripts" / "legal" / "legal-sanity-scan.sh"
 
 TIER_1_REPOS = ["digitalmodel", "worldenergydata", "assethold"]
-TIER_2_REPOS = ["doris", "OGManufacturing", "saipem", "rock-oil-field", "acma-projects"]
+TIER_2_REPOS = ["lng_a", "OGManufacturing", "client_d", "client_b", "mkt_a"]
 
 
 def load_config(config_path: Path) -> Dict[str, Any]:

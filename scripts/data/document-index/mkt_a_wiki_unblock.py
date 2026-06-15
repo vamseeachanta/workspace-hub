@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bounded helper for #2245 ACMA wiki-unblock artifacts."""
+"""Bounded helper for #2245 mkt_a wiki-unblock artifacts."""
 
 from __future__ import annotations
 
@@ -18,26 +18,26 @@ HUB_ROOT = SCRIPT_DIR.parents[2]
 DEFAULT_INDEX_PATH = HUB_ROOT / "data/document-index/index.jsonl"
 DEFAULT_LEDGER_PATH = HUB_ROOT / "data/document-index/standards-transfer-ledger.yaml"
 DEFAULT_SUMMARIES_DIR = HUB_ROOT / "data/document-index/summaries"
-DEFAULT_HANDOFF_PATH = HUB_ROOT / "docs/reports/acma-wiki-unblock-2245-handoff.yaml"
+DEFAULT_HANDOFF_PATH = HUB_ROOT / "docs/reports/mkt_a-wiki-unblock-2245-handoff.yaml"
 
 TARGET_SPECS = [
     {
         "id": "OCIMF-TANDEM-MOORING",
         "title": "OCIMF Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities",
         "domain": "marine",
-        "doc_path": "/mnt/ace/acma-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf",
+        "doc_path": "/mnt/ace/mkt_a-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf",
     },
     {
         "id": "CSA-Z276.1-20",
         "title": "CSA Z276.1-20 Marine Structures Associated with LNG Facilities",
         "domain": "marine",
-        "doc_path": "/mnt/ace/acma-codes/CSA/276.1-20 marine structures associated with LNG facilities.pdf",
+        "doc_path": "/mnt/ace/mkt_a-codes/CSA/276.1-20 marine structures associated with LNG facilities.pdf",
     },
     {
         "id": "CSA-Z276.18",
         "title": "CSA Z276.18 LNG Production, Storage, and Handling",
         "domain": "marine",
-        "doc_path": "/mnt/ace/acma-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf",
+        "doc_path": "/mnt/ace/mkt_a-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf",
     },
 ]
 
@@ -195,7 +195,7 @@ def build_handoff_payload(results: list[ArtifactResult]) -> dict:
     return {
         "issue": 2245,
         "downstream_issue": 2227,
-        "generated_from": "scripts/data/document-index/acma_wiki_unblock.py",
+        "generated_from": "scripts/data/document-index/mkt_a_wiki_unblock.py",
         "ready_for_2227": all(result.ready_for_2227 for result in results),
         "targets": [
             {
@@ -234,7 +234,7 @@ def run(index_path: Path, ledger_path: Path, summaries_dir: Path, handoff_path: 
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Prepare bounded ACMA summary/classification artifacts for #2245")
+    parser = argparse.ArgumentParser(description="Prepare bounded mkt_a summary/classification artifacts for #2245")
     parser.add_argument("--index-path", type=Path, default=DEFAULT_INDEX_PATH)
     parser.add_argument("--ledger-path", type=Path, default=DEFAULT_LEDGER_PATH)
     parser.add_argument("--summaries-dir", type=Path, default=DEFAULT_SUMMARIES_DIR)

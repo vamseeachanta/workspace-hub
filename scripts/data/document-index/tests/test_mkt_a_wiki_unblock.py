@@ -1,4 +1,4 @@
-"""Tests for bounded ACMA wiki-unblock helper (#2245)."""
+"""Tests for bounded mkt_a wiki-unblock helper (#2245)."""
 
 import json
 import sys
@@ -10,7 +10,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent.parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from acma_wiki_unblock import (  # noqa: E402
+from mkt_a_wiki_unblock import (  # noqa: E402
     TARGET_SPECS,
     build_handoff_payload,
     preview_is_usable,
@@ -32,15 +32,15 @@ def _write_ledger(path: Path) -> None:
 - id: OCIMF-TANDEM-MOORING
   title: OCIMF Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities
   domain: marine
-  doc_path: /mnt/ace/acma-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf
+  doc_path: /mnt/ace/mkt_a-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf
 - id: CSA-Z276.1-20
   title: CSA Z276.1-20 Marine Structures Associated with LNG Facilities
   domain: marine
-  doc_path: /mnt/ace/acma-codes/CSA/276.1-20 marine structures associated with LNG facilities.pdf
+  doc_path: /mnt/ace/mkt_a-codes/CSA/276.1-20 marine structures associated with LNG facilities.pdf
 - id: CSA-Z276.18
   title: CSA Z276.18 LNG Production, Storage, and Handling
   domain: marine
-  doc_path: /mnt/ace/acma-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf
+  doc_path: /mnt/ace/mkt_a-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf
 """.strip()
         + "\n",
         encoding="utf-8",
@@ -57,7 +57,7 @@ def test_resolve_target_records_returns_exact_three_targets(tmp_path: Path) -> N
             {
                 "path": spec["doc_path"],
                 "content_hash": f"sha256:{i}",
-                "source": "acma_codes",
+                "source": "mkt_a_codes",
                 "domain": None,
                 "summary": None,
                 "ext": "pdf",
@@ -66,9 +66,9 @@ def test_resolve_target_records_returns_exact_three_targets(tmp_path: Path) -> N
         ]
         + [
             {
-                "path": "/mnt/ace/acma-codes/CSA/out-of-scope.pdf",
+                "path": "/mnt/ace/mkt_a-codes/CSA/out-of-scope.pdf",
                 "content_hash": "sha256:extra",
-                "source": "acma_codes",
+                "source": "mkt_a_codes",
                 "domain": None,
                 "summary": None,
                 "ext": "pdf",
@@ -98,7 +98,7 @@ def test_resolve_target_records_errors_when_any_target_missing(tmp_path: Path) -
             {
                 "path": TARGET_SPECS[0]["doc_path"],
                 "content_hash": "sha256:1",
-                "source": "acma_codes",
+                "source": "mkt_a_codes",
                 "domain": None,
                 "summary": None,
                 "ext": "pdf",
@@ -126,7 +126,7 @@ def test_build_handoff_payload_names_exact_artifact_refs(tmp_path: Path) -> None
             {
                 "path": spec["doc_path"],
                 "content_hash": f"sha256:{i}",
-                "source": "acma_codes",
+                "source": "mkt_a_codes",
                 "domain": None,
                 "summary": None,
                 "ext": "pdf",
@@ -166,7 +166,7 @@ def test_write_summary_artifact_marks_blocker_for_unusable_preview(tmp_path: Pat
         "title": record["title"],
         "path": record["doc_path"],
         "content_hash": "sha256:blocker",
-        "source": "acma_codes",
+        "source": "mkt_a_codes",
         "domain": "marine",
         "ext": "pdf",
     })()

@@ -115,7 +115,7 @@ PATH_RULES: list[tuple[str, Optional[set[str]], str, list[str], str]] = [
     # ── ace/docs/_standards sub-directories ──────────────────────────────
     ("_standards/ASTM",     None,               "materials",            ["digitalmodel", "OGManufacturing"],    "ace_astm"),
     ("_standards/NACE",     None,               "cathodic-protection",  ["digitalmodel"],                       "ace_nace"),
-    ("_standards/API",      None,               "pipeline",             ["digitalmodel", "doris"],              "ace_api"),
+    ("_standards/API",      None,               "pipeline",             ["digitalmodel", "lng_a"],              "ace_api"),
     ("_standards/ISO",      None,               "structural",           ["digitalmodel", "OGManufacturing"],    "ace_iso"),
     ("_standards/BS",       None,               "structural",           ["digitalmodel", "OGManufacturing"],    "ace_bs"),
     ("_standards/ASME",     None,               "structural",           ["digitalmodel", "OGManufacturing"],    "ace_asme"),
@@ -123,20 +123,20 @@ PATH_RULES: list[tuple[str, Optional[set[str]], str, list[str], str]] = [
     ("_standards/Norsok",   None,               "structural",           ["digitalmodel", "OGManufacturing"],    "ace_norsok"),
     # ── O&G Standards DB sub-directories ────────────────────────────────
     ("Codes & Standards/ASTM",   None,          "materials",            ["digitalmodel", "OGManufacturing"],    "og_astm"),
-    ("Codes & Standards/API",    None,          "pipeline",             ["digitalmodel", "doris"],              "og_api"),
+    ("Codes & Standards/API",    None,          "pipeline",             ["digitalmodel", "lng_a"],              "og_api"),
     ("Codes & Standards/ISO",    None,          "structural",           ["digitalmodel", "OGManufacturing"],    "og_iso"),
     ("Codes & Standards/ASCE",   None,          "structural",           ["digitalmodel", "OGManufacturing"],    "og_asce"),
     ("Codes & Standards/AS",     None,          "structural",           ["digitalmodel", "OGManufacturing"],    "og_as"),
-    ("Oil and Gas Codes/API",    None,          "pipeline",             ["digitalmodel", "doris"],              "og_api_stds"),
+    ("Oil and Gas Codes/API",    None,          "pipeline",             ["digitalmodel", "lng_a"],              "og_api_stds"),
     # ── dde/documents sub-directories (most specific first) ─────────────
     ("dde/documents/ri/",               None,   "marine",               ["digitalmodel"],                       "dde_ri_riser"),
     ("dde/documents/614 Sewol",         None,   "marine",               [],                                     "dde_sewol"),
     ("dde/documents/simulation",        None,   "structural",           ["digitalmodel"],                       "dde_simulation"),
-    ("dde/documents/0168_Python",       None,   "project-management",   ["acma-projects"],                      "dde_0168_python"),
+    ("dde/documents/0168_Python",       None,   "project-management",   ["mkt_a"],                      "dde_0168_python"),
     ("dde/documents/0163 FDAS",         None,   "energy-economics",     ["worldenergydata"],                    "dde_0163_fdas"),
-    # All remaining numbered ACMA project folders (0NNN prefix handled below by regex in apply_path_rules)
-    # Fallback: any remaining dde/documents/ → acma-projects
-    ("dde/documents/",                  None,   "project-management",   ["acma-projects"],                      "dde_acma_projects"),
+    # All remaining numbered mkt_a project folders (0NNN prefix handled below by regex in apply_path_rules)
+    # Fallback: any remaining dde/documents/ → mkt_a
+    ("dde/documents/",                  None,   "project-management",   ["mkt_a"],                      "dde_mkt_a_projects"),
     # ── knowledge_skills/projects — engineering project archives (WRK-1170) ──
     ("knowledge_skills/projects/halliburton",    None, "installation",       ["digitalmodel", "OGManufacturing"], "ks_halliburton"),
     ("knowledge_skills/projects",                None, "project-management", [],                                  "ks_projects_fallback"),
@@ -172,7 +172,7 @@ PATH_RULES: list[tuple[str, Optional[set[str]], str, list[str], str]] = [
 FILENAME_RULES: list[tuple[tuple[str, ...], str, list[str]]] = [
     (("API RP ", "API-RP-", "API STD ", "API-STD-", "API SPEC ", "API-SPEC-",
       "API TR ", "API-TR-", "API BULL", "API MPMS"),
-     "pipeline",            ["digitalmodel", "doris"]),
+     "pipeline",            ["digitalmodel", "lng_a"]),
     (("SPE-", "SPE "),
      "energy-economics",    ["worldenergydata"]),
     (("DNV-", "DNV ", "DNVGL-", "DNVGL ", "DNV GL"),

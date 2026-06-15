@@ -10,8 +10,8 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[4]
 OCIMF_DOC_KEY = "sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af"
 SUMMARY_PATH = REPO_ROOT / "data/document-index/summaries" / f"{OCIMF_DOC_KEY}.json"
-HANDOFF_PATH = REPO_ROOT / "docs/reports/acma-wiki-unblock-2245-handoff.yaml"
-SOURCE_PATH = "/mnt/ace/acma-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf"
+HANDOFF_PATH = REPO_ROOT / "docs/reports/mkt_a-wiki-unblock-2245-handoff.yaml"
+SOURCE_PATH = "/mnt/ace/mkt_a-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf"
 
 
 def test_2521_ocimf_summary_artifact_unblocks_preview_gate() -> None:
