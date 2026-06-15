@@ -44,6 +44,12 @@ from pathlib import Path
 
 import yaml
 
+# #3139: shared skill universe + short_name key (single source of truth).
+# Self-heal sys.path so `import _skill_identity` resolves both when run directly
+# and when loaded via importlib in tests.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _skill_identity import discover_skills, derive_short_name  # noqa: E402
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -82,16 +88,11 @@ def scan_skills(skills_dir: Path) -> dict[str, dict]:
     """
     skills: dict[str, dict] = {}
 
-    for skill_md in sorted(skills_dir.rglob("SKILL.md")):
-        parts = skill_md.parts
-        if any(excluded in parts for excluded in {"_archive", "_core", "_internal"}):
-            continue
-
+    for full_rel in discover_skills(skills_dir):  # #3139: shared universe (excludes _archive/_archived/_core/_internal)
+        skill_md = skills_dir / full_rel / "SKILL.md"
         rel_path = str(skill_md.relative_to(skills_dir))
         # Skill name is the parent directory name
         skill_name = skill_md.parent.name
-        # Full path for uniqueness
-        full_rel = str(skill_md.parent.relative_to(skills_dir)).replace(os.sep, "/")
 
         try:
             text = skill_md.read_text(encoding="utf-8")
@@ -150,7 +151,7 @@ def scan_skills(skills_dir: Path) -> dict[str, dict]:
         canonical_name = str(fm.get("name", skill_name)).strip() or skill_name
         skills[full_rel] = {
             "name": canonical_name,
-            "short_name": canonical_name.lower(),
+            "short_name": derive_short_name(skill_md),  # #3139: single canonical derivation
             "path": rel_path,
             "full_rel": full_rel,
             "related_skills": related,

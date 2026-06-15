@@ -35,6 +35,12 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+# #3139: shared skill universe + short_name key (single source of truth).
+# Self-heal sys.path so `import _skill_identity` resolves both when run directly
+# (uv run python scripts/skills/...) and when loaded via importlib in tests.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _skill_identity import discover_skills, derive_short_name  # noqa: E402
+
 DEFAULT_MIN_COVERAGE = 14  # days — shared with skill-usage-report.py demotion rule
 
 
@@ -90,42 +96,6 @@ def scan_sessions(sessions_dir: Path):
 
     coverage_days = (newest - oldest).days if oldest and newest else 0
     return event_ts, session_ts, coverage_days
-
-
-def discover_skills(skills_root: Path):
-    """Walk .claude/skills for SKILL.md, yield the relative skill name."""
-    skills = []
-    root = Path(skills_root)
-    for skill_md in root.rglob("SKILL.md"):
-        rel = skill_md.parent.relative_to(root).as_posix()
-        skills.append(rel)
-    return sorted(skills)
-
-
-def derive_short_name(skill_md_path) -> str:
-    """Canonical skill key = frontmatter `name` lowercased, else dir basename.
-
-    Mirrors skill-usage-report.py:150-153 (`canonical_name = fm.get("name",
-    parent.name); short_name = canonical_name.lower()`) so the scanner's OUTPUT
-    keys join the report's tier keys (#3112 BUG-2). Minimal frontmatter parse —
-    the scanner has no yaml dep; only the single-line `name:` field is needed.
-    """
-    p = Path(skill_md_path)
-    basename = p.parent.name
-    name = None
-    try:
-        text = p.read_text(encoding="utf-8")
-    except (OSError, UnicodeDecodeError):
-        return basename.lower()
-    if text.startswith("---"):
-        end = text.find("\n---", 3)
-        block = text[3:end] if end != -1 else ""
-        for line in block.splitlines():
-            s = line.strip()
-            if s.startswith("name:"):
-                name = s[len("name:"):].strip().strip('"').strip("'")
-                break
-    return ((name or basename).strip() or basename).lower()
 
 
 def classify(event_ts, session_ts, coverage_days: int, skills_root: Path):
