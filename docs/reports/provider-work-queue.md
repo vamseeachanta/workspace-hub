@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-06-15T13:20:14.047417Z
+Generated: 2026-06-15T21:36:54.249930Z
 Current week: 2026-W25
 Recommended provider order: gemini, claude, codex
 
@@ -9,12 +9,11 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 32
-- Total routed candidates: 175
+- Execution-ready candidates: 35
+- Total routed candidates: 177
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2563 Set up Telegram mobile access for Hermes AI control | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:operations, domain:integrations, machine:dev-primary |
 | #2628 epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:harness, machine:dev-primary, status:plan-approved |
 | #2686 Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete | yes | strategy/workflow/architecture language | bug, priority:high, cat:engineering, cat:bugfix, machine:dev-primary, status:plan-approved |
 | #2694 Epic: Cross-domain duplicate-implementation cleanup (catenary, PipeCapacity, cathodic protection, natural-period, hydro-matrix, on-bottom stability) | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:bugfix, domain:refactor, machine:dev-primary |
@@ -22,23 +21,24 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #2739 feat(hermes): promote ace-linux-2 as first Telegram/Hermes dispatch worker | yes | existing claude agent label | enhancement, priority:high, cat:ai-orchestration, cat:operations, machine:ace-linux-2, agent:claude |
 | #2751 Cross-platform harness setup: integrate AI-provider bootstrap, auth orchestration, macOS+PowerShell, per-machine status registry | yes | strategy/workflow/architecture language | priority:high, cat:harness, domain:machine-setup, machine:dev-primary, status:plan-approved, dispatch:ready |
 | #2754 throughput(workstations): activate ace-linux-1 provider/machine lane | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:operations, machine:ace-linux-1, status:plan-approved |
+| #2755 throughput(workstations): activate ace-linux-2 provider/machine lane | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:operations, status:working, machine:ace-linux-2 |
 
 ## codex
 
 - Routing priority: high
-- Execution-ready candidates: 1
-- Total routed candidates: 21
+- Execution-ready candidates: 2
+- Total routed candidates: 19
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #3030 Dispatch-time codex weekly-quota gate: suspend lane:codex routing when available <10% | yes | implementation/test/fix language | domain:ai-tools, status:plan-approved, gate:completeness, lane:claude |
+| #3143 bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session | yes | implementation/test/fix language | bug, cat:harness/ops, status:plan-approved, gate:completeness |
 | #2880 feat(codex): make yolo-equivalent permission defaults travel across machines | no | existing codex agent label | enhancement, priority:high, cat:harness, domain:ai-config, machine:multi, agent:codex |
 | #3026 ace-linux-2: gnome-shell crash recovery (2026-06-10) + /dev/sda end-of-life replacement plan | no | implementation/test/fix language | priority:high, lane:claude |
-| #2572 Routine: /repo-sync + /mnt/local-analysis cleanup audit (every 2 days) | no | implementation/test/fix language | priority:medium, domain:automation, machine:dev-primary, dispatch:ready, gate:completeness, lane:claude |
-| #2623 fix(digitalmodel-tests): Cluster A — sys.modules pollution leaking MagicMock into tests/contracts/ (2 failures) | no | implementation/test/fix language | enhancement, priority:medium, cat:engineering, machine:dev-primary, dispatch:ready, gate:completeness |
-| #2625 investigate(digitalmodel-tests): Cluster E — marine-engineering domain regressions (~60 failures across catenary/wave/ocimf/RAO) | no | implementation/test/fix language | enhancement, priority:medium, cat:engineering, machine:dev-primary, dispatch:ready, gate:completeness |
 | #2671 R3 — Hydrodynamics: Industry practice (conferences, journals, vendor docs) | no | implementation/test/fix language | priority:medium, cat:engineering, cat:research, domain:hydrodynamics, machine:dev-primary, dispatch:ready |
 | #2718 audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | no | implementation/test/fix language | priority:medium, cat:ai-orchestration, cat:harness, domain:ai-config, machine:dev-primary, dispatch:ready |
+| #2750 Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay | no | implementation/test/fix language | priority:medium, cat:harness, machine:dev-primary, dispatch:ready, gate:completeness, domain:harness |
+| #2763 plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent | no | implementation/test/fix language | enhancement, priority:medium, cat:ai-orchestration, cat:operations, cat:harness, domain:automation |
 
 ## gemini
 

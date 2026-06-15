@@ -1,48 +1,10 @@
 {
-  "generated_at": "2026-06-15T13:20:14.190287Z",
+  "generated_at": "2026-06-15T21:36:54.404120Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 6,
   "applied": [],
   "candidates": [
-    {
-      "number": 2563,
-      "title": "Set up Telegram mobile access for Hermes AI control",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2563",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:ai-orchestration",
-        "cat:operations",
-        "domain:integrations",
-        "machine:dev-primary",
-        "status:plan-approved",
-        "dispatch:ready",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-06-10T12:58:44Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
     {
       "number": 2628,
       "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
@@ -232,6 +194,45 @@
       "eligible": true
     },
     {
+      "number": 2755,
+      "title": "throughput(workstations): activate ace-linux-2 provider/machine lane",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2755",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:ai-orchestration",
+        "cat:operations",
+        "status:working",
+        "machine:ace-linux-2",
+        "status:plan-approved",
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:workstations-machine-bringup",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-06-10T16:29:18Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
       "number": 3030,
       "title": "Dispatch-time codex weekly-quota gate: suspend lane:codex routing when available <10%",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3030",
@@ -242,6 +243,35 @@
         "lane:claude"
       ],
       "updatedAt": "2026-06-10T20:47:30Z",
+      "execution_ready": true,
+      "priority_rank": 4,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.75,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3143,
+      "title": "bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3143",
+      "labels": [
+        "bug",
+        "cat:harness/ops",
+        "status:plan-approved",
+        "gate:completeness"
+      ],
+      "updatedAt": "2026-06-15T21:19:47Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
@@ -378,106 +408,6 @@
       "eligible": false
     },
     {
-      "number": 2572,
-      "title": "Routine: /repo-sync + /mnt/local-analysis cleanup audit (every 2 days)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2572",
-      "labels": [
-        "priority:medium",
-        "domain:automation",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-06-15T10:08:09Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2623,
-      "title": "fix(digitalmodel-tests): Cluster A \u2014 sys.modules pollution leaking MagicMock into tests/contracts/ (2 failures)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2623",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:engineering",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness",
-        "domain:testing-suite-triage",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-06-10T12:58:35Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2625,
-      "title": "investigate(digitalmodel-tests): Cluster E \u2014 marine-engineering domain regressions (~60 failures across catenary/wave/ocimf/RAO)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2625",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:engineering",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness",
-        "domain:marine-rao-seakeeping",
-        "lane:codex"
-      ],
-      "updatedAt": "2026-06-10T12:58:30Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 2671,
       "title": "R3 \u2014 Hydrodynamics: Industry practice (conferences, journals, vendor docs)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2671",
@@ -526,6 +456,76 @@
         "lane:claude"
       ],
       "updatedAt": "2026-06-10T16:18:13Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2750,
+      "title": "Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2750",
+      "labels": [
+        "priority:medium",
+        "cat:harness",
+        "machine:dev-primary",
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:harness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-06-10T12:55:23Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2763,
+      "title": "plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2763",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:ai-orchestration",
+        "cat:operations",
+        "cat:harness",
+        "domain:automation",
+        "machine:dev-primary",
+        "status:needs-plan",
+        "dispatch:ready",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-06-10T16:13:01Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
