@@ -85,6 +85,12 @@ When documents will be converted to PDF:
 - Use `generate_pdfs.py` in the admin directory to regenerate PDFs after mermaid changes
 - The script includes retry logic for mermaid.ink rate limits
 
+## Sanitized Process Records
+
+When converting chat-derived guidance into repo-maintained Mermaid artifacts, create a sanitized Markdown record rather than only returning the diagram in chat. Include frontmatter, a record log, one Mermaid block per process, a compact data-to-track table, assumptions/sensitivity notes, and an index/README link for discoverability. Avoid raw chat, personal identifiers, and high-sensitivity details; use role labels and concise operational summaries.
+
+See `references/sanitized-process-flowchart-records.md` for the reusable record shape and template.
+
 ## Checklist
 
 Before committing a mermaid diagram:
