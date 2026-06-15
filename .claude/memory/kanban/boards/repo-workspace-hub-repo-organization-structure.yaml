@@ -208,7 +208,7 @@ cards:
     priority: 0
     body_excerpt: '## Summary
 
-      Follow-on issue split from #2244 triage artifact to handle a bounded slice of ACMA breadth discovered outside the approved #2227 scope.
+      Follow-on issue split from #2244 triage artifact to handle a bounded slice of mkt-a breadth discovered outside the approved #2227 scope.
 
       ## Why this is split'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2339

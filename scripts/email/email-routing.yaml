@@ -55,7 +55,7 @@ rules:
 
   # ==== ACE Engineering / Consulting ====
   "aceengineer.com":                "aceengineer-admin/docs/email/internal"
-  "dorisgroup.com":                 "doris/docs/email"
+  "lng-agroup.com":                 "lng-a/docs/email"
   "mcdermott.com":                  "aceengineer-admin/docs/email/client-mcdermott"
   "ril.com":                        "aceengineer-admin/docs/email/client-ril"
   "shell.com":                      "aceengineer-admin/docs/email/client-shell"
@@ -64,7 +64,7 @@ rules:
   "technipfmc.com":                 "aceengineer-admin/docs/email/client-technip"
   "technip.com":                    "aceengineer-admin/docs/email/client-technip"
   "subsea7.com":                    "aceengineer-admin/docs/email/client-subsea7"
-  "frontierdeepwater.com":          "frontierdeepwater/docs/email"
+  "client-a.com":          "client-a/docs/email"
   "engineeredcustomsolutions.com":  "aceengineer-admin/docs/email/client-ecs"
   "rockoilfield.com":               "aceengineer-admin/docs/email/recruiter"
   "stepstoprogress.com":            "aceengineer-admin/docs/email/recruiter"

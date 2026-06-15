@@ -311,7 +311,7 @@ cards:
 
       **Status:** blocked | **Priority:** high | **Category:** engineering/marine
 
-      **Complexity:** complex | **Machine:** acma-ansys05'
+      **Complexity:** complex | **Machine:** mkt-a-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#464
     title: Add hydrodynamic BEM analysis module (Capytaine)
     source: github_issue

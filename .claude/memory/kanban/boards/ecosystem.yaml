@@ -33,10 +33,10 @@ cards:
     body_excerpt: |
       llm-wiki flipped PRIVATE 2026-05-20. Codes/standards data (OCIMF/API/DNV/ABS/
       IACS/ASCE/ASME) lands at full fidelity; verbatim+tables allowed; raw PDFs stay
-      /mnt/ace/acma-codes/. Run private corpus-ingest program.
+      /mnt/ace/mkt-a-codes/. Run private corpus-ingest program.
       Refs: project_llm_wiki_privacy_flip, feedback_codes_standards_data_in_private_wiki.
-    spans_repos: [llm-wiki, llm-wiki-acma, workspace-hub]
-    spans_boards: [repo-llm-wiki, repo-llm-wiki-acma]
+    spans_repos: [llm-wiki, llm-wiki-mkt-a, workspace-hub]
+    spans_boards: [repo-llm-wiki, repo-llm-wiki-mkt-a]
 
   - idempotency_key: eco:wiki-sibling-naming-locked
     title: "Enforce llm-wiki-<client> sibling naming + ref-not-duplicate routing"
@@ -45,11 +45,11 @@ cards:
     priority: 1
     body_excerpt: |
       Per project_wiki_sibling_naming_locked: suffix `llm-wiki-<client>` (NOT prefix);
-      one per CLIENT not project (proj-a -> llm-wiki-acma/projects/proj-a/);
+      one per CLIENT not project (proj-a -> llm-wiki-mkt-a/projects/proj-a/);
       ref-not-duplicate generic content. Lock data/knowledge/result search routing
       across llm-wiki + llm-wiki-<client> siblings. workspace-hub#2778, #2744 rename.
-    spans_repos: [llm-wiki, llm-wiki-acma, workspace-hub]
-    spans_boards: [repo-llm-wiki, repo-llm-wiki-acma]
+    spans_repos: [llm-wiki, llm-wiki-mkt-a, workspace-hub]
+    spans_boards: [repo-llm-wiki, repo-llm-wiki-mkt-a]
 
   - idempotency_key: eco:codes-standards-corpus
     title: "Codes & standards corpus: ingest, route, surface in digitalmodel + wiki"
@@ -57,7 +57,7 @@ cards:
     initial_status: triage
     priority: 1
     body_excerpt: |
-      Codes/standards data flows: raw PDFs at /mnt/ace/acma-codes/, structured
+      Codes/standards data flows: raw PDFs at /mnt/ace/mkt-a-codes/, structured
       content in private llm-wiki, applied code-checks in digitalmodel/codes.
       Silent verdict-flip defect class needs section+edition not just code_id.
     spans_repos: [digitalmodel, llm-wiki, workspace-hub]

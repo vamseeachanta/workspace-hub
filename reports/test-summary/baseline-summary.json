@@ -136,8 +136,8 @@
       "status": "configured"
     },
     {
-      "name": "acma-projects",
-      "path": "/mnt/github/workspace-hub/acma-projects",
+      "name": "mkt-a",
+      "path": "/mnt/github/workspace-hub/mkt-a",
       "testDirectories": [
         "tests",
         "tests/fixtures",
@@ -191,8 +191,8 @@
       "status": "configured"
     },
     {
-      "name": "client_projects",
-      "path": "/mnt/github/workspace-hub/client_projects",
+      "name": "client-c",
+      "path": "/mnt/github/workspace-hub/client-c",
       "testDirectories": [
         "tests",
         "tests/fixtures",
@@ -209,8 +209,8 @@
       "status": "configured"
     },
     {
-      "name": "doris",
-      "path": "/mnt/github/workspace-hub/doris",
+      "name": "lng-a",
+      "path": "/mnt/github/workspace-hub/lng-a",
       "testDirectories": [
         "tests",
         "tests/fixtures",
@@ -244,8 +244,8 @@
       "status": "configured"
     },
     {
-      "name": "frontierdeepwater",
-      "path": "/mnt/github/workspace-hub/frontierdeepwater",
+      "name": "client-a",
+      "path": "/mnt/github/workspace-hub/client-a",
       "testDirectories": [
         "tests",
         "tests/fixtures",
@@ -315,8 +315,8 @@
       "status": "configured"
     },
     {
-      "name": "rock-oil-field",
-      "path": "/mnt/github/workspace-hub/rock-oil-field",
+      "name": "client-b",
+      "path": "/mnt/github/workspace-hub/client-b",
       "testDirectories": [
         "tests",
         "tests/fixtures",
@@ -350,8 +350,8 @@
       "status": "configured"
     },
     {
-      "name": "saipem",
-      "path": "/mnt/github/workspace-hub/saipem",
+      "name": "client-d",
+      "path": "/mnt/github/workspace-hub/client-d",
       "testDirectories": [
         "tests",
         "tests/fixtures",
@@ -385,8 +385,8 @@
       "status": "configured"
     },
     {
-      "name": "seanation",
-      "path": "/mnt/github/workspace-hub/seanation",
+      "name": "client-f",
+      "path": "/mnt/github/workspace-hub/client-f",
       "testDirectories": [
         "tests",
         "tests/fixtures",

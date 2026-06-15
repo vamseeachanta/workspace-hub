@@ -137,13 +137,13 @@ manifest:
     - repo-llm-wiki-ingest-batch-extraction
     - repo-llm-wiki-ingest-corpus-acquisition
     - repo-llm-wiki-tooling
-  - slug: repo-llm-wiki-acma
+  - slug: repo-llm-wiki-mkt-a
     tier: repo
-    repo: vamseeachanta/llm-wiki-acma
+    repo: vamseeachanta/llm-wiki-mkt-a
     domain: null
     parent_slug: null
-    workspace_path: /mnt/local-analysis/llm-wiki-acma
-    file: boards/repo-llm-wiki-acma.yaml
+    workspace_path: /mnt/local-analysis/llm-wiki-mkt-a
+    file: boards/repo-llm-wiki-mkt-a.yaml
     card_count: 0
   - slug: repo-sabithaandkrishnaestates
     tier: repo
@@ -1019,8 +1019,8 @@ manifest:
   - file: gaps/kaggle-rogii-2026.yaml
     repo_stem: kaggle-rogii-2026
     gap_count: 3
-  - file: gaps/llm-wiki-acma.yaml
-    repo_stem: llm-wiki-acma
+  - file: gaps/llm-wiki-mkt-a.yaml
+    repo_stem: llm-wiki-mkt-a
     gap_count: 3
   - file: gaps/llm-wiki.yaml
     repo_stem: llm-wiki

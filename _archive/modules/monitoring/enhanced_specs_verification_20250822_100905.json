@@ -55,7 +55,7 @@
     ]
   },
   {
-    "repository": "acma-projects",
+    "repository": "mkt-a",
     "status": "\u26a0\ufe0f Partial",
     "has_enhanced_specs": true,
     "has_module_agent": true,
@@ -121,7 +121,7 @@
     ]
   },
   {
-    "repository": "frontierdeepwater",
+    "repository": "client-a",
     "status": "\u26a0\ufe0f Partial",
     "has_enhanced_specs": true,
     "has_module_agent": true,
@@ -165,7 +165,7 @@
     ]
   },
   {
-    "repository": "rock-oil-field",
+    "repository": "client-b",
     "status": "\u26a0\ufe0f Partial",
     "has_enhanced_specs": true,
     "has_module_agent": true,
@@ -187,7 +187,7 @@
     ]
   },
   {
-    "repository": "saipem",
+    "repository": "client-d",
     "status": "\u26a0\ufe0f Partial",
     "has_enhanced_specs": true,
     "has_module_agent": true,
@@ -209,7 +209,7 @@
     ]
   },
   {
-    "repository": "seanation",
+    "repository": "client-f",
     "status": "\u26a0\ufe0f Partial",
     "has_enhanced_specs": true,
     "has_module_agent": true,

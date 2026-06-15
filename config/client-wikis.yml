@@ -16,7 +16,7 @@
 # Provision a host:
 #   cp <aceengineer-strategy>/config/client-wikis.yml config/.client-wikis.local.yml
 #
-# Schema (unchanged) — see docs/governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md
+# Schema (unchanged) — see docs/governance/2026-05-20-client-llm-wiki-feature-and-mkt-a-instance-design.md
 # and .claude/rules/wiki-sibling-routing.md.
 registry_version: 0.1
 relocated: true

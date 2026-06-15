@@ -1098,7 +1098,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#209
-    title: 'WRK-275: acma-projects repo content index — catalog projects, codes & standards, and key reference docs'
+    title: 'WRK-275: mkt-a repo content index — catalog projects, codes & standards, and key reference docs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/209
     gh_state: closed
@@ -1272,7 +1272,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#221
-    title: 'WRK-274: saipem repo content index — searchable catalog of disciplines, project files, and key docs'
+    title: 'WRK-274: client-d repo content index — searchable catalog of disciplines, project files, and key docs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/221
     gh_state: closed
@@ -1287,7 +1287,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#222
-    title: 'WRK-275: acma-projects repo content index — catalog projects, codes & standards, and key reference docs'
+    title: 'WRK-275: mkt-a repo content index — catalog projects, codes & standards, and key reference docs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/222
     gh_state: closed
@@ -2448,7 +2448,7 @@ cards:
 
       Revise the hurricane planning/mooring infographic using `worldenergydata` marine safety incident data and the reviewed document `Hurricane Planning and Mooring R0-4revisions.docx` so the artifact clearly positions hurricane mooring analysis as a risk-avoidance decision tool.'
   - idempotency_key: gh:vamseeachanta/worldenergydata#406
-    title: 'gtm: send capability/GTM intro email to Chuck White (Frontier Deepwater EVP)'
+    title: 'gtm: send capability/GTM intro email to Chuck White (client-a EVP)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/406
     gh_state: closed

@@ -1,19 +1,19 @@
 board:
-  slug: repo-llm-wiki-acma
-  display_name: llm-wiki-acma
+  slug: repo-llm-wiki-mkt-a
+  display_name: llm-wiki-mkt-a
   tier: repo
-  repo: vamseeachanta/llm-wiki-acma
-  workspace_path: /mnt/local-analysis/llm-wiki-acma
+  repo: vamseeachanta/llm-wiki-mkt-a
+  workspace_path: /mnt/local-analysis/llm-wiki-mkt-a
   description: |
-    ACMA private llm-wiki sibling — per memory project_wiki_sibling_naming_locked
-    (2026-05-22): suffix form llm-wiki-acma, one per CLIENT (proj-a project nests
-    under acma/projects/proj-a/). Zero open GitHub issues; carrying uncommitted
+    mkt-a private llm-wiki sibling — per memory project_wiki_sibling_naming_locked
+    (2026-05-22): suffix form llm-wiki-mkt-a, one per CLIENT (proj-a project nests
+    under mkt-a/projects/proj-a/). Zero open GitHub issues; carrying uncommitted
     deliverable for workspace-hub#2760 (proj-a current rudder-force report).
 cards:
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#1
-    title: 'Client work flow: data -> llm-wiki-acma -> problems (issues) -> result layers'
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#1
+    title: 'Client work flow: data -> llm-wiki-mkt-a -> problems (issues) -> result layers'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/1
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/1
     gh_state: open
     gh_labels:
       - documentation
@@ -24,10 +24,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#2
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#2
     title: Research Teams bot via Hermes Agent for Oil & Gas Q&A over repo ecosystem
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/2
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/2
     gh_state: open
     gh_labels:
       - status:plan-review
@@ -39,10 +39,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#3
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#3
     title: 'Subissue of #2: Verify Teams tenant/app permissions and local Teams POC path'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/3
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/3
     gh_state: open
     gh_labels:
       - area:teams-bot
@@ -57,10 +57,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#4
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#4
     title: 'Subissue of #2: Build approved repo knowledge pack for Oil & Gas Q&A POC'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/4
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/4
     gh_state: open
     gh_labels:
       - area:teams-bot
@@ -74,10 +74,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#5
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#5
     title: 'Subissue of #2: Implement minimal Hermes-backed Q&A service over repo knowledge pack'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/5
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/5
     gh_state: open
     gh_labels:
       - area:teams-bot
@@ -90,10 +90,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#6
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#6
     title: 'Subissue of #2: Connect Q&A POC to fastest allowed Teams surface'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/6
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/6
     gh_state: open
     gh_labels:
       - area:teams-bot
@@ -108,10 +108,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#7
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#7
     title: 'Subissue of #2: Define security, identity, logging, and credential gates for Teams bot POC'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/7
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/7
     gh_state: open
     gh_labels:
       - area:teams-bot
@@ -125,10 +125,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#8
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#8
     title: 'Subissue of #2: Produce HTML POC demo report and acceptance matrix'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/8
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/8
     gh_state: open
     gh_labels:
       - area:teams-bot
@@ -141,10 +141,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#9
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#9
     title: 'private(cfd): maintain ballast-tank sloshing client geometry and study artifacts'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/9
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/9
     gh_state: open
     gh_labels:
       - domain:marine
@@ -154,10 +154,10 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#10
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#10
     title: 'B1546 Noble Drilling: maintain project wiki intake and analysis readiness'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/10
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/10
     gh_state: open
     gh_labels:
       - domain:content
@@ -167,10 +167,10 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#11
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#11
     title: 'B1546: complete source extraction and OCR for client inputs'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/11
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/11
     gh_state: open
     gh_labels:
       - domain:ingest
@@ -180,10 +180,10 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#12
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#12
     title: 'B1546: formalize coupled roll and sloshing methodology gate'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/12
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/12
     gh_state: open
     gh_labels:
       - domain:marine
@@ -193,10 +193,10 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#13
-    title: 'All ACMA projects: design 6-hour llm-wiki refresh job'
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#13
+    title: 'All mkt-a projects: design 6-hour llm-wiki refresh job'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/13
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/13
     gh_state: open
     gh_labels:
       - domain:tooling
@@ -206,10 +206,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#14
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#14
     title: 'B1546: capture Noble approval, PO, and approved scope baseline'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/14
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/14
     gh_state: open
     gh_labels:
       - domain:governance
@@ -219,10 +219,10 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#15
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#15
     title: 'B1546: build candidate tank geometry and fill-level data index'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/15
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/15
     gh_state: open
     gh_labels:
       - domain:marine
@@ -232,10 +232,10 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#16
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#16
     title: 'B1546: validate AQWA archive import and roll-focused frequency grid'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/16
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/16
     gh_state: open
     gh_labels:
       - domain:marine
@@ -245,10 +245,10 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#17
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#17
     title: 'B1546: define CFD prototype, compute plan, and software ownership'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/17
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/17
     gh_state: open
     gh_labels:
       - domain:marine
@@ -258,10 +258,10 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#18
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#18
     title: 'B1546: define sloshing pressure extraction and structural assessment criteria'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/18
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/18
     gh_state: open
     gh_labels:
       - domain:marine
@@ -271,10 +271,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#19
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#19
     title: 'B1546: maintain Phase A schedule, deliverable gates, and client action tracker'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/19
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/19
     gh_state: open
     gh_labels:
       - domain:governance
@@ -284,10 +284,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#20
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#20
     title: 'B1546: extract technical references for sloshing methodology basis'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/20
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/20
     gh_state: open
     gh_labels:
       - domain:content
@@ -297,10 +297,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#21
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#21
     title: 'B1546: execute sloshing-in-tanks CFD study from May 2026 email package'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/21
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/21
     gh_state: open
     gh_labels:
       - domain:marine
@@ -310,10 +310,10 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#22
-    title: 'B1546: Understand and document ACMA workbook calculation work'
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#22
+    title: 'B1546: Understand and document mkt-a workbook calculation work'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/22
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/22
     gh_state: open
     gh_labels:
       - domain:content
@@ -323,10 +323,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#23
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#23
     title: domains/ scaffold + domain charters (analysis, marketing) + data-cycle docs updated
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/23
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/23
     gh_state: closed
     gh_labels:
       - enhancement
@@ -335,10 +335,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#24
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#24
     title: Per-domain knowledge pack builder with fail-closed redaction gate + --domain flag on QA engine
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/24
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/24
     gh_state: closed
     gh_labels:
       - enhancement
@@ -348,10 +348,10 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/llm-wiki-acma#25
+  - idempotency_key: gh:vamseeachanta/llm-wiki-mkt-a#25
     title: 'QR onboarding kit per channel: invite links (join-approval on marketing), generic QR script, rotation procedure'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/llm-wiki-acma/issues/25
+    source_url: https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/25
     gh_state: closed
     gh_labels:
       - enhancement

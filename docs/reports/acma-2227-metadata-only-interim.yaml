@@ -18,7 +18,7 @@ targets:
       creator: Xerox WorkCentre 7655
       producer: Xerox WorkCentre 7655
       creation_date: 2010-03-04
-      local_doc_path: /mnt/ace/acma-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf
+      local_doc_path: /mnt/ace/mkt-a-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf
     interim_summary: OCIMF guidance focused on tandem mooring and offloading operations involving conventional tankers at FPSO facilities.
     confidence: low
     blocker: No readable source text extracted in the current environment; summary is metadata-only.
@@ -42,7 +42,7 @@ targets:
       encrypted: true
       drm: Vitrium
       creation_date: 2024-01-15
-      local_doc_path: /mnt/ace/acma-codes/CSA/276.1-20 marine structures associated with LNG facilities.pdf
+      local_doc_path: /mnt/ace/mkt-a-codes/CSA/276.1-20 marine structures associated with LNG facilities.pdf
     interim_summary: CSA standard concerning design requirements for marine structures associated with LNG facilities.
     confidence: low
     blocker: PDF is DRM/encrypted and readable source text is not available on this machine.
@@ -64,7 +64,7 @@ targets:
       encrypted: true
       drm: Vitrium
       creation_date: 2024-01-15
-      local_doc_path: /mnt/ace/acma-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf
+      local_doc_path: /mnt/ace/mkt-a-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf
     interim_summary: CSA standard related to LNG production, storage, and handling operations.
     confidence: low
     blocker: PDF is DRM/encrypted and readable source text is not available on this machine.

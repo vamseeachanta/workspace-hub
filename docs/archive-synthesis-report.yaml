@@ -92,14 +92,14 @@ categories:
         count: 6
         repos:
         - aceengineer-admin
-        - frontierdeepwater
+        - client-a
         - worldenergydata
       ingestion:
         count: 11
         repos:
-        - acma-projects
+        - mkt-a
         - digitalmodel
-        - saipem
+        - client-d
         - workspace-hub
         - worldenergydata
       maintenance:
@@ -178,9 +178,9 @@ categories:
       cathodic-protection:
         count: 8
         repos:
-        - acma-projects
+        - mkt-a
         - digitalmodel
-        - saipem
+        - client-d
         - workspace-hub
       data-extraction:
         count: 1
@@ -351,9 +351,9 @@ categories:
       maintenance:
         count: 9
         repos:
-        - acma-projects
+        - mkt-a
         - digitalmodel
-        - saipem
+        - client-d
         - workspace-hub
         - worldenergydata
       mcp-servers:
@@ -715,7 +715,7 @@ categories:
       ops:
         count: 10
         repos:
-        - acma-projects
+        - mkt-a
         - assetutilities
         - workspace-hub
       workstations:

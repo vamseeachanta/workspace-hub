@@ -77,7 +77,7 @@ cards:
   repo: vamseeachanta/workspace-hub
   domain: ops
   provider: claude
-  title: 'WRK-1354: frontierdeepwater: sync missing files from remote '
+  title: 'WRK-1354: client-a: sync missing files from remote '
   url: https://github.com/vamseeachanta/workspace-hub/issues/1354
   dispatch_status: ready
   wip_eligible: false

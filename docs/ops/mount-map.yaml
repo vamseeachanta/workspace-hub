@@ -54,7 +54,7 @@ mounts:
       - MoorDyn                # mooring dynamics
       - MoorPy                 # mooring analysis
       - openfast               # OpenFAST models
-      - client_projects        # client project archives
+      - client-c        # client project archives
     env_var: ACE_DATA_ROOT
     aliases:
       - /mnt/ace               # used in mounted-source-registry.yaml (ace-linux-1 local path)
@@ -252,13 +252,13 @@ canonical_layout:
     - openfast
     - WEC-Sim
     - aceengineer-admin
-    - saipem
+    - client-d
     - 2H
-    - doris
-    - frontierdeepwater
-    - seanation
+    - lng-a
+    - client-a
+    - client-f
     - worldenergydata
-    - rock-oil-field
+    - client-b
     - gmsh
     - opm-common
     - 0_mrv
@@ -273,8 +273,8 @@ canonical_layout:
       proposed: workspace-hub/production/
     - current: umbilical
       proposed: workspace-hub/umbilical/
-    - current: client_projects
-      proposed: workspace-hub/client-projects/
+    - current: client-c
+      proposed: workspace-hub/client-c/
     - current: scripts
       proposed: workspace-hub/scripts/
   migration_plan_ref: docs/ops/drive-layout-migration.yaml

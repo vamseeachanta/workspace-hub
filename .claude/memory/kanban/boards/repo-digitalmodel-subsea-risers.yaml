@@ -31,7 +31,7 @@ cards:
 
       **Status:** pending | **Priority:** medium | **Category:** engineering/pipeline
 
-      **Complexity:** complex | **Machine:** acma-ansys05'
+      **Complexity:** complex | **Machine:** mkt-a-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#138
     title: 'WRK-046: OrcaFlex drilling and completion riser parametric analysis'
     source: github_issue
@@ -53,7 +53,7 @@ cards:
 
       **Status:** pending | **Priority:** medium | **Category:** engineering/marine
 
-      **Complexity:** complex | **Machine:** acma-ansys05'
+      **Complexity:** complex | **Machine:** mkt-a-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#197
     title: 'WRK-503: feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri'
     source: github_issue
@@ -77,7 +77,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#198
-    title: 'WRK-504: feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri'
+    title: 'WRK-504: feat(lng-a/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/198
     gh_state: open
@@ -187,7 +187,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#210
-    title: 'WRK-506: feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers'
+    title: 'WRK-506: feat(lng-a/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/210
     gh_state: open
@@ -231,7 +231,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#215
-    title: 'WRK-508: feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers'
+    title: 'WRK-508: feat(lng-a/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/215
     gh_state: open
@@ -275,7 +275,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#217
-    title: 'WRK-510: feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ'
+    title: 'WRK-510: feat(lng-a/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/217
     gh_state: open
@@ -319,7 +319,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#219
-    title: 'WRK-512: feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float'
+    title: 'WRK-512: feat(lng-a/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/219
     gh_state: open
@@ -363,7 +363,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#227
-    title: 'WRK-520: feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers'
+    title: 'WRK-520: feat(lng-a/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/227
     gh_state: open
@@ -407,7 +407,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#233
-    title: 'WRK-526: feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference'
+    title: 'WRK-526: feat(lng-a/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/233
     gh_state: open
@@ -451,7 +451,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#239
-    title: 'WRK-532: feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers'
+    title: 'WRK-532: feat(lng-a/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/239
     gh_state: open
@@ -495,7 +495,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#241
-    title: 'WRK-534: feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management'
+    title: 'WRK-534: feat(lng-a/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/241
     gh_state: open

@@ -81,16 +81,16 @@ repos:
     objectives: [ingest+verify standards tables, serve queryable knowledge]
     explicit: true
     status: active
-  - repo: llm-wiki-acma
+  - repo: llm-wiki-mkt-a
     tier: knowledge-wiki
-    mission: "Client-scoped private wiki for the ACMA project workspace with redaction/promotion gates."
+    mission: "Client-scoped private wiki for the mkt-a project workspace with redaction/promotion gates."
     objectives: [per-client knowledge, no bleed to public]
     explicit: true
     status: active
   - repo: llm-wiki-fdas
     tier: knowledge-wiki
     serves: [O2, O3]   # per-repo override: knowledge AND go-to-market (corpus doubles as marketing material)
-    mission: "Private project wiki for Frontier Deepwater (FDAS): ingest the engineering source corpus into queryable, provenance-tracked knowledge + screening/analysis (riser, mooring, etc.), AND surface it as marketing / capability-showcase material."
+    mission: "Private project wiki for client-a (FDAS): ingest the engineering source corpus into queryable, provenance-tracked knowledge + screening/analysis (riser, mooring, etc.), AND surface it as marketing / capability-showcase material."
     objectives: [engineering corpus ingest + analysis, marketing/capability showcase from the corpus]
     explicit: true
     status: active
@@ -185,9 +185,9 @@ repos:
 #  D4. personal tier is OUT of the business mission (shares harness only). EXCEPTION: teamresumes
 #      is a tier-1 continual-improvement target (VA resume only). [DONE]
 #
-#  D3. Namespace dirs (2802-pilot-evidence, acma-projects, acma-projects-freeze-work, worktrees)
+#  D3. Namespace dirs (2802-pilot-evidence, mkt-a, mkt-a-freeze-work, worktrees)
 #      are PLAIN directories (no .git) — non-git working/raw-data staging, NOT repos. Excluded from
-#      this registry by design (e.g. acma-projects is the raw-source root for llm-wiki-acma;
+#      this registry by design (e.g. mkt-a is the raw-source root for llm-wiki-mkt-a;
 #      worktrees is git-worktree staging). [DONE]
 #
 # Open questions still to resolve:

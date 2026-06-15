@@ -80,7 +80,7 @@
       "errors": []
     },
     {
-      "repo": "acma-projects",
+      "repo": "mkt-a",
       "status": "success",
       "trunk": "main",
       "updated": true,
@@ -88,7 +88,7 @@
       "errors": []
     },
     {
-      "repo": "doris",
+      "repo": "lng-a",
       "status": "success",
       "trunk": "main",
       "updated": true,
@@ -96,7 +96,7 @@
       "errors": []
     },
     {
-      "repo": "client_projects",
+      "repo": "client-c",
       "status": "success",
       "trunk": "main",
       "updated": false,
@@ -120,7 +120,7 @@
       "errors": []
     },
     {
-      "repo": "frontierdeepwater",
+      "repo": "client-a",
       "status": "success",
       "trunk": "main",
       "updated": true,
@@ -152,7 +152,7 @@
       "errors": []
     },
     {
-      "repo": "rock-oil-field",
+      "repo": "client-b",
       "status": "success",
       "trunk": "master",
       "updated": false,
@@ -184,7 +184,7 @@
       "errors": []
     },
     {
-      "repo": "seanation",
+      "repo": "client-f",
       "status": "success",
       "trunk": "main",
       "updated": true,
@@ -192,7 +192,7 @@
       "errors": []
     },
     {
-      "repo": "saipem",
+      "repo": "client-d",
       "status": "success",
       "trunk": "main",
       "updated": true,

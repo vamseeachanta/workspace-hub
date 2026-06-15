@@ -484,7 +484,7 @@
         },
         {
           "number": 2760,
-          "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates",
+          "title": "revise(naval-arch): B1528 proj-a force calculation review updates",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2760",
           "labels": [
             "enhancement",
@@ -1672,7 +1672,7 @@
         },
         {
           "number": 2926,
-          "title": "feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]",
+          "title": "feat(workstations): mkt-a-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2926",
           "labels": [
             "enhancement",
@@ -2554,7 +2554,7 @@
         },
         {
           "number": 2690,
-          "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/Saipem, OrcaFlex/SAGE Profile)",
+          "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/client-d, OrcaFlex/SAGE Profile)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2690",
           "labels": [
             "priority:medium",
@@ -3383,7 +3383,7 @@
         },
         {
           "number": 2859,
-          "title": "Doris demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata",
+          "title": "lng-a demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2859",
           "labels": [
             "enhancement",
@@ -4119,7 +4119,7 @@
         },
         {
           "number": 2784,
-          "title": "Confirm and delete acma-projects-freeze-work snapshot",
+          "title": "Confirm and delete mkt-a-freeze-work snapshot",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2784",
           "labels": [
             "priority:low",

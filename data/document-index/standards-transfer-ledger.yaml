@@ -131,7 +131,7 @@ standards:
   domain: pipeline
   doc_path: ''
   doc_paths:
-  - /mnt/ace/acma-codes/API/1999 July RP 1111 Offshore Hydrocarbon Pipelines 3rd ed.pdf
+  - /mnt/ace/mkt-a-codes/API/1999 July RP 1111 Offshore Hydrocarbon Pipelines 3rd ed.pdf
   status: done
   wrk_id: null
   repo: digitalmodel
@@ -3049,10 +3049,10 @@ standards:
   title: API_RP_2SK_2nd_Ed_(1996)_Design_and_Analysis_of_Stationkeeping_Systems_for_Floating_Structures
   org: API
   domain: marine
-  doc_path: /mnt/ace/acma-codes/API/1996 Dec RP 2SK Stationkeeping Systems for Floating
+  doc_path: /mnt/ace/mkt-a-codes/API/1996 Dec RP 2SK Stationkeeping Systems for Floating
     Structures 2nd ed.pdf
   doc_paths:
-  - /mnt/ace/acma-codes/API/1996 Dec RP 2SK Stationkeeping Systems for Floating Structures
+  - /mnt/ace/mkt-a-codes/API/1996 Dec RP 2SK Stationkeeping Systems for Floating Structures
     2nd ed.pdf
   status: done
   wrk_id: null
@@ -7526,18 +7526,18 @@ standards:
   title: OCIMF Mooring Equipment Guidelines (3rd Edition, 2008)
   org: OCIMF
   domain: marine
-  doc_path: /mnt/ace/acma-codes/OCIMF/OCIMF - 2008 - Mooring Equipment Guidelines.pdf
+  doc_path: /mnt/ace/mkt-a-codes/OCIMF/OCIMF - 2008 - Mooring Equipment Guidelines.pdf
   doc_paths:
-  - /mnt/ace/acma-codes/OCIMF/OCIMF - 2008 - Mooring Equipment Guidelines.pdf
-  - /mnt/ace/acma-codes/OCIMF 3rd ed/OCIMF - 2008 - Mooring Equipment Guidelines.pdf
+  - /mnt/ace/mkt-a-codes/OCIMF/OCIMF - 2008 - Mooring Equipment Guidelines.pdf
+  - /mnt/ace/mkt-a-codes/OCIMF 3rd ed/OCIMF - 2008 - Mooring Equipment Guidelines.pdf
   status: done
   wrk_id: null
   repo: null
   modules: []
   implemented_at: '2026-04-11T00:00:00'
-  notes: 'Historical predecessor of MEG4 (4th Ed). Two scans from different acma-codes
+  notes: 'Historical predecessor of MEG4 (4th Ed). Two scans from different mkt-a-codes
     folders with different content hashes (sha256:51de0e48... vs sha256:58d0e4a9...),
-    confirming different binary content of same edition. Backfilled from acma_codes
+    confirming different binary content of same edition. Backfilled from mkt-a_codes
     source per #2226.'
   exhausted: false
   exhausted_at: null
@@ -7546,16 +7546,16 @@ standards:
   title: OCIMF Mooring Equipment Guidelines CDs Companion (2008)
   org: OCIMF
   domain: marine
-  doc_path: /mnt/ace/acma-codes/OCIMF/OCIMF - 2008 - Mooring Equipment Guidelines,
+  doc_path: /mnt/ace/mkt-a-codes/OCIMF/OCIMF - 2008 - Mooring Equipment Guidelines,
     CDs.pdf
   doc_paths:
-  - /mnt/ace/acma-codes/OCIMF/OCIMF - 2008 - Mooring Equipment Guidelines, CDs.pdf
+  - /mnt/ace/mkt-a-codes/OCIMF/OCIMF - 2008 - Mooring Equipment Guidelines, CDs.pdf
   status: done
   wrk_id: null
   repo: null
   modules: []
   implemented_at: '2026-04-11T00:00:00'
-  notes: 'Companion CDs document to MEG 3rd Edition. Backfilled from acma_codes source
+  notes: 'Companion CDs document to MEG 3rd Edition. Backfilled from mkt-a_codes source
     per #2226.'
   exhausted: false
   exhausted_at: null
@@ -7564,16 +7564,16 @@ standards:
   title: OCIMF Mooring Equipment Guidelines (4th Edition, 2018)
   org: OCIMF
   domain: marine
-  doc_path: /mnt/ace/acma-codes/OCIMF (MEG 4)/Mooring Equipment Guidelines - MEG4.pdf
+  doc_path: /mnt/ace/mkt-a-codes/OCIMF (MEG 4)/Mooring Equipment Guidelines - MEG4.pdf
   doc_paths:
-  - /mnt/ace/acma-codes/OCIMF (MEG 4)/Mooring Equipment Guidelines - MEG4.pdf
+  - /mnt/ace/mkt-a-codes/OCIMF (MEG 4)/Mooring Equipment Guidelines - MEG4.pdf
   status: done
   wrk_id: null
   repo: null
   modules: []
   implemented_at: '2026-04-11T00:00:00'
   notes: 'Current edition (MEG4). Existing wiki page at knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md.
-    Backfilled from acma_codes source per #2226.'
+    Backfilled from mkt-a_codes source per #2226.'
   exhausted: false
   exhausted_at: null
   absorbed_into: []
@@ -7582,10 +7582,10 @@ standards:
     FPSO Facilities
   org: OCIMF
   domain: marine
-  doc_path: /mnt/ace/acma-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines
+  doc_path: /mnt/ace/mkt-a-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines
     for Conventional Tankers at FPSO Facilities.pdf
   doc_paths:
-  - /mnt/ace/acma-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for
+  - /mnt/ace/mkt-a-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for
     Conventional Tankers at FPSO Facilities.pdf
   status: done
   wrk_id: null
@@ -7593,7 +7593,7 @@ standards:
   modules: []
   implemented_at: '2026-04-11T00:00:00'
   notes: 'Net-new OCIMF guideline for tandem mooring operations at FPSO facilities.
-    No prior coverage in any registry. Backfilled from acma_codes source per #2226.'
+    No prior coverage in any registry. Backfilled from mkt-a_codes source per #2226.'
   exhausted: false
   exhausted_at: null
   absorbed_into: []
@@ -7601,17 +7601,17 @@ standards:
   title: CSA Z276.1-20 Marine Structures Associated with LNG Facilities
   org: CSA
   domain: marine
-  doc_path: /mnt/ace/acma-codes/CSA/276.1-20 marine structures associated with LNG
+  doc_path: /mnt/ace/mkt-a-codes/CSA/276.1-20 marine structures associated with LNG
     facilities.pdf
   doc_paths:
-  - /mnt/ace/acma-codes/CSA/276.1-20 marine structures associated with LNG facilities.pdf
+  - /mnt/ace/mkt-a-codes/CSA/276.1-20 marine structures associated with LNG facilities.pdf
   status: done
   wrk_id: null
   repo: null
   modules: []
   implemented_at: '2026-04-11T00:00:00'
   notes: 'Net-new; marine structural standard for LNG facilities. Backfilled from
-    acma_codes source per #2226.'
+    mkt-a_codes source per #2226.'
   exhausted: false
   exhausted_at: null
   absorbed_into: []
@@ -7619,16 +7619,16 @@ standards:
   title: CSA Z276.2-19 Near-Shoreline FLNG Facilities
   org: CSA
   domain: marine
-  doc_path: /mnt/ace/acma-codes/CSA/276.2-19 near-shoreline FLNG facilities.pdf
+  doc_path: /mnt/ace/mkt-a-codes/CSA/276.2-19 near-shoreline FLNG facilities.pdf
   doc_paths:
-  - /mnt/ace/acma-codes/CSA/276.2-19 near-shoreline FLNG facilities.pdf
+  - /mnt/ace/mkt-a-codes/CSA/276.2-19 near-shoreline FLNG facilities.pdf
   status: done
   wrk_id: null
   repo: null
   modules: []
   implemented_at: '2026-04-11T00:00:00'
   notes: 'Net-new; FLNG siting standard. Not in parent #2216 plan but discovered
-    during indexing. Backfilled from acma_codes source per #2226.'
+    during indexing. Backfilled from mkt-a_codes source per #2226.'
   exhausted: false
   exhausted_at: null
   absorbed_into: []
@@ -7636,15 +7636,15 @@ standards:
   title: CSA Z276.18 LNG Production, Storage, and Handling
   org: CSA
   domain: marine
-  doc_path: /mnt/ace/acma-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf
+  doc_path: /mnt/ace/mkt-a-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf
   doc_paths:
-  - /mnt/ace/acma-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf
+  - /mnt/ace/mkt-a-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf
   status: done
   wrk_id: null
   repo: null
   modules: []
   implemented_at: '2026-04-11T00:00:00'
-  notes: 'Net-new; LNG operations standard. Backfilled from acma_codes source per
+  notes: 'Net-new; LNG operations standard. Backfilled from mkt-a_codes source per
     #2226.'
   exhausted: false
   exhausted_at: null
@@ -7653,10 +7653,10 @@ standards:
   title: CSA B625-13 Portable Tanks for Transport of Dangerous Goods
   org: CSA
   domain: transport
-  doc_path: /mnt/ace/acma-codes/CSA/B625-13 Portable tanks for the transport of dangerous
+  doc_path: /mnt/ace/mkt-a-codes/CSA/B625-13 Portable tanks for the transport of dangerous
     goods.pdf
   doc_paths:
-  - /mnt/ace/acma-codes/CSA/B625-13 Portable tanks for the transport of dangerous
+  - /mnt/ace/mkt-a-codes/CSA/B625-13 Portable tanks for the transport of dangerous
     goods.pdf
   status: done
   wrk_id: null
@@ -7664,7 +7664,7 @@ standards:
   modules: []
   implemented_at: '2026-04-11T00:00:00'
   notes: 'Net-new; dangerous goods transport standard. Not in parent #2216 plan but
-    discovered during indexing. Backfilled from acma_codes source per #2226.'
+    discovered during indexing. Backfilled from mkt-a_codes source per #2226.'
   exhausted: false
   exhausted_at: null
   absorbed_into: []
@@ -7672,16 +7672,16 @@ standards:
   title: CSA C22.1-12 Canadian Electrical Code
   org: CSA
   domain: electrical
-  doc_path: /mnt/ace/acma-codes/CSA/CSA 22.1-12.pdf
+  doc_path: /mnt/ace/mkt-a-codes/CSA/CSA 22.1-12.pdf
   doc_paths:
-  - /mnt/ace/acma-codes/CSA/CSA 22.1-12.pdf
+  - /mnt/ace/mkt-a-codes/CSA/CSA 22.1-12.pdf
   status: done
   wrk_id: null
   repo: null
   modules: []
   implemented_at: '2026-04-11T00:00:00'
   notes: 'Net-new; Canadian Electrical Code. Not in parent #2216 plan but discovered
-    during indexing. Domain: electrical, not marine. Backfilled from acma_codes source
+    during indexing. Domain: electrical, not marine. Backfilled from mkt-a_codes source
     per #2226.'
   exhausted: false
   exhausted_at: null
@@ -7691,10 +7691,10 @@ standards:
     (3rd Edition, 2005)
   org: API
   domain: marine
-  doc_path: /mnt/ace/acma-codes/API/2005 RP 2SK with 2008 Add/2005 Oct RP 2SK.pdf
+  doc_path: /mnt/ace/mkt-a-codes/API/2005 RP 2SK with 2008 Add/2005 Oct RP 2SK.pdf
   doc_paths:
-  - /mnt/ace/acma-codes/API/2005 RP 2SK with 2008 Add/2005 Oct RP 2SK.pdf
-  - /mnt/ace/acma-codes/API/2005 RP 2SK with 2008 Add/API 2SK 3rd edition.pdf
+  - /mnt/ace/mkt-a-codes/API/2005 RP 2SK with 2008 Add/2005 Oct RP 2SK.pdf
+  - /mnt/ace/mkt-a-codes/API/2005 RP 2SK with 2008 Add/API 2SK 3rd edition.pdf
   status: done
   wrk_id: null
   repo: null
@@ -7702,7 +7702,7 @@ standards:
   implemented_at: '2026-04-11T00:00:00'
   notes: 'New edition not previously tracked. Two different PDF scans (sha256:8117eb28...
     and sha256:d4062ff1...) confirm different binary content of same edition. Backfilled
-    from acma_codes source per #2226.'
+    from mkt-a_codes source per #2226.'
   exhausted: false
   exhausted_at: null
   absorbed_into: []
@@ -7713,14 +7713,14 @@ standards:
   doc_path: /mnt/ace/docs/_standards/raw/0000 Codes & Standards/AS/API/STA/2SK_Add.pdf
   doc_paths:
   - /mnt/ace/docs/_standards/raw/0000 Codes & Standards/AS/API/STA/2SK_Add.pdf
-  - /mnt/ace/acma-codes/API/2005 RP 2SK with 2008 Add/RP 2SK_Addendum 2008.pdf
+  - /mnt/ace/mkt-a-codes/API/2005 RP 2SK with 2008 Add/RP 2SK_Addendum 2008.pdf
   status: done
   wrk_id: null
   repo: null
   modules: []
   implemented_at: '2026-04-11T00:00:00'
   notes: 'Published addendum to API RP 2SK 3rd Edition. Also indexed at ace_standards
-    path STA/2SK_Add.pdf (merged provenance in index.jsonl). Backfilled from acma_codes
+    path STA/2SK_Add.pdf (merged provenance in index.jsonl). Backfilled from mkt-a_codes
     source per #2226.'
   exhausted: false
   exhausted_at: null

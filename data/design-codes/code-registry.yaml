@@ -12,7 +12,7 @@ codes:
     latest_known_edition: "2021"
     publication_date: "2021-10-01"
     disciplines: [pipeline, subsea]
-    repos: [digitalmodel, doris]
+    repos: [digitalmodel, lng-a]
     notes: "2021 edition current; 2007 edition deprecated"
     status: current
 
@@ -44,7 +44,7 @@ codes:
     latest_known_edition: "2021"
     publication_date: "2017-05-01"
     disciplines: [pipeline, subsea]
-    repos: [digitalmodel, doris]
+    repos: [digitalmodel, lng-a]
     notes: "2021 edition released; free-span VIV fatigue may differ"
     status: check
 
@@ -66,7 +66,7 @@ codes:
     latest_known_edition: "2nd"
     publication_date: "2013-06-01"
     disciplines: [riser, structural, subsea]
-    repos: [digitalmodel, doris]
+    repos: [digitalmodel, lng-a]
     status: current
 
   - id: API-RP-1111
@@ -78,7 +78,7 @@ codes:
     latest_known_edition: "5th"
     publication_date: "2015-07-01"
     disciplines: [pipeline]
-    repos: [doris, digitalmodel]
+    repos: [lng-a, digitalmodel]
     status: current
 
   - id: BS-7910

@@ -47,7 +47,7 @@ cards:
 
       Plan a bounded curated extraction pass for the SESA FLNG Terminal / lng-a `62092_sesa` corpus now represented metadata-first in the LLM-wikis.'
   - idempotency_key: gh:vamseeachanta/llm-wiki#15
-    title: 'META: resolve standards-routing for maritime-law / lng-projects / acma-projects (post-#2615 deferred Open Questions)'
+    title: 'META: resolve standards-routing for maritime-law / lng-projects / mkt-a (post-#2615 deferred Open Questions)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/15
     gh_state: closed
@@ -205,7 +205,7 @@ cards:
 
       Execute the already-designed external-source Batch Pack 1 so the repo promotes metadata-rich online data APIs and standards portals into wiki-ready stubs for the thin LLM-wiki domains.'
   - idempotency_key: gh:vamseeachanta/llm-wiki#26
-    title: 'feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion'
+    title: 'feat(knowledge): execute Batch Pack 4 for non-mkt-a standards summary promotion'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/26
     gh_state: open
@@ -224,7 +224,7 @@ cards:
     priority: 1
     body_excerpt: '## Summary
 
-      Execute Batch Pack 4 as a narrowly scoped, summary-backed promotion wave for non-ACMA standards knowledge in cathodic-protection, pipeline, and structural domains.'
+      Execute Batch Pack 4 as a narrowly scoped, summary-backed promotion wave for non-mkt-a standards knowledge in cathodic-protection, pipeline, and structural domains.'
   - idempotency_key: gh:vamseeachanta/llm-wiki#27
     title: 'docs(knowledge): add standard uplink/back-navigation block to wiki index pages'
     source: github_issue
@@ -541,7 +541,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#46
-    title: 'governance(llm-wiki): prepare Frontier Deepwater source-family clearance checklist'
+    title: 'governance(llm-wiki): prepare client-a source-family clearance checklist'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/46
     gh_state: closed
@@ -1258,7 +1258,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#99
-    title: 'docs(governance): note that /mnt/ace/rock-oil-field/ is wrong-domain for reservoir-eng / formation-eval local-corpus walks'
+    title: 'docs(governance): note that /mnt/ace/client-b/ is wrong-domain for reservoir-eng / formation-eval local-corpus walks'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/99
     gh_state: closed
@@ -1332,7 +1332,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#123
-    title: 'epic(acma): client project data-cycle readiness and private llm-wiki launch'
+    title: 'epic(mkt-a): client project data-cycle readiness and private llm-wiki launch'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/123
     gh_state: open

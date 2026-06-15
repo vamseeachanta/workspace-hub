@@ -139,8 +139,8 @@
   priority: low
   complexity: low
 
-# doris (pipeline / subsea)
-- repo: doris
+# lng-a (pipeline / subsea)
+- repo: lng-a
   title: "Formalise calculation workflow — MATLAB/Excel to Python"
   description: >-
     Migrate ad-hoc MATLAB and Excel calculations to
@@ -149,7 +149,7 @@
   priority: medium
   complexity: high
 
-- repo: doris
+- repo: lng-a
   title: "DNV-ST-F101 pressure containment — MAOP validation"
   description: >-
     Implement system pressure test and MAOP validation
@@ -158,7 +158,7 @@
   priority: medium
   complexity: medium
 
-- repo: doris
+- repo: lng-a
   title: "API RP 1111 — deepwater pipeline design checks"
   description: >-
     Implement collapse and propagating buckle checks
@@ -167,7 +167,7 @@
   priority: medium
   complexity: medium
 
-- repo: doris
+- repo: lng-a
   title: "On-bottom stability — DNV-RP-F109 soil resistance"
   description: >-
     Implement on-bottom stability calculations with
@@ -204,8 +204,8 @@
   priority: medium
   complexity: high
 
-# saipem / rock-oil-field (installation / umbilicals)
-- repo: saipem
+# client-d / client-b (installation / umbilicals)
+- repo: client-d
   title: "Portable installation analysis — OrcaFlex automation"
   description: >-
     Extract generic OrcaFlex automation from
@@ -214,7 +214,7 @@
   priority: medium
   complexity: high
 
-- repo: rock-oil-field
+- repo: client-b
   title: "Vessel weather-window calculator — operability analysis"
   description: >-
     Implement operability analysis from Hs/Tp scatter
@@ -223,8 +223,8 @@
   priority: low
   complexity: medium
 
-# acma-projects (structural / composites)
-- repo: acma-projects
+# mkt-a (structural / composites)
+- repo: mkt-a
   title: "LNG tank structural checks — API 620 / EN 14620"
   description: >-
     Implement thin-shell hoop stress calculations for
@@ -233,7 +233,7 @@
   priority: medium
   complexity: high
 
-- repo: acma-projects
+- repo: mkt-a
   title: "Aluminium structural module — Eurocode 9 / AA ADM"
   description: >-
     Implement aluminium member capacity checks per
@@ -242,7 +242,7 @@
   priority: low
   complexity: high
 
-- repo: acma-projects
+- repo: mkt-a
   title: "Composite panel design — CLT strength checks"
   description: >-
     Implement Classical Laminate Theory strength checks

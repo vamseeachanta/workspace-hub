@@ -32,7 +32,7 @@ cards:
 
       **Status:** blocked | **Priority:** high | **Category:** engineering/marine
 
-      **Complexity:** medium | **Machine:** acma-ansys05'
+      **Complexity:** medium | **Machine:** mkt-a-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#139
     title: 'WRK-047: OpenFOAM CFD analysis capability for digitalmodel'
     source: github_issue

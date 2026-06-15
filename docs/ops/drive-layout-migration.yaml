@@ -69,32 +69,32 @@ current_ace_layout:
       proposed: "${ACE_DATA_ROOT}/aceengineer-admin"
       status: already_aligned
 
-    - path: /mnt/ace/saipem
-      proposed: "${ACE_DATA_ROOT}/saipem"
+    - path: /mnt/ace/client-d
+      proposed: "${ACE_DATA_ROOT}/client-d"
       status: already_aligned
 
     - path: /mnt/ace/2H
       proposed: "${ACE_DATA_ROOT}/2H"
       status: already_aligned
 
-    - path: /mnt/ace/doris
-      proposed: "${ACE_DATA_ROOT}/doris"
+    - path: /mnt/ace/lng-a
+      proposed: "${ACE_DATA_ROOT}/lng-a"
       status: already_aligned
 
-    - path: /mnt/ace/frontierdeepwater
-      proposed: "${ACE_DATA_ROOT}/frontierdeepwater"
+    - path: /mnt/ace/client-a
+      proposed: "${ACE_DATA_ROOT}/client-a"
       status: already_aligned
 
-    - path: /mnt/ace/seanation
-      proposed: "${ACE_DATA_ROOT}/seanation"
+    - path: /mnt/ace/client-f
+      proposed: "${ACE_DATA_ROOT}/client-f"
       status: already_aligned
 
     - path: /mnt/ace/worldenergydata
       proposed: "${ACE_DATA_ROOT}/worldenergydata"
       status: already_aligned
 
-    - path: /mnt/ace/rock-oil-field
-      proposed: "${ACE_DATA_ROOT}/rock-oil-field"
+    - path: /mnt/ace/client-b
+      proposed: "${ACE_DATA_ROOT}/client-b"
       status: already_aligned
 
     - path: /mnt/ace/gmsh
@@ -170,8 +170,8 @@ current_ace_layout:
       referenced_by:
         - scripts/data/document-index/config.yaml
 
-    - path: /mnt/ace/client_projects
-      proposed: "${ACE_DATA_ROOT}/workspace-hub/client-projects/"
+    - path: /mnt/ace/client-c
+      proposed: "${ACE_DATA_ROOT}/workspace-hub/client-c/"
       status: needs_relocation
       reason: "client project archives; not a repo"
       referenced_by:
@@ -256,7 +256,7 @@ hardcoded_paths:
           - digitalmodel/.claude/skills/skills-catalog.json
           - digitalmodel/docs/domains/agents/AI_AGENT_ORCHESTRATION.md
           - digitalmodel/docs/domains/cathodic_protection/cp_bug_fixes_summary.md
-          - digitalmodel/docs/domains/cathodic_protection/saipem_cp_comparison_analysis.md
+          - digitalmodel/docs/domains/cathodic_protection/client-d_cp_comparison_analysis.md
           - digitalmodel/docs/domains/project-docs/HTML_REPORTING_STANDARDS.md
           - digitalmodel/docs/domains/project-docs/PHASE_2_2_BASE_SOLVERS_IMPLEMENTATION.md
           - digitalmodel/docs/domains/development/DEPLOYMENT-PROMPT-WEB-CONTEXTUALIZATION.md
@@ -300,11 +300,11 @@ hardcoded_paths:
         action: "use WORKSPACE_HUB_ROOT or relative path"
 
       - name: client project examples
-        pattern: '/mnt/github/workspace-hub/client_projects'
+        pattern: '/mnt/github/workspace-hub/client-c'
         files:
           - digitalmodel/examples/domains/artificial_lift/dynacard_demo.py
           - digitalmodel/examples/domains/artificial_lift/field_troubleshooter.py
-        action: "use ${ACE_DATA_ROOT}/client_projects or env var"
+        action: "use ${ACE_DATA_ROOT}/client-c or env var"
 
   # ── Category 2: /mnt/ace/ (ace drive data paths) ─────────────────────────
   - category: "ace drive /mnt/ace/ references"

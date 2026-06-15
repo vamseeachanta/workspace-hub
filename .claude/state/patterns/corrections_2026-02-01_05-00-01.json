@@ -2051,8 +2051,8 @@
           "new": "### Storage - Old external hard drives (mix of working and non-working) — need assessment - 1x 500 G"
         },
         {
-          "old": "### Phase 2: Inventory - [ ] Run script on all 3 old PCs - [ ] Run script on 2 ACMA work computers -",
-          "new": "### Phase 2: Inventory - [ ] Run script on all 3 old PCs - [ ] Run script on 2 ACMA work computers -"
+          "old": "### Phase 2: Inventory - [ ] Run script on all 3 old PCs - [ ] Run script on 2 mkt-a work computers -",
+          "new": "### Phase 2: Inventory - [ ] Run script on all 3 old PCs - [ ] Run script on 2 mkt-a work computers -"
         },
         {
           "old": "- [ ] Cost/benefit of any additional upgrades (RAM, network cards, etc.) - [ ] Final disposition pla",

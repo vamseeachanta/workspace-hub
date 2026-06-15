@@ -3,12 +3,12 @@
 # Checker should machine-aware skip clone existence check when mount root is absent
 # (e.g., this machine doesn't have that mount), so test expects exit 0.
 #
-# Uses the real acma GH repo so the GH-lookup step also passes — isolates the
+# Uses the real mkt-a GH repo so the GH-lookup step also passes — isolates the
 # behavior under test to the mount-root-absent skip path.
 registry_version: 0.1
 wikis:
   - short_name: missing-mount
-    repo: vamseeachanta/llm-wiki-acma
+    repo: vamseeachanta/llm-wiki-mkt-a
     visibility: PRIVATE
     raw_roots:
       - /mnt/nonexistent-mount-fixture/raw/
