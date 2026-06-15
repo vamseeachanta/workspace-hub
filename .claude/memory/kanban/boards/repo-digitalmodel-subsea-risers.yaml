@@ -31,7 +31,7 @@ cards:
 
       **Status:** pending | **Priority:** medium | **Category:** engineering/pipeline
 
-      **Complexity:** complex | **Machine:** mkt-a-ansys05'
+      **Complexity:** complex | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#138
     title: 'WRK-046: OrcaFlex drilling and completion riser parametric analysis'
     source: github_issue
@@ -53,7 +53,7 @@ cards:
 
       **Status:** pending | **Priority:** medium | **Category:** engineering/marine
 
-      **Complexity:** complex | **Machine:** mkt-a-ansys05'
+      **Complexity:** complex | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#197
     title: 'WRK-503: feat(digitalmodel/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri'
     source: github_issue

@@ -13,7 +13,7 @@ type: reference
 | home-win | .148 | Windows | devuser | SMB only (port 22 blocked) | SMB share: `\\10.0.0.3\GitHub` → C:\GitHub; repos: aceengineer-admin, achantas-data |
 | macbook-portable | .166 | macOS (ARM64 M1) | krishna | key (passwordless) | Hostname: Vamsees-MacBook-Air.local; `~/workspace-hub/` has aceengineer-admin, achantas-data, sabithaandkrishnaestates; AirPlay ports 5000/7000 also open |
 | licensed-win-1 | — | Windows | — | no SSH | OrcaFlex license machine; not on local LAN |
-| mkt-a-WS014 | .132 | Windows | — | unknown | Windows workstation |
+| ACMA-WS014 | .132 | Windows | — | unknown | Windows workstation |
 
 ## Access Patterns
 

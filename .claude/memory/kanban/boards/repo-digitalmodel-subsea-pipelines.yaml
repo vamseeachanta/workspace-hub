@@ -31,7 +31,7 @@ cards:
 
       **Status:** pending | **Priority:** low | **Category:** engineering/marine
 
-      **Complexity:** complex | **Machine:** mkt-a-ansys05'
+      **Complexity:** complex | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#179
     title: 'WRK-481: feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing'
     source: github_issue

@@ -32,7 +32,7 @@ cards:
 
       **Status:** blocked | **Priority:** medium | **Category:** engineering/marine
 
-      **Complexity:** medium | **Machine:** mkt-a-ansys05'
+      **Complexity:** medium | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#281
     title: 'WRK-121: Extract & Catalog OrcaFlex Models from client-b/s7'
     source: github_issue
@@ -93,7 +93,7 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## Machine: ace-linux-1 (or mkt-a-ansys05 for Windows extraction)
+    body_excerpt: '## Machine: ace-linux-1 (or acma-ansys05 for Windows extraction)
 
       ## Context
 

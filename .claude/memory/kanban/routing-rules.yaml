@@ -14,15 +14,15 @@ machines:
   dev-secondary:    {os: linux, role: secondary,   hostname: ace-linux-2}
   licensed-win-1:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex]}
   licensed-win-2:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex],
-                     aliases: [mkt-a-ws014], notes: "same box as mkt-a-ws014 (mkt-a client workstation)"}
+                     aliases: [acma-ws014], notes: "same box as acma-ws014 (mkt-a client workstation)"}
   home-win:         {os: windows, role: aux,        notes: "home windows; statements/scans (e.g. Chase)"}
   macbook-portable: {os: macos,   role: aux,        notes: "portable/mobile work"}
   multi:            {os: any,     role: virtual,    notes: "spans machines / not pinned to one box"}
 
 # Alias map (label-in-the-wild -> canonical machine). route.py folds these so
-# machine:mkt-a-ws014 counts as licensed-win-2 without relabeling existing cards.
+# machine:acma-ws014 counts as licensed-win-2 without relabeling existing cards.
 machine_aliases:
-  mkt-a-ws014: licensed-win-2
+  acma-ws014: licensed-win-2
   ace-linux-1: dev-primary      # hostname-style stragglers -> canonical dispatch name
   ace-linux-2: dev-secondary
 

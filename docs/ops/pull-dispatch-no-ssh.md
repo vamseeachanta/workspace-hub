@@ -10,7 +10,7 @@ hosts polling the same source never run the same item.
 `scripts/operations/dispatch_pull.py`:
 
 1. Resolves this host's registry id (`resolve_machine_id`, alias-aware — the real Windows name
-   `mkt-a-ANSYS05` resolves to `ace-win-1`).
+   `ACMA-ANSYS05` resolves to `ace-win-1`).
 2. `git fetch` of the `refs/heads/dispatch-lease/*` namespace (so the lease CAS sees other hosts' claims).
 3. Reads the routed-card list `.claude/dispatch/<machine>.yaml` (cards with `dispatch_status: ready`).
 4. For each card, **`claim_run`** acquires a fenced git-ref lease keyed by the card id

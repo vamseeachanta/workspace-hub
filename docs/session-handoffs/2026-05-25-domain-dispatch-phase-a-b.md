@@ -8,7 +8,7 @@ GitHub-centered dispatch architecture for the ecosystem kanban: every repo categ
 
 ### Outcomes
 - **1,485 open issues labeled** across 12 repos (`machine:` / `dispatch:ready` / `domain:` where applicable / `ai:` for non-default providers). 0 errors.
-- **Machine roster adopted from the pre-existing in-the-wild scheme** (0 relabeling): `dev-primary`, `dev-secondary`, `licensed-win-1`, `licensed-win-2` (== `mkt-a-ws014`), `home-win`, `macbook-portable`, `multi`. Aliases fold `ace-linux-1/2`→`dev-primary/secondary`.
+- **Machine roster adopted from the pre-existing in-the-wild scheme** (0 relabeling): `dev-primary`, `dev-secondary`, `licensed-win-1`, `licensed-win-2` (== `acma-ws014`), `home-win`, `macbook-portable`, `multi`. Aliases fold `ace-linux-1/2`→`dev-primary/secondary`.
 - **Provider capacity model:** claude/codex = workhorse; **hermes shares codex quota** (one WIP pool); gemini scarce/manual-only.
 - **workspace-hub reconciliation:** its 162 fine `domain:` labels mapped → 6 coarse board-domains (`domain-map-workspace-hub.yaml`); coarse writes suppressed so the existing taxonomy is preserved.
 - **worldenergydata:** `ingestion`→`ingest` rename (board + manifest + domains.yaml; live label renamed in place, 22 issues moved). `bsee`/`hse` boards added (no cards yet).
