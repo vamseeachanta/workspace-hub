@@ -2161,7 +2161,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]"
+        "title": "feat(workstations): licensed-solver-node licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -2174,7 +2174,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]",
+      "title": "feat(workstations): licensed-solver-node licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2926",
       "warnings": []
     },
@@ -10695,7 +10695,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]"
+          "title": "feat(workstations): licensed-solver-node licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -10708,7 +10708,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]",
+        "title": "feat(workstations): licensed-solver-node licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2926",
         "warnings": []
       },
