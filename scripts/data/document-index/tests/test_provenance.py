@@ -146,10 +146,10 @@ class TestMergeProvenance:
             _rec("/a.pdf", "og_standards", content_hash="sha256:lst",
                  target_repos=["digitalmodel"]),
             _rec("/b.pdf", "ace_project", content_hash="sha256:lst",
-                 target_repos=["digitalmodel", "doris"]),
+                 target_repos=["digitalmodel", "lng_a"]),
         ]
         merged = merge_provenance(records)
-        assert "doris" in merged[0]["target_repos"]
+        assert "lng_a" in merged[0]["target_repos"]
         assert "digitalmodel" in merged[0]["target_repos"]
 
     def test_custom_source_priority(self):

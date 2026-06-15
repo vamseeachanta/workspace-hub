@@ -70,12 +70,12 @@ sources:
     source_type: workspace_spec
     extensions: [.md, .yaml, .yml]
 
-  acma_codes:
+  mkt_a_codes:
     enabled: true
     paths:
-      - /mnt/ace/acma-codes
+      - /mnt/ace/mkt_a-codes
     host: dev-primary
-    source_type: acma_codes
+    source_type: mkt_a_codes
     extensions: [.pdf, .docx, .xlsx, .pptx, .txt]
 
   api_metadata:
@@ -188,7 +188,7 @@ deduplication:
     - dde_project
     - va_hdd_2
     - workspace_spec
-    - acma_codes
+    - mkt_a_codes
     - api_metadata
 
 domains:
@@ -211,11 +211,11 @@ repo_domain_map:
   digitalmodel: [structural, cathodic-protection, pipeline, marine, installation, materials]
   worldenergydata: [energy-economics, regulatory]
   assethold: [portfolio]
-  doris: [pipeline, structural]
+  lng_a: [pipeline, structural]
   OGManufacturing: [structural, regulatory]
-  saipem: [installation, marine]
-  rock-oil-field: [installation, marine]
-  acma-projects: [structural, materials]
+  client_d: [installation, marine]
+  client_b: [installation, marine]
+  mkt_a: [structural, materials]
   pdf-large-reader: []
   assetutilities: []
 

@@ -29,7 +29,7 @@ PROMPT = (
     '{"discipline":"structural|cathodic-protection|pipeline|marine|installation'
     '|energy-economics|materials|regulatory|drilling|other",'
     '"summary":"one sentence scope",'
-    '"repos":["digitalmodel","worldenergydata","assethold","doris","OGManufacturing","acma-projects"],'
+    '"repos":["digitalmodel","worldenergydata","assethold","lng_a","OGManufacturing","mkt_a"],'
     '"keywords":["word1","word2","word3"]}'
     "\nPick only repos genuinely relevant. Use the metadata and text to classify."
 )
