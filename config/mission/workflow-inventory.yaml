@@ -207,4 +207,4 @@ orphans:
   - name: crontab-template.sh
     reason: "Legacy read-only reference; SSoT is schedule-tasks.yaml. Deprecated by design."
   - name: update_ai_agents_daily.sh
-    reason: "claude-flow-era boilerplate with hardcoded stale path /mnt/github/workspace-hub; effectively dead on this machine (see #3081 verification). Retire candidate."
+    reason: "claude-flow-era boilerplate with hardcoded stale path /mnt/github/workspace-hub; effectively dead on this machine (see #3081 verification). RETIRED in #3103 along with its orchestration cluster (deploy_orchestration_all_repos, agent_orchestrator, gate_pass_review, sync_orchestration_all_repos)."
