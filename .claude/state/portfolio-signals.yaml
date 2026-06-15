@@ -1,4 +1,4 @@
-generated_at: '2026-06-14T07:03:45Z'
+generated_at: '2026-06-15T07:03:50Z'
 lookback_days: 30
 provider_activity:
   claude:
@@ -22,6 +22,22 @@ l2_meta:
   files_skipped_no_orchestrator: 0
   files_skipped_malformed: 0
 capability_signals:
+- date: '2026-06-10'
+  provider: gemini
+  capability: Gemini Omni Scientific Multi-modal Generation
+  engineering_domains:
+  - structural
+  - drilling
+  impact: high
+  source: https://blog.google
+- date: '2026-06-14'
+  provider: claude
+  capability: Claude Fable 5 for Scientific Research
+  engineering_domains:
+  - subsea
+  - reservoir
+  impact: high
+  source: https://www.anthropic.com
 - date: '2026-05-21'
   provider: claude
   capability: Advanced PDE Tool Use & Fluid Dynamics Modeling
@@ -103,14 +119,6 @@ capability_signals:
   - reservoir
   impact: medium
   source: https://cloud.google.com/blog/products/ai-machine-learning/gemini-reservoir-agent
-- date: '2026-05-15'
-  provider: claude
-  capability: Structural Health Monitoring Pipeline
-  engineering_domains:
-  - structural
-  - subsea
-  impact: low
-  source: https://anthropic.com/research/structural-health-monitoring
 - date: '2026-05-18'
   provider: gemini
   capability: Gemini 2.5 Native FEA Interpretation
@@ -119,65 +127,11 @@ capability_signals:
   - subsea
   impact: high
   source: https://blog.google/technology/ai/gemini-native-fea-2026
-- date: '2026-05-15'
-  provider: claude
-  capability: Claude 3.5 Opus Reservoir Simulation Plugin
-  engineering_domains:
-  - reservoir
-  impact: high
-  source: https://www.anthropic.com/news/claude-reservoir-plugin-2026
-- date: '2026-05-14'
-  provider: codex
-  capability: Codex Drill-Path Optimization API
-  engineering_domains:
-  - drilling
-  - subsea
-  impact: medium
-  source: https://openai.com/blog/codex-drill-path-api-2026
-- date: '2026-05-05'
-  provider: gemini
-  capability: Native 3D Finite Element Analysis (FEA) generation
-  engineering_domains:
-  - structural
-  - subsea
-  impact: high
-  source: https://blog.google/technology/ai/gemini-fea-capabilities-2026
-- date: '2026-05-04'
-  provider: claude
-  capability: Opus Computational Fluid Dynamics (CFD) Plugin
-  engineering_domains:
-  - reservoir
-  - subsea
-  impact: high
-  source: https://www.anthropic.com/news/claude-cfd-integration
-- date: '2026-04-30'
-  provider: claude
-  capability: Non-linear Material Stress Modeling Artifacts
-  engineering_domains:
-  - structural
-  impact: medium
-  source: https://www.anthropic.com/news/claude-structural-stress-modeling
-- date: '2026-05-04'
-  provider: gemini
-  capability: Native Physics-Informed Neural Networks (PINN) API
-  engineering_domains:
-  - subsea
-  - drilling
-  impact: high
-  source: https://blog.google/technology/ai/gemini-engineering-pinn
-- date: '2026-05-02'
-  provider: claude
-  capability: Advanced Finite Element Analysis Context Extension
-  engineering_domains:
-  - structural
-  - subsea
-  impact: high
-  source: https://www.anthropic.com/news/claude-fea-analysis
 l3_meta:
   query_attempted: true
   query_mode: engineering
-  parse_success: false
-  signals_added: 0
-  signals_pruned: 0
-  carry_forward: true
-  source_verified: false
+  parse_success: true
+  signals_added: 2
+  signals_pruned: 8
+  carry_forward: false
+  source_verified: true

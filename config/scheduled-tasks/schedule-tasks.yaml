@@ -949,3 +949,25 @@ tasks:
       docs/reports/tier-1-indexing-freshness-latest.md and a dated snapshot;
       emits a #2291 cron-health evidence line. Three-level exit (0/1/2).
       Contract: docs/standards/TIER1_INDEXING_FRESHNESS_AUDIT.md. Issue #2465.
+
+  - id: flywheel-review
+    label: Ecosystem flywheel monthly review
+    schedule: "0 6 1 * *"
+    machines: [dev-primary]
+    roles: [control-plane]
+    requires: [python3, uv, git]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      uv run --no-project --python 3.11 --with pyyaml python scripts/cron/flywheel-review.py
+      >> $WORKSPACE_HUB/logs/flywheel/flywheel-review-$(date +\%Y\%m).log 2>&1
+    log: logs/flywheel/flywheel-review-*.md
+    is_claude_task: false
+    description: >-
+      Monthly (1st, 06:00 UTC) re-derivation of epic #3078's flywheel: recomputes the
+      measurable flywheel-scorecard metrics (workflow O4-vs-business skew, orphans,
+      scoped-memory coverage) from config/mission/{mission-map,workflow-inventory,
+      flywheel-scorecard}.yaml + schedule-tasks.yaml + a live scoped-memory scan, and
+      writes a dated review to logs/flywheel/. This closes the loop (mission → workflow
+      → metrics → marketing re-derive on a cadence). Issue #3085.

@@ -1,27 +1,27 @@
 {
-  "generated_at": "2026-06-14T21:20:18.539050Z",
-  "current_week": "2026-W24",
+  "generated_at": "2026-06-15T05:20:11.014998Z",
+  "current_week": "2026-W25",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-06-14T21:20:18.383551Z",
+    "utilization_generated_at": "2026-06-15T05:20:10.896007Z",
     "audit_generated_at": "2026-06-10T16:45:32Z"
   },
   "recommended_provider_order": [
+    "gemini",
     "claude",
-    "codex",
-    "gemini"
+    "codex"
   ],
   "recommendations": [
     {
       "provider": "claude",
-      "status": "needs_cleanup",
+      "status": "underused",
       "priority": "high",
-      "reported_utilization_pct": 6.7,
+      "reported_utilization_pct": 0.0,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 42,
-      "post_records_current_week": 2707,
+      "sessions_current_week": 0,
+      "post_records_current_week": 0,
       "audit_post_records": 116689,
       "missing_repo_reads": 8718,
       "python3_per_1k_records": 9.22,
@@ -29,20 +29,36 @@
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
-          "tool": "unknown",
-          "count": 2343
-        },
-        {
           "tool": "Bash",
-          "count": 272
+          "count": 63882
         },
         {
           "tool": "Read",
-          "count": 89
+          "count": 21281
+        },
+        {
+          "tool": "Edit",
+          "count": 9507
         },
         {
           "tool": "Write",
-          "count": 3
+          "count": 8421
+        },
+        {
+          "tool": "unknown",
+          "count": 5358
+        },
+        {
+          "tool": "Grep",
+          "count": 2613
+        },
+        {
+          "tool": "Agent",
+          "count": 1380
+        },
+        {
+          "tool": "ToolSearch",
+          "count": 681
         }
       ],
       "preferred_work": [
@@ -67,11 +83,11 @@
       "provider": "codex",
       "status": "needs_cleanup",
       "priority": "high",
-      "reported_utilization_pct": 54.0,
+      "reported_utilization_pct": 55.0,
       "quota_basis": "quota",
       "quota_source": "app-server-live",
-      "sessions_current_week": 310,
-      "post_records_current_week": 30711,
+      "sessions_current_week": 0,
+      "post_records_current_week": 0,
       "audit_post_records": 60184,
       "missing_repo_reads": 1256,
       "python3_per_1k_records": 14.57,
@@ -80,23 +96,35 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 29375
+          "count": 49379
         },
         {
-          "tool": "spawn_agent",
-          "count": 217
+          "tool": "Read",
+          "count": 7154
         },
         {
-          "tool": "view_image",
-          "count": 216
+          "tool": "Grep",
+          "count": 2014
         },
         {
           "tool": "update_plan",
-          "count": 211
+          "count": 434
         },
         {
-          "tool": "wait_agent",
-          "count": 183
+          "tool": "list_mcp_resources",
+          "count": 212
+        },
+        {
+          "tool": "spawn_agent",
+          "count": 197
+        },
+        {
+          "tool": "_add_comment_to_issue",
+          "count": 150
+        },
+        {
+          "tool": "close_agent",
+          "count": 125
         }
       ],
       "preferred_work": [
@@ -117,11 +145,11 @@
     },
     {
       "provider": "gemini",
-      "status": "needs_cleanup",
-      "priority": "high",
-      "reported_utilization_pct": 100.0,
+      "status": "underused",
+      "priority": "highest",
+      "reported_utilization_pct": 0.0,
       "quota_basis": "quota",
-      "quota_source": "429-throttle",
+      "quota_source": "manual-snapshot",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
       "audit_post_records": 6205,
@@ -180,7 +208,7 @@
     }
   ],
   "summary": {
-    "highest_priority_provider": "claude",
-    "highest_priority_reason": "Reserve Claude for adversarial review, plan review, and long-context synthesis."
+    "highest_priority_provider": "gemini",
+    "highest_priority_reason": "Batch 5-6 related research/recon tasks into Gemini sessions."
   }
 }
