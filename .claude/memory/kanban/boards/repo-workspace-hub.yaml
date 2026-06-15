@@ -189,7 +189,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#34
-    title: 'WRK-1043: tidy-agent-teams: wire Stop hook on ace-linux-2 and mkt-a-ansys05'
+    title: 'WRK-1043: tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/34
     gh_state: closed
@@ -5415,7 +5415,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#637
-    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on mkt-a-ansys05'
+    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/637
     gh_state: closed
@@ -5754,7 +5754,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#677
-    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on mkt-a-ansys05'
+    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/677
     gh_state: closed
@@ -7222,7 +7222,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#848
-    title: 'WRK-1066: chore(harness): environment parity audit — tool versions across ace-linux-1, ace-linux-2, mkt-a-ansys05'
+    title: 'WRK-1066: chore(harness): environment parity audit — tool versions across ace-linux-1, ace-linux-2, acma-ansys05'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/848
     gh_state: closed
@@ -7358,7 +7358,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#860
-    title: 'WRK-1077: mkt-a-ansys05 workstation readiness setup'
+    title: 'WRK-1077: acma-ansys05 workstation readiness setup'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/860
     gh_state: closed
@@ -8618,7 +8618,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#998
-    title: 'WRK-1066: chore(harness): environment parity audit — tool versions across ace-linux-1, ace-linux-2, mkt-a-ansys05'
+    title: 'WRK-1066: chore(harness): environment parity audit — tool versions across ace-linux-1, ace-linux-2, acma-ansys05'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/998
     gh_state: closed
@@ -8746,7 +8746,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#1009
-    title: 'WRK-1077: mkt-a-ansys05 workstation readiness setup'
+    title: 'WRK-1077: acma-ansys05 workstation readiness setup'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1009
     gh_state: closed
@@ -20521,7 +20521,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2926
-    title: 'feat(workstations): mkt-a-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]'
+    title: 'feat(workstations): ACMA-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2926
     gh_state: open

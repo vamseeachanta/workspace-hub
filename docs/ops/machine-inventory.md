@@ -116,7 +116,7 @@ Path placeholders used in the rows below (see canonical values in the reference 
 
 ---
 
-### mkt-a-ws014 (Windows, on-site mkt-a workstation)
+### acma-ws014 (Windows, on-site mkt-a workstation)
 
 | Dimension | Value |
 |---|---|

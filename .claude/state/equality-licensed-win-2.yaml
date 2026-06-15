@@ -1,7 +1,7 @@
 generated_at: "2026-05-31T18:03:56"
 schema_version: 3
 machine: "licensed-win-2"
-host: "mkt-a-ws014"
+host: "acma-ws014"
 os: windows
 status: active
 provenance:
@@ -28,7 +28,7 @@ dimensions:
     providers: {claude: present, codex: present, gemini: absent, hermes: present}
     gh_auth: ok
     python_cmd: python
-    readiness_ref: harness-readiness-mkt-a-ws014.yaml
+    readiness_ref: harness-readiness-acma-ws014.yaml
     readiness_overall: fail
   skills: {repo_skill_count: 396}
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}

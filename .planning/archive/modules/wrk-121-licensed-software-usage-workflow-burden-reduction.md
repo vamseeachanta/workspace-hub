@@ -148,7 +148,7 @@ Prepared for: mkt-a Management / IT Department
    +-------------+------------------+----------+------------------+
 
 2. CURRENT ACCESS METHOD
-   - OrcaFlex: TightVNC to dedicated workstation (mkt-a-ANSYS machine)
+   - OrcaFlex: TightVNC to dedicated workstation (ACMA-ANSYS machine)
    - ANSYS: Direct login or RDP to licensed machines
 
 3. KNOWN ISSUES

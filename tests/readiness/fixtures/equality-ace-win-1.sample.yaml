@@ -13,7 +13,7 @@
 generated_at: "2026-05-30T04:31:07"
 schema_version: 4
 machine: "ace-win-1"
-host: "mkt-a-ws002"
+host: "acma-ws002"
 os: windows
 status: active
 provenance:

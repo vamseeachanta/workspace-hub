@@ -11,7 +11,7 @@ board:
     '
 cards:
   - idempotency_key: gh:vamseeachanta/workspace-hub#52
-    title: 'WRK-1133: Add mkt-a-ws014 to workstations documentation and routing'
+    title: 'WRK-1133: Add acma-ws014 to workstations documentation and routing'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/52
     gh_state: open
@@ -153,13 +153,13 @@ cards:
 
       ### Install Method'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1510
-    title: 'Verify Claude Desktop install: mkt-a-WS014'
+    title: 'Verify Claude Desktop install: ACMA-WS014'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1510
     gh_state: open
     gh_labels:
       - priority:low
-      - machine:mkt-a-ws014
+      - machine:acma-ws014
       - dispatch:ready
       - gate:completeness
       - domain:workstations-machine-bringup
@@ -169,7 +169,7 @@ cards:
     priority: 0
     body_excerpt: 'Parent: #1504
 
-      ## Machine: mkt-a-WS014 (Windows workstation)
+      ## Machine: ACMA-WS014 (Windows workstation)
 
       ### Install Method'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1564

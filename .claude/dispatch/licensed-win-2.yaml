@@ -14,7 +14,7 @@ cards:
   repo: vamseeachanta/workspace-hub
   domain: ai-orchestration
   provider: claude
-  title: 'Verify Claude Desktop install: mkt-a-WS014'
+  title: 'Verify Claude Desktop install: ACMA-WS014'
   url: https://github.com/vamseeachanta/workspace-hub/issues/1510
   dispatch_status: ready
   wip_eligible: false

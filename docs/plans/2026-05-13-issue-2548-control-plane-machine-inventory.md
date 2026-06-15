@@ -120,7 +120,7 @@ This is a T1 documentation issue. Tests are verification commands, not pytest su
 
 | Verification step | Command | Expected result |
 |---|---|---|
-| Inventory covers all 7 machines | `grep -c "^| ace-linux-1\|^| ace-linux-2\|^| licensed-win-1\|^| licensed-win-2\|^| macbook-portable\|^| gali-linux-compute-1\|^| home-win\|^| mkt-a-ws014" docs/ops/machine-inventory.md` | ≥7 rows |
+| Inventory covers all 7 machines | `grep -c "^| ace-linux-1\|^| ace-linux-2\|^| licensed-win-1\|^| licensed-win-2\|^| macbook-portable\|^| gali-linux-compute-1\|^| home-win\|^| acma-ws014" docs/ops/machine-inventory.md` | ≥7 rows |
 | No stale workspace path in registry | `grep "mnt/workspace-hub" config/workstations/registry.yaml` | (empty output) |
 | BUSINESS_BRAIN.md within 200-line budget | `wc -l docs/BUSINESS_BRAIN.md` | ≤200 |
 | BUSINESS_BRAIN.md points to inventory doc | `grep "machine-inventory" docs/BUSINESS_BRAIN.md` | match found |
@@ -159,7 +159,7 @@ This is a T1 documentation issue. Tests are verification commands, not pytest su
 - **Risk:** licensed-win-1 and licensed-win-2 have `ssh: null` — executor cannot remotely verify programs/licenses. Plan scopes Windows hosts as "document from registry.yaml + baseline inventory; mark unverified." If user can provide a manual inventory snapshot from the physical machine, it should replace the placeholder.
 - **Risk:** `docs/BUSINESS_BRAIN.md` is at 201 lines (over the 200-line cap stated in the doc itself). The machine section update must shrink to compensate — pointer to `docs/ops/machine-inventory.md` plus a 1-line summary is sufficient.
 - **Risk:** AQWA queue schema extension (needed for full smoke workflow) is tracked by #2641. This plan documents the AQWA dispatch as "gap — pending #2641" to avoid scope overlap with that issue's plan.
-- **Open:** Should `home-win` and `mkt-a-ws014` machines from BUSINESS_BRAIN.md be included in the inventory table? They appear in the BUSINESS_BRAIN.md machine table but not in `config/workstations/registry.yaml`. Recommend: include as stub rows in the inventory doc with "registry entry: none — add to registry.yaml before scheduling work."
+- **Open:** Should `home-win` and `acma-ws014` machines from BUSINESS_BRAIN.md be included in the inventory table? They appear in the BUSINESS_BRAIN.md machine table but not in `config/workstations/registry.yaml`. Recommend: include as stub rows in the inventory doc with "registry entry: none — add to registry.yaml before scheduling work."
 
 ---
 
