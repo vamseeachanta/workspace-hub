@@ -15,6 +15,7 @@ Resolution order for the canonical file:
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 
 _REL = "config/tier1-python-repos.txt"
@@ -50,6 +51,57 @@ def tier1_python_repos(path: str | os.PathLike[str] | None = None) -> list[str]:
     if not slugs:
         raise RuntimeError(f"tier-1 repo list is empty: {f}")
     return slugs
+
+
+def _has_repo_marker(path: Path) -> bool:
+    return (path / ".git").is_dir() or (path / "pyproject.toml").is_file()
+
+
+def resolve_tier1_repo_path(
+    slug: str,
+    repo_root: str | os.PathLike[str] | None = None,
+    base: str | os.PathLike[str] | None = None,
+) -> Path:
+    """Resolve a tier-1 repo slug for nested or sibling checkout layouts.
+
+    Probe order matches ``scripts/lib/tier1-repos.sh``:
+    explicit base / ``$TIER1_REPOS_BASE``, then ``repo_root/slug``, then the
+    sibling ``dirname(repo_root)/slug``. A path counts only if it has a repo
+    marker (``.git`` directory or ``pyproject.toml``). Missing repos fail closed.
+    """
+    if not slug:
+        raise FileNotFoundError("empty tier-1 repo slug")
+
+    root_value = repo_root or os.environ.get("REPO_ROOT") or Path(__file__).resolve().parents[2]
+    root = Path(root_value).resolve()
+    base_value = base or os.environ.get("TIER1_REPOS_BASE")
+
+    candidates: list[Path] = []
+    if base_value:
+        candidates.append(Path(base_value).expanduser() / slug)
+    candidates.extend([root / slug, root.parent / slug])
+
+    seen: set[str] = set()
+    found: list[Path] = []
+    for candidate in candidates:
+        key = str(candidate)
+        if key in seen:
+            continue
+        seen.add(key)
+        if _has_repo_marker(candidate):
+            found.append(candidate)
+
+    if not found:
+        raise FileNotFoundError(
+            f"could not resolve tier-1 repo {slug!r} from base/nested/sibling layouts"
+        )
+    if len(found) > 1:
+        print(
+            f"tier1_repos.py: WARN {slug} resolves at multiple layouts: "
+            f"{' '.join(str(p) for p in found)}; using {found[0]}",
+            file=sys.stderr,
+        )
+    return found[0]
 
 
 if __name__ == "__main__":  # pragma: no cover - manual probe

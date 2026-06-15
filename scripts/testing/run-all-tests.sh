@@ -57,7 +57,8 @@ fi
 
 run_repo() {
     local name="$1" rel_dir="$2" pythonpath="$3" pytest_args="$4"
-    local repo_dir="${REPO_ROOT}/${rel_dir}"
+    local repo_dir
+    repo_dir="$(resolve_tier1_repo_path "$name" 2>/dev/null || true)"
 
     if [[ ! -d "$repo_dir" ]]; then
         printf '{"repo":"%s","exit_code":-1,"status":"skipped","passed":0,"failed":0,"error":0,"skipped_count":0,"unexpected":0,"expected_fail":0,"unexpected_ids":[]}\n' "$name"
@@ -121,15 +122,18 @@ if [[ "$COVERAGE" == "true" ]]; then
 
     # Build a Python list literal of the canonical tier-1 repos for the heredoc
     # below, so the coverage repo set stays sourced from the SSoT (#3023).
-    _cov_repos_py="$(printf '"%s", ' "${TIER1_PYTHON_REPOS[@]}")"
+    _cov_repos_py=""
+    for _cov_repo in "${TIER1_PYTHON_REPOS[@]}"; do
+        _cov_path="$(resolve_tier1_repo_path "$_cov_repo" 2>/dev/null || true)"
+        _cov_repos_py="${_cov_repos_py}\"${_cov_repo}\": \"${_cov_path}\", "
+    done
 
     # Extract coverage % from each repo's coverage.json and build results mapping
     uv run --no-project python - <<PYEOF2
 import json, sys
 from pathlib import Path
 
-repo_root = Path("${REPO_ROOT}")
-repos = {name: repo_root / name for name in [${_cov_repos_py}]}
+repos = {name: Path(path) for name, path in {${_cov_repos_py}}.items() if path}
 filter_repo = "${FILTER_REPO}"
 results = {}
 for name, repo_dir in repos.items():
@@ -164,11 +168,14 @@ fi
 
 # ── Contract tests (digitalmodel + worldenergydata) ──────────────────────────
 
+assetutilities_path="$(resolve_tier1_repo_path assetutilities 2>/dev/null || true)"
 for repo in digitalmodel worldenergydata; do
-    if [[ -d "${REPO_ROOT}/${repo}/tests/contracts" ]]; then
-        PYTHONPATH="${REPO_ROOT}/${repo}/src:${REPO_ROOT}/assetutilities/src" \
-            uv run --project "${REPO_ROOT}/${repo}" python -m pytest \
-            "${REPO_ROOT}/${repo}/tests/contracts/" -v --tb=short -m contracts
+    [[ -n "$FILTER_REPO" && "$repo" != "$FILTER_REPO" ]] && continue
+    repo_path="$(resolve_tier1_repo_path "$repo" 2>/dev/null || true)"
+    if [[ -n "$repo_path" && -d "${repo_path}/tests/contracts" ]]; then
+        PYTHONPATH="${repo_path}/src:${assetutilities_path}/src" \
+            uv run --project "$repo_path" python -m pytest \
+            "${repo_path}/tests/contracts/" -v --tb=short -m contracts
     fi
 done
 
