@@ -34,7 +34,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#268
-    title: 'WRK-628: feat(client-a): client AI roadshow — phased engineering AI adoption programme'
+    title: 'WRK-628: feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/268
     gh_state: open
@@ -56,7 +56,7 @@ cards:
 
       **Repo:** [''client-a'', ''aceengineer-website''] | **Complexity:** complex | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#267
-    title: 'WRK-625: feat(client-a): engineering AI demo — system prompts + knowledge base (Day 1)'
+    title: 'WRK-625: feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/267
     gh_state: open
@@ -100,7 +100,7 @@ cards:
 
       **Repo:** [''workspace-hub''] | **Complexity:** complex | **Machine:** [''dev-primary'', ''dev-secondary'']'
   - idempotency_key: gh:vamseeachanta/digitalmodel#271
-    title: 'WRK-631: feat(client-a): Microsoft Teams chatbot integration — Phase 2 deployment for both clients'
+    title: 'WRK-631: feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/271
     gh_state: open

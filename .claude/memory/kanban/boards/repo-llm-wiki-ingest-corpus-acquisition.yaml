@@ -284,7 +284,7 @@ cards:
 
       **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
   - idempotency_key: gh:vamseeachanta/llm-wiki#115
-    title: '[specialist-corpus] vendor-contractor pdfs — 2H, client-d, lng-a, client-a, OGManufacturing, umbilical, client-f, client-b'
+    title: '[specialist-corpus] vendor-contractor pdfs — 2H, saipem, doris, frontierdeepwater, OGManufacturing, umbilical, seanation, rock-oil-field'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/115
     gh_state: closed
@@ -465,7 +465,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#128
-    title: '[client-wiki] client-c triage manifest (76 mixed dirs) — blocking'
+    title: '[client-wiki] client_projects triage manifest (76 mixed dirs) — blocking'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/128
     gh_state: open

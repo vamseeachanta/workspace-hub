@@ -232,7 +232,7 @@ cards:
 
       ## Affected tests (16)'
   - idempotency_key: gh:vamseeachanta/digitalmodel#644
-    title: 'lng-a GTM: cathodic protection analysis/requirements for structures — add demo_06 worked example + promote tier'
+    title: 'Doris GTM: cathodic protection analysis/requirements for structures — add demo_06 worked example + promote tier'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/644
     gh_state: open

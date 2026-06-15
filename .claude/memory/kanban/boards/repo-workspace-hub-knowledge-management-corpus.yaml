@@ -27,7 +27,7 @@ cards:
     priority: 0
     body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
   - idempotency_key: gh:vamseeachanta/workspace-hub#1354
-    title: 'WRK-1354: client-a: sync missing files from remote to /mnt/ace/client-a'
+    title: 'WRK-1354: frontierdeepwater: sync missing files from remote to /mnt/ace/frontierdeepwater'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1354
     gh_state: open

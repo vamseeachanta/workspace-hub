@@ -828,7 +828,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#69
-    title: lng-a (Mo Dessoukey) prospective-client follow-up — post-demo 2026-06-05 outcome capture + BD next steps
+    title: Doris (Mo Dessoukey) prospective-client follow-up — post-demo 2026-06-05 outcome capture + BD next steps
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/69
     gh_state: open
