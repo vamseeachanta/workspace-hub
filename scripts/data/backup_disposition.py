@@ -1,4 +1,4 @@
-"""Issue #2769 — ACMA pre-move backup disposition reporting (Phase A dry-run).
+"""Issue #2769 — mkt-a pre-move backup disposition reporting (Phase A dry-run).
 
 Composes over scripts/data/preexisting_inventory.py to produce a metadata-only,
 public-safe comparison of a single backup root against the corresponding active
@@ -217,7 +217,7 @@ def render_public_report(report: BackupDispositionReport) -> list[str]:
     pressure = report.disk_pressure
     comp = report.comparison
     lines = [
-        "# ACMA Pre-Move Backup Disposition Report (Phase A, dry-run)",
+        "# mkt-a Pre-Move Backup Disposition Report (Phase A, dry-run)",
         "",
         (
             "This report is metadata-only and redacted. It compares one backup "

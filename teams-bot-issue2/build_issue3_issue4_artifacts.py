@@ -1,7 +1,7 @@
 import base64, datetime as dt, html, json, os, pathlib, re, subprocess, textwrap
 from html.parser import HTMLParser
 
-REPO='vamseeachanta/llm-wiki-acma'
+REPO='vamseeachanta/llm-wiki-mkt-a'
 BASE=pathlib.Path('C:/workspace-hub/teams-bot-issue2')
 BASE.mkdir(parents=True, exist_ok=True)
 STAMP='2026-05-29_045817'
@@ -120,7 +120,7 @@ for idx, item in enumerate(allowed, start=1):
             pass
     text=normalize(text)
     # avoid including huge text verbatim in HTML, but index chunks are for private repo POC
-    source_id=f'ACMA-KP-{idx:03d}'
+    source_id=f'mkt-a-KP-{idx:03d}'
     classification='client-private-approved-report-layer' if p.startswith('reports/') else 'client-private-repo-doc'
     source={
         'source_id':source_id,'path':p,'repo':REPO,'repo_ref':'main','blob_sha':sha or item.get('sha'),
@@ -154,9 +154,9 @@ jsonl_path=BASE/'knowledge-pack-index.jsonl'
 jsonl_path.write_text('\n'.join(json.dumps(c, ensure_ascii=False) for c in chunks)+'\n', encoding='utf-8')
 # also create a slim sample questions file
 sample_questions=[
-    {'id':'Q1','question':'What workflow should ACMA use to turn client data into report-layer results?','expected_source_ids':['ACMA-KP-001','ACMA-KP-002','ACMA-KP-003']},
-    {'id':'Q2','question':'What redaction posture applies before public or non-client promotion?','expected_source_ids':['ACMA-KP-004']},
-    {'id':'Q3','question':'What sources support the Sirocco current/rudder force calculation?','expected_source_ids':[s['source_id'] for s in sources if 'issue-2760' in s['path']][:5]},
+    {'id':'Q1','question':'What workflow should mkt-a use to turn client data into report-layer results?','expected_source_ids':['mkt-a-KP-001','mkt-a-KP-002','mkt-a-KP-003']},
+    {'id':'Q2','question':'What redaction posture applies before public or non-client promotion?','expected_source_ids':['mkt-a-KP-004']},
+    {'id':'Q3','question':'What sources support the proj-a current/rudder force calculation?','expected_source_ids':[s['source_id'] for s in sources if 'issue-2760' in s['path']][:5]},
 ]
 questions_path=write(BASE/'knowledge-pack-sample-questions.json', json.dumps(sample_questions, indent=2, ensure_ascii=False))
 rows='\n'.join(f"<tr><td><code>{html.escape(s['source_id'])}</code></td><td><code>{html.escape(s['path'])}</code></td><td>{html.escape(s['classification'])}</td><td>{s['chars_indexed']}</td></tr>" for s in sources)

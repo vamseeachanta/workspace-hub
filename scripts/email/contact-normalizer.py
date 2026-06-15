@@ -17,7 +17,7 @@ from collections import Counter
 # CONFIG
 # ============================================================
 ACE_CLIENT_DOMAINS = {
-    "ril.com", "dorisgroup.com", "mcdermott.com", "shell.com",
+    "ril.com", "lng-agroup.com", "mcdermott.com", "shell.com",
     "kbr.com", "technip.com", "technipfmc.com", "subsea7.com",
     "nov.com", "aker.com", "bp.com", "awilcodrilling.com",
     "eagle.org", "vulcanoffshore.com", "boptechnologies.com",
@@ -57,7 +57,7 @@ SPAM_NAME_PARTS = [
 ]
 
 DOMAIN_COMPANY = {
-    "ril.com": "Reliance Industries", "dorisgroup.com": "DORIS",
+    "ril.com": "Reliance Industries", "lng-agroup.com": "lng-a",
     "mcdermott.com": "McDermott", "shell.com": "Shell",
     "kbr.com": "KBR", "bp.com": "BP",
     "technip.com": "TechnipFMC", "technipfmc.com": "TechnipFMC",

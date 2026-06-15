@@ -33,11 +33,11 @@ if [ -z "$REPO" ] || [ -z "$TASK" ]; then
 fi
 
 # Determine repository tier
-WORK_TIER1="workspace-hub|digitalmodel|energy|frontierdeepwater"
-WORK_TIER2="assetutilities|worldenergydata|rock-oil-field|teamresumes"
-WORK_TIER3="doris|saipem|OGManufacturing|seanation"
+WORK_TIER1="workspace-hub|digitalmodel|energy|client-a"
+WORK_TIER2="assetutilities|worldenergydata|client-b|teamresumes"
+WORK_TIER3="lng-a|client-d|OGManufacturing|client-f"
 PERSONAL_ACTIVE="aceengineer-admin|aceengineer-website"
-PERSONAL_EXPERIMENTAL="hobbies|sd-work|acma-projects|achantas-data"
+PERSONAL_EXPERIMENTAL="hobbies|sd-work|mkt-a|achantas-data"
 
 # Complexity indicators
 OPUS_KEYWORDS="architecture|refactor|design|security|complex|multi-file|algorithm|optimization|strategy|planning|cross-repository|performance|migration"

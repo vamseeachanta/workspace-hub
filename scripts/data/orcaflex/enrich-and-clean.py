@@ -16,7 +16,7 @@ Requires: worldenergydata installed (pip install -e ../../worldenergydata)
 Runs on:  licensed-win-1 (same ecosystem as dat-to-yaml.py)
 
 Usage:
-    python enrich-and-clean.py --input client_projects/data/raw/orcaflex-extracted/ \\
+    python enrich-and-clean.py --input client-c/data/raw/orcaflex-extracted/ \\
                                 --output digitalmodel/data/orcaflex/ --dry-run
     python enrich-and-clean.py --input path/to/raw/ --output path/to/clean/
 """
@@ -334,7 +334,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Enrich OrcaFlex YAML extracts with worldenergydata, strip client names"
     )
-    parser.add_argument("--input", required=True, help="Raw YAML dir (client_projects staging)")
+    parser.add_argument("--input", required=True, help="Raw YAML dir (client-c staging)")
     parser.add_argument("--output", required=True, help="Clean YAML dir (digitalmodel/data/orcaflex)")
     parser.add_argument("--deny-list", default=str(HUB_ROOT / ".legal-deny-list.yaml"))
     parser.add_argument("--dry-run", action="store_true")

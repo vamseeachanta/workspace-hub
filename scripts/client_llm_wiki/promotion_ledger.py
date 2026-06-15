@@ -1,7 +1,7 @@
 """Promotion-ledger schema validation, readiness classification, and reporting.
 
 Issue: https://github.com/vamseeachanta/workspace-hub/issues/2747
-Plan:  docs/plans/2026-05-21-issue-2747-acma-private-wiki-promotion-ledger.md
+Plan:  docs/plans/2026-05-21-issue-2747-mkt-a-private-wiki-promotion-ledger.md
 Templates: templates/client-llm-wiki/ledgers/
 
 Design notes:

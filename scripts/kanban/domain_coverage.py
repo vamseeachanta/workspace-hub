@@ -57,7 +57,7 @@ DEFAULT_REPOS = [
     "vamseeachanta/hobbies",
     "vamseeachanta/investments",
     "vamseeachanta/llm-wiki",
-    "vamseeachanta/llm-wiki-acma",
+    "vamseeachanta/llm-wiki-mkt-a",
     "vamseeachanta/llm-wiki-fdas",
     "vamseeachanta/sabithaandkrishnaestates",
     "vamseeachanta/teamresumes",
