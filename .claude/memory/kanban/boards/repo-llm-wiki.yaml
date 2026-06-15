@@ -1566,3 +1566,73 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#704
+    title: '[deckhand-compliance] US offshore pipeline regulations for wall-thickness workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/704
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - status:pending
+      - cat:knowledge-domain
+      - domain:marine
+      - domain:standards
+      - llm-wiki
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#705
+    title: '[deckhand-compliance] International offshore pipeline standards for wall-thickness workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/705
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - status:pending
+      - cat:knowledge-domain
+      - domain:marine
+      - domain:standards
+      - llm-wiki
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#706
+    title: '[deckhand-compliance] US OCS and floating-system regulations for mooring workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/706
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - status:pending
+      - cat:knowledge-domain
+      - domain:marine
+      - domain:standards
+      - domain:maritime-law
+      - llm-wiki
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#707
+    title: '[deckhand-compliance] International mooring and stationkeeping standards for mooring workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/707
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - status:pending
+      - cat:knowledge-domain
+      - domain:marine
+      - domain:standards
+      - domain:maritime-law
+      - llm-wiki
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

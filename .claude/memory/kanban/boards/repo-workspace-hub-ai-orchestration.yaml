@@ -981,3 +981,28 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3109
+    title: 'Model parity: external Fable-5 corpus (Hugging Face) — out-of-sample validation of #3056 — epic #3043'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3109
+    gh_state: open
+    gh_labels:
+      - domain:ai-orchestration
+      - machine:multi
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3112
+    title: 'Harden: instrument true skill/command invocation (the measurement gap behind retirement + de-prescription) — epic #3058'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3112
+    gh_state: open
+    gh_labels:
+      - domain:ai-orchestration
+      - domain:skill-improvement
+      - machine:multi
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

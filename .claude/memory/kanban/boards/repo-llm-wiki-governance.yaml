@@ -27,3 +27,20 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#703
+    title: 'feat(llm-wiki): map Deckhand active-workflow regulations for compliance'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/703
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - status:pending
+      - cat:knowledge-domain
+      - domain:standards
+      - llm-wiki
+      - domain:governance
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
