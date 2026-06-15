@@ -28,6 +28,17 @@ FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // .tool_input.path // ""' 2
 CMD=$(echo "$INPUT" | jq -r '.tool_input.command // ""' 2>/dev/null | head -c 150) || CMD=""
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // ""' 2>/dev/null) || SESSION_ID=""
 
+# #3112 BUG-1 emit: record skill_name (rel-path under .claude/skills) when a
+# SKILL.md is Read, so skill-invocation-scanner.py has events to count. The
+# scanner joins events on this rel-path key. Fast-exit for non-skill paths.
+SKILL_NAME=""
+case "$FILE" in
+  */.claude/skills/*/SKILL.md)
+    SKILL_NAME="${FILE##*/.claude/skills/}"   # -> email/gmail-triage/SKILL.md
+    SKILL_NAME="${SKILL_NAME%/SKILL.md}"       # -> email/gmail-triage
+    ;;
+esac
+
 # Get context
 TS=$(date -Iseconds)
 EPOCH=$(date +%s)
@@ -45,10 +56,12 @@ ENTRY=$(jq -cn \
   --arg file "${FILE:-}" \
   --arg cmd "${CMD:-}" \
   --arg session_id "${SESSION_ID:-}" \
+  --arg skill_name "${SKILL_NAME:-}" \
   '{ts:$ts, epoch:$epoch, hook:$hook, tool:$tool, project:$project, repo:$repo}
    + if ($file != "") then {file:$file} else {} end
    + if ($cmd != "") then {cmd:$cmd} else {} end
-   + if ($session_id != "") then {session_id:$session_id} else {} end' \
+   + if ($session_id != "") then {session_id:$session_id} else {} end
+   + if ($skill_name != "") then {skill_name:$skill_name} else {} end' \
   2>/dev/null) \
   || ENTRY="{\"ts\":\"${TS}\",\"hook\":\"${HOOK_TYPE}\",\"tool\":\"${TOOL}\"}"
 

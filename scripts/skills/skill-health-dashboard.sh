@@ -125,12 +125,18 @@ fi
 # ---------------------------------------------------------------------------
 INVOCATION_DIR=".claude/state/skill-invocations"
 INVOCATION_FILE="${INVOCATION_DIR}/$(date +%Y-%m-%d).json"
-if [[ -d "logs/orchestrator/hermes" ]]; then
+# #3112: scan where session-logger actually writes skill_name events
+# (.claude/state/sessions), not the (empty) hermes log dir; then regenerate the
+# usage report WITH --invocation-data so demotion actually applies (BUG-3 wiring).
+INVOCATION_SESSIONS_DIR=".claude/state/sessions"
+if [[ -d "${INVOCATION_SESSIONS_DIR}" ]]; then
   mkdir -p "${INVOCATION_DIR}"
   uv run --no-project python "${WS_HUB}/scripts/skills/skill-invocation-scanner.py" \
-      --sessions-dir "logs/orchestrator/hermes" \
+      --sessions-dir "${INVOCATION_SESSIONS_DIR}" \
       --skills-root ".claude/skills" \
       --output "${INVOCATION_FILE}" >/dev/null 2>&1 || true
+  uv run --no-project python "${WS_HUB}/scripts/skills/skill-usage-report.py" \
+      --invocation-data "${INVOCATION_FILE}" >/dev/null 2>&1 || true
 fi
 
 # ---------------------------------------------------------------------------
