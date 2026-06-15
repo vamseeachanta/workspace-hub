@@ -47,10 +47,10 @@ def load_rules(map_path: Path) -> list[Rule]:
         pat = raw["pattern"]
         if raw.get("word_bound"):
             # Alpha-boundary: match unless flanked by ASCII letters. This protects
-            # a short token from matching inside a larger *word* (e.g. 'hdic' inside
+            # a short token from matching inside a larger *word* (e.g. a token inside
             # 'blockMeshDict') while STILL matching when the token abuts digits,
-            # underscores, or punctuation (e.g. 'Saipem7000', 'saipem_vessels',
-            # '_Saipem[1]') — cases plain \b...\b silently misses because '_' is a
+            # underscores, or punctuation (e.g. 'Tokenco7000', 'tokenco_vessels',
+            # '_Tokenco[1]') — cases plain \b...\b silently misses because '_' is a
             # regex word char.
             pat = rf"(?<![A-Za-z]){pat}(?![A-Za-z])"
         rules.append(
