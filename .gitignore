@@ -571,3 +571,6 @@ scripts/review/results/
 # the learning cron. The real client names live ONLY in the private
 # aceengineer-strategy archive; provision a local copy here per host. Never track.
 config/agents/.client-codename-map.local.yaml
+
+# PII #3098: real client registry relocated private; local copy provisioned per host
+config/.client-wikis.local.yml

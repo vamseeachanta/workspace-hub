@@ -36,7 +36,10 @@ log() { echo "[install-wiki-frontmatter-hook] $*"; }
 WS_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 CANONICAL_PY="$WS_ROOT/scripts/enforcement/check-wiki-sibling-frontmatter.py"
 CANONICAL_SH="$WS_ROOT/scripts/enforcement/check-wiki-sibling-frontmatter.sh"
-REGISTRY="$WS_ROOT/config/client-wikis.yml"
+# Real registry is PRIVATE (#3098). Source the local private copy (provisioned
+# per host from aceengineer-strategy); the public config/client-wikis.yml is now
+# an empty stub and cannot be vendored. Override with $WIKI_SIBLING_REGISTRY_PATH.
+REGISTRY="${WIKI_SIBLING_REGISTRY_PATH:-$WS_ROOT/config/.client-wikis.local.yml}"
 
 if [[ ! -f "$CANONICAL_PY" ]]; then
   log "ERROR: canonical script not found at $CANONICAL_PY"

@@ -89,15 +89,19 @@ def _parse_frontmatter(path: Path) -> dict[str, Any] | None:
 def _load_registry(repo_root: Path) -> dict[str, dict[str, Any]] | None:
     """Resolve and load client-wikis.yml registry.
 
-    Precedence:
+    Precedence (the real registry is PRIVATE — #3098):
         1. $WIKI_SIBLING_REGISTRY_PATH if set
-        2. $repo_root/.workspace-hub/client-wikis.yml
-        3. None (warn-only mode for registry-dependent rules)
+        2. $repo_root/config/.client-wikis.local.yml  (gitignored; provisioned per host)
+        3. $repo_root/.workspace-hub/client-wikis.yml  (vendored into wiki repos)
+        4. None (warn-only mode for registry-dependent rules)
+    The public config/client-wikis.yml is an empty stub and is intentionally NOT
+    a candidate (its `wikis: []` would clear all client slugs).
     """
     explicit = os.environ.get("WIKI_SIBLING_REGISTRY_PATH")
     candidates: list[Path] = []
     if explicit:
         candidates.append(Path(explicit))
+    candidates.append(repo_root / "config" / ".client-wikis.local.yml")
     candidates.append(repo_root / ".workspace-hub" / "client-wikis.yml")
     for path in candidates:
         if path.is_file():
