@@ -17,6 +17,7 @@ set -uo pipefail
 # === Configuration ===
 # Canonical tier-1 Python set is config/tier1-python-repos.txt via scripts/lib/tier1-repos.sh (#3023).
 REPO_ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]:-$0}")" rev-parse --show-toplevel 2>/dev/null || pwd)"
+GUARD="${REPO_ROOT}/scripts/lib/worktree_guard.py"  # #3143 deny-by-default ownership guard
 source "${REPO_ROOT}/scripts/lib/tier1-repos.sh"
 TIER1_REPOS=(workspace-hub "${TIER1_PYTHON_REPOS[@]}")
 WORKSPACE_ROOT=/mnt/local-analysis/workspace-hub
@@ -139,7 +140,10 @@ for repo in "${TIER1_REPOS[@]}"; do
         # Verify no open PR
         OPEN_PR=$(gh pr list --repo "vamseeachanta/$repo" --head "$branch" --state open --json number --jq length 2>/dev/null || echo 0)
         if [ "$OPEN_PR" = "0" ]; then
-          if run "delete merged branch $repo/$branch" git_q branch -d "$branch" 2>/dev/null; then
+          # #3143: never delete a branch checked out in a live worktree (guard runs in this repo's CWD).
+          if ! python3 "$GUARD" safe-delete-branch "$branch" 2>/dev/null; then
+            echo "  $repo/$branch: checked out in a live worktree — skipping delete (#3143)"
+          elif run "delete merged branch $repo/$branch" git_q branch -d "$branch" 2>/dev/null; then
             MERGED_COUNT=$((MERGED_COUNT + 1))
           fi
         fi
