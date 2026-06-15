@@ -571,3 +571,7 @@ config/agents/.client-codename-map.local.yaml
 
 # PII #3098: real client registry relocated private; local copy provisioned per host
 config/.client-wikis.local.yml
+
+# Stray inspection/staging scratch dirs (#3098) — never track
+.tmp-inspect-*/
+.tmp-*/
