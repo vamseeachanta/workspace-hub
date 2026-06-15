@@ -1,10 +1,48 @@
 {
-  "generated_at": "2026-06-15T05:20:12.862608Z",
+  "generated_at": "2026-06-15T13:20:14.190287Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 6,
   "applied": [],
   "candidates": [
+    {
+      "number": 2563,
+      "title": "Set up Telegram mobile access for Hermes AI control",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2563",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:ai-orchestration",
+        "cat:operations",
+        "domain:integrations",
+        "machine:dev-primary",
+        "status:plan-approved",
+        "dispatch:ready",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-06-10T12:58:44Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
     {
       "number": 2628,
       "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
@@ -194,45 +232,6 @@
       "eligible": true
     },
     {
-      "number": 2755,
-      "title": "throughput(workstations): activate ace-linux-2 provider/machine lane",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2755",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:ai-orchestration",
-        "cat:operations",
-        "status:working",
-        "machine:ace-linux-2",
-        "status:plan-approved",
-        "dispatch:ready",
-        "gate:completeness",
-        "domain:workstations-machine-bringup",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-06-10T16:29:18Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
       "number": 3030,
       "title": "Dispatch-time codex weekly-quota gate: suspend lane:codex routing when available <10%",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3030",
@@ -390,7 +389,7 @@
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-06-13T10:08:14Z",
+      "updatedAt": "2026-06-15T10:08:09Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
