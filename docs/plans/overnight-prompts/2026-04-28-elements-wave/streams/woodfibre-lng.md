@@ -17,7 +17,7 @@ Umbrella: https://github.com/vamseeachanta/workspace-hub/issues/2540
 Completed upstream: #2526, #2534, #2535, #2536.
 
 Raw corpus source of record:
-`/mnt/ace/acma-projects/31522-woodfibre-lng`
+`/mnt/ace/mkt-a/31522-woodfibre-lng`
 
 Wiki domain target:
 `lng-projects`
@@ -49,7 +49,7 @@ Do not write to:
 ## Required work
 
 1. Re-read issue #2544 with `gh issue view 2544`.
-2. Build a read-only structure map for `/mnt/ace/acma-projects/31522-woodfibre-lng` from path/file metadata. Avoid opening huge binaries unless only metadata is read.
+2. Build a read-only structure map for `/mnt/ace/mkt-a/31522-woodfibre-lng` from path/file metadata. Avoid opening huge binaries unless only metadata is read.
 3. Identify project document families and likely high-value small candidates. Explicitly flag client/confidentiality review needs.
 4. Produce `woodfibre-corpus-scout.md` with top-level/second-level structure, file-type/size observations, risks, and recommended extraction strategy.
 5. Produce `woodfibre-first-tranche.tsv` with no more than 15 candidate artifacts. Columns: priority, family, content_kind, bytes, absolute_path, rationale, extraction_method, target_wiki_page, confidentiality_risk.

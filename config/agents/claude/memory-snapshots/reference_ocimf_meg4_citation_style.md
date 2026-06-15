@@ -29,7 +29,7 @@ Researched 2026-05-22 (workspace-hub #2760 Pass G; full source URLs in agent tra
 ## Project document citation
 Cite as controlled document with: **Project No. / Document No. / Title / Revision / Date / Originator / availability marker**.
 
-Example: ACMA Engineering (2026). *B1528 proj-a — Vessel Geometry and Rudder Particulars Workbook*. Document No. B1528-NA-CAL-001, Rev. B, dated 2026-04-15. (Proprietary; available on request.)
+Example: mkt-a Engineering (2026). *B1528 proj-a — Vessel Geometry and Rudder Particulars Workbook*. Document No. B1528-NA-CAL-001, Rev. B, dated 2026-04-15. (Proprietary; available on request.)
 
 ## Coefficient source provenance
 Name figure + interpolation axis + regime: *"Longitudinal current force coefficient Cxc digitized from OCIMF MEG4 (2018), Annex A, Fig. A9 (loaded VLCC, conventional bow), interpolated at water-depth-to-draft ratio > 4.4, per MEG4 §A.1 conventions."*

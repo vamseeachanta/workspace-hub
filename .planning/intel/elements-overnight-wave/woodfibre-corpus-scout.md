@@ -46,7 +46,7 @@
 
 ## Document-control structure inside `05.Deliverables/`
 
-ACMA EDMS naming convention: `350106-SC-EN-003-SD-NNNNNN_<rev>.<ext>`. Folder codes:
+mkt-a EDMS naming convention: `350106-SC-EN-003-SD-NNNNNN_<rev>.<ext>`. Folder codes:
 
 | Code | Meaning | Files | High-value? |
 |---|---|---:|---|
@@ -100,14 +100,14 @@ ACMA EDMS naming convention: `350106-SC-EN-003-SD-NNNNNN_<rev>.<ext>`. Folder co
 
 ### Confidentiality / IP risk: **HIGH** for all candidates
 
-This is a live project corpus. EDMS prefix `350106-SC-EN-003-SD-XXXXXX` indicates ACMA Engineering's project artefact register, executed for what appears to be the **WoodfibreLNG floating storage tank (FST) detailed design** — the file/folder naming references `FST-1`, `FST-2`, `Capricorn`, `Taurus`, `LNGC` (LNG carrier), `FSTs CP System` (cathodic protection), `Loading Arm Motions`, `Permanent Mooring Interface Loads`, `Initial Scantling Evaluation`. Likely third-party stakeholders include Pacific Energy / WoodfibreLNG (owner), WSP (mentioned by folder name), and shipyard partners (Capricorn, Taurus naming).
+This is a live project corpus. EDMS prefix `350106-SC-EN-003-SD-XXXXXX` indicates mkt-a Engineering's project artefact register, executed for what appears to be the **WoodfibreLNG floating storage tank (FST) detailed design** — the file/folder naming references `FST-1`, `FST-2`, `Capricorn`, `Taurus`, `LNGC` (LNG carrier), `FSTs CP System` (cathodic protection), `Loading Arm Motions`, `Permanent Mooring Interface Loads`, `Initial Scantling Evaluation`. Likely third-party stakeholders include Pacific Energy / WoodfibreLNG (owner), WSP (mentioned by folder name), and shipyard partners (Capricorn, Taurus naming).
 
 **Implication:**
 - Methodology summaries, scope outlines, code references — typically OK to abstract.
 - Numerical values (loads, GA dimensions, scantling sizes, design heading angles) — likely confidential.
-- Cannot copy raw PDFs/DOCX into git/wiki. Even abstracts must be reviewed by ACMA before publication.
+- Cannot copy raw PDFs/DOCX into git/wiki. Even abstracts must be reviewed by mkt-a before publication.
 
-**Action:** every candidate is marked `confidentiality_risk: high` in the first-tranche TSV. Plan acceptance requires explicit ACMA review checkpoint (see canonical plan).
+**Action:** every candidate is marked `confidentiality_risk: high` in the first-tranche TSV. Plan acceptance requires explicit mkt-a review checkpoint (see canonical plan).
 
 ### Volume risk
 
@@ -127,13 +127,13 @@ This is a live project corpus. EDMS prefix `350106-SC-EN-003-SD-XXXXXX` indicate
    - `.txt` (readmes): full inline quote permissible (already trivially small, no IP density).
 4. **One wiki source page per document**, frontmatter sourced from EDMS doc number, latest revision letter only.
 5. **Latest-revision rule:** for documents with multiple revs (e.g. Naval Architecture Design Brief is at Rev B / B1 / C / C1 / C2), the first tranche includes only the **highest published rev** (C1 here) and the planner must NOT silently include older revs.
-6. **Confidentiality gate before any extraction:** PR description must list candidate set; merge waits on ACMA / project-lead approval, not just wiki maintainer review.
+6. **Confidentiality gate before any extraction:** PR description must list candidate set; merge waits on mkt-a / project-lead approval, not just wiki maintainer review.
 
 ## Uncertainties (per prompt: documenting rather than asking)
 
 - **Project sponsor identity** is inferred from filename patterns (`WoodfibreLNG`, `WSP Interface loads`, `FST-1/FST-2`, `Capricorn/Taurus`). Cannot be confirmed without opening a PDF — out of scope here. Plan-stage reviewer should sanity-check before dispatching extraction.
-- **EDMS doc number meaning of trailing `_<letter>`** assumed to be the IFR/IFA revision letter (B = "Issued for Review", C = "Issued for Approval", per common ACMA convention). Suffix `1`, `2` (e.g. `_C1`, `_C2`) assumed to be sub-revisions within the lettered review cycle. Latest = highest rev letter, then highest sub-revision.
-- **Sponsorship between ACMA, WoodfibreLNG, WSP, Pacific Energy:** not derivable from metadata. Must be clarified with the project owner before any extracted content lands publicly.
+- **EDMS doc number meaning of trailing `_<letter>`** assumed to be the IFR/IFA revision letter (B = "Issued for Review", C = "Issued for Approval", per common mkt-a convention). Suffix `1`, `2` (e.g. `_C1`, `_C2`) assumed to be sub-revisions within the lettered review cycle. Latest = highest rev letter, then highest sub-revision.
+- **Sponsorship between mkt-a, WoodfibreLNG, WSP, Pacific Energy:** not derivable from metadata. Must be clarified with the project owner before any extracted content lands publicly.
 - **Whether `_from_elements/` staging exists for this corpus** is implied by the #2535 catalog (staging path is `/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements`) but not verified in this scout because the working directory is sandboxed away from `/mnt/ace`. Treat as a precondition, not a confirmation.
 
 ## Companion bucket cross-reference

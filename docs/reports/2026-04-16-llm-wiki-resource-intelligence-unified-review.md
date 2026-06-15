@@ -256,7 +256,7 @@ Output: JSONL cross-link store per wiki pair, consumed by agents and wiki index 
 | #2039 | Ingest remaining high-value sources (skills metadata, closed issues) | Internal |
 | #2067 | Wire .planning/research into engineering wiki nightly ingest | Research |
 | #2010 | Career-learnings seed migration (pipeline, OrcaFlex VIV, FEA, CFD) | Seeds |
-| #2216 | Integrate /mnt/ace/acma-codes into llm-wiki and repo intelligence | ACMA |
+| #2216 | Integrate /mnt/ace/mkt-a-codes into llm-wiki and repo intelligence | mkt-a |
 | #2287 | Assess LR and Noble Denton corpus for downstream repo routing | External |
 | #1609 | Automated resource download pipeline | Infrastructure |
 | #1610 | Add opm-common to open-source-engineering-catalog | Content |
@@ -373,7 +373,7 @@ Currently 75 wiki-related issues are scattered across `domain:knowledge`, `domai
 | Category | Open | Closed | Total |
 |----------|------|--------|-------|
 | LLM-Wiki (core, ingestion, automation, agent, reconciliation, strengthening) | ~25 | ~25 | ~50 |
-| Document Intelligence (pipeline, standards, ACMA, triage) | ~18 | ~12 | ~30 |
+| Document Intelligence (pipeline, standards, mkt-a, triage) | ~18 | ~12 | ~30 |
 | Resource Intelligence (registry, downloads, cross-ref) | ~5 | ~1 | ~6 |
 | **Combined (deduplicated)** | **~40** | **~35** | **~75** |
 

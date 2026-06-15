@@ -10,10 +10,10 @@ This wave is **planning-only**. It must not extract broad raw data, copy raw fil
 
 | Terminal | Issue | Workstream | Raw corpus | Result artifact |
 |---:|---:|---|---|---|
-| 1 | #2541 | SESA LNG curated extraction plan | `/mnt/ace/doris/62092_sesa` | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-1-sesa.md` |
-| 2 | #2542 | Doris University training taxonomy plan | `/mnt/ace/doris/training` | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-2-doris-university.md` |
-| 3 | #2543 | DORIS codes/specs standards metadata plan | `/mnt/ace/doris/codes` | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-3-doris-codes.md` |
-| 4 | #2544 | Woodfibre LNG corpus scout plan | `/mnt/ace/acma-projects/31522-woodfibre-lng` | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md` |
+| 1 | #2541 | SESA LNG curated extraction plan | `/mnt/ace/lng-a/62092_sesa` | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-1-sesa.md` |
+| 2 | #2542 | lng-a University training taxonomy plan | `/mnt/ace/lng-a/training` | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-2-lng-a-university.md` |
+| 3 | #2543 | lng-a codes/specs standards metadata plan | `/mnt/ace/lng-a/codes` | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-3-lng-a-codes.md` |
+| 4 | #2544 | Woodfibre LNG corpus scout plan | `/mnt/ace/mkt-a/31522-woodfibre-lng` | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md` |
 
 Umbrella issue: #2540.
 
@@ -48,8 +48,8 @@ Important files:
 | Terminal | Allowed writes | Forbidden writes |
 |---:|---|---|
 | 1 | `docs/plans/2026-04-28-issue-2541-elements-sesa-curated-extraction-plan.md`; `.planning/intel/elements-overnight-wave/sesa-*`; result file T1 | T2/T3/T4 plan/result/intel paths; `/mnt/ace`; wiki raw folders |
-| 2 | `docs/plans/2026-04-28-issue-2542-elements-doris-university-training-plan.md`; `.planning/intel/elements-overnight-wave/doris-university-*`; result file T2 | T1/T3/T4 plan/result/intel paths; `/mnt/ace`; wiki raw folders |
-| 3 | `docs/plans/2026-04-28-issue-2543-elements-doris-codes-standards-plan.md`; `.planning/intel/elements-overnight-wave/doris-codes-*`; result file T3 | T1/T2/T4 plan/result/intel paths; `/mnt/ace`; wiki raw folders |
+| 2 | `docs/plans/2026-04-28-issue-2542-elements-lng-a-university-training-plan.md`; `.planning/intel/elements-overnight-wave/lng-a-university-*`; result file T2 | T1/T3/T4 plan/result/intel paths; `/mnt/ace`; wiki raw folders |
+| 3 | `docs/plans/2026-04-28-issue-2543-elements-lng-a-codes-standards-plan.md`; `.planning/intel/elements-overnight-wave/lng-a-codes-*`; result file T3 | T1/T2/T4 plan/result/intel paths; `/mnt/ace`; wiki raw folders |
 | 4 | `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md`; `.planning/intel/elements-overnight-wave/woodfibre-*`; result file T4 | T1/T2/T3 plan/result/intel paths; `/mnt/ace`; wiki raw folders |
 
 All terminals must avoid editing shared files such as `docs/plans/README.md`, wiki indexes, wiki logs, `.gitignore`, and scripts unless explicitly instructed in a later approved implementation wave.

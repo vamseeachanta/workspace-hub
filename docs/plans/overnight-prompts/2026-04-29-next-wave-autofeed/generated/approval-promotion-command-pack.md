@@ -80,10 +80,10 @@ Approving the **pointer/scout metadata-only subset** described by the 2026-04-29
 
 Scope of approval:
 - Emit only the corpus pointer page and structured metadata pointers; no document abstract extraction, no technical summary extraction, no direct quote, no table extraction, no figure extraction.
-- The post-scout extraction tranche stays blocked pending (a) a dedicated extraction plan with its own adversarial review and (b) `docs/governance/woodfibre-extraction-clearance-2026.md` with row-level clearance signed by an explicitly named ACMA project owner / client-authorized reviewer / legal-IP delegate.
+- The post-scout extraction tranche stays blocked pending (a) a dedicated extraction plan with its own adversarial review and (b) `docs/governance/woodfibre-extraction-clearance-2026.md` with row-level clearance signed by an explicitly named mkt-a project owner / client-authorized reviewer / legal-IP delegate.
 - Execute sequentially after #2541 because both touch `knowledge/wikis/lng-projects/wiki/index.md` and `log.md`.
 
-This approval does NOT authorize: any abstract/quote/table/figure extraction, any persisted full-text dump, any OCR, any modification of `/mnt/ace/acma-projects/31522-woodfibre-lng`, or any #2534 cleanup.
+This approval does NOT authorize: any abstract/quote/table/figure extraction, any persisted full-text dump, any OCR, any modification of `/mnt/ace/mkt-a/31522-woodfibre-lng`, or any #2534 cleanup.
 
 Re-review consensus: Gemini APPROVE (grounded), Codex APPROVE (degraded sandbox grounding — addendum-only).
 
@@ -100,7 +100,7 @@ Re-review synthesis: `scripts/review/results/2026-04-29-plan-2541-2544-rereview-
 Reviewer verdicts: Gemini APPROVE (grounded); Codex APPROVE (degraded sandbox grounding).
 HARD RUNTIME GATE: post-scout extraction stays blocked pending a separate extraction plan + `docs/governance/woodfibre-extraction-clearance-2026.md` with row-level clearance.
 Sequencing: execute AFTER #2541; both touch `knowledge/wikis/lng-projects/wiki/index.md` and `log.md`.
-Excluded from approval: any abstract/quote/table/figure extraction; full-text dumps; OCR; modifications of `/mnt/ace/acma-projects/31522-woodfibre-lng`; #2534 cleanup.
+Excluded from approval: any abstract/quote/table/figure extraction; full-text dumps; OCR; modifications of `/mnt/ace/mkt-a/31522-woodfibre-lng`; #2534 cleanup.
 EOF
 git add .planning/plan-approved/2544.md
 git commit -m "chore(planning): reconcile #2544 approval marker with scout-only scope"

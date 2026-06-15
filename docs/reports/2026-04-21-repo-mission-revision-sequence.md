@@ -80,19 +80,19 @@ Tier-2 and Tier-3 repos should be revised against this spine rather than indepen
 ### Wave 2 — domain and client execution repos
 5. `worldenergydata`
 6. `OGManufacturing`
-7. `acma-projects`
-8. `seanation`
-9. `frontierdeepwater`
-10. `rock-oil-field`
+7. `mkt-a`
+8. `client-f`
+9. `client-a`
+10. `client-b`
 11. `investments`
 
 ### Wave 3 — operational/support/personal repos
 12. `aceengineer-admin`
 13. `aceengineer-strategy`
-14. `client_projects`
-15. `saipem`
+14. `client-c`
+15. `client-d`
 16. `CAD-DEVELOPMENTS`
-17. `doris`
+17. `lng-a`
 18. `teamresumes`
 19. `sd-work`
 20. `assethold`
@@ -118,17 +118,17 @@ Rationale:
 | `aceengineer-website` | T1 | README + AGENTS + CLAUDE | No structured mission/roadmap/decisions files |
 | `worldenergydata` | T2 | README + AGENTS + CLAUDE | No structured `.agent-os` mission files found |
 | `OGManufacturing` | T2 | Strong `.agent-os` mission/roadmap/decisions | Align wording to portfolio spine and downstream role |
-| `acma-projects` | T2 | `.agent-os/product/mission.md` present | Roadmap/decisions thin or absent |
-| `seanation` | T2 | Strong `.agent-os` mission/roadmap/decisions | Align to portfolio routing and llm-wiki role |
-| `frontierdeepwater` | T2 | `.agent-os/product/mission.md` present | Roadmap/decisions thin or absent |
-| `rock-oil-field` | T2 | `.agent-os/product/mission.md` + CLAUDE | Missing `AGENTS.md` and `README.md` |
+| `mkt-a` | T2 | `.agent-os/product/mission.md` present | Roadmap/decisions thin or absent |
+| `client-f` | T2 | Strong `.agent-os` mission/roadmap/decisions | Align to portfolio routing and llm-wiki role |
+| `client-a` | T2 | `.agent-os/product/mission.md` present | Roadmap/decisions thin or absent |
+| `client-b` | T2 | `.agent-os/product/mission.md` + CLAUDE | Missing `AGENTS.md` and `README.md` |
 | `investments` | T2 | Strong `.agent-os` mission/roadmap/decisions | Clarify ecosystem role vs personal/portfolio analytics |
 | `aceengineer-admin` | T3 | Strong `.agent-os` mission/roadmap/decisions | Align to consulting-ops support role |
 | `aceengineer-strategy` | T3 | README only | Missing `AGENTS.md`, `CLAUDE.md`, and structured mission set |
-| `client_projects` | T3 | `.agent-os/product/mission.md` present | Roadmap/decisions thin or absent |
-| `saipem` | T3 | Strong `.agent-os` mission/roadmap/decisions | Clarify client-delivery vs reusable knowledge ownership |
+| `client-c` | T3 | `.agent-os/product/mission.md` present | Roadmap/decisions thin or absent |
+| `client-d` | T3 | Strong `.agent-os` mission/roadmap/decisions | Clarify client-delivery vs reusable knowledge ownership |
 | `CAD-DEVELOPMENTS` | T3 | README + AGENTS + CLAUDE | No structured `.agent-os` mission set |
-| `doris` | T3 | Strong `.agent-os` mission/roadmap/decisions | Clarify where it fits relative to data/analytics stack |
+| `lng-a` | T3 | Strong `.agent-os` mission/roadmap/decisions | Clarify where it fits relative to data/analytics stack |
 | `teamresumes` | T3 | Strong `.agent-os` mission/roadmap/decisions | Low-priority role clarification only |
 | `sd-work` | T3 | `.agent-os/product/mission.md` present | Roadmap/decisions thin or absent |
 | `assethold` | T3 | Strong `.agent-os` mission/roadmap/decisions | Align to investments / finance boundary |

@@ -45,8 +45,8 @@ Then provide:
 - **Found:** `docs/strategy/gtm/vessel-installation-contractors/email-templates.md` (139 lines, 2026-04-02) — three-step cold/follow-up/meeting outreach sequence with placeholder slots (`{{COMPANY}}`, `{{JOB_TITLE}}`, `{{PAIN_POINT_*}}`), Day 0/3/7 timing, A/B subject variants, and disqualification criteria. **Implication for #2554:** the matrix needs a per-target slot for `{{PAIN_POINT_1..3}}` derived from public fleet/project evidence, otherwise the templates render with stale generic copy.
 - **Found:** `docs/gtm/outreach-candidate-briefs-2026-04-28.md` (1015 lines, lane C2 output) — 10 buyer-segment briefs with `can-say-now` / `cannot-claim-yet` / `missing-proof` fields. Candidates 3, 4, and 5 are vessel-installation-segment (deepwater mudmat, shallow-water S-lay, rigid-jumper installation) and already carry shipped-demo evidence (`digitalmodel/examples/demos/gtm/demo_03|04|05_*.html`). **Implication:** the contractor matrix can adopt the eight-field brief template verbatim and inherit Demo 3/4/5 as the proof anchor for Tier-1 / Tier-2 vessel contractors.
 - **Found:** `docs/gtm/capability-summary.md`, `docs/gtm/capability-map.md`, `docs/gtm/marine-terminal-engineering-scope.md`, `docs/gtm/fowt-engineering-scope.md` — capability framing already split by service line and adjacent segments. The contractor matrix should reference these via path, not re-author scope text.
-- **Found:** Issue #1669 body (Apr 2) — pre-existing tier seed list (Tier-1 majors: Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, Van Oord, DEME; Tier-2 specialists: DOF Subsea, Solstad, Bourbon, Sapura, EMAS/Ezra, Seaway7; Tier-3 niche: Helix, Superior Energy, DeepOcean, Gulf Offshore). **Implication:** the matrix takes #1669's tier list as the starting set and must reconcile (drop, retier, add) using the criteria below; #1669 has no evidence URLs attached to most names.
-- **Found:** Issue #1799 body — pipelay barge spec collection target (Allseas Lorelay, Subsea 7 Seven Navica, Saipem Castorone, McDermott DB101, Sapura Constructor, Van Oord Stork, Boskalis lay barges). **Implication:** vessel-spec data anchors the "relevant fleet angle" column for ~7 contractors and is also a public-source seed for the matrix. #1799 itself is a separate data-collection issue — the matrix references its outputs without duplicating spec rows.
+- **Found:** Issue #1669 body (Apr 2) — pre-existing tier seed list (Tier-1 majors: Subsea7, TechnipFMC, client-d, McDermott, Allseas, Heerema, Boskalis, Van Oord, DEME; Tier-2 specialists: DOF Subsea, Solstad, Bourbon, Sapura, EMAS/Ezra, Seaway7; Tier-3 niche: Helix, Superior Energy, DeepOcean, Gulf Offshore). **Implication:** the matrix takes #1669's tier list as the starting set and must reconcile (drop, retier, add) using the criteria below; #1669 has no evidence URLs attached to most names.
+- **Found:** Issue #1799 body — pipelay barge spec collection target (Allseas Lorelay, Subsea 7 Seven Navica, client-d Castorone, McDermott DB101, Sapura Constructor, Van Oord Stork, Boskalis lay barges). **Implication:** vessel-spec data anchors the "relevant fleet angle" column for ~7 contractors and is also a public-source seed for the matrix. #1799 itself is a separate data-collection issue — the matrix references its outputs without duplicating spec rows.
 - **Found:** `digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json` (referenced in Demo 3) — Large CSV (5,000 te) and Medium CSV (2,500 te) class-typical RAOs and crane envelopes. **Implication:** vessel matrix `relevant fleet angle` column should describe whether each contractor's flagship fits the demo's envelope or sits outside it, so outreach copy can claim defensibly.
 - **Found:** `docs/gtm/intake/prospect-schema.json` (Draft-07 validated per #2346) — defines the YAML intake shape used to produce 48-hour custom demo reruns. **Implication:** the matrix `outreach priority` column should flag which contractors would be worth pre-staging an intake YAML for once their interest is confirmed.
 - **Gap:** No existing single artifact merges (a) #1669 tier list, (b) public fleet evidence, (c) #1799 vessel-spec coverage, (d) per-target pain-point hypotheses, and (e) demo-anchor mapping into one outreach-ready matrix. `ls docs/reports/gtm/ 2>&1` returned "No such file or directory" — the target directory has to be created.
@@ -342,20 +342,20 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **outreach_priority.** **High** — Tier-1 fit; even without a vessel-anchored demo match, Demo 1 + Demo 2 are credible anchors.
 - **private_route.** external.
 
-### Target 3 — Saipem
+### Target 3 — client-d
 
-- **company.** Saipem (Italy)
+- **company.** client-d (Italy)
 - **tier_seed.** T1
 - **tier_revised.** T1
 - **segment.** Subsea EPIC, pipelay (deep + shallow), heavy lift, drilling
 - **relevant_fleet.** Castorone (PLV — [#1799](https://github.com/vamseeachanta/workspace-hub/issues/1799) seed; deep + shallow capable), FDS-2 HLV
 - **demo_anchor.** Demo 4 (shallow-water S-lay — Castorone shallow envelope), Demo 3 (deepwater installation — FDS-2 analogue), Demo 5 (rigid-jumper)
 - **pain_point_hypothesis.** Cross-water-depth fleet flexibility is a competitive lever; concept-stage screening that compares small-barge vs. larger-vessel feasibility frees engineering bandwidth on portfolio bidding.
-- **corporate_root_evidence.** https://www.saipem.com/ (corporate root)
+- **corporate_root_evidence.** https://www.client-d.com/ (corporate root)
 - **deep_link_evidence.** PENDING — verify official fleet/project/vessel subpage before send; scaffold v1 intentionally stops at the corporate root.
 - **pain_point_evidence.** `inferred-from-demo-coverage` for scaffold v1; replace with public fleet/project/source proof before send.
 - **can_say_now.** "60-case shallow-water S-lay screening across 2 barge classes × 5 pipe sizes × 6 depths" (Demo 4); "180-case deepwater mudmat installation against Large-CSV / Medium-CSV envelopes" (Demo 3).
-- **cannot_claim_yet.** Castorone-specific RAOs; named-Saipem project case studies.
+- **cannot_claim_yet.** Castorone-specific RAOs; named-client-d project case studies.
 - **outreach_priority.** **High**.
 - **private_route.** external.
 
@@ -677,7 +677,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **Total target rows:** 22 (≥ 20 required by [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) acceptance criterion #1).
 - **Live targets (priority High / Medium / Low):** 19. Deprecated/deferred: 3 (Solstad, EMAS, Cadeler-deferred).
 - **Targets with at least one shipped-demo anchor:** 17 of 19 live (Demo 3 / 4 / 5 mapping).
-- **Targets in `outreach_priority: High`:** 10 (Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura Energy, Helix). Each carries a named-vessel anchor and a demo-mapping.
+- **Targets in `outreach_priority: High`:** 10 (Subsea7, TechnipFMC, client-d, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura Energy, Helix). Each carries a named-vessel anchor and a demo-mapping.
 - **High-priority evidence state:** 10 of 10 currently have `corporate_root_evidence`, `deep_link_evidence`, and `pain_point_evidence` fields present; all 10 still require replacement of scaffold placeholders with verified public deep links / pain-point proof before send.
 - **Targets in `outreach_priority: Medium`:** 7 (Van Oord, DEME, Bourbon, Seaway7, DeepOcean, Jan De Nul, Acteon).
 - **Targets in `outreach_priority: Low`:** 2 (Eidesvik, Otto Candies).

@@ -2,7 +2,7 @@
 
 > **Date:** 2026-05-20
 > **Session:** workspace-hub @ ace-linux-1
-> **Trigger:** User asked to "correct the polar charts in `digitalmodel/docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html`" — add transparent ship outline + show coefficients at appropriate phase angle so lateral force is obvious. Generalized for any study (e.g., workspace-hub#2760 SIROCCO consumer).
+> **Trigger:** User asked to "correct the polar charts in `digitalmodel/docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html`" — add transparent ship outline + show coefficients at appropriate phase angle so lateral force is obvious. Generalized for any study (e.g., workspace-hub#2760 proj-a consumer).
 > **Outcome:** digitalmodel#616 created → planned → reviewed (Claude r1+r2 plan-review + r1 code-review) → implemented (8 commits) → closed → reopened → fixed (2 visual bugs caught by Chrome MCP verification) → re-closed.
 > **No external action remaining.**
 
@@ -52,7 +52,7 @@
 ### workspace-hub upstream cross-links
 
 - `workspace-hub#2768` (OCIMF closeout umbrella, OPEN): 2 cross-link comments posted (spawn note + closure update)
-- `workspace-hub#2760` (B1528 SIROCCO force review, `status:plan-review`): 2 cross-link comments (capability available + closure update)
+- `workspace-hub#2760` (B1528 proj-a force review, `status:plan-review`): 2 cross-link comments (capability available + closure update)
 
 ---
 
@@ -78,7 +78,7 @@ These are committed in this exit handoff so the GH-comment hyperlinks resolve an
 | Item | Reason preserved |
 |---|---|
 | `M tests/marine_ops/marine_engineering/integration/charts/ocimf_mooring/*.png` (5 files) | Side-effect of running the pre-existing OCIMF integration tests (digitalmodel#556/#557/#561/#564 sibling-issue failures). NOT mine; running those tests regenerated the PNG comparison fixtures. Whoever owns those failing tests should commit or revert. |
-| `?? tests/naval_architecture/test_issue_2760_sirocco_current_rudder_revision.py` | Not mine; appeared during this session from another agent or session. Belongs to whoever is working on workspace-hub#2760. |
+| `?? tests/naval_architecture/test_issue_2760_proj-a_current_rudder_revision.py` | Not mine; appeared during this session from another agent or session. Belongs to whoever is working on workspace-hub#2760. |
 
 ### workspace-hub
 
@@ -86,8 +86,8 @@ Many parallel-session modifications visible in `git status`. Of those:
 
 | Item | Owner | NOT touched this session |
 |---|---|---|
-| `M docs/plans/2026-05-20-issue-2746-llm-wiki-acma.md` | Other session (#2746 work) | ✓ |
-| `M docs/plans/2026-05-20-issue-2760-b1528-sirocco-force-review-revision.md` | Other session (#2760 work) | ✓ |
+| `M docs/plans/2026-05-20-issue-2746-llm-wiki-mkt-a.md` | Other session (#2746 work) | ✓ |
+| `M docs/plans/2026-05-20-issue-2760-b1528-proj-a-force-review-revision.md` | Other session (#2760 work) | ✓ |
 | `MM docs/reports/provider-*.md/html` (6 files) | Auto-generated routing dashboard | ✓ |
 | `M scripts/review/results/2026-05-20-plan-2766-*.md` (3 files) | Other session (#2766 review) | ✓ |
 | `?? docs/plans/2026-05-20-issue-2770/2771/2772/2773-*.md` | Other session (placement decisions) | ✓ |
@@ -142,7 +142,7 @@ No surviving session-owned processes (verified via `pgrep`).
 
 2. **`workspace-hub#2768` epic plan progression**: the plan is `draft` per the README row but the live issue says `status:plan-review` (drift). To advance to real `status:plan-review`, run a Claude r1 adversarial review of the epic plan (currently no review artifacts exist) — then user approval, then Phase A (knowledge/wikis mirror via #2284) which gates Phase B4/B6 (digitalmodel citation registry). This is the natural OCIMF continuation track.
 
-3. **`workspace-hub#2760` SIROCCO consumer hook**: now that the polar-viz module is live in digitalmodel, the SIROCCO force-by-force review can call `polar_force_overlay()` directly. Implementation is gated on user approval of #2760's plan (currently `status:plan-review`).
+3. **`workspace-hub#2760` proj-a consumer hook**: now that the polar-viz module is live in digitalmodel, the proj-a force-by-force review can call `polar_force_overlay()` directly. Implementation is gated on user approval of #2760's plan (currently `status:plan-review`).
 
 ### Open questions left for domain judgment
 
@@ -167,7 +167,7 @@ This caught two bugs that 23 green TDD tests missed. The SessionStart hook noted
 
 ### NOT to be confused with
 
-- `docs/session-handoffs/2026-05-20-issue-2745-execution-complete-2746-and-2745-closeout.md` — different session, different scope (llm-wiki/acma freeze work)
+- `docs/session-handoffs/2026-05-20-issue-2745-execution-complete-2746-and-2745-closeout.md` — different session, different scope (llm-wiki/mkt-a freeze work)
 - `docs/handoffs/2026-05-20-exit-scheduler-plan-review.md` — different session, different scope (scheduler review)
 - This handoff is exclusively about the OCIMF polar-visualization shipping cycle
 

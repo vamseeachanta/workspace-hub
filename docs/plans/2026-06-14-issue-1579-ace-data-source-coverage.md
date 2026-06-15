@@ -21,7 +21,7 @@
 - Found local prerequisite: `data/document-index/index.jsonl` exists on `dev-primary` as ignored machine-local document-index state. Sample keys include `path`, `old_path`, `content_hash`, `summary`, `summary_done`, `summary_file_exists`, `target_repos`, `domain`, `source`, and `status`. Some rows can carry `summary: null`, `summary_done: true`, and `summary_file_exists: true`, so implementation must resolve ignored summary sidecars under `data/document-index/summaries/` before treating a row as described. Implementation must fail closed with a clear prerequisite error if the local index or a required summary sidecar is absent.
 - Found: `data/document-index/cross-drive-dedup-report.json` already has prior dedup evidence across `/mnt/ace` and remote DDE source pairs, including `exact_duplicates`, `name_size_matches`, `unique_to_ace`, and `unique_to_dde`.
 - Found: `data/document-index/mounted-source-registry.yaml` already carries source roots, canonical storage policy, provenance rules, and dedup rules for `/mnt/ace`, `/mnt/ace-data`, remote DDE, standards, literature, and project archives.
-- Found: `config/client-wikis.yml` declares `llm-wiki-acma` and `llm-wiki-hdic` as bootstrapped client wiki siblings, with additional planned client wiki siblings for rock-oil-field, client-projects, doris, frontierdeepwater, and saipem.
+- Found: `config/client-wikis.yml` declares `llm-wiki-mkt-a` and `llm-wiki-client-e` as bootstrapped client wiki siblings, with additional planned client wiki siblings for client-b, client-c, lng-a, client-a, and client-d.
 - Routing context: this plan reads `llm-wiki*` checkout metadata for coverage mapping but does not write wiki content, so the plan header remains `Client: N/A` per the issue-plan template.
 - Boundary: generated tracked inventory/report artifacts must be positive-allowlist sanitized. This plan and review artifacts may quote minimal path/config evidence for governance review; generated JSON/JSONL/CSV/HTML outputs must not repeat exact raw mount paths, private wiki paths, client/project basenames, client-identifying raw filenames, or free-text descriptions. Generated tracked artifacts will use content-free sequential refs (`row_000001`, `wiki_0001`), safe enum values, and aggregate counts. The ref-to-path mapping lives only in a durable ignored local full-fidelity artifact under `artifacts/private/issue-1579/`, with a tracked manifest that records local artifact SHA and retention metadata but no raw paths.
 - Gap: no existing artifact records every live `/mnt/ace` root child with description status, decision state, duplicate/reorg state, raw-source preservation state, and `llm-wiki*` mapping status.
@@ -41,11 +41,11 @@
 
 ### LLM Wiki pages and repos consulted
 
-- Live sibling checkouts observed on this machine: `/mnt/local-analysis/llm-wiki`, `/mnt/local-analysis/llm-wiki-acma`, and `/mnt/local-analysis/llm-wiki-fdas`.
+- Live sibling checkouts observed on this machine: `/mnt/local-analysis/llm-wiki`, `/mnt/local-analysis/llm-wiki-mkt-a`, and `/mnt/local-analysis/llm-wiki-fdas`.
 - `llm-wiki` checkout membership and git status can drift between planning and implementation. During r5 review, a transient `llm-wiki-vbatch-165-review` worktree was observed and then disappeared before the next local poll. Implementation must record each observed wiki checkout's branch, clean/dirty state, ahead/behind state, and checkout class at run time. Eligible sibling checkouts feed coverage percentages; transient/non-sibling worktrees are recorded as exclusions and must not create registry-drift decisions.
-- `llm-wiki-acma` is clean at planning time and contains client workflow docs, `projects/sirocco`, `projects/B1546-Noble-Drilling`, `sources/`, and `ledgers/`.
-- `llm-wiki-fdas` is live on disk but not listed in `config/client-wikis.yml`; `config/client-wikis.yml` does list planned `frontierdeepwater` with repo `vamseeachanta/llm-wiki-frontierdeepwater`. Because the live registry has no `fdas` alias or row, implementation must classify the current live state as `observed-unregistered` and queue registry reconciliation. `registered-slug-mismatch` is allowed only when explicit registry or source-manifest alias evidence links the live checkout to a registered client row.
-- `llm-wiki-hdic` is listed as bootstrapped in `config/client-wikis.yml`, but no sibling checkout was observed under `/mnt/local-analysis` during planning while its registered raw root exists under `/mnt/ace`. Implementation must report this reverse drift as `registered-but-not-checked-out` and must not collapse it into the same bucket as live-but-unregistered repos.
+- `llm-wiki-mkt-a` is clean at planning time and contains client workflow docs, `projects/proj-a`, `projects/B1546-Noble-Drilling`, `sources/`, and `ledgers/`.
+- `llm-wiki-fdas` is live on disk but not listed in `config/client-wikis.yml`; `config/client-wikis.yml` does list planned `client-a` with repo `vamseeachanta/llm-wiki-client-a`. Because the live registry has no `fdas` alias or row, implementation must classify the current live state as `observed-unregistered` and queue registry reconciliation. `registered-slug-mismatch` is allowed only when explicit registry or source-manifest alias evidence links the live checkout to a registered client row.
+- `llm-wiki-client-e` is listed as bootstrapped in `config/client-wikis.yml`, but no sibling checkout was observed under `/mnt/local-analysis` during planning while its registered raw root exists under `/mnt/ace`. Implementation must report this reverse drift as `registered-but-not-checked-out` and must not collapse it into the same bucket as live-but-unregistered repos.
 - `llm-wiki` contains source manifests and data-document-index artifacts such as `data/document-index/og-standards-raw-bucket-disposition.jsonl`, `og-standards-raw-unique-quarantine.jsonl`, `conference-candidate-manifest.jsonl`, and multiple source-manifest validators. These are reuse candidates for mapping and dedup/reorg semantics.
 
 ### Documents consulted
@@ -136,19 +136,19 @@ GH issue: #1579
   dedup_rule: prefer this location over ad-hoc downloads; check before re-downloading
 ```
 
-`config/client-wikis.yml:6-73` shows the registry has `acma` and `hdic` bootstrapped plus several planned client wikis, but no `fdas` row:
+`config/client-wikis.yml:6-73` shows the registry has `mkt-a` and `client-e` bootstrapped plus several planned client wikis, but no `fdas` row:
 
 ```text
-- short_name: acma
-  repo: vamseeachanta/llm-wiki-acma
+- short_name: mkt-a
+  repo: vamseeachanta/llm-wiki-mkt-a
   raw_roots:
-    - /mnt/ace/acma-projects/
+    - /mnt/ace/mkt-a/
   status: bootstrapped
 ...
-- short_name: hdic
-  repo: vamseeachanta/llm-wiki-hdic
+- short_name: client-e
+  repo: vamseeachanta/llm-wiki-client-e
   raw_roots:
-    - /mnt/ace/hdic/
+    - /mnt/ace/client-e/
   status: bootstrapped
 ```
 
@@ -168,7 +168,7 @@ $ find /mnt/ace -mindepth 1 -maxdepth 1 -type f | wc -l
 
 $ find /mnt/local-analysis -maxdepth 1 -type d -name 'llm-wiki*' -printf '%f\n' | sort
 llm-wiki
-llm-wiki-acma
+llm-wiki-mkt-a
 llm-wiki-fdas
 
 $ ls -ld /mnt/ace-data /mnt/ace
@@ -352,8 +352,8 @@ function compute_completeness_before_close(changed_files, evidence_items):
 | `test_relocation_ledger_requires_refs_checksum_and_rollback` | every proposed move has source ref, destination ref, checksum ref, reason, and rollback ref | fixture relocation proposal | ledger row validates or test fails |
 | `test_no_executed_move_or_delete_actions` | this issue remains audit/proposal only | generated relocation ledger | all action states are `proposed` or `needs-user-decision` |
 | `test_llm_wiki_live_repo_set_is_recorded` | live `llm-wiki*` clone enumeration is represented | fixture repo list | coverage metadata records exact repo set, checkout class, stale/clean status, and excluded counts |
-| `test_transient_llm_wiki_worktree_is_excluded_from_denominators` | review/batch worktrees cannot pollute wiki coverage or drift queues | fixture `llm-wiki`, `llm-wiki-acma`, and `llm-wiki-vbatch-165-review` with generic wiki remote under noncanonical name | transient checkout is recorded with `excluded_reason=transient-non-sibling`, excluded from per-wiki denominators, and not queued as `observed-unregistered` |
-| `test_live_unregistered_client_wiki_registry_drift_is_flagged` | live wiki clone with no registry or alias evidence becomes drift candidate | fixture live `llm-wiki-fdas` remote, registry `frontierdeepwater` row, no alias row | row/status flags `observed-unregistered` drift and queues registry reconciliation |
+| `test_transient_llm_wiki_worktree_is_excluded_from_denominators` | review/batch worktrees cannot pollute wiki coverage or drift queues | fixture `llm-wiki`, `llm-wiki-mkt-a`, and `llm-wiki-vbatch-165-review` with generic wiki remote under noncanonical name | transient checkout is recorded with `excluded_reason=transient-non-sibling`, excluded from per-wiki denominators, and not queued as `observed-unregistered` |
+| `test_live_unregistered_client_wiki_registry_drift_is_flagged` | live wiki clone with no registry or alias evidence becomes drift candidate | fixture live `llm-wiki-fdas` remote, registry `client-a` row, no alias row | row/status flags `observed-unregistered` drift and queues registry reconciliation |
 | `test_registered_slug_mismatch_requires_explicit_alias_evidence` | live wiki clone can become slug-mismatch only when the link is represented as data | fixture live wiki remote plus registry row carrying an explicit alias/source-manifest alias | row/status flags `registered-slug-mismatch` and queues registry reconciliation |
 | `test_registered_wiki_without_checkout_is_drift_candidate` | registered wiki with raw root but no local checkout does not disappear from mapping | fixture `config/client-wikis.yml` row, live raw root, missing checkout | row/status flags `registered-but-not-checked-out`, denominator status `checkout-unavailable`, and follow-up decision item |
 | `test_percentage_math_has_explicit_denominators` | coverage percentages are reproducible from rows | fixture rows with mapped/unmapped/not-eligible statuses | percentages match expected denominator arithmetic |
@@ -406,7 +406,7 @@ uv run pytest tests/data/test_ace_data_source_coverage.py -v
 - [ ] The live `llm-wiki*` repo set is enumerated, each observed checkout is classified as `eligible-sibling`, `registered-missing-checkout`, or `transient-non-sibling`, and eligible siblings are compared with `config/client-wikis.yml`; registry drift is reported only for eligible siblings and registered missing checkouts.
 - [ ] Transient/non-sibling wiki worktrees such as `*-vbatch-*`, `*-review`, detached worktree clones, and noncanonical directories pointing at the generic wiki remote are recorded with `excluded_reason=transient-non-sibling`, excluded from per-wiki coverage denominators, and not emitted as `observed-unregistered` registry reconciliation decisions.
 - [ ] Wiki coverage percentages include explicit denominators for root-level `/mnt/ace`, selected recursive scope, client-work coverage, general-work coverage, and each eligible live wiki sibling repo. `general-work` denominator is reproducible from rows as `client_general_applicability in {general, both}` plus included root/selected-recursive scope, excluding partial rows and rows whose denominator bucket is `not-wiki-eligible`.
-- [ ] A live `llm-wiki*` repo without registry `raw_roots` and without explicit alias evidence receives `coverage_denominator_status=not-applicable-registry-drift` and drift status `observed-unregistered` rather than causing a zero-denominator failure. The current live `llm-wiki-fdas` / registered `frontierdeepwater` state must use this conservative path unless an explicit alias is added to registry/source-manifest data before implementation. A live repo receives drift status `registered-slug-mismatch` only when explicit alias evidence links it to a registered client under a different slug. A registered wiki whose raw root is live but whose checkout is absent receives drift status `registered-but-not-checked-out`, `coverage_denominator_status=checkout-unavailable`, and a queued follow-up decision. Exact private repo names appear only in the full-fidelity artifact and the plan's bounded evidence section; generated tracked artifacts and final issue comments use `target_wiki_ref` plus aggregate counts.
+- [ ] A live `llm-wiki*` repo without registry `raw_roots` and without explicit alias evidence receives `coverage_denominator_status=not-applicable-registry-drift` and drift status `observed-unregistered` rather than causing a zero-denominator failure. The current live `llm-wiki-fdas` / registered `client-a` state must use this conservative path unless an explicit alias is added to registry/source-manifest data before implementation. A live repo receives drift status `registered-slug-mismatch` only when explicit alias evidence links it to a registered client under a different slug. A registered wiki whose raw root is live but whose checkout is absent receives drift status `registered-but-not-checked-out`, `coverage_denominator_status=checkout-unavailable`, and a queued follow-up decision. Exact private repo names appear only in the full-fidelity artifact and the plan's bounded evidence section; generated tracked artifacts and final issue comments use `target_wiki_ref` plus aggregate counts.
 - [ ] Percentage math is reproducible from `data/inventory/ace-data-source-description-coverage.json`.
 - [ ] `docs/reports/ace-data-source-description-coverage.html` renders the human-facing report and includes unknowns, dedup/reorg candidates, preservation risks, coverage percentages, and next decision item.
 - [ ] The HTML report renders `partial_excluded_count` and `partial_excluded_ref_count` adjacent to every headline percentage whose denominator excludes partial rows.
@@ -431,10 +431,10 @@ uv run pytest tests/data/test_ace_data_source_coverage.py -v
 | Claude r2 | UNAVAILABLE | CLI returned rc=143 before producing a usable current review |
 | Codex r2 | UNAVAILABLE | rerun did not produce a usable current review; stale prior artifact cited text no longer present |
 | Gemini r2 | UNAVAILABLE | rerun did not produce a usable current review; stale prior artifact cited text no longer present |
-| Claude r3 | MAJOR | forced `code` completeness class is structurally near-unpassable for a new audit package; module-status scope and `write_html(result)` call are broken; `llm-wiki-fdas` should be reconciled against registered `frontierdeepwater` as a slug mismatch |
+| Claude r3 | MAJOR | forced `code` completeness class is structurally near-unpassable for a new audit package; module-status scope and `write_html(result)` call are broken; `llm-wiki-fdas` should be reconciled against registered `client-a` as a slug mismatch |
 | Codex r3 | MAJOR | `score_code()` snapshot shape, package import name, threshold requirement, and closeout integration tests were underspecified |
 | Gemini r3 | MAJOR / evidence-disputed | provider reviewed from `/tmp` and falsely reported repo files missing; kept as disagreement evidence, with only generally applicable closeout-schema concerns considered |
-| Claude r4 | MAJOR | package-map class derivation was not wired in the current close gate; `fdas` to `frontierdeepwater` slug mismatch requires explicit alias data; r4 had insufficient usable provider signal |
+| Claude r4 | MAJOR | package-map class derivation was not wired in the current close gate; `fdas` to `client-a` slug mismatch requires explicit alias data; r4 had insufficient usable provider signal |
 | Codex r4 | UNAVAILABLE | Codex CLI returned `Reading additional input from stdin...` before producing a usable review |
 | Gemini r4 | UNAVAILABLE | Gemini CLI failed before producing a usable review |
 | Claude r5 | MAJOR | transient `llm-wiki-vbatch-165-review` worktree can pollute wiki denominators and drift queues without an exclusion policy |
@@ -470,7 +470,7 @@ Revisions made based on review:
 - **Risk:** filename/path heuristics can leak or misclassify confidential client context. Tracked artifacts will be sanitized beyond mount-prefix removal; exact raw paths, private wiki paths, and client/project basenames remain only in the ignored local full-fidelity artifact, and path-only inference is queued for user decision.
 - **Risk:** symlink aliases and remote/API registry entries can corrupt denominators. The implementation will canonicalize to realpaths, traverse only present filesystem roots under `/mnt/ace`, and count each physical target once.
 - **Risk:** live wiki checkout status and set membership can drift after planning, including short-lived review/batch worktrees. The implementation will record wiki repo status and checkout class, exclude transient/non-sibling clones from coverage denominators, and either refresh eligible checkouts under a separate safe step or mark mapping evidence as stale.
-- **Risk:** wiki registry state has multiple drift classes: live `llm-wiki-fdas` is currently unregistered because no explicit alias links it to registered planned `frontierdeepwater`, and registered `llm-wiki-hdic` was not observed as a local checkout during planning. The implementation will report observed-unregistered, explicit-alias slug-mismatch, and registered-without-checkout classes separately rather than silently excluding or conflating them.
+- **Risk:** wiki registry state has multiple drift classes: live `llm-wiki-fdas` is currently unregistered because no explicit alias links it to registered planned `client-a`, and registered `llm-wiki-client-e` was not observed as a local checkout during planning. The implementation will report observed-unregistered, explicit-alias slug-mismatch, and registered-without-checkout classes separately rather than silently excluding or conflating them.
 - **Risk:** document-index rows can point to ignored summary sidecars not visible in tracked files. The implementation will require and resolve sidecars explicitly, then fail closed if the sidecar convention or file is unavailable.
 - **Risk:** exact duplicate detection depends on available hashes. When hashes are missing, the implementation will classify candidates as near duplicates and prohibit deletion.
 - **Decision:** The first approved implementation will use the fixed recursion policy in Acceptance Criteria: all root children, max-depth-2 for every first-level directory, and full recursion only for registry/wiki/index/dedup-backed roots whose canonical realpath is present under `/mnt/ace`.

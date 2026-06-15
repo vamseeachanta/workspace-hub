@@ -12,7 +12,7 @@
 
 ### Existing repo code
 - Found: `data/document-index/mounted-source-registry.yaml` — defines mounted-source governance context for local/remote/API sources; this plan will not replace it, only add a raw-like routing view that can be reconciled with it.
-- Found: `data/document-index/index.jsonl` — already indexes some mounted sources, but selected raw-like roots show uneven coverage: 72 records for the ACMA/DAS raw sensor path and 0 records for O&G raw, BSEE raw data, AQWA raw decks, OrcaFlex raw examples, Frontier Deepwater raw, and worldenergydata HSE raw.
+- Found: `data/document-index/index.jsonl` — already indexes some mounted sources, but selected raw-like roots show uneven coverage: 72 records for the mkt-a/DAS raw sensor path and 0 records for O&G raw, BSEE raw data, AQWA raw decks, OrcaFlex raw examples, client-a raw, and worldenergydata HSE raw.
 - Gap: no existing `ace-data` raw-like source routing matrix was found in `docs/plans/` or document-intelligence docs that covers all discovered `/mnt/ace-data` raw-like roots with target wiki/domain, sensitivity, and issue mapping.
 
 ### Standards
@@ -55,17 +55,17 @@
 MISSING /mnt/ace-data/raw data
 TOTAL_RAW_LIKE_DIRS=14
 /mnt/ace-data/O&G-Standards/raw: files=28803 dirs=692
-/mnt/ace-data/client_projects/energy_bsee/raw_data: files=10 dirs=0
+/mnt/ace-data/client-c/energy_bsee/raw_data: files=10 dirs=0
 /mnt/ace-data/digitalmodel/docs/aqwa/data/scripts/mooring_analysis/raw: files=28 dirs=0
 /mnt/ace-data/digitalmodel/docs/orcaflex/literature/examples/raw: files=38 dirs=76
-/mnt/ace-data/frontierdeepwater/data/raw: files=4 dirs=1
+/mnt/ace-data/client-a/data/raw: files=4 dirs=1
 /mnt/ace-data/worldenergydata/data/modules/hse/raw: files=97 dirs=7
 
 Frozen inventory roots for implementation:
 1. /mnt/ace-data/O&G-Standards/raw
 2. /mnt/ace-data/aceengineercode/data/raw
 3. /mnt/ace-data/build/codex-desktop/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hashbrown-0.16.1/src/raw
-4. /mnt/ace-data/client_projects/energy_bsee/raw_data
+4. /mnt/ace-data/client-c/energy_bsee/raw_data
 5. /mnt/ace-data/data/archive/acematrix-admin/AceMatrix/2000 Projects/2001 Engineering/AceEngineer/Programs/struts-2.0.14-all/struts-2.0.14/docs/docs/images/raw
 6. /mnt/ace-data/data/archive/acematrix-admin/AceMatrix/2000 Projects/2001 Engineering/Superseeded/AceEngineer/NetBeansProjects/struts-2.1.6/docs/docs/images/raw
 7. /mnt/ace-data/digitalmodel/docs/aqwa/data/scripts/mooring_analysis/raw
@@ -73,7 +73,7 @@ Frozen inventory roots for implementation:
 9. /mnt/ace-data/digitalmodel/docs/qgis/data/project1/outputs/elevation/raw
 10. /mnt/ace-data/docs/disciplines/misc/projects/0133_ssi_marketing/00_inbox/0133 SSI Marketing/Phase1/Images/Raw
 11. /mnt/ace-data/docs/disciplines/misc/projects/0136_das/00_inbox/0136 DAS/Data/Raw
-12. /mnt/ace-data/frontierdeepwater/data/raw
+12. /mnt/ace-data/client-a/data/raw
 13. /mnt/ace-data/opm-common/opm/input/eclipse/Parser/raw
 14. /mnt/ace-data/worldenergydata/data/modules/hse/raw
 ```
@@ -81,12 +81,12 @@ Frozen inventory roots for implementation:
 **Index prefix coverage proof**:
 ```text
 /mnt/ace-data/O&G-Standards/raw -> index_records 0
-/mnt/ace-data/client_projects/energy_bsee/raw_data -> index_records 0
+/mnt/ace-data/client-c/energy_bsee/raw_data -> index_records 0
 /mnt/ace-data/digitalmodel/docs/aqwa/data/scripts/mooring_analysis/raw -> index_records 0
 /mnt/ace-data/digitalmodel/docs/orcaflex/literature/examples/raw -> index_records 0
-/mnt/ace-data/frontierdeepwater/data/raw -> index_records 0
+/mnt/ace-data/client-a/data/raw -> index_records 0
 /mnt/ace-data/worldenergydata/data/modules/hse/raw -> index_records 0
-/mnt/ace-data/docs/disciplines/misc/projects/0136_das/.../Data/Raw -> index_records 72; repo=acma-projects; status=gap
+/mnt/ace-data/docs/disciplines/misc/projects/0136_das/.../Data/Raw -> index_records 72; repo=mkt-a; status=gap
 ```
 
 **Plan duplicate search proof**:
@@ -95,7 +95,7 @@ docs/plans grep ace-data -> 0 hits
 docs/plans grep O&G-Standards/raw -> 0 hits
 docs/plans grep energy_bsee -> 0 hits
 docs/plans grep worldenergydata/data/modules/hse/raw -> 0 hits
-docs/plans grep frontierdeepwater/data/raw -> 0 hits
+docs/plans grep client-a/data/raw -> 0 hits
 docs/plans grep orcaflex/literature/examples/raw -> 0 hits
 docs/plans grep aqwa/data/scripts/mooring_analysis/raw -> 0 hits
 ```
@@ -165,7 +165,7 @@ fail if row includes raw text excerpts, file contents, secrets, or unapproved pr
 | `test_frozen_inventory_contains_14_roots` | frozen snapshot enumerates every planning-time raw-like root exactly once | `ace-data-raw-like-inventory-2026-05-04.yaml` | 14 unique roots |
 | `test_raw_like_routing_covers_inventory` | every frozen raw-like root is present in routing | 14 known metadata-only roots | no missing roots |
 | `test_raw_like_routing_has_no_raw_content` | routing sidecar/docs do not include raw excerpts or extracted content | generated artifacts | only path/count/type/routing metadata allowed |
-| `test_sensitive_sources_are_approval_gated` | ACMA/DAS/project/client-like roots are not candidate-promoted by default | sensitive path examples | classification is approval-gated or excluded |
+| `test_sensitive_sources_are_approval_gated` | mkt-a/DAS/project/client-like roots are not candidate-promoted by default | sensitive path examples | classification is approval-gated or excluded |
 | `test_existing_issue_mappings_present` | AQWA/OrcaFlex/O&G standards/Elements mappings point to existing issues | known path families | #2103/#2124/#2364/#2373/#2392/#2487/#2540-family are present |
 | `test_each_root_has_single_primary_owner` | typed mapping prevents duplicate issue ownership | routing rows | exactly one primary decision per root |
 | `test_candidate_roots_not_already_owned_elsewhere` | candidate rows cannot also be owned/excluded by another issue family | routing rows | mutually-exclusive routing outcomes |

@@ -43,7 +43,7 @@ Plan files exist, hook gates need markers, and scope is bounded. Listed in **low
 | # | Issue | Why blocked/stale |
 |---|---|---|
 | **B1** | [#2152](https://github.com/vamseeachanta/workspace-hub/issues/2152) test(reporting): golden fixture corpus for weekly review run artifacts | Has `status:blocked` together with `status:plan-approved`. Same conflict shape as V1 #2433 but with no urgency (not on a CI critical path) — recommend resolving in the same triage pass that handles V1. |
-| **B2** | [#2227](https://github.com/vamseeachanta/workspace-hub/issues/2227) feat(acma-codes): OCIMF Tandem Mooring + CSA Z276 wiki promotion | Has `status:needs-data` together with `status:plan-approved` — the OCIMF/CSA source acquisition has not landed (per ace1 scout). The plan file exists (`docs/plans/2026-04-12-issue-2227-…`) but cannot execute until the standards are licensed/acquired. **Recommend:** revert to `status:needs-data`-only or move to `status:plan-review` until source acquisition is confirmed. |
+| **B2** | [#2227](https://github.com/vamseeachanta/workspace-hub/issues/2227) feat(mkt-a-codes): OCIMF Tandem Mooring + CSA Z276 wiki promotion | Has `status:needs-data` together with `status:plan-approved` — the OCIMF/CSA source acquisition has not landed (per ace1 scout). The plan file exists (`docs/plans/2026-04-12-issue-2227-…`) but cannot execute until the standards are licensed/acquired. **Recommend:** revert to `status:needs-data`-only or move to `status:plan-review` until source acquisition is confirmed. |
 
 > Also stale per ace1 credit-burn scout (not re-listed in detail to avoid duplication): #2125, #2126, #2124 (Orcina vendor-derivative deny-list — #2482), #1962/#1782 (Tier-1 epics with no plan files), #1583/#2327/#2373 (no plan files), #2229 (machine:licensed-win-1 only).
 
@@ -117,7 +117,7 @@ Workspace: /mnt/local-analysis/workspace-hub. Issue: #2541 (status:plan-approved
 Task: deliver the two artifacts named in #2541's acceptance criteria — a SESA candidate dossier and an approval-ready bounded-extraction plan. This is a planning-output run, not an implementation run; no extraction is performed against /mnt/ace contents.
 
 Inputs of record:
-- Raw corpus: /mnt/ace/doris/62092_sesa  (read-only; do not copy files into git)
+- Raw corpus: /mnt/ace/lng-a/62092_sesa  (read-only; do not copy files into git)
 - Existing metadata page from #2535: bucket-level Elements source/catalog page in knowledge/wikis/lng-projects/
 - Candidate queue: .planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv
 

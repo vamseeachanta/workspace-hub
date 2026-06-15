@@ -154,7 +154,7 @@ These rules apply to all queue execution:
 #2241 (umbrella)
 ├── #2242 (this queue) ← YOU ARE HERE
 ├── #2243 (batch packs) ← companion deliverable
-├── #2244 (ACMA breadth triage)
+├── #2244 (mkt-a breadth triage)
 │
 ├── Pre-existing execution issues to reuse:
 │   ├── #1609 (download automation pipeline)

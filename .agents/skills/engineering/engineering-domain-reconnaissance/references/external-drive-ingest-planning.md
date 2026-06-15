@@ -97,12 +97,12 @@ Build a source-to-destination table before copying. For `/mnt/ace`, prefer repo-
 Clarify whether ambiguous buckets are real repos or category folders. In the ACE workspace, examples include:
 
 - `workspace-hub` = governance/planning/orchestration, not bulk data dumping
-- `client_projects` = real repo bucket for legacy client project material when appropriate
-- `acma-projects` = ACMA project/client-number material
+- `client-c` = real repo bucket for legacy client project material when appropriate
+- `mkt-a` = mkt-a project/client-number material
 - `assethold` = asset-holding / real-estate data
 - `digitalmodel` = engineering workflow/reference/tooling data
-- `doris` = Doris project/training/codes material
-- `acma-codes` = standards/regulatory corpus; verify before duplicating codes/regulations
+- `lng-a` = lng-a project/training/codes material
+- `mkt-a-codes` = standards/regulatory corpus; verify before duplicating codes/regulations
 
 ### 4. Issue drafting before execution
 

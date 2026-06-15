@@ -54,4 +54,4 @@ wc -l parent-files.tsv stage-files.tsv exact-path-size-overlap.tsv path-size-con
 
 ## Codes & Regulations
 
-Still skipped. Before any ingest, compare source against `/mnt/ace/acma-codes/` with inventory/checksum sampling and create a separate decision note.
+Still skipped. Before any ingest, compare source against `/mnt/ace/mkt-a-codes/` with inventory/checksum sampling and create a separate decision note.

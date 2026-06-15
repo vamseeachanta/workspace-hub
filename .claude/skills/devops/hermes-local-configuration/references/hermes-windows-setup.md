@@ -425,7 +425,7 @@ Notes:
 - The Windows deny subset (`format`, `del /f /s /q`, `rd /s`, `reg delete`, `diskpart`, …) comes from
   `_base.deny_required_os.windows` in `config/workstations/harness-roles.yaml`, selected by the
   machine's `os: windows`; the Linux-only entries (`crontab`/`systemctl`/`sudo`/…) are NOT applied.
-- Host detection resolves the real Windows computer name (e.g. `ACMA-ANSYS05`) via the registry
+- Host detection resolves the real Windows computer name (e.g. `mkt-a-ANSYS05`) via the registry
   `hostname_aliases`, so `--machine` is usually unnecessary.
 - The write only touches `settings.json` — it never interacts with OrcaFlex/AQWA/ANSYS processes, so
   it is safe to run while solvers are idle.

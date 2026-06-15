@@ -180,15 +180,15 @@ The matrix currently has the following WAF/protection-related URLs (some pre-exi
 |---|---|---|---|
 | 1 | Subsea7 | Cloudflare-style JS challenge across the entire host | YES — works in real browsers; PDF datasheets also blocked, no clean alternative. Add §3 note. |
 | 2 | TechnipFMC | (Adv-C-flagged WAF, pre-existing) | Confirm in next probe pass; not in this 14-row repair scope |
-| 3 | Saipem | (Adv-C-flagged WAF, pre-existing) | Confirm in next probe pass; not in this 14-row repair scope |
+| 3 | client-d | (Adv-C-flagged WAF, pre-existing) | Confirm in next probe pass; not in this 14-row repair scope |
 | 4 | McDermott | 403 to bot UAs only | YES — full content via WebFetch / browser; 403 is UA-targeted, not content-gone |
 | 15 | Hornbeck | Broken TLS chain | TENTATIVE — works in browsers, fails strict probes; Helix merger may obviate by Q3 2026 |
 | 19 | Cadeler | Simply.com UA/IP filter, 451/455 to probes | TENTATIVE — works via Anthropic infra and real browsers |
 | 24 | Woodside | (Adv-C-flagged WAF, pre-existing) | Confirm in next probe pass; not in this 14-row repair scope |
 
-**Recommendation for main session:** the 4 pre-existing WAF rows (TechnipFMC, Saipem, Woodside, plus newly-confirmed Subsea7, McDermott) are **acceptable as evidence URLs** because human reviewers will click them in a browser and see real content. Add a one-line note to §3:
+**Recommendation for main session:** the 4 pre-existing WAF rows (TechnipFMC, client-d, Woodside, plus newly-confirmed Subsea7, McDermott) are **acceptable as evidence URLs** because human reviewers will click them in a browser and see real content. Add a one-line note to §3:
 
-> Several corporate sites (Subsea7, TechnipFMC, Saipem, McDermott, Woodside) deploy WAFs that block automated probes (`curl`, headless scrapers) but render correctly in real browsers. These URLs are valid evidence; an HTTP-probe report flagging them as broken is a false positive.
+> Several corporate sites (Subsea7, TechnipFMC, client-d, McDermott, Woodside) deploy WAFs that block automated probes (`curl`, headless scrapers) but render correctly in real browsers. These URLs are valid evidence; an HTTP-probe report flagging them as broken is a false positive.
 
 For Hornbeck (15) and Cadeler (19), recommend adding a TLS-chain / host-firewall note to §3 as well — these are real but probe-hostile.
 

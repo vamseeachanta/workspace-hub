@@ -11,7 +11,7 @@
 - GitHub issue #2389: `feat(doc-intel): thread source_doc_key through promotion pipeline and promoted artifacts`.
 - Parent/dependency chain: #2389 feeds #2747 and #2748; it is the generic source-traceability primitive for promoted artifacts.
 - Workspace hard gates: issue → resource intel → plan → adversarial review → `status:plan-review` → USER APPROVES → `status:plan-approved` → TDD implementation → close.
-- User update: private `llm-wiki` posture allows fuller ACMA/client data capture with key-information abstractions; public-safe constraints still apply to public repos/docs.
+- User update: private `llm-wiki` posture allows fuller mkt-a/client data capture with key-information abstractions; public-safe constraints still apply to public repos/docs.
 
 ## Problem
 The current promotion chain can stamp output integrity but cannot reliably answer which L1 source produced a promoted knowledge artifact.

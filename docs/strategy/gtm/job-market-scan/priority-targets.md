@@ -34,7 +34,7 @@ Score factors: keyword niche level, seniority, priority company flag, location, 
 | 20 | **McDermott International, Ltd** | 4 | 520 | 150 | structural engineer offshore, pipeline engineer offshore, mooring engineer offshore | 📧 Email pitch |
 | 21 | **DNV** | 5 | 510 | 110 | DNV engineer offshore, corrosion engineer | 📧 Email pitch |
 | 22 | **Hermeus** | 12 | 505 | 55 | ANSYS engineer manufacturing, structural analyst aerospace, corrosion engineer | 📧 Email pitch |
-| 23 | **Saipem** | 4 | 500 | 135 | mooring engineer offshore, subsea engineer | 📧 Email pitch |
+| 23 | **client-d** | 4 | 500 | 135 | mooring engineer offshore, subsea engineer | 📧 Email pitch |
 | 24 | **Seatrium** | 5 | 500 | 110 | naval architect Houston, mooring engineer offshore, subsea engineer | 📧 Email pitch |
 | 25 | **Helix Energy Solutions Group** | 5 | 490 | 110 | naval architect Houston, mooring engineer offshore, subsea engineer | 📧 Email pitch |
 | 26 | **McAllister Towing** | 6 | 490 | 95 | DNV engineer offshore, mooring engineer offshore, riser engineer offshore | 📧 Email pitch |
@@ -127,7 +127,7 @@ Score factors: keyword niche level, seniority, priority company flag, location, 
 | 20 | McDermott International, Ltd | 4 | 520 | ✅ | structural engineer offshore, pipeline engineer offshore, mooring engineer offshore |
 | 21 | DNV | 5 | 510 | ✅ | DNV engineer offshore, corrosion engineer |
 | 22 | Hermeus | 12 | 505 |  | ANSYS engineer manufacturing, structural analyst aerospace, corrosion engineer |
-| 23 | Saipem | 4 | 500 | ✅ | mooring engineer offshore, subsea engineer |
+| 23 | client-d | 4 | 500 | ✅ | mooring engineer offshore, subsea engineer |
 | 24 | Seatrium | 5 | 500 |  | naval architect Houston, mooring engineer offshore, subsea engineer |
 | 25 | Helix Energy Solutions Group | 5 | 490 |  | naval architect Houston, mooring engineer offshore, subsea engineer |
 | 26 | McAllister Towing | 6 | 490 |  | DNV engineer offshore, mooring engineer offshore, riser engineer offshore |

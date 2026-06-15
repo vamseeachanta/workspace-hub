@@ -1,4 +1,4 @@
-# Doris Follow-Up Email + PDF Links
+# lng-a Follow-Up Email + PDF Links
 
 Date: 2026-05-08
 Purpose: Sendable follow-up packet after Mo Dessoukey replied that he will review the tool and report findings to Stéphane.

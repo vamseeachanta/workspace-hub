@@ -10,7 +10,7 @@ Only `personal/` remains under this directory — and only as a scaffold (`index
 
 The 8 domain wikis previously under `knowledge/wikis/`:
 
-- `acma-projects/`
+- `mkt-a/`
 - `asset-management/`
 - `engineering/`
 - `engineering-standards/`

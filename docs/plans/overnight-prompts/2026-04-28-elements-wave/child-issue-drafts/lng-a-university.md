@@ -1,12 +1,12 @@
-# Child issue draft — Doris University training corpus
+# Child issue draft — lng-a University training corpus
 
 > **Status:** draft (existing tracker is [#2542](https://github.com/vamseeachanta/workspace-hub/issues/2542); CLOSED 2026-04-29 after bounded execution; this draft documents the original planning scope and serves as a template for any successor cycle)
 > **Wave:** 2026-04-28 Elements overnight planning wave (umbrella [#2540](https://github.com/vamseeachanta/workspace-hub/issues/2540))
-> **Corpus:** `/mnt/ace/doris/training` — 11 GB / 1,129 files (excluding `_from_elements/` provenance staging)
+> **Corpus:** `/mnt/ace/lng-a/training` — 11 GB / 1,129 files (excluding `_from_elements/` provenance staging)
 
 ## Title
 
-`feat(llm-wiki): plan curated Doris University training corpus extraction from Elements`
+`feat(llm-wiki): plan curated lng-a University training corpus extraction from Elements`
 
 ## Recommended labels
 
@@ -17,7 +17,7 @@
 
 ## Background
 
-The Doris University catalog covers subsea production systems training. Top-level themed directories (`1.00`–`1.03 Subsea Production / Control / Umbilical / Installation`, plus `Corrosion`, `FreeSpan`, `FieldLayout`, `Flexible Pipe`, `Rigid Jumper`, `ENI Training`, `DE Presentations`, `draft presentations`) suggest a structured curriculum amenable to a metadata-first taxonomy.
+The lng-a University catalog covers subsea production systems training. Top-level themed directories (`1.00`–`1.03 Subsea Production / Control / Umbilical / Installation`, plus `Corrosion`, `FreeSpan`, `FieldLayout`, `Flexible Pipe`, `Rigid Jumper`, `ENI Training`, `DE Presentations`, `draft presentations`) suggest a structured curriculum amenable to a metadata-first taxonomy.
 
 ## Scope
 
@@ -30,11 +30,11 @@ The Doris University catalog covers subsea production systems training. Top-leve
 - OCR or full-text extraction of slide decks / movies / PDFs.
 - Embedded chart / figure / movie copy into wiki or git.
 - Standards excerpts (training material may quote standards — those clauses are NOT republished).
-- Any write to `/mnt/ace/doris/training/**`.
+- Any write to `/mnt/ace/lng-a/training/**`.
 
 ## Allowed paths (read-only)
 
-- `/mnt/ace/doris/training/**`
+- `/mnt/ace/lng-a/training/**`
 - `.planning/intel/elements-to-llm-wiki/**`
 - `knowledge/wikis/engineering/**` — reference layout for concept / source pages
 
@@ -43,14 +43,14 @@ The Doris University catalog covers subsea production systems training. Top-leve
 - Any write under `/mnt/ace/**`
 - `knowledge/wikis/**/raw/`
 - Any persisted full-text deck extraction
-- Cross-stream artifact paths (SESA, DORIS Codes, Woodfibre)
+- Cross-stream artifact paths (SESA, lng-a Codes, Woodfibre)
 
 ## Deliverable
 
-- Taxonomy at `.planning/intel/elements-overnight-wave/doris-university-taxonomy.md`
-- First-tranche TSV at `.planning/intel/elements-overnight-wave/doris-university-first-tranche.tsv`
-- Canonical plan at `docs/plans/2026-04-28-issue-2542-elements-doris-university-training-plan.md`
-- Wave result at `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-2-doris-university.md`
+- Taxonomy at `.planning/intel/elements-overnight-wave/lng-a-university-taxonomy.md`
+- First-tranche TSV at `.planning/intel/elements-overnight-wave/lng-a-university-first-tranche.tsv`
+- Canonical plan at `docs/plans/2026-04-28-issue-2542-elements-lng-a-university-training-plan.md`
+- Wave result at `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-2-lng-a-university.md`
 
 ## Acceptance criteria (planning-only)
 

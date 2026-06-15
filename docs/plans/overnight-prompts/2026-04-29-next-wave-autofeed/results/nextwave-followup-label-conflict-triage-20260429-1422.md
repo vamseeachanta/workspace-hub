@@ -103,7 +103,7 @@
 
 ---
 
-### [#2227](https://github.com/vamseeachanta/workspace-hub/issues/2227) — feat(acma-codes): OCIMF Tandem + CSA Z276 wiki promotion
+### [#2227](https://github.com/vamseeachanta/workspace-hub/issues/2227) — feat(mkt-a-codes): OCIMF Tandem + CSA Z276 wiki promotion
 
 - **Live query timestamp:** 2026-04-29 14:23 CDT.
 - **`updatedAt`:** `2026-04-29T17:30:55Z`.

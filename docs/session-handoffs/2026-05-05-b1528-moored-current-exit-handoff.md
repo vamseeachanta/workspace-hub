@@ -1,14 +1,14 @@
-# B1528 SIROCCO moored-current exit handoff — 2026-05-05
+# B1528 proj-a moored-current exit handoff — 2026-05-05
 
 ## Executive status
 
-B1528 SIROCCO/Sorrocco moored-current rudder force-component reporting is
+B1528 proj-a/Sorrocco moored-current rudder force-component reporting is
 complete and ready for engineer review on 2026-05-06.
 
 | Repository | Branch | Sync state | HEAD |
 |---|---|---|---|
 | `digitalmodel` | `main` | `origin/main...HEAD = 0 0` | `989e20eb test(#2568): TDD tests for turning-circle and tactical-diameter estimator` |
-| `acma-projects` | `main` | `origin/main...HEAD = 0 0` | `105c9ce8 chore(B1528): add SIROCCO moored-current PDF report` |
+| `mkt-a` | `main` | `origin/main...HEAD = 0 0` | `105c9ce8 chore(B1528): add proj-a moored-current PDF report` |
 
 The moored-current calculation package itself was added in `digitalmodel`
 commit:
@@ -22,27 +22,27 @@ that later commit is now also on `origin/main`.
 
 | Issue | State | Result |
 |---|---:|---|
-| [workspace-hub #2642](https://github.com/vamseeachanta/workspace-hub/issues/2642) | Closed, completed | B1528 SIROCCO moored-current rudder force components at COG for 3.5 kn current and +/-1 to +/-5 deg rudder. |
+| [workspace-hub #2642](https://github.com/vamseeachanta/workspace-hub/issues/2642) | Closed, completed | B1528 proj-a moored-current rudder force components at COG for 3.5 kn current and +/-1 to +/-5 deg rudder. |
 
 Completion comments were posted on #2642 with both the `digitalmodel` report
-package and the `acma-projects` PDF links.
+package and the `mkt-a` PDF links.
 
 ## Published report links
 
 ### digitalmodel
 
-- Durable report: https://github.com/vamseeachanta/digitalmodel/blob/main/docs/domains/marine-engineering/b1528-sirocco-moored-current-report.md
-- Generated HTML: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/b1528_sirocco/moored_current/b1528_sirocco_moored_current_report.html
-- Generated Markdown: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/b1528_sirocco/moored_current/b1528_sirocco_moored_current_report.md
-- Results CSV: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/b1528_sirocco/moored_current/b1528_sirocco_moored_current_results.csv
-- Results JSON: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/b1528_sirocco/moored_current/b1528_sirocco_moored_current_results.json
+- Durable report: https://github.com/vamseeachanta/digitalmodel/blob/main/docs/domains/marine-engineering/b1528-proj-a-moored-current-report.md
+- Generated HTML: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/b1528_proj-a/moored_current/b1528_proj-a_moored_current_report.html
+- Generated Markdown: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/b1528_proj-a/moored_current/b1528_proj-a_moored_current_report.md
+- Results CSV: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/b1528_proj-a/moored_current/b1528_proj-a_moored_current_results.csv
+- Results JSON: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/b1528_proj-a/moored_current/b1528_proj-a_moored_current_results.json
 - Master calculation review: https://github.com/vamseeachanta/digitalmodel/blob/main/docs/domains/marine-engineering/rudder-and-ship-force-calculation-review.md
 
-### acma-projects
+### mkt-a
 
-- PDF report: https://github.com/vamseeachanta/acma-projects/blob/main/B1528/output/b1528_sirocco_moored_current_report.pdf
-- PDF commit: https://github.com/vamseeachanta/acma-projects/commit/105c9ce84d0862382f1efaabd60780dce41783a9
-- Local PDF path: `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output/b1528_sirocco_moored_current_report.pdf`
+- PDF report: https://github.com/vamseeachanta/mkt-a/blob/main/B1528/output/b1528_proj-a_moored_current_report.pdf
+- PDF commit: https://github.com/vamseeachanta/mkt-a/commit/105c9ce84d0862382f1efaabd60780dce41783a9
+- Local PDF path: `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output/b1528_proj-a_moored_current_report.pdf`
 
 ## Calculation scope
 
@@ -101,9 +101,9 @@ horizontal resultant force, and the sample verification point.
 
 ```text
 PYTHONPATH=src UV_NO_SYNC=1 uv run python -m pytest \
-  tests/naval_architecture/test_b1528_sirocco_yaw_moment.py \
-  tests/naval_architecture/test_b1528_sirocco_time_trace.py \
-  tests/naval_architecture/test_b1528_sirocco_moored_current.py
+  tests/naval_architecture/test_b1528_proj-a_yaw_moment.py \
+  tests/naval_architecture/test_b1528_proj-a_time_trace.py \
+  tests/naval_architecture/test_b1528_proj-a_moored_current.py
 ```
 
 Result: `18 passed`.
@@ -116,15 +116,15 @@ scripts/legal/legal-sanity-scan.sh --repo=digitalmodel --diff-only
 
 Result: `PASS`.
 
-ACMA PDF metadata:
+mkt-a PDF metadata:
 
 - 12 pages
 - A4 landscape
-- generated from `b1528_sirocco_moored_current_report.html`
+- generated from `b1528_proj-a_moored_current_report.html`
 
 ## Known caveats
 
-- Full `git status`/`git diff` on `acma-projects` can hang because of the large
+- Full `git status`/`git diff` on `mkt-a` can hang because of the large
   worktree. Prefer targeted checks or commit-specific verification.
 - The moored-current report is rudder-induced only. Hull current loads,
   mooring-line stiffness, bank effects, tug loads, current-profile variation,
@@ -140,6 +140,6 @@ ACMA PDF metadata:
 - [x] Moored-current issue #2642 created, documented, and closed.
 - [x] `digitalmodel` report source, generated outputs, durable docs, tests, and
       master review update pushed.
-- [x] ACMA PDF exported, committed, and pushed.
-- [x] `acma-projects` synced with `origin/main`.
+- [x] mkt-a PDF exported, committed, and pushed.
+- [x] `mkt-a` synced with `origin/main`.
 - [x] Handoff written for next session.

@@ -23,7 +23,7 @@ digitalmodel/.claude/skills/
   workflows/     -> ../../.claude/skills/_internal/workflows/   (link, gitignored)
   orcaflex-*/    (local, committed)                            (unique project skills)
 
-seanation/.claude/skills/
+client-f/.claude/skills/
   guidelines/    -> ../../.claude/skills/_internal/guidelines/  (link, gitignored)
   meta/          -> ../../.claude/skills/_internal/meta/        (link, gitignored)
   workflows/     -> ../../.claude/skills/_internal/workflows/   (link, gitignored)
@@ -154,7 +154,7 @@ bash scripts/propagate-ecosystem.sh    # re-creates links if needed (idempotent)
 4. `bash scripts/propagate-ecosystem.sh` — links created, hooks added
 5. `ls -la digitalmodel/.claude/skills/guidelines/` — shows link (junction/symlink)
 6. `cat digitalmodel/.claude/skills/guidelines/ai-agent-guidelines/SKILL.md` — resolves correctly
-7. `grep post-task-review seanation/.claude/settings.json` — hook present
+7. `grep post-task-review client-f/.claude/settings.json` — hook present
 8. `git -C digitalmodel status` — no unexpected changes (shared dirs gitignored)
 
 ## Risks & Mitigations

@@ -38,7 +38,7 @@
 | 2206 | Pyramid conformance checks | Created (T1) | `scripts/review/results/2026-04-16-plan-2206-claude-overnight.md` | approval-ready | None | Yes |
 | 2207 | Standards/codes provenance reuse contract | Created (T1) | `scripts/review/results/2026-04-16-plan-2207-claude-overnight.md` | approval-ready | None | Yes |
 | 2209 | Durable vs transient knowledge boundary | Created (T1) | `scripts/review/results/2026-04-16-plan-2209-claude-overnight.md` | approval-ready | None | Yes |
-| 2216 | ACMA codes LLM wiki repo intelligence integration | Existed (plan-review) | `scripts/review/results/2026-04-16-plan-2216-claude-overnight.md` | needs-revision | MAJOR: stale scope — plan needs realignment with current issue state | No |
+| 2216 | mkt-a codes LLM wiki repo intelligence integration | Existed (plan-review) | `scripts/review/results/2026-04-16-plan-2216-claude-overnight.md` | needs-revision | MAJOR: stale scope — plan needs realignment with current issue state | No |
 | 2227 | OCIMF tandem CSA Z276 wiki promotion | Existed (draft) | `scripts/review/results/2026-04-16-plan-2227-claude-overnight.md` | needs-revision (minor) | MINOR: prior REVISE/MINOR findings need address before promotion | Conditionally |
 | 2229 | Licensed Win-1 live validation | Existed (plan-review) | `scripts/review/results/2026-04-16-plan-2229-claude-overnight.md` | blocked | MAJOR: requires Windows machine access (dev-primary); Linux agents cannot execute | No |
 | 2235 | Add retention metadata section to plan template | Created (T1) | `scripts/review/results/2026-04-16-plan-2235-claude-overnight.md` | approval-ready | None | Yes |

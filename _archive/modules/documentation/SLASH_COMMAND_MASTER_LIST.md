@@ -125,7 +125,7 @@
 `/command-name`, `/create-module-agent`, `/create-module-agent-backup-20250810-104956`, `/create-spec`, `/execute-tasks`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`
 ... and 17 more
 
-**acma-projects** (27 commands)
+**mkt-a** (27 commands)
 `/command-name`, `/create-module-agent`, `/create-module-agent-backup-20250810-104956`, `/create-spec`, `/execute-tasks`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`
 ... and 17 more
 
@@ -141,7 +141,7 @@
 `/command-name`, `/create-module-agent`, `/create-module-agent-backup-20250810-104956`, `/create-spec`, `/execute-tasks`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`
 ... and 18 more
 
-**client_projects** (26 commands)
+**client-c** (26 commands)
 `/command-name`, `/create-module-agent`, `/create-spec`, `/execute-tasks`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`, `/git-flow-all`
 ... and 16 more
 
@@ -149,7 +149,7 @@
 `/check-module-boundaries`, `/command-name`, `/config`, `/create-module-agent`, `/create-module-agent-backup-20250810-104956`, `/create-spec`, `/docs`, `/execute-tasks`, `/git-clean`, `/git-clean-all`
 ... and 24 more
 
-**doris** (25 commands)
+**lng-a** (25 commands)
 `/command-name`, `/create-spec`, `/execute-tasks`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`, `/git-flow-all`, `/git-git_manager`
 ... and 15 more
 
@@ -157,7 +157,7 @@
 `/command-name`, `/create-module-agent`, `/create-module-agent-backup-20250810-104956`, `/create-spec`, `/execute-tasks`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`
 ... and 17 more
 
-**frontierdeepwater** (27 commands)
+**client-a** (27 commands)
 `/command-name`, `/create-module-agent`, `/create-module-agent-backup-20250810-104956`, `/create-spec`, `/execute-tasks`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`
 ... and 17 more
 
@@ -173,7 +173,7 @@
 `/command-name`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`, `/git-flow-all`, `/git-git_manager`, `/git-pr`, `/git-pr-all`
 ... and 13 more
 
-**rock-oil-field** (27 commands)
+**client-b** (27 commands)
 `/command-name`, `/create-module-agent`, `/create-module-agent-backup-20250810-104956`, `/create-spec`, `/execute-tasks`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`
 ... and 17 more
 
@@ -181,7 +181,7 @@
 `/command-name`, `/create-module-agent`, `/create-spec`, `/execute-tasks`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`, `/git-flow-all`
 ... and 16 more
 
-**saipem** (27 commands)
+**client-d** (27 commands)
 `/command-name`, `/create-module-agent`, `/create-module-agent-backup-20250810-104956`, `/create-spec`, `/execute-tasks`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`
 ... and 17 more
 
@@ -189,7 +189,7 @@
 `/command-name`, `/create-module-agent`, `/create-module-agent-backup-20250810-104956`, `/create-spec`, `/execute-tasks`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`
 ... and 17 more
 
-**seanation** (27 commands)
+**client-f** (27 commands)
 `/command-name`, `/create-module-agent`, `/create-module-agent-backup-20250810-104956`, `/create-spec`, `/execute-tasks`, `/git-clean`, `/git-clean-all`, `/git-commit`, `/git-commit-all`, `/git-flow`
 ... and 17 more
 

@@ -163,11 +163,11 @@ Adjust scores based on context (repository, domain, etc.):
 # ABOUTME: Adjusts based on repository tier, domain
 
 # Repository tiers
-TIER1_REPOS="workspace-hub|digitalmodel|energy|frontierdeepwater"
-TIER2_REPOS="aceengineercode|assetutilities|worldenergydata|rock-oil-field"
-TIER3_REPOS="doris|saipem|OGManufacturing|seanation"
+TIER1_REPOS="workspace-hub|digitalmodel|energy|client-a"
+TIER2_REPOS="aceengineercode|assetutilities|worldenergydata|client-b"
+TIER3_REPOS="lng-a|client-d|OGManufacturing|client-f"
 PERSONAL_ACTIVE="aceengineer-admin|aceengineer-website"
-PERSONAL_EXPERIMENTAL="hobbies|sd-work|acma-projects"
+PERSONAL_EXPERIMENTAL="hobbies|sd-work|mkt-a"
 
 # Get repository tier
 get_repo_tier() {
@@ -437,10 +437,10 @@ SONNET_KEYWORDS="implement|feature|bug|fix|code review|documentation|test|update
 HAIKU_KEYWORDS="check|status|simple|quick|template|list|grep|find|search|summary|validation|exists|show|display"
 
 # Repository tiers
-WORK_TIER1="workspace-hub|digitalmodel|energy|frontierdeepwater"
+WORK_TIER1="workspace-hub|digitalmodel|energy|client-a"
 WORK_TIER2="aceengineercode|assetutilities|worldenergydata"
-WORK_TIER3="doris|saipem|OGManufacturing"
-PERSONAL="hobbies|sd-work|acma-projects"
+WORK_TIER3="lng-a|client-d|OGManufacturing"
+PERSONAL="hobbies|sd-work|mkt-a"
 
 # ─────────────────────────────────────────────────────────────────
 # Scoring Functions

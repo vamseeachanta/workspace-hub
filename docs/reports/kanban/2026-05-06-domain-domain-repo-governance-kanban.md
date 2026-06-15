@@ -59,7 +59,7 @@ _None._
 - [assethold#11](https://github.com/vamseeachanta/assethold/issues/11) — repo | guidelines _(agent: `agent:claude`, priority: `Unranked`, domains: `domain:repo-governance`; labels: wrk-item, status:plan-approved)_
 - [assethold#22](https://github.com/vamseeachanta/assethold/issues/22) — Daily portfolio report as PDF emailed to inbox _(agent: `agent:claude`, priority: `Unranked`, domains: `domain:repo-governance`; labels: status:plan-approved)_
 - [assetutilities#19](https://github.com/vamseeachanta/assetutilities/issues/19) — tech debt | git | branch, computer and multiuser merge _(agent: `agent:claude`, priority: `Unranked`, domains: `domain:repo-governance`; labels: enhancement, status:plan-approved)_
-- [assetutilities#31](https://github.com/vamseeachanta/assetutilities/issues/31) — tech debt | ACMA | Source Files | Sync vs. Copy _(agent: `agent:claude`, priority: `Unranked`, domains: `domain:repo-governance`; labels: feature, status:plan-approved)_
+- [assetutilities#31](https://github.com/vamseeachanta/assetutilities/issues/31) — tech debt | mkt-a | Source Files | Sync vs. Copy _(agent: `agent:claude`, priority: `Unranked`, domains: `domain:repo-governance`; labels: feature, status:plan-approved)_
 - [assetutilities#35](https://github.com/vamseeachanta/assetutilities/issues/35) — productivity | Consolidate repos _(agent: `agent:claude`, priority: `Unranked`, domains: `domain:repo-governance`; labels: status:plan-approved)_
 - [assetutilities#60](https://github.com/vamseeachanta/assetutilities/issues/60) — repo | package development _(agent: `agent:claude`, priority: `Unranked`, domains: `domain:repo-governance`; labels: status:plan-approved)_
 

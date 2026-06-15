@@ -30,12 +30,12 @@
 |------------|-------|-------|--------|--------|--------|
 | **digitalmodel** | 6 | 1,161 | eeb2ee20 | ✅ Tested | ✅ Pushed |
 | **worldenergydata** | 5 | 766 | a46a9f1 | ✅ Complete | ✅ Pushed (rebased) |
-| **rock-oil-field** | 5 | 766 | 2688aa5 | ✅ Complete | ✅ Pushed (master) |
+| **client-b** | 5 | 766 | 2688aa5 | ✅ Complete | ✅ Pushed (master) |
 | **assetutilities** | 5 | 766 | dd47758 | ✅ Complete | ✅ Pushed |
 | **assethold** | 5 | 766 | 5489ca7 | ✅ Complete | ✅ Pushed |
-| **saipem** | 5 | 766 | 9f57145 | ✅ Complete | ✅ Pushed |
+| **client-d** | 5 | 766 | 9f57145 | ✅ Complete | ✅ Pushed |
 | **teamresumes** | 5 | 766 | ed9438f | ✅ Complete | ✅ Pushed |
-| **acma-projects** | 5 | 766 | a6dab6d | ✅ Complete | ✅ Pushed |
+| **mkt-a** | 5 | 766 | a6dab6d | ✅ Complete | ✅ Pushed |
 
 ---
 
@@ -223,12 +223,12 @@ validation:
 ### Phase 2: Installation (Complete)
 1. ✅ Installed to digitalmodel (6 files, 1,161 lines)
 2. ✅ Installed to worldenergydata (5 files, 766 lines)
-3. ✅ Installed to rock-oil-field (5 files, 766 lines)
+3. ✅ Installed to client-b (5 files, 766 lines)
 4. ✅ Installed to assetutilities (5 files, 766 lines)
 5. ✅ Installed to assethold (5 files, 766 lines)
-6. ✅ Installed to saipem (5 files, 766 lines)
+6. ✅ Installed to client-d (5 files, 766 lines)
 7. ✅ Installed to teamresumes (5 files, 766 lines)
-8. ✅ Installed to acma-projects (5 files, 766 lines)
+8. ✅ Installed to mkt-a (5 files, 766 lines)
 
 ### Phase 3: Testing (Complete for digitalmodel)
 1. ✅ Created integration demo
@@ -284,7 +284,7 @@ validation:
     - consumption_value
 ```
 
-**Example for rock-oil-field**:
+**Example for client-b**:
 ```yaml
 validation:
   required_fields:

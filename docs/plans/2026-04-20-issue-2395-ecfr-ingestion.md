@@ -46,7 +46,7 @@
 | Issue | State | Relationship | Behavior if unshipped |
 |---|---|---|---|
 | #2205 | CLOSED | authority | — |
-| #2373 | OPEN | parallel (non-ACMA standards) | scope-separated |
+| #2373 | OPEN | parallel (non-mkt-a standards) | scope-separated |
 | #2365 | OPEN | parallel (design-code registry) | no blocking |
 | #596 | CLOSED | prior art (extract-url.py) | reference only |
 
@@ -57,7 +57,7 @@
 
 **Issue statuses** (2026-04-20T15:50Z):
 - `#2205` — **CLOSED**
-- `#2373` — **OPEN** — feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion
+- `#2373` — **OPEN** — feat(knowledge): execute Batch Pack 4 for non-mkt-a standards summary promotion
 - `#2365` — **OPEN** — feat(knowledge): promote design-code registry into standards overviews
 - `#596` — **CLOSED** — WRK-5041: feat(doc-intel): extract-url.py — internet document extraction pipeline
 

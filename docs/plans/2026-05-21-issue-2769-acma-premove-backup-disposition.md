@@ -1,4 +1,4 @@
-# Issue #2769 Plan — chore(data-disposition): plan disposition of /mnt/ace/acma-projects.preexisting-* 1.8 TB pre-move backup
+# Issue #2769 Plan — chore(data-disposition): plan disposition of /mnt/ace/mkt-a.preexisting-* 1.8 TB pre-move backup
 
 ## Metadata
 - **Issue:** #2769
@@ -8,17 +8,17 @@
 - **Execution class:** parallel-worktree after approval
 
 ## Resource Intel
-- GitHub issue #2769: `chore(data-disposition): plan disposition of /mnt/ace/acma-projects.preexisting-* 1.8 TB pre-move backup`.
+- GitHub issue #2769: `chore(data-disposition): plan disposition of /mnt/ace/mkt-a.preexisting-* 1.8 TB pre-move backup`.
 - Parent/dependency chain: #2769 is a child/special case of #2767 and adjacent to completed #2745 freeze; depends on #2731/#2732 for final location policy.
 - Workspace hard gates: issue → resource intel → plan → adversarial review → `status:plan-review` → USER APPROVES → `status:plan-approved` → TDD implementation → close.
-- User update: private `llm-wiki` posture allows fuller ACMA/client data capture with key-information abstractions; public-safe constraints still apply to public repos/docs.
+- User update: private `llm-wiki` posture allows fuller mkt-a/client data capture with key-information abstractions; public-safe constraints still apply to public repos/docs.
 
 ## Problem
-The ACMA pre-move backup is reportedly ~1.8 TB on a 95%-full mount. It needs focused disposition planning before any storage-changing operation.
+The mkt-a pre-move backup is reportedly ~1.8 TB on a 95%-full mount. It needs focused disposition planning before any storage-changing operation.
 
 ## Scope
 ### Owned paths
-- ACMA backup inventory report
+- mkt-a backup inventory report
 - Non-destructive comparison manifest
 - Approved disposition runbook, if later authorized
 

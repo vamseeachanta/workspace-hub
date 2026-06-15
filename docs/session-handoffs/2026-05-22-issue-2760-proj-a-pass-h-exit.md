@@ -1,8 +1,8 @@
-# Session exit handoff — #2760 SIROCCO current/rudder force review (Passes A-H + DOCX pictures)
+# Session exit handoff — #2760 proj-a current/rudder force review (Passes A-H + DOCX pictures)
 
 **Date:** 2026-05-22
 **Session:** Claude Code main (Opus 4.7, 1M context)
-**Issue:** [vamseeachanta/workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) — `revise(naval-arch): B1528 SIROCCO force calculation review updates`
+**Issue:** [vamseeachanta/workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) — `revise(naval-arch): B1528 proj-a force calculation review updates`
 **Issue state:** OPEN, `status:plan-approved` (per user direction — explicit "leave open for review pass" decision logged earlier)
 **Branch:** `digitalmodel/main` (10 atomic commits ahead from session start); `workspace-hub/main` (unrelated divergence — see §Repo state below)
 
@@ -75,24 +75,24 @@ Started from a partial implementation (commit `32edf91c` had the OCIMF workbook 
 
 ### Tests
 - **42/42 focused suite pass** in ~3.5 min (was 28 at session start, +14 new)
-- `OCIMF_WORKBOOK_PATH="/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx" uv run pytest tests/naval_architecture/test_issue_2760_sirocco_current_rudder_revision.py tests/naval_architecture/test_b1528_sirocco_current_heading_rudder.py -q`
+- `OCIMF_WORKBOOK_PATH="/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx" uv run pytest tests/naval_architecture/test_issue_2760_proj-a_current_rudder_revision.py tests/naval_architecture/test_b1528_proj-a_current_heading_rudder.py -q`
 
 ## Artifact locations
 
 | Tier | Path | Size |
 |---|---|---|
-| Durable HTML (Git-tracked) | `digitalmodel/docs/domains/marine-engineering/b1528-sirocco-current-rudder-force-report.html` | 5.15 MB (interactive, 2233-row Plotly inline) |
-| Durable MD | `digitalmodel/docs/domains/marine-engineering/b1528-sirocco-current-rudder-force-report.md` | 10.0 KB |
-| Durable manifest | `…b1528-sirocco-current-rudder-force-manifest.json` | 989 B |
-| Durable citations | `…b1528-sirocco-current-rudder-force-citations.json` | 1.7 KB |
-| Runtime CSV | `digitalmodel/outputs/b1528_sirocco/current_rudder_force/…_results.csv` | 1.94 MB |
+| Durable HTML (Git-tracked) | `digitalmodel/docs/domains/marine-engineering/b1528-proj-a-current-rudder-force-report.html` | 5.15 MB (interactive, 2233-row Plotly inline) |
+| Durable MD | `digitalmodel/docs/domains/marine-engineering/b1528-proj-a-current-rudder-force-report.md` | 10.0 KB |
+| Durable manifest | `…b1528-proj-a-current-rudder-force-manifest.json` | 989 B |
+| Durable citations | `…b1528-proj-a-current-rudder-force-citations.json` | 1.7 KB |
+| Runtime CSV | `digitalmodel/outputs/b1528_proj-a/current_rudder_force/…_results.csv` | 1.94 MB |
 | Runtime JSON | `…_results.json` | 5.9 MB |
 | Runtime DOCX (with 4 embedded schematic pictures) | `…_report.docx` | 179 KB |
 | Runtime PDF | `…_report.pdf` | 229 KB |
-| ACMA client DOCX | `workspace-hub/acma-projects/B1528/output/b1528_sirocco_current_rudder_force_report.docx` | 179 KB |
-| ACMA client PDF | `…force_report.pdf` | 229 KB |
+| mkt-a client DOCX | `workspace-hub/mkt-a/B1528/output/b1528_proj-a_current_rudder_force_report.docx` | 179 KB |
+| mkt-a client PDF | `…force_report.pdf` | 229 KB |
 
-ACMA paths are gitignored at workspace-hub root (runtime stage only, not committed).
+mkt-a paths are gitignored at workspace-hub root (runtime stage only, not committed).
 
 ## Issue thread comments posted this session
 
@@ -117,12 +117,12 @@ ACMA paths are gitignored at workspace-hub root (runtime stage only, not committ
 
 ### digitalmodel
 - `origin/main == HEAD` at `b9846bb0` ✓
-- Working tree: 5 EXPECTED untracked files (`.planning/quick/review-2760-*` × 3, `docs/plans/2026-05-21-issue-2760-claude-completion-handoff.md`, `docs/session-handoffs/2026-05-21-issue-2760-sirocco-exit-handoff.md` — inherited from prior sessions, not Pass A-H output)
+- Working tree: 5 EXPECTED untracked files (`.planning/quick/review-2760-*` × 3, `docs/plans/2026-05-21-issue-2760-claude-completion-handoff.md`, `docs/session-handoffs/2026-05-21-issue-2760-proj-a-exit-handoff.md` — inherited from prior sessions, not Pass A-H output)
 - Cleanup audit verdict: **EXPECTED** (no UNEXPECTED residue from this session)
 
 ### workspace-hub
 - 3 ahead / 5 behind `origin/main` — auto-sync churn (3 local `chore(sync)` commits already pushed elsewhere) + other-session work (5 unrelated commits on origin: `#2775` sibling SSoT fix, inbox-manageability signals, skill docs guards). Per `SHARED_SOUL` "do NOT force mixed commit when control-plane repo is diverged with unrelated pre-existing changes" — left as-is for user to resolve via auto-sync or manual rebase.
-- This handoff file (`docs/session-handoffs/2026-05-22-issue-2760-sirocco-pass-h-exit.md`) committed via pathspec to land cleanly without rebase risk.
+- This handoff file (`docs/session-handoffs/2026-05-22-issue-2760-proj-a-pass-h-exit.md`) committed via pathspec to land cleanly without rebase risk.
 
 ### Two new memory entries (auto-memory)
 - `reference_ocimf_annex_a_graphic_style.md` — reusable for future marine-engineering schematic work
@@ -135,27 +135,27 @@ ACMA paths are gitignored at workspace-hub root (runtime stage only, not committ
 cd /mnt/local-analysis/digitalmodel && git log --oneline -1 && git status --short | head -5
 
 # Re-run focused suite (~3.5 min)
-OCIMF_WORKBOOK_PATH="/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx" uv run pytest \
-  tests/naval_architecture/test_issue_2760_sirocco_current_rudder_revision.py \
-  tests/naval_architecture/test_b1528_sirocco_current_heading_rudder.py -q
+OCIMF_WORKBOOK_PATH="/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx" uv run pytest \
+  tests/naval_architecture/test_issue_2760_proj-a_current_rudder_revision.py \
+  tests/naval_architecture/test_b1528_proj-a_current_heading_rudder.py -q
 
 # Regenerate all artifacts (~10 sec including Playwright screenshots)
-OCIMF_WORKBOOK_PATH="/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx" uv run python -c "
+OCIMF_WORKBOOK_PATH="/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx" uv run python -c "
 from pathlib import Path
-from digitalmodel.naval_architecture.b1528_sirocco_current_heading_rudder_report import (
+from digitalmodel.naval_architecture.b1528_proj-a_current_heading_rudder_report import (
     run_b1528_current_heading_rudder_report, write_b1528_current_heading_rudder_report,
 )
 manifest = write_b1528_current_heading_rudder_report(
     run_b1528_current_heading_rudder_report(),
-    Path('outputs/b1528_sirocco/current_rudder_force'),
+    Path('outputs/b1528_proj-a/current_rudder_force'),
 )
 print(manifest['html_report'])
 "
 
 # Serve HTML for browser review (started at port 8765 in this session — may still be running)
-cd /mnt/local-analysis/digitalmodel/outputs/b1528_sirocco/current_rudder_force \
+cd /mnt/local-analysis/digitalmodel/outputs/b1528_proj-a/current_rudder_force \
   && uv run python -m http.server 8765
-# Open: http://localhost:8765/b1528_sirocco_current_rudder_force_report.html
+# Open: http://localhost:8765/b1528_proj-a_current_rudder_force_report.html
 ```
 
 ## Next-checkpoint decision tree

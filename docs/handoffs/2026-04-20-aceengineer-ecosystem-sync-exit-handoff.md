@@ -8,7 +8,7 @@
 
 ## What got built
 
-A daily 6:00 AM CT local cron (targeting `ace-linux-1`) that will review 6 public engineering repos — `digitalmodel`, `assethold`, `assetutilities`, `CAD-DEVELOPMENTS`, `doris`, `frontierdeepwater` — and surface website-worthy changes via:
+A daily 6:00 AM CT local cron (targeting `ace-linux-1`) that will review 6 public engineering repos — `digitalmodel`, `assethold`, `assetutilities`, `CAD-DEVELOPMENTS`, `lng-a`, `client-a` — and surface website-worthy changes via:
 - A markdown digest written to `docs/sync-reports/YYYY-MM-DD.md` (internal to workspace-hub)
 - GitHub issues filed on `vamseeachanta/aceengineer-website` when any of 4 signals fires (new semver tag, new case-study file, README capability section diff, upstream issues closed with `showcase`/`website` label)
 

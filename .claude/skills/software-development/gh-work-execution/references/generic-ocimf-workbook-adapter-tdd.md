@@ -21,7 +21,7 @@ A green report-generation test is not enough when the numerical model still uses
    - Add a representative numeric lock for at least one default/report case (for example a known heading's interpolated `Cx/Cy/Cm`) so the test suite proves the selected workbook basis, not just field presence.
 4. Preserve generic/reference limitations in generated artifacts.
    - If the workbook data is generic OCIMF/reference tanker-current data, report it as such.
-   - Do not call it asset-specific, client-specific, or SIROCCO-specific unless an approved source proves that linkage.
+   - Do not call it asset-specific, client-specific, or proj-a-specific unless an approved source proves that linkage.
 5. Check every emitted surface before closeout.
    - CSV/JSON numerical output, provenance JSON, manifest, Markdown, HTML, DOCX, and PDF must all reflect the same source-gated model and limitation language.
    - Search report templates and generated copy for stale placeholder phrases such as `transparent reference heading coefficients`, `first-cut placeholder`, or generic trig/coefficient language after the model changes. Treat stale explanatory text as an artifact-contract failure even when numeric tests are green.

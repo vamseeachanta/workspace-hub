@@ -1,4 +1,4 @@
-# Issue #2748 Plan — feat(acma): client output scaffolding for reports chatbots and evidence packs
+# Issue #2748 Plan — feat(mkt-a): client output scaffolding for reports chatbots and evidence packs
 
 ## Metadata
 - **Issue:** #2748
@@ -8,10 +8,10 @@
 - **Execution class:** parallel-worktree after approval
 
 ## Resource Intel
-- GitHub issue #2748: `feat(acma): client output scaffolding for reports chatbots and evidence packs`.
+- GitHub issue #2748: `feat(mkt-a): client output scaffolding for reports chatbots and evidence packs`.
 - Parent/dependency chain: #2748 depends on #2746 private wiki target, #2747 promotion ledger, and #2389 provenance contract.
 - Workspace hard gates: issue → resource intel → plan → adversarial review → `status:plan-review` → USER APPROVES → `status:plan-approved` → TDD implementation → close.
-- User update: private `llm-wiki` posture allows fuller ACMA/client data capture with key-information abstractions; public-safe constraints still apply to public repos/docs.
+- User update: private `llm-wiki` posture allows fuller mkt-a/client data capture with key-information abstractions; public-safe constraints still apply to public repos/docs.
 
 ## Problem
 The client-facing layer must not consume private knowledge silently; every result needs evidence, confidence, and storage/publication rules.
@@ -53,7 +53,7 @@ The client-facing layer must not consume private knowledge silently; every resul
 
 ## Adversarial Review Hardening
 - Implementation is blocked on #2746, #2747, and #2389 being approved/landed enough to define private wiki target, readiness contract, and provenance contract.
-- Extend existing report-layer contracts (`docs/architecture/report-evidence-bundle.schema.yaml`, `tests/architecture/test_report_layer_contract.py`, and `templates/client-llm-wiki/reports/`) instead of creating parallel ACMA-only contract drift.
+- Extend existing report-layer contracts (`docs/architecture/report-evidence-bundle.schema.yaml`, `tests/architecture/test_report_layer_contract.py`, and `templates/client-llm-wiki/reports/`) instead of creating parallel mkt-a-only contract drift.
 - Add deny-by-default export-control contract: outputs are blocked unless every source class is allowed for that audience/channel/residency. Evidence manifests alone are insufficient.
 - Required manifest fields: corpus scope, audience classification, `output_residency`, source class mix, freshness, review/sanitization gate status, `source_doc_key`, readiness/confidence, execution metadata, artifact type, and derivation chain.
 - RED tests must reject unscored entries, scored-but-not-review-cleared entries, missing provenance/source class/residency, private-only/internal-note sources in client/public outputs, mixed public/private corpora with public output residency, and chatbot packs whose output residency is broader than corpus posture.

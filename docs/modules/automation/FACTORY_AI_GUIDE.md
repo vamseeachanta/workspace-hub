@@ -40,24 +40,24 @@ All 26 repositories are initialized with factory.ai:
 - aceengineer-website
 - achantas-data
 - achantas-media
-- acma-projects
+- mkt-a
 - ai-native-traditional-eng
 - assethold
 - assetutilities
-- client_projects
+- client-c
 - digitalmodel
-- doris
+- lng-a
 - energy
-- frontierdeepwater
+- client-a
 - hobbies
 - investments
 - OGManufacturing
 - pyproject-starter
-- rock-oil-field
+- client-b
 - sabithaandkrishnaestates
-- saipem
+- client-d
 - sd-work
-- seanation
+- client-f
 - teamresumes
 - worldenergydata
 
@@ -387,7 +387,7 @@ git push origin feature/user-notifications
 REPOS=(
   "aceengineercode"
   "pyproject-starter"
-  "client_projects"
+  "client-c"
 )
 
 for repo in "${REPOS[@]}"; do

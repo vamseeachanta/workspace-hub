@@ -150,7 +150,7 @@ Plus the Standards page extra-fields table (`code_id`, `publisher`, `revision` a
 **Issue #2471 body excerpt** (verifies CSA-Z276-only scope):
 ```
 Decide and codify the sanctioned durable-wiki routing/schema for CSA Z276 pages
-before CSA coverage is promoted from ACMA/standards metadata into LLM-wiki content.
+before CSA coverage is promoted from mkt-a/standards metadata into LLM-wiki content.
 ```
 
 **Public-revision evidence (web — Standards Norway / standard.no)**:

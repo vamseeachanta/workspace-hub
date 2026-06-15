@@ -151,7 +151,7 @@
 | 12 | #12 | WRK-1022: Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents |
 | 13 | #30 | WRK-1000: fix(work-queue): restore /work skill compatibility in Codex CLI |
 | 14 | #32 | WRK-1024: chore(harness): increase context window limits for Claude and Codex |
-| 15 | #37 | WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) |
+| 15 | #37 | WRK-1051: chore(harness): verify Codex config on mkt-a-ansys05 (WRK-1024 follow-up) |
 | 16 | #38 | WRK-1088: feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets |
 | 17 | #42 | WRK-1103: learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings |
 | 18 | #45 | WRK-1110: enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap |

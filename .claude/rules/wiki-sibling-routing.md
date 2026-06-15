@@ -6,7 +6,7 @@
 
 **How to apply:**
 
-1. **Naming.** Generic sibling is `vamseeachanta/llm-wiki` (private since 2026-05-20 — see [[project_llm_wiki_privacy_flip]]). Client siblings use the **suffix form** `vamseeachanta/llm-wiki-<client>` — one sibling per client, not per project. Projects nest as folders under `projects/<project-slug>/` inside the client sibling. Registry: [`config/client-wikis.yml`](../../config/client-wikis.yml). Confirmed bootstrap: `llm-wiki-acma` (created 2026-05-18, PRIVATE).
+1. **Naming.** Generic sibling is `vamseeachanta/llm-wiki` (private since 2026-05-20 — see [[project_llm_wiki_privacy_flip]]). Client siblings use the **suffix form** `vamseeachanta/llm-wiki-<client>` — one sibling per client, not per project. Projects nest as folders under `projects/<project-slug>/` inside the client sibling. Registry: [`config/client-wikis.yml`](../../config/client-wikis.yml). Confirmed bootstrap: `llm-wiki-mkt-a` (created 2026-05-18, PRIVATE).
 
 2. **Data layer.** Writers (ingest pipelines, AI-assisted extraction, manual digitization) declare their target sibling via `LLM_WIKI_TARGET={generic,<client>}` env or config. Frontmatter must carry a `visibility:` field from the allowed set:
 
@@ -20,7 +20,7 @@
 
 3. **Execution layer.** Planning template ([`docs/plans/_template-issue-plan.md`](../../docs/plans/_template-issue-plan.md)) carries `Client:` (required for plans touching wiki content; `N/A` otherwise) and `Project:` (optional) header fields. Agent dispatch prompts (Claude `Agent`, Codex `codex exec`, Hermes routing) propagate `client` + `project` context to subagents so they don't re-improvise. Citation resolvers and skills that retrieve knowledge accept `client` + `project` parameters; default to `generic` only when explicitly unset.
 
-4. **Output layer.** Citation sidecars (per [`calc-citation-contract.md`](calc-citation-contract.md)) include `source_sibling:` (required — `generic` or the client slug) and `source_project:` (optional — `null` when source is client-level, populated when source is project-level). Reports, dashboards, and chatbots render the source-sibling identity prominently (e.g., a `Sourced from llm-wiki-acma/projects/sirocco` badge) so client-specific findings are never confused with generic ones.
+4. **Output layer.** Citation sidecars (per [`calc-citation-contract.md`](calc-citation-contract.md)) include `source_sibling:` (required — `generic` or the client slug) and `source_project:` (optional — `null` when source is client-level, populated when source is project-level). Reports, dashboards, and chatbots render the source-sibling identity prominently (e.g., a `Sourced from llm-wiki-mkt-a/projects/proj-a` badge) so client-specific findings are never confused with generic ones.
 
 5. **Cross-sibling linking discipline.** Extends [#2776](https://github.com/vamseeachanta/workspace-hub/issues/2776) (cross-wiki linking discipline epic).
    - `client → generic`: **full URL allowed and encouraged** (reference-not-duplicate posture).
@@ -64,9 +64,9 @@ Re-sync procedure (manual): `git -C workspace-hub pull && scripts/agents/install
 
 ## Pilot reference
 
-- **Bootstrap pilot:** client `acma` (`status: bootstrapped` in `config/client-wikis.yml` since 2026-05-18; repo `vamseeachanta/llm-wiki-acma` PRIVATE).
-- **First nested project:** `sirocco` under `acma`, lives at `llm-wiki-acma/projects/sirocco/` (live engagement tracked in [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760)).
-- **First operational routing decision:** OCIMF MEG3/MEG4 methodology → generic `llm-wiki/wikis/naval-architecture/standards/ocimf-meg.md`; SIROCCO project-specific calc results → `llm-wiki-acma/projects/sirocco/results/`. Documented in [`docs/session-handoffs/2026-05-20-handoff-digitalmodel-616-ocimf-to-llm-wiki.md`](../../docs/session-handoffs/2026-05-20-handoff-digitalmodel-616-ocimf-to-llm-wiki.md).
+- **Bootstrap pilot:** client `mkt-a` (`status: bootstrapped` in `config/client-wikis.yml` since 2026-05-18; repo `vamseeachanta/llm-wiki-mkt-a` PRIVATE).
+- **First nested project:** `proj-a` under `mkt-a`, lives at `llm-wiki-mkt-a/projects/proj-a/` (live engagement tracked in [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760)).
+- **First operational routing decision:** OCIMF MEG3/MEG4 methodology → generic `llm-wiki/wikis/naval-architecture/standards/ocimf-meg.md`; proj-a project-specific calc results → `llm-wiki-mkt-a/projects/proj-a/results/`. Documented in [`docs/session-handoffs/2026-05-20-handoff-digitalmodel-616-ocimf-to-llm-wiki.md`](../../docs/session-handoffs/2026-05-20-handoff-digitalmodel-616-ocimf-to-llm-wiki.md).
 
 ## Related rules and skills
 
@@ -79,9 +79,9 @@ Re-sync procedure (manual): `git -C workspace-hub pull && scripts/agents/install
 ## Related issues
 
 - [#2778](https://github.com/vamseeachanta/workspace-hub/issues/2778) — this rule's source issue (architecture: lock data/knowledge/result search routing).
-- [#2744](https://github.com/vamseeachanta/workspace-hub/issues/2744) — first client-sibling pilot (acma); receives a follow-on AC for project-nesting layout per this rule.
+- [#2744](https://github.com/vamseeachanta/workspace-hub/issues/2744) — first client-sibling pilot (mkt-a); receives a follow-on AC for project-nesting layout per this rule.
 - [#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774) — generic ingest umbrella; consumes this rule's data-layer convention.
 - [#2776](https://github.com/vamseeachanta/workspace-hub/issues/2776) — cross-wiki linking discipline (this rule's §5 extends it).
 - [#2775](https://github.com/vamseeachanta/workspace-hub/issues/2775) — workspace-hub SSoT harness flow (sibling SSoT scaffolding from this rule's enforcement-script installer extends).
-- [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) — canonical data/repo locations; `client_projects` (underscore raw-root) and `frontierdeepwater` (no hyphen) edge cases noted in §1.
+- [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) — canonical data/repo locations; `client-c` (underscore raw-root) and `client-a` (no hyphen) edge cases noted in §1.
 - [#2400](https://github.com/vamseeachanta/workspace-hub/issues/2400) — MCP `wiki_search` dependency (will consume this routing contract once landed).

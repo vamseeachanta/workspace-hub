@@ -48,12 +48,12 @@ The ACE workspace spans 4 physical/logical mount points containing **3.6M+ files
 | `docs/` | Project archives | ~3.4 TB | 100K+ | 119 project folders (0063-0200+), conferences/, engineering-refs/, _archive/ |
 | `docs/conferences/` | Conference papers | ~50 GB | 38,526 | OMAE(13126), OTC(8500), DOT(7516), ISOPE(4516), + 26 more conferences |
 | `digitalmodel/` | Domain docs overflow | varies | varies | 22+ domain literature folders with download scripts |
-| `client_projects/` | Client archives | varies | varies | 50+ project folders (legacy + active) |
+| `client-c/` | Client archives | varies | varies | 50+ project folders (legacy + active) |
 | `Production/` | Production eng | 960 MB | varies | ESP, EOR, GIS, Halliburton, training materials |
 | `2H/` | Riser engineering | varies | varies | 15+ riser/wellhead projects (31057-31290) |
-| `doris/` | Floating systems | varies | varies | FPSO projects (Zama, Lakach, SESA), OrcaFlex models |
-| `frontierdeepwater/` | Deepwater eng | varies | varies | Agent-OS enabled repo, deepwater analysis |
-| `saipem/` | EPC/installation | varies | varies | Yellowtail project, admin |
+| `lng-a/` | Floating systems | varies | varies | FPSO projects (Zama, Lakach, SESA), OrcaFlex models |
+| `client-a/` | Deepwater eng | varies | varies | Agent-OS enabled repo, deepwater analysis |
+| `client-d/` | EPC/installation | varies | varies | Yellowtail project, admin |
 | `data/` | Datasets | varies | varies | document-index, osi-datasets, legacy HDD archives |
 | `.ace-knowledge/` | Knowledge DB | 1.2 GB | 2 | SQLite index.db for cross-drive search |
 | `scripts/` | Maintenance | small | 3 | build-manifest.py + tests |
@@ -303,8 +303,8 @@ ls /mnt/ace/docs/ | grep "^0[0-9]"
 
 # Client-specific repos on /mnt/ace
 ls /mnt/ace/2H/        # Riser engineering
-ls /mnt/ace/doris/     # FPSO/floating
-ls /mnt/ace/saipem/    # EPC/installation
+ls /mnt/ace/lng-a/     # FPSO/floating
+ls /mnt/ace/client-d/    # EPC/installation
 
 # DDE project archive (may have files not in /mnt/ace)
 ls /mnt/remote/ace-linux-2/dde/documents/
@@ -417,8 +417,8 @@ ace-linux-1 (this machine)
 │   ├── docs/ (119 project folders + conferences/ + engineering-refs/)
 │   │   └── conferences/ (38,526 papers — NOT indexed)
 │   ├── digitalmodel/docs/domains/ (research literature by domain)
-│   ├── client_projects/ (50+ project archives)
-│   ├── 2H/, doris/, saipem/, frontierdeepwater/... (client repos)
+│   ├── client-c/ (50+ project archives)
+│   ├── 2H/, lng-a/, client-d/, client-a/... (client repos)
 │   ├── Production/, 0_mrv/, umbilical/ (domain archives with INDEX.md)
 │   ├── .ace-knowledge/index.db (1.2 GB knowledge DB)
 │   ├── assets.json (machine-readable manifest)
@@ -459,7 +459,7 @@ ace-linux-1 (this machine)
 | Conference paper (OMAE, OTC, DOT) | `/mnt/ace/docs/conferences/<conf>/` |
 | Domain research literature | `/mnt/ace/digitalmodel/docs/domains/<domain>/literature/` |
 | Project documentation | `/mnt/ace/docs/0NNN...` or `/mnt/ace/<client>/` |
-| OrcaFlex model files | `/mnt/ace/doris/orcaflex/` or `/mnt/remote/ace-linux-2/dde/Orcaflex/` |
+| OrcaFlex model files | `/mnt/ace/lng-a/orcaflex/` or `/mnt/remote/ace-linux-2/dde/Orcaflex/` |
 | Extracted equations/constants | `data/doc-intelligence/equations.jsonl` / `constants.jsonl` |
 | Standards implementation status | `data/document-index/standards-transfer-ledger.yaml` |
 | Online learning resources | `docs/resources/<domain>-resources.md` (14 domain pages) |

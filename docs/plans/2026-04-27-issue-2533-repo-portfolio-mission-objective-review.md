@@ -55,7 +55,7 @@ When repo-tier sources conflict, implementation must record the conflict and use
 - No deterministic committed inventory/evidence files currently reconcile `BUSINESS_BRAIN`, repository overview, live immediate-child local repo inventory, and sibling-repo mission source evidence.
 - No single table currently records mission/objective, tier/status, source path, and routing rule for every active or explicitly excluded repo.
 - Tier-2/Tier-3 repos have short domain labels but no explicit issue-routing guidance.
-- Known overlaps are not resolved in one visible place: `investments` vs `assethold`, `client_projects` vs client-specific repos, `workspace-hub` vs per-repo execution docs, and `assetutilities` vs repo-specific utilities.
+- Known overlaps are not resolved in one visible place: `investments` vs `assethold`, `client-c` vs client-specific repos, `workspace-hub` vs per-repo execution docs, and `assetutilities` vs repo-specific utilities.
 
 ### Evidence (embedded verification)
 

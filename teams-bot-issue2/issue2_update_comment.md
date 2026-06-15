@@ -4,7 +4,7 @@ Continued execution on #3 and #4 as requested.
 
 ### #3 Teams permissions/local path
 Artifact:
-https://github.com/vamseeachanta/llm-wiki-acma/blob/main/reports/teams-bot/issue-2/issue3-teams-permission-checklist.html
+https://github.com/vamseeachanta/llm-wiki-mkt-a/blob/main/reports/teams-bot/issue-2/issue3-teams-permission-checklist.html
 
 Summary:
 - Local Teams is installed/running and supports Teams deep-link/protocol handlers.
@@ -14,12 +14,12 @@ Summary:
 
 ### #4 Knowledge pack
 Artifact:
-https://github.com/vamseeachanta/llm-wiki-acma/blob/main/reports/teams-bot/issue-2/knowledge-pack.html
+https://github.com/vamseeachanta/llm-wiki-mkt-a/blob/main/reports/teams-bot/issue-2/knowledge-pack.html
 
 Supporting files:
-- https://github.com/vamseeachanta/llm-wiki-acma/blob/main/reports/teams-bot/issue-2/knowledge-pack-manifest.json
-- https://github.com/vamseeachanta/llm-wiki-acma/blob/main/reports/teams-bot/issue-2/knowledge-pack-index.jsonl
-- https://github.com/vamseeachanta/llm-wiki-acma/blob/main/reports/teams-bot/issue-2/knowledge-pack-sample-questions.json
+- https://github.com/vamseeachanta/llm-wiki-mkt-a/blob/main/reports/teams-bot/issue-2/knowledge-pack-manifest.json
+- https://github.com/vamseeachanta/llm-wiki-mkt-a/blob/main/reports/teams-bot/issue-2/knowledge-pack-index.jsonl
+- https://github.com/vamseeachanta/llm-wiki-mkt-a/blob/main/reports/teams-bot/issue-2/knowledge-pack-sample-questions.json
 
 Summary:
 - 15 approved repo/report-layer sources indexed.

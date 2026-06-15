@@ -108,7 +108,7 @@ doc_type: report               # report|standard|calculation|guideline|web
 domain: cathodic-protection
 ledger_id: "XXX"               # ← links to standards-transfer-ledger entry
 source: local                  # local|web|standard
-source_path: acma-projects/B1522/ctr-2/ref/proj/...
+source_path: mkt-a/B1522/ctr-2/ref/proj/...
 source_available: true         # false if path absent on current machine
 extractor: claude-sonnet-4-6
 extraction_date: "2026-03-12"

@@ -15,25 +15,25 @@ The following directories are independent git repositories and are excluded from
 - `aceengineercode/` - Core code repository
 - `achantas-data/` - Data management repository
 - `achantas-media/` - Media assets repository
-- `acma-projects/` - ACMA projects repository
+- `mkt-a/` - mkt-a projects repository
 - `ai-native-traditional-eng/` - AI engineering repository
 - `assethold/` - Asset holding repository
 - `assetutilities/` - Asset utilities repository
-- `client_projects/` - Client projects repository
+- `client-c/` - Client projects repository
 - `coordination/` - Coordination tools repository
 - `digitalmodel/` - Digital model repository
-- `doris/` - Doris project repository
+- `lng-a/` - lng-a project repository
 - `energy/` - Energy projects repository
-- `frontierdeepwater/` - Frontier deepwater repository
+- `client-a/` - client-a repository
 - `hobbies/` - Hobbies projects repository
 - `investments/` - Investment tracking repository
 - `OGManufacturing/` - OG Manufacturing repository
 - `pyproject-starter/` - Python project starter repository
-- `rock-oil-field/` - Rock oil field repository
+- `client-b/` - Rock oil field repository
 - `sabithaandkrishnaestates/` - Estates management repository
-- `saipem/` - Saipem project repository
+- `client-d/` - client-d project repository
 - `sd-work/` - SD work repository
-- `seanation/` - Sea nation repository
+- `client-f/` - Sea nation repository
 - `teamresumes/` - Team resumes repository
 - `worldenergydata/` - World energy data repository
 

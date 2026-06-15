@@ -62,16 +62,16 @@ Phase 1e validation has been completed successfully, confirming that the pytest 
 
 - ✅ **pyproject-starter** (42 tests - template repo)
 - ✅ **ai-native-traditional-eng** (16 tests)
-- ✅ **frontierdeepwater** (14 tests)
+- ✅ **client-a** (14 tests)
 - ✅ **energy** (18 tests)
-- ✅ **seanation** (16 tests)
-- ✅ **doris** (16 tests)
+- ✅ **client-f** (16 tests)
+- ✅ **lng-a** (16 tests)
 
 **Total**: 122 tests ready to run immediately
 
 ### Tier 2 Repositories Needing Config (6 Repos)
 
-- aceengineer-admin, aceengineer-website, rock-oil-field, saipem, client_projects, OGManufacturing
+- aceengineer-admin, aceengineer-website, client-b, client-d, client-c, OGManufacturing
 
 **Estimated Fix Time**: 5-7 days
 
@@ -79,7 +79,7 @@ Phase 1e validation has been completed successfully, confirming that the pytest 
 
 - ✅ **hobbies** (17 tests)
 - ✅ **sd-work** (17 tests)
-- ✅ **acma-projects** (22 tests)
+- ✅ **mkt-a** (22 tests)
 - ✅ **investments** (24 tests)
 - ✅ **sabithaandkrishnaestates** (22 tests)
 

@@ -59,4 +59,4 @@ Deep extraction follow-up: [workspace-hub#2536](https://github.com/vamseeachanta
 - `/mnt/ace` parent targets remain source of record.
 - `_from_elements/` staging remains retained under #2534 until the retention gate.
 - No staging/source cleanup was performed here.
-- `Codes & Regulations` remains excluded from this Elements copy/index path except for existing `/mnt/ace/acma-codes` governance.
+- `Codes & Regulations` remains excluded from this Elements copy/index path except for existing `/mnt/ace/mkt-a-codes` governance.

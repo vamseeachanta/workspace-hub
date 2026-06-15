@@ -4115,8 +4115,8 @@ path,file_size_bytes,total_sheets,has_vba,domain,project_number,status
 /mnt/ace/digitalmodel/docs/riser_analysis/data/stackup_schematic/Rev2/testData/Riser data_9500ft.xlsx,10680,1,False,riser,,ok
 /mnt/ace/digitalmodel/docs/riser_analysis/data/stackup_schematic/Rev2/testData/riserStackup.xlsx,30649,4,False,riser,,ok
 /mnt/ace/digitalmodel/docs/riser_analysis/data/stackup_schematic/Rev3/Riserdata.xlsx,9865,1,False,riser,,ok
-/mnt/ace/digitalmodel/docs/ship-design/data/coefficients/transformations/model_test/from_port_to_starboard/34456 - CFD - Wind Loads - Light and Full Load -ACMA_r4.xlsx,969216,0,False,ship_design,3445,error: AttributeError: 'Chartsheet' object has no attribute 'max_row'
-/mnt/ace/digitalmodel/docs/ship-design/data/coefficients/transformations/model_test/from_port_to_starboard/34456-CFD - Current Loads - openDomain -ACMA.xlsx,381759,20,False,ship_design,3445,ok
+/mnt/ace/digitalmodel/docs/ship-design/data/coefficients/transformations/model_test/from_port_to_starboard/34456 - CFD - Wind Loads - Light and Full Load -mkt-a_r4.xlsx,969216,0,False,ship_design,3445,error: AttributeError: 'Chartsheet' object has no attribute 'max_row'
+/mnt/ace/digitalmodel/docs/ship-design/data/coefficients/transformations/model_test/from_port_to_starboard/34456-CFD - Current Loads - openDomain -mkt-a.xlsx,381759,20,False,ship_design,3445,ok
 /mnt/ace/digitalmodel/docs/structural/data/platebuckling/614-CAL-2215-01 (SEWOL ANSYS Buckling Template) DRAFT2.xlsm,4338080,0,True,buckling,,error: AttributeError: 'Chartsheet' object has no attribute 'max_row'
 /mnt/local-analysis/workspace-hub/digitalmodel/docs/domains/orcawave/L01_aqwa_benchmark/orcawave_001_ship_raos_rev2.xlsx,2340355,15,False,orcaflex,,ok
 /mnt/local-analysis/workspace-hub/digitalmodel/tests/fixtures/solver/L00_test01.xlsx,373674,12,False,other,,ok

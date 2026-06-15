@@ -9,7 +9,7 @@
 
 | Tier | Companies | Hook | Demo to Reference |
 |------|-----------|------|-------------------|
-| 1 — Major EPIC | Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema | Fleet-wide vessel screening at scale — run your full vessel matrix overnight | Demo 3 (mudmat, 180 cases) or Demo 5 (jumper, 300 cases) |
+| 1 — Major EPIC | Subsea7, TechnipFMC, client-d, McDermott, Allseas, Heerema | Fleet-wide vessel screening at scale — run your full vessel matrix overnight | Demo 3 (mudmat, 180 cases) or Demo 5 (jumper, 300 cases) |
 | 2 — Specialist Vessel Ops | DOF, Solstad, Boskalis, DEME, Seaway7 | Vessel capability comparison for tenders — know your limits before the bid | Demo 4 (pipelay, 60 cases) or Demo 3 (mudmat) |
 | 3 — Regional/Niche | Cal Dive/Helix, DeepOcean, Gulf Offshore | Quick-turn screening for smaller projects — 48hr answer, not 3 weeks | Demo 1 (freespan, 680 cases) or Demo 2 (wall thickness, 72 cases) |
 
@@ -223,7 +223,7 @@ Use these as starting points — verify against current fleet data before sendin
 | Subsea7 | Seven Borealis, Seven Arctic — heavy lift + pipelay | Active in GoM and North Sea deepwater |
 | Allseas | Pioneering Spirit — largest installation vessel | Ultra-heavy lift, platform removal |
 | Heerema | Sleipnir, Thialf — semi-sub crane vessels | Deepwater heavy lift campaigns |
-| Saipem | Castorone, S7000 — pipelay + heavy lift | West Africa, Middle East installation |
+| client-d | Castorone, S7000 — pipelay + heavy lift | West Africa, Middle East installation |
 | McDermott | Amazon, DLV 2000 — deepwater pipelay | GoM deepwater pipelay focus |
 | TechnipFMC | Deep Energy, Deep Blue — flex/rigid pipelay | Subsea tiebacks, deepwater flex pipe |
 | Boskalis | Various — offshore wind + subsea | Growing offshore wind installation |

@@ -36,18 +36,18 @@ Config source: `/etc/fstab`. Local NTFS disks: `nofail,uid=1000,gid=1000` (ntfs-
 
 - **Local disks:** `lsblk` + `df -hT` enumerate `sdb1` (`/`, ext4 OS SSD), `sda2` (`/mnt/local-analysis`, ntfs-3g), `sdc2` (`/mnt/dde`, ntfs3). `/mnt/dde` touch+rm probe → writable; `du` confirms 1.6T `documents/` + OrcaFlex/O&G archives.
 - **Reachability:** `ping ace-linux-1` OK (192.168.1.100); `getent hosts ace-linux-1` resolves.
-- **NFS contents:** `/mnt/remote/ace-linux-1/ace/` lists 53 entries incl. `acma-codes/`, `acma-projects/`, `client_projects/`, `digitalmodel/`, `doris/`, `investments/`, `OGManufacturing/`, `assets.json` (1.2 GB), `capytaine/`, `HAMS/`, `MoorDyn/`, `MoorPy/`, `gmsh/`.
+- **NFS contents:** `/mnt/remote/ace-linux-1/ace/` lists 53 entries incl. `mkt-a-codes/`, `mkt-a/`, `client-c/`, `digitalmodel/`, `lng-a/`, `investments/`, `OGManufacturing/`, `assets.json` (1.2 GB), `capytaine/`, `HAMS/`, `MoorDyn/`, `MoorPy/`, `gmsh/`.
 - **NFS writable:** touch+rm probe in share root succeeded → **writable** (rw, sec=sys).
 - **sshfs contents:** `/mnt/remote/ace-linux-1/local-analysis/` lists the live ace-linux-1 workspace (workspace-hub, digitalmodel, worldenergydata, assethold, assetutilities, etc.) plus session-summary HTML and agent-worktrees.
 - **Latency:** warm `ls` on both shares < 15 ms.
-- **Codes/standards corpus present:** `/mnt/remote/ace-linux-1/ace/acma-codes/` resolves and contains ABS / API / ASCE / ASME / ASTM / ANSI / AISC / … vendor-code folders — the off-repo PDF source-of-truth referenced by `.claude/rules/codes-standards-data-routing.md`.
+- **Codes/standards corpus present:** `/mnt/remote/ace-linux-1/ace/mkt-a-codes/` resolves and contains ABS / API / ASCE / ASME / ASTM / ANSI / AISC / … vendor-code folders — the off-repo PDF source-of-truth referenced by `.claude/rules/codes-standards-data-routing.md`.
 
 ## Caveats / action items
 
 1. **Path divergence — `/mnt/ace` does not exist on ace-linux-2 (low impact, no action needed).**
    On ace-linux-1 the corpus lives at `/mnt/ace/...`; on ace-linux-2 the same data is fully accessible at `/mnt/remote/ace-linux-1/ace/...`. There is no `/mnt/ace` symlink here, and **none is required** — the mount is directly usable.
    - The data is **not blocked**. Anything that takes a path argument, or that you point at the mount, works today.
-   - The calc-citation resolver does **not** dereference `/mnt/ace` — it reads wiki pages via `LLM_WIKI_PATH` / `knowledge/wikis/`. The `/mnt/ace/acma-codes/<code>/` in `sources:` frontmatter (`.claude/rules/codes-standards-data-routing.md`) is a **provenance string**, never opened at runtime. No rule is actually broken on this box.
+   - The calc-citation resolver does **not** dereference `/mnt/ace` — it reads wiki pages via `LLM_WIKI_PATH` / `knowledge/wikis/`. The `/mnt/ace/mkt-a-codes/<code>/` in `sources:` frontmatter (`.claude/rules/codes-standards-data-routing.md`) is a **provenance string**, never opened at runtime. No rule is actually broken on this box.
    - The only scenario a symlink helps: running an ace-linux-1-authored script that hardcodes the literal `/mnt/ace/...` string, *unmodified*, on ace-linux-2. ~91 ecosystem files mention `/mnt/ace`, but nearly all are kanban-board prose, not live code paths that execute here.
    **Recommendation: do NOT add the symlink pre-emptively (YAGNI).** If a concrete hardcoded-path script later fails on this host, `sudo ln -s /mnt/remote/ace-linux-1/ace /mnt/ace` is the one-line fix.
 

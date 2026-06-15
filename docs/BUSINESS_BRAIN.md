@@ -27,23 +27,23 @@ No team members. AI agents are the workforce.
 | Repo | Domain |
 |------|--------|
 | OGManufacturing | Manufacturing/domain project context; reusable code routes to `digitalmodel` |
-| acma-projects | ACMA naval-architecture client project data/delivery |
-| frontierdeepwater | Startup project data; AceEngineer has 5% stake |
+| mkt-a | mkt-a naval-architecture client project data/delivery |
+| client-a | Startup project data; AceEngineer has 5% stake |
 | worldenergydata | Energy data analysis |
 | sabithaandkrishnaestates | Corporate/investment admin: finance tracking, taxes, entity records |
 
 ### Tier-3 (low-frequency, reference, client archive, or retirement candidates)
 aceengineer-admin, aceengineer-strategy, achantas-data, achantas-media,
-assethold, client_projects, doris, hobbies, pdf-large-reader,
-saipem, sd-work, teamresumes
+assethold, client-c, lng-a, hobbies, pdf-large-reader,
+client-d, sd-work, teamresumes
 
 ### Archive / extraction candidates
 | Repo | Disposition |
 |------|-------------|
 | investments | Private triage; migrate analysis/code to `assethold`, private records to `achantasdata`; retire within 3 months after no-loss migration |
-| rock-oil-field | Sanity-check and migrate useful code/data/analysis to Tier-1 repos; archive/retire if possible |
-| seanation | Client repo; extract useful data/information and archive |
-| saipem | Engineering installation contractor repo; extract useful info and archive/retire over time |
+| client-b | Sanity-check and migrate useful code/data/analysis to Tier-1 repos; archive/retire if possible |
+| client-f | Client repo; extract useful data/information and archive |
+| client-d | Engineering installation contractor repo; extract useful info and archive/retire over time |
 
 ## Machines (workstation inventory)
 

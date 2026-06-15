@@ -13,10 +13,10 @@ Open issues with status labels after cleanup:
 - #2206 | status:plan-review | marker=False | feat(knowledge): validate single-source-of-truth pyramid conformance across intelligence assets and execution workflows | https://github.com/vamseeachanta/workspace-hub/issues/2206
 - #2207 | status:plan-review | marker=False | feat(doc-intel): define standards/codes provenance + reuse contract for llm-wiki promotion | https://github.com/vamseeachanta/workspace-hub/issues/2207
 - #2209 | status:plan-review | marker=False | chore(knowledge): define durable-vs-transient knowledge boundary across wikis, issues, registries, and session artifacts | https://github.com/vamseeachanta/workspace-hub/issues/2209
-- #2216 | status:plan-review | marker=False | feat(naval-architecture): integrate /mnt/ace/acma-codes into llm-wiki and repo intelligence ecosystem | https://github.com/vamseeachanta/workspace-hub/issues/2216
-- #2227 | status:plan-review | marker=False | feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis | https://github.com/vamseeachanta/workspace-hub/issues/2227
+- #2216 | status:plan-review | marker=False | feat(naval-architecture): integrate /mnt/ace/mkt-a-codes into llm-wiki and repo intelligence ecosystem | https://github.com/vamseeachanta/workspace-hub/issues/2216
+- #2227 | status:plan-review | marker=False | feat(mkt-a-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis | https://github.com/vamseeachanta/workspace-hub/issues/2227
 - #2229 | status:plan-review | marker=False | feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live | https://github.com/vamseeachanta/workspace-hub/issues/2229
-- #2244 | status:plan-approved | marker=True | feat(acma-codes): triage newly discovered CSA/API breadth beyond current wiki-promotion scope | https://github.com/vamseeachanta/workspace-hub/issues/2244
+- #2244 | status:plan-approved | marker=True | feat(mkt-a-codes): triage newly discovered CSA/API breadth beyond current wiki-promotion scope | https://github.com/vamseeachanta/workspace-hub/issues/2244
 - #2246 | status:plan-approved | marker=True | fix(doc-intel): normalize summary-artifact identity between Phase B and Phase C | https://github.com/vamseeachanta/workspace-hub/issues/2246
 - #2247 | status:plan-approved | marker=True | feat(doc-intel): add bounded authoritative domain writeback for targeted classification runs | https://github.com/vamseeachanta/workspace-hub/issues/2247
 - #2269 | status:plan-review | marker=False | feat(openfoam): standardize ESI v2312 baseline workflow and validation | https://github.com/vamseeachanta/workspace-hub/issues/2269

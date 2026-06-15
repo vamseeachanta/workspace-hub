@@ -49,7 +49,7 @@ scripts/legal/legal-sanity-scan.sh --diff-only --json
 uv run python -m py_compile scripts/gtm/render_brochure_charts.py
 git diff --check
 
-grep -R --line-number '/mnt/local-analysis\|/tmp/pytest\|client_projects\|acma-projects\|seanation\|frontierdeepwater' \
+grep -R --line-number '/mnt/local-analysis\|/tmp/pytest\|client-c\|mkt-a\|client-f\|client-a' \
   docs/reports/gtm/assets docs/reports/gtm/legal-scans
 # no matches
 ```

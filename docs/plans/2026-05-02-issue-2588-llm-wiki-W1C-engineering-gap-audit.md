@@ -26,15 +26,15 @@
 - `knowledge/wikis/engineering/wiki/standards/` (9 files including `TEMPLATE.md`) — DNV: `dnv-os-e301`, `dnv-rp-c203`, `dnv-rp-c205`, `dnv-rp-f101`, `dnv-rp-f105`; API: `api-579-ffs`; OCIMF: `ocimf-meg4`, `ocimf-tandem-mooring`. NO ABS, BV, ISO 19900-series, NORSOK, IACS, BSEE, or full DNV-OS catalog yet.
 - `knowledge/wikis/engineering/wiki/entities/` (23 files) — solver/tool entities (`aqwa-solver`, `orcaflex-solver`, `orcawave-solver`, `bemrosetta-tool`, `openfoam-cfd`), failure-incident entities (`elba-island-mooring-incident`, `prelude-flng-mooring`, `nws-lng-mooring-investigation`, `hmpe-mooring-failures`), and process entities (`gsd-framework`, `hermes`, `claude-code`, `codex-cli`, `gemini-cli`).
 - `knowledge/wikis/engineering/wiki/workflows/` (5 files) — `orcawave-orcaflex-fixture-expansion-cookbook`, `orcawave-to-orcaflex-pipeline`, `parametric-engineering-reports`, `qgis-flowline-dem-preprocessing`, `solver-debugging-protocol`.
-- `knowledge/wikis/engineering/wiki/sources/` (23 files) — predominantly seed/extraction provenance (Doris University modules, Elements ingest dossiers, mooring-failures-seed). Per `.claude/rules/calc-citation-contract.md`, vendor-derivative sources pages are deny-list for citation; calcs must point at `standards/` or `concepts/`.
+- `knowledge/wikis/engineering/wiki/sources/` (23 files) — predominantly seed/extraction provenance (lng-a University modules, Elements ingest dossiers, mooring-failures-seed). Per `.claude/rules/calc-citation-contract.md`, vendor-derivative sources pages are deny-list for citation; calcs must point at `standards/` or `concepts/`.
 
 ### Documents consulted
 - `docs/plans/2026-04-26-issue-2378-marine-wiki-chunked-index.md` — sibling chunked-index plan for marine-engineering wiki (different domain; informs paginated-index pattern but not engineering-wiki content gaps).
 - `docs/plans/2026-04-26-issue-2363-wiki-refs-reverse-lookup.md` — sibling reverse-lookup plan (informs ref tracing).
 - `docs/plans/2026-04-20-issue-2392-wiki-coverage-gap-detector.md` — directly related; #2392 is the future automated coverage-gap detector this manual audit prefigures.
-- Issue #2540 — Elements overnight wave epic; out of scope for engineering-wiki content (focused on `/mnt/ace/doris/*` and `/mnt/ace/acma-projects/31522-woodfibre-lng/*` corpora destined for `marine-engineering`/`maritime-law` wikis, not `engineering`). No write-path overlap with this audit.
+- Issue #2540 — Elements overnight wave epic; out of scope for engineering-wiki content (focused on `/mnt/ace/lng-a/*` and `/mnt/ace/mkt-a/31522-woodfibre-lng/*` corpora destined for `marine-engineering`/`maritime-law` wikis, not `engineering`). No write-path overlap with this audit.
 - Issue #2368 — `feat(knowledge): generate faceted portal pages for large LLM-wiki domains`, OPEN; this audit's prioritized backfill list will feed #2368 portal-page selection downstream.
-- Issue #2373 — `feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion`, OPEN; some priority entries from this audit (DNV-OS-F101, API RP 17-series, ISO 19900) may align with Batch Pack 4 scope.
+- Issue #2373 — `feat(knowledge): execute Batch Pack 4 for non-mkt-a standards summary promotion`, OPEN; some priority entries from this audit (DNV-OS-F101, API RP 17-series, ISO 19900) may align with Batch Pack 4 scope.
 - Issue #2392 — `feat(knowledge): wiki coverage-gap detector`, OPEN; produces `scripts/knowledge/detect_wiki_gaps.py` and per-domain `docs/reports/wiki-coverage-gaps/<domain>.yaml`. This audit is the manual precursor that proves the detector's eventual output shape.
 - `.claude/rules/calc-citation-contract.md` — defines fail-closed citation contract; informs prioritization (subdirs that calcs would cite first = higher priority).
 - ISO 19900-series offshore-structures standards taxonomy (ISO 19900 general / 19901 specific provisions / 19902 fixed steel / 19903 fixed concrete / 19904 floating / 19905-1 site-specific assessment of jack-ups) — used as the verifiable external taxonomy anchor for priority rationale. Each ISO part defines a discipline scope (structural integrity, environmental loading, materials, fatigue, etc.); priority entries cite a specific part number rather than a generic English noun.
@@ -50,7 +50,7 @@
 **Issue statuses** (verified 2026-05-02 via `gh issue view`):
 - `#2540` — CLOSED — `epic(llm-wiki): overnight Elements corpus planning wave after #2536` (closed after this plan was authored; gap-audit work proceeds independently of the parent epic's lifecycle)
 - `#2368` — OPEN — `feat(knowledge): generate faceted portal pages for large LLM-wiki domains`
-- `#2373` — OPEN — `feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion`
+- `#2373` — OPEN — `feat(knowledge): execute Batch Pack 4 for non-mkt-a standards summary promotion`
 - `#2392` — OPEN — `feat(knowledge): wiki coverage-gap detector — inventory × wiki diff per discipline`
 - `#2378` — OPEN — `feat(knowledge): chunk and paginate the canonical marine-engineering wiki index`
 

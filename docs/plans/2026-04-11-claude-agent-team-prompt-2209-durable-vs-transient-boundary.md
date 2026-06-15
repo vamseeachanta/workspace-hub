@@ -22,7 +22,7 @@ Repo/workflow constraints:
 - Stay within the approved scope for `#2209`: define the durable-vs-transient knowledge boundary across llm-wikis, GitHub issues, registries, weekly reviews, and session/handoff artifacts.
 - Do NOT implement downstream enforcement hooks, registry schemas, or wiki/code changes in this run.
 - Do NOT redefine the parent pyramid/layer model from `#2205`.
-- Do NOT absorb retrieval-policy work from `#2208`, provenance/schema work from `#2207`, conformance tooling from `#2206`, or `/mnt/ace/acma-codes` integration work from `#2216`.
+- Do NOT absorb retrieval-policy work from `#2208`, provenance/schema work from `#2207`, conformance tooling from `#2206`, or `/mnt/ace/mkt-a-codes` integration work from `#2216`.
 
 Primary issue:
 - `#2209` https://github.com/vamseeachanta/workspace-hub/issues/2209

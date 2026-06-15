@@ -43,7 +43,7 @@ Added CI/CD workflows to 5 repositories using GitHub Actions with modern tooling
 - Image/video file type validation
 - Standard Python tooling (uv, pytest, black, flake8)
 
-### 5. acma-projects
+### 5. mkt-a
 **Type**: Complex Python project with many dependencies
 **Workflow Features**:
 - System dependency installation (wkhtmltopdf)
@@ -82,7 +82,7 @@ All workflows trigger on:
 
 ## Error Handling Strategy
 - **Strict**: Core Python projects (aceengineer-admin, achantas-media)
-- **Relaxed**: Engineering/research code (aceengineercode, acma-projects)
+- **Relaxed**: Engineering/research code (aceengineercode, mkt-a)
 - **Custom**: Documentation repos (achantas-data) with specialized checks
 
 ## Security Features
@@ -97,7 +97,7 @@ Based on this implementation, the remaining repositories can be categorized and 
 
 - **Python projects**: Use templates from aceengineer-admin or aceengineercode
 - **Data/documentation**: Use achantas-data template
-- **Complex engineering**: Use acma-projects template with system dependencies
+- **Complex engineering**: Use mkt-a template with system dependencies
 - **Web applications**: Extend with deployment stages
 - **Static sites**: Add build and deploy steps
 

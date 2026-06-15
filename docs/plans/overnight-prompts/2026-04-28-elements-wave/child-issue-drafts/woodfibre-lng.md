@@ -2,7 +2,7 @@
 
 > **Status:** draft (existing tracker is [#2544](https://github.com/vamseeachanta/workspace-hub/issues/2544); CLOSED 2026-04-29 after bounded planning execution; this draft documents the original planning scope and serves as a template for any successor cycle)
 > **Wave:** 2026-04-28 Elements overnight planning wave (umbrella [#2540](https://github.com/vamseeachanta/workspace-hub/issues/2540))
-> **Corpus:** `/mnt/ace/acma-projects/31522-woodfibre-lng` — 1.8 TB / 10,729 files (largest corpus by bytes)
+> **Corpus:** `/mnt/ace/mkt-a/31522-woodfibre-lng` — 1.8 TB / 10,729 files (largest corpus by bytes)
 
 ## Title
 
@@ -17,7 +17,7 @@
 
 ## Background
 
-Woodfibre LNG is the largest remaining metadata-only corpus from Elements ingest. The dominant directory is `02.Mooring Analysis` at 1.7 TB (predominantly OrcaFlex `.sim` simulation outputs). `05.Deliverables` (3.2 GB) holds the curated client-facing deliverables. ACMA project — confidentiality / project-owner clearance required before any wiki write.
+Woodfibre LNG is the largest remaining metadata-only corpus from Elements ingest. The dominant directory is `02.Mooring Analysis` at 1.7 TB (predominantly OrcaFlex `.sim` simulation outputs). `05.Deliverables` (3.2 GB) holds the curated client-facing deliverables. mkt-a project — confidentiality / project-owner clearance required before any wiki write.
 
 ## Scope
 
@@ -32,13 +32,13 @@ Woodfibre LNG is the largest remaining metadata-only corpus from Elements ingest
 - Any extraction whatsoever — Woodfibre is scout/pointer only this wave.
 - Any wiki write before clearance recorded.
 - Any abstract / quote / figure copy.
-- Cross-stream paths (SESA, Doris University, DORIS Codes).
+- Cross-stream paths (SESA, lng-a University, lng-a Codes).
 
 ## Allowed paths (read-only)
 
-- `/mnt/ace/acma-projects/31522-woodfibre-lng/05.Deliverables/**` — listings only
-- `/mnt/ace/acma-projects/31522-woodfibre-lng/01.Stability/**` — listings only
-- `/mnt/ace/acma-projects/31522-woodfibre-lng/04.Model Test Correlation/**` — listings only
+- `/mnt/ace/mkt-a/31522-woodfibre-lng/05.Deliverables/**` — listings only
+- `/mnt/ace/mkt-a/31522-woodfibre-lng/01.Stability/**` — listings only
+- `/mnt/ace/mkt-a/31522-woodfibre-lng/04.Model Test Correlation/**` — listings only
 
 ## Forbidden paths (extraction or write)
 
@@ -67,4 +67,4 @@ Woodfibre LNG is the largest remaining metadata-only corpus from Elements ingest
 
 - Pointer-only. No extraction. No abstracts. No quotes. No figures.
 - 1.7 TB `02.Mooring Analysis` is OUT — do not even enumerate file lists for that subtree.
-- Wiki writes require explicit ACMA / project-owner clearance recorded *before* any plan-approved label is applied.
+- Wiki writes require explicit mkt-a / project-owner clearance recorded *before* any plan-approved label is applied.

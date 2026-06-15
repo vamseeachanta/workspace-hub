@@ -24,24 +24,24 @@ All repositories now have:
 | aceengineer-website | master | ✅ Clean | |
 | achantas-data | main | ✅ Clean | |
 | achantas-media | jun-jul-aug | ⚠️ Special | Uses jun-jul-aug as main |
-| acma-projects | main | ✅ Clean | |
+| mkt-a | main | ✅ Clean | |
 | ai-native-traditional-eng | main | ✅ Clean | |
 | assethold | master | ✅ Clean | |
 | assetutilities | main | ✅ Clean | |
-| client_projects | main | ✅ Clean | |
+| client-c | main | ✅ Clean | |
 | digitalmodel | master | ✅ Clean | Has stashed changes |
-| doris | main | ✅ Clean | |
+| lng-a | main | ✅ Clean | |
 | energy | master | ✅ Clean | Deleted: apr_may |
-| frontierdeepwater | main | ✅ Clean | |
+| client-a | main | ✅ Clean | |
 | hobbies | main | ✅ Clean | |
 | investments | main | ✅ Clean | Deleted: family-dollar-analysis, urban-development-dashboard |
 | OGManufacturing | main | ✅ Clean | |
 | pyproject-starter | master | ✅ Clean | |
-| rock-oil-field | master | ✅ Clean | Deleted: installation |
+| client-b | master | ✅ Clean | Deleted: installation |
 | sabithaandkrishnaestates | main | ✅ Clean | |
-| saipem | main | ✅ Clean | Deleted: 2024 |
+| client-d | main | ✅ Clean | Deleted: 2024 |
 | sd-work | main | ✅ Clean | |
-| seanation | main | ✅ Clean | |
+| client-f | main | ✅ Clean | |
 | teamresumes | main | ✅ Clean | Deleted: 202412, 202501 |
 | worldenergydata | master | ✅ Clean | |
 
@@ -57,8 +57,8 @@ All repositories now have:
 - `aceengineercode`: 202501, 202505 (local & remote)
 - `energy`: apr_may
 - `investments`: family-dollar-analysis, urban-development-dashboard
-- `rock-oil-field`: installation
-- `saipem`: 2024
+- `client-b`: installation
+- `client-d`: 2024
 - `teamresumes`: 202412, 202501
 
 ## 🏗️ Trunk-Based Development Benefits

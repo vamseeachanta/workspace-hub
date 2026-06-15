@@ -118,7 +118,7 @@ Confidence: High
 
 **Fix Applied:** Added workspace-hub to WORK_TIER1 in suggest_model.sh line 27:
 ```bash
-WORK_TIER1="workspace-hub|digitalmodel|energy|frontierdeepwater"
+WORK_TIER1="workspace-hub|digitalmodel|energy|client-a"
 ```
 
 **Verification:**
@@ -135,11 +135,11 @@ WORK_TIER1="workspace-hub|digitalmodel|energy|frontierdeepwater"
 
 **Verified Tier Classifications:**
 ```bash
-WORK_TIER1: workspace-hub, digitalmodel, energy, frontierdeepwater
-WORK_TIER2: aceengineercode, assetutilities, worldenergydata, rock-oil-field, teamresumes
-WORK_TIER3: doris, saipem, OGManufacturing, seanation
+WORK_TIER1: workspace-hub, digitalmodel, energy, client-a
+WORK_TIER2: aceengineercode, assetutilities, worldenergydata, client-b, teamresumes
+WORK_TIER3: lng-a, client-d, OGManufacturing, client-f
 PERSONAL_ACTIVE: aceengineer-admin, aceengineer-website
-PERSONAL_EXPERIMENTAL: hobbies, sd-work, acma-projects, achantas-data
+PERSONAL_EXPERIMENTAL: hobbies, sd-work, mkt-a, achantas-data
 ```
 
 **Coverage:** 26 repositories classified across 5 tiers

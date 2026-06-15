@@ -45,8 +45,8 @@ I was able to collect title-level and PDF/catalog metadata for the three blocked
 These are **metadata-only summaries**, not source-text-grounded summaries. They should be treated as interim placeholders only and must not be used to assert clause-level technical requirements.
 
 ### Current status
-- `docs/reports/acma-wiki-unblock-2245-handoff.yaml` still reports `ready_for_2227: false`
-- `docs/reports/acma-2227-metadata-only-interim.yaml` captures the structured metadata-only handoff
+- `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml` still reports `ready_for_2227: false`
+- `docs/reports/mkt-a-2227-metadata-only-interim.yaml` captures the structured metadata-only handoff
 - #2227 remains blocked for full wiki-promotion work until readable source text is available from an authorized/legitimate source
 
 ## Draft B — stronger blocker diagnosis
@@ -67,4 +67,4 @@ Most likely unblock paths:
 3. manually curated summaries from an authorized readable source
 
 Structured artifact for the metadata-only fallback:
-- `docs/reports/acma-2227-metadata-only-interim.yaml`
+- `docs/reports/mkt-a-2227-metadata-only-interim.yaml`

@@ -93,7 +93,7 @@ ls -lah ./scripts/monitoring/check_claude_usage.sh
 #### Work Repositories (15 repos) - Higher quality priority
 
 ```yaml
-# digitalmodel, energy, frontierdeepwater, etc.
+# digitalmodel, energy, client-a, etc.
 primary_model: Opus     # 60% of work tasks
 fallback_model: Sonnet  # 30% of work tasks
 quick_tasks: Haiku      # 10% of work tasks
@@ -334,7 +334,7 @@ Output: JSON with file paths and existence status.
 #### Tier 1: Production Critical (Use Opus primarily)
 - **digitalmodel** - Full-stack application (Rails + React)
 - **energy** - Energy analytics platform
-- **frontierdeepwater** - Marine engineering analysis
+- **client-a** - Marine engineering analysis
 
 **Strategy:**
 - 70% Opus, 20% Sonnet, 10% Haiku
@@ -354,7 +354,7 @@ Output: JSON with file paths and existence status.
 - Quick utilities with Haiku
 
 #### Tier 3: Maintenance Mode (Use Haiku primarily)
-- **doris**, **saipem**, **OGManufacturing**
+- **lng-a**, **client-d**, **OGManufacturing**
 - Occasional updates only
 
 **Strategy:**
@@ -375,7 +375,7 @@ Output: JSON with file paths and existence status.
 - Opus for critical decisions only
 
 #### Tier 2: Experimental
-- **hobbies**, **sd-work**, **acma-projects**
+- **hobbies**, **sd-work**, **mkt-a**
 - Learning and experimentation
 
 **Strategy:**
@@ -751,13 +751,13 @@ A: Daily before starting work, and mid-session if working on many tasks.
 
 ```yaml
 work_repositories:
-  tier_1_production: [digitalmodel, energy, frontierdeepwater]
-  tier_2_active: [aceengineercode, assetutilities, worldenergydata, rock-oil-field, teamresumes]
-  tier_3_maintenance: [doris, saipem, OGManufacturing, seanation, ai-native-traditional-eng, assethold, client_projects, acma-projects, pyproject-starter]
+  tier_1_production: [digitalmodel, energy, client-a]
+  tier_2_active: [aceengineercode, assetutilities, worldenergydata, client-b, teamresumes]
+  tier_3_maintenance: [lng-a, client-d, OGManufacturing, client-f, ai-native-traditional-eng, assethold, client-c, mkt-a, pyproject-starter]
 
 personal_repositories:
   tier_1_active: [aceengineer-admin, aceengineer-website]
-  tier_2_experimental: [hobbies, sd-work, acma-projects, achantas-data, achantas-media]
+  tier_2_experimental: [hobbies, sd-work, mkt-a, achantas-data, achantas-media]
   tier_3_archive: [investments, sabithaandkrishnaestates]
 ```
 

@@ -26,12 +26,12 @@ Recommended mapping pattern:
 
 | Raw client root | Private wiki/corpus target | Rule |
 |---|---|---|
-| `/mnt/ace/rock-oil-field` | `/mnt/local-analysis/rock-oil-field-llm-wiki` | Private-client corpus; no public promotion by default |
-| `/mnt/ace/client-projects` | `/mnt/local-analysis/client-projects-llm-wiki` | Private-client corpus; no public promotion by default |
-| `/mnt/ace/doris` | `/mnt/local-analysis/doris-llm-wiki` | Private-client corpus; no public promotion by default |
-| `/mnt/ace/acma-projects` | `/mnt/local-analysis/acma-projects-llm-wiki` | Private-client corpus; no public promotion by default |
+| `/mnt/ace/client-b` | `/mnt/local-analysis/client-b-llm-wiki` | Private-client corpus; no public promotion by default |
+| `/mnt/ace/client-c` | `/mnt/local-analysis/client-c-llm-wiki` | Private-client corpus; no public promotion by default |
+| `/mnt/ace/lng-a` | `/mnt/local-analysis/lng-a-llm-wiki` | Private-client corpus; no public promotion by default |
+| `/mnt/ace/mkt-a` | `/mnt/local-analysis/mkt-a-llm-wiki` | Private-client corpus; no public promotion by default |
 | `/mnt/ace/frontier-deepwater` | `/mnt/local-analysis/frontier-deepwater-llm-wiki` | Private-client corpus; no public promotion by default |
-| `/mnt/ace/saipem` and similar roots | `/mnt/local-analysis/<client>-llm-wiki` | Private-client corpus; no public promotion by default |
+| `/mnt/ace/client-d` and similar roots | `/mnt/local-analysis/<client>-llm-wiki` | Private-client corpus; no public promotion by default |
 
 Report-time combination rule:
 - A client insight report may query both a private client wiki/corpus and public `llm-wiki`.

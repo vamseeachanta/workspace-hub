@@ -304,8 +304,8 @@
 | /mnt/ace/digitalmodel/docs/riser_analysis/data/stackup_schematic/Rev2/testData/Riser data_9500ft.xlsx | 1 | riser | - | no |
 | /mnt/ace/digitalmodel/docs/riser_analysis/data/stackup_schematic/Rev2/testData/riserStackup.xlsx | 4 | riser | - | no |
 | /mnt/ace/digitalmodel/docs/riser_analysis/data/stackup_schematic/Rev3/Riserdata.xlsx | 1 | riser | - | no |
-| /mnt/ace/digitalmodel/docs/ship-design/data/coefficients/transformations/model_test/from_port_to_starboard/34456 - CFD - Wind Loads - Light and Full Load -ACMA_r4.xlsx | 34 | ship_design | 3445 | no |
-| /mnt/ace/digitalmodel/docs/ship-design/data/coefficients/transformations/model_test/from_port_to_starboard/34456-CFD - Current Loads - openDomain -ACMA.xlsx | 20 | ship_design | 3445 | no |
+| /mnt/ace/digitalmodel/docs/ship-design/data/coefficients/transformations/model_test/from_port_to_starboard/34456 - CFD - Wind Loads - Light and Full Load -mkt-a_r4.xlsx | 34 | ship_design | 3445 | no |
+| /mnt/ace/digitalmodel/docs/ship-design/data/coefficients/transformations/model_test/from_port_to_starboard/34456-CFD - Current Loads - openDomain -mkt-a.xlsx | 20 | ship_design | 3445 | no |
 | /mnt/ace/digitalmodel/docs/structural/data/platebuckling/614-CAL-2215-01 (SEWOL ANSYS Buckling Template) DRAFT2.xlsm | 16 | buckling | - | yes |
 | /mnt/local-analysis/workspace-hub/digitalmodel/docs/domains/orcawave/L01_aqwa_benchmark/orcawave_001_ship_raos_rev2.xlsx | 15 | orcawave | - | no |
 | /mnt/local-analysis/workspace-hub/digitalmodel/tests/fixtures/solver/L00_test01.xlsx | 12 | other | - | no |

@@ -43,7 +43,7 @@ Issue portfolio in scope
 2) Promotion waves / content expansion
 - #2364 `feat(knowledge): execute Batch Pack 1 to promote API/standards-portal metadata into thin wiki domains`
 - #2369 `feat(knowledge): execute Batch Pack 2 to promote indexed conference summaries into wiki topic stubs`
-- #2373 `feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion`
+- #2373 `feat(knowledge): execute Batch Pack 4 for non-mkt-a standards summary promotion`
 - #2380 `feat(knowledge): execute Batch Pack 3 Tier A for external engineering software profiles`
 - #2365 `feat(knowledge): promote design-code registry into standards overviews and repo-target backlinks`
 

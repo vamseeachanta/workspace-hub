@@ -44,7 +44,7 @@ A prior capacity-aware artifact (`provider-capacity-aware-20260501-0613/results/
 |---|---|---|---|
 | SESA extraction clearance | `docs/governance/sesa-extraction-clearance-2026.md` (or named-owner comment on #2541) | **Does not exist** — verified via `ls docs/governance/` 2026-05-01: directory holds only flywheel/SESSION-GOVERNANCE/TRUST-ARCHITECTURE/standards/policy files, no SESA file | All SESA extraction, source/concept/comparison page emission, quote/snippet emission. Plan-approval is **not** blocked by this. |
 | Woodfibre extraction clearance | `docs/governance/woodfibre-extraction-clearance-2026.md` | **Does not exist** | Document abstract / quote / table / figure extraction. Pointer/scout-metadata-only subset is **not** blocked by this. |
-| Approver authority | Named ACMA project owner / client-authorized reviewer / legal-IP delegate; row-level schema (path, doc-id, approver, allowed extraction level, prohibited content, expiration) | No clearance record exists yet, so no approver named | Hardens the runtime gate; "generic project lead" is explicitly insufficient per #2544 addendum L332 |
+| Approver authority | Named mkt-a project owner / client-authorized reviewer / legal-IP delegate; row-level schema (path, doc-id, approver, allowed extraction level, prohibited content, expiration) | No clearance record exists yet, so no approver named | Hardens the runtime gate; "generic project lead" is explicitly insufficient per #2544 addendum L332 |
 
 These gates fire at **runtime**, not at **plan-approval time**. The user can label `status:plan-approved` for the bounded subsets today; the clearance files only have to exist before the implementation phase emits any wiki content.
 
@@ -80,7 +80,7 @@ This lane:
 
 - did not apply `status:plan-approved` (or any label) to any GitHub issue;
 - did not author or stage `docs/governance/sesa-extraction-clearance-2026.md` or `docs/governance/woodfibre-extraction-clearance-2026.md`;
-- did not extract any source content from `/mnt/ace/doris/62092_sesa` or `/mnt/ace/acma-projects/31522-woodfibre-lng`;
+- did not extract any source content from `/mnt/ace/lng-a/62092_sesa` or `/mnt/ace/mkt-a/31522-woodfibre-lng`;
 - did not perform any `gh issue` mutation;
 - does not authorize any downstream lane to perform any of the above based on this report.
 

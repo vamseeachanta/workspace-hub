@@ -39,8 +39,8 @@ The following CP-stream repositories have the legal scan wired into `.pre-commit
 | Repo | Deny list | Hook entry |
 |---|---|---|
 | `digitalmodel` | `.legal-deny-list.yaml` (158 lines) | `../scripts/legal/legal-sanity-scan.sh --repo=digitalmodel` |
-| `saipem` | `.legal-deny-list.yaml` (67 lines) | `../scripts/legal/legal-sanity-scan.sh --repo=saipem` |
-| `acma-projects` | `.legal-deny-list.yaml` (146 lines) | `../scripts/legal/legal-sanity-scan.sh --repo=acma-projects` |
+| `client-d` | `.legal-deny-list.yaml` (67 lines) | `../scripts/legal/legal-sanity-scan.sh --repo=client-d` |
+| `mkt-a` | `.legal-deny-list.yaml` (146 lines) | `../scripts/legal/legal-sanity-scan.sh --repo=mkt-a` |
 
 The hook uses `language: script` with `pass_filenames: false` so it always scans the full repo tree against the merged global + local deny lists. The `entry` path is relative to the submodule root (one level up `../` reaches the workspace-hub `scripts/` tree).
 
@@ -52,6 +52,6 @@ The hook uses `language: script` with `pass_filenames: false` so it always scans
 ### Running manually from workspace root
 ```bash
 ./scripts/legal/legal-sanity-scan.sh --repo=digitalmodel
-./scripts/legal/legal-sanity-scan.sh --repo=saipem
-./scripts/legal/legal-sanity-scan.sh --repo=acma-projects
+./scripts/legal/legal-sanity-scan.sh --repo=client-d
+./scripts/legal/legal-sanity-scan.sh --repo=mkt-a
 ```

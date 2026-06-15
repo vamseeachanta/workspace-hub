@@ -128,4 +128,4 @@ Cross-repo access:
 |--------|----------|--------------|
 | Consolidate `worldenergydata/data/marine_safety/` into `data/modules/marine_safety/` | Low | New item |
 | Determine if assethold LoopNet CSV should be gitignored | Low | New item |
-| Extend tier classification to `aceengineer-admin`, `saipem`, `doris` | Medium | New item |
+| Extend tier classification to `aceengineer-admin`, `client-d`, `lng-a` | Medium | New item |

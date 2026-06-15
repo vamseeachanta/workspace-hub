@@ -208,7 +208,7 @@ This skill enables:
 
 Potential repositories for deployment:
 - worldenergydata - Validate scraped energy data
-- rock-oil-field - Validate field production data
+- client-b - Validate field production data
 - assetutilities - Validate asset inventory data
 - Any CSV/DataFrame processing pipeline
 

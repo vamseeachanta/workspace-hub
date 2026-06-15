@@ -24,7 +24,7 @@
 | [`4ffa51ce`](https://github.com/vamseeachanta/llm-wiki/commit/4ffa51ce) | API Bulletin 2U — Stability Design of Cylindrical Shells | 3e, Jun 2004 (OCR-derived) |
 | [`5c94bd4e`](https://github.com/vamseeachanta/llm-wiki/commit/5c94bd4e) | API RP 500 — Class I Div 1/2 Area Classification | 2e, Nov 1997 (on-disk; OCR-derived) |
 
-Total: 2,091 lines of structured wiki content across 10 commits. Pages use post-2026-05-20 private-llm-wiki frontmatter (`visibility: private-llm-wiki`, `sources:` pointing at `/mnt/ace/acma-codes/`, verbatim TOCs, edition + section tagging per `feedback_silent_verdict_flip_defect_class`). Two OCR-derived pages carry an additional `ocr_note` frontmatter field flagging PyMuPDF+tesseract provenance and gating formula re-verification before calc-binding use.
+Total: 2,091 lines of structured wiki content across 10 commits. Pages use post-2026-05-20 private-llm-wiki frontmatter (`visibility: private-llm-wiki`, `sources:` pointing at `/mnt/ace/mkt-a-codes/`, verbatim TOCs, edition + section tagging per `feedback_silent_verdict_flip_defect_class`). Two OCR-derived pages carry an additional `ocr_note` frontmatter field flagging PyMuPDF+tesseract provenance and gating formula re-verification before calc-binding use.
 
 ### Subagent pipeline
 
@@ -47,7 +47,7 @@ Mid-session, a chained `git add && git commit && git add && git commit && ...` b
 | Branch | `main` |
 | HEAD | `5c94bd4e` (this session's 10th commit) |
 | Ahead/behind origin | **10 ahead / 0 behind** (clean to push) |
-| Staged | `wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md` — parallel SIROCCO session work (#2760), preserved untouched by this session via pathspec-form commits |
+| Staged | `wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md` — parallel proj-a session work (#2760), preserved untouched by this session via pathspec-form commits |
 | Untracked | `.codex/` and `.gemini/` (each contains a single `skills` symlink → `../../workspace-hub/.claude/skills` — intentional cross-agent skill-sharing infrastructure, created 2026-05-22 10:55, not residue) |
 | **Push status** | **NOT PUSHED** (deferred per option-2 "per-page commits for morning review") |
 
@@ -72,13 +72,13 @@ Not modified by this session. No state changes.
 
 ### CLEAN
 - llm-wiki working tree (no leftover scratch in repo).
-- No PDF copies committed (raw vendor-licensed PDFs remained at `/mnt/ace/acma-codes/` per `.claude/rules/codes-standards-data-routing.md`).
+- No PDF copies committed (raw vendor-licensed PDFs remained at `/mnt/ace/mkt-a-codes/` per `.claude/rules/codes-standards-data-routing.md`).
 - No legal-deny-list violations.
-- No commits touched the parallel SIROCCO staged file.
+- No commits touched the parallel proj-a staged file.
 - 10 commits used atomic pathspec form (no sweep-contamination per `feedback_retry_loop_sweep_contamination`).
 
 ### EXPECTED (proceed with named residue)
-- llm-wiki staged b1528 file (parallel SIROCCO session, #2760).
+- llm-wiki staged b1528 file (parallel proj-a session, #2760).
 - `/tmp/llm-wiki-extract/` (~4.3 MB of 11 extracted PDF text files + ocr_fallback.py helper; safe to `rm -rf` when morning review no longer needs them).
 - llm-wiki 10-ahead-of-origin state (by design per option-2).
 
@@ -126,4 +126,4 @@ This session took NO external-visible actions beyond what was explicitly authori
 - Wiki sibling routing rule: `.claude/rules/wiki-sibling-routing.md`
 - Calc citation contract: `.claude/rules/calc-citation-contract.md`
 - New memory: `~/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_chained_git_op_under_heavy_load.md`
-- Related issues: [#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774) (private llm-wiki corpus-ingest program — this is one tranche of execution), [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) (SIROCCO — preserved staged file context), [#2778](https://github.com/vamseeachanta/workspace-hub/issues/2778) (wiki-sibling-routing rule that landed mid-session)
+- Related issues: [#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774) (private llm-wiki corpus-ingest program — this is one tranche of execution), [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) (proj-a — preserved staged file context), [#2778](https://github.com/vamseeachanta/workspace-hub/issues/2778) (wiki-sibling-routing rule that landed mid-session)

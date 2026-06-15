@@ -239,11 +239,11 @@ repos:
   - name: CAD-DEVELOPMENTS
     path: /mnt/local-analysis/workspace-hub/CAD-DEVELOPMENTS
     readme_sections: ["Capabilities", "Features"]
-  - name: doris
-    path: /mnt/local-analysis/workspace-hub/doris
+  - name: lng-a
+    path: /mnt/local-analysis/workspace-hub/lng-a
     readme_sections: ["Capabilities", "Features"]
-  - name: frontierdeepwater
-    path: /mnt/local-analysis/workspace-hub/frontierdeepwater
+  - name: client-a
+    path: /mnt/local-analysis/workspace-hub/client-a
     readme_sections: ["Capabilities", "Features"]
 issue_repo: vamseeachanta/aceengineer-website
 digest_dir: docs/sync-reports
@@ -1168,7 +1168,7 @@ def test_render_with_signals():
     )
     out = render_digest(
         signals_by_repo={"digitalmodel": [sig]},
-        skipped={"doris": "fetch timeout"},
+        skipped={"lng-a": "fetch timeout"},
         date="2026-04-20",
         duration_s=47,
         repos_total=6,
@@ -1267,7 +1267,7 @@ Run footer: Duration: 42s · Repos OK: 6/6 · Signals: 0 · Issues filed: 0 · N
 
 ## Skipped repos
 
-- ⚠ `doris`: fetch timeout
+- ⚠ `lng-a`: fetch timeout
 
 ---
 
@@ -1869,7 +1869,7 @@ Create `scripts/ecosystem-sync/audit-readmes.sh`:
 # are present in each source repo's top-level README.md.
 set -euo pipefail
 
-REPOS=(digitalmodel assethold assetutilities CAD-DEVELOPMENTS doris frontierdeepwater)
+REPOS=(digitalmodel assethold assetutilities CAD-DEVELOPMENTS lng-a client-a)
 HEADINGS=("Capabilities" "Features" "What it does")
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
@@ -1934,7 +1934,7 @@ Create `scripts/ecosystem-sync/create-labels.sh`:
 # Create `showcase` and `website` labels on the 6 source repos.
 # Idempotent: uses --force to update if label already exists.
 set -euo pipefail
-REPOS=(digitalmodel assethold assetutilities CAD-DEVELOPMENTS doris frontierdeepwater)
+REPOS=(digitalmodel assethold assetutilities CAD-DEVELOPMENTS lng-a client-a)
 OWNER=vamseeachanta
 
 for r in "${REPOS[@]}"; do

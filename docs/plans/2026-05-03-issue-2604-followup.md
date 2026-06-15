@@ -11,7 +11,7 @@
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `digitalmodel/tests/naval_architecture/test_b1528_sirocco_yaw_moment.py` line 109-111 — failing test reads `pyproject.toml` and asserts a single-line literal substring.
+- Found: `digitalmodel/tests/naval_architecture/test_b1528_proj-a_yaw_moment.py` line 109-111 — failing test reads `pyproject.toml` and asserts a single-line literal substring.
 - Found: `digitalmodel/pyproject.toml` line 219-220 — `[tool.setuptools.package-data]` declares `digitalmodel = ["subsea/cross_sections/fixtures/*.yml", "naval_architecture/data/*.yml"]` (two entries on one line).
 - Found: `digitalmodel/tests/naval_architecture/test_rudder_stock_torque_sweep.py::test_packaged_yaml_in_built_distribution_preserves_existing_package_data` (line 180-220) — verifies the **wheel manifest** actually contains `digitalmodel/naval_architecture/data/*.yml` plus `subsea/cross_sections/fixtures/*.yml` after `python -m build --wheel`. This is the durable behavioral check; #2604's failing test is redundant declaration-level validation.
 - Found: `digitalmodel/tests/subsea/cross_sections/test_fixtures.py::test_fixture_package_data_available_after_install_metadata` (line 97-99) — uses `importlib.resources.files(...).iterdir()` against the installed package; another behavioral cross-check.
@@ -37,14 +37,14 @@ No relevant wiki pages — this is a test-quality fix.
 - `#2604` — OPEN — title matches; labels: `priority:low`; severity called Low in body.
 
 **File existence** (verified via Read tool 2026-05-02):
-- EXISTS: `digitalmodel/tests/naval_architecture/test_b1528_sirocco_yaw_moment.py`
+- EXISTS: `digitalmodel/tests/naval_architecture/test_b1528_proj-a_yaw_moment.py`
 - EXISTS: `digitalmodel/pyproject.toml`
 - EXISTS: `digitalmodel/tests/naval_architecture/test_rudder_stock_torque_sweep.py`
 - EXISTS: `digitalmodel/tests/subsea/cross_sections/test_fixtures.py`
 
 **Line excerpts**
 
-`digitalmodel/tests/naval_architecture/test_b1528_sirocco_yaw_moment.py` lines 109-111:
+`digitalmodel/tests/naval_architecture/test_b1528_proj-a_yaw_moment.py` lines 109-111:
 ```python
 def test_packaged_b1528_yaml_declared_as_package_data():
     pyproject = Path("pyproject.toml").read_text(encoding="utf-8")
@@ -70,7 +70,7 @@ Source count: 5 (issue body, failing test file, pyproject.toml, sibling test #1 
 | Artifact | Path |
 |---|---|
 | This plan | docs/plans/2026-05-02-issue-2604-loosen-b1528-package-data-test.md |
-| Test (modify) | `digitalmodel/tests/naval_architecture/test_b1528_sirocco_yaw_moment.py` |
+| Test (modify) | `digitalmodel/tests/naval_architecture/test_b1528_proj-a_yaw_moment.py` |
 | Implementation | none — test-only change |
 | Plan review (single-author) | scripts/review/results/2026-05-02-plan-2604-claude.md |
 
@@ -99,7 +99,7 @@ assert "naval_architecture/data/*.yml" in package_data
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `digitalmodel/tests/naval_architecture/test_b1528_sirocco_yaw_moment.py` | Replace literal-substring assertion (line 109-111) with `tomllib.loads(...)` + array-membership check |
+| Modify | `digitalmodel/tests/naval_architecture/test_b1528_proj-a_yaw_moment.py` | Replace literal-substring assertion (line 109-111) with `tomllib.loads(...)` + array-membership check |
 
 No change to `pyproject.toml`. No new dependency (`tomllib` is Python 3.11+ stdlib; `requires-python = ">=3.11"`).
 
@@ -121,7 +121,7 @@ Adjacent tests that should remain GREEN (cross-checks, not modified):
 
 ## Acceptance Criteria
 
-- [ ] `uv run pytest digitalmodel/tests/naval_architecture/test_b1528_sirocco_yaw_moment.py::test_packaged_b1528_yaml_declared_as_package_data -v` passes against current `pyproject.toml`.
+- [ ] `uv run pytest digitalmodel/tests/naval_architecture/test_b1528_proj-a_yaw_moment.py::test_packaged_b1528_yaml_declared_as_package_data -v` passes against current `pyproject.toml`.
 - [ ] Same test still passes if `pyproject.toml` `package-data` is collapsed to a single-entry layout (`digitalmodel = ["naval_architecture/data/*.yml"]`) — forward-compat.
 - [ ] Same test still fails (correctly) if `naval_architecture/data/*.yml` is removed from `package-data["digitalmodel"]` — negative-case correctness.
 - [ ] `uv run pytest digitalmodel/tests/naval_architecture/ -v` regression-clean.

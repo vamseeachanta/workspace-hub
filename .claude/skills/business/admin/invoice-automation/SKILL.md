@@ -24,7 +24,7 @@ This skill automates invoice generation for AceEngineer's engineering consulting
 Activate when the user mentions:
 - Invoice generation or creation
 - Client billing or billing cycles
-- Monthly invoices for clients (ACMA, RII, Doris, SeaNation)
+- Monthly invoices for clients (mkt-a, RII, lng-a, client-f)
 - Engineering consulting fees
 
 ## Core Capabilities
@@ -41,7 +41,7 @@ Activate when the user mentions:
 aceengineer invoice generate --month 2025-01
 
 # Generate invoice for specific client
-aceengineer invoice generate --month 2025-01 --client ACMA
+aceengineer invoice generate --month 2025-01 --client mkt-a
 
 # Preview without generating files
 aceengineer invoice generate --month 2025-01 --dry-run
@@ -52,7 +52,7 @@ aceengineer invoice generate --month 2025-01 --dry-run
 ```yaml
 # config/invoice_config.yaml
 client:
-  name: "ACMA Engineering"
+  name: "mkt-a Engineering"
   contact: "John Smith"
   address: "123 Client Street"
 

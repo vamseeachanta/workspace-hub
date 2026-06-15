@@ -4,15 +4,15 @@
 > **Destination:** `vamseeachanta/digitalmodel` issue tracker
 > **Created:** 2026-05-20
 > **Author:** Claude (workspace-hub session)
-> **Source request:** workspace-hub session 2026-05-20 — user asked to correct polar charts in `digitalmodel/docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html` with (a) transparent ship outline in middle, (b) coefficients shown at the appropriate phase angle so lateral force per environmental direction is obvious, AND (c) the resulting capability must be reusable for generic studies including [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) (B1528 SIROCCO).
-> **Related:** workspace-hub#2768 (OCIMF umbrella), workspace-hub#2760 (SIROCCO force review), digitalmodel#556 (CYw bounding), digitalmodel#563 (OCIMFExcelAdapter)
+> **Source request:** workspace-hub session 2026-05-20 — user asked to correct polar charts in `digitalmodel/docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html` with (a) transparent ship outline in middle, (b) coefficients shown at the appropriate phase angle so lateral force per environmental direction is obvious, AND (c) the resulting capability must be reusable for generic studies including [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) (B1528 proj-a).
+> **Related:** workspace-hub#2768 (OCIMF umbrella), workspace-hub#2760 (proj-a force review), digitalmodel#556 (CYw bounding), digitalmodel#563 (OCIMFExcelAdapter)
 > **After user approval:** post body below as a new digitalmodel issue; capture the assigned issue number; then transcribe the companion plan draft (`2026-05-20-digitalmodel-plan-draft-ocimf-polar-vessel-force-overlay.md`) to `digitalmodel/docs/plans/2026-05-20-issue-<NNN>-ocimf-polar-vessel-force-overlay.md` and apply `status:plan-review` label.
 
 ---
 
 ## Proposed title
 
-`feat(marine_ops): polar plot with vessel silhouette and on-body force vectors — reusable across OCIMF explorer, SIROCCO review, future studies`
+`feat(marine_ops): polar plot with vessel silhouette and on-body force vectors — reusable across OCIMF explorer, proj-a review, future studies`
 
 ## Proposed labels
 
@@ -29,7 +29,7 @@
 
 ### Purpose
 
-Build a reusable polar-plot capability in digitalmodel that overlays (a) a transparent vessel silhouette anchoring the angular axis, and (b) explicit on-body force-vector arrows showing the direction the environmental loading actually pushes the vessel — so that any consumer (the OCIMF coefficient explorer, the [B1528 SIROCCO moored-current review](https://github.com/vamseeachanta/workspace-hub/issues/2760), or future force/moment analyses) can render polar diagrams where lateral / longitudinal / yaw load direction is unambiguous from the picture alone.
+Build a reusable polar-plot capability in digitalmodel that overlays (a) a transparent vessel silhouette anchoring the angular axis, and (b) explicit on-body force-vector arrows showing the direction the environmental loading actually pushes the vessel — so that any consumer (the OCIMF coefficient explorer, the [B1528 proj-a moored-current review](https://github.com/vamseeachanta/workspace-hub/issues/2760), or future force/moment analyses) can render polar diagrams where lateral / longitudinal / yaw load direction is unambiguous from the picture alone.
 
 Today the OCIMF explorer's polar plots (`docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html`) render `r = |C|` against angular axis `θ = incidence heading`, with sign encoded only as line style (solid/dashed). Readers must mentally invert from "incidence direction" to "force direction" via the OCIMF sign convention — exactly the cognitive step that the new on-body force arrows + silhouette will remove.
 
@@ -38,7 +38,7 @@ Today the OCIMF explorer's polar plots (`docs/domains/charts/phase2/ocimf/ocimf_
 | Use case | Current pain point | What this delivers |
 |---|---|---|
 | OCIMF coefficient explorer (`scripts/python/digitalmodel/ocimf/build_coefficient_explorer.py`) | Polar shows `r = |Cy|`; sign as line style only; no vessel reference frame | Bow-up silhouette in middle + on-body force arrows at sampled headings, with arrow length ∝ |Cy| and arrow direction in vessel-fixed +Y/−Y |
-| B1528 SIROCCO moored-current review (workspace-hub#2760) | Force-by-force review of X/Y/Z/K/M/N at rudder angles ±5°; existing report renders force magnitudes but not on-body direction relative to vessel | Same polar capability accepts arbitrary `force_vectors(theta, fx, fy, fz, mx, my, mz)` input; not OCIMF-specific |
+| B1528 proj-a moored-current review (workspace-hub#2760) | Force-by-force review of X/Y/Z/K/M/N at rudder angles ±5°; existing report renders force magnitudes but not on-body direction relative to vessel | Same polar capability accepts arbitrary `force_vectors(theta, fx, fy, fz, mx, my, mz)` input; not OCIMF-specific |
 | Future generic environmental-loading studies | Each study reinvents its own Plotly polar; no shared visual convention; sign-handling drifts | Single `polar_force_overlay()` function used by all consumers; one place to fix bugs, one place to render |
 
 ### Scope
@@ -54,7 +54,7 @@ Today the OCIMF explorer's polar plots (`docs/domains/charts/phase2/ocimf/ocimf_
 2. **Vessel silhouette assets** — three default silhouettes (tanker, gas-carrier, generic-hull) as transparent Plotly polygon paths defined in body coordinates and scaled to the polar radial axis. Bow-up by convention.
 3. **Force-arrow renderer** — for each sampled `theta`, draws a short arrow starting at the silhouette boundary and pointing in the resolved force direction (vessel-body frame), with arrow length proportional to the coefficient/force magnitude. Arrow color/style indicates positive vs negative.
 4. **Consumer #1 — OCIMF explorer**: refactor `scripts/python/digitalmodel/ocimf/build_coefficient_explorer.py:make_polar_overlay()` to delegate to the new module. The HTML output at `docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html` is regenerated.
-5. **Consumer #2 — SIROCCO**: add a hook for the workspace-hub#2760 plan to call the new module once it lands. (Implementation of the SIROCCO side stays gated by #2760's own approval.)
+5. **Consumer #2 — proj-a**: add a hook for the workspace-hub#2760 plan to call the new module once it lands. (Implementation of the proj-a side stays gated by #2760's own approval.)
 6. **Tests** — TDD against frame-convention correctness (e.g., OCIMF positive Cyc at θ=90° → force-arrow points to +Y starboard), silhouette scaling, dataframe-schema validation, and snapshot of the rendered HTML output.
 
 #### Explicitly out of scope (separate issues)
@@ -74,8 +74,8 @@ Today the OCIMF explorer's polar plots (`docs/domains/charts/phase2/ocimf/ocimf_
 - [ ] OCIMF explorer HTML regenerated from refactored build script; visual output preserves all existing 15 figure traces (no data lost); ship outline + force arrows present on every polar diagram.
 - [ ] TDD test suite covers: input-schema validation, frame-convention enum behavior, silhouette scaling, arrow-direction correctness for known signed coefficients, and snapshot stability of the rendered HTML on a fixed input.
 - [ ] No regression: `cd digitalmodel && uv run pytest tests/marine_ops/` passes.
-- [ ] Module is importable and usable from a hypothetical workspace-hub#2760 SIROCCO-side caller — verified by a smoke test in `tests/` that constructs a synthetic SIROCCO-style force DataFrame and calls the module.
-- [ ] No external client/project identifiers (e.g., `B1528`, `acma-projects` paths) are embedded in the module code or tests — those references are caller-side only; per `.claude/rules/` legal-compliance baseline.
+- [ ] Module is importable and usable from a hypothetical workspace-hub#2760 proj-a-side caller — verified by a smoke test in `tests/` that constructs a synthetic proj-a-style force DataFrame and calls the module.
+- [ ] No external client/project identifiers (e.g., `B1528`, `mkt-a` paths) are embedded in the module code or tests — those references are caller-side only; per `.claude/rules/` legal-compliance baseline.
 - [ ] Plan reproduction-proof (Step 1.5): for the OCIMF explorer side, the existing `make_polar_overlay()` HTML output is captured as a "before" snapshot in the plan so reviewers can compare against the "after" snapshot before approval.
 
 ### Gate note
@@ -91,7 +91,7 @@ Per workspace-hub `.claude/rules/`, self-approval is forbidden.
 ### References
 
 - workspace-hub#2768 — OCIMF MEG3/MEG4 closeout umbrella
-- workspace-hub#2760 — B1528 SIROCCO moored-current force review (downstream consumer)
+- workspace-hub#2760 — B1528 proj-a moored-current force review (downstream consumer)
 - digitalmodel#556 — CYw=-3.56 out-of-envelope (concurrent fix, independent)
 - digitalmodel#563 — OCIMFExcelAdapter (concurrent fix, independent)
 - Existing build script: `scripts/python/digitalmodel/ocimf/build_coefficient_explorer.py:396` (`make_polar_overlay`)

@@ -69,7 +69,7 @@ All 25 repositories have received:
 - worldenergydata ✅
 - digitalmodel ✅
 - achantas-data ✅
-- saipem ✅
+- client-d ✅
 
 ## ✅ Directory Structure Integrity
 
@@ -96,7 +96,7 @@ The `/git-sync-all` command now includes:
 ### Last Sync Results
 - **Date**: 2025-08-22T15:57:08
 - **Success**: 23/25 repos
-- **Failed**: 2 repos (client_projects, rock-oil-field - unstaged changes)
+- **Failed**: 2 repos (client-c, client-b - unstaged changes)
 - **All repos have local changes**: Ready for commits
 
 ## 📊 Summary Statistics

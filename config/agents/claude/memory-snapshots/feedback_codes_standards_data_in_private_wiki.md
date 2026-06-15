@@ -7,7 +7,7 @@ metadata:
   originSessionId: 301086a5-63fe-4d73-a934-dd43ff2f9c0d
 ---
 
-Vendor-licensed engineering codes and standards data lives in the **private** `vamseeachanta/llm-wiki` repo. Verbatim clause/convention text, digitized coefficient tables (re-emitted as CSV), figure captions, and per-figure descriptions are all permitted in the repo. The raw vendor PDF itself stays at `/mnt/ace/acma-codes/<code>/` as the canonical source of truth; the wiki holds the digitized derivation.
+Vendor-licensed engineering codes and standards data lives in the **private** `vamseeachanta/llm-wiki` repo. Verbatim clause/convention text, digitized coefficient tables (re-emitted as CSV), figure captions, and per-figure descriptions are all permitted in the repo. The raw vendor PDF itself stays at `/mnt/ace/mkt-a-codes/<code>/` as the canonical source of truth; the wiki holds the digitized derivation.
 
 **Why:** the 2026-05-20 user directive collapsed the licensing window for codes-and-standards content by flipping `vamseeachanta/llm-wiki` from public to private. Previously the public posture required `extraction_policy: metadata-only` + `raw_copy_allowed: false` + `## Boundary` sections on every standards page — high friction for ingest and per-page-design overhead. Privacy removes the public-redistribution risk; engineering content can land at full fidelity. Forks/stars on llm-wiki were 0 at flip time so no external dependents to coordinate. User framing: "OCIMF is codes and standards and is public knowledge. Let us land it in llm-wiki public repo" → escalated to "let us get clients and go with full flow" → llm-wiki visibility-flipped to private.
 

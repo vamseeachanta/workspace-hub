@@ -52,7 +52,7 @@ Final repo table after fetch/prune, fast-forward pulls, and cache cleanup:
 | hobbies | main | 0 | 4 | 0 | 0 | 0 | 1 |
 | kaggle-rogii-2026 | main | 0 | 2 | 0 | 0 | 0 | 1 |
 | llm-wiki | main | 0 | 5 | 0 | 0 | 0 | 1 |
-| llm-wiki-acma | main | 0 | 0 | 0 | 0 | 0 | 1 |
+| llm-wiki-mkt-a | main | 0 | 0 | 0 | 0 | 0 | 1 |
 | llm-wiki-fdas | main | 0 | 3 | 0 | 0 | 0 | 1 |
 | raw-to-knowledge-playbook | main | 0 | 1 | 0 | 0 | 0 | 1 |
 | sabithaandkrishnaestates | main | 0 | 2 | 0 | 0 | 0 | 1 |

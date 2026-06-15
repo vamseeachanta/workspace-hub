@@ -20,9 +20,9 @@ These repositories have active Python codebase with existing test infrastructure
 | **pyproject-starter** | ✓ | ✓ (2 files) | ✓ (5 files) | **READY FOR EXPANSION** |
 | **ai-native-traditional-eng** | ✓ | ✓ (1 file) | ✓ (3 files) | **READY FOR EXPANSION** |
 | **achantas-data** | ✓ | ✓ (2 files) | ✓ (2 files) | **READY FOR EXPANSION** |
-| **seanation** | ✓ | ✓ (1 file) | ✓ (1 file) | **READY FOR EXPANSION** |
-| **saipem** | ✓ | ✓ (0 files) | ✓ (2 files) | **NEEDS TEST CREATION** |
-| **acma-projects** | ✓ | ✓ (1 file) | ✓ (2 files) | **READY FOR EXPANSION** |
+| **client-f** | ✓ | ✓ (1 file) | ✓ (1 file) | **READY FOR EXPANSION** |
+| **client-d** | ✓ | ✓ (0 files) | ✓ (2 files) | **NEEDS TEST CREATION** |
+| **mkt-a** | ✓ | ✓ (1 file) | ✓ (2 files) | **READY FOR EXPANSION** |
 
 ### ARCHIVE (2 repositories - Maintenance Only)
 
@@ -30,7 +30,7 @@ These repositories are marked for archive with minimal active development:
 
 | Repository | Status | Notes |
 |------------|--------|-------|
-| **client_projects** | ARCHIVE | Large legacy codebase, minimal maintenance |
+| **client-c** | ARCHIVE | Large legacy codebase, minimal maintenance |
 | **OGManufacturing** | ARCHIVE | Reference/documentation repository |
 | **achantas-media** | ARCHIVE | Media storage, no development |
 
@@ -113,9 +113,9 @@ For archive repositories:
 | pyproject-starter | ~50% | 75% | +25% |
 | ai-native-traditional-eng | ~40% | 75% | +35% |
 | achantas-data | ~45% | 75% | +30% |
-| seanation | ~30% | 75% | +45% |
-| saipem | ~0% | 75% | +75% |
-| acma-projects | ~50% | 75% | +25% |
+| client-f | ~30% | 75% | +45% |
+| client-d | ~0% | 75% | +75% |
+| mkt-a | ~50% | 75% | +25% |
 
 ### Deliverables
 

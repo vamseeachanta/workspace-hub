@@ -1,11 +1,11 @@
-# Plan for #2373: Execute Batch Pack 4 for non-ACMA standards summary promotion
+# Plan for #2373: Execute Batch Pack 4 for non-mkt-a standards summary promotion
 
 > **Status:** draft (v3)
 > **Complexity:** T2
 > **Date:** 2026-04-23 (v2 revised 2026-04-24; v3 revised 2026-04-24)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2373
 > **Review artifacts (v2):** scripts/review/results/20260425T034634Z-plan-2373-v2.md-plan-claude.md (MAJOR), scripts/review/results/20260425T034912Z-plan-2373-v2.md-plan-gemini.md (MINOR)
-> **Review artifacts (v1):** scripts/review/results/20260424T032933Z-2026-04-23-issue-2373-batch-pack-4-non-acma-standards-summary-promotion.md-plan-{claude,codex,gemini}.md
+> **Review artifacts (v1):** scripts/review/results/20260424T032933Z-2026-04-23-issue-2373-batch-pack-4-non-mkt-a-standards-summary-promotion.md-plan-{claude,codex,gemini}.md
 
 ---
 
@@ -47,7 +47,7 @@ Addresses Claude r2 MAJOR (10 items, P2/P3) and Gemini r2 MINOR (3 items). Codex
 | `cathodic-protection` domain (19 entries) | summary-backed; 47.4% calc implemented | `data/document-index/standards-transfer-ledger.yaml` |
 | `pipeline` domain (55 entries) | summary-backed; 21.8% calc implemented | `data/document-index/standards-transfer-ledger.yaml` |
 | `structural` domain (71 entries) | summary-backed; 5.6% calc implemented | `data/document-index/standards-transfer-ledger.yaml` |
-| `marine` domain (42 entries) | reserved for ACMA/OCIMF/CSA scope (#2216, #2227, #2284) — EXCLUDED | issue #2373 scope |
+| `marine` domain (42 entries) | reserved for mkt-a/OCIMF/CSA scope (#2216, #2227, #2284) — EXCLUDED | issue #2373 scope |
 | `process` domain (55 entries) | new domain (zero prior calc) — DEFERRED | maturity YAML |
 | `drilling` domain (9 entries) | new domain (zero prior calc) — DEFERRED | maturity YAML |
 | `materials` domain (122 entries) | DEFERRED to separate wave (locked v2) | this plan §Acceptance Criteria |
@@ -60,7 +60,7 @@ Addresses Claude r2 MAJOR (10 items, P2/P3) and Gemini r2 MINOR (3 items). Codex
 
 ### Documents consulted
 - Parent epic #2390 — Batch Pack 4 assigned to Wave 7 (after Wave 6 Batch Packs 1+3); standalone, not paired.
-- Issue #2373 body — scope locked to non-ACMA domains; first slice = `cathodic-protection + pipeline + structural`; summary/ledger evidence only; no raw PDF rereads; excludes #2216/#2227/#2284 ACMA/OCIMF/CSA work and #2365 design-code-registry work.
+- Issue #2373 body — scope locked to non-mkt-a domains; first slice = `cathodic-protection + pipeline + structural`; summary/ledger evidence only; no raw PDF rereads; excludes #2216/#2227/#2284 mkt-a/OCIMF/CSA work and #2365 design-code-registry work.
 - `docs/reports/llm-wiki-external-source-priority-queue.md` §5 — ranks `standards-with-existing-summaries` as P1; aligns with this wave.
 - Issue #2365 — design-code registry promotion sources from `data/design-codes/code-registry.yaml` (separate from ledger); overlap avoided.
 - Issue #2207 — provenance/reuse contract; outputs cite ledger entries and shard summaries by stable key (ledger `id` + shard record path).
@@ -77,9 +77,9 @@ Addresses Claude r2 MAJOR (10 items, P2/P3) and Gemini r2 MINOR (3 items). Codex
 ### Evidence (embedded verification, run 2026-04-23 unless noted; v3 dry-run 2026-04-24)
 
 **Issue statuses** (verified via `gh issue view`):
-- `#2373` — OPEN — "feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion"
+- `#2373` — OPEN — "feat(knowledge): execute Batch Pack 4 for non-mkt-a standards summary promotion"
 - `#2390` — OPEN — epic coordinator
-- `#2216`, `#2227`, `#2284` — scope-excluded ACMA/OCIMF/CSA scope
+- `#2216`, `#2227`, `#2284` — scope-excluded mkt-a/OCIMF/CSA scope
 - `#2365` — scope-excluded design-code-registry
 - `#2471` — sanctioned `wiki/standards/` subtree decision (referenced by v2/v3)
 - `#2039` — engineering wiki ingest umbrella (downstream consumer)
@@ -104,7 +104,7 @@ Addresses Claude r2 MAJOR (10 items, P2/P3) and Gemini r2 MINOR (3 items). Codex
 - MISSING (this plan creates): `data/document-index/standards-aliases.yaml` — alias fixture pre-landed (NEW v3)
 - MISSING (this plan creates): `scripts/data/document-index/count_slice.py` — slice-count test helper (NEW v3)
 - MISSING (this plan creates): `scripts/enforcement/audit-no-mnt-ace.py` — audithook wrapper (NEW v3)
-- MISSING (this plan creates): `docs/reports/batch-pack-4-non-acma-standards-{cathodic-protection,pipeline,structural}.md`
+- MISSING (this plan creates): `docs/reports/batch-pack-4-non-mkt-a-standards-{cathodic-protection,pipeline,structural}.md`
 - MISSING (this plan creates): `docs/reports/batch-pack-4-extend-vs-create-map.yaml`
 - MISSING (this plan creates): `docs/reports/batch-pack-4-provenance-sample.yaml`
 
@@ -351,14 +351,14 @@ Per `feedback_multi_agent_commit_serialization` and `feedback_merge_race_silent_
 
 | Artifact | Path |
 |---|---|
-| This plan (v3) | docs/plans/2026-04-23-issue-2373-batch-pack-4-non-acma-standards-summary-promotion.md |
+| This plan (v3) | docs/plans/2026-04-23-issue-2373-batch-pack-4-non-mkt-a-standards-summary-promotion.md |
 | Topic-cluster fixture (NEW v2) | data/document-index/standards-topic-clusters.yaml |
 | Standards-aliases fixture (NEW v3) | data/document-index/standards-aliases.yaml |
 | Slice-count helper script (NEW v3) | scripts/data/document-index/count_slice.py |
 | Audithook wrapper script (NEW v3) | scripts/enforcement/audit-no-mnt-ace.py |
-| Per-domain report: cathodic-protection | docs/reports/batch-pack-4-non-acma-standards-cathodic-protection.md |
-| Per-domain report: pipeline | docs/reports/batch-pack-4-non-acma-standards-pipeline.md |
-| Per-domain report: structural | docs/reports/batch-pack-4-non-acma-standards-structural.md |
+| Per-domain report: cathodic-protection | docs/reports/batch-pack-4-non-mkt-a-standards-cathodic-protection.md |
+| Per-domain report: pipeline | docs/reports/batch-pack-4-non-mkt-a-standards-pipeline.md |
+| Per-domain report: structural | docs/reports/batch-pack-4-non-mkt-a-standards-structural.md |
 | Extend-vs-create map | docs/reports/batch-pack-4-extend-vs-create-map.yaml |
 | Provenance fixture (sample rows) | docs/reports/batch-pack-4-provenance-sample.yaml |
 | Wiki-ready stubs | appended within per-domain reports (no commits to `knowledge/wikis/**` in this wave) |
@@ -372,7 +372,7 @@ Per `feedback_multi_agent_commit_serialization` and `feedback_merge_race_silent_
 
 ## Deliverable
 
-Three per-domain Batch Pack 4 execution reports (cathodic-protection, pipeline, structural) containing wiki-ready topic/standard stubs derived exclusively from the existing `standards-transfer-ledger.yaml` entries and the `data/document-index/shards/*.json` summary surface, plus an extend-vs-create YAML map against `knowledge/wikis/engineering/wiki/standards/` (with #2471 v3 frontmatter forward-adopted) and `concepts/`, plus a provenance fixture demonstrating the ledger→shard→stub chain — with zero raw PDF rereads, zero ACMA/OCIMF/CSA (marine) rows, zero `data/design-codes/code-registry.yaml` rows, and no modifications to `knowledge/wikis/**` in this wave. New clustering, aliases, and helper-script artifacts pre-land to make per-domain clustering, slug-collision resolution, and slice-count verification deterministic.
+Three per-domain Batch Pack 4 execution reports (cathodic-protection, pipeline, structural) containing wiki-ready topic/standard stubs derived exclusively from the existing `standards-transfer-ledger.yaml` entries and the `data/document-index/shards/*.json` summary surface, plus an extend-vs-create YAML map against `knowledge/wikis/engineering/wiki/standards/` (with #2471 v3 frontmatter forward-adopted) and `concepts/`, plus a provenance fixture demonstrating the ledger→shard→stub chain — with zero raw PDF rereads, zero mkt-a/OCIMF/CSA (marine) rows, zero `data/design-codes/code-registry.yaml` rows, and no modifications to `knowledge/wikis/**` in this wave. New clustering, aliases, and helper-script artifacts pre-land to make per-domain clustering, slug-collision resolution, and slice-count verification deterministic.
 
 **Note on scope boundary:** Wiki-READY stubs land as artifacts under `docs/reports/`; actual page creation under `knowledge/wikis/engineering/wiki/**` is out of scope for #2373 and belongs to downstream consumers (#2039 engineering wiki ingest umbrella).
 
@@ -486,7 +486,7 @@ for p, rows in collisions.items():
 
 # Step 6 — Emit per-domain reports (each with #2471 frontmatter for standards stubs)
 for domain, entries in sorted(per_domain.items()):
-    write_report(f"docs/reports/batch-pack-4-non-acma-standards-{domain}.md",
+    write_report(f"docs/reports/batch-pack-4-non-mkt-a-standards-{domain}.md",
                  entries=entries,
                  cluster_assignments={e["id"]: assign_cluster(e, clusters[domain]) for e in entries})
 
@@ -524,9 +524,9 @@ write_yaml("docs/reports/batch-pack-4-provenance-sample.yaml", rows=stratified_s
 | Create | data/document-index/standards-aliases.yaml | NEW v3: ledger-id → canonical-page alias fixture (Claude r2 P2 #6) |
 | Create | scripts/data/document-index/count_slice.py | NEW v3: invokes the in_slice filter and prints len + checksum (Gemini r2 P2 #1) |
 | Create | scripts/enforcement/audit-no-mnt-ace.py | NEW v3: `sys.addaudithook` wrapper that traps any `open` event whose path begins with `/mnt/ace/` and exits non-zero (Claude r2 P3 #8) |
-| Create | docs/reports/batch-pack-4-non-acma-standards-cathodic-protection.md | Sub-slice 4a deliverable |
-| Create | docs/reports/batch-pack-4-non-acma-standards-pipeline.md | Sub-slice 4b deliverable |
-| Create | docs/reports/batch-pack-4-non-acma-standards-structural.md | Sub-slice 4c deliverable |
+| Create | docs/reports/batch-pack-4-non-mkt-a-standards-cathodic-protection.md | Sub-slice 4a deliverable |
+| Create | docs/reports/batch-pack-4-non-mkt-a-standards-pipeline.md | Sub-slice 4b deliverable |
+| Create | docs/reports/batch-pack-4-non-mkt-a-standards-structural.md | Sub-slice 4c deliverable |
 | Create | docs/reports/batch-pack-4-extend-vs-create-map.yaml | Extend-vs-create + collision-group map (deterministic sha256 group ids) |
 | Create | docs/reports/batch-pack-4-provenance-sample.yaml | Stratified 10-row sample (3 per domain + 1 multi-shard) |
 | Update (separate commit, **main-session-only — NOT in lane diff**) | docs/plans/README.md | Plan row for #2373 — see §Serialization Protocol; enforced by `post_run_lane_diff_owned_paths` (forbids `^docs/plans/`) and `post_run_main_diff_owned_paths` (only `^docs/plans/README\.md$`) |
@@ -556,7 +556,7 @@ write_yaml("docs/reports/batch-pack-4-provenance-sample.yaml", rows=stratified_s
 | post_run_slice_id_checksum | Sorted-id sha256 matches pinned EXPECTED_SLICE_ID_CHECKSUM | `python3 scripts/data/document-index/count_slice.py --checksum` | prints `a7996eb6b79f9882b35f5fe33fca36fd144c67a1ff5e10525bd7d260306e4d70` |
 | post_run_yaml_parses | Extend-vs-create YAML parses | `python3 -c "import yaml; yaml.safe_load(open(...))"` | exit 0 |
 | post_run_provenance_parses | Provenance sample YAML parses | same | exit 0 |
-| post_run_no_marine | No marine/ACMA rows escaped | grep for `domain: marine` in reports | 0 matches |
+| post_run_no_marine | No marine/mkt-a rows escaped | grep for `domain: marine` in reports | 0 matches |
 | post_run_no_ocimf_csa | No OCIMF/CSA rows escaped | grep for `org: OCIMF` or `org: CSA` | 0 matches |
 | post_run_no_design_code_overlap | No row in design-code registry | cross-compare against `data/design-codes/code-registry.yaml` | empty intersection |
 | post_run_all_extend_pages_exist | Every `extend-only` row references a real wiki page | `test -f` per page path | exit 0 per row |
@@ -589,7 +589,7 @@ sys.addaudithook(_hook)
 
 ## Acceptance Criteria
 
-- [ ] Three per-domain reports exist: `batch-pack-4-non-acma-standards-{cathodic-protection,pipeline,structural}.md`
+- [ ] Three per-domain reports exist: `batch-pack-4-non-mkt-a-standards-{cathodic-protection,pipeline,structural}.md`
 - [ ] Topic-cluster fixture `data/document-index/standards-topic-clusters.yaml` pre-lands BEFORE per-domain reports run, including `<domain>-other` declarations
 - [ ] Standards-aliases fixture `data/document-index/standards-aliases.yaml` pre-lands BEFORE per-domain reports run (NEW v3)
 - [ ] Combined post-filter row count equals `EXPECTED_SLICE_COUNT = 68` (PINNED v3, NOT a range)
@@ -622,7 +622,7 @@ sys.addaudithook(_hook)
 
 ## Risks and Open Questions
 
-- **Risk:** `marine` domain in the ledger is broader than ACMA/OCIMF/CSA. Mitigation: blanket-exclude `domain == "marine"`; carry forward to a later issue.
+- **Risk:** `marine` domain in the ledger is broader than mkt-a/OCIMF/CSA. Mitigation: blanket-exclude `domain == "marine"`; carry forward to a later issue.
 - **Risk:** Ledger `status == "done"` does NOT imply an existing wiki page. Mitigation: file-existence check for extend-vs-create classification.
 - **Risk:** Topic-cluster keyword tables may misclassify edge cases. Mitigation: per-domain reports include the full keyword table inline (including `<domain>-other` empty-keyword row); misclassifications become surgical follow-ups, not silent. Tie-break is longest-keyword + lex-`cluster_id`.
 - **Risk:** Provenance fixture is 10 stratified rows. Mitigation: stratification rule pinned; full coverage deferred to #2207 / #2039 ingest.

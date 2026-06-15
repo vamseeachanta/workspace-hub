@@ -71,7 +71,7 @@ When sources conflict on tier:
 
 - No canonical `docs/REPO_MISSION_PORTFOLIO.md` exists yet.
 - Tier-2/Tier-3 repos in `BUSINESS_BRAIN.md` lack issue-routing rules (belongs-here / route-elsewhere).
-- Known mission overlaps are not visibly resolved anywhere: `investments` ↔ `assethold`; `client_projects` ↔ client-specific repos (`acma-projects`, `seanation`, `saipem`, `frontierdeepwater`, `doris`); `workspace-hub` ↔ per-repo execution docs; `assetutilities` ↔ repo-specific utilities; `aceengineer-website` ↔ `aceengineer-strategy` (delivery vs strategy); `digitalmodel` ↔ client/project verticals.
+- Known mission overlaps are not visibly resolved anywhere: `investments` ↔ `assethold`; `client-c` ↔ client-specific repos (`mkt-a`, `client-f`, `client-d`, `client-a`, `lng-a`); `workspace-hub` ↔ per-repo execution docs; `assetutilities` ↔ repo-specific utilities; `aceengineer-website` ↔ `aceengineer-strategy` (delivery vs strategy); `digitalmodel` ↔ client/project verticals.
 - `docs/README.md` discovery surface routes agents to `.agent-os/product/*` references that `CONTROL_PLANE_CONTRACT.md` marks legacy; mission discovery has no canonical landing.
 - No single artifact tells a future agent "this work belongs in repo X" / "route this elsewhere" for the full active portfolio.
 
@@ -96,7 +96,7 @@ When sources conflict on tier:
 - MISSING (this plan creates after approval): `docs/REPO_MISSION_PORTFOLIO.md`
 
 **Local immediate-child repo inventory** (`find /mnt/local-analysis/workspace-hub -maxdepth 2 -name .git -type d`, 2026-05-02):
-23 repos present: `aceengineer-admin`, `aceengineer-strategy`, `aceengineer-website`, `achantas-data`, `achantas-media`, `acma-projects`, `assethold`, `assetutilities`, `CAD-DEVELOPMENTS`, `client_projects`, `digitalmodel`, `doris`, `frontierdeepwater`, `hobbies`, `investments`, `OGManufacturing`, `rock-oil-field`, `sabithaandkrishnaestates`, `saipem`, `sd-work`, `seanation`, `teamresumes`, `worldenergydata`.
+23 repos present: `aceengineer-admin`, `aceengineer-strategy`, `aceengineer-website`, `achantas-data`, `achantas-media`, `mkt-a`, `assethold`, `assetutilities`, `CAD-DEVELOPMENTS`, `client-c`, `digitalmodel`, `lng-a`, `client-a`, `hobbies`, `investments`, `OGManufacturing`, `client-b`, `sabithaandkrishnaestates`, `client-d`, `sd-work`, `client-f`, `teamresumes`, `worldenergydata`.
 
 Issue body lists 24 repos (mentions `pdf-large-reader if present/active`); `pdf-large-reader` is NOT present locally. `heavyequipemnt-rag` and `simpledigitalmarketing` (from `WORKSPACE_HUB_REPOSITORY_OVERVIEW.md`) are NOT present locally. These three are recorded as `inventory-drift: not-present-locally` in the artifact.
 
@@ -176,7 +176,7 @@ function classify(repo):
     return "unclassified — REVIEW_REQUIRED"
 
 function derive_tier3_subclass(repo):
-    # client verticals: acma-projects, seanation, saipem, frontierdeepwater, client_projects, doris
+    # client verticals: mkt-a, client-f, client-d, client-a, client-c, lng-a
     # business/admin support: aceengineer-admin, sabithaandkrishnaestates, teamresumes, achantas-data, achantas-media, hobbies, sd-work
     # strategy/private: aceengineer-strategy
     # asset/investment: assethold (note: ownership transferred per memory)
@@ -187,12 +187,12 @@ function lookup_known_overlaps(repo):
     overlaps = {
       "investments": "Overlaps with assethold; per BUSINESS_BRAIN, investments → migrate to assethold + achantas-data, retire within 3 months",
       "assethold": "Receives investments migration; ownership transferred samdansk2 → vamseeachanta (memory)",
-      "client_projects": "Generic client wrapper; per-client work routes to acma-projects/seanation/saipem/frontierdeepwater/doris when those exist",
+      "client-c": "Generic client wrapper; per-client work routes to mkt-a/client-f/client-d/client-a/lng-a when those exist",
       "workspace-hub": "Portfolio control plane — routes execution to per-repo docs, not the inverse",
       "assetutilities": "Shared utility library — repo-specific utilities stay in their repo unless 2+ repos need them",
       "aceengineer-website": "Public delivery surface only; firm strategic copy lives in private aceengineer-strategy (memory)",
       "aceengineer-strategy": "Private strategic copy authority; aceengineer-website pulls from here, not the reverse (memory)",
-      "digitalmodel": "Numerical-model library; client-specific vertical work routes to the client repo (acma-projects, seanation, saipem, frontierdeepwater)",
+      "digitalmodel": "Numerical-model library; client-specific vertical work routes to the client repo (mkt-a, client-f, client-d, client-a)",
       ...
     }
     return overlaps.get(repo, "none identified")
@@ -277,7 +277,7 @@ All checks below are deterministic and runnable via `scripts/tests/check_repo_mi
 - [ ] C3: Every YAML record has all required fields: `repo`, `tier`, `mission`, `source_path`, `routing_belongs_here`, `routing_route_elsewhere`, `overlap_notes`, `inventory_status`, `notes`.
 - [ ] C4: Every `source_path` value resolves to a real file in the named repo, OR is exactly `none` (mission = `REVIEW_REQUIRED`), OR is `legacy_source:<path>` (legacy `.agent-os/product/mission.md` fallback).
 - [ ] C5+C6: Tier-1 records (`workspace-hub`, `digitalmodel`, `assetutilities`, `aceengineer-website`) are consistent with `docs/ROUTING_INDEX.md` per-repo roles and the closed contracts of #2460-#2465.
-- [ ] C7: Every overlap pair flagged in #2533 body has **symmetric** `overlap_notes` (both repos in each pair name the other): `investments↔assethold`, `client_projects↔client-specific repos`, `workspace-hub↔per-repo execution docs`, `assetutilities↔repo-specific utilities`, `digitalmodel↔client/project verticals`, `aceengineer-website↔aceengineer-strategy`.
+- [ ] C7: Every overlap pair flagged in #2533 body has **symmetric** `overlap_notes` (both repos in each pair name the other): `investments↔assethold`, `client-c↔client-specific repos`, `workspace-hub↔per-repo execution docs`, `assetutilities↔repo-specific utilities`, `digitalmodel↔client/project verticals`, `aceengineer-website↔aceengineer-strategy`.
 - [ ] C8: `docs/BUSINESS_BRAIN.md`, `docs/ROUTING_INDEX.md`, `docs/README.md` each contain a link to `docs/REPO_MISSION_PORTFOLIO.md`.
 - [ ] C9: Records exist for `pdf-large-reader`, `heavyequipemnt-rag`, `simpledigitalmarketing` with `inventory_status: not-present-locally` and `notes` naming the source that mentions them.
 - [ ] C10: `assethold` record's `notes` contains `samdansk2 → vamseeachanta ownership transfer per session memory; local origin may be stale`.
@@ -320,11 +320,11 @@ Revisions made based on rev-2 Gemini MAJOR (rev-3):
 When two repos overlap on mission, this plan's resolution rules:
 
 1. **`investments` ↔ `assethold`:** `BUSINESS_BRAIN.md` already declares investments → migrate to assethold + achantas-data, retire within 3 months. Portfolio row records this; no further action this issue.
-2. **`client_projects` ↔ client-specific repos:** Client-specific repo (acma-projects, seanation, saipem, frontierdeepwater, doris) wins when work targets a single client. `client_projects` is the catch-all for engagements that lack a dedicated repo.
+2. **`client-c` ↔ client-specific repos:** Client-specific repo (mkt-a, client-f, client-d, client-a, lng-a) wins when work targets a single client. `client-c` is the catch-all for engagements that lack a dedicated repo.
 3. **`workspace-hub` ↔ per-repo execution docs:** `workspace-hub` owns portfolio governance, harness, control-plane, durable standards, document-intelligence registries. Per-repo execution docs live in the owning repo. Cross-repo coordination → workspace-hub. Single-repo-scope work → owning repo.
 4. **`assetutilities` ↔ repo-specific utilities:** Utility lives in `assetutilities` only when 2+ repos need it. Single-repo utility stays in the owning repo.
 5. **`aceengineer-website` ↔ `aceengineer-strategy`:** Per memory, `aceengineer-strategy` is the private canonical strategic-copy source; `aceengineer-website` is the public delivery surface. Strategic copy work → strategy. Site delivery / pages / build → website.
-6. **`digitalmodel` ↔ client/project verticals:** Reusable engineering code/tests/methodology → `digitalmodel`. One-off client analysis with non-reusable inputs → matching client vertical (acma-projects, seanation, saipem, frontierdeepwater).
+6. **`digitalmodel` ↔ client/project verticals:** Reusable engineering code/tests/methodology → `digitalmodel`. One-off client analysis with non-reusable inputs → matching client vertical (mkt-a, client-f, client-d, client-a).
 7. **General fallback (when not listed above):** If sources conflict, the row's `overlap-notes` column records the conflict with `RESOLUTION_PENDING` and a follow-up issue is recommended in the plan's closeout comment. Never silently pick a side.
 
 ---
@@ -336,7 +336,7 @@ When two repos overlap on mission, this plan's resolution rules:
 - **Risk (rev-2 mitigation):** Memory-derived constraints (assethold ownership, aceengineer copy split) are not in any committed file in this repo. Implementation MUST commit them to `data/document-index/repo-portfolio-inventory.yaml` `notes` field, so the artifact carries its own provenance. User should confirm the wording during approval.
 - **Risk:** `docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md` reconciliation deferred to #2553 — this plan only flags drift, does not fix the overview doc. If user wants reconciliation in this issue, scope expands and plan needs revision.
 - **Risk (rev-2 mitigation):** Validation is now deterministic via `scripts/tests/check_repo_mission_portfolio.sh`. Promotion to a pre-commit hook or CI surface is a follow-up issue, not in this plan's scope.
-- **Open:** Should the artifact include the four "Archive / extraction candidates" (`investments`, `rock-oil-field`, `seanation`, `saipem`) as full active rows or as a separate section? Plan's default: full row each, with `classification` reflecting archive-candidate status and `routing-rule-route-elsewhere` documenting the migration target.
+- **Open:** Should the artifact include the four "Archive / extraction candidates" (`investments`, `client-b`, `client-f`, `client-d`) as full active rows or as a separate section? Plan's default: full row each, with `classification` reflecting archive-candidate status and `routing-rule-route-elsewhere` documenting the migration target.
 - **Open:** Should `pdf-large-reader` row be created at all when not present locally? Plan's default: yes, marked `inventory-drift: not-present-locally; mentioned in #2533 body` so that future workers have provenance.
 
 ---

@@ -1,4 +1,4 @@
-# Exit handoff — ACMA/wiki chain and LLM-wiki strengthening
+# Exit handoff — mkt-a/wiki chain and LLM-wiki strengthening
 
 Date: 2026-04-12
 Repo: `vamseeachanta/workspace-hub`
@@ -9,10 +9,10 @@ Repo: `vamseeachanta/workspace-hub`
 - #2241 — staged web-sweep and production-readiness umbrella
 - #2242 — prioritized external-source queue
 - #2243 — token-efficient staged batch packs
-- #2244 — ACMA breadth triage beyond current wiki-promotion scope
+- #2244 — mkt-a breadth triage beyond current wiki-promotion scope
 
 2. Approved issue #2228 was executed and closed
-- Commit: `7b34862f8` — `docs(intelligence): refresh accessibility map after ACMA source integration (#2228)`
+- Commit: `7b34862f8` — `docs(intelligence): refresh accessibility map after mkt-a source integration (#2228)`
 - #2228 closed successfully
 
 3. #2227 was reconciled into canonical planning state
@@ -25,10 +25,10 @@ Repo: `vamseeachanta/workspace-hub`
 - Commit: `c08826c44` — `docs(plan): recover #2227 with review-backed blocker and prerequisite split`
 
 4. #2245 unblocker issue was created and entered planning recovery
-- #2245 — prepare summary/classification artifacts to unblock bounded ACMA wiki promotion
+- #2245 — prepare summary/classification artifacts to unblock bounded mkt-a wiki promotion
 - Planning intake/approval-intent comments were posted
 - Canonical plan file created:
-  `docs/plans/2026-04-12-issue-2245-acma-summary-classification-unblock.md`
+  `docs/plans/2026-04-12-issue-2245-mkt-a-summary-classification-unblock.md`
 - `docs/plans/README.md` updated with #2245 row (not yet committed)
 
 5. Additional future issues were created from #2245 review findings
@@ -64,7 +64,7 @@ Targets:
 
 3. Pipeline/tooling mismatch found during #2245 planning
 - `phase-b-extract.py` writes summary files using a derived 16-char key and appears to call `os.path.isabs(...)` without importing `os`
-- `phase-b-claude-worker.py` writes richer summary JSON keyed by full `content_hash`, but does not currently expose `acma_codes` in the CLI source choices
+- `phase-b-claude-worker.py` writes richer summary JSON keyed by full `content_hash`, but does not currently expose `mkt-a_codes` in the CLI source choices
 - `phase-c-classify.py` expects summary lookup by SHA-based filenames and does not obviously provide a bounded authoritative writeback path for exactly 3 target docs
 
 These findings motivated #2246 and #2247.
@@ -77,7 +77,7 @@ Broad strengthening issues
 - #2243: https://github.com/vamseeachanta/workspace-hub/issues/2243
 - #2244: https://github.com/vamseeachanta/workspace-hub/issues/2244
 
-ACMA/wiki chain
+mkt-a/wiki chain
 - #2216: https://github.com/vamseeachanta/workspace-hub/issues/2216
 - #2227: https://github.com/vamseeachanta/workspace-hub/issues/2227
 - #2228: https://github.com/vamseeachanta/workspace-hub/issues/2228
@@ -95,7 +95,7 @@ Important comments
 
 ## Local repo artifacts not yet committed
 These are intentionally left for next session review / commit decision:
-- `docs/plans/2026-04-12-issue-2245-acma-summary-classification-unblock.md`
+- `docs/plans/2026-04-12-issue-2245-mkt-a-summary-classification-unblock.md`
 - `docs/plans/README.md` row for #2245
 
 ## Recommended next sequence

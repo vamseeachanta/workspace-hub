@@ -9,7 +9,7 @@ the language of that work precise.
 
 **Scope**:
 A named set of repositories plus the permission policy that governs what Deckhand
-may do to them (e.g. `ecosystem`, `acma`, `doris`). A scope answers "which repos,
+may do to them (e.g. `ecosystem`, `mkt-a`, `lng-a`). A scope answers "which repos,
 and read/write/delete?" — it says nothing about which messaging platform a reply
 goes to.
 _Avoid_: Channel (means a transport target here), named channel, repo group
@@ -41,7 +41,7 @@ in a diff). Independent of, and never implying, destructive operations. This is
 _Avoid_: Access, role, grant
 
 **Sensitivity** / **Clearance**:
-A scope declares a *sensitivity* (e.g. `acma` = private, `ecosystem` = internal);
+A scope declares a *sensitivity* (e.g. `mkt-a` = private, `ecosystem` = internal);
 a delivery group declares the *clearance* — which sensitivities it may receive.
 Output produced under a scope may only fan out to delivery groups cleared for that
 scope's sensitivity. Full-detail replies on the origin chat are allowed only when it

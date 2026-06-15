@@ -37,12 +37,12 @@
 - `knowledge/wikis/engineering/CLAUDE.md` — sanctions `wiki/{concepts,entities,sources,standards,workflows}/`.
 
 ### Documents consulted
-- `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md` — parent approved plan.
-- `docs/plans/2026-04-12-issue-2245-acma-summary-classification-unblock.md` — prerequisite; CLOSED 2026-04-13 with `ready_for_2227: false` handoff artifact.
-- `docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md` — CLOSED 2026-04-11 (completed).
+- `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md` — parent approved plan.
+- `docs/plans/2026-04-12-issue-2245-mkt-a-summary-classification-unblock.md` — prerequisite; CLOSED 2026-04-13 with `ready_for_2227: false` handoff artifact.
+- `docs/plans/2026-04-11-issue-2225-mkt-a-codes-source-registration-and-initial-indexing.md` — CLOSED 2026-04-11 (completed).
 - `docs/plans/2026-04-16-issue-2207-standards-codes-provenance-reuse-contract.md` — CLOSED; defines the reuse contract this plan consumes.
 - `docs/plans/2026-04-23-issue-2471-standards-wiki-path-sanction.md` (on `plan/issue-2471-standards-wiki-path-sanction`) — Phase 2 prereq (codification of `wiki/standards/` schema + lint + gitignore re-include).
-- `docs/reports/acma-wiki-unblock-2245-handoff.yaml` — authoritative per-target blocker evidence.
+- `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml` — authoritative per-target blocker evidence.
 - `.claude/rules/calc-citation-contract.md` — mandates `code_id`/`publisher`/`revision` frontmatter on standards pages so downstream calc modules can emit Citations against them.
 - `feedback_issue_2460_approval_binding.md` — approval markers must be revision-bound (SHA + review artifact paths + storage surface), not mutable file-path refs; v5 closure path is locked per this rule.
 - Issue #2227 comment thread (2026-04-12 → 2026-04-23): #2244 triage routed broader CSA/API breadth to #2283/#2284/#2285/#2286/#2287; rollback 2026-04-21 15:07 moved label → `status:plan-review`.
@@ -110,7 +110,7 @@ CSA pages are NOT a Branch A or Branch B deliverable for #2227 anymore — they 
 | #2216 (parent umbrella) | OPEN, `status:plan-review` | Non-blocking for this child | `gh issue view 2216` |
 | #2225 (source registration) | CLOSED 2026-04-11, `status:plan-approved` | NOT blocking | `gh issue view 2225` |
 | #2207 (reuse contract) | CLOSED, `status:plan-approved` | NOT blocking | `gh issue view 2207` |
-| #2245 OCIMF preview content | CLOSED 2026-04-13, OCIMF preview length 0 in `sha256:5e5f….json` | **Phase 1 content sub-gate: BLOCKING** | `docs/reports/acma-wiki-unblock-2245-handoff.yaml`, `data/document-index/summaries/sha256:5e5f….json` |
+| #2245 OCIMF preview content | CLOSED 2026-04-13, OCIMF preview length 0 in `sha256:5e5f….json` | **Phase 1 content sub-gate: BLOCKING** | `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml`, `data/document-index/summaries/sha256:5e5f….json` |
 | #2471 `wiki/standards/` page-type sanction (DECISION) | user-approved 2026-04-23; v3 plan-approved at `cb1c4a972` on `plan/issue-2471-standards-wiki-path-sanction` | **NOT BLOCKING for Phase 1** (engineering wiki already sanctions `wiki/standards/`); BLOCKING for Phase 2 | `gh issue view 2471`, branch `plan/issue-2471-standards-wiki-path-sanction` |
 | #2471 codification merged to main | not yet merged | **NOT BLOCKING for Phase 1**; BLOCKING for Phase 2 | check via `git merge-base --is-ancestor plan/issue-2471-standards-wiki-path-sanction origin/main` |
 | engineering wiki `wiki/standards/` already sanctioned | line 7 of `knowledge/wikis/engineering/CLAUDE.md`: `Pages: wiki/{concepts,entities,sources,standards,workflows}/` | **NOT BLOCKING** for Phase 1 | `knowledge/wikis/engineering/CLAUDE.md` |
@@ -123,14 +123,14 @@ CSA pages are NOT a Branch A or Branch B deliverable for #2227 anymore — they 
 
 ```bash
 # ---------- Entry gate ----------
-load handoff_yaml = yaml.load("docs/reports/acma-wiki-unblock-2245-handoff.yaml")
+load handoff_yaml = yaml.load("docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml")
 load summary_5e5f = json.load("data/document-index/summaries/sha256:5e5f...json")
 
 # Defensive assertion (Claude r4 P3 — KeyError vs documented FAIL ambiguity).
 # `ready_for_2227` MUST exist in handoff_yaml. If absent, fail loud — do not coerce to FAIL silently.
 assert "ready_for_2227" in handoff_yaml, \
     f"FATAL: handoff_yaml missing ready_for_2227 key — cannot evaluate CONTENT_SUB_GATE; " \
-    f"fix docs/reports/acma-wiki-unblock-2245-handoff.yaml schema before re-running"
+    f"fix docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml schema before re-running"
 assert "summary" in summary_5e5f and "text_preview" in summary_5e5f, \
     "FATAL: summary_5e5f missing summary or text_preview keys — cannot evaluate CONTENT_SUB_GATE"
 
@@ -300,11 +300,11 @@ All tests will live at `tests/knowledge/test_ocimf_tandem_promotion.py` (new fil
 
 **T1 always-PASS contract (rewritten in v5 per Claude r4 P2):** T1 verifies that the `CONTENT_SUB_GATE` evaluation logic correctly applies the documented rule (handoff `ready_for_2227` AND OCIMF summary non-empty AND OCIMF preview non-empty) to the current artifacts. **T1 PASSES whenever the gate logic is implemented correctly, irrespective of the resulting boolean** — under Branch B execution T1 still passes because the test asserts evaluation correctness, not gate outcome. Tests T3–T13 use branch-aware skip via `@pytest.mark.skipif(not CONTENT_SUB_GATE_PASS, reason="Branch B — wiki writes deliberately deferred")`. T-Bneg runs unconditionally and asserts no wiki writes occurred under Branch B.
 
-**`CONTENT_SUB_GATE_PASS` resolution (Claude r4 P3):** the test module reads the runtime value from environment variable `CONTENT_SUB_GATE_PASS` (set by the execution wrapper from the entry-gate result). If unset, the module falls back to evaluating the gate directly from the artifacts at `docs/reports/acma-wiki-unblock-2245-handoff.yaml` and `data/document-index/summaries/sha256:5e5f….json`. **In CI environments where these artifacts may be absent (shallow clones, sparse checkouts):** the fallback raises `pytest.skip("CONTENT_SUB_GATE artifacts unavailable — set CONTENT_SUB_GATE_PASS env var explicitly")` for the entire module rather than silently treating absence as PASS or FAIL. The execution wrapper is responsible for setting the env var explicitly in CI; the fallback is for local-developer convenience only.
+**`CONTENT_SUB_GATE_PASS` resolution (Claude r4 P3):** the test module reads the runtime value from environment variable `CONTENT_SUB_GATE_PASS` (set by the execution wrapper from the entry-gate result). If unset, the module falls back to evaluating the gate directly from the artifacts at `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml` and `data/document-index/summaries/sha256:5e5f….json`. **In CI environments where these artifacts may be absent (shallow clones, sparse checkouts):** the fallback raises `pytest.skip("CONTENT_SUB_GATE artifacts unavailable — set CONTENT_SUB_GATE_PASS env var explicitly")` for the entire module rather than silently treating absence as PASS or FAIL. The execution wrapper is responsible for setting the env var explicitly in CI; the fallback is for local-developer convenience only.
 
 | Test ID | Test name | What it verifies | Runner | Expected outcome | Gates which branch |
 |---|---|---|---|---|---|
-| T1 | `test_prereq_content_sub_gate_evaluation` | Reads `acma-wiki-unblock-2245-handoff.yaml` and `summaries/sha256:5e5f….json`; asserts that the gate-evaluation function correctly returns FAIL when any of the three conditions hold (`ready_for_2227` False OR summary empty OR text_preview empty) and PASS otherwise. The test exercises evaluation logic with both real artifacts AND synthetic fixtures, and PASSES whenever the evaluation function is correct, regardless of the live artifact's actual outcome. | pytest | always PASS (validates the gate code, not the data) | entry gate (always run) |
+| T1 | `test_prereq_content_sub_gate_evaluation` | Reads `mkt-a-wiki-unblock-2245-handoff.yaml` and `summaries/sha256:5e5f….json`; asserts that the gate-evaluation function correctly returns FAIL when any of the three conditions hold (`ready_for_2227` False OR summary empty OR text_preview empty) and PASS otherwise. The test exercises evaluation logic with both real artifacts AND synthetic fixtures, and PASSES whenever the evaluation function is correct, regardless of the live artifact's actual outcome. | pytest | always PASS (validates the gate code, not the data) | entry gate (always run) |
 | T-Bneg | `test_branch_b_no_wiki_writes_when_gate_fails` | If `CONTENT_SUB_GATE` evaluates FAIL, asserts that `git diff --name-only --diff-filter=A $(git merge-base origin/main HEAD)..HEAD -- knowledge/wikis/engineering/wiki/standards/` is empty (merge-base pinned per Claude r4 P3). | pytest | PASS under Branch B; skipped under Branch A | Branch B safety net |
 | T3 | `test_ocimf_tandem_page_exists` | `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md` exists | pytest | PASS post-Branch A; SKIPPED on Branch B | Branch A |
 | T4 | `test_ocimf_tandem_frontmatter_valid` | Page has `title`, `tags`, `added`, `last_updated`, `sources`, `domain=marine` AND **the v5-required forward-adopted #2471 contract fields are present and non-empty**. v5 asserts presence-and-non-emptiness rather than exact-field-name match: the test enumerates `["code_id", "publisher", "revision"]` as the v5 expected names BUT also accepts a documented rename map (e.g., `"revision" -> "code_revision"`) loaded from `tests/knowledge/_fixtures/citation_field_aliases.yaml`. If #2471 codification merges with a renamed field, the alias map is updated in a follow-up PR (≤ 5 lines) and existing pages need no migration. | pytest | PASS post-Branch A; SKIPPED on Branch B | Branch A |

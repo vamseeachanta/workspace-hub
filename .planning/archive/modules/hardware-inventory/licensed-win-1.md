@@ -84,5 +84,5 @@ work_item: WRK-050
 
 - ASPEED GPU detected by script as only GPU — this is normal for Supermicro server boards; it serves the IPMI/BMC remote console only
 - Firmware 2.5 (2025-02-10) is recent — no immediate update needed
-- Machine name pattern: `licensed-win-1` confirms ACMA ownership; ANSYS suffix indicates its primary role
+- Machine name pattern: `licensed-win-1` confirms mkt-a ownership; ANSYS suffix indicates its primary role
 - Raw assessment JSON saved to: `pyproject-starter/hardware-assessment-licensed-win-1-20260220.json` (to be moved)

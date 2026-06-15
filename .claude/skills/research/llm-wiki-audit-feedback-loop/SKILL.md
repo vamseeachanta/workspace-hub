@@ -172,7 +172,7 @@ new audit referencing this one's `id`. Log line includes ` — partial`.
 
    2026-05-20 · rejected.
    The 1.67 value is correct for the legacy 2018 edition still cited by
-   the upstream client's project basis-of-design (acma project 2024-03).
+   the upstream client's project basis-of-design (mkt-a project 2024-03).
    The wiki page documents the value as legacy and the citation explicitly
    notes the edition. Not a bug.
    ```

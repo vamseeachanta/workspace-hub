@@ -100,12 +100,12 @@ This workflow refresh must be applied to:
 
 1. **All Existing Repositories**
    - aceengineer-admin, aceengineer-website, aceengineercode
-   - achantas-data, achantas-media, acma-projects
+   - achantas-data, achantas-media, mkt-a
    - ai-native-traditional-eng, assethold, assetutilities
-   - client_projects, digitalmodel, doris, energy
-   - frontierdeepwater, hobbies, investments
+   - client-c, digitalmodel, lng-a, energy
+   - client-a, hobbies, investments
    - Lightning-SPA-App, OGManufacturing, pyproject-starter
-   - rock-oil-field
+   - client-b
 
 2. **Future Repositories**
    - Automatic application on Agent OS installation

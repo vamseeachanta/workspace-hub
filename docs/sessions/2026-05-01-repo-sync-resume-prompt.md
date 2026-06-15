@@ -48,13 +48,13 @@ bash .claude/hooks/check-encoding.sh 2>&1 | tail -15
 
 Warn-only mode. Fix any UTF-16/CRLF files surfaced via `iconv -f UTF-16 -t UTF-8 <file> | sed 's/\r//' > /tmp/fixed.md && mv /tmp/fixed.md <file>` then commit individually.
 
-### Step 4 — acma-projects rematerialization (long, background)
+### Step 4 — mkt-a rematerialization (long, background)
 
 Sparse config was disabled but only 34 of ~368K files are on disk. To finish:
 
 ```bash
-cd /mnt/local-analysis/workspace-hub/acma-projects
-nohup git checkout HEAD -- . > /tmp/acma-rematerialize.log 2>&1 &
+cd /mnt/local-analysis/workspace-hub/mkt-a
+nohup git checkout HEAD -- . > /tmp/mkt-a-rematerialize.log 2>&1 &
 echo "PID $! launched. Expect 20-40 min runtime."
 ```
 
@@ -64,7 +64,7 @@ Do NOT block on this. Move on to Step 5.
 
 ```bash
 cd /mnt/local-analysis/workspace-hub
-for repo in aceengineer-admin achantas-data achantas-media hobbies investments sabithaandkrishnaestates sd-work assethold assetutilities client_projects digitalmodel doris frontierdeepwater OGManufacturing rock-oil-field saipem seanation teamresumes worldenergydata aceengineer-website; do
+for repo in aceengineer-admin achantas-data achantas-media hobbies investments sabithaandkrishnaestates sd-work assethold assetutilities client-c digitalmodel lng-a client-a OGManufacturing client-b client-d client-f teamresumes worldenergydata aceengineer-website; do
   [ -e "$repo/.git" ] || continue
   d=$(timeout 20 git -C "$repo" status --porcelain 2>/dev/null | wc -l)
   [ "$d" != "0" ] && printf "%-25s dirty=%s branch=%s\n" "$repo" "$d" "$(git -C "$repo" branch --show-current 2>/dev/null)"
@@ -80,7 +80,7 @@ cd /mnt/local-analysis/workspace-hub
 git worktree list --porcelain | awk '/^worktree/{print $2}' | while read wt; do
   [ "$wt" = "/mnt/local-analysis/workspace-hub" ] && continue
   [ "$wt" = "/mnt/local-analysis/workspace-hub-issue-2515-planning" ] && continue
-  case "$wt" in *acma-projects*) continue;; esac
+  case "$wt" in *mkt-a*) continue;; esac
   branch=$(timeout 10 git -C "$wt" branch --show-current 2>/dev/null)
   [ -z "$branch" ] && branch="(detached)"
   d=$(timeout 10 git -C "$wt" status --porcelain 2>/dev/null | wc -l)
@@ -114,7 +114,7 @@ Output a markdown table of:
 - Sibling repos still dirty after sweep
 - Worktrees committed by subagents (count)
 - Worktrees needing user decision (list)
-- acma-projects rematerialize PID + log location
+- mkt-a rematerialize PID + log location
 
 ## Memory candidates to save after success
 

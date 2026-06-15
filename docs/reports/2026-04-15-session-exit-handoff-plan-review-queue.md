@@ -65,9 +65,9 @@
 - `docs/plans/2026-04-11-issue-2129-issue-state-drift-redundancy-audit.md`
 - `docs/plans/2026-04-11-issue-2104-canonical-entry-points-for-ecosystem-intelligence.md`
 - `docs/plans/2026-04-11-issue-2136-intelligence-accessibility-registry-with-machine-reachability.md`
-- `docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md`
+- `docs/plans/2026-04-11-issue-2225-mkt-a-codes-source-registration-and-initial-indexing.md`
 - `docs/plans/2026-04-11-issue-2226-ocimf-csa-ledger-provenance-backfill.md`
-- `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md`
+- `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md`
 - `docs/plans/2026-04-13-issue-2229-licensed-win-1-live-validation.md`
 - `docs/plans/2026-04-13-issue-2105-freshness-cadences-and-staleness-signals.md`
 - `scripts/review/results/2026-04-15-plan-2129-claude.md`
@@ -95,7 +95,7 @@ Other still-open live plan-review items not yet audited in this pass:
 1. Audit #2227 next
 - Why:
   - still live `status:plan-review`
-  - sits directly in the #2216 ACMA chain already cleaned up here
+  - sits directly in the #2216 mkt-a chain already cleaned up here
   - likely best next candidate to classify as either:
     - needs revision
     - approval-ready after reconciliation

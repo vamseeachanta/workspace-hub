@@ -49,7 +49,7 @@
 - `gh issue view 2521` — CLOSED 2026-04-25 with `status:done`; produced the 528-char summary + 1.5KB text_preview that the OCIMF target now holds.
 - `gh issue view 2522` — OPEN; body explicitly: "This issue does not block #2227 closure. #2227 closes only when OCIMF Phase 1 Branch A lands on origin/main."
 - `docs/plans/2026-04-12-issue-2227-ocimf-tandem-csa-z276-wiki-promotion.md` (v5) — defines the Branch A contract this plan executes; this plan's deliverable surface (page + frontmatter + MEG4 cross-link + index bump + log entry + ≤10-line MEG4 update) is identical to v5 §Files-to-Change Branch A.
-- `docs/reports/acma-wiki-unblock-2245-handoff.yaml` — gate-input file. Top-level `ready_for_2227: false`; per-target OCIMF entry `ready_for_2227: true`; CSA entries `ready_for_2227: false` with blocker explicitly noting "intentionally split to #2522".
+- `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml` — gate-input file. Top-level `ready_for_2227: false`; per-target OCIMF entry `ready_for_2227: true`; CSA entries `ready_for_2227: false` with blocker explicitly noting "intentionally split to #2522".
 - `.claude/rules/calc-citation-contract.md` — #2471 frontmatter contract (`code_id`, `publisher`, `revision` required for standards-derived constants); applies to standards-page frontmatter even when no calc consumer exists yet (forward-adopt).
 
 ### Gaps identified
@@ -61,14 +61,14 @@
 ### Evidence (embedded verification)
 
 **Issue statuses** (verified 2026-05-02 via `gh issue view`):
-- `#2559` — OPEN, `status:plan-approved` (label re-affirmed by user post r1-amendment 2026-05-02) — `feat(acma-codes): promote OCIMF Tandem preview into LLM-wiki source summary`
-- `#2227` — **CLOSED 2026-05-02T11:08:57Z by user override** (originally OPEN with `status:plan-approved` at draft commit `33214dae8`; user manually closed ~4 minutes later, no closing comment, `state_reason: null`, close event references commit `33214dae8`) — `feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis`. See §#2227 Closeout Reframe.
+- `#2559` — OPEN, `status:plan-approved` (label re-affirmed by user post r1-amendment 2026-05-02) — `feat(mkt-a-codes): promote OCIMF Tandem preview into LLM-wiki source summary`
+- `#2227` — **CLOSED 2026-05-02T11:08:57Z by user override** (originally OPEN with `status:plan-approved` at draft commit `33214dae8`; user manually closed ~4 minutes later, no closing comment, `state_reason: null`, close event references commit `33214dae8`) — `feat(mkt-a-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis`. See §#2227 Closeout Reframe.
 - `#2521` — CLOSED, `status:done` — `OCIMF-TANDEM-MOORING preview content extraction (unblocks #2227 Phase 1)`
 - `#2522` — OPEN — `Phase 2: Promote CSA Z276.1-20 + Z276.18 into marine-engineering wiki/standards/`
 
 **File existence** (verified 2026-05-02):
 - EXISTS: `tests/knowledge/test_ocimf_tandem_promotion.py` (287 lines, gh-tracked)
-- EXISTS: `docs/reports/acma-wiki-unblock-2245-handoff.yaml`
+- EXISTS: `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml`
 - EXISTS: `data/document-index/summaries/sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af.json` (non-empty `summary` and `text_preview`)
 - EXISTS: `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md`
 - MISSING (this plan creates): `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md`
@@ -94,7 +94,7 @@ def evaluate_content_sub_gate(handoff: dict[str, Any], summary: dict[str, Any]) 
     )
 ```
 
-**Handoff yaml top-level vs per-target** (`docs/reports/acma-wiki-unblock-2245-handoff.yaml:4` and `:16`):
+**Handoff yaml top-level vs per-target** (`docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml:4` and `:16`):
 ```
 line 4:  ready_for_2227: false                        # top-level rollup
 line 16:   ready_for_2227: true                       # per-target OCIMF row
@@ -108,7 +108,7 @@ This is the **load-bearing decision** for this plan. The v5 test contract and th
 
 ### Path (a) — UPDATE THE HANDOFF FILE [SELECTED]
 
-Set `docs/reports/acma-wiki-unblock-2245-handoff.yaml` top-level `ready_for_2227: true` with an inline comment explaining that CSA scope is now formally split to #2522, so the top-level flag now means "OCIMF target ready" rather than "all targets ready." Per-target rows remain unchanged (CSA stays `ready_for_2227: false` with the existing "split to #2522" blocker note, which is now correctly documentary rather than gating).
+Set `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml` top-level `ready_for_2227: true` with an inline comment explaining that CSA scope is now formally split to #2522, so the top-level flag now means "OCIMF target ready" rather than "all targets ready." Per-target rows remain unchanged (CSA stays `ready_for_2227: false` with the existing "split to #2522" blocker note, which is now correctly documentary rather than gating).
 
 **Pros:**
 - Zero code change. Test contract (`evaluate_content_sub_gate`) untouched.
@@ -152,7 +152,7 @@ Change `evaluate_content_sub_gate` to read the per-target OCIMF row (`handoff["t
 | Index bump | `knowledge/wikis/engineering/wiki/index.md` (Standards 7→8 pages) |
 | Log entry | `knowledge/wikis/engineering/wiki/log.md` |
 | Inbound link | one of: `knowledge/wikis/engineering/wiki/concepts/mooring-line-failure-physics.md` OR `knowledge/wikis/engineering/wiki/sources/mooring-failures-seed.md` |
-| Gate-input update | `docs/reports/acma-wiki-unblock-2245-handoff.yaml` (Path (a)) |
+| Gate-input update | `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml` (Path (a)) |
 | Plan review — Claude | `scripts/review/results/2026-05-02-plan-2559-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-05-02-plan-2559-codex.md` (if Codex ≥ 0.125 ships; else SKIP per #2479) |
 | Plan review — Gemini | `scripts/review/results/2026-05-02-plan-2559-gemini.md` |
@@ -166,7 +166,7 @@ A git-tracked `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.m
 - Standards-section row + `Standards (8 pages)` count bump in `engineering/wiki/index.md`
 - Promotion entry in `engineering/wiki/log.md`
 - One inbound link from a concept or source page (`test_ocimf_tandem_has_inbound_link`)
-- Gate-input reconciliation in `acma-wiki-unblock-2245-handoff.yaml` (Path a)
+- Gate-input reconciliation in `mkt-a-wiki-unblock-2245-handoff.yaml` (Path a)
 
 After landing, the v5 #2227 test contract goes from `2 passed, 11 skipped` → `12 passed/1 skipped (T2 self-skips by design under Branch A — this is the v5 contract working correctly)`. #2227 is already CLOSED (user override 2026-05-02T11:08:57Z); see §#2227 Closeout Reframe for the relationship between this plan's deliverable and #2227's closed state.
 
@@ -179,7 +179,7 @@ After landing, the v5 #2227 test contract goes from `2 passed, 11 skipped` → `
 require user approval of Path (a) — handoff-file rollup-semantics change
 
 # Step 0: gate-input reconciliation
-edit docs/reports/acma-wiki-unblock-2245-handoff.yaml:
+edit docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml:
     set top-level ready_for_2227: true
     add YAML comment above the field:
         # Rollup now means "OCIMF target ready" — CSA targets formally split to #2522
@@ -195,7 +195,7 @@ create knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md:
         publisher: OCIMF                                # #2471
         revision: 1st-Edition-2009                      # #2471 (per text_preview cover page)
         tags: [standard, ocimf, mooring, tandem, fpso, offloading, conventional-tanker]
-        sources: [acma_codes]
+        sources: [mkt-a_codes]
         added: 2026-05-02
         last_updated: 2026-05-02
         domain: marine
@@ -210,7 +210,7 @@ create knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md:
           subsea mooring arrangements, basis of design, tandem mooring config, equipment)
         ## Provenance
         - doc_key: sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af
-        - source_ref: /mnt/ace/acma-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf
+        - source_ref: /mnt/ace/mkt-a-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf
         - source_summary: data/document-index/summaries/sha256:5e5f...json (OCR preview, first 3 pages, non-empty)
         - extraction_method: ocr_tesseract_first_pages (per #2521)
         - promoted_from: 2227
@@ -230,7 +230,7 @@ create knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md:
         ## Limits and Out-of-Scope
         - explicit notes: no full-text OCR; no design constants extracted;
           no claims beyond what cover/TOC OCR established;
-          consult /mnt/ace/acma-codes/OCIMF/ for design-time use
+          consult /mnt/ace/mkt-a-codes/OCIMF/ for design-time use
 
 # Step 2: amend ocimf-meg4.md (≤10 added lines, 0 removed)
 modify knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md:
@@ -279,7 +279,7 @@ expect: exit 0 (covered by test_llm_wiki_lint_engineering_clean)
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `docs/reports/acma-wiki-unblock-2245-handoff.yaml` | Path (a): top-level `ready_for_2227: true` + clarifying comment (rollup-semantics change after #2522 split) |
+| Modify | `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml` | Path (a): top-level `ready_for_2227: true` + clarifying comment (rollup-semantics change after #2522 split) |
 | Create | `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md` | new standards page; satisfies T3, T4, T5, T6, T8, T11 |
 | Modify | `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` | ≤10-line cross-reference addition; satisfies T7 |
 | Modify | `knowledge/wikis/engineering/wiki/index.md` | Standards 7→8 pages + tandem row; satisfies T9 (test name `test_engineering_index_has_tandem_row`) |
@@ -335,7 +335,7 @@ uv run pytest tests/knowledge/ -v
 ## Acceptance Criteria
 
 - [ ] User approves Path (a) handoff-file rollup-semantics change in plan-review (USER APPROVAL GATE per `feedback_issue_2460_approval_binding`).
-- [ ] `docs/reports/acma-wiki-unblock-2245-handoff.yaml` top-level `ready_for_2227: true` with inline comment documenting rollup semantics; per-target rows unchanged.
+- [ ] `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml` top-level `ready_for_2227: true` with inline comment documenting rollup semantics; per-target rows unchanged.
 - [ ] `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md` exists and satisfies T3–T6, T11, T12.
 - [ ] `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` modified with ≤10 added lines, 0 removed; satisfies T7.
 - [ ] `knowledge/wikis/engineering/wiki/index.md` heading reads `## Standards (8 pages)` with tandem row present; satisfies T8.
@@ -373,7 +373,7 @@ uv run pytest tests/knowledge/ -v
 
 ## Risks and Open Questions
 
-- **USER APPROVAL GATE (Risk-A1) — RESOLVED 2026-05-02:** user applied `status:plan-approved` label to #2559 after reviewing this plan and chose to amend rather than redraft (Path A). Original concern: Path (a) changes the meaning of `acma-wiki-unblock-2245-handoff.yaml` top-level `ready_for_2227` from "all targets ready" to "OCIMF target ready (CSA split to #2522)." Per `feedback_issue_2460_approval_binding`, even though no test code changes, **the truth value of the v5 test contract's `CONTENT_SUB_GATE_PASS` flips from False to True as a result of this edit** — that is a test-contract-adjacent change requiring explicit user approval at plan-review. **Status: SATISFIED** — approval is bound to this plan's amended SHA (to be recorded by main session at amendment-commit time) plus the r1 review artifact at `scripts/review/results/2026-05-02-plan-2559-claude.md` (committed `1d50d50ad`). Execution agents may proceed with the Path (a) edit without further self-approval.
+- **USER APPROVAL GATE (Risk-A1) — RESOLVED 2026-05-02:** user applied `status:plan-approved` label to #2559 after reviewing this plan and chose to amend rather than redraft (Path A). Original concern: Path (a) changes the meaning of `mkt-a-wiki-unblock-2245-handoff.yaml` top-level `ready_for_2227` from "all targets ready" to "OCIMF target ready (CSA split to #2522)." Per `feedback_issue_2460_approval_binding`, even though no test code changes, **the truth value of the v5 test contract's `CONTENT_SUB_GATE_PASS` flips from False to True as a result of this edit** — that is a test-contract-adjacent change requiring explicit user approval at plan-review. **Status: SATISFIED** — approval is bound to this plan's amended SHA (to be recorded by main session at amendment-commit time) plus the r1 review artifact at `scripts/review/results/2026-05-02-plan-2559-claude.md` (committed `1d50d50ad`). Execution agents may proceed with the Path (a) edit without further self-approval.
 - **Risk-R1 (T12 content quality):** The 528-char summary is light on hard numbers/units. The body must surface enough discriminating terms (chafe chain, fairlead, weak link, hawser, FPSO, conventional tanker — all present in the source summary) to clear T12's "≥2 of 3 categories" bar. Targeting all 3 categories with: `1st-Edition-2009` (decimal version-like), one unit-bearing measurement extracted from the cover-page metadata if present (likely none — fall back to citing only ISBN-style decimals), and the `chafe chain` domain term. **Mitigation**: if T12 fails on first run, expand the Cross-References / Related Standards section with curated MEG4-grounded terms (which IS in the existing MEG4 page, e.g., the Zarga 44mm UHMPE / 15m snap-back numerical example) — this leans on the explicit MEG4 cross-link the page already makes. If T12 still fails, declare it a stub-state issue and open a follow-up rather than padding with ungrounded numbers.
 - **Risk-R2 (lint coverage):** Per v5 plan §Risks, `llm_wiki.py lint` orphan/link checks may not traverse `standards/`. T13 (`test_ocimf_tandem_has_inbound_link`) is the explicit guard — adding the inbound link to `mooring-line-failure-physics.md` satisfies it independent of lint behavior.
 - **Risk-R3 (cross-review availability):** Codex CLI 0.124.0 is broken per #2479 (`feedback_codex_cli_0_124_upstream_regression`). If 0.125 hasn't shipped by review time, fall back to Claude r3 + Gemini per `feedback_permission_gate_blocks_cross_review`.

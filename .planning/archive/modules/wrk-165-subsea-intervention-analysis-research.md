@@ -66,7 +66,7 @@ Key intervention vessel contractors globally:
 - **Coretrax** — well intervention tools (tubular running, clean-up)
 
 **Tier C — SURF / EPCI Contractors**
-Subsea7, McDermott, TechnipFMC, Saipem — when they hold the SURF frame agreement
+Subsea7, McDermott, TechnipFMC, client-d — when they hold the SURF frame agreement
 and are asked to include intervention scope or when completing a trunkline tie-back
 that requires access engineering.
 

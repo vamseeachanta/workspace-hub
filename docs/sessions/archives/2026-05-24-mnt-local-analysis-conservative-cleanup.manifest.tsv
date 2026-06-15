@@ -5179,7 +5179,7 @@ f	103	1777316448.4172054000	ace2-codex-work/issue-2464/scripts/review/results/20
 f	103	1777316448.4948811000	ace2-codex-work/issue-2464/scripts/review/results/20260324T091601Z-wrk-5139-impl-diff.txt-implementation-codex.md
 f	103	1777316448.5453660000	ace2-codex-work/issue-2464/scripts/review/results/20260324T091911Z-cross-review-package.md-plan-codex.md
 f	103	1777316448.7171462000	ace2-codex-work/issue-2464/scripts/review/results/20260424T032923Z-2026-04-23-issue-2380-batch-pack-3-tier-a-engineering-software-profiles.md-plan-codex.md
-f	103	1777316448.7199255000	ace2-codex-work/issue-2464/scripts/review/results/20260424T032933Z-2026-04-23-issue-2373-batch-pack-4-non-acma-standards-summary-promotion.md-plan-codex.md
+f	103	1777316448.7199255000	ace2-codex-work/issue-2464/scripts/review/results/20260424T032933Z-2026-04-23-issue-2373-batch-pack-4-non-mkt-a-standards-summary-promotion.md-plan-codex.md
 f	103	1777316448.7228068000	ace2-codex-work/issue-2464/scripts/review/results/20260424T033343Z-2026-04-23-issue-2364-batch-pack-1-api-standards-portal-promotion.md-plan-codex.md
 f	103	1777316448.7268599000	ace2-codex-work/issue-2464/scripts/review/results/20260424T033357Z-2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md-plan-codex.md
 f	103	1777316448.7298780000	ace2-codex-work/issue-2464/scripts/review/results/20260424T040238Z-2026-04-23-issue-2368-faceted-portal-pages.md-plan-codex.md
@@ -5561,7 +5561,7 @@ f	10941	1777316448.0455597000	ace2-codex-work/issue-2464/scripts/review/results/
 f	1094	1777316420.2399382000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/cad/gmsh-meshing/quality-metrics/SKILL.md
 f	1094	1777316444.1672043000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/reliability-of-welded-austenitic-stainless-steel-containing-base-metal-delta-fer.md
 f	10946	1777317198.6713334000	ace2-codex-work/issue-2464/scripts/search/__pycache__/build_content_index.cpython-311.pyc
-f	10948	1777316429.3429040000	ace2-codex-work/issue-2464/docs/plans/2026-04-12-issue-2245-acma-summary-classification-unblock.md
+f	10948	1777316429.3429040000	ace2-codex-work/issue-2464/docs/plans/2026-04-12-issue-2245-mkt-a-summary-classification-unblock.md
 f	1095	1777316423.1688343000	ace2-codex-work/issue-2464/.claude/skills/workspace-hub/learned/git-worktree-cleanup-and-branch-hygiene/SKILL.md
 f	1095	1777316437.3028172000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/a-comparison-of-three-development-scenarios-for-a-deepwater-field-in-offshore-br.md
 f	10956	1777316418.0752690000	ace2-codex-work/issue-2464/.claude/agent-library/github/project-board-sync.md
@@ -6469,7 +6469,7 @@ f	12601	1777316426.0245566000	ace2-codex-work/issue-2464/.planning/handoffs/2026
 f	1260	1777316446.1246735000	ace2-codex-work/issue-2464/monitoring-dashboard/package.json
 f	1260	1777316452.0357704000	ace2-codex-work/issue-2464/tests/skills/test_skill_usage_report_filters.py
 f	12608	1777316431.1479696000	ace2-codex-work/issue-2464/examples/claude-code-course/uigen/.next/static/media/or3nQ6H_1_WfwkMZI_qYFrMdmhHkjkotbA-s.cb6bbcb1.woff2
-f	1261	1777316425.5146308000	ace2-codex-work/issue-2464/.planning/archive/modules/hardware-inventory/hardware-assessment-ACMA-ANSYS05-20260220.json
+f	1261	1777316425.5146308000	ace2-codex-work/issue-2464/.planning/archive/modules/hardware-inventory/hardware-assessment-mkt-a-ANSYS05-20260220.json
 f	126	1777316427.4736528000	ace2-codex-work/issue-2464/config/quality/secrets-baseline-assetutilities.json
 f	126	1777316447.5438178000	ace2-codex-work/issue-2464/scripts/pipelines/stubs/__init__.py
 f	12620	1777316447.0305522000	ace2-codex-work/issue-2464/scripts/data/document-index/phase-f-gap-wrk-generator.py
@@ -6928,7 +6928,7 @@ f	13809	1777316447.3636429000	ace2-codex-work/issue-2464/scripts/knowledge/categ
 f	1381	1777316420.3384312000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/gis/google-earth-engine/31-parse-getinfo-results/SKILL.md
 f	1381	1777316433.9328619000	ace2-codex-work/issue-2464/knowledge/wikis/engineering/wiki/entities/elba-island-mooring-incident.md
 f	1381	1777316448.0073011000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-23-plan-2373-gemini.md
-f	1381	1777316448.7210700000	ace2-codex-work/issue-2464/scripts/review/results/20260424T032933Z-2026-04-23-issue-2373-batch-pack-4-non-acma-standards-summary-promotion.md-plan-gemini.md
+f	1381	1777316448.7210700000	ace2-codex-work/issue-2464/scripts/review/results/20260424T032933Z-2026-04-23-issue-2373-batch-pack-4-non-mkt-a-standards-summary-promotion.md-plan-gemini.md
 f	13816	1777316418.0795604000	ace2-codex-work/issue-2464/.claude/agent-library/github/sync-coordinator.md
 f	13816	1777316429.0863195000	ace2-codex-work/issue-2464/docs/modules/ai/MINIMAL_HARNESS_ARCHITECTURE_2026-03.md
 f	13816	1777316433.7688927000	ace2-codex-work/issue-2464/knowledge/wikis/engineering/raw/papers/MINIMAL_HARNESS_ARCHITECTURE_2026-03.md
@@ -8112,7 +8112,7 @@ f	174	1777316423.2819203000	ace2-codex-work/issue-2464/.claude/state/candidates/
 f	174	1777316426.2435203000	ace2-codex-work/issue-2464/.planning/plan-approved/2207.md
 f	174	1777316446.8525471000	ace2-codex-work/issue-2464/scripts/data/README.md
 f	174	1777316448.7177158000	ace2-codex-work/issue-2464/scripts/review/results/20260424T032923Z-2026-04-23-issue-2380-batch-pack-3-tier-a-engineering-software-profiles.md-plan-codex.raw.md
-f	174	1777316448.7204729000	ace2-codex-work/issue-2464/scripts/review/results/20260424T032933Z-2026-04-23-issue-2373-batch-pack-4-non-acma-standards-summary-promotion.md-plan-codex.raw.md
+f	174	1777316448.7204729000	ace2-codex-work/issue-2464/scripts/review/results/20260424T032933Z-2026-04-23-issue-2373-batch-pack-4-non-mkt-a-standards-summary-promotion.md-plan-codex.raw.md
 f	17418	1777316427.0568022000	ace2-codex-work/issue-2464/_archive/skills/devtools/pyproject-toml/SKILL.md
 f	174308	1777316424.0497552000	ace2-codex-work/issue-2464/.claude/state/session-signals/2026-03-13.jsonl
 f	1743	1777316421.4282291000	ace2-codex-work/issue-2464/.claude/skills/_internal/meta/repo-cleanup/folders-to-delete-confirmed-safe/SKILL.md
@@ -8237,7 +8237,7 @@ f	1791	1777316815.8540261000	ace2-codex-work/issue-2464/.venv/lib/python3.11/sit
 f	179	1777316424.8747105000	ace2-codex-work/issue-2464/.gemini/gsd-local-patches/backup-meta.json
 f	179	1777316426.3314652000	ace2-codex-work/issue-2464/.planning/quick/claude-review-2046.out
 f	179	1777316427.5522942000	ace2-codex-work/issue-2464/config/workflow-tips/candidates.yaml
-f	179	1777316447.0353210000	ace2-codex-work/issue-2464/scripts/data/document-index/prepare-acma-wiki-unblock.py
+f	179	1777316447.0353210000	ace2-codex-work/issue-2464/scripts/data/document-index/prepare-mkt-a-wiki-unblock.py
 f	1792	1777316427.3466372000	ace2-codex-work/issue-2464/config/agents/claude/memory-snapshots/feedback_adversarial_review_stance.md
 f	1792	1777316430.2793268000	ace2-codex-work/issue-2464/docs/resources/orcaflex-resources.md
 f	1792	1777316815.2599699000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/sqlalchemy/cyextension/processors.pyx
@@ -8644,7 +8644,7 @@ f	19413	1777316428.9839087000	ace2-codex-work/issue-2464/docs/gtm/website-pages/
 f	19415	1777316426.4535775000	ace2-codex-work/issue-2464/.planning/quick/rereview2-2045-codex.out
 f	194	1777316419.3389688000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/productivity/obsidian/notes-ideas/SKILL.md
 f	19430	1777316421.7647374000	ace2-codex-work/issue-2464/.claude/skills/creative/popular-web-designs/templates/uber.md
-f	19439	1777316429.7289401000	ace2-codex-work/issue-2464/docs/reports/2026-04-15-issue-2244-acma-breadth-triage.md
+f	19439	1777316429.7289401000	ace2-codex-work/issue-2464/docs/reports/2026-04-15-issue-2244-mkt-a-breadth-triage.md
 f	1944	1777316419.1370226000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/legal/meeting-briefing/meeting-details/SKILL.md
 f	1944	1777316421.5332738000	ace2-codex-work/issue-2464/.claude/skills/business/customer-support/ticket-triage/SKILL.md
 f	1944	1777316429.2539948000	ace2-codex-work/issue-2464/docs/modules/workflow/README.md
@@ -9132,7 +9132,7 @@ f	21376	1777316426.5575590000	ace2-codex-work/issue-2464/.planning/quick/review-
 f	21376	1777316426.5607612000	ace2-codex-work/issue-2464/.planning/quick/review-2290-rereview-prompt.md
 f	21378	1777316427.3406970000	ace2-codex-work/issue-2464/config/agents/ai-agents-registry.json
 f	2138	1777316447.9709320000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-22-plan-2443-gemini-r5.md
-f	21396	1777316429.3330459000	ace2-codex-work/issue-2464/docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md
+f	21396	1777316429.3330459000	ace2-codex-work/issue-2464/docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md
 f	2141	1777316419.4969150000	ace2-codex-work/issue-2464/.claude/skills/_archive/data/analytics/statistical-analysis/identifying-trends/SKILL.md
 f	214	1777316418.8223383000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/communication/brand-guidelines/governance/SKILL.md
 f	214	1777316421.3851129000	ace2-codex-work/issue-2464/.claude/skills/_internal/documentation/mkdocs/subsection-11/SKILL.md
@@ -9516,7 +9516,7 @@ f	2320	1777316424.6680448000	ace2-codex-work/issue-2464/.codex/get-shit-done/wor
 f	2320	1777316424.7493210000	ace2-codex-work/issue-2464/.gemini/commands/gsd/forensics.toml
 f	23205	1777316425.3850774000	ace2-codex-work/issue-2464/.planning/archive/legacy-specs/legacy-agent-os/specs/phase2-task2-2/sub-specs/consolidation-strategy.md
 f	2321	1777316420.4297593000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/marine-offshore/hydrodynamic-analysis/application-3-added-mass-convergence-check/SKILL.md
-f	2321	1777316429.8430757000	ace2-codex-work/issue-2464/docs/reports/acma-wiki-unblock-2245-handoff.yaml
+f	2321	1777316429.8430757000	ace2-codex-work/issue-2464/docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml
 f	2322	1777316425.0762230000	ace2-codex-work/issue-2464/.planning/.continue-here.md
 f	2322	1777316429.3049982000	ace2-codex-work/issue-2464/docs/plans/2026-04-09-second-pass-claude-rerun-commands.md
 f	23231	1777316421.7484737000	ace2-codex-work/issue-2464/.claude/skills/creative/popular-web-designs/templates/linear.app.md
@@ -9611,7 +9611,7 @@ f	23574	1777316423.8554057000	ace2-codex-work/issue-2464/.claude/state/patterns/
 f	23574	1777316423.8614222000	ace2-codex-work/issue-2464/.claude/state/patterns/script-ideas_2026-01-26_05-00-01.json
 f	2358	1777316418.5610953000	ace2-codex-work/issue-2464/.claude/memory/topics/feedback_codex_sandbox_fallback_paths.md
 f	2358	1777316433.8355766000	ace2-codex-work/issue-2464/knowledge/wikis/engineering/raw/papers/feedback_codex_sandbox_fallback_paths.md
-f	23583	1777316425.3692858000	ace2-codex-work/issue-2464/.planning/archive/data-sources/rock-oil-field.yaml
+f	23583	1777316425.3692858000	ace2-codex-work/issue-2464/.planning/archive/data-sources/client-b.yaml
 f	23585	1777316429.5036942000	ace2-codex-work/issue-2464/docs/plans/2026-04-24-issue-282-orcawave-reporting-standardization.md
 f	23588	1777316423.8920875000	ace2-codex-work/issue-2464/.claude/state/reflect-history/analysis_2026-01-28_07-59-25.json
 f	2359	1777316426.2773466000	ace2-codex-work/issue-2464/.planning/plan-approved/2482.md
@@ -9948,7 +9948,7 @@ f	25034	1777316426.4182168000	ace2-codex-work/issue-2464/.planning/quick/rerevie
 f	250417	1777316427.2752351000	ace2-codex-work/issue-2464/assets/WRK-5082/references/duke-cee421-frame-element.pdf
 f	2504	1777316431.1783278000	ace2-codex-work/issue-2464/examples/claude-code-course/uigen/src/components/auth/SignUpForm.tsx
 f	25057	1777316418.4172865000	ace2-codex-work/issue-2464/.claude/get-shit-done/workflows/complete-milestone.md
-f	25058	1777316425.3705522000	ace2-codex-work/issue-2464/.planning/archive/data-sources/saipem.yaml
+f	25058	1777316425.3705522000	ace2-codex-work/issue-2464/.planning/archive/data-sources/client-d.yaml
 f	2506	1777316420.2495959000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/calculation-methodology/sections/12-verification.md
 f	2506	1777316427.3557276000	ace2-codex-work/issue-2464/config/agents/claude/memory-snapshots/feedback_email_cross_noise.md
 f	2506	1777316429.6999777000	ace2-codex-work/issue-2464/docs/plans/overnight-prompts/2026-04-15/claude-20-issue-adversarial-planning-review.md
@@ -10142,7 +10142,7 @@ f	2573	1777316422.1252739000	ace2-codex-work/issue-2464/.claude/skills/engineeri
 f	2573	1777316814.9804080000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/yaml/tokens.py
 f	2574	1777316422.4063392000	ace2-codex-work/issue-2464/.claude/skills/github/github-auth/scripts/gh-env.sh
 f	25742	1777316422.8407540000	ace2-codex-work/issue-2464/.claude/skills/research/research-paper-writing/references/experiment-patterns.md
-f	25747	1777316429.3343258000	ace2-codex-work/issue-2464/docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md
+f	25747	1777316429.3343258000	ace2-codex-work/issue-2464/docs/plans/2026-04-11-issue-2225-mkt-a-codes-source-registration-and-initial-indexing.md
 f	2575	1777316419.4980418000	ace2-codex-work/issue-2464/.claude/skills/_archive/data/analytics/statistical-analysis/when-to-use/SKILL.md
 f	2576	1777316429.5991152000	ace2-codex-work/issue-2464/docs/plans/focused-prompts/2026-04-09/implement-1839-next-slice.md
 f	25765	1777316455.7250533000	ace2-codex-work/issue-2464/transcript_raw.json
@@ -10666,7 +10666,7 @@ f	2767	1777316421.9339197000	ace2-codex-work/issue-2464/.claude/skills/developme
 f	276849	1777316423.8051301000	ace2-codex-work/issue-2464/.claude/state/patterns/corrections_2026-02-05_05-00-02.json
 f	27689	1777316426.6471157000	ace2-codex-work/issue-2464/.planning/quick/review-2460-codex.out
 f	27689	1777316815.5704205000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/pdfminer/cmap/78-RKSJ-H.json.gz
-f	2769	1777316429.8425651000	ace2-codex-work/issue-2464/docs/reports/acma-2227-metadata-only-wiki-stubs.md
+f	2769	1777316429.8425651000	ace2-codex-work/issue-2464/docs/reports/mkt-a-2227-metadata-only-wiki-stubs.md
 f	2770	1777316422.9231970000	ace2-codex-work/issue-2464/.claude/skills/smart-home/openhue/SKILL.md
 f	277111	1777316423.3763124000	ace2-codex-work/issue-2464/.claude/state/corrections/session_20260216.jsonl
 f	2771	1777316426.6707195000	ace2-codex-work/issue-2464/.planning/quick/review-2460-r15-gemini.out
@@ -11130,7 +11130,7 @@ f	2933	1777316426.9655025000	ace2-codex-work/issue-2464/_archive/skills/ai-promp
 f	2936	1777316420.4587857000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/marine-offshore/mooring-analysis/5-installation-and-pretensioning/SKILL.md
 f	2936	1777316425.6585995000	ace2-codex-work/issue-2464/.planning/archive/modules/work-queue-index-skill-use-index-md.md
 f	29362	1777316429.4558705000	ace2-codex-work/issue-2464/docs/plans/2026-04-22-issue-2448-assethold-smoke-followup.md
-f	2937	1777316429.8415001000	ace2-codex-work/issue-2464/docs/reports/acma-2227-comment-drafts.md
+f	2937	1777316429.8415001000	ace2-codex-work/issue-2464/docs/reports/mkt-a-2227-comment-drafts.md
 f	2937	1777316447.6832317000	ace2-codex-work/issue-2464/scripts/review/normalize-verdicts.sh
 f	2938	1777316418.8476915000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/communication/calendly-api/1-rate-limiting/SKILL.md
 f	2938	1777316421.8035729000	ace2-codex-work/issue-2464/.claude/skills/data/documents/document-rag-pipeline/SKILL.md
@@ -11602,7 +11602,7 @@ f	316	1777316420.0092591000	ace2-codex-work/issue-2464/.claude/skills/_archive/d
 f	316	1777316426.2570556000	ace2-codex-work/issue-2464/.planning/plan-approved/2307.md
 f	316	1777316446.2005818000	ace2-codex-work/issue-2464/pylib/idna/compat.py
 f	3162	1777316422.2922272000	ace2-codex-work/issue-2464/.claude/skills/engineering/marine-offshore/orcaflex/vessel-setup/SKILL.md
-f	3163	1777316429.8420331000	ace2-codex-work/issue-2464/docs/reports/acma-2227-metadata-only-interim.yaml
+f	3163	1777316429.8420331000	ace2-codex-work/issue-2464/docs/reports/mkt-a-2227-metadata-only-interim.yaml
 f	3165	1777316424.9506388000	ace2-codex-work/issue-2464/.github/workflows/baseline-check.yml
 f	3165	1777316447.9703606000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-22-plan-2443-gemini-r4.md
 f	3166	1777316447.6821461000	ace2-codex-work/issue-2464/scripts/review/lib/disagreement-diff.sh
@@ -12880,7 +12880,7 @@ f	395	1777316419.3270448000	ace2-codex-work/issue-2464/.claude/skills/_archive/b
 f	395	1777316420.2125201000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/cad/cad-engineering/version-metadata/SKILL.md
 f	395	1777316420.8006838000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/marine-offshore/signal-analysis/version-metadata/SKILL.md
 f	395	1777316421.1518380000	ace2-codex-work/issue-2464/.claude/skills/_archive/workspace-hub/agent-teams/idle-state/SKILL.md
-f	395	1777316425.3674569000	ace2-codex-work/issue-2464/.planning/archive/data-sources/frontierdeepwater.yaml
+f	395	1777316425.3674569000	ace2-codex-work/issue-2464/.planning/archive/data-sources/client-a.yaml
 f	39522	1777316815.7802216000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/pdfminer/cmap/UniJIS-UCS2-H.json.gz
 f	39531	1777316426.4420020000	ace2-codex-work/issue-2464/.planning/quick/rereview16-2045-codex.out
 f	3953	1777316421.2282702000	ace2-codex-work/issue-2464/.claude/skills/_core/bash/json-config-loader/1-keyvalue-configuration-parsing/SKILL.md
@@ -14127,13 +14127,13 @@ f	474	1777316426.2649367000	ace2-codex-work/issue-2464/.planning/plan-approved/2
 f	474	1777316427.4833963000	ace2-codex-work/issue-2464/config/skills/weekly-audit-waivers.yaml
 f	4743	1777316418.5331972000	ace2-codex-work/issue-2464/.claude/hooks/session-governor-check.sh
 f	4744	1777316418.4010472000	ace2-codex-work/issue-2464/.claude/get-shit-done/templates/state.md
-f	47473	1777316425.3669650000	ace2-codex-work/issue-2464/.planning/archive/data-sources/doris.yaml
+f	47473	1777316425.3669650000	ace2-codex-work/issue-2464/.planning/archive/data-sources/lng-a.yaml
 f	4751	1777316447.7034385000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-11-plan-2216-final.md
 f	4751	1777316451.7377511000	ace2-codex-work/issue-2464/state/session-signals/2026-04-17.jsonl
 f	475	1777316419.5280196000	ace2-codex-work/issue-2464/.claude/skills/_archive/data/documents/pdf/quick-reference/SKILL.md
 f	475	1777316420.4802929000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/marine-offshore/orcaflex-batch-manager/error-handling/SKILL.md
 f	475	1777316420.6691942000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/marine-offshore/orcaflex-vessel-setup/vessel-properties-yaml/SKILL.md
-f	47527	1777316425.3617926000	ace2-codex-work/issue-2464/.planning/archive/data-sources/acma-projects.yaml
+f	47527	1777316425.3617926000	ace2-codex-work/issue-2464/.planning/archive/data-sources/mkt-a.yaml
 f	4755	1777316815.0033310000	ace2-codex-work/issue-2464/.venv/include/site/python3.11/greenlet/greenlet.h
 f	4755	1777316815.4945656000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/greenlet/greenlet.h
 f	4756	1777316426.7146718000	ace2-codex-work/issue-2464/.planning/quick/skills-followup-consolidation-issue-claude-prompt.md
@@ -20352,7 +20352,7 @@ f	5676	1777316422.9383249000	ace2-codex-work/issue-2464/.claude/skills/software-
 f	5678	1777316419.6377591000	ace2-codex-work/issue-2464/.claude/skills/_archive/data/office/xlsx-to-python/step-1-dual-pass-loading/SKILL.md
 f	5679	1777316421.5582704000	ace2-codex-work/issue-2464/.claude/skills/business/job-posting-fit-analysis/SKILL.md
 f	5679	1777316425.4121580000	ace2-codex-work/issue-2464/.planning/archive/modules/agents-md-assessment-workspace-hub.md
-f	5679	1777316428.9997454000	ace2-codex-work/issue-2464/docs/handoffs/2026-04-12-acma-wiki-exit-handoff.md
+f	5679	1777316428.9997454000	ace2-codex-work/issue-2464/docs/handoffs/2026-04-12-mkt-a-wiki-exit-handoff.md
 f	5680	1777316425.6363964000	ace2-codex-work/issue-2464/.planning/archive/modules/tender-wondering-graham.md
 f	5681	1777316447.3411725000	ace2-codex-work/issue-2464/scripts/gis/geotiff-to-blender.py
 f	568	1777316420.7964305000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/marine-offshore/signal-analysis/error-handling/SKILL.md
@@ -32782,7 +32782,7 @@ f	626	1777316426.7931498000	ace2-codex-work/issue-2464/.planning/skills/evals/do
 f	626	1777316437.3945748000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/exxonmobil-dot-02.md
 f	6263	1777316419.3701087000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/productivity/time-tracking/1-toggl-track-time-entries/SKILL.md
 f	6265	1777316451.4556037000	ace2-codex-work/issue-2464/scripts/utilities/doc-to-context/examples/sample_output.json
-f	6266	1777316447.0734417000	ace2-codex-work/issue-2464/scripts/data/document-index/tests/test_acma_wiki_unblock.py
+f	6266	1777316447.0734417000	ace2-codex-work/issue-2464/scripts/data/document-index/tests/test_mkt-a_wiki_unblock.py
 f	6270	1777316422.4738041000	ace2-codex-work/issue-2464/.claude/skills/mlops/inference/obliteratus/references/analysis-modules.md
 f	6270	1777316425.9826634000	ace2-codex-work/issue-2464/.planning/archive/modules/wrk-120-local-data-strategy-gitignore-bsee.md
 f	627	1777316420.0818963000	ace2-codex-work/issue-2464/.claude/skills/_archive/development/sparc/sparc-architecture/execution-checklist/SKILL.md
@@ -35562,7 +35562,7 @@ f	73146	1777316425.3499161000	ace2-codex-work/issue-2464/.planning/archive/clien
 f	7315	1777316447.3395798000	ace2-codex-work/issue-2464/scripts/examples/trimesh_hull_preprocessing.py
 f	73	1777316815.1869316000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/pdfplumber/_version.py
 f	7318	1777316423.2392348000	ace2-codex-work/issue-2464/.claude/skills/workspace-hub/orcawave-orcaflex-readiness-audit/SKILL.md
-f	7321	1777316429.3180351000	ace2-codex-work/issue-2464/docs/plans/2026-04-11-claude-agent-team-prompt-2225-acma-source-registration-planning.md
+f	7321	1777316429.3180351000	ace2-codex-work/issue-2464/docs/plans/2026-04-11-claude-agent-team-prompt-2225-mkt-a-source-registration-planning.md
 f	732	1777316418.7116341000	ace2-codex-work/issue-2464/.claude/skills/_archive/ai/prompting/prompt-engineering/1-be-specific-and-clear/SKILL.md
 f	732	1777316420.2965724000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/doc-extraction/naval-architecture/standards-reference/SKILL.md
 f	732	1777316420.5551487000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/marine-offshore/orcaflex-line-wizard/yaml-based-line-setup/SKILL.md
@@ -36077,7 +36077,7 @@ f	7785	1777316425.2922017000	ace2-codex-work/issue-2464/.planning/archive/capabi
 f	7785	1777316428.7929950000	ace2-codex-work/issue-2464/docs/document-intelligence/dde-drive-catalog.md
 f	778655	1777316444.7521189000	ace2-codex-work/issue-2464/logs/orchestrator/codex/session_20260305.jsonl
 f	7790	1777316448.0058369000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-23-plan-2373-claude.md
-f	7790	1777316448.7190217000	ace2-codex-work/issue-2464/scripts/review/results/20260424T032933Z-2026-04-23-issue-2373-batch-pack-4-non-acma-standards-summary-promotion.md-plan-claude.md
+f	7790	1777316448.7190217000	ace2-codex-work/issue-2464/scripts/review/results/20260424T032933Z-2026-04-23-issue-2373-batch-pack-4-non-mkt-a-standards-summary-promotion.md-plan-claude.md
 f	779	1777316418.5638052000	ace2-codex-work/issue-2464/.claude/memory/topics/feedback_html_refresh.md
 f	779	1777316419.2634534000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/product/product-roadmap/allocating-capacity/SKILL.md
 f	779	1777316419.9720319000	ace2-codex-work/issue-2464/.claude/skills/_archive/development/github/github-release-manager/github-actions-integration/SKILL.md
@@ -36209,7 +36209,7 @@ f	793	1777316437.3905474000	ace2-codex-work/issue-2464/knowledge/wikis/marine-en
 f	7933	1777316451.8570876000	ace2-codex-work/issue-2464/tests/document-intelligence/test_marine_taxonomy.py
 f	7934	1777316425.6083668000	ace2-codex-work/issue-2464/.planning/archive/modules/remove-claude-flow-references.md
 f	7934	1777316448.2720431000	ace2-codex-work/issue-2464/scripts/review/results/20260223T042536Z-SKILL.md-implementation-gemini.md
-f	7936	1777316429.7295861000	ace2-codex-work/issue-2464/docs/reports/2026-04-15-issue-2244-acma-breadth-triage.yaml
+f	7936	1777316429.7295861000	ace2-codex-work/issue-2464/docs/reports/2026-04-15-issue-2244-mkt-a-breadth-triage.yaml
 f	794	1777316418.1745615000	ace2-codex-work/issue-2464/.claude/commands/gsd/scan.md
 f	794	1777316418.5727042000	ace2-codex-work/issue-2464/.claude/rules/coding-style.md
 f	794	1777316419.8168687000	ace2-codex-work/issue-2464/.claude/skills/_archive/development/documentation/marp/1-project-structure/SKILL.md
@@ -36415,7 +36415,7 @@ f	8191	1777316429.4969019000	ace2-codex-work/issue-2464/docs/plans/2026-04-24-is
 f	819	1777316423.1612338000	ace2-codex-work/issue-2464/.claude/skills/workspace-hub/learned/freetaxusa-efiling-workflow/SKILL.md
 f	819	1777316437.7522535000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/iso-063-liu-seven-new-quality-tools-and-appreciative.md
 f	819	1777316437.7532819000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/iso-081-christensen-where-is-qms-going-in-healthcare.md
-f	819	1777316444.2021075000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/session-6-francesco-maccagni-saipem-1.md
+f	819	1777316444.2021075000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/session-6-francesco-maccagni-client-d-1.md
 f	819	1777316444.2037011000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/session-7-peter-falconer-2hoffshore-1.md
 f	8193	1777316447.2147690000	ace2-codex-work/issue-2464/scripts/data/orcaflex/_archive/anonymize-import.py
 f	820	1777316419.8790310000	ace2-codex-work/issue-2464/.claude/skills/_archive/development/elite-frontend-ux/phase-0-context-analysis-answer-before-writing-any/SKILL.md
@@ -36555,7 +36555,7 @@ f	834	1777316419.1577409000	ace2-codex-work/issue-2464/.claude/skills/_archive/b
 f	834	1777316420.2151886000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/cad/freecad-automation/agent-settings/SKILL.md
 f	834	1777316420.3777654000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/marine-offshore/bemrosetta/with-diffraction-module/SKILL.md
 f	834	1777316426.3823706000	ace2-codex-work/issue-2464/.planning/quick/issue-2398-latest-gemini-integration-comment.md
-f	834	1777316437.3652557000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/deepgulf-mkdecrin-saipem-rev0.md
+f	834	1777316437.3652557000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/deepgulf-mkdecrin-client-d-rev0.md
 f	8345	1777316421.7268562000	ace2-codex-work/issue-2464/.claude/skills/creative/p5js/references/interaction.md
 f	8345	1777316446.6967009000	ace2-codex-work/issue-2464/scripts/automation/release_scan_wrk.py
 f	834902	1777316423.8208974000	ace2-codex-work/issue-2464/.claude/state/patterns/corrections_2026-02-22_07-19-29.json
@@ -36931,7 +36931,7 @@ f	8759	1777316447.1384736000	ace2-codex-work/issue-2464/scripts/data/og-standard
 f	876	1777316423.1864399000	ace2-codex-work/issue-2464/.claude/skills/workspace-hub/learned/multi-file-tax-prep-orchestration/SKILL.md
 f	876	1777316435.9852782000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/15-optimization-of-calm-buoy-export-terminal-availability.md
 f	8762	1777316418.3722998000	ace2-codex-work/issue-2464/.claude/get-shit-done/references/verification-overrides.md
-f	8763	1777316429.3173221000	ace2-codex-work/issue-2464/docs/plans/2026-04-11-claude-agent-team-prompt-2216-acma-codes-planning.md
+f	8763	1777316429.3173221000	ace2-codex-work/issue-2464/docs/plans/2026-04-11-claude-agent-team-prompt-2216-mkt-a-codes-planning.md
 f	8765	1777316452.0647021000	ace2-codex-work/issue-2464/tests/testing/test-generate-review-input.sh
 f	8770	1777316429.5837571000	ace2-codex-work/issue-2464/docs/plans/claude-ops-2026-04-09/results/plan-review-command-pack.md
 f	8771	1777316424.5603031000	ace2-codex-work/issue-2464/.codex/agents/gsd-user-profiler.md
@@ -37203,7 +37203,7 @@ f	912	1777316428.6379340000	ace2-codex-work/issue-2464/data/semiconductor/packag
 f	912	1777316437.8173434000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/novel-qualification-methodology-for-subsea-processing.md
 f	912	1777316444.3905633000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/statoilhydro-merger-implications-for-gulf-of-mexico-statoilhydro.md
 f	912	1777316815.6748421000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/cryptography/hazmat/bindings/_rust/openssl/keys.pyi
-f	9123	1777316446.9520838000	ace2-codex-work/issue-2464/scripts/data/document-index/acma_wiki_unblock.py
+f	9123	1777316446.9520838000	ace2-codex-work/issue-2464/scripts/data/document-index/mkt-a_wiki_unblock.py
 f	9126	1777316423.2997836000	ace2-codex-work/issue-2464/.claude/state/corrections/session_20260124.jsonl
 f	91272	1777316816.0277368000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/pdfminer/cmap/UniCNS-UTF8-V.json.gz
 f	913	1777316418.9689851000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/communication/teams-api/common-issues/SKILL.md

@@ -902,7 +902,7 @@ def test_execution_entry_point_inventory_covers_named_repos():
         assert f"| {repo} |" in text
     assert "Enumeration command" in text
     assert "unavailable" in text.lower() or "not available" in text.lower()
-    assert "client_projects/" not in text, "tracked inventory must not leak client child paths"
+    assert "client-c/" not in text, "tracked inventory must not leak client child paths"
 
 
 def test_follow_up_issue_bundle_present():

@@ -115,7 +115,7 @@ See `config/email/README.md` for full usage guide. Reference: #1986.
 
 ### ace
 - VIP: anyone in GTM prospect list, active clients
-- URGENT: anything from @ril.com, @dorisgroup.com, @mcdermott.com (known clients)
+- URGENT: anything from @ril.com, @lng-agroup.com, @mcdermott.com (known clients)
 - EXTRACT (not noise): CRE listing senders — sandsig.com, marcusmillichap.com, loopnet.com,
   partnersrealestate.com, ten-x.ccsend.com, c.costarmail.com. These feed structured data
   extraction to assethold/data/cre-listings/ via the cre-listing template (#1991).

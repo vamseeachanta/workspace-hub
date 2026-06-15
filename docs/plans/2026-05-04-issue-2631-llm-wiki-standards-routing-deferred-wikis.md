@@ -7,7 +7,7 @@
 
 ## Problem Statement
 
-Issue #2631 will resolve the deferred standards-routing decisions for `maritime-law`, `lng-projects`, and `acma-projects` after the prior llm-wiki standards-routing wave. The work will not let an agent choose sanction/defer/archive independently. It will capture the **user-selected outcome** for each wiki and will leave any wiki unresolved when explicit user choice is absent.
+Issue #2631 will resolve the deferred standards-routing decisions for `maritime-law`, `lng-projects`, and `mkt-a` after the prior llm-wiki standards-routing wave. The work will not let an agent choose sanction/defer/archive independently. It will capture the **user-selected outcome** for each wiki and will leave any wiki unresolved when explicit user choice is absent.
 
 - `/mnt/ace` raw corpora will remain outside git; approved implementation will promote only curated summaries, metadata, cross-links, and provenance fields.
 - No plan will self-approve, create approval markers, or move an issue to `status:plan-approved`; this plan will stop at `status:plan-review` for user approval.
@@ -43,7 +43,7 @@ The approved implementation will create `docs/governance/llm-wiki-standards-rout
 
 ```python
 def test_decision_record_requires_user_choice():
-    for wiki in ["maritime-law", "lng-projects", "acma-projects"]:
+    for wiki in ["maritime-law", "lng-projects", "mkt-a"]:
         assert decision[wiki]["outcome"] in {"sanction", "defer", "archive", "unresolved"}
         if decision[wiki]["outcome"] != "unresolved":
             assert decision[wiki]["user_choice_source"]

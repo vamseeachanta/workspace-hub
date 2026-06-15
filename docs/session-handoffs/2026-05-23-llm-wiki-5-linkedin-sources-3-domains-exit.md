@@ -29,7 +29,7 @@ Also updated each domain's `index.md` (source/page counters + Sources rows, alph
 - **Repo:** `vamseeachanta/llm-wiki` (PRIVATE), local clone `/mnt/local-analysis/llm-wiki`.
 - **Commit:** `a6903044` — "Add 5 LinkedIn practitioner source pages across 3 engineering domains" — 11 files, +354 / −9.
 - **Pushed:** fast-forward `df5241f2..a6903044` → `origin/main`. Verified `0 0` in sync; all 5 pages confirmed present on `origin/main` via `git ls-tree`.
-- **Pathspec-scoped commit** (`git commit -- <11 paths>`, `--only` mode) deliberately excluded the parallel session's pre-staged `wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md`, which remained staged for its owning session.
+- **Pathspec-scoped commit** (`git commit -- <11 paths>`, `--only` mode) deliberately excluded the parallel session's pre-staged `wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md`, which remained staged for its owning session.
 
 ## Parallel-swarm incident (resolved, no data loss)
 
@@ -37,7 +37,7 @@ A mid-operation `git log` snapshot — taken while the first commit was still in
 
 ## Repo states at exit
 
-- **`/mnt/local-analysis/llm-wiki`** — on `main`, `0 0` with `origin/main` (tip `a6903044`, mine). Dirty exceptions (NOT mine, left intentionally): parallel session's staged `acma-projects/.../b1528-sirocco-rudder-yaw-moment-inputs.md`; pre-existing untracked `.codex/`, `.gemini/`, `scripts/enforcement/`. Transient `.fuse_hidden*` artifacts (ntfs-3g FUSE mount) were never git-tracked.
+- **`/mnt/local-analysis/llm-wiki`** — on `main`, `0 0` with `origin/main` (tip `a6903044`, mine). Dirty exceptions (NOT mine, left intentionally): parallel session's staged `mkt-a/.../b1528-proj-a-rudder-yaw-moment-inputs.md`; pre-existing untracked `.codex/`, `.gemini/`, `scripts/enforcement/`. Transient `.fuse_hidden*` artifacts (ntfs-3g FUSE mount) were never git-tracked.
 - **`/mnt/local-analysis/workspace-hub`** — on `main`; only change this session is this handoff file.
 
 ## Next steps (optional follow-on)

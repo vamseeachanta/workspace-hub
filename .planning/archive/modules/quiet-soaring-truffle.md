@@ -28,17 +28,17 @@ Structural decisions made during planning session 2026-02-22.
 | Repo | Domain | Notes |
 |------|--------|-------|
 | `pdf-large-reader` | Document processing | **Review WRK needed**: may be superseded by AI agent native PDF capabilities; create WRK-NNN to assess before further investment |
-| `doris` | Subsea pipeline design | Project-driven, formalisation needed |
+| `lng-a` | Subsea pipeline design | Project-driven, formalisation needed |
 | `OGManufacturing` | Drilling / production | Early stage, needs repo structure first |
-| `acma-projects` | Structural consultancy | Document-driven, early |
-| `saipem` | Umbilical installation | Project-specific, not yet portable |
-| `rock-oil-field` | Offshore installation | Project-driven |
-| `frontierdeepwater` | Deepwater project docs | Document repo, limited portable code |
+| `mkt-a` | Structural consultancy | Document-driven, early |
+| `client-d` | Umbilical installation | Project-specific, not yet portable |
+| `client-b` | Offshore installation | Project-driven |
+| `client-a` | Deepwater project docs | Document repo, limited portable code |
 
 ### Tier 3 — Personal / Admin / Project (low engineering investment)
 
-`aceengineer-admin`, `aceengineer-website`, `seanation`, `hobbies`, `teamresumes`,
-`sd-work`, `sabithaandkrishnaestates`, `achantas-data`, `client_projects`
+`aceengineer-admin`, `aceengineer-website`, `client-f`, `hobbies`, `teamresumes`,
+`sd-work`, `sabithaandkrishnaestates`, `achantas-data`, `client-c`
 
 ---
 
@@ -286,8 +286,8 @@ Independent of Phases A–F. Can be created this session.
 | G-18 | Agent-readable specs index | Overlaps Phase E; create as separate WRK |
 
 ### Tier 2 Phase G items
-Created as-is from WRK-309 spec (doris 4, OGManufacturing 3, saipem/rock-oil-field 2,
-acma-projects 3, frontierdeepwater — defer). Total: ~12 additional items.
+Created as-is from WRK-309 spec (lng-a 4, OGManufacturing 3, client-d/client-b 2,
+mkt-a 3, client-a — defer). Total: ~12 additional items.
 
 **+ Additional WRK item:** Review `pdf-large-reader` vs. native AI agent PDF capabilities
 and decide whether to continue investment or deprecate.

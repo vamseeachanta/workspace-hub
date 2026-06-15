@@ -33,19 +33,19 @@ This roadmap implements baseline testing and UV environment modernization across
 
 ### Repositories (16 repos with NO tests):
 1. achantas-media
-2. acma-projects
+2. mkt-a
 3. ai-native-traditional-eng
 4. assethold
 5. coordination
-6. doris
+6. lng-a
 7. energy
-8. frontierdeepwater
+8. client-a
 9. hobbies
 10. investments
 11. memory
 12. sabithaandkrishnaestates
 13. sd-work
-14. seanation
+14. client-f
 15. teamresumes
 16. worldenergydata
 
@@ -124,10 +124,10 @@ This roadmap implements baseline testing and UV environment modernization across
 3. aceengineercode (20+ tests)
 4. achantas-data (5+ tests)
 5. assetutilities (10+ tests)
-6. client_projects (50+ tests)
+6. client-c (50+ tests)
 7. OGManufacturing (5+ tests)
 8. pyproject-starter (3 tests)
-9. rock-oil-field (20+ tests)
+9. client-b (20+ tests)
 
 **Actions per repo (30 min each):**
 - Add `.coveragerc` or coverage config to pyproject.toml
@@ -150,7 +150,7 @@ Same 9 repos as above
 - Add integration tests if missing
 - Document testing strategy
 
-#### Priority 4: Expand saipem CI/CD:
+#### Priority 4: Expand client-d CI/CD:
 - Has CI/CD but only 5+ tests
 - Expand test suite using baseline templates
 - Increase coverage
@@ -180,8 +180,8 @@ Same 9 repos as above
 1. **digitalmodel** - expand to 90%+ (already at high coverage)
 2. **aceengineer-website** - 21 tests, expand for full coverage
 3. **aceengineercode** - 20+ tests, expand for engineering calcs
-4. **client_projects** - 50+ tests, ensure all client projects covered
-5. **rock-oil-field** - 20+ tests, expand for structural analysis
+4. **client-c** - 50+ tests, ensure all client projects covered
+5. **client-b** - 20+ tests, expand for structural analysis
 
 **Time estimate:** 1-3 days per major repository
 **Deliverable:** All production repos at 80%+ coverage (10 days)

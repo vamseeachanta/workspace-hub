@@ -41,7 +41,7 @@ Design or operate a central AI workflow control plane that combines provider quo
 
 ### Check company/workstream routing before local execution
 
-Before doing client/company ecosystem work, check whether that company has a designated dispatch surface and worker-machine route. If the work belongs to a specific company channel, keep intake/status there and route execution to the named workstation rather than defaulting to the current Hermes host. Example pattern from Doris: the `doris` Telegram channel is the Doris company-admin dispatch surface, and Doris ecosystem execution should route to `ace-linux-2`; the current Hermes session remains the control/coordination surface only when explicitly asked.
+Before doing client/company ecosystem work, check whether that company has a designated dispatch surface and worker-machine route. If the work belongs to a specific company channel, keep intake/status there and route execution to the named workstation rather than defaulting to the current Hermes host. Example pattern from lng-a: the `lng-a` Telegram channel is the lng-a company-admin dispatch surface, and lng-a ecosystem execution should route to `ace-linux-2`; the current Hermes session remains the control/coordination surface only when explicitly asked.
 
 If the worker route is blocked by auth or reachability, preserve the work as repo-owned artifacts and a runnable handoff script, then report the exact block and the command to run on the correct workstation. Do not silently substitute local execution for routed execution.
 

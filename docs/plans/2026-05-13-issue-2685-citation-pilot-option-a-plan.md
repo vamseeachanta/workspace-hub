@@ -46,7 +46,7 @@
 
 - Tried `knowledge/wikis/engineering/wiki/standards/dnv-os-e301.md` → MISSING in main tree.
 - Tried `find /knowledge/wikis -iname '*e301*'` → only the digitalmodel **test fixture** hit. No marine-engineering or engineering wiki page exists yet.
-- Existing standards roots found: `knowledge/wikis/acma-projects/wiki/standards/`, `knowledge/wikis/marine-engineering/raw/standards/`. Neither contains DNV-OS-E301 today.
+- Existing standards roots found: `knowledge/wikis/mkt-a/wiki/standards/`, `knowledge/wikis/marine-engineering/raw/standards/`. Neither contains DNV-OS-E301 today.
 
 ### Documents consulted
 

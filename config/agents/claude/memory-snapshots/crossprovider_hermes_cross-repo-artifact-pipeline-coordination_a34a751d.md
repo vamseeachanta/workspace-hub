@@ -8,6 +8,6 @@ metadata:
   tags: [proj-a, artifact-generation, cross-repo]
 ---
 
-proj-a outputs are generated in digitalmodel repo but need to be copied to workspace-hub/acma/ subdirectory as part of the artifact production phase. This requires explicit routing logic rather than generating directly to the final destination, likely due to repo structure constraints.
+proj-a outputs are generated in digitalmodel repo but need to be copied to workspace-hub/mkt-a/ subdirectory as part of the artifact production phase. This requires explicit routing logic rather than generating directly to the final destination, likely due to repo structure constraints.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

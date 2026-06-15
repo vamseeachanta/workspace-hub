@@ -72,8 +72,8 @@ Even with 1 error repository, the runner continues:
 ```
 ✓ digitalmodel - 45 passed, 0 failed, 85.2% coverage
 ✓ energy - 32 passed, 0 failed, 78.5% coverage
-✗ frontierdeepwater - 10 passed, 2 failed, 75.3% coverage
-✓ rock-oil-field - 28 passed, 0 failed, 82.1% coverage
+✗ client-a - 10 passed, 2 failed, 75.3% coverage
+✓ client-b - 28 passed, 0 failed, 82.1% coverage
 ⚠ worldenergydata - Environment setup failed
 ```
 
@@ -329,7 +329,7 @@ for repo, times in execution_times.items():
 ```bash
 # Test only production-critical work repositories
 python scripts/testing/unified_test_runner.py \
-    --repos digitalmodel energy frontierdeepwater \
+    --repos digitalmodel energy client-a \
     --workers 4 \
     --verbose
 ```
@@ -360,7 +360,7 @@ python scripts/testing/unified_test_runner.py \
 
 # Test larger repositories with fewer workers
 python scripts/testing/unified_test_runner.py \
-    --repos digitalmodel energy frontierdeepwater \
+    --repos digitalmodel energy client-a \
     --workers 3
 ```
 

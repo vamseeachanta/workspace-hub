@@ -5,10 +5,10 @@
 Two Offshore Magazine survey posters (2010 heavy lift, 2011 pipelay) contain structured
 fleet data for offshore contractors. Both are **vector PDFs** (Adobe InDesign CS5 —
 machine-readable text, no OCR needed). Data is currently inaccessible for programmatic
-querying. Goal: load into `frontierdeepwater/data/` so downstream agents can query
+querying. Goal: load into `client-a/data/` so downstream agents can query
 contractor capabilities (e.g. "find all J-lay vessels capable of 2000m WD").
 
-`frontierdeepwater/data/raw/` and `data/processed/` are **empty** (only `.gitkeep`).
+`client-a/data/raw/` and `data/processed/` are **empty** (only `.gitkeep`).
 No existing ETL scripts. Python tooling: uv + assetutilities dep, pytest 80% threshold.
 
 ---
@@ -17,7 +17,7 @@ No existing ETL scripts. Python tooling: uv + assetutilities dep, pytest 80% thr
 
 **Files to create/copy:**
 
-1. `frontierdeepwater/data/raw/offshore-magazine/`
+1. `client-a/data/raw/offshore-magazine/`
    - Copy `1111PipelayPoster112711APPads.pdf` → `pipelay-contractors-2011.pdf`
    - Copy `OFF1011HeavyLift-Poster.pdf` → `heavy-lift-vessels-2010.pdf`
    - Create `README.md` documenting provenance (publisher, date, source path)
@@ -26,9 +26,9 @@ No existing ETL scripts. Python tooling: uv + assetutilities dep, pytest 80% thr
 
 ## Phase 2 — Extract Script
 
-**File:** `frontierdeepwater/scripts/python/extract_vessel_data.py`
+**File:** `client-a/scripts/python/extract_vessel_data.py`
 
-Strategy: Use **PyMuPDF** (`fitz`) — available or install in frontierdeepwater venv.
+Strategy: Use **PyMuPDF** (`fitz`) — available or install in client-a venv.
 PyMuPDF provides `page.get_text("dict")` giving text blocks with bounding-box
 coordinates. Group blocks by y-coordinate bands → rows; x-coordinate ranges → columns.
 
@@ -71,7 +71,7 @@ notes, needs_review
 
 ## Phase 3 — Tests
 
-**File:** `frontierdeepwater/tests/unit/test_extract_vessel_data.py`
+**File:** `client-a/tests/unit/test_extract_vessel_data.py`
 
 Test cases (TDD first):
 - `test_parse_dimension_strips_unit` — "984'" → 984.0
@@ -84,7 +84,7 @@ Test cases (TDD first):
 
 ## Phase 4 — Provenance README
 
-**File:** `frontierdeepwater/data/raw/offshore-magazine/README.md`
+**File:** `client-a/data/raw/offshore-magazine/README.md`
 
 Documents:
 - Source: Offshore Magazine survey posters
@@ -99,7 +99,7 @@ Documents:
 
 ```bash
 # Run tests first (TDD)
-cd frontierdeepwater && python -m pytest tests/unit/test_extract_vessel_data.py -v
+cd client-a && python -m pytest tests/unit/test_extract_vessel_data.py -v
 
 # Run extraction
 python scripts/python/extract_vessel_data.py \

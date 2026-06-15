@@ -1,4 +1,4 @@
-# Claude agent-team prompt: #2225 acma-codes source registration and initial indexing planning pack
+# Claude agent-team prompt: #2225 mkt-a-codes source registration and initial indexing planning pack
 
 Use this prompt as a single self-contained handoff to Claude Code.
 
@@ -19,7 +19,7 @@ Critical repo/workflow constraints:
 - Issue `#2225` is not implementation-approved yet.
 - Treat this run as planning-only.
 - Do NOT modify pipeline code, registries, wiki pages, or index outputs in this run.
-- Your goal is to produce the planning package for `#2225`, grounded in the real contents of `/mnt/ace/acma-codes` and the approved parent architecture, then move the issue to `status:plan-review` only if the plan is review-ready.
+- Your goal is to produce the planning package for `#2225`, grounded in the real contents of `/mnt/ace/mkt-a-codes` and the approved parent architecture, then move the issue to `status:plan-review` only if the plan is review-ready.
 - If a blocking uncertainty remains after review, post a blocker summary and stop without applying `status:plan-review`.
 
 Primary issue:
@@ -33,7 +33,7 @@ Parent / related issues to consume, not redefine:
 - Downstream follow-ons from split: `#2226`, `#2227`, `#2228`
 
 Primary repo artifacts to read first:
-- `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md`
+- `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md`
 - `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md`
 - `docs/document-intelligence/standards-codes-provenance-reuse-contract.md`
 - `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md`
@@ -46,16 +46,16 @@ Primary repo artifacts to read first:
 - `docs/plans/_template-issue-plan.md`
 
 Live source to inspect directly:
-- `/mnt/ace/acma-codes`
+- `/mnt/ace/mkt-a-codes`
 
 Allowed write paths for this run:
-- `docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md`
+- `docs/plans/2026-04-11-issue-2225-mkt-a-codes-source-registration-and-initial-indexing.md`
 - `scripts/review/results/2026-04-11-plan-2225-claude.md`
 - `scripts/review/results/2026-04-11-plan-2225-final.md`
 - `docs/plans/README.md`
 
 Read-only paths:
-- `/mnt/ace/acma-codes/**`
+- `/mnt/ace/mkt-a-codes/**`
 - `data/document-index/**`
 - `scripts/data/document-index/**`
 - `docs/**`
@@ -77,7 +77,7 @@ Git safety rule:
 
 Success condition:
 By the end of this run, the repo should contain a review-ready plan for `#2225` that:
-- defines the exact source-registration change for `/mnt/ace/acma-codes`
+- defines the exact source-registration change for `/mnt/ace/mkt-a-codes`
 - uses real live inventory evidence from the mounted directory
 - defines the Phase A indexing scope and junk-file exclusion rules
 - defines the initial dedup assessment approach against the current corpus
@@ -88,7 +88,7 @@ By the end of this run, the repo should contain a review-ready plan for `#2225` 
 
 Required outputs:
 1. A formal plan file:
-   - `docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md`
+   - `docs/plans/2026-04-11-issue-2225-mkt-a-codes-source-registration-and-initial-indexing.md`
 2. A Claude review artifact:
    - `scripts/review/results/2026-04-11-plan-2225-claude.md`
 3. A final synthesis / integrator artifact:
@@ -100,7 +100,7 @@ Required outputs:
 The plan must include these core sections:
 - Resource Intelligence Summary
 - Existing registry/index/pipeline surfaces consulted
-- Live inventory findings for `/mnt/ace/acma-codes`
+- Live inventory findings for `/mnt/ace/mkt-a-codes`
 - Proposed source-registration model
 - Proposed Phase A indexing scope
 - Junk/non-document exclusion policy
@@ -116,7 +116,7 @@ The plan must include these core sections:
 - Complexity
 
 Specific planning questions to answer from real evidence:
-1. What are the actual top-level source families and representative file types in `/mnt/ace/acma-codes`?
+1. What are the actual top-level source families and representative file types in `/mnt/ace/mkt-a-codes`?
 2. What exact mounted-source-registry entry should be added?
 3. How should junk artifacts like `Thumbs.db` be excluded or classified?
 4. What is the best first-pass dedup method against existing corpus and standards sources?
@@ -127,7 +127,7 @@ Execution steps:
 
 STEP 1 — Live intake and resource intelligence
 - Read `#2225` live from GitHub.
-- Inspect `/mnt/ace/acma-codes` directly (top-level families, representative files, junk artifacts).
+- Inspect `/mnt/ace/mkt-a-codes` directly (top-level families, representative files, junk artifacts).
 - Read the relevant registry/pipeline sources and the parent #2216 plan.
 - Ground all major claims in current repo files and live directory contents.
 

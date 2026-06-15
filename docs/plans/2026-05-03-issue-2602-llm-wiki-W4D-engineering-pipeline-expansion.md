@@ -79,13 +79,13 @@ This plan will create **concept pages**, not standards pages. Per `.claude/rules
 - #2596 — OPEN — "erratum(plans): correct #2471 sanction-scope over-citation in W1-A and W1-B (W3-C)" — provides the path-sanction provenance discipline this plan adheres to.
 - #2597 — OPEN — "feat(llm-wiki): engineering wiki riser sub-domain topical expansion (W3-D)" — same-shape sibling.
 - #2589 — OPEN — "feat(llm-wiki): naval-architecture wiki topical expansion — 10 core concept pages (W1-D)" — distant sibling; provides the standards-NAME-without-thresholds pattern.
-- /mnt/ace inventory: `digitalmodel/docs/pipelines/literature/{academic, regulatory-bsee, textbooks, buckling, pressure_loss}` (verified 2026-05-03), including `2007-2-Yablonskikh_buckle_assessment.pdf`, `349567530-Appendix-2-Onshore-Pipeline-Design-Basis.pdf`, `ASME L&D B31.8 Natural Gas Pipelines Guide.pdf`, `co2_pipeline_design_review.pdf`, `hydrogen_pipeline.pdf`, `pipelay_solitaire_stinger_force_analysis.pdf`, `Pipeline_Route_Determination_GN_e-Aug16.pdf`, `precommission.pdf`, `buckling/31_2010_Dr_Thusyanthan_Uplift_resistance_of_buried_pipelines_and_DNV_guidelines_OPT2010.pdf`. Plus `/mnt/ace/saipem/` (Saipem is offshore-pipeline EPCI; subdirs `general/{cp, engg, flexible, reports, slwr, spoolbase, yt_docs}`, `yellowtail/`), `/mnt/ace/docs/0181 KBR Pipeline`, `/mnt/ace/docs/611 Mecor Pipeline Installation Analysis`, `/mnt/ace/docs/0098 Mecor Pipeline Installation Analysis`, `/mnt/ace/0_mrv/9427_2pipeline_engg`, `/mnt/ace/client_projects/energy_pipeline_installation_mp`, `/mnt/ace/docs/0175 TJG Pipelay Analysis`, `/mnt/ace/doris/training/draft presentations/On-Bottom Stability`. Plan will NOT extract from these PDFs (per #2482 deny-list); concept pages will cite them by reference at most, with NO copy-paste of text.
+- /mnt/ace inventory: `digitalmodel/docs/pipelines/literature/{academic, regulatory-bsee, textbooks, buckling, pressure_loss}` (verified 2026-05-03), including `2007-2-Yablonskikh_buckle_assessment.pdf`, `349567530-Appendix-2-Onshore-Pipeline-Design-Basis.pdf`, `ASME L&D B31.8 Natural Gas Pipelines Guide.pdf`, `co2_pipeline_design_review.pdf`, `hydrogen_pipeline.pdf`, `pipelay_solitaire_stinger_force_analysis.pdf`, `Pipeline_Route_Determination_GN_e-Aug16.pdf`, `precommission.pdf`, `buckling/31_2010_Dr_Thusyanthan_Uplift_resistance_of_buried_pipelines_and_DNV_guidelines_OPT2010.pdf`. Plus `/mnt/ace/client-d/` (client-d is offshore-pipeline EPCI; subdirs `general/{cp, engg, flexible, reports, slwr, spoolbase, yt_docs}`, `yellowtail/`), `/mnt/ace/docs/0181 KBR Pipeline`, `/mnt/ace/docs/611 Mecor Pipeline Installation Analysis`, `/mnt/ace/docs/0098 Mecor Pipeline Installation Analysis`, `/mnt/ace/0_mrv/9427_2pipeline_engg`, `/mnt/ace/client-c/energy_pipeline_installation_mp`, `/mnt/ace/docs/0175 TJG Pipelay Analysis`, `/mnt/ace/lng-a/training/draft presentations/On-Bottom Stability`. Plan will NOT extract from these PDFs (per #2482 deny-list); concept pages will cite them by reference at most, with NO copy-paste of text.
 - WebSearch — "Bai Subsea Pipelines and Risers chapter list" → confirms canonical pipeline curriculum: Part I Mechanical Design (wall-thickness, hydrostatic collapse), Part II Pipeline Design (route selection, on-bottom stability, lateral & upheaval buckling, free-span, span fatigue, trawl-pull-over, dropped object), Part III Installation (S-lay, J-lay, reel-lay, tow-out, HDD), separate flow-assurance section (wax, asphaltenes), integrity-management section. Bai/Bai book is the canonical English-language pipeline reference.
 - WebSearch — "DNV-OS-F101 / DNV-ST-F101 submarine pipeline systems": confirmed current edition is **DNV-ST-F101** (rebranded from DNV-OS-F101; Aug 2021 edition + Dec 2021 amendment), umbrella standard for design / materials / fabrication / installation / testing / commissioning / operation / re-qualification / abandonment of rigid metallic submarine pipelines. **Plan will use DNV-ST-F101 (current name) but allow citations to DNV-OS-F101 only as legacy.**
 
 ### Gaps identified
 
-Coverage matrix vs. canonical offshore-pipeline-engineering curriculum (Bai & Bai *Subsea Pipelines and Risers* chapter list + DNV-ST-F101 + DNV-RP-F109/F110/F111/F114/F116 + API RP 1111 + 2H/Saipem/digitalmodel corpora):
+Coverage matrix vs. canonical offshore-pipeline-engineering curriculum (Bai & Bai *Subsea Pipelines and Risers* chapter list + DNV-ST-F101 + DNV-RP-F109/F110/F111/F114/F116 + API RP 1111 + 2H/client-d/digitalmodel corpora):
 
 | Canonical topic | Current wiki status | Action |
 |---|---|---|
@@ -95,10 +95,10 @@ Coverage matrix vs. canonical offshore-pipeline-engineering curriculum (Bai & Ba
 | Upheaval buckling (download / cover / imperfection; DNV-RP-F110 + Hobbs/Palmer) | gap (calc `upheaval_buckling.py` exists; Thusyanthan PDF on /mnt/ace) | **NEW** `concepts/pipeline-upheaval-buckling.md` |
 | Pipeline walking (asymmetric thermal cycling, end-expansion, axial creep) | gap | **NEW** `concepts/pipeline-walking.md` |
 | Pipe-soil interaction (axial / lateral resistance; berm formation; DNV-RP-F114) | gap | **NEW** `concepts/pipeline-soil-interaction.md` |
-| Pipelay installation methods (S-lay, J-lay, reel-lay, tow-out — surface, mid-depth, off-bottom, bottom) | gap (Saipem corpus + Solitaire stinger PDF on /mnt/ace) | **NEW** `concepts/pipeline-installation-methods.md` |
+| Pipelay installation methods (S-lay, J-lay, reel-lay, tow-out — surface, mid-depth, off-bottom, bottom) | gap (client-d corpus + Solitaire stinger PDF on /mnt/ace) | **NEW** `concepts/pipeline-installation-methods.md` |
 | End-expansion, spool / mid-line tee / PLET / sleeper design | gap | **NEW** `concepts/pipeline-end-expansion-spool-design.md` |
 | Trawl-gear interference / dropped-object protection (DNV-RP-F111) | gap | **NEW** `concepts/pipeline-trawl-impact-protection.md` |
-| Pipeline coatings (anti-corrosion FBE/3LPE/3LPP, thermal-insulation wet/dry, concrete weight) | gap (Bai Ch3 covers; field-joint coating in /mnt/ace/saipem) | **NEW** `concepts/pipeline-coatings.md` |
+| Pipeline coatings (anti-corrosion FBE/3LPE/3LPP, thermal-insulation wet/dry, concrete weight) | gap (Bai Ch3 covers; field-joint coating in /mnt/ace/client-d) | **NEW** `concepts/pipeline-coatings.md` |
 | Pipeline cathodic protection (bracelet anodes, attenuation; companion to riser-CP) | partial — generic `cathodic-protection-design.md` | not in this batch — defer; new pages will cross-link |
 | HDD onshore-pipeline crossing | gap | not in this batch — defer; flagged as Open Question on onshore-pipeline scope |
 | Pipeline integrity / FFS / corrosion | covered (`pipeline-integrity-assessment.md`) | leave |
@@ -113,7 +113,7 @@ Coverage matrix vs. canonical offshore-pipeline-engineering curriculum (Bai & Ba
 4. `concepts/pipeline-upheaval-buckling.md` — download / cover / imperfection / Palmer-Hobbs; DNV-RP-F110; cross-link to `upheaval_buckling.py` and Thusyanthan reference.
 5. `concepts/pipeline-walking.md` — asymmetric thermal cycling, axial creep, end-expansion, anchor design; references Carr / Bruton walking-mechanism literature (NAME only).
 6. `concepts/pipeline-soil-interaction.md` — axial / lateral resistance models, berm formation, embedment-history dependence; DNV-RP-F114.
-7. `concepts/pipeline-installation-methods.md` — S-lay / J-lay / reel-lay / tow-out (surface, mid-depth, off-bottom, bottom); references API RP 1111 installation limits and Saipem-corpus context (NAME only, no extraction).
+7. `concepts/pipeline-installation-methods.md` — S-lay / J-lay / reel-lay / tow-out (surface, mid-depth, off-bottom, bottom); references API RP 1111 installation limits and client-d-corpus context (NAME only, no extraction).
 8. `concepts/pipeline-end-expansion-spool-design.md` — end-expansion, expansion spool, mid-line tee, PLET, sleeper interaction; cross-link to walking and lateral-buckling.
 9. `concepts/pipeline-trawl-impact-protection.md` — DNV-RP-F111; rock-dump / mattress / trenching / burial; impact-energy bands.
 10. `concepts/pipeline-coatings.md` — corrosion (FBE / 3LPE / 3LPP), thermal-insulation (wet / dry / PIP), concrete weight; field-joint coating; references API RP 5L2 / DNV-RP-F106.
@@ -142,7 +142,7 @@ Coverage matrix vs. canonical offshore-pipeline-engineering curriculum (Bai & Ba
 - EXISTS: `digitalmodel/src/digitalmodel/subsea/pipeline/free_span/{models,span_allowable_length,span_fatigue_damage,span_natural_frequency,span_onset_screening,span_viv_response,wave_velocity,weibull_current}.py` (+ `_bilinear_sn.py`).
 - EXISTS: `digitalmodel/src/digitalmodel/{asset_integrity/pipeline_skill,cathodic_protection/pipeline_cp,solvers/orcaflex/pipeline_schematic}.py`.
 - EXISTS: `/mnt/ace/digitalmodel/docs/pipelines/literature/{academic, regulatory-bsee, textbooks, buckling, pressure_loss}/`.
-- EXISTS: `/mnt/ace/saipem/{admin,general,yellowtail}/` and `/mnt/ace/saipem/general/{cp,engg,flexible,reports,slwr,spoolbase,yt_docs}/`.
+- EXISTS: `/mnt/ace/client-d/{admin,general,yellowtail}/` and `/mnt/ace/client-d/general/{cp,engg,flexible,reports,slwr,spoolbase,yt_docs}/`.
 - EXISTS: `/mnt/ace/docs/{0181 KBR Pipeline, 611 Mecor Pipeline Installation Analysis, 0098 Mecor Pipeline Installation Analysis, 0175 TJG Pipelay Analysis}/`.
 - EXISTS: `tests/governance/test_2471_citation_scope.py` — allowlist test that will catch any over-citation of #2471 in this plan or its child pages.
 - MISSING (this plan creates): the 10 new `concepts/pipeline-*.md` pages listed above.
@@ -215,7 +215,7 @@ This confirms strong gap signal: free-span has 11 hits (existing dedicated page)
   (5) #2596 W3-C erratum,
   (6) #2597 W3-D shape precedent,
   (7) /mnt/ace pipeline literature corpora,
-  (8) /mnt/ace/saipem EPCI corpus,
+  (8) /mnt/ace/client-d EPCI corpus,
   (9) digitalmodel/src/digitalmodel/subsea/pipeline/ module footprint,
   (10) WebSearch Bai/Bai chapter list,
   (11) WebSearch DNV-ST-F101 (current rebrand),
@@ -324,7 +324,7 @@ function append_log(log_path):
 | Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-upheaval-buckling.md` | Download, cover height, imperfection, Palmer-Hobbs; references DNV-RP-F110; cross-link to `digitalmodel/subsea/pipeline/upheaval_buckling.py` (NAME only) |
 | Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-walking.md` | Asymmetric thermal cycling, axial creep, end-expansion, anchor design; references Carr / Bruton walking-mechanism literature (NAME only) |
 | Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-soil-interaction.md` | Axial / lateral resistance models, berm formation, embedment-history dependence; references DNV-RP-F114 |
-| Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-installation-methods.md` | S-lay, J-lay, reel-lay, tow-out (surface, mid-depth, off-bottom, bottom); references API RP 1111 + Saipem EPCI corpus context (NAME only) |
+| Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-installation-methods.md` | S-lay, J-lay, reel-lay, tow-out (surface, mid-depth, off-bottom, bottom); references API RP 1111 + client-d EPCI corpus context (NAME only) |
 | Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-end-expansion-spool-design.md` | End-expansion, expansion spool, mid-line tee, PLET, sleeper interaction; cross-link to walking + lateral-buckling. **Implementer note:** PLET-as-SCR-tie-in discussion must be confined to a `## Scope` or `## Out of Scope` callout (whitelisted by the section-dominance test) OR balanced with explicit pipeline-side keywords (`spool`, `pipelay`, `flowline`) within the same H2 section to satisfy `test_no_scope_creep_into_riser_mooring_umbilical`. Body sections cannot use `SCR` freely even when describing pipeline-side hardware. |
 | Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-trawl-impact-protection.md` | DNV-RP-F111; rock-dump / mattress / trenching / burial; impact-energy bands |
 | Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-coatings.md` | Anti-corrosion (FBE / 3LPE / 3LPP), thermal-insulation (wet / dry / PIP), concrete weight, field-joint coating; references API RP 5L2 / DNV-RP-F106 |

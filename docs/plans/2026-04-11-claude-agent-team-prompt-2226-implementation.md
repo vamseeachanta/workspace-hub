@@ -32,8 +32,8 @@ Review artifacts:
 Authoritative supporting docs to follow, not redefine:
 - `docs/document-intelligence/standards-codes-provenance-reuse-contract.md`
 - `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md`
-- `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md`
-- `docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md`
+- `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md`
+- `docs/plans/2026-04-11-issue-2225-mkt-a-codes-source-registration-and-initial-indexing.md`
 - `data/document-index/index.jsonl`
 - `data/document-index/standards-transfer-ledger.yaml`
 - `data/design-codes/code-registry.yaml`
@@ -75,7 +75,7 @@ Required implementation outcomes:
 1. Update `data/document-index/standards-transfer-ledger.yaml`
    - add the approved OCIMF entries
    - add the approved CSA entries
-   - update the existing API RP 1111 and API RP 2SK entries with acma-codes alias/doc_paths where approved by the plan
+   - update the existing API RP 1111 and API RP 2SK entries with mkt-a-codes alias/doc_paths where approved by the plan
    - add the approved API RP 2SK 3rd edition / addendum entries if supported by the plan and indexed evidence
 2. Use real indexed evidence from `index.jsonl` for every new or updated ledger entry
 3. Preserve ledger consistency and avoid duplicate/conflicting truth
@@ -91,7 +91,7 @@ Implementation guidance:
 - Do not add a new `doc_key` field to the ledger schema unless the existing structure already clearly supports it and the plan explicitly allows it. Otherwise keep to the current schema and use path/provenance notes as planned.
 
 Required verification before commit:
-- confirm all new/updated ledger entries map to real indexed `acma_codes` records
+- confirm all new/updated ledger entries map to real indexed `mkt-a_codes` records
 - confirm no duplicate/conflicting IDs are introduced
 - confirm API alias vs new-edition handling matches the approved plan
 - confirm any optional `code-registry.yaml` change is justified; otherwise leave it untouched
@@ -100,7 +100,7 @@ Required verification before commit:
 Git discipline:
 - Stage only the owned paths explicitly by path.
 - Commit message:
-  - `feat(acma-codes): backfill ledger provenance and aliases for OCIMF/CSA (#2226)`
+  - `feat(mkt-a-codes): backfill ledger provenance and aliases for OCIMF/CSA (#2226)`
 - After commit, push to `origin main`.
 
 GitHub closeout:

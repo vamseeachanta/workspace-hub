@@ -17,25 +17,25 @@ Inventory all folders/files in `/mnt/remote/ace-linux-2/local-analysis` (excludi
 
 ## Relocation Plan
 
-### Category 1: Engineering Projects → `/mnt/ace/client_projects/`
+### Category 1: Engineering Projects → `/mnt/ace/client-c/`
 
 | Source | Size | Destination |
 |--------|------|-------------|
-| 0111 RII | 2.8G | client_projects/0111-RII/ |
-| 0112 CN Adapter | 6.3M | client_projects/0112-CN-Adapter/ |
-| 0116 Thinwall Pipe FEA | 15G | client_projects/0116-Thinwall-Pipe-FEA/ |
-| 0119 Programming | 26M | client_projects/0119-Programming/ |
-| 0127 Mooring | 9.8M | client_projects/0127-Mooring/ |
-| 0132 | 428M | client_projects/0132/ |
-| 0154 TVO | 24G | client_projects/0154-TVO/ |
-| 0159 Anchor FEA | 276M | client_projects/0159-Anchor-FEA/ |
-| 0162-001 | 455M | client_projects/0162-001/ |
-| 0163-FDAS | 4.9G | client_projects/0163-FDAS/ |
-| 0182 | 8.3G | client_projects/0182/ |
-| 0190 | 66M | client_projects/0190/ |
-| 0198 | 49G | client_projects/0198/ |
-| Sewol | 128G | client_projects/Sewol/ |
-| 0000 Completed | 13G | client_projects/0000-Completed/ |
+| 0111 RII | 2.8G | client-c/0111-RII/ |
+| 0112 CN Adapter | 6.3M | client-c/0112-CN-Adapter/ |
+| 0116 Thinwall Pipe FEA | 15G | client-c/0116-Thinwall-Pipe-FEA/ |
+| 0119 Programming | 26M | client-c/0119-Programming/ |
+| 0127 Mooring | 9.8M | client-c/0127-Mooring/ |
+| 0132 | 428M | client-c/0132/ |
+| 0154 TVO | 24G | client-c/0154-TVO/ |
+| 0159 Anchor FEA | 276M | client-c/0159-Anchor-FEA/ |
+| 0162-001 | 455M | client-c/0162-001/ |
+| 0163-FDAS | 4.9G | client-c/0163-FDAS/ |
+| 0182 | 8.3G | client-c/0182/ |
+| 0190 | 66M | client-c/0190/ |
+| 0198 | 49G | client-c/0198/ |
+| Sewol | 128G | client-c/Sewol/ |
+| 0000 Completed | 13G | client-c/0000-Completed/ |
 
 ### Category 2: Conference Literature → `/mnt/ace/docs/conferences/`
 
@@ -72,7 +72,7 @@ Inventory all folders/files in `/mnt/remote/ace-linux-2/local-analysis` (excludi
 | System Volume Information | 1008K | Windows system artifact |
 | DumpStack.log.tmp | 8K | Windows dump log |
 | msdia80.dll | 905K | Visual Studio artifact |
-| acma_wood.ps1 | 1K | Orphaned script |
+| mkt-a_wood.ps1 | 1K | Orphaned script |
 | Dropbox | 8K | Empty directory |
 | OneDrive | symlink | Broken symlink |
 | Son_Server2 | 4.5M | Legacy server files |

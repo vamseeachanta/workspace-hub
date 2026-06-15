@@ -349,7 +349,7 @@ Alternatively (lower-effort): the dispatcher writes a *copy* of `lane-state.md` 
 
 - Did NOT mutate GitHub (no `gh issue edit`, comment, label, close, PR, merge).
 - Did NOT create or edit `.planning/plan-approved/*` markers.
-- Did NOT touch `digitalmodel/`, `assethold/`, `worldenergydata/`, `frontierdeepwater/`, `ai-orchestrator-template/` sub-repos.
+- Did NOT touch `digitalmodel/`, `assethold/`, `worldenergydata/`, `client-a/`, `ai-orchestrator-template/` sub-repos.
 - Did NOT execute `scripts/review/plan-review-fanout.sh`, `codex exec`, `gemini`, or `hermes` (state-mutating).
 - Did NOT register, modify, or remove any cronjob.
 - Did NOT implement any code, run any tests, or commit anything.

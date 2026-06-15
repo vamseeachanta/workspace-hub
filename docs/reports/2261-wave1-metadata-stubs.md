@@ -23,7 +23,7 @@ Each stub below is a candidate wiki entry. Fields:
 - **year**: Publication year (from PDF metadata or filename, if visible)
 - **pages**: Page count from PDF metadata
 - **encrypted**: Whether the PDF is DRM-protected
-- **local_doc_path**: Source file path on `/mnt/ace/acma-codes/`
+- **local_doc_path**: Source file path on `/mnt/ace/mkt-a-codes/`
 - **fragments**: Files merged into this parent (count)
 - **status**: `blocked-metadata-only` (all stubs)
 - **confidence**: `low` (all stubs)
@@ -246,7 +246,7 @@ What is known (metadata-only)
 - Page orientation: landscape (792 x 612 pts, rotated 270 degrees).
 
 Prior coverage
-- Previously stubbed in #2227 interim artifacts (docs/reports/acma-2227-metadata-only-interim.yaml).
+- Previously stubbed in #2227 interim artifacts (docs/reports/mkt-a-2227-metadata-only-interim.yaml).
 - This Wave 1 stub extends that coverage with full directory-context inventory.
 
 Blocker

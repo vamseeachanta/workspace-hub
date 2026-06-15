@@ -1,11 +1,11 @@
-You are working in vamseeachanta/workspace-hub. Follow AGENTS.md hard gates. Do not self-apply status:plan-approved. TDD is mandatory for implementation. Re-check live GitHub issue labels/comments before action. Preserve unrelated dirty changes. Use uv run for Python. Post durable GitHub issue comments with evidence. Never expose credentials. User update: llm-wiki is now private; ACMA/client data can be stored more fully with key-information abstractions and lesser restrictions than public-wiki routing. For destructive filesystem/data operations, stop at dry-run evidence unless the exact destructive action is explicitly authorized in an approved plan.
+You are working in vamseeachanta/workspace-hub. Follow AGENTS.md hard gates. Do not self-apply status:plan-approved. TDD is mandatory for implementation. Re-check live GitHub issue labels/comments before action. Preserve unrelated dirty changes. Use uv run for Python. Post durable GitHub issue comments with evidence. Never expose credentials. User update: llm-wiki is now private; mkt-a/client data can be stored more fully with key-information abstractions and lesser restrictions than public-wiki routing. For destructive filesystem/data operations, stop at dry-run evidence unless the exact destructive action is explicitly authorized in an approved plan.
 
-TASK: Execute approved issue #2745: "feat(acma): freeze acma-projects and move to local-only archive posture".
+TASK: Execute approved issue #2745: "feat(mkt-a): freeze mkt-a and move to local-only archive posture".
 
 Scope:
 - Worktree: /mnt/local-analysis/agent-worktrees/workspace-hub-issue-2745-data-freeze-codex
 - Branch: agent/issue-2745-data-freeze-codex
-- Plan artifact: docs/plans/2026-05-20-issue-2745-acma-projects-freeze.md
+- Plan artifact: docs/plans/2026-05-20-issue-2745-mkt-a-freeze.md
 - GitHub issue: https://github.com/vamseeachanta/workspace-hub/issues/2745
 
 Required workflow:

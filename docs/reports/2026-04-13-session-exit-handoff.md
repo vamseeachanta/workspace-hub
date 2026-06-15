@@ -6,7 +6,7 @@
 - Issue: https://github.com/vamseeachanta/workspace-hub/issues/2245
 - Outcome: blocker-reporting completion; #2227 remains blocked on readable source access
 
-2. ACMA metadata-only issue tree created
+2. mkt-a metadata-only issue tree created
 - Parent: #2260
 - Wave 1: #2261
 - Wave 2: #2262
@@ -35,11 +35,11 @@
 
 1. #2278
 - https://github.com/vamseeachanta/workspace-hub/issues/2278
-- chore(acma-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave
+- chore(mkt-a-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave
 
 2. #2279
 - https://github.com/vamseeachanta/workspace-hub/issues/2279
-- chore(acma-codes): codify support-artifact defer/reject policy for metadata-only sweep waves
+- chore(mkt-a-codes): codify support-artifact defer/reject policy for metadata-only sweep waves
 
 ## Current in-progress state
 
@@ -53,7 +53,7 @@ Wave 3 is still running in tmux.
   - comments to #2263 and #2260 not yet confirmed posted at last check
 
 ## Active tmux sessions
-- claude-acma-tree
+- claude-mkt-a-tree
 - claude-wave1-exec
 - claude-wave2
 - claude-wave3
@@ -82,5 +82,5 @@ Wave 3 is still running in tmux.
 
 ## Notes
 - #2227 remains blocked on source-text availability and authorized readable access
-- strict ACMA LLM-wiki-friendly count remains 0 under the current source-text-grounded contract
+- strict mkt-a LLM-wiki-friendly count remains 0 under the current source-text-grounded contract
 - metadata-only sweep program is the active fallback path

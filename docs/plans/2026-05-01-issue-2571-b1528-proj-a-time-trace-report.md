@@ -1,4 +1,4 @@
-# Plan for #2571: B1528 SIROCCO time-trace benchmark report with rudder inflow feedback
+# Plan for #2571: B1528 proj-a time-trace benchmark report with rudder inflow feedback
 
 > **Status:** completed
 > **Complexity:** T3
@@ -23,17 +23,17 @@
 | IMO turning-circle metrics | terminology only | benchmark naming; no compliance/pass-fail claim |
 
 ### LLM Wiki pages consulted
-- `knowledge/wikis/acma-projects/wiki/sources/b1528-sirocco-breakaway-notes.md` — benchmark notes requiring normalization.
-- `knowledge/wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md` — B1528 geometry/inputs.
+- `knowledge/wikis/mkt-a/wiki/sources/b1528-proj-a-breakaway-notes.md` — benchmark notes requiring normalization.
+- `knowledge/wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md` — B1528 geometry/inputs.
 - `knowledge/wikis/naval-architecture/wiki/concepts/maneuvering-validation-metrics.md` — turning-circle/tactical-diameter context.
 - `knowledge/wikis/naval-architecture/wiki/concepts/maneuvering-coordinate-conventions.md` — coordinate/sign convention basis.
 
 ### Documents consulted
 
-- `B1528/excel_to_py/Rudder Force & Yaw Moments.xlsx` — workbook contains `Rudder Area and Geometry`, `Rudder Force`, `Yaw Moment` sheets. Extracted B1528 SIROCCO values include LBP `225.5 m`, rudder area `44.9395631937 m²`, rudder center aft of AP `-1.0520261379 m`, legacy yaw lever `0.6 * LBP = 135.3 m`, `β = 600`, and `Cr = 1.065/0.935`.
+- `B1528/excel_to_py/Rudder Force & Yaw Moments.xlsx` — workbook contains `Rudder Area and Geometry`, `Rudder Force`, `Yaw Moment` sheets. Extracted B1528 proj-a values include LBP `225.5 m`, rudder area `44.9395631937 m²`, rudder center aft of AP `-1.0520261379 m`, legacy yaw lever `0.6 * LBP = 135.3 m`, `β = 600`, and `Cr = 1.065/0.935`.
 - `B1528/excel_to_py/rudder_force_yaw_moment.py` — converted workbook script exposes the legacy calculation family but hardcodes formulas and does not provide a reusable input/report workflow.
-- `B1528/ref/SIROCCO breakaway notes.docx` — contains narrative heading/speed/time anchors and a turning/track benchmark, but evidence must be normalized before numerical comparison.
-- `knowledge/wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md` — newly created pre-work wiki page documenting extracted B1528 inputs and calculation boundaries.
+- `B1528/ref/proj-a breakaway notes.docx` — contains narrative heading/speed/time anchors and a turning/track benchmark, but evidence must be normalized before numerical comparison.
+- `knowledge/wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md` — newly created pre-work wiki page documenting extracted B1528 inputs and calculation boundaries.
 - `knowledge/wikis/naval-architecture/wiki/concepts/maneuvering-coordinate-conventions.md` — sign/coordinate convention background from prior yaw-moment work.
 - #2564 — completed reusable yaw-moment sweep workflow for typical-ship/rudder cases.
 - #2568 — approved/planned preliminary turning-circle/tactical-diameter estimator workflow.
@@ -42,7 +42,7 @@
 ### Gaps identified
 - Need a bounded time integrator that computes yaw rate, heading, x/y trace, and local rudder inflow feedback.
 - Need calibration/assumption fields for Nomoto `K` and `T` or a documented source-gap/sensitivity-mode if project-specific coefficients are unavailable; no benchmark calibration may be invented.
-- Need benchmark overlay against SIROCCO turning/track evidence, but only where evidence is quantitative enough.
+- Need benchmark overlay against proj-a turning/track evidence, but only where evidence is quantitative enough.
 - Need interactive time-history charts and clear limitations against full MMG/incident reconstruction.
 
 ### Evidence (embedded verification)
@@ -69,17 +69,17 @@ y_dot = U * sin(psi)
 ## Artifact Map
 | Artifact | Path |
 |---|---|
-| This plan | docs/plans/2026-05-01-issue-2571-b1528-sirocco-time-trace-report.md |
-| Tests | digitalmodel/tests/naval_architecture/test_b1528_sirocco_time_trace.py |
-| Input YAML | digitalmodel/src/digitalmodel/naval_architecture/data/b1528_sirocco_time_trace.yml |
-| Time-trace module/wrapper | digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_time_trace.py |
-| Report docs | digitalmodel/docs/domains/marine-engineering/b1528-sirocco-time-trace-report.md |
-| Interactive output | digitalmodel/outputs/b1528_sirocco/time_trace_report.html |
+| This plan | docs/plans/2026-05-01-issue-2571-b1528-proj-a-time-trace-report.md |
+| Tests | digitalmodel/tests/naval_architecture/test_b1528_proj-a_time_trace.py |
+| Input YAML | digitalmodel/src/digitalmodel/naval_architecture/data/b1528_proj-a_time_trace.yml |
+| Time-trace module/wrapper | digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_time_trace.py |
+| Report docs | digitalmodel/docs/domains/marine-engineering/b1528-proj-a-time-trace-report.md |
+| Interactive output | digitalmodel/outputs/b1528_proj-a/time_trace_report.html |
 
 ---
 
 ## Deliverable
-A B1528 SIROCCO preliminary time-trace calculation/report with rudder-local inflow feedback, benchmark comparison, and interactive charts.
+A B1528 proj-a preliminary time-trace calculation/report with rudder-local inflow feedback, benchmark comparison, and interactive charts.
 
 ---
 
@@ -106,11 +106,11 @@ render interactive charts and benchmark overlay where data permits
 ## Files to Change
 | Action | Path | Reason |
 |---|---|---|
-| Create | digitalmodel/tests/naval_architecture/test_b1528_sirocco_time_trace.py | TDD for dynamic method/report |
-| Create | digitalmodel/src/digitalmodel/naval_architecture/data/b1528_sirocco_time_trace.yml | B1528 dynamic input file |
-| Create | digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_time_trace.py | project wrapper or method extension |
+| Create | digitalmodel/tests/naval_architecture/test_b1528_proj-a_time_trace.py | TDD for dynamic method/report |
+| Create | digitalmodel/src/digitalmodel/naval_architecture/data/b1528_proj-a_time_trace.yml | B1528 dynamic input file |
+| Create | digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_time_trace.py | project wrapper or method extension |
 | Update | digitalmodel/src/digitalmodel/naval_architecture/__init__.py | export if reusable public API is added |
-| Create | digitalmodel/docs/domains/marine-engineering/b1528-sirocco-time-trace-report.md | detailed report |
+| Create | digitalmodel/docs/domains/marine-engineering/b1528-proj-a-time-trace-report.md | detailed report |
 | Update | docs/plans/README.md | plan index |
 
 ---
@@ -131,11 +131,11 @@ render interactive charts and benchmark overlay where data permits
 ## Acceptance Criteria
 - [ ] HARD STOP: after this plan reaches `status:plan-review`, wait for explicit user approval / `status:plan-approved` before implementation.
 - [ ] #2568 method is available/approved and #2569 source-pack evidence is available before B1528 benchmark claims are made.
-- [ ] Tests are written before implementation and pass with `UV_NO_SYNC=1 uv run pytest tests/naval_architecture/test_b1528_sirocco_time_trace.py -q`.
+- [ ] Tests are written before implementation and pass with `UV_NO_SYNC=1 uv run pytest tests/naval_architecture/test_b1528_proj-a_time_trace.py -q`.
 - [ ] The numerical method is explicitly documented, including state variables, units, integrator choice, and timestep-sensitivity check.
 - [ ] Outputs include heading, yaw rate, x/y trajectory, rudder-local inflow angle, effective rudder angle, local rudder speed, force, and yaw moment.
 - [ ] Interactive charts include trajectory, heading vs time, yaw rate vs time, effective rudder angle vs time, yaw moment vs time, and benchmark overlay or source-gap panel.
-- [ ] Benchmark section compares against extracted SIROCCO evidence with caveats and uncertainty notes; if evidence is narrative-only, report source-gap/sensitivity results rather than overlaying fabricated points.
+- [ ] Benchmark section compares against extracted proj-a evidence with caveats and uncertainty notes; if evidence is narrative-only, report source-gap/sensitivity results rather than overlaying fabricated points.
 - [ ] Report clearly states preliminary first-order model boundary; no full MMG, compliance, or incident-reconstruction claim.
 
 ---
@@ -177,12 +177,12 @@ Completed 2026-05-01.
 
 Delivered in `vamseeachanta/digitalmodel`:
 
-- `src/digitalmodel/naval_architecture/b1528_sirocco_time_trace.py`
-- `src/digitalmodel/naval_architecture/data/b1528_sirocco_time_trace.yml`
-- `tests/naval_architecture/test_b1528_sirocco_time_trace.py`
-- `docs/domains/marine-engineering/b1528-sirocco-time-trace-report.md`
-- `outputs/b1528_sirocco/time_trace/b1528_sirocco_time_trace_report.html`
-- CSV/JSON/provenance/manifest outputs under `outputs/b1528_sirocco/time_trace/`
+- `src/digitalmodel/naval_architecture/b1528_proj-a_time_trace.py`
+- `src/digitalmodel/naval_architecture/data/b1528_proj-a_time_trace.yml`
+- `tests/naval_architecture/test_b1528_proj-a_time_trace.py`
+- `docs/domains/marine-engineering/b1528-proj-a-time-trace-report.md`
+- `outputs/b1528_proj-a/time_trace/b1528_proj-a_time_trace_report.html`
+- CSV/JSON/provenance/manifest outputs under `outputs/b1528_proj-a/time_trace/`
 - `scripts/review/results/2026-05-01-implementation-2571-hermes.md`
 
 Validation:

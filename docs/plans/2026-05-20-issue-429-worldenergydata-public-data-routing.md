@@ -30,7 +30,7 @@
 
 ### LLM Wiki pages consulted
 - Source: `/mnt/local-analysis/workspace-hub/.claude/rules/codes-standards-data-routing.md` §6 — *"genuinely public-domain or open-license ... may stay in a public sibling wiki if desired"* — the explicit open decision this plan resolves.
-- Wiki ecosystem inventory: `vamseeachanta/llm-wiki` (PRIVATE, 2026-05-20 flip), `vamseeachanta/llm-wiki-acma` (PRIVATE, client-scoped). No public sibling wiki exists.
+- Wiki ecosystem inventory: `vamseeachanta/llm-wiki` (PRIVATE, 2026-05-20 flip), `vamseeachanta/llm-wiki-mkt-a` (PRIVATE, client-scoped). No public sibling wiki exists.
 
 ### Documents consulted
 - `docs/governance/2026-05-14-service-provider-data-routing-and-bsee-ingest-design.md` — D1 matrix row 5: *"Public classification-society / regulator records → Public llm-wiki entity/standards page"*. **Stale relative to 2026-05-20 privacy flip** — the "Public llm-wiki" row now points at a private wiki, which is exactly the conflict this plan resolves.
@@ -62,7 +62,7 @@
 ```
 worldenergydata     PUBLIC
 llm-wiki            PRIVATE   (flipped 2026-05-20 21:30 CT)
-llm-wiki-acma       PRIVATE
+llm-wiki-mkt-a       PRIVATE
 digitalmodel        PUBLIC
 assetutilities      PUBLIC
 aceengineercode     PUBLIC
@@ -262,14 +262,14 @@ Considered. Rejected because: (i) `worldenergydata` is a Python library; mixing 
 - **Risk:** Two-wiki maintenance discipline. Mitigation: cross-link discipline documented in governance doc; `worldenergydata-wiki` index pages explicitly state "for vendor-licensed standards content, see private llm-wiki" with non-link prose (avoids 404 for external readers, per `codes-standards-data-routing.md §5` precedent).
 - **Resolved (user, 2026-05-20):** structure = **regular repo with `wiki/` directory** (not GitHub's built-in Wiki). Matches `llm-wiki` pattern, supports PR review, supports CI, supports `gh issue` cross-references.
 - **Resolved (user, 2026-05-20):** repo name = **`vamseeachanta/worldenergydata-wiki`**. Mirrors the consumer-library name `worldenergydata`; discoverable via `gh repo list vamseeachanta` adjacency to the existing public library.
-- **Open:** Should llm-wiki-acma (client-scoped private) inherit a similar public sibling pattern for client deliverables? Out of scope here; file follow-on.
+- **Open:** Should llm-wiki-mkt-a (client-scoped private) inherit a similar public sibling pattern for client deliverables? Out of scope here; file follow-on.
 
 ---
 
 ## Out of Scope
 
 - Vendor-licensed standards routing — settled in `.claude/rules/codes-standards-data-routing.md` §1-5 (private llm-wiki).
-- Client-project content (B1528, SIROCCO, acma-projects) — separate epic under client-engagement issues.
+- Client-project content (B1528, proj-a, mkt-a) — separate epic under client-engagement issues.
 - Re-scraping data already captured — existing `/mnt/ace/` snapshots remain canonical raw source.
 - Pipeline rate-limit / scraper-reliability work — separate issue class.
 - License-drift detection cron script — flagged as follow-on, not built here.

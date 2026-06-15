@@ -23,14 +23,14 @@ Primary issue:
 - `#2225` https://github.com/vamseeachanta/workspace-hub/issues/2225
 
 Approved plan:
-- `docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md`
+- `docs/plans/2026-04-11-issue-2225-mkt-a-codes-source-registration-and-initial-indexing.md`
 
 Review artifacts:
 - `scripts/review/results/2026-04-11-plan-2225-claude.md`
 - `scripts/review/results/2026-04-11-plan-2225-final.md`
 
 Authoritative supporting docs to follow, not redefine:
-- `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md`
+- `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md`
 - `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md`
 - `docs/document-intelligence/standards-codes-provenance-reuse-contract.md`
 - `data/document-index/mounted-source-registry.yaml`
@@ -53,8 +53,8 @@ Optional owned path only if truly necessary and directly tied to deliverable evi
 - a small generated report file under `docs/reports/` or `docs/document-intelligence/` is NOT owned by this issue unless absolutely necessary; prefer GitHub comment summary instead
 
 Read-only context paths:
-- `docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md`
-- `/mnt/ace/acma-codes/**`
+- `docs/plans/2026-04-11-issue-2225-mkt-a-codes-source-registration-and-initial-indexing.md`
+- `/mnt/ace/mkt-a-codes/**`
 - `data/document-index/index.jsonl`
 - `data/document-index/standards-transfer-ledger.yaml`
 - `scripts/review/results/2026-04-11-plan-2225-*.md`
@@ -74,13 +74,13 @@ Implement the approved #2225 plan fully and safely.
 
 Required implementation outcomes:
 1. Update `data/document-index/mounted-source-registry.yaml`
-   - add source entry for `/mnt/ace/acma-codes`
+   - add source entry for `/mnt/ace/mkt-a-codes`
    - include clear staging/dedup guidance consistent with the approved plan
 2. Update `scripts/data/document-index/config.yaml`
-   - add `acma_codes` source entry under `sources:`
-   - add `acma_codes` to source priority appropriately
+   - add `mkt-a_codes` source entry under `sources:`
+   - add `mkt-a_codes` to source priority appropriately
    - add/confirm exclusion patterns for obvious junk artifacts like `Thumbs.db` and `desktop.ini`
-3. Perform a live inventory check of `/mnt/ace/acma-codes`
+3. Perform a live inventory check of `/mnt/ace/mkt-a-codes`
    - verify top-level families and note any material deviations from the plan
 4. Run the appropriate Phase A indexing path for the new source if safe and feasible in this environment
    - if full indexing is too heavy for this run, do the smallest safe bounded run that still proves the source wiring is correct, and report exactly what was done
@@ -105,14 +105,14 @@ Required verification before commit:
 - confirm new mounted source entry exists
 - confirm new config source entry exists
 - confirm junk exclusion rules cover obvious system artifacts
-- confirm live `/mnt/ace/acma-codes` inspection was performed and summarized
+- confirm live `/mnt/ace/mkt-a-codes` inspection was performed and summarized
 - confirm any indexing command actually executed is reported accurately
 - confirm no forbidden paths were modified
 
 Git discipline:
 - Stage only the owned paths explicitly by path.
 - Commit message:
-  - `feat(acma-codes): register source and configure initial indexing for #2225`
+  - `feat(mkt-a-codes): register source and configure initial indexing for #2225`
 - After commit, push to `origin main`.
 
 GitHub closeout:

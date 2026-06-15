@@ -6,14 +6,14 @@
 - Verified these issues are approved on GitHub and have local approval markers under `.planning/plan-approved/`:
   - `#2055` — feat(field-dev): subsea cost benchmarking from SubseaIQ equipment counts
   - `#1962` — FEATURE: Tier-1 Repo Ecosystem Refactoring — audit, plan, execute with Claude Code plan mode
-  - `#2245` — feat(doc-intel): prepare summary/classification artifacts to unblock bounded ACMA wiki promotion
+  - `#2245` — feat(doc-intel): prepare summary/classification artifacts to unblock bounded mkt-a wiki promotion
   - `#2247` — feat(doc-intel): add bounded authoritative domain writeback for targeted classification runs
   - `#2246` — fix(doc-intel): normalize summary-artifact identity between Phase B and Phase C
-  - `#2227` — feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis
+  - `#2227` — feat(mkt-a-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis
   - `#2241` — feat(llm-wiki): staged web-sweep and production-readiness program for external-source strengthening
   - `#2243` — chore(llm-wiki): define token-efficient staged batch packs for broad wiki strengthening
   - `#2242` — feat(llm-wiki): prioritize external-source queue for token-efficient wiki strengthening
-  - `#2244` — feat(acma-codes): triage newly discovered CSA/API breadth beyond current wiki-promotion scope
+  - `#2244` — feat(mkt-a-codes): triage newly discovered CSA/API breadth beyond current wiki-promotion scope
 - Cleaned contradictory status on `#2055` by removing stale `status:plan-review` after confirming `status:plan-approved` existed.
 
 ### Future GitHub issues created

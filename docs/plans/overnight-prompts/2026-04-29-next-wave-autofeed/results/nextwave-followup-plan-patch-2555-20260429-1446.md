@@ -67,7 +67,7 @@ Sibling lanes #2556 (brochure-send) and #2557 (productivity review) stay paused 
 | Wave guardrail | Compliance |
 |---|---|
 | Workspace = `/mnt/local-analysis/workspace-hub`; no ace-linux-2 dispatch | OK — all work local; no remote invocation |
-| Planning/review/synthesis only; no production-code changes outside the named plan file | OK — only `docs/plans/2026-04-29-issue-2555-vessel-capability-charts.md` edited (planning artifact); no edits to `digitalmodel/`, `assethold/`, `worldenergydata/`, `frontierdeepwater/`, `ai-orchestrator-template/`, or any subrepo |
+| Planning/review/synthesis only; no production-code changes outside the named plan file | OK — only `docs/plans/2026-04-29-issue-2555-vessel-capability-charts.md` edited (planning artifact); no edits to `digitalmodel/`, `assethold/`, `worldenergydata/`, `client-a/`, `ai-orchestrator-template/`, or any subrepo |
 | No outreach drafted/sent | OK — no outreach drafts touched, no recruiter/contractor email, no external publishing |
 | No private contact details exposed; no secrets printed | OK — no contact-detail or secret content in this artifact |
 | No GitHub mutations: no `gh issue edit/comment/close`, no `gh pr ...` | OK — only `gh issue view --json state,labels,updatedAt` (read-only) executed |
@@ -75,7 +75,7 @@ Sibling lanes #2556 (brochure-send) and #2557 (productivity review) stay paused 
 | No `status:plan-approved` applied | OK — label not changed; user-in-loop gate preserved |
 | No `.planning/plan-approved/*` markers created/edited | OK — no files touched under `.planning/plan-approved/` |
 | No `scripts/review/plan-review-fanout.sh`, `codex`, `gemini`, or mutating Hermes commands run | OK — none invoked; permission scope of this lane prevents fanout dispatch |
-| No edits to `digitalmodel/`, `assethold/`, `worldenergydata/`, `frontierdeepwater/`, `ai-orchestrator-template/` | OK — verified by edit set |
+| No edits to `digitalmodel/`, `assethold/`, `worldenergydata/`, `client-a/`, `ai-orchestrator-template/` | OK — verified by edit set |
 | Storyboard / report files NOT edited | OK — storyboard at `docs/reports/gtm/2026-04-29-vessel-capability-chart-storyboard.md` was read but not modified; finding 5's enforcement was added at plan-AC level only |
 | Result artifact written to the exact specified path | OK — `docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2555-20260429-1446.md` |
 | Single primary result artifact | OK — one file written by this lane |

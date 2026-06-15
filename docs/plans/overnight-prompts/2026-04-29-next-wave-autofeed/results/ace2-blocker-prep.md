@@ -269,17 +269,17 @@ Out of scope: implementing the ledger script; promoting any issue; touching wiki
 
 **Live state (verified 2026-04-29T14:31Z):** OPEN · `status:plan-approved` · `priority:medium` · `cat:data-pipeline` · `domain:marine` + `domain:knowledge-management`
 **Classification:** **A — Execution-readiness**
-**Why this is the blocker:** Live label is `status:plan-approved`, so the plan exists and was user-approved. ace-linux-2 could not locate the plan path within budget (NFS Glob timeouts on `**/*sesa*`). The execution-readiness blockers are all environmental: (a) read access to `/mnt/ace/doris/62092_sesa` from the executing machine, (b) the `#2534` retention boundary, (c) the bound on extraction tranche size (≤20 artifacts), and (d) the raw-data policy: NO raw files copied into git/wiki.
+**Why this is the blocker:** Live label is `status:plan-approved`, so the plan exists and was user-approved. ace-linux-2 could not locate the plan path within budget (NFS Glob timeouts on `**/*sesa*`). The execution-readiness blockers are all environmental: (a) read access to `/mnt/ace/lng-a/62092_sesa` from the executing machine, (b) the `#2534` retention boundary, (c) the bound on extraction tranche size (≤20 artifacts), and (d) the raw-data policy: NO raw files copied into git/wiki.
 **Files to inspect (next-lane must rediscover plan path):**
 - Plan file (path unverified): expected naming `docs/plans/2026-04-2*-issue-2541-elements-sesa-curated-extraction-plan.md`. Confirm via `gh issue view 2541 --comments` (the plan filename is usually pasted into a status-change comment).
 - `.planning/intel/elements-overnight-wave/sesa-candidate-dossier.md` — candidate dossier from the plan's deliverables list.
 - `.planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv` — the candidate queue.
-- `/mnt/ace/doris/62092_sesa` — raw corpus (read-only access required).
+- `/mnt/ace/lng-a/62092_sesa` — raw corpus (read-only access required).
 - Sibling closed issues: #2535 (metadata indexing), #2536 (first-pass extraction).
 **Acceptance criteria for next-lane:**
 - [ ] Plan path located and confirmed before any extraction begins.
 - [ ] Local approval marker for #2541 located (or escalation).
-- [ ] Read access to `/mnt/ace/doris/62092_sesa` confirmed on the execution machine.
+- [ ] Read access to `/mnt/ace/lng-a/62092_sesa` confirmed on the execution machine.
 - [ ] Extraction tranche bounded to ≤20 artifacts as specified in the issue body.
 - [ ] Each extracted artifact has source path, byte size, rationale, extraction method, target wiki page recorded.
 - [ ] Zero raw files copied into git/wiki/raw folders.
@@ -288,20 +288,20 @@ Out of scope: implementing the ledger script; promoting any issue; touching wiki
 **Next-lane prompt (Category A · execution-readiness, ace-1 only — NFS access):**
 
 ```
-You are picking up #2541 (SESA LNG curated extraction), live status:plan-approved. Run on ace-linux-1 only — ace-linux-2 cannot reliably reach `/mnt/ace/doris/62092_sesa` per current Glob timeouts.
+You are picking up #2541 (SESA LNG curated extraction), live status:plan-approved. Run on ace-linux-1 only — ace-linux-2 cannot reliably reach `/mnt/ace/lng-a/62092_sesa` per current Glob timeouts.
 
 Pre-execution checklist:
 1. `gh issue view 2541 --comments` — find the plan filename pasted in the status-change comment. Also check `ls docs/plans/2026-04-2*-issue-2541-*` and `ls docs/plans/2026-04-2*-elements-sesa-*`.
 2. Read the plan in full.
 3. Confirm local approval marker for #2541. If absent, escalate.
-4. `ls /mnt/ace/doris/62092_sesa` — confirm read access from the execution machine. If permission-denied, escalate before any extraction code runs.
+4. `ls /mnt/ace/lng-a/62092_sesa` — confirm read access from the execution machine. If permission-denied, escalate before any extraction code runs.
 5. Read `.planning/intel/elements-overnight-wave/sesa-candidate-dossier.md` and `.planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv` to ground the tranche selection in what was approved.
 
 Hard guardrails (any violation = stop):
 - Tranche bounded to ≤20 artifacts. Do not silently expand.
 - Zero raw files copied into git/wiki/raw folders. Extracted *content* may be summarized into wiki pages; raw binaries stay on `/mnt/ace`.
-- `#2534` retention boundary held. `/mnt/ace/doris/62092_sesa` is read-only — confirm by mounting check before any write attempt.
-- No additional ACMA/client confidentiality content is extracted unless the plan explicitly approved that file.
+- `#2534` retention boundary held. `/mnt/ace/lng-a/62092_sesa` is read-only — confirm by mounting check before any write attempt.
+- No additional mkt-a/client confidentiality content is extracted unless the plan explicitly approved that file.
 
 Acceptance:
 - Each extracted artifact lands at its planned wiki target page with provenance recorded.
@@ -319,15 +319,15 @@ Acceptance:
 **Files to inspect (next-lane must rediscover plan path):**
 - Plan file (path unverified): expected naming `docs/plans/2026-04-2*-issue-2544-elements-woodfibre-scout-plan.md`. Confirm via `gh issue view 2544 --comments`.
 - `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md` — scout dossier from the plan's deliverables list.
-- `/mnt/ace/acma-projects/31522-woodfibre-lng` — raw corpus (read-only access required).
+- `/mnt/ace/mkt-a/31522-woodfibre-lng` — raw corpus (read-only access required).
 - Sibling closed issues: #2535, #2536.
 **Acceptance criteria for next-lane:**
 - [ ] Plan path located.
 - [ ] Local approval marker for #2544 located (or escalation).
-- [ ] Read access to `/mnt/ace/acma-projects/31522-woodfibre-lng` confirmed.
+- [ ] Read access to `/mnt/ace/mkt-a/31522-woodfibre-lng` confirmed.
 - [ ] Scout works from `find -type f -printf` style metadata, NOT from opening/extracting large binaries.
 - [ ] Candidate tranche bounded to ≤15 artifacts.
-- [ ] Tranche includes explicit ACMA/client confidentiality flag per artifact.
+- [ ] Tranche includes explicit mkt-a/client confidentiality flag per artifact.
 - [ ] Zero raw files copied into git/wiki/raw folders.
 - [ ] `#2534` retention boundary held; corpus path unchanged.
 
@@ -340,16 +340,16 @@ Pre-execution checklist:
 1. `gh issue view 2544 --comments` — find the plan filename. Also `ls docs/plans/2026-04-2*-issue-2544-*` and `ls docs/plans/2026-04-2*-elements-woodfibre-*`.
 2. Read the plan in full.
 3. Confirm local approval marker for #2544. If absent, escalate.
-4. `ls /mnt/ace/acma-projects/31522-woodfibre-lng` — confirm read access. Run `du -sh` once to confirm the ~1.879 TB figure; do NOT recursively `ls` the entire tree.
+4. `ls /mnt/ace/mkt-a/31522-woodfibre-lng` — confirm read access. Run `du -sh` once to confirm the ~1.879 TB figure; do NOT recursively `ls` the entire tree.
 5. Read `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md` if it exists; if not, you are likely the agent creating it.
 
 Hard guardrails (any violation = stop):
 - Scout MUST work from path + file metadata only. Never `cat` or text-extract a large binary unless the plan explicitly approved that artifact.
 - Tranche bounded to ≤15 artifacts.
-- Each candidate has: path, size, type, rationale, extraction method, expected wiki target, ACMA/client confidentiality flag.
+- Each candidate has: path, size, type, rationale, extraction method, expected wiki target, mkt-a/client confidentiality flag.
 - Zero raw files copied into git/wiki/raw folders.
-- `/mnt/ace/acma-projects/31522-woodfibre-lng` is read-only — confirm via mount check.
-- If the plan flagged "additional ACMA/client confidentiality review needed before extraction," DO NOT extract; only scout. Surface the gate to the user.
+- `/mnt/ace/mkt-a/31522-woodfibre-lng` is read-only — confirm via mount check.
+- If the plan flagged "additional mkt-a/client confidentiality review needed before extraction," DO NOT extract; only scout. Surface the gate to the user.
 
 Acceptance:
 - Scout dossier landed at `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md`.
@@ -370,8 +370,8 @@ Out of scope: extraction itself; that is a follow-up issue created from this sco
 | 2474 | B · review fanout | **ace-1 only** (`machine:dev-primary`) | trio fanout script available | plan can't reach plan-review |
 | 2378 | C · triage | either | r0 trio readable | high-blast-radius decisions deferred |
 | 2370 | D · plan draft | either | template available | issue can't move at all |
-| 2541 | A · execution | **ace-1 only** (NFS) | `/mnt/ace/doris/62092_sesa` access; plan path located | retention-boundary breach |
-| 2544 | A · execution | **ace-1 only** (NFS, size) | `/mnt/ace/acma-projects/31522-woodfibre-lng` access; plan path located | confidentiality breach |
+| 2541 | A · execution | **ace-1 only** (NFS) | `/mnt/ace/lng-a/62092_sesa` access; plan path located | retention-boundary breach |
+| 2544 | A · execution | **ace-1 only** (NFS, size) | `/mnt/ace/mkt-a/31522-woodfibre-lng` access; plan path located | confidentiality breach |
 
 **Net effect** (if all 7 lanes complete): 4 issues advance approved → executed; 1 advances drafted → reviewed; 1 advances reviewed → revised; 1 advances issue body → drafted. Total: 7 issues unblocked, 4 ready for closure, 3 newly review-ready.
 

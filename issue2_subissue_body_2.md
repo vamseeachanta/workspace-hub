@@ -1,7 +1,7 @@
 Parent: #2
 
 ## Objective
-Create a small, approved, cited knowledge pack from the `llm-wiki-acma` repo ecosystem for the first Oil & Gas Q&A POC.
+Create a small, approved, cited knowledge pack from the `llm-wiki-mkt-a` repo ecosystem for the first Oil & Gas Q&A POC.
 
 ## Scope
 - Inventory approved Markdown/HTML/report/manifests in the repo.

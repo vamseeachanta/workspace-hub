@@ -16,7 +16,7 @@ Additionally, enforce solver/non-solver module separation in codebase and establ
 ## Implementation Decisions
 
 ### Machine Topology
-- **D-01:** Three-machine architecture: licensed-win-1 (acma-ansys05, OrcaFlex/OrcaWave license), win-2 (ws014, backup/overflow), dev-primary (Linux, orchestration/processing)
+- **D-01:** Three-machine architecture: licensed-win-1 (mkt-a-ansys05, OrcaFlex/OrcaWave license), win-2 (ws014, backup/overflow), dev-primary (Linux, orchestration/processing)
 - **D-02:** dev-primary is the primary processing machine for all non-license work. win-2 is backup/overflow only — not part of the primary pipeline
 - **D-03:** Direct network path exists between licensed-win-1 and win-2
 

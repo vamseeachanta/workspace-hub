@@ -1,4 +1,4 @@
-# Claude agent-team prompt: #2216 /mnt/ace/acma-codes integration planning pack
+# Claude agent-team prompt: #2216 /mnt/ace/mkt-a-codes integration planning pack
 
 Use this prompt as a single self-contained handoff to Claude Code.
 
@@ -19,7 +19,7 @@ Critical repo/workflow constraints:
 - Issue `#2216` is NOT implementation-ready unless live checks prove otherwise.
 - This run is planning-only unless the issue is already fully approved for execution, which is unlikely. Verify live.
 - Do NOT implement ingestion code, registry changes, wiki changes, or pipeline code for `#2216` in this run.
-- Your goal is to produce the planning package for `#2216`, grounded in the real contents of `/mnt/ace/acma-codes`, and move the issue to `status:plan-review` only if the planning package is review-ready.
+- Your goal is to produce the planning package for `#2216`, grounded in the real contents of `/mnt/ace/mkt-a-codes`, and move the issue to `status:plan-review` only if the planning package is review-ready.
 - If a blocking uncertainty remains after review, post a blocker summary and stop without applying `status:plan-review`.
 
 Primary issue:
@@ -36,7 +36,7 @@ Related architecture/issues to consume, not redefine:
 - upstream context: `#1575`, `#1563`, `#2034`
 
 Key real-world source location:
-- `/mnt/ace/acma-codes`
+- `/mnt/ace/mkt-a-codes`
 
 Observed sample contents already known from live inspection:
 - `OCIMF/OCIMF - 2008 - Mooring Equipment Guidelines.pdf`
@@ -61,13 +61,13 @@ Primary repo artifacts to read first:
 - `docs/plans/_template-issue-plan.md`
 
 Allowed write paths for this run:
-- `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md`
+- `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md`
 - `scripts/review/results/2026-04-11-plan-2216-claude.md`
 - `scripts/review/results/2026-04-11-plan-2216-final.md`
 - `docs/plans/README.md`
 
 Read-only paths:
-- `/mnt/ace/acma-codes/**`
+- `/mnt/ace/mkt-a-codes/**`
 - `docs/document-intelligence/**`
 - `data/document-index/**`
 - `data/design-codes/**`
@@ -92,7 +92,7 @@ Git safety rule:
 
 Success condition:
 By the end of this run, the repo should contain a review-ready plan for `#2216` that:
-- inventories and classifies the real contents of `/mnt/ace/acma-codes`
+- inventories and classifies the real contents of `/mnt/ace/mkt-a-codes`
 - states whether the collection is raw-source, derived, mixed, or duplicated corpus material
 - defines how it should enter the intelligence ecosystem without violating #2205/#2207/#2209
 - identifies dedup/provenance requirements against existing registries and corpora
@@ -103,7 +103,7 @@ By the end of this run, the repo should contain a review-ready plan for `#2216` 
 
 Required outputs:
 1. A formal plan file using the repo plan template semantics:
-   - `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md`
+   - `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md`
 2. A Claude review artifact:
    - `scripts/review/results/2026-04-11-plan-2216-claude.md`
 3. A final synthesis / integrator artifact:
@@ -118,7 +118,7 @@ The plan must include these core sections:
 - Standards / registries consulted
 - LLM wiki pages or intelligence docs consulted
 - Documents consulted
-- Real inventory/classification of `/mnt/ace/acma-codes`
+- Real inventory/classification of `/mnt/ace/mkt-a-codes`
 - Gaps identified
 - Artifact map
 - Deliverable
@@ -131,9 +131,9 @@ The plan must include these core sections:
 - Complexity
 
 Specific planning questions to answer from real evidence:
-1. Which standards/code families are present under `/mnt/ace/acma-codes`?
+1. Which standards/code families are present under `/mnt/ace/mkt-a-codes`?
 2. What duplicate or overlap risk likely exists with existing corpora and registries?
-3. Should `/mnt/ace/acma-codes` become:
+3. Should `/mnt/ace/mkt-a-codes` become:
    - a new mounted source,
    - a subset mapped into existing mounted sources,
    - a staging area that must be normalized first,
@@ -150,7 +150,7 @@ Execution steps:
 
 STEP 1 — Live intake and resource intelligence
 - Read `#2216` live from GitHub.
-- Inspect `/mnt/ace/acma-codes` directly.
+- Inspect `/mnt/ace/mkt-a-codes` directly.
 - Build a concise but real inventory by top-level family, file types, and obvious standards domains.
 - Check current repo registries/docs for overlap and likely duplication.
 - Use the parent/sibling architecture docs to constrain the design.
@@ -199,7 +199,7 @@ Final return format in the Claude session:
 6. Residual blockers or risks
 
 Quality bar:
-- Ground every major claim in the real `/mnt/ace/acma-codes` contents or current repo artifacts.
+- Ground every major claim in the real `/mnt/ace/mkt-a-codes` contents or current repo artifacts.
 - Prefer explicit split recommendations over vague “future work.”
 - Do not let planning drift into implementation.
 - Keep the result usable as the next operator-ready implementation dossier.

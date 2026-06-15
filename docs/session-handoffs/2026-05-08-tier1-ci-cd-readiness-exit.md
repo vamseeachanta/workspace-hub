@@ -29,7 +29,7 @@ Session closeout for tier-1 CI/CD readiness and follow-on sync work across:
 
 Latest verified root HEAD:
 
-- `fec1b92a009a` — `docs: finalize Doris GTM exit handoff`
+- `fec1b92a009a` — `docs: finalize lng-a GTM exit handoff`
 
 Relevant preceding commits:
 

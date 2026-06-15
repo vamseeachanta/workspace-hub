@@ -45,7 +45,7 @@ A fourth supporting check (named-list cardinality vs. integer) was added to dete
 |---|---|---|
 | Scaffold per-row grep (AC #6 canonical) | scaffold rows matching `\*\*outreach_priority\.\*\* \*\*High\*\*` | **12** |
 | Scaffold Summary Counts integer | `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` line 453 ("**Targets in `outreach_priority: High`:** 12") | **12** |
-| Scaffold Summary Counts named list | line 453 names: Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura Energy, Helix, Hornbeck Offshore Services, Edison Chouest Offshore | **12** |
+| Scaffold Summary Counts named list | line 453 names: Subsea7, TechnipFMC, client-d, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura Energy, Helix, Hornbeck Offshore Services, Edison Chouest Offshore | **12** |
 | Lane summary primary statement | `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md` line 12 ("**12 High-priority targets** are identified ...") | **12** (12 names listed) |
 | Lane summary recommended-paste block | same file, line 56 ("12 High-priority targets after owner-approved GoM defaults") | **12** |
 
@@ -62,7 +62,7 @@ The 12 High-priority rows in the scaffold body, by target heading:
 
 1. Target 1 — Subsea7
 2. Target 2 — TechnipFMC (Subsea)
-3. Target 3 — Saipem
+3. Target 3 — client-d
 4. Target 4 — McDermott International
 5. Target 5 — Allseas
 6. Target 6 — Heerema Marine Contractors

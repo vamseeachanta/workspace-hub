@@ -37,10 +37,10 @@
 
 | # | Repo | Size | Tests | Risk | Time |
 |---|------|------|-------|------|------|
-| 3 | **frontierdeepwater** | 490 MB | ✅ 1 | 🟢 Low | 2-3 days |
+| 3 | **client-a** | 490 MB | ✅ 1 | 🟢 Low | 2-3 days |
 | 4 | **energy** | 5.4 GB | ✅ 1 | 🟢 Low | 2-3 days |
-| 5 | **seanation** | 1.5 GB | ✅ 1 | 🟢 Low | 2-3 days |
-| 6 | **doris** | 521 MB | ✅ 1 | 🟢 Low | 2-3 days |
+| 5 | **client-f** | 1.5 GB | ✅ 1 | 🟢 Low | 2-3 days |
+| 6 | **lng-a** | 521 MB | ✅ 1 | 🟢 Low | 2-3 days |
 
 **Why Second**: Smoke tests exist, good size distribution, low risk
 
@@ -50,8 +50,8 @@
 
 | # | Repo | Size | Tests | Risk | Time |
 |---|------|------|-------|------|------|
-| 7 | **rock-oil-field** | 5.2 GB | ❌ 0 | 🟡 Medium | 4-5 days |
-| 8 | **saipem** | 4.1 GB | ❌ 0 | 🟡 Medium | 4-5 days |
+| 7 | **client-b** | 5.2 GB | ❌ 0 | 🟡 Medium | 4-5 days |
+| 8 | **client-d** | 4.1 GB | ❌ 0 | 🟡 Medium | 4-5 days |
 | 9 | **aceengineer-website** | 281 MB | ❌ 0 | 🟡 Medium | 3-4 days |
 | 10 | **aceengineer-admin** | 821 MB | ❌ 0 | 🟡 Medium | 3-4 days |
 
@@ -64,7 +64,7 @@
 | # | Repo | Size | Tests | Risk | Time |
 |---|------|------|-------|------|------|
 | 11 | **OGManufacturing** | 2.4 GB | ❌ 0 | 🔴 High | 5-7 days |
-| 12 | **client_projects** | 13 GB | ❌ 0 | 🔴 High | 6-8 days |
+| 12 | **client-c** | 13 GB | ❌ 0 | 🔴 High | 6-8 days |
 
 **Why Last**: Complex architecture, meta-repositories, need clarification before deployment
 
@@ -77,7 +77,7 @@
 - **All 12 have pyproject.toml** (Python project structure)
 - **All 12 have tests/ directories** (ready for testing framework)
 - **All 12 have Python 3.9+** (consistent Python version)
-- **5 repos already have smoke tests** (energy, frontierdeepwater, seanation, doris, ai-native-traditional-eng)
+- **5 repos already have smoke tests** (energy, client-a, client-f, lng-a, ai-native-traditional-eng)
 
 ### ⚠️ What We Need
 - **pytest.ini** - Configuration files for all 12 repos (30 min × 12 = 6 hours)
@@ -88,7 +88,7 @@
 ### ❌ Special Issues
 - **aceengineer-website** - Currently on `flask-backup` branch (not main) ⚠️
 - **OGManufacturing** - Contains submodule references to other repos 🚩
-- **client_projects** - Largest repo (13 GB), multi-project structure 🚩
+- **client-c** - Largest repo (13 GB), multi-project structure 🚩
 
 ---
 
@@ -100,17 +100,17 @@ Week 1: Pilot Phase
   Day 2: ai-native-traditional-eng (validation)
 
 Week 2-3: High Priority Rollout
-  Days 3-4: frontierdeepwater
+  Days 3-4: client-a
   Days 5-6: energy
-  Days 7-8: seanation & doris
+  Days 7-8: client-f & lng-a
 
 Week 4: Medium Priority
-  Days 9-12: rock-oil-field, saipem
+  Days 9-12: client-b, client-d
   Days 13-15: aceengineer-website, aceengineer-admin
 
 Week 5+: Investigation & Complex Cases
   Days 16-22: OGManufacturing (needs investigation)
-  Days 23-30: client_projects (needs investigation)
+  Days 23-30: client-c (needs investigation)
 
 Total: ~30 calendar days for full rollout
 ```
@@ -123,16 +123,16 @@ Total: ~30 calendar days for full rollout
 |------|------|-------|-----------|----------|------|-------|
 | pyproject-starter | 7.7M | 2 ✅ | 90% 🟢 | 1 | 1 day | Day 1 |
 | ai-native-traditional-eng | 12M | 1 ✅ | 85% 🟢 | 2 | 1-2 days | Day 2 |
-| frontierdeepwater | 490M | 1 ✅ | 85% 🟢 | 3 | 2-3 days | Day 3 |
+| client-a | 490M | 1 ✅ | 85% 🟢 | 3 | 2-3 days | Day 3 |
 | energy | 5.4G | 1 ✅ | 85% 🟢 | 4 | 2-3 days | Day 5 |
-| seanation | 1.5G | 1 ✅ | 85% 🟢 | 5 | 2-3 days | Day 7 |
-| doris | 521M | 1 ✅ | 85% 🟢 | 6 | 2-3 days | Day 9 |
-| rock-oil-field | 5.2G | 0 ❌ | 75% 🟡 | 7 | 4-5 days | Day 11 |
-| saipem | 4.1G | 0 ❌ | 75% 🟡 | 8 | 4-5 days | Day 15 |
+| client-f | 1.5G | 1 ✅ | 85% 🟢 | 5 | 2-3 days | Day 7 |
+| lng-a | 521M | 1 ✅ | 85% 🟢 | 6 | 2-3 days | Day 9 |
+| client-b | 5.2G | 0 ❌ | 75% 🟡 | 7 | 4-5 days | Day 11 |
+| client-d | 4.1G | 0 ❌ | 75% 🟡 | 8 | 4-5 days | Day 15 |
 | aceengineer-website | 281M | 0 ❌ | 65% 🟡 | 9 | 3-4 days | Day 19 |
 | aceengineer-admin | 821M | 0 ❌ | 70% 🟡 | 10 | 3-4 days | Day 22 |
 | OGManufacturing | 2.4G | 0 ❌ | 70% 🔴 | 11 | 5-7 days | Day 25 |
-| client_projects | 13G | 0 ❌ | 65% 🔴 | 12 | 6-8 days | Day 30 |
+| client-c | 13G | 0 ❌ | 65% 🔴 | 12 | 6-8 days | Day 30 |
 
 ---
 
@@ -183,13 +183,13 @@ When ready to proceed, execute:
 ./deploy_tier2_phase1.sh pyproject-starter ai-native-traditional-eng
 
 # Phase 2: High Priority (Day 3-9)
-./deploy_tier2_phase2.sh frontierdeepwater energy seanation doris
+./deploy_tier2_phase2.sh client-a energy client-f lng-a
 
 # Phase 3: Medium Priority (Day 9-22)
-./deploy_tier2_phase3.sh rock-oil-field saipem aceengineer-website aceengineer-admin
+./deploy_tier2_phase3.sh client-b client-d aceengineer-website aceengineer-admin
 
 # Phase 4: Investigation (Day 25+)
-./investigate_tier2_phase4.sh OGManufacturing client_projects
+./investigate_tier2_phase4.sh OGManufacturing client-c
 ```
 
 ---

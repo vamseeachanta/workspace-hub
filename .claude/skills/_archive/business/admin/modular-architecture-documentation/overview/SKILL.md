@@ -62,7 +62,7 @@ Users can adopt modules in any order based on business priorities.
 
 ```bash
 # Module 1: Invoice Automation
-invoice-gen --client ACMA --month 2025-01 --template monthly
+invoice-gen --client mkt-a --month 2025-01 --template monthly
 invoice-gen --all-clients --month 2025-01 --email
 
 # Module 2: Tax Preparation

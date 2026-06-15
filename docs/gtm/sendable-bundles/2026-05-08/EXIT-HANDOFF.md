@@ -1,4 +1,4 @@
-# Exit Handoff — Doris GTM Repo Ecosystem Packet
+# Exit Handoff — lng-a GTM Repo Ecosystem Packet
 
 Timestamp: 2026-05-08T09:52:12-05:00  
 Repository: `workspace-hub`  
@@ -14,7 +14,7 @@ Key files:
 
 - `repo-ecosystem-flowchart.pdf` — 1-page landscape PDF showing the tier-1 engineering consulting repo ecosystem flowchart with embedded GitHub links.
 - `repo-ecosystem-flowchart.html` — source HTML used to render the PDF.
-- `doris-follow-up-email-and-links.md` — refined Mo/Doris response plus local/GitHub links to the new PDF, GTM PDFs, and all tier-1 repos.
+- `lng-a-follow-up-email-and-links.md` — refined Mo/lng-a response plus local/GitHub links to the new PDF, GTM PDFs, and all tier-1 repos.
 - `EXIT-HANDOFF.md` — this exit note.
 
 ## Verification completed
@@ -23,7 +23,7 @@ Key files:
 - `pdfinfo` verified `repo-ecosystem-flowchart.pdf` is exactly 1 page, letter landscape (`792 x 612 pts`).
 - PDF text/strings verification found visible repo-link labels and embedded clickable GitHub URIs for all 8 tier-1 repos.
 - Markdown link verification confirmed all referenced local GTM PDF targets exist.
-- `doris-follow-up-email-and-links.md` was opened in VS Code.
+- `lng-a-follow-up-email-and-links.md` was opened in VS Code.
 - `repo-ecosystem-flowchart.pdf` was opened in VS Code.
 
 ## Git / push state
@@ -51,7 +51,7 @@ No email was sent and no external message was posted. The response draft and lin
 
 ## Remaining next steps
 
-1. Review `doris-follow-up-email-and-links.md` in VS Code.
+1. Review `lng-a-follow-up-email-and-links.md` in VS Code.
 2. Decide whether to send the PDF as an attachment, GitHub link, or both.
 3. If using GitHub links, confirm/push any final committed state before sending.
 4. Decide separately whether to keep, commit, or revert the unrelated `repo-sync` skill update.

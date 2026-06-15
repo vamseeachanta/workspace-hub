@@ -28,7 +28,7 @@ User directive evolved across the session:
 - Remote topic branch `codex/burn-20260511-assetutilities-bundle` deleted from origin.
 - Merged content: 2 files (`.github/workflows/tests.yml` switches to `uv sync --group test`; `tests/repo_structure/test_repo_structure_contract.py` adds a contract test pinning that convention). No conflict — main had not touched either file since merge-base `ff65300`.
 
-No commits landed in `digitalmodel` this session (already 0/0 with origin/main at session start; today's 4 SIROCCO DOCX commits were already on origin).
+No commits landed in `digitalmodel` this session (already 0/0 with origin/main at session start; today's 4 proj-a DOCX commits were already on origin).
 
 ## Disk state at exit
 

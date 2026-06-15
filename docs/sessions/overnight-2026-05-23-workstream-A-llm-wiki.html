@@ -45,7 +45,7 @@
   <li><strong>10 of 10 standards pages landed in <code>vamseeachanta/llm-wiki</code></strong> as 10 atomic commits on <code>main</code> (range <code>aeb98f8d</code>..<code>5c94bd4e</code>). All unpushed — awaiting morning review.</li>
   <li>Workstreams B, C, D <strong>NOT STARTED</strong> per option-2 scope decision.</li>
   <li>Pipeline survived a 19-min stuck <code>git add</code> (kernel I/O hang from 65 concurrent git processes); recovered via PID kill + stale-lock removal + restart with per-file atomic commits (no chaining).</li>
-  <li><span class="expected">EXPECTED residue</span>: one parallel-session staged file preserved (b1528 SIROCCO); two untracked agent-config dirs (<code>.codex/</code>, <code>.gemini/</code>) noted for gitignore-follow-up.</li>
+  <li><span class="expected">EXPECTED residue</span>: one parallel-session staged file preserved (b1528 proj-a); two untracked agent-config dirs (<code>.codex/</code>, <code>.gemini/</code>) noted for gitignore-follow-up.</li>
   <li>Quota estimate (rough): <strong>~18–22%</strong> of weekly Max pool consumed this session. Plenty of headroom for Tue–Fri.</li>
 </ul>
 
@@ -211,14 +211,14 @@
 <h3 class="clean">CLEAN</h3>
 <ul>
   <li>llm-wiki working tree: no leftover writes in temp paths inside the repo.</li>
-  <li>No PDF copies committed (raw vendor-licensed PDFs remained at <code>/mnt/ace/acma-codes/</code> per <code>codes-standards-data-routing.md</code>).</li>
+  <li>No PDF copies committed (raw vendor-licensed PDFs remained at <code>/mnt/ace/mkt-a-codes/</code> per <code>codes-standards-data-routing.md</code>).</li>
   <li>No staged sweep-contamination: all 10 commits used <code>git commit -- &lt;pathspec&gt;</code> form per <code>feedback_multi_agent_commit_serialization</code>.</li>
   <li>No legal-deny-list violations (no client identifiers introduced; OCIMF/SIGTTO + DNV + API + Noble Denton are all standards bodies, not client identifiers).</li>
 </ul>
 
 <h3 class="expected">EXPECTED residue (proceed with named residue)</h3>
 <ul>
-  <li><strong>llm-wiki staged file <code>wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md</code></strong> — pre-existing in index when this session started; identified as parallel SIROCCO session work (matches open issue #2760 "revise(naval-arch): B1528 SIROCCO force calculation review updates"). Preserved untouched throughout this session by using pathspec-form commits. This is OTHER agents' in-flight work; not mine to touch.</li>
+  <li><strong>llm-wiki staged file <code>wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md</code></strong> — pre-existing in index when this session started; identified as parallel proj-a session work (matches open issue #2760 "revise(naval-arch): B1528 proj-a force calculation review updates"). Preserved untouched throughout this session by using pathspec-form commits. This is OTHER agents' in-flight work; not mine to touch.</li>
   <li><strong><code>/tmp/llm-wiki-extract/</code></strong> — 11 extracted PDF text files (~3.8 MB) + <code>ocr_fallback.py</code> helper. Useful if morning review wants to re-inspect extracted source content. Safe to <code>rm -rf /tmp/llm-wiki-extract/</code> when no longer needed (just /tmp).</li>
   <li><strong>llm-wiki 10-ahead-of-origin state</strong> — by design per option-2 ("per-page commits for morning review"). User decides when to push.</li>
 </ul>
@@ -238,7 +238,7 @@
 <h3>What worked</h3>
 <ul>
   <li><strong>3 parallel write-only subagents per batch</strong> at the documented cap-3 concurrency. Each subagent self-contained, primed with: PDF text path, output path, frontmatter template, body-section template, hard rules (no fabrication, verbatim section IDs, no PDF copying). Total: 9 subagent dispatches, all succeeded first try, all writes verified landed via <code>ls</code> per <code>feedback_subagent_write_phantom</code>.</li>
-  <li><strong>Pathspec-form commits</strong> (<code>git commit -- &lt;file&gt;</code>) preserved the parallel SIROCCO session's staged b1528 file across 10 commits.</li>
+  <li><strong>Pathspec-form commits</strong> (<code>git commit -- &lt;file&gt;</code>) preserved the parallel proj-a session's staged b1528 file across 10 commits.</li>
   <li><strong>OCR fallback chain</strong> (pdftotext → PyMuPDF 300 DPI → tesseract --psm 6) recovered 2 image-PDF sources cleanly enough to extract structured content; OCR provenance flagged in <code>ocr_note</code> frontmatter field as defensive measure.</li>
   <li><strong>PDF→text extraction in 8-way parallel bash</strong> completed in ~30 seconds total wall-clock; subsequent subagents read from cheap text files rather than the 7.1 GB raw PDF corpus.</li>
 </ul>

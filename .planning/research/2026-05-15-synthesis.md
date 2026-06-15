@@ -187,7 +187,7 @@ May 8 synthesis insight (quality gates from Phase 5 nightly researchers + Phase 
   - **Blocking:** Phase 7 smoke tests can pass with low branch coverage without this (untested solver error paths)
 
 - [ ] **`worldenergydata` + `workspace-hub` #TBD: Verify pandas ≥3.0.2 pinning + re-run Phase 2 regression tests**
-  - **Scope:** Confirm `pyproject.toml` + `requirements.txt` across all data repos (worldenergydata, frontierdeepwater, rock-oil-field, seanation)
+  - **Scope:** Confirm `pyproject.toml` + `requirements.txt` across all data repos (worldenergydata, client-a, client-b, client-f)
   - **Test:** Re-run Phase 2 Parquet round-trip regression tests (EIA, BSEE, SODIR) with pandas 3.0.2
   - **Goal:** Confirm CoW + string dtype stability (Phase 2 blocking per 2026-04-21 synthesis)
   - **Timeline:** Verification complete by Phase 7 planning gate (May 10) [OVERDUE — escalate to immediate]

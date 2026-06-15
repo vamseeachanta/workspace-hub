@@ -10,13 +10,13 @@
 - bash_execution
 
 ## Files Changed
-acma-projects
+mkt-a
 assethold
 assetutilities
 docs/SKILL_BULK_INSTALLATION_SUMMARY.md
 docs/SKILL_DEPLOYMENT_COMPLETE.md
-rock-oil-field
-saipem
+client-b
+client-d
 skills/workspace-hub/data-validation-reporter/bulk_install.sh
 skills/workspace-hub/data-validation-reporter/install_to_repo.sh
 teamresumes

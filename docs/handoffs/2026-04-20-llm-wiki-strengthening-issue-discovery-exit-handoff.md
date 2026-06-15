@@ -45,7 +45,7 @@ Work completed:
 ### Promotion waves / content expansion
 - `#2364` Batch Pack 1 API/standards-portal metadata promotion
 - `#2369` Batch Pack 2 indexed conference-summary promotion
-- `#2373` Batch Pack 4 non-ACMA standards-summary promotion
+- `#2373` Batch Pack 4 non-mkt-a standards-summary promotion
 - `#2380` Batch Pack 3 Tier A external engineering software profiles
 - `#2365` design-code registry promotion
 

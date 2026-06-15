@@ -1,6 +1,6 @@
 # Claude agent-team prompt: #2216 remaining LLM-wiki ecosystem strengthening wave
 
-Use this prompt as a single self-contained handoff to Claude Code for the remaining ACMA/LLM-wiki ecosystem work.
+Use this prompt as a single self-contained handoff to Claude Code for the remaining mkt-a/LLM-wiki ecosystem work.
 
 ---
 
@@ -21,7 +21,7 @@ Live issue state to honor:
 - `#2216` https://github.com/vamseeachanta/workspace-hub/issues/2216
   - state: OPEN
   - label: `status:plan-approved`
-  - role: approved umbrella issue for ACMA-codes integration
+  - role: approved umbrella issue for mkt-a-codes integration
 - `#2225` source registration + indexing: CLOSED
 - `#2226` ledger/provenance backfill: CLOSED
 - `#2227` wiki promotion: OPEN
@@ -45,15 +45,15 @@ Authoritative architecture and workflow artifacts to consume, not redefine:
 - `docs/document-intelligence/intelligence-accessibility-map.md` (`#2096`)
 - `docs/document-intelligence/README.md` (`#2104` implementation surface)
 - `data/document-index/intelligence-accessibility-registry.yaml` (`#2136` implementation surface)
-- `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md`
-- `docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md`
+- `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md`
+- `docs/plans/2026-04-11-issue-2225-mkt-a-codes-source-registration-and-initial-indexing.md`
 - `docs/plans/2026-04-11-issue-2226-ocimf-csa-ledger-provenance-backfill.md`
 - `docs/plans/README.md`
 - `docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md`
 - `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md`
 
 Current grounded state already landed in repo (verify before writing):
-- `data/document-index/mounted-source-registry.yaml` contains `acma_codes_local`.
+- `data/document-index/mounted-source-registry.yaml` contains `mkt-a_codes_local`.
 - `data/document-index/standards-transfer-ledger.yaml` already contains OCIMF + CSA entries from `#2226`, including:
   - `OCIMF-MEG-3RD-ED-2008`
   - `OCIMF-MEG4-2018`
@@ -145,9 +145,9 @@ Required work sequence:
 4. If `#2228` is approved, implement accessibility/entry-point refresh
    - update `intelligence-accessibility-map.md` so it reflects current reality after #2104, #2136, #2225, and #2226
    - remove or revise stale claims such as "docs/README has no intelligence links" and "docs/document-intelligence/README does not exist"
-   - add only the minimal ACMA-specific accessibility consequences needed after source registration and wiki promotion
+   - add only the minimal mkt-a-specific accessibility consequences needed after source registration and wiki promotion
    - keep the document as an inventory/gap-analysis artifact; do not redesign parent architecture or registry schema
-   - touch `docs/document-intelligence/README.md` only if a small, concrete ACMA-source mention is needed and clearly justified
+   - touch `docs/document-intelligence/README.md` only if a small, concrete mkt-a-source mention is needed and clearly justified
 5. Adversarial review inside the same run
    - verify scope discipline against `#2205`, `#2207`, `#2208`, `#2209`, `#2096`, `#2104`, `#2136`
    - verify no unapproved expansion beyond the approved promotion targets
@@ -172,7 +172,7 @@ Detailed implementation expectations for wiki pages:
 Detailed implementation expectations for accessibility-map refresh:
 - Update only the sections made stale by already-landed work.
 - Preserve the document's role as a map/gap analysis.
-- Add ACMA-specific discoverability notes only where they materially improve future retrieval.
+- Add mkt-a-specific discoverability notes only where they materially improve future retrieval.
 - Reflect that the intelligence ecosystem now has:
   - docs landing page
   - document-intelligence landing page
@@ -185,7 +185,7 @@ Explicit follow-up capture expectations:
 If you confirm additional valuable but out-of-scope material, call it out in GitHub comments rather than absorbing it silently. Examples:
 - `CSA-Z276.2-19` promotion decision
 - `CSA-B625-13` / `CSA-C22.1-12` treatment
-- broader API-family backfill from acma-codes
+- broader API-family backfill from mkt-a-codes
 - reverse backlink automation from ledger to wiki pages
 
 Required verification before commit:
@@ -202,7 +202,7 @@ Git discipline:
 - Use narrow commits.
 - Suggested commit split if both issues are implemented:
   - `docs(knowledge): promote OCIMF tandem mooring and CSA Z276 wiki coverage (#2227)`
-  - `docs(intelligence): refresh accessibility map after ACMA source integration (#2228)`
+  - `docs(intelligence): refresh accessibility map after mkt-a source integration (#2228)`
 - Push to `origin main` only after verification.
 
 GitHub closeout expectations:

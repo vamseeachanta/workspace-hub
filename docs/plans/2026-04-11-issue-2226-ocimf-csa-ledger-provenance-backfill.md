@@ -18,23 +18,23 @@
 |---|---|---|
 | Standards transfer ledger | `data/document-index/standards-transfer-ledger.yaml` | 425 standards; API-RP-1111 (5 entries, `done`); API-RP-2SK-2ND-ED (1 entry, `done`, no doc_paths); **NO OCIMF entries; NO CSA entries** |
 | Design code registry | `data/design-codes/code-registry.yaml` | Contains API-RP-1111 (5th Ed), API-RP-2A-WSD; **NO OCIMF, NO CSA, NO API-RP-2SK entries** |
-| Corpus index | `data/document-index/index.jsonl` | 2,521 acma_codes records now indexed (from completed #2225); OCIMF across 3 folders (182 records), CSA in 1 folder (10 records), API in 1 folder (53 records) |
+| Corpus index | `data/document-index/index.jsonl` | 2,521 mkt-a_codes records now indexed (from completed #2225); OCIMF across 3 folders (182 records), CSA in 1 folder (10 records), API in 1 folder (53 records) |
 | Provenance merger | `scripts/data/document-index/provenance.py` | Content-hash-based dedup; merges by `content_hash` into single records with provenance arrays |
 | Provenance contract | `docs/document-intelligence/standards-codes-provenance-reuse-contract.md` | Defines `doc_key` = SHA-256 of file content; alias rules; edition/supersession treatment; required provenance fields |
 | Parent operating model | `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` | Pyramid model; L2 owns provenance; L3 wiki inherits from L2 |
-| Parent plan #2216 | `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md` | Approved integration plan; recommended 4-way follow-on split; this issue is follow-on #2 |
-| Upstream plan #2225 | `docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md` | Source registration and Phase A indexing; defines handoff boundary to this issue |
-| Mounted source registry | `data/document-index/mounted-source-registry.yaml` | `acma_codes_local` now registered (from #2225) |
+| Parent plan #2216 | `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md` | Approved integration plan; recommended 4-way follow-on split; this issue is follow-on #2 |
+| Upstream plan #2225 | `docs/plans/2026-04-11-issue-2225-mkt-a-codes-source-registration-and-initial-indexing.md` | Source registration and Phase A indexing; defines handoff boundary to this issue |
+| Mounted source registry | `data/document-index/mounted-source-registry.yaml` | `mkt-a_codes_local` now registered (from #2225) |
 
 ### Standards / registries consulted
 
 | Standard/Registry | Ledger Status | Findings |
 |---|---|---|
-| API RP 1111 (multiple editions) | `done` (5 entries) | `doc_paths` populated from `/mnt/ace/0000 O&G/`; acma-codes has `1999 July RP 1111` with `doc_key: 23be68a8...` which is a different hash from existing records |
-| API RP 2SK (2nd Ed, 1996) | `done` (1 entry: `API-RP-2SK-2ND-ED`) | **No `doc_paths` populated**; acma-codes has 2nd ed (`doc_key: dd7838f9...`), 3rd ed 2005 (`doc_key: 8117eb28...`), 3rd ed alt scan (`doc_key: d4062ff1...`), and 2008 addendum (`doc_key: 63ce67c3...`) |
-| OCIMF MEG (any edition) | **NOT in ledger** | acma-codes has MEG 2008 (3rd Ed) at 2 paths with different doc_keys: `51de0e48...` (OCIMF/) and `58d0e4a9...` (OCIMF 3rd ed/); MEG4 (4th Ed, 2018) indexed at `b2627091...` |
-| OCIMF Tandem Mooring | **NOT in ledger** | acma-codes has `OCIMF-Tandem Mooring...FPSO.pdf` with `doc_key: 5e5f61e7...`; entirely new |
-| OCIMF OVID/OVPQ | **NOT in ledger** | acma-codes has `OCIMF OVID OVPQ-Master-Full.pdf` (`doc_key: 9ed18d9c...`) and `OVID_operator_application_ovpq.pdf` (`doc_key: 41e3d972...`); inspection/vetting documents, not standards |
+| API RP 1111 (multiple editions) | `done` (5 entries) | `doc_paths` populated from `/mnt/ace/0000 O&G/`; mkt-a-codes has `1999 July RP 1111` with `doc_key: 23be68a8...` which is a different hash from existing records |
+| API RP 2SK (2nd Ed, 1996) | `done` (1 entry: `API-RP-2SK-2ND-ED`) | **No `doc_paths` populated**; mkt-a-codes has 2nd ed (`doc_key: dd7838f9...`), 3rd ed 2005 (`doc_key: 8117eb28...`), 3rd ed alt scan (`doc_key: d4062ff1...`), and 2008 addendum (`doc_key: 63ce67c3...`) |
+| OCIMF MEG (any edition) | **NOT in ledger** | mkt-a-codes has MEG 2008 (3rd Ed) at 2 paths with different doc_keys: `51de0e48...` (OCIMF/) and `58d0e4a9...` (OCIMF 3rd ed/); MEG4 (4th Ed, 2018) indexed at `b2627091...` |
+| OCIMF Tandem Mooring | **NOT in ledger** | mkt-a-codes has `OCIMF-Tandem Mooring...FPSO.pdf` with `doc_key: 5e5f61e7...`; entirely new |
+| OCIMF OVID/OVPQ | **NOT in ledger** | mkt-a-codes has `OCIMF OVID OVPQ-Master-Full.pdf` (`doc_key: 9ed18d9c...`) and `OVID_operator_application_ovpq.pdf` (`doc_key: 41e3d972...`); inspection/vetting documents, not standards |
 | OCIMF MEG4 justification | **NOT in ledger** | `Mooring Equipment Guidelines (MEG4) justification.pdf` (`doc_key: 4d716398...`); supporting document |
 | OCIMF Coefficient data | N/A | `OCIMF Coef.xlsx` (`doc_key: bb80d89d...`) and digitized figure PDFs (A5-A19); data artifacts, not standards |
 | CSA Z276.1-20 | **NOT in any registry** | Marine structures for LNG facilities; `doc_key: b576ada3...` |
@@ -45,15 +45,15 @@
 
 ### LLM Wiki pages consulted
 
-- `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` -- covers OCIMF MEG4 (4th Ed, 2018); distinct from acma-codes MEG 2008 (3rd Ed predecessor)
+- `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` -- covers OCIMF MEG4 (4th Ed, 2018); distinct from mkt-a-codes MEG 2008 (3rd Ed predecessor)
 - `knowledge/wikis/engineering/wiki/standards/dnv-os-e301.md` -- DNV position mooring; cross-references API RP 2SK (4th Ed, 2024)
 
 ### Documents consulted
 
 - `docs/document-intelligence/standards-codes-provenance-reuse-contract.md` -- #2207 provenance contract defining `doc_key`, alias rules, edition treatment
 - `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` -- #2205 parent operating model
-- `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md` -- parent plan with inventory classification
-- `docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md` -- upstream plan defining handoff boundary
+- `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md` -- parent plan with inventory classification
+- `docs/plans/2026-04-11-issue-2225-mkt-a-codes-source-registration-and-initial-indexing.md` -- upstream plan defining handoff boundary
 - GitHub issue #2226 -- scope, acceptance criteria, deliverables
 - GitHub issue #2216 -- parent umbrella; approved follow-on split
 
@@ -61,9 +61,9 @@
 
 1. **OCIMF not in transfer ledger** -- No OCIMF entries exist despite 182+ indexed records across 3 edition folders
 2. **CSA not in any registry** -- 5 distinct CSA standards discovered (3 more than the parent plan identified)
-3. **API RP 2SK ledger entry has no `doc_paths`** -- Cannot verify dedup without adding acma-codes paths
+3. **API RP 2SK ledger entry has no `doc_paths`** -- Cannot verify dedup without adding mkt-a-codes paths
 4. **No `doc_key` fields in ledger** -- Ledger identifies standards by human-readable `id` only; #2207 contract recommends `doc_key` but field does not exist yet
-5. **Hash format inconsistency** -- Existing non-acma sources use 32-character truncated hashes; acma_codes uses proper 64-character SHA-256; direct hash comparison for dedup WILL FAIL across sources
+5. **Hash format inconsistency** -- Existing non-mkt-a sources use 32-character truncated hashes; mkt-a_codes uses proper 64-character SHA-256; direct hash comparison for dedup WILL FAIL across sources
 6. **OCIMF MEG 2008 exists as 2 different scans** -- `OCIMF/` and `OCIMF 3rd ed/` folders contain the same-named file with different doc_keys (different binary content)
 7. **OCIMF supporting documents (OVID, coefficient data) need classification** -- Not standards per se, but related materials
 
@@ -71,7 +71,7 @@
 
 ---
 
-## Real Indexed Findings from `acma_codes`
+## Real Indexed Findings from `mkt-a_codes`
 
 This section provides evidence-grounded analysis of the indexed records from the completed #2225 work.
 
@@ -118,9 +118,9 @@ This section provides evidence-grounded analysis of the indexed records from the
 
 ### API Overlap Analysis (53 records)
 
-The acma-codes API folder contains 28+ unique standards, far more than the 2 (RP 1111, RP 2SK) identified in the parent plan. Key overlaps with the existing ledger:
+The mkt-a-codes API folder contains 28+ unique standards, far more than the 2 (RP 1111, RP 2SK) identified in the parent plan. Key overlaps with the existing ledger:
 
-| acma-codes File | acma doc_key | Existing Ledger Entry | Existing Hash Format | Dedup Status |
+| mkt-a-codes File | mkt-a doc_key | Existing Ledger Entry | Existing Hash Format | Dedup Status |
 |---|---|---|---|---|
 | 1999 July RP 1111...3rd ed.pdf | `23be68a89a071831...` (64-char) | `API-RP-1111-3RD-ED` has no doc_paths, no doc_key | N/A | **Cannot hash-compare; same edition** -- should be alias |
 | 1996 Dec RP 2SK...2nd ed.pdf | `dd7838f9f26ce212...` (64-char) | `API-RP-2SK-2ND-ED` has no doc_paths, no doc_key | N/A | **Cannot hash-compare; same edition** -- should be alias |
@@ -128,9 +128,9 @@ The acma-codes API folder contains 28+ unique standards, far more than the 2 (RP
 | API 2SK 3rd edition.pdf | `d4062ff1a8df959d...` (64-char) | No 3rd Ed entry in ledger | N/A | **Different scan of 3rd Ed** |
 | RP 2SK_Addendum 2008.pdf | `63ce67c3267a7d04...` (64-char) | No addendum entry | N/A | **New; addendum not tracked** |
 
-**Critical finding:** Direct hash-comparison dedup between acma_codes and earlier sources is impossible because:
+**Critical finding:** Direct hash-comparison dedup between mkt-a_codes and earlier sources is impossible because:
 1. Earlier sources use 32-character truncated hashes (likely MD5 or SHA-256 first 16 bytes)
-2. acma_codes uses proper 64-character SHA-256 hashes
+2. mkt-a_codes uses proper 64-character SHA-256 hashes
 3. The ledger entries for API RP 1111 and 2SK have no `doc_key` fields at all
 
 **Implication:** Alias linkage in this issue must be based on **metadata matching** (standard ID + edition + year), not content-hash comparison. The #2207 provenance contract's `doc_key` comparison model cannot be fully applied until the hash format inconsistency is resolved (tracked by #2207 Section 10 open question #1).
@@ -141,7 +141,7 @@ The acma-codes API folder contains 28+ unique standards, far more than the 2 (RP
 
 ### New OCIMF Entries
 
-| Proposed ID | Title | org | domain | doc_paths (from acma-codes) | status | notes |
+| Proposed ID | Title | org | domain | doc_paths (from mkt-a-codes) | status | notes |
 |---|---|---|---|---|---|---|
 | `OCIMF-MEG-3RD-ED-2008` | OCIMF Mooring Equipment Guidelines (3rd Ed, 2008) | OCIMF | marine | `OCIMF/OCIMF - 2008 - Mooring Equipment Guidelines.pdf`, `OCIMF 3rd ed/OCIMF - 2008 - Mooring Equipment Guidelines.pdf` | done | Historical predecessor of MEG4; 2 different scans (different doc_keys) |
 | `OCIMF-MEG-3RD-ED-CDS` | OCIMF Mooring Equipment Guidelines CDs Companion (2008) | OCIMF | marine | `OCIMF/OCIMF - 2008 - Mooring Equipment Guidelines, CDs.pdf` | done | Companion to MEG 3rd Ed |
@@ -160,19 +160,19 @@ The acma-codes API folder contains 28+ unique standards, far more than the 2 (RP
 
 ### Existing API Entries to Update (alias paths only)
 
-| Existing ID | Update | acma-codes path to add as alias |
+| Existing ID | Update | mkt-a-codes path to add as alias |
 |---|---|---|
-| `API-RP-1111-3RD-ED` | Add acma-codes path to `doc_paths` | `/mnt/ace/acma-codes/API/1999 July RP 1111 Offshore Hydrocarbon Pipelines 3rd ed.pdf` |
-| `API-RP-2SK-2ND-ED` | Add acma-codes path to `doc_paths` | `/mnt/ace/acma-codes/API/1996 Dec RP 2SK Stationkeeping Systems for Floating Structures 2nd ed.pdf` |
+| `API-RP-1111-3RD-ED` | Add mkt-a-codes path to `doc_paths` | `/mnt/ace/mkt-a-codes/API/1999 July RP 1111 Offshore Hydrocarbon Pipelines 3rd ed.pdf` |
+| `API-RP-2SK-2ND-ED` | Add mkt-a-codes path to `doc_paths` | `/mnt/ace/mkt-a-codes/API/1996 Dec RP 2SK Stationkeeping Systems for Floating Structures 2nd ed.pdf` |
 
 ### New API Entries (editions not currently in ledger)
 
-| Proposed ID | Title | acma-codes paths | notes |
+| Proposed ID | Title | mkt-a-codes paths | notes |
 |---|---|---|---|
 | `API-RP-2SK-3RD-ED` | API RP 2SK Design and Analysis of Stationkeeping Systems (3rd Ed, 2005) | `API/2005 RP 2SK with 2008 Add/2005 Oct RP 2SK.pdf`, `API/2005 RP 2SK with 2008 Add/API 2SK 3rd edition.pdf` | New edition; 2 different PDF copies (different doc_keys confirm different scans) |
 | `API-RP-2SK-3RD-ED-ADDENDUM` | API RP 2SK 3rd Ed Addendum (2008) | `API/2005 RP 2SK with 2008 Add/RP 2SK_Addendum 2008.pdf` | Addendum to 3rd Ed |
 
-**Scope note:** The remaining ~25 API standards in acma-codes (RP 14J, RP 505, RP 500, 7K, BULL 2U, RP 2C, RP 2D, RP 2H, RP 2A-WSD, RP 14C, RP 14F, RP 14G, RP 54, RP 75, RP 95J, 4F, catalogues, INT-MET) are out of scope for this issue. They should be addressed in a separate follow-on issue that systematically resolves all API overlaps.
+**Scope note:** The remaining ~25 API standards in mkt-a-codes (RP 14J, RP 505, RP 500, 7K, BULL 2U, RP 2C, RP 2D, RP 2H, RP 2A-WSD, RP 14C, RP 14F, RP 14G, RP 54, RP 75, RP 95J, 4F, catalogues, INT-MET) are out of scope for this issue. They should be addressed in a separate follow-on issue that systematically resolves all API overlaps.
 
 ---
 
@@ -191,7 +191,7 @@ Per the #2207 provenance contract (Section 3.4):
 
 ### Application to this issue
 
-| acma-codes document | Treatment | Reasoning |
+| mkt-a-codes document | Treatment | Reasoning |
 |---|---|---|
 | API RP 1111 (1999, 3rd Ed) | **Alias** of `API-RP-1111-3RD-ED` | Same edition identified by title; cannot hash-verify but metadata match is sufficient |
 | API RP 2SK (1996, 2nd Ed) | **Alias** of `API-RP-2SK-2ND-ED` | Same edition identified by title; add as first `doc_paths` entry (currently empty) |
@@ -242,11 +242,11 @@ When #2207 implementation adds `doc_key` to ledger schema:
 
 ### Analysis
 
-The `code-registry.yaml` tracks **design codes actively used in digitalmodel/doris repos** with edition currency. Currently contains 8 entries: DNV-ST-F101, DNV-RP-C203, DNV-RP-C205, DNV-RP-F105, API-RP-2A-WSD, API-RP-2RD, API-RP-1111, BS-7910, ASME-B31.4, ISO-13628-7.
+The `code-registry.yaml` tracks **design codes actively used in digitalmodel/lng-a repos** with edition currency. Currently contains 8 entries: DNV-ST-F101, DNV-RP-C203, DNV-RP-C205, DNV-RP-F105, API-RP-2A-WSD, API-RP-2RD, API-RP-1111, BS-7910, ASME-B31.4, ISO-13628-7.
 
 | Candidate | Should it go in code-registry? | Reasoning |
 |---|---|---|
-| OCIMF MEG4 | **Deferred** | MEG4 provides mooring design guidelines used in analysis, but there is no current `digitalmodel` or `doris` module that directly implements MEG4 calculations. May be warranted after wiki promotion (#2227) if code modules are created. |
+| OCIMF MEG4 | **Deferred** | MEG4 provides mooring design guidelines used in analysis, but there is no current `digitalmodel` or `lng-a` module that directly implements MEG4 calculations. May be warranted after wiki promotion (#2227) if code modules are created. |
 | OCIMF MEG 2008 | **No** | Historical predecessor; not actively used for design. |
 | OCIMF Tandem Mooring | **No** | Operational guideline, not a design code. |
 | CSA Z276.1-20 | **No** | LNG facility standard; no active design code implementation. |
@@ -254,7 +254,7 @@ The `code-registry.yaml` tracks **design codes actively used in digitalmodel/dor
 | CSA Z276.18 | **No** | LNG operations standard; not a design code. |
 | CSA B625-13 | **No** | Transport standard; not a design code. |
 | CSA 22.1-12 | **No** | Electrical code; no active design code implementation. |
-| API RP 2SK | **Maybe** | API RP 2SK is actively used in mooring analysis. However, the registered edition in acma-codes (2nd/3rd Ed) does not match the current edition (likely 4th Ed, 2024, per wiki). Adding it requires confirming which edition is actively used. **Deferred** to a separate review. |
+| API RP 2SK | **Maybe** | API RP 2SK is actively used in mooring analysis. However, the registered edition in mkt-a-codes (2nd/3rd Ed) does not match the current edition (likely 4th Ed, 2024, per wiki). Adding it requires confirming which edition is actively used. **Deferred** to a separate review. |
 
 **Decision:** No code-registry changes in this issue. OCIMF MEG4 and API RP 2SK are the strongest candidates but both require additional context (active module usage, current edition) that is outside this issue's scope.
 
@@ -274,7 +274,7 @@ The `code-registry.yaml` tracks **design codes actively used in digitalmodel/dor
 
 ## Deliverable
 
-New OCIMF and CSA entries in `standards-transfer-ledger.yaml` with provenance-linked `doc_paths` from indexed acma-codes records, plus alias path updates for overlapping API RP 1111 and RP 2SK entries, with documented alias/edition treatment rationale.
+New OCIMF and CSA entries in `standards-transfer-ledger.yaml` with provenance-linked `doc_paths` from indexed mkt-a-codes records, plus alias path updates for overlapping API RP 1111 and RP 2SK entries, with documented alias/edition treatment rationale.
 
 ---
 
@@ -291,8 +291,8 @@ This is planning-level pseudocode. No implementation code should be written in t
      - title: <full_title>
      - org: OCIMF
      - domain: marine
-     - doc_path: <primary acma-codes path>
-     - doc_paths: [<all acma-codes paths for this standard>]
+     - doc_path: <primary mkt-a-codes path>
+     - doc_paths: [<all mkt-a-codes paths for this standard>]
      - status: done
      - notes: <edition info, cross-references, scan differences>
      - exhausted: false
@@ -306,12 +306,12 @@ This is planning-level pseudocode. No implementation code should be written in t
 
 3. Update existing API RP 1111 entry:
    - Find API-RP-1111-3RD-ED entry
-   - Append acma-codes path to doc_paths array
+   - Append mkt-a-codes path to doc_paths array
 
 4. Update existing API RP 2SK entry:
    - Find API-RP-2SK-2ND-ED entry
-   - Set doc_path to acma-codes path (currently empty)
-   - Set doc_paths to [acma-codes path]
+   - Set doc_path to mkt-a-codes path (currently empty)
+   - Set doc_paths to [mkt-a-codes path]
 
 5. Add 2 new API RP 2SK edition entries:
    - API-RP-2SK-3RD-ED with both scan paths
@@ -344,7 +344,7 @@ These are the files that will be modified during **future implementation**. This
 |---|---|---|
 | Modify | `data/document-index/standards-transfer-ledger.yaml` | Add 11 new entries (4 OCIMF + 5 CSA + 2 API RP 2SK editions); update 2 existing entries (API-RP-1111-3RD-ED, API-RP-2SK-2ND-ED) with alias paths; update header counts |
 | NOT modified | `data/design-codes/code-registry.yaml` | Deferred -- no active design code modules for OCIMF/CSA |
-| NOT modified | `data/document-index/index.jsonl` | Already contains acma_codes records from #2225; this issue does not reindex |
+| NOT modified | `data/document-index/index.jsonl` | Already contains mkt-a_codes records from #2225; this issue does not reindex |
 | NOT modified | `knowledge/wikis/**` | Wiki promotion is #2227 scope |
 | Update | `docs/plans/README.md` | Add this plan to the index |
 
@@ -357,8 +357,8 @@ These are the files that will be modified during **future implementation**. This
 | verify_ocimf_entries_exist | 4 OCIMF entries in ledger | `standards-transfer-ledger.yaml` | Entries for OCIMF-MEG-3RD-ED-2008, OCIMF-MEG-3RD-ED-CDS, OCIMF-MEG4-2018, OCIMF-TANDEM-MOORING |
 | verify_csa_entries_exist | 5 CSA entries in ledger | `standards-transfer-ledger.yaml` | Entries for CSA-Z276.1-20, CSA-Z276.2-19, CSA-Z276.18, CSA-B625-13, CSA-22.1-12 |
 | verify_api_2sk_3rd_entries | 2 new API RP 2SK entries | `standards-transfer-ledger.yaml` | Entries for API-RP-2SK-3RD-ED, API-RP-2SK-3RD-ED-ADDENDUM |
-| verify_api_1111_alias | acma-codes path added to API-RP-1111-3RD-ED | `standards-transfer-ledger.yaml` | `doc_paths` includes `/mnt/ace/acma-codes/API/1999 July RP 1111...` |
-| verify_api_2sk_alias | acma-codes path added to API-RP-2SK-2ND-ED | `standards-transfer-ledger.yaml` | `doc_paths` includes `/mnt/ace/acma-codes/API/1996 Dec RP 2SK...` |
+| verify_api_1111_alias | mkt-a-codes path added to API-RP-1111-3RD-ED | `standards-transfer-ledger.yaml` | `doc_paths` includes `/mnt/ace/mkt-a-codes/API/1999 July RP 1111...` |
+| verify_api_2sk_alias | mkt-a-codes path added to API-RP-2SK-2ND-ED | `standards-transfer-ledger.yaml` | `doc_paths` includes `/mnt/ace/mkt-a-codes/API/1996 Dec RP 2SK...` |
 | verify_no_duplicate_ids | No duplicate ledger IDs | `standards-transfer-ledger.yaml` | All `id` values are unique |
 | verify_doc_paths_indexed | All new doc_paths exist in index.jsonl | Cross-check ledger doc_paths against index | Every path in a ledger entry has a matching index record |
 | verify_header_counts | Total and done counts updated | `standards-transfer-ledger.yaml` header | total: 436, done: 435 |
@@ -373,8 +373,8 @@ These are the files that will be modified during **future implementation**. This
 - [ ] 4 OCIMF entries added to `standards-transfer-ledger.yaml` (MEG 3rd Ed, MEG CDs, MEG4, Tandem Mooring)
 - [ ] 5 CSA entries added to `standards-transfer-ledger.yaml` (Z276.1-20, Z276.2-19, Z276.18, B625-13, 22.1-12)
 - [ ] 2 new API RP 2SK edition entries added (3rd Ed, 3rd Ed Addendum)
-- [ ] `API-RP-1111-3RD-ED` `doc_paths` updated with acma-codes alias path
-- [ ] `API-RP-2SK-2ND-ED` `doc_paths` populated with acma-codes path (closing empty-paths gap)
+- [ ] `API-RP-1111-3RD-ED` `doc_paths` updated with mkt-a-codes alias path
+- [ ] `API-RP-2SK-2ND-ED` `doc_paths` populated with mkt-a-codes path (closing empty-paths gap)
 - [ ] All `doc_paths` in new/updated entries correspond to real indexed records in `index.jsonl`
 - [ ] Entries include provenance notes consistent with #2207 contract (edition, scan variation, supersession where applicable)
 - [ ] Overlapping API documents are handled as aliases (same edition) or distinct entries (different edition) with documented rationale
@@ -425,23 +425,23 @@ Revisions made based on review:
 
 ### Risks
 
-1. **Hash format inconsistency blocks hash-based dedup** -- Existing sources use 32-char hashes; acma_codes uses 64-char SHA-256. This means the #2207 provenance contract's preferred `doc_key` comparison model cannot be used for cross-source alias detection until hash formats are normalized. **Mitigation:** Use metadata matching (title, edition, year) for alias determination in this issue; document the hash inconsistency as an input to #2207 implementation.
+1. **Hash format inconsistency blocks hash-based dedup** -- Existing sources use 32-char hashes; mkt-a_codes uses 64-char SHA-256. This means the #2207 provenance contract's preferred `doc_key` comparison model cannot be used for cross-source alias detection until hash formats are normalized. **Mitigation:** Use metadata matching (title, edition, year) for alias determination in this issue; document the hash inconsistency as an input to #2207 implementation.
 
 2. **OCIMF MEG 2008 has 2 different scans** -- The `OCIMF/` and `OCIMF 3rd ed/` copies of the same-named file have different doc_keys (`51de0e48...` vs `58d0e4a9...`). Per #2207 Section 3.4, different binary = different doc_key. **Mitigation:** Create one ledger entry (`OCIMF-MEG-3RD-ED-2008`) with both paths in `doc_paths` and note the scan difference. When `doc_key` is added to ledger schema, pick the canonical scan.
 
 3. **CSA scope larger than parent plan anticipated** -- 5 CSA standards instead of 2. Three additional standards (Z276.2-19, B625-13, 22.1-12) are outside the marine/LNG domain. **Mitigation:** Include all 5 with accurate domain classification (marine, transport, electrical). The ledger is a comprehensive registry, not domain-limited.
 
-4. **Many more API standards need alias resolution** -- 25+ API standards in acma_codes beyond RP 1111 and RP 2SK are unresolved. **Mitigation:** Explicitly scope this issue to only RP 1111 and RP 2SK; recommend follow-on issue for remaining API aliases.
+4. **Many more API standards need alias resolution** -- 25+ API standards in mkt-a_codes beyond RP 1111 and RP 2SK are unresolved. **Mitigation:** Explicitly scope this issue to only RP 1111 and RP 2SK; recommend follow-on issue for remaining API aliases.
 
 5. **No `doc_key` field in ledger schema** -- The #2207 contract recommends adding `doc_key` to the ledger but the field does not exist yet. Adding it for just these entries would create schema inconsistency. **Mitigation:** Defer `doc_key` addition to a coordinated schema migration; document SHA-256 values in plan notes for future back-population.
 
 ### Open Questions
 
-1. **Should CSA 22.1-12 (Canadian Electrical Code) be included?** -- It's in the acma-codes/CSA folder but is a general electrical code, not marine/LNG-specific. The issue scope says "OCIMF and CSA standards from acma-codes" which arguably includes all CSA standards found. **Recommendation:** Include it with `domain: electrical` for completeness; it was part of the indexed source.
+1. **Should CSA 22.1-12 (Canadian Electrical Code) be included?** -- It's in the mkt-a-codes/CSA folder but is a general electrical code, not marine/LNG-specific. The issue scope says "OCIMF and CSA standards from mkt-a-codes" which arguably includes all CSA standards found. **Recommendation:** Include it with `domain: electrical` for completeness; it was part of the indexed source.
 
 2. **Should OCIMF OVID/OVPQ documents get ledger entries?** -- These are inspection/vetting questionnaire documents, not engineering standards. **Recommendation:** Exclude from ledger; they are operational forms, not standards. If needed, they can be addressed in a separate operational-document registry.
 
-3. **Should the ~25 remaining API standards in acma-codes get alias resolution in this issue?** -- The issue title says "OCIMF/CSA ledger entries" with API being secondary (alias handling only). **Recommendation:** Limit API scope to RP 1111 and RP 2SK (explicit in issue body); create a follow-on issue for remaining API standards.
+3. **Should the ~25 remaining API standards in mkt-a-codes get alias resolution in this issue?** -- The issue title says "OCIMF/CSA ledger entries" with API being secondary (alias handling only). **Recommendation:** Limit API scope to RP 1111 and RP 2SK (explicit in issue body); create a follow-on issue for remaining API standards.
 
 4. **How should the OCIMF coefficient data (xlsx, digitized figures) be handled?** -- These are engineering data artifacts, not standards. They have value for mooring analysis but don't fit the standards-transfer-ledger model. **Recommendation:** Defer to a separate data-asset registry or note their existence in the MEG entry `notes` field. Not ledger entries.
 

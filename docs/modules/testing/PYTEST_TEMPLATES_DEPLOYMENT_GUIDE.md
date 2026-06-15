@@ -133,7 +133,7 @@ REPOS_DIR="$(pwd)"
 REPOSITORIES=(
     "digitalmodel"
     "energy"
-    "frontierdeepwater"
+    "client-a"
     "aceengineer-code"
     "worldenergydata"
     # ... add all 26 repositories
@@ -178,9 +178,9 @@ echo "Next steps: Integrate configurations into each repository's pyproject.toml
 
 | Tier | fail_under | Repositories |
 |------|-----------|--------------|
-| **1 (Production)** | 85% | digitalmodel, energy, frontierdeepwater |
+| **1 (Production)** | 85% | digitalmodel, energy, client-a |
 | **2 (Active Dev)** | 80% | aceengineer-website, hobbies, sd-work |
-| **3 (Maintenance)** | 80% | doris, saipem, OGManufacturing |
+| **3 (Maintenance)** | 80% | lng-a, client-d, OGManufacturing |
 
 ---
 

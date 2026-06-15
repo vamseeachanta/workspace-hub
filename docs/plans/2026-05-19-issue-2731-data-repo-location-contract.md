@@ -95,7 +95,7 @@ The implementation will re-run this live probe. If cleanup changes leave only `/
 ```text
 # /mnt/ace — Canonical External Storage
 Local drive (7.3 TB ext4) on ace-linux-1 for engineering data that exceeds git repo limits.
-Repo Overflow includes digitalmodel/, worldenergydata/, frontierdeepwater/, client_projects/, rock-oil-field/, saipem/, doris/.
+Repo Overflow includes digitalmodel/, worldenergydata/, client-a/, client-c/, client-b/, client-d/, lng-a/.
 ```
 
 **Operating-model proof** (`docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md`, lines 46-53):

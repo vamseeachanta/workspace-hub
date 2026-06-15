@@ -1,7 +1,7 @@
 # Execution-Readiness Audit + Runbook — Issue #2227
 
 > **Audit date:** 2026-04-30
-> **Subject issue:** [#2227 — feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis](https://github.com/vamseeachanta/workspace-hub/issues/2227)
+> **Subject issue:** [#2227 — feat(mkt-a-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis](https://github.com/vamseeachanta/workspace-hub/issues/2227)
 > **Subject plan:** `docs/plans/2026-04-12-issue-2227-ocimf-tandem-csa-z276-wiki-promotion.md`
 > **Approval marker:** `.planning/plan-approved/2227.md`
 > **Auditor lane:** plan-mode, read-only
@@ -27,7 +27,7 @@ Approved scope:    execute v5 Branch B when OCIMF preview content gate fails;
 
 **State today contradicts the precondition:**
 
-- The OCIMF Tandem summary artifact at `data/document-index/summaries/sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af.json` is now content-rich (`summary` ~2 KB describing scope/TOC; `text_preview` quotes title page + Terms of Use). The `acma-wiki-unblock-2245-handoff.yaml` entry has `ready_for_2227: true` for OCIMF Tandem.
+- The OCIMF Tandem summary artifact at `data/document-index/summaries/sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af.json` is now content-rich (`summary` ~2 KB describing scope/TOC; `text_preview` quotes title page + Terms of Use). The `mkt-a-wiki-unblock-2245-handoff.yaml` entry has `ready_for_2227: true` for OCIMF Tandem.
 - Issue #2521 ("OCIMF-TANDEM-MOORING preview content extraction") closed 2026-04-29T17:30:52Z — that close is what flipped the gate.
 - The most recent #2227 comment (2026-04-29T17:30:53Z, by vamseeachanta) acknowledges the unblock and frames Branch A as executable.
 - No new approval comment has scoped Branch A. The label is stale relative to the new precondition.
@@ -216,13 +216,13 @@ added: 2026-XX-XX
 last_updated: 2026-XX-XX
 sources:
   - doc_key: sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af
-    source_ref: acma_codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf
+    source_ref: mkt-a_codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf
 cross_links:
   - ocimf-meg4
 ---
 
 > doc_key: sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af
-> source_ref: ledger/acma_codes/OCIMF/OCIMF-TANDEM-MOORING
+> source_ref: ledger/mkt-a_codes/OCIMF/OCIMF-TANDEM-MOORING
 > promoted_from: 2227
 
 # OCIMF Tandem Mooring & Offloading Guidelines
@@ -269,7 +269,7 @@ Add at the bottom (or appropriate chronological slot):
 
 ```markdown
 ## [YYYY-MM-DD] ingest | OCIMF-TANDEM-MOORING promotion (#2227)
-- Promoted from acma_codes ledger entry sha256:5e5f61e785... .
+- Promoted from mkt-a_codes ledger entry sha256:5e5f61e785... .
 - Net-new page at `wiki/standards/ocimf-tandem-mooring.md`.
 - Narrow cross-reference appended to `wiki/standards/ocimf-meg4.md`.
 - Source: OCIMF *Tandem Mooring & Offloading Guidelines for Conventional Tankers at F(P)SO Facilities*, 1st Ed. 2009.
@@ -383,7 +383,7 @@ The audit found NO Branch A implementation on main — the wiki page does not ex
 | Test contract | `tests/knowledge/test_ocimf_tandem_promotion.py` |
 | Lint runner | `scripts/knowledge/llm_wiki.py` (cmd `lint`) |
 | Approval marker | `.planning/plan-approved/2227.md` |
-| Content gate inputs | `docs/reports/acma-wiki-unblock-2245-handoff.yaml`, `data/document-index/summaries/sha256:5e5f...json` |
+| Content gate inputs | `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml`, `data/document-index/summaries/sha256:5e5f...json` |
 | Existing MEG4 page (modify target) | `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` |
 | Engineering wiki schema | `knowledge/wikis/engineering/CLAUDE.md` |
 | Citation-contract rule | `.claude/rules/calc-citation-contract.md` |

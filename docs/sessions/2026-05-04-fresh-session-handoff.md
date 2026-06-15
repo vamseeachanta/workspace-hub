@@ -25,7 +25,7 @@ Last 7 commits authored by the source session (all on `main`):
 
 **Issues closed (8) at `status:done`:** #2615, #2587, #2589, #2592, #2597, #2602, #2612, #2532.
 
-**Issues filed (4) awaiting user triage:** #2629 (reverse cross-links), #2630 (cross-links regen), #2631 (deferred routing decisions for maritime-law / lng-projects / acma-projects), #2632 (rebind 3 stuck llm-wiki issues #2368/#2124/#2125).
+**Issues filed (4) awaiting user triage:** #2629 (reverse cross-links), #2630 (cross-links regen), #2631 (deferred routing decisions for maritime-law / lng-projects / mkt-a), #2632 (rebind 3 stuck llm-wiki issues #2368/#2124/#2125).
 
 ---
 
@@ -58,7 +58,7 @@ git fetch origin main
 Read each, decide priority/labels, optionally flip to `status:plan-review` if the discussion is straightforward:
 
 - **#2632** (META: rebind 3 stuck llm-wiki issues) — highest leverage. Unblocks #2368/#2124/#2125 which have been frozen since 2026-04-28. Each requires the user to commit `.planning/plan-approved/<n>.md` markers bound to specific SHAs. The remediation `git checkout` + marker template is in the issue body.
-- **#2631** (META: routing decisions for maritime-law / lng-projects / acma-projects) — needs a decision call from the user. Three wikis, three of {sanction / defer / archive} choices.
+- **#2631** (META: routing decisions for maritime-law / lng-projects / mkt-a) — needs a decision call from the user. Three wikis, three of {sanction / defer / archive} choices.
 - **#2629** + **#2630** (engineering reverse cross-links + cross-links.md regen) — small, mechanical. Ready to plan.
 
 ### Option 2: pivot to non-llm-wiki `status:plan-approved` work

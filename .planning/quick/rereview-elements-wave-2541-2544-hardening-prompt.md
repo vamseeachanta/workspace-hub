@@ -54,7 +54,7 @@ Before any wiki write, add failing tests or validation checks proving:
 ---
 
 ## Issue #2542
-Path: `docs/plans/2026-04-28-issue-2542-elements-doris-university-training-plan.md`
+Path: `docs/plans/2026-04-28-issue-2542-elements-lng-a-university-training-plan.md`
 
 ### Addendum under re-review
 ```markdown
@@ -87,7 +87,7 @@ This addendum is authoritative over earlier pseudocode if there is any conflict.
 ---
 
 ## Issue #2543
-Path: `docs/plans/2026-04-28-issue-2543-elements-doris-codes-standards-plan.md`
+Path: `docs/plans/2026-04-28-issue-2543-elements-lng-a-codes-standards-plan.md`
 
 ### Addendum under re-review
 ```markdown
@@ -128,7 +128,7 @@ This addendum is authoritative over earlier pseudocode if there is any conflict.
 
 ### Clearance authority and row-level schema
 - `docs/governance/woodfibre-extraction-clearance-2026.md` remains a hard prerequisite for any post-scout extraction.
-- Accepted approvers must be explicitly named by role: ACMA project owner, client-authorized reviewer, or legal/IP delegate. A generic "project lead" is insufficient.
+- Accepted approvers must be explicitly named by role: mkt-a project owner, client-authorized reviewer, or legal/IP delegate. A generic "project lead" is insufficient.
 - Row-level clearance must record: source path, document identifier, approver, approval date, allowed extraction level (`metadata-only`, `curated-fields`, `short-quote-approved`, `abstract-approved`), prohibited content, and expiration/review condition.
 
 ### No persisted full-text or default quotes

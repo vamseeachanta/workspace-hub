@@ -81,7 +81,7 @@ After installing filters and running "Apply to existing conversations":
 ## What stays in the inbox (expected residue)
 
 After the sweep, the inbox should contain only:
-- Live conversations (e.g., Sabitha tax + property thread, Frontier Deepwater group).
+- Live conversations (e.g., Sabitha tax + property thread, client-a group).
 - Job-application status updates (e.g., Anthropic STEM Fellow, GC Squared Naval Architect).
 - Calendar invitations and reminders.
 - Soccer-style local social coordination (Selim Ozkul / Memorial Outdoor).

@@ -44,7 +44,7 @@ graph TB
     subgraph "Tier 3: Local Agents"
         R1[aceengineer-admin<br/>local agents]
         R2[aceengineercode<br/>local agents]
-        R3[client_projects<br/>local agents]
+        R3[client-c<br/>local agents]
     end
 
     WH -.symlinks.-> R1

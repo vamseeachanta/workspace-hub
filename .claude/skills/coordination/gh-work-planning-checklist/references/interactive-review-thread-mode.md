@@ -20,7 +20,7 @@ Use this when a GitHub issue is intentionally serving as the discussion surface 
 
 Do not turn a simple "show me the issue so I can comment" request into a broad resource-intel fan-out. Fetch the issue and comments, return the link and comment-ready map, then continue deeper inspection only after the user has the discussion surface.
 
-## B1528 SIROCCO example pattern
+## B1528 proj-a example pattern
 
 For an engineering force-calculation revision issue, the comment-ready map should be force-by-force:
 

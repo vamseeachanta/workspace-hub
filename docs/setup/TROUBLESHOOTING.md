@@ -182,7 +182,7 @@ cat .git/info/sparse-checkout     # what's included?
 git sparse-checkout add <path>
 ```
 
-**Don't** run `git sparse-checkout disable` on `acma-projects/` — it hangs for ~22 minutes materializing 329K files.
+**Don't** run `git sparse-checkout disable` on `mkt-a/` — it hangs for ~22 minutes materializing 329K files.
 
 ## Cross-references
 

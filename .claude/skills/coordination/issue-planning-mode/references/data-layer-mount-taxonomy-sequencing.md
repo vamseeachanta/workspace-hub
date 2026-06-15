@@ -37,17 +37,17 @@ Public issues/docs may name folder classes and root patterns. Do not publish exa
 Allowed public examples:
 
 ```text
-/mnt/ace/client_projects/<client-or-project>/
-/mnt/ace/doris/<client-or-project-or-workstream>/
-/mnt/ace/saipem/<client-or-project-or-workstream>/
+/mnt/ace/client-c/<client-or-project>/
+/mnt/ace/lng-a/<client-or-project-or-workstream>/
+/mnt/ace/client-d/<client-or-project-or-workstream>/
 /mnt/local-analysis/<client>-llm-wiki/
 ```
 
 Avoid public examples like:
 
 ```text
-/mnt/ace/client_projects/<actual-client-project-name>/
-/mnt/ace/doris/<actual-client-project-name>/
+/mnt/ace/client-c/<actual-client-project-name>/
+/mnt/ace/lng-a/<actual-client-project-name>/
 ```
 
 ## Planning deliverables to request

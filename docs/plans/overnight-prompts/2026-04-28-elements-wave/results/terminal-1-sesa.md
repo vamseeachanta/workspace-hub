@@ -20,7 +20,7 @@
 - **Theme coverage** — every theme listed in #2541 acceptance criteria is represented:
   - reference-studies: 6 artifacts (G-ITE-10046/10008/10010/10024/10033/10042)
   - free-span / metocean: 6 artifacts (G-ITE-10029, L-MCA-10025 .docx + .pdf, L-LYO-10033/10032, L-MCA-10022)
-  - material-specs: 2 artifacts (L-HDS-10016 baseline + DORIS markup)
+  - material-specs: 2 artifacts (L-HDS-10016 baseline + lng-a markup)
   - subsea-valves-TBE: 3 artifacts (PIETRO trunnion brochure, RMT VM catalogue, ASTM compliance matrix .pptx)
   - logistics/deliverables: 3 artifacts (San Antonio Este logistics base description, Q-PRO-10066 deliverable, KOM presentation)
 - **Standards explicitly excluded:** DNV-ST-F101, API 6DSS, ASME B16.5, ASTM A351/A182/A276 — they belong in `wiki/standards/` per `.claude/rules/calc-citation-contract.md`.
@@ -40,12 +40,12 @@
 1. Are LYOS / MKII / Hilli three competing FLNG vessel options, or is one of them a topside identifier?
 2. Is the SESA project freely citeable inside the workspace-hub wiki, or does vendor brochure text need a redistribution policy first?
 3. Should Rev JRA review-markup PDFs be merged into base-rev source pages, or kept as separate review pages?
-4. Is there a private DORIS wiki page documenting the GSM-AO numbering scheme that would obviate a redocumentation concept page?
+4. Is there a private lng-a wiki page documenting the GSM-AO numbering scheme that would obviate a redocumentation concept page?
 
 ## Verification (commands run)
 
 - `gh issue view 2541` — OPEN, title matches, all referenced issues (#2540 umbrella, #2526/#2534/#2535/#2536) cited.
-- `Grep ^[a-z]+\tlng-projects\tdoris-62092-sesa\t deep-extraction-candidates.tsv` → 347 SESA candidate rows confirmed.
+- `Grep ^[a-z]+\tlng-projects\tlng-a-62092-sesa\t deep-extraction-candidates.tsv` → 347 SESA candidate rows confirmed.
 - `Grep . sesa-first-tranche.tsv -c` → 21 lines (header + 20 rows) confirmed.
 - File-existence post-write: all four required output paths exist and are non-empty.
 

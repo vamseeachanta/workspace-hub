@@ -77,7 +77,7 @@ uv run scripts/email/gmail-archive-extract.py --account personal --query "from:p
 
 ### Extract without deleting (safe first pass)
 ```bash
-uv run scripts/email/gmail-archive-extract.py --account ace --query "from:dorisgroup.com" --max 100
+uv run scripts/email/gmail-archive-extract.py --account ace --query "from:lng-agroup.com" --max 100
 ```
 
 ### After extraction: sync to workspace-hub repos and commit
@@ -111,7 +111,7 @@ Use `contact-manager` skill for normalization.
 ## Email Account Handling
 
 Each account has different cleanup priorities:
-- **ace**: Extract client emails (doris, mcdermott, shell, etc.) → their repos. Extract CRE market data → assethold. Delete spam/newsletters.
+- **ace**: Extract client emails (lng-a, mcdermott, shell, etc.) → their repos. Extract CRE market data → assethold. Delete spam/newsletters.
 - **personal**: Delete spam aggressively (promote.weebly.com, swimoutlet, wikimedia, etc.). Archive personal docs → achantas-data. School/parent emails → keep.
 - **skestates**: Almost everything is valuable (tenant, insurance, tax). Archive all → sabithaandkrishnaestates docs.
 

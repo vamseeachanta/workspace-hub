@@ -12,7 +12,7 @@
 
 ### Existing repo code
 
-- Found: `docs/BUSINESS_BRAIN.md:10-59` — canonical repo inventory; lists 24 active repos across 3 tiers: Tier-1 (workspace-hub, digitalmodel, assetutilities, aceengineer-website), Tier-2 (OGManufacturing, acma-projects, frontierdeepwater, worldenergydata, sabithaandkrishnaestates), Tier-3/archive (~11 repos). Interaction-limit lockdown (#2546) targeted public repos — Tier-1 and Tier-2 are the primary audit scope.
+- Found: `docs/BUSINESS_BRAIN.md:10-59` — canonical repo inventory; lists 24 active repos across 3 tiers: Tier-1 (workspace-hub, digitalmodel, assetutilities, aceengineer-website), Tier-2 (OGManufacturing, mkt-a, client-a, worldenergydata, sabithaandkrishnaestates), Tier-3/archive (~11 repos). Interaction-limit lockdown (#2546) targeted public repos — Tier-1 and Tier-2 are the primary audit scope.
 - Found: `docs/standards/CONTROL_PLANE_CONTRACT.md` — exists; defines `ace-linux-1` as dispatch control plane with GitHub-mutation authority. Relevant: branch protection rules that block unauthorized pushes to main are part of the same governance layer.
 - Gap: No dedicated security audit script exists in `scripts/security/` for branch-protection querying.
 - Gap: No `docs/security/` directory exists — this plan creates it as the evidence landing zone.

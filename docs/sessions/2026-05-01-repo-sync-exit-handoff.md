@@ -13,7 +13,7 @@ Trigger: `/repo-sync` + commit-untracked + sparse-disable + worktree sweep
 | 4. Sibling repo sweep | DONE | only aceengineer-admin had dirty state; **TOKEN LEAK**: Telegram Bot API token committed + pushed per user's authorization (private repo, codex/burn-20260427-issue-2493 branch). User authorized commit/push as private. |
 | 5. Encoding health check | NOT STARTED | runs after Phase 3 commit lands |
 | 6. Worktree decisions | NOT STARTED | 56 worktrees inventoried in background (bwi78rz7a); not consumed |
-| 7. Sparse-checkout disable | DONE | acma-projects (config disabled, 368K files unmaterialized — run `git checkout HEAD -- .` later); workspace-hub-issue-2515-planning worktree (config disabled, has pre-existing 31,718 staged deletions = in-progress branch work) |
+| 7. Sparse-checkout disable | DONE | mkt-a (config disabled, 368K files unmaterialized — run `git checkout HEAD -- .` later); workspace-hub-issue-2515-planning worktree (config disabled, has pre-existing 31,718 staged deletions = in-progress branch work) |
 
 ## Critical state
 
@@ -37,13 +37,13 @@ Files with applied markers (legitimate install/test patterns):
 - gmail-headless-oauth.md, engineering-calculation-plan-hardening.md
 
 ### Sparse-checkout state to remediate later
-- `acma-projects/`: `core.sparseCheckout=false` but only 34/368K files materialized on disk. Run when ready: `cd acma-projects && git checkout HEAD -- .` (will take ~30 min, prior runs deadlocked)
+- `mkt-a/`: `core.sparseCheckout=false` but only 34/368K files materialized on disk. Run when ready: `cd mkt-a && git checkout HEAD -- .` (will take ~30 min, prior runs deadlocked)
 - `workspace-hub-issue-2515-planning` (worktree): sparse disabled, 31,718 staged deletions remain (this is pre-existing in-progress branch work — DO NOT auto-commit)
 
 ### Worktree inventory in flight
 - Background task `bwi78rz7a` writing to `/tmp/worktree-inventory.txt`
 - Lightweight bash inventory — much faster than the failed subagent run (which timed out at 17%)
-- Skips workspace-hub root, 2515-planning worktree, and acma-projects
+- Skips workspace-hub root, 2515-planning worktree, and mkt-a
 
 ## To resume
 
@@ -64,12 +64,12 @@ bash .claude/hooks/check-encoding.sh
 cat /tmp/worktree-inventory.txt   # consume the bash inventory
 # Group dirty worktrees, dispatch subagents to commit each (per user "use agent teams")
 
-# 5. acma-projects rematerialization (background, ~30min)
-cd acma-projects && git checkout HEAD -- . &
+# 5. mkt-a rematerialization (background, ~30min)
+cd mkt-a && git checkout HEAD -- . &
 ```
 
 ## Gotchas hit this session
-1. **Auto-backgrounding** — Bash tool auto-backgrounds long commands; foreground commits got stuck behind 27-min sparse-disable processes. Lock contention on acma-projects required pkill cleanup.
+1. **Auto-backgrounding** — Bash tool auto-backgrounds long commands; foreground commits got stuck behind 27-min sparse-disable processes. Lock contention on mkt-a required pkill cleanup.
 2. **Per-worktree git config** — sparseCheckout config lived in `.git/config.worktree`, not local config. Initial `--unset` missed it.
 3. **Scanner false-positive cascade** — every `git commit` exposed a new tier of false positives (uv_run, agent_config_mod, html_comment_injection on the marker comment itself). Required iterative fixes.
 4. **Subagent timeouts** — worktree inventory subagent burned 14 minutes covering 17% of work; direct bash is faster for survey tasks.
@@ -81,4 +81,4 @@ cd acma-projects && git checkout HEAD -- . &
 - workspace-hub `.claude/hooks/check-skill-content.sh` modified (UNCOMMITTED — bundled into pending Phase 3 commit)
 - 16 files in workspace-hub got `scanner-allow:` markers (UNCOMMITTED — bundled into pending Phase 3 commit)
 - workspace-hub `.git/info/sparse-checkout` removed; `core.sparseCheckout=false` in worktree config
-- acma-projects sparse config disabled (working tree NOT yet rematerialized)
+- mkt-a sparse config disabled (working tree NOT yet rematerialized)

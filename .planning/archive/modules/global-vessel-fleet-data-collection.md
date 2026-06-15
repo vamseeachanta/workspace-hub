@@ -73,7 +73,7 @@ src/worldenergydata/vessel_fleet/
 │   │   ├── borr.py                 # 29 modern jackups
 │   │   ├── cosl.py                 # 40+ (32 jackups, 10 semisubs)
 │   │   ├── ades.py                 # 83 offshore + 40 onshore
-│   │   ├── saipem.py               # 12 drilling rigs
+│   │   ├── client-d.py               # 12 drilling rigs
 │   │   ├── stena.py                # 6 rigs
 │   │   ├── vantage.py              # 4 rigs
 │   │   ├── nabors.py               # Onshore + MODS platform rigs
@@ -82,7 +82,7 @@ src/worldenergydata/vessel_fleet/
 │   └── construction/               # Marine contractor configs
 │       ├── heerema.py              # Sleipnir, Thialf, Balder (crane vessels)
 │       ├── allseas.py              # Pioneering Spirit, Solitaire (pipelay + heavy-lift)
-│       ├── saipem_vessels.py       # Castorone, S7000 (pipelay + crane)
+│       ├── client-d_vessels.py       # Castorone, S7000 (pipelay + crane)
 │       ├── subsea7.py              # Seven Borealis, Seven Vega (pipelay + SURF)
 │       ├── mcdermott.py            # Amazon, DLV 2000 (derrick lay + pipelay)
 │       ├── boskalis.py             # Boka Vanguard, Fjord (heavy transport + crane)
@@ -220,7 +220,7 @@ tests/modules/vessel_fleet/
 |------------|---------|-------|-----------|
 | Heerema | 3 | Crane vessels (Sleipnir: 20,000t, Thialf: 14,200t) | heerema.com/fleet |
 | Allseas | 4+ | Pipelay, heavy-lift (Pioneering Spirit: 48,000t lift) | allseas.com/equipment |
-| Saipem | 17 | Pipelay, crane, FPSO install (spec PDFs available) | saipem.com/fleet-and-yards |
+| client-d | 17 | Pipelay, crane, FPSO install (spec PDFs available) | client-d.com/fleet-and-yards |
 | Subsea7 | 10+ | Pipelay, SURF, flex-lay | subsea7.com/our-fleet |
 | McDermott | 5+ | Derrick lay, pipelay (Amazon, DLV 2000) | mcdermott.com/fleet |
 | Boskalis | 15+ | Heavy transport, crane, cable-lay | boskalis.com/fleet |
@@ -281,7 +281,7 @@ tests/modules/vessel_fleet/
 | Borr Drilling | 29 | Jackups (all modern) | Fleet page + investor presentations |
 | COSL | 40+ | Jackups + semisubs | Fleet page (less detailed) |
 | ADES/Shelf | 83+40 | Jackups + onshore | Fleet page + FSR |
-| Saipem | 12 | Drilling rigs | Detailed spec PDFs |
+| client-d | 12 | Drilling rigs | Detailed spec PDFs |
 | Stena | 6 | Drillships + 1 semi | Individual rig pages |
 | Vantage | 4 | Drillships + jackups | Spec PDFs |
 | Nabors | 200+ | Onshore + MODS platform | Product pages |
@@ -292,7 +292,7 @@ tests/modules/vessel_fleet/
 
 ### Collection strategy per contractor type
 
-**Contractors with spec PDFs** (Transocean, Saipem, Vantage):
+**Contractors with spec PDFs** (Transocean, client-d, Vantage):
 1. Fetch fleet page HTML → extract rig names + spec PDF URLs
 2. Download each spec PDF → extract with pdfplumber
 3. Parse key-value pairs from PDF text → map to schema
@@ -419,7 +419,7 @@ tests/modules/vessel_fleet/
 "ENSCO 87"              → "ENSCO 87" (keep, it's the actual name)
 "VALARIS DS-4"          → "VALARIS DS-4"
 "M/V SLEIPNIR"          → "SLEIPNIR"
-"SAIPEM 10000"          → "SAIPEM 10000"
+"client-d 10000"          → "client-d 10000"
 ```
 
 ### Quality checks
@@ -476,13 +476,13 @@ Week 5: Phase 6 (fusion, dedup, quality) + BSEE bridge
 1. Transocean — best spec PDFs, clear URL pattern
 2. Valaris — largest mixed fleet, good HTML tables
 3. Borr — pure jackup fleet, modern data
-4. Saipem — detailed spec PDFs
+4. client-d — detailed spec PDFs
 5. Noble — post-Diamond acquisition, large fleet
 
 **Construction** (Phase 2B, first batch):
 1. Heerema — iconic crane vessels, clean fleet page
 2. Allseas — Pioneering Spirit, well-documented
-3. Saipem vessels — detailed PDFs already available
+3. client-d vessels — detailed PDFs already available
 4. Subsea7 — good fleet page
 
 ---
@@ -496,8 +496,8 @@ Week 5: Phase 6 (fusion, dedup, quality) + BSEE bridge
 | Jackups | 0 | ~200 | Contractors (Borr, Valaris, Noble, ADES, COSL) |
 | Onshore/Land rigs | 0 | ~500+ | Contractors (Nabors, P-UTI, H&P, ADES) |
 | Platform rigs | 0 | ~30 | Nabors MODS, others |
-| Crane vessels | 0 | ~15 | Heerema, Saipem, others |
-| Pipelay vessels | 0 | ~20 | Allseas, Saipem, Subsea7, McDermott |
+| Crane vessels | 0 | ~15 | Heerema, client-d, others |
+| Pipelay vessels | 0 | ~20 | Allseas, client-d, Subsea7, McDermott |
 | Heavy-lift/transport | 0 | ~10 | Allseas, Boskalis, OHT |
 | Wind installation | 0 | ~15 | DEME, Van Oord, Cadeler |
 | **Total** | **16** | **~900+** | |

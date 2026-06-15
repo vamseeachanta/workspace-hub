@@ -345,7 +345,7 @@ TASKS=(
   "digitalmodel|Implement user login"
   "energy|Quick status check of pipeline"
   "hobbies|Add new hobby to list"
-  "frontierdeepwater|Design stress analysis architecture"
+  "client-a|Design stress analysis architecture"
 )
 
 for task_entry in "${TASKS[@]}"; do

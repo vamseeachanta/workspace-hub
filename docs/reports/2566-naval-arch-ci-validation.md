@@ -22,7 +22,7 @@
 | 1 | `uv sync` (in `digitalmodel/`) | ⚠️ PARTIAL | Substantively complete: venv populated, all needed packages installed. The sync process lingers indefinitely after install (PID stayed alive >18s and was killed manually). Workaround documented as follow-up. |
 | 2 | `pytest tests/naval_architecture/test_yaw_moment_sweep.py` | ✅ PASS | **21 passed** in 51.14s. Zero failures. |
 | 3 | `pytest tests/naval_architecture/test_rudder_stock_torque_sweep.py` | ⚠️ 18/19 PASS | 18 passed, **1 failed**: `test_public_import_surface_outside_pytest_path_injection` — `load_packaged_rudder_stock_torque_yaml` is not re-exported from `digitalmodel.naval_architecture.__init__.py`. **Real bug.** Filed as follow-up below. |
-| 4 | `pytest tests/naval_architecture/test_b1528_sirocco_yaw_moment.py` | ⚠️ 5/6 PASS | 5 passed, **1 failed**: `test_packaged_b1528_yaml_declared_as_package_data` — asserts literal substring `'digitalmodel = ["naval_architecture/data/*.yml"]'` in pyproject.toml, but the actual declaration is `digitalmodel = ["subsea/cross_sections/fixtures/*.yml", "naval_architecture/data/*.yml"]`. **Test-string bug** (too strict — package-data IS correctly declared). Filed as follow-up below. |
+| 4 | `pytest tests/naval_architecture/test_b1528_proj-a_yaw_moment.py` | ⚠️ 5/6 PASS | 5 passed, **1 failed**: `test_packaged_b1528_yaml_declared_as_package_data` — asserts literal substring `'digitalmodel = ["naval_architecture/data/*.yml"]'` in pyproject.toml, but the actual declaration is `digitalmodel = ["subsea/cross_sections/fixtures/*.yml", "naval_architecture/data/*.yml"]`. **Test-string bug** (too strict — package-data IS correctly declared). Filed as follow-up below. |
 | 5 | `ruff check src/digitalmodel/naval_architecture/ tests/naval_architecture/` | ⚠️ 13 errors | All in unrelated `tests/naval_architecture/test_vessel_fleet_adapter.py`; none in #2564/#2565 code. Auto-fixable with `--fix`. |
 | 6 | `uv build` | ✅ PASS | Built `digitalmodel-0.1.1.tar.gz` + `digitalmodel-0.1.1-py3-none-any.whl`. |
 | 7 | Wheel manifest — both YAMLs bundled | ✅ PASS | Both files present at expected paths with non-zero sizes (yaw 898 B, rudder 2123 B). |
@@ -47,7 +47,7 @@ Both YAML resources from [#2564](https://github.com/vamseeachanta/workspace-hub/
 digitalmodel = ["subsea/cross_sections/fixtures/*.yml", "naval_architecture/data/*.yml"]
 ```
 
-The naval-arch path IS declared; the sirocco test failure (#4) is from an over-strict literal match assertion.
+The naval-arch path IS declared; the proj-a test failure (#4) is from an over-strict literal match assertion.
 
 ## Unrelated failures — propose follow-up issues
 
@@ -69,6 +69,6 @@ The naval-arch path IS declared; the sirocco test failure (#4) is from an over-s
 
 The two failures are bounded and reasoned-about:
 - **#3 failure (rudder)** is a real but narrow-scope public-API gap — the loader exists, just isn't re-exported from `__init__`. File as a follow-up; do not block #2566 closure on it.
-- **#4 failure (sirocco)** is a test-side bug (over-strict literal-string match) — the package-data IS correctly declared.
+- **#4 failure (proj-a)** is a test-side bug (over-strict literal-string match) — the package-data IS correctly declared.
 
 Neither failure undermines the #2564/#2565 deliverables themselves. **#2566 quality-gate scope is satisfied.**

@@ -78,7 +78,7 @@ Interpretation:
 
 2. cross-repo or non-workspace-hub relative paths being counted as workspace-hub repo drift
 - `digitalmodel/specs/module-registry.yaml`
-- `client_projects/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py`
+- `client-c/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py`
 - `digitalmodel/docs/...`
 
 Interpretation:

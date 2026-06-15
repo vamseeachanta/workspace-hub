@@ -14,13 +14,13 @@ graph TB
 
     WH --> TIER1["🚀 Tier-1 Repos<br/>────────────<br/>digitalmodel/<br/>assetutilities/<br/>assethold/<br/>worldenergydata/"]
 
-    WH --> TIER2["📦 Tier-2 Repos<br/>────────────<br/>aceengineer-admin/<br/>aceengineer-website/<br/>aceengineer-strategy/<br/>frontierdeepwater/<br/>doris/ seanation/<br/>saipem/ rock-oil-field/<br/>OGManufacturing/<br/>client_projects/"]
+    WH --> TIER2["📦 Tier-2 Repos<br/>────────────<br/>aceengineer-admin/<br/>aceengineer-website/<br/>aceengineer-strategy/<br/>client-a/<br/>lng-a/ client-f/<br/>client-d/ client-b/<br/>OGManufacturing/<br/>client-c/"]
 
     WH --> INFRA["🛠️ Infrastructure<br/>────────────<br/>scripts/<br/>tests/<br/>templates/<br/>tools/<br/>src/"]
 
     WH --> DATA["📊 Data & Knowledge<br/>────────────<br/>data/<br/>knowledge/<br/>knowledge-base/<br/>docs/<br/>reports/<br/>notes/"]
 
-    WH --> OTHER["📂 Other<br/>────────────<br/>achantas-data/<br/>achantas-media/<br/>acma-projects/<br/>investments/<br/>hobbies/<br/>_archive/"]
+    WH --> OTHER["📂 Other<br/>────────────<br/>achantas-data/<br/>achantas-media/<br/>mkt-a/<br/>investments/<br/>hobbies/<br/>_archive/"]
 
     style WH fill:#f9f,stroke:#333,stroke-width:4px
     style CONFIG fill:#bbf,stroke:#333,stroke-width:2px
@@ -86,13 +86,13 @@ graph LR
 - **`aceengineer-admin/`**: Business administration automation
 - **`aceengineer-website/`**: Company website (Flask)
 - **`aceengineer-strategy/`**: Business strategy
-- **`frontierdeepwater/`**: Marine engineering project
-- **`doris/`**: Marine domain project
-- **`seanation/`**: Drilling domain project
-- **`saipem/`**: Construction/engineering domain
-- **`rock-oil-field/`**: Oil field analysis
+- **`client-a/`**: Marine engineering project
+- **`lng-a/`**: Marine domain project
+- **`client-f/`**: Drilling domain project
+- **`client-d/`**: Construction/engineering domain
+- **`client-b/`**: Oil field analysis
 - **`OGManufacturing/`**: Manufacturing domain
-- **`client_projects/`**: Client project collection
+- **`client-c/`**: Client project collection
 
 ### 🛠️ Infrastructure
 - **`scripts/`**: Automation scripts (quality checks, operations, cron)
@@ -111,7 +111,7 @@ graph LR
 
 ### 📂 Other
 - **`achantas-data/`**, **`achantas-media/`**: Personal data/media
-- **`acma-projects/`**: ACMA project collection
+- **`mkt-a/`**: mkt-a project collection
 - **`investments/`**: Investment tracking
 - **`hobbies/`**: Personal projects
 - **`_archive/`**: Archived content

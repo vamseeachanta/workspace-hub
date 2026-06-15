@@ -24,17 +24,17 @@ Page references a client project name?
 
 ---
 
-## Example 2: B1528 SIROCCO mooring-tension analysis (hypothetical)
+## Example 2: B1528 proj-a mooring-tension analysis (hypothetical)
 
-**Source**: workspace-hub#2760 SIROCCO force calculation review
+**Source**: workspace-hub#2760 proj-a force calculation review
 
-**Proposed page**: `wikis/naval-architecture/methodology/sirocco-rudder-angle-envelope.md`
+**Proposed page**: `wikis/naval-architecture/methodology/proj-a-rudder-angle-envelope.md`
 
 **Walkthrough**:
 
 ```
 Page references a client project name?
-  → YES (SIROCCO is the project; B1528 is the project code)
+  → YES (proj-a is the project; B1528 is the project code)
 
 Is project name in public domain?
   → Investigate:
@@ -56,7 +56,7 @@ Is all key data also publicly available?
 `source: workspace-hub#2760`
 
 **For a public page** (different slug, abstracted):
-`abstraction: applied; source private llm-wiki-<client> page-id sirocco-rudder-envelope`
+`abstraction: applied; source private llm-wiki-<client> page-id proj-a-rudder-envelope`
 
 ---
 
@@ -95,7 +95,7 @@ Is all key data also publicly available?
 
 ## Example 4: Mixed-tier OCIMF methodology page
 
-**Source**: OCIMF MEG4 Annex A convention + abstracted illustration from acma project
+**Source**: OCIMF MEG4 Annex A convention + abstracted illustration from mkt-a project
 
 **Proposed page**: `wikis/naval-architecture/methodology/ocimf-coefficient-interpretation.md`
 
@@ -109,12 +109,12 @@ Page section A: OCIMF MEG Annex A convention
 
 Page section B: Worked example using a deepwater FSO
   Page references a client project name?
-    → Original draft had "ACMA-2023-Q4 mooring study"
+    → Original draft had "mkt-a-2023-Q4 mooring study"
     → Public domain? NO
     → ABSTRACT to "a deepwater FSO mooring study (operator anonymized)"
 
 Page section C: Coefficient envelope ranges
-  References specific numeric envelopes from acma client work?
+  References specific numeric envelopes from mkt-a client work?
     → If exact: do NOT include in public; either remove section or
       sanitize to range like "typical Cyc range in deepwater
       single-screw FSOs is 0.4 to 0.8"

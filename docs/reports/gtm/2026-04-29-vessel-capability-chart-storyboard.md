@@ -27,10 +27,10 @@ This document is **planning-only**. No PNG/SVG/PDF assets are emitted by this ar
 | Standards inherited (citations) | DNV-ST-F101, DNV-RP-H103, DNV-ST-N001, DNV-OS-H101, API RP 1111 | Cited in `_references` arrays of the JSON inputs |
 
 **Out-of-bounds paths** (must NOT appear in any chart):
-- `client_projects/**`
-- `acma-projects/**`
-- `seanation/**`
-- `frontierdeepwater/**` (5% stake, not a public reference)
+- `client-c/**`
+- `mkt-a/**`
+- `client-f/**`
+- `client-a/**` (5% stake, not a public reference)
 - Any vessel-name-keyed measured-telemetry claim sourced from an engagement.
 
 ---
@@ -214,7 +214,7 @@ The C1+C2+C3 set alone covers all four ACs. C4 is added if brochure layout permi
 Before any chart is exported for external use, all of the following must be true and recorded:
 
 1. **Source provenance recorded** — chart's data-input paths cited in the export's accompanying caption/footnote.
-2. **Public-vs-private inputs identified** — every data path is from `digitalmodel/examples/demos/gtm/**` (representative-class disclosure inherited) or `docs/gtm/capability-map.md`. No paths from `client_projects/`, `acma-projects/`, `seanation/`, `frontierdeepwater/`, or any private archive.
+2. **Public-vs-private inputs identified** — every data path is from `digitalmodel/examples/demos/gtm/**` (representative-class disclosure inherited) or `docs/gtm/capability-map.md`. No paths from `client-c/`, `mkt-a/`, `client-f/`, `client-a/`, or any private archive.
 3. **Methodology and standards citations attached** — caption names DNV/API standards inherited from the JSON `_references`.
 4. **Tests/review state known** — chart-render run cleanly; demo source data not regenerated since last cross-provider review.
 5. **Legal scan run** — `scripts/legal/legal-sanity-scan.sh` is run in a mode that scans the actual generated collateral and caption text, not only textual git diffs. If `--diff-only` is used, generated PNG/SVG/PDF/caption artifacts must first be tracked or otherwise explicitly passed to the scanner; output is archived alongside the asset commit.

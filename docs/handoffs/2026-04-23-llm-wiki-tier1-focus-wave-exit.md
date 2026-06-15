@@ -17,7 +17,7 @@ This handoff records what was verified, what was changed, and what the next oper
 2. The `#2461`-`#2465` child issues are no longer blocked by `#2460`, but their plans drift from the landed contract and must be patched before implementation.
 3. `#2369` readiness mismatch was verified and commented: first Batch Pack 2 execution slice should use DOT + OMAE + OTC, not ISOPE.
 4. `#2216` and `#2227` remain `status:plan-review` and are not executable as written.
-5. Two new ACMA unblocker issues were created: `#2470` and `#2471`.
+5. Two new mkt-a unblocker issues were created: `#2470` and `#2471`.
 
 ## Git / landing state
 
@@ -93,7 +93,7 @@ Do not confuse these with the `#2460` landed artifact set.
 
 ### New issues created
 
-- `#2470` — `feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion`
+- `#2470` — `feat(mkt-a-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion`
   - https://github.com/vamseeachanta/workspace-hub/issues/2470
 - `#2471` — `feat(knowledge): decide sanctioned CSA Z276 wiki routing and durability contract`
   - https://github.com/vamseeachanta/workspace-hub/issues/2471
@@ -119,7 +119,7 @@ Do not confuse these with the `#2460` landed artifact set.
 - `#2227` — OPEN, `status:plan-review`, priority medium
   - Not executable; blocked by content readiness and CSA routing decision.
 - `#2470` — OPEN, priority medium
-  - New ACMA summary-readiness unblocker.
+  - New mkt-a summary-readiness unblocker.
 - `#2471` — OPEN, priority medium
   - New CSA wiki routing/durability unblocker.
 
@@ -213,7 +213,7 @@ Patch the plan to:
 - add finding types for missing / wrong registry path
 - add fixture case for non-canonical registry path or missing module-routing.yaml
 
-## ACMA / LLM-wiki next work
+## mkt-a / LLM-wiki next work
 
 ### `#2369`
 
@@ -238,7 +238,7 @@ Do not approve/execute current plan.
 Blockers:
 
 - #2227 target summary artifacts exist but have empty `summary` fields.
-- `docs/reports/acma-wiki-unblock-2245-handoff.yaml` says `ready_for_2227: false`.
+- `docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml` says `ready_for_2227: false`.
 - CSA routing/durability is unresolved.
 
 Use new blockers:

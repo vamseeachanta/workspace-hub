@@ -12,14 +12,14 @@
 
 ## ▶ REMAINING WORK — assigned to ace-linux-2
 
-### deckhand#2 — Rotate DECKHAND_PAT_ACMA + DECKHAND_PAT_DORIS (DUE 2026-06-08)
+### deckhand#2 — Rotate DECKHAND_PAT_mkt-a + DECKHAND_PAT_lng-a (DUE 2026-06-08)
 - Labeled `host:ace-linux-2`; full executable run sheet posted as issue comment 4645330367.
-- **Key finding:** rotation touches TWO env files — `~/.hermes/deckhand/secrets.env` (shims, via `add-scope-pat.sh acma|doris`) AND `~/.hermes/.env` (verify-pat, direct edit). Update both or split-brain. Still `hermes gateway restart` despite the script's "no restart" note (gateway caches env separately).
+- **Key finding:** rotation touches TWO env files — `~/.hermes/deckhand/secrets.env` (shims, via `add-scope-pat.sh mkt-a|lng-a`) AND `~/.hermes/.env` (verify-pat, direct edit). Update both or split-brain. Still `hermes gateway restart` despite the script's "no restart" note (gateway caches env separately).
 - On close, the daily GTM routine flips the EXP-002 broad-send gate ⚠️→✅ on its next 11:00 UTC run.
 
 ### Other open gates (human-only, no host pin)
-- **strategy#30:** post deck-grade confirmation comment on the Doris-demo material → unblocks deck #1 (#31, due ~06-11) + Intermoor canary.
-- **PRs awaiting Vamsee review:** ace-strategy #60/#61/#62 (Thread C), #63 (Baez pamphlet). Approving = routine merges next run (gate 5). Voice-edit #61 before the Collide post (week of 06-09).
+- **strategy#30:** post deck-grade confirmation comment on the lng-a-demo material → unblocks deck #1 (#31, due ~06-11) + Intermoor canary.
+- **PRs awaiting Vamsee review:** ace-strategy #60/#61/#62 (Thread C), #63 (client-g pamphlet). Approving = routine merges next run (gate 5). Voice-edit #61 before the Collide post (week of 06-09).
 - **strategy#59:** Hanwha SuccessFactors portal sign-in (req #1546/#1547).
 
 ## Routine management

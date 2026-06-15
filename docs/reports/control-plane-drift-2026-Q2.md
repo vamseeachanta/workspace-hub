@@ -14,22 +14,22 @@ Scan root: `/mnt/local-analysis/workspace-hub`
 | aceengineer-website | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | achantas-data | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | achantas-media | ✅ | ✅ | ❌ | ✅ | ✅ | missing: .claude |
-| acma-projects | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
+| mkt-a | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | assethold | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | assetutilities | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | CAD-DEVELOPMENTS | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
-| client_projects | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
+| client-c | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | digitalmodel | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
-| doris | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
-| frontierdeepwater | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
+| lng-a | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
+| client-a | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | hobbies | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | investments | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | OGManufacturing | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
-| rock-oil-field | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
+| client-b | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | sabithaandkrishnaestates | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
-| saipem | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
+| client-d | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | sd-work | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
-| seanation | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
+| client-f | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | teamresumes | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 | worldenergydata | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
 

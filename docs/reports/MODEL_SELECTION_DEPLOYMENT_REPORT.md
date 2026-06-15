@@ -13,7 +13,7 @@ Successfully deployed the automated model selection system to the top 5 work rep
 **Target Repositories (Work Tier 1 & 2):**
 1. ✅ digitalmodel (Work Tier 1 - Production)
 2. ✅ energy (Work Tier 1 - Production)
-3. ✅ frontierdeepwater (Work Tier 1 - Production)
+3. ✅ client-a (Work Tier 1 - Production)
 4. ✅ aceengineercode (Work Tier 2 - Active)
 5. ✅ assetutilities (Work Tier 2 - Active)
 
@@ -71,7 +71,7 @@ Each repository received the following files:
 |------------|-----------------|----------------------|-----------|------------|--------|
 | digitalmodel | ✅ | ✅ | ✅ | ✅ | SUCCESS |
 | energy | ✅ | ✅ | ✅ | ✅ | SUCCESS |
-| frontierdeepwater | ✅ | ✅ | ✅ | ✅ | SUCCESS |
+| client-a | ✅ | ✅ | ✅ | ✅ | SUCCESS |
 | aceengineercode | ✅ | ✅ | ✅ | ✅ | SUCCESS |
 | assetutilities | ✅ | ✅ | ✅ | ✅ | SUCCESS |
 
@@ -165,7 +165,7 @@ All repositories now share the centralized usage log:
 - **Typical tasks:** O&G data analysis, NPV calculations
 - **Expected distribution:** Balanced across all models
 
-### frontierdeepwater (Work Tier 1 - Production)
+### client-a (Work Tier 1 - Production)
 - **Tier bonus:** +1 to complexity score
 - **Typical tasks:** Marine engineering analysis
 - **Expected distribution:** Higher SONNET usage for calculations
@@ -239,25 +239,25 @@ chmod +x scripts/monitoring/check_claude_usage.sh
 ### Week 1: Top 5 Repositories (COMPLETE)
 - ✅ digitalmodel
 - ✅ energy
-- ✅ frontierdeepwater
+- ✅ client-a
 - ✅ aceengineercode
 - ✅ assetutilities
 
 ### Week 2: Remaining Work Repositories (PENDING)
 - worldenergydata
-- rock-oil-field
+- client-b
 - teamresumes
-- doris
-- saipem
+- lng-a
+- client-d
 - OGManufacturing
-- seanation
+- client-f
 
 ### Week 3: Personal Repositories (PENDING)
 - aceengineer-admin
 - aceengineer-website
 - hobbies
 - sd-work
-- acma-projects
+- mkt-a
 - achantas-data
 
 ### Week 4: Monitoring & Refinement (PENDING)

@@ -91,7 +91,7 @@ rules:
 
   # ---- Extract to repos ----
   "familydollar.com":               "sabithaandkrishnaestates/data/tenant"
-  "frontierdeepwater.com":          "frontierdeepwater/data/client"
+  "client-a.com":          "client-a/data/client"
   "engineeredcustomsolutions.com":  "aceengineer-admin/data/client-ecs"
   "sandsig.com":                    "assethold/data/cre-listings"
   # ... default → "achantas-data/data/other"

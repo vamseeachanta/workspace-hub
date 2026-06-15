@@ -16,13 +16,13 @@ Hard gates remain active: no implementation without live `status:plan-approved`;
 
 | Column | Layer | Issue | Status | Owner / route | Next checkpoint |
 |---|---|---:|---|---|---|
-| Ready / dependency input | Data | #2745 freeze ACMA projects and local-only archive posture | `status:plan-approved` | Claude CLI if execution starts | Verify freeze contract before any backup disposition live operation. |
-| Ready / dependency input | Data | #2746 create private `llm-wiki-acma` repo target | `status:plan-approved` | Claude CLI preferred; Codex review | Defines private wiki target required by #2747/#2748. |
+| Ready / dependency input | Data | #2745 freeze mkt-a projects and local-only archive posture | `status:plan-approved` | Claude CLI if execution starts | Verify freeze contract before any backup disposition live operation. |
+| Ready / dependency input | Data | #2746 create private `llm-wiki-mkt-a` repo target | `status:plan-approved` | Claude CLI preferred; Codex review | Defines private wiki target required by #2747/#2748. |
 | Blocked at gate | Data | #2747 raw-to-private-wiki promotion ledger | live label is `status:working`, not `status:plan-approved` | Claude attempted, Codex attempted; both stood down/blocked | Needs user approval reconciliation / live label update before implementation. Codex sandbox currently fails with `bwrap`; Claude correctly refused missing live approval. |
 | Waiting on data ledger | Result | #2748 client output scaffolding for reports/chatbots/evidence packs | `status:plan-approved` | Claude CLI after #2747 lands; Codex adversarial review | Plan explicitly blocks implementation on #2747 and #2746/#2389 being landed enough to define contracts. |
 | In review / fix loop | Execution / data disposition | #2769 pre-move backup disposition dry-run reporter | `status:working` | Claude implemented; Codex adversarial review | Codex found MAJORs; orchestrator patched output-residency guard + report redaction. Await final review. |
 | Needs planning before execution | Data | #2731 inventory/normalize data locations | `status:needs-plan` | planning lane only | Needed for broader canonical data/root taxonomy; do not implement until planned/reviewed/approved. |
-| Portfolio / epic | Data | #2744 ACMA client project data-cycle readiness/private llm-wiki launch | open epic | orchestrator | Use as umbrella tracking surface after issue comments are posted. |
+| Portfolio / epic | Data | #2744 mkt-a client project data-cycle readiness/private llm-wiki launch | open epic | orchestrator | Use as umbrella tracking surface after issue comments are posted. |
 
 ## Delegation lanes
 

@@ -109,7 +109,7 @@ All four verification checks pass.
 | No `status:plan-review` applied to any GitHub issue | OK — same; the tightened AC §209 (kept intact by this lane) explicitly forbids self-promotion |
 | Did NOT run `gh issue edit`, `gh issue comment`, `gh issue close`, `gh pr *`, `scripts/review/plan-review-fanout.sh`, `codex`, `gemini`, `hermes`, or `git push` | OK — none invoked; the only `gh` invocations this wave's documents reference are read-only and were performed by the prior 14:46 / 15:11 lanes, not by this lane |
 | Did NOT create or edit `.planning/plan-approved/*` markers | OK — no files touched under `.planning/plan-approved/` |
-| Did NOT touch `digitalmodel/`, `assethold/`, `worldenergydata/`, `frontierdeepwater/`, `ai-orchestrator-template/`, or any production/source code | OK — verified by edit set; only two planning-artifact paths modified |
+| Did NOT touch `digitalmodel/`, `assethold/`, `worldenergydata/`, `client-a/`, `ai-orchestrator-template/`, or any production/source code | OK — verified by edit set; only two planning-artifact paths modified |
 | Did NOT commit; left edits in working tree for user review | OK — `git diff` continues to show the changes; no commit object created by this lane |
 | Wrote exactly one primary result artifact at the specified path | OK — `docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2555-consistency-20260429-1535.md` |
 | Did NOT overwrite any existing nextwave result file | OK — checked: the 14:46 patch result, the 15:11 re-review result, and any other `nextwave-followup-*-2555*` results are untouched; this lane writes only its own filename with the `-consistency-20260429-1535` suffix |
@@ -151,7 +151,7 @@ This lane explicitly DID NOT:
 - Apply any GitHub label, including `status:plan-approved`, `status:plan-review`, or any other label.
 - Create, edit, or delete any approval marker under `.planning/plan-approved/*`.
 - Run `scripts/review/plan-review-fanout.sh`, `codex`, `gemini`, or `hermes` — fanout dispatch and provider invocation are out-of-scope for this planning/document-consistency lane.
-- Edit any production or source code path (`digitalmodel/`, `assethold/`, `worldenergydata/`, `frontierdeepwater/`, `ai-orchestrator-template/`, etc.).
+- Edit any production or source code path (`digitalmodel/`, `assethold/`, `worldenergydata/`, `client-a/`, `ai-orchestrator-template/`, etc.).
 - Draft or send outreach (no recruiter/contractor email, no external publishing, no Slack/Discord, no Gmail mutation).
 - Print, hardcode, or expose any secret or private contact detail.
 - Create a git commit. The two file edits remain in the working tree for user review and disposition.

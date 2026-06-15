@@ -1,7 +1,7 @@
 # Wave 1 (#2261) Execution Packet
 
 Issue
-- #2261 — feat(acma-codes): Wave 1 metadata-only wiki sweep — OCIMF (MEG 4), OCIMF, CSA
+- #2261 — feat(mkt-a-codes): Wave 1 metadata-only wiki sweep — OCIMF (MEG 4), OCIMF, CSA
 - URL: https://github.com/vamseeachanta/workspace-hub/issues/2261
 - Parent: #2260
 - Related blockers/context: #2227, #2245, #2207, #2216
@@ -12,10 +12,10 @@ Status
 
 ## 1. Exact directory inventory targets
 
-Target roots under `/mnt/ace/acma-codes/`:
+Target roots under `/mnt/ace/mkt-a-codes/`:
 
 1. `OCIMF (MEG 4)/`
-   - path: `/mnt/ace/acma-codes/OCIMF (MEG 4)`
+   - path: `/mnt/ace/mkt-a-codes/OCIMF (MEG 4)`
    - current file count: 59
    - ext mix:
      - pdf: 51
@@ -30,7 +30,7 @@ Target roots under `/mnt/ace/acma-codes/`:
      - `OCIMF MEG4 (Working Document).docx`
 
 2. `OCIMF/`
-   - path: `/mnt/ace/acma-codes/OCIMF`
+   - path: `/mnt/ace/mkt-a-codes/OCIMF`
    - current file count: 22
    - ext mix:
      - pdf: 20
@@ -42,7 +42,7 @@ Target roots under `/mnt/ace/acma-codes/`:
      - `Figures/A10 ... Loaded Tanker.pdf`
 
 3. `CSA/`
-   - path: `/mnt/ace/acma-codes/CSA`
+   - path: `/mnt/ace/mkt-a-codes/CSA`
    - current file count: 5
    - ext mix:
      - pdf: 5
@@ -68,19 +68,19 @@ Why
 
 Owned paths
 - `docs/reports/2261-wave1-*`
-- `tmp/acma-wave1-*`
+- `tmp/mkt-a-wave1-*`
 - the exact approved metadata-only wiki/stub output paths once approved
 - the exact approved document-index provenance output paths once approved
 
 Read-only paths
-- `/mnt/ace/acma-codes/OCIMF (MEG 4)/`
-- `/mnt/ace/acma-codes/OCIMF/`
-- `/mnt/ace/acma-codes/CSA/`
+- `/mnt/ace/mkt-a-codes/OCIMF (MEG 4)/`
+- `/mnt/ace/mkt-a-codes/OCIMF/`
+- `/mnt/ace/mkt-a-codes/CSA/`
 - `data/document-index/index.jsonl`
 - `data/document-index/standards-transfer-ledger.yaml`
 - `docs/document-intelligence/standards-codes-provenance-reuse-contract.md`
-- `docs/reports/acma-2227-metadata-only-interim.yaml`
-- `docs/reports/acma-2227-metadata-only-wiki-stubs.md`
+- `docs/reports/mkt-a-2227-metadata-only-interim.yaml`
+- `docs/reports/mkt-a-2227-metadata-only-wiki-stubs.md`
 
 Forbidden paths before approval
 - `docs/plans/README.md`
@@ -120,9 +120,9 @@ Forbidden paths before approval
 
 Inventory and sanity
 - `python - <<'PY' ... inventory roots ... PY`
-- `find '/mnt/ace/acma-codes/OCIMF (MEG 4)' -type f | wc -l`
-- `find '/mnt/ace/acma-codes/OCIMF' -type f | wc -l`
-- `find '/mnt/ace/acma-codes/CSA' -type f | wc -l`
+- `find '/mnt/ace/mkt-a-codes/OCIMF (MEG 4)' -type f | wc -l`
+- `find '/mnt/ace/mkt-a-codes/OCIMF' -type f | wc -l`
+- `find '/mnt/ace/mkt-a-codes/CSA' -type f | wc -l`
 
 Metadata checks
 - `pdfinfo <file>` for PDFs
@@ -147,7 +147,7 @@ Recommended execution outputs:
 - `docs/reports/2261-wave1-family-map.md`
 - `docs/reports/2261-wave1-metadata-stubs.md`
 - `docs/reports/2261-wave1-validation.md`
-- optional temp scratch/manifests under `tmp/acma-wave1-*`
+- optional temp scratch/manifests under `tmp/mkt-a-wave1-*`
 
 ## 7. Risks / blockers / assumptions
 

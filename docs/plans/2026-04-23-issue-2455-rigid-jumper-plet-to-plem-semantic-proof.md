@@ -270,7 +270,7 @@ sys.exit(0 if proof_passes(findings) else 2)
 - [ ] `semantic_diff.py` produces a JSON report matching `expected_diff_report.json`
 - [ ] `docs/standards/SEMANTIC_DIFF_TAXONOMY.md` exists with five defined categories and one worked jumper-family example per category
 - [ ] Roadmap promotes PLET-to-PLEM rigid jumper from "Partial" to "Ready now" with a dated note referencing this plan
-- [ ] Fixture `spec.yml` is non-proprietary: `grep -iE 'ballymore|acma|ansys|saipem'` returns empty on the committed fixture copy
+- [ ] Fixture `spec.yml` is non-proprietary: `grep -iE 'ballymore|mkt-a|ansys|client-d'` returns empty on the committed fixture copy
 - [ ] Fixture size is reviewable: target `spec.yml` <= 2 000 lines; justify in revision wave if infeasible
 - [ ] Review artifacts posted under `scripts/review/results/` for Claude, Codex, Gemini at `-plan-2455-*.md`
 
@@ -295,7 +295,7 @@ Revisions made based on review:
 
 ## Risks and Open Questions
 
-- **Risk — spec pedigree vs fixture committability:** the 68 253-line `plet_to_plem/spec.yml` is an extraction of proprietary-adjacent material (ACMA-ANSYS05 export per #1905; the word "ballymore" appears in the reporting-side fixture metadata). Committing unchanged would leak client/source identifiers. Mitigation: author a trimmed fixture under `digitalmodel/tests/fixtures/orcaflex/jumper/plet_to_plem_proof/` with scrubbed names, keeping only analysis-critical line types, segment count, constraints, and connector.
+- **Risk — spec pedigree vs fixture committability:** the 68 253-line `plet_to_plem/spec.yml` is an extraction of proprietary-adjacent material (mkt-a-ANSYS05 export per #1905; the word "ballymore" appears in the reporting-side fixture metadata). Committing unchanged would leak client/source identifiers. Mitigation: author a trimmed fixture under `digitalmodel/tests/fixtures/orcaflex/jumper/plet_to_plem_proof/` with scrubbed names, keeping only analysis-critical line types, segment count, constraints, and connector.
 - **Risk — template vs extract mismatch:** two distinct PLET-to-PLEM specs already exist (`library/templates/jumper_rigid_subsea/spec.yml` at 492 lines vs `jumper/plet_to_plem/spec.yml` at 68 253 lines). The issue says "preferably `jumper/plet_to_plem/spec.yml`"; this plan uses the template-shaped spec as the generator input and the monolithic artifacts in `jumper/plet_to_plem/monolithic/` as the ground-truth reference. The split is made explicit above.
 - **Risk — roadmap-cited taxonomy is vaporware:** `SEMANTIC_DIFF_TAXONOMY.md` is referenced by the roadmap (line 40) but absent from the tree. Creating it here is the lowest-surface-area remedy.
 - **Risk — negative-control coverage:** a proof that only asserts "no blocking findings" on a good input is weak. Plan includes `test_classifier_detects_injected_blocking_drift` and `test_classifier_keeps_ignorable_whitespace_off_blocking_list` so the classifier itself is tested.

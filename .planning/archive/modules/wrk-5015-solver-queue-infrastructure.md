@@ -1,13 +1,13 @@
 # WRK-5015 — Solver Queue Infrastructure Plan
 
-**Issue:** GH-1503 | **Machine:** acma-ansys05 (licensed-win-1)
+**Issue:** GH-1503 | **Machine:** mkt-a-ansys05 (licensed-win-1)
 **Approved by:** vamseeachanta (2026-03-30)
 
 ---
 
 ## Context
 
-This machine (`acma-ansys05`) holds an OrcFxAPI 11.6c licence. The goal is to automate
+This machine (`mkt-a-ansys05`) holds an OrcFxAPI 11.6c licence. The goal is to automate
 job processing so that `dev-primary` can push solver jobs via git and have them
 auto-executed here every 30 minutes without manual logins.
 

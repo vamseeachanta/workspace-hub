@@ -15,7 +15,7 @@ A fast POC is feasible if we split the work:
 3. Connect that service to the fastest Teams surface allowed by org settings: Teams tab, Bot Framework bot, incoming webhook demo bridge, or deep-link/manual fallback.
 
 HTML feasibility artifact:
-https://github.com/vamseeachanta/llm-wiki-acma/blob/main/reports/teams-bot/issue-2/2026-05-28_225033-teams-local-feasibility-poc-subissues.html
+https://github.com/vamseeachanta/llm-wiki-mkt-a/blob/main/reports/teams-bot/issue-2/2026-05-28_225033-teams-local-feasibility-poc-subissues.html
 
 ### Subissues created
 - [ ] #3 — Verify Teams tenant/app permissions and local Teams POC path

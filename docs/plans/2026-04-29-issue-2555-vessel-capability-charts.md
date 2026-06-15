@@ -196,7 +196,7 @@ Planning-only deliverable. The tests below are *plan-readiness checks*, not unit
 | every_chart_has_evidence_note | Each chart has public-source/assumption note | per-chart "Evidence & Legal Scope" subsection present |
 | every_chart_has_caption_draft | Each chart has draft caption text | per-chart "Caption Draft" subsection present |
 | every_chart_has_format_spec | Each chart names target output formats | per-chart "Output Formats" subsection present |
-| no_proprietary_input_paths | Storyboard cites only representative-class data | absence of `client_projects/`, `acma-projects/`, `seanation/`, `frontierdeepwater/` paths in storyboard |
+| no_proprietary_input_paths | Storyboard cites only representative-class data | absence of `client-c/`, `mkt-a/`, `client-f/`, `client-a/` paths in storyboard |
 | no_named_real_vessel_telemetry | Storyboard does not promise telemetry-from-named-named-vessel | absence of bare named-vessel claims like "Allseas Lorelay measured 3.2m heave on 2024-08-01" — claims must be classed as `representative_class` framings |
 | acceptance_criteria_mapped | Each issue AC has at least one chart concept addressing it | traceability matrix in storyboard |
 
@@ -275,7 +275,7 @@ Validation evidence:
 - `uv run python scripts/gtm/render_brochure_charts.py --digitalmodel-root /mnt/local-analysis/digitalmodel-issue-2514-impl --output-dir docs/reports/gtm/assets --legal-scan-dir docs/reports/gtm/legal-scans --create-output-dirs` → rendered C1/C2/C3 PNG/SVG/PDF/caption/metadata outputs.
 - `scripts/legal/legal-sanity-scan.sh --diff-only --json` → `rc=0` with no output on pass.
 - `uv run python -m py_compile scripts/gtm/render_brochure_charts.py` and `git diff --check` passed during closeout.
-- Artifact leak scan over `docs/reports/gtm/assets docs/reports/gtm/legal-scans` found no `/mnt/local-analysis`, `/tmp/pytest`, `client_projects`, `acma-projects`, `seanation`, or `frontierdeepwater` strings.
+- Artifact leak scan over `docs/reports/gtm/assets docs/reports/gtm/legal-scans` found no `/mnt/local-analysis`, `/tmp/pytest`, `client-c`, `mkt-a`, `client-f`, or `client-a` strings.
 - Visual QA inspected C1 PNG for legibility and obvious rendering corruption; remaining visual polish caveats are non-blocking and belong in #2556 brochure assembly if desired.
 
 Boundary retained:

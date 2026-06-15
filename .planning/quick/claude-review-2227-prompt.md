@@ -53,7 +53,7 @@ Plan under review:
     35|- `knowledge/wikis/marine-engineering/CLAUDE.md` and `knowledge/wikis/engineering/CLAUDE.md` — wiki conventions, frontmatter expectations, and parent operating-model linkage.
     36|
     37|### Documents consulted
-    38|- `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md` — parent approved plan identified OCIMF Tandem Mooring, CSA Z276.1-20, and CSA Z276.18 as the bounded promotion candidates.
+    38|- `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md` — parent approved plan identified OCIMF Tandem Mooring, CSA Z276.1-20, and CSA Z276.18 as the bounded promotion candidates.
     39|- `docs/plans/2026-04-11-issue-2226-ocimf-csa-ledger-provenance-backfill.md` — authoritative source for ledger-backed IDs, path evidence, and explicit out-of-scope breadth discovered after indexing.
     40|- `docs/plans/README.md` — confirms there was no canonical #2227 plan row before this planning recovery; this run creates it.
     41|- `docs/document-intelligence/standards-codes-provenance-reuse-contract.md` — provenance back-link expectations; promotion should consume ledger evidence, not raw reparse.

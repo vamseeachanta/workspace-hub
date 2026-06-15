@@ -1,7 +1,7 @@
 # Wave 3 Validation — #2263
 
 Issue
-- #2263 — feat(acma-codes): Wave 3 metadata-only wiki sweep — ISO, ASTM, IACS
+- #2263 — feat(mkt-a-codes): Wave 3 metadata-only wiki sweep — ISO, ASTM, IACS
 - Parent: #2260
 - Generated: 2026-04-13
 

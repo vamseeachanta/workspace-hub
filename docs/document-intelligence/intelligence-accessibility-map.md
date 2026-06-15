@@ -5,7 +5,7 @@
 > **Siblings:** [#2207](https://github.com/vamseeachanta/workspace-hub/issues/2207) (provenance contract), [#2209](https://github.com/vamseeachanta/workspace-hub/issues/2209) (durable/transient boundary)
 > **Status:** Normative — approved intelligence accessibility inventory for weekly review consumption
 > **Date:** 2026-04-12
-> **Last refresh:** 2026-04-12 — corrected stale assertions after #2104, #2136, #2225, #2226 landed; added ACMA-source accessibility notes (#2228)
+> **Last refresh:** 2026-04-12 — corrected stale assertions after #2104, #2136, #2225, #2226 landed; added mkt-a-source accessibility notes (#2228)
 > **Scope:** Inventory and accessibility analysis only. Canonical entry-point design is delegated to #2104; machine-readable registry implementation is delegated to #2136.
 
 ---
@@ -125,7 +125,7 @@ Machine-readable inventory and provenance tracking surfaces.
 | Corpus index | `data/document-index/index.jsonl` | ~1,033,933 records | Per-document index (path, SHA-256, size, extension, source) |
 | Registry stats | `data/document-index/registry.yaml` | Aggregate | Counts by source, domain, repo |
 | Standards transfer ledger | `data/document-index/standards-transfer-ledger.yaml` | 425 standards | Standard-to-repo/module mapping with status |
-| Mounted source registry | `data/document-index/mounted-source-registry.yaml` | 12 sources | Source-root inventory with mount definitions (includes `acma_codes_local` per #2225) |
+| Mounted source registry | `data/document-index/mounted-source-registry.yaml` | 12 sources | Source-root inventory with mount definitions (includes `mkt-a_codes_local` per #2225) |
 | Summaries | `data/document-index/summaries/<sha>.json` | ~639,585 files | Per-document LLM/deterministic classification |
 | Enhancement plan | `data/document-index/enhancement-plan.yaml` | 34,099 lines | Domain classification + gap analysis output |
 | Online resource registry | `data/document-index/online-resource-registry.yaml` | ~247 resources | Tracked online data sources |
@@ -190,7 +190,7 @@ This is the core deliverable. Each row maps an asset to its current discoverabil
 |---|---|---|---|---|---|---|
 | Corpus index (`index.jsonl`) | L2 | `data/document-index/index.jsonl` | `data-intelligence-map.md` Section 1 | Agent (pipeline) | **Partially discoverable** | Referenced in data-intelligence-map but not from docs/README.md |
 | Standards transfer ledger | L2 | `data/document-index/standards-transfer-ledger.yaml` | `data-intelligence-map.md` Section 1 | Agent + Human | **Partially discoverable** | Same |
-| Mounted source registry | L2 | `data/document-index/mounted-source-registry.yaml` | `data-intelligence-map.md` Section 1, `docs/document-intelligence/README.md` | Agent | **Partially discoverable** | Now 12 sources including `acma_codes_local` (#2225) |
+| Mounted source registry | L2 | `data/document-index/mounted-source-registry.yaml` | `data-intelligence-map.md` Section 1, `docs/document-intelligence/README.md` | Agent | **Partially discoverable** | Now 12 sources including `mkt-a_codes_local` (#2225) |
 | Summaries directory | L2 | `data/document-index/summaries/` | `data-intelligence-map.md` Section 1 | Agent (pipeline) | **Partially discoverable** | 639K files; no human-navigable summary of what's covered |
 | Design code registry | L2 | `data/design-codes/code-registry.yaml` | `data-intelligence-map.md` Section 5 | Agent + Human | **Partially discoverable** | Not referenced from engineering wiki or standards wiki pages |
 | Online resource registry | L2 | `data/document-index/online-resource-registry.yaml` | `data-intelligence-map.md` Section 1 | Agent | **Hard to discover** | Only referenced from data-intelligence-map |
@@ -314,11 +314,11 @@ Wikis are now referenced from two navigation surfaces under `docs/`:
 
 **Previous classification:** Weak — low severity. **Current classification:** Resolved.
 
-### 6.9 ACMA-source accessibility after #2225 and #2226
+### 6.9 mkt-a-source accessibility after #2225 and #2226
 
 **Status:** New — added 2026-04-12 (#2228).
 
-The `/mnt/ace/acma-codes` source is now registered as `acma_codes_local` in `data/document-index/mounted-source-registry.yaml` (#2225), and OCIMF/CSA standards from that source have ledger entries in `data/document-index/standards-transfer-ledger.yaml` (#2226):
+The `/mnt/ace/mkt-a-codes` source is now registered as `mkt-a_codes_local` in `data/document-index/mounted-source-registry.yaml` (#2225), and OCIMF/CSA standards from that source have ledger entries in `data/document-index/standards-transfer-ledger.yaml` (#2226):
 
 | Ledger ID | Standard | Accessibility |
 |---|---|---|
@@ -518,4 +518,4 @@ Based on the gaps identified in this map, work should proceed in this order:
 | **Partially discoverable** | 7 | Corpus index, standards ledger, mounted source registry, knowledge seeds, data-intelligence-map, engineering documentation map, wiki indexes (from outside wiki context) |
 | **Hard to discover** | 6 | Cross-wiki link index, online resource registry, enhancement plan, conference registries, resource intelligence maturity, document intelligence audit |
 
-**Overall assessment (2026-04-12):** The accessibility landscape has improved significantly since the initial inventory. The primary entry points (`docs/README.md`, `docs/document-intelligence/README.md`, `WORKSPACE_HUB_CAPABILITIES_SUMMARY.md`) now link to the intelligence ecosystem. LLM-wikis and architecture docs are reachable within 2 hops. The `acma_codes_local` source is registered and OCIMF/CSA standards are ledger-backed, though wiki promotion of these standards is pending (#2227). Remaining gaps are concentrated in secondary registries (conference, online resources, enhancement plan) that lack navigation links.
+**Overall assessment (2026-04-12):** The accessibility landscape has improved significantly since the initial inventory. The primary entry points (`docs/README.md`, `docs/document-intelligence/README.md`, `WORKSPACE_HUB_CAPABILITIES_SUMMARY.md`) now link to the intelligence ecosystem. LLM-wikis and architecture docs are reachable within 2 hops. The `mkt-a_codes_local` source is registered and OCIMF/CSA standards are ledger-backed, though wiki promotion of these standards is pending (#2227). Remaining gaps are concentrated in secondary registries (conference, online resources, enhancement plan) that lack navigation links.

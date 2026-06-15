@@ -19,8 +19,8 @@ knowledge/wikis/lng-projects/CLAUDE.md
 knowledge/wikis/lng-projects/wiki/index.md
 knowledge/wikis/lng-projects/wiki/log.md
 knowledge/wikis/lng-projects/wiki/overview.md
-knowledge/wikis/lng-projects/wiki/sources/elements-acma-projects-31522-woodfibre.md
-knowledge/wikis/lng-projects/wiki/sources/elements-doris-62092-sesa.md
+knowledge/wikis/lng-projects/wiki/sources/elements-mkt-a-31522-woodfibre.md
+knowledge/wikis/lng-projects/wiki/sources/elements-lng-a-62092-sesa.md
 knowledge/wikis/lng-projects/wiki/sources/woodfibre-corpus-pointer.md
 ```
 
@@ -53,7 +53,7 @@ Standards-page production for lng-projects is **not yet bootstrapped**. The wiki
 
 - `knowledge/wikis/lng-projects/CLAUDE.md` — frontmatter schema (title, tags, added, last_updated mandatory; sources/cross_links recommended); standards-page extra fields (`code_id`, `publisher`, `revision`) reserved for future standards routing; lines 13–24 declare the canonical directory layout.
 - `knowledge/wikis/lng-projects/wiki/index.md` — confirms entity/concept tables empty and source count = 3.
-- `knowledge/wikis/lng-projects/wiki/sources/elements-doris-62092-sesa.md` — SESA FLNG Terminal source page (metadata-only, frontmatter-only ingest from 2026-04-28).
+- `knowledge/wikis/lng-projects/wiki/sources/elements-lng-a-62092-sesa.md` — SESA FLNG Terminal source page (metadata-only, frontmatter-only ingest from 2026-04-28).
 - `knowledge/wikis/lng-projects/wiki/sources/woodfibre-corpus-pointer.md` — explicit metadata-only pointer; no abstracts or full-text per #2540/#2482 deny-list. The body line "This page does **not** authorize or contain document abstracts, direct quotes, tables, figures, or full-text extraction" sets the boundary that this plan must not cross.
 - Sibling: `knowledge/wikis/marine-engineering/wiki/` — partial overlap on cryogenic / process-safety topics; this plan will cross-link rather than duplicate (boundary-page pattern from naval-arch #2589 W1-D).
 - Sibling: `knowledge/wikis/naval-architecture/wiki/concepts/ship-structures.md` — gas-carrier hull-girder cross-link target if relevant; not duplicated here.
@@ -70,7 +70,7 @@ Standards-page production for lng-projects is **not yet bootstrapped**. The wiki
 - #2541 — OPEN (`status:plan-review`), "feat(llm-wiki): plan curated SESA LNG corpus extraction from Elements" — **SOURCE-PAGE work**; reserves SESA-specific extraction. This plan is concept-only and will not draft any SESA-specific source content.
 - #2544 — CLOSED (`status:plan-approved`), "feat(llm-wiki): scout Woodfibre LNG corpus for bounded extraction candidates" — produced the Woodfibre corpus pointer. This plan does not author or modify Woodfibre source-pages.
 - #2589 — OPEN (`status:plan-review`), "feat(llm-wiki): naval-architecture wiki topical expansion — 10 core concept pages (W1-D)" — review-shape precedent for this plan.
-- /mnt/ace inventory awareness only: `/mnt/ace/doris/62092_sesa/{000 Client Supplied,001 Transfer,002 Project Filing,_from_elements,data,analysis,999 Work Space}` confirms SESA raw material is locally accessible — out of scope for this concept-only plan, citable only by reference.
+- /mnt/ace inventory awareness only: `/mnt/ace/lng-a/62092_sesa/{000 Client Supplied,001 Transfer,002 Project Filing,_from_elements,data,analysis,999 Work Space}` confirms SESA raw material is locally accessible — out of scope for this concept-only plan, citable only by reference.
 - WebSearch — LNG project lifecycle phases — confirms canonical phases: Conceptualization/Pre-FEED → FEED (12-18 months) → EPC → Commissioning/Startup → Operations → (Decommissioning) (sources: whatispiping.com, epcintel.com, energy.gov Global LNG Fundamentals, 2b1stconsulting.com, engimates.com).
 - WebSearch — FLNG vs onshore LNG — confirms canonical comparison: FLNG 1.0-2.0 mtpa vs onshore 3.0-8.0 mtpa; FLNG 3-5 yr vs onshore 5-7 yr build; FLNG ~25% footprint; relocatable vs permanent (sources: en.wikipedia.org/wiki/Floating_liquefied_natural_gas, sciencedirect.com Floating LNG overview, oxfordenergy.org NG149 Floating LNG Update).
 
@@ -119,7 +119,7 @@ Coverage matrix vs. canonical LNG-project topic skeleton (after excluding #2541 
 - EXISTS: `knowledge/wikis/lng-projects/wiki/index.md` (page_count=3, source_count=3, last_updated=2026-05-01)
 - EXISTS: `knowledge/wikis/lng-projects/wiki/log.md`
 - EXISTS: `knowledge/wikis/lng-projects/wiki/overview.md` (placeholder)
-- EXISTS: `knowledge/wikis/lng-projects/wiki/sources/{elements-acma-projects-31522-woodfibre,elements-doris-62092-sesa,woodfibre-corpus-pointer}.md`
+- EXISTS: `knowledge/wikis/lng-projects/wiki/sources/{elements-mkt-a-31522-woodfibre,elements-lng-a-62092-sesa,woodfibre-corpus-pointer}.md`
 - MISSING (this plan creates): `wiki/concepts/lng-project-lifecycle.md`, `wiki/concepts/lng-liquefaction-processes.md`, `wiki/concepts/lng-storage-tanks.md`, `wiki/concepts/lng-marine-transfer-systems.md`, `wiki/concepts/lng-process-safety.md`, `wiki/concepts/lng-project-shapes.md`, `wiki/concepts/lng-boil-off-gas-management.md`, `wiki/concepts/lng-regulatory-framework.md`
 - MISSING (this plan creates): `tests/knowledge/test_lng_projects_expansion.py`
 - EXISTING (empty, scaffolded by `llm-wiki init` 2026-04-28): `wiki/concepts/`, `wiki/entities/`
@@ -140,7 +140,7 @@ Coverage matrix vs. canonical LNG-project topic skeleton (after excluding #2541 
 
 > "This page does **not** authorize or contain document abstracts, direct quotes, tables, figures, or full-text extraction."
 
-This plan's selected topics avoid every SESA-specific and Woodfibre-specific noun-phrase. No new page will mention "SESA", "Woodfibre", "ACMA project 31522", "Doris project 62092", or any project-name-bound facts; standards-body NAMING and generic LNG-industry concepts only.
+This plan's selected topics avoid every SESA-specific and Woodfibre-specific noun-phrase. No new page will mention "SESA", "Woodfibre", "mkt-a project 31522", "lng-a project 62092", or any project-name-bound facts; standards-body NAMING and generic LNG-industry concepts only.
 
 **Gap proofs** (`ls knowledge/wikis/lng-projects/wiki/concepts/ 2>&1`):
 
@@ -199,7 +199,7 @@ function author_lng_concept_page(slug, scope_summary):
     section "Standards / References" — ≥1 bullet NAMING NFPA|EN|IGC|SIGTTO|OCIMF|IACS|ABS|DNV|IMO with stable URL, but MUST NOT enumerate specific thresholds, formulas, or code clauses (those would belong on `wiki/standards/<code-id>.md` if/when path-sanction lands — see Open Question)
     section "Cross-References" — markdown links to ≥2 see_also targets
     forbid: extracted text from PDFs (#2482 deny-list)
-    forbid: any reference to "SESA", "Woodfibre", "ACMA project 31522", "Doris project 62092", or any project-bound name (#2541/#2544 reservation)
+    forbid: any reference to "SESA", "Woodfibre", "mkt-a project 31522", "lng-a project 62092", or any project-bound name (#2541/#2544 reservation)
     enforce: word count ≤ 400 per page (concept summary, not chapter copy)
 
 function update_index(index_path, new_pages):
@@ -245,8 +245,8 @@ Note: no seed-file (`knowledge/seeds/`) is used for lng-projects (verified 2026-
 | `test_frontmatter_required_fields` | Every new page has `title`, `tags`, `added`, `last_updated` per `CLAUDE.md` schema | parse YAML frontmatter | all 4 keys present, non-empty |
 | `test_frontmatter_see_also_min_two` | Each page lists ≥2 entries in `see_also` | parse YAML | `len(see_also) >= 2` |
 | `test_at_least_one_standards_body_named` | Page body NAMES ≥1 of NFPA / EN / IGC / SIGTTO / OCIMF / IACS / ABS / DNV / IMO | regex search of body text | match found per page |
-| `test_no_sesa_or_woodfibre_noun_phrases` | Body contains zero #2541/#2544 reserved phrases AND zero workspace-hub-internal corpus identifiers in the 8 NEW pages | regex `r'\b(SESA\|Woodfibre\|ACMA[- ]?project[- ]?\d{4,6}\|Doris[- ]?project[- ]?\d{4,6})\b'` (case-insensitive — generalized per r1 M2 to catch any future ACMA/Doris project code, not just 31522/62092) | zero matches in new pages |
-| `test_no_internal_corpus_identifiers` | Concept pages do not name any workspace-hub-internal corpus identifier (positive-list assertion per r1 M2) — any LNG-project noun-phrase named in a concept page must be an industry-canonical project name (e.g. KGP, Pluto, Sabine Pass, Cheniere) and never a workspace-hub-internal corpus identifier | regex search for `ACMA`/`Doris`/`62092`/`31522` patterns plus future scout-issue project codes | zero matches |
+| `test_no_sesa_or_woodfibre_noun_phrases` | Body contains zero #2541/#2544 reserved phrases AND zero workspace-hub-internal corpus identifiers in the 8 NEW pages | regex `r'\b(SESA\|Woodfibre\|mkt-a[- ]?project[- ]?\d{4,6}\|lng-a[- ]?project[- ]?\d{4,6})\b'` (case-insensitive — generalized per r1 M2 to catch any future mkt-a/lng-a project code, not just 31522/62092) | zero matches in new pages |
+| `test_no_internal_corpus_identifiers` | Concept pages do not name any workspace-hub-internal corpus identifier (positive-list assertion per r1 M2) — any LNG-project noun-phrase named in a concept page must be an industry-canonical project name (e.g. KGP, Pluto, Sabine Pass, Cheniere) and never a workspace-hub-internal corpus identifier | regex search for `mkt-a`/`lng-a`/`62092`/`31522` patterns plus future scout-issue project codes | zero matches |
 | `test_word_count_under_400` | Concept summary discipline (no chapter copy per #2482) | count words | each page < 400 words |
 | `test_index_links_resolve` | Every relative link in `index.md` Concepts + Entities tables resolves | walk markdown links | 100% resolve |
 | `test_see_also_paths_resolve` | Every `see_also` entry in each new page's frontmatter points to a real file on disk | parse YAML, `Path.exists()` per entry | 100% resolve |
@@ -264,7 +264,7 @@ Note: no seed-file (`knowledge/seeds/`) is used for lng-projects (verified 2026-
 - [ ] All 8 new wiki pages will exist with valid frontmatter (`title`, `tags`, `added=2026-05-03`, `last_updated=2026-05-03`).
 - [ ] Each new page will NAME ≥1 standards body (NFPA / EN / IGC / SIGTTO / OCIMF / IACS / ABS / DNV / IMO) with stable URL or sibling source-page link, but MUST NOT enumerate specific thresholds, formulas, or code clauses (those would belong on `wiki/standards/<code-id>.md` if/when path-sanction is granted).
 - [ ] Each new page will list ≥2 `see_also` cross-links, and every entry will resolve to a real file on disk.
-- [ ] No new page will reference any noun-phrase reserved by #2541 (SESA / Doris project 62092) or #2544 (Woodfibre / ACMA project 31522).
+- [ ] No new page will reference any noun-phrase reserved by #2541 (SESA / lng-a project 62092) or #2544 (Woodfibre / mkt-a project 31522).
 - [ ] No new page will duplicate scope of an existing source page in `wiki/sources/` — concept pages are project-agnostic, source pages are project-bound.
 - [ ] `index.md` Concepts table will list 8 new rows (alphabetical, including re-routed `lng-regulatory-framework`); Entities table empty placeholder retained (no entity pages this batch per r1 M1).
 - [ ] `index.md` frontmatter `page_count` will read ≥11 (3 existing source pages + 8 new concept pages).
@@ -289,7 +289,7 @@ Note: no seed-file (`knowledge/seeds/`) is used for lng-projects (verified 2026-
 
 **Revisions made based on review:**
 - M1 — Re-routed `lng-regulatory-framework.md` from `entities/` to `concepts/` (multi-body framework is abstract concept, not a tangible artifact entity).
-- M2 — Generalized SESA/Woodfibre reservation regex to `ACMA[- ]?project[- ]?\d{4,6}` and `Doris[- ]?project[- ]?\d{4,6}` wildcards; added `test_no_internal_corpus_identifiers` positive-list assertion.
+- M2 — Generalized SESA/Woodfibre reservation regex to `mkt-a[- ]?project[- ]?\d{4,6}` and `lng-a[- ]?project[- ]?\d{4,6}` wildcards; added `test_no_internal_corpus_identifiers` positive-list assertion.
 - m3 — Recomputed page_count math (3 → 11 = 3 existing source pages + 8 new concept pages); index.md Concepts table now 8 rows, Entities placeholder retained.
 - m4 — Schema/scope mismatch on `wiki/standards/` directory pre-declared in `lng-projects/CLAUDE.md` is documented as known-debt under Open Questions.
 - m5 — Corrected directory-existence claim: `wiki/concepts/` and `wiki/entities/` exist as empty directories (scaffolded by `llm-wiki init` 2026-04-28); only `wiki/standards/` is genuinely missing.

@@ -8,7 +8,7 @@ Codex and Hermes "unmapped path drift" is not a single class of problem. The cur
 - these should stay in the actionable repo-drift bucket
 
 2. Cross-repo / sibling-repo relative paths currently counted as workspace-hub repo drift
-- examples: `digitalmodel/specs/module-registry.yaml`, `client_projects/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py`, `digitalmodel/docs/...`
+- examples: `digitalmodel/specs/module-registry.yaml`, `client-c/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py`, `digitalmodel/docs/...`
 - these are not valid repo-local paths in the current workspace-hub checkout
 - recommendation: split them into a separate cross-repo/sibling-repo bucket
 

@@ -51,13 +51,13 @@ The deployed CLAUDE.md files contain three complementary rule sets:
 
 **Client Projects (8)**:
 - ✅ `aceengineer-website/CLAUDE.md` → 28K
-- ✅ `acma-projects/CLAUDE.md` → 28K
-- ✅ `client_projects/CLAUDE.md` → 28K
-- ✅ `doris/CLAUDE.md` → 28K
-- ✅ `frontierdeepwater/CLAUDE.md` → 28K
+- ✅ `mkt-a/CLAUDE.md` → 28K
+- ✅ `client-c/CLAUDE.md` → 28K
+- ✅ `lng-a/CLAUDE.md` → 28K
+- ✅ `client-a/CLAUDE.md` → 28K
 - ✅ `OGManufacturing/CLAUDE.md` → 28K
-- ✅ `saipem/CLAUDE.md` → 28K
-- ✅ `seanation/CLAUDE.md` → 28K
+- ✅ `client-d/CLAUDE.md` → 28K
+- ✅ `client-f/CLAUDE.md` → 28K
 
 **Data & Analysis Projects (4)**:
 - ✅ `achantas-data/CLAUDE.md` → 28K
@@ -67,7 +67,7 @@ The deployed CLAUDE.md files contain three complementary rule sets:
 
 **Energy & Oil Field Projects (3)**:
 - ✅ `energy/CLAUDE.md` → 28K
-- ✅ `rock-oil-field/CLAUDE.md` → 28K
+- ✅ `client-b/CLAUDE.md` → 28K
 - ✅ `sd-work/CLAUDE.md` → 28K
 
 **Asset Management (2)**:

@@ -6,7 +6,7 @@
 > **Review artifacts:** `scripts/review/results/2026-05-04-plan-2639-claude.md`, `scripts/review/results/2026-05-04-plan-2639-gemini.md`
 
 ## Problem Statement
-Issue #2639 will intentionally bundle W4-C Table G P2 items 4–6: `stability-in-waves`, core offshore platform entity pages, and live-count regeneration for `overview.md`. The batch will not touch raw/source-stub provenance or project-specific corpora such as SESA, Woodfibre, ACMA, or Doris.
+Issue #2639 will intentionally bundle W4-C Table G P2 items 4–6: `stability-in-waves`, core offshore platform entity pages, and live-count regeneration for `overview.md`. The batch will not touch raw/source-stub provenance or project-specific corpora such as SESA, Woodfibre, mkt-a, or lng-a.
 
 - `/mnt/ace` raw corpora will remain outside git; approved implementation will promote only curated summaries, metadata, cross-links, and provenance fields.
 - No plan will self-approve, create approval markers, or move an issue to `status:plan-approved`; this plan will stop at `status:plan-review` for user approval.
@@ -28,13 +28,13 @@ Issue #2639 will intentionally bundle W4-C Table G P2 items 4–6: `stability-in
 
 ### Out of Scope
 - Copying `/mnt/ace` raw data or source-stub bodies.
-- Project-specific facts from SESA, Woodfibre, ACMA/31522, Doris, or similar internal corpora.
+- Project-specific facts from SESA, Woodfibre, mkt-a/31522, lng-a, or similar internal corpora.
 - #2630 cross-link regeneration.
 - Editing `wiki/sources/` or #2638 deliverables except to count already-landed files.
 
 ## TDD Contract
 ```python
-RESERVED_PROJECT_TERMS = ["SESA", "Woodfibre", "ACMA", "31522", "Doris", "Doris University"]
+RESERVED_PROJECT_TERMS = ["SESA", "Woodfibre", "mkt-a", "31522", "lng-a", "lng-a University"]
 
 def test_no_project_or_raw_leakage(page):
     assert "/mnt/ace" not in page.text
@@ -63,7 +63,7 @@ def test_overview_uses_live_counts(repo_tree):
 ## Acceptance Criteria
 - [ ] Plan will explicitly cover W4-C Table G P2 items 4–6.
 - [ ] P2 pages will use current marine wiki schema and high-level summaries only.
-- [ ] New pages will not contain `/mnt/ace`, SESA, Woodfibre, ACMA/31522, Doris, or verbatim source-stub/raw text.
+- [ ] New pages will not contain `/mnt/ace`, SESA, Woodfibre, mkt-a/31522, lng-a, or verbatim source-stub/raw text.
 - [ ] `overview.md` will be regenerated from live tree counts and will be race-tolerant with #2638.
 - [ ] Cross-link regeneration will remain in #2630 or a separately approved follow-up.
 

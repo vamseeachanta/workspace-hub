@@ -9,7 +9,7 @@ metadata:
 
 `vamseeachanta/workspace-hub` is **PUBLIC**; `vamseeachanta/llm-wiki` and every `llm-wiki-<client>` are **PRIVATE** (verified 2026-05-26). Therefore all `/mnt/ace` document-porting and client-wiki tracking issues must be created in the **private** wiki repos, not in public workspace-hub.
 
-**Why:** the corpus-ingest umbrella (#2774) enumerated 54 vendor-licensed publishers + `/mnt/ace` paths, and the client epic (#2744) named the ACMA engagement — all sitting in a public repo. On 2026-05-26 the user directed "move existing workspace-hub issues to llm-wiki to maintain privacy."
+**Why:** the corpus-ingest umbrella (#2774) enumerated 54 vendor-licensed publishers + `/mnt/ace` paths, and the client epic (#2744) named the mkt-a engagement — all sitting in a public repo. On 2026-05-26 the user directed "move existing workspace-hub issues to llm-wiki to maintain privacy."
 
 **How to apply:**
 - New porting/client issues → `gh issue create --repo vamseeachanta/llm-wiki` (or the client sibling), never workspace-hub.

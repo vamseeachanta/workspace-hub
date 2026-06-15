@@ -27,8 +27,8 @@ Purpose: validate production topology before Stage 2 Tasks 15–17
   - `assethold`
   - `assetutilities`
   - `CAD-DEVELOPMENTS`
-  - `doris`
-  - `frontierdeepwater`
+  - `lng-a`
+  - `client-a`
 - [ ] README-heading audit has been run or intentionally deferred with evidence.
 - [ ] Repos missing all target headings have a remediation plan before relying on Signal 3.
 - [ ] `showcase` and `website` labels exist on the 6 upstream repos before expecting Signal 5 to be meaningful.

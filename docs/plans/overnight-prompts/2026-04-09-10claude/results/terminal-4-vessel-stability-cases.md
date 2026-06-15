@@ -37,9 +37,9 @@
 | SLEIPNIR | 220.0 | 102.0 | 27.5 | -- (missing) | Heerema | 2019 |
 | THIALF | 201.0 | 88.4 | 31.2 | 71,368 | Heerema | 1985 |
 | BALDER | 152.0 | 76.8 | 25.0 | -- (missing) | Heerema | 1978 |
-| SAIPEM 7000 | 198.0 | 87.0 | 25.0 | -- (missing) | Saipem | -- |
-| SAIPEM FDS | 152.0 | 92.0 | 23.0 | -- (missing) | Saipem | -- |
-| SAIPEM FDS2 | 152.0 | 92.0 | 23.0 | -- (missing) | Saipem | -- |
+| client-d 7000 | 198.0 | 87.0 | 25.0 | -- (missing) | client-d | -- |
+| client-d FDS | 152.0 | 92.0 | 23.0 | -- (missing) | client-d | -- |
+| client-d FDS2 | 152.0 | 92.0 | 23.0 | -- (missing) | client-d | -- |
 | DLV 2000 | 170.0 | 54.0 | 18.0 | -- (missing) | McDermott | -- |
 
 ### 1.3 Tests Already Present

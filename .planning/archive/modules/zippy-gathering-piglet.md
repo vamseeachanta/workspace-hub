@@ -4,7 +4,7 @@
 
 The document index has 1,033,789 records but the linkage layer is thin:
 - `digitalmodel.yaml` has 9 calc_examples entries covering pipeline/structural/marine/CP
-- `doris.yaml`, `saipem.yaml`, `rock-oil-field.yaml` have **zero** calc_examples entries
+- `lng-a.yaml`, `client-d.yaml`, `client-b.yaml` have **zero** calc_examples entries
 - `calc-examples-mapper.py` does not exist (WRK-566 tooling missing)
 - `specs/data-sources/script-audit.yaml` does not exist (WRK-573 missing)
 - WRK-567 back-link pass is blocked until 561/562/563 complete
@@ -19,8 +19,8 @@ final cleanup agent for WRK-567 after the parallel wave completes.
 | WRK items | Target files | Conflict? |
 |-----------|-------------|-----------|
 | WRK-561, 562, 563, 572 | `specs/data-sources/digitalmodel.yaml` | YES — same file |
-| WRK-564 | `specs/data-sources/doris.yaml` | No |
-| WRK-565 | `specs/data-sources/saipem.yaml`, `rock-oil-field.yaml` | No |
+| WRK-564 | `specs/data-sources/lng-a.yaml` | No |
+| WRK-565 | `specs/data-sources/client-d.yaml`, `client-b.yaml` | No |
 | WRK-566 | `scripts/readiness/query-docs.sh` (extend), new `calc-examples-mapper.py` | No |
 | WRK-573 | new `specs/data-sources/script-audit.yaml` | No |
 | WRK-567 | 78 WRK item `.md` files in `.claude/work-queue/` | No (after wave 1) |
@@ -47,14 +47,14 @@ final cleanup agent for WRK-567 after the parallel wave completes.
 
 ### Agent Beta — other repo calc_examples
 **WRK items:** WRK-564, WRK-565 (parallel, different files)
-**Files:** `specs/data-sources/doris.yaml`, `specs/data-sources/saipem.yaml`,
-           `specs/data-sources/rock-oil-field.yaml`
+**Files:** `specs/data-sources/lng-a.yaml`, `specs/data-sources/client-d.yaml`,
+           `specs/data-sources/client-b.yaml`
 **Work:**
-- WRK-564: Add `calc_examples:` section to doris.yaml — ≥10 pipeline calc files
+- WRK-564: Add `calc_examples:` section to lng-a.yaml — ≥10 pipeline calc files
   across DNV-OS-F101 (wall thickness), API-RP-1111 (propagation buckle),
   DNV-RP-F109 (on-bottom stability), DNV-RP-F110 (upheaval buckling), pipelay calcs.
   Query `index.jsonl` for matching files using `scripts/readiness/query-docs.sh`.
-- WRK-565: Add `calc_examples:` section to saipem.yaml and rock-oil-field.yaml —
+- WRK-565: Add `calc_examples:` section to client-d.yaml and client-b.yaml —
   pipelay analysis (0611-RES-0175-01), tensioner/FDAS calcs (0145-CAL series).
 **Commit:** one per WRK item
 
@@ -121,8 +121,8 @@ Codex is a hard gate. If Codex quota is exhausted, manual review + note in commi
 
 - [ ] digitalmodel.yaml `calc_examples` grows from 9 to ≥15 standard entries with files
 - [ ] digitalmodel.yaml gains `fea_models:` section with 3 model groups
-- [ ] doris.yaml has `calc_examples:` with ≥10 pipeline calc files
-- [ ] saipem.yaml and rock-oil-field.yaml both have `calc_examples:` sections
+- [ ] lng-a.yaml has `calc_examples:` with ≥10 pipeline calc files
+- [ ] client-d.yaml and client-b.yaml both have `calc_examples:` sections
 - [ ] `calc-examples-mapper.py` exists and outputs valid YAML for 3 test standards
 - [ ] `query-docs.sh --calc-only` and `--standard` flags work
 - [ ] `specs/data-sources/script-audit.yaml` exists with 4 categories, legal scan run

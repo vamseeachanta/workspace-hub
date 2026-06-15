@@ -171,7 +171,7 @@ This cleanup is per-machine state (`~/.claude/projects/...` is not git-tracked) 
 
 ## Follow-on research filed as #2714
 
-At exit-time, user asked for research into Gulf of Mexico production progress + Lower Tertiary play + US energy-security framing, with anti-confirmation-bias guardrails against the FDAS (Frontier Deepwater's Field Development Solution) thesis. AceEngineer holds a 5% equity stake in Frontier Deepwater per BUSINESS_BRAIN, so the bias-source is real and the data-must-lead instruction is load-bearing.
+At exit-time, user asked for research into Gulf of Mexico production progress + Lower Tertiary play + US energy-security framing, with anti-confirmation-bias guardrails against the FDAS (client-a's Field Development Solution) thesis. AceEngineer holds a 5% equity stake in client-a per BUSINESS_BRAIN, so the bias-source is real and the data-must-lead instruction is load-bearing.
 
 Filed as **vamseeachanta/workspace-hub#2714** (labels: `cat:research`, `cat:knowledge-domain`) for execution in a future session. The issue body enumerates:
 
@@ -180,6 +180,6 @@ Filed as **vamseeachanta/workspace-hub#2714** (labels: `cat:research`, `cat:know
 - Four falsifiable hypotheses with explicit "supports / falsifies" evidence patterns, including H4 which tests the FDAS thesis directly.
 - Anti-confirmation-bias guardrails: mandatory bias disclosure, "what would change my mind" sections, counter-position steelman, no vendor-derivative content per the 2026-05-14 matrix.
 - Acceptance criteria requiring evidence-led conclusion (allowed: "thesis supported", "partially supported with qualifications", OR "thesis not supported").
-- One ambiguity flagged for user clarification before execution: FDAS naming collision (worldenergydata module name vs. Frontier Deepwater branded service line — same thing under two names, or coincidence?).
+- One ambiguity flagged for user clarification before execution: FDAS naming collision (worldenergydata module name vs. client-a branded service line — same thing under two names, or coincidence?).
 
-The matrix from this session governs how the future research handles vendor-derivative materials encountered along the way (Frontier Deepwater own materials → off-repo per row 1; EIA/BSEE/BOEM/USGS → public wiki per row 5).
+The matrix from this session governs how the future research handles vendor-derivative materials encountered along the way (client-a own materials → off-repo per row 1; EIA/BSEE/BOEM/USGS → public wiki per row 5).

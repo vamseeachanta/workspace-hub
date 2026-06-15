@@ -1,10 +1,10 @@
-# Issue #2769 — ACMA pre-move backup disposition (Phase A dry-run contract)
+# Issue #2769 — mkt-a pre-move backup disposition (Phase A dry-run contract)
 
 ## Status
 
 - **Phase:** A (metadata-only, dry-run).
 - **Branch:** `issue-2769-backup-disposition-claude`.
-- **Plan:** [`docs/plans/2026-05-21-issue-2769-acma-premove-backup-disposition.md`](../plans/2026-05-21-issue-2769-acma-premove-backup-disposition.md).
+- **Plan:** [`docs/plans/2026-05-21-issue-2769-mkt-a-premove-backup-disposition.md`](../plans/2026-05-21-issue-2769-mkt-a-premove-backup-disposition.md).
 - **Dependency:** [#2767](https://github.com/vamseeachanta/workspace-hub/issues/2767) Phase A inventory module landed on `main` at commit `86149e5e4`.
 - **Upstream gates:** [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) and [#2732](https://github.com/vamseeachanta/workspace-hub/issues/2732) (raw/source bucket placement) must close before any disposition recommendation moves out of `blocked` for live data.
 
@@ -17,7 +17,7 @@ A repo-safe reporting tool that compares one backup root against the correspondi
 - never executes a destructive disposition action (`move`/`delete`/`archive`/`compress`/`merge`/`tar`) — the helper raises `DestructiveActionBlocked`;
 - declares `disposition_status` as either `blocked` or `ready_for_recommendation`, never `proceed`.
 
-The live ACMA scan against the redacted pre-move backup root is **not** invoked here. It is an operator action gated on a separate execution issue.
+The live mkt-a scan against the redacted pre-move backup root is **not** invoked here. It is an operator action gated on a separate execution issue.
 
 ## Module surface
 
@@ -90,7 +90,7 @@ uv run python -m py_compile scripts/data/backup_disposition.py tests/test_backup
 
 ## Out of scope for this phase
 
-- Live execution against the local ACMA data root.
+- Live execution against the local mkt-a data root.
 - Multi-backup batch comparison (Phase A is one backup vs one active).
 - Bounded-sampling strategy for very large trees — Phase A relies on the upstream `preexisting_inventory` walker's existing inaccessible-path handling and would degrade to `incomplete_scan` rather than risk an unbounded scan in a constrained environment.
 - Any local data-mount expansion or hardware decision.

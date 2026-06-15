@@ -26,7 +26,7 @@
 - Average health score: 43/100 across all 26 assessed repositories
 - **Critical Findings:**
   - ⭐ **Model Repository Identified:** assethold (28% coverage, has CI/CD, health: 65/100)
-  - 🔴 **Highest Risk:** client_projects (1,645 files, 4% coverage, client-facing, 9-week gap)
+  - 🔴 **Highest Risk:** client-c (1,645 files, 4% coverage, client-facing, 9-week gap)
   - 🟡 **Archive Review Required:** 6 repositories showing activity despite archive classification
 - CI/CD pipelines: Only 2/26 repositories have workflows (8%) - workspace-hub, assethold
 - Test coverage crisis: 15+ repositories with <10% coverage, requiring immediate attention
@@ -44,14 +44,14 @@
 | aceengineer-website | Web App | Medium | Low | TBD | 3 | ⚪ Not Started | P2 |
 | achantas-data | Data/Analytics | Medium | Low | TBD | 2 | ⚪ Not Started | P3 |
 | assetutilities | Utilities | Medium | Medium | TBD | 3 | ⚪ Not Started | P2 |
-| doris | Marine | Medium | Low | TBD | 2 | ⚪ Not Started | P3 |
+| lng-a | Marine | Medium | Low | TBD | 2 | ⚪ Not Started | P3 |
 | energy | O&G | High | Medium | TBD | 4 | ⚪ Not Started | P1 |
-| frontierdeepwater | Marine | Medium | Low | TBD | 2 | ⚪ Not Started | P3 |
+| client-a | Marine | Medium | Low | TBD | 2 | ⚪ Not Started | P3 |
 | investments | Finance | Low | Very Low | TBD | 1 | ⚪ Archive Candidate | P4 |
-| rock-oil-field | O&G | Medium | Low | TBD | 2 | ⚪ Not Started | P3 |
+| client-b | O&G | Medium | Low | TBD | 2 | ⚪ Not Started | P3 |
 | sabithaandkrishnaestates | Personal | Low | Very Low | TBD | 0 | ⚪ Archive Candidate | P4 |
-| saipem | Marine | Low | Very Low | TBD | 1 | ⚪ Archive Candidate | P4 |
-| seanation | Marine | Medium | Low | TBD | 2 | ⚪ Not Started | P3 |
+| client-d | Marine | Low | Very Low | TBD | 1 | ⚪ Archive Candidate | P4 |
+| client-f | Marine | Medium | Low | TBD | 2 | ⚪ Not Started | P3 |
 | teamresumes | HR/Admin | Low | Very Low | TBD | 0 | ⚪ Archive Candidate | P4 |
 
 **Legend:**
@@ -458,7 +458,7 @@
 
 ---
 
-### doris (P3 - Marine)
+### lng-a (P3 - Marine)
 
 **Classification:**
 - Domain: Marine Engineering
@@ -505,7 +505,7 @@
 
 ---
 
-### frontierdeepwater (P3 - Marine)
+### client-a (P3 - Marine)
 
 **Classification:**
 - Domain: Marine Engineering
@@ -602,7 +602,7 @@
 
 ---
 
-### rock-oil-field (P3 - O&G)
+### client-b (P3 - O&G)
 
 **Classification:**
 - Domain: Oil & Gas
@@ -700,7 +700,7 @@
 
 ---
 
-### saipem (P4 - Marine)
+### client-d (P4 - Marine)
 
 **Classification:**
 - Domain: Marine Engineering
@@ -750,7 +750,7 @@
 
 ---
 
-### seanation (P3 - Marine)
+### client-f (P3 - Marine)
 
 **Classification:**
 - Domain: Marine Engineering
@@ -947,7 +947,7 @@
 
 ---
 
-### acma-projects (P2 - Work Projects)
+### mkt-a (P2 - Work Projects)
 
 **Classification:**
 - Domain: Work Projects
@@ -1102,7 +1102,7 @@
 
 ---
 
-### client_projects (P1 - Client Work)
+### client-c (P1 - Client Work)
 
 **Classification:**
 - Domain: Client Work
@@ -1147,7 +1147,7 @@
 - [ ] 🔴 **URGENT:** Identify critical client-facing paths
 
 **Action Items:**
-- [ ] 🔴 P0: **IMMEDIATE** - Comprehensive assessment of client_projects
+- [ ] 🔴 P0: **IMMEDIATE** - Comprehensive assessment of client-c
 - [ ] 🔴 P0: Prioritize critical client-facing functionality for testing
 - [ ] 🔴 P0: Develop phased test coverage strategy (4% → 10% → 15%)
 - [ ] 🔴 P0: Setup CI/CD pipeline immediately
@@ -1398,14 +1398,14 @@ Repositories meeting 3+ archive criteria:
 |------------|-----------------|-------------|------------|-----------|-------------------|------------------|
 | investments | ❌ **FALSE** (44 commits, 2 weeks ago) | ⚠️ Unknown | ❌ | ⚠️ Unknown | ✅ | **Needs Re-Evaluation** |
 | sabithaandkrishnaestates | ❌ **FALSE** (96 commits, 2 days ago) | ⚠️ Unknown | ❌ | ⚠️ Unknown | ✅ | **CONTRADICTED BY DATA** |
-| saipem | ❌ **FALSE** (25 commits, 21 hours ago) | ⚠️ Unknown | ❌ | ⚠️ Unknown | ✅ | **Needs Re-Evaluation** |
+| client-d | ❌ **FALSE** (25 commits, 21 hours ago) | ⚠️ Unknown | ❌ | ⚠️ Unknown | ✅ | **Needs Re-Evaluation** |
 | teamresumes | ❌ **FALSE** (30 commits, 57 min ago) | ⚠️ Unknown | ❌ | ⚠️ Unknown | ✅ | **CONTRADICTED BY DATA** |
 
 **🔴 CRITICAL FINDINGS:**
 - **ALL FOUR** repositories marked as "Inactive (6mo+)" show **RECENT ACTIVITY**
 - **sabithaandkrishnaestates**: 96 commits (HIGHEST activity), last commit **2 days ago**
 - **teamresumes**: Last commit **57 minutes ago** (ACTIVE RIGHT NOW)
-- **saipem**: Last commit **21 hours ago**
+- **client-d**: Last commit **21 hours ago**
 - **investments**: Last commit **2 weeks ago**
 
 **Archive Criteria Require Urgent Revision:**

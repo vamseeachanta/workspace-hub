@@ -58,7 +58,7 @@ All scripts live in `scripts/data/document-index/`. Each phase is resume-safe an
 - **Input:** `enhancement-plan.yaml`
 - **Output:** `specs/data-sources/<repo>.yaml` per Tier-1/Tier-2 repo
 - **Legal gate:** Runs `legal-sanity-scan.sh` before writing; sanitizes paths
-- **Repo tiers:** Tier 1 (digitalmodel, worldenergydata, assethold), Tier 2 (doris, OGManufacturing, saipem, rock-oil-field, acma-projects)
+- **Repo tiers:** Tier 1 (digitalmodel, worldenergydata, assethold), Tier 2 (lng-a, OGManufacturing, client-d, client-b, mkt-a)
 
 ### Phase E — Registry Building (`phase-e-registry.py`, 190 lines + `phase-e-backpopulate.py`, 222 lines + `phase-e2-remap.py`, 531 lines)
 
@@ -86,7 +86,7 @@ All scripts live in `scripts/data/document-index/`. Each phase is resume-safe an
 - **Legacy output:** WRK item YAML files in `.claude/work-queue/`
 - **Canonical tracking note:** Promote active items into GitHub issues before new execution; keep local WRK artifacts only for historical/compatibility workflows.
 - **Scope:** Pre-seeds items like "Expand S-N curve library from 17 to 20 standards", "CALM buoy mooring fatigue", etc.
-- **Repos covered:** digitalmodel (G-1 through G-6 groups), worldenergydata, assethold, doris, saipem
+- **Repos covered:** digitalmodel (G-1 through G-6 groups), worldenergydata, assethold, lng-a, client-d
 
 ---
 
@@ -209,11 +209,11 @@ The `promoters/` directory handles promoting extracted data into structured know
 | Repo | Standards Count | Gaps | Implemented |
 |------|----------------|------|-------------|
 | digitalmodel | 183 | 14 | 2 |
-| acma-projects | 110 | 0 | 0 |
-| doris | 92 | 0 | 0 |
+| mkt-a | 110 | 0 | 0 |
+| lng-a | 92 | 0 | 0 |
 | OGManufacturing | 71 | 0 | 0 |
-| rock-oil-field | 35 | 0 | 0 |
-| saipem | 35 | 0 | 0 |
+| client-b | 35 | 0 | 0 |
+| client-d | 35 | 0 | 0 |
 | worldenergydata | 12 | 4 | 0 |
 | assethold | 0 | 5 | 0 |
 

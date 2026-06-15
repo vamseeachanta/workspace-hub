@@ -56,7 +56,7 @@ local branch:
 - `hobbies`
 - `kaggle-rogii-2026`
 - `llm-wiki`
-- `llm-wiki-acma`
+- `llm-wiki-mkt-a`
 - `llm-wiki-fdas`
 - `raw-to-knowledge-playbook`
 - `sabithaandkrishnaestates`

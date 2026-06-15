@@ -96,7 +96,7 @@ cat docs/CLAUDE_MODEL_SELECTION_QUICK_REFERENCE.md
 2. energy
 3. worldenergydata
 4. aceengineercode
-5. frontierdeepwater
+5. client-a
 
 **Actions:**
 - Add model selection reminder to each repo's CLAUDE.md

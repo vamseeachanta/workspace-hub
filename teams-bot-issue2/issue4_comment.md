@@ -3,19 +3,19 @@
 Created the first private knowledge pack for the Oil & Gas Q&A POC.
 
 HTML report:
-https://github.com/vamseeachanta/llm-wiki-acma/blob/main/reports/teams-bot/issue-2/knowledge-pack.html
+https://github.com/vamseeachanta/llm-wiki-mkt-a/blob/main/reports/teams-bot/issue-2/knowledge-pack.html
 
 Machine-readable artifacts:
-- Manifest: https://github.com/vamseeachanta/llm-wiki-acma/blob/main/reports/teams-bot/issue-2/knowledge-pack-manifest.json
-- Retrieval index JSONL: https://github.com/vamseeachanta/llm-wiki-acma/blob/main/reports/teams-bot/issue-2/knowledge-pack-index.jsonl
-- Starter questions: https://github.com/vamseeachanta/llm-wiki-acma/blob/main/reports/teams-bot/issue-2/knowledge-pack-sample-questions.json
+- Manifest: https://github.com/vamseeachanta/llm-wiki-mkt-a/blob/main/reports/teams-bot/issue-2/knowledge-pack-manifest.json
+- Retrieval index JSONL: https://github.com/vamseeachanta/llm-wiki-mkt-a/blob/main/reports/teams-bot/issue-2/knowledge-pack-index.jsonl
+- Starter questions: https://github.com/vamseeachanta/llm-wiki-mkt-a/blob/main/reports/teams-bot/issue-2/knowledge-pack-sample-questions.json
 
 ### Contents
 - Indexed sources: 15
 - Retrieval chunks: 43
 - Included approved repo docs and report-layer artifacts.
 - Excluded raw `sources/` content.
-- Added stable source IDs like `ACMA-KP-001`.
+- Added stable source IDs like `mkt-a-KP-001`.
 - Added starter evaluation questions for #5.
 
 ### Acceptance status

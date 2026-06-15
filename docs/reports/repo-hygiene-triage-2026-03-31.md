@@ -61,21 +61,21 @@ Detected child Git repos:
 - `aceengineer-website`
 - `achantas-data`
 - `achantas-media`
-- `acma-projects`
+- `mkt-a`
 - `assethold`
 - `assetutilities`
-- `client_projects`
+- `client-c`
 - `digitalmodel`
-- `doris`
-- `frontierdeepwater`
+- `lng-a`
+- `client-a`
 - `heavyequipemnt-rag`
 - `hobbies`
 - `investments`
-- `rock-oil-field`
+- `client-b`
 - `sabithaandkrishnaestates`
-- `saipem`
+- `client-d`
 - `sd-work`
-- `seanation`
+- `client-f`
 - `simpledigitalmarketing`
 - `teamresumes`
 - `worldenergydata`
@@ -114,10 +114,10 @@ These are high-confusion artifacts because they resemble partial workflow output
 Observed examples:
 
 - `aceengineer-admin/.DS_Store`
-- `acma-projects/Thumbs.db`
+- `mkt-a/Thumbs.db`
 - `aceengineer-admin/verify_claude_setup.bat`
-- `acma-projects/sync_git.bat`
-- `acma-projects/sync_git.ps1`
+- `mkt-a/sync_git.bat`
+- `mkt-a/sync_git.ps1`
 - `teamresumes/claude-flow.cmd`
 
 These are not necessarily wrong individually, but they should be intentional, documented, and gitignored appropriately.

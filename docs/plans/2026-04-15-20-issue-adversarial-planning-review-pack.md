@@ -39,9 +39,9 @@ Purpose: Prepare a single overnight Claude pass that performs planning-only work
    - Plan: missing; draft required
 7. #2209 — chore(knowledge): define durable-vs-transient knowledge boundary across wikis, issues, registries, and session artifacts
    - Plan: missing; draft required
-8. #2216 — feat(naval-architecture): integrate /mnt/ace/acma-codes into llm-wiki and repo intelligence ecosystem
-   - Plan: `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md`
-9. #2227 — feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis
+8. #2216 — feat(naval-architecture): integrate /mnt/ace/mkt-a-codes into llm-wiki and repo intelligence ecosystem
+   - Plan: `docs/plans/2026-04-11-issue-2216-mkt-a-codes-llm-wiki-repo-intelligence-integration.md`
+9. #2227 — feat(mkt-a-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis
    - Plan: `docs/plans/2026-04-12-issue-2227-ocimf-tandem-csa-z276-wiki-promotion.md`
 10. #2229 — feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live
     - Plan: `docs/plans/2026-04-13-issue-2229-licensed-win-1-live-validation.md`

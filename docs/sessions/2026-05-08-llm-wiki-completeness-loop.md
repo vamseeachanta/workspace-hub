@@ -36,14 +36,14 @@ Eight wiki domains exist; four are scaffold-stage. The ecosystem has ~25 registr
 |---:|---|---:|---:|---|---|
 | 1 | `O&G-Standards/` | 43 GB | 54,916 PDFs | engineering-standards | Pre-OCR'd, has `_inventory.db` + `_catalog.json` — consume the index |
 | 2 | `digitalmodel/docs/` | (subset of 106 GB) | many | engineering + marine-engineering + naval-architecture | 86 topical subdirs map 1-to-1 with wiki taxonomy |
-| 3 | `acma-codes/` | 7.1 GB | 4,897 | maritime-law + engineering-standards | Clean split: regulatory bodies vs. class-society codes |
+| 3 | `mkt-a-codes/` | 7.1 GB | 4,897 | maritime-law + engineering-standards | Clean split: regulatory bodies vs. class-society codes |
 | 4 | `2H/` | 42 MB | 32 | marine-engineering | Tiny but every dir is a deepwater riser/wellhead client report |
-| 5 | `client_projects/energy_*` + numbered dirs | (subset of 250 GB) | many | marine + lng-projects + engineering | High-value cherrypick (drilling-riser, metocean, mrv, pipeline-installation, subseafirst) |
-| 6 | `frontierdeepwater/` | 6.5 GB | 6,281 | marine-engineering | Deepwater client archive with structured Engineering/, REFERENCES/ |
-| 7 | `doris/{61850_zama, 61863_lakach, orcaflex, models, calculations}` | (subset of 38 GB) | many | lng-projects + marine-engineering | Finishes the 3-bucket Elements ingest |
+| 5 | `client-c/energy_*` + numbered dirs | (subset of 250 GB) | many | marine + lng-projects + engineering | High-value cherrypick (drilling-riser, metocean, mrv, pipeline-installation, subseafirst) |
+| 6 | `client-a/` | 6.5 GB | 6,281 | marine-engineering | Deepwater client archive with structured Engineering/, REFERENCES/ |
+| 7 | `lng-a/{61850_zama, 61863_lakach, orcaflex, models, calculations}` | (subset of 38 GB) | many | lng-projects + marine-engineering | Finishes the 3-bucket Elements ingest |
 | 8 | Hydro/CFD tool cluster (capytaine, gmsh, HAMS, MoorDyn, MoorPy, openfast, WEC-Sim, opm-common) | <1 GB each | each ~100s-1000s | engineering + marine-engineering | Bundle as one open-source-solvers rollup page |
 
-**Surprises:** `client_projects/` and `docs/` reuse project numbers (dedup needed); `_inventory.db` for O&G-Standards is a free-money win; `Production/` (29 GB) is mostly mp3/mov training media (out of scope without transcription).
+**Surprises:** `client-c/` and `docs/` reuse project numbers (dedup needed); `_inventory.db` for O&G-Standards is a free-money win; `Production/` (29 GB) is mostly mp3/mov training media (out of scope without transcription).
 
 **Out of scope:** `aceengineer-admin`, `kaggle-rogii-2026`, `data` (vendor lake), `worldenergydata` (separate GTM).
 
@@ -51,22 +51,22 @@ Eight wiki domains exist; four are scaffold-stage. The ecosystem has ~25 registr
 
 ## Sub-task (b) — Online-resource gaps summary [`gap-B-online.md`]
 
-**Sparsity ranking:** `acma-projects` (8 pages, 2 sources) → `lng-projects` (15 pages, no standards/) → `maritime-law` (33 pages, 2 sources) → `engineering-standards` (82 pages, missing regulator surfaces) → `naval-architecture` (74 pages, missing live data feeds). `engineering` is mature (skip). `marine-engineering` needs only narrow strategic adds, not bulk.
+**Sparsity ranking:** `mkt-a` (8 pages, 2 sources) → `lng-projects` (15 pages, no standards/) → `maritime-law` (33 pages, 2 sources) → `engineering-standards` (82 pages, missing regulator surfaces) → `naval-architecture` (74 pages, missing live data feeds). `engineering` is mature (skip). `marine-engineering` needs only narrow strategic adds, not bulk.
 
 **Cross-domain top 10 (impact = breadth × authority × access ease, all verified 2026-05-08):**
 
 | Rank | Source | Domains served | Access |
 |---:|---|---|---|
-| 1 | **BSEE Data Center** (data.bsee.gov) | engineering-standards, lng-projects, naval-architecture, acma-projects | Free / queryable |
+| 1 | **BSEE Data Center** (data.bsee.gov) | engineering-standards, lng-projects, naval-architecture, mkt-a | Free / queryable |
 | 2 | **UN DOALOS UNCLOS** | maritime-law, lng-projects, engineering-standards | Free PDF + HTML |
-| 3 | **NAVFAC DM-26.5/26.6 + UFC 4-159-03** | acma-projects, naval-architecture, engineering-standards | Free, public release |
+| 3 | **NAVFAC DM-26.5/26.6 + UFC 4-159-03** | mkt-a, naval-architecture, engineering-standards | Free, public release |
 | 4 | **ITTC Recommended Procedures register** | naval-architecture, marine-engineering | Free PDFs |
 | 5 | **PHMSA Pipeline Incident dataset** | engineering-standards, lng-projects | Free CSV |
 | 6 | **IGU World LNG Report 2025** | lng-projects, marine-engineering | Free PDF |
 | 7 | **IMO GISIS public modules** | maritime-law, engineering-standards, naval-architecture | Free w/ registration |
-| 8 | **NTSB CAROL marine docket** | acma-projects, naval-architecture, maritime-law | Free |
+| 8 | **NTSB CAROL marine docket** | mkt-a, naval-architecture, maritime-law | Free |
 | 9 | **FERC LNG terminal page + eLibrary** | lng-projects, engineering-standards | Free, deep dockets hard |
-| 10 | **USACE EM 1110-2-1100 Coastal Engineering Manual** | engineering-standards, naval-architecture, acma-projects | Free PDFs (~350 MB) |
+| 10 | **USACE EM 1110-2-1100 Coastal Engineering Manual** | engineering-standards, naval-architecture, mkt-a | Free PDFs (~350 MB) |
 
 Honorable mentions: NOAA NCEI/GEBCO_2026 bathymetry, CMI Rotterdam Rules + CML database, IAM Subject-Specific Guidelines.
 
@@ -146,8 +146,8 @@ Organized in 5 tiers from cheapest-and-most-reversible to most-strategic:
 - **E13. `O&G-Standards/` ingest** → engineering-standards. Consume existing `_inventory.db` + OCR text. **Lowest cost / highest coverage win** because the heavy work is already done.
 - **E14. `digitalmodel/docs/` ingest** (86 topical subdirs) → engineering + marine-engineering + naval-architecture. Per-subdir mapping table needed first.
 - **E15. BSEE Data Center pipeline** → 4 domains simultaneously. Free, queryable. Build a domain-aware fetch+classify+page-emit script.
-- **E16. `acma-codes/` split** → maritime-law + engineering-standards. Pre-classify by directory name (regulatory body vs. class society vs. national code).
-- **E17. NAVFAC DM-26.x suite** → acma-projects (closes the standards gap on the sparsest domain).
+- **E16. `mkt-a-codes/` split** → maritime-law + engineering-standards. Pre-classify by directory name (regulatory body vs. class society vs. national code).
+- **E17. NAVFAC DM-26.x suite** → mkt-a (closes the standards gap on the sparsest domain).
 
 ### Tier 5 — Architectural improvements (larger, decision-required)
 

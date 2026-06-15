@@ -24,7 +24,7 @@
 ### Why this is worth planning now
 - `#2055` remains blocked on equipment-count evidence; prior planning artifacts explicitly say the implementation must stay `status:needs-data` until at least 10 GoM records are source-backed and definition-normalized.
 - Existing plan artifacts already established that `data/field-development/subseaiq-scan-latest.json` has project rows but **no equipment counts**.
-- A completed source-pack pattern exists in-repo (`docs/projects/acma/B1528/sirocco-rudder-source-pack.md`) and is a good template for “authoritative values / derived values / gaps” separation.
+- A completed source-pack pattern exists in-repo (`docs/projects/mkt-a/B1528/proj-a-rudder-source-pack.md`) and is a good template for “authoritative values / derived values / gaps” separation.
 
 ### Resource intelligence already confirmed
 - Existing downstream references:
@@ -35,7 +35,7 @@
   - `subseaiq-scan-latest.json` currently carries `name/operator/water_depth_m/host/year/capacity_bopd` only.
   - `worldenergydata/subseaiq/analytics/normalize.py` and the `SubseaProject` shape were previously documented as capable of consuming equipment-count fields once evidence exists.
 - Reusable source-pack style reference:
-  - `docs/projects/acma/B1528/sirocco-rudder-source-pack.md`
+  - `docs/projects/mkt-a/B1528/proj-a-rudder-source-pack.md`
 
 ### Reproduction / resource-intel needs before implementation
 1. Confirm the live location and schema of `data/field-development/subseaiq-scan-latest.json` in the current checkout.

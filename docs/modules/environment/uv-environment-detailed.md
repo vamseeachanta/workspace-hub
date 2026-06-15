@@ -44,12 +44,12 @@ These repositories have complete UV configurations and are production-ready:
 - **Status**: Simple Flask application, well-configured
 - **Dependencies**: Basic web stack (Flask, Werkzeug, Jinja2)
 
-#### achantas-media, acma-projects, ai-native-traditional-eng
+#### achantas-media, mkt-a, ai-native-traditional-eng
 - **Configuration**: ✅ uv.toml, ✅ pyproject.toml
 - **Python Version**: >=3.8
 - **Status**: Standard configurations following template pattern
 
-#### client_projects, digitalmodel, doris, energy, frontierdeepwater
+#### client-c, digitalmodel, lng-a, energy, client-a
 - **Configuration**: ✅ uv.toml, ✅ pyproject.toml
 - **Python Version**: >=3.8
 - **Status**: Production-ready with comprehensive tooling configurations
@@ -59,12 +59,12 @@ These repositories have complete UV configurations and are production-ready:
 - **Python Version**: >=3.8
 - **Status**: Template projects and personal repositories
 
-#### rock-oil-field, sabithaandkrishnaestates, saipem, sd-work
+#### client-b, sabithaandkrishnaestates, client-d, sd-work
 - **Configuration**: ✅ uv.toml, ✅ pyproject.toml
 - **Python Version**: >=3.8
 - **Status**: Industry-specific projects with specialized dependencies
 
-#### seanation, teamresumes, worldenergydata
+#### client-f, teamresumes, worldenergydata
 - **Configuration**: ✅ uv.toml, ✅ pyproject.toml
 - **Python Version**: >=3.8
 - **Status**: Fully modernized with parallel processing configurations

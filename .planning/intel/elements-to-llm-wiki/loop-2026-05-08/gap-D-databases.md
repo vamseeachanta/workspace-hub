@@ -34,7 +34,7 @@ The llm-wiki ecosystem rests on **~25 registries/databases** spread across six s
 | `dde-standards-inventory.yaml` | YAML | 20 KB | `phase-a-index.py` | `cross-reference-registries.py` (indirect) | 2026-04-03 | DDE-drive standards listing |
 | `dde-oil-gas-codes-scan.yaml` | YAML | 6 KB | `phase-a-index.py` | none direct | 2026-04-03 | Oil-gas codes scan output |
 | `dde-migration-report.yaml` | YAML | 2 KB | `dde-migration-report.py` | none direct | 2026-04-04 | Migration audit report |
-| `standards-transfer-ledger.yaml` | YAML | 425 standards, 240 KB | `build-ledger.py` | `ace_resource_audit.py`, `generate-domain-resource-views.py`, `acma_wiki_unblock.py`, `cross-reference-registries.py`, `mark-exhausted.py`, `query-ledger.py`, `reclassify-domains.py` (most-consumed file in the surface) | 2026-04-11 | Local-standards ledger |
+| `standards-transfer-ledger.yaml` | YAML | 425 standards, 240 KB | `build-ledger.py` | `ace_resource_audit.py`, `generate-domain-resource-views.py`, `mkt-a_wiki_unblock.py`, `cross-reference-registries.py`, `mark-exhausted.py`, `query-ledger.py`, `reclassify-domains.py` (most-consumed file in the surface) | 2026-04-11 | Local-standards ledger |
 | `index.jsonl` | JSONL | 649,564 records, **623 MB** | `phase-a-index.py`, summary workers | `validate-index-metadata.py`, summary workers, downstream classifiers | 2026-04-17 | Master corpus index (heart of the doc-intel pipeline) |
 | `index.jsonl.backup-2026-04-17` | JSONL | 604 MB | snapshot | none | 2026-04-16 | Backup; safe to age out |
 | `research-literature-index.jsonl` | JSONL | 46 KB | `download_and_catalog.py` | none direct | 2026-04-05 | Research-literature subset |
@@ -128,8 +128,8 @@ The llm-wiki ecosystem rests on **~25 registries/databases** spread across six s
 | File | Last-mod | 1-line role |
 |---|---|---|
 | `2026-04-16-llm-wiki-resource-intelligence-unified-review.md` | 2026-04-16 | Cross-AI unified review of resource-intel surface |
-| `acma-2227-metadata-only-wiki-stubs.md` | 2026-04-13 | Metadata-only wiki stub plan for #2227 |
-| `acma-wiki-unblock-2245-handoff.yaml` | 2026-05-02 | Wiki-unblock handoff (#2245) |
+| `mkt-a-2227-metadata-only-wiki-stubs.md` | 2026-04-13 | Metadata-only wiki stub plan for #2227 |
+| `mkt-a-wiki-unblock-2245-handoff.yaml` | 2026-05-02 | Wiki-unblock handoff (#2245) |
 | `engineering-wiki-skill-ingest-priority-pack.yaml` | 2026-04-14 | Priority pack for engineering wiki ingest skill (#2039–#2042) |
 | `engineering-wiki-skill-ingest-readiness-2039-2042.md` | 2026-04-14 | Readiness summary for the same |
 | `llm-wiki-external-source-priority-queue.md` | 2026-04-14 | Markdown twin of priority-queue.yaml |

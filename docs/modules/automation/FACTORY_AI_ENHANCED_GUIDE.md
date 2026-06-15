@@ -185,11 +185,11 @@ overrides:
 - energy
 - assetutilities
 - achantas-data
-- doris
+- lng-a
 - ai-native-traditional-eng
 - investments
 - sabithaandkrishnaestates
-- seanation
+- client-f
 
 **Specialized Configuration:**
 - UV environment management
@@ -209,10 +209,10 @@ droid exec "Create interactive dashboard from energy_production.csv"
 **Repositories:**
 - aceengineercode
 - OGManufacturing
-- rock-oil-field
-- frontierdeepwater
-- saipem
-- acma-projects
+- client-b
+- client-a
+- client-d
+- mkt-a
 - sd-work
 
 **Specialized Configuration:**
@@ -234,7 +234,7 @@ droid exec "Implement stress analysis calculation with ASME standards"
 - aceengineer-website
 - assethold
 - achantas-media
-- client_projects
+- client-c
 - hobbies
 - teamresumes
 

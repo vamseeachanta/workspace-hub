@@ -25,17 +25,17 @@ net-shrinking. Provider strategy is validated by cost data.
 | `aceengineer-website` | 5 | 2 | 3 | 6 | **high** | Agents generate + publish content from module outputs |
 | `aceengineer-admin` | 3 | 2 | 1 | 2 | medium | Admin workflows documented; agent-executable |
 | `achantas-data` | 3 | 2 | 2 | 6 | medium | Data indexed; queryable by agents |
-| `doris` | 3 | 3 | 21 | 0 | medium | Pipeline structure clean; agent-callable for data pull |
-| `saipem` | 3 | 3 | 0 | 1 | medium | Installation modules stable; benchmarked |
-| `acma-projects` | 3 | 2 | 1 | 2 | medium | Structural modules integrated with digitalmodel |
-| `frontierdeepwater` | 2 | 2 | 6 | 4 | low | Vessel data extracted; minimal ongoing investment |
+| `lng-a` | 3 | 3 | 21 | 0 | medium | Pipeline structure clean; agent-callable for data pull |
+| `client-d` | 3 | 3 | 0 | 1 | medium | Installation modules stable; benchmarked |
+| `mkt-a` | 3 | 2 | 1 | 2 | medium | Structural modules integrated with digitalmodel |
+| `client-a` | 2 | 2 | 6 | 4 | low | Vessel data extracted; minimal ongoing investment |
 | `OGManufacturing` | 2 | 2 | 8 | 1 | low | Stable; no new investment unless client need arises |
-| `rock-oil-field` | 2 | 2 | 0 | 2 | low | OrcaFlex models catalogued (WRK-121); then park |
+| `client-b` | 2 | 2 | 0 | 2 | low | OrcaFlex models catalogued (WRK-121); then park |
 | `pdf-large-reader` | 2 | 3 | 1 | 1 | low | Utility tool; maintain, no expansion |
 | `pyproject-starter` | 2 | 4 | 0 | 0 | low | Template stable; update when ecosystem changes |
 | `CAD-DEVELOPMENTS` | 2 | 1 | 0 | 1 | low | FEA pipeline scaffolded; park until needed |
 | `sd-work` | 1 | 2 | 0 | 0 | defer | No pending items; check quarterly |
-| `seanation` | 1 | 1 | 0 | 0 | defer | No active engineering use; park |
+| `client-f` | 1 | 1 | 0 | 0 | defer | No active engineering use; park |
 | `teamresumes` | 1 | 2 | 0 | 0 | defer | Manual process; agent automation low ROI |
 | `hobbies` | 1 | 1 | 0 | 0 | defer | Personal; no compound value |
 | `sabithaandkrishnaestates` | 1 | 2 | 3 | 1 | defer | Reactive only |
