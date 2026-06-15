@@ -65,12 +65,13 @@ A skill-invocation signal feeding the existing chain: a PostToolUse hook emits `
 - [ ] @-include/progressive-disclosure remains an explicit documented blind spot (out of v1 scope).
 
 ## Adversarial Review Summary
-| Provider | Verdict | Findings |
+| Provider | Verdict | Findings (all incorporated above) |
 |---|---|---|
-| Claude (empirical + adversarial) | (focused review of implementation surface — see below) | premise PROVEN empirically; review targets hook cost, short_name derivation edge cases, settings wiring, backfill volume |
-| Codex / Gemini | optional T3 escalation | |
+| Claude empirical proof | PASS | BUG 2 join mismatch proven via real functions (`/tmp/proof_3112_join.py`). Premise not in doubt. |
+| Claude adversarial (impl surface) | **MAJOR → incorporated** | Found BUG 3 (dashboard not wired); `derive_short_name` must NOT use `_skill_name_from_path`; 2 short_name collisions + `_archived` exclusion gap; 3,180-vs-833 universe mismatch; existing scanner/demotion tests assert rel-path (false "unaffected" AC); reuse `session-logger.sh` + `skill_execution_tracker.py` instead of new files; Skill-tool PostToolUse contract empirically unverified. All folded into Files-to-Change + Risks. |
+| Codex / Gemini | NOT RUN | T3 escalation available at implementation start |
 
-**Overall result:** pending focused review → then USER approval (gate-blocked; agent cannot self-approve).
+**Overall result:** MAJOR findings incorporated → spec is now accurate. **Recommend a confirmatory re-review at implementation start.** Then USER approval required before any code write (gate-blocked; agent cannot self-approve). Empirical verification before coding turned a "quick emit-step add" into a correctly-scoped 3-bug change — six adversarial passes this session, each caught real defects pre-code.
 
 ## Risks
 - **short_name collisions:** two skills with the same frontmatter `name` in different dirs collide on the key. Mitigation: detect + warn at derive time; the report already keys this way, so collisions are pre-existing, not introduced.
