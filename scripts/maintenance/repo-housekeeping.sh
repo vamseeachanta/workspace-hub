@@ -76,6 +76,7 @@ GREEN='\033[0;32m'; YELLOW='\033[1;33m'; CYAN='\033[0;36m'; RED='\033[0;31m'; BO
 # Repo root → default sweep root is its parent (the sibling-repos directory).
 REPO_ROOT="$(git -C "$(dirname "$0")" rev-parse --show-toplevel 2>/dev/null || pwd)"
 [[ -z "$ROOT" ]] && ROOT="$(dirname "$REPO_ROOT")"
+GUARD="${REPO_ROOT}/scripts/lib/worktree_guard.py"  # #3143 deny-by-default worktree/branch ownership guard
 
 # Secret-file denylist: never removed even under --prune-ignored.
 SECRET_GLOBS=('.env' '.env.*' '*.key' '*.pem' 'auth.json' 'id_rsa' 'id_ed25519' '*secret*' '*.secret')
@@ -185,6 +186,12 @@ for dir in "${REPO_DIRS[@]}"; do
   while IFS= read -r wt; do
     [[ -z "$wt" || "$wt" == "$(pwd)" ]] && continue
     [[ -n "$(git -C "$wt" status --porcelain 2>/dev/null)" ]] || continue
+    # #3143: only auto-commit WIP in a worktree housekeeping OWNS (.wt-owner marker).
+    # NEVER sweep a foreign/active session's uncommitted work into a commit.
+    if ! python3 "$GUARD" is-owned "$wt" repo-housekeeping 2>/dev/null; then
+      echo "  worktree ${wt}: foreign/unowned — skipping WIP commit (#3143)"
+      continue
+    fi
     wbr="$(git -C "$wt" symbolic-ref --quiet --short HEAD 2>/dev/null || echo '?')"
     echo "  worktree ${wt} (${wbr}): uncommitted changes"
     act "git -C ${wt} add -A && commit" \
@@ -212,7 +219,11 @@ for dir in "${REPO_DIRS[@]}"; do
           echo -e "  branch ${br}: already merged into ${base} — ${YELLOW}current branch, not deleting${NC}"
         else
           echo -e "  branch ${br}: ${ahead} ahead but all commits already in ${base} — ${GREEN}merged; pruning${NC}"
-          act "git branch -D ${br}" git branch -D "$br" 2>/dev/null && branches_deleted=$((branches_deleted+1))
+          if python3 "$GUARD" safe-delete-branch "$br" 2>/dev/null; then
+            act "git branch -D ${br}" git branch -D "$br" 2>/dev/null && branches_deleted=$((branches_deleted+1))
+          else
+            echo -e "  branch ${br}: checked out in a live worktree — ${YELLOW}skipping delete (#3143)${NC}"
+          fi
         fi
         continue
       fi
@@ -250,7 +261,11 @@ for dir in "${REPO_DIRS[@]}"; do
     mb="$(echo "$mb" | sed 's/^[* +]*//;s/ *$//')"
     [[ -z "$mb" || "$mb" == "$mainb" || "$mb" == "master" || "$mb" == "$cur" ]] && continue
     echo "  stale branch (merged into ${base}): ${mb}"
-    act "git branch -d ${mb}" git branch -d "$mb" 2>/dev/null && branches_deleted=$((branches_deleted+1))
+    if python3 "$GUARD" safe-delete-branch "$mb" 2>/dev/null; then
+      act "git branch -d ${mb}" git branch -d "$mb" 2>/dev/null && branches_deleted=$((branches_deleted+1))
+    else
+      echo "  branch ${mb}: checked out in a live worktree — skipping delete (#3143)"
+    fi
   done < <(git branch --merged "$base" 2>/dev/null)
 
   # 4b) PRUNE worktrees (merged or missing) -----------------------------------

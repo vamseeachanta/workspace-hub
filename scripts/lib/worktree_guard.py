@@ -96,6 +96,9 @@ def main(argv: list[str] | None = None) -> int:
     if cmd == "safe-remove-worktree":
         wt, owner = rest[0], rest[1]
         return 0 if safe_to_remove_worktree(wt, owner) else 1
+    if cmd == "is-owned":
+        wt, owner = rest[0], rest[1]
+        return 0 if worktree_is_owned(wt, owner) else 1
     if cmd == "mark-owner":
         wt, owner = rest[0], rest[1]
         (Path(wt) / OWNER_MARKER).write_text(owner.strip() + "\n", encoding="utf-8")
