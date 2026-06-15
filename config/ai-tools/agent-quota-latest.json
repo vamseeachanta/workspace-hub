@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-14T16:20:07-05:00",
+  "timestamp": "2026-06-14T20:20:04-05:00",
   "agents": [
     {
       "provider": "claude",
@@ -17,23 +17,23 @@
       "tier": "subscription",
       "weekly_limit": 1400,
       "week_messages": 246,
-      "week_pct": 54,
-      "five_hour_pct": 0,
-      "pct_remaining": 46,
-      "hours_to_reset": 105,
+      "week_pct": 55,
+      "five_hour_pct": 12,
+      "pct_remaining": 45,
+      "hours_to_reset": 101,
       "resets_at": "2026-06-19T01:32:54-0500",
       "source": "app-server-live"
     },
     {
       "provider": "gemini",
       "tier": "google_login",
-      "week_pct": 100,
+      "week_pct": 0,
       "five_hour_pct": null,
-      "pct_remaining": 0,
-      "hours_to_reset": 0.5,
-      "resets_at": "2026-06-14T16:47:59-05:00",
-      "captured_at": null,
-      "source": "429-throttle"
+      "pct_remaining": 100,
+      "hours_to_reset": 159.5,
+      "resets_at": "",
+      "captured_at": "2026-06-14T16:32:59-05:00",
+      "source": "manual-snapshot"
     }
   ]
 }

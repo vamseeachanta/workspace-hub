@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-14T21:20:20.511201Z",
+  "generated_at": "2026-06-15T01:20:12.660112Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 6,
@@ -27,7 +27,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation",
@@ -65,7 +65,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation",
@@ -103,7 +103,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation",
@@ -139,7 +139,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation",
@@ -177,7 +177,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation",
@@ -216,7 +216,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation",
@@ -258,6 +258,95 @@
         "execution-ready",
         "strong-codex-language-match",
         "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2679,
+      "title": "R3 \u2014 Mooring: Industry practice (Vryhof, Bridon, MIRP, OMAE sessions)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2679",
+      "labels": [
+        "priority:medium",
+        "cat:engineering",
+        "cat:research",
+        "machine:dev-primary",
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:marine-orcaflex",
+        "lane:codex"
+      ],
+      "updatedAt": "2026-06-10T12:57:08Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "gemini",
+      "routing_reason": "research/triage/audit language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research"
+      ],
+      "target_label": "agent:gemini",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-gemini-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2854,
+      "title": "gap(memory): Hermes read-back leg missing \u2014 consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2854",
+      "labels": [
+        "priority:medium",
+        "cat:ai-orchestration",
+        "domain:knowledge-management-platform",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-06-10T16:10:43Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "gemini",
+      "routing_reason": "research/triage/audit language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "general"
+      ],
+      "target_label": "agent:gemini",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-gemini-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3031,
+      "title": "triage: backfill placeholder bodies on gh-next-id.sh / backfill-github-refs.sh created issues",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3031",
+      "labels": [
+        "priority:medium",
+        "domain:work-queue"
+      ],
+      "updatedAt": "2026-06-10T15:58:42Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "gemini",
+      "routing_reason": "research/triage/audit language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research"
+      ],
+      "target_label": "agent:gemini",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-gemini-language-match",
+        "provider-highest-priority"
       ],
       "eligible": false
     },
@@ -424,39 +513,6 @@
       "eligible": false
     },
     {
-      "number": 2679,
-      "title": "R3 \u2014 Mooring: Industry practice (Vryhof, Bridon, MIRP, OMAE sessions)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2679",
-      "labels": [
-        "priority:medium",
-        "cat:engineering",
-        "cat:research",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness",
-        "domain:marine-orcaflex",
-        "lane:codex"
-      ],
-      "updatedAt": "2026-06-10T12:57:08Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "gemini",
-      "routing_reason": "research/triage/audit language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research"
-      ],
-      "target_label": "agent:gemini",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-gemini-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 2718,
       "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
@@ -486,62 +542,6 @@
       "confidence_reasons": [
         "priority-labeled",
         "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2854,
-      "title": "gap(memory): Hermes read-back leg missing \u2014 consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2854",
-      "labels": [
-        "priority:medium",
-        "cat:ai-orchestration",
-        "domain:knowledge-management-platform",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-06-10T16:10:43Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "gemini",
-      "routing_reason": "research/triage/audit language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "general"
-      ],
-      "target_label": "agent:gemini",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-gemini-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 3031,
-      "title": "triage: backfill placeholder bodies on gh-next-id.sh / backfill-github-refs.sh created issues",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3031",
-      "labels": [
-        "priority:medium",
-        "domain:work-queue"
-      ],
-      "updatedAt": "2026-06-10T15:58:42Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "gemini",
-      "routing_reason": "research/triage/audit language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research"
-      ],
-      "target_label": "agent:gemini",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-gemini-language-match",
         "provider-high-priority"
       ],
       "eligible": false
