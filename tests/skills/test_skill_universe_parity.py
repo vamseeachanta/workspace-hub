@@ -61,3 +61,25 @@ def test_gmail_data_extraction_collision_gone(libs):
     rels = [s for s in ident.discover_skills(LIVE_SKILLS)
             if ident.derive_short_name(LIVE_SKILLS / s / "SKILL.md") == "gmail-data-extraction"]
     assert rels == ["email/gmail-data-extraction"], f"collision not resolved: {rels}"
+
+
+def test_report_child_skill_count_uses_shared_exclusions(libs, tmp_path):
+    """Nested child counts must not reintroduce stale local exclusion rules."""
+    _, _, report = libs
+    root = tmp_path / "skills"
+    for rel in [
+        "parent",
+        "parent/live-child",
+        "parent/_archived/old-child",
+        "parent/_archive/older-child",
+        "parent/_core/core-child",
+        "parent/_internal/internal-child",
+    ]:
+        skill_dir = root / rel
+        skill_dir.mkdir(parents=True)
+        (skill_dir / "SKILL.md").write_text(f"---\nname: {Path(rel).name}\n---\n", encoding="utf-8")
+
+    skills = report.scan_skills(root)
+
+    assert set(skills) == {"parent", "parent/live-child"}
+    assert skills["parent"]["child_skill_count"] == 1

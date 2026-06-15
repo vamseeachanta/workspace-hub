@@ -48,7 +48,7 @@ import yaml
 # Self-heal sys.path so `import _skill_identity` resolves both when run directly
 # and when loaded via importlib in tests.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _skill_identity import discover_skills, derive_short_name  # noqa: E402
+from _skill_identity import DEFAULT_EXCLUSIONS, discover_skills, derive_short_name  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -84,7 +84,7 @@ def _skill_name_from_path(path: Path, skills_root: Path) -> str:
 def scan_skills(skills_dir: Path) -> dict[str, dict]:
     """Scan all SKILL.md files, returning {skill_name: {path, related_skills, see_also, body_refs}}.
 
-    Excludes _archive/, _core/, and _internal/ directories.
+    Excludes directories from _skill_identity.DEFAULT_EXCLUSIONS.
     """
     skills: dict[str, dict] = {}
 
@@ -145,7 +145,7 @@ def scan_skills(skills_dir: Path) -> dict[str, dict]:
         child_skill_count = sum(
             1
             for child in skill_md.parent.rglob("SKILL.md")
-            if child != skill_md and not any(excluded in child.parts for excluded in {"_archive", "_core", "_internal"})
+            if child != skill_md and not any(excluded in child.parts for excluded in DEFAULT_EXCLUSIONS)
         )
 
         canonical_name = str(fm.get("name", skill_name)).strip() or skill_name
@@ -469,7 +469,7 @@ def main() -> int:
     # --- Step 1: Scan all SKILL.md files ---
     print(f"Scanning skills in {skills_dir} ...")
     skills = scan_skills(skills_dir)
-    print(f"  Found {len(skills)} skills (excluding _archive)")
+    print(f"  Found {len(skills)} skills (excluding {', '.join(sorted(DEFAULT_EXCLUSIONS))})")
 
     # --- Step 2: Build reference graph ---
     ref_counts = build_reference_graph(skills)
