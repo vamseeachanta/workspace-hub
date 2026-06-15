@@ -26,7 +26,7 @@ def _write(path: Path, content: str) -> None:
 
 def _backup_and_active(tmp_path: Path) -> tuple[Path, Path]:
     backup = tmp_path / "ClientAcma.preexisting-before-repo-move-20260520-075928"
-    active = tmp_path / "acma-projects"
+    active = tmp_path / "mkt-a"
     return backup, active
 
 
@@ -215,7 +215,7 @@ def test_rendered_report_redacts_client_names_and_raw_paths(tmp_path: Path) -> N
     backup = (
         tmp_path / "VerySensitiveAcmaClient.preexisting-before-repo-move-20260520-075928"
     )
-    active = tmp_path / "acma-projects"
+    active = tmp_path / "mkt-a"
     _write(backup / "Confidential Job" / "client-bid.xlsx", "payload")
     _write(active / "Confidential Job" / "client-bid.xlsx", "payload")
 
@@ -340,7 +340,7 @@ def test_phase_a_report_artifact_does_not_leak_raw_mnt_ace_path() -> None:
         Path(__file__).resolve().parents[1]
         / "docs"
         / "reports"
-        / "issue-2769-acma-premove-backup-disposition.md"
+        / "issue-2769-mkt-a-premove-backup-disposition.md"
     )
 
     rendered = report_path.read_text(encoding="utf-8")

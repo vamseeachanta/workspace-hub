@@ -83,11 +83,11 @@ def minimal_registry_for_tests(*, repo_root: Path, workspace_root: Path) -> dict
         "CAD-DEVELOPMENTS",
         "hobbies",
         "kaggle-rogii-2026",
-        "llm-wiki-acma",
+        "llm-wiki-mkt-a",
         "sabithaandkrishnaestates",
         "teamresumes",
     ]
-    historical_names = ["acma-projects", "client_projects", "doris", "frontierdeepwater", "OGManufacturing", "rock-oil-field", "saipem", "sd-work", "seanation"]
+    historical_names = ["mkt-a", "client-c", "lng-a", "client-a", "OGManufacturing", "client-b", "client-d", "sd-work", "client-f"]
     historical = {}
     for name in historical_names:
         historical[name] = {

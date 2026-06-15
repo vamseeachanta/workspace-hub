@@ -44,7 +44,7 @@ machines:
       - CAD-DEVELOPMENTS
       - hobbies
       - kaggle-rogii-2026
-      - llm-wiki-acma
+      - llm-wiki-mkt-a
       - sabithaandkrishnaestates
       - teamresumes
     telegram_hermes:
@@ -81,29 +81,29 @@ machines:
         - CAD-DEVELOPMENTS
         - hobbies
         - kaggle-rogii-2026
-        - llm-wiki-acma
+        - llm-wiki-mkt-a
         - sabithaandkrishnaestates
         - teamresumes
       historically_moved_not_currently_present:
-        acma-projects:
+        mkt-a:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
           latest_probe: absent
           warning: historical_state_changed_since_prior_comment
-        client_projects:
+        client-c:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
           latest_probe: absent
           warning: historical_state_changed_since_prior_comment
-        doris:
+        lng-a:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
           latest_probe: absent
           warning: historical_state_changed_since_prior_comment
-        frontierdeepwater:
+        client-a:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
@@ -116,13 +116,13 @@ machines:
           latest_probe: absent
           warning: historical_state_changed_since_prior_comment
           runtime_access_change: remove_from_data_access_profile
-        rock-oil-field:
+        client-b:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
           latest_probe: absent
           warning: historical_state_changed_since_prior_comment
-        saipem:
+        client-d:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
@@ -134,7 +134,7 @@ machines:
           prior_claim: sibling=git
           latest_probe: absent
           warning: historical_state_changed_since_prior_comment
-        seanation:
+        client-f:
           source_issue: 2766
           source_comment: 4497956095
           prior_claim: sibling=git
