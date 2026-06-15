@@ -37,6 +37,15 @@ repos:
         entry: python scripts/email/fixture-redaction-check.py
         language: system
         files: '^tests/fixtures/email/.*\.(ya?ml|txt|md)$'
+      - id: legal-client-pii
+        name: no client identifiers in tracked files (#3095/#3099)
+        # Blocks staged files that contain a client identifier. Reads a PRIVATE
+        # local map (config/agents/.client-codename-map.local.yaml); degrades-open
+        # if absent. The #3099 CI gate is the strict backstop. Bypass: LEGAL_PII_ALLOW=1.
+        entry: uv run python scripts/legal/check-client-pii.py --staged
+        language: system
+        pass_filenames: false
+        always_run: true
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.21.2

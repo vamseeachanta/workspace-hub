@@ -1,0 +1,67 @@
+name: Legal Client-PII Gate
+
+# Recurrence backstop for the public-repo client-PII epic (#3095, sub-issue #3099).
+# Fails a PR that introduces a client identifier into a tracked file.
+#
+# The client list is PRIVATE. It is supplied via the encrypted repo/org secret
+# LEGAL_CLIENT_MAP (the contents of client-codename-map.yaml). No client names
+# live in this workflow or the repo, and the guard never echoes a matched value
+# (these CI logs are public).
+#
+# Provision once:  gh secret set LEGAL_CLIENT_MAP \
+#                    < /path/to/aceengineer-strategy/pii-remediation/3097-2026-06-14/client-codename-map.yaml
+#
+# If the secret is unset, the job runs in DEGRADE-OPEN mode (warns, does not
+# block) so forks / unconfigured environments don't break — but on the main
+# repo the secret should always be set so the gate is strict.
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  client-pii-gate:
+    name: Client-PII Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Materialize private client map from secret
+        env:
+          LEGAL_CLIENT_MAP_SECRET: ${{ secrets.LEGAL_CLIENT_MAP }}
+        run: |
+          if [[ -n "$LEGAL_CLIENT_MAP_SECRET" ]]; then
+            printf '%s' "$LEGAL_CLIENT_MAP_SECRET" > "$RUNNER_TEMP/client-map.yaml"
+            echo "LEGAL_CLIENT_MAP=$RUNNER_TEMP/client-map.yaml" >> "$GITHUB_ENV"
+            echo "STRICT=--strict" >> "$GITHUB_ENV"
+            echo "secret present → strict mode" >&2
+          else
+            echo "::warning::LEGAL_CLIENT_MAP secret not set — gate runs degrade-open (non-blocking)."
+            echo "STRICT=" >> "$GITHUB_ENV"
+          fi
+
+      - name: Scan PR diff for client identifiers
+        run: |
+          echo "## Legal Client-PII Gate" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if uv run python scripts/legal/check-client-pii.py \
+               --base-ref "origin/${{ github.base_ref }}" $STRICT; then
+            echo "**Result:** PASS — no client identifiers in changed files." >> "$GITHUB_STEP_SUMMARY"
+          else
+            rc=$?
+            echo "**Result:** FAIL (exit $rc) — a changed file contains a client identifier." >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Values are withheld from logs (public). Codename-redact before re-pushing:" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            echo "uv run python scripts/legal/redact-client-pii.py --map <private-map> <file>" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            exit $rc
+          fi
