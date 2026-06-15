@@ -27,7 +27,7 @@ Generated: 2026-05-09
 
 | Issue | Title | Lane | Domain routes | Priority | 5-hour Hermes swarm route | Labels |
 | --- | --- | --- | --- | --- | --- | --- |
-| [digitalmodel #598](https://github.com/vamseeachanta/digitalmodel/issues/598) | feat(naval-architecture): SIROCCO current-heading/rudder force component chart set | Plan Review / Needs Approval | category:engineering, category:engineering-calculations, domain:naval-architecture | priority:high | approval/review batch: 3-6 issues/window; user decision or plan revision only | `cat:engineering`, `cat:engineering-calculations`, `domain:naval-architecture`, `enhancement`, `priority:high`, `status:plan-review` |
+| [digitalmodel #598](https://github.com/vamseeachanta/digitalmodel/issues/598) | feat(naval-architecture): proj-a current-heading/rudder force component chart set | Plan Review / Needs Approval | category:engineering, category:engineering-calculations, domain:naval-architecture | priority:high | approval/review batch: 3-6 issues/window; user decision or plan revision only | `cat:engineering`, `cat:engineering-calculations`, `domain:naval-architecture`, `enhancement`, `priority:high`, `status:plan-review` |
 
 ### Ready / Plan Approved (1)
 

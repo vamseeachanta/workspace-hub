@@ -8,6 +8,6 @@ metadata:
   tags: [architecture, repo-organization, cross-repo-sync]
 ---
 
-#2775 proposes flowing memory, skills, harness configuration from workspace-hub control plane across sibling repos (digitalmodel, acma-projects, etc.) as siblings. Current state: symlinks + AGENTS.md pointers; ideal state: canonical source with cross-repo inheritance.
+#2775 proposes flowing memory, skills, harness configuration from workspace-hub control plane across sibling repos (digitalmodel, mkt-a, etc.) as siblings. Current state: symlinks + AGENTS.md pointers; ideal state: canonical source with cross-repo inheritance.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

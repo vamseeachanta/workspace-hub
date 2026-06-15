@@ -32,10 +32,10 @@ BUCKETS = [
     Bucket(2, "assethold-casa-grande-77017", "casa_grande_77017", Path("/mnt/ace/assethold/casa-grande-77017"), Path("/mnt/ace/assethold/casa-grande-77017/_from_elements"), "small real-estate/asset bucket"),
     Bucket(3, "digitalmodel-qgis", "qgis", Path("/mnt/ace/digitalmodel/tools/qgis"), Path("/mnt/ace/digitalmodel/tools/qgis/_from_elements"), "reusable workflow/data"),
     Bucket(4, "digitalmodel-riser-toolbox", "Riser Toolbox", Path("/mnt/ace/digitalmodel/references/riser-toolbox"), Path("/mnt/ace/digitalmodel/references/riser-toolbox/_from_elements"), "engineering reference"),
-    Bucket(5, "doris-62092-sesa", "62092  SESA FLNG Terminal Project", Path("/mnt/ace/doris/62092_sesa"), Path("/mnt/ace/doris/62092_sesa/_from_elements"), "likely overlap; review carefully"),
-    Bucket(6, "doris-university", "Doris University", Path("/mnt/ace/doris/training"), Path("/mnt/ace/doris/training/_from_elements"), "training material"),
-    Bucket(7, "doris-codes-specs", "Codes and Specs", Path("/mnt/ace/doris/codes"), Path("/mnt/ace/doris/codes/_from_elements/codes-doris"), "high file-count overlap risk"),
-    Bucket(8, "acma-projects-31522-woodfibre", "Woodfibre", Path("/mnt/ace/acma-projects/31522-woodfibre-lng"), Path("/mnt/ace/acma-projects/31522-woodfibre-lng/_from_elements"), "very large; treat as separate reviewed merge"),
+    Bucket(5, "lng-a-62092-sesa", "62092  SESA FLNG Terminal Project", Path("/mnt/ace/lng-a/62092_sesa"), Path("/mnt/ace/lng-a/62092_sesa/_from_elements"), "likely overlap; review carefully"),
+    Bucket(6, "lng-a-university", "lng-a University", Path("/mnt/ace/lng-a/training"), Path("/mnt/ace/lng-a/training/_from_elements"), "training material"),
+    Bucket(7, "lng-a-codes-specs", "Codes and Specs", Path("/mnt/ace/lng-a/codes"), Path("/mnt/ace/lng-a/codes/_from_elements/codes-lng-a"), "high file-count overlap risk"),
+    Bucket(8, "mkt-a-31522-woodfibre", "Woodfibre", Path("/mnt/ace/mkt-a/31522-woodfibre-lng"), Path("/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements"), "very large; treat as separate reviewed merge"),
 ]
 
 

@@ -3516,7 +3516,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/digitalmodel#598
-    title: 'feat(naval-architecture): SIROCCO current-heading/rudder force component chart set'
+    title: 'feat(naval-architecture): proj-a current-heading/rudder force component chart set'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/598
     gh_state: closed
@@ -3550,7 +3550,7 @@ cards:
 
       ## Required work'
   - idempotency_key: gh:vamseeachanta/digitalmodel#616
-    title: 'feat(marine_ops): polar plot with vessel silhouette and on-body force vectors — reusable across OCIMF explorer, SIROCCO review, future studies'
+    title: 'feat(marine_ops): polar plot with vessel silhouette and on-body force vectors — reusable across OCIMF explorer, proj-a review, future studies'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/616
     gh_state: closed

@@ -79,17 +79,17 @@
     },
     {
       "sha": "sha256:b3335ab966708094fbff94faaaa18929a005596199e9a4bf4093d6443e534d42",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/B1535/specs/place_holder_prompts.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/B1535/specs/place_holder_prompts.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:ef8f438c115a0e67fa439c9f3567b27b402f6343da80453c661417a816028c38",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/B1535/specs/2025-08-07-offshore-msiv-shallow-water-research/sub-specs/commercial-analysis-spec.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/B1535/specs/2025-08-07-offshore-msiv-shallow-water-research/sub-specs/commercial-analysis-spec.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:f3b229a62988e264d12c732a25b1848fd4270a8f7aab0ed5f75a9aca4a9aa2a8",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/modules/agent-os/slash-commands/create-spec/spec.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/modules/agent-os/slash-commands/create-spec/spec.md",
       "source": "workspace_spec"
     },
     {
@@ -134,7 +134,7 @@
     },
     {
       "sha": "sha256:da2308e49a82fa105bafa19d5ebad2536b520ec6e5bf3438e4b0e3c3250e8045",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client_projects/modules/agent-os/slash-commands/create-module-agent/sub-specs/workflow-refresh.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-c/modules/agent-os/slash-commands/create-module-agent/sub-specs/workflow-refresh.md",
       "source": "workspace_spec"
     },
     {
@@ -609,17 +609,17 @@
     },
     {
       "sha": "sha256:b9c15d6a3d38079b6a65cdd8196722460f2f2557c4f7a531d19452b1ee98cf11",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/doris/modules/agent-os/slash-commands/create-module-agent/spec.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/lng-a/modules/agent-os/slash-commands/create-module-agent/spec.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:cf78465667d4db4e7f2217fa130ae123cec90f68e095294c98cfb60f743c0d21",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/frontierdeepwater/2025-07-31-agent-os-integration/tasks.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-a/2025-07-31-agent-os-integration/tasks.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:e7cd419af87adc29a148420952ade6db1a5b8b967004ec7688a2b3390b32cf4c",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/frontierdeepwater/specs/README.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-a/specs/README.md",
       "source": "workspace_spec"
     },
     {
@@ -634,12 +634,12 @@
     },
     {
       "sha": "sha256:b539c4060291a90f6873a332617cae907dccb2630784e8304b4833273db7bb70",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/rock-oil-field/README.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-b/README.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:0f3609e57622824249086ef9e483a9517d5fc334fd672e596fa6d41d148ac819",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/rock-oil-field/templates/plan-template-minimal.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-b/templates/plan-template-minimal.md",
       "source": "workspace_spec"
     },
     {

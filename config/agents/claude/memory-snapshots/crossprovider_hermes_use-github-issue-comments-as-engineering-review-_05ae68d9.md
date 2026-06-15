@@ -5,7 +5,7 @@ metadata:
   type: reference
   source: hermes
   bridged: 2026-05-26
-  tags: [github-workflow, engineering-review, sirocco]
+  tags: [github-workflow, engineering-review, proj-a]
 ---
 
 For interactive engineering reviews (e.g., force-by-force calculations), post clarifications, assumptions, and decisions back to the GitHub issue thread rather than local plan files. This captures context for future reviews and ensures all stakeholders see the decision rationale.

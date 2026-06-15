@@ -2,7 +2,7 @@
 [batch-ingest] Loaded 1 records
 [batch-ingest] DRY-RUN mode — no files will be written
 
-  [DRY-RUN] Would create: wiki/sources/elements-doris-codes-specs.md — Elements ingest catalog — doris-codes-specs
+  [DRY-RUN] Would create: wiki/sources/elements-lng-a-codes-specs.md — Elements ingest catalog — lng-a-codes-specs
   Progress: 1/1 (100%) — created=1 skipped=0 errors=0
   [batch 1] Wrote 1 entries to index.md and log.md (dry-run)
 

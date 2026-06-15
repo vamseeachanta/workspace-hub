@@ -256,23 +256,23 @@
 ,
     {"repo":"achantas-media","hash":"999336a498ae4b9942523da8cce9f4b64d8e58da","short_hash":"999336a","message":"Initial commit: Achantas Media collection","author":"Vamsee Achanta","date":"2026-01-24T21:36:50-06:00","timestamp":"1769312210","files_changed":3881,"insertions":94404,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"f52db0fc29e1cbb7a0cae91369446f29510726ef","short_hash":"f52db0fc","message":"chore: Add B1912 project files and update admin notes","author":"Vamsee Achanta","date":"2026-02-02T18:18:52-06:00","timestamp":"1770077932","files_changed":4,"insertions":260,"deletions":0}
+    {"repo":"mkt-a","hash":"f52db0fc29e1cbb7a0cae91369446f29510726ef","short_hash":"f52db0fc","message":"chore: Add B1912 project files and update admin notes","author":"Vamsee Achanta","date":"2026-02-02T18:18:52-06:00","timestamp":"1770077932","files_changed":4,"insertions":260,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"23a08f901d0d031fb98ba9601035304f956f6981","short_hash":"23a08f90","message":"chore: Batch sync from workspace-hub","author":"Vamsee Achanta","date":"2026-01-25T18:08:09-06:00","timestamp":"1769386089","files_changed":2,"insertions":109,"deletions":1}
+    {"repo":"mkt-a","hash":"23a08f901d0d031fb98ba9601035304f956f6981","short_hash":"23a08f90","message":"chore: Batch sync from workspace-hub","author":"Vamsee Achanta","date":"2026-01-25T18:08:09-06:00","timestamp":"1769386089","files_changed":2,"insertions":109,"deletions":1}
 ,
-    {"repo":"acma-projects","hash":"7c24cdafcd1e4dbbb8a5a5f38d9dc2fe7ac08a09","short_hash":"7c24cdaf","message":"chore: Add Claude statusline command","author":"Vamsee Achanta","date":"2026-01-20T11:35:45-06:00","timestamp":"1768930545","files_changed":1,"insertions":49,"deletions":0}
+    {"repo":"mkt-a","hash":"7c24cdafcd1e4dbbb8a5a5f38d9dc2fe7ac08a09","short_hash":"7c24cdaf","message":"chore: Add Claude statusline command","author":"Vamsee Achanta","date":"2026-01-20T11:35:45-06:00","timestamp":"1768930545","files_changed":1,"insertions":49,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"9b65e6c6b4afe12816ead2893b51bdd239e10b67","short_hash":"9b65e6c6","message":"feat: Add context-management skill v2.0 and validation scripts","author":"Vamsee Achanta","date":"2026-01-18T17:37:22-06:00","timestamp":"1768779442","files_changed":7,"insertions":752,"deletions":0}
+    {"repo":"mkt-a","hash":"9b65e6c6b4afe12816ead2893b51bdd239e10b67","short_hash":"9b65e6c6","message":"feat: Add context-management skill v2.0 and validation scripts","author":"Vamsee Achanta","date":"2026-01-18T17:37:22-06:00","timestamp":"1768779442","files_changed":7,"insertions":752,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"250e87b8b8f85db8cabacf880dc2b91d5a49b8ea","short_hash":"250e87b8","message":"refactor: Optimize CLAUDE.md context (~2.5KB from ~32KB)","author":"Vamsee Achanta","date":"2026-01-18T15:50:25-06:00","timestamp":"1768773025","files_changed":5,"insertions":350,"deletions":706}
+    {"repo":"mkt-a","hash":"250e87b8b8f85db8cabacf880dc2b91d5a49b8ea","short_hash":"250e87b8","message":"refactor: Optimize CLAUDE.md context (~2.5KB from ~32KB)","author":"Vamsee Achanta","date":"2026-01-18T15:50:25-06:00","timestamp":"1768773025","files_changed":5,"insertions":350,"deletions":706}
 ,
-    {"repo":"acma-projects","hash":"9e606c1a20601aa3bf6d1f6633aab03a9e634353","short_hash":"9e606c1a","message":"feat: Add plan templates with cross-review process","author":"Vamsee Achanta","date":"2026-01-18T15:36:37-06:00","timestamp":"1768772197","files_changed":4,"insertions":475,"deletions":0}
+    {"repo":"mkt-a","hash":"9e606c1a20601aa3bf6d1f6633aab03a9e634353","short_hash":"9e606c1a","message":"feat: Add plan templates with cross-review process","author":"Vamsee Achanta","date":"2026-01-18T15:36:37-06:00","timestamp":"1768772197","files_changed":4,"insertions":475,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"c8433bdfbb11d4e7ba984d3fc167f2111edbd8c0","short_hash":"c8433bdf","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:07-06:00","timestamp":"1768454947","files_changed":14,"insertions":2333,"deletions":0}
+    {"repo":"mkt-a","hash":"c8433bdfbb11d4e7ba984d3fc167f2111edbd8c0","short_hash":"c8433bdf","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:07-06:00","timestamp":"1768454947","files_changed":14,"insertions":2333,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"b7e030905b3c3ef9661b4f3a8bc90cd64ee97dae","short_hash":"b7e03090","message":"chore: Add skill-learner hooks","author":"Vamsee Achanta","date":"2026-01-07T10:22:58-06:00","timestamp":"1767802978","files_changed":2,"insertions":96,"deletions":0}
+    {"repo":"mkt-a","hash":"b7e030905b3c3ef9661b4f3a8bc90cd64ee97dae","short_hash":"b7e03090","message":"chore: Add skill-learner hooks","author":"Vamsee Achanta","date":"2026-01-07T10:22:58-06:00","timestamp":"1767802978","files_changed":2,"insertions":96,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"a6dab6de2c371ac92d6e735ecc64b939701be5e4","short_hash":"a6dab6de","message":"feat(validators): Install data-validation-reporter skill","author":"Vamsee Achanta","date":"2026-01-07T09:57:35-06:00","timestamp":"1767801455","files_changed":5,"insertions":766,"deletions":0}
+    {"repo":"mkt-a","hash":"a6dab6de2c371ac92d6e735ecc64b939701be5e4","short_hash":"a6dab6de","message":"feat(validators): Install data-validation-reporter skill","author":"Vamsee Achanta","date":"2026-01-07T09:57:35-06:00","timestamp":"1767801455","files_changed":5,"insertions":766,"deletions":0}
 ,
     {"repo":"assethold","hash":"2c3834c6203ec0c6e832106c7382d1bcdc6c44de","short_hash":"2c3834c","message":"End of day auto-sync 2026-02-01","author":"Vamsee Achanta","date":"2026-02-01T23:00:07-06:00","timestamp":"1770008407","files_changed":0
 ,
@@ -364,30 +364,30 @@
 ,
     {"repo":"assetutilities","hash":"dd47758213baebe3e7d36c63fd01746f2f6d7ff9","short_hash":"dd47758","message":"feat(validators): Install data-validation-reporter skill","author":"Vamsee Achanta","date":"2026-01-07T09:56:46-06:00","timestamp":"1767801406","files_changed":5,"insertions":766,"deletions":0}
 ,
-    {"repo":"client_projects","hash":"7ad39ecf1dacd6d9e121a8aecc89920d00b63c84","short_hash":"7ad39ecf","message":"feat: consolidate remaining client project files and pipeline work","author":"Vamsee Achanta","date":"2026-01-31T11:22:56-06:00","timestamp":"1769880176","files_changed":1097,"insertions":185084,"deletions":0}
+    {"repo":"client-c","hash":"7ad39ecf1dacd6d9e121a8aecc89920d00b63c84","short_hash":"7ad39ecf","message":"feat: consolidate remaining client project files and pipeline work","author":"Vamsee Achanta","date":"2026-01-31T11:22:56-06:00","timestamp":"1769880176","files_changed":1097,"insertions":185084,"deletions":0}
 ,
-    {"repo":"client_projects","hash":"f3e35afd243d719854894c9adbd48cfc21833e10","short_hash":"f3e35afd","message":"feat: consolidate remaining energy project files","author":"Vamsee Achanta","date":"2026-01-31T11:17:59-06:00","timestamp":"1769879879","files_changed":1177,"insertions":3135829,"deletions":0}
+    {"repo":"client-c","hash":"f3e35afd243d719854894c9adbd48cfc21833e10","short_hash":"f3e35afd","message":"feat: consolidate remaining energy project files","author":"Vamsee Achanta","date":"2026-01-31T11:17:59-06:00","timestamp":"1769879879","files_changed":1177,"insertions":3135829,"deletions":0}
 ,
-    {"repo":"client_projects","hash":"517f4dede88284cc31ca0fd59f2c7311cb8bf49d","short_hash":"517f4ded","message":"feat: consolidate Spark, DeepScale Support, and ML_LR files","author":"Vamsee Achanta","date":"2026-01-31T11:15:46-06:00","timestamp":"1769879746","files_changed":4002,"insertions":3091717,"deletions":0}
+    {"repo":"client-c","hash":"517f4dede88284cc31ca0fd59f2c7311cb8bf49d","short_hash":"517f4ded","message":"feat: consolidate Spark, DeepScale Support, and ML_LR files","author":"Vamsee Achanta","date":"2026-01-31T11:15:46-06:00","timestamp":"1769879746","files_changed":4002,"insertions":3091717,"deletions":0}
 ,
-    {"repo":"client_projects","hash":"fba561b18aebbfe21356331cbc996c0b35710041","short_hash":"fba561b1","message":"feat: consolidate energy_integrity and energy_firm_data_analytics files","author":"Vamsee Achanta","date":"2026-01-31T11:07:33-06:00","timestamp":"1769879253","files_changed":4078,"insertions":2453679,"deletions":0}
+    {"repo":"client-c","hash":"fba561b18aebbfe21356331cbc996c0b35710041","short_hash":"fba561b1","message":"feat: consolidate energy_integrity and energy_firm_data_analytics files","author":"Vamsee Achanta","date":"2026-01-31T11:07:33-06:00","timestamp":"1769879253","files_changed":4078,"insertions":2453679,"deletions":0}
 ,
-    {"repo":"client_projects","hash":"31129f00ed4a4469964a68c0f061fcda5ee4c7bf","short_hash":"31129f00","message":"feat: consolidate energy_engineering client project files","author":"Vamsee Achanta","date":"2026-01-31T11:03:19-06:00","timestamp":"1769878999","files_changed":2958,"insertions":914660,"deletions":0}
+    {"repo":"client-c","hash":"31129f00ed4a4469964a68c0f061fcda5ee4c7bf","short_hash":"31129f00","message":"feat: consolidate energy_engineering client project files","author":"Vamsee Achanta","date":"2026-01-31T11:03:19-06:00","timestamp":"1769878999","files_changed":2958,"insertions":914660,"deletions":0}
 ,
-    {"repo":"client_projects","hash":"6f890f8f13c8234a733f33df4b45759a3deb09b4","short_hash":"6f890f8f","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:44-06:00","timestamp":"1769841764","files_changed":1,"insertions":1,"deletions":0}
+    {"repo":"client-c","hash":"6f890f8f13c8234a733f33df4b45759a3deb09b4","short_hash":"6f890f8f","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:44-06:00","timestamp":"1769841764","files_changed":1,"insertions":1,"deletions":0}
 ,
-    {"repo":"client_projects","hash":"1aa7884c538e2a55a8b563ab57a445f22c5ce3c7","short_hash":"1aa7884c","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:37-06:00","timestamp":"1769816797","files_changed":1,"insertions":1,"deletions":0}
+    {"repo":"client-c","hash":"1aa7884c538e2a55a8b563ab57a445f22c5ce3c7","short_hash":"1aa7884c","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:37-06:00","timestamp":"1769816797","files_changed":1,"insertions":1,"deletions":0}
 ,
-    {"repo":"client_projects","hash":"e63bb186f6178d7346a2a763fd06bdf515d56891","short_hash":"e63bb186","message":"feat(reflect): complete RAG-to-skills feedback loop","author":"Vamsee Achanta","date":"2026-01-27T10:37:06-06:00","timestamp":"1769531826","files_changed":1,"insertions":1,"deletions":101}
+    {"repo":"client-c","hash":"e63bb186f6178d7346a2a763fd06bdf515d56891","short_hash":"e63bb186","message":"feat(reflect): complete RAG-to-skills feedback loop","author":"Vamsee Achanta","date":"2026-01-27T10:37:06-06:00","timestamp":"1769531826","files_changed":1,"insertions":1,"deletions":101}
 ,
-    {"repo":"client_projects","hash":"0a0376c972b4bdcb4b28f27611557a56c57865f1","short_hash":"0a0376c9","message":"chore: remove legacy .claude/CLAUDE.md (inherited from workspace-hub)","author":"Vamsee Achanta","date":"2026-01-26T12:47:39-06:00","timestamp":"1769453259","files_changed":1,"insertions":0,"deletions":497}
+    {"repo":"client-c","hash":"0a0376c972b4bdcb4b28f27611557a56c57865f1","short_hash":"0a0376c9","message":"chore: remove legacy .claude/CLAUDE.md (inherited from workspace-hub)","author":"Vamsee Achanta","date":"2026-01-26T12:47:39-06:00","timestamp":"1769453259","files_changed":1,"insertions":0,"deletions":497}
 ,
 ,
-    {"repo":"client_projects","hash":"2ef3009062de961eeb15a5e2fe783c9149913fb8","short_hash":"2ef30090","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:32-06:00","timestamp":"1768879292","files_changed":1,"insertions":22,"deletions":710}
+    {"repo":"client-c","hash":"2ef3009062de961eeb15a5e2fe783c9149913fb8","short_hash":"2ef30090","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:32-06:00","timestamp":"1768879292","files_changed":1,"insertions":22,"deletions":710}
 ,
-    {"repo":"client_projects","hash":"d4a645a19151cc4dff6d9b3d8470ce04116e2bd1","short_hash":"d4a645a1","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:14-06:00","timestamp":"1768454954","files_changed":13,"insertions":2295,"deletions":0}
+    {"repo":"client-c","hash":"d4a645a19151cc4dff6d9b3d8470ce04116e2bd1","short_hash":"d4a645a1","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:14-06:00","timestamp":"1768454954","files_changed":13,"insertions":2295,"deletions":0}
 ,
-    {"repo":"client_projects","hash":"41ac01da9a34e7a647727c73bf33b56d0242875e","short_hash":"41ac01da","message":"chore: Sync with workspace-hub consolidation updates","author":"Vamsee Achanta","date":"2026-01-11T23:46:09-06:00","timestamp":"1768196769","files_changed":2,"insertions":2296,"deletions":0}
+    {"repo":"client-c","hash":"41ac01da9a34e7a647727c73bf33b56d0242875e","short_hash":"41ac01da","message":"chore: Sync with workspace-hub consolidation updates","author":"Vamsee Achanta","date":"2026-01-11T23:46:09-06:00","timestamp":"1768196769","files_changed":2,"insertions":2296,"deletions":0}
 ,
     {"repo":"digitalmodel","hash":"1eff71d737a182b6b93679d7b527b6fceda4d546","short_hash":"1eff71d73","message":"feat(WRK-095): add @unit_checked decorators to plate buckling calculations","author":"Vamsee Achanta","date":"2026-02-04T11:19:45-06:00","timestamp":"1770225585","files_changed":5,"insertions":865,"deletions":35}
 ,
@@ -1037,82 +1037,82 @@
 ,
     {"repo":"digitalmodel","hash":"9e6a2c7bdf3ed200dd75086f7e9be43e9dc2de42","short_hash":"9e6a2c7bd","message":"feat(orcawave): Add interactive RAO comparison with unit conversion (deg/m)","author":"Vamsee Achanta","date":"2026-01-06T20:15:57-06:00","timestamp":"1767752157","files_changed":7,"insertions":1105,"deletions":58}
 ,
-    {"repo":"doris","hash":"59805550d205d404806b651cbe990488a93adfb3","short_hash":"5980555","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:44-06:00","timestamp":"1769841764","files_changed":1,"insertions":1,"deletions":0}
+    {"repo":"lng-a","hash":"59805550d205d404806b651cbe990488a93adfb3","short_hash":"5980555","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:44-06:00","timestamp":"1769841764","files_changed":1,"insertions":1,"deletions":0}
 ,
-    {"repo":"doris","hash":"99088383821d47ce332802e38b9e540b1ae8e46c","short_hash":"9908838","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:43-06:00","timestamp":"1769816803","files_changed":2,"insertions":8,"deletions":4}
+    {"repo":"lng-a","hash":"99088383821d47ce332802e38b9e540b1ae8e46c","short_hash":"9908838","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:43-06:00","timestamp":"1769816803","files_changed":2,"insertions":8,"deletions":4}
 ,
-    {"repo":"doris","hash":"c54d47ed10426a150d55220ca27d8611d25c85b2","short_hash":"c54d47e","message":"chore(claude): trim .claude/CLAUDE.md to 2KB budget","author":"Vamsee Achanta","date":"2026-01-29T11:03:11-06:00","timestamp":"1769706191","files_changed":3,"insertions":170,"deletions":630}
+    {"repo":"lng-a","hash":"c54d47ed10426a150d55220ca27d8611d25c85b2","short_hash":"c54d47e","message":"chore(claude): trim .claude/CLAUDE.md to 2KB budget","author":"Vamsee Achanta","date":"2026-01-29T11:03:11-06:00","timestamp":"1769706191","files_changed":3,"insertions":170,"deletions":630}
 ,
-    {"repo":"doris","hash":"bb9647d0176f387a49a785bcf57217055f8fa68c","short_hash":"bb9647d","message":"chore: Batch sync from workspace-hub","author":"Vamsee Achanta","date":"2026-01-25T18:08:36-06:00","timestamp":"1769386116","files_changed":6,"insertions":14283,"deletions":1}
+    {"repo":"lng-a","hash":"bb9647d0176f387a49a785bcf57217055f8fa68c","short_hash":"bb9647d","message":"chore: Batch sync from workspace-hub","author":"Vamsee Achanta","date":"2026-01-25T18:08:36-06:00","timestamp":"1769386116","files_changed":6,"insertions":14283,"deletions":1}
 ,
-    {"repo":"doris","hash":"707afd8c15c6919c73b9c5428fccdd809d94975a","short_hash":"707afd8","message":"chore: Add .build_libredwg to gitignore","author":"Vamsee Achanta","date":"2026-01-21T07:35:47-06:00","timestamp":"1769002547","files_changed":2,"insertions":1,"deletions":1}
+    {"repo":"lng-a","hash":"707afd8c15c6919c73b9c5428fccdd809d94975a","short_hash":"707afd8","message":"chore: Add .build_libredwg to gitignore","author":"Vamsee Achanta","date":"2026-01-21T07:35:47-06:00","timestamp":"1769002547","files_changed":2,"insertions":1,"deletions":1}
 ,
-    {"repo":"doris","hash":"1c37dc2d2f8452369497101f4d346828f6d0cb98","short_hash":"1c37dc2","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-21T07:14:53-06:00","timestamp":"1769001293","files_changed":22,"insertions":1527,"deletions":0}
+    {"repo":"lng-a","hash":"1c37dc2d2f8452369497101f4d346828f6d0cb98","short_hash":"1c37dc2","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-21T07:14:53-06:00","timestamp":"1769001293","files_changed":22,"insertions":1527,"deletions":0}
 ,
-    {"repo":"doris","hash":"dd881e6dc8bd96531b9f3695ebbacc3f85cf2752","short_hash":"dd881e6","message":"chore: Sync all repositories","author":"Vamsee Achanta","date":"2026-01-20T22:19:23-06:00","timestamp":"1768969163","files_changed":4,"insertions":581,"deletions":0}
+    {"repo":"lng-a","hash":"dd881e6dc8bd96531b9f3695ebbacc3f85cf2752","short_hash":"dd881e6","message":"chore: Sync all repositories","author":"Vamsee Achanta","date":"2026-01-20T22:19:23-06:00","timestamp":"1768969163","files_changed":4,"insertions":581,"deletions":0}
 ,
-    {"repo":"doris","hash":"d7429c24a90500184a09adc7d0ca3e29e843e05c","short_hash":"d7429c2","message":"feat(62092_sesa): Add metocean data analysis and OCR tables","author":"Vamsee Achanta","date":"2026-01-20T21:49:15-06:00","timestamp":"1768967355","files_changed":36,"insertions":467,"deletions":0}
+    {"repo":"lng-a","hash":"d7429c24a90500184a09adc7d0ca3e29e843e05c","short_hash":"d7429c2","message":"feat(62092_sesa): Add metocean data analysis and OCR tables","author":"Vamsee Achanta","date":"2026-01-20T21:49:15-06:00","timestamp":"1768967355","files_changed":36,"insertions":467,"deletions":0}
 ,
-    {"repo":"doris","hash":"a9e88f24c3bb29a8a8a5675a96e86b2f5d608baa","short_hash":"a9e88f2","message":"Sync all repositories","author":"Vamsee Achanta","date":"2026-01-19T22:24:34-06:00","timestamp":"1768883074","files_changed":9,"insertions":657,"deletions":0}
+    {"repo":"lng-a","hash":"a9e88f24c3bb29a8a8a5675a96e86b2f5d608baa","short_hash":"a9e88f2","message":"Sync all repositories","author":"Vamsee Achanta","date":"2026-01-19T22:24:34-06:00","timestamp":"1768883074","files_changed":9,"insertions":657,"deletions":0}
 ,
-    {"repo":"doris","hash":"40744679178cc98fefdf3ba6e6c85792c0704ccb","short_hash":"4074467","message":"feat(62092_sesa): Add float properties and OrcaFlex model documentation","author":"Vamsee Achanta","date":"2026-01-19T22:16:55-06:00","timestamp":"1768882615","files_changed":8,"insertions":9898,"deletions":0}
+    {"repo":"lng-a","hash":"40744679178cc98fefdf3ba6e6c85792c0704ccb","short_hash":"4074467","message":"feat(62092_sesa): Add float properties and OrcaFlex model documentation","author":"Vamsee Achanta","date":"2026-01-19T22:16:55-06:00","timestamp":"1768882615","files_changed":8,"insertions":9898,"deletions":0}
 ,
-    {"repo":"doris","hash":"06e2ebd8e84488210f6d79b16d07a2b9c20ac400","short_hash":"06e2ebd","message":"feat(62092_sesa): Add MKII and HILLI pipeline comparison analysis","author":"Vamsee Achanta","date":"2026-01-19T19:10:53-06:00","timestamp":"1768871453","files_changed":2,"insertions":252,"deletions":0}
+    {"repo":"lng-a","hash":"06e2ebd8e84488210f6d79b16d07a2b9c20ac400","short_hash":"06e2ebd","message":"feat(62092_sesa): Add MKII and HILLI pipeline comparison analysis","author":"Vamsee Achanta","date":"2026-01-19T19:10:53-06:00","timestamp":"1768871453","files_changed":2,"insertions":252,"deletions":0}
 ,
-    {"repo":"doris","hash":"ee6198fd65cee6c418214a662837ee1afb5286ce","short_hash":"ee6198f","message":"refactor(62092_sesa): Remove pipe_cross_section code (moved to digitalmodel)","author":"Vamsee Achanta","date":"2026-01-19T19:02:07-06:00","timestamp":"1768870927","files_changed":10,"insertions":0,"deletions":1569}
+    {"repo":"lng-a","hash":"ee6198fd65cee6c418214a662837ee1afb5286ce","short_hash":"ee6198f","message":"refactor(62092_sesa): Remove pipe_cross_section code (moved to digitalmodel)","author":"Vamsee Achanta","date":"2026-01-19T19:02:07-06:00","timestamp":"1768870927","files_changed":10,"insertions":0,"deletions":1569}
 ,
-    {"repo":"doris","hash":"59b53356fa9a96b498d23409a3a03115f1c061ed","short_hash":"59b5335","message":"feat(62092_sesa): Add float model v4 and v5 iterations","author":"Vamsee Achanta","date":"2026-01-19T16:24:02-06:00","timestamp":"1768861442","files_changed":7,"insertions":22880,"deletions":0}
+    {"repo":"lng-a","hash":"59b53356fa9a96b498d23409a3a03115f1c061ed","short_hash":"59b5335","message":"feat(62092_sesa): Add float model v4 and v5 iterations","author":"Vamsee Achanta","date":"2026-01-19T16:24:02-06:00","timestamp":"1768861442","files_changed":7,"insertions":22880,"deletions":0}
 ,
-    {"repo":"doris","hash":"9d1d993be736bd63bcd546251b790f65fb232285","short_hash":"9d1d993","message":"Add HILII Pipeline Design Basis document","author":"Vamsee Achanta","date":"2026-01-19T16:19:10-06:00","timestamp":"1768861150","files_changed":1,"insertions":0,"deletions":0}
+    {"repo":"lng-a","hash":"9d1d993be736bd63bcd546251b790f65fb232285","short_hash":"9d1d993","message":"Add HILII Pipeline Design Basis document","author":"Vamsee Achanta","date":"2026-01-19T16:19:10-06:00","timestamp":"1768861150","files_changed":1,"insertions":0,"deletions":0}
 ,
-    {"repo":"doris","hash":"77d392f6bf05fe32d620243cae62c23814775542","short_hash":"77d392f","message":"feat(62092_sesa): Add FreeCAD float models and rename PDFs","author":"Vamsee Achanta","date":"2026-01-19T16:11:07-06:00","timestamp":"1768860667","files_changed":9,"insertions":1622,"deletions":0}
+    {"repo":"lng-a","hash":"77d392f6bf05fe32d620243cae62c23814775542","short_hash":"77d392f","message":"feat(62092_sesa): Add FreeCAD float models and rename PDFs","author":"Vamsee Achanta","date":"2026-01-19T16:11:07-06:00","timestamp":"1768860667","files_changed":9,"insertions":1622,"deletions":0}
 ,
-    {"repo":"doris","hash":"75bd08d04b02e019438f76fbab6e2781b00a5946","short_hash":"75bd08d","message":"feat(62092_sesa): Add pipe cross section analysis and float models","author":"Vamsee Achanta","date":"2026-01-19T14:25:52-06:00","timestamp":"1768854352","files_changed":31,"insertions":28375,"deletions":0}
+    {"repo":"lng-a","hash":"75bd08d04b02e019438f76fbab6e2781b00a5946","short_hash":"75bd08d","message":"feat(62092_sesa): Add pipe cross section analysis and float models","author":"Vamsee Achanta","date":"2026-01-19T14:25:52-06:00","timestamp":"1768854352","files_changed":31,"insertions":28375,"deletions":0}
 ,
-    {"repo":"doris","hash":"6c1d7e186237b75e637c5a63a03d5d6b3b925f98","short_hash":"6c1d7e1","message":"refactor(structure): Move translation tools to workspace root - Gemini","author":"Vamsee Achanta","date":"2026-01-19T07:47:34-06:00","timestamp":"1768830454","files_changed":3,"insertions":0,"deletions":295}
+    {"repo":"lng-a","hash":"6c1d7e186237b75e637c5a63a03d5d6b3b925f98","short_hash":"6c1d7e1","message":"refactor(structure): Move translation tools to workspace root - Gemini","author":"Vamsee Achanta","date":"2026-01-19T07:47:34-06:00","timestamp":"1768830454","files_changed":3,"insertions":0,"deletions":295}
 ,
-    {"repo":"doris","hash":"29d21f769dd8f8242604d67e2b06619e98cc6202","short_hash":"29d21f7","message":"chore: remove dummy test file - Gemini","author":"Vamsee Achanta","date":"2026-01-19T07:41:35-06:00","timestamp":"1768830095","files_changed":1,"insertions":0,"deletions":0}
+    {"repo":"lng-a","hash":"29d21f769dd8f8242604d67e2b06619e98cc6202","short_hash":"29d21f7","message":"chore: remove dummy test file - Gemini","author":"Vamsee Achanta","date":"2026-01-19T07:41:35-06:00","timestamp":"1768830095","files_changed":1,"insertions":0,"deletions":0}
 ,
-    {"repo":"doris","hash":"192d1d6490417e5410523b29a35b1b73d5d60629","short_hash":"192d1d6","message":"chore: test gemini review trigger - Gemini","author":"Vamsee Achanta","date":"2026-01-19T07:41:30-06:00","timestamp":"1768830090","files_changed":1,"insertions":0,"deletions":0}
+    {"repo":"lng-a","hash":"192d1d6490417e5410523b29a35b1b73d5d60629","short_hash":"192d1d6","message":"chore: test gemini review trigger - Gemini","author":"Vamsee Achanta","date":"2026-01-19T07:41:30-06:00","timestamp":"1768830090","files_changed":1,"insertions":0,"deletions":0}
 ,
-    {"repo":"doris","hash":"316417079506a4e9976284682ac34185b50c6997","short_hash":"3164170","message":"fix(tools): Implement Codex review feedback - optimize script and add deps - Gemini","author":"Vamsee Achanta","date":"2026-01-19T06:43:16-06:00","timestamp":"1768826596","files_changed":3,"insertions":122,"deletions":57}
+    {"repo":"lng-a","hash":"316417079506a4e9976284682ac34185b50c6997","short_hash":"3164170","message":"fix(tools): Implement Codex review feedback - optimize script and add deps - Gemini","author":"Vamsee Achanta","date":"2026-01-19T06:43:16-06:00","timestamp":"1768826596","files_changed":3,"insertions":122,"deletions":57}
 ,
-    {"repo":"doris","hash":"c04533f7d335fb40c6137ec8cdb44f25ae748e44","short_hash":"c04533f","message":"feat(tools): Add Excel translation skill and plan - Gemini","author":"Vamsee Achanta","date":"2026-01-19T06:40:39-06:00","timestamp":"1768826439","files_changed":3,"insertions":231,"deletions":0}
+    {"repo":"lng-a","hash":"c04533f7d335fb40c6137ec8cdb44f25ae748e44","short_hash":"c04533f","message":"feat(tools): Add Excel translation skill and plan - Gemini","author":"Vamsee Achanta","date":"2026-01-19T06:40:39-06:00","timestamp":"1768826439","files_changed":3,"insertions":231,"deletions":0}
 ,
-    {"repo":"doris","hash":"78d5137dfb17036f2575b8e64c1730623c2ced9b","short_hash":"78d5137","message":"Organize 62092_sesa data files into subdirectories","author":"Vamsee Achanta","date":"2026-01-19T05:41:24-06:00","timestamp":"1768822884","files_changed":14,"insertions":0,"deletions":0}
+    {"repo":"lng-a","hash":"78d5137dfb17036f2575b8e64c1730623c2ced9b","short_hash":"78d5137","message":"Organize 62092_sesa data files into subdirectories","author":"Vamsee Achanta","date":"2026-01-19T05:41:24-06:00","timestamp":"1768822884","files_changed":14,"insertions":0,"deletions":0}
 ,
-    {"repo":"doris","hash":"6ce8896b27f827a2bdc06fac58e6a136cf4e9123","short_hash":"6ce8896","message":"Add 62092_sesa project files","author":"Vamsee Achanta","date":"2026-01-18T17:56:05-06:00","timestamp":"1768780565","files_changed":12,"insertions":263,"deletions":0}
+    {"repo":"lng-a","hash":"6ce8896b27f827a2bdc06fac58e6a136cf4e9123","short_hash":"6ce8896","message":"Add 62092_sesa project files","author":"Vamsee Achanta","date":"2026-01-18T17:56:05-06:00","timestamp":"1768780565","files_changed":12,"insertions":263,"deletions":0}
 ,
-    {"repo":"doris","hash":"d7243f06d32d6ac218c561de5dde34cebd5e0855","short_hash":"d7243f0","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:04-06:00","timestamp":"1768454944","files_changed":14,"insertions":2333,"deletions":0}
+    {"repo":"lng-a","hash":"d7243f06d32d6ac218c561de5dde34cebd5e0855","short_hash":"d7243f0","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:04-06:00","timestamp":"1768454944","files_changed":14,"insertions":2333,"deletions":0}
 ,
-    {"repo":"doris","hash":"0f6684f210b30647ed5418a62ed6b522af1fe489","short_hash":"0f6684f","message":"Merge branch '2024' into main","author":"Vamsee Achanta","date":"2026-01-13T14:50:39-06:00","timestamp":"1768337439","files_changed":356,"insertions":493141,"deletions":763}
+    {"repo":"lng-a","hash":"0f6684f210b30647ed5418a62ed6b522af1fe489","short_hash":"0f6684f","message":"Merge branch '2024' into main","author":"Vamsee Achanta","date":"2026-01-13T14:50:39-06:00","timestamp":"1768337439","files_changed":356,"insertions":493141,"deletions":763}
 ,
-    {"repo":"doris","hash":"225b2515f462618a791f948840772871a7ae4253","short_hash":"225b251","message":"Merge branch '202505' into main","author":"Vamsee Achanta","date":"2026-01-13T14:50:15-06:00","timestamp":"1768337415","files_changed":46,"insertions":288966,"deletions":0}
+    {"repo":"lng-a","hash":"225b2515f462618a791f948840772871a7ae4253","short_hash":"225b251","message":"Merge branch '202505' into main","author":"Vamsee Achanta","date":"2026-01-13T14:50:15-06:00","timestamp":"1768337415","files_changed":46,"insertions":288966,"deletions":0}
 ,
-    {"repo":"doris","hash":"1ddb6b4146ff67f00b6a59e989c12c541b45cfcf","short_hash":"1ddb6b4","message":"chore: Sync with workspace-hub consolidation updates","author":"Vamsee Achanta","date":"2026-01-11T23:52:39-06:00","timestamp":"1768197159","files_changed":1,"insertions":80,"deletions":7}
+    {"repo":"lng-a","hash":"1ddb6b4146ff67f00b6a59e989c12c541b45cfcf","short_hash":"1ddb6b4","message":"chore: Sync with workspace-hub consolidation updates","author":"Vamsee Achanta","date":"2026-01-11T23:52:39-06:00","timestamp":"1768197159","files_changed":1,"insertions":80,"deletions":7}
 ,
-    {"repo":"frontierdeepwater","hash":"425086adc574e4fac993158dc0a9a8df36c13604","short_hash":"425086a","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:45-06:00","timestamp":"1769841765","files_changed":1,"insertions":1,"deletions":0}
+    {"repo":"client-a","hash":"425086adc574e4fac993158dc0a9a8df36c13604","short_hash":"425086a","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:45-06:00","timestamp":"1769841765","files_changed":1,"insertions":1,"deletions":0}
 ,
-    {"repo":"frontierdeepwater","hash":"dd3bc3ac56a22295345b7ce48d7c180e9b72b02a","short_hash":"dd3bc3a","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:43-06:00","timestamp":"1769816803","files_changed":1,"insertions":1,"deletions":0}
+    {"repo":"client-a","hash":"dd3bc3ac56a22295345b7ce48d7c180e9b72b02a","short_hash":"dd3bc3a","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:43-06:00","timestamp":"1769816803","files_changed":1,"insertions":1,"deletions":0}
 ,
-    {"repo":"frontierdeepwater","hash":"40837ac17c2c7a547ad857fcd894d5404314a790","short_hash":"40837ac","message":"chore: sync claude settings","author":"Vamsee Achanta","date":"2026-01-27T10:38:38-06:00","timestamp":"1769531918","files_changed":1,"insertions":1,"deletions":101}
+    {"repo":"client-a","hash":"40837ac17c2c7a547ad857fcd894d5404314a790","short_hash":"40837ac","message":"chore: sync claude settings","author":"Vamsee Achanta","date":"2026-01-27T10:38:38-06:00","timestamp":"1769531918","files_changed":1,"insertions":1,"deletions":101}
 ,
-    {"repo":"frontierdeepwater","hash":"d8868d97230c49450a4409ce41be7ecc1c53ff16","short_hash":"d8868d9","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:45-06:00","timestamp":"1769377425","files_changed":3,"insertions":3,"deletions":4}
+    {"repo":"client-a","hash":"d8868d97230c49450a4409ce41be7ecc1c53ff16","short_hash":"d8868d9","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:45-06:00","timestamp":"1769377425","files_changed":3,"insertions":3,"deletions":4}
 ,
 ,
-    {"repo":"frontierdeepwater","hash":"939a1b928291e77e2b5e8be601d4ed62122dc264","short_hash":"939a1b9","message":"chore: Sync and update configurations","author":"Vamsee Achanta","date":"2026-01-22T06:11:11-06:00","timestamp":"1769083871","files_changed":9,"insertions":0,"deletions":0}
+    {"repo":"client-a","hash":"939a1b928291e77e2b5e8be601d4ed62122dc264","short_hash":"939a1b9","message":"chore: Sync and update configurations","author":"Vamsee Achanta","date":"2026-01-22T06:11:11-06:00","timestamp":"1769083871","files_changed":9,"insertions":0,"deletions":0}
 ,
-    {"repo":"frontierdeepwater","hash":"7dd2817037e3c1f467c0d42aa2ad2c5c367ab16f","short_hash":"7dd2817","message":"Sync all repositories","author":"Vamsee Achanta","date":"2026-01-19T22:24:36-06:00","timestamp":"1768883076","files_changed":2,"insertions":0,"deletions":0}
+    {"repo":"client-a","hash":"7dd2817037e3c1f467c0d42aa2ad2c5c367ab16f","short_hash":"7dd2817","message":"Sync all repositories","author":"Vamsee Achanta","date":"2026-01-19T22:24:36-06:00","timestamp":"1768883076","files_changed":2,"insertions":0,"deletions":0}
 ,
-    {"repo":"frontierdeepwater","hash":"a63f407e2ef17342117968d51eeee0b54ff8056c","short_hash":"a63f407","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:32-06:00","timestamp":"1768879292","files_changed":1,"insertions":15,"deletions":733}
+    {"repo":"client-a","hash":"a63f407e2ef17342117968d51eeee0b54ff8056c","short_hash":"a63f407","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:32-06:00","timestamp":"1768879292","files_changed":1,"insertions":15,"deletions":733}
 ,
-    {"repo":"frontierdeepwater","hash":"64292f46d85cfc7297a3187b0b1f954739a10472","short_hash":"64292f4","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:03-06:00","timestamp":"1768454943","files_changed":14,"insertions":2333,"deletions":0}
+    {"repo":"client-a","hash":"64292f46d85cfc7297a3187b0b1f954739a10472","short_hash":"64292f4","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:03-06:00","timestamp":"1768454943","files_changed":14,"insertions":2333,"deletions":0}
 ,
-    {"repo":"frontierdeepwater","hash":"0378b0c4289085eb72211cab9f474a589ebac9b5","short_hash":"0378b0c","message":"fix: Correct weekly/monthly usage counting to include full date range","author":"Vamsee Achanta","date":"2026-01-14T14:10:15-06:00","timestamp":"1768421415","files_changed":1,"insertions":31,"deletions":14}
+    {"repo":"client-a","hash":"0378b0c4289085eb72211cab9f474a589ebac9b5","short_hash":"0378b0c","message":"fix: Correct weekly/monthly usage counting to include full date range","author":"Vamsee Achanta","date":"2026-01-14T14:10:15-06:00","timestamp":"1768421415","files_changed":1,"insertions":31,"deletions":14}
 ,
-    {"repo":"frontierdeepwater","hash":"b572132e59cb5b5a530974e88c4eeef773504164","short_hash":"b572132","message":"Merge branch 'incremental-push' into main","author":"Vamsee Achanta","date":"2026-01-13T09:24:49-06:00","timestamp":"1768317889","files_changed":155,"insertions":1308,"deletions":79622}
+    {"repo":"client-a","hash":"b572132e59cb5b5a530974e88c4eeef773504164","short_hash":"b572132","message":"Merge branch 'incremental-push' into main","author":"Vamsee Achanta","date":"2026-01-13T09:24:49-06:00","timestamp":"1768317889","files_changed":155,"insertions":1308,"deletions":79622}
 ,
-    {"repo":"frontierdeepwater","hash":"e3a4efc01f3f81b4d8633d7752c7493e6946e2b4","short_hash":"e3a4efc","message":"feat: Add automated model selection system","author":"Vamsee Achanta","date":"2026-01-09T11:05:30-06:00","timestamp":"1767978330","files_changed":3,"insertions":531,"deletions":0}
+    {"repo":"client-a","hash":"e3a4efc01f3f81b4d8633d7752c7493e6946e2b4","short_hash":"e3a4efc","message":"feat: Add automated model selection system","author":"Vamsee Achanta","date":"2026-01-09T11:05:30-06:00","timestamp":"1767978330","files_changed":3,"insertions":531,"deletions":0}
 ,
     {"repo":"hobbies","hash":"cbe2cd526217387199403a3ecb26c723cb5b2281","short_hash":"cbe2cd5","message":"chore: remove tracked __pycache__ files and update .gitignore","author":"Vamsee Achanta","date":"2026-02-04T11:19:45-06:00","timestamp":"1770225585","files_changed":10,"insertions":0,"deletions":0}
 ,
@@ -1139,19 +1139,19 @@
 ,
     {"repo":"pdf-large-reader","hash":"365508bf6fabf7d2d8012cd4839017125f80defa","short_hash":"365508b","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:28:52-06:00","timestamp":"1768454932","files_changed":14,"insertions":2338,"deletions":0}
 ,
-    {"repo":"rock-oil-field","hash":"8d98d8c9f634dacd0907a462582d14fb1f254d8f","short_hash":"8d98d8c","message":"chore: Batch sync from workspace-hub","author":"Vamsee Achanta","date":"2026-01-25T18:08:45-06:00","timestamp":"1769386125","files_changed":2,"insertions":109,"deletions":1}
+    {"repo":"client-b","hash":"8d98d8c9f634dacd0907a462582d14fb1f254d8f","short_hash":"8d98d8c","message":"chore: Batch sync from workspace-hub","author":"Vamsee Achanta","date":"2026-01-25T18:08:45-06:00","timestamp":"1769386125","files_changed":2,"insertions":109,"deletions":1}
 ,
-    {"repo":"rock-oil-field","hash":"7d76341bfbeb55e4405f65d7435ebc32fcb85dcd","short_hash":"7d76341","message":"chore: Add Claude statusline command","author":"Vamsee Achanta","date":"2026-01-20T11:35:59-06:00","timestamp":"1768930559","files_changed":1,"insertions":49,"deletions":0}
+    {"repo":"client-b","hash":"7d76341bfbeb55e4405f65d7435ebc32fcb85dcd","short_hash":"7d76341","message":"chore: Add Claude statusline command","author":"Vamsee Achanta","date":"2026-01-20T11:35:59-06:00","timestamp":"1768930559","files_changed":1,"insertions":49,"deletions":0}
 ,
-    {"repo":"rock-oil-field","hash":"8fe59da9a22fcbd2c1cc5392c3cea68680ce31ed","short_hash":"8fe59da","message":"feat: Add context-management skill v2.0 and validation scripts","author":"Vamsee Achanta","date":"2026-01-18T17:37:26-06:00","timestamp":"1768779446","files_changed":7,"insertions":752,"deletions":0}
+    {"repo":"client-b","hash":"8fe59da9a22fcbd2c1cc5392c3cea68680ce31ed","short_hash":"8fe59da","message":"feat: Add context-management skill v2.0 and validation scripts","author":"Vamsee Achanta","date":"2026-01-18T17:37:26-06:00","timestamp":"1768779446","files_changed":7,"insertions":752,"deletions":0}
 ,
-    {"repo":"rock-oil-field","hash":"45696deba87ae699f6d7581bc253979f146196d5","short_hash":"45696de","message":"refactor: Optimize CLAUDE.md context (~2.5KB from ~32KB)","author":"Vamsee Achanta","date":"2026-01-18T15:50:27-06:00","timestamp":"1768773027","files_changed":5,"insertions":350,"deletions":706}
+    {"repo":"client-b","hash":"45696deba87ae699f6d7581bc253979f146196d5","short_hash":"45696de","message":"refactor: Optimize CLAUDE.md context (~2.5KB from ~32KB)","author":"Vamsee Achanta","date":"2026-01-18T15:50:27-06:00","timestamp":"1768773027","files_changed":5,"insertions":350,"deletions":706}
 ,
-    {"repo":"rock-oil-field","hash":"d8633349b9ef88ea6818af01a7268163768dc386","short_hash":"d863334","message":"feat: Add plan templates with cross-review process","author":"Vamsee Achanta","date":"2026-01-18T15:36:39-06:00","timestamp":"1768772199","files_changed":4,"insertions":475,"deletions":0}
+    {"repo":"client-b","hash":"d8633349b9ef88ea6818af01a7268163768dc386","short_hash":"d863334","message":"feat: Add plan templates with cross-review process","author":"Vamsee Achanta","date":"2026-01-18T15:36:39-06:00","timestamp":"1768772199","files_changed":4,"insertions":475,"deletions":0}
 ,
-    {"repo":"rock-oil-field","hash":"9ef5186d7ab2430f9e757199ea8b5a623e69e25e","short_hash":"9ef5186","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:04-06:00","timestamp":"1768454944","files_changed":15,"insertions":2333,"deletions":0}
+    {"repo":"client-b","hash":"9ef5186d7ab2430f9e757199ea8b5a623e69e25e","short_hash":"9ef5186","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:04-06:00","timestamp":"1768454944","files_changed":15,"insertions":2333,"deletions":0}
 ,
-    {"repo":"rock-oil-field","hash":"c85db3ffeac390a60a383319e0886476414874be","short_hash":"c85db3f","message":"chore: Sync with workspace-hub consolidation updates","author":"Vamsee Achanta","date":"2026-01-11T23:52:43-06:00","timestamp":"1768197163","files_changed":1,"insertions":78,"deletions":9}
+    {"repo":"client-b","hash":"c85db3ffeac390a60a383319e0886476414874be","short_hash":"c85db3f","message":"chore: Sync with workspace-hub consolidation updates","author":"Vamsee Achanta","date":"2026-01-11T23:52:43-06:00","timestamp":"1768197163","files_changed":1,"insertions":78,"deletions":9}
 ,
     {"repo":"sabithaandkrishnaestates","hash":"a3d3e0260642d909ce0f149552a22251711c83eb","short_hash":"a3d3e02","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:45-06:00","timestamp":"1769841765","files_changed":1,"insertions":1,"deletions":0}
 ,
@@ -1172,52 +1172,52 @@
 ,
     {"repo":"sabithaandkrishnaestates","hash":"d8ae855823d5aca52fbdd475e2cab4228df81a4e","short_hash":"d8ae855","message":"Add lease term summary documentation","author":"Vamsee Achanta","date":"2026-01-12T07:44:21-06:00","timestamp":"1768225461","files_changed":1,"insertions":39,"deletions":0}
 ,
-    {"repo":"saipem","hash":"20ef1bf06d226f49b53eb0433d4fcd02e5a58d47","short_hash":"20ef1bf","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:46-06:00","timestamp":"1769841766","files_changed":1,"insertions":1,"deletions":0}
+    {"repo":"client-d","hash":"20ef1bf06d226f49b53eb0433d4fcd02e5a58d47","short_hash":"20ef1bf","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:46-06:00","timestamp":"1769841766","files_changed":1,"insertions":1,"deletions":0}
 ,
-    {"repo":"saipem","hash":"20e5c6f5aa2ccd8257cb1769518835035671a94c","short_hash":"20e5c6f","message":"Merge origin/main to reconcile diverged histories","author":"Vamsee Achanta","date":"2026-01-31T00:08:47-06:00","timestamp":"1769839727","files_changed":1676,"insertions":1618972,"deletions":0}
+    {"repo":"client-d","hash":"20e5c6f5aa2ccd8257cb1769518835035671a94c","short_hash":"20e5c6f","message":"Merge origin/main to reconcile diverged histories","author":"Vamsee Achanta","date":"2026-01-31T00:08:47-06:00","timestamp":"1769839727","files_changed":1676,"insertions":1618972,"deletions":0}
 ,
-    {"repo":"saipem","hash":"ce6f853f72453181e2506208b4f5046c61d19ff4","short_hash":"ce6f853","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:58-06:00","timestamp":"1769816818","files_changed":1,"insertions":1,"deletions":0}
+    {"repo":"client-d","hash":"ce6f853f72453181e2506208b4f5046c61d19ff4","short_hash":"ce6f853","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:58-06:00","timestamp":"1769816818","files_changed":1,"insertions":1,"deletions":0}
 ,
-    {"repo":"saipem","hash":"1d4fc14805cdeda4f9726bf3f31897114d69225d","short_hash":"1d4fc14","message":"chore: sync claude settings","author":"Vamsee Achanta","date":"2026-01-27T10:38:39-06:00","timestamp":"1769531919","files_changed":1,"insertions":1,"deletions":1}
+    {"repo":"client-d","hash":"1d4fc14805cdeda4f9726bf3f31897114d69225d","short_hash":"1d4fc14","message":"chore: sync claude settings","author":"Vamsee Achanta","date":"2026-01-27T10:38:39-06:00","timestamp":"1769531919","files_changed":1,"insertions":1,"deletions":1}
 ,
-    {"repo":"saipem","hash":"8c67c4177d70b245bdd3cff29ce7de7c33f961e3","short_hash":"8c67c41","message":"chore: Batch sync from workspace-hub","author":"Vamsee Achanta","date":"2026-01-25T18:08:54-06:00","timestamp":"1769386134","files_changed":2,"insertions":109,"deletions":1}
+    {"repo":"client-d","hash":"8c67c4177d70b245bdd3cff29ce7de7c33f961e3","short_hash":"8c67c41","message":"chore: Batch sync from workspace-hub","author":"Vamsee Achanta","date":"2026-01-25T18:08:54-06:00","timestamp":"1769386134","files_changed":2,"insertions":109,"deletions":1}
 ,
-    {"repo":"saipem","hash":"82a9ce717469bd9ed466019b1e88f601236c9459","short_hash":"82a9ce7","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:46-06:00","timestamp":"1769377426","files_changed":1,"insertions":2,"deletions":2}
+    {"repo":"client-d","hash":"82a9ce717469bd9ed466019b1e88f601236c9459","short_hash":"82a9ce7","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-25T15:43:46-06:00","timestamp":"1769377426","files_changed":1,"insertions":2,"deletions":2}
 ,
 ,
-    {"repo":"saipem","hash":"72a5ec4c572b62809d29bd957b4050cd0380b7a4","short_hash":"72a5ec4","message":"feat: Add correction learning hooks for RAGS analysis","author":"Vamsee Achanta","date":"2026-01-21T22:53:03-06:00","timestamp":"1769057583","files_changed":2,"insertions":100,"deletions":1}
+    {"repo":"client-d","hash":"72a5ec4c572b62809d29bd957b4050cd0380b7a4","short_hash":"72a5ec4","message":"feat: Add correction learning hooks for RAGS analysis","author":"Vamsee Achanta","date":"2026-01-21T22:53:03-06:00","timestamp":"1769057583","files_changed":2,"insertions":100,"deletions":1}
 ,
-    {"repo":"saipem","hash":"75b84f5cf604b5c17107f08ff8cc729ef5d14d53","short_hash":"75b84f5","message":"chore: Add Claude statusline command","author":"Vamsee Achanta","date":"2026-01-20T11:36:04-06:00","timestamp":"1768930564","files_changed":1,"insertions":49,"deletions":0}
+    {"repo":"client-d","hash":"75b84f5cf604b5c17107f08ff8cc729ef5d14d53","short_hash":"75b84f5","message":"chore: Add Claude statusline command","author":"Vamsee Achanta","date":"2026-01-20T11:36:04-06:00","timestamp":"1768930564","files_changed":1,"insertions":49,"deletions":0}
 ,
-    {"repo":"saipem","hash":"e480aa459a2c51c37290ed44eb2956588bb7f38c","short_hash":"e480aa4","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:39-06:00","timestamp":"1768879299","files_changed":1,"insertions":28,"deletions":71}
+    {"repo":"client-d","hash":"e480aa459a2c51c37290ed44eb2956588bb7f38c","short_hash":"e480aa4","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:39-06:00","timestamp":"1768879299","files_changed":1,"insertions":28,"deletions":71}
 ,
-    {"repo":"saipem","hash":"ee03cd79cbc43ed34fcbe9dbc613784934b16260","short_hash":"ee03cd7","message":"feat: Add context-management skill v2.0 and validation scripts","author":"Vamsee Achanta","date":"2026-01-18T17:37:26-06:00","timestamp":"1768779446","files_changed":7,"insertions":752,"deletions":0}
+    {"repo":"client-d","hash":"ee03cd79cbc43ed34fcbe9dbc613784934b16260","short_hash":"ee03cd7","message":"feat: Add context-management skill v2.0 and validation scripts","author":"Vamsee Achanta","date":"2026-01-18T17:37:26-06:00","timestamp":"1768779446","files_changed":7,"insertions":752,"deletions":0}
 ,
-    {"repo":"saipem","hash":"965de835c9d6e2ecbb961a3509595d01d865de54","short_hash":"965de83","message":"feat: Add context-management skill v2.0 and validation scripts","author":"Vamsee Achanta","date":"2026-01-18T17:37:26-06:00","timestamp":"1768779446","files_changed":7,"insertions":752,"deletions":0}
+    {"repo":"client-d","hash":"965de835c9d6e2ecbb961a3509595d01d865de54","short_hash":"965de83","message":"feat: Add context-management skill v2.0 and validation scripts","author":"Vamsee Achanta","date":"2026-01-18T17:37:26-06:00","timestamp":"1768779446","files_changed":7,"insertions":752,"deletions":0}
 ,
-    {"repo":"saipem","hash":"e382037bbdfe9aae3781b88f529b04d742cb1a92","short_hash":"e382037","message":"refactor: Optimize CLAUDE.md context (~2.5KB from ~32KB)","author":"Vamsee Achanta","date":"2026-01-18T15:50:28-06:00","timestamp":"1768773028","files_changed":5,"insertions":350,"deletions":682}
+    {"repo":"client-d","hash":"e382037bbdfe9aae3781b88f529b04d742cb1a92","short_hash":"e382037","message":"refactor: Optimize CLAUDE.md context (~2.5KB from ~32KB)","author":"Vamsee Achanta","date":"2026-01-18T15:50:28-06:00","timestamp":"1768773028","files_changed":5,"insertions":350,"deletions":682}
 ,
-    {"repo":"saipem","hash":"6c328db7af8ed41ecf38e1fde17bf33885097ea0","short_hash":"6c328db","message":"refactor: Optimize CLAUDE.md context (~2.5KB from ~32KB)","author":"Vamsee Achanta","date":"2026-01-18T15:50:28-06:00","timestamp":"1768773028","files_changed":5,"insertions":350,"deletions":682}
+    {"repo":"client-d","hash":"6c328db7af8ed41ecf38e1fde17bf33885097ea0","short_hash":"6c328db","message":"refactor: Optimize CLAUDE.md context (~2.5KB from ~32KB)","author":"Vamsee Achanta","date":"2026-01-18T15:50:28-06:00","timestamp":"1768773028","files_changed":5,"insertions":350,"deletions":682}
 ,
-    {"repo":"saipem","hash":"b32265518999ba011fa5907ba8fc0ed218f5ad01","short_hash":"b322655","message":"feat: Add plan templates with cross-review process","author":"Vamsee Achanta","date":"2026-01-18T15:36:40-06:00","timestamp":"1768772200","files_changed":4,"insertions":475,"deletions":0}
+    {"repo":"client-d","hash":"b32265518999ba011fa5907ba8fc0ed218f5ad01","short_hash":"b322655","message":"feat: Add plan templates with cross-review process","author":"Vamsee Achanta","date":"2026-01-18T15:36:40-06:00","timestamp":"1768772200","files_changed":4,"insertions":475,"deletions":0}
 ,
-    {"repo":"saipem","hash":"f7359e2c1e2a37b6b81e995bd86211fc3f8270a4","short_hash":"f7359e2","message":"feat: Add plan templates with cross-review process","author":"Vamsee Achanta","date":"2026-01-18T15:36:40-06:00","timestamp":"1768772200","files_changed":4,"insertions":475,"deletions":0}
+    {"repo":"client-d","hash":"f7359e2c1e2a37b6b81e995bd86211fc3f8270a4","short_hash":"f7359e2","message":"feat: Add plan templates with cross-review process","author":"Vamsee Achanta","date":"2026-01-18T15:36:40-06:00","timestamp":"1768772200","files_changed":4,"insertions":475,"deletions":0}
 ,
-    {"repo":"saipem","hash":"09482c9f60a96dc6617c8e1829e23939ca18e26d","short_hash":"09482c9","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:02-06:00","timestamp":"1768454942","files_changed":14,"insertions":2333,"deletions":0}
+    {"repo":"client-d","hash":"09482c9f60a96dc6617c8e1829e23939ca18e26d","short_hash":"09482c9","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:02-06:00","timestamp":"1768454942","files_changed":14,"insertions":2333,"deletions":0}
 ,
-    {"repo":"saipem","hash":"c6f7018f57bd2f5f10f015cde55409f75995ae4a","short_hash":"c6f7018","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:02-06:00","timestamp":"1768454942","files_changed":14,"insertions":2333,"deletions":0}
+    {"repo":"client-d","hash":"c6f7018f57bd2f5f10f015cde55409f75995ae4a","short_hash":"c6f7018","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:02-06:00","timestamp":"1768454942","files_changed":14,"insertions":2333,"deletions":0}
 ,
-    {"repo":"saipem","hash":"590cdc3a05e1a9b0bcc7ce3503cdaa3ceacd4723","short_hash":"590cdc3","message":"chore: Sync with workspace-hub consolidation updates","author":"Vamsee Achanta","date":"2026-01-11T23:52:48-06:00","timestamp":"1768197168","files_changed":1,"insertions":3,"deletions":56}
+    {"repo":"client-d","hash":"590cdc3a05e1a9b0bcc7ce3503cdaa3ceacd4723","short_hash":"590cdc3","message":"chore: Sync with workspace-hub consolidation updates","author":"Vamsee Achanta","date":"2026-01-11T23:52:48-06:00","timestamp":"1768197168","files_changed":1,"insertions":3,"deletions":56}
 ,
-    {"repo":"saipem","hash":"21689042e367c5db0c48758af2d32d2e66548afd","short_hash":"2168904","message":"chore: Sync with workspace-hub consolidation updates","author":"Vamsee Achanta","date":"2026-01-11T23:52:48-06:00","timestamp":"1768197168","files_changed":1,"insertions":3,"deletions":56}
+    {"repo":"client-d","hash":"21689042e367c5db0c48758af2d32d2e66548afd","short_hash":"2168904","message":"chore: Sync with workspace-hub consolidation updates","author":"Vamsee Achanta","date":"2026-01-11T23:52:48-06:00","timestamp":"1768197168","files_changed":1,"insertions":3,"deletions":56}
 ,
-    {"repo":"saipem","hash":"18926f60ab7ae9ca7243a5551dc34b93bdb028d5","short_hash":"18926f6","message":"chore: Add skill-learner hooks","author":"Vamsee Achanta","date":"2026-01-07T10:22:48-06:00","timestamp":"1767802968","files_changed":2,"insertions":96,"deletions":0}
+    {"repo":"client-d","hash":"18926f60ab7ae9ca7243a5551dc34b93bdb028d5","short_hash":"18926f6","message":"chore: Add skill-learner hooks","author":"Vamsee Achanta","date":"2026-01-07T10:22:48-06:00","timestamp":"1767802968","files_changed":2,"insertions":96,"deletions":0}
 ,
-    {"repo":"saipem","hash":"4126ab30ee72c625f09241c069d21b42426db055","short_hash":"4126ab3","message":"chore: Add skill-learner hooks","author":"Vamsee Achanta","date":"2026-01-07T10:22:48-06:00","timestamp":"1767802968","files_changed":2,"insertions":96,"deletions":0}
+    {"repo":"client-d","hash":"4126ab30ee72c625f09241c069d21b42426db055","short_hash":"4126ab3","message":"chore: Add skill-learner hooks","author":"Vamsee Achanta","date":"2026-01-07T10:22:48-06:00","timestamp":"1767802968","files_changed":2,"insertions":96,"deletions":0}
 ,
-    {"repo":"saipem","hash":"9f57145ef501e995d60161e4ea33835b310ba083","short_hash":"9f57145","message":"feat(validators): Install data-validation-reporter skill","author":"Vamsee Achanta","date":"2026-01-07T09:57:20-06:00","timestamp":"1767801440","files_changed":5,"insertions":766,"deletions":0}
+    {"repo":"client-d","hash":"9f57145ef501e995d60161e4ea33835b310ba083","short_hash":"9f57145","message":"feat(validators): Install data-validation-reporter skill","author":"Vamsee Achanta","date":"2026-01-07T09:57:20-06:00","timestamp":"1767801440","files_changed":5,"insertions":766,"deletions":0}
 ,
-    {"repo":"saipem","hash":"1c0d912e19789b69e0895eb7479435528b3e187b","short_hash":"1c0d912","message":"feat(validators): Install data-validation-reporter skill","author":"Vamsee Achanta","date":"2026-01-07T09:57:20-06:00","timestamp":"1767801440","files_changed":5,"insertions":766,"deletions":0}
+    {"repo":"client-d","hash":"1c0d912e19789b69e0895eb7479435528b3e187b","short_hash":"1c0d912","message":"feat(validators): Install data-validation-reporter skill","author":"Vamsee Achanta","date":"2026-01-07T09:57:20-06:00","timestamp":"1767801440","files_changed":5,"insertions":766,"deletions":0}
 ,
     {"repo":"sd-work","hash":"cab2355c2885f429220c5d6e58a62149c6a7f1ab","short_hash":"cab2355","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:46-06:00","timestamp":"1769841766","files_changed":1,"insertions":1,"deletions":0}
 ,
@@ -1236,18 +1236,18 @@
 ,
     {"repo":"sd-work","hash":"49fe837c0e6c2865130623f68f41efa84ab21329","short_hash":"49fe837","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:29:05-06:00","timestamp":"1768454945","files_changed":13,"insertions":2295,"deletions":0}
 ,
-    {"repo":"seanation","hash":"f7bc2d4a39ed1ab4053614397579c20ac4fc4a95","short_hash":"f7bc2d4","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:46-06:00","timestamp":"1769841766","files_changed":1,"insertions":1,"deletions":0}
+    {"repo":"client-f","hash":"f7bc2d4a39ed1ab4053614397579c20ac4fc4a95","short_hash":"f7bc2d4","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:46-06:00","timestamp":"1769841766","files_changed":1,"insertions":1,"deletions":0}
 ,
-    {"repo":"seanation","hash":"363cc6b340d7ff3d2ae9d8321a79be865acaaf29","short_hash":"363cc6b","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:58-06:00","timestamp":"1769816818","files_changed":1,"insertions":1,"deletions":0}
+    {"repo":"client-f","hash":"363cc6b340d7ff3d2ae9d8321a79be865acaaf29","short_hash":"363cc6b","message":"Update: Batch commit from repository_sync","author":"Vamsee Achanta","date":"2026-01-30T17:46:58-06:00","timestamp":"1769816818","files_changed":1,"insertions":1,"deletions":0}
 ,
-    {"repo":"seanation","hash":"9642f4010601404cdc7f2bbf18c700245ec0dba1","short_hash":"9642f40","message":"chore: sync claude settings","author":"Vamsee Achanta","date":"2026-01-27T10:38:40-06:00","timestamp":"1769531920","files_changed":1,"insertions":1,"deletions":101}
+    {"repo":"client-f","hash":"9642f4010601404cdc7f2bbf18c700245ec0dba1","short_hash":"9642f40","message":"chore: sync claude settings","author":"Vamsee Achanta","date":"2026-01-27T10:38:40-06:00","timestamp":"1769531920","files_changed":1,"insertions":1,"deletions":101}
 ,
 ,
-    {"repo":"seanation","hash":"b6ab7257b50e1fc48c3df64ab8fa54045407fa97","short_hash":"b6ab725","message":"chore: Sync all repositories","author":"Vamsee Achanta","date":"2026-01-20T22:19:22-06:00","timestamp":"1768969162","files_changed":3,"insertions":58,"deletions":921}
+    {"repo":"client-f","hash":"b6ab7257b50e1fc48c3df64ab8fa54045407fa97","short_hash":"b6ab725","message":"chore: Sync all repositories","author":"Vamsee Achanta","date":"2026-01-20T22:19:22-06:00","timestamp":"1768969162","files_changed":3,"insertions":58,"deletions":921}
 ,
-    {"repo":"seanation","hash":"4dcc9cb58f7a937dd2a6405ed0ddde4345627cdd","short_hash":"4dcc9cb","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:38-06:00","timestamp":"1768879298","files_changed":1,"insertions":17,"deletions":714}
+    {"repo":"client-f","hash":"4dcc9cb58f7a937dd2a6405ed0ddde4345627cdd","short_hash":"4dcc9cb","message":"refactor: Migrate CLAUDE.md to inheritance model","author":"Vamsee Achanta","date":"2026-01-19T21:21:38-06:00","timestamp":"1768879298","files_changed":1,"insertions":17,"deletions":714}
 ,
-    {"repo":"seanation","hash":"acb75a61b8bc543687c4288875c1da4d5b05a15c","short_hash":"acb75a6","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:44:06-06:00","timestamp":"1768455846","files_changed":14,"insertions":2333,"deletions":0}
+    {"repo":"client-f","hash":"acb75a61b8bc543687c4288875c1da4d5b05a15c","short_hash":"acb75a6","message":"Auto-sync: batch update 2026-01-14","author":"Vamsee Achanta","date":"2026-01-14T23:44:06-06:00","timestamp":"1768455846","files_changed":14,"insertions":2333,"deletions":0}
 ,
     {"repo":"teamresumes","hash":"576d3efefcf0e2ee1a17636e0b457a1e0a5cece6","short_hash":"576d3ef","message":"chore: add compound engineering command symlink","author":"Vamsee Achanta","date":"2026-01-31T00:42:46-06:00","timestamp":"1769841766","files_changed":1,"insertions":1,"deletions":0}
 ,

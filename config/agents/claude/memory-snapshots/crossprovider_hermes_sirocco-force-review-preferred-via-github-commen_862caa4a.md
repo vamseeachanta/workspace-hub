@@ -1,6 +1,6 @@
 ---
-name: crossprovider hermes sirocco-force-review-preferred-via-github-commen
-description: SIROCCO force review preferred via GitHub comments
+name: crossprovider hermes proj-a-force-review-preferred-via-github-commen
+description: proj-a force review preferred via GitHub comments
 metadata:
   type: reference
   source: hermes

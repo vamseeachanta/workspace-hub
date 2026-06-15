@@ -303,7 +303,7 @@ cards:
     priority: 0
     body_excerpt: '# Batch 6: Shell Perdido Manifold + VMCast + Production Engineering
 
-      **Source**: `engineering_workbooks/shell_perdido_south/`, `engineering_workbooks/BP_MD2_FJR_vmcast/`, `client_projects/energy_engineering/`
+      **Source**: `engineering_workbooks/shell_perdido_south/`, `engineering_workbooks/BP_MD2_FJR_vmcast/`, `client-c/energy_engineering/`
 
       **Machine**: ws014 (Windows)'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2032

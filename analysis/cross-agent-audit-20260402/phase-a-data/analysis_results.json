@@ -533,11 +533,11 @@
       10
     ],
     [
-      "client_projects/energy_engineering/ecs/ecs_clients.md",
+      "client-c/energy_engineering/ecs/ecs_clients.md",
       10
     ],
     [
-      "client_projects/ecs/proj/ecs_clients.md",
+      "client-c/ecs/proj/ecs_clients.md",
       10
     ],
     [
@@ -1767,7 +1767,7 @@
       32
     ],
     [
-      "doris",
+      "lng-a",
       28
     ],
     [
@@ -1775,7 +1775,7 @@
       23
     ],
     [
-      "client_projects",
+      "client-c",
       19
     ],
     [
@@ -1783,7 +1783,7 @@
       19
     ],
     [
-      "saipem",
+      "client-d",
       19
     ],
     [
@@ -1843,11 +1843,11 @@
       9
     ],
     [
-      "rock-oil-field",
+      "client-b",
       7
     ],
     [
-      "frontierdeepwater",
+      "client-a",
       6
     ],
     [
@@ -1859,7 +1859,7 @@
       2
     ],
     [
-      "seanation",
+      "client-f",
       1
     ]
   ],

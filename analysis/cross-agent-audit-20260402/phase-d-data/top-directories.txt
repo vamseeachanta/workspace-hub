@@ -4,7 +4,7 @@
     136 .claude/skills/coordination/workspace/claude-reflect/scripts
     135 specs/modules
     105 .claude/projects/-mnt-local-analysis-workspace-hub/memory
-    101 frontierdeepwater/data/processed/vessel-parameters
+    101 client-a/data/processed/vessel-parameters
      93 assetutilities/src/assetutilities/common
      89 scripts/data/document-index
      88 .claude/work-queue

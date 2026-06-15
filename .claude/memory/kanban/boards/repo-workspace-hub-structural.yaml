@@ -31,7 +31,7 @@ cards:
 
       **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** engineering | **Subcategory:** structural
 
-      **Repo:** [''acma-projects''] | **Complexity:** complex | **Machine:** licensed-win-1'
+      **Repo:** [''mkt-a''] | **Complexity:** complex | **Machine:** licensed-win-1'
   - idempotency_key: gh:vamseeachanta/workspace-hub#192
     title: 'WRK-634: feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime'
     source: github_issue
@@ -52,7 +52,7 @@ cards:
 
       **Status:** Stage 17: Reclaim (n) | **Priority:** high | **Category:** engineering | **Subcategory:** structural
 
-      **Repo:** [''workspace-hub'', ''frontierdeepwater'', ''TBD-client2-repo''] | **Complexity:** simple | **Machine:** dev-primary'
+      **Repo:** [''workspace-hub'', ''client-a'', ''TBD-client2-repo''] | **Complexity:** simple | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/workspace-hub#257
     title: 'WRK-191: Field development case study catalog — structured reference library of real projects'
     source: github_issue

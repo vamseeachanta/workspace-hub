@@ -1,6 +1,6 @@
 ---
-name: crossprovider hermes sirocco-naval-architecture-artifact-workflow-htm
-description: SIROCCO naval-architecture artifact workflow: HTML → DOCX with visual parity
+name: crossprovider hermes proj-a-naval-architecture-artifact-workflow-htm
+description: proj-a naval-architecture artifact workflow: HTML → DOCX with visual parity
 metadata:
   type: reference
   source: hermes

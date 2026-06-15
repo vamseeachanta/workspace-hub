@@ -60,14 +60,14 @@ copy_one() {
   } >> "$(dirname "$dest")/MOVE-LOG.md"
 }
 
-copy_one "62092  SESA FLNG Terminal Project" "/mnt/ace/doris/62092_sesa/_from_elements" "doris-62092-sesa"
+copy_one "62092  SESA FLNG Terminal Project" "/mnt/ace/lng-a/62092_sesa/_from_elements" "lng-a-62092-sesa"
 copy_one "casa_grande_77017" "/mnt/ace/assethold/casa-grande-77017/_from_elements" "assethold-casa-grande-77017"
-copy_one "Codes and Specs" "/mnt/ace/doris/codes/_from_elements/codes-doris" "doris-codes-specs"
-copy_one "Doris University" "/mnt/ace/doris/training/_from_elements" "doris-university"
+copy_one "Codes and Specs" "/mnt/ace/lng-a/codes/_from_elements/codes-lng-a" "lng-a-codes-specs"
+copy_one "lng-a University" "/mnt/ace/lng-a/training/_from_elements" "lng-a-university"
 copy_one "qgis" "/mnt/ace/digitalmodel/tools/qgis/_from_elements" "digitalmodel-qgis"
 copy_one "Riser Toolbox" "/mnt/ace/digitalmodel/references/riser-toolbox/_from_elements" "digitalmodel-riser-toolbox"
 copy_one "Suction Pile Sizing" "/mnt/ace/digitalmodel/references/suction-pile-sizing/_from_elements" "digitalmodel-suction-pile-sizing"
-copy_one "Woodfibre" "/mnt/ace/acma-projects/31522-woodfibre-lng/_from_elements" "acma-projects-31522-woodfibre"
+copy_one "Woodfibre" "/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements" "mkt-a-31522-woodfibre"
 
 # Codes & Regulations is intentionally not copied; verify-only per issue.
 {

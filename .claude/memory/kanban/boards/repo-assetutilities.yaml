@@ -131,7 +131,7 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: "- [ ] clone client project, https://github.com/vamseeachanta/seanation\n- [ ] Install programs\n  - [x] Github account (login and comment) (PB)"
+    body_excerpt: "- [ ] clone client project, https://github.com/vamseeachanta/client-f\n- [ ] Install programs\n  - [x] Github account (login and comment) (PB)"
   - idempotency_key: gh:vamseeachanta/assetutilities#41
     title: tech debt | Clean code
     source: github_issue
@@ -319,7 +319,7 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: "siva used it with writers.py, doris_writer.py. \n\nThe way reportgen uses the registry design (to read a writer class name from config yml, then initialize the appropriate writer class and initiate the run method) is similar/ same as what engine is doing."
+    body_excerpt: "siva used it with writers.py, lng-a_writer.py. \n\nThe way reportgen uses the registry design (to read a writer class name from config yml, then initialize the appropriate writer class and initiate the run method) is similar/ same as what engine is doing."
   - idempotency_key: gh:vamseeachanta/assetutilities#28
     title: tech debt | switch to loguru
     source: github_issue

@@ -19,20 +19,20 @@
 | 6 | assethold                   | 0      | 1    | 4    | -     | -      | standalone | 746L*   | 62      | tier-1 |
 | 7 | sabithaandkrishnaestates    | 0      | 1    | 0    | -     | -      | pointer  | 740L*     | 35      | tier-2 |
 | 8 | teamresumes                 | 0      | 1    | 6    | -     | -      | pointer  | 740L*     | 32      | tier-2 |
-| 9 | acma-projects               | 0      | 0    | 4    | -     | -      | pointer  | 9L        | 30      | tier-2 |
+| 9 | mkt-a               | 0      | 0    | 4    | -     | -      | pointer  | 9L        | 30      | tier-2 |
 | 10| achantas-data               | 13     | 1    | 0    | -     | -      | pointer  | 44L       | 27      | tier-2 |
 | 11| worldenergydata             | 33     | 7    | 8    | -     | -      | standalone | 19L     | 21      | tier-1 |
 | 12| investments                 | 0      | 1    | 0    | -     | -      | pointer  | 740L*     | 17      | tier-2 |
 | 13| sd-work                     | 0      | 1    | 0    | -     | -      | pointer  | 9L        | 16      | tier-2 |
 | 14| hobbies                     | 0      | 0    | 0    | -     | -      | pointer  | 752L*     | 13      | tier-2 |
 | 15| aceengineer-admin           | 1      | 1    | 0    | -     | -      | pointer  | 9L        | 5       | tier-2 |
-| 16| client_projects             | 0      | 1    | 0    | -     | -      | pointer  | 9L        | 5       | tier-2 |
+| 16| client-c             | 0      | 1    | 0    | -     | -      | pointer  | 9L        | 5       | tier-2 |
 | 17| OGManufacturing             | 0      | 1    | 0    | -     | -      | standalone | 9L      | 4       | tier-2 |
-| 18| doris                       | 0      | 1    | 2    | -     | -      | pointer  | 9L        | 4       | tier-2 |
-| 19| frontierdeepwater           | 0      | 1    | 0    | -     | -      | pointer  | 9L        | 4       | tier-2 |
-| 20| rock-oil-field              | 0      | 0    | 4    | -     | -      | pointer  | 32L       | 4       | tier-2 |
-| 21| saipem                      | 0      | 1    | 4    | -     | -      | pointer  | 9L        | 4       | tier-2 |
-| 22| seanation                   | 0      | 1    | 0    | -     | -      | pointer  | 9L        | 4       | tier-2 |
+| 18| lng-a                       | 0      | 1    | 2    | -     | -      | pointer  | 9L        | 4       | tier-2 |
+| 19| client-a           | 0      | 1    | 0    | -     | -      | pointer  | 9L        | 4       | tier-2 |
+| 20| client-b              | 0      | 0    | 4    | -     | -      | pointer  | 32L       | 4       | tier-2 |
+| 21| client-d                      | 0      | 1    | 4    | -     | -      | pointer  | 9L        | 4       | tier-2 |
+| 22| client-f                   | 0      | 1    | 0    | -     | -      | pointer  | 9L        | 4       | tier-2 |
 | 23| aceengineer-strategy        | 0      | 0    | 0    | -     | -      | MISSING  | MISSING   | 3       | tier-2 |
 | 24| simpledigitalmarketing      | 0      | 0    | 0    | -     | -      | pointer  | 32L       | 1       | tier-2 |
 
@@ -104,7 +104,7 @@ These files contain `<<<<<<< Updated upstream` markers, meaning Claude agents re
 | assetutilities       | Yes             | MEDIUM |
 | assethold            | Yes             | MEDIUM (also has merge conflict) |
 | hobbies              | Yes             | LOW (personal repo, merge conflict masks content) |
-| rock-oil-field       | Yes             | LOW (4 commits in 90d) |
+| client-b       | Yes             | LOW (4 commits in 90d) |
 | simpledigitalmarketing | Yes           | LOW (1 commit in 90d) |
 
 ### Repo Overrides
@@ -143,7 +143,7 @@ These files contain `<<<<<<< Updated upstream` markers, meaning Claude agents re
 
 | Command        | Found In                                                    | Count |
 |----------------|-------------------------------------------------------------|-------|
-| `compound.md`  | assetutilities, assethold, sabithaandkrishnaestates, teamresumes, achantas-data, investments, sd-work, aceengineer-admin, client_projects, OGManufacturing, doris, frontierdeepwater, saipem, seanation | 14 |
+| `compound.md`  | assetutilities, assethold, sabithaandkrishnaestates, teamresumes, achantas-data, investments, sd-work, aceengineer-admin, client-c, OGManufacturing, lng-a, client-a, client-d, client-f | 14 |
 | `today.md`     | workspace-hub, CAD-DEVELOPMENTS, digitalmodel               | 3     |
 | `work.md`      | CAD-DEVELOPMENTS, digitalmodel                               | 2     |
 | `analyze.md`   | digitalmodel, worldenergydata                                | 2     |
@@ -190,8 +190,8 @@ CAD-DEVELOPMENTS has a near-complete copy of the workspace-hub skill tree. Categ
 | metocean-data-fetcher        | YES       | Already promoted to workspace-hub — check sync |
 | metocean-statistics          | YES       | Already promoted to workspace-hub — check sync |
 | metocean-visualizer          | YES       | Already promoted to workspace-hub — check sync |
-| marine-safety-incidents      | YES       | Relevant for doris, seanation, OGManufacturing |
-| economic-sensitivity-analyzer| YES       | Relevant for investments, client_projects |
+| marine-safety-incidents      | YES       | Relevant for lng-a, client-f, OGManufacturing |
+| economic-sensitivity-analyzer| YES       | Relevant for investments, client-c |
 | bsee-data-extractor          | PARTIAL   | US-specific but reusable pattern |
 | sodir-data-extractor         | PARTIAL   | Norway-specific but reusable pattern |
 
@@ -245,9 +245,9 @@ CAD-DEVELOPMENTS has a near-complete copy of the workspace-hub skill tree. Categ
 | Repo                  | Issue                                              |
 |-----------------------|----------------------------------------------------|
 | simpledigitalmarketing| 1 commit in 90d, no skills/commands — dormant      |
-| rock-oil-field        | 4 commits, no skills — low activity                |
-| seanation             | 4 commits, no skills — low activity                |
-| frontierdeepwater     | 4 commits, no skills — low activity                |
+| client-b        | 4 commits, no skills — low activity                |
+| client-f             | 4 commits, no skills — low activity                |
+| client-a     | 4 commits, no skills — low activity                |
 
 ---
 

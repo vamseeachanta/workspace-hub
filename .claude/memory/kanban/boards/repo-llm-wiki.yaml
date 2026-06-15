@@ -45,9 +45,9 @@ cards:
     priority: 0
     body_excerpt: '## Summary
 
-      Plan a bounded curated extraction pass for the SESA FLNG Terminal / DORIS `62092_sesa` corpus now represented metadata-first in the LLM-wikis.'
+      Plan a bounded curated extraction pass for the SESA FLNG Terminal / lng-a `62092_sesa` corpus now represented metadata-first in the LLM-wikis.'
   - idempotency_key: gh:vamseeachanta/llm-wiki#15
-    title: 'META: resolve standards-routing for maritime-law / lng-projects / acma-projects (post-#2615 deferred Open Questions)'
+    title: 'META: resolve standards-routing for maritime-law / lng-projects / mkt-a (post-#2615 deferred Open Questions)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/15
     gh_state: closed
@@ -541,7 +541,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#46
-    title: 'governance(llm-wiki): prepare Frontier Deepwater source-family clearance checklist'
+    title: 'governance(llm-wiki): prepare client-a source-family clearance checklist'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/46
     gh_state: closed
@@ -1258,7 +1258,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#99
-    title: 'docs(governance): note that /mnt/ace/rock-oil-field/ is wrong-domain for reservoir-eng / formation-eval local-corpus walks'
+    title: 'docs(governance): note that /mnt/ace/client-b/ is wrong-domain for reservoir-eng / formation-eval local-corpus walks'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/99
     gh_state: closed

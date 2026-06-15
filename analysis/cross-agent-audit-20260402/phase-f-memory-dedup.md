@@ -91,21 +91,21 @@
 | aceengineer-website | 9 | Pointer | ✅ v1.0.0 |
 | achantas-data | 9 | Pointer | ✅ v1.0.0 |
 | achantas-media | 9 | Pointer | ✅ v1.0.0 |
-| acma-projects | 9 | Pointer | ✅ v1.0.0 |
+| mkt-a | 9 | Pointer | ✅ v1.0.0 |
 | assethold | 11 | Adapted (frontmatter) | ✅ v1.0.0 |
 | assetutilities | 11 | Adapted (frontmatter) | ✅ v1.0.0 |
-| client_projects | 9 | Pointer | ✅ v1.0.0 |
+| client-c | 9 | Pointer | ✅ v1.0.0 |
 | digitalmodel | 11 | Adapted (frontmatter) | ✅ v1.0.0 |
-| doris | 9 | Pointer | ✅ v1.0.0 |
-| frontierdeepwater | 9 | Pointer | ✅ v1.0.0 |
+| lng-a | 9 | Pointer | ✅ v1.0.0 |
+| client-a | 9 | Pointer | ✅ v1.0.0 |
 | hobbies | 9 | Pointer | ✅ v1.0.0 |
 | investments | 9 | Pointer | ✅ v1.0.0 |
 | OGManufacturing | 11 | Adapted (frontmatter) | ✅ v1.0.0 |
-| rock-oil-field | 9 | Pointer | ✅ v1.0.0 |
+| client-b | 9 | Pointer | ✅ v1.0.0 |
 | sabithaandkrishnaestates | 9 | Pointer | ✅ v1.0.0 |
-| saipem | 9 | Pointer | ✅ v1.0.0 |
+| client-d | 9 | Pointer | ✅ v1.0.0 |
 | sd-work | 9 | Pointer | ✅ v1.0.0 |
-| seanation | 9 | Pointer | ✅ v1.0.0 |
+| client-f | 9 | Pointer | ✅ v1.0.0 |
 | simpledigitalmarketing | 9 | Pointer | ✅ v1.0.0 |
 | teamresumes | 9 | Pointer | ✅ v1.0.0 |
 | worldenergydata | 12 | Adapted (frontmatter) | ✅ v1.0.0 |
@@ -124,21 +124,21 @@ AGENTS.md ecosystem is well-maintained. All 22 subrepos either point to canonica
 | aceengineer-website | 8 | Pointer | ✅ OK |
 | achantas-data | 43 | Adapted | ❌ **MERGE CONFLICT** |
 | achantas-media | 8 | Pointer | ✅ OK |
-| acma-projects | 8 | Pointer | ✅ OK |
+| mkt-a | 8 | Pointer | ✅ OK |
 | **assethold** | **745** | **Standalone** | **❌ MERGE CONFLICT** |
 | assetutilities | 14 | Adapted | ✅ OK |
-| client_projects | 8 | Pointer | ✅ OK |
+| client-c | 8 | Pointer | ✅ OK |
 | digitalmodel | 14 | Adapted | ✅ OK |
-| doris | 8 | Pointer | ✅ OK |
-| frontierdeepwater | 8 | Pointer | ✅ OK |
+| lng-a | 8 | Pointer | ✅ OK |
+| client-a | 8 | Pointer | ✅ OK |
 | **hobbies** | **751** | **Standalone** | **❌ MERGE CONFLICT** |
 | **investments** | **739** | **Standalone** | **❌ MERGE CONFLICT** |
 | OGManufacturing | 8 | Pointer | ✅ OK |
-| rock-oil-field | 31 | Adapted | ⚠️ Untracked |
+| client-b | 31 | Adapted | ⚠️ Untracked |
 | **sabithaandkrishnaestates** | **739** | **Standalone** | **❌ MERGE CONFLICT** |
-| saipem | 8 | Pointer | ✅ OK |
+| client-d | 8 | Pointer | ✅ OK |
 | sd-work | 8 | Pointer | ✅ OK |
-| seanation | 8 | Pointer | ✅ OK |
+| client-f | 8 | Pointer | ✅ OK |
 | simpledigitalmarketing | 31 | Adapted | ⚠️ Untracked |
 | **teamresumes** | **739** | **Standalone** | **❌ MERGE CONFLICT** |
 | worldenergydata | 18 | Adapted | ✅ OK |

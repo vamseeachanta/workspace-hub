@@ -79,17 +79,17 @@
     },
     {
       "sha": "sha256:21e680848f9a0f0bd0021c2fa3348b0af34d226b73eef4d58dd4e074d8573125",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/B1522/specs/fatigue_analysis/acma_fatigue_assessment_emails.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/B1522/specs/fatigue_analysis/acma_fatigue_assessment_emails.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:47ef06f71f5d376190fd5189b3cb56f63f1a39ee2ea3ea26a56a0bd12ee47e8a",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/B1535/specs/2025-08-07-offshore-msiv-shallow-water-research/task_summary.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/B1535/specs/2025-08-07-offshore-msiv-shallow-water-research/task_summary.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:da2308e49a82fa105bafa19d5ebad2536b520ec6e5bf3438e4b0e3c3250e8045",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/modules/agent-os/slash-commands/create-module-agent/sub-specs/workflow-refresh.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/modules/agent-os/slash-commands/create-module-agent/sub-specs/workflow-refresh.md",
       "source": "workspace_spec"
     },
     {
@@ -134,7 +134,7 @@
     },
     {
       "sha": "sha256:1f27fe97f4f00b7ae8a9af299650f3172c1e28533fb69ab07ee261af35975e05",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client_projects/modules/agent-os/slash-commands/create-module-agent/sub-specs/templates.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-c/modules/agent-os/slash-commands/create-module-agent/sub-specs/templates.md",
       "source": "workspace_spec"
     },
     {
@@ -609,17 +609,17 @@
     },
     {
       "sha": "sha256:aa434c49d6ad49fe298c5dbccd159a83aec14b15d8f4aedafe628a32565855f3",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/doris/.agent-os/specs/README.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/lng-a/.agent-os/specs/README.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:b1a8b96591b7e0a3d147071f88a197121eddfa91605493c8c2e782aa417f88bc",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/frontierdeepwater/2025-07-31-agent-os-integration/spec.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-a/2025-07-31-agent-os-integration/spec.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:f3b229a62988e264d12c732a25b1848fd4270a8f7aab0ed5f75a9aca4a9aa2a8",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/frontierdeepwater/modules/agent-os/slash-commands/create-spec/spec.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-a/modules/agent-os/slash-commands/create-spec/spec.md",
       "source": "workspace_spec"
     },
     {
@@ -639,12 +639,12 @@
     },
     {
       "sha": "sha256:fb7929bfafdbde19b7ddbdef2533606a4d98ea0402314cb44434665cf876b1f5",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/rock-oil-field/specs/README.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-b/specs/README.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:56b9cbab59a0e43f02cafebc1baa52970081bdf58c8e05df564a6a93966d6484",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/seanation/specs/README.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-f/specs/README.md",
       "source": "workspace_spec"
     },
     {

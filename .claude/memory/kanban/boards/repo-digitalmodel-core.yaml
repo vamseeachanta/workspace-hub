@@ -611,7 +611,7 @@ cards:
 
       Follow-up to #596 repo-structure normalization.
 
-      `#596` intentionally keeps tracked `outputs/b1528_sirocco/**` files in place as a temporary metadata-complete durable exception because relocating them requires package-source traceability-link decisions and per-file retention classification.'
+      `#596` intentionally keeps tracked `outputs/b1528_proj-a/**` files in place as a temporary metadata-complete durable exception because relocating them requires package-source traceability-link decisions and per-file retention classification.'
   - idempotency_key: gh:vamseeachanta/digitalmodel#620
     title: 'Review remediation: SQLi/.format, pickle, yaml.Loader, dup modules (2026-05-23)'
     source: github_issue

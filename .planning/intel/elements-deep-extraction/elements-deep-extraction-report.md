@@ -50,5 +50,5 @@ Validation logs are under `.planning/intel/elements-deep-extraction/validation/`
 ## Deferred
 
 - Large Riser Toolbox workbooks were not fully expanded into wiki text.
-- Woodfibre/Doris large corpora remain metadata-only from `#2535` until separately scoped.
+- Woodfibre/lng-a large corpora remain metadata-only from `#2535` until separately scoped.
 - No source/staging cleanup was performed; `workspace-hub#2534` remains retention-gated.

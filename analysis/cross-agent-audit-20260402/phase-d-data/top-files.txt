@@ -4,10 +4,10 @@
      66 /mnt/local-analysis/workspace-hub/scripts/work-queue/whats-next.sh
      59 /mnt/local-analysis/workspace-hub/assetutilities/src/assetutilities/common/data.py
      58 /mnt/local-analysis/workspace-hub/specs/wrk/WRK-658/plan.md
-     57 /mnt/local-analysis/workspace-hub/frontierdeepwater/data/processed/vessel-parameters/pipelay-parameters.csv
+     57 /mnt/local-analysis/workspace-hub/client-a/data/processed/vessel-parameters/pipelay-parameters.csv
      50 /mnt/local-analysis/workspace-hub/scripts/work-queue/verify-gate-evidence.py
      48 /mnt/local-analysis/workspace-hub/digitalmodel/src/digitalmodel/structural/analysis/wall_thickness_mt_report.py
-     44 /mnt/local-analysis/workspace-hub/frontierdeepwater/data/processed/vessel-parameters/heavy-lift-parameters.csv
+     44 /mnt/local-analysis/workspace-hub/client-a/data/processed/vessel-parameters/heavy-lift-parameters.csv
      43 /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/work-queue/SKILL.md
      42 /mnt/local-analysis/workspace-hub/.claude/work-queue/assets/WRK-1028/plan-draft-review.html
      41 /mnt/local-analysis/workspace-hub/data/oss-engineering-catalog.yaml

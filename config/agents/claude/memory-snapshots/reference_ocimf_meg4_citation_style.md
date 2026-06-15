@@ -29,7 +29,7 @@ Researched 2026-05-22 (workspace-hub #2760 Pass G; full source URLs in agent tra
 ## Project document citation
 Cite as controlled document with: **Project No. / Document No. / Title / Revision / Date / Originator / availability marker**.
 
-Example: ACMA Engineering (2026). *B1528 SIROCCO — Vessel Geometry and Rudder Particulars Workbook*. Document No. B1528-NA-CAL-001, Rev. B, dated 2026-04-15. (Proprietary; available on request.)
+Example: ACMA Engineering (2026). *B1528 proj-a — Vessel Geometry and Rudder Particulars Workbook*. Document No. B1528-NA-CAL-001, Rev. B, dated 2026-04-15. (Proprietary; available on request.)
 
 ## Coefficient source provenance
 Name figure + interpolation axis + regime: *"Longitudinal current force coefficient Cxc digitized from OCIMF MEG4 (2018), Annex A, Fig. A9 (loaded VLCC, conventional bow), interpolated at water-depth-to-draft ratio > 4.4, per MEG4 §A.1 conventions."*
@@ -44,7 +44,7 @@ Name figure + interpolation axis + regime: *"Longitudinal current force coeffici
 | Vague | Professional |
 |---|---|
 | "licensed off-repo workbook" | "OCIMF MEG4 (2018), Annex A, Figs. A9–A11" (cite the standard, not the workbook) |
-| "B1528 SIROCCO source pack" | "Project Document B1528-NA-CAL-001 Rev. B (proprietary)" |
+| "B1528 proj-a source pack" | "Project Document B1528-NA-CAL-001 Rev. B (proprietary)" |
 | "generic-reference OCIMF tanker-current basis" | "current load coefficients derived per OCIMF MEG4 (2018), Annex A (loaded VLCC, conventional bow, h/T > 4.4)" |
 
 ## Style rules

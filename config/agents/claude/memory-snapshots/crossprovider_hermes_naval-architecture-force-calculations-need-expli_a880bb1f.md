@@ -8,6 +8,6 @@ metadata:
   tags: [naval-architecture, hydrodynamics, frame-transforms, physics-contract]
 ---
 
-Reusing `X = F sin²(α)`, `Y = F sin(α) cos(α)` with heading-offset-adjusted inflow angle changes the physics frame (current-aligned vs ship-fixed) without transform. digitalmodel Sirocco#598 MAJOR: must define local current frame, explicit local→ship rotation, and verify all tests use consistent frame. Deferring this creates silent component/sign mismatches.
+Reusing `X = F sin²(α)`, `Y = F sin(α) cos(α)` with heading-offset-adjusted inflow angle changes the physics frame (current-aligned vs ship-fixed) without transform. digitalmodel proj-a#598 MAJOR: must define local current frame, explicit local→ship rotation, and verify all tests use consistent frame. Deferring this creates silent component/sign mismatches.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

@@ -6,9 +6,9 @@ board:
   workspace_path: /mnt/local-analysis/llm-wiki-acma
   description: |
     ACMA private llm-wiki sibling — per memory project_wiki_sibling_naming_locked
-    (2026-05-22): suffix form llm-wiki-acma, one per CLIENT (SIROCCO project nests
-    under acma/projects/sirocco/). Zero open GitHub issues; carrying uncommitted
-    deliverable for workspace-hub#2760 (SIROCCO current rudder-force report).
+    (2026-05-22): suffix form llm-wiki-acma, one per CLIENT (proj-a project nests
+    under acma/projects/proj-a/). Zero open GitHub issues; carrying uncommitted
+    deliverable for workspace-hub#2760 (proj-a current rudder-force report).
 cards:
   - idempotency_key: gh:vamseeachanta/llm-wiki-acma#1
     title: 'Client work flow: data -> llm-wiki-acma -> problems (issues) -> result layers'

@@ -10743,7 +10743,7 @@
       "chain_id": "20260218_b3d28e95",
       "length": 1,
       "files": [
-        "/mnt/local-analysis/workspace-hub/frontierdeepwater/modules/automation/update_ai_agents_daily.sh"
+        "/mnt/local-analysis/workspace-hub/client-a/modules/automation/update_ai_agents_daily.sh"
       ],
       "chain_type": "single_file_iteration"
     },
@@ -10915,7 +10915,7 @@
       "chain_id": "20260218_fefd270c",
       "length": 1,
       "files": [
-        "/mnt/local-analysis/workspace-hub/frontierdeepwater/.claude/commands/truth/start.md"
+        "/mnt/local-analysis/workspace-hub/client-a/.claude/commands/truth/start.md"
       ],
       "chain_type": "single_file_iteration"
     },
@@ -16903,8 +16903,8 @@
       "file": "/mnt/local-analysis/workspace-hub/.claude/work-queue/pending/WRK-114.md",
       "sample_edits": [
         {
-          "old": "- Source paths in acma-projects may contain client project references — must sanitize per legal-comp",
-          "new": "- Source paths in acma-projects and saipem may contain client project references — must sanitize per"
+          "old": "- Source paths in mkt-a may contain client project references — must sanitize per legal-comp",
+          "new": "- Source paths in mkt-a and client-d may contain client project references — must sanitize per"
         },
         {
           "old": "*Source: User request to get hull shapes and sizes for various floating bodies from 4 specific sourc",
@@ -18242,8 +18242,8 @@
       "file": "/mnt/local-analysis/workspace-hub/assethold/README.md",
       "sample_edits": [
         {
-          "old": "```cron # Run daily at 6:30 PM ET (after US market close) 30 18 aceengineer-admin aceengineer-website achantas-data achantas-media acma-projects AGENTS.md ai-native-traditional-eng _archive assethold assetutilities check_collisions.py check_duplicates.py CLAUDE.md client_projects config coordination data digitalmodel dist docker docs doris dryrun_debug.log examples flow-nexus frontierdeepwater generate_manifests.py generate_migration_lists.py generate_reports.py hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports rock-oil-field ruv-swarm sabithaandkrishnaestates saipem scripts sd-work seanation Shared simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata aceengineer-admin aceengineer-website achantas-data achantas-media acma-projects AGENTS.md ai-native-traditional-eng _archive assethold assetutilities check_collisions.py check_duplicates.py CLAUDE.md client_projects config coordination data digitalmodel dist docker docs doris dryrun_debug.log examples flow-nexus frontierdeepwater generate_manifests.py generate_migration_lists.py generate_reports.py hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports rock-oil-field ruv-swarm sabithaandkrishnaestates saipem scripts sd-work seanation Shared simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata 1-5 cd /path/to/assethold && pyt",
-          "new": "```cron # Run daily at 6:30 PM ET (after US market close) 30 18 aceengineer-admin aceengineer-website achantas-data achantas-media acma-projects AGENTS.md ai-native-traditional-eng _archive assethold assetutilities check_collisions.py check_duplicates.py CLAUDE.md client_projects config coordination data digitalmodel dist docker docs doris dryrun_debug.log examples flow-nexus frontierdeepwater generate_manifests.py generate_migration_lists.py generate_reports.py hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports rock-oil-field ruv-swarm sabithaandkrishnaestates saipem scripts sd-work seanation Shared simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata aceengineer-admin aceengineer-website achantas-data achantas-media acma-projects AGENTS.md ai-native-traditional-eng _archive assethold assetutilities check_collisions.py check_duplicates.py CLAUDE.md client_projects config coordination data digitalmodel dist docker docs doris dryrun_debug.log examples flow-nexus frontierdeepwater generate_manifests.py generate_migration_lists.py generate_reports.py hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports rock-oil-field ruv-swarm sabithaandkrishnaestates saipem scripts sd-work seanation Shared simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata 1-5 cd /path/to/assethold && uv "
+          "old": "```cron # Run daily at 6:30 PM ET (after US market close) 30 18 aceengineer-admin aceengineer-website achantas-data achantas-media mkt-a AGENTS.md ai-native-traditional-eng _archive assethold assetutilities check_collisions.py check_duplicates.py CLAUDE.md client-c config coordination data digitalmodel dist docker docs lng-a dryrun_debug.log examples flow-nexus client-a generate_manifests.py generate_migration_lists.py generate_reports.py hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports client-b ruv-swarm sabithaandkrishnaestates client-d scripts sd-work client-f Shared simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata aceengineer-admin aceengineer-website achantas-data achantas-media mkt-a AGENTS.md ai-native-traditional-eng _archive assethold assetutilities check_collisions.py check_duplicates.py CLAUDE.md client-c config coordination data digitalmodel dist docker docs lng-a dryrun_debug.log examples flow-nexus client-a generate_manifests.py generate_migration_lists.py generate_reports.py hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports client-b ruv-swarm sabithaandkrishnaestates client-d scripts sd-work client-f Shared simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata 1-5 cd /path/to/assethold && pyt",
+          "new": "```cron # Run daily at 6:30 PM ET (after US market close) 30 18 aceengineer-admin aceengineer-website achantas-data achantas-media mkt-a AGENTS.md ai-native-traditional-eng _archive assethold assetutilities check_collisions.py check_duplicates.py CLAUDE.md client-c config coordination data digitalmodel dist docker docs lng-a dryrun_debug.log examples flow-nexus client-a generate_manifests.py generate_migration_lists.py generate_reports.py hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports client-b ruv-swarm sabithaandkrishnaestates client-d scripts sd-work client-f Shared simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata aceengineer-admin aceengineer-website achantas-data achantas-media mkt-a AGENTS.md ai-native-traditional-eng _archive assethold assetutilities check_collisions.py check_duplicates.py CLAUDE.md client-c config coordination data digitalmodel dist docker docs lng-a dryrun_debug.log examples flow-nexus client-a generate_manifests.py generate_migration_lists.py generate_reports.py hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports client-b ruv-swarm sabithaandkrishnaestates client-d scripts sd-work client-f Shared simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata 1-5 cd /path/to/assethold && uv "
         }
       ]
     },
@@ -19563,7 +19563,7 @@
       ]
     },
     {
-      "file": "/mnt/local-analysis/workspace-hub/frontierdeepwater/.claude/commands/truth/start.md",
+      "file": "/mnt/local-analysis/workspace-hub/client-a/.claude/commands/truth/start.md",
       "sample_edits": [
         {
           "old": " \"path\": \".claude-flow/metrics/truth-daily.json\"",
@@ -19572,7 +19572,7 @@
       ]
     },
     {
-      "file": "/mnt/local-analysis/workspace-hub/frontierdeepwater/modules/automation/update_ai_agents_daily.sh",
+      "file": "/mnt/local-analysis/workspace-hub/client-a/modules/automation/update_ai_agents_daily.sh",
       "sample_edits": [
         {
           "old": "# Check for performance logs METRICS_DIR=\"$WORKSPACE_ROOT/.claude-flow/metrics\" if [ -d \"$METRICS_DI",
@@ -20228,8 +20228,8 @@
       "file": "/mnt/local-analysis/workspace-hub/worldenergydata/src/worldenergydata/bsee/analysis/forecasting/decline_analysis.py",
       "sample_edits": [
         {
-          "old": " n = len(actual) rss = np.sum((actual - predicted) aceengineer-admin aceengineer-website achantas-data achantas-media acma-projects ai-native-traditional-eng _archive assethold assetutilities CLAUDE.md client_projects config coordination data digitalmodel dist docker docs doris examples flow-nexus frontierdeepwater hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports rock-oil-field ruv-swarm sabithaandkrishnaestates saipem scripts sd-work seanation simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata 2) if rss <= 0 or n <=",
-          "new": " n = len(actual) rss = np.sum((actual - predicted) aceengineer-admin aceengineer-website achantas-data achantas-media acma-projects ai-native-traditional-eng _archive assethold assetutilities CLAUDE.md client_projects config coordination data digitalmodel dist docker docs doris examples flow-nexus frontierdeepwater hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports rock-oil-field ruv-swarm sabithaandkrishnaestates saipem scripts sd-work seanation simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata 2) if n <= 0: "
+          "old": " n = len(actual) rss = np.sum((actual - predicted) aceengineer-admin aceengineer-website achantas-data achantas-media mkt-a ai-native-traditional-eng _archive assethold assetutilities CLAUDE.md client-c config coordination data digitalmodel dist docker docs lng-a examples flow-nexus client-a hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports client-b ruv-swarm sabithaandkrishnaestates client-d scripts sd-work client-f simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata 2) if rss <= 0 or n <=",
+          "new": " n = len(actual) rss = np.sum((actual - predicted) aceengineer-admin aceengineer-website achantas-data achantas-media mkt-a ai-native-traditional-eng _archive assethold assetutilities CLAUDE.md client-c config coordination data digitalmodel dist docker docs lng-a examples flow-nexus client-a hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports client-b ruv-swarm sabithaandkrishnaestates client-d scripts sd-work client-f simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata 2) if n <= 0: "
         }
       ]
     },
@@ -20341,7 +20341,7 @@
       "file": "/mnt/local-analysis/workspace-hub/worldenergydata/src/worldenergydata/bsee/pipeline/field_report.py",
       "sample_edits": [
         {
-          "old": " return \"\"\" agents analyze_coverage.py archive backups cache checkpoints CLAUDE.md CLAUDE.md.backup-20251023-081047 config COVERAGE_ANALYSIS.txt coverage.json coverage.xml data docs examples frontierdeepwater htmlcov LICENSE logs Makefile modules output PHASE_1_TEST_DEVELOPMENT_PLAN.md pyproject.toml pytest.ini QUICK_START_MARINE_REPORTS.md QUICK_START.md README.md reports results scripts specs src test_export.json test_output tests user_prompt.md uv.lock uv.toml { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: -apple-s",
+          "old": " return \"\"\" agents analyze_coverage.py archive backups cache checkpoints CLAUDE.md CLAUDE.md.backup-20251023-081047 config COVERAGE_ANALYSIS.txt coverage.json coverage.xml data docs examples client-a htmlcov LICENSE logs Makefile modules output PHASE_1_TEST_DEVELOPMENT_PLAN.md pyproject.toml pytest.ini QUICK_START_MARINE_REPORTS.md QUICK_START.md README.md reports results scripts specs src test_export.json test_output tests user_prompt.md uv.lock uv.toml { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: -apple-s",
           "new": " return ( \"* { box-sizing: border-box; margin: 0; padding: 0; }\\n\" \"body { font-f"
         }
       ]
@@ -20549,12 +20549,12 @@
       "file": "/mnt/local-analysis/workspace-hub/worldenergydata/test_exporters.py",
       "sample_edits": [
         {
-          "old": "def load_test_data(): \"\"\"Load real BSEE data for testing.\"\"\" print(\"=\" aceengineer-admin aceengineer-website achantas-data achantas-media acma-projects ai-native-traditional-eng _archive assethold assetutilities CLAUDE.md client_projects config coordination data digitalmodel dist docker docs doris examples flow-nexus frontierdeepwater hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports rock-oil-field ruv-swarm sabithaandkrishnaestates saipem scripts sd-work seanation simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata WRK-134.md 60) print(\"LOAD",
-          "new": "def load_test_data(): \"\"\"Load real BSEE data for testing.\"\"\" print(\"=\" aceengineer-admin aceengineer-website achantas-data achantas-media acma-projects ai-native-traditional-eng _archive assethold assetutilities CLAUDE.md client_projects config coordination data digitalmodel dist docker docs doris examples flow-nexus frontierdeepwater hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports rock-oil-field ruv-swarm sabithaandkrishnaestates saipem scripts sd-work seanation simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata WRK-134.md 60) print(\"LOAD"
+          "old": "def load_test_data(): \"\"\"Load real BSEE data for testing.\"\"\" print(\"=\" aceengineer-admin aceengineer-website achantas-data achantas-media mkt-a ai-native-traditional-eng _archive assethold assetutilities CLAUDE.md client-c config coordination data digitalmodel dist docker docs lng-a examples flow-nexus client-a hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports client-b ruv-swarm sabithaandkrishnaestates client-d scripts sd-work client-f simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata WRK-134.md 60) print(\"LOAD",
+          "new": "def load_test_data(): \"\"\"Load real BSEE data for testing.\"\"\" print(\"=\" aceengineer-admin aceengineer-website achantas-data achantas-media mkt-a ai-native-traditional-eng _archive assethold assetutilities CLAUDE.md client-c config coordination data digitalmodel dist docker docs lng-a examples flow-nexus client-a hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports client-b ruv-swarm sabithaandkrishnaestates client-d scripts sd-work client-f simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata WRK-134.md 60) print(\"LOAD"
         },
         {
-          "old": "def test_excel_export(df): \"\"\"Test Excel export.\"\"\" print(\"=\" aceengineer-admin aceengineer-website achantas-data achantas-media acma-projects ai-native-traditional-eng _archive assethold assetutilities CLAUDE.md client_projects config coordination data digitalmodel dist docker docs doris examples flow-nexus frontierdeepwater hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports rock-oil-field ruv-swarm sabithaandkrishnaestates saipem scripts sd-work seanation simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata WRK-134.md 60) print(\"TESTING EXCEL",
-          "new": "def test_excel_export(df): \"\"\"Test Excel export.\"\"\" print(\"=\" aceengineer-admin aceengineer-website achantas-data achantas-media acma-projects ai-native-traditional-eng _archive assethold assetutilities CLAUDE.md client_projects config coordination data digitalmodel dist docker docs doris examples flow-nexus frontierdeepwater hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports rock-oil-field ruv-swarm sabithaandkrishnaestates saipem scripts sd-work seanation simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata WRK-134.md 60) print(\"TESTING EXCEL"
+          "old": "def test_excel_export(df): \"\"\"Test Excel export.\"\"\" print(\"=\" aceengineer-admin aceengineer-website achantas-data achantas-media mkt-a ai-native-traditional-eng _archive assethold assetutilities CLAUDE.md client-c config coordination data digitalmodel dist docker docs lng-a examples flow-nexus client-a hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports client-b ruv-swarm sabithaandkrishnaestates client-d scripts sd-work client-f simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata WRK-134.md 60) print(\"TESTING EXCEL",
+          "new": "def test_excel_export(df): \"\"\"Test Excel export.\"\"\" print(\"=\" aceengineer-admin aceengineer-website achantas-data achantas-media mkt-a ai-native-traditional-eng _archive assethold assetutilities CLAUDE.md client-c config coordination data digitalmodel dist docker docs lng-a examples flow-nexus client-a hobbies investments logs modules monitoring-dashboard node_modules OGManufacturing pdf-large-reader pyproject-starter README.md reports client-b ruv-swarm sabithaandkrishnaestates client-d scripts sd-work client-f simpledigitalmarketing skills specs src teamresumes templates test-framework-integrations tests worldenergydata WRK-134.md 60) print(\"TESTING EXCEL"
         }
       ]
     },

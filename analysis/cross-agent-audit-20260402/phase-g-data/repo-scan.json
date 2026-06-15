@@ -505,8 +505,8 @@
     "tier": "tier-2"
   },
   {
-    "name": "acma-projects",
-    "path": "/mnt/local-analysis/workspace-hub/acma-projects",
+    "name": "mkt-a",
+    "path": "/mnt/local-analysis/workspace-hub/mkt-a",
     "skills_count": 0,
     "skill_categories": [],
     "commands_count": 0,
@@ -835,8 +835,8 @@
     "tier": "tier-2"
   },
   {
-    "name": "client_projects",
-    "path": "/mnt/local-analysis/workspace-hub/client_projects",
+    "name": "client-c",
+    "path": "/mnt/local-analysis/workspace-hub/client-c",
     "skills_count": 0,
     "skill_categories": [],
     "commands_count": 1,
@@ -917,8 +917,8 @@
     "tier": "tier-2"
   },
   {
-    "name": "doris",
-    "path": "/mnt/local-analysis/workspace-hub/doris",
+    "name": "lng-a",
+    "path": "/mnt/local-analysis/workspace-hub/lng-a",
     "skills_count": 0,
     "skill_categories": [],
     "commands_count": 1,
@@ -961,8 +961,8 @@
     "tier": "tier-2"
   },
   {
-    "name": "frontierdeepwater",
-    "path": "/mnt/local-analysis/workspace-hub/frontierdeepwater",
+    "name": "client-a",
+    "path": "/mnt/local-analysis/workspace-hub/client-a",
     "skills_count": 0,
     "skill_categories": [],
     "commands_count": 1,
@@ -1002,8 +1002,8 @@
     "tier": "tier-2"
   },
   {
-    "name": "rock-oil-field",
-    "path": "/mnt/local-analysis/workspace-hub/rock-oil-field",
+    "name": "client-b",
+    "path": "/mnt/local-analysis/workspace-hub/client-b",
     "skills_count": 0,
     "skill_categories": [],
     "commands_count": 0,
@@ -1046,8 +1046,8 @@
     "tier": "tier-2"
   },
   {
-    "name": "saipem",
-    "path": "/mnt/local-analysis/workspace-hub/saipem",
+    "name": "client-d",
+    "path": "/mnt/local-analysis/workspace-hub/client-d",
     "skills_count": 0,
     "skill_categories": [],
     "commands_count": 1,
@@ -1092,8 +1092,8 @@
     "tier": "tier-2"
   },
   {
-    "name": "seanation",
-    "path": "/mnt/local-analysis/workspace-hub/seanation",
+    "name": "client-f",
+    "path": "/mnt/local-analysis/workspace-hub/client-f",
     "skills_count": 0,
     "skill_categories": [],
     "commands_count": 1,

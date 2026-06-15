@@ -71,15 +71,15 @@ repos:
       cathodic protection, asset integrity, GIS, or field-development modules.
     routing_route_elsewhere: >-
       Route elsewhere when the work is one-off client-project data with non-reusable
-      inputs (→ matching client vertical like acma-projects, seanation, saipem,
-      frontierdeepwater, doris) or shared cross-repo utilities (→ assetutilities).
+      inputs (→ matching client vertical like mkt-a, client-f, client-d,
+      client-a, lng-a) or shared cross-repo utilities (→ assetutilities).
     overlap_notes: >-
       Overlaps with workspace-hub on portfolio-vs-execution boundary
       (workspace-hub owns governance/harness; digitalmodel owns engineering
       execution). Overlaps with assetutilities on reusable-utility boundary
       (digitalmodel depends on assetutilities; shared utility code belongs in
       assetutilities, not digitalmodel). Overlaps with client/project verticals
-      (acma-projects, seanation, saipem, frontierdeepwater, doris): reusable
+      (mkt-a, client-f, client-d, client-a, lng-a): reusable
       engineering code/tests/methodology → digitalmodel; one-off client analysis
       with non-reusable inputs → matching client vertical. Per #2462
       (PR digitalmodel#539) digitalmodel canonical routing surfaces are being
@@ -166,13 +166,13 @@ repos:
     notes: >-
       Maturity alpha.
 
-  - repo: acma-projects
+  - repo: mkt-a
     tier: tier-2
     mission: >-
       ACMA Inc. naval-architecture client project data and delivery — structural
       design and analysis for vessels (LNG tanks, workboats, novel hulls)
       across steel, aluminum, and composites.
-    source_path: acma-projects/README.md
+    source_path: mkt-a/README.md
     routing_belongs_here: >-
       Work belongs here when it is ACMA-client naval-architecture project data,
       structural-analysis deliverables, or vessel design context tied to ACMA
@@ -180,10 +180,10 @@ repos:
     routing_route_elsewhere: >-
       Route elsewhere when the work is reusable engineering methodology
       (→ digitalmodel), shared utilities (→ assetutilities), or generic
-      multi-client wrapper (→ client_projects when no dedicated ACMA scope).
+      multi-client wrapper (→ client-c when no dedicated ACMA scope).
     overlap_notes: >-
-      Overlaps with client_projects (the generic client wrapper) — ACMA-client
-      work always wins when work targets ACMA specifically; client_projects is
+      Overlaps with client-c (the generic client wrapper) — ACMA-client
+      work always wins when work targets ACMA specifically; client-c is
       the catch-all only when no dedicated client repo exists. Overlaps with
       digitalmodel on the reusable-vs-client-specific boundary: reusable
       naval-architecture methodology → digitalmodel; ACMA-engagement-specific
@@ -192,24 +192,24 @@ repos:
     notes: >-
       Operator map TBD. AGENTS.md is a pointer; README.md carries mission text.
 
-  - repo: frontierdeepwater
+  - repo: client-a
     tier: tier-2
     mission: >-
-      Frontier Deepwater startup project data and company documents.
+      client-a startup project data and company documents.
       AceEngineer holds a 5% stake per BUSINESS_BRAIN; relationship is
       partner/investor as well as engineering contributor.
-    source_path: frontierdeepwater/README.md
+    source_path: client-a/README.md
     routing_belongs_here: >-
-      Work belongs here when it is Frontier Deepwater project documents, deal
+      Work belongs here when it is client-a project documents, deal
       context, or company-specific engineering work tied to that engagement.
     routing_route_elsewhere: >-
       Route elsewhere when the engineering analysis generalizes (→ digitalmodel),
       when shared utility work is needed (→ assetutilities), or when generic
-      client wrapper applies (→ client_projects).
+      client wrapper applies (→ client-c).
     overlap_notes: >-
-      Overlaps with client_projects when work spans multiple engagements —
-      Frontier Deepwater-specific work stays here; multi-client coordination
-      goes to client_projects. Overlaps with digitalmodel on the
+      Overlaps with client-c when work spans multiple engagements —
+      client-a-specific work stays here; multi-client coordination
+      goes to client-c. Overlaps with digitalmodel on the
       reusable-vs-client-specific boundary: reusable deepwater methodology
       → digitalmodel; FDW-engagement-specific analysis stays here.
     inventory_status: present-locally
@@ -430,50 +430,50 @@ repos:
       Per session memory project_cad_tooling_review, CAD tooling review is
       PAUSED; #2327, #2328, #2329 await doc/resource intel (#2205) review.
 
-  - repo: client_projects
+  - repo: client-c
     tier: tier-3
     mission: >-
-      Generic client-projects catch-all — list of client engagements, shared
+      Generic client-c catch-all — list of client engagements, shared
       project-management surfaces, and confidential codes to enable delivery
       across multiple clients without a dedicated repo.
-    source_path: client_projects/README.md
+    source_path: client-c/README.md
     routing_belongs_here: >-
       Work belongs here when it is client work that lacks a dedicated client
       repo, cross-client coordination, or shared project-management context
       for multiple engagements.
     routing_route_elsewhere: >-
       Route elsewhere when the engagement has a dedicated client repo
-      (acma-projects, seanation, saipem, frontierdeepwater, doris) — that
+      (mkt-a, client-f, client-d, client-a, lng-a) — that
       always wins.
     overlap_notes: >-
-      Overlaps with every client-specific repo (acma-projects, seanation,
-      saipem, frontierdeepwater, doris). Client-specific repo wins when work
-      targets a single client. client_projects is the catch-all for engagements
+      Overlaps with every client-specific repo (mkt-a, client-f,
+      client-d, client-a, lng-a). Client-specific repo wins when work
+      targets a single client. client-c is the catch-all for engagements
       that lack a dedicated repo.
     inventory_status: present-locally
     notes: >-
       AGENTS.md is a pointer; README.md is brief. Catch-all wrapper.
 
-  - repo: doris
+  - repo: lng-a
     tier: tier-3
     mission: >-
-      Doris client project context — engineering consulting work performed by
-      Vamsee for Doris (an engineering consulting firm and client). Maintains
+      lng-a client project context — engineering consulting work performed by
+      Vamsee for lng-a (an engineering consulting firm and client). Maintains
       client project data, deliverables, references, and execution context
       needed to support consulting delivery.
-    source_path: "legacy_source:doris/.agent-os/product/mission.md"
+    source_path: "legacy_source:lng-a/.agent-os/product/mission.md"
     routing_belongs_here: >-
-      Work belongs here when it is Doris-client consulting deliverables, client
-      project data, or reference context tied to the Doris engagement.
+      Work belongs here when it is lng-a-client consulting deliverables, client
+      project data, or reference context tied to the lng-a engagement.
     routing_route_elsewhere: >-
       Route elsewhere when reusable engineering work (→ digitalmodel), shared
       utilities (→ assetutilities), or generic multi-client coordination
-      (→ client_projects).
+      (→ client-c).
     overlap_notes: >-
-      Overlaps with client_projects as one of the client-specific verticals —
-      Doris-client work always wins for Doris-targeted engagements. Overlaps
+      Overlaps with client-c as one of the client-specific verticals —
+      lng-a-client work always wins for lng-a-targeted engagements. Overlaps
       with digitalmodel on the reusable-vs-client-specific boundary: reusable
-      consulting methodology → digitalmodel; Doris-engagement-specific
+      consulting methodology → digitalmodel; lng-a-engagement-specific
       analysis stays here.
     inventory_status: present-locally
     notes: >-
@@ -503,22 +503,22 @@ repos:
     notes: >-
       Explicitly not-a-software-project per README.md. No tests, no CI.
 
-  - repo: saipem
+  - repo: client-d
     tier: tier-3
     mission: >-
-      Saipem (engineering installation contractor) project work and reference
+      client-d (engineering installation contractor) project work and reference
       documents. Per BUSINESS_BRAIN, an archive/extraction candidate — extract
       useful installation-project information and archive/retire the repo over time.
-    source_path: saipem/README.md
+    source_path: client-d/README.md
     routing_belongs_here: >-
-      Work belongs here only while triaging Saipem-engagement files for
+      Work belongs here only while triaging client-d-engagement files for
       extraction/migration. Active engineering work routes elsewhere.
     routing_route_elsewhere: >-
       Route reusable installation-analysis methodology (→ digitalmodel),
-      generic-client work without dedicated repo (→ client_projects), or
+      generic-client work without dedicated repo (→ client-c), or
       cross-repo coordination (→ workspace-hub).
     overlap_notes: >-
-      Overlaps with client_projects and digitalmodel as migration targets.
+      Overlaps with client-c and digitalmodel as migration targets.
       Per BUSINESS_BRAIN archive/extraction candidate list. Tracked at
       gh issue #2545.
     inventory_status: present-locally
@@ -568,23 +568,23 @@ repos:
     notes: >-
       Personal admin tool. Active.
 
-  - repo: rock-oil-field
+  - repo: client-b
     tier: tier-3
     mission: >-
       Temporary client/work archive that should be sanity-checked and
       migrated into the appropriate Tier-1 repositories. Reusable code,
       engineering calculations, technical workflows, data products, and
       analysis should move to the correct Tier-1 home rather than remain here.
-    source_path: "legacy_source:rock-oil-field/.agent-os/product/mission.md"
+    source_path: "legacy_source:client-b/.agent-os/product/mission.md"
     routing_belongs_here: >-
       Work belongs here only during triage. Mission is migrate-out, not
       accumulate-here.
     routing_route_elsewhere: >-
       Route engineering calculations to digitalmodel, shared utilities to
-      assetutilities, generic-client work to client_projects, and once nothing
+      assetutilities, generic-client work to client-c, and once nothing
       useful remains exclusively here, archive/retire the repo.
     overlap_notes: >-
-      Overlaps with digitalmodel, assetutilities, and client_projects as
+      Overlaps with digitalmodel, assetutilities, and client-c as
       migration targets. Per BUSINESS_BRAIN archive/extraction candidate list.
       Tracked at gh issue #2539.
     inventory_status: present-locally
@@ -617,23 +617,23 @@ repos:
       Mission source is legacy .agent-os/product/mission.md. Retirement target
       3 months from BUSINESS_BRAIN last-updated; track #2537.
 
-  - repo: seanation
+  - repo: client-f
     tier: tier-3
     mission: >-
       Client-specific repository containing project data, technical information,
-      analysis context, and documents from a SeaNation client engagement.
+      analysis context, and documents from a client-f client engagement.
       Mission is review-extract-archive: extract any useful data/information,
       preserve context/provenance, migrate reusable artifacts to durable
       repositories, then archive.
-    source_path: "legacy_source:seanation/.agent-os/product/mission.md"
+    source_path: "legacy_source:client-f/.agent-os/product/mission.md"
     routing_belongs_here: >-
-      Work belongs here only during extraction triage for the SeaNation client
+      Work belongs here only during extraction triage for the client-f client
       engagement.
     routing_route_elsewhere: >-
       Route reusable artifacts to digitalmodel/assetutilities; generic-client
-      wrapper work to client_projects.
+      wrapper work to client-c.
     overlap_notes: >-
-      Overlaps with client_projects (catch-all client wrapper) and digitalmodel
+      Overlaps with client-c (catch-all client wrapper) and digitalmodel
       (engineering migration target). Per BUSINESS_BRAIN archive/extraction
       candidate list. Tracked at gh issue #2547.
     inventory_status: present-locally
@@ -685,7 +685,7 @@ repos:
       Work belongs here when it is wiki content additions/edits across the
       domain wikis (engineering, marine-engineering, naval-architecture,
       maritime-law, asset-management, lng-projects, engineering-standards,
-      acma-projects-wiki, drilling-engineering), cross-domain link manifest
+      mkt-a-wiki, drilling-engineering), cross-domain link manifest
       updates, or seed YAMLs for downstream extraction.
     routing_route_elsewhere: >-
       Route elsewhere when the work is corpus-extraction pipeline code

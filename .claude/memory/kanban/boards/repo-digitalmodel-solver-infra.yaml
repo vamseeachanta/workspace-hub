@@ -34,7 +34,7 @@ cards:
 
       **Complexity:** medium | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#281
-    title: 'WRK-121: Extract & Catalog OrcaFlex Models from rock-oil-field/s7'
+    title: 'WRK-121: Extract & Catalog OrcaFlex Models from client-b/s7'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/281
     gh_state: open
@@ -51,7 +51,7 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 1
-    body_excerpt: '## WRK-121: Extract & Catalog OrcaFlex Models from rock-oil-field/s7
+    body_excerpt: '## WRK-121: Extract & Catalog OrcaFlex Models from client-b/s7
 
       **Status:** blocked | **Priority:** high | **Category:** engineering/marine
 

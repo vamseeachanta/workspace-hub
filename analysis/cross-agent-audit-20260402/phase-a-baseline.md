@@ -467,11 +467,11 @@ Total log entries: **409**
 | agent-a4dd71d2 | 39 | 0.1% |
 | assethold | 38 | 0.1% |
 | OGManufacturing | 32 | 0.0% |
-| doris | 28 | 0.0% |
+| lng-a | 28 | 0.0% |
 | agent-adc58889 | 23 | 0.0% |
-| client_projects | 19 | 0.0% |
+| client-c | 19 | 0.0% |
 | wrk-1119-permission-model | 19 | 0.0% |
-| saipem | 19 | 0.0% |
+| client-d | 19 | 0.0% |
 | agent-a2ce3a27 | 18 | 0.0% |
 | agent-a33c7a4d | 15 | 0.0% |
 | agent-a2e2ea6a | 14 | 0.0% |
@@ -486,11 +486,11 @@ Total log entries: **409**
 | agent-a3637eb9 | 10 | 0.0% |
 | achantas-data | 10 | 0.0% |
 | agent-a182b46f | 9 | 0.0% |
-| rock-oil-field | 7 | 0.0% |
-| frontierdeepwater | 6 | 0.0% |
+| client-b | 7 | 0.0% |
+| client-a | 6 | 0.0% |
 | teamresumes | 5 | 0.0% |
 | CAD-DEVELOPMENTS | 2 | 0.0% |
-| seanation | 1 | 0.0% |
+| client-f | 1 | 0.0% |
 
 ### Hermes (inferred from file paths)
 

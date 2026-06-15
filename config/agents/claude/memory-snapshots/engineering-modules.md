@@ -142,13 +142,13 @@ cfg = {"inputs": {"calculation_type": "DNV_RP_F103_2010",
 
 ### Abstracted Calc Library (WRK-276/280)
 - 11 `.md` files: calc-001..009 (WRK-276) + calc-010/011 (WRK-280 FST documents)
-- 3 deny lists created: `digitalmodel/`, `saipem/`, `acma-projects/` `.legal-deny-list.yaml`
+- 3 deny lists created: `digitalmodel/`, `client-d/`, `mkt-a/` `.legal-deny-list.yaml`
 - Legal CI gate: `digitalmodel/.pre-commit-config.yaml` has `legal-sanity-scan` hook
   - Entry: `scripts/legal/legal-sanity-scan.sh --repo=digitalmodel` (NOT `../scripts/...`)
-- Note: saipem and acma-projects have NO pre-commit config — manual scan gate only
+- Note: client-d and mkt-a have NO pre-commit config — manual scan gate only
 
 ### Route C items pending plan gate
-- **WRK-272**: DNV-RP-B401 offshore — jacket structures; B401-2021 PDF at `acma-projects/B1522/ctr-2/cal/DNV-RP-B401-2021.pdf`
+- **WRK-272**: DNV-RP-B401 offshore — jacket structures; B401-2021 PDF at `mkt-a/B1522/ctr-2/cal/DNV-RP-B401-2021.pdf`
 - **WRK-277**: ABS GN Offshore 2018 — PDF at `digitalmodel/docs/domains/cathodic_protection/codes/ABS cathodic-protection-offshore-gn-dec18.pdf`
 - Both require plan gate + Codex cross-review before implementation
 

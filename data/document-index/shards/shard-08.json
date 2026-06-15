@@ -74,17 +74,17 @@
     },
     {
       "sha": "sha256:48d9a04658f0a1850599a781fb9db777b6661a060d502f5dbd7ebb30acbc6cfc",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/B1522/ctr-7/_src/rev_a08/postproc/specs/modules/gmsh/requirements/technical_requirements.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/B1522/ctr-7/_src/rev_a08/postproc/specs/modules/gmsh/requirements/technical_requirements.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:075969b1eff249492c78b535ccc382406a7f54197d053193f6ade3dbeeb19a0a",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/B1535/specs/2025-08-07-offshore-msiv-shallow-water-research/spec.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/B1535/specs/2025-08-07-offshore-msiv-shallow-water-research/spec.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:10727eebdae8f56e18b043804e1eaa086f005b5dcbae6e8d47c72023ad0e391a",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/acma-projects/modules/agent-os/slash-commands/create-module-agent/sub-specs/integration.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/mkt-a/modules/agent-os/slash-commands/create-module-agent/sub-specs/integration.md",
       "source": "workspace_spec"
     },
     {
@@ -129,7 +129,7 @@
     },
     {
       "sha": "sha256:89825a14c23b698b946e34483871af3a88b5611ecf271d0d937b166578f5db8a",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client_projects/modules/agent-os/slash-commands/create-module-agent/sub-specs/implementation.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-c/modules/agent-os/slash-commands/create-module-agent/sub-specs/implementation.md",
       "source": "workspace_spec"
     },
     {
@@ -609,12 +609,12 @@
     },
     {
       "sha": "sha256:e9bab2d65b91f1dd9430279e522399da7c5c11c1afa4d34fa7b553193e4eaa16",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/doris/specs/README.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/lng-a/specs/README.md",
       "source": "workspace_spec"
     },
     {
       "sha": "sha256:eebe744ad0844cb699ddf5021e30787862e8ce9b5ffad549a774ce1739aa5b6f",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/frontierdeepwater/modules/agent-os/slash-commands/create-module-agent/sub-specs/templates.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-a/modules/agent-os/slash-commands/create-module-agent/sub-specs/templates.md",
       "source": "workspace_spec"
     },
     {
@@ -634,7 +634,7 @@
     },
     {
       "sha": "sha256:da2308e49a82fa105bafa19d5ebad2536b520ec6e5bf3438e4b0e3c3250e8045",
-      "path": "/mnt/local-analysis/workspace-hub/specs/repos/rock-oil-field/modules/agent-os/slash-commands/create-module-agent/sub-specs/workflow-refresh.md",
+      "path": "/mnt/local-analysis/workspace-hub/specs/repos/client-b/modules/agent-os/slash-commands/create-module-agent/sub-specs/workflow-refresh.md",
       "source": "workspace_spec"
     },
     {

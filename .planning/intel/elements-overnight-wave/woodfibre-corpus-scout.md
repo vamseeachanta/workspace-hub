@@ -1,7 +1,7 @@
 # Woodfibre LNG corpus scout (issue #2544)
 
 > Generated: 2026-04-28 (overnight wave Terminal 4)
-> Source of record: `/mnt/ace/acma-projects/31522-woodfibre-lng/`
+> Source of record: `/mnt/ace/mkt-a/31522-woodfibre-lng/`
 > Wiki domain target: `lng-projects`
 > Method: metadata-first read of `.planning/intel/elements-to-llm-wiki/elements-ingested-files.jsonl` (5,364 records). No `/mnt/ace` walks; no raw content opened.
 
@@ -134,11 +134,11 @@ This is a live project corpus. EDMS prefix `350106-SC-EN-003-SD-XXXXXX` indicate
 - **Project sponsor identity** is inferred from filename patterns (`WoodfibreLNG`, `WSP Interface loads`, `FST-1/FST-2`, `Capricorn/Taurus`). Cannot be confirmed without opening a PDF — out of scope here. Plan-stage reviewer should sanity-check before dispatching extraction.
 - **EDMS doc number meaning of trailing `_<letter>`** assumed to be the IFR/IFA revision letter (B = "Issued for Review", C = "Issued for Approval", per common ACMA convention). Suffix `1`, `2` (e.g. `_C1`, `_C2`) assumed to be sub-revisions within the lettered review cycle. Latest = highest rev letter, then highest sub-revision.
 - **Sponsorship between ACMA, WoodfibreLNG, WSP, Pacific Energy:** not derivable from metadata. Must be clarified with the project owner before any extracted content lands publicly.
-- **Whether `_from_elements/` staging exists for this corpus** is implied by the #2535 catalog (staging path is `/mnt/ace/acma-projects/31522-woodfibre-lng/_from_elements`) but not verified in this scout because the working directory is sandboxed away from `/mnt/ace`. Treat as a precondition, not a confirmation.
+- **Whether `_from_elements/` staging exists for this corpus** is implied by the #2535 catalog (staging path is `/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements`) but not verified in this scout because the working directory is sandboxed away from `/mnt/ace`. Treat as a precondition, not a confirmation.
 
 ## Companion bucket cross-reference
 
-`doris-62092-sesa` (also `lng-projects` domain, 418 files / 1.47 GB, scouted by Terminal 1) sits in the same wiki. Coordinate Woodfibre source-page naming with SESA's so neither overwrites the other (e.g., prefix `woodfibre-` vs `sesa-` on each `wiki/sources/*.md`).
+`lng-a-62092-sesa` (also `lng-projects` domain, 418 files / 1.47 GB, scouted by Terminal 1) sits in the same wiki. Coordinate Woodfibre source-page naming with SESA's so neither overwrites the other (e.g., prefix `woodfibre-` vs `sesa-` on each `wiki/sources/*.md`).
 
 ## Files produced by this scout
 

@@ -45,7 +45,7 @@ cards:
     priority: 1
     body_excerpt: |
       Per project_wiki_sibling_naming_locked: suffix `llm-wiki-<client>` (NOT prefix);
-      one per CLIENT not project (SIROCCO -> llm-wiki-acma/projects/sirocco/);
+      one per CLIENT not project (proj-a -> llm-wiki-acma/projects/proj-a/);
       ref-not-duplicate generic content. Lock data/knowledge/result search routing
       across llm-wiki + llm-wiki-<client> siblings. workspace-hub#2778, #2744 rename.
     spans_repos: [llm-wiki, llm-wiki-acma, workspace-hub]

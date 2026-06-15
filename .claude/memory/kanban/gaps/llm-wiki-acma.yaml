@@ -2,10 +2,10 @@ board_slug: repo-llm-wiki-acma
 repo: vamseeachanta/llm-wiki-acma
 gaps:
   - idempotency_key: gap:repo-llm-wiki-acma:001
-    title: Uncommitted SIROCCO rudder-force report (issue-2760) staged but not committed
+    title: Uncommitted proj-a rudder-force report (issue-2760) staged but not committed
     source: detected_gap
     detection_basis: |
-      git status shows 7 staged files under reports/B1528/issue-2760/ (b1528-sirocco-current-rudder-force-report.{md,html,pdf,docx} + citations.json + manifest.json + report-layer-manifest.json). Plus untracked .codex/ and .gemini/ runtime dirs.
+      git status shows 7 staged files under reports/B1528/issue-2760/ (b1528-proj-a-current-rudder-force-report.{md,html,pdf,docx} + citations.json + manifest.json + report-layer-manifest.json). Plus untracked .codex/ and .gemini/ runtime dirs.
     needs_issue: true
     priority: 2
     body_excerpt: |
@@ -20,10 +20,10 @@ gaps:
     body_excerpt: |
       Audit cross-repo references for legacy acma-llm-wiki paths; confirm citation resolver + docs updated.
   - idempotency_key: gap:repo-llm-wiki-acma:003
-    title: Per-client project routing scaffold (acma/projects/sirocco)
+    title: Per-client project routing scaffold (acma/projects/proj-a)
     source: detected_gap
     detection_basis: |
-      Memory locks one-llm-wiki-per-CLIENT (not per project); SIROCCO nests under acma/projects/sirocco/. Folder convention exists but not codified in repo README.
+      Memory locks one-llm-wiki-per-CLIENT (not per project); proj-a nests under acma/projects/proj-a/. Folder convention exists but not codified in repo README.
     needs_issue: true
     priority: 0
     body_excerpt: |

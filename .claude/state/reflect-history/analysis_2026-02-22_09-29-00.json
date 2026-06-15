@@ -191,32 +191,32 @@
 ,
     {"repo":"achantas-media","hash":"999336a498ae4b9942523da8cce9f4b64d8e58da","short_hash":"999336a","message":"Initial commit: Achantas Media collection","author":"Vamsee Achanta","date":"2026-01-24T21:36:50-06:00","timestamp":"1769312210","files_changed":3881,"insertions":94404,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"59f86d53d7034e15f01ac3505ab48c6dec48e015","short_hash":"59f86d53","message":"chore(legal): add pre-commit legal scan hook (WRK-278)","author":"Vamsee Achanta","date":"2026-02-20T22:28:00-06:00","timestamp":"1771648080","files_changed":1,"insertions":11,"deletions":0}
+    {"repo":"mkt-a","hash":"59f86d53d7034e15f01ac3505ab48c6dec48e015","short_hash":"59f86d53","message":"chore(legal): add pre-commit legal scan hook (WRK-278)","author":"Vamsee Achanta","date":"2026-02-20T22:28:00-06:00","timestamp":"1771648080","files_changed":1,"insertions":11,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"4d88390d68609e866459c0f3e816e48db05916ae","short_hash":"4d88390d","message":"docs: add searchable content index — projects, CP files, codes & standards (WRK-275)","author":"Vamsee Achanta","date":"2026-02-20T22:09:14-06:00","timestamp":"1771646954","files_changed":1,"insertions":553,"deletions":0}
+    {"repo":"mkt-a","hash":"4d88390d68609e866459c0f3e816e48db05916ae","short_hash":"4d88390d","message":"docs: add searchable content index — projects, CP files, codes & standards (WRK-275)","author":"Vamsee Achanta","date":"2026-02-20T22:09:14-06:00","timestamp":"1771646954","files_changed":1,"insertions":553,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"ee7a985aa5500095f5e7a08b2575cd1593211997","short_hash":"ee7a985a","message":"chore(admin): update OrcaFlex Orcina email format","author":"Vamsee Achanta","date":"2026-02-12T22:09:20-06:00","timestamp":"1770955760","files_changed":2,"insertions":0,"deletions":0}
+    {"repo":"mkt-a","hash":"ee7a985aa5500095f5e7a08b2575cd1593211997","short_hash":"ee7a985a","message":"chore(admin): update OrcaFlex Orcina email format","author":"Vamsee Achanta","date":"2026-02-12T22:09:20-06:00","timestamp":"1770955760","files_changed":2,"insertions":0,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"437653aad861cebbb915643d432dca48cf60f39d","short_hash":"437653aa","message":"fix(admin): reorder mermaid decision flows (Yes left, No right)","author":"Vamsee Achanta","date":"2026-02-11T10:05:40-06:00","timestamp":"1770825940","files_changed":4,"insertions":103,"deletions":103}
+    {"repo":"mkt-a","hash":"437653aad861cebbb915643d432dca48cf60f39d","short_hash":"437653aa","message":"fix(admin): reorder mermaid decision flows (Yes left, No right)","author":"Vamsee Achanta","date":"2026-02-11T10:05:40-06:00","timestamp":"1770825940","files_changed":4,"insertions":103,"deletions":103}
 ,
-    {"repo":"acma-projects","hash":"dff6292df2df83ea0c4e45b0021b80d104679e5b","short_hash":"dff6292d","message":"fix(admin): update OrcaFlex host from ACMA-ANSYS03 to licensed-win-1","author":"Vamsee Achanta","date":"2026-02-11T10:02:22-06:00","timestamp":"1770825742","files_changed":6,"insertions":89,"deletions":89}
+    {"repo":"mkt-a","hash":"dff6292df2df83ea0c4e45b0021b80d104679e5b","short_hash":"dff6292d","message":"fix(admin): update OrcaFlex host from ACMA-ANSYS03 to licensed-win-1","author":"Vamsee Achanta","date":"2026-02-11T10:02:22-06:00","timestamp":"1770825742","files_changed":6,"insertions":89,"deletions":89}
 ,
-    {"repo":"acma-projects","hash":"394d4305a31c217039e79609df66623b0fda522c","short_hash":"394d4305","message":"fix(admin): convert ASCII tables to markdown for proper PDF rendering","author":"Vamsee Achanta","date":"2026-02-11T09:58:21-06:00","timestamp":"1770825501","files_changed":5,"insertions":351,"deletions":501}
+    {"repo":"mkt-a","hash":"394d4305a31c217039e79609df66623b0fda522c","short_hash":"394d4305","message":"fix(admin): convert ASCII tables to markdown for proper PDF rendering","author":"Vamsee Achanta","date":"2026-02-11T09:58:21-06:00","timestamp":"1770825501","files_changed":5,"insertions":351,"deletions":501}
 ,
-    {"repo":"acma-projects","hash":"fb9931fd395b6d1c27de338ae3ea55f7e3a2470f","short_hash":"fb9931fd","message":"fix(admin): remove plaintext passwords, add license usage docs","author":"Vamsee Achanta","date":"2026-02-11T09:48:30-06:00","timestamp":"1770824910","files_changed":9,"insertions":1245,"deletions":17}
+    {"repo":"mkt-a","hash":"fb9931fd395b6d1c27de338ae3ea55f7e3a2470f","short_hash":"fb9931fd","message":"fix(admin): remove plaintext passwords, add license usage docs","author":"Vamsee Achanta","date":"2026-02-11T09:48:30-06:00","timestamp":"1770824910","files_changed":9,"insertions":1245,"deletions":17}
 ,
-    {"repo":"acma-projects","hash":"dc04dfb8e3e543f8f6335ab55ecfb95f7c2a04d4","short_hash":"dc04dfb8","message":"Merge branch 'main' of https://github.com/vamseeachanta/acma-projects","author":"Vamsee Achanta","date":"2026-02-10T13:56:38-06:00","timestamp":"1770753398","files_changed":7,"insertions":0,"deletions":15517}
+    {"repo":"mkt-a","hash":"dc04dfb8e3e543f8f6335ab55ecfb95f7c2a04d4","short_hash":"dc04dfb8","message":"Merge branch 'main' of https://github.com/vamseeachanta/mkt-a","author":"Vamsee Achanta","date":"2026-02-10T13:56:38-06:00","timestamp":"1770753398","files_changed":7,"insertions":0,"deletions":15517}
 ,
-    {"repo":"acma-projects","hash":"eb32b61842135b7b00e33503724e7236eb2c9903","short_hash":"eb32b618","message":"chore: centralize shared skills, add post-task-review hook","author":"Vamsee Achanta","date":"2026-02-10T11:59:11-06:00","timestamp":"1770746351","files_changed":12,"insertions":13,"deletions":1864}
+    {"repo":"mkt-a","hash":"eb32b61842135b7b00e33503724e7236eb2c9903","short_hash":"eb32b618","message":"chore: centralize shared skills, add post-task-review hook","author":"Vamsee Achanta","date":"2026-02-10T11:59:11-06:00","timestamp":"1770746351","files_changed":12,"insertions":13,"deletions":1864}
 ,
-    {"repo":"acma-projects","hash":"c89ed2c885a7c7ff79eb8308565764dcf99241e2","short_hash":"c89ed2c8","message":"chore: remove claude-flow references and artifacts","author":"Vamsee Achanta","date":"2026-02-10T07:36:24-06:00","timestamp":"1770730584","files_changed":7,"insertions":0,"deletions":15517}
+    {"repo":"mkt-a","hash":"c89ed2c885a7c7ff79eb8308565764dcf99241e2","short_hash":"c89ed2c8","message":"chore: remove claude-flow references and artifacts","author":"Vamsee Achanta","date":"2026-02-10T07:36:24-06:00","timestamp":"1770730584","files_changed":7,"insertions":0,"deletions":15517}
 ,
-    {"repo":"acma-projects","hash":"8b8230b44cc7b11485097b91d536cc967a953726","short_hash":"8b8230b4","message":"chore: Reorganize project folders with underscore prefix and add CFD, engineering, hulls resources","author":"Vamsee Achanta","date":"2026-02-08T20:18:18-06:00","timestamp":"1770603498","files_changed":97,"insertions":7497,"deletions":0}
+    {"repo":"mkt-a","hash":"8b8230b44cc7b11485097b91d536cc967a953726","short_hash":"8b8230b4","message":"chore: Reorganize project folders with underscore prefix and add CFD, engineering, hulls resources","author":"Vamsee Achanta","date":"2026-02-08T20:18:18-06:00","timestamp":"1770603498","files_changed":97,"insertions":7497,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"025d3c1edb753655079e90c3ec3ffb79fb55d9f7","short_hash":"025d3c1e","message":"chore: batch sync","author":"Vamsee Achanta","date":"2026-02-08T14:34:36-06:00","timestamp":"1770582876","files_changed":2,"insertions":1,"deletions":86}
+    {"repo":"mkt-a","hash":"025d3c1edb753655079e90c3ec3ffb79fb55d9f7","short_hash":"025d3c1e","message":"chore: batch sync","author":"Vamsee Achanta","date":"2026-02-08T14:34:36-06:00","timestamp":"1770582876","files_changed":2,"insertions":1,"deletions":86}
 ,
-    {"repo":"acma-projects","hash":"f52db0fc29e1cbb7a0cae91369446f29510726ef","short_hash":"f52db0fc","message":"chore: Add B1912 project files and update admin notes","author":"Vamsee Achanta","date":"2026-02-02T18:18:52-06:00","timestamp":"1770077932","files_changed":4,"insertions":260,"deletions":0}
+    {"repo":"mkt-a","hash":"f52db0fc29e1cbb7a0cae91369446f29510726ef","short_hash":"f52db0fc","message":"chore: Add B1912 project files and update admin notes","author":"Vamsee Achanta","date":"2026-02-02T18:18:52-06:00","timestamp":"1770077932","files_changed":4,"insertions":260,"deletions":0}
 ,
-    {"repo":"acma-projects","hash":"23a08f901d0d031fb98ba9601035304f956f6981","short_hash":"23a08f90","message":"chore: Batch sync from workspace-hub","author":"Vamsee Achanta","date":"2026-01-25T18:08:09-06:00","timestamp":"1769386089","files_changed":2,"insertions":109,"deletions":1}
+    {"repo":"mkt-a","hash":"23a08f901d0d031fb98ba9601035304f956f6981","short_hash":"23a08f90","message":"chore: Batch sync from workspace-hub","author":"Vamsee Achanta","date":"2026-01-25T18:08:09-06:00","timestamp":"1769386089","files_changed":2,"insertions":109,"deletions":1}
   ]
 }
