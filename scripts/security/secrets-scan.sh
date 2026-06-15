@@ -75,7 +75,8 @@ scan_repo() {
   if [[ "${repo_name}" == "workspace-hub" ]]; then
     repo_path="${REPO_ROOT}"
   else
-    repo_path="${REPO_ROOT}/${repo_name}"
+    repo_path="$(resolve_tier1_repo_path "$repo_name" 2>/dev/null || true)"
+    [[ -z "$repo_path" ]] && repo_path="${REPO_ROOT}/${repo_name}"
   fi
   local baseline="${BASELINE_DIR}/secrets-baseline-${repo_name}.json"
 

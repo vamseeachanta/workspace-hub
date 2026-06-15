@@ -115,7 +115,7 @@ fi
 
 if ! $OPT_RUFF_ONLY; then
   for _r in "${REPO_ORDER[@]}"; do
-    _rp="${REPO_ROOT}/${REPO_MAP[$_r]}"
+    _rp="$(resolve_tier1_repo_path "$_r" 2>/dev/null || true)"
     if [[ -f "${_rp}/pyproject.toml" ]]; then
       mypy_ver="$(cd "$_rp" && uv run mypy --version 2>/dev/null | head -1 \
                   || echo '(unavailable)')"
@@ -426,11 +426,11 @@ run_api_audit() {
 # Main loop — collect failures, never abort early
 # ---------------------------------------------------------------------------
 for repo_name in "${REPO_ORDER[@]}"; do
-  repo_path="${REPO_ROOT}/${REPO_MAP[$repo_name]}"
   label="$(pad_label "[${repo_name}]")"
+  repo_path="$(resolve_tier1_repo_path "$repo_name" 2>/dev/null || true)"
 
   if [[ ! -d "$repo_path" ]]; then
-    echo "${label} ERROR: directory not found: ${repo_path}" >&2
+    echo "${label} ERROR: directory not found for ${repo_name} (checked TIER1_REPOS_BASE, nested, sibling layouts)" >&2
     FAIL_COUNT=$((FAIL_COUNT + 1))
     continue
   fi

@@ -35,7 +35,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root
-from scripts.lib.tier1_repos import tier1_python_repos
+from scripts.lib.tier1_repos import resolve_tier1_repo_path, tier1_python_repos
 
 try:
     import yaml
@@ -52,6 +52,13 @@ DEFAULT_REPO_ROOT = Path(__file__).parents[2]
 
 # Canonical list is config/tier1-python-repos.txt (#3023).
 REPOS: dict[str, str] = {s: s for s in tier1_python_repos()}
+
+
+def _repo_path(repo_root: Path, repo_name: str) -> Path:
+    try:
+        return resolve_tier1_repo_path(repo_name, repo_root=repo_root)
+    except FileNotFoundError:
+        return repo_root / REPOS.get(repo_name, repo_name)
 
 
 # ---------------------------------------------------------------------------
@@ -361,8 +368,8 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Baseline output: {baseline_path}")
         print("=" * 60)
         counts: dict[str, int] = {}
-        for repo_name, rel_path in REPOS.items():
-            repo_path = repo_root / rel_path
+        for repo_name in REPOS:
+            repo_path = _repo_path(repo_root, repo_name)
             if not repo_path.is_dir():
                 print(f"  SKIP  {repo_name}  (not found: {repo_path})")
                 continue
@@ -421,9 +428,7 @@ def main(argv: list[str] | None = None) -> int:
     for repo_name in baseline_data["repos"]:
         if baseline_data["repos"][repo_name].get("exempt"):
             continue
-        # Map baseline repo name to filesystem path
-        rel_path = REPOS.get(repo_name, repo_name)
-        repo_path = repo_root / rel_path
+        repo_path = _repo_path(repo_root, repo_name)
         if not repo_path.is_dir():
             print(f"  SKIP  {repo_name}  (not found: {repo_path})")
             skipped_repos.append(repo_name)

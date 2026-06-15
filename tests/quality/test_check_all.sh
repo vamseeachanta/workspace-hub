@@ -39,11 +39,22 @@ assert_not_contains() {
 # Setup: fixture REPO_ROOT with 5 minimal repos + mock uv bin
 # ---------------------------------------------------------------------------
 FIXTURE_ROOT="$(mktemp -d)"
+SIBLING_PARENT="$(mktemp -d)"
 MOCK_DIR="$(mktemp -d)"
-trap 'rm -rf "$FIXTURE_ROOT" "$MOCK_DIR"' EXIT
+trap 'rm -rf "$FIXTURE_ROOT" "$SIBLING_PARENT" "$MOCK_DIR"' EXIT
+
+mkdir -p "${FIXTURE_ROOT}/scripts/lib" "${FIXTURE_ROOT}/config"
+cp "${REPO_ROOT}/scripts/lib/tier1-repos.sh" "${FIXTURE_ROOT}/scripts/lib/tier1-repos.sh"
+cat > "${FIXTURE_ROOT}/config/tier1-python-repos.txt" <<'EOF'
+assetutilities
+digitalmodel
+worldenergydata
+assethold
+ogmanufacturing
+EOF
 
 # Create minimal repo structure for all 5 repos
-for repo in assetutilities digitalmodel worldenergydata assethold OGManufacturing; do
+for repo in assetutilities digitalmodel worldenergydata assethold ogmanufacturing; do
   mkdir -p "${FIXTURE_ROOT}/${repo}/src"
   printf '[project]\nname = "%s"\n' "$repo" > "${FIXTURE_ROOT}/${repo}/pyproject.toml"
 done
@@ -123,6 +134,17 @@ mkdir -p "${FIXTURE_ROOT}/assetutilities/docs"
 
 run_check() {
   QUALITY_REPO_ROOT="$FIXTURE_ROOT" bash "$CHECK_SCRIPT" "$@"
+}
+
+SIBLING_HUB="${SIBLING_PARENT}/workspace-hub"
+mkdir -p "${SIBLING_HUB}/scripts/lib" "${SIBLING_HUB}/config"
+cp "${REPO_ROOT}/scripts/lib/tier1-repos.sh" "${SIBLING_HUB}/scripts/lib/tier1-repos.sh"
+printf 'assetutilities\n' > "${SIBLING_HUB}/config/tier1-python-repos.txt"
+mkdir -p "${SIBLING_PARENT}/assetutilities/src"
+printf '[project]\nname = "assetutilities"\n' > "${SIBLING_PARENT}/assetutilities/pyproject.toml"
+
+run_sibling_check() {
+  QUALITY_REPO_ROOT="$SIBLING_HUB" bash "$CHECK_SCRIPT" "$@"
 }
 
 # ---------------------------------------------------------------------------
@@ -296,6 +318,17 @@ assert_contains "T19 api: line present" "api:" "$t19_out"
 # ---------------------------------------------------------------------------
 echo "── T20: --help mentions --api ────────────────────────────"
 assert_contains "T20 --help shows --api" "--api" "$help_out"
+
+# ---------------------------------------------------------------------------
+# T21: sibling-layout repo resolves through shared helper (#3127)
+# ---------------------------------------------------------------------------
+echo "── T21: sibling-layout repo resolves ─────────────────────"
+t21_exit=0
+t21_out="$(MOCK_RUFF_EXIT=0 run_sibling_check --ruff-only --repo assetutilities 2>&1)" \
+  || t21_exit=$?
+assert_exit "T21 sibling layout exits 0" 0 "$t21_exit"
+assert_contains "T21 ruff: line present" "ruff:" "$t21_out"
+assert_not_contains "T21 no nested directory error" "directory not found: ${SIBLING_HUB}/assetutilities" "$t21_out"
 
 # ---------------------------------------------------------------------------
 # Summary
