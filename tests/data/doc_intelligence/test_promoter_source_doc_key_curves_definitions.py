@@ -77,7 +77,7 @@ class TestCurvesPromoterSourceDocKey:
         )
 
         result = promote_curves(
-            [_curve_record(doc_key="/mnt/ace/acma-codes/foo.pdf")], tmp_dir,
+            [_curve_record(doc_key="/mnt/ace/mkt-a-codes/foo.pdf")], tmp_dir,
         )
         assert result.errors
         assert result.files_written == []

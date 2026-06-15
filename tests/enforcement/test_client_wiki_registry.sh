@@ -4,7 +4,7 @@
 # (Created in T3 of workspace-hub#2746 — RED phase: checker does not exist yet.)
 #
 # Covers tests 1-8 of the TDD list in
-# docs/plans/2026-05-20-issue-2746-llm-wiki-acma.md §TDD Test List.
+# docs/plans/2026-05-20-issue-2746-llm-wiki-mkt-a.md §TDD Test List.
 #
 # Test 9 (template-instantiation LICENSE grep) lives elsewhere — see
 # r2-codex review finding #4: that test runs post-T6 against an instantiated

@@ -4,7 +4,7 @@
 TDD: tests written before implementation; expected to FAIL initially (red phase).
 
 Fixture strategy: each test builds a hermetic git repo under tmp_path with a
-wiki-shaped name (e.g., llm-wiki-acma), vendors a registry copy, stages content,
+wiki-shaped name (e.g., llm-wiki-mkt-a), vendors a registry copy, stages content,
 and invokes the script via subprocess. Hermeticity ensures no cross-test
 contamination and no dependence on the host workspace-hub state.
 
@@ -70,25 +70,25 @@ def _vendor_registry(repo: Path, content: str | None = None) -> None:
     default = """\
 registry_version: 0.1
 wikis:
-  - short_name: acma
-    repo: vamseeachanta/llm-wiki-acma
+  - short_name: mkt-a
+    repo: vamseeachanta/llm-wiki-mkt-a
     visibility: PRIVATE
     posture: client-private
     status: bootstrapped
     projects:
-      - sirocco
-  - short_name: doris
-    repo: vamseeachanta/llm-wiki-doris
+      - proj-a
+  - short_name: lng-a
+    repo: vamseeachanta/llm-wiki-lng-a
     visibility: PRIVATE
     posture: client-private
     status: planned
-  - short_name: client-projects
-    repo: vamseeachanta/llm-wiki-client-projects
+  - short_name: client-c
+    repo: vamseeachanta/llm-wiki-client-c
     visibility: PRIVATE
     posture: client-private
     status: planned
-  - short_name: frontierdeepwater
-    repo: vamseeachanta/llm-wiki-frontierdeepwater
+  - short_name: client-a
+    repo: vamseeachanta/llm-wiki-client-a
     visibility: PRIVATE
     posture: client-private
     status: planned
@@ -152,9 +152,9 @@ def test_enforcement_passes_on_valid_generic_frontmatter(tmp_path: Path) -> None
 
 def test_enforcement_passes_on_valid_private_client_frontmatter(tmp_path: Path) -> None:
     """A wiki page with visibility=private-client-llm-wiki + client + project passes."""
-    repo = _make_wiki_repo(tmp_path, "llm-wiki-acma")
+    repo = _make_wiki_repo(tmp_path, "llm-wiki-mkt-a")
     _vendor_registry(repo)
-    _stage(repo, "projects/sirocco/methodology/foo.md", _fm("private-client-llm-wiki", client="acma", project="sirocco"))
+    _stage(repo, "projects/proj-a/methodology/foo.md", _fm("private-client-llm-wiki", client="mkt-a", project="proj-a"))
     r = _run_check(repo)
     assert r.returncode == 0, f"unexpected fail: stdout={r.stdout} stderr={r.stderr}"
 
@@ -175,7 +175,7 @@ def test_enforcement_fails_when_visibility_invalid(tmp_path: Path) -> None:
 
 def test_enforcement_fails_when_private_client_missing_client(tmp_path: Path) -> None:
     """Rule B — private-client-llm-wiki without client: fails."""
-    repo = _make_wiki_repo(tmp_path, "llm-wiki-acma")
+    repo = _make_wiki_repo(tmp_path, "llm-wiki-mkt-a")
     _vendor_registry(repo)
     _stage(repo, "pages/foo.md", _fm("private-client-llm-wiki"))  # no client:
     r = _run_check(repo)
@@ -198,12 +198,12 @@ def test_enforcement_fails_when_client_not_in_registry(tmp_path: Path) -> None:
 
 def test_enforcement_fails_when_client_slug_mismatches_repo_identity(tmp_path: Path) -> None:
     """Rule C (r2-F1) — client value must match the wiki repo's identity (suffix after llm-wiki-)."""
-    repo = _make_wiki_repo(tmp_path, "llm-wiki-doris")
+    repo = _make_wiki_repo(tmp_path, "llm-wiki-lng-a")
     _vendor_registry(repo)
-    _stage(repo, "pages/foo.md", _fm("private-client-llm-wiki", client="acma"))  # acma != doris
+    _stage(repo, "pages/foo.md", _fm("private-client-llm-wiki", client="mkt-a"))  # mkt-a != lng-a
     r = _run_check(repo)
     assert r.returncode == 1
-    assert "doris" in r.stderr or "acma" in r.stderr
+    assert "lng-a" in r.stderr or "mkt-a" in r.stderr
 
 
 # ── Rule D: project: only valid when visibility=private-client-llm-wiki ────
@@ -213,7 +213,7 @@ def test_enforcement_fails_when_project_without_private_client_visibility(tmp_pa
     """Rule D — project: set without private-client-llm-wiki visibility fails."""
     repo = _make_wiki_repo(tmp_path, "llm-wiki")
     _vendor_registry(repo)
-    _stage(repo, "wikis/foo.md", _fm("private-llm-wiki", project="sirocco"))  # project on generic
+    _stage(repo, "wikis/foo.md", _fm("private-llm-wiki", project="proj-a"))  # project on generic
     r = _run_check(repo)
     assert r.returncode == 1
     assert "project" in r.stderr
@@ -224,9 +224,9 @@ def test_enforcement_fails_when_project_without_private_client_visibility(tmp_pa
 
 def test_enforcement_fails_when_project_not_in_registry_projects_list(tmp_path: Path) -> None:
     """Rule E (r1-F5) — project value must be enumerated in registry.projects when populated."""
-    repo = _make_wiki_repo(tmp_path, "llm-wiki-acma")
-    _vendor_registry(repo)  # default registry has acma.projects=[sirocco]
-    _stage(repo, "projects/unknown/foo.md", _fm("private-client-llm-wiki", client="acma", project="unknown"))
+    repo = _make_wiki_repo(tmp_path, "llm-wiki-mkt-a")
+    _vendor_registry(repo)  # default registry has mkt-a.projects=[proj-a]
+    _stage(repo, "projects/unknown/foo.md", _fm("private-client-llm-wiki", client="mkt-a", project="unknown"))
     r = _run_check(repo)
     assert r.returncode == 1
     assert "unknown" in r.stderr or "projects" in r.stderr
@@ -234,9 +234,9 @@ def test_enforcement_fails_when_project_not_in_registry_projects_list(tmp_path: 
 
 def test_enforcement_warns_when_registry_projects_list_absent(tmp_path: Path) -> None:
     """Rule E forward-compat — when client.projects is absent/empty, warn-only (exit 0)."""
-    repo = _make_wiki_repo(tmp_path, "llm-wiki-doris")
-    _vendor_registry(repo)  # doris has no projects: key
-    _stage(repo, "projects/new-project/foo.md", _fm("private-client-llm-wiki", client="doris", project="new-project"))
+    repo = _make_wiki_repo(tmp_path, "llm-wiki-lng-a")
+    _vendor_registry(repo)  # lng-a has no projects: key
+    _stage(repo, "projects/new-project/foo.md", _fm("private-client-llm-wiki", client="lng-a", project="new-project"))
     r = _run_check(repo)
     assert r.returncode == 0, f"expected warn-only pass: stdout={r.stdout} stderr={r.stderr}"
 
@@ -246,9 +246,9 @@ def test_enforcement_warns_when_registry_projects_list_absent(tmp_path: Path) ->
 
 def test_enforcement_passes_on_pages_dir_frontmatter(tmp_path: Path) -> None:
     """r2-F3 — pages/ (not just wikis/) is also validated."""
-    repo = _make_wiki_repo(tmp_path, "llm-wiki-acma")
+    repo = _make_wiki_repo(tmp_path, "llm-wiki-mkt-a")
     _vendor_registry(repo)
-    _stage(repo, "pages/handbook/foo.md", _fm("private-client-llm-wiki", client="acma", project="sirocco"))
+    _stage(repo, "pages/handbook/foo.md", _fm("private-client-llm-wiki", client="mkt-a", project="proj-a"))
     r = _run_check(repo)
     assert r.returncode == 0, f"unexpected fail: stdout={r.stdout} stderr={r.stderr}"
 
@@ -283,28 +283,28 @@ def test_enforcement_skips_when_not_in_wiki_repo(tmp_path: Path) -> None:
 
 def test_enforcement_excludes_readme_md_from_project_validation(tmp_path: Path) -> None:
     """r2-F4 — README.md basenames excluded from projects/**/*.md validation."""
-    repo = _make_wiki_repo(tmp_path, "llm-wiki-acma")
+    repo = _make_wiki_repo(tmp_path, "llm-wiki-mkt-a")
     _vendor_registry(repo)
     # README without frontmatter under projects/ — should NOT trip
-    _stage(repo, "projects/sirocco/README.md", "# Project Sirocco\n\nNavigation aid, no frontmatter.\n")
+    _stage(repo, "projects/proj-a/README.md", "# Project proj-a\n\nNavigation aid, no frontmatter.\n")
     r = _run_check(repo)
     assert r.returncode == 0, f"README should be excluded: stdout={r.stdout} stderr={r.stderr}"
 
 
 def test_enforcement_handles_bucket_name_edge_cases(tmp_path: Path) -> None:
-    """#2731 D5/D6 edge cases (client_projects underscore raw-root, frontierdeepwater no-hyphen)
+    """#2731 D5/D6 edge cases (client-c underscore raw-root, client-a no-hyphen)
     resolve correctly via repo identity."""
-    repo_cp = _make_wiki_repo(tmp_path, "llm-wiki-client-projects")
+    repo_cp = _make_wiki_repo(tmp_path, "llm-wiki-client-c")
     _vendor_registry(repo_cp)
-    _stage(repo_cp, "projects/foo/methodology/x.md", _fm("private-client-llm-wiki", client="client-projects", project="foo"))
+    _stage(repo_cp, "projects/foo/methodology/x.md", _fm("private-client-llm-wiki", client="client-c", project="foo"))
     r1 = _run_check(repo_cp)
-    assert r1.returncode == 0, f"client-projects edge case failed: stderr={r1.stderr}"
+    assert r1.returncode == 0, f"client-c edge case failed: stderr={r1.stderr}"
 
-    repo_fd = _make_wiki_repo(tmp_path, "llm-wiki-frontierdeepwater")
+    repo_fd = _make_wiki_repo(tmp_path, "llm-wiki-client-a")
     _vendor_registry(repo_fd)
-    _stage(repo_fd, "pages/foo.md", _fm("private-client-llm-wiki", client="frontierdeepwater"))
+    _stage(repo_fd, "pages/foo.md", _fm("private-client-llm-wiki", client="client-a"))
     r2 = _run_check(repo_fd)
-    assert r2.returncode == 0, f"frontierdeepwater edge case failed: stderr={r2.stderr}"
+    assert r2.returncode == 0, f"client-a edge case failed: stderr={r2.stderr}"
 
 
 # ── Mode tests ─────────────────────────────────────────────────────────────

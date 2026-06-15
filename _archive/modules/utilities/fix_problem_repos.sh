@@ -108,9 +108,9 @@ export RED GREEN YELLOW BLUE CYAN NC
 # Handle repos with uncommitted changes in parallel
 echo -e "assethold\nworldenergydata" | xargs -I {} -P 2 bash -c 'handle_uncommitted "$@"' _ {}
 
-# Check if saipem exists (it seems to be missing from the listing)
-if [ -d "saipem" ]; then
-    handle_uncommitted "saipem"
+# Check if client-d exists (it seems to be missing from the listing)
+if [ -d "client-d" ]; then
+    handle_uncommitted "client-d"
 fi
 
 echo -e "${BLUE}Step 2: Resolving merge conflicts${NC}\n"
@@ -158,16 +158,16 @@ for repo in assethold worldenergydata digitalmodel; do
     fi
 done
 
-# Check if saipem exists
-if [ -d "saipem/.git" ]; then
-    cd "saipem" 2>/dev/null
+# Check if client-d exists
+if [ -d "client-d/.git" ]; then
+    cd "client-d" 2>/dev/null
     branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
     if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
         status="${YELLOW}still has changes${NC}"
     else
         status="${GREEN}synced${NC}"
     fi
-    printf "%-20s [%-15s] %b\n" "saipem" "$branch" "$status"
+    printf "%-20s [%-15s] %b\n" "client-d" "$branch" "$status"
     cd ..
 fi
 

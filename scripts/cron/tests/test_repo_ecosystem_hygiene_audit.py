@@ -380,17 +380,17 @@ def test_historical_entry_precedence_over_unknown_residue(tmp_path: Path) -> Non
     for repo in required_repos():
         if repo != "workspace-hub":
             make_git_repo(ecosystem / repo)
-    make_git_repo(ecosystem / "acma-projects")
+    make_git_repo(ecosystem / "mkt-a")
 
     result = run(["bash", str(SCRIPT)], REPO_ROOT, env=env)
     assert result.returncode == 0, result.stderr + result.stdout
     state = load_latest_state(output)
 
     historical = {item["name"]: item for item in state["historical"]}
-    assert historical["acma-projects"]["status"] == "WARN"
-    assert historical["acma-projects"]["finding"] == "historical_state_changed_since_prior_comment"
-    assert historical["acma-projects"]["latest_probe_mismatch"] is True
-    assert "acma-projects" not in {item["name"] for item in state["residue"]}
+    assert historical["mkt-a"]["status"] == "WARN"
+    assert historical["mkt-a"]["finding"] == "historical_state_changed_since_prior_comment"
+    assert historical["mkt-a"]["latest_probe_mismatch"] is True
+    assert "mkt-a" not in {item["name"] for item in state["residue"]}
 
 
 def test_reports_stale_branch_worktree_and_stash(tmp_path: Path) -> None:

@@ -20,12 +20,12 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 SOURCE_PATH = Path(
-    "/mnt/ace/acma-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines "
+    "/mnt/ace/mkt-a-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines "
     "for Conventional Tankers at FPSO Facilities.pdf"
 )
 OCIMF_DOC_KEY = "sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af"
 SUMMARY_PATH = REPO_ROOT / "data/document-index/summaries" / f"{OCIMF_DOC_KEY}.json"
-HANDOFF_PATH = REPO_ROOT / "docs/reports/acma-wiki-unblock-2245-handoff.yaml"
+HANDOFF_PATH = REPO_ROOT / "docs/reports/mkt-a-wiki-unblock-2245-handoff.yaml"
 TITLE = "OCIMF Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities"
 
 
@@ -74,7 +74,7 @@ def write_summary(preview: str) -> None:
     payload = {
         "path": str(SOURCE_PATH),
         "sha256": OCIMF_DOC_KEY,
-        "source": "acma_codes",
+        "source": "mkt-a_codes",
         "title": TITLE,
         "discipline": "marine",
         "domain": "marine",

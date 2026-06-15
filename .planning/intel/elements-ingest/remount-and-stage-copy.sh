@@ -71,7 +71,7 @@ copy_one "Woodfibre" "/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements" "mkt-a-
 
 # Codes & Regulations is intentionally not copied; verify-only per issue.
 {
-  echo "Codes & Regulations was not copied. Per issue #2526 it is verify-only against /mnt/ace/acma-codes unless missing content is proven."
+  echo "Codes & Regulations was not copied. Per issue #2526 it is verify-only against /mnt/ace/mkt-a-codes unless missing content is proven."
   date -Is
 } | tee "$LOG_DIR/codes-regulations-skip-note.txt"
 

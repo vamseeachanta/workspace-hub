@@ -10,15 +10,15 @@ def write(path, text):
     path.write_text(text.strip()+"\n", encoding='utf-8')
 
 std_sources=[
-('doris-codes-specs-faceted-index','DORIS Codes and Specs faceted metadata index','Faceted pointer for the Elements DORIS codes/specs corpus.','/mnt/ace/doris/codes','35,197 files; approximate family counts regenerated from Elements metadata, not raw extraction.'),
-('doris-techstreet-drop','DORIS TechStreet Drop metadata pointer','Licensed-aggregator drop: metadata-only existence pointer.','/mnt/ace/doris/codes/TechStreet Drop','License posture: CRITICAL. No publisher list, titles, clauses, or copied standard text emitted.'),
-('doris-company-specs','DORIS Company Specs metadata pointer','Confidential company/client specifications bucket: metadata-only existence pointer.','/mnt/ace/doris/codes/Company Specs','Confidentiality posture: CRITICAL. No subfolder enumeration, client list, clauses, or copied content emitted.'),
-('doris-deepstar','DORIS DeepStar metadata pointer','DeepStar/JIP deliverables bucket: metadata-only existence pointer.','/mnt/ace/doris/codes/DeepStar','JIP membership posture: HIGH. No deliverable text, titles beyond bucket name, or technical findings emitted.'),
+('lng-a-codes-specs-faceted-index','lng-a Codes and Specs faceted metadata index','Faceted pointer for the Elements lng-a codes/specs corpus.','/mnt/ace/lng-a/codes','35,197 files; approximate family counts regenerated from Elements metadata, not raw extraction.'),
+('lng-a-techstreet-drop','lng-a TechStreet Drop metadata pointer','Licensed-aggregator drop: metadata-only existence pointer.','/mnt/ace/lng-a/codes/TechStreet Drop','License posture: CRITICAL. No publisher list, titles, clauses, or copied standard text emitted.'),
+('lng-a-company-specs','lng-a Company Specs metadata pointer','Confidential company/client specifications bucket: metadata-only existence pointer.','/mnt/ace/lng-a/codes/Company Specs','Confidentiality posture: CRITICAL. No subfolder enumeration, client list, clauses, or copied content emitted.'),
+('lng-a-deepstar','lng-a DeepStar metadata pointer','DeepStar/JIP deliverables bucket: metadata-only existence pointer.','/mnt/ace/lng-a/codes/DeepStar','JIP membership posture: HIGH. No deliverable text, titles beyond bucket name, or technical findings emitted.'),
 ]
 for slug,title,summary,src,notes in std_sources:
     write(engstd/f'sources/{slug}.md', f'''---
 title: "{title}"
-tags: ["elements-ingest", "doris", "standards", "metadata-only"]
+tags: ["elements-ingest", "lng-a", "standards", "metadata-only"]
 added: {D}
 last_updated: {D}
 domain: engineering-standards
@@ -43,10 +43,10 @@ No raw standards text is copied, extracted, quoted, summarized, or stored in git
 {notes}
 
 ## Cross-links
-- [Elements ingest catalog — doris-codes-specs](elements-doris-codes-specs.md)
-- [DORIS Codes and Specs faceted metadata index](doris-codes-specs-faceted-index.md)
+- [Elements ingest catalog — lng-a-codes-specs](elements-lng-a-codes-specs.md)
+- [lng-a Codes and Specs faceted metadata index](lng-a-codes-specs-faceted-index.md)
 ''')
-faceted=engstd/'sources/doris-codes-specs-faceted-index.md'
+faceted=engstd/'sources/lng-a-codes-specs-faceted-index.md'
 faceted.write_text(faceted.read_text(encoding='utf-8')+'''
 ## Approximate family histogram
 Counts are approximate planning metadata regenerated from `.planning/intel/elements-to-llm-wiki/elements-ingested-files.jsonl` and should not be treated as authoritative standard inventories.
@@ -58,10 +58,10 @@ Counts are approximate planning metadata regenerated from `.planning/intel/eleme
 | BV Ship and Offshore Rules | 5,325 | public portal metadata only; BV publisher stub deferred unless revision_source/public_url verified |
 | API mentions | 7,516 | metadata signal only |
 | ASME mentions | 5,221 | metadata signal only |
-| OCIMF / CSA | 0 / 0 | boundary belongs to acma-codes, #2227/#2471 |
+| OCIMF / CSA | 0 / 0 | boundary belongs to mkt-a-codes, #2227/#2471 |
 
 ## Corpus boundary
-`Codes and Regulations` / `acma-codes` is not represented here. OCIMF and CSA promotion remains tracked by #2227/#2471, not this DORIS codes/specs corpus.
+`Codes and Regulations` / `mkt-a-codes` is not represented here. OCIMF and CSA promotion remains tracked by #2227/#2471, not this lng-a codes/specs corpus.
 
 BV publisher stub deferred: public revision metadata was not independently verified during this metadata-only pass.
 ''', encoding='utf-8')
@@ -74,26 +74,26 @@ for slug,title,summary,src,notes in std_sources:
 idx_text=idx_text.replace('last_updated: 2026-04-28','last_updated: 2026-04-29').replace('page_count: 1','page_count: 5').replace('source_count: 1','source_count: 5')
 idx.write_text(idx_text, encoding='utf-8')
 log=engstd/'log.md'
-log.write_text(log.read_text(encoding='utf-8')+f'''\n## [{D}] ingest | DORIS Codes metadata-only standards pointer pass (#2543)\n- Pages created: `sources/doris-codes-specs-faceted-index.md`, `sources/doris-techstreet-drop.md`, `sources/doris-company-specs.md`, `sources/doris-deepstar.md`.\n- Source of record: `/mnt/ace/doris/codes`; no raw standards text copied or extracted.\n- Notes: BV publisher stub deferred pending public revision/source/date evidence; #2534 cleanup remains blocked.\n''', encoding='utf-8')
+log.write_text(log.read_text(encoding='utf-8')+f'''\n## [{D}] ingest | lng-a Codes metadata-only standards pointer pass (#2543)\n- Pages created: `sources/lng-a-codes-specs-faceted-index.md`, `sources/lng-a-techstreet-drop.md`, `sources/lng-a-company-specs.md`, `sources/lng-a-deepstar.md`.\n- Source of record: `/mnt/ace/lng-a/codes`; no raw standards text copied or extracted.\n- Notes: BV publisher stub deferred pending public revision/source/date evidence; #2534 cleanup remains blocked.\n''', encoding='utf-8')
 
 source_pages=[
-('doris-university-module-1-00-subsea-production-systems-overview','Doris University Module 1.00 — Subsea Production Systems Overview','Rows 1; metadata-first overview of SPS curriculum context.'),
-('doris-university-module-1-01-production-control-systems','Doris University Module 1.01 — Production Control Systems','Rows 2-3; metadata-first pointer to control-system curriculum materials.'),
-('doris-university-module-1-02-umbilical-systems','Doris University Module 1.02 — Umbilical Systems','Rows 4-6; metadata-first pointer to umbilical systems training materials.'),
-('doris-university-module-1-03-installation-workover-control','Doris University Module 1.03 — Installation/Workover Control','Rows 7-8; metadata-first pointer to IWOCS training materials.'),
-('doris-university-lunch-and-learn-control-systems','Doris University Lunch and Learn — Control Systems','Rows 13-14; metadata-first pointer to Doris-authored lunch-and-learn content.'),
-('doris-university-lunch-and-learn-umbilical-systems','Doris University Lunch and Learn — Umbilical Systems','Rows 15-17; metadata-first pointer to umbilical lunch-and-learn content.'),
-('doris-university-syllabus-snapshot','Doris University syllabus snapshot','Row 18; syllabus/taxonomy validation pointer.'),
+('lng-a-university-module-1-00-subsea-production-systems-overview','lng-a University Module 1.00 — Subsea Production Systems Overview','Rows 1; metadata-first overview of SPS curriculum context.'),
+('lng-a-university-module-1-01-production-control-systems','lng-a University Module 1.01 — Production Control Systems','Rows 2-3; metadata-first pointer to control-system curriculum materials.'),
+('lng-a-university-module-1-02-umbilical-systems','lng-a University Module 1.02 — Umbilical Systems','Rows 4-6; metadata-first pointer to umbilical systems training materials.'),
+('lng-a-university-module-1-03-installation-workover-control','lng-a University Module 1.03 — Installation/Workover Control','Rows 7-8; metadata-first pointer to IWOCS training materials.'),
+('lng-a-university-lunch-and-learn-control-systems','lng-a University Lunch and Learn — Control Systems','Rows 13-14; metadata-first pointer to lng-a-authored lunch-and-learn content.'),
+('lng-a-university-lunch-and-learn-umbilical-systems','lng-a University Lunch and Learn — Umbilical Systems','Rows 15-17; metadata-first pointer to umbilical lunch-and-learn content.'),
+('lng-a-university-syllabus-snapshot','lng-a University syllabus snapshot','Row 18; syllabus/taxonomy validation pointer.'),
 ]
 for slug,title,summary in source_pages:
     write(eng/f'sources/{slug}.md', f'''---
 title: "{title}"
-tags: ["elements-ingest", "doris", "training", "metadata-first"]
+tags: ["elements-ingest", "lng-a", "training", "metadata-first"]
 added: {D}
 last_updated: {D}
 domain: engineering
 sources:
-  - /mnt/ace/doris/training
+  - /mnt/ace/lng-a/training
 extraction_policy: metadata-first
 raw_copy_allowed: false
 ocr_allowed: false
@@ -105,16 +105,16 @@ ocr_allowed: false
 {summary}
 
 ## Source of record
-- `/mnt/ace/doris/training`
+- `/mnt/ace/lng-a/training`
 
 ## Extraction boundary
 Full text was not extracted. No slide text, speaker notes, figures, standard excerpts, OCR output, or raw file bytes were copied into git/wiki. This page is a curated metadata/source pointer for workspace-hub#2542.
 
 ## Cross-links
-- [Elements ingest catalog — doris-university](elements-doris-university.md)
+- [Elements ingest catalog — lng-a-university](elements-lng-a-university.md)
 ''')
 concepts=[
-('subsea-production-system-overview','Subsea production system overview','Connects Doris University SPS overview material to reusable subsea production system concepts.'),
+('subsea-production-system-overview','Subsea production system overview','Connects lng-a University SPS overview material to reusable subsea production system concepts.'),
 ('subsea-production-control-system','Subsea production control system','Metadata-first synthesis hook for production control system curriculum.'),
 ('subsea-umbilical-system','Subsea umbilical system','Metadata-first synthesis hook for umbilical system curriculum.'),
 ('installation-workover-control-system','Installation/workover control system','Metadata-first synthesis hook for IWOCS curriculum.'),
@@ -126,12 +126,12 @@ concepts=[
 for slug,title,summary in concepts:
     write(eng/f'concepts/{slug}.md', f'''---
 title: "{title}"
-tags: ["doris-university", "training", "curated-summary"]
+tags: ["lng-a-university", "training", "curated-summary"]
 added: {D}
 last_updated: {D}
 domain: engineering
 sources:
-  - /mnt/ace/doris/training
+  - /mnt/ace/lng-a/training
 curated_summary_only: true
 full_text_extracted: false
 ---
@@ -145,8 +145,8 @@ full_text_extracted: false
 This is a curated summary shell created from tranche metadata only. Full text was not extracted, OCR was not used, and no standard clause text or training figures were copied.
 
 ## Source pointers
-- `/mnt/ace/doris/training`
-- [Elements ingest catalog — doris-university](../sources/elements-doris-university.md)
+- `/mnt/ace/lng-a/training`
+- [Elements ingest catalog — lng-a-university](../sources/elements-lng-a-university.md)
 ''')
 write(engstd/'standards/api-17e.md', f'''---
 title: "API 17E — Subsea umbilicals metadata stub"
@@ -168,7 +168,7 @@ raw_copy_allowed: false
 
 # API 17E — Subsea umbilicals metadata stub
 
-This page is a resolver placeholder for Doris University calc-citation routing. It contains public metadata only and no standard clause text.
+This page is a resolver placeholder for lng-a University calc-citation routing. It contains public metadata only and no standard clause text.
 ''')
 idx=eng/'index.md'
 idx_text=idx.read_text(encoding='utf-8')
@@ -181,8 +181,8 @@ for slug,title,summary in concepts:
 idx_text=idx_text.replace('last_updated: 2026-04-28','last_updated: 2026-04-29')
 idx.write_text(idx_text, encoding='utf-8')
 log=eng/'log.md'
-log.write_text(log.read_text(encoding='utf-8')+f'''\n## [{D}] ingest | Doris University metadata-first tranche 1 (#2542)\n- Pages created: 7 source pointers and 8 curated concept shells.\n- Standards resolver: `engineering-standards/wiki/standards/api-17e.md` public-metadata-only stub.\n- Source of record: `/mnt/ace/doris/training`; no raw training decks, figures, full text, OCR output, or standards excerpts copied.\n''', encoding='utf-8')
-cat=eng/'sources/elements-doris-university.md'
+log.write_text(log.read_text(encoding='utf-8')+f'''\n## [{D}] ingest | lng-a University metadata-first tranche 1 (#2542)\n- Pages created: 7 source pointers and 8 curated concept shells.\n- Standards resolver: `engineering-standards/wiki/standards/api-17e.md` public-metadata-only stub.\n- Source of record: `/mnt/ace/lng-a/training`; no raw training decks, figures, full text, OCR output, or standards excerpts copied.\n''', encoding='utf-8')
+cat=eng/'sources/elements-lng-a-university.md'
 cat_text=cat.read_text(encoding='utf-8')
 if '## Tranche 1 children' not in cat_text:
     cat_text += '\n\n## Tranche 1 children\n' + '\n'.join(f'- [{title}]({slug}.md)' for slug,title,_ in source_pages) + '\n'

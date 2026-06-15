@@ -168,7 +168,7 @@ class TestValidateSourceDocKey:
             validate_source_doc_key,
         )
         with pytest.raises(SourceDocKeyError):
-            validate_source_doc_key("/mnt/ace/acma-codes/foo.pdf")
+            validate_source_doc_key("/mnt/ace/mkt-a-codes/foo.pdf")
 
     def test_rejects_windows_style_path(self):
         from scripts.data.doc_intelligence.promoters.text_utils import (
@@ -267,7 +267,7 @@ class TestConstantsPromoterSourceDocKey:
         from scripts.data.doc_intelligence.promoters.constants import (
             promote_constants,
         )
-        rec = _const_record(doc_key="/mnt/ace/acma-codes/foo.pdf")
+        rec = _const_record(doc_key="/mnt/ace/mkt-a-codes/foo.pdf")
         result = promote_constants([rec], tmp_dir)
         assert result.errors
         assert result.files_written == []
