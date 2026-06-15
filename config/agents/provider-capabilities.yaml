@@ -7,8 +7,45 @@
 # scripts, documentation, and assessment tools can reference it without
 # parsing multiple sources.
 
-version: 1.2.0
-last_updated: "2026-06-11"
+version: 1.3.0
+last_updated: "2026-06-15"
+
+# --- capability_bindings (G1 / #3116) --------------------------------------
+# Logical agent capability -> per-provider NATIVE binding + ENFORCEMENT class.
+# Single source of truth for portable agent defs (config/agents/agent-defs/*.agent.yaml);
+# consumed by scripts/ai/run_agent.py. Do NOT create a parallel capability-map.yaml.
+#
+# enforcement:
+#   enforced    -> harness accepts a tool allowlist; `native` lists the real tool names
+#                  (Claude Code subagents only).
+#   advisory    -> monolithic CLI with built-in tools; capability is injected as prompt
+#                  preamble, NOT sandboxed (Codex `codex exec`, Gemini `--yolo`).
+#   unsupported -> harness cannot provide it; run_agent.py FAILS CLOSED before dispatch.
+capability_bindings:
+  read_files:
+    claude: {enforcement: enforced, native: [Read]}
+    codex:  {enforcement: advisory}
+    gemini: {enforcement: advisory}
+  search_code:
+    claude: {enforcement: enforced, native: [Grep, Glob]}
+    codex:  {enforcement: advisory}
+    gemini: {enforcement: advisory}
+  run_shell:
+    claude: {enforcement: enforced, native: [Bash]}
+    codex:  {enforcement: advisory}
+    gemini: {enforcement: advisory}
+  write_files:
+    claude: {enforcement: enforced, native: [Write, Edit]}
+    codex:  {enforcement: advisory}
+    gemini: {enforcement: advisory}
+  web_search:
+    claude: {enforcement: enforced, native: [WebSearch, WebFetch]}
+    codex:  {enforcement: unsupported}   # codex exec has no web tool here
+    gemini: {enforcement: advisory}
+  gui_automation:
+    claude: {enforcement: unsupported}
+    codex:  {enforcement: unsupported}
+    gemini: {enforcement: unsupported}
 
 # Radar visualization: config/ai-tools/agent-capability-radar.html
 # Scores data: config/ai-tools/agent-capability-scores.yaml
