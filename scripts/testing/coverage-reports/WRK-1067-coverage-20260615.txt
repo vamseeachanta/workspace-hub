@@ -1,0 +1,8 @@
+coverage-ratchet report — 2026-06-15T16:16:13Z
+============================================================
+  FAIL    no coverage result for 'assethold'
+  FAIL    no coverage result for 'assetutilities'
+  FAIL    no coverage result for 'digitalmodel'
+  FAIL    no coverage result for 'worldenergydata'
+
+Result: 0 PASS, 4 FAIL

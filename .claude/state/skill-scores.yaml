@@ -1,5 +1,5 @@
-generated_at: '2026-06-14T03:10:28Z'
-total_skills: 830
+generated_at: '2026-06-15T14:20:07Z'
+total_skills: 831
 skills:
   absolute-path-review-dispatch-guard:
     baseline_usage_rate: 0.0
@@ -4589,7 +4589,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: dead
     path: engineering/cfd/openfoam/analysis
   openhue:
     baseline_usage_rate: 0.0
@@ -5248,6 +5248,15 @@ skills:
     framework_usage: false
     tier: dead
     path: coordination/periodic-skill-ecosystem-housekeeping-audit
+  personal-tax-filing-packet:
+    baseline_usage_rate: 0.0
+    calls_in_period: 0
+    reference_count: 0
+    child_skill_count: 0
+    effective_reference_count: 0
+    framework_usage: false
+    tier: dead
+    path: business_admin/personal-tax-filing-packet
   pipefail-grep-q-sigpipe-guard:
     baseline_usage_rate: 0.0
     calls_in_period: 0
@@ -7406,7 +7415,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: hot
+    tier: warm
     path: data/documents/xlsx
   xlsx-to-python:
     baseline_usage_rate: 0.0
