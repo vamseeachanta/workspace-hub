@@ -118,14 +118,14 @@ preserved_external:
     fingerprint:
       cwd_contains: /llm-wiki
       script_basename: cron_ingest.sh
-  - owner: achantas-data
+  - owner: external-private-repo
     note: >-
-      Weekday market-alerts cron (analysis/market-alerts/cron.sh) owned by the SEPARATE achantas-data
-      repo, run on trading-hours triggers (CRON_TZ=America/New_York). Stable bits: the
-      analysis/market-alerts/cron.sh path fragment. Does NOT pin the # market-alerts-cron comment or
-      the schedule so the match survives a path/redirect change. Keep verbatim; workspace-hub never owns it.
+      Weekday trading-hours cron owned by a SEPARATE private personal-automation repo (NOT
+      workspace-hub), run on a CRON_TZ=America/New_York schedule. Stable bit: the market-alerts/cron.sh
+      path fragment only — intentionally does NOT name the owning repo (PII hygiene, epic #3095) or pin
+      the schedule/comment. Keep verbatim; the workspace-hub cutover never owns it.
     fingerprint:
-      command_contains: analysis/market-alerts/cron.sh
+      command_contains: market-alerts/cron.sh
 
 # Preserved-LOCAL crons (#2988, F2 follow-up) — machine-local workspace-hub maintenance
 # crons that are NOT in the role catalog and NOT externally-owned. Functionally identical
