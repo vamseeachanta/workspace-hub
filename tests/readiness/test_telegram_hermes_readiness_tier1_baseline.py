@@ -23,7 +23,7 @@ NON_TIER1 = [
     "CAD-DEVELOPMENTS",
     "hobbies",
     "kaggle-rogii-2026",
-    "llm-wiki-acma",
+    "llm-wiki-mkt-a",
     "sabithaandkrishnaestates",
     "teamresumes",
 ]

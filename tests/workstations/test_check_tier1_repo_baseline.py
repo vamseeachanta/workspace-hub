@@ -44,11 +44,11 @@ NON_TIER1 = [
     "CAD-DEVELOPMENTS",
     "hobbies",
     "kaggle-rogii-2026",
-    "llm-wiki-acma",
+    "llm-wiki-mkt-a",
     "sabithaandkrishnaestates",
     "teamresumes",
 ]
-HISTORICAL = ["acma-projects", "client_projects", "doris", "frontierdeepwater", "OGManufacturing", "rock-oil-field", "saipem", "sd-work", "seanation"]
+HISTORICAL = ["mkt-a", "client-c", "lng-a", "client-a", "OGManufacturing", "client-b", "client-d", "sd-work", "client-f"]
 
 
 def test_dev_primary_tier1_baseline_schema_v1_matches_2770_decision():
