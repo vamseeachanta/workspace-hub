@@ -143,9 +143,28 @@ def render_cron_line(schedule: str, command: str) -> str:
     return f"{str(schedule).strip()} {str(command).strip()}"
 
 
+def _ensure_log_dir(command: str, log: Any) -> str:
+    """Prepend `mkdir -p $WORKSPACE_HUB/<logdir>` so a cron `>>` redirect never
+    fails on a missing parent directory — cron cannot create it, and a failed
+    redirect makes the job produce no log (reads as MISSING in cron-health even
+    though the job is fine). The dir is derived from the task's catalog `log:`
+    field. No-op for absolute/non-standard logs, or when the command already
+    ensures the dir (e.g. the email tasks that mkdir -p inline)."""
+    if not command or not log:
+        return command
+    log = str(log).strip()
+    if not log.startswith("logs/"):
+        return command
+    log_dir = log.rsplit("/", 1)[0]
+    if "mkdir -p" in command and log_dir in command:
+        return command
+    return f"mkdir -p $WORKSPACE_HUB/{log_dir} && {command}"
+
+
 def render_task(task: dict[str, Any], context: dict[str, Any]) -> dict[str, Any]:
     schedule = effective_schedule(task, context)
     command = expand_command(task.get("command", ""), context)
+    command = _ensure_log_dir(command, task.get("log"))
     rendered = dict(task)
     rendered["schedule"] = schedule
     rendered["command"] = command

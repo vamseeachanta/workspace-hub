@@ -15,7 +15,7 @@
 # Usage: bash scripts/cron/gsd-researcher-nightly.sh [--dry-run]
 
 set -uo pipefail
-export PATH="${HOME}/.local/bin:${HOME}/.cargo/bin:/usr/local/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${HOME}/.npm-global/bin:${HOME}/.cargo/bin:/usr/local/bin:${PATH}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WS_HUB="$(cd "${SCRIPT_DIR}/../.." && pwd)"

@@ -26,7 +26,12 @@ bash "$MON/equivalence-fingerprint.sh" --out "$fp_local" 2>/dev/null || { echo "
 role="$($PY -c "import json,sys;print(json.load(open(sys.argv[1]))['role'])" "$fp_local" 2>/dev/null || echo unknown)"
 
 # 2. publish to the shared git ref (soft — network/auth issues must not crash the cron)
-$PY "$MON/equivalence_state.py" publish --repo "$REPO_ROOT" --role "$role" --file "$fp_local" 2>&1 | sed 's/^/[publish] /'
+# Absent sibling repos are EXPECTED on single-repo machines; the underlying
+# check emits "ERROR: directory not found" for them. Downgrade that benign token
+# here (not in the shared check-all.sh) so cron-health does not false-flag this
+# job — real publish failures keep their error wording.
+$PY "$MON/equivalence_state.py" publish --repo "$REPO_ROOT" --role "$role" --file "$fp_local" 2>&1 \
+  | sed -e 's/^/[publish] /' -e 's/ERROR: directory not found:/SKIP (absent sibling):/'
 
 # 3. collect + 4. compare (in one python pass)
 report="$REPO_ROOT/.claude/state/equivalence/divergences-latest.json"

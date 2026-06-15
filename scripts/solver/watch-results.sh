@@ -54,6 +54,16 @@ sync_repo() {
         return 0
     fi
 
+    # A non-fast-forward (transient divergence of workspace-hub main, common under
+    # auto-sync) is benign for a results watcher: it uses local state this cycle and
+    # fast-forwards next run. Treat it as a skip, not a hard failure — and do NOT emit
+    # error-classified tokens (ERROR:/fatal:) that cron-health would false-flag.
+    if printf '%s' "$output" | grep -qiE 'not possible to fast-forward|diverging branches|divergent'; then
+        set_pull_failure_count 0
+        log "NOTICE: pull skipped — main diverged (non-fast-forward); using local state, will retry next run"
+        return 0
+    fi
+
     local failures
     failures=$(current_pull_failure_count)
     failures=$((failures + 1))
