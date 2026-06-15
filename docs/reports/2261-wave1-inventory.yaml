@@ -38,7 +38,7 @@ orgs:
   - org: OCIMF
     org_full: Oil Companies International Marine Forum
     collection: MEG4
-    root: "/mnt/ace/acma-codes/OCIMF (MEG 4)"
+    root: "/mnt/ace/mkt-a-codes/OCIMF (MEG 4)"
     file_count: 59
     files:
       # --- Parent ---
@@ -523,7 +523,7 @@ orgs:
   - org: OCIMF
     org_full: Oil Companies International Marine Forum
     collection: general
-    root: /mnt/ace/acma-codes/OCIMF
+    root: /mnt/ace/mkt-a-codes/OCIMF
     file_count: 22
     files:
       # --- Parents / standalone ---
@@ -755,7 +755,7 @@ orgs:
   - org: CSA
     org_full: CSA Group
     collection: standards
-    root: /mnt/ace/acma-codes/CSA
+    root: /mnt/ace/mkt-a-codes/CSA
     file_count: 5
     files:
       - file: "276.1-20 marine structures associated with LNG facilities.pdf"

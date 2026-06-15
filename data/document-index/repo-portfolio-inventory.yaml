@@ -169,24 +169,24 @@ repos:
   - repo: mkt-a
     tier: tier-2
     mission: >-
-      ACMA Inc. naval-architecture client project data and delivery — structural
+      mkt-a Inc. naval-architecture client project data and delivery — structural
       design and analysis for vessels (LNG tanks, workboats, novel hulls)
       across steel, aluminum, and composites.
     source_path: mkt-a/README.md
     routing_belongs_here: >-
-      Work belongs here when it is ACMA-client naval-architecture project data,
-      structural-analysis deliverables, or vessel design context tied to ACMA
+      Work belongs here when it is mkt-a-client naval-architecture project data,
+      structural-analysis deliverables, or vessel design context tied to mkt-a
       engagements.
     routing_route_elsewhere: >-
       Route elsewhere when the work is reusable engineering methodology
       (→ digitalmodel), shared utilities (→ assetutilities), or generic
-      multi-client wrapper (→ client-c when no dedicated ACMA scope).
+      multi-client wrapper (→ client-c when no dedicated mkt-a scope).
     overlap_notes: >-
-      Overlaps with client-c (the generic client wrapper) — ACMA-client
-      work always wins when work targets ACMA specifically; client-c is
+      Overlaps with client-c (the generic client wrapper) — mkt-a-client
+      work always wins when work targets mkt-a specifically; client-c is
       the catch-all only when no dedicated client repo exists. Overlaps with
       digitalmodel on the reusable-vs-client-specific boundary: reusable
-      naval-architecture methodology → digitalmodel; ACMA-engagement-specific
+      naval-architecture methodology → digitalmodel; mkt-a-engagement-specific
       analysis stays here.
     inventory_status: present-locally
     notes: >-

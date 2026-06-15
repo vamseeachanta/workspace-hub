@@ -92,7 +92,7 @@ gaps:
 # --- ballast-tank sloshing CFD engine-feature gaps: PROMOTED 2026-05-31 ---
 # All 5 engine-capability gaps were promoted to digitalmodel GH issues #658-#662
 # (children of #637) and moved into boards/repo-digitalmodel-hydro.yaml with gh:
-# idempotency keys. (Client-specific feature plan tracked privately in llm-wiki-acma.)
+# idempotency keys. (Client-specific feature plan tracked privately in llm-wiki-mkt-a.)
 #   gap:...hydro:001 -> #658 (single-DOF motion engine)
 #   gap:...hydro:002 -> #659 (partial-fill setFields)
 #   gap:...hydro:005 -> #660 (FFT natural-frequency)

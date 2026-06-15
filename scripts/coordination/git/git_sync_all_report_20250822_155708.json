@@ -44,7 +44,7 @@
       "message": "Already up to date."
     },
     {
-      "repo": "acma-projects",
+      "repo": "mkt-a",
       "branch": "main",
       "status": "success",
       "has_changes": true,
@@ -58,7 +58,7 @@
       "message": "Already up to date."
     },
     {
-      "repo": "doris",
+      "repo": "lng-a",
       "branch": "main",
       "status": "success",
       "has_changes": true,
@@ -86,7 +86,7 @@
       "message": "Already up to date."
     },
     {
-      "repo": "client_projects",
+      "repo": "client-c",
       "branch": "main",
       "status": "failed",
       "has_changes": true,
@@ -114,7 +114,7 @@
       "message": "Already up to date."
     },
     {
-      "repo": "frontierdeepwater",
+      "repo": "client-a",
       "branch": "main",
       "status": "success",
       "has_changes": true,
@@ -128,7 +128,7 @@
       "message": "Already up to date."
     },
     {
-      "repo": "rock-oil-field",
+      "repo": "client-b",
       "branch": "master",
       "status": "failed",
       "has_changes": true,
@@ -149,7 +149,7 @@
       "message": "Already up to date."
     },
     {
-      "repo": "saipem",
+      "repo": "client-d",
       "branch": "main",
       "status": "success",
       "has_changes": true,
@@ -163,7 +163,7 @@
       "message": "Already up to date."
     },
     {
-      "repo": "seanation",
+      "repo": "client-f",
       "branch": "main",
       "status": "success",
       "has_changes": true,

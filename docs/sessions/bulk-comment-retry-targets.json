@@ -493,7 +493,7 @@
   },
   {
     "number": 1510,
-    "title": "Verify Claude Desktop install: ACMA-WS014"
+    "title": "Verify Claude Desktop install: mkt-a-WS014"
   },
   {
     "number": 1509,
@@ -653,7 +653,7 @@
   },
   {
     "number": 1354,
-    "title": "WRK-1354: frontierdeepwater: sync missing files from remote to /mnt/ace/frontierdeepwater"
+    "title": "WRK-1354: client-a: sync missing files from remote to /mnt/ace/client-a"
   },
   {
     "number": 1353,
@@ -941,11 +941,11 @@
   },
   {
     "number": 191,
-    "title": "WRK-632: feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients)"
+    "title": "WRK-632: feat(client-a): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients)"
   },
   {
     "number": 190,
-    "title": "WRK-626: feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3)"
+    "title": "WRK-626: feat(client-a): engineering AI demo — calculation templates + data processing (Days 2-3)"
   },
   {
     "number": 189,
@@ -1401,7 +1401,7 @@
   },
   {
     "number": 52,
-    "title": "WRK-1133: Add acma-ws014 to workstations documentation and routing"
+    "title": "WRK-1133: Add mkt-a-ws014 to workstations documentation and routing"
   },
   {
     "number": 50,
@@ -1449,7 +1449,7 @@
   },
   {
     "number": 37,
-    "title": "WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up)"
+    "title": "WRK-1051: chore(harness): verify Codex config on mkt-a-ansys05 (WRK-1024 follow-up)"
   },
   {
     "number": 35,

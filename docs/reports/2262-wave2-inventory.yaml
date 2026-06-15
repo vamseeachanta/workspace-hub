@@ -35,7 +35,7 @@ summary:
 orgs:
   - org: API
     org_full: American Petroleum Institute
-    root: /mnt/ace/acma-codes/API
+    root: /mnt/ace/mkt-a-codes/API
     file_count: 29
     files:
       # --- Parents / standalone standards ---
@@ -341,7 +341,7 @@ orgs:
   # ──────────────────────────────────────────────
   - org: Lloyds_Register
     org_full: Lloyd's Register
-    root: /mnt/ace/acma-codes/Lloyds Register
+    root: /mnt/ace/mkt-a-codes/Lloyds Register
     file_count: 40
     files:
       # --- Parents / standalone ---
@@ -766,7 +766,7 @@ orgs:
   # ──────────────────────────────────────────────
   - org: SIGTTO
     org_full: Society of International Gas Tanker and Terminal Operators
-    root: /mnt/ace/acma-codes/SIGTTO
+    root: /mnt/ace/mkt-a-codes/SIGTTO
     file_count: 14
     files:
       - file: "DAM-QRH-01 Ver 3.0 - Quick Release Hooks and Capstans.pdf"
@@ -904,7 +904,7 @@ orgs:
   # ──────────────────────────────────────────────
   - org: Noble_Denton
     org_full: Noble Denton (now DNV GL)
-    root: /mnt/ace/acma-codes/Noble Denton Guidelines
+    root: /mnt/ace/mkt-a-codes/Noble Denton Guidelines
     file_count: 13
     files:
       - file: "0001-nd rev 1.1 28-jun-16 general guidelines for marine projects.pdf"

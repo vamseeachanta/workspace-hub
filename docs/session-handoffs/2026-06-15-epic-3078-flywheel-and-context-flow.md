@@ -22,7 +22,7 @@ Built epic **#3078** end-to-end (mission → workflow → metrics → context-fl
 - **PR #3110 (merged):** cleared the live agent-library's dangling refs to the deleted scripts (registry path values → RETIRED notes; README usage examples → live `@`-ref pattern). No live agent def touched.
 
 ## Context-flow rollout — per-repo scoped memory (PRs all merged)
-workspace-hub, llm-wiki, kaggle-rogii (pre-existing) + digitalmodel #761, assetutilities #92, worldenergydata #478, worldenergydata-wiki #1, aceengineer-website #18, aceengineer-admin #27, aceengineer-strategy #72/#73, deckhand #357, llm-wiki-acma #32, llm-wiki-fdas #55, raw-to-knowledge-playbook #45, CAD-DEVELOPMENTS #2 (on the `bakkiprasad5669` fork). Tool: workspace-hub PR #3100.
+workspace-hub, llm-wiki, kaggle-rogii (pre-existing) + digitalmodel #761, assetutilities #92, worldenergydata #478, worldenergydata-wiki #1, aceengineer-website #18, aceengineer-admin #27, aceengineer-strategy #72/#73, deckhand #357, llm-wiki-mkt-a #32, llm-wiki-fdas #55, raw-to-knowledge-playbook #45, CAD-DEVELOPMENTS #2 (on the `bakkiprasad5669` fork). Tool: workspace-hub PR #3100.
 
 ## Repo states (at exit)
 - **workspace-hub:** my work all merged to `origin/main`. NOTE: the shared checkout's working branch is a PARALLEL session's (`fix/cron-render-mkdir-and-flywheel-glob` — hardening the flywheel-review glob/mkdir I shipped). I did NOT touch it.

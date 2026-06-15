@@ -27,7 +27,7 @@ cards:
     priority: 0
     body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
   - idempotency_key: gh:vamseeachanta/workspace-hub#1354
-    title: 'WRK-1354: frontierdeepwater: sync missing files from remote to /mnt/ace/frontierdeepwater'
+    title: 'WRK-1354: client-a: sync missing files from remote to /mnt/ace/client-a'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1354
     gh_state: open
@@ -256,7 +256,7 @@ cards:
     priority: 0
     body_excerpt: '## Summary
 
-      Follow-on issue split from #2244 triage artifact to handle a bounded slice of ACMA breadth discovered outside the approved #2227 scope.
+      Follow-on issue split from #2244 triage artifact to handle a bounded slice of mkt-a breadth discovered outside the approved #2227 scope.
 
       ## Why this is split'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2284
@@ -278,7 +278,7 @@ cards:
     priority: 0
     body_excerpt: '## Summary
 
-      Follow-on issue split from #2244 triage artifact to handle a bounded slice of ACMA breadth discovered outside the approved #2227 scope.
+      Follow-on issue split from #2244 triage artifact to handle a bounded slice of mkt-a breadth discovered outside the approved #2227 scope.
 
       ## Why this is split'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2285
@@ -300,7 +300,7 @@ cards:
     priority: 0
     body_excerpt: '## Summary
 
-      Follow-on issue split from #2244 triage artifact to handle a bounded slice of ACMA breadth discovered outside the approved #2227 scope.
+      Follow-on issue split from #2244 triage artifact to handle a bounded slice of mkt-a breadth discovered outside the approved #2227 scope.
 
       ## Why this is split'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2286
@@ -322,7 +322,7 @@ cards:
     priority: 0
     body_excerpt: '## Summary
 
-      Follow-on issue split from #2244 triage artifact to handle a bounded slice of ACMA breadth discovered outside the approved #2227 scope.
+      Follow-on issue split from #2244 triage artifact to handle a bounded slice of mkt-a breadth discovered outside the approved #2227 scope.
 
       ## Why this is split'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2293
@@ -414,7 +414,7 @@ cards:
 
       ## Why'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2470
-    title: 'feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion'
+    title: 'feat(mkt-a-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2470
     gh_state: open
@@ -433,7 +433,7 @@ cards:
     priority: 0
     body_excerpt: '## Summary
 
-      Create a source-grounded, readable-summary unblocker for the ACMA wiki-promotion targets currently blocking #2227.
+      Create a source-grounded, readable-summary unblocker for the mkt-a wiki-promotion targets currently blocking #2227.
 
       ## Why'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2658

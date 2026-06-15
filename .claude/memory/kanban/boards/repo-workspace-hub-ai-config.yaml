@@ -48,7 +48,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#37
-    title: 'WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up)'
+    title: 'WRK-1051: chore(harness): verify Codex config on mkt-a-ansys05 (WRK-1024 follow-up)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/37
     gh_state: open
@@ -65,11 +65,11 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up)
+    body_excerpt: '## WRK-1051: chore(harness): verify Codex config on mkt-a-ansys05 (WRK-1024 follow-up)
 
       **Status:** pending | **Priority:** medium | **Category:** harness/ai-config
 
-      **Repo:** workspace-hub | **Complexity:** simple | **Machine:** acma-ansys05'
+      **Repo:** workspace-hub | **Complexity:** simple | **Machine:** mkt-a-ansys05'
   - idempotency_key: gh:vamseeachanta/workspace-hub#73
     title: 'WRK-1205: fix: recurring correction correction pattern on Write'
     source: github_issue

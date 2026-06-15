@@ -31,7 +31,7 @@ cards:
 
       **Status:** pending | **Priority:** low | **Category:** engineering/marine
 
-      **Complexity:** complex | **Machine:** acma-ansys05'
+      **Complexity:** complex | **Machine:** mkt-a-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#179
     title: 'WRK-481: feat(digitalmodel): integrate GEBCO_2025 Bathymetry for subsea routing'
     source: github_issue
@@ -55,7 +55,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** moderate | **Machine:** unset'
   - idempotency_key: gh:vamseeachanta/digitalmodel#190
-    title: 'WRK-498: feat(doris/pipeline): Implement API RP 1111 — API RP 1111'
+    title: 'WRK-498: feat(lng-a/pipeline): Implement API RP 1111 — API RP 1111'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/190
     gh_state: open
@@ -99,7 +99,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#193
-    title: 'WRK-500: feat(doris/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci'
+    title: 'WRK-500: feat(lng-a/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/193
     gh_state: open
@@ -143,7 +143,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#196
-    title: 'WRK-502: feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se'
+    title: 'WRK-502: feat(lng-a/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/196
     gh_state: open
@@ -209,7 +209,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#221
-    title: 'WRK-514: feat(doris/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems'
+    title: 'WRK-514: feat(lng-a/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/221
     gh_state: open
@@ -253,7 +253,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#225
-    title: 'WRK-518: feat(doris/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy'
+    title: 'WRK-518: feat(lng-a/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/225
     gh_state: open
@@ -297,7 +297,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#229
-    title: 'WRK-522: feat(doris/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi'
+    title: 'WRK-522: feat(lng-a/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/229
     gh_state: open
@@ -341,7 +341,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#231
-    title: 'WRK-524: feat(doris/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr'
+    title: 'WRK-524: feat(lng-a/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/231
     gh_state: open
@@ -385,7 +385,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#235
-    title: 'WRK-528: feat(doris/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines'
+    title: 'WRK-528: feat(lng-a/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/235
     gh_state: open
@@ -429,7 +429,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#237
-    title: 'WRK-530: feat(doris/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an'
+    title: 'WRK-530: feat(lng-a/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/237
     gh_state: open
@@ -473,7 +473,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#243
-    title: 'WRK-536: feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s'
+    title: 'WRK-536: feat(lng-a/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/243
     gh_state: open
@@ -517,7 +517,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#245
-    title: 'WRK-538: feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari'
+    title: 'WRK-538: feat(lng-a/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/245
     gh_state: open

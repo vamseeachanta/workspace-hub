@@ -78,7 +78,7 @@ body:
         - licensed-win-2
         - macbook-portable
         - home-win
-        - acma-ws014
+        - mkt-a-ws014
         - multi
     validations:
       required: true

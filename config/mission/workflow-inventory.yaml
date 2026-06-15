@@ -35,7 +35,7 @@ workflows:
     script: scripts/knowledge/wiki-ingest-cron.sh
     does: Incremental knowledge-wiki ingest; scans sources, triggers llm_wiki.py, auto-commits
     serves: [O2]
-    repos_touched: [llm-wiki, llm-wiki-acma, llm-wiki-fdas]
+    repos_touched: [llm-wiki, llm-wiki-mkt-a, llm-wiki-fdas]
     mutates: commits
   - name: gsd-researcher-nightly
     schedule: "35 1 * * *"

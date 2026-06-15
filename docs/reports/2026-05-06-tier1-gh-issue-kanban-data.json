@@ -3032,7 +3032,7 @@
       "priority_bucket": "MEDIUM",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "chore(seanation): extract useful client information and archive repo",
+      "title": "chore(client-f): extract useful client information and archive repo",
       "updatedAt": "2026-04-29T01:38:55Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2547"
     },
@@ -3083,7 +3083,7 @@
       "priority_bucket": "MEDIUM",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "chore(saipem): extract useful installation-project information and archive or retire repo",
+      "title": "chore(client-d): extract useful installation-project information and archive or retire repo",
       "updatedAt": "2026-04-29T00:48:56Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2545"
     },
@@ -3134,7 +3134,7 @@
       "priority_bucket": "MEDIUM",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "chore(rock-oil-field): sanity-check and migrate useful code/data/analysis to Tier-1 repos",
+      "title": "chore(client-b): sanity-check and migrate useful code/data/analysis to Tier-1 repos",
       "updatedAt": "2026-04-28T23:50:26Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2539"
     },
@@ -5616,7 +5616,7 @@
       "priority_bucket": "MEDIUM",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion",
+      "title": "feat(mkt-a-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion",
       "updatedAt": "2026-04-23T20:48:22Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2470"
     },
@@ -10937,7 +10937,7 @@
       "priority_bucket": "MEDIUM",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "chore(acma-codes): codify support-artifact defer/reject policy for metadata-only sweep waves",
+      "title": "chore(mkt-a-codes): codify support-artifact defer/reject policy for metadata-only sweep waves",
       "updatedAt": "2026-04-14T09:35:46Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2279"
     },
@@ -11002,7 +11002,7 @@
       "priority_bucket": "MEDIUM",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "chore(acma-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave",
+      "title": "chore(mkt-a-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave",
       "updatedAt": "2026-04-14T09:35:44Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2278"
     },
@@ -31572,21 +31572,21 @@
       ],
       "kanban_lane": "Planning Needed / Future Backlog",
       "label_names": [
-        "machine:acma-ws014"
+        "machine:mkt-a-ws014"
       ],
       "labels": [
         {
           "color": "e4e669",
-          "description": "Assigned to ACMA-WS014",
+          "description": "Assigned to mkt-a-WS014",
           "id": "LA_kwDOP48Lhs8AAAACdfOIHQ",
-          "name": "machine:acma-ws014"
+          "name": "machine:mkt-a-ws014"
         }
       ],
       "number": 1510,
       "priority_bucket": "Unranked",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "Verify Claude Desktop install: ACMA-WS014",
+      "title": "Verify Claude Desktop install: mkt-a-WS014",
       "updatedAt": "2026-03-31T11:26:43Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/1510"
     },
@@ -33297,7 +33297,7 @@
       "priority_bucket": "Unranked",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "WRK-1354: frontierdeepwater: sync missing files from remote to /mnt/ace/frontierdeepwater",
+      "title": "WRK-1354: client-a: sync missing files from remote to /mnt/ace/client-a",
       "updatedAt": "2026-03-31T11:26:47Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/1354"
     },
@@ -36277,7 +36277,7 @@
         "local_repo_exists": true,
         "plan_exists": true,
         "plan_paths": [
-          "docs/plans/2026-05-01-issue-2569-b1528-sirocco-source-pack.md"
+          "docs/plans/2026-05-01-issue-2569-b1528-proj-a-source-pack.md"
         ]
       },
       "assignees": [],
@@ -37248,7 +37248,7 @@
       "priority_bucket": "HIGH",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "WRK-632: feat(frontierdeepwater): chatbot fundamentals \u2014 shared persona, tone, tiers, pitch template (all clients)",
+      "title": "WRK-632: feat(client-a): chatbot fundamentals \u2014 shared persona, tone, tiers, pitch template (all clients)",
       "updatedAt": "2026-04-15T20:01:17Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/191"
     },
@@ -37306,7 +37306,7 @@
       "priority_bucket": "HIGH",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "WRK-626: feat(frontierdeepwater): engineering AI demo \u2014 calculation templates + data processing (Days 2-3)",
+      "title": "WRK-626: feat(client-a): engineering AI demo \u2014 calculation templates + data processing (Days 2-3)",
       "updatedAt": "2026-03-21T13:28:49Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/190"
     },
@@ -42524,7 +42524,7 @@
         "local_repo_exists": true,
         "plan_exists": true,
         "plan_paths": [
-          "docs/plans/2026-04-23-issue-2373-batch-pack-4-non-acma-standards-summary-promotion.md"
+          "docs/plans/2026-04-23-issue-2373-batch-pack-4-non-mkt-a-standards-summary-promotion.md"
         ]
       },
       "assignees": [],
@@ -42648,7 +42648,7 @@
           "docs/plans/2026-04-16-issue-2070-state-size-guard.md",
           "docs/plans/2026-04-16-issue-2270-blender-headless-baseline-workflow-and-smoke-render-validation.md",
           "docs/plans/2026-04-29-issue-2370-closed-issue-promotion-ledger.md",
-          "docs/plans/2026-05-01-issue-2570-b1528-sirocco-yaw-moment-report.md"
+          "docs/plans/2026-05-01-issue-2570-b1528-proj-a-yaw-moment-report.md"
         ]
       },
       "assignees": [],
@@ -42710,7 +42710,7 @@
         "plan_paths": [
           "docs/plans/2026-04-15-issue-2269-openfoam-v2312-baseline-workflow-and-validation.md",
           "docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md",
-          "docs/plans/2026-05-01-issue-2569-b1528-sirocco-source-pack.md"
+          "docs/plans/2026-05-01-issue-2569-b1528-proj-a-source-pack.md"
         ]
       },
       "assignees": [],
@@ -43300,8 +43300,8 @@
           "docs/plans/2026-04-21-issue-2357-sitemap-www-backfill.md",
           "docs/plans/2026-04-23-issue-2457-orcawave-l03-ship-roundtrip-proof.md",
           "docs/plans/2026-04-29-issue-2557-weekly-productivity-flow-hacks.md",
-          "docs/plans/2026-05-01-issue-2570-b1528-sirocco-yaw-moment-report.md",
-          "docs/plans/2026-05-01-issue-2571-b1528-sirocco-time-trace-report.md"
+          "docs/plans/2026-05-01-issue-2570-b1528-proj-a-yaw-moment-report.md",
+          "docs/plans/2026-05-01-issue-2571-b1528-proj-a-time-trace-report.md"
         ]
       },
       "assignees": [],
@@ -43365,7 +43365,7 @@
           "docs/plans/2026-04-26-issue-2254-claude-gemini-quota-observability.md",
           "docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md",
           "docs/plans/2026-04-28-issue-2541-elements-sesa-curated-extraction-plan.md",
-          "docs/plans/2026-04-28-issue-2542-elements-doris-university-training-plan.md"
+          "docs/plans/2026-04-28-issue-2542-elements-lng-a-university-training-plan.md"
         ]
       },
       "assignees": [],
@@ -43493,7 +43493,7 @@
           "docs/plans/2026-04-29-issue-2552-external-contributor-runbook.md",
           "docs/plans/2026-05-03-issue-2626-narrow-2552-runbook-fixes.md",
           "docs/plans/2026-04-21-issue-1525-workspace-hub-mission-control-plane-contract.md",
-          "docs/plans/2026-05-01-issue-2569-b1528-sirocco-source-pack.md"
+          "docs/plans/2026-05-01-issue-2569-b1528-proj-a-source-pack.md"
         ]
       },
       "assignees": [],
@@ -43539,7 +43539,7 @@
       "priority_bucket": "MEDIUM",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "WRK-1133: Add acma-ws014 to workstations documentation and routing",
+      "title": "WRK-1133: Add mkt-a-ws014 to workstations documentation and routing",
       "updatedAt": "2026-03-21T13:25:02Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/52"
     },
@@ -43850,7 +43850,7 @@
         "plan_exists": true,
         "plan_paths": [
           "docs/plans/2026-04-09-issue-2045-agent-planning-onboarding.md",
-          "docs/plans/2026-04-12-issue-2245-acma-summary-classification-unblock.md",
+          "docs/plans/2026-04-12-issue-2245-mkt-a-summary-classification-unblock.md",
           "docs/plans/2026-04-23-issue-2445-bypass-rollback-advisor-and-observer.md",
           "docs/plans/2026-04-22-issue-2458-orcawave-multibody-benchmark-fixture.md",
           "docs/plans/2026-04-22-issue-2459-assethold-post-smoke-ci-hardening.md"
@@ -43987,7 +43987,7 @@
           "docs/plans/2026-04-14-claude-prompt-issues-2242-2243.md",
           "docs/plans/2026-04-17-issue-2342-2343-demo-detail-pages.md",
           "docs/plans/2026-04-21-issue-2442-assethold-python-tests.md",
-          "docs/plans/2026-04-28-issue-2542-elements-doris-university-training-plan.md",
+          "docs/plans/2026-04-28-issue-2542-elements-lng-a-university-training-plan.md",
           "docs/plans/2026-04-20-issue-2420-repo-portfolio-steering-contract.md"
         ]
       },
@@ -44248,7 +44248,7 @@
         "plan_paths": [
           "docs/plans/2026-04-21-issue-2437-workspace-hub-prune.md",
           "docs/plans/2026-05-04-issue-2637-llm-wiki-engineering-classification-societies.md",
-          "docs/plans/2026-04-23-issue-2373-batch-pack-4-non-acma-standards-summary-promotion.md",
+          "docs/plans/2026-04-23-issue-2373-batch-pack-4-non-mkt-a-standards-summary-promotion.md",
           "docs/plans/2026-04-26-issue-2375-wrk-completions-normalize-seeds.md",
           "docs/plans/2026-04-26-issue-2378-marine-wiki-chunked-index.md"
         ]
@@ -44303,7 +44303,7 @@
       "priority_bucket": "MEDIUM",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up)",
+      "title": "WRK-1051: chore(harness): verify Codex config on mkt-a-ansys05 (WRK-1024 follow-up)",
       "updatedAt": "2026-04-04T20:33:35Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/37"
     },
@@ -44717,7 +44717,7 @@
           "docs/plans/2026-04-28-issue-2378-plan-draft.md",
           "docs/plans/2026-04-28-issue-2536-elements-deep-extraction.md",
           "docs/plans/2026-04-28-issue-2541-elements-sesa-curated-extraction-plan.md",
-          "docs/plans/2026-04-28-issue-2542-elements-doris-university-training-plan.md"
+          "docs/plans/2026-04-28-issue-2542-elements-lng-a-university-training-plan.md"
         ]
       },
       "assignees": [],
@@ -45612,7 +45612,7 @@
       "priority_bucket": "HIGH",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "feat(naval-arch): B1528 SIROCCO moored-current rudder force component report",
+      "title": "feat(naval-arch): B1528 proj-a moored-current rudder force component report",
       "updatedAt": "2026-05-05T10:09:49Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2642"
     },
@@ -46008,7 +46008,7 @@
       "priority_bucket": "HIGH",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "meta(governance): umbrella sanction \u2014 wiki/standards/ routing for engineering-standards / asset-management / lng-projects / acma-projects (W5-D follow-up)",
+      "title": "meta(governance): umbrella sanction \u2014 wiki/standards/ routing for engineering-standards / asset-management / lng-projects / mkt-a (W5-D follow-up)",
       "updatedAt": "2026-05-03T21:27:35Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2615"
     },
@@ -48010,7 +48010,7 @@
         "local_repo_exists": true,
         "plan_exists": true,
         "plan_paths": [
-          "docs/plans/2026-05-01-issue-2571-b1528-sirocco-time-trace-report.md"
+          "docs/plans/2026-05-01-issue-2571-b1528-proj-a-time-trace-report.md"
         ]
       },
       "assignees": [],
@@ -48079,7 +48079,7 @@
       "priority_bucket": "HIGH",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "feat(naval-arch): B1528 SIROCCO time-trace benchmark report with rudder inflow feedback",
+      "title": "feat(naval-arch): B1528 proj-a time-trace benchmark report with rudder inflow feedback",
       "updatedAt": "2026-05-01T09:47:22Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2571"
     },
@@ -48093,7 +48093,7 @@
         "local_repo_exists": true,
         "plan_exists": true,
         "plan_paths": [
-          "docs/plans/2026-05-01-issue-2570-b1528-sirocco-yaw-moment-report.md"
+          "docs/plans/2026-05-01-issue-2570-b1528-proj-a-yaw-moment-report.md"
         ]
       },
       "assignees": [],
@@ -48162,7 +48162,7 @@
       "priority_bucket": "HIGH",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "feat(naval-arch): B1528 SIROCCO yaw-moment input and interactive static report",
+      "title": "feat(naval-arch): B1528 proj-a yaw-moment input and interactive static report",
       "updatedAt": "2026-05-01T08:55:42Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2570"
     },
@@ -48176,7 +48176,7 @@
         "local_repo_exists": true,
         "plan_exists": true,
         "plan_paths": [
-          "docs/plans/2026-05-01-issue-2569-b1528-sirocco-source-pack.md"
+          "docs/plans/2026-05-01-issue-2569-b1528-proj-a-source-pack.md"
         ]
       },
       "assignees": [],
@@ -48252,7 +48252,7 @@
       "priority_bucket": "HIGH",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "docs(acma): B1528 SIROCCO rudder source pack and benchmark extraction",
+      "title": "docs(mkt-a): B1528 proj-a rudder source pack and benchmark extraction",
       "updatedAt": "2026-05-01T03:09:51Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2569"
     },
@@ -52448,7 +52448,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-121: Extract & Catalog OrcaFlex Models from rock-oil-field/s7",
+      "title": "WRK-121: Extract & Catalog OrcaFlex Models from client-b/s7",
       "updatedAt": "2026-05-06T19:04:31Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/281"
     },
@@ -52781,7 +52781,7 @@
       "priority_bucket": "MEDIUM",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-631: feat(frontierdeepwater): Microsoft Teams chatbot integration \u2014 Phase 2 deployment for both clients",
+      "title": "WRK-631: feat(client-a): Microsoft Teams chatbot integration \u2014 Phase 2 deployment for both clients",
       "updatedAt": "2026-05-06T18:59:47Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/271"
     },
@@ -52973,7 +52973,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-628: feat(frontierdeepwater): client AI roadshow \u2014 phased engineering AI adoption programme",
+      "title": "WRK-628: feat(client-a): client AI roadshow \u2014 phased engineering AI adoption programme",
       "updatedAt": "2026-03-24T12:48:00Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/268"
     },
@@ -53031,7 +53031,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-625: feat(frontierdeepwater): engineering AI demo \u2014 system prompts + knowledge base (Day 1)",
+      "title": "WRK-625: feat(client-a): engineering AI demo \u2014 system prompts + knowledge base (Day 1)",
       "updatedAt": "2026-03-24T12:48:01Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/267"
     },
@@ -53727,7 +53727,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-595: feat(orcaflex): rewrite enrichment pipeline \u2014 worldenergydata-first, all stages on acma-ansys05",
+      "title": "WRK-595: feat(orcaflex): rewrite enrichment pipeline \u2014 worldenergydata-first, all stages on mkt-a-ansys05",
       "updatedAt": "2026-03-24T12:48:18Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/255"
     },
@@ -54575,7 +54575,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-538: feat(doris/pipeline): Implement DNV F116 \u2014 DNV RP F116 (2009) Integrity Management of Submari",
+      "title": "WRK-538: feat(lng-a/pipeline): Implement DNV F116 \u2014 DNV RP F116 (2009) Integrity Management of Submari",
       "updatedAt": "2026-03-24T12:48:30Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/245"
     },
@@ -54691,7 +54691,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-536: feat(doris/pipeline): Implement DNV F109 \u2014 DNV RP F109 (2007) On-bottom stability design of s",
+      "title": "WRK-536: feat(lng-a/pipeline): Implement DNV F109 \u2014 DNV RP F109 (2007) On-bottom stability design of s",
       "updatedAt": "2026-03-24T12:48:33Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/243"
     },
@@ -54807,7 +54807,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-534: feat(doris/pipeline): Implement DNV F206 \u2014 DNV RP F206 (2008) Riser Integrity Management",
+      "title": "WRK-534: feat(lng-a/pipeline): Implement DNV F206 \u2014 DNV RP F206 (2008) Riser Integrity Management",
       "updatedAt": "2026-03-24T12:48:35Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/241"
     },
@@ -54923,7 +54923,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-532: feat(doris/pipeline): Implement DNV F202 \u2014 DNV RP F202 (2010) Composite Risers",
+      "title": "WRK-532: feat(lng-a/pipeline): Implement DNV F202 \u2014 DNV RP F202 (2010) Composite Risers",
       "updatedAt": "2026-03-24T12:48:39Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/239"
     },
@@ -55039,7 +55039,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-530: feat(doris/pipeline): Implement DNV F102 \u2014 DNV RP F102 (2011) Pipeline Field Joint Coating an",
+      "title": "WRK-530: feat(lng-a/pipeline): Implement DNV F102 \u2014 DNV RP F102 (2011) Pipeline Field Joint Coating an",
       "updatedAt": "2026-03-24T12:48:42Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/237"
     },
@@ -55155,7 +55155,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-528: feat(doris/pipeline): Implement DNV F105 \u2014 DNV RP F105 (2006) Free Spanning Pipelines",
+      "title": "WRK-528: feat(lng-a/pipeline): Implement DNV F105 \u2014 DNV RP F105 (2006) Free Spanning Pipelines",
       "updatedAt": "2026-03-24T12:48:44Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/235"
     },
@@ -55271,7 +55271,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-526: feat(doris/pipeline): Implement DNV F203 \u2014 DNV RP F203 (2009) Riser interference",
+      "title": "WRK-526: feat(lng-a/pipeline): Implement DNV F203 \u2014 DNV RP F203 (2009) Riser interference",
       "updatedAt": "2026-03-24T12:48:47Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/233"
     },
@@ -55387,7 +55387,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-524: feat(doris/pipeline): Implement DNV F108 \u2014 DNV RP F108 with update 2009 (2006) Fracture Contr",
+      "title": "WRK-524: feat(lng-a/pipeline): Implement DNV F108 \u2014 DNV RP F108 with update 2009 (2006) Fracture Contr",
       "updatedAt": "2026-03-24T12:48:50Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/231"
     },
@@ -55503,7 +55503,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-522: feat(doris/pipeline): Implement DNV F110 \u2014 DNV RP F110 (2007) Global buckling of submarine pi",
+      "title": "WRK-522: feat(lng-a/pipeline): Implement DNV F110 \u2014 DNV RP F110 (2007) Global buckling of submarine pi",
       "updatedAt": "2026-03-24T12:48:53Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/229"
     },
@@ -55619,7 +55619,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-520: feat(doris/pipeline): Implement DNV F201 \u2014 DNV OS F201 (2010) Dynamic Risers",
+      "title": "WRK-520: feat(lng-a/pipeline): Implement DNV F201 \u2014 DNV OS F201 (2010) Dynamic Risers",
       "updatedAt": "2026-03-24T12:48:56Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/227"
     },
@@ -55735,7 +55735,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-518: feat(doris/pipeline): Implement DNV OSS 006 \u2014 DNV OSS 006 (1981) Rules for Submarine Pipeline Sy",
+      "title": "WRK-518: feat(lng-a/pipeline): Implement DNV OSS 006 \u2014 DNV OSS 006 (1981) Rules for Submarine Pipeline Sy",
       "updatedAt": "2026-03-24T12:48:58Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/225"
     },
@@ -55851,7 +55851,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-516: feat(doris/pipeline): Implement API RP 17G \u2014 API RP 17G 2nd Ed (2006) Design and Operation of C",
+      "title": "WRK-516: feat(lng-a/pipeline): Implement API RP 17G \u2014 API RP 17G 2nd Ed (2006) Design and Operation of C",
       "updatedAt": "2026-03-24T12:49:01Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/223"
     },
@@ -55967,7 +55967,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-514: feat(doris/pipeline): Implement DNV F101 \u2014 DNV OS F101 (2010) Submarine Pipeline Systems",
+      "title": "WRK-514: feat(lng-a/pipeline): Implement DNV F101 \u2014 DNV OS F101 (2010) Submarine Pipeline Systems",
       "updatedAt": "2026-03-24T12:49:04Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/221"
     },
@@ -56083,7 +56083,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-512: feat(doris/pipeline): Implement API STD 2RD \u2014 API STD 2RD 2nd Ed (2013) Dynamic Risers for Float",
+      "title": "WRK-512: feat(lng-a/pipeline): Implement API STD 2RD \u2014 API STD 2RD 2nd Ed (2013) Dynamic Risers for Float",
       "updatedAt": "2026-03-24T12:49:07Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/219"
     },
@@ -56199,7 +56199,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-510: feat(doris/pipeline): Implement ISO 16389 \u2014 ISO 16389 (2003) Dynamic Risers for Floating Produ",
+      "title": "WRK-510: feat(lng-a/pipeline): Implement ISO 16389 \u2014 ISO 16389 (2003) Dynamic Risers for Floating Produ",
       "updatedAt": "2026-03-24T12:49:11Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/217"
     },
@@ -56315,7 +56315,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-508: feat(doris/pipeline): Implement ISO 13628-7 \u2014 ISO 13628-7 2005 Completion Workover Risers",
+      "title": "WRK-508: feat(lng-a/pipeline): Implement ISO 13628-7 \u2014 ISO 13628-7 2005 Completion Workover Risers",
       "updatedAt": "2026-03-24T12:49:13Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/215"
     },
@@ -56605,7 +56605,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-506: feat(doris/pipeline): Implement ISO 13624-1 \u2014 DIN EN ISO 13624-1 (2007-11) Risers",
+      "title": "WRK-506: feat(lng-a/pipeline): Implement ISO 13624-1 \u2014 DIN EN ISO 13624-1 (2007-11) Risers",
       "updatedAt": "2026-03-24T12:49:20Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/210"
     },
@@ -57374,7 +57374,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-504: feat(doris/pipeline): Implement ISO 13628 \u2014 ISO 13628 Pt 7 DRAFT (2003) Completion workover ri",
+      "title": "WRK-504: feat(lng-a/pipeline): Implement ISO 13628 \u2014 ISO 13628 Pt 7 DRAFT (2003) Completion workover ri",
       "updatedAt": "2026-03-24T12:49:36Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/198"
     },
@@ -57490,7 +57490,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-502: feat(doris/pipeline): Implement ISO 16708 \u2014 ISO 16708 1st Ed (2006) Pipeline transportation se",
+      "title": "WRK-502: feat(lng-a/pipeline): Implement ISO 16708 \u2014 ISO 16708 1st Ed (2006) Pipeline transportation se",
       "updatedAt": "2026-03-24T12:49:39Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/196"
     },
@@ -57664,7 +57664,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-500: feat(doris/pipeline): Implement API RP 1109 \u2014 API RP 1109 Marking Liquid Petroleum Pipeline Faci",
+      "title": "WRK-500: feat(lng-a/pipeline): Implement API RP 1109 \u2014 API RP 1109 Marking Liquid Petroleum Pipeline Faci",
       "updatedAt": "2026-03-24T12:49:43Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/193"
     },
@@ -57838,7 +57838,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-498: feat(doris/pipeline): Implement API RP 1111 \u2014 API RP 1111",
+      "title": "WRK-498: feat(lng-a/pipeline): Implement API RP 1111 \u2014 API RP 1111",
       "updatedAt": "2026-03-24T12:49:47Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/190"
     },
@@ -66419,7 +66419,7 @@
         "local_repo_exists": true,
         "plan_exists": true,
         "plan_paths": [
-          "docs/plans/2026-05-05-issue-31-acma-source-files-sync-vs-copy.md"
+          "docs/plans/2026-05-05-issue-31-mkt-a-source-files-sync-vs-copy.md"
         ]
       },
       "assignees": [
@@ -66458,7 +66458,7 @@
       "priority_bucket": "Unranked",
       "repo": "assetutilities",
       "state": "OPEN",
-      "title": "tech debt | ACMA | Source Files | Sync vs. Copy",
+      "title": "tech debt | mkt-a | Source Files | Sync vs. Copy",
       "updatedAt": "2026-05-06T22:31:14Z",
       "url": "https://github.com/vamseeachanta/assetutilities/issues/31"
     },
@@ -67681,7 +67681,7 @@
         "local_repo_exists": true,
         "plan_exists": true,
         "plan_paths": [
-          "docs/plans/2026-05-05-issue-31-acma-source-files-sync-vs-copy.md",
+          "docs/plans/2026-05-05-issue-31-mkt-a-source-files-sync-vs-copy.md",
           "docs/plans/2026-05-05-issue-41-clean-code.md",
           "docs/plans/2026-05-05-issue-19-monthly-branch-and-multiuser-merge.md"
         ]

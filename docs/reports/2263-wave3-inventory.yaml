@@ -33,7 +33,7 @@ summary:
 orgs:
   - org: ISO_Standards
     org_full: International Organization for Standardization
-    root: /mnt/ace/acma-codes/ISO Standards
+    root: /mnt/ace/mkt-a-codes/ISO Standards
     file_count: 31
     files:
       # --- Parents / standalone standards ---
@@ -364,7 +364,7 @@ orgs:
 # ──────────────────────────────────────────────
   - org: ASTM
     org_full: ASTM International
-    root: /mnt/ace/acma-codes/ASTM
+    root: /mnt/ace/mkt-a-codes/ASTM
     file_count: 16
     files:
       # --- Parents / standalone standards ---
@@ -539,7 +539,7 @@ orgs:
 # ──────────────────────────────────────────────
   - org: IACS
     org_full: International Association of Classification Societies
-    root: /mnt/ace/acma-codes/IACS
+    root: /mnt/ace/mkt-a-codes/IACS
     file_count: 11
     files:
       # --- Parents / standalone standards ---

@@ -264,7 +264,7 @@ cards:
     priority: 0
     body_excerpt: "- [ ] setup linux machine\n  - [ ] ?"
   - idempotency_key: gh:vamseeachanta/assetutilities#31
-    title: tech debt | ACMA | Source Files | Sync vs. Copy
+    title: tech debt | mkt-a | Source Files | Sync vs. Copy
     source: github_issue
     source_url: https://github.com/vamseeachanta/assetutilities/issues/31
     gh_state: open
@@ -280,7 +280,7 @@ cards:
       - getsivakumar
     initial_status: triage
     priority: 0
-    body_excerpt: "Objective: \n- [ ] Determine the best way from one of methods below and implement in ACMA WLNG project\n- [ ] Prepare boiler plate code for ignoring at folder level not file level"
+    body_excerpt: "Objective: \n- [ ] Determine the best way from one of methods below and implement in mkt-a WLNG project\n- [ ] Prepare boiler plate code for ignoring at folder level not file level"
   - idempotency_key: gh:vamseeachanta/assetutilities#30
     title: tech debt | AI agents
     source: github_issue

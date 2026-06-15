@@ -85,7 +85,7 @@ sources:
     report_chatbot_eligibility: summaries only after explicit gate; no default public eligibility
   - source_class: client_project_data
     owner: client/project repo or private mounted project archive
-    canonical_path: client_projects or redacted project source ID
+    canonical_path: client-c or redacted project source ID
     input_residency: client-private repo or redacted mounted project source ID
     layer: A-DATA
     level: D-CLIENT-PRIVATE

@@ -10,7 +10,7 @@
 #
 # Repos with no `domains:` key are intentionally FLAT (below the meaningful-
 # subsystem bar): aceengineer-admin, aceengineer-strategy, hobbies,
-# kaggle-rogii-2026, llm-wiki-acma. Issues there carry only repo/machine/ai
+# kaggle-rogii-2026, llm-wiki-mkt-a. Issues there carry only repo/machine/ai
 # labels, no domain.
 
 repos:

@@ -31,7 +31,7 @@ cards:
 
       **Status:** pending | **Priority:** medium | **Category:** engineering/marine
 
-      **Complexity:** complex | **Machine:** acma-ansys05'
+      **Complexity:** complex | **Machine:** mkt-a-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#203
     title: 'WRK-5062: Mooring analysis study — literature, methods and implementation'
     source: github_issue

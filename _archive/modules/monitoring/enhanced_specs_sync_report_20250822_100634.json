@@ -61,7 +61,7 @@
     "enhanced_specs": "\u26a0\ufe0f Partial (missing module agent)"
   },
   {
-    "repository": "acma-projects",
+    "repository": "mkt-a",
     "status": "success",
     "actions": [
       "Fixed duplicate folders",
@@ -138,7 +138,7 @@
     "enhanced_specs": "\u26a0\ufe0f Partial (missing module agent)"
   },
   {
-    "repository": "frontierdeepwater",
+    "repository": "client-a",
     "status": "success",
     "actions": [
       "Fixed duplicate folders",
@@ -190,7 +190,7 @@
     "enhanced_specs": "\u26a0\ufe0f Partial (missing module agent)"
   },
   {
-    "repository": "rock-oil-field",
+    "repository": "client-b",
     "status": "success",
     "actions": [
       "Fixed duplicate folders",
@@ -216,7 +216,7 @@
     "enhanced_specs": "\u26a0\ufe0f Partial (missing module agent)"
   },
   {
-    "repository": "saipem",
+    "repository": "client-d",
     "status": "success",
     "actions": [
       "Fixed duplicate folders",
@@ -242,7 +242,7 @@
     "enhanced_specs": "\u26a0\ufe0f Partial (missing module agent)"
   },
   {
-    "repository": "seanation",
+    "repository": "client-f",
     "status": "success",
     "actions": [
       "Fixed duplicate folders",

@@ -11,11 +11,11 @@ repos:
   - name: CAD-DEVELOPMENTS
     path: /mnt/local-analysis/workspace-hub/CAD-DEVELOPMENTS
     readme_sections: ["Capabilities", "Features"]
-  - name: doris
-    path: /mnt/local-analysis/workspace-hub/doris
+  - name: lng-a
+    path: /mnt/local-analysis/workspace-hub/lng-a
     readme_sections: ["Capabilities", "Features"]
-  - name: frontierdeepwater
-    path: /mnt/local-analysis/workspace-hub/frontierdeepwater
+  - name: client-a
+    path: /mnt/local-analysis/workspace-hub/client-a
     readme_sections: ["Capabilities", "Features"]
 issue_repo: vamseeachanta/aceengineer-website
 digest_dir: docs/sync-reports

@@ -805,7 +805,7 @@
         "unknown_review"
       ],
       "substate": null,
-      "title": "feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion",
+      "title": "feat(knowledge): execute Batch Pack 4 for non-mkt-a standards summary promotion",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2373",
       "warnings": [
         "approved_no_marker",
@@ -1948,7 +1948,7 @@
         "unavailable_review"
       ],
       "substate": null,
-      "title": "feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis",
+      "title": "feat(mkt-a-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2227",
       "warnings": [
         "approved_no_marker",
@@ -2888,7 +2888,7 @@
       },
       "secondary_notes": [],
       "substate": null,
-      "title": "chore(acma-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave",
+      "title": "chore(mkt-a-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2278",
       "warnings": []
     },
@@ -2921,7 +2921,7 @@
       },
       "secondary_notes": [],
       "substate": null,
-      "title": "chore(acma-codes): codify support-artifact defer/reject policy for metadata-only sweep waves",
+      "title": "chore(mkt-a-codes): codify support-artifact defer/reject policy for metadata-only sweep waves",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2279",
       "warnings": []
     },
@@ -5583,7 +5583,7 @@
       },
       "secondary_notes": [],
       "substate": null,
-      "title": "feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion",
+      "title": "feat(mkt-a-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2470",
       "warnings": []
     },
@@ -8255,7 +8255,7 @@
           "unknown_review"
         ],
         "substate": null,
-        "title": "feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion",
+        "title": "feat(knowledge): execute Batch Pack 4 for non-mkt-a standards summary promotion",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2373",
         "warnings": [
           "approved_no_marker",
@@ -9398,7 +9398,7 @@
           "unavailable_review"
         ],
         "substate": null,
-        "title": "feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis",
+        "title": "feat(mkt-a-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2227",
         "warnings": [
           "approved_no_marker",
@@ -10338,7 +10338,7 @@
         },
         "secondary_notes": [],
         "substate": null,
-        "title": "chore(acma-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave",
+        "title": "chore(mkt-a-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2278",
         "warnings": []
       },
@@ -10371,7 +10371,7 @@
         },
         "secondary_notes": [],
         "substate": null,
-        "title": "chore(acma-codes): codify support-artifact defer/reject policy for metadata-only sweep waves",
+        "title": "chore(mkt-a-codes): codify support-artifact defer/reject policy for metadata-only sweep waves",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2279",
         "warnings": []
       },
@@ -13033,7 +13033,7 @@
         },
         "secondary_notes": [],
         "substate": null,
-        "title": "feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion",
+        "title": "feat(mkt-a-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2470",
         "warnings": []
       },

@@ -55,7 +55,7 @@ cards:
 
       **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/workspace-hub#191
-    title: 'WRK-632: feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients)'
+    title: 'WRK-632: feat(client-a): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/191
     gh_state: open
@@ -1076,7 +1076,7 @@ cards:
 
       **Repo:** [''aceengineer-website'', ''digitalmodel'', ''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/workspace-hub#190
-    title: 'WRK-626: feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3)'
+    title: 'WRK-626: feat(client-a): engineering AI demo — calculation templates + data processing (Days 2-3)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/190
     gh_state: open
@@ -1179,7 +1179,7 @@ cards:
 
       At 16" and 20" with mid-range WT at 500m depth, propagation buckling governs across ALL pressure levels (10-25 MPa). This is technically correct (propagation buckling is D/t-dependent, not pressure-dependent) but may confuse non-specialist viewers who expect different pressures to show different utilisations.'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2859
-    title: 'Doris demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata'
+    title: 'lng-a demo prep (Mo Dessoukey, 2026-06-05): ready max domains across digitalmodel + worldenergydata'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2859
     gh_state: open

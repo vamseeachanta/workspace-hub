@@ -33,7 +33,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#223
-    title: 'WRK-516: feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C'
+    title: 'WRK-516: feat(lng-a/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/223
     gh_state: open

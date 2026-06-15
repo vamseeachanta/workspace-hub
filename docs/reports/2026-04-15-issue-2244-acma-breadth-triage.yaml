@@ -1,4 +1,4 @@
-# ACMA Breadth Triage — Machine-Readable Companion
+# mkt-a Breadth Triage — Machine-Readable Companion
 # Issue: #2244
 # Parent umbrella: #2216
 # Generated: 2026-04-15
@@ -9,13 +9,13 @@ meta:
   parent_umbrella: 2216
   bounded_issue: 2227
   generated: "2026-04-15"
-  report_path: docs/reports/2026-04-15-issue-2244-acma-breadth-triage.md
+  report_path: docs/reports/2026-04-15-issue-2244-mkt-a-breadth-triage.md
   evidence_base:
     - docs/reports/2261-wave1-family-map.md
     - docs/reports/2262-wave2-family-map.md
     - docs/reports/2261-wave1-metadata-stubs.md
     - docs/reports/2262-wave2-metadata-stubs.md
-    - docs/handoffs/2026-04-12-acma-wiki-exit-handoff.md
+    - docs/handoffs/2026-04-12-mkt-a-wiki-exit-handoff.md
 
 # Items already in #2227 scope (NOT triaged here)
 in_scope_2227:

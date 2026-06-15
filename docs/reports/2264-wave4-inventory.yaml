@@ -21,7 +21,7 @@ summary:
     reject: 2139
 orgs:
   - org: "DNV Rules"
-    root: "/mnt/ace/acma-codes/DNV Rules"
+    root: "/mnt/ace/mkt-a-codes/DNV Rules"
     file_count: 2892
     files:
       - file: "1993 DNV & Other Unbonded Flexible Pipe.pdf"
@@ -26053,7 +26053,7 @@ orgs:
         confidence: low
         source_quality: title-and-metadata-only
   - org: "ABS Rules"
-    root: "/mnt/ace/acma-codes/ABS Rules"
+    root: "/mnt/ace/mkt-a-codes/ABS Rules"
     file_count: 531
     files:
       - file: "2024.07.01 CS Awareness to Owner Rule Changes Jul 2024.pdf"
@@ -30836,7 +30836,7 @@ orgs:
         confidence: low
         source_quality: title-and-metadata-only
   - org: "IMO"
-    root: "/mnt/ace/acma-codes/IMO"
+    root: "/mnt/ace/mkt-a-codes/IMO"
     file_count: 463
     files:
       - file: "1981 Resolution A.491(XII) Safety for Nuclear Merchant Ships.pdf"
@@ -35007,7 +35007,7 @@ orgs:
         confidence: low
         source_quality: title-and-metadata-only
   - org: "USCG"
-    root: "/mnt/ace/acma-codes/USCG"
+    root: "/mnt/ace/mkt-a-codes/USCG"
     file_count: 520
     files:
       - file: "PRG.H2-08.2018.01.05.General_Arrangements_(H_I_K_R_and_U).pdf"

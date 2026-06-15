@@ -105,7 +105,7 @@
       "changes": []
     },
     {
-      "repo": "acma-projects",
+      "repo": "mkt-a",
       "status": "success",
       "branch": "main",
       "stashed": false,
@@ -131,7 +131,7 @@
       "changes": []
     },
     {
-      "repo": "doris",
+      "repo": "lng-a",
       "status": "success",
       "branch": "main",
       "stashed": false,
@@ -170,7 +170,7 @@
       "changes": []
     },
     {
-      "repo": "frontierdeepwater",
+      "repo": "client-a",
       "status": "success",
       "branch": "main",
       "stashed": false,
@@ -196,7 +196,7 @@
       "changes": []
     },
     {
-      "repo": "client_projects",
+      "repo": "client-c",
       "status": "success",
       "branch": "main",
       "stashed": false,
@@ -261,7 +261,7 @@
       "changes": []
     },
     {
-      "repo": "rock-oil-field",
+      "repo": "client-b",
       "status": "success",
       "branch": "master",
       "stashed": false,
@@ -274,7 +274,7 @@
       "changes": []
     },
     {
-      "repo": "saipem",
+      "repo": "client-d",
       "status": "success",
       "branch": "main",
       "stashed": false,
@@ -306,7 +306,7 @@
       ]
     },
     {
-      "repo": "seanation",
+      "repo": "client-f",
       "status": "success",
       "branch": "main",
       "stashed": false,

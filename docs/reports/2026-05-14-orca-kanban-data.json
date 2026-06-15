@@ -558,7 +558,7 @@
           "priority": "priority:high",
           "state": "CLOSED",
           "status": null,
-          "title": "WRK-595: feat(orcaflex): rewrite enrichment pipeline \u2014 worldenergydata-first, all stages on acma-ansys05",
+          "title": "WRK-595: feat(orcaflex): rewrite enrichment pipeline \u2014 worldenergydata-first, all stages on mkt-a-ansys05",
           "updated": "2026-03-20T04:21:31Z",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/677"
         },
@@ -575,7 +575,7 @@
           "priority": "priority:high",
           "state": "CLOSED",
           "status": null,
-          "title": "WRK-595: feat(orcaflex): rewrite enrichment pipeline \u2014 worldenergydata-first, all stages on acma-ansys05",
+          "title": "WRK-595: feat(orcaflex): rewrite enrichment pipeline \u2014 worldenergydata-first, all stages on mkt-a-ansys05",
           "updated": "2026-03-20T04:21:44Z",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/637"
         },
@@ -1238,7 +1238,7 @@
           "priority": "priority:medium",
           "state": "OPEN",
           "status": null,
-          "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/Saipem, OrcaFlex/SAGE Profile)",
+          "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/client-d, OrcaFlex/SAGE Profile)",
           "updated": "2026-05-13T11:06:34Z",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2690"
         },

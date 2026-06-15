@@ -485,7 +485,7 @@ cards:
 
       ## Plan Reference'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2260
-    title: 'feat(acma-codes): staged metadata-only wiki sweep for ACMA standards collection'
+    title: 'feat(mkt-a-codes): staged metadata-only wiki sweep for mkt-a standards collection'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2260
     gh_state: closed
@@ -501,7 +501,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2261
-    title: 'feat(acma-codes): Wave 1 metadata-only wiki sweep — OCIMF (MEG 4), OCIMF, CSA'
+    title: 'feat(mkt-a-codes): Wave 1 metadata-only wiki sweep — OCIMF (MEG 4), OCIMF, CSA'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2261
     gh_state: closed
@@ -517,7 +517,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2262
-    title: "feat(acma-codes): Wave 2 metadata-only wiki sweep — API, Lloyd's Register, SIGTTO, Noble Denton"
+    title: "feat(mkt-a-codes): Wave 2 metadata-only wiki sweep — API, Lloyd's Register, SIGTTO, Noble Denton"
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2262
     gh_state: closed
@@ -533,7 +533,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2263
-    title: 'feat(acma-codes): Wave 3 metadata-only wiki sweep — ISO, ASTM, IACS'
+    title: 'feat(mkt-a-codes): Wave 3 metadata-only wiki sweep — ISO, ASTM, IACS'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2263
     gh_state: closed
@@ -549,7 +549,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2264
-    title: 'feat(acma-codes): Wave 4 metadata-only wiki sweep — DNV Rules, ABS Rules, IMO, USCG'
+    title: 'feat(mkt-a-codes): Wave 4 metadata-only wiki sweep — DNV Rules, ABS Rules, IMO, USCG'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2264
     gh_state: closed
@@ -565,7 +565,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2278
-    title: 'chore(acma-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave'
+    title: 'chore(mkt-a-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2278
     gh_state: open
@@ -588,7 +588,7 @@ cards:
 
       ## Why'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2279
-    title: 'chore(acma-codes): codify support-artifact defer/reject policy for metadata-only sweep waves'
+    title: 'chore(mkt-a-codes): codify support-artifact defer/reject policy for metadata-only sweep waves'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2279
     gh_state: open
@@ -607,7 +607,7 @@ cards:
     priority: 0
     body_excerpt: '## Summary
 
-      Define a repeatable policy for handling non-standard supporting artifacts encountered during ACMA metadata-only sweeps: catalogs, screenshots, newsletters, access notes, shortcuts, temp files, and other non-promotable support materials.
+      Define a repeatable policy for handling non-standard supporting artifacts encountered during mkt-a metadata-only sweeps: catalogs, screenshots, newsletters, access notes, shortcuts, temp files, and other non-promotable support materials.
 
       ## Why'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2589
@@ -626,7 +626,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2760
-    title: 'revise(naval-arch): B1528 SIROCCO force calculation review updates'
+    title: 'revise(naval-arch): B1528 proj-a force calculation review updates'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2760
     gh_state: open

@@ -65,10 +65,10 @@ client_references:
     description: "Total Moho Nord — client project"
   - pattern: "Lakach"
     case_sensitive: true
-    description: "Doris Lakach — client project"
+    description: "lng-a Lakach — client project"
   - pattern: "61850_zama"
     case_sensitive: false
-    description: "Doris Zama — client project number"
+    description: "lng-a Zama — client project number"
   - pattern: "MC518"
     case_sensitive: true
     description: "Client block/lease designation"

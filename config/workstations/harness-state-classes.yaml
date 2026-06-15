@@ -87,6 +87,27 @@ preserved_external:
     fingerprint:
       cwd_contains: /.deckhand-guard
       script_basename: patch-health-check.py
+  - owner: deckhand
+    note: >-
+      2-minute deliverables-sweep cron (sweep-deliverables.py scan) run from the detached
+      .deckhand-sweep worktree. Stable bits: /.deckhand-sweep cwd + sweep-deliverables.py basename.
+    fingerprint:
+      cwd_contains: /.deckhand-sweep
+      script_basename: sweep-deliverables.py
+  - owner: deckhand
+    note: >-
+      Hourly per-patch wipe/drift detector (patch-guard.py, deckhand#162) run from the deckhand
+      checkout. Stable bits: /deckhand cwd + patch-guard.py basename.
+    fingerprint:
+      cwd_contains: /deckhand
+      script_basename: patch-guard.py
+  - owner: deckhand
+    note: >-
+      Daily hermes-update sentinel (hermes-update-sentinel.py, deckhand#162) that re-applies patches
+      after an update wipe, run from the deckhand checkout. Stable bits: /deckhand cwd + basename.
+    fingerprint:
+      cwd_contains: /deckhand
+      script_basename: hermes-update-sentinel.py
   - owner: llm-wiki
     note: >-
       6-hourly O&G-Standards corpus-ingest campaign (cron_ingest.sh) owned by the SEPARATE
@@ -97,6 +118,14 @@ preserved_external:
     fingerprint:
       cwd_contains: /llm-wiki
       script_basename: cron_ingest.sh
+  - owner: achantas-data
+    note: >-
+      Weekday market-alerts cron (analysis/market-alerts/cron.sh) owned by the SEPARATE achantas-data
+      repo, run on trading-hours triggers (CRON_TZ=America/New_York). Stable bits: the
+      analysis/market-alerts/cron.sh path fragment. Does NOT pin the # market-alerts-cron comment or
+      the schedule so the match survives a path/redirect change. Keep verbatim; workspace-hub never owns it.
+    fingerprint:
+      command_contains: analysis/market-alerts/cron.sh
 
 # Preserved-LOCAL crons (#2988, F2 follow-up) — machine-local workspace-hub maintenance
 # crons that are NOT in the role catalog and NOT externally-owned. Functionally identical
