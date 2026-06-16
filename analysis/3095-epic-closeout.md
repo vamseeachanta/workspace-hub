@@ -42,13 +42,13 @@ Five identifiers **outside** the 14 scripts, surfaced only by the repo-wide swee
 |---|---|---:|
 | `.planning/research/PITFALLS.md` | bare token in a referenced filename | codename-redacted |
 | `data/document-index/shards/shard-00.json` | bare token in a path leaf | codename-redacted |
-| `scripts/readiness/compare-harness-state.sh` | `check_acma()` fn | renamed `check_ace_win_1()` (host-accurate) |
+| `scripts/readiness/compare-harness-state.sh` | client-token function name | renamed `check_ace_win_1()` (host-accurate) |
 | `scripts/email/gmail-digest.py` | client email domain in VIP set | externalized → `config/.vip-domains.local` |
 | `config/quality/no-abs-paths-baseline.txt` | 7 stale pre-rename entries | refreshed to current filename |
 
 ### Engine precision fix (private map)
 
-The redactor's `hdic` rule was tightened to an inline **alphanumeric** boundary so digit-adjacent hash fragments (e.g. a HuggingFace CDN id) stop false-matching, with no loss of any real reference. Map-only change (private + gitignored); the public engine and its `word_bound` semantics are unchanged.
+One short client codename-source token's redaction rule was tightened to an inline **alphanumeric** boundary so digit-adjacent hash fragments (e.g. a HuggingFace CDN id) stop false-matching, with no loss of any real reference. Map-only change (private + gitignored); the public engine and its `word_bound` semantics are unchanged.
 
 ## Prevention layer (#3099, live)
 
@@ -72,4 +72,4 @@ The real lists live **only** in gitignored `config/.*.local` files (one gitignor
 ## Out of scope
 
 - **Git-history scrub** — HEAD-only remediation accepted; historical commits still carry identifiers.
-- **Operator follow-up:** re-set the `LEGAL_CLIENT_MAP` CI secret + refresh the ace-linux-1 cron-host local map to pick up the `hdic` boundary fix (non-blocking — no normal PR touches the only digit-adjacent instances, two vendored reference docs).
+- **Operator follow-up:** re-set the `LEGAL_CLIENT_MAP` CI secret + refresh the ace-linux-1 cron-host local map to pick up the boundary fix (non-blocking — no normal PR touches the only digit-adjacent instances, two vendored reference docs).
