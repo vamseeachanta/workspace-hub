@@ -305,11 +305,30 @@ run_ruff() {
   return 1
 }
 
+# Read a repo's mypy-baseline entry (#3148): prints "EXEMPT", the error_count, or "" (no entry).
+_mypy_baseline_info() {
+  local repo="$1" bl="${REPO_ROOT}/config/quality/mypy-baseline.yaml"
+  [[ -f "$bl" ]] || return 0
+  MYPY_BL_REPO="$repo" MYPY_BL_FILE="$bl" uv run --no-project --with pyyaml python -c '
+import yaml, os
+d = yaml.safe_load(open(os.environ["MYPY_BL_FILE"])) or {}
+e = (d.get("repos", {}).get(os.environ["MYPY_BL_REPO"]) or {})
+print("EXEMPT" if e.get("exempt") else e.get("error_count", ""))' 2>/dev/null
+}
+
 run_mypy() {
   local repo_name="$1" repo_path="$2"
 
   if [[ ! -d "${repo_path}/src" ]]; then
     MYPY_RESULTS[$repo_name]="SKIP (no src/ directory)"
+    return 0
+  fi
+
+  # Exempt repos (baseline exempt:true) can't be type-checked — e.g. corrupted
+  # files crash mypy (digitalmodel#788). Skip BEFORE running mypy. (#3148)
+  local bl_info; bl_info="$(_mypy_baseline_info "$repo_name")"
+  if [[ "$bl_info" == "EXEMPT" ]]; then
+    MYPY_RESULTS[$repo_name]="EXEMPT (see mypy-baseline note)"
     return 0
   fi
 
@@ -319,25 +338,48 @@ run_mypy() {
   fi
 
   local -a mypy_args=(mypy src/)
-
   if grep -q '^\[tool\.mypy\]' "${repo_path}/pyproject.toml" 2>/dev/null; then
     mypy_args+=(--config-file pyproject.toml)
   else
     mypy_args+=(--ignore-missing-imports)
   fi
 
+  # timeout wrapper: large repos (worldenergydata) cold-compile for minutes;
+  # exit 124 = timeout (env), distinct from a crash. (#3148)
   local output exit_code=0
-  output="$(cd "$repo_path" && uv run "${mypy_args[@]}" 2>&1)" || exit_code=$?
+  output="$(cd "$repo_path" && timeout 300 uv run "${mypy_args[@]}" 2>&1)" || exit_code=$?
 
   if [[ $exit_code -eq 0 ]]; then
     MYPY_RESULTS[$repo_name]="PASS (0 errors)"
     return 0
   fi
 
-  local errors warnings
-  errors="$(printf '%s\n' "$output" | grep -c ': error:' || true)"
-  warnings="$(printf '%s\n' "$output" | grep -c ': warning:' || true)"
-  MYPY_RESULTS[$repo_name]="FAIL (${errors:-0} errors, ${warnings:-0} warnings)"
+  # Exit semantics (#3148): 124=timeout, >=2 (except 124)=crash/usage error —
+  # NEITHER may ratchet-pass (a crash parses 0 errors → would falsely pass <=baseline).
+  if [[ $exit_code -eq 124 ]]; then
+    MYPY_RESULTS[$repo_name]="FAIL (mypy timed out after 300s)"
+    return 1
+  fi
+  if [[ $exit_code -ge 2 ]]; then
+    MYPY_RESULTS[$repo_name]="FAIL (mypy crashed/usage error, exit ${exit_code})"
+    return 1
+  fi
+
+  # exit 1 = type errors → ratchet vs baseline (PASS when count <= baseline).
+  local count
+  count="$(printf '%s\n' "$output" | grep -oE 'Found [0-9]+ error' | grep -oE '[0-9]+' | tail -1 || true)"
+  [[ -z "$count" ]] && count="$(printf '%s\n' "$output" | grep -c ': error:' || true)"
+
+  if [[ "${MYPY_NO_RATCHET:-0}" != "1" ]]; then
+    if [[ -n "$bl_info" && -n "$count" && "$count" -le "$bl_info" ]]; then
+      MYPY_RESULTS[$repo_name]="PASS (${count} <= baseline ${bl_info})"
+      return 0
+    fi
+    MYPY_RESULTS[$repo_name]="FAIL (${count:-?} errors > baseline ${bl_info:-none})"
+    return 1
+  fi
+
+  MYPY_RESULTS[$repo_name]="FAIL (${count:-?} errors)"
   return 1
 }
 

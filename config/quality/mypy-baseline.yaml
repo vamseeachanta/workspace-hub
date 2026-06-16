@@ -3,25 +3,23 @@
 # When actual < baseline, baseline is auto-updated (no auto-commit).
 # Update by running: uv run --no-project python scripts/quality/check_mypy_ratchet.py --init
 schema_version: "1"
-updated_at: "2026-03-09"
+updated_at: "2026-06-16"
 repos:
   assetutilities:
-    error_count: 941
-    updated_at: "2026-03-09"
-    note: "941 errors in 83 files — mostly missing type annotations."
+    error_count: 1148
+    updated_at: "2026-06-16"
+    note: "1148 errors; web-contextualization + agent-os hyphen-dirs excluded (workspace-hub#3148)."
   digitalmodel:
-    error_count: 1
-    updated_at: "2026-03-09"
-    note: "1 error (syntax error in projectScheduleD01.py prevents further checking)."
-  worldenergydata:
-    error_count: 3414
-    updated_at: "2026-03-09"
-    note: "3414 errors in 547 files — mostly missing type annotations."
-  assethold:
-    error_count: 320
-    updated_at: "2026-03-09"
-    note: "320 errors in 48 files — mostly missing type annotations."
-  ogmanufacturing:
+    exempt: true
     error_count: 0
-    updated_at: "2026-03-09"
-    note: "Clean — no issues found in 5 source files."
+    updated_at: "2026-06-16"
+    exempt_reason: "12 non-Python .py files crash mypy (exit 2) — tracked in digitalmodel#788; un-exempt after fix."
+    note: "EXEMPT — mypy cannot run until digitalmodel#788 (corrupted .py files) is fixed."
+  worldenergydata:
+    error_count: 3589
+    updated_at: "2026-06-16"
+    note: "3589 errors in 585 files (re-seeded workspace-hub#3148)."
+  assethold:
+    error_count: 355
+    updated_at: "2026-06-16"
+    note: "355 errors in 62 files (re-seeded workspace-hub#3148)."
