@@ -457,3 +457,9 @@
 {"ts":"2026-06-15T07:04:41Z","host":"ace-linux-1","agent":"claude","status":"warn","version":"","message":"CLI not found in PATH"}
 {"ts":"2026-06-15T07:04:41Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.136.0","message":"version 0.136.0 below minimum 1.0.0 — run update"}
 {"ts":"2026-06-15T07:04:41Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.27.3","message":"version 0.27.3 below minimum 1.0.0 — run update"}
+{"ts":"2026-06-16T07:13:21Z","host":"ace-linux-1","agent":"claude","status":"warn","version":"","message":"CLI not found in PATH"}
+{"ts":"2026-06-16T07:13:21Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.136.0","message":"version 0.136.0 below minimum 1.0.0 — run update"}
+{"ts":"2026-06-16T07:13:21Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.27.3","message":"version 0.27.3 below minimum 1.0.0 — run update"}
+{"ts":"2026-06-16T07:14:20Z","host":"ace-linux-1","agent":"claude","status":"warn","version":"","message":"CLI not found in PATH"}
+{"ts":"2026-06-16T07:14:20Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.136.0","message":"version 0.136.0 below minimum 1.0.0 — run update"}
+{"ts":"2026-06-16T07:14:20Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.27.3","message":"version 0.27.3 below minimum 1.0.0 — run update"}

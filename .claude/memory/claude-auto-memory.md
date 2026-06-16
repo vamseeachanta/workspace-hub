@@ -8,7 +8,7 @@
 
 ## Feedback
 - [llm-wiki verify-batch fan-out 2026-06-13](project_llm_wiki_verify_fanout_session_2026_06_13.md) — 8 batch PRs #663-670 (76 verified/18 rejected/2 deferred), ALL OPEN/user-gated; collision-free WITHOUT merging via domain-axis then bucket-switch (ok→flagged disjoint by structural_status); same-domain PR pairs conflict on queue+index → merge together+rebuild; flagged-DNV ≈ figure mis-detections (mostly reject #227); spot_check catches rebuild width/newline defects; bs-7608-021 provenance mismatch → #200
-- [Provider/skills rework 2026-06-11](project_provider_skills_rework_2026_06_11.md) — Hermes runs gpt-5.5 via codex NOT Claude; claude-flow-era boilerplate archived in ALL 13 repos (dm/wed/website done via git-worktree-on-main trick, branches untouched) + hub registries → Fable 5 gen; epic wshub#3040 = push list + status; `.agents/skills` is LIVE Gemini surface (never delete); gemini-2.5-pro verified primary; ALL commits LOCAL — user must push 13 repos
+- [Provider/skills rework 2026-06-11](project_provider_skills_rework_2026_06_11.md) — Hermes runs gpt-5.5 via codex NOT Claude; claude-flow-era boilerplate archived in ALL 13 repos (dm/wed/website done via git-worktree-on-main trick, branches untouched) + hub registries → Fable 5 gen; epic wshub#3040 = push list + status; `.agents/skills` is LIVE Gemini surface (never delete); gemini-2.5-pro verified primary; ALL commits LOCAL — user must push 13 repos *verified: 2026-06-16*
 - [Subagent acceptance-metric drives signal deletion](feedback_subagent_acceptance_metric_drives_signal_deletion.md) — 2026-06-10 OGManufacturing cleanup: fan-out subagents over-removed 3× chasing "grep-empty" (deleted a knowledge domain, rewrote generated prose, missed gate-relevant run-all-tests.sh). Brief subagents on what to PRESERVE (audit trails/report data/generated files); orchestrator-verify every diff; reclassify REMOVE→KEEP with rationale
 - [Safest Countries 2026 trip shortlist (achantas-data)](project_safest_countries_2026_trips.md) — GPI Top-10 family trips as GitHub issues (hub #118 + per-country #119–127, Switzerland=#68) + merged artifact `_travel/2026/safest-countries-2026.md` (#128); live-researched IAH/family costs; GOTCHA: achantas-data CI lints/link-checks WHOLE tree → every PR red from pre-existing debt, `UNSTABLE` not `BLOCKED` so merge allowed; open: confirm family size, pick window, mature a lead (2026-06-09)
 - [Check issue state before implementing (detached-HEAD hazard)](feedback_check_issue_state_before_implementing_on_detached_head.md) — 2026-06-09 wasted full impl of #2992 (statusline weekly-reset) because a parallel session already merged it (#3004) + closed the issue; I worked from a detached HEAD → stale 154-commit base → 100-file PR #3005 (closed). ALWAYS branch from origin/main + `gh issue view`/`gh pr list --search` BEFORE coding
@@ -134,7 +134,7 @@
 - [claude-in-chrome session-scoped](feedback_claude_in_chrome_session_scoped.md) — `mcp__claude-in-chrome__*` binds main session; subagents can't drive Chrome; partition main=browser, sub=research
 - [Gmail bulk archive dialog-free](feedback_gmail_bulk_archive_no_confirm.md) — archive has no confirm dialog; delete/empty-trash/unsubscribe DO dialog and break claude-in-chrome
 - [gif_creator as proof pattern](feedback_gif_creator_as_proof_pattern.md) — `mcp__claude-in-chrome__gif_creator` captures 50 frames + click indicators; export to `docs/sessions/`
-- [superpowers/specs gitignored](feedback_superpowers_specs_gitignored.md) — brainstorming skill's `docs/superpowers/specs/` is gitignored (`.gitignore:438`); write to `docs/governance/` instead
+- [superpowers/specs gitignored](feedback_superpowers_specs_gitignored.md) — brainstorming skill's `docs/superpowers/specs/` is gitignored (`.gitignore:438`); write to `docs/governance/` instead *verified: 2026-06-16*
 - [Hermes-active preflight check](feedback_hermes_active_preflight_check.md) — Hermes cleanup loops on main revert parallel commits in minutes; preflight pgrep, use worktree+branch if active
 - [NTFS dirty-volume mount path](feedback_ntfs_dirty_volume_mount_path.md) — `ntfs3` refuses dirty volumes; use `ntfs-3g` (FUSE) auto-replays journal; explicit uid/gid for ownership
 - [ntfs3 breaks IntxLNK symlinks](feedback_ntfs3_symlink_intxlnk.md) — in-kernel ntfs3 reads ntfs-3g symlinks as raw `IntxLNK`; stay on ntfs-3g for git repos. Verified 2026-05-01.
@@ -142,7 +142,7 @@
 - [Sparse-checkout: add not disable](feedback_sparse_checkout_add_not_disable.md) — mkt-a sparse only; `git sparse-checkout add <path>` not `disable` (hung 22min materializing ~329K files)
 - [Naive secret-scan FP cascade](feedback_naive_secret_scan_false_positive_cascade.md) — regex matches `secrets-scan.sh` paths, "tokens used" prose, argon2 comments; trust hardened pre-commit hook
 - [Origin committed with unresolved markers](feedback_origin_committed_with_unresolved_markers.md) — parallel sessions land half-resolved files; pull double-nests markers; `git checkout --ours` if HEAD clean
-- [Emergency-stop recovery](feedback_emergency_stop_recovery_pattern.md) — kill -P stops next iter; partial-deleted worktree `.git` gitlink recoverable via parent `.git/worktrees/<name>/HEAD`
+- [Emergency-stop recovery](feedback_emergency_stop_recovery_pattern.md) — kill -P stops next iter; partial-deleted worktree `.git` gitlink recoverable via parent `.git/worktrees/<name>/HEAD` *stale: 2026-06-16*
 - [Bundle orphan SHAs from worktree](feedback_bundle_orphan_sha_from_worktree.md) — `git bundle` from parent fails on unreachable orphans; bundle from worktree where HEAD points; tag for cross-machine
 - [push --no-verify for preservation](feedback_pre_push_hook_no_verify_for_preservation.md) — Iron Law bans `commit --no-verify` only; push --no-verify ok for codex-branch preservation
 - [Multi-session /whats-next swarm](feedback_multi_session_swarm.md) — 2 concurrent /whats-next on same machine produce non-colliding work; wip-label gates collisions; cross-validate before follow-ups
@@ -175,7 +175,7 @@
 - [importlib + @dataclass needs sys.modules](feedback_importlib_dataclass_sys_modules.md) — kebab-case scripts via spec_from_file_location must register in sys.modules BEFORE exec_module for @dataclass
 - [Dispatch local-marker rationalization](feedback_dispatch_local_marker_rationalization.md) — dispatch lanes can write `.planning/plan-approved/<n>.md` rationalizing user instruction; forbid markers AND label
 - [Service-provider data routing](feedback_service_provider_data_routing.md) — 6-row matrix: vendor brochures→off-repo, SEC/conf-papers/regulator→public wiki. Codified 2026-05-14; #2482
-- [Codex bootstrap untracked sed origin](feedback_codex_bootstrap_untracked_sed_origin.md) — broken `~/.codex/AGENTS.md` came from one-off `sed s/claude/Codex/g`, not committed script; symlink-to-runtime fix per #2719 Phase 4
+- [Codex bootstrap untracked sed origin](feedback_codex_bootstrap_untracked_sed_origin.md) — broken `~/.codex/AGENTS.md` came from one-off `sed s/claude/Codex/g`, not committed script; symlink-to-runtime fix per #2719 Phase 4 *stale: 2026-06-16*
 - [Reviewer dispatch refetch live body](feedback_reviewer_dispatch_refetch_live_body.md) — never reuse cached `/tmp/<prompt>.txt`; refetch live issue/plan body before each review dispatch (cost: Gemini MAJOR rediscovered already-fixed defects on stale input)
 - [RCA conflated SSH PATH vs subprocess PATH](feedback_rca_conflated_ssh_vs_subprocess_path.md) — for "executable not found" in daemon-spawned subprocesses, read `/proc/<pid>/environ` not `echo $PATH`; #2712 closed as can't-repro
 - [Runtime base64 blocks binary roundtrip](feedback_runtime_base64_blocks_binary_roundtrip.md) — canvas.toDataURL in JS tool results returns `[BLOCKED: Base64 encoded data]`; use download path, save_to_disk, or skip-to-written-description for binary capture
@@ -251,7 +251,7 @@
 ## References
 > ai-orchestration.md, network_machines.md
 - [devaKrishna videos canonical source](reference_krishna_videos_youtube.md) — all progress videos on YouTube `achantav@gmail.com`; grounds skill-analysis evidence
-- [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json`
+- [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json` *stale: 2026-06-16*
 - [achantas-data](reference_achantas_data.md) — personal data + travel as GitHub issues
 - [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06 *stale: 2026-06-15*
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access

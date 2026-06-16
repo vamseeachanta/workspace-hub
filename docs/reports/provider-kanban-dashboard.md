@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-16T01:20:10Z
+Generated: 2026-06-16T05:20:11Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,7 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #3148 | check-all run_mypy is a hard co-blocker (no baseline) + assetutilities mypy config/crash | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3148 | check-all run_mypy is a hard co-blocker (no baseline) + assetutilities mypy config/crash | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3146 | Add ruff baseline/ratchet to check-all — pre-push gate unpassable on 3/4 tier-1 repos (chronic bypass) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3143 | bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3142 | bug(review-tooling): validate-review-output.sh + render-structured-review.py tracked non-executable (100644) but invoked directly → fails on fresh clone | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
@@ -51,7 +51,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3137 | Skill-invocation: capture Skill-tool calls (id→short_name resolution) — follow-on to #3112 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #3120 | feat(harness): G5 cross-surface session continuity — resumable session object [sub of #2998, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3119 | feat(harness): G4 budget-as-policy — stateful cost/token guardrail at harness layer [sub of #1838, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3118 | feat(harness): G3 MCP-first tool exposure — provider-portable tools [sub of #3058, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3118 | feat(harness): G3 MCP-first tool exposure — provider-portable tools [sub of #3058, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3117 | feat(harness): G2 AGENTS.md portability — cross-harness instruction convention [sub of #3058, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3116 | feat(harness): G1 portable agent-definition format — define once, run on any harness (Claude/Codex/Gemini) [sub of #3058, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3114 | feat(ecosystem): Omnigent-lens — make repo ecosystem AI-provider- & OS/machine-equivalent [gap-analysis umbrella; extends #2887/#2967/#3058] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
