@@ -46,34 +46,24 @@ echo -e "${GREEN}✓ Workspace droids.yml found${NC}"
 echo -e "${GREEN}✓ Repository template found${NC}"
 echo ""
 
-# Repository type mappings
+# Repository type mappings. The values carried client repo names + descriptions
+# (#3098), so the map is no longer hardcoded. It is loaded from a gitignored
+# per-host file ($REPO_TYPES_FILE or workspace-hub/config/.repo-types.local),
+# one entry per line, pipe-delimited:
+#     <repo>|<type>|<focus label>|<key tech>
+# ('#' comments and blank lines ignored). See config/.repo-types.local.example.
+# The value is reassembled to the original "type:focus:tech" colon form so the
+# downstream `IFS=':' read` parsing is unchanged. Absent file -> empty map ->
+# the per-repo loop processes nothing (safe no-op).
 declare -A REPO_TYPES
-REPO_TYPES=(
-    ["worldenergydata"]="python_analysis:World Energy Data Analysis:Python, Pandas, Plotly, UV"
-    ["digitalmodel"]="python_analysis:Digital Model & FDAS:Python, NumPy, Pandas, Plotly"
-    ["pyproject-starter"]="python_analysis:Python Project Starter:Python, UV, pytest"
-    ["aceengineercode"]="engineering:Engineering Calculations:Python, NumPy, SciPy"
-    ["energy"]="python_analysis:Energy Analysis:Python, Pandas, Plotly"
-    ["rock-oil-field"]="engineering:Rock & Oil Field Analysis:Python, NumPy, SciPy"
-    ["frontierdeepwater"]="engineering:Frontier Deepwater:Python, Engineering"
-    ["saipem"]="engineering:Saipem Engineering:Python, Calculations"
-    ["aceengineer-admin"]="web_app:Ace Engineer Admin:React, TypeScript, Node.js"
-    ["aceengineer-website"]="web_app:Ace Engineer Website:React, JavaScript, CSS"
-    ["assethold"]="web_app:Asset Management:React, TypeScript"
-    ["assetutilities"]="python_analysis:Asset Utilities:Python, Pandas"
-    ["achantas-data"]="python_analysis:Achantas Data:Python, Pandas"
-    ["achantas-media"]="web_app:Achantas Media:JavaScript, Media Processing"
-    ["acma-projects"]="engineering:ACMA Projects:Python, Engineering"
-    ["ai-native-traditional-eng"]="python_analysis:AI Native Traditional Engineering:Python, AI/ML"
-    ["client_projects"]="web_app:Client Projects:Multi-language"
-    ["doris"]="python_analysis:Doris Analysis:Python, Pandas"
-    ["hobbies"]="web_app:Hobbies & Projects:Multi-language"
-    ["investments"]="python_analysis:Investment Analysis:Python, Pandas, Finance"
-    ["sabithaandkrishnaestates"]="python_analysis:Real Estate Management:Python, Data Analysis"
-    ["sd-work"]="engineering:SD Work:Python, Engineering"
-    ["seanation"]="python_analysis:Sea Nation:Python, Marine Analysis"
-    ["teamresumes"]="web_app:Team Resumes:HTML, CSS, JavaScript"
-)
+_rt_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+_types_file="${REPO_TYPES_FILE:-$_rt_root/config/.repo-types.local}"
+if [[ -f "$_types_file" ]]; then
+    while IFS='|' read -r _repo _type _focus _tech; do
+        [[ -z "$_repo" || "$_repo" == \#* ]] && continue
+        REPO_TYPES["$_repo"]="${_type}:${_focus}:${_tech}"
+    done < "$_types_file"
+fi
 
 # Counters
 SUCCESS_COUNT=0

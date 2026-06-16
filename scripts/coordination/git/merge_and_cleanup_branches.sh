@@ -12,23 +12,23 @@ echo -e "${BLUE}🔀 Branch Merge and Cleanup Tool${NC}"
 echo "=================================="
 echo ""
 
-# Repositories with non-main branches that need attention
-declare -A repos_with_branches=(
-    ["ai-native-traditional-eng"]="custom_changes"
-    ["assetutilities"]="docs/openai-prompting-guide"
-    ["energy"]="apr_may for-merge"
-    ["pyproject-starter"]="custom_changes"
-    ["rock-oil-field"]="jun-jul"
-    ["aceengineer-admin"]="apr-may-jun"
-    ["client_projects"]="apr_may aug-sep-oct"
-    ["doris"]="2024 202501 202505"
-    ["frontierdeepwater"]="incremental-push"
-    ["hobbies"]="aug-sep-oct"
-    ["investments"]="urban-development-dashboard"
-    ["sabithaandkrishnaestates"]="family-dollar-deal-documentation"
-    ["teamresumes"]="sub-agents-enhancement"
-    ["worldenergydata"]="copilot/fix-2ed5a295-77af-4bd6-bd83-d19d89599404"
-)
+# Repositories with non-main branches that need attention. This repo->branch map
+# carried client repo names (#3098), so it is no longer hardcoded. It is loaded
+# from a gitignored per-host file ($BRANCH_CLEANUP_FILE or
+# workspace-hub/config/.branch-cleanup.local), one entry per line:
+#     <repo>:<space-separated branch list>
+# ('#' comments and blank lines ignored). See config/.branch-cleanup.local.example.
+# Absent file -> empty map -> the script processes nothing (safe no-op). The
+# merge/delete/push logic below is unchanged.
+declare -A repos_with_branches=()
+_wh_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+_map_file="${BRANCH_CLEANUP_FILE:-$_wh_root/config/.branch-cleanup.local}"
+if [[ -f "$_map_file" ]]; then
+    while IFS=: read -r _repo _branches; do
+        [[ -z "$_repo" || "$_repo" == \#* ]] && continue
+        repos_with_branches["$_repo"]="${_branches# }"
+    done < "$_map_file"
+fi
 
 # Track results
 merged_branches=()
@@ -178,8 +178,8 @@ fi
 
 echo ""
 echo -e "${BLUE}📝 Special Note:${NC}"
-echo -e "${YELLOW}  • saipem repository:${NC} Has workflow permission issues"
-echo "    Need to update GitHub OAuth permissions or use a Personal Access Token"
-echo "    with 'workflow' scope to push workflow files."
+echo -e "${YELLOW}  • Some repositories may have workflow permission issues${NC}"
+echo "    when pushing workflow files. Update GitHub OAuth permissions or use a"
+echo "    Personal Access Token with 'workflow' scope."
 echo ""
 echo -e "${GREEN}✅ Branch cleanup process completed!${NC}"
