@@ -76,11 +76,19 @@ jobs:
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
+          BASE_REF: ${{ github.base_ref }}   # via env, not interpolated into the script
         run: |
           rc=0
           printf '%s\n%s\n' "$PR_TITLE" "$PR_BODY" \
             | uv run python scripts/legal/check-client-pii.py --stdin --source "PR title/body" $STRICT || rc=$?
-          for sha in $(git rev-list "origin/${{ github.base_ref }}..HEAD"); do
+          # Fail CLOSED if the commit range can't be computed (e.g. base not fetched);
+          # an empty-but-valid range (rev-list succeeds, no commits) is a legitimate pass.
+          if ! shas="$(git rev-list --no-merges "origin/$BASE_REF..HEAD" 2>/dev/null)"; then
+            echo "::error::cannot compute commit range origin/$BASE_REF..HEAD — failing closed (need fetch-depth: 0)." >&2
+            echo "**Metadata/commits:** FAIL — commit range unavailable; scan could not run." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          for sha in $shas; do
             git log -1 --format=%B "$sha" \
               | uv run python scripts/legal/check-client-pii.py --stdin --source "commit $sha" $STRICT || rc=$?
           done

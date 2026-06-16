@@ -55,11 +55,13 @@ Client identifiers are kept out of **every public surface**, not just file conte
 (`--message-file` / `--stdin --source <label>`) feeds messages/metadata through the
 same engine and **never prints the matched value** — only the source label.
 
-**Squash-merge transient-token branches.** A merge-commit promotes a feature
-branch's individual commit messages into `main`'s history; a squash-merge does not
-(it uses the PR title/body). If a branch's commit messages might carry a transient
-token (e.g. mid-remediation), **squash-merge** it so nothing reaches `main` history —
-and remember git-history rewrites of `main` are out of scope (HEAD-only).
+**Merge method.** The CI gate blocks a PR whose commit messages carry an identifier
+**regardless of merge method**, so the gate — not the merge method — is what prevents
+the leak. Squash-merge remains useful as *hygiene* (a merge-commit copies every
+feature-branch commit message into `main`'s history; a squash uses only the PR
+title/body) and as defense-in-depth if a contributor locally bypasses the hook
+(`LEGAL_PII_ALLOW=1`). Pre-gate history that already contains a token is **out of
+scope** (HEAD-only — rewriting `main` history is not done).
 
 ### Provisioning the CI secret (one-time)
 ```bash

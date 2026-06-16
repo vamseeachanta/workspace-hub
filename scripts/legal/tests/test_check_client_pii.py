@@ -3,6 +3,8 @@
 Synthetic names only — the test file carries no real client identifiers.
 """
 import importlib.util
+import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -67,9 +69,6 @@ def test_binary_unreadable_skipped(tmp_path):
 
 
 # ── #3169: text mode (commit messages / PR metadata) ──────────────────────────
-import os
-import subprocess
-
 _SCRIPT = _LEGAL / "check-client-pii.py"
 
 
