@@ -12,38 +12,21 @@ This script ensures:
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 from datetime import datetime
 import json
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _sibling_repos import load_sibling_repos  # noqa: E402
 
 # Configuration
 BASE_PATH = Path("/mnt/github/github")
 SOURCE_REPO = "aceengineer-admin"  # Repository with the correct enhanced specs
 
-# List of all repositories to sync
-REPOSITORIES = [
-    "aceengineer-admin",
-    "aceengineercode", 
-    "aceengineer-website",
-    "achantas-data",
-    "achantas-media",
-    "acma-projects",
-    "ai-native-traditional-eng",
-    "assethold",
-    "assetutilities",
-    "digitalmodel",
-    "energy",
-    "frontierdeepwater",
-    "hobbies",
-    "investments",
-    "rock-oil-field",
-    "sabithaandkrishnaestates",
-    "saipem",
-    "sd-work",
-    "seanation",
-    "teamresumes",
-    "worldenergydata"
-]
+# Repository list — per-host (carried client repo names, #3098); loaded from the
+# gitignored config/.sibling-repos.local (or the public default when unprovisioned).
+REPOSITORIES = load_sibling_repos()
 
 # Files to sync
 ENHANCED_SPEC_FILES = {

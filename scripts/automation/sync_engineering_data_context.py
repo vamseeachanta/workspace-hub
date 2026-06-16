@@ -5,22 +5,19 @@ Sync the engineering-data-context command across all repositories.
 
 import os
 import shutil
+import sys
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _sibling_repos import load_sibling_repos  # noqa: E402
 
 # Source file
 SOURCE_FILE = Path("/mnt/github/github/.agent-os/commands/engineering_data_context.py")
 
-# List of repositories
-REPOS = [
-    "aceengineer-admin", "aceengineercode", "aceengineer-website", 
-    "achantas-data", "achantas-media", "acma-projects",
-    "ai-native-traditional-eng", "assethold", "assetutilities",
-    "client_projects", "digitalmodel", "doris", "energy",
-    "frontierdeepwater", "hobbies", "investments",
-    "pyproject-starter", "rock-oil-field", "sabithaandkrishnaestates",
-    "saipem", "sd-work", "seanation", "teamresumes", "worldenergydata"
-]
+# Repository list — per-host (carried client repo names, #3098); loaded from the
+# gitignored config/.sibling-repos.local (or the public default when unprovisioned).
+REPOS = load_sibling_repos()
 
 def sync_to_repo(repo_name: str) -> tuple:
     """Sync the command to a single repository."""
