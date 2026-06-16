@@ -146,8 +146,29 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
         continue
     fi
 
-    # Skip tasks not assigned to this machine (if we can resolve identity)
-    # For now, check all cron tasks since this is a repo-level health check
+    # Skip tasks not assigned to this machine (only when we can resolve our
+    # identity and the task declares an explicit machine list). A task pinned to
+    # other hosts writes its log on those hosts, never in this host's local tree,
+    # so checking it here is a guaranteed false MISSING (#3034 quota-snapshot-refresh
+    # is assigned to ace-linux-2 but was flagged red in dev-primary's report). If
+    # the task has no machine list, or we cannot resolve our own identity, fall
+    # back to the previous behaviour of checking every task.
+    if [[ -n "$MY_MACHINE_NAMES" && -n "$machines_str" ]]; then
+        task_for_this_machine=false
+        IFS=',' read -ra _task_machines <<< "$machines_str"
+        IFS=',' read -ra _my_names <<< "$MY_MACHINE_NAMES"
+        for _tm in "${_task_machines[@]}"; do
+            for _mn in "${_my_names[@]}"; do
+                if [[ "$_tm" == "$_mn" ]]; then
+                    task_for_this_machine=true
+                    break 2
+                fi
+            done
+        done
+        if [[ "$task_for_this_machine" == false ]]; then
+            continue
+        fi
+    fi
 
     TOTAL_TASKS=$((TOTAL_TASKS + 1))
 
