@@ -1,8 +1,14 @@
 @echo off
 echo Setting up Claude Code for all repositories...
 
-REM List of repositories to configure
-set "repos=achantas-data client_projects doris ecs energy hobbies investments OGManufacturing predyct rock-oil-field saipem seanation spire_projects"
+REM Repo list is per-host (carried client repo names, #3098); read from a
+REM gitignored file. Provision config\.windows-repos.local (one repo per line);
+REM see config\.windows-repos.local.example.
+set "REPO_LIST_FILE=%~dp0..\..\config\.windows-repos.local"
+set "repos="
+if exist "%REPO_LIST_FILE%" (
+    for /f "usebackq eol=# delims=" %%r in ("%REPO_LIST_FILE%") do call set "repos=%%repos%% %%r"
+)
 
 for %%r in (%repos%) do (
     echo.
