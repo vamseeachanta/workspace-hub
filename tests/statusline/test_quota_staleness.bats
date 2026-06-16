@@ -14,6 +14,8 @@ setup() {
   export STATUSLINE_QUOTA_PRIMARY="$TMPDIR/agent-quota-latest.json"
   export STATUSLINE_QUOTA_CACHE="$TMPDIR/agent-quota-cache.json"
   export STATUSLINE_GEMINI_SNAPSHOT="$TMPDIR/agy-usage-snapshot.json"
+  export STATUSLINE_CLAUDE_STATS_CACHE="$TMPDIR/no-stats-cache.json"
+  export STATUSLINE_CLAUDE_CREDS="$TMPDIR/no-claude-creds.json"
   export GEMINI_ERROR_DIR="$TMPDIR"
   cat > "$STATUSLINE_GEMINI_SNAPSHOT" <<EOF
 {

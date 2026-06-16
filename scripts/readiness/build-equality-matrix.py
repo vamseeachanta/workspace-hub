@@ -20,6 +20,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+from html import escape
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -30,6 +31,13 @@ REPO = Path(__file__).resolve().parents[2]
 STATE = REPO / ".claude" / "state"
 REPORTS = REPO / "docs" / "reports"
 CONFIG = REPO / "scripts" / "readiness" / "harness-config.yaml"
+sys.path.insert(0, str(REPO / "scripts" / "readiness"))
+
+try:
+    from statusline_provider_coverage import collect_statusline_provider_coverage
+except Exception:  # pragma: no cover - fail closed when the helper cannot load.
+    def collect_statusline_provider_coverage(_repo_root: Path) -> dict:
+        return {"contract_verdict": "MISSING-EVIDENCE", "error": "helper import failed"}
 
 TIER1_DEFAULT = ["assetutilities", "digitalmodel", "worldenergydata", "assethold"]
 UNREACHABLE_DEFAULT = {"home-win", "macbook-portable"}
@@ -316,6 +324,34 @@ BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd
 DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
 
+def statusline_provider_coverage_verdict(report: dict) -> tuple[str, str]:
+    if not isinstance(report, dict):
+        return "MISSING-EVIDENCE", "statusline provider coverage helper returned no report"
+    verdict = str(report.get("contract_verdict") or "MISSING-EVIDENCE")
+    detail_parts = []
+    if report.get("output_sample"):
+        detail_parts.append(str(report["output_sample"]))
+    if report.get("dirty"):
+        detail_parts.append("dirty=" + ",".join(report.get("dirty_paths") or []))
+    if report.get("missing_paths"):
+        detail_parts.append("missing=" + ",".join(report.get("missing_paths") or []))
+    blocker = report.get("r6_closeout_blocker") or {}
+    if blocker.get("state") and blocker.get("state") != "closed":
+        detail_parts.append(f"issue_2894={blocker.get('state')}")
+    if report.get("error"):
+        detail_parts.append("error=" + str(report["error"]))
+    return verdict, " | ".join(detail_parts) if detail_parts else "no detail"
+
+
+def render_repo_level_row(name: str, verdict: str, detail: str, col_count: int) -> str:
+    cls = verdict.lower()
+    span = max(1, col_count)
+    return (
+        f'<tr><th>{escape(name)}</th><td class="{escape(cls)}" colspan="{span}">'
+        f'<strong>{escape(verdict)}</strong> <span class="detail">{escape(detail)}</span></td></tr>'
+    )
+
+
 def main() -> None:
     config = yaml.safe_load(CONFIG.read_text()) if CONFIG.exists() else {}
     roster = load_roster(config)
@@ -324,6 +360,10 @@ def main() -> None:
     reports = load_reports()
 
     rows = []
+    statusline_report = collect_statusline_provider_coverage(REPO)
+    statusline_verdict, statusline_detail = statusline_provider_coverage_verdict(statusline_report)
+    rows.append(render_repo_level_row(
+        "statusline:provider-coverage", statusline_verdict, statusline_detail, len(roster)))
     for dim in DISPLAY_DIMS:
         cells = "".join(
             f'<td class="{verdict_for(dim, m, reports, baselines, roster, probed).lower()}">'
@@ -336,13 +376,13 @@ def main() -> None:
 
     html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>Machine-Equality Matrix — #2801</title>
-<style>body{{font:14px/1.5 system-ui,sans-serif;margin:2rem}}table{{border-collapse:collapse}}
-th,td{{border:1px solid #ddd;padding:.4rem .6rem;font-size:.8rem}}thead th{{background:#2d3748;color:#fff}}
-tbody th{{background:#edf2f7}}.conforms,.equal,.parity{{background:#c6f6d5}}
-.below-baseline,.diverges{{background:#fed7d7}}.no-majority,.missing-baseline{{background:#feebc8}}
-.expected-diff,.expected-divergence{{background:#e9d8fd}}
-.pending,.missing-evidence{{background:#fffaf0}}.unreachable,.absent{{background:#f7fafc;color:#a0aec0}}
-.stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}</style></head>
+    <style>body{{font:14px/1.5 system-ui,sans-serif;margin:2rem}}table{{border-collapse:collapse}}
+   th,td{{border:1px solid #ddd;padding:.4rem .6rem;font-size:.8rem}}thead th{{background:#2d3748;color:#fff}}
+   tbody th{{background:#edf2f7}}.conforms,.equal,.parity,.complete{{background:#c6f6d5}}
+   .below-baseline,.diverges{{background:#fed7d7}}.no-majority,.missing-baseline{{background:#feebc8}}
+   .expected-diff,.expected-divergence{{background:#e9d8fd}}
+   .pending,.missing-evidence,.partial{{background:#fffaf0}}.unreachable,.absent{{background:#f7fafc;color:#a0aec0}}
+   .stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}.detail{{color:#4a5568}}</style></head>
 <body><h1>Machine-Equality Matrix</h1>
 <p>#2801 · {date.today().isoformat()} · reporting {reporting}/{active} active machines</p>
 <table><thead><tr><th>Dimension</th>{cols}</tr></thead><tbody>{''.join(rows)}</tbody></table></body></html>"""

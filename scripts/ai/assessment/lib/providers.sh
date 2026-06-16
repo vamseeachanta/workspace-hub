@@ -83,9 +83,15 @@ PYEOF
     read -r messages sessions tools <<< "$weekly"
     messages=${messages:-0}; sessions=${sessions:-0}; tools=${tools:-0}
 
+    local ratio
+    ratio=$(awk -v r="${CLAUDE_MESSAGE_RATIO:-15}" 'BEGIN {
+        if (r+0 != r || r+0 <= 0) r = 15
+        printf "%s", r
+    }')
+
     local approx=0 pct_used=0 pct_remaining=100
     if (( weekly_limit > 0 && messages > 0 )); then
-        approx=$(awk -v m="$messages" -v r="${CLAUDE_MESSAGE_RATIO:-15}" 'BEGIN { printf "%d", m/r }')
+        approx=$(awk -v m="$messages" -v r="$ratio" 'BEGIN { printf "%d", m/r }')
         pct_used=$(awk -v u="$approx" -v l="$weekly_limit" 'BEGIN { printf "%d", (u/l)*100 }')
         (( pct_used > 100 )) && pct_used=100
         pct_remaining=$(( 100 - pct_used ))
@@ -116,7 +122,7 @@ PYEOF
           week_messages:$messages, approx_requests:$approx,
           week_sessions:$sessions, week_tool_calls:$tools,
           pct_remaining:$pct, avg_daily_messages:$avg,
-          trend:$trend, source:"stats-cache.json"}'
+          trend:$trend, source:"stats-cache.json-estimate"}'
 }
 
 # Merges ccusage token/cost data into a provider JSON entry as auxiliary metadata only.

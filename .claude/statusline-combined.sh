@@ -4,7 +4,7 @@
 # The project statusLine is the vendored GSD statusline
 # (.claude/hooks/gsd-statusline.js), which shows milestone/phase/task but NO
 # AI-quota or weekly-reset info. This wrapper runs BOTH the GSD statusline and
-# the "usage tail" from statusline-command.sh (the C:|O:|G: segment with the
+# the "usage tail" from statusline-command.sh (the C:|O:|G:|H=O segment with the
 # #2992 weekly-reset countdown, plus cost + context) and joins them — so the
 # reset countdown is visible while working in workspace-hub.
 #

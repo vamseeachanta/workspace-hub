@@ -12,7 +12,7 @@ setup() {
   cat > "$STATUSLINE_QUOTA_PRIMARY" <<'EOF'
 {"agents":[
   {"provider":"claude","week_pct":null,"pct_remaining":null,"hours_to_reset":null,"resets_at":"","source":"unavailable"},
-  {"provider":"codex","week_pct":36,"pct_remaining":64,"hours_to_reset":60,"resets_at":"","source":"app-server-live"},
+  {"provider":"codex","week_pct":36,"pct_remaining":64,"five_hour_pct":1,"hours_to_reset":60,"resets_at":"","source":"app-server-live"},
   {"provider":"gemini","pct_remaining":100,"source":"estimated"}
 ]}
 EOF
@@ -31,7 +31,8 @@ INPUT='{"model":{"display_name":"Opus 4.8"},"workspace":{"current_dir":"'"$PWD"'
   run bash -c "printf '%s' '$INPUT' | bash '$SCRIPT'"
   [ "$status" -eq 0 ]
   clean=$(printf '%s' "$output" | sed 's/\x1b\[[0-9;]*m//g')   # strip ANSI colors
-  [[ "$clean" == *"O:64%·2.5d"* ]]   # 60h/24 = 2.5d, via reused reset_days
+  [[ "$clean" == *"O:64%·2.5d·5h99%"* ]]   # 60h/24 = 2.5d, via reused reset_days
+  [[ "$clean" == *"|H=O"* ]]
   [[ "$clean" == *"ctx:15%"* ]]
 }
 
@@ -55,6 +56,8 @@ INPUT='{"model":{"display_name":"Opus 4.8"},"workspace":{"current_dir":"'"$PWD"'
   cp "$BATS_TEST_DIRNAME/../../.claude/statusline-command.sh" "$TMPDIR/statusline-command.sh"
   run bash -c "printf '%s' '$INPUT' | bash '$TMPDIR/statusline-combined.sh'"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"O:64%·2.5d"* ]]   # tail still present
+  clean=$(printf '%s' "$output" | sed 's/\x1b\[[0-9;]*m//g')
+  [[ "$clean" == *"O:64%·2.5d·5h99%"* ]]   # tail still present
+  [[ "$clean" == *"|H=O"* ]]
   [[ "$output" != *" │ "* ]]          # no joiner since GSD half was empty
 }

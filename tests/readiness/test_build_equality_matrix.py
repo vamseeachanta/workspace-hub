@@ -432,6 +432,48 @@ def test_matrix_renders_nine_provider_capability_rows_for_four_active_machines(t
     assert "EXPECTED-DIVERGENCE" in html
 
 
+def test_statusline_provider_coverage_renders_as_repo_level_colspan_row(tmp_path, monkeypatch):
+    state = tmp_path / "state"
+    state.mkdir()
+    reports_dir = tmp_path / "reports"
+    cfg = tmp_path / "harness-config.yaml"
+    machines = {m: {"status": "active"} for m in ("dev-primary", "dev-secondary")}
+    cfg.write_text(yaml.safe_dump({"workstations": machines, "tier1_repos": TIER1}))
+    for machine in machines:
+        (state / f"equality-{machine}.yaml").write_text(
+            yaml.safe_dump(_provider_report(machine)))
+    monkeypatch.setattr(bem, "STATE", state)
+    monkeypatch.setattr(bem, "REPORTS", reports_dir)
+    monkeypatch.setattr(bem, "CONFIG", cfg)
+    monkeypatch.setattr(
+        bem,
+        "collect_statusline_provider_coverage",
+        lambda _repo: {
+            "contract_verdict": "COMPLETE",
+            "dirty": False,
+            "missing_paths": [],
+            "r6_closeout_blocker": {"state": "closed"},
+            "output_sample": "C:95%?|O:35%·2.5d·5h99%|G:100%·6.6d|H=O",
+        },
+        raising=False,
+    )
+
+    bem.main()
+
+    html = next(reports_dir.glob("*-machine-equality-matrix.html")).read_text()
+    assert "<th>statusline:provider-coverage</th>" in html
+    assert 'colspan="2"' in html
+    assert "COMPLETE" in html
+    assert "C:95%?|O:35%·2.5d·5h99%|G:100%·6.6d|H=O" in html
+    assert "statusline:provider-coverage" not in bem.DISPLAY_DIMS
+
+
+def test_repo_level_row_empty_roster_uses_valid_colspan():
+    row = bem.render_repo_level_row("statusline:provider-coverage", "PARTIAL", "no roster", 0)
+
+    assert 'colspan="1"' in row
+
+
 # ── uniform-dim equality + ties (C1) ────────────────────────────────────────
 def test_matrix_pending_under_two():
     assert bem.uniform_verdict("skills", ["407"]) == "PENDING"

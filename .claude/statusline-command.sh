@@ -8,7 +8,7 @@ input=$(cat)
 # Optional segment mode (#2893): emit only a sub-part of the statusline so a
 # wrapper can compose this with another statusline (e.g. the vendored GSD one,
 # which has no quota/reset display). Recognized:
-#   --usage-tail  -> AI-usage segment (C:|O:|G: with weekly-reset) + cost + ctx
+#   --usage-tail  -> AI-usage segment (C:|O:|G:|H=O with reset/burst data) + cost + ctx
 # Any other/empty value renders the full statusline unchanged.
 SEGMENT="${1:-}"
 
@@ -54,11 +54,13 @@ issue_num=$(echo "$branch" | grep -oE '[0-9]{3,5}' | head -1) || true
 
 # AI usage remaining percentages
 # C: uses Claude.ai 7-day subscription quota (from statusline JSON) as primary,
-# falls back to agent-quota file. O: and G: from agent-quota files.
+# falls back to local/cache data. O: and G: from quota/usage helpers; H aliases O.
 # Env overrides keep the script testable with fixture quota files (#2992);
 # they fall back to the real locations in normal use.
 quota_primary="${STATUSLINE_QUOTA_PRIMARY:-$ws_root/config/ai-tools/agent-quota-latest.json}"
 quota_cache="${STATUSLINE_QUOTA_CACHE:-${HOME}/.cache/agent-quota.json}"
+claude_stats_cache="${STATUSLINE_CLAUDE_STATS_CACHE:-${HOME}/.claude/stats-cache.json}"
+claude_creds="${STATUSLINE_CLAUDE_CREDS:-${HOME}/.claude/.credentials.json}"
 
 # Parse an ISO-8601 timestamp to epoch seconds; emits nothing on failure.
 iso_epoch() {
@@ -107,31 +109,162 @@ quota_file_state() {   # <file> -> fresh | stale | missing
 primary_state=$(quota_file_state "$quota_primary")
 cache_state=$(quota_file_state "$quota_cache")
 
+is_estimate_source() {
+    case "${1:-}" in
+        estimated|*-estimate|stats-cache.json-estimate|statusline-stats-cache-estimate)
+            return 0 ;;
+    esac
+    return 1
+}
+
+entry_source() {  # <provider> <file>
+    jq -r --arg p "$1" \
+        '.agents[]? | select(.provider == $p) | .source // empty' "$2" 2>/dev/null
+}
+
+file_state_for_source() {  # <file> <source>
+    local file="$1" source="$2" state
+    [[ "$file" == "$quota_primary" ]] && state="$primary_state" || state="$cache_state"
+    if is_estimate_source "$source"; then
+        echo estimate
+    else
+        echo "$state"
+    fi
+}
+
+remaining_from_used() {  # <used-pct>
+    awk -v u="$1" 'BEGIN {
+        if (u+0 != u) exit 1
+        r = 100 - u
+        if (r < 0) r = 0
+        if (r > 100) r = 100
+        printf "%d", r
+    }' 2>/dev/null || true
+}
+
+select_quota_value() {  # <primary-val> <primary-state> <cache-val> <cache-state>
+    local p_val="$1" p_state="$2" c_val="$3" c_state="$4"
+    # Freshness remains the top-level ordering, but within a freshness tier a
+    # non-estimate source wins. Shared quota collectors should not persist
+    # estimates; if they ever do, the visible "?" marker is still mandatory.
+    if [[ -n "$p_val" && "$primary_state" == fresh && "$p_state" != estimate ]]; then
+        echo "$p_val $p_state"
+    elif [[ -n "$c_val" && "$cache_state" == fresh && "$c_state" != estimate ]]; then
+        echo "$c_val $c_state"
+    elif [[ -n "$p_val" && "$primary_state" == fresh ]]; then
+        echo "$p_val $p_state"
+    elif [[ -n "$c_val" && "$cache_state" == fresh ]]; then
+        echo "$c_val $c_state"
+    elif [[ -n "$p_val" && "$p_state" != estimate ]]; then
+        echo "$p_val $p_state"
+    elif [[ -n "$c_val" && "$c_state" != estimate ]]; then
+        echo "$c_val $c_state"
+    elif [[ -n "$p_val" ]]; then
+        echo "$p_val $p_state"
+    elif [[ -n "$c_val" ]]; then
+        echo "$c_val $c_state"
+    else
+        echo "- none"
+    fi
+}
+
 # Emit "<pct> <fresh|stale>" (or "- none" when unknown) for a provider,
 # choosing the freshest file that has a value: fresh primary > fresh cache >
 # stale primary > stale cache. Preserves the historical field-per-file
 # convention (primary: week_pct, cache: pct_remaining).
 extract_pct() {
-    local provider="$1" p_val="" c_val="" v
+    local provider="$1" p_val="" c_val="" p_src="" c_src="" p_out_state="" c_out_state="" v
     if [[ -f "$quota_primary" ]]; then
         v=$(jq -r --arg p "$provider" \
             '.agents[] | select(.provider == $p) | .week_pct // empty' \
             "$quota_primary" 2>/dev/null)
-        [[ -n "$v" && "$v" != "null" ]] && \
-            p_val=$(awk -v w="$v" 'BEGIN { printf "%d", 100 - w }')
+        [[ -n "$v" && "$v" != "null" ]] && p_val=$(remaining_from_used "$v")
+        p_src=$(entry_source "$provider" "$quota_primary")
+        p_out_state=$(file_state_for_source "$quota_primary" "$p_src")
     fi
     if [[ -f "$quota_cache" ]]; then
         v=$(jq -r --arg p "$provider" \
             '.agents[] | select(.provider == $p) | .pct_remaining // empty' \
             "$quota_cache" 2>/dev/null)
         [[ -n "$v" && "$v" != "null" ]] && c_val="$v"
+        c_src=$(entry_source "$provider" "$quota_cache")
+        c_out_state=$(file_state_for_source "$quota_cache" "$c_src")
     fi
-    if [[ -n "$p_val" && "$primary_state" == fresh ]]; then echo "$p_val fresh"
-    elif [[ -n "$c_val" && "$cache_state" == fresh ]]; then echo "$c_val fresh"
-    elif [[ -n "$p_val" ]]; then echo "$p_val stale"
-    elif [[ -n "$c_val" ]]; then echo "$c_val stale"
-    else echo "- none"
+    select_quota_value "$p_val" "$p_out_state" "$c_val" "$c_out_state"
+}
+
+codex_five_hour_remaining() {
+    # `five_hour_pct` is used-polarity from scripts/ai/assessment/query-codex-usage.sh:
+    # live app-server `.primary.usedPercent` and session `.payload.rate_limits.primary.used_percent`.
+    # The statusline displays remaining-polarity, so it renders 100 - five_hour_pct.
+    local p_val="" c_val="" p_src="" c_src="" p_out_state="" c_out_state="" v
+    if [[ -f "$quota_primary" ]]; then
+        v=$(jq -r '.agents[] | select(.provider == "codex") | .five_hour_pct // empty' \
+            "$quota_primary" 2>/dev/null)
+        [[ -n "$v" && "$v" != "null" ]] && p_val=$(remaining_from_used "$v")
+        p_src=$(entry_source codex "$quota_primary")
+        p_out_state=$(file_state_for_source "$quota_primary" "$p_src")
     fi
+    if [[ -f "$quota_cache" ]]; then
+        v=$(jq -r '.agents[] | select(.provider == "codex") | .five_hour_pct // empty' \
+            "$quota_cache" 2>/dev/null)
+        [[ -n "$v" && "$v" != "null" ]] && c_val=$(remaining_from_used "$v")
+        c_src=$(entry_source codex "$quota_cache")
+        c_out_state=$(file_state_for_source "$quota_cache" "$c_src")
+    fi
+    select_quota_value "$p_val" "$p_out_state" "$c_val" "$c_out_state"
+}
+
+jq_supports_iso_dates() {
+    jq -n '"2000-01-01T00:00:00Z" | fromdateiso8601' >/dev/null 2>&1
+}
+
+positive_ratio() {
+    awk -v r="${CLAUDE_MESSAGE_RATIO:-15}" 'BEGIN {
+        if (r+0 != r || r+0 <= 0) r = 15
+        printf "%s", r
+    }'
+}
+
+claude_weekly_limit_from_creds() {
+    [[ -f "$claude_creds" ]] || return 0
+    local tier rate_tier key
+    tier=$(jq -r '.claudeAiOauth.subscriptionType // empty' "$claude_creds" 2>/dev/null) || return 0
+    rate_tier=$(jq -r '.claudeAiOauth.rateLimitTier // empty' "$claude_creds" 2>/dev/null) || return 0
+    key="${rate_tier:-$tier}"
+    case "$key" in
+        pro) echo 2000 ;;
+        max) echo 10000 ;;
+        default_claude_max_20x) echo 20000 ;;
+        team) echo 3500 ;;
+        "") return 0 ;;
+        *) echo 10000 ;;
+    esac
+}
+
+claude_stats_estimate() {
+    [[ -f "$claude_stats_cache" && -f "$claude_creds" ]] || { echo "- none"; return; }
+    jq_supports_iso_dates || { echo "- none"; return; }
+    local limit messages ratio pct_remaining
+    limit=$(claude_weekly_limit_from_creds) || { echo "- none"; return; }
+    [[ -n "$limit" ]] || { echo "- none"; return; }
+    messages=$(jq -r '
+        def day_epoch:
+          ((.date? // "") | tostring | . + "T00:00:00Z") as $date
+          | try ($date | fromdateiso8601) catch 0;
+        [.dailyActivity[]? | select(day_epoch > (now - 604800)) | (.messageCount // 0)] | add // 0
+    ' "$claude_stats_cache" 2>/dev/null) || { echo "- none"; return; }
+    [[ "$messages" =~ ^[0-9]+$ ]] || { echo "- none"; return; }
+    ratio=$(positive_ratio)
+    pct_remaining=$(awk -v m="$messages" -v r="$ratio" -v l="$limit" 'BEGIN {
+        if (l+0 != l || l <= 0 || r+0 != r || r <= 0) exit 1
+        approx = m / r
+        pct = int((approx / l) * 100)
+        if (pct > 100) pct = 100
+        if (pct < 0) pct = 0
+        printf "%d", 100 - pct
+    }' 2>/dev/null) || { echo "- none"; return; }
+    [[ -n "$pct_remaining" ]] && echo "$pct_remaining estimate" || echo "- none"
 }
 
 # Convert an ISO-8601 timestamp into days-from-now, 1 decimal, floored at 0.
@@ -154,7 +287,7 @@ days_until_iso() {
 # date-parse misses and empty substitutions are swallowed so a bad field can't
 # blank the whole statusline under `set -euo pipefail`.
 reset_days() {
-    local provider="$1" file resets_at="" hours="" source="" file_state=""
+    local provider="$1" file resets_at="" hours="" source="" file_state="" selected=0
     # Freshest file first (#3034) — same selection principle as extract_pct,
     # so a fresh HOME cache supplies the countdown instead of a stale primary.
     local -a file_order=("$quota_primary" "$quota_cache")
@@ -168,15 +301,19 @@ reset_days() {
             '.agents[] | select(.provider == $p) | .resets_at // empty' "$file" 2>/dev/null)
         hours=$(jq -r --arg p "$provider" \
             '.agents[] | select(.provider == $p) | .hours_to_reset // empty' "$file" 2>/dev/null)
+        case "$source" in
+            unavailable|estimated|*-estimate|stats-cache.json-estimate|statusline-stats-cache-estimate)
+                resets_at=""; hours=""
+                continue ;;
+        esac
         if [[ -n "$source" || -n "$resets_at" || ( -n "$hours" && "$hours" != "null" ) ]]; then
             [[ "$file" == "$quota_primary" ]] && file_state="$primary_state" \
                                               || file_state="$cache_state"
+            selected=1
             break
         fi
     done
-    case "$source" in
-        unavailable|estimated) return ;;
-    esac
+    [[ "$selected" == 1 ]] || return
     if [[ -n "$resets_at" ]]; then
         local days
         days=$(days_until_iso "$resets_at") || days=""
@@ -228,7 +365,7 @@ gemini_snapshot_pct() {
 # the figure is unknown. Emits literal \033 escapes for the final printf %b.
 color_pct() {
     local label="$1" rem="$2" suffix="${3:-}"
-    if [[ -z "$rem" || "$rem" == "-" ]]; then
+    if [[ -z "$rem" || "$rem" == "-" || ! "$rem" =~ ^[0-9]+$ ]]; then
         echo "\033[2m${label}:-%${suffix}\033[0m"   # dim: unknown/unavailable
         return
     fi
@@ -238,19 +375,48 @@ color_pct() {
     echo "${color}${label}:${rem}%${suffix}\033[0m"
 }
 
+color_5h_suffix() {
+    local rem="$1" state="${2:-fresh}" mark=""
+    if [[ -z "$rem" || "$rem" == "-" || ! "$rem" =~ ^[0-9]+$ ]]; then
+        return
+    fi
+    [[ "$state" == stale || "$state" == estimate ]] && mark="?"
+    local color='\033[32m'
+    (( rem < 40 )) && color='\033[33m'
+    (( rem < 20 )) && color='\033[31m'
+    echo "${color}5h${rem}%${mark}\033[0m"
+}
+
+hermes_alias() {
+    local rem="$1" state="${2:-none}" mark=""
+    if [[ -z "$rem" || "$rem" == "-" || ! "$rem" =~ ^[0-9]+$ ]]; then
+        echo "\033[2mH=O?\033[0m"
+        return
+    fi
+    [[ "$state" == stale || "$state" == estimate ]] && mark="?"
+    local color='\033[32m'
+    (( rem < 40 )) && color='\033[33m'
+    (( rem < 20 )) && color='\033[31m'
+    echo "${color}H=O${mark}\033[0m"
+}
+
 # Claude: prefer 7-day subscription remaining from API (most accurate)
 week_used=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 week_resets_at=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 c_suffix=""
 c_mark=""
 if [[ -n "$week_used" ]]; then
-    c_rem=$(awk -v u="$week_used" 'BEGIN { printf "%d", 100 - u }')
+    c_rem=$(remaining_from_used "$week_used")
+    [[ -n "$c_rem" ]] || c_rem="-"
 else
     # Fallback to agent-quota file (stale file -> ? marker on the percentage)
     read -r c_rem c_state <<< "$(extract_pct "claude")"
-    [[ "$c_state" == stale ]] && c_mark="?"
+    if [[ "$c_state" == none || -z "${c_state:-}" ]]; then
+        read -r c_rem c_state <<< "$(claude_stats_estimate)"
+    fi
+    [[ "$c_state" == stale || "$c_state" == estimate ]] && c_mark="?"
     # Sonnet sub-bucket: show tighter limit with (S) indicator
-    if [[ -f "$quota_primary" && -n "$c_rem" && "$c_rem" != "-" ]]; then
+    if [[ "$c_state" != estimate && -f "$quota_primary" && -n "$c_rem" && "$c_rem" != "-" ]]; then
         s_val=$(jq -r '.agents[] | select(.provider == "claude") | .sonnet_pct // empty' \
             "$quota_primary" 2>/dev/null)
         if [[ -n "$s_val" && "$s_val" != "null" ]]; then
@@ -263,9 +429,10 @@ else
 fi
 
 read -r o_pct o_state <<< "$(extract_pct "codex")"
+read -r o_5h_pct o_5h_state <<< "$(codex_five_hour_remaining)"
 read -r g_pct g_state g_suffix <<< "$(gemini_snapshot_pct)"
 [[ "$g_suffix" == "-" ]] && g_suffix=""
-o_mark=""; [[ "$o_state" == stale ]] && o_mark="?"
+o_mark=""; [[ "$o_state" == stale || "$o_state" == estimate ]] && o_mark="?"
 g_mark=""; [[ "$g_state" == stale ]] && g_mark="?"
 
 # Append a "·N.Nd" weekly-reset countdown (days, 1 decimal) to the weekly-quota
@@ -291,8 +458,12 @@ o_days_mark=""; [[ "${o_days_state:-}" == stale && -n "${o_days:-}" ]] && o_days
 c_suffix="${c_mark}${c_suffix}"
 o_suffix="$o_mark"
 [[ -n "${o_days:-}" ]] && o_suffix="${o_mark}·${o_days}d${o_days_mark}"
+if [[ -n "${o_5h_pct:-}" && "$o_5h_pct" != "-" ]]; then
+    o_5h_segment=$(color_5h_suffix "$o_5h_pct" "${o_5h_state:-fresh}")
+    [[ -n "$o_5h_segment" ]] && o_suffix="${o_suffix}·${o_5h_segment}"
+fi
 
-ai_usage="$(color_pct C "$c_rem" "$c_suffix")|$(color_pct O "$o_pct" "$o_suffix")|$(color_pct G "$g_pct" "${g_mark}${g_suffix}")"
+ai_usage="$(color_pct C "$c_rem" "$c_suffix")|$(color_pct O "$o_pct" "$o_suffix")|$(color_pct G "$g_pct" "${g_mark}${g_suffix}")|$(hermes_alias "$o_pct" "$o_state")"
 
 # Repo module name (basename of workspace root)
 repo_name=$(basename "$ws_root")
