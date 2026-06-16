@@ -1,39 +1,32 @@
 @echo off
+setlocal enabledelayedexpansion
 echo Claude Code Repository Switcher
 echo ================================
 echo.
-echo Available repositories:
-echo 1. aceengineer-admin
-echo 2. achantas-data
-echo 3. client_projects
-echo 4. doris
-echo 5. ecs
-echo 6. energy
-echo 7. hobbies
-echo 8. investments
-echo 9. OGManufacturing
-echo 10. predyct
-echo 11. rock-oil-field
-echo 12. saipem
-echo 13. seanation
-echo 14. spire_projects
-echo.
-set /p choice="Select repository (1-14): "
 
-if "%choice%"=="1" set "repo=aceengineer-admin"
-if "%choice%"=="2" set "repo=achantas-data"
-if "%choice%"=="3" set "repo=client_projects"
-if "%choice%"=="4" set "repo=doris"
-if "%choice%"=="5" set "repo=ecs"
-if "%choice%"=="6" set "repo=energy"
-if "%choice%"=="7" set "repo=hobbies"
-if "%choice%"=="8" set "repo=investments"
-if "%choice%"=="9" set "repo=OGManufacturing"
-if "%choice%"=="10" set "repo=predyct"
-if "%choice%"=="11" set "repo=rock-oil-field"
-if "%choice%"=="12" set "repo=saipem"
-if "%choice%"=="13" set "repo=seanation"
-if "%choice%"=="14" set "repo=spire_projects"
+REM Repo list is per-host (carried client repo names, #3098); read from a
+REM gitignored file. Provision config\.windows-repos.local (one repo per line);
+REM see config\.windows-repos.local.example. The numbered menu and the
+REM choice->repo mapping are generated from that list.
+set "REPO_LIST_FILE=%~dp0..\..\config\.windows-repos.local"
+if not exist "%REPO_LIST_FILE%" (
+    echo Error: repo list not found: %REPO_LIST_FILE%
+    echo Provision it from config\.windows-repos.local.example
+    pause
+    exit /b 1
+)
+
+echo Available repositories:
+set /a count=0
+for /f "usebackq eol=# delims=" %%r in ("%REPO_LIST_FILE%") do (
+    set /a count+=1
+    set "repo[!count!]=%%r"
+    echo !count!. %%r
+)
+echo.
+set /p choice="Select repository (1-!count!): "
+
+set "repo=!repo[%choice%]!"
 
 if "%repo%"=="" (
     echo Invalid selection!
