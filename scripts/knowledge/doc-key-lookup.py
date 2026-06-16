@@ -190,17 +190,20 @@ def search_wiki_pages(query: str, by: str = "key") -> List[Dict[str, str]]:
     return matches
 
 
-def run_lookup(query: str, by: str = "key", json_output: bool = False) -> int:
-    """Run unified lookup and display results."""
-    results = {
+def lookup_data(query: str, by: str = "key") -> Dict[str, Any]:
+    """Pure unified lookup across the pyramid — deterministic (no timestamp, no I/O).
+
+    Shared core for the CLI (run_lookup) AND the MCP tool (doc_key_lookup_mcp) so every
+    surface returns identical data (#3118 anti-drift contract; tested in
+    tests/test_doc_key_lookup_mcp.py).
+    """
+    results: Dict[str, Any] = {
         "query": query,
         "lookup_type": by,
-        "timestamp": datetime.now().isoformat(),
         "index_records": [],
         "standards_ledger": [],
         "wiki_pages": [],
     }
-    total = 0
 
     if by == "key":
         results["index_records"] = search_index_by_key(query)
@@ -224,6 +227,17 @@ def run_lookup(query: str, by: str = "key", json_output: bool = False) -> int:
                 path_results = search_index_by_path(Path(doc_path).name, limit=5)
                 results["index_records"].extend(path_results)
 
+    # Drop None-valued fields from index records (matches the JSON surface).
+    for rec in results["index_records"]:
+        for key in list(rec.keys()):
+            if rec[key] is None:
+                del rec[key]
+    return results
+
+
+def run_lookup(query: str, by: str = "key", json_output: bool = False) -> int:
+    """Run unified lookup and display results."""
+    results = lookup_data(query, by)
     total = (
         len(results["index_records"])
         + len(results["standards_ledger"])
@@ -231,12 +245,9 @@ def run_lookup(query: str, by: str = "key", json_output: bool = False) -> int:
     )
 
     if json_output:
-        # Simplify index records for JSON output
-        for rec in results["index_records"]:
-            for key in list(rec.keys()):
-                if rec[key] is None:
-                    del rec[key]
-        print(json.dumps(results, indent=2, default=str))
+        out = dict(results)
+        out["timestamp"] = datetime.now().isoformat()
+        print(json.dumps(out, indent=2, default=str))
     else:
         print(f"{'=' * 60}")
         print(f" doc_key Lookup: {query}")
