@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_autostash_lock_race_workspace_hub.md
 
 ---
 name: autostash-lock-race-workspace-hub
 description: "git rebase --autostash fails (\"Cannot autostash\") when statusline-command.sh git status loops race with stash creation on workspace-hub"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 000d04a3-532a-4959-becb-59b1f1349fb3

@@ -6,7 +6,7 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-06-14)
+## Synced from Hermes Memory (2026-06-16)
 
 ### Environment Facts
 
@@ -47,7 +47,7 @@ Context parity = compute parity. Zero waste everywhere.
 - **ace-linux-1 control surface**: keep user approvals, launch decisions, GitHub mutations, and cross-lane reconciliation on `ace-linux-1` unless explicit failover is chosen.
 - **Overnight batch**: 3 self-contained prompts, one per terminal, zero git contention.
   Always include a git contention avoidance map.
-- **Long-running lanes**: prefer named `tmux` sessions or Hermes-tracked background processes with logs under `logs/night-runs/` and prompt packs under `docs/plans/overnight-prompts/`. *verified: 2026-06-15*
+- **Long-running lanes**: prefer named `tmux` sessions or Hermes-tracked background processes with logs under `logs/night-runs/` and prompt packs under `docs/plans/overnight-prompts/`.
 - **Adversarial review**: BOTH stages — plan review AND code/artifact review.
   Minimum: Claude + Codex + Gemini all review.
 - **Context parity**: Corrections made in one agent must propagate to all others.

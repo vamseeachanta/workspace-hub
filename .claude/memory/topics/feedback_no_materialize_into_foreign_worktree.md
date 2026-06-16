@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_no_materialize_into_foreign_worktree.md
 
 ---
 name: feedback_no_materialize_into_foreign_worktree
 description: "Don't materialize files into a working tree checked out on another session's branch — it pollutes their tree and can leak into the shared index"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: f034965f-13d1-4a2f-b6b9-58d211c43da0

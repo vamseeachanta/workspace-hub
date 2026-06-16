@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_parallel_subagent_shared_target_manifest_deferral.md
 
 ---
 name: feedback-parallel-subagent-shared-target-manifest-deferral
 description: "When dispatching parallel write-only subagents that need to edit shared cross-link / index / log files, partition into unique-target (subagent edits directly) vs shared-target (subagent emits old_string+new_string deltas in YAML manifest, main session applies in deterministic order). Avoids last-write-wins race without serializing the whole authoring phase."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 58f6d77d-d489-489a-8a6f-d4407be06c12

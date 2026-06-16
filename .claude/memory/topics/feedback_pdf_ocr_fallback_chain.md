@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_pdf_ocr_fallback_chain.md
 
 ---
 name: pdf-ocr-fallback-chain
 description: "When pdftotext and PyMuPDF both return empty text on a PDF, treat it as image-rendered and OCR via PyMuPDF render to PNG → tesseract; pattern recurs for vendor/recruiter JDs, scanned contracts, printed-then-scanned docs"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 3537e768-7e6b-42e4-9a13-a4b0e3f1d9aa

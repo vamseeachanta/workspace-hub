@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_codex_sandbox_uv_cache_readonly.md
 
 ---
 name: feedback-codex-sandbox-uv-cache-readonly
 description: "Under the Codex-under-Claude sandbox, `uv run` fails because ~/.cache/uv is read-only; use .venv/bin/python or UV_CACHE_DIR=/tmp"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 980c06c6-7a70-4602-bfbc-32addeb44f9a

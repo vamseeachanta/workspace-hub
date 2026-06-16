@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_r1_review_trust_hazard.md
 
 ---
 name: r1-review-trust-hazard
 description: "before applying an r1-review fix asserting that something is missing, independently verify the asserted gap by reading the relevant source — reviewers have constrained retrieval"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 88b3956a-7a96-4346-9dbe-674f5fb0b4e9

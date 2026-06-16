@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_cross_provider_agent_liveness.md
 
 ---
 name: feedback-cross-provider-agent-liveness
 description: "Monitoring Claude+Codex+Hermes agents: normalize liveness on the process table/daemon, never on on-disk JSON; each provider's state file lies in a different way"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 08e3d2f3-8ca3-49c2-bc9d-390a767f25fa

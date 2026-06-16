@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_importlib_dataclass_sys_modules.md
 
 ---
 name: importlib-dataclass-sys-modules
 description: kebab-case Python scripts loaded via spec_from_file_location must register in sys.modules BEFORE exec_module if they contain @dataclass — otherwise dataclass machinery raises AttributeError on cls.__module__.__dict__ lookup
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: dda679b1-6aba-45a0-8665-9e2fdb62d530

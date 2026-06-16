@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_browser_capture_to_disk_webgl.md
 
 ---
 name: feedback-browser-capture-to-disk-webgl
 description: How to get web imagery into a file for video/PDF pipelines — bridge save_to_disk writes no host file; headless chrome --screenshot works but has no WebGL (no Google Earth/Street View)
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 0c5c8b5b-c073-4d66-9dca-4e4fae000083

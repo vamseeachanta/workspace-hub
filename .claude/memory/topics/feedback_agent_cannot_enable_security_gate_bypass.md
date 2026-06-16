@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_agent_cannot_enable_security_gate_bypass.md
 
 ---
 name: feedback_agent_cannot_enable_security_gate_bypass
 description: Auto-mode classifier hard-blocks the agent from enabling/spreading/self-granting a pre-push security-gate bypass — even with explicit user instruction; human must exercise it
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 8678d66a-8660-4ebd-bb70-9222d55deb83

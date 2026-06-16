@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_completeness_gate_close_flow_gotchas.md
 
 ---
 name: feedback_completeness_gate_close_flow_gotchas
 description: "Operational gotchas for closing gate:completeness issues (#2798) — env-var false alarm, evidence class for harness, same-actor close OK"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 23aefe56-3d99-4ddd-bd1e-43aba4d12059

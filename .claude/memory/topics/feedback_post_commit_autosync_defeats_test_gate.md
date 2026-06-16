@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_post_commit_autosync_defeats_test_gate.md
 
 ---
 name: post-commit-autosync-defeats-test-gate
 description: "Plans with push-after-test gating must use SKIP_PUSH=1 git commit, or the post-commit auto-sync hook (WRK-1141) silently pushes the commit before the empirical test can run. Companion to feedback_autosync_silent_pusher."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 5db7e4c7-4f76-4d7d-86bc-4906d339cf16

@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_timelapse_append_current_satellite_frame.md
 
 ---
 name: feedback_timelapse_append_current_satellite_frame
 description: GIS timelapse videos should append a current high-res satellite/Maps frame as the final frame; NAIP lags ~2-4 yrs (latest 2022)
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 418eae65-b0b5-4afd-ba31-d1663bc3b6ab

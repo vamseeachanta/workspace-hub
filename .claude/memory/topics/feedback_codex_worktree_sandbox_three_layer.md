@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_codex_worktree_sandbox_three_layer.md
 
 ---
 name: feedback_codex_worktree_sandbox_three_layer
 description: "Running Codex-via-broker in a git worktree needs THREE aligned sandbox fixes, not one; from the"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: b651e067-4f81-4661-af7c-942d6716908f

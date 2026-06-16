@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-06-16T05:20:09.144135Z
+Generated: 2026-06-16T13:20:15.641199Z
 Current week: 2026-W25
 Recommended provider order: gemini, claude, codex
 
@@ -9,8 +9,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 36
-- Total routed candidates: 177
+- Execution-ready candidates: 40
+- Total routed candidates: 176
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: high
 - Execution-ready candidates: 2
-- Total routed candidates: 19
+- Total routed candidates: 20
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -35,10 +35,10 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3143 bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session | yes | implementation/test/fix language | bug, cat:harness/ops, status:plan-approved, gate:completeness |
 | #2880 feat(codex): make yolo-equivalent permission defaults travel across machines | no | existing codex agent label | enhancement, priority:high, cat:harness, domain:ai-config, machine:multi, agent:codex |
 | #3026 ace-linux-2: gnome-shell crash recovery (2026-06-10) + /dev/sda end-of-life replacement plan | no | implementation/test/fix language | priority:high, lane:claude |
+| #2625 investigate(digitalmodel-tests): Cluster E — marine-engineering domain regressions (~60 failures across catenary/wave/ocimf/RAO) | no | implementation/test/fix language | enhancement, priority:medium, cat:engineering, machine:dev-primary, dispatch:ready, gate:completeness |
 | #2671 R3 — Hydrodynamics: Industry practice (conferences, journals, vendor docs) | no | implementation/test/fix language | priority:medium, cat:engineering, cat:research, domain:hydrodynamics, machine:dev-primary, dispatch:ready |
 | #2718 audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | no | implementation/test/fix language | priority:medium, cat:ai-orchestration, cat:harness, domain:ai-config, machine:dev-primary, dispatch:ready |
 | #2750 Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay | no | implementation/test/fix language | priority:medium, cat:harness, machine:dev-primary, dispatch:ready, gate:completeness, domain:harness |
-| #2763 plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent | no | implementation/test/fix language | enhancement, priority:medium, cat:ai-orchestration, cat:operations, cat:harness, domain:automation |
 
 ## gemini
 

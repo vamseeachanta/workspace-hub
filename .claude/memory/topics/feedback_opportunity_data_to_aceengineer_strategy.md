@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_opportunity_data_to_aceengineer_strategy.md
 
 ---
 name: feedback-opportunity-data-to-aceengineer-strategy
 description: ALL opportunity data — full-time job applications AND consulting/BD leads — canonically lives in aceengineer-strategy (pipeline/); teamresumes keeps only the chronological application log + CV artifacts
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 6010c297-dfe1-4247-aa54-f3a21f1996f0

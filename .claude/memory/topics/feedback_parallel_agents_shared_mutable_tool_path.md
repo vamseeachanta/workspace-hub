@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-15
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_parallel_agents_shared_mutable_tool_path.md
 
 ---
 name: feedback_parallel_agents_shared_mutable_tool_path
 description: Parallel subagents must not share one mutable tool/script path — one agent patching it mid-run races the others. Give each its own copy or freeze it read-only.
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: f7fadb7c-8e14-45c9-8014-2cbd970bbd6d

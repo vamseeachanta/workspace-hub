@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_completeness_score_before_closure.md
 
 ---
 name: feedback-completeness-score-before-closure
 description: User requirement 2026-05-25 — all completed work must carry a test-based completeness score (0-100%) the user can review/rank BEFORE issue closure; all progress documented in HTML artifacts per the repo ecosystem.
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: e9bcfa5b-c1dc-4596-834b-bda6539efc25

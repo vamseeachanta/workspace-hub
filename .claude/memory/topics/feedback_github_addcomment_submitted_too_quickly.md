@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_github_addcomment_submitted_too_quickly.md
 
 ---
 name: feedback_github_addcomment_submitted_too_quickly
 description: "GitHub addComment GraphQL throttle returns literal \"was submitted too quickly\" — not \"rate limit\"; rate-limit detection regex must include this exact phrase"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: b5c609c4-cd38-41a6-9044-510a56899eb8

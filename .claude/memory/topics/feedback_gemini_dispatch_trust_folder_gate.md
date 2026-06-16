@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_gemini_dispatch_trust_folder_gate.md
 
 ---
 name: feedback_gemini_dispatch_trust_folder_gate
 description: submit-to-gemini.sh fails in isolated temp dir until GEMINI_CLI_TRUST_WORKSPACE=true is set
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: f034965f-13d1-4a2f-b6b9-58d211c43da0

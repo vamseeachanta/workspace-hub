@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_hermes_no_openrouter_always_gpt55.md
 
 ---
 name: feedback-hermes-no-openrouter-always-gpt55
 description: "User directive 2026-05-25 — Hermes must NOT use OpenRouter at all (key removed from ~/.hermes/.env) and must use gpt-5.5/openai-codex for ALL model routing (default, delegation, every quick_command, smart_routing cheap_model, all auxiliary.* tasks). Supersedes the Copilot-multiplier routing table in ai-orchestration.md."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: e9bcfa5b-c1dc-4596-834b-bda6539efc25

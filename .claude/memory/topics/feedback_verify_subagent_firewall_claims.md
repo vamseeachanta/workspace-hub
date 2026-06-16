@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_verify_subagent_firewall_claims.md
 
 ---
 name: verify-subagent-firewall-claims-on-client-data
 description: "Subagents posting client-data plans can overclaim firewall compliance; always read the actual posted content for project/field identifiers before trusting \"no leak\""
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 1e9b595a-e882-4c22-b042-7f7fc030f4d8

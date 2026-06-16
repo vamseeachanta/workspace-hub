@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_reviewer_dispatch_refetch_live_body.md
 
 ---
 name: feedback_reviewer_dispatch_refetch_live_body
 description: "Before dispatching any provider review (Codex / Gemini / Claude subagent), refetch the live artifact body; never reuse a prior /tmp/<prompt>.txt from an earlier dispatch round."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 214b6592-b65b-480f-accf-16e6a9761175

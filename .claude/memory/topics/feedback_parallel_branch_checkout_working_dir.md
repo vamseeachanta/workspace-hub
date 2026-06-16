@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_parallel_branch_checkout_working_dir.md
 
 ---
 name: parallel-branch-checkout-working-dir
 description: "When a parallel session checks out a feature branch in the same git tree, your working directory's file contents become that branch's state — even if main has your commits. Verify with git reflog/branch, not file contents on disk."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 37c4fd1d-3784-4903-a5ea-5fe997dd7044

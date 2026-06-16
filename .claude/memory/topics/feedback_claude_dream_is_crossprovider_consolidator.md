@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_claude_dream_is_crossprovider_consolidator.md
 
 ---
 name: feedback_claude_dream_is_crossprovider_consolidator
 description: "User chose the Claude dream (not Hermes) as THE cross-provider memory consolidator; a bridge script distills Codex/Gemini/Hermes sessions into Claude's auto-memory dir"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: e0c2082e-c5ec-4acf-bdbb-6163610bea88

@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_cross_review_finds_what_self_review_misses.md
 
 ---
 name: cross-review-finds-what-self-review-misses
 description: "Code-stage adversarial cross-review consistently finds defects that the implementing session's self-review misses — never skip the cross-review gate post-implementation, even when feeling confident"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 301086a5-63fe-4d73-a934-dd43ff2f9c0d
@@ -14,7 +14,7 @@ Cross-review at the code stage catches defects that the implementing session's s
 
 **Why:** 2026-05-21 close-out of digitalmodel#617 + worldenergydata#429: implementation landed feeling clean — tests passing, plan acceptance criteria met, end-to-end live-resolver verification successful. Dispatched 4 parallel code-reviewer subagents (2 per issue, different focus angles). Both verdicts came back **MAJOR**, not the expected MINOR. Findings the implementing session had not surfaced:
 
-- **Public-repo client identifier leak** (`worldenergydata-wiki:MIGRATION_MANIFEST.md:46` mentioned `B1528, proj-a, mkt-a` verbatim in a public repo deny-row — even as a "what NOT to include" example, the identifiers were exposed in CC-BY-4.0 prose);
+- **Public-repo client identifier leak** (`worldenergydata-wiki:MIGRATION_MANIFEST.md:46` mentioned `B1528, SIROCCO, acma-projects` verbatim in a public repo deny-row — even as a "what NOT to include" example, the identifiers were exposed in CC-BY-4.0 prose);
 - **LICENSE paraphrase failing GitHub detection** (the LICENSE file was a hand-written summary rather than the canonical CC-BY-4.0 legalcode.txt; `spdx_id: NOASSERTION` blocked the green badge and CC-license filters);
 - **Duplicated resolver logic** in `digitalmodel:mooring_design.py:_default_repo_root` — parallel 6-level chain that silently bypassed the canonical resolver's DeprecationWarning + known-local-clones fallback; users of the legacy env var would never see the migration nudge;
 - **Asymmetric env-var error handling** (LLM_WIKI_PATH=invalid raised hard while DIGITALMODEL_REPO_ROOT=invalid silently fell through);

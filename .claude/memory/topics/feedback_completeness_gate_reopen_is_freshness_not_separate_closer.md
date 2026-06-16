@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_completeness_gate_reopen_is_freshness_not_separate_closer.md
 
 ---
 name: feedback_completeness_gate_reopen_is_freshness_not_separate_closer
 description: "completeness gate (#2798) reopens on label-freshness/authorized-owner, NOT separate-closer (opt-in, default off); verify check.py before asking user to flip a CI var"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 125ef504-cd50-421e-a7c5-e585a8805650

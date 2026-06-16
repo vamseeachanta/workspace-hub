@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_check_issue_state_before_implementing_on_detached_head.md
 
 ---
 name: feedback_check_issue_state_before_implementing_on_detached_head
 description: "Before coding an issue, branch from origin/main and confirm it isn't already closed/PR-merged by a parallel session — detached-HEAD sessions silently produce stale-base work"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 97f5bdec-e4ac-46ef-9621-afbf4c40dc6c

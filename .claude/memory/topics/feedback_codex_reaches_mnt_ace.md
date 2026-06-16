@@ -1,16 +1,16 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_codex_reaches_mnt_ace.md
 
 ---
 name: codex-reaches-mnt-ace
 description: "codex exec under workspace-write CAN read /mnt/ace corpora — corpus-ingest issues ARE Codex-delegable for access; corrects my wrong \"not Codex-suitable\" triage"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 9d5c1253-dc2e-4029-884d-0f22ed116810
 ---
 
-`codex exec` with the current `-s workspace-write` sandbox **CAN read `/mnt/ace` corpora** (host paths outside the workspace). Verified 2026-05-27: read `/mnt/ace/O&G-Standards/` (32 publisher dirs + `_catalog.json` → 27,343 docs), `/mnt/ace/mkt-a-codes/`, `/mnt/ace/docs/conferences/`. workspace-write restricts *writes* to the workspace but allows filesystem *reads* broadly; network_access=true.
+`codex exec` with the current `-s workspace-write` sandbox **CAN read `/mnt/ace` corpora** (host paths outside the workspace). Verified 2026-05-27: read `/mnt/ace/O&G-Standards/` (32 publisher dirs + `_catalog.json` → 27,343 docs), `/mnt/ace/acma-codes/`, `/mnt/ace/docs/conferences/`. workspace-write restricts *writes* to the workspace but allows filesystem *reads* broadly; network_access=true.
 
 **Why this matters:** I triaged the 8 `agent:codex` corpus-ingest issues (llm-wiki #105/#106/#108/#109/#115/#124/#125/#126) as "not Codex-suitable — sandbox can't reach /mnt/ace." **That was wrong** — the user had fixed sandbox access the day before (relates to [[feedback_codex_sandbox_write_blocked]] #2804). Those `agent:codex` labels are valid.
 

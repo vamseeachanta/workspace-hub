@@ -2,7 +2,7 @@
 
 Action required: 4 tier-1 repo(s) have missing required surfaces or legacy references. See per-repo findings below.
 
-Generated: 2026-06-14T11:30:01Z
+Generated: 2026-06-16T11:30:01Z
 Scope: workspace-hub, digitalmodel, assetutilities, aceengineer-website
 Source baseline: `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`
 
@@ -19,6 +19,7 @@ Reason:
 ### workspace-hub — red
 Current concerns
 - missing required surface(s): docs/maps/workspace-hub-operator-map.md,docs/registry/module-routing.yaml
+- 1 broken active reference(s) in canonical routing surfaces
 
 Next actions
 - execute #2464 to clean curated routing surfaces

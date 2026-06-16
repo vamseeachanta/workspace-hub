@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_temp_index_snapshot_live_repo.md
 
 ---
 name: feedback_temp_index_snapshot_live_repo
 description: Snapshot a live-process working tree to a branch via temp-index plumbing instead of a worktree
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 6a1ea957-75ad-490c-a8d1-8032917427d9

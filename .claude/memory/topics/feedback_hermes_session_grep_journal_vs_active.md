@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_hermes_session_grep_journal_vs_active.md
 
 ---
 name: feedback-hermes-session-grep-journal-vs-active
 description: "Hermes session/goal grep matches historical chat transcripts; discriminator is session_id overlap with running pgrep'd workers, not file existence"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: cc26971a-8770-49db-81b9-ae41eb299110

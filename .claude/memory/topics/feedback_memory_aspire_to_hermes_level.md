@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_memory_aspire_to_hermes_level.md
 
 ---
 name: feedback-memory-aspire-to-hermes-level
 description: "User feedback 2026-05-17 — All AI provider work should flow through Hermes agent's memory strategy. Hermes-memory is the canonical backend; per-provider memory stores (Claude Code auto-memory, Codex state, Gemini session memory) should consolidate to Hermes rather than evolve in parallel. Originally framed as 'Claude Code memory should match Hermes' then refined same-session to the broader cross-provider architectural ask."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 232a32a4-c42b-48c1-96d9-2f5f1c95a9fd

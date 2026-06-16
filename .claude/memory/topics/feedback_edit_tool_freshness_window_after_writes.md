@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_edit_tool_freshness_window_after_writes.md
 
 ---
 name: edit-tool-freshness-window-after-writes
 description: "Edit tool's freshness guard can silently invalidate after a long Write chain in the same turn; Edits to a previously-edited file return \"File has not been read yet\" and fail silently — applies most often to index.md / log.md updates batched with content writes"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 72238262-9b25-493d-9731-fc22b67185aa

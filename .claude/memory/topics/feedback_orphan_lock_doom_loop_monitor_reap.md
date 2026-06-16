@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_orphan_lock_doom_loop_monitor_reap.md
 
 ---
 name: feedback_orphan_lock_doom_loop_monitor_reap
 description: "Diagnosing/fixing a wedged parallel session — orphan .git/index.lock doom-loop, pgrep -x git vs -f detection, and monitor-reap unwedge"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: c60d603d-e50b-48a4-96d2-e91e7b33970d

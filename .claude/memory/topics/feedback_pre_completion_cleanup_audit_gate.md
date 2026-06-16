@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_pre_completion_cleanup_audit_gate.md
 
 ---
 name: feedback-pre-completion-cleanup-audit-gate
 description: "Run pre-completion-cleanup-audit skill before reporting \"all done\"; surface residue in CLEAN/EXPECTED/UNEXPECTED buckets; never relay completion with UNEXPECTED residue present"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: cc26971a-8770-49db-81b9-ae41eb299110

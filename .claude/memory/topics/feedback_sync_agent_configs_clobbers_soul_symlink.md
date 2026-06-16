@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_sync_agent_configs_clobbers_soul_symlink.md
 
 ---
 name: feedback_sync_agent_configs_clobbers_soul_symlink
 description: "nightly sync-agent-configs.sh copies the 4KB Hermes delta over ~/.hermes/SOUL.md, clobbering install-soul-runtime.sh's symlink — recurring gutted-identity drift (#2864)"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 125ef504-cd50-421e-a7c5-e585a8805650

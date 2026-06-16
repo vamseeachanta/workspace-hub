@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_worktree_materialization_variance.md
 
 ---
 name: worktree-materialization-variance-workspace-hub
 description: "workspace-hub git worktree add materialization is indeterminate — 17 min one run, 1h+ stalled another, depending on parallel agent I/O load"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 000d04a3-532a-4959-becb-59b1f1349fb3

@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_ingest_route_by_content_and_value_filter.md
 
 ---
 name: ingest-route-by-content-content-value-filter
 description: "O&G-Standards publisher dirs are misfiled grab-bags → route by actual topic not folder label; image-only/low-text PDFs are noise → filter, don't one-page-per-PDF"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 1e9b595a-e882-4c22-b042-7f7fc030f4d8

@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_codex_exec_cpu_starved_in_claude_sandbox.md
 
 ---
 name: feedback-codex-exec-cpu-starved-in-claude-sandbox
 description: "codex exec nested under Claude is CPU-starved/slow in this sandbox (≈5% CPU; a heavy refactor wrote nothing for a very long time) — route heavy AUTHORING to Claude subagents, use Codex for independent REVIEW only (and its exec output is buffer-lossy)"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 71a79ff0-329a-44b2-9bb9-df290e7e5916

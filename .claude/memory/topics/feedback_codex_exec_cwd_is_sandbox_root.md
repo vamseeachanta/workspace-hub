@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_codex_exec_cwd_is_sandbox_root.md
 
 ---
 name: codex-exec-cwd-is-sandbox-write-root
 description: codex exec workspace-write sandbox root = the cwd at launch; sibling repos outside that cwd are READ-ONLY → cd into the target clone before dispatching writes
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 1e9b595a-e882-4c22-b042-7f7fc030f4d8

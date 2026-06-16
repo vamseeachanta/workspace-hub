@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_hermes_triage_is_pipeline_entry.md
 
 ---
 name: hermes-triage-is-pipeline-entry
 description: "Hermes --triage flag is the ENTRY of the auto-promotion/decomposition pipeline, not a safe parking spot"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 000d04a3-532a-4959-becb-59b1f1349fb3

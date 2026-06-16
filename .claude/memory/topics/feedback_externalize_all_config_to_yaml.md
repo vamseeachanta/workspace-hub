@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_externalize_all_config_to_yaml.md
 
 ---
 name: feedback-externalize-all-config-to-yaml
 description: "All work config (members, repos, data locations, material/code constants, thresholds) must live in reviewable/editable/trackable .yml — never hardcoded — because deliverables are industry-grade (many companies, not 1-2)"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 71a79ff0-329a-44b2-9bb9-df290e7e5916

@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_hermes_blocked_status_auto_unblocked.md
 
 ---
 name: hermes-blocked-status-auto-unblocked
 description: Hermes gateway auto-unblocks --initial-status blocked cards within minutes; blocked is NOT a parking spot for imported work
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 000d04a3-532a-4959-becb-59b1f1349fb3

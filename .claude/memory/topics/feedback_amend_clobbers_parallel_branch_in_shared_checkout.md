@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-15
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_amend_clobbers_parallel_branch_in_shared_checkout.md
 
 ---
 name: feedback_amend_clobbers_parallel_branch_in_shared_checkout
 description: "In the shared main checkout, git commit --amend can land on a parallel session's branch because they moved HEAD between your edit and commit — always use a dedicated worktree."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: f7fadb7c-8e14-45c9-8014-2cbd970bbd6d

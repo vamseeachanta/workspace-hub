@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_git_commit_pathspec_ignores_staged_deletion.md
 
 ---
 name: git-commit-pathspec-ignores-staged-deletion
 description: "git commit -- <path> is pathspec mode (re-derives from working tree), so it silently ignores a staged `git rm --cached` deletion when the file still exists on disk"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: c1410bc2-cb05-420e-a38f-5b6ace4a58c7

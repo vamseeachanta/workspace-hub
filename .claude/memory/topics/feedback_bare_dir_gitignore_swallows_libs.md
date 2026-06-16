@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_bare_dir_gitignore_swallows_libs.md
 
 ---
 name: feedback_bare_dir_gitignore_swallows_libs
 description: "Bare directory patterns in workspace-hub .gitignore (lib/, reports/) silently untrack paths tree-wide; verify git tracking before committing a script fix"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 3902ef62-677b-4f6e-9a97-a6fc27b6baf5

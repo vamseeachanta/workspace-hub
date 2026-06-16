@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_prepush_hooks_sigpipe_and_sibling_layout.md
 
 ---
 name: feedback_prepush_hooks_sigpipe_and_sibling_layout
 description: Two workspace-hub pre-push blockers — review-gate SIGPIPE false-negative (fixed) and check-all sibling-repo path mismatch (open)
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 8678d66a-8660-4ebd-bb70-9222d55deb83

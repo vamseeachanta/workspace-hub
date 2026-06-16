@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_parallel_session_staged_change_bleedthrough.md
 
 ---
 name: parallel-session-staged-change-bleedthrough
 description: "When committing in a checkout shared with parallel agent sessions (Hermes lanes, Claude Code subagents, cron jobs), `git add <single-path>` is additive — the index may already hold staged changes from another agent. `git commit` will sweep them in. Always run `git diff --cached --name-only` BEFORE `git commit` and verify staged set matches what your `git add` named."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 76ab2ab3-ba1e-4c05-b984-b73d97dafefc

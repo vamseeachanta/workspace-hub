@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_third_party_skill_pack_screening.md
 
 ---
 name: feedback_third_party_skill_pack_screening
 description: Screening heuristic before adopting third-party skill packs into the ecosystem skills tree
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: be1efb2f-7da6-40d6-aad5-6d430bae3330

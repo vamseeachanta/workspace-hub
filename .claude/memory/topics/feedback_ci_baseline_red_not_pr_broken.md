@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_ci_baseline_red_not_pr_broken.md
 
 ---
 name: feedback-ci-baseline-red-not-pr-broken
 description: Pre-existing main-branch CI failures can falsely implicate a PR — always check upstream baseline before assuming your PR caused the red state.
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 51bb2baf-ddde-4427-8c87-f5ce8bfa1400

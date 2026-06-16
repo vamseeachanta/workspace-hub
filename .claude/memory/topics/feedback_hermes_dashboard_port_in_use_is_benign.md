@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_hermes_dashboard_port_in_use_is_benign.md
 
 ---
 name: feedback_hermes_dashboard_port_in_use_is_benign
 description: "hermes dashboard Errno 98 on :9119 means an instance is already running, not a crash"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 8768ca8e-2749-41ce-a654-016aa9569377

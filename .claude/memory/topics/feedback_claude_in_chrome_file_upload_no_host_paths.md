@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_claude_in_chrome_file_upload_no_host_paths.md
 
 ---
 name: feedback_claude_in_chrome_file_upload_no_host_paths
 description: claude-in-chrome file_upload runtime rejects host filesystem paths despite its schema; user must pick files in the native picker
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 418eae65-b0b5-4afd-ba31-d1663bc3b6ab

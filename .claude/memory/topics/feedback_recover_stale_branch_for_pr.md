@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_recover_stale_branch_for_pr.md
 
 ---
 name: feedback_recover_stale_branch_for_pr
 description: Recovering an unpushed local branch into a PR — rebase/cherry-pick onto current origin/main first; never naive-push a stale branch
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: d3595eb1-9926-403a-8e08-2b56c7533826

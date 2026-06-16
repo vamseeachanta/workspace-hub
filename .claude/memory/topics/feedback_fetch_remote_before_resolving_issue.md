@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_fetch_remote_before_resolving_issue.md
 
 ---
 name: fetch-remote-before-resolving-issue
 description: "Before implementing a fix for a tracked issue, fetch origin and check whether that issue was already solved and pushed from another machine — local state alone hides it."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 50cc6367-3751-4c5a-900a-58719808a16d

@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_runtime_base64_blocks_binary_roundtrip.md
 
 ---
 name: runtime-base64-blocks-binary-roundtrip-via-js-tool-results
 description: "claude-in-chrome javascript_tool results have base64-encoded data filtered by the runtime — canvas.toDataURL() / fetch().then(blob).text() etc. return \"[BLOCKED: Base64 encoded data]\" sentinels, not the actual base64. Plan binary-capture workflows around this constraint."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: d178d601-ec8f-43a1-b9c4-b79d2e69b17f

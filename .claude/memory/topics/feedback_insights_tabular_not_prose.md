@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_insights_tabular_not_prose.md
 
 ---
 name: feedback-insights-tabular-not-prose
 description: "User preference 2026-05-25 — render Explanatory-style insight blocks (and key takeaways generally) as TABLES, not prose bullet lists. Applies to the ★ Insight ─ blocks the Explanatory output style emits."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: e9bcfa5b-c1dc-4596-834b-bda6539efc25

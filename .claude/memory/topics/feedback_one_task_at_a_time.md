@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_one_task_at_a_time.md
 
 ---
 name: feedback-one-task-at-a-time
 description: "Communication preference: end turns with a brief summary + ONE next task, not a multi-option menu"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 2f51eb5e-4d21-4559-be1b-474d20fcc2d6

@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/ai-orchestration.md
 
 ---
 name: ai-orchestration-models-agents-and-cross-review
 description: "Model routing, provider constraints, quota management, cross-AI review patterns, and Hermes config.yaml mapping"
-metadata:
+metadata: 
   node_type: memory
   type: reference
   originSessionId: e9bcfa5b-c1dc-4596-834b-bda6539efc25

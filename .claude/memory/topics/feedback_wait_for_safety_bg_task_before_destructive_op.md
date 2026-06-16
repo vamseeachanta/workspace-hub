@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_wait_for_safety_bg_task_before_destructive_op.md
 
 ---
 name: wait-for-safety-bg-task-before-destructive-op
 description: "When a background task is in flight to verify \"is this safe to delete / does anything reference this\", its completion is a blocking dependency for the destructive action — even when the user has given conditional approval like \"if stale, delete\"."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 34528cd5-609d-42a7-8b4b-2f1d5d2d14b4

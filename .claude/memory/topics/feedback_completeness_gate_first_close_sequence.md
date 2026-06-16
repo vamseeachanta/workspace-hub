@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_completeness_gate_first_close_sequence.md
 
 ---
 name: feedback_completeness_gate_first_close_sequence
 description: Closing a gate:completeness issue needs owners-var + stamp-BEFORE-verify ordering; the
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: b651e067-4f81-4661-af7c-942d6716908f

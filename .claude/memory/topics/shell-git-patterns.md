@@ -1,4 +1,4 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/shell-git-patterns.md
 
 # Shell & Git Patterns — Detailed Memory
@@ -65,7 +65,7 @@
 ## Quarantine Pattern (untracked/gitignored dirs with legal content)
 - If a dir is gitignored but contains client references: `mkdir -p .archived && mv <dir> .archived/<dir>`
 - `.archived/` should be gitignored too; add pattern matching the subdir
-- worldenergydata: `client-a/` → `.archived/client-a/` (2026-02-18)
+- worldenergydata: `frontierdeepwater/` → `.archived/frontierdeepwater/` (2026-02-18)
 
 ## Windows-Path Dirs in Linux Repos
 - Cross-platform CI can create dirs like `D:\workspace-hub\digitalmodel\docs\...` (backslashes in name)

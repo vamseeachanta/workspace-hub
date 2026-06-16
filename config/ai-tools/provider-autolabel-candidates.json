@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T05:20:09.277412Z",
+  "generated_at": "2026-06-16T13:20:15.778008Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 6,
@@ -408,6 +408,40 @@
       "eligible": false
     },
     {
+      "number": 2625,
+      "title": "investigate(digitalmodel-tests): Cluster E \u2014 marine-engineering domain regressions (~60 failures across catenary/wave/ocimf/RAO)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2625",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:engineering",
+        "machine:dev-primary",
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:marine-rao-seakeeping",
+        "lane:codex"
+      ],
+      "updatedAt": "2026-06-10T12:58:30Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
       "number": 2671,
       "title": "R3 \u2014 Hydrodynamics: Industry practice (conferences, journals, vendor docs)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2671",
@@ -489,43 +523,6 @@
         "lane:claude"
       ],
       "updatedAt": "2026-06-10T12:55:23Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2763,
-      "title": "plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2763",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:ai-orchestration",
-        "cat:operations",
-        "cat:harness",
-        "domain:automation",
-        "machine:dev-primary",
-        "status:needs-plan",
-        "dispatch:ready",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-06-10T16:13:01Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",

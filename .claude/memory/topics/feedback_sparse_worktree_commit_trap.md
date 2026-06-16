@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_sparse_worktree_commit_trap.md
 
 ---
 name: sparse-worktree-commit-trap
 description: "In a sparse-checkout worktree, git add silently skips files outside the cone — verify the COMMITTED tree (git show HEAD), not the working tree, or you ship data loss"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 9d5c1253-dc2e-4029-884d-0f22ed116810

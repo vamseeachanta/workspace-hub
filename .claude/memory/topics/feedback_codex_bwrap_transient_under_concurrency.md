@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_codex_bwrap_transient_under_concurrency.md
 
 ---
 name: codex-bwrap-uid-map-failure-is-transient-under-concurrency
 description: "\"bwrap: setting up uid map: Permission denied\" is an intermittent concurrency symptom, not a hard break — retry; cap concurrent codex sandboxes conservatively"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 1e9b595a-e882-4c22-b042-7f7fc030f4d8

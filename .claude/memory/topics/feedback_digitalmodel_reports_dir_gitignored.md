@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_digitalmodel_reports_dir_gitignored.md
 
 ---
 name: feedback_digitalmodel_reports_dir_gitignored
 description: "digitalmodel .gitignore ignores any reports/ dir — completeness HTML must go to a tracked path, not docs/reports/"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 57ba7232-71af-4ee6-92f1-0f808c39212f

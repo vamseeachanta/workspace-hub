@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_codex_cli_0_124_upstream_regression.md
 
 ---
 name: codex-cli-stdin-detection-hang-reopened-2026-05-16-0-130-0-hangs-non-deterministically
 description: "Feedback originally 2026-04-24 — codex-cli 0.124.0+ has a stdin-detection regression. 2026-05-11 marked it RESOLVED on 0.130.0; 2026-05-16 reverification proves the hang reproduces non-deterministically on 0.130.0 even with `</dev/null` workaround. Downgrade does NOT help (user-verified). Treat codex as unreliable until upstream investigates the TTY-vs-pty / invocation-context dimension."
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: c33ac478-fe2b-456e-b884-3c68d71720c2

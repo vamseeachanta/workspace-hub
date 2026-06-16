@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-14
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-06-16
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_subagent_acceptance_metric_drives_signal_deletion.md
 
 ---
 name: feedback_subagent_acceptance_metric_drives_signal_deletion
 description: "A \"make grep/metric empty\" acceptance criterion pushes fan-out subagents to delete signal, not just the target; brief them on what to PRESERVE and always orchestrator-verify their edits"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 97f5bdec-e4ac-46ef-9621-afbf4c40dc6c
