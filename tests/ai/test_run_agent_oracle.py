@@ -33,6 +33,13 @@ REVIEWER = REPO_ROOT / "config" / "agents" / "agent-defs" / "reviewer.agent.yaml
 DIFF = REPO_ROOT / "tests" / "ai" / "fixtures" / "planted_defect.diff"
 # The planted defect: eval() / code-injection. Either token counts as "found".
 DEFECT_RE = re.compile(r"\beval\b|code[- ]?(execution|injection)|arbitrary code", re.I)
+VERDICT_RE = re.compile(r"\"?verdict\"?\s*[:=]\s*\"?(MAJOR|MINOR|REJECT)\b", re.I)
+
+# submit-to-*.sh exit codes that still carry usable structured output:
+#   0 = rendered + validated VALID; 6 = raw structured output present (renderer
+#   not blessed, e.g. uv-render nuance). Both mean the agent RAN and produced a
+#   review. NO_OUTPUT(5)/quota(3)/timeout(124)/untrusted(55) are real failures.
+OUTPUT_PRESENT_EXITS = {0, 6}
 
 pytestmark = pytest.mark.skipif(
     os.environ.get("RUN_PROVIDER_ORACLE") != "1",
@@ -46,5 +53,11 @@ def test_provider_surfaces_planted_defect(provider):
     assert manifest["prompt_hash"]  # same def -> same hash across providers
     run = module.dispatch_run(dispatch, str(DIFF), provider)
     print(f"\n[{provider}] exit={run['exit_code']}\n{run['stdout'][:1500]}")
-    assert run["exit_code"] == 0, run["stderr"][:500]
+    # The agent must have RUN and produced structured output (not a transport failure)...
+    assert run["exit_code"] in OUTPUT_PRESENT_EXITS, (
+        f"{provider} transport failure exit={run['exit_code']}: {run['stderr'][:500]}"
+    )
+    # ...flagged the defect (verdict >= MINOR)...
+    assert VERDICT_RE.search(run["stdout"]), f"{provider} returned no MINOR/MAJOR/REJECT verdict"
+    # ...and NAMED the planted eval() RCE (behavioral parity, not just schema validity).
     assert DEFECT_RE.search(run["stdout"]), f"{provider} did not surface the planted eval() defect"
