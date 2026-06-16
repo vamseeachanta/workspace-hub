@@ -10,11 +10,9 @@ repos:
     updated_at: "2026-06-16"
     note: "1148 errors; web-contextualization + agent-os hyphen-dirs excluded (workspace-hub#3148)."
   digitalmodel:
-    exempt: true
-    error_count: 0
+    error_count: 11003
     updated_at: "2026-06-16"
-    exempt_reason: "12 non-Python .py files crash mypy (exit 2) — tracked in digitalmodel#788; un-exempt after fix."
-    note: "EXEMPT — mypy cannot run until digitalmodel#788 (corrupted .py files) is fixed."
+    note: "11003 errors in 1112 files (un-exempted after digitalmodel#788 repaired the 12 non-Python .py files that crashed mypy exit 2; gate-exact: uv run mypy src/ --config-file pyproject.toml)."
   worldenergydata:
     error_count: 3589
     updated_at: "2026-06-16"
