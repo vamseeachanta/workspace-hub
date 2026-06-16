@@ -9,9 +9,13 @@ import json
 import yaml
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Set
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _sibling_repos import load_sibling_repos  # noqa: E402
 
 class SlashCommandEcosystemSync:
     def __init__(self):
@@ -36,17 +40,10 @@ class SlashCommandEcosystemSync:
     def scan_all_repositories(self) -> Dict[str, List[str]]:
         """Scan all repositories for slash commands"""
         repo_commands = {}
-        
-        repos = [
-            "aceengineer-admin", "aceengineercode", "aceengineer-website",
-            "achantas-data", "achantas-media", "acma-projects",
-            "ai-native-traditional-eng", "assethold", "assetutilities",
-            "digitalmodel", "energy", "frontierdeepwater",
-            "hobbies", "investments",
-            "rock-oil-field", "sabithaandkrishnaestates", "saipem",
-            "sd-work", "seanation", "teamresumes", "worldenergydata",
-            "pyproject-starter", "doris", "client_projects"
-        ]
+
+        # Repository list — per-host (carried client repo names, #3098); loaded from
+        # the gitignored config/.sibling-repos.local (or public default if unprovisioned).
+        repos = load_sibling_repos()
         
         for repo in repos:
             repo_path = self.base_path / repo

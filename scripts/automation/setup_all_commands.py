@@ -5,7 +5,11 @@ Setup all slash commands in the root github folder by copying from existing repo
 import os
 import shutil
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _sibling_repos import load_sibling_repos  # noqa: E402
 
 def setup_all_commands():
     """Copy all command files from repositories to root .agent-os/commands/"""
@@ -68,17 +72,10 @@ def setup_all_commands():
         "/sync-all-commands": "sync_all_commands.py",
     }
     
-    # Source repositories to check for commands
-    source_repos = [
-        "aceengineer-admin",
-        "aceengineercode", 
-        "aceengineer-website",
-        "assetutilities",
-        "digitalmodel",
-        "achantas-data",
-        "frontierdeepwater",
-        "saipem"
-    ]
+    # Source repositories to check for commands — per-host (carried client repo
+    # names, #3098); loaded from the gitignored config/.sibling-repos.local (or
+    # the public default when unprovisioned). Repos without commands are skipped.
+    source_repos = load_sibling_repos()
     
     copied_commands = []
     missing_commands = []

@@ -5,6 +5,7 @@ ABOUTME: Maps prefix aliases to repo tools and invokes them via subprocess
 
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -19,6 +20,10 @@ from typing import Dict, List, Optional, Tuple
 #                OR a dotted "module:function" string used with `python -m`
 #     description: one-line description for `ace --list`
 # ---------------------------------------------------------------------------
+# Public (non-client) routes. Client-repo routes carried client identifiers, so
+# they are NOT hardcoded here (#3095/#3098); they are merged in at import time
+# from the gitignored config/.ace-routes.local (provisioned per host — see
+# config/.ace-routes.local.example). Absent file => only these routes exist.
 ROUTES: Dict[str, Dict[str, str]] = {
     "dm": {
         "repo": "digitalmodel",
@@ -40,21 +45,6 @@ ROUTES: Dict[str, Dict[str, str]] = {
         "command": "assetutils-devtools",
         "description": "Asset utilities development tools",
     },
-    "fdw": {
-        "repo": "frontierdeepwater",
-        "command": "frontierdeepwater",
-        "description": "Frontier deepwater project tools",
-    },
-    "spm": {
-        "repo": "saipem",
-        "command": "saipem",
-        "description": "Saipem offshore engineering analysis",
-    },
-    "doris": {
-        "repo": "doris",
-        "command": "doris",
-        "description": "Doris subsea pipeline analysis tools",
-    },
     "ogm": {
         "repo": "OGManufacturing",
         "command": "ogmanufacturing",
@@ -65,17 +55,34 @@ ROUTES: Dict[str, Dict[str, str]] = {
         "command": "achantas-data",
         "description": "Achantas data processing tools",
     },
-    "sea": {
-        "repo": "seanation",
-        "command": "seanation",
-        "description": "SeaNation offshore drilling analysis",
-    },
     "sdw": {
         "repo": "sd-work",
         "command": "sd-work",
         "description": "SD-work engineering tools",
     },
 }
+
+
+def _load_local_routes() -> None:
+    """Merge per-host private routes (client repos) from the gitignored file.
+
+    Format: a JSON object mapping prefix -> {repo, command, description}. Each
+    entry is validated before merging so a malformed file can't corrupt ROUTES.
+    """
+    routes_file = Path(__file__).resolve().parents[2] / "config" / ".ace-routes.local"
+    try:
+        extra = json.loads(routes_file.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return
+    if not isinstance(extra, dict):
+        return
+    required = {"repo", "command", "description"}
+    for prefix, info in extra.items():
+        if isinstance(info, dict) and required <= info.keys():
+            ROUTES[str(prefix)] = {k: str(info[k]) for k in required}
+
+
+_load_local_routes()
 
 
 def workspace_root() -> Path:
