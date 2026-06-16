@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-15T16:36:49-05:00",
+  "timestamp": "2026-06-16T00:20:05-05:00",
   "agents": [
     {
       "provider": "claude",
@@ -17,10 +17,10 @@
       "tier": "subscription",
       "weekly_limit": 1400,
       "week_messages": 209,
-      "week_pct": 65,
-      "five_hour_pct": 1,
-      "pct_remaining": 35,
-      "hours_to_reset": 80,
+      "week_pct": 73,
+      "five_hour_pct": 27,
+      "pct_remaining": 27,
+      "hours_to_reset": 73,
       "resets_at": "2026-06-19T01:32:54-0500",
       "source": "app-server-live"
     },

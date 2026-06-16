@@ -1,5 +1,5 @@
-generated_at: '2026-06-15T14:20:07Z'
-total_skills: 831
+generated_at: '2026-06-15T21:39:14Z'
+total_skills: 826
 skills:
   absolute-path-review-dispatch-guard:
     baseline_usage_rate: 0.0
@@ -26,7 +26,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/sales/account-research
   ace-linux-1-control-surface:
     baseline_usage_rate: 0.0833
@@ -35,7 +35,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: coordination/ace-linux-1-control-surface
   aceengineer-website-copy-alignment:
     baseline_usage_rate: 0.0
@@ -62,7 +62,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: operations/automation/activepieces
   adversarial-code-review-and-fix:
     baseline_usage_rate: 0.0
@@ -98,7 +98,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: software-development/adversarial-review-prompt-refresh-guard
   adversarial-review-rerun-prompt-refresh:
     baseline_usage_rate: 0.0
@@ -233,7 +233,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: operations/automation/airflow
   airtable:
     baseline_usage_rate: 0.0
@@ -251,7 +251,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/content-design/algorithmic-art
   api:
     baseline_usage_rate: 0.0
@@ -269,7 +269,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 6
     framework_usage: false
-    tier: hot
+    tier: warm
     path: data/scientific/api-integration
   api12-drilling-analyzer:
     baseline_usage_rate: 0.0
@@ -341,7 +341,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: engineering/marine-offshore/aqwa/input
   aqwa-output:
     baseline_usage_rate: 0.0417
@@ -350,7 +350,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: engineering/marine-offshore/aqwa/output
   aqwa-reference:
     baseline_usage_rate: 0.0417
@@ -359,7 +359,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: engineering/marine-offshore/aqwa/reference
   architecture-diagram:
     baseline_usage_rate: 0.0
@@ -422,7 +422,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: coordination/artifact-verification
   arxiv:
     baseline_usage_rate: 0.0
@@ -476,7 +476,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/finance/audit-support
   automation:
     baseline_usage_rate: 0.0
@@ -485,7 +485,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: development/automation/automation
   autoviz:
     baseline_usage_rate: 0.0833
@@ -494,7 +494,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/analysis/autoviz
   avoid-empty-review-artifact-evidence-in-plan-redrafts:
     baseline_usage_rate: 0.0
@@ -539,7 +539,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: operations/devtools/background-service-manager
   baoyu-article-illustrator:
     baseline_usage_rate: 0.0
@@ -629,7 +629,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/bemrosetta
   blender-interface:
     baseline_usage_rate: 0.0833
@@ -710,7 +710,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/communication/brand-guidelines
   brand-voice:
     baseline_usage_rate: 0.125
@@ -719,7 +719,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/marketing/brand-voice
   bridge-brokerage-market-data-apis:
     baseline_usage_rate: 0.0
@@ -737,7 +737,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 6
     framework_usage: false
-    tier: hot
+    tier: warm
     path: data/energy/bsee-data-extractor
   bsee-sodir-extraction:
     baseline_usage_rate: 0.0
@@ -773,7 +773,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: finance/c-corp-rd-tax-strategy
   c-corp-tax-consultant:
     baseline_usage_rate: 0.0
@@ -782,7 +782,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/c-corp-tax-consultant
   cad-engineering:
     baseline_usage_rate: 0.0833
@@ -791,7 +791,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/cad/cad-engineering
   cad-mesh-generation:
     baseline_usage_rate: 0.0
@@ -818,7 +818,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: business/communication/calendly-api
   call-prep:
     baseline_usage_rate: 0.2083
@@ -827,7 +827,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/sales/call-prep
   campaign-planning:
     baseline_usage_rate: 0.0417
@@ -836,7 +836,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: business/marketing/campaign-planning
   canned-responses:
     baseline_usage_rate: 0.2083
@@ -845,7 +845,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/legal/canned-responses
   canonical-doc-contract-plan-hardening:
     baseline_usage_rate: 0.0
@@ -863,7 +863,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/content-design/canvas-design
   cash-basis-corporate-tax-reconciliation:
     baseline_usage_rate: 0.0
@@ -890,7 +890,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/catenary-riser
   cathodic-protection:
     baseline_usage_rate: 0.125
@@ -935,7 +935,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: autonomous-ai-agents/claude-code
   claude-delegated-issue-tree-expansion:
     baseline_usage_rate: 0.0
@@ -1016,7 +1016,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: operations/devtools/cli-productivity
   client-llm-wiki-factory:
     baseline_usage_rate: 0.0
@@ -1034,7 +1034,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: science/bio-research/clinical-trial-protocol
   clip:
     baseline_usage_rate: 0.0
@@ -1052,7 +1052,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/finance/close-management
   closed-issue-plan-refile-loop:
     baseline_usage_rate: 0.0
@@ -1088,7 +1088,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: github/codebase-inspection
   codex:
     baseline_usage_rate: 0.0833
@@ -1097,7 +1097,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: hot
+    tier: warm
     path: autonomous-ai-agents/codex
   codex-background-burn-orchestration:
     baseline_usage_rate: 0.0
@@ -1160,7 +1160,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 6
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/marketing/competitive-analysis
   competitive-intelligence:
     baseline_usage_rate: 0.2083
@@ -1169,7 +1169,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/sales/competitive-intelligence
   compliance:
     baseline_usage_rate: 0.2083
@@ -1178,7 +1178,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/legal/compliance
   comprehensive-learning:
     baseline_usage_rate: 0.2083
@@ -1199,11 +1199,11 @@ skills:
     tier: cold
     path: coordination/comprehensive-learning-wrapper
   contact-manager:
-    baseline_usage_rate: 0.25
+    baseline_usage_rate: 0.125
     calls_in_period: 6
-    reference_count: 6
+    reference_count: 3
     child_skill_count: 0
-    effective_reference_count: 6
+    effective_reference_count: 3
     framework_usage: false
     tier: hot
     path: email/contact-manager
@@ -1214,7 +1214,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/marketing/content-strategy
   context-compaction-handoff:
     baseline_usage_rate: 0.0
@@ -1304,7 +1304,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/sales/create-an-asset
   credential-scanner-safe-skill-authoring:
     baseline_usage_rate: 0.0
@@ -1349,7 +1349,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/customer-support/customer-research
   d3js:
     baseline_usage_rate: 0.0
@@ -1367,7 +1367,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/sales/daily-briefing
   dark-intelligence-workflow:
     baseline_usage_rate: 0.2083
@@ -1385,7 +1385,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/analysis/dash
   data-analysis:
     baseline_usage_rate: 0.0
@@ -1412,7 +1412,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 6
     framework_usage: false
-    tier: hot
+    tier: warm
     path: data/analytics/data-exploration
   data-management:
     baseline_usage_rate: 0.0
@@ -1430,7 +1430,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/data-pipeline-processor
   data-validation:
     baseline_usage_rate: 0.1667
@@ -1439,7 +1439,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/analytics/data-validation
   data-visualization:
     baseline_usage_rate: 0.0833
@@ -1448,7 +1448,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/analytics/data-visualization
   debug-toml-section-scoping-errors:
     baseline_usage_rate: 0.0
@@ -1511,7 +1511,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: workspace-hub/learned/diagnose-and-mount-dirty-ntfs-drives
   diagnose-dirty-ntfs-mount-errors:
     baseline_usage_rate: 0.0417
@@ -1520,7 +1520,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: workspace-hub/learned/diagnose-dirty-ntfs-mount-errors
   diagnose-shebang-venv-import-errors:
     baseline_usage_rate: 0.0
@@ -1673,7 +1673,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: business/communication/doc-coauthoring
   doc-extraction:
     baseline_usage_rate: 0.1667
@@ -1727,7 +1727,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/doc-research-download
   docker:
     baseline_usage_rate: 0.1667
@@ -1736,7 +1736,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: operations/devtools/docker
   docs-stale-reference-guardrails:
     baseline_usage_rate: 0.0
@@ -1763,7 +1763,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/documents/document-inventory
   document-rag-pipeline:
     baseline_usage_rate: 0.0833
@@ -1781,7 +1781,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: development/documentation/documentation
   documentation-contract-plan-hardening:
     baseline_usage_rate: 0.0
@@ -1799,7 +1799,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/documentation/docusaurus
   docx:
     baseline_usage_rate: 0.0833
@@ -1808,7 +1808,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: hot
+    tier: warm
     path: data/documents/docx
   docx-templates:
     baseline_usage_rate: 0.0417
@@ -1817,7 +1817,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: data/office/docx-templates
   domain-gap-to-issue-roadmap:
     baseline_usage_rate: 0.0
@@ -1844,7 +1844,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/sales/draft-outreach
   drillbotics:
     baseline_usage_rate: 0.0
@@ -1862,7 +1862,7 @@ skills:
     child_skill_count: 1
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: engineering/drilling
   dspy:
     baseline_usage_rate: 0.125
@@ -1907,7 +1907,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: data/energy/economic-sensitivity-analyzer
   ecosystem-terminology:
     baseline_usage_rate: 0.0417
@@ -1934,7 +1934,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/energy/energy-data-visualizer
   enforcement-audit-and-upgrade:
     baseline_usage_rate: 0.0
@@ -1979,7 +1979,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 7
     framework_usage: false
-    tier: hot
+    tier: warm
     path: development/engineering-report-generator
   engineering-solver-domain-recon:
     baseline_usage_rate: 0.0417
@@ -1988,7 +1988,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: github/engineering-solver-domain-recon
   escalation:
     baseline_usage_rate: 0.1667
@@ -1997,7 +1997,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/customer-support/escalation
   espp-stock-sale-entry-freetaxusa:
     baseline_usage_rate: 0.0
@@ -2051,7 +2051,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: hot
+    tier: warm
     path: data/excel-workbook-to-python-cowork
   excel-workbook-to-python-v2:
     baseline_usage_rate: 0.0
@@ -2159,7 +2159,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: data/energy/fdas-economics
   fe-analyst:
     baseline_usage_rate: 0.0
@@ -2177,7 +2177,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/product/feature-spec
   field-analyzer:
     baseline_usage_rate: 0.0833
@@ -2186,7 +2186,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/energy/field-analyzer
   field-dev-code-recon:
     baseline_usage_rate: 0.0
@@ -2195,7 +2195,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: field-dev-code-recon
   financial-analysis:
     baseline_usage_rate: 0.0
@@ -2231,7 +2231,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/finance/financial-statements
   find-nearby:
     baseline_usage_rate: 0.0
@@ -2267,7 +2267,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: engineering/asset-integrity/fitness-for-service
   fix-symlink-shebang-persistence:
     baseline_usage_rate: 0.0
@@ -2375,7 +2375,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/content-design/frontend-design
   full-branch-cleanup-and-worktree-hygiene:
     baseline_usage_rate: 0.0
@@ -2429,7 +2429,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: software-development/gh-work-execution
   gh-work-execution-checklist:
     baseline_usage_rate: 0.0
@@ -2483,7 +2483,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: operations/devtools/git-advanced
   git-blob-size-filter-cleanup:
     baseline_usage_rate: 0.0
@@ -2555,7 +2555,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/git-worktree-workflow
   gitbook:
     baseline_usage_rate: 0.0
@@ -2573,7 +2573,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 8
     framework_usage: false
-    tier: hot
+    tier: warm
     path: operations/automation/github-actions
   github-actions-cross-platform-validation-gotchas:
     baseline_usage_rate: 0.0
@@ -2618,7 +2618,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: github/github-comment-body-file-safety
   github-interaction-limits-hardening:
     baseline_usage_rate: 0.0
@@ -2699,7 +2699,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 8
     framework_usage: false
-    tier: hot
+    tier: warm
     path: github/github-issues
   github-label-approval-reconciliation:
     baseline_usage_rate: 0.0
@@ -2717,7 +2717,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/github/modes
   github-multi-repo:
     baseline_usage_rate: 0.0
@@ -2753,7 +2753,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/github/project-board
   github-release-manager:
     baseline_usage_rate: 0.0
@@ -2807,7 +2807,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: development/github/swarm-issue
   github-swarm-pr:
     baseline_usage_rate: 0.2083
@@ -2816,7 +2816,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: development/github/swarm-pr
   github-sync:
     baseline_usage_rate: 0.1667
@@ -2825,7 +2825,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/github/sync
   github-visual-planning-issues:
     baseline_usage_rate: 0.0
@@ -2843,7 +2843,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/github/workflow
   gitignore-scaffold:
     baseline_usage_rate: 0.0417
@@ -2852,7 +2852,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: development/gitignore-scaffold
   gmail-attachment-to-document:
     baseline_usage_rate: 0.0
@@ -2870,44 +2870,17 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: email/gmail-data-extraction
-  gmail-email-to-repo-extraction:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    child_skill_count: 0
-    effective_reference_count: 0
-    framework_usage: false
-    tier: dead
-    path: email/_archived/gmail-email-to-repo-extraction
   gmail-extract-and-act:
-    baseline_usage_rate: 0.1667
+    baseline_usage_rate: 0.125
     calls_in_period: 4
-    reference_count: 4
+    reference_count: 3
     child_skill_count: 0
-    effective_reference_count: 4
+    effective_reference_count: 3
     framework_usage: false
     tier: warm
     path: email/gmail-extract-and-act
-  gmail-extract-and-clean:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    child_skill_count: 0
-    effective_reference_count: 0
-    framework_usage: false
-    tier: hot
-    path: email/_archived/gmail-extract-and-clean
-  gmail-extract-archive:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    child_skill_count: 0
-    effective_reference_count: 0
-    framework_usage: false
-    tier: dead
-    path: email/_archived/gmail-extract-archive
   gmail-headless-oauth:
     baseline_usage_rate: 0.0
     calls_in_period: 0
@@ -2915,14 +2888,14 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: email/gmail-headless-oauth
   gmail-multi-account:
-    baseline_usage_rate: 0.5417
+    baseline_usage_rate: 0.2917
     calls_in_period: 13
-    reference_count: 13
+    reference_count: 7
     child_skill_count: 0
-    effective_reference_count: 13
+    effective_reference_count: 7
     framework_usage: false
     tier: hot
     path: email/gmail-multi-account
@@ -2944,33 +2917,15 @@ skills:
     framework_usage: false
     tier: warm
     path: email/gmail-outreach
-  gmail-touchbase:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    child_skill_count: 0
-    effective_reference_count: 0
-    framework_usage: false
-    tier: dead
-    path: email/_archived/gmail-touchbase
   gmail-triage:
-    baseline_usage_rate: 0.375
+    baseline_usage_rate: 0.2083
     calls_in_period: 9
-    reference_count: 9
+    reference_count: 5
     child_skill_count: 0
-    effective_reference_count: 9
+    effective_reference_count: 5
     framework_usage: false
     tier: hot
     path: email/gmail-triage
-  gmail-unsubscribe:
-    baseline_usage_rate: 0.0
-    calls_in_period: 0
-    reference_count: 0
-    child_skill_count: 0
-    effective_reference_count: 0
-    framework_usage: false
-    tier: dead
-    path: email/_archived/gmail-unsubscribe
   gmsh-meshing:
     baseline_usage_rate: 0.3333
     calls_in_period: 1
@@ -2978,7 +2933,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 8
     framework_usage: false
-    tier: hot
+    tier: warm
     path: engineering/cad/gmsh-meshing
   godmode:
     baseline_usage_rate: 0.0
@@ -3005,7 +2960,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: productivity/google-workspace
   great-tables:
     baseline_usage_rate: 0.0833
@@ -3014,7 +2969,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/analysis/great-tables
   grill-me:
     baseline_usage_rate: 0.0
@@ -3041,7 +2996,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: true
-    tier: warm
+    tier: cold
     path: workspace-hub/learned/gsd-adversarial-review-pattern
   gsd-operational-audit:
     baseline_usage_rate: 0.0
@@ -3050,7 +3005,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: true
-    tier: warm
+    tier: cold
     path: software-development/gsd-operational-audit
   gtm-cross-review-readiness:
     baseline_usage_rate: 0.0
@@ -3122,7 +3077,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: workspace-hub-learned/gtm-signal-to-engineering-artifact-conversion
   gtm-signals-to-engineering-artifacts:
     baseline_usage_rate: 0.0
@@ -3158,7 +3113,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: mlops/inference/guidance
   handle-blocked-financial-sites-data-export:
     baseline_usage_rate: 0.0
@@ -3230,7 +3185,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: productivity/handoff
   hardware-assessment:
     baseline_usage_rate: 0.0
@@ -3257,7 +3212,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: autonomous-ai-agents/hermes-agent
   hermes-agent-skill-authoring:
     baseline_usage_rate: 0.0
@@ -3293,7 +3248,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: devops/hermes-kanban-readability
   hermes-local-configuration:
     baseline_usage_rate: 0.0
@@ -3311,7 +3266,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: memory/hermes-memory-bridge
   hermes-model-switching:
     baseline_usage_rate: 0.0
@@ -3329,7 +3284,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: devops/hermes-windows-setup
   hermes-workflow-audit:
     baseline_usage_rate: 0.0
@@ -3350,13 +3305,13 @@ skills:
     tier: dead
     path: data/visualization/highcharts
   himalaya:
-    baseline_usage_rate: 0.1667
+    baseline_usage_rate: 0.0833
     calls_in_period: 4
-    reference_count: 4
+    reference_count: 2
     child_skill_count: 0
-    effective_reference_count: 4
+    effective_reference_count: 2
     framework_usage: false
-    tier: hot
+    tier: warm
     path: email/himalaya
   hse-risk-analyzer:
     baseline_usage_rate: 0.125
@@ -3365,7 +3320,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/energy/hse-risk-analyzer
   html-report-verify:
     baseline_usage_rate: 0.0833
@@ -3374,7 +3329,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/html-report-verify
   huggingface-hub:
     baseline_usage_rate: 0.0
@@ -3410,7 +3365,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 9
     framework_usage: false
-    tier: hot
+    tier: warm
     path: engineering/marine-offshore/hydrodynamics
   ideation:
     baseline_usage_rate: 0.0
@@ -3455,7 +3410,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: science/bio-research/instrument-data-allotrope
   interactive-claude-to-file-based-fallback:
     baseline_usage_rate: 0.0
@@ -3473,7 +3428,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/analytics/interactive-dashboard-builder
   interactive-issue-execution-worktree-guardrails:
     baseline_usage_rate: 0.0
@@ -3491,7 +3446,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/communication/internal-comms
   inventory-readiness-provider-dispatch:
     baseline_usage_rate: 0.0
@@ -3518,7 +3473,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: business/admin/invoice-automation
   iso:
     baseline_usage_rate: 0.0
@@ -3545,7 +3500,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: hot
+    tier: warm
     path: github/issue-portfolio-triage
   issue-tree-decomposition:
     baseline_usage_rate: 0.0
@@ -3599,7 +3554,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/finance/journal-entry-prep
   jupyter-live-kernel:
     baseline_usage_rate: 0.0
@@ -3635,7 +3590,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 6
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/customer-support/knowledge-management
   knowledge-pipeline:
     baseline_usage_rate: 0.0
@@ -3662,7 +3617,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/enterprise-search/knowledge-synthesis
   label-driven-prompt-generation-architecture:
     baseline_usage_rate: 0.0
@@ -3680,7 +3635,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: ai/prompting/langchain
   large-lint-gate-restoration-wave:
     baseline_usage_rate: 0.0
@@ -3716,7 +3671,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/marketing/lead-generation
   learned-git-worktree-hook-path-and-real-hook-shape-review:
     baseline_usage_rate: 0.0
@@ -3734,16 +3689,16 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/legal/legal-risk-assessment
   legal-sanity-scan:
-    baseline_usage_rate: 0.25
+    baseline_usage_rate: 0.125
     calls_in_period: 6
-    reference_count: 6
+    reference_count: 3
     child_skill_count: 0
-    effective_reference_count: 6
+    effective_reference_count: 3
     framework_usage: false
-    tier: hot
+    tier: cold
     path: coordination/legal-sanity-scan
   library-evaluation-integration:
     baseline_usage_rate: 0.0
@@ -3923,7 +3878,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: productivity/maps
   marine-offshore-engineering:
     baseline_usage_rate: 0.0
@@ -3950,7 +3905,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: data/energy/marine-safety-incidents
   maritime-legal:
     baseline_usage_rate: 0.0
@@ -3968,7 +3923,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: development/documentation/marp
   matlab-dark-port:
     baseline_usage_rate: 0.0
@@ -4013,7 +3968,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/legal/meeting-briefing
   memory-bridge-commit-fallbacks:
     baseline_usage_rate: 0.0
@@ -4085,7 +4040,7 @@ skills:
     child_skill_count: 3
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/energy/metocean
   metocean-data-fetcher:
     baseline_usage_rate: 0.0
@@ -4121,7 +4076,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/product/metrics-tracking
   minecraft-modpack-server:
     baseline_usage_rate: 0.0
@@ -4202,7 +4157,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: digitalmodel/module-lookup
   mooring-analysis:
     baseline_usage_rate: 0.0417
@@ -4292,7 +4247,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 6
     framework_usage: false
-    tier: hot
+    tier: warm
     path: software-development/multi-provider-adversarial-review
   multi-repo-branch-hygiene-at-scale:
     baseline_usage_rate: 0.0
@@ -4373,7 +4328,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: coordination/multi-tool-architecture-assessment
   multi-year-tax-filing-verification-workflow:
     baseline_usage_rate: 0.0
@@ -4391,7 +4346,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: operations/automation/n8n
   nano-pdf:
     baseline_usage_rate: 0.0
@@ -4436,7 +4391,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/legal/nda-triage
   nested-git-repo-stash-safety:
     baseline_usage_rate: 0.0
@@ -4463,7 +4418,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: science/bio-research/nextflow-pipelines
   node-inspect-debugger:
     baseline_usage_rate: 0.0
@@ -4499,7 +4454,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/productivity/notion-api
   npv-analyzer:
     baseline_usage_rate: 0.1667
@@ -4508,7 +4463,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/energy/npv-analyzer
   numpy-numerical-analysis:
     baseline_usage_rate: 0.0417
@@ -4517,7 +4472,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: data/scientific/numpy-numerical-analysis
   obliteratus:
     baseline_usage_rate: 0.0
@@ -4562,7 +4517,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: engineering/oil-and-gas
   opencode:
     baseline_usage_rate: 0.0
@@ -4607,7 +4562,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/office/openpyxl
   orcaflex:
     baseline_usage_rate: 1.0
@@ -4652,7 +4607,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/orcaflex/environment-config
   orcaflex-extreme-analysis:
     baseline_usage_rate: 0.2083
@@ -4661,7 +4616,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: engineering/marine-offshore/orcaflex/extreme-analysis
   orcaflex-file-conversion:
     baseline_usage_rate: 0.0
@@ -4697,7 +4652,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/orcaflex/line-wizard
   orcaflex-modal-analysis:
     baseline_usage_rate: 0.0
@@ -4715,7 +4670,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/orcaflex/model-generator
   orcaflex-model-sanitization:
     baseline_usage_rate: 0.0
@@ -4733,7 +4688,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 12
     framework_usage: false
-    tier: hot
+    tier: warm
     path: engineering/marine-offshore/orcaflex/modeling
   orcaflex-monolithic-to-modular:
     baseline_usage_rate: 0.0833
@@ -4742,7 +4697,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/orcaflex/monolithic-to-modular
   orcaflex-mooring-iteration:
     baseline_usage_rate: 0.0833
@@ -4751,7 +4706,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/orcaflex/mooring-iteration
   orcaflex-operability:
     baseline_usage_rate: 0.2083
@@ -4760,7 +4715,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: engineering/marine-offshore/orcaflex/operability
   orcaflex-post-processing:
     baseline_usage_rate: 0.375
@@ -4769,7 +4724,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 9
     framework_usage: false
-    tier: hot
+    tier: warm
     path: engineering/marine-offshore/orcaflex/post-processing
   orcaflex-rao-import:
     baseline_usage_rate: 0.0833
@@ -4778,7 +4733,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/orcaflex/rao-import
   orcaflex-reporting-fixture-proof-pattern:
     baseline_usage_rate: 0.0
@@ -4796,7 +4751,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/orcaflex/results-comparison
   orcaflex-spec-audit:
     baseline_usage_rate: 0.0
@@ -4823,7 +4778,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/orcaflex/static-debug
   orcaflex-vessel-setup:
     baseline_usage_rate: 0.0833
@@ -4832,7 +4787,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/orcaflex/vessel-setup
   orcaflex-visualization:
     baseline_usage_rate: 0.0
@@ -4850,7 +4805,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/orcaflex/yaml-gotchas
   orcawave:
     baseline_usage_rate: 0.2917
@@ -4868,7 +4823,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 6
     framework_usage: false
-    tier: hot
+    tier: warm
     path: engineering/marine-offshore/orcawave/analysis
   orcawave-aqwa-benchmark:
     baseline_usage_rate: 0.0
@@ -4940,7 +4895,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: engineering/marine-offshore/orcawave/to-orcaflex
   orchestrator-routing:
     baseline_usage_rate: 0.0417
@@ -4958,7 +4913,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: coordination/oss-wiki-development-arc
   outlines:
     baseline_usage_rate: 0.0
@@ -5093,7 +5048,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 10
     framework_usage: false
-    tier: hot
+    tier: warm
     path: data/scientific/pandas-data-processing
   pandasai:
     baseline_usage_rate: 0.0417
@@ -5102,7 +5057,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: ai/prompting/pandasai
   pandoc:
     baseline_usage_rate: 0.125
@@ -5111,7 +5066,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/documentation/pandoc
   parallel-approved-issue-worktrees:
     baseline_usage_rate: 0.0417
@@ -5120,7 +5075,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: software-development/parallel-approved-issue-worktrees
   parallel-array-alignment-pattern:
     baseline_usage_rate: 0.0
@@ -5138,7 +5093,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/parallel-file-processor
   parallel-llm-wiki-gap-to-issues:
     baseline_usage_rate: 0.0
@@ -5192,7 +5147,7 @@ skills:
     child_skill_count: 1
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: data/documents/pdf/text-extractor
   pdf-text-extractor-readability-classification:
     baseline_usage_rate: 0.0417
@@ -5201,7 +5156,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: data/documents/pdf/text-extractor/readability-classification
   pdf-utilities:
     baseline_usage_rate: 0.0
@@ -5237,7 +5192,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: business/marketing/performance-analytics
   periodic-skill-ecosystem-housekeeping-audit:
     baseline_usage_rate: 0.0
@@ -5282,7 +5237,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: software-development/plan
   plan-automation-contracts:
     baseline_usage_rate: 0.0
@@ -5309,7 +5264,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: coordination/plan-exit-governance-drift-handoff
   plan-gated-issue-execution-wave:
     baseline_usage_rate: 0.0
@@ -5345,7 +5300,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: coordination/plan-gated-overnight-queue-partition
   plan-governance-vs-execution-boundary-for-adversarial-review:
     baseline_usage_rate: 0.0
@@ -5408,7 +5363,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: workspace-hub-learned/plan-review-artifact-authority-and-approval-drift
   plan-review-fanout-runner-drift-recovery:
     baseline_usage_rate: 0.0
@@ -5498,7 +5453,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 7
     framework_usage: false
-    tier: hot
+    tier: warm
     path: data/visualization/plotly
   plotly-visualization:
     baseline_usage_rate: 0.0
@@ -5525,7 +5480,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 6
     framework_usage: false
-    tier: hot
+    tier: warm
     path: data/analysis/polars
   polymarket:
     baseline_usage_rate: 0.0
@@ -5624,7 +5579,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/documents/pptx
   pre-completion-cleanup-audit:
     baseline_usage_rate: 0.0
@@ -5687,7 +5642,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: engineering/marine-offshore/production-engineering
   production-forecaster:
     baseline_usage_rate: 0.1667
@@ -5696,7 +5651,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/energy/production-forecaster
   prompt-engineering:
     baseline_usage_rate: 0.0833
@@ -5786,7 +5741,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/office/pypdf
   pyproject-toml:
     baseline_usage_rate: 0.0
@@ -5804,7 +5759,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: development/testing/pytest-fixture-generator
   python-debugpy:
     baseline_usage_rate: 0.0
@@ -5822,7 +5777,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/office/python-docx
   python-gis-ecosystem:
     baseline_usage_rate: 0.0
@@ -5867,7 +5822,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: development/workflows/python-project-template
   python-scientific-computing:
     baseline_usage_rate: 0.0833
@@ -5876,7 +5831,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/scientific/python-scientific-computing
   pytorch-fsdp:
     baseline_usage_rate: 0.0
@@ -5894,7 +5849,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: engineering/cad/pyvista-3d
   qgis:
     baseline_usage_rate: 0.0
@@ -5957,7 +5912,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/finance/reconciliation
   recover-from-corrupted-git-state:
     baseline_usage_rate: 0.0
@@ -6101,7 +6056,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: hot
+    tier: warm
     path: data/research-literature
   research-paper-writing:
     baseline_usage_rate: 0.0
@@ -6119,7 +6074,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/customer-support/response-drafting
   risk-and-redundancy:
     baseline_usage_rate: 0.0
@@ -6173,7 +6128,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: science/bio-research/scientific-problem-selection
   scvi-tools:
     baseline_usage_rate: 0.2083
@@ -6182,7 +6137,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: science/bio-research/scvi-tools
   search-strategy:
     baseline_usage_rate: 0.0833
@@ -6191,7 +6146,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/enterprise-search/search-strategy
   segment-anything-model:
     baseline_usage_rate: 0.0
@@ -6227,7 +6182,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/marketing/seo-optimizer
   serving-llms-vllm:
     baseline_usage_rate: 0.0
@@ -6281,7 +6236,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: development/shell-tdd
   ship-dynamics-6dof:
     baseline_usage_rate: 0.0
@@ -6308,7 +6263,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: science/bio-research/single-cell-rna-qc
   single-terminal-gh-issue-prompts:
     baseline_usage_rate: 0.0
@@ -6389,7 +6344,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: business/communication/slack-gif-creator
   social-media:
     baseline_usage_rate: 0.0417
@@ -6398,7 +6353,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: business/marketing/social-media
   sodir-data-extractor:
     baseline_usage_rate: 0.0
@@ -6461,7 +6416,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/sparc/sparc-architecture
   sparc-pseudocode:
     baseline_usage_rate: 0.125
@@ -6470,7 +6425,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/sparc/sparc-pseudocode
   sparc-refinement:
     baseline_usage_rate: 0.125
@@ -6479,7 +6434,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/sparc/sparc-refinement
   sparc-specification:
     baseline_usage_rate: 0.125
@@ -6488,7 +6443,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/sparc/sparc-specification
   sphinx:
     baseline_usage_rate: 0.125
@@ -6497,7 +6452,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/documentation/sphinx
   spike:
     baseline_usage_rate: 0.0
@@ -6533,7 +6488,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/analytics/sql-queries
   stable-diffusion-image-generation:
     baseline_usage_rate: 0.0
@@ -6569,7 +6524,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/product/stakeholder-comms
   static-site-brand-identity-migration-tdd:
     baseline_usage_rate: 0.0
@@ -6596,7 +6551,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/analytics/statistical-analysis
   streamlit:
     baseline_usage_rate: 0.25
@@ -6605,7 +6560,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 6
     framework_usage: false
-    tier: hot
+    tier: warm
     path: data/analysis/streamlit
   structural-analysis:
     baseline_usage_rate: 0.5417
@@ -6623,7 +6578,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/subagent-driven
   subagent-driven-development:
     baseline_usage_rate: 0.0417
@@ -6632,7 +6587,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: software-development/subagent-driven-development
   subagent-sandbox-limitations:
     baseline_usage_rate: 0.0
@@ -6695,7 +6650,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: business/productivity/task-management
   tax-consultant-nnn-property:
     baseline_usage_rate: 0.0
@@ -6785,7 +6740,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: business/admin/tax-preparation
   tax-return-data-capture-and-archival:
     baseline_usage_rate: 0.0
@@ -6839,7 +6794,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/tdd-obra
   tdd-verification-and-adversarial-review:
     baseline_usage_rate: 0.0
@@ -6857,7 +6812,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/communication/teams-api
   teams-meeting-pipeline:
     baseline_usage_rate: 0.0
@@ -6929,7 +6884,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 0
     framework_usage: false
-    tier: hot
+    tier: warm
     path: development/test-suit-repair-pattern
   testing-production:
     baseline_usage_rate: 0.0833
@@ -6938,7 +6893,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/testing/testing-production
   testing-tdd-london:
     baseline_usage_rate: 0.125
@@ -6947,7 +6902,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/testing/testing-tdd-london
   theme-factory:
     baseline_usage_rate: 0.125
@@ -6956,7 +6911,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/content-design/theme-factory
   ticket-triage:
     baseline_usage_rate: 0.1667
@@ -6965,7 +6920,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/customer-support/ticket-triage
   tier1-indexing-scorecard-and-freshness-audit:
     baseline_usage_rate: 0.0
@@ -7001,7 +6956,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: business/productivity/todoist-api
   toml-section-scoping-config-debug:
     baseline_usage_rate: 0.0
@@ -7046,7 +7001,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: business/productivity/trello-api
   trip-planner:
     baseline_usage_rate: 0.0
@@ -7100,7 +7055,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: business/product/user-research-synthesis
   uv-package-manager:
     baseline_usage_rate: 0.0
@@ -7118,7 +7073,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 5
     framework_usage: false
-    tier: hot
+    tier: warm
     path: business/finance/variance-analysis
   verification-loop:
     baseline_usage_rate: 0.0833
@@ -7127,7 +7082,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/verification-loop
   verify-claude-run-commit-vs-working-tree-before-closing:
     baseline_usage_rate: 0.0
@@ -7163,7 +7118,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 1
     framework_usage: false
-    tier: cold
+    tier: dead
     path: operations/devtools/vscode-extensions
   wave-based-parallel-plan-execution:
     baseline_usage_rate: 0.0
@@ -7199,7 +7154,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 6
     framework_usage: false
-    tier: hot
+    tier: warm
     path: development/webapp-testing
   webhook-subscriptions:
     baseline_usage_rate: 0.0
@@ -7262,7 +7217,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: operations/automation/windmill
   work-around-merge-conflicts-in-test-execution:
     baseline_usage_rate: 0.0
@@ -7361,7 +7316,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: coordination/workstation-aware-provider-orchestration
   worktree-branch-sync-hygiene:
     baseline_usage_rate: 0.0417
@@ -7415,7 +7370,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 2
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/documents/xlsx
   xlsx-to-python:
     baseline_usage_rate: 0.0
@@ -7442,7 +7397,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 8
     framework_usage: false
-    tier: hot
+    tier: warm
     path: data/scientific/yaml-configuration
   yaml-workflow-executor:
     baseline_usage_rate: 0.1667
@@ -7451,7 +7406,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 4
     framework_usage: false
-    tier: warm
+    tier: cold
     path: development/yaml-workflow-executor
   ydata-profiling:
     baseline_usage_rate: 0.125
@@ -7460,7 +7415,7 @@ skills:
     child_skill_count: 0
     effective_reference_count: 3
     framework_usage: false
-    tier: warm
+    tier: cold
     path: data/analysis/ydata-profiling
   youtube-content:
     baseline_usage_rate: 0.0

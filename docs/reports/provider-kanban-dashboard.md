@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-15T21:36:56Z
+Generated: 2026-06-16T13:20:18Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,7 +43,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #3148 | check-all run_mypy is a hard co-blocker (no baseline) + assetutilities mypy config/crash | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3169 | PII guard: extend coverage to commit messages + PR bodies (gap found in #3098 closeout) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
+| #3148 | check-all run_mypy is a hard co-blocker (no baseline) + assetutilities mypy config/crash | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: major_review,missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3146 | Add ruff baseline/ratchet to check-all — pre-push gate unpassable on 3/4 tier-1 repos (chronic bypass) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3143 | bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3142 | bug(review-tooling): validate-review-output.sh + render-structured-review.py tracked non-executable (100644) but invoked directly → fails on fresh clone | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
@@ -51,8 +52,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3137 | Skill-invocation: capture Skill-tool calls (id→short_name resolution) — follow-on to #3112 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #3120 | feat(harness): G5 cross-surface session continuity — resumable session object [sub of #2998, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3119 | feat(harness): G4 budget-as-policy — stateful cost/token guardrail at harness layer [sub of #1838, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3118 | feat(harness): G3 MCP-first tool exposure — provider-portable tools [sub of #3058, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3117 | feat(harness): G2 AGENTS.md portability — cross-harness instruction convention [sub of #3058, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3118 | feat(harness): G3 MCP-first tool exposure — provider-portable tools [sub of #3058, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3116 | feat(harness): G1 portable agent-definition format — define once, run on any harness (Claude/Codex/Gemini) [sub of #3058, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3114 | feat(ecosystem): Omnigent-lens — make repo ecosystem AI-provider- & OS/machine-equivalent [gap-analysis umbrella; extends #2887/#2967/#3058] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3112 | Harden: instrument true skill/command invocation (the measurement gap behind retirement + de-prescription) — epic #3058 | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; issue already has approval marker on disk |
@@ -60,9 +60,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3107 | Model parity: ship a 'fable-mode' behavioral adapter skill (executable playbook) — epic #3043 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3104 | Compliance alert: W25 — 29% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3103 | Retire dead claude-flow orchestration cluster in scripts/automation/ (epic #3078 follow-up) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #3098 | PII: hand-authored docs/plans/handoffs scrub — epic #3095 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3096 | PII: full multi-client sweep + categorization (assessment) — epic #3095 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3095 | Epic: Public-repo client-PII remediation (systemic — 43+ files) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3087 | Statusline: make Gemini (agy) usage genuine + add days/hours-to-reset token | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3086 | Standardize agy (Antigravity CLI) default model = Gemini 3.1 Pro (High) across all machines | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3077 | Orchestrator consistency drift (2026-06-14) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -118,7 +115,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2901 | Plan Deckhand Telegram/Signal/WhatsApp/Teams platform parity reconnaissance | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2900 | Plan Deckhand multi-platform notification fanout for Telegram, Signal, WhatsApp, and Teams | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2894 | feat(workstations): #0 revive + verify the equality-matrix substrate (weekly cron live, evidence committed) — BLOCKS #2887 R1-R6 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2893 | feat(workstations): cross-provider statusline parity (Claude/Codex/Gemini/Hermes equivalent) [#2887 R6] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2893 | feat(workstations): cross-provider statusline parity (Claude/Codex/Gemini/Hermes equivalent) [#2887 R6] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2892 | feat(workstations): OSS custom-program inventory + version-currency dimension (OpenFOAM/Blender/CalculiX/Gmsh/Capytaine) [#2887 R5] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2891 | feat(workstations): network/data-availability reachability cell (mounts, GitHub, provider APIs, license servers) [#2887 R4] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2890 | feat(workstations): repo-sync-status cell (ahead/behind/dirty/detached) in equivalence status [#2887 R3] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -243,6 +240,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2640 | feat(gtm): worldenergydata production decline forecast — shareable Jupyter notebook for GTM demo | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2634 | Compliance alert: W19 — 35% (high) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2628 | epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
+| #2626 | fix(security): narrow #2552 external-contributor runbook tests + scenario 3 — drop privacy-leaking test, define ingestion vector, resolve interaction-limit contradiction | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
+| #2625 | investigate(digitalmodel-tests): Cluster E — marine-engineering domain regressions (~60 failures across catenary/wave/ocimf/RAO) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2624 | policy(digitalmodel-tests): Cluster D — decide whether redis/psycopg2/motor belong in QG suite (51 errors) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

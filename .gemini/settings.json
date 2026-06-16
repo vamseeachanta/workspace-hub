@@ -53,5 +53,6 @@
   "statusLine": {
     "type": "command",
     "command": "node .gemini/hooks/gsd-statusline.js"
-  }
+  },
+  "mcpServers": {}
 }

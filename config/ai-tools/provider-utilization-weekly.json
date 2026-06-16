@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T21:36:52.069949Z",
+  "generated_at": "2026-06-16T05:20:07.021187Z",
   "current_week": "2026-W25",
   "report_weeks": 8,
   "subscriptions": {
@@ -687,22 +687,22 @@
         "provider": "claude",
         "week": "2026-W25",
         "sessions": 1,
-        "post_records": 49,
-        "activity_utilization_pct": 0.1,
+        "post_records": 254,
+        "activity_utilization_pct": 0.6,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 0.1,
+        "reported_utilization_pct": 0.6,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-06-15T21:36:49Z",
+        "quota_snapshot_ts": "2026-06-16T05:20:05Z",
         "top_tools": [
           {
             "tool": "unknown",
-            "count": 49
+            "count": 254
           }
         ],
         "first_ts": "2026-06-15T16:31:30Z",
-        "last_ts": "2026-06-15T17:21:20Z",
+        "last_ts": "2026-06-16T03:12:01Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
@@ -711,12 +711,12 @@
         "sessions": 0,
         "post_records": 0,
         "activity_utilization_pct": 0.0,
-        "quota_utilization_pct": 65.0,
-        "reported_utilization_pct": 65.0,
+        "quota_utilization_pct": 73.0,
+        "reported_utilization_pct": 73.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "app-server-live",
-        "quota_snapshot_ts": "2026-06-15T21:36:49Z",
+        "quota_snapshot_ts": "2026-06-16T05:20:05Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -733,7 +733,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "manual-snapshot",
-        "quota_snapshot_ts": "2026-06-15T21:36:49Z",
+        "quota_snapshot_ts": "2026-06-16T05:20:05Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -761,9 +761,9 @@
   "underutilization_alerts": [
     {
       "provider": "claude",
-      "reported_utilization_pct": 0.1,
+      "reported_utilization_pct": 0.6,
       "basis": "activity_vs_recent_peak",
-      "message": "claude at 0.1% (activity_vs_recent_peak)"
+      "message": "claude at 0.6% (activity_vs_recent_peak)"
     },
     {
       "provider": "gemini",

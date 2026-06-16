@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-15T21:36:54.249930Z",
+  "generated_at": "2026-06-16T05:20:09.144135Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-15T21:36:52.204960Z",
+  "scorecard_generated_at": "2026-06-16T05:20:07.168008Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 35,
+      "execution_ready_count": 36,
       "total_candidates": 177,
       "top_issues": [
         {
@@ -1079,6 +1079,31 @@
           ]
         },
         {
+          "number": 3118,
+          "title": "feat(harness): G3 MCP-first tool exposure \u2014 provider-portable tools [sub of #3058, umbrella #3114]",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3118",
+          "labels": [
+            "enhancement",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:ai-orchestration",
+            "status:plan-approved",
+            "gate:completeness"
+          ],
+          "updatedAt": "2026-06-16T02:13:17Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 3137,
           "title": "Skill-invocation: capture Skill-tool calls (id\u2192short_name resolution) \u2014 follow-on to #3112",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3137",
@@ -1134,7 +1159,7 @@
             "status:plan-approved",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-15T18:58:18Z",
+          "updatedAt": "2026-06-15T21:55:43Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1155,9 +1180,10 @@
             "bug",
             "status:plan-review",
             "status:plan-approved",
-            "gate:completeness"
+            "gate:completeness",
+            "status:completeness-verified"
           ],
-          "updatedAt": "2026-06-15T21:21:40Z",
+          "updatedAt": "2026-06-16T03:07:07Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1165,6 +1191,7 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -3554,7 +3581,7 @@
             "domain:workstations-fleet-equivalence",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-10T16:32:22Z",
+          "updatedAt": "2026-06-16T03:17:30Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4457,7 +4484,7 @@
             "status:plan-review",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-15T16:20:00Z",
+          "updatedAt": "2026-06-15T21:58:34Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4559,7 +4586,7 @@
           "labels": [
             "domain:cleanup"
           ],
-          "updatedAt": "2026-06-15T15:30:54Z",
+          "updatedAt": "2026-06-16T03:12:46Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4623,7 +4650,7 @@
             "cat:harness",
             "domain:ai-orchestration"
           ],
-          "updatedAt": "2026-06-15T16:11:10Z",
+          "updatedAt": "2026-06-16T03:04:21Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4659,29 +4686,6 @@
           ]
         },
         {
-          "number": 3118,
-          "title": "feat(harness): G3 MCP-first tool exposure \u2014 provider-portable tools [sub of #3058, umbrella #3114]",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3118",
-          "labels": [
-            "enhancement",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:ai-orchestration"
-          ],
-          "updatedAt": "2026-06-15T16:10:41Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3119,
           "title": "feat(harness): G4 budget-as-policy \u2014 stateful cost/token guardrail at harness layer [sub of #1838, umbrella #3114]",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3119",
@@ -4689,9 +4693,10 @@
             "enhancement",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:ai-orchestration"
+            "domain:ai-orchestration",
+            "status:blocked"
           ],
-          "updatedAt": "2026-06-15T16:10:43Z",
+          "updatedAt": "2026-06-16T02:53:28Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4712,9 +4717,10 @@
             "enhancement",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:ai-orchestration"
+            "domain:ai-orchestration",
+            "status:blocked"
           ],
-          "updatedAt": "2026-06-15T16:10:45Z",
+          "updatedAt": "2026-06-16T03:04:20Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4732,9 +4738,10 @@
           "title": "check-all run_mypy is a hard co-blocker (no baseline) + assetutilities mypy config/crash",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3148",
           "labels": [
-            "bug"
+            "bug",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-06-15T19:17:24Z",
+          "updatedAt": "2026-06-16T03:13:25Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4786,7 +4793,7 @@
             "status:plan-approved",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-15T21:19:47Z",
+          "updatedAt": "2026-06-15T21:52:43Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4984,7 +4991,7 @@
             "status:plan-approved",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-15T21:19:47Z",
+          "updatedAt": "2026-06-15T21:52:43Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -5426,7 +5433,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-15T04:00:03Z",
+          "updatedAt": "2026-06-16T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5523,7 +5530,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-15T04:00:03Z",
+          "updatedAt": "2026-06-16T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
