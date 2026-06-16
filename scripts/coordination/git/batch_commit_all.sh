@@ -46,8 +46,18 @@ commit_repo() {
 export -f commit_repo
 export GREEN YELLOW RED BLUE NC
 
-# Get all repos with changes
-repos_with_changes="aceengineer-admin aceengineercode aceengineer-website achantas-data achantas-media acma-projects ai-native-traditional-eng assetutilities client_projects digitalmodel doris energy frontierdeepwater hobbies investments pyproject-starter rock-oil-field sabithaandkrishnaestates saipem sd-work seanation teamresumes worldenergydata"
+# Get all repos. The sibling-repo list carried client repo names (#3098), so it
+# is no longer hardcoded here. Resolution order:
+#   1) $SIBLING_REPOS_FILE or workspace-hub/config/.sibling-repos.local (gitignored,
+#      provisioned per host — one repo per line or space-separated)
+#   2) dynamic discovery of sibling git repos under the current parent dir
+_wh_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+_repos_file="${SIBLING_REPOS_FILE:-$_wh_root/config/.sibling-repos.local}"
+if [[ -f "$_repos_file" ]]; then
+    repos_with_changes="$(tr '\n' ' ' < "$_repos_file")"
+else
+    repos_with_changes="$(find . -maxdepth 2 -type d -name .git 2>/dev/null | sed 's|/.git$||; s|^\./||' | sort | tr '\n' ' ')"
+fi
 
 # Process in parallel (max 5 at a time to avoid overwhelming git)
 echo "$repos_with_changes" | tr ' ' '\n' | xargs -I {} -P 5 bash -c 'commit_repo "$@"' _ {}
