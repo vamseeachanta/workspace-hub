@@ -1,0 +1,15 @@
+repos:
+  assethold:
+    error_count: 360
+    updated_at: '2026-06-15'
+  assetutilities:
+    error_count: 473
+    updated_at: '2026-06-15'
+  digitalmodel:
+    error_count: 12055
+    updated_at: '2026-06-15'
+  worldenergydata:
+    error_count: 3165
+    updated_at: '2026-06-15'
+schema_version: '1'
+updated_at: '2026-06-15'

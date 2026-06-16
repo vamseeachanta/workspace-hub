@@ -259,6 +259,16 @@ run_vulture() {
   return 0
 }
 
+# Read a repo's ruff-baseline error_count (#3146). Empty if no baseline/entry.
+_ruff_baseline_count() {
+  local repo="$1" bl="${REPO_ROOT}/config/quality/ruff-baseline.yaml"
+  [[ -f "$bl" ]] || return 0
+  RUFF_BL_REPO="$repo" RUFF_BL_FILE="$bl" uv run --no-project --with pyyaml python -c '
+import yaml, os
+d = yaml.safe_load(open(os.environ["RUFF_BL_FILE"])) or {}
+print((d.get("repos", {}).get(os.environ["RUFF_BL_REPO"]) or {}).get("error_count", ""))' 2>/dev/null
+}
+
 run_ruff() {
   local repo_name="$1" repo_path="$2"
   local -a ruff_args=(check .)
@@ -278,6 +288,19 @@ run_ruff() {
   count="$(printf '%s\n' "$output" \
             | grep -oE '^Found [0-9]+ error' | grep -oE '[0-9]+' | tail -1 \
             || true)"
+
+  # Ratchet (#3146): existing ruff debt is baselined — PASS when count <= baseline,
+  # FAIL only on NEW errors. Bypass with RUFF_NO_RATCHET=1 (manual zero-tolerance).
+  if [[ "${RUFF_NO_RATCHET:-0}" != "1" ]]; then
+    local baseline; baseline="$(_ruff_baseline_count "$repo_name")"
+    if [[ -n "$baseline" && -n "$count" && "$count" -le "$baseline" ]]; then
+      RUFF_RESULTS[$repo_name]="PASS (${count} <= baseline ${baseline})"
+      return 0
+    fi
+    RUFF_RESULTS[$repo_name]="FAIL (${count:-?} errors > baseline ${baseline:-none})"
+    return 1
+  fi
+
   RUFF_RESULTS[$repo_name]="FAIL (${count:-?} errors)"
   return 1
 }
