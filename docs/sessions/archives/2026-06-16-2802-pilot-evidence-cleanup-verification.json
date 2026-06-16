@@ -1,0 +1,35 @@
+{
+  "target_paths": [
+    "/mnt/local-analysis/2802-pilot-evidence"
+  ],
+  "classification": "Tier 1 archive then delete",
+  "archive_path": "/mnt/local-analysis/workspace-hub/docs/sessions/archives/2026-06-16-2802-pilot-evidence.tar.gz",
+  "manifest_path": "/mnt/local-analysis/workspace-hub/docs/sessions/archives/2026-06-16-2802-pilot-evidence.manifest.tsv",
+  "archive_sha256": "6ca14bbac6509fe8cc103fc4052c7057069cfb69ef1c7336ac3699d0f0dda8e9",
+  "archive_contents": [
+    "2802-pilot-evidence/",
+    "2802-pilot-evidence/2802-completeness.html",
+    "2802-pilot-evidence/EXIT-HANDOFF.md",
+    "2802-pilot-evidence/orchestrator-summary.md",
+    "2802-pilot-evidence/t3-codex-review.log",
+    "2802-pilot-evidence/t3-gemini-review.txt"
+  ],
+  "residue_buckets": {
+    "A_disposable": 0,
+    "B_evidence_bearing": 5,
+    "C_inspect_first": 0
+  },
+  "pre_delete_checks": {
+    "open_files": "none",
+    "active_process_refs": "none except verification command itself",
+    "cleanup_lock": "absent"
+  },
+  "delete_allowed": true,
+  "disposition": {
+    "original_path_exists": false,
+    "trash_stage": "/mnt/local-analysis/.cleanup-trash/20260616-095709/2802-pilot-evidence",
+    "final_delete": "deferred because disk pressure is low; two-phase cleanup stage retained for one cycle"
+  },
+  "approver": "user approved CTA 5",
+  "timestamp": "2026-06-16T09:57:09-05:00"
+}
