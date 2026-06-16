@@ -18,7 +18,8 @@ name: Legal Client-PII Gate
 on:
   pull_request:
     branches: [main]
-    types: [opened, synchronize, reopened]
+    # `edited` so a title/body changed AFTER opening is re-scanned (#3169).
+    types: [opened, synchronize, reopened, edited]
 
 jobs:
   client-pii-gate:
@@ -63,5 +64,37 @@ jobs:
             echo '```' >> "$GITHUB_STEP_SUMMARY"
             echo "uv run python scripts/legal/redact-client-pii.py --map <private-map> <file>" >> "$GITHUB_STEP_SUMMARY"
             echo '```' >> "$GITHUB_STEP_SUMMARY"
+            exit $rc
+          fi
+
+      - name: Scan PR title/body + commit messages for client identifiers
+        # #3169: commit messages and PR metadata are public surfaces too. Uses the
+        # same LEGAL_CLIENT_MAP env sourcing + $STRICT as the diff step above.
+        # PR title/body arrive via env (never interpolated into the script) so an
+        # odd/hostile title can't break or echo. Commits are scanned individually
+        # so a hit names the offending SHA. Matched values are never printed.
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          BASE_REF: ${{ github.base_ref }}   # via env, not interpolated into the script
+        run: |
+          rc=0
+          printf '%s\n%s\n' "$PR_TITLE" "$PR_BODY" \
+            | uv run python scripts/legal/check-client-pii.py --stdin --source "PR title/body" $STRICT || rc=$?
+          # Fail CLOSED if the commit range can't be computed (e.g. base not fetched);
+          # an empty-but-valid range (rev-list succeeds, no commits) is a legitimate pass.
+          if ! shas="$(git rev-list --no-merges "origin/$BASE_REF..HEAD" 2>/dev/null)"; then
+            echo "::error::cannot compute commit range origin/$BASE_REF..HEAD — failing closed (need fetch-depth: 0)." >&2
+            echo "**Metadata/commits:** FAIL — commit range unavailable; scan could not run." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          for sha in $shas; do
+            git log -1 --format=%B "$sha" \
+              | uv run python scripts/legal/check-client-pii.py --stdin --source "commit $sha" $STRICT || rc=$?
+          done
+          if [[ "$rc" -eq 0 ]]; then
+            echo "**Metadata/commits:** PASS — no client identifiers in PR title/body or commit messages." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "**Metadata/commits:** FAIL (exit $rc) — a PR title/body or commit message contains a client identifier (value withheld; amend or squash-merge to remove it)." >> "$GITHUB_STEP_SUMMARY"
             exit $rc
           fi

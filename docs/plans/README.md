@@ -481,3 +481,4 @@ Add one row per plan:
 | [#3029](https://github.com/vamseeachanta/workspace-hub/issues/3029) | Wire lane: labels into dispatch routing + planning template + planning skill | [Plan](2026-06-10-issue-3029-lane-label-workflow-wiring.md) | done | T2 | 2026-06-10 |
 | [#3030](https://github.com/vamseeachanta/workspace-hub/issues/3030) | Dispatch-time codex weekly-quota gate (suspend lane:codex when available <10%) | [Plan](2026-06-10-issue-3030-codex-quota-dispatch-gate.md) | done | T2 | 2026-06-10 |
 | [#3034](https://github.com/vamseeachanta/workspace-hub/issues/3034) | Quota cache staleness — statusline freshness-aware sourcing + slim local refresh | [Plan](2026-06-10-issue-3034-quota-cache-staleness.md) | plan-review | T2 | 2026-06-10 |
+| [#3169](https://github.com/vamseeachanta/workspace-hub/issues/3169) | PII guard — extend coverage to commit messages + PR bodies | [Plan](2026-06-16-issue-3169-pii-guard-commit-msg-pr-body.md) | plan-approved | T2 | 2026-06-16 |
