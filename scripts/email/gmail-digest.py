@@ -67,14 +67,38 @@ CONTACT_FILES = {
     "skestates": BASE / "sabithaandkrishnaestates/admin/contacts/skestates_contacts.csv",
 }
 
-# VIP domains per account
+# VIP domains per account. Industry-major defaults only; a CLIENT's corporate
+# email domain is PII (it reveals the engagement) so client VIP domains are NOT
+# hardcoded in this public repo (#3095/#3098). Provision them per host in the
+# gitignored config/.vip-domains.local (one "domain" or "account:domain" per
+# line; default account is "ace"; '#' comments allowed). Absent file → only the
+# defaults below are treated as VIP.
 ACE_VIP_DOMAINS = {
-    "ril.com", "dorisgroup.com", "mcdermott.com", "shell.com",
+    "ril.com", "mcdermott.com", "shell.com",
     "kbr.com", "bp.com", "subsea7.com", "technipfmc.com",
 }
 SKESTATES_VIP_DOMAINS = {
     "familydollar.com", "dollartree.com", "marsh.com",
 }
+
+
+def _load_local_vip_domains() -> None:
+    """Merge per-host private VIP domains from the gitignored local file."""
+    sets = {"ace": ACE_VIP_DOMAINS, "skestates": SKESTATES_VIP_DOMAINS}
+    try:
+        lines = (BASE / "config" / ".vip-domains.local").read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return
+    for line in lines:
+        line = line.split("#", 1)[0].strip()
+        if not line:
+            continue
+        account, _, domain = line.rpartition(":")
+        target = sets.get(account or "ace", ACE_VIP_DOMAINS)
+        target.add(domain.strip().lower())
+
+
+_load_local_vip_domains()
 
 # ============================================================
 # CONTACT LOADING

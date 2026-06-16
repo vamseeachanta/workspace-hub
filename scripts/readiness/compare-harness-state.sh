@@ -67,7 +67,7 @@ check_ace2() {
 check_ace2
 
 # ── ace-win-1: stale-report detection (>25h) ───────────────────────────
-check_acma() {
+check_ace_win_1() {
   local report="${STATE_DIR}/harness-readiness-ace-win-1.yaml"
   if [[ ! -f "$report" ]]; then
     log_warn "ace-win-1: no report found — Windows Task Scheduler may not have run yet"
@@ -100,7 +100,7 @@ check_acma() {
     fi
   fi
 }
-check_acma
+check_ace_win_1
 
 echo ""
 if [[ "$DEGRADED" -eq 0 ]]; then

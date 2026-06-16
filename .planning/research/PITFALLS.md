@@ -267,7 +267,7 @@ Domain-specific security issues beyond general web security.
 
 | Mistake | Risk | Prevention |
 |---------|------|------------|
-| Hardcoded license server credentials in scripts | Credential exposure in git history | Environment variables for all credentials. The WRK-121 audit found plaintext passwords in `acma_vpn.md` -- do not repeat this pattern. |
+| Hardcoded license server credentials in scripts | Credential exposure in git history | Environment variables for all credentials. The WRK-121 audit found plaintext passwords in `mkt-a_vpn.md` -- do not repeat this pattern. |
 | HTML reports with unescaped user strings | XSS in shared reports (vessel names, analyst names, project IDs can contain malicious content) | The WRK-129 spec mandates `_escape()` helper wrapping `html.escape()` for ALL user-supplied strings. 6+ field-specific escaping tests required. Already specified -- enforce it. |
 | OrcaWave .owd files containing proprietary client data | Client data leakage if example files are committed to public repo | Keep client data in private repos only. Example/benchmark files use synthetic or published geometries (unit box, standard barge, WAMIT validation cases). |
 | Batch results left on shared licensed machine | Other users accessing confidential analysis results | Automated cleanup: copy results to secure storage, delete from shared machine after batch completion. |
