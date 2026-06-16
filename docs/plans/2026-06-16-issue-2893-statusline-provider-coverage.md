@@ -1,6 +1,6 @@
 # Plan for [#2893](https://github.com/vamseeachanta/workspace-hub/issues/2893): Statusline Provider Coverage
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T3
 > **Date:** 2026-06-16
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2893
@@ -49,7 +49,7 @@ No relevant wiki pages.
 ### Gaps identified
 
 - No canonical `docs/plans/` artifact existed for issue [#2893](https://github.com/vamseeachanta/workspace-hub/issues/2893) before this planning wave.
-- The issue had contradictory labels (`status:plan-approved` and `status:needs-plan`) during earlier review rounds. After fresh r13 Codex MAJOR evidence, rollback was performed per the issue-planning workflow: a GitHub comment was posted and live labels now carry `status:plan-review` with no `status:plan-approved` or `status:needs-plan`. Implementation remains blocked until a no-MAJOR review wave exists and the user explicitly approves.
+- The issue had contradictory labels (`status:plan-approved` and `status:needs-plan`) during earlier review rounds. After fresh r13 Codex MAJOR evidence, rollback was performed per the issue-planning workflow. R14 then reached no-MAJOR available-provider review, and the user explicitly approved implementation on 2026-06-16; live labels now carry `status:plan-approved`.
 - Live-input `C:` already renders correctly. Estimate-fallback `C:` still renders unavailable when live rate-limit input is absent and no authoritative Claude quota file entry exists; the plan must include concrete fallback/unknown behavior tied to [#2843](https://github.com/vamseeachanta/workspace-hub/issues/2843) without rebuilding the live path.
 - `O:` does not show Codex 5-hour remaining headroom despite `five_hour_pct` being available in the quota JSON.
 - Fresh-file `history.jsonl-estimate` Codex data is not visibly distinguished from live app-server/session telemetry.
@@ -61,7 +61,7 @@ No relevant wiki pages.
 ### Evidence
 
 **Issue statuses** (verified 2026-06-16T05:40:42-05:00 via `gh issue view`):
-- [#2893](https://github.com/vamseeachanta/workspace-hub/issues/2893) — OPEN — cross-provider statusline parity issue; label rollback completed after r13 MAJOR review evidence and the issue now carries `status:plan-review` without stale `status:plan-approved` or `status:needs-plan`.
+- [#2893](https://github.com/vamseeachanta/workspace-hub/issues/2893) — OPEN — cross-provider statusline parity issue; R14 reached no-MAJOR available-provider review and the user explicitly approved implementation on 2026-06-16. The issue now carries `status:plan-approved`.
 - [#2843](https://github.com/vamseeachanta/workspace-hub/issues/2843) — OPEN — Claude `C:` usage visibility issue.
 - [#2844](https://github.com/vamseeachanta/workspace-hub/issues/2844) — OPEN — Codex 5-hour burst-window plus stale/estimate marker issue.
 - [#2887](https://github.com/vamseeachanta/workspace-hub/issues/2887) — OPEN — epic-level machine/provider equivalence issue extending [#2801](https://github.com/vamseeachanta/workspace-hub/issues/2801).
@@ -457,7 +457,7 @@ matrix:
 | Codex | MINOR | r14 found no blockers. Remaining minors were that the live issue was already in `status:plan-review` before r14 artifacts were tracked and the completeness closeout artifact list was underspecified. |
 | Gemini | UNAVAILABLE | r14 Gemini CLI failed before returning usable review signal (`rc=124`); per cross-review routing, this degrades T3 to the two available no-MAJOR providers and is documented rather than blocking indefinitely. |
 
-**Overall result:** r14 returned no MAJOR from available providers: Claude MINOR, Codex MINOR, Gemini UNAVAILABLE. The plan is ready for user approval review but is not implementation-approved.
+**Overall result:** r14 returned no MAJOR from available providers: Claude MINOR, Codex MINOR, Gemini UNAVAILABLE. The user explicitly approved implementation on 2026-06-16.
 
 Revisions made based on review:
 - Added concrete Claude `C:` visibility work and tests tied to [#2843](https://github.com/vamseeachanta/workspace-hub/issues/2843), now scoped around existing `query_claude_stats()` and the deliberate authoritative-only policy in `scripts/ai/assessment/lib/providers.sh`.
@@ -465,7 +465,7 @@ Revisions made based on review:
 - Defined the repo-level helper JSON schema and required observed stripped statusline output evidence.
 - Removed the dead matrix provider tuple and required a concrete repo-level render path outside `DISPLAY_DIMS` and per-machine `verdict_for()` routing.
 - Deferred Codex native config migration and `scripts/_core/sync-agent-configs.sh` TOML editing because current local validation cannot prove exact Codex key/item semantics.
-- Recorded live governance drift that previously put [#2893](https://github.com/vamseeachanta/workspace-hub/issues/2893) in both `status:plan-approved` and `status:needs-plan`; after r13 rollback, implementation stays blocked under `status:plan-review` until no-MAJOR review evidence and explicit user approval exist.
+- Recorded live governance drift that previously put [#2893](https://github.com/vamseeachanta/workspace-hub/issues/2893) in both `status:plan-approved` and `status:needs-plan`; after r13 rollback and r14 no-MAJOR available-provider review, explicit user approval restored `status:plan-approved`.
 - Added [#2894](https://github.com/vamseeachanta/workspace-hub/issues/2894) non-closing scope: local code/tests may be prepared, but [#2893](https://github.com/vamseeachanta/workspace-hub/issues/2893) cannot be closed as R6-complete while [#2894](https://github.com/vamseeachanta/workspace-hub/issues/2894) remains a live blocker.
 - Archived r3, r4, and r5 review artifacts under stable `*-rN-*.md` names because the fixed current-output paths are truncated during the next fanout run.
 - Added source-aware statusline extraction, Codex 5-hour cache schema handling, `H=O` alias rendering outside `color_pct`, and explicit Hermes alias-to-`COMPLETE` mapping.
@@ -522,7 +522,7 @@ Revisions made based on review:
 
 ## Risks and Open Questions
 
-- **Risk:** Earlier label drift incorrectly left the issue in both `status:plan-approved` and `status:needs-plan` while fresh review waves returned `MAJOR`. That drift was rolled back after r13; implementation remains blocked under `status:plan-review` until a no-MAJOR plan is reviewed and the user explicitly approves.
+- **Risk:** Earlier label drift incorrectly left the issue in both `status:plan-approved` and `status:needs-plan` while fresh review waves returned `MAJOR`. That drift was rolled back after r13; R14 reached no-MAJOR available-provider review and the user explicitly approved implementation on 2026-06-16.
 - **Risk:** [#2894](https://github.com/vamseeachanta/workspace-hub/issues/2894) is a live blocker for R6 closeout. This plan can produce preparatory local code/tests for the row, but closing [#2893](https://github.com/vamseeachanta/workspace-hub/issues/2893) as complete requires [#2894](https://github.com/vamseeachanta/workspace-hub/issues/2894) to be resolved or the blocker to be explicitly lifted.
 - **Risk:** Codex native statusline cannot render the exact Claude Code shell-formatted `C:|O:|G:` string unless upstream adds arbitrary formatter support. Native footer migration is out of scope until exact item identifiers and safe config mutation can be validated.
 - **Risk:** Hermes has no independent quota telemetry in the current collector. The contract must render Hermes as an explicit OpenAI/Codex alias (`H=O`) or `unknown`, not as a fake separate percentage.
