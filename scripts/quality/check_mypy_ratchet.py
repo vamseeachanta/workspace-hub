@@ -225,6 +225,13 @@ def _run_mypy(repo_path: Path) -> tuple[int, str]:
             timeout=300,
         )
         combined = proc.stdout + proc.stderr
+        # exit >=2 = mypy crash/usage error (e.g. a non-Python file: "not a valid
+        # Python package name" / "errors prevented further checking"). It prints a
+        # bogus "Found N error" that _parse_error_count would treat as a real count
+        # → a crash would ratchet-PASS. Treat as a hard crash, never a count. (#3148)
+        if proc.returncode >= 2:
+            last = combined.strip().splitlines()[-1] if combined.strip() else ""
+            return -2, f"CRASH (mypy exit {proc.returncode} — not type errors): {last}"
         count = _parse_error_count(combined)
         return count, combined.strip().splitlines()[-1] if combined.strip() else ""
     except subprocess.TimeoutExpired:
