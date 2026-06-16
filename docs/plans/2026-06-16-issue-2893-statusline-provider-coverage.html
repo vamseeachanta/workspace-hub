@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan for Issue 2893: Statusline Provider Coverage</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      margin: 0;
+      color: #1f2933;
+      background: #f7f9fb;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+      background: #ffffff;
+      min-height: 100vh;
+    }
+    h1, h2 {
+      line-height: 1.2;
+      margin: 0 0 12px;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    h2 {
+      font-size: 18px;
+      margin-top: 28px;
+      border-top: 1px solid #d9e2ec;
+      padding-top: 18px;
+    }
+    p, li {
+      font-size: 15px;
+    }
+    code {
+      background: #edf2f7;
+      border-radius: 4px;
+      padding: 1px 4px;
+    }
+    .status {
+      display: inline-block;
+      margin: 8px 0 18px;
+      padding: 4px 8px;
+      border: 1px solid #c2410c;
+      color: #7c2d12;
+      background: #fff7ed;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .summary {
+      background: #f8fafc;
+      border-left: 4px solid rgb(37, 99, 235);
+      padding: 12px 14px;
+    }
+    a {
+      color: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Plan for <a href="https://github.com/vamseeachanta/workspace-hub/issues/2893">Issue 2893</a>: Statusline Provider Coverage</h1>
+    <div class="status">plan-review</div>
+
+    <p class="summary">This is the human-facing companion to the canonical Markdown workflow artifact at <a href="./2026-06-16-issue-2893-statusline-provider-coverage.md">docs/plans/2026-06-16-issue-2893-statusline-provider-coverage.md</a>. It does not replace the required issue-plan file or review artifacts.</p>
+
+    <h2>Scope</h2>
+    <p>The plan narrows <a href="https://github.com/vamseeachanta/workspace-hub/issues/2893">Issue 2893</a> to the shared workspace-hub Claude Code statusline and the single repo-level equality-matrix row <code>statusline:provider-coverage</code>. Native Codex footer migration stays out of scope until there is a reliable validator for exact Codex status-line item identifiers.</p>
+
+    <h2>Planned Contract</h2>
+    <ul>
+      <li><code>C:</code> keeps live Claude quota rendering and adds only an explicitly marked fallback estimate or unknown state.</li>
+      <li><code>O:</code> keeps weekly remaining/reset shape and adds Codex 5-hour remaining headroom.</li>
+      <li><code>G:</code> stays source-aware for Gemini snapshot data.</li>
+      <li><code>H=O</code> represents Hermes as an explicit OpenAI/Codex pool alias, not a separate fabricated quota.</li>
+    </ul>
+
+    <h2>Review State</h2>
+    <p>Latest archived r14 review result: Claude MINOR, Codex MINOR, Gemini UNAVAILABLE. The plan has no MAJOR findings from available providers and is ready for user approval review; implementation remains blocked until explicit user approval.</p>
+
+    <h2>Gate State</h2>
+    <p>Implementation remains blocked. The live issue is in <code>status:plan-review</code>; no code changes should start until explicit user approval moves it to <code>status:plan-approved</code>.</p>
+
+    <h2>Related Issues</h2>
+    <p>Related work: <a href="https://github.com/vamseeachanta/workspace-hub/issues/2843">Issue 2843</a>, <a href="https://github.com/vamseeachanta/workspace-hub/issues/2844">Issue 2844</a>, <a href="https://github.com/vamseeachanta/workspace-hub/issues/2887">Issue 2887</a>, and <a href="https://github.com/vamseeachanta/workspace-hub/issues/2894">Issue 2894</a>.</p>
+  </main>
+</body>
+</html>
