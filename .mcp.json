@@ -9,6 +9,12 @@
         "semantic-scholar-mcp"
       ],
       "env": {}
+    },
+    "doc-key-lookup": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "--no-project", "scripts/knowledge/doc_key_lookup_mcp.py"],
+      "env": {}
     }
   }
 }
