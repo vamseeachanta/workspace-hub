@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-15T21:36:54.249930Z",
+  "generated_at": "2026-06-16T01:20:08.563700Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-15T21:36:52.204960Z",
+  "scorecard_generated_at": "2026-06-16T01:20:06.631667Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -1134,7 +1134,7 @@
             "status:plan-approved",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-15T18:58:18Z",
+          "updatedAt": "2026-06-15T21:55:43Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4457,7 +4457,7 @@
             "status:plan-review",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-15T16:20:00Z",
+          "updatedAt": "2026-06-15T21:58:34Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4666,9 +4666,10 @@
             "enhancement",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:ai-orchestration"
+            "domain:ai-orchestration",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-06-15T16:10:41Z",
+          "updatedAt": "2026-06-15T22:33:23Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4786,7 +4787,7 @@
             "status:plan-approved",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-15T21:19:47Z",
+          "updatedAt": "2026-06-15T21:52:43Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4984,7 +4985,7 @@
             "status:plan-approved",
             "gate:completeness"
           ],
-          "updatedAt": "2026-06-15T21:19:47Z",
+          "updatedAt": "2026-06-15T21:52:43Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",

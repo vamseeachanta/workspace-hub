@@ -355,9 +355,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -367,7 +366,8 @@
           "enhancement",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:ai-orchestration"
+          "domain:ai-orchestration",
+          "status:plan-review"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -390,7 +390,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "feat(harness): G3 MCP-first tool exposure \u2014 provider-portable tools [sub of #3058, umbrella #3114]",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3118",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8498,7 +8500,7 @@
       ]
     }
   ],
-  "generated_at": "2026-06-15T21:36:56Z",
+  "generated_at": "2026-06-16T01:20:10Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8834,9 +8836,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8846,7 +8847,8 @@
             "enhancement",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:ai-orchestration"
+            "domain:ai-orchestration",
+            "status:plan-review"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8869,7 +8871,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "feat(harness): G3 MCP-first tool exposure \u2014 provider-portable tools [sub of #3058, umbrella #3114]",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3118",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16985,14 +16989,14 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-06-15T21:36:52.204960Z",
+  "scorecard_generated_at": "2026-06-16T01:20:06.631667Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-15T21:36:52.069949Z",
+  "utilization_generated_at": "2026-06-16T01:20:06.504240Z",
   "warning_summary": {
     "approved_no_marker": 26,
     "approved_no_plan": 15,
     "dual_status_labels": 9,
     "marker_without_open_approved_issue": 158,
-    "missing_review": 59
+    "missing_review": 60
   }
 }
