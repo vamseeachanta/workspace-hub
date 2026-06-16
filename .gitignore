@@ -578,3 +578,11 @@ config/.client-wikis.local.yml
 
 # PII #3098: sibling-repo list (carries client repo names) — per-host, never track
 config/.sibling-repos.local
+
+# PII #3095/#3098: per-host private provision files for dev-ops scripts that would
+# otherwise hardcode client repo names / maps / routing tables / VIP domains.
+# These carry client identifiers, so they are gitignored and provisioned per host
+# from the private aceengineer-strategy archive. The committed *.local.example
+# templates (PII-free) document each format. Covers .vip-domains.local,
+# .branch-cleanup.local, .windows-repos.local, .repo-types.local, .ace-routes.local, …
+config/.*.local

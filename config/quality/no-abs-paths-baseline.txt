@@ -138,9 +138,9 @@ scripts/data/doc_intelligence/tests/test_benchmark_pdf_tools.py:127
 scripts/data/doc_intelligence/tests/test_benchmark_pdf_tools.py:21
 scripts/data/doc_intelligence/tests/test_benchmark_pdf_tools.py:22
 scripts/data/document-index/_summary_lookup.py:3
-scripts/data/document-index/acma_wiki_unblock.py:28
-scripts/data/document-index/acma_wiki_unblock.py:34
-scripts/data/document-index/acma_wiki_unblock.py:40
+scripts/data/document-index/mkt_a_wiki_unblock.py:28
+scripts/data/document-index/mkt_a_wiki_unblock.py:34
+scripts/data/document-index/mkt_a_wiki_unblock.py:40
 scripts/data/document-index/build-capability-map.py:38
 scripts/data/document-index/build-index-other-bucket-packs.py:27
 scripts/data/document-index/build-index-other-bucket-packs.py:283
@@ -174,10 +174,10 @@ scripts/data/document-index/remap_og_standards_paths.py:8
 scripts/data/document-index/remap_og_standards_paths.py:9
 scripts/data/document-index/summarise-worker.py:23
 scripts/data/document-index/summarise-worker.py:24
-scripts/data/document-index/tests/test_acma_wiki_unblock.py:35
-scripts/data/document-index/tests/test_acma_wiki_unblock.py:39
-scripts/data/document-index/tests/test_acma_wiki_unblock.py:43
-scripts/data/document-index/tests/test_acma_wiki_unblock.py:69
+scripts/data/document-index/tests/test_mkt_a_wiki_unblock.py:35
+scripts/data/document-index/tests/test_mkt_a_wiki_unblock.py:39
+scripts/data/document-index/tests/test_mkt_a_wiki_unblock.py:43
+scripts/data/document-index/tests/test_mkt_a_wiki_unblock.py:69
 scripts/data/document-index/tests/test_provenance.py:69
 scripts/data/document-index/tests/test_provenance.py:70
 scripts/data/document-index/tests/test_provenance.py:78
