@@ -347,3 +347,30 @@ def test_exempt_repo_is_skipped() -> None:
     passes, failures = mod.check_repos(baseline_repos, actual_counts)
     assert len(failures) == 0, "Exempt repo should not appear in failures"
     assert any(p["status"] == "exempt" for p in passes), "Exempt repo should appear in passes"
+
+
+# ---------------------------------------------------------------------------
+# T14: mypy crash (exit >=2) must NOT be parsed as a passing count (#3148)
+# ---------------------------------------------------------------------------
+
+
+def test_run_mypy_crash_exit2_not_parsed_as_count(tmp_path: Path) -> None:
+    """A crashed mypy (exit 2 on a non-Python file) prints a bogus 'Found 1 error'
+    that _parse_error_count would treat as 1 → ratchet-PASS. The exit-code guard
+    must return the crash sentinel (-2) instead, so a crash never passes (#3148)."""
+    mod = _import_module()
+    (tmp_path / "src").mkdir()
+    (tmp_path / "pyproject.toml").write_text("[tool.mypy]\n", encoding="utf-8")
+    with patch.object(mod.subprocess, "run") as m:
+        m.side_effect = [
+            MagicMock(returncode=0),  # `mypy --version` availability check
+            MagicMock(  # the run itself crashed on a non-Python file
+                returncode=2,
+                stdout="x.py:8: error: Invalid syntax  [syntax]\n"
+                       "Found 1 error in 1 file (errors prevented further checking)",
+                stderr="",
+            ),
+        ]
+        count, summary = mod._run_mypy(tmp_path)
+    assert count == -2, f"crash (exit 2) must return -2, not a parsed count; got {count}"
+    assert "CRASH" in summary and "exit 2" in summary
