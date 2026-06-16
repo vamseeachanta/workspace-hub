@@ -6,6 +6,7 @@
 #   claude  -> claude update
 #   codex   -> codex update
 #   gemini  -> npm install -g @google/gemini-cli@latest
+#   agy     -> agy update   (Antigravity CLI; ~/.local/bin/agy, OAuth/Code Assist)
 #
 # Each step is independent: a failure is reported but does not abort the rest.
 # Run with --dry-run to print the commands without executing them.
@@ -161,6 +162,7 @@ fi
 run_step claude claude update
 run_step codex  codex  update
 run_step gemini npm install -g @google/gemini-cli@latest
+run_step agy    agy    update
 
 echo
 echo "================ Summary ================"
