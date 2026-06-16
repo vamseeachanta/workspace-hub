@@ -1,77 +1,92 @@
-# Plan for #3148: check-all run_mypy baseline-aware + fix assetutilities mypy crash
+# Plan for #3148: make check-all mypy gate passable across ALL tier-1 repos
 
-> **Status:** plan-review (NOT self-approved)
-> **Complexity:** T2 (mirrors the merged #3146 ruff-ratchet pattern + a one-line assetutilities mypy-config fix)
+> **Status:** plan-review (REVISED to T3 after adversarial review — NOT self-approved)
+> **Complexity:** T3 (review proved it spans all 4 tier-1 repos + 2 code fixes + 2 gate scripts — was wrongly scoped T2)
 > **Date:** 2026-06-16
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3148
 > **Client:** N/A | **Project:** N/A
+> **Review:** 1 Claude scope-subagent NON-APPROVE (empirical, all 4 repos); codex+gemini fanout FAILED (SIGTERM/timeout) → degraded, documented.
 
 ---
 
-## Resource Intelligence Summary
+## Why revised (r1 scope review — NON-APPROVE)
 
-Two distinct sub-problems (both make check-all's `:158` gate fail on mypy):
+The T2 plan fixed only assetutilities. Empirical mypy enumeration on ALL four tier-1 repos (live filesystem) showed **every repo fails the proposed mypy gate**, so the original plan unblocks 1 of 4 and re-breaks the rest. The #3127/#3146 lesson ("verify coverage across the whole set") applied.
 
-### A. check-all `run_mypy` is a hard gate with no baseline
-`scripts/quality/check-all.sh` `run_mypy` runs `uv run mypy src/` and FAILs on any non-zero exit — it does NOT consult `config/quality/mypy-baseline.yaml` (which already exists, seeded; e.g. assetutilities=941). The mypy *ratchet* (`check_mypy_ratchet.py`, pre-push opt-in) is a SEPARATE gate; it does not make check-all's `:158` mypy lenient. Same shape as #3146 (ruff), now solved — mirror that fix.
-
-### B. assetutilities mypy CRASHES (not type-errors)
-**Reproduced:** `cd /mnt/local-analysis/assetutilities && uv run mypy src/` → `web-contextualization is not a valid Python package name`, **exit 2**. Root cause: `src/modules/web-contextualization` — a hyphenated dir is not a valid Python package, so mypy aborts (exit 2) before type-checking → check-all reports `mypy: FAIL (0 errors)`. **With `--exclude 'web-contextualization'`, mypy runs normally: exit 1, 1215 errors in 137 files.** (The 941 in the current baseline is stale / from a different invocation — re-seed.)
-
-### Proven pattern to mirror
-Merged #3146: `_ruff_baseline_count` helper in check-all + ratchet logic (`PASS when count <= baseline`, `RUFF_NO_RATCHET=1` escape) + `check_ruff_ratchet.py`. `mypy-baseline.yaml` + `check_mypy_ratchet.py` already exist — only the check-all WIRING is missing.
+### Per-repo mypy reality (reproduced 2026-06-16)
+| repo | mypy result | baseline (mypy-baseline.yaml) | problem |
+|---|---|---|---|
+| assetutilities | exit 2 CRASH (`src/modules/web-contextualization`); after exclude → exit 1, 1215 | 941 | crash + stale baseline + **3** hyphen-dirs (agent-os, web-contextualization, enhanced-create-specs) → count depends on which excluded (1215 vs 1148) |
+| digitalmodel | **exit 2 CRASH** — syntax error `src/digitalmodel/specialized/project_management/projectScheduleD01.py:8` | 1 (seeded FROM the crash) | real code bug; exclude won't help |
+| worldenergydata | exit 1, **3589**; **cold run 4m08s > 300s → timeout(124)** | 3414 | regression +175 + timeout |
+| assethold | exit 1, **355** | 320 | regression +35 |
 
 ---
 
-## Design
+## Design (T3 — full gate-surface mypy fix)
 
-1. **Fix B first (assetutilities):** add `web-contextualization` (or a glob for hyphenated module dirs) to `[tool.mypy] exclude` in `assetutilities/pyproject.toml`, so mypy runs instead of crashing. This is prerequisite — a crashed mypy must not be ratcheted (see nuance).
-2. **Fix A (workspace-hub):** make check-all `run_mypy` baseline-aware, mirroring #3146:
-   - `_mypy_baseline_count` helper reads `config/quality/mypy-baseline.yaml`.
-   - `run_mypy`: exit 0 → PASS; **exit ≥2 → hard FAIL (crash/usage — NEVER ratchet-pass)**; exit 1 → count errors, PASS when `count <= baseline`, FAIL on regression. `MYPY_NO_RATCHET=1` escape.
-   - **Re-seed** `mypy-baseline.yaml` for assetutilities to the post-fix count (1215) via `check_mypy_ratchet.py --init` (or targeted), so the ratchet is accurate after the crash fix.
+### 1. Per-repo crash/code fixes (prerequisite — a crash must never be ratcheted)
+- **assetutilities**: `[tool.mypy] exclude` the hyphenated module dirs. **Decision: enumerate all 3** (`web-contextualization`, `agent-os`, `enhanced-create-specs`) explicitly (glob `-` is too broad/fragile) — and seed the baseline to the resulting count. File a follow-up to rename hyphenated module dirs (not valid Python packages).
+- **digitalmodel**: **fix the syntax error** at `projectScheduleD01.py:8` (real bug) — preferred over excluding. If the fix is non-trivial, fall back to a per-file `[[tool.mypy.overrides]] ignore_errors` with a TODO + follow-up issue.
 
-### Critical design nuance (vs #3146 ruff)
-mypy exit codes differ from ruff: **exit 2 = crash/usage error**, exit 1 = type errors, 0 = clean. A crashed mypy yields 0 parsed errors — `0 <= baseline` would FALSELY PASS. So `run_mypy` MUST treat exit ≥2 as a hard failure, independent of the baseline. (This is exactly the bug class behind B — a crash masquerading as "0 errors".)
+### 2. check-all `run_mypy` baseline-aware (clone merged #3146 ruff)
+- `_mypy_baseline_count` helper reads `mypy-baseline.yaml`.
+- Exit-code handling (the load-bearing nuance):
+  - **0** → PASS.
+  - **1** (type errors) → count, PASS when `count <= baseline`, else FAIL (regression).
+  - **2** (usage/crash) → **hard FAIL** (never ratchet-pass; a crash yields 0 parsed errors).
+  - **124/137** (timeout/OOM, env) → distinct: wrap `run_mypy` in `timeout 300` (match the ratchet); on timeout, **FAIL with an explicit "mypy timed out" reason** (not silently "crash"), and document the warm-cache expectation for CI. (Do NOT silently pass.)
+- `MYPY_NO_RATCHET=1` escape (manual zero-tolerance).
+
+### 3. Same exit-2/timeout guard in `check_mypy_ratchet.py._run_mypy` (lines 219-229)
+Today it ignores `returncode` and parses crash output as a real count → ratchet-passes a crash. Add: returncode 2 → crash (fail/raise, not count); 124 → timeout. Keeps the two gates (check-all + the opt-in ratchet) from disagreeing on the same repo. Add tests.
+
+### 4. Re-seed ALL baselines (after the crash/code fixes land)
+Targeted re-seed each repo to its post-fix actual: assetutilities (post-exclude), digitalmodel (post-syntax-fix), worldenergydata (3589), assethold (355). **Drop the stale `ogmanufacturing` row** (removed from tier-1 in #3012; not on disk). Warm the mypy cache before seeding worldenergydata (avoid the 4-min cold compile skewing/timeouts).
 
 ---
 
 ## Files to Change
-| Action | Path | Reason |
-|---|---|---|
-| Modify | `assetutilities/pyproject.toml` (`[tool.mypy] exclude`) | stop mypy crashing on `src/modules/web-contextualization` |
-| Modify | `scripts/quality/check-all.sh` | `_mypy_baseline_count` + baseline-aware `run_mypy` (exit-2 hard-fail) |
-| Modify | `config/quality/mypy-baseline.yaml` | re-seed assetutilities to post-fix count (~1215) |
-| Create | `tests/quality/test_check_all_mypy_ratchet.sh` (or extend `test_check_all.sh`) | baselined-passes / new-error-fails / crash(exit2)-fails / exclude-fixes-crash |
+| Action | Path |
+|---|---|
+| Modify | `assetutilities/pyproject.toml` — `[tool.mypy] exclude` (3 hyphen dirs) |
+| Modify | `digitalmodel/.../projectScheduleD01.py` — fix syntax error (or per-module override) |
+| Modify | `scripts/quality/check-all.sh` — `run_mypy` baseline-aware + exit-code handling + `timeout` wrapper |
+| Modify | `scripts/quality/check_mypy_ratchet.py` — exit-2/timeout guard in `_run_mypy` |
+| Modify | `config/quality/mypy-baseline.yaml` — re-seed all 4; drop ogmanufacturing |
+| Create | `tests/quality/test_check_all_mypy_ratchet.sh` + ratchet crash test |
 
 ---
 
 ## TDD Test List
 | Test | Verifies |
 |---|---|
-| mypy_baselined_passes | repo at/under baseline → check-all mypy PASS |
-| mypy_regression_fails | count > baseline → FAIL |
-| mypy_crash_exit2_hard_fails | mypy exit 2 (mocked) → FAIL, NOT a baseline-pass (the key nuance) |
-| mypy_no_ratchet_escape | `MYPY_NO_RATCHET=1` → hard zero-tolerance |
-| assetutilities_mypy_runs_after_exclude | with the pyproject exclude, mypy exits 1 (runs) not 2 (crash) |
+| mypy_baselined_passes / mypy_regression_fails | ratchet core |
+| mypy_crash_exit2_hard_fails (check-all) | crash ≠ pass |
+| mypy_ratchet_crash_exit2_fails (check_mypy_ratchet) | sibling gate agrees |
+| mypy_timeout_124_fails_with_reason | timeout distinct from crash, not silent |
+| mypy_no_ratchet_escape | zero-tolerance escape |
+| assetutilities_mypy_runs_after_exclude | exit 1 not 2 |
+| digitalmodel_mypy_runs_after_syntax_fix | exit 1 not 2 |
 
 ---
 
 ## Acceptance Criteria
-- [ ] `cd assetutilities && uv run mypy src/` no longer exits 2 (crash) — runs and reports type errors (exit 1).
-- [ ] `mypy-baseline.yaml` assetutilities count reflects the post-fix actual (re-seeded).
-- [ ] check-all `--repo assetutilities` mypy PASSES via ratchet (count <= baseline); a +1 regression FAILS; a simulated crash (exit 2) FAILS.
-- [ ] Existing `test_check_all.sh` + `check_mypy_ratchet` tests still pass.
-- [ ] `legal-sanity-scan --diff-only` passes.
-- [ ] Cross-provider review (T2) clean; **re-check #3148 state immediately before implementing** (parallel-merge lesson from #3127/#3146).
+- [ ] All 4 tier-1 repos: `uv run mypy src/` (with config) exits 0/1 (runs), never 2 (crash).
+- [ ] `mypy-baseline.yaml` re-seeded to actuals for all 4; ogmanufacturing removed.
+- [ ] check-all `--repo <each>` mypy PASSES via ratchet; +1 regression FAILS; simulated exit-2 FAILS; simulated timeout(124) FAILS-with-reason.
+- [ ] `check_mypy_ratchet.py` also fails on exit-2 (no gate disagreement).
+- [ ] **End-to-end:** a clean push's check-all (ruff #3146 + mypy #3148) passes for all 4 repos — i.e. the bypass is no longer needed *for check-all* (note: run-all-tests/coverage/secrets are separate pre-push gates).
+- [ ] Existing tests + `legal-sanity-scan --diff-only` pass.
+- [ ] T3 cross-provider review (Claude+Codex+Gemini) clean; re-check #3148 state immediately before implementing.
 
 ---
 
-## Risks and Open Questions
-- **Risk:** excluding `web-contextualization` hides any real type issues in that module. Acceptable — it's not an importable package (hyphen); if it should be checked, rename it (separate). Document the exclusion reason.
-- **Risk:** crash-vs-clean conflation (exit 2 passing as 0) — explicitly tested (`mypy_crash_exit2_hard_fails`).
-- **Risk:** two-repo change (assetutilities + workspace-hub) → two PRs (one per repo). Land assetutilities exclude first, then re-seed baseline, then workspace-hub wiring.
-- **Open:** glob-exclude all hyphenated module dirs vs just this one? Recommend just this one + a follow-up to lint for hyphenated package dirs.
+## Risks / Sequencing
+- **Sequence:** per-repo code fixes (assetutilities exclude, digitalmodel syntax) FIRST → warm caches → re-seed baselines → check-all + ratchet wiring + tests. Multiple PRs (per-repo fixes can land independently; workspace-hub wiring last).
+- **Risk:** digitalmodel syntax fix may reveal cascading errors (the crash masked everything) — the post-fix count could be large; that's the honest baseline.
+- **Risk:** worldenergydata cold-compile timeout on CI — warm-cache or raise the timeout; tested.
+- **Risk:** excluding hyphen dirs hides real issues there → follow-up to rename them.
 
-## Complexity: T2
-A near-clone of the merged #3146 ruff wiring + a one-line assetutilities mypy-exclude + baseline re-seed; the only novel piece is the exit-2-hard-fail nuance (well-contained + explicitly tested).
+## Complexity: T3
+Four repos (two needing code fixes), two gate scripts, full baseline re-seed, exit-code/timeout semantics — systemic; 3-provider review required.
