@@ -44,8 +44,22 @@ public, so listing the names there *is* the leak (the deny-list paradox).
 | Layer | Mechanism | Blocking? | Notes |
 |---|---|---|---|
 | Emit | `.gitignore` stop-commit of dump clusters + redaction step in `scripts/cron/commit-learning-artifacts.sh` | n/a | dumps can't re-enter; cron redacts curated state at source (#3097) |
-| Local | pre-commit hook `legal-client-pii` (`.pre-commit-config.yaml`) | yes (bypassable) | fast feedback; reads local map, degrades-open |
-| CI | `.github/workflows/legal-client-pii-gate.yml` | yes (strict) | **the real backstop**; reads the private map from the `LEGAL_CLIENT_MAP` repo secret |
+| Local (files) | pre-commit hook `legal-client-pii` (`--staged`) | yes (bypassable) | fast feedback; reads local map, degrades-open |
+| Local (commit msg) | pre-commit hook `legal-client-pii-commit-msg` on the `commit-msg` stage (`--message-file "$1"`) | yes (bypassable) | scans the **commit message** (#3169); auto-wired via `default_install_hook_types`; degrades-open |
+| CI | `.github/workflows/legal-client-pii-gate.yml` | yes (strict) | **the real backstop**; scans the file diff **and** the PR title/body + each commit message in range (#3169); re-runs on PR `edited`; reads the private map from the `LEGAL_CLIENT_MAP` repo secret |
+
+### Surfaces covered (#3169)
+
+Client identifiers are kept out of **every public surface**, not just file content:
+**tracked files**, **commit messages**, and **PR title/body**. The guard's text mode
+(`--message-file` / `--stdin --source <label>`) feeds messages/metadata through the
+same engine and **never prints the matched value** — only the source label.
+
+**Squash-merge transient-token branches.** A merge-commit promotes a feature
+branch's individual commit messages into `main`'s history; a squash-merge does not
+(it uses the PR title/body). If a branch's commit messages might carry a transient
+token (e.g. mid-remediation), **squash-merge** it so nothing reaches `main` history —
+and remember git-history rewrites of `main` are out of scope (HEAD-only).
 
 ### Provisioning the CI secret (one-time)
 ```bash

@@ -1,6 +1,11 @@
 # Pre-commit hooks for workspace-hub
-# Install: pre-commit install --hook-type commit-msg
+# Install: pre-commit install   (default_install_hook_types below wires both
+#          the pre-commit and commit-msg stages automatically)
 # Test: echo "bad message" | pre-commit run commitizen --hook-stage commit-msg
+
+# Auto-wire both stages so `pre-commit install` enables the commit-msg hooks
+# (the #3169 client-PII commit-message guard depends on this).
+default_install_hook_types: [pre-commit, commit-msg]
 
 repos:
   # Commit message linting (conventional commits)
@@ -46,6 +51,17 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+      - id: legal-client-pii-commit-msg
+        name: no client identifiers in the commit message (#3095/#3169)
+        # Blocks a commit whose MESSAGE contains a client identifier (the
+        # file-content guard above does not see commit messages). Reads the same
+        # PRIVATE local map; degrades-open if absent (parity with --staged). The
+        # value is never printed. Bypass: LEGAL_PII_ALLOW=1.
+        # pre-commit appends the commit-message file path → it becomes the value
+        # of the trailing --message-file argument.
+        entry: uv run python scripts/legal/check-client-pii.py --source "commit message" --message-file
+        language: system
+        stages: [commit-msg]
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.21.2

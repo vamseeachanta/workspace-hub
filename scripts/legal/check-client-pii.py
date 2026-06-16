@@ -91,12 +91,36 @@ def violations_in(path: Path, rules) -> list[int]:
     return hits
 
 
+def scan_text(text: str, rules, label: str) -> int:
+    """Scan arbitrary text (a commit message, PR title/body) for client identifiers.
+
+    Reuses the redactor engine so the guard never disagrees with the redactor.
+    NEVER prints the matched text — only the caller-supplied `label` (e.g.
+    "commit <sha>", "PR metadata"), so public CI logs can't leak the value.
+    Returns 1 if an identifier is present, else 0.
+    """
+    _, n = _engine.redact_text(text, rules)
+    if n:
+        print(f"✖ Client identifier found in {label} — blocked (#3095/#3099).", file=sys.stderr)
+        print("  (value withheld — public logs would leak it; remove the client name "
+              "from the message/metadata, or squash-merge to drop it from history.)", file=sys.stderr)
+        print("Bypass (discouraged): LEGAL_PII_ALLOW=1", file=sys.stderr)
+        return 1
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--map", type=Path, default=Path(os.environ.get("LEGAL_CLIENT_MAP", DEFAULT_MAP)))
     ap.add_argument("--base-ref", help="scan files changed vs this ref (CI/PR mode)")
     ap.add_argument("--staged", action="store_true", help="scan staged files (pre-commit mode)")
     ap.add_argument("--all", action="store_true", help="scan all tracked files")
+    ap.add_argument("--message-file", type=Path,
+                    help="scan the text in this file (e.g. a commit message — the commit-msg hook's $1) instead of tracked files")
+    ap.add_argument("--stdin", action="store_true",
+                    help="scan text read from stdin (e.g. PR title/body, commit-range messages) instead of tracked files")
+    ap.add_argument("--source", default=None,
+                    help="label for the scanned text in messages (e.g. 'commit <sha>', 'PR metadata'); the matched value is never printed")
     ap.add_argument("--strict", action="store_true", help="fail (exit 2) if the private map is missing")
     ap.add_argument("paths", nargs="*", help="explicit files to scan")
     args = ap.parse_args()
@@ -114,6 +138,22 @@ def main() -> int:
         return 0
 
     rules = _engine.load_rules(args.map)
+
+    # Text mode (#3169): scan a commit message / PR metadata instead of files.
+    if args.message_file is not None or args.stdin:
+        if args.message_file is not None:
+            try:
+                text = args.message_file.read_text(encoding="utf-8")
+            except OSError as e:
+                msg = f"legal-client-pii: cannot read --message-file {args.message_file}: {e}"
+                print(msg, file=sys.stderr)
+                return 2 if args.strict else 0
+            label = args.source or str(args.message_file)
+        else:
+            text = sys.stdin.read()
+            label = args.source or "stdin"
+        return scan_text(text, rules, label)
+
     targets = collect_targets(args)
 
     bad: list[tuple[str, list[int]]] = []
