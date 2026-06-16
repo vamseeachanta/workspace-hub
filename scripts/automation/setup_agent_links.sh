@@ -32,7 +32,7 @@ usage() {
     echo "Examples:"
     echo "  $0 /mnt/github/aceengineer-admin"
     echo "  $0 ../aceengineercode --dry-run"
-    echo "  $0 /mnt/github/client_projects --universal-only"
+    echo "  $0 /mnt/github/digitalmodel --universal-only"
     exit 1
 }
 

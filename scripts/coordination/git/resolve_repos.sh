@@ -11,17 +11,21 @@ echo -e "${BLUE}🔧 Repository Resolution Tool${NC}"
 echo "=================================="
 echo ""
 
-# List of diverged repositories
-diverged_repos=(
-    "aceengineer-website"
-    "ai-native-traditional-eng"
-    "assethold"
-    "assetutilities"
-    "energy"
-    "pyproject-starter"
-    "rock-oil-field"
-    "saipem"
-)
+# List of repositories to resolve. This list carried client repo names (#3098),
+# so it is no longer hardcoded. Resolution order (same pattern as
+# scripts/coordination/git/batch_commit_all.sh, #3160):
+#   1) $SIBLING_REPOS_FILE or workspace-hub/config/.sibling-repos.local
+#      (gitignored, provisioned per host — one repo per line; '#' comments OK)
+#   2) dynamic discovery of sibling git repos under the current parent dir
+# The push/branch-cleanup logic below is unchanged. Processing a non-diverged
+# repo is a safe no-op (push of an up-to-date branch does nothing).
+_wh_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+_repos_file="${SIBLING_REPOS_FILE:-$_wh_root/config/.sibling-repos.local}"
+if [[ -f "$_repos_file" ]]; then
+    mapfile -t diverged_repos < <(grep -vE '^[[:space:]]*(#|$)' "$_repos_file")
+else
+    mapfile -t diverged_repos < <(find . -maxdepth 2 -type d -name .git 2>/dev/null | sed 's|/.git$||; s|^\./||' | sort)
+fi
 
 # Arrays to track results
 branches_needing_attention=()
