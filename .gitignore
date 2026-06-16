@@ -575,3 +575,6 @@ config/.client-wikis.local.yml
 # Stray inspection/staging scratch dirs (#3098) — never track
 .tmp-inspect-*/
 .tmp-*/
+
+# PII #3098: sibling-repo list (carries client repo names) — per-host, never track
+config/.sibling-repos.local

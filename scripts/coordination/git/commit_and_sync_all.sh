@@ -72,8 +72,10 @@ export RED GREEN YELLOW BLUE CYAN NC
 
 echo -e "${BLUE}Step 1: Handling repositories with uncommitted changes${NC}\n"
 
-# Process repos with uncommitted changes in parallel
-echo -e "assethold\nworldenergydata\nsaipem" | xargs -I {} -P 3 bash -c 'commit_and_push "$@"' _ {}
+# Process a couple of priority repos first (the rest are handled by the dynamic
+# Step-2 pass below, so any repo omitted here is still covered). Client repo names
+# removed from this public list (#3098); they remain covered by the Step-2 sweep.
+echo -e "assethold\nworldenergydata" | xargs -I {} -P 3 bash -c 'commit_and_push "$@"' _ {}
 
 echo -e "${BLUE}Step 2: Checking all repositories for any remaining changes${NC}\n"
 
