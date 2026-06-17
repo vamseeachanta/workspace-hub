@@ -62,11 +62,22 @@ cron_age() {
 age_learning="$(cron_age comprehensive-learning)"
 age_session="$(cron_age session-analysis)"
 
+# Primary-tree drift dimensions (#3187): is this checkout on main, and is there a
+# stale orphan .git/index.lock? The lock age is only reported when NO live git
+# process holds it (a live op's lock is not "stale").
+cur_branch="$(git symbolic-ref --short HEAD 2>/dev/null || echo DETACHED)"
+on_main=false; [ "$cur_branch" = "main" ] && on_main=true
+lock="$REPO_ROOT/.git/index.lock"
+lock_stale=null
+if [ -e "$lock" ] && ! pgrep -x git >/dev/null 2>&1; then
+  lock_stale="$(python3 -c 'import os,sys,time; print(round((time.time()-os.path.getmtime(sys.argv[1]))/60,1))' "$lock" 2>/dev/null || echo null)"
+fi
+
 # Emit JSON via python for safe quoting.
-python3 - "$role" "$host" "$clone_head" "$behind" "$ahead" "$hv" "$hinstall" "$reg_sha" "$age_learning" "$age_session" <<'PY' > "${OUT:-/dev/stdout}"
+python3 - "$role" "$host" "$clone_head" "$behind" "$ahead" "$hv" "$hinstall" "$reg_sha" "$age_learning" "$age_session" "$on_main" "$lock_stale" <<'PY' > "${OUT:-/dev/stdout}"
 import json, sys, hashlib, os
 from datetime import datetime, timezone
-role, host, head, behind, ahead, hv, hinstall, reg, al, as_ = sys.argv[1:11]
+role, host, head, behind, ahead, hv, hinstall, reg, al, as_, on_main_s, lock_stale_s = sys.argv[1:13]
 def fhash(path):
     try:
         with open(path, "rb") as fh:
@@ -103,6 +114,8 @@ fp = {
         "session-analysis": num(as_),
     },
     "provider_soul_hashes": provider_soul,
+    "on_main": (on_main_s == "true"),
+    "index_lock_stale_min": num(lock_stale_s),
 }
 print(json.dumps(fp, indent=1))
 PY
