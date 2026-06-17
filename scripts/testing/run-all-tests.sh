@@ -13,7 +13,11 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
+# Git-free structural root (matches check-all.sh:8). Do NOT use
+# `git -C "$SCRIPT_DIR" rev-parse --show-toplevel`: git exports GIT_DIR (without
+# GIT_WORK_TREE) into pre-push hooks when pushing from a worktree, which makes
+# --show-toplevel collapse to $SCRIPT_DIR and breaks the source below (#3179).
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 PARSER="${SCRIPT_DIR}/parse_pytest_output.py"
 EF_FILE="${SCRIPT_DIR}/expected-failures.txt"
 
