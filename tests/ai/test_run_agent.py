@@ -120,3 +120,29 @@ def test_prepare_run_returns_manifest_and_dispatch_for_supported():
     assert dispatch["wrapper"].endswith("submit-to-codex.sh")
     # dispatch carries the materialized prompt (preamble + agent prompt)
     assert dispatch["prompt"].strip()
+
+
+# --- #3190: skill routing + back-compat + agy fail-closed --------------------
+
+def test_no_routed_skill_is_byte_identical_back_compat():
+    # absence of a routed skill must leave the prompt exactly as before
+    _, d_none = prepare_run(REVIEWER_DEF, "codex", bindings=BINDINGS, routed_skill=None)
+    _, d_default = prepare_run(REVIEWER_DEF, "codex", bindings=BINDINGS)
+    assert d_none["prompt"] == d_default["prompt"]
+    assert "# Routed skill:" not in d_none["prompt"]
+
+
+def test_routed_skill_is_prepended_and_recorded():
+    manifest, dispatch = prepare_run(REVIEWER_DEF, "codex", bindings=BINDINGS,
+                                     routed_skill="development/github/code-review")
+    assert manifest["routed_skill"] == "development/github/code-review"
+    assert "# Routed skill: development/github/code-review" in dispatch["prompt"]
+    assert ".claude/skills/development/github/code-review/SKILL.md" in dispatch["prompt"]
+
+
+def test_agy_is_unsupported_for_dispatch_fails_closed():
+    # agy has no headless dispatch -> not a WRAPPERS/bindings provider -> every
+    # capability resolves unsupported -> resolve_capabilities raises (no fake wrapper).
+    d = load_agent_def(REVIEWER_DEF)
+    with pytest.raises(UnsupportedCapabilityError):
+        resolve_capabilities(d, "agy", BINDINGS)

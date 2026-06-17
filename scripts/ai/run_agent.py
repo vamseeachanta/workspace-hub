@@ -142,13 +142,17 @@ def build_manifest(agent_def: dict, provider: str, bindings: dict) -> dict:
     }
 
 
-def materialize_prompt(agent_def: dict, provider: str, res: dict) -> str:
-    """Render the provider prompt: identity-ref + advisory caps + agent prompt.
+def materialize_prompt(agent_def: dict, provider: str, res: dict, routed_skill: str | None = None) -> str:
+    """Render the provider prompt: routed-skill ref + advisory caps + agent prompt.
 
-    Ordering preserves the untrusted-content boundary: shared identity -> agent
-    prompt -> (caller appends user task + untrusted content via the wrapper).
+    Ordering preserves the untrusted-content boundary: routed skill + shared
+    identity -> agent prompt -> (caller appends user task + untrusted content).
     """
     lines = []
+    if routed_skill:  # #3190: prepend the router's match so any provider sees it
+        lines.append(
+            f"# Routed skill: {routed_skill} — read .claude/skills/{routed_skill}/SKILL.md before acting"
+        )
     if res["advisory"]:
         lines.append(
             "# Advisory capabilities (this CLI cannot be sandboxed): "
@@ -160,16 +164,19 @@ def materialize_prompt(agent_def: dict, provider: str, res: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def prepare_run(agent_def_path: Path | str, provider: str, bindings: dict | None = None):
+def prepare_run(agent_def_path: Path | str, provider: str, bindings: dict | None = None,
+                routed_skill: str | None = None):
     """Resolve + manifest + materialize. FAILS CLOSED before returning dispatch."""
     agent_def = load_agent_def(agent_def_path)
     if bindings is None:
         bindings = load_bindings()
     res = resolve_capabilities(agent_def, provider, bindings)  # raises on unsupported
     manifest = build_manifest(agent_def, provider, bindings)
+    if routed_skill:
+        manifest["routed_skill"] = routed_skill
     dispatch = {
         "wrapper": str(WRAPPERS[provider]),
-        "prompt": materialize_prompt(agent_def, provider, res),
+        "prompt": materialize_prompt(agent_def, provider, res, routed_skill=routed_skill),
     }
     return manifest, dispatch
 
@@ -197,17 +204,26 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--provider", required=True, choices=sorted(WRAPPERS))
     ap.add_argument("--file", help="content/diff file under review (enables dispatch)")
     ap.add_argument("--execute", action="store_true", help="actually invoke the wrapper")
+    ap.add_argument("--query", help="task description; routes a matching skill via skill_router (#3190)")
+    ap.add_argument("--context-tags", action="append", default=[], help="context tag (repeatable) for routing")
     args = ap.parse_args(argv)
+    routed_skill = None
+    if args.query:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from skill_router import top_skill  # provider-neutral; provider recorded, not used to rank
+        routed_skill = top_skill(args.query, provider=args.provider, context_tags=args.context_tags)
     try:
-        manifest, dispatch = prepare_run(args.agent, args.provider)
+        manifest, dispatch = prepare_run(args.agent, args.provider, routed_skill=routed_skill)
     except UnsupportedCapabilityError as e:
         print(json.dumps({"status": "fail-closed", "reason": str(e)}), file=sys.stderr)
         return 2
     out = {"manifest": manifest}
+    rc = 0
     if args.execute and args.file:
         out["run"] = dispatch_run(dispatch, args.file, args.provider)
+        rc = out["run"].get("exit_code", 0)  # #3190 fix: propagate dispatch exit code (was always 0)
     print(json.dumps(out, indent=2))
-    return 0
+    return rc
 
 
 if __name__ == "__main__":
