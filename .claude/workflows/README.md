@@ -107,8 +107,32 @@ Workflows integrate with %ctx tracking:
 | 60-80% | Create checkpoint, archive older exchanges |
 | 80-100% | Trim to essentials |
 
+## Gate-chain templates (#3191)
+
+Three **provider-neutral** templates encode the mandatory gate chain as data (so Claude/Codex/Gemini/Hermes follow the same gates). They carry `kind: gated-workflow` and are validated against `schema/workflow.schema.json` by `tests/workflow/test_gated_workflow_templates.py` (run: `uv run --group dev pytest tests/workflow/`). They are **Level-0/1 data, NOT enforcement** — enforcement lives in `scripts/workflow/plan_approval_gate_check.py` and `.github/workflows/completeness-gate.yml`.
+
+- `issue-gate-chain.yaml` — full lifecycle (issue → plan → USER approves → implement(TDD) → cross-review → close); per-tier review depth (T1=1/T2=2/T3=3 providers); `user_approval` is `USER_ONLY` + `self_approve: forbidden`.
+- `tdd-implementation.yaml` — test-first → implement → refactor → review → close; opt-in completeness gate.
+- `cross-provider-review-workflow.yaml` — encodes `scripts/review/plan-review-fanout.sh` (default Claude+Codex+Gemini, `on_provider_unavailable: continue_and_record`).
+
+## Choosing a workflow template
+
+| Use case | Template | Schema |
+|---|---|---|
+| Issue lifecycle / approval gate chain | **`issue-gate-chain.yaml`** | gated-workflow |
+| TDD implementation (new work) | **`tdd-implementation.yaml`** | gated-workflow |
+| Cross-provider adversarial review | **`cross-provider-review-workflow.yaml`** | gated-workflow |
+| Multi-repo pytest validation | `pytest-validation.yaml` | legacy `metadata/config/steps` |
+| Hierarchical result aggregation | `aggregation.yaml` | legacy `metadata/config/steps` |
+| Context-overflow checkpointing | `checkpoint.yaml` | legacy `metadata/config/steps` |
+| Standard TDD phases (**deprecated** — Claude-only, no gates) | `standard-development.yaml` → use `tdd-implementation.yaml` | legacy `name/phases` |
+| Data analysis (**deprecated** — Claude-only, no gates) | `data-analysis.yaml` | legacy `name/phases` |
+
+Only `kind: gated-workflow` files are validated by `schema/workflow.schema.json`; the two legacy dialects are out of its scope by construction.
+
 ## Related Documentation
 
 - Context Management Skill: `~/.claude/skills/context-management/SKILL.md`
 - CLAUDE.md Directives: `.claude/CLAUDE.md`
 - Batch Runner: `scripts/batchtools/batch_runner.sh`
+- Gate chain source: `AGENTS.md` / `config/agents/SHARED_SOUL.md` (Hard Gates); review fan-out: `scripts/review/plan-review-fanout.sh`
