@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vamseeachanta.workspace-hub/schema/gated-workflow.json",
+  "title": "Gated workflow template (#3191)",
+  "description": "Schema for provider-neutral gate-chain workflow templates. Scoped by the `kind: gated-workflow` discriminator — legacy workflow dialects (metadata/config/steps, name/phases) are NOT validated by this schema. These templates are Level-0/1 DATA, not enforcement; enforcement lives in scripts/workflow/plan_approval_gate_check.py and .github/workflows/completeness-gate.yml.",
+  "type": "object",
+  "required": ["kind", "metadata", "source", "gates"],
+  "additionalProperties": true,
+  "properties": {
+    "kind": { "const": "gated-workflow" },
+    "metadata": {
+      "type": "object",
+      "required": ["name", "version", "description"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "source": {
+      "type": "string",
+      "description": "Inline citation to the rule/gate-chain source (e.g. AGENTS.md#hard-gates)."
+    },
+    "tiers": {
+      "type": "object",
+      "description": "Reference data only — tier is assigned by the human at plan-review; providers are looked up here, not enforced by the template.",
+      "patternProperties": {
+        "^T[123]$": {
+          "type": "object",
+          "required": ["review_providers"],
+          "properties": {
+            "review_providers": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": { "type": "string" },
+          "status_label": { "type": ["string", "null"] },
+          "actor": { "type": "string" },
+          "self_approve": { "enum": ["forbidden", "allowed"] },
+          "precondition": { "type": ["string", "null"] },
+          "tests_before_code": { "type": "boolean" },
+          "review_depth_from": { "type": "string" },
+          "runner": { "type": "string" },
+          "applies_when_label": { "type": "string" },
+          "verifier": { "type": "string" },
+          "close_reason": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

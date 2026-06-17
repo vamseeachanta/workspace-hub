@@ -1,0 +1,36 @@
+# TDD implementation workflow (#3191) — provider-neutral rewrite of the shape in
+# standard-development.yaml (which hardcodes Claude Code subagent tooling).
+# DATA not enforcement.
+kind: gated-workflow
+metadata:
+  name: tdd-implementation
+  version: 1.0.0
+  description: Provider-neutral test-first implementation (test_first -> implement -> refactor -> review -> close).
+source: config/agents/SHARED_SOUL.md#hard-gates   # Gate 2: "TDD mandatory — tests before implementation; no exceptions."
+
+tiers:
+  T1: { review_providers: [claude] }
+  T2: { review_providers: [claude, codex] }
+  T3: { review_providers: [claude, codex, gemini] }
+
+gates:
+  - id: test_first
+    description: Write failing tests that encode the spec (red) before any implementation.
+  - id: implement
+    precondition: status:plan-approved
+    tests_before_code: true
+    description: Implement to green; smallest change that passes the tests.
+  - id: refactor
+    description: Refactor with tests green; no behavior change.
+  - id: review
+    review_depth_from: tiers
+    runner: scripts/review/plan-review-fanout.sh
+    description: Adversarial code-stage review at the tier's depth.
+  - id: completeness_gate
+    applies_when_label: gate:completeness
+    verifier: COMPLETENESS_OWNERS
+    thresholds: { code: 90, evidence: 80 }
+    description: Opt-in owner-verified completeness score before close.
+  - id: close
+    close_reason: completed
+    description: Close with a summary + evidence (tests, artifacts).
