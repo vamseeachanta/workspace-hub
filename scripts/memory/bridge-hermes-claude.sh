@@ -267,6 +267,16 @@ if [[ -f "${CURATE}" ]]; then
     else
         RBPY=(python3)
     fi
+    # Topics INDEX (#3189) — regenerate on every machine; deterministic (no timestamp),
+    # lives under .claude/memory/topics/ so the existing `git add .claude/memory/` commits it.
+    _idx="${REPO_ROOT}/scripts/memory/build_topics_index.py"
+    if [[ -f "${_idx}" ]]; then
+        if "${RBPY[@]}" "${_idx}" --topics-dir "${TOPICS_DIR}" >/dev/null 2>&1; then
+            echo "  ✅ .claude/memory/topics/INDEX.md (topics index)"
+        else
+            echo "  ⚠️  WARN: topics INDEX generation failed — previous kept"
+        fi
+    fi
     # F1: write to a temp file and mv ONLY on success — a failed emit must never
     # clobber the existing slice to 0 bytes (`> file` truncates before python runs).
     # Hermes local sink (every machine; not committed)
@@ -290,6 +300,15 @@ if [[ -f "${CURATE}" ]]; then
             rm -f "${_tmp_c}"
             echo "  ⚠️  WARN: Codex read-back slice emit failed — previous kept (not clobbered)"
         fi
+        # Gemini slice (#3189) — repo-tracked, same temp-then-mv + slice-owner gating as Codex
+        _tmp_g=$(mktemp)
+        if "${RBPY[@]}" "${CURATE}" --target gemini --source-dir "${REPO_ROOT}/.claude/memory" > "${_tmp_g}"; then
+            mv "${_tmp_g}" "${REPO_ROOT}/config/agents/gemini/MEMORY.runtime.md"
+            echo "  ✅ config/agents/gemini/MEMORY.runtime.md (Gemini read-back slice)"
+        else
+            rm -f "${_tmp_g}"
+            echo "  ⚠️  WARN: Gemini read-back slice emit failed — previous kept (not clobbered)"
+        fi
     fi
 fi
 echo ""
@@ -301,8 +320,10 @@ if [[ "${COMMIT_MODE}" == "--commit" ]]; then
     cd "${REPO_ROOT}"
     # Diff-aware: only commit if something actually changed
     git add .claude/memory/
-    # Codex read-back slice (#2841) — staged only on the designated slice owner
-    [[ "${SLICE_OWNER}" == true ]] && git add config/agents/codex/MEMORY.runtime.md 2>/dev/null || true
+    # Codex + Gemini read-back slices (#2841/#3189) — staged only on the designated slice owner
+    if [[ "${SLICE_OWNER}" == true ]]; then
+        git add config/agents/codex/MEMORY.runtime.md config/agents/gemini/MEMORY.runtime.md 2>/dev/null || true
+    fi
     if git diff --cached --quiet; then
         echo "[bridge] No changes to commit — .claude/memory/ is already up to date"
         exit 0
@@ -318,7 +339,7 @@ if [[ "${COMMIT_MODE}" == "--commit" ]]; then
 
     # Pathspec-scoped commit (repo multi-agent-commit-serialization rule) — never sweep
     # unrelated staged changes from a parallel session.
-    git commit -m "chore(memory): auto-refresh memory bridge (${TIMESTAMP})" -- .claude/memory/ config/agents/codex/MEMORY.runtime.md
+    git commit -m "chore(memory): auto-refresh memory bridge (${TIMESTAMP})" -- .claude/memory/ config/agents/codex/MEMORY.runtime.md config/agents/gemini/MEMORY.runtime.md
     echo "[bridge] Committed. Pulling with rebase before push..."
 
     # Pull with rebase — abort if conflicts

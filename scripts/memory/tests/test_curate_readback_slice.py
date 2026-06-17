@@ -143,3 +143,20 @@ def test_curate_tiny_cap_clamped(memdir):
     """F3: a degenerate cap below fixed overhead still yields len(out) <= cap."""
     for cap in (50, 100, 169):
         assert len(mod.curate(memdir, target="hermes", cap=cap)) <= cap
+
+
+def test_curate_gemini_in_default_caps():
+    """#3189: gemini is a first-class target reusing the codex path."""
+    assert "gemini" in mod.DEFAULT_CAPS
+
+
+def test_curate_gemini_parity_with_codex(memdir):
+    """#3189: gemini shares the codex code path -> byte-identical at equal cap."""
+    assert mod.curate(memdir, target="gemini", cap=7000) == mod.curate(memdir, target="codex", cap=7000)
+
+
+def test_curate_gemini_excludes_claude_only(memdir):
+    """#3189: F4 filter honored for gemini (Claude-only slugs dropped; shared kept)."""
+    out = mod.curate(memdir, target="gemini", cap=7000)
+    assert "claude_in_chrome_session_scoped" not in out
+    assert "Shared rule about browsers" in out
