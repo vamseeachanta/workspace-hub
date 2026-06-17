@@ -41,10 +41,12 @@ Provider-neutral `scripts/ai/skill_router.py` ranking ALL skills for `(query, pr
 - **Generator `build_skill_index.py` (Python, not awk):** walk `.claude/skills/**/SKILL.md` (exclude `_archive*`/`_*` families per soul-runtime precedent); `when_to_use` by 3-tier precedence, each tagged `when_to_use_source`: (1) `when_to_use:` frontmatter (3); (2) `## When to Use` section (329); (3) `## Trigger` (33); (4) **backfill** from frontmatter name+description+family (~2751). Idempotent: sorted by id, date-pinned `generated_at` (not timestamp), normalized whitespace → byte-stable unless a SKILL.md changes. ~1-2s build, on-demand (not at dispatch).
 - Curated 51 get authored `when_to_use` in `skills-knowledge-graph.yaml` (survives rebuild); full tree derived at build time. Progressive curation: an author adds `when_to_use:`/`## When to Use` → picked up next build (no mass edit).
 
-### 2. First-class agy wrapper — with an honest infeasibility fallback
-- Add `agy` → `scripts/review/submit-to-agy.sh` to `WRAPPERS` + an `agy` env branch in `dispatch_run()`. `--provider` choices auto-extend; `materialize_prompt` prepends identically → matched skill prepended for agy **directly, not via codex**.
-- **INFEASIBILITY FLAG:** agy has NO documented headless dispatch (interactive TUI only). So `submit-to-agy.sh` **cannot** mirror `submit-to-gemini.sh`'s `-p` exec today.
-- **Fallback (ship this):** `submit-to-agy.sh` materializes the skill-prepended prompt to a tracked artifact and **fails closed (exit 3)** with a clear message ("agy has no headless dispatch; prompt written to <path> for manual paste"). agy is first-class in WRAPPERS + router (skill IS prepended), honest about the limitation, one-line flip to real exec when agy ships a headless flag. Verify `agy --help` at build time; if a headless mode exists, wire it and drop the fallback. File a follow-on for real agy headless dispatch.
+### 2. agy: first-class in the ROUTER, `unsupported` for DISPATCH (corrected per review)
+agy has NO documented headless dispatch (interactive TUI only). The original "fake exit-3 wrapper in WRAPPERS" design was **rejected by review** — it would let a user pick `--provider agy`, get a recorded failure, yet `main()` returns 0 → *fake success*. Corrected design (architecturally consistent with how `gui_automation` etc. already fail closed):
+- **Do NOT add a fake wrapper to `WRAPPERS`.** Instead mark agy `enforcement: unsupported` for the dispatch capability in `config/agents/provider-capabilities.yaml`, so `resolve_capabilities()` **raises before dispatch** (the existing fail-closed path; `tests/ai/test_run_agent.py` already covers unsupported→raise).
+- agy IS first-class in the **router** (`skill_router.py` ranks identically for any provider token incl. agy) — the skill match is computed for agy; only headless *execution* is unsupported.
+- **Pre-flight gate:** a Level-2 `check-agy-headless-capability.sh` probes `agy --help`; agy is promoted to a real `WRAPPERS` provider (mirroring `submit-to-gemini.sh`) ONLY when headless is detected. Follow-on issue filed for that flip.
+- **Also fix `main()` exit propagation:** when `--execute` dispatches, return the wrapper's `exit_code` (today `main()` always returns 0, hiding dispatch failures) — with a test.
 
 ### 3. Router + 4. integration
 - `skill_router.py`: rank by query↔when_to_use overlap + context_tags↔domain/family; **down-weight `source: backfill`**; provider recorded for audit, NOT used to re-rank; None on no match (fail-open); deterministic tie-break by id (cross-provider determinism).
@@ -61,14 +63,21 @@ NOT changing: `soul-runtime-lib.sh` (family index stays compact); `skill_graph.s
 **run_agent:** agy-valid-provider; agy-uses-submit-to-agy.sh (NOT codex); prepends-matched-skill; no-query-byte-identical; manifest-records-routed_skill+source; agy-wrapper-fails-closed-with-artifact (asserts exit 3 + message). Red first.
 
 ## Risks / open questions
-- **HIGH — agy headless infeasibility:** all evidence = interactive TUI. Fail-closed wrapper + verify `agy --help` + follow-on for real exec. **Operator: accept fail-closed agy (artifact + manual paste) for now, or descope agy until it ships headless?**
+- **HIGH — agy headless infeasibility: RESOLVED (operator 2026-06-17 = accept fail-closed agy).** Ship the fail-closed `submit-to-agy.sh` (writes skill-prepended prompt artifact + exit 3 for manual paste); verify `agy --help` at build time; file a follow-on to wire real exec when agy ships a headless flag. agy stays first-class in WRAPPERS + router.
 - **HIGH — backfill quality:** ~88% (~2751/3113) when_to_use auto-derived → noisy matches. `source` tagging + down-weight + progressive curation; acceptance must not require high-fidelity matches for backfilled skills.
 - **MED — index churn** (3000-line YAML): sorted/date-pinned/normalized; regenerate only on SKILL.md change.
 - **MED — two index artifacts** (curated graph vs full index): document the split.
 - **Open:** provider affects ranking? NO (audit only; only source-tier scores). Top-1 prepend (manifest records top-k).
 
-## Adversarial review (T3 — 3 providers) — PENDING (re-plan not yet reviewed)
-Force: agy-headless fail-closed acceptable vs block; backfill-noise acceptance threshold; two-index coherence; churn/idempotency at 3113; back-compat byte-identical; provider-neutral determinism across all FOUR providers incl. agy.
+## Adversarial review (T3 plan-stage) — DONE, findings folded in
+1 adversarial lens run 2026-06-17 (REJECT; 2 BLOCK + 1 REJECT + 2 MED). Resolutions:
+- **BLOCK — agy fake-wrapper hides failure.** FIXED: agy is `enforcement: unsupported` for dispatch (raises before dispatch), NOT a fake exit-3 wrapper; first-class in the router only. (§2 rewritten.)
+- **BLOCK — `main()` swallows dispatch exit code** (always returns 0). FIXED: propagate the wrapper exit_code on `--execute`; test added.
+- **REJECT — backfill acceptance unmeasurable.** FIXED: concrete down-weight (backfill score ×0.2) + measurable acceptance — for a fixed sample of ~20 common queries, top-3 must include ≥1 non-backfill OR the backfill hit must have strong (>N-char) overlap; `test_backfill_top_k_quality` enforces it.
+- **MED — two-index drift.** FIXED: `check-skill-index-coherence.sh` (curated 51 ⊆ full index; authored when_to_use not silently overridden) + CI check; document the split in `config/agents/README.md`.
+- **MED — idempotency unverified at 3113.** FIXED: lock `yaml.safe_dump(sort_keys=True, default_flow_style=False, allow_unicode=True)` + trailing newline; `test_index_byte_stable_on_rerun` generates twice and diffs.
+- **Clarify:** "no-`--query` byte-identical" = the dispatch/prompt path (CLI `--help` text changes with new args, acceptable). provider-neutral test asserts the ROUTER ignores provider in ranking (agy top-id == gemini top-id) — router-level, since agy never dispatches.
+Cross-provider (Codex/Gemini) fanout recommended at code stage.
 
 ## Acceptance criteria
 Both expansions: tests pass; no-query byte-identical; `skill-index-full.yaml` one entry per non-archived SKILL.md with when_to_use+source for ALL (idempotent); curated 51 authored in graph + index regenerated; **agy first-class in WRAPPERS, prepends skill via submit-to-agy.sh (not via codex), cross-provider top-id identical across codex/gemini/claude/agy**; agy headless infeasibility documented + fail-closed verified (or real exec wired) + follow-on filed; review artifacts posted.
