@@ -113,8 +113,9 @@ agents:
 # ── Execution contexts + cost ceiling (#3192) ────────────────────────────────
 # SSoT for the cost policy: docs/governance/2026-06-17-cost-ceiling-policy.md
 # policy_summary: Claude is the interactive-dev lane only; Hermes backing stays
-#   gpt-5.5/openai-codex; agy (Antigravity, Gemini-backed -> the `gemini` token)
-#   is the cheap fallback/delegation lane; NO Claude for Hermes-context work.
+#   openai-codex (model pinned in model-registry.yaml); agy (Antigravity,
+#   Gemini-backed -> the `gemini` token) is the cheap fallback/delegation lane;
+#   NO Claude for Hermes-context work.
 #
 # routing_resolution_note: ADVISORY ONLY. The executed routers
 #   (scripts/coordination/routing/lib/tier_router.sh, scripts/ai/task-dispatcher.py)
@@ -124,7 +125,7 @@ agents:
 cost_ceiling_policy: docs/governance/2026-06-17-cost-ceiling-policy.md
 execution_contexts:
   hermes_batch:               # docs / data-analysis / delegation / overnight-batch
-    primary: openai-codex     # Hermes backing = gpt-5.5 via openai-codex (unchanged)
+    primary: openai-codex     # Hermes backing via openai-codex; model pinned in model-registry (unchanged)
     fallbacks: [gemini]       # agy = the Antigravity Gemini CLI surface -> gemini token
     forbid: [claude]          # cost ceiling
     cost_ceiling: true
