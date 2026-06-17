@@ -67,6 +67,32 @@ tasks:
       Complements the weekly equality-report (#2801) with focused alerting on the
       model-parity-critical dimensions. Set EQUIV_ALERT_ISSUE=<n> to post drift to an issue.
 
+  # Linux-only (v1); Windows Task Scheduler parity deferred per epic #3058.
+  - id: harness-install-doctor
+    label: Harness install-doctor — REPAIR arm for equivalence-sentinel (#3058/#3059)
+    schedule: "11 */6 * * *"   # :11 — 6 min before sentinel (:17); avoids 04:0x provider-dream-bridge stagger
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    roles: [control-plane, comms-dispatch]
+    requires: [bash, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/maintenance/harness-install-doctor.sh
+      >> $WORKSPACE_HUB/logs/maintenance/harness-install-doctor-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/maintenance/harness-install-doctor-*.log
+    is_claude_task: false
+    description: >-
+      Per-box (every 6h, :11 — 6 min before the equivalence-sentinel at :17) idempotent
+      REPAIR of per-provider harness install state, OUT-OF-SESSION so the next session for
+      ANY provider (Claude/Codex/agy) starts pre-healed. Runs the blessed installer
+      scripts/agents/install-soul-runtime.sh (SOUL/AGENTS runtime symlinks) which otherwise
+      runs only by hand and never re-heals secondary boxes; report-only guardrails on
+      ~/.codex/skills (.system must not be shadowed) and the Codex memory surface.
+      ORTHOGONAL to the sentinel (#3059), not a replacement: the sentinel still runs and
+      still detects all drift dimensions; this only pre-heals the install layer before it.
+      The sentinel is report-only; this is the missing repair arm. Provider-neutral by
+      design — a SessionEnd hook would only fire after Claude.
+
   - id: parity-sentinel
     label: Behavioral parity instrumentation (#3061)
     schedule: "40 4 * * 1"
