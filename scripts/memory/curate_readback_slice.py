@@ -40,7 +40,7 @@ CLAUDE_ONLY_SLUGS = (
     "chatgpt_share", "output_style", "mcp_scope",
 )
 
-DEFAULT_CAPS = {"codex": 7000, "hermes": 2000}
+DEFAULT_CAPS = {"codex": 7000, "hermes": 2000, "gemini": 7000}  # gemini reuses the codex path (#3189)
 _HEADER = "<!-- MANAGED by curate_readback_slice.py — do not hand-edit; regenerate via bridge-hermes-claude.sh -->\n\n"
 _MARKER_RESERVE = 64  # bytes reserved so the omitted-marker always fits under the cap
 
