@@ -24,7 +24,7 @@
 set -uo pipefail
 : "${HOME:?HOME must be set}"
 
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "${WORKSPACE_HUB:-/mnt/local-analysis/workspace-hub}")"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "${WORKSPACE_HUB:-$PWD}")"
 DRY="${DOCTOR_DRY_RUN:-0}"
 TS="$(date -u +%Y%m%dT%H%M%SZ)"
 GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; NC='\033[0m'
@@ -41,8 +41,12 @@ record() { local s="$1" d="$2" c="${NC}"
 
 # Concurrent-activity detector — fail-closed: any sign of life => not idle.
 concurrent_reason() {
-    [[ -f "${REPO_ROOT}/.git/index.lock" ]] && { echo "index.lock present"; return; }
-    _git_lock_has_holder "${REPO_ROOT}/.git" 2>/dev/null && { echo ".git held by a process"; return; }
+    # index.lock presence is the strongest local signal of an in-flight git op.
+    # (We do NOT fuser the .git dir — a holder of .git/index.lock does not show up
+    # as a holder of the directory; review CRITICAL-2. pgrep below covers the rest.)
+    { [[ -f "${REPO_ROOT}/.git/index.lock" ]] || [[ -f "${REPO_ROOT}/.git/HEAD.lock" ]] \
+        || [[ -d "${REPO_ROOT}/.git/rebase-merge" ]] || [[ -d "${REPO_ROOT}/.git/rebase-apply" ]]; } \
+        && { echo "git lock / rebase in progress"; return; }
     if command -v pgrep >/dev/null 2>&1; then
         pgrep -f 'git[ -].*push|pre-push|pytest|run-benchmarks|run-all-tests' >/dev/null 2>&1 \
             && { echo "live push/pre-push/test"; return; }
@@ -82,29 +86,39 @@ else
         record REPAIRED "DRY-RUN: would return '${branch}' -> main"
     else
         if _git_safe_lock_acquire; then
-            stash_id=""; dirty=0
+            stash_id=""
             if [[ -n "$(git -C "$REPO_ROOT" status --porcelain)" ]]; then
-                dirty=1
-                if git -C "$REPO_ROOT" stash push -u -m "return-to-main-guard ${TS} from ${branch}" >/dev/null 2>&1; then
+                # CRITICAL-1: confirm a NEW stash was actually created before trusting
+                # stash@{0} (a clean tree / no-op push would leave an OLD stash on top).
+                before="$(git -C "$REPO_ROOT" stash list 2>/dev/null | wc -l)"
+                if git -C "$REPO_ROOT" stash push -u -m "return-to-main-guard ${TS} from ${branch}" >/dev/null 2>&1 \
+                   && [ "$(git -C "$REPO_ROOT" stash list 2>/dev/null | wc -l)" -gt "$before" ]; then
                     stash_id="$(git -C "$REPO_ROOT" rev-parse stash@{0} 2>/dev/null)"
                 else
-                    record NEEDS-ATTENTION "stash failed on '${branch}' — not switching"; rc=1
+                    record NEEDS-ATTENTION "could not capture dirty state in a new stash on '${branch}' — not switching"; rc=1
                 fi
             fi
             if (( rc == 0 )); then
-                if git -C "$REPO_ROOT" checkout main >/dev/null 2>&1 && git -C "$REPO_ROOT" pull --ff-only origin main >/dev/null 2>&1; then
+                if git -C "$REPO_ROOT" checkout main >/dev/null 2>&1; then
+                    # On main now. HIGH-3: the stash is KEPT for recovery and NEVER
+                    # popped on success (popping the branch's stash onto main is wrong).
+                    # pull is best-effort — being on main is the goal even if not latest.
+                    git -C "$REPO_ROOT" pull --ff-only origin main >/dev/null 2>&1 || true
                     msg="returned '${branch}' -> main"
                     if [[ -n "$stash_id" ]]; then
                         msg="${msg}; dirty state stashed (kept): ${stash_id}"
-                        rdir="${REPO_ROOT}/.claude/state/git-guard-reports"; mkdir -p "$rdir"
-                        printf '{"ts":"%s","host":"%s","from_branch":"%s","stash":"%s","recover":"git stash apply %s"}\n' \
-                            "$TS" "$(hostname)" "$branch" "$stash_id" "$stash_id" > "${rdir}/${TS}-${branch//\//-}.json"
+                        rdir="${REPO_ROOT}/.claude/state/git-guard-reports"
+                        if mkdir -p "$rdir" 2>/dev/null; then
+                            printf '{"ts":"%s","host":"%s","from_branch":"%s","stash":"%s","recover":"git stash apply %s"}\n' \
+                                "$TS" "$(hostname)" "$branch" "$stash_id" "$stash_id" \
+                                > "${rdir}/${TS}-${branch//\//-}.json" 2>/dev/null || true
+                        fi
                     fi
                     record REPAIRED "$msg"
                 else
-                    # checkout/pull failed — restore the working tree we stashed
+                    # checkout FAILED — still on '${branch}'; restore its dirty state there.
                     [[ -n "$stash_id" ]] && git -C "$REPO_ROOT" stash pop >/dev/null 2>&1 || true
-                    record NEEDS-ATTENTION "checkout/pull main failed; restored '${branch}' (stash popped)"; rc=1
+                    record NEEDS-ATTENTION "checkout main failed; left on '${branch}' (stash restored)"; rc=1
                 fi
             fi
             _git_safe_lock_release

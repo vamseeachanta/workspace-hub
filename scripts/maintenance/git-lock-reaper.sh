@@ -24,7 +24,7 @@
 set -uo pipefail
 : "${HOME:?HOME must be set}"
 
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "${WORKSPACE_HUB:-/mnt/local-analysis/workspace-hub}")"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "${WORKSPACE_HUB:-$PWD}")"
 DRY="${DOCTOR_DRY_RUN:-0}"
 TS="$(date -u +%Y%m%dT%H%M%SZ)"
 GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; NC='\033[0m'
