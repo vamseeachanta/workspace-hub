@@ -1,0 +1,62 @@
+# Plan for #3192: Reconcile routing-config.yaml with operator cost policy (Hermes→agy, Claude dev-only)
+
+> **Status:** draft
+> **Complexity:** T2
+> **Date:** 2026-06-17
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3192
+> **Client:** N/A
+> **Lane:** lane:claude
+> **Review artifacts:** scripts/review/results/2026-06-17-plan-3192-claude.md | ...-codex.md | ...-gemini.md
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `config/agents/routing-config.yaml` (111 lines) — `tiers.{SIMPLE,STANDARD,COMPLEX,REASONING}.primary` all `claude`; `agents.hermes` declares `provider: openai-codex`, `models.primary: gpt-5.5`.
+- Found: `config/agents/model-registry.yaml` (v2.2) — `latest_models` (claude_primary opus-4-8[1m], gemini_primary gemini-2.5-pro, openai_primary gpt-5.5) + work_queue_routing.
+- Found: `config/agents/provider-capabilities.yaml` (v1.3) — `providers.hermes.model_ids.primary: gpt-5.5`; strategy note: "Hermes runs gpt-5.5 via the openai-codex provider (NOT a Claude wrapper)".
+- **Consumer reality (load-bearing):** the tier→provider mapping is **advisory/documentary, NOT executed.** Verified: `scripts/coordination/routing/lib/tier_router.sh:10` assigns `ROUTING_CONFIG=` but never reads it — routing chains are hardcoded bash arrays (and already disagree with the YAML, e.g. SIMPLE primary=codex in bash vs claude in YAML). `scripts/ai/task-dispatcher.py` loads the YAML but only reads `tiers.*.description`; provider preference comes from a hardcoded dict. `scripts/coordination/routing/route.sh` prints a hardcoded table that disagrees with both. `scripts/dispatch/route.py` (#3030 lane dispatcher) doesn't reference routing-config at all.
+- Gap: NO single executed source of truth for tier routing — three drifted copies (YAML, tier_router.sh arrays, task-dispatcher dict).
+
+### Standards / LLM Wiki
+Not applicable / none — harness governance config.
+
+### Documents consulted
+Issue #3192 (cost policy + 3-part scope); epic #3058 (convert manual checks → standing invariants → motivates a written SSoT + guard test, not just a config edit); `docs/governance/2026-06-14-model-parity-decision.md` (decision-record format + single-registry principle); `scripts/agents/set-antigravity-default-model.sh` (proves **agy = Antigravity CLI, Gemini-backed** → "agy" resolves to provider `gemini`); `scripts/enforcement/model-id-baseline.txt:934` (records routing-config gpt-5.5 line — editing Hermes block may move it); `tests/config/test_routing_config_observed_behavior.py` (asserts SIMPLE/STANDARD primary==claude — contradicts the new policy, must change).
+
+### Gaps identified
+- No `docs/governance/*cost*` doc exists — SSoT must be written from scratch.
+- routing-config has no cost-policy header and no "execution context" notion separate from tier.
+- No test enforces the cost ceiling → config can silently drift back (the #3058 failure mode).
+- **Unresolved policy/config conflict (surface, don't silently fix):** policy says "agy (Gemini) powers Hermes" but all configs + strategy note say Hermes runs gpt-5.5 via openai-codex. Treat as a deliberate operator redefinition; record for HITL confirmation.
+
+### Evidence
+#3192 OPEN; #3058 OPEN. Files verified. Gap proofs: `grep -rli "cost ceiling|cost policy" docs/` empty; `grep -c routing-config scripts/dispatch/route.py` → 0; tier_router.sh has no YAML parser. N/A reproduction (governance/config divergence, shown statically; old test currently passes encoding the OLD policy). Sources: 8.
+
+---
+
+## Approach / Deliverable
+A cost-ceiling-honoring `routing-config.yaml` that separates **execution context** (hermes_batch → agy/Gemini primary, forbid claude; interactive_dev → Claude/Codex; cross_review unchanged) from **tier**, backed by a written governance SSoT (`docs/governance/2026-06-17-cost-ceiling-policy.md`) referenced from the config header, with model-registry + provider-capabilities reconciled, Claude-on-Hermes assumptions flagged, and a regression-guard test that fails if a cost-ceiling context ever names Claude.
+
+- Add `header.cost_ceiling_policy` + `policy_summary`; add `execution_contexts` (hermes_batch{primary: agy, forbid: [claude], cost_ceiling: true}, interactive_dev{primary: claude}, cross_review{primary: claude}); repoint tiers to contexts; add `routing_resolution_note` stating the maps are advisory today.
+- **Scope boundary (deliberate):** this changes the declarative/advisory config + governance ONLY. Rewiring the 3 hardcoded executed routers to actually parse routing-config (collapsing the drifted copies into one executed SSoT) is larger → follow-up under #3058. The `routing_resolution_note` makes the advisory status explicit so no one believes the ceiling is runtime-enforced when it isn't.
+
+## Files to change
+Create: `docs/governance/2026-06-17-cost-ceiling-policy.md`, `tests/config/test_cost_ceiling_policy.py`.
+Modify: `config/agents/routing-config.yaml`, `config/agents/provider-capabilities.yaml`, `config/agents/model-registry.yaml` (comment cross-ref, no model-ID churn), `tests/config/test_routing_config_observed_behavior.py` (replace the all-claude assertion), `docs/plans/README.md`. Update if flagged: `scripts/enforcement/model-id-baseline.txt:934`.
+
+## TDD test list
+hermes-context-forbids-claude; hermes-context-primary-is-agy; interactive-dev-primary-is-claude; cost-policy-reference-resolves (file exists); cross-review-unchanged; simple-standard-no-longer-claude-only (inverts old guard); provider-caps-hermes-aligned. Red first.
+
+## Risks / open questions (HITL-critical)
+- **Advisory vs enforced:** is it acceptable to ship a "cost ceiling" the runtime routers don't read? The plan scopes executed-router rewiring to a #3058 follow-up; `routing_resolution_note` keeps it honest. **Confirm acceptable.**
+- **Hermes-backing conflict:** every config says Hermes = gpt-5.5/openai-codex; policy says agy/Gemini. **Does the operator intend to redefine Hermes's backing lane** (changes agents.hermes.provider + strategy note + line-934 baseline), or only which agent handles Hermes-CONTEXT tasks? Recorded inline, not auto-resolved.
+- **agy↔gemini taxonomy:** use `agy` as a first-class token (→ Antigravity Gemini surface) or reuse `gemini`? Keep consistent with set-antigravity-default-model.sh.
+- **Test inversion:** flipping `test_simple_and_standard_route_to_claude` (tied to #1730) — confirm no other suite depends on it.
+
+## Adversarial review (T2; default 3-agent)
+PENDING. Force the 4 HITL questions above — especially advisory-vs-enforced honesty and the Hermes-backing conflict.
+
+## Acceptance criteria
+Mirror issue #3192: execution contexts reflect Hermes→agy / Claude dev-only / agy fallback; cost-ceiling contexts forbid Claude; governance SSoT written + referenced; model-registry + provider-capabilities reconciled with Claude-on-Hermes flags; Hermes-backing conflict recorded for HITL; tests pass (incl. inverted guard); no regression; routing_resolution_note documents advisory status + deferred executed-router consolidation; model-id baseline clean/updated; review artifacts posted.
