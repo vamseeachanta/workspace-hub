@@ -101,6 +101,43 @@ assert_eq "handoff" "$(branch_of "$R")" "test_guard_off_main_live_git: stays put
 assert_contains "$OUT" "active git" "test_guard_off_main_live_git: logs 'active git'"
 echo ""
 
+# Repo left mid-merge with an unresolved conflict (MERGE_HEAD present, conflict
+# file UNSTAGED), checked out on feature branch `feat`.
+make_merge_conflict_repo() {
+  local r="$TEST_DIR/repo-$$-$RANDOM"
+  mkdir -p "$r"; git -C "$r" init -q
+  git -C "$r" config user.email t@t; git -C "$r" config user.name t
+  echo base > "$r/c.txt"; git -C "$r" add c.txt; git -C "$r" commit -qm init
+  git -C "$r" branch -M main
+  git -C "$r" checkout -q -b feat
+  echo feat > "$r/c.txt"; git -C "$r" add c.txt; git -C "$r" commit -qm feat
+  git -C "$r" checkout -q main
+  echo main > "$r/c.txt"; git -C "$r" add c.txt; git -C "$r" commit -qm main
+  git -C "$r" checkout -q feat
+  git -C "$r" merge main >/dev/null 2>&1 || true   # conflict -> MERGE_HEAD, c.txt unmerged
+  echo "$r"
+}
+
+# ── Test 7: mid-merge conflict -> REFUSE (do not stash away the resolution) ────
+echo "Test 7: off main + merge in progress (MERGE_HEAD)"
+R="$(make_merge_conflict_repo)"
+[[ -f "$R/.git/MERGE_HEAD" ]] && pass "test_guard_merge_in_progress: precondition MERGE_HEAD present" || fail "test_guard_merge_in_progress: precondition MERGE_HEAD present"
+OUT="$(run_guard "$R" 1)"; RC="$(read_rc)"
+assert_eq "1" "$RC" "test_guard_merge_in_progress: exits 1 (refuse)"
+assert_eq "feat" "$(branch_of "$R")" "test_guard_merge_in_progress: stays on feat (work preserved)"
+[[ -f "$R/.git/MERGE_HEAD" ]] && pass "test_guard_merge_in_progress: MERGE_HEAD not abandoned" || fail "test_guard_merge_in_progress: MERGE_HEAD not abandoned" "in-flight merge destroyed"
+[[ "$(git -C "$R" stash list | wc -l | tr -d ' ')" -eq 0 ]] && pass "test_guard_merge_in_progress: no stash created" || fail "test_guard_merge_in_progress: no stash created" "resolution stashed away"
+echo ""
+
+# ── Test 8: detached HEAD (mid-rebase shape) -> REFUSE ────────────────────────
+echo "Test 8: detached HEAD"
+R="$(make_guard_repo)"; git -C "$R" checkout -q --detach
+OUT="$(run_guard "$R" 1)"; RC="$(read_rc)"
+assert_eq "1" "$RC" "test_guard_detached_head: exits 1 (refuse)"
+[[ -z "$(branch_of "$R")" ]] && pass "test_guard_detached_head: stays detached (not yanked to main)" || fail "test_guard_detached_head: stays detached" "switched to $(branch_of "$R")"
+assert_contains "$OUT" "in-flight" "test_guard_detached_head: logs in-flight refusal"
+echo ""
+
 echo "============================================"
 echo "Results: $TESTS_PASSED/$TESTS_RUN passed, $TESTS_FAILED failed"
 echo "============================================"

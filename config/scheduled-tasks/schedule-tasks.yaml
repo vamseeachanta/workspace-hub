@@ -108,7 +108,7 @@ tasks:
     is_claude_task: false
     description: >-
       Every 5 min on dev-primary: detect a .git/index.lock that is BOTH older than
-      LOCK_REAPER_AGE_MINUTES (default 5) AND has no live `git` process, then remove it
+      LOCK_REAPER_AGE_MINUTES (default 10) AND has no live `git` process, then remove it
       with a stderr alert (cron -> mail). A zero-byte orphan lock silently froze ALL git
       automation on ace-linux-1 for ~5h on 2026-06-17 (#3187). Dual-guard (age + no-live-git)
       so it can never race-reap a live op's lock — unlike git-safe.sh:git_heal_index().
