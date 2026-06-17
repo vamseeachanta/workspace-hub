@@ -37,6 +37,17 @@ if counts="$(git rev-list --left-right --count origin/main...HEAD 2>/dev/null)";
   ahead="$(echo "$counts" | awk '{print $2}')"
 fi
 
+# Current branch + stale-orphan index.lock — v2 fields (#3187). Reuse the SAME
+# shared predicate the reaper uses so detection and repair agree by construction.
+# shellcheck source=/dev/null
+source "${REPO_ROOT}/scripts/cron/lib/git-safe.sh" 2>/dev/null || true
+cur_branch="$(_git_current_branch "$REPO_ROOT" 2>/dev/null || echo null)"; [ -z "$cur_branch" ] && cur_branch=null
+if declare -F _has_stale_orphan_lock >/dev/null 2>&1 && _has_stale_orphan_lock "$REPO_ROOT" 2>/dev/null; then
+  stale_lock="true"
+else
+  stale_lock="false"
+fi
+
 # Harness version + install method.
 hv="$(claude --version 2>/dev/null | awk '{print $1}')"; [ -z "$hv" ] && hv=null
 cpath="$(command -v claude 2>/dev/null || true)"
@@ -63,10 +74,10 @@ age_learning="$(cron_age comprehensive-learning)"
 age_session="$(cron_age session-analysis)"
 
 # Emit JSON via python for safe quoting.
-python3 - "$role" "$host" "$clone_head" "$behind" "$ahead" "$hv" "$hinstall" "$reg_sha" "$age_learning" "$age_session" <<'PY' > "${OUT:-/dev/stdout}"
+python3 - "$role" "$host" "$clone_head" "$behind" "$ahead" "$hv" "$hinstall" "$reg_sha" "$age_learning" "$age_session" "$cur_branch" "$stale_lock" <<'PY' > "${OUT:-/dev/stdout}"
 import json, sys, hashlib, os
 from datetime import datetime, timezone
-role, host, head, behind, ahead, hv, hinstall, reg, al, as_ = sys.argv[1:11]
+role, host, head, behind, ahead, hv, hinstall, reg, al, as_, cur_branch, stale_lock = sys.argv[1:13]
 def fhash(path):
     try:
         with open(path, "rb") as fh:
@@ -91,10 +102,12 @@ def num(x):
         except ValueError: return None
 def s(x): return None if x in ("null", "") else x
 fp = {
-    "fingerprint_version": 1,
+    "fingerprint_version": 2,
     "role": role, "hostname": host,
     "ts": datetime.now(timezone.utc).isoformat(),
     "clone_head": s(head),
+    "current_branch": s(cur_branch),            # v2 (#3187)
+    "stale_index_lock": (stale_lock == "true"), # v2 (#3187)
     "behind_origin": num(behind), "ahead_origin": num(ahead),
     "harness_version": s(hv), "harness_install": s(hinstall),
     "registry_sha256": s(reg),

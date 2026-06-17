@@ -122,6 +122,24 @@ def compare(fps, *, behind_warn=10, stale_h=6.0, learning_max_h=48.0):
                                 f"{r} fingerprint is {age_h:.1f}h older than the newest box — may not be reporting",
                                 {r: round(age_h, 1)}))
 
+    # 7. per-box working-tree drift (v2 fingerprints, #3187). Version-aware: a v1
+    # box has no current_branch/stale_index_lock fields, so it is skipped — a
+    # not-yet-upgraded box never triggers a false off-main divergence during rollout.
+    for r, f in zip(roles, fps):
+        if (f.get("fingerprint_version") or 1) < 2:
+            continue
+        if f.get("stale_index_lock"):
+            out.append(_div(CRITICAL, "stale-index-lock",
+                            f"{r}: stale orphan .git/index.lock present — git layer may be frozen (the #3187 outage)",
+                            {r: True}))
+        br = f.get("current_branch")
+        if br and br != "main":
+            # control-plane roles run branch-independent crons; off-main breaks them
+            sev = WARNING if f.get("role") == "full" else INFO
+            out.append(_div(sev, "off-main",
+                            f"{r}: working tree on '{br}', not main — branch-independent crons run against the wrong tree",
+                            {r: br}))
+
     out.sort(key=lambda d: _SEV_RANK[d["severity"]])
     return out
 

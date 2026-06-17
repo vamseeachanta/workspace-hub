@@ -84,14 +84,78 @@ _git_safe_lock_release() {
 }
 
 # ============================================================================
+# Portable helpers (BSD/GNU) — #3187
+# ============================================================================
+_stat_mtime() {  # epoch-seconds mtime of a path; 0 if missing/unknown
+    stat -c %Y "$1" 2>/dev/null || stat -f %m "$1" 2>/dev/null || echo 0
+}
+
+_git_current_branch() {  # current branch name, portable across git versions
+    local d="${1:-${GIT_SAFE_REPO:-.}}"
+    git -C "$d" branch --show-current 2>/dev/null \
+        || git -C "$d" symbolic-ref --short HEAD 2>/dev/null \
+        || echo "unknown"
+}
+
+# Return 0 (true) if any process currently holds the given file open.
+# Fail-closed: if neither fuser nor lsof exists, we cannot prove it unheld,
+# so we report "held" so callers never reap on an unprovable box.
+_git_lock_has_holder() {
+    local lock="$1"
+    if command -v fuser >/dev/null 2>&1; then
+        fuser "$lock" >/dev/null 2>&1
+        return $?
+    fi
+    if command -v lsof >/dev/null 2>&1; then
+        lsof -- "$lock" >/dev/null 2>&1
+        return $?
+    fi
+    return 0  # no detector -> assume held (fail-closed)
+}
+
+# ============================================================================
+# Stale-orphan index.lock predicate — #3187
+# ============================================================================
+# Shared by git-lock-reaper.sh AND git_heal_index so both agree on what is
+# "safe to remove". Returns 0 (true) ONLY when ALL hold (fail-closed):
+#   1. the lock file exists
+#   2. no process holds it open (fuser/lsof)
+#   3. no live git push / pre-push / pytest / benchmark process anywhere
+#   4. no rebase/merge in progress
+#   5. lock age >= GIT_LOCK_REAP_AFTER_MIN (default 90 — must exceed worst-case
+#      pre-push suite; measure on dev-primary before lowering, #3187 AC)
+#   6. DECISIVE: `git status` succeeds with the lock present => git released it
+#      (the 2026-06-17 incident: a stale lock on a NON-corrupt index that the
+#      old heal-on-corrupt-only path never cleared).
+GIT_LOCK_REAP_AFTER_MIN="${GIT_LOCK_REAP_AFTER_MIN:-90}"
+_has_stale_orphan_lock() {
+    local git_dir="${1:-${GIT_SAFE_REPO:-.}}"
+    local lock="${git_dir}/.git/index.lock"
+    [[ -f "$lock" ]] || return 1
+    _git_lock_has_holder "$lock" && return 1
+    if command -v pgrep >/dev/null 2>&1; then
+        pgrep -f 'git[ -].*push|pre-push|pytest|run-benchmarks|run-all-tests' >/dev/null 2>&1 && return 1
+    fi
+    [[ -d "${git_dir}/.git/rebase-merge" || -d "${git_dir}/.git/rebase-apply" || -f "${git_dir}/.git/MERGE_HEAD" ]] && return 1
+    local age_min=$(( ( $(date +%s) - $(_stat_mtime "$lock") ) / 60 ))
+    (( age_min >= GIT_LOCK_REAP_AFTER_MIN )) || return 1
+    git -C "$git_dir" status >/dev/null 2>&1 || return 1
+    return 0
+}
+
+# ============================================================================
 # Index healing — recovers from corrupt .git/index
 # ============================================================================
 git_heal_index() {
     local git_dir="${GIT_SAFE_REPO:-.}"
     if ! git -C "$git_dir" status >/dev/null 2>&1; then
         _git_safe_log "WARNING: git index appears corrupt, attempting recovery"
-        # Remove stale lock if present
-        rm -f "${git_dir}/.git/index.lock" 2>/dev/null || true
+        # Corrupt-index recovery (status FAILS) is distinct from the stale-orphan
+        # reaper (_has_stale_orphan_lock requires status to SUCCEED). Still, never
+        # yank a lock a live process holds open (#3187 review #3).
+        if [[ -f "${git_dir}/.git/index.lock" ]] && ! _git_lock_has_holder "${git_dir}/.git/index.lock"; then
+            rm -f "${git_dir}/.git/index.lock" 2>/dev/null || true
+        fi
         # Rebuild index from HEAD
         if git -C "$git_dir" read-tree HEAD 2>/dev/null; then
             _git_safe_log "Index recovered via read-tree HEAD"

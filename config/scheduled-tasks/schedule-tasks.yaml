@@ -93,6 +93,48 @@ tasks:
       The sentinel is report-only; this is the missing repair arm. Provider-neutral by
       design — a SessionEnd hook would only fire after Claude.
 
+  # Linux-only (v1); Windows deferred per epic #3058.
+  - id: git-lock-reaper
+    label: Reap true-orphan .git/index.lock on workspace-hub (#3187)
+    schedule: "7,37 * * * *"   # staggered off dispatch-leader-watch (*/15) + repository-sync to avoid flock contention
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    roles: [control-plane, comms-dispatch]
+    requires: [bash, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/maintenance/git-lock-reaper.sh
+      >> $WORKSPACE_HUB/logs/maintenance/git-lock-reaper-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/maintenance/git-lock-reaper-*.log
+    is_claude_task: false
+    description: >-
+      Twice-hourly reaper for a stale orphan .git/index.lock (the 2026-06-17 #3187
+      incident froze primary git ~5h). Delegates the decision to the shared
+      git-safe.sh:_has_stale_orphan_lock predicate (no holder, no live push/test,
+      no rebase, age >= GIT_LOCK_REAP_AFTER_MIN=90, AND git status succeeds) so it
+      NEVER reaps a live pre-push lock. Fail-closed; runs branch-independently.
+
+  # Linux-only (v1); Windows deferred per epic #3058.
+  - id: return-to-main-guard
+    label: Return workspace-hub working tree to main when safely idle (#3187)
+    schedule: "23,53 * * * *"   # staggered off repository-sync so a guard checkout never races a sync pull
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    roles: [control-plane, comms-dispatch]
+    requires: [bash, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/maintenance/return-to-main-guard.sh
+      >> $WORKSPACE_HUB/logs/maintenance/return-to-main-guard-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/maintenance/return-to-main-guard-*.log
+    is_claude_task: false
+    description: >-
+      Returns the working tree to main so branch-independent crons run against main,
+      not a stale handoff branch (2026-06-17 #3187). Aggressively fail-closed: skips
+      on any concurrent activity (lock holder / live push/test / agent session /
+      recent session-signal), NEEDS-ATTENTION on no-upstream or unpushed branches,
+      stashes regenerable dirty state (kept, never dropped) with checkout-failure recovery.
+
   - id: parity-sentinel
     label: Behavioral parity instrumentation (#3061)
     schedule: "40 4 * * 1"
