@@ -122,6 +122,28 @@ def compare(fps, *, behind_warn=10, stale_h=6.0, learning_max_h=48.0):
                                 f"{r} fingerprint is {age_h:.1f}h older than the newest box — may not be reporting",
                                 {r: round(age_h, 1)}))
 
+    # 7. primary (role=full) parked off `main` -> WARNING (#3187). Cron scripts run
+    # against whatever branch is checked out, so an off-main primary silently serves
+    # stale scripts. Off-main is only flagged for role=full (the cron/orchestration
+    # hub); secondary boxes legitimately sit on feature branches.
+    for r, f in zip(roles, fps):
+        if f.get("role") != "full":
+            continue
+        if f.get("on_main") is False:
+            out.append(_div(WARNING, "primary-off-main",
+                            f"{r} (orchestration hub) is parked off main — crons run against the wrong tree",
+                            {r: "off-main"}))
+
+    # 8. stale .git/index.lock reported -> WARNING (#3187). A zero-byte orphan lock
+    # with no holder silently freezes git automation (froze the primary ~5h on
+    # 2026-06-17). The fingerprint only sets this when no live git process holds it.
+    for r, f in zip(roles, fps):
+        age = f.get("index_lock_stale_min")
+        if isinstance(age, (int, float)) and not isinstance(age, bool):
+            out.append(_div(WARNING, "stale-index-lock",
+                            f"{r}: orphan .git/index.lock ~{age:.0f} min old with no holder — git automation may be frozen",
+                            {r: round(float(age), 1)}))
+
     out.sort(key=lambda d: _SEV_RANK[d["severity"]])
     return out
 
