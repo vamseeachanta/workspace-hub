@@ -37,9 +37,11 @@ Issue #3192 (cost policy + 3-part scope); epic #3058 (convert manual checks → 
 ---
 
 ## Approach / Deliverable
-A cost-ceiling-honoring `routing-config.yaml` that separates **execution context** (hermes_batch → agy/Gemini primary, forbid claude; interactive_dev → Claude/Codex; cross_review unchanged) from **tier**, backed by a written governance SSoT (`docs/governance/2026-06-17-cost-ceiling-policy.md`) referenced from the config header, with model-registry + provider-capabilities reconciled, Claude-on-Hermes assumptions flagged, and a regression-guard test that fails if a cost-ceiling context ever names Claude.
+**OPERATOR DECISION (2026-06-17): Hermes's backing lane STAYS `gpt-5.5`/openai-codex** — the original policy phrase "agy powers Hermes" is overridden; agy is the cheap *fallback / delegation* lane, NOT Hermes's backing model. So no change to `agents.hermes.provider` (remains openai-codex) and the model-id baseline line stays put — the conflict is RESOLVED, not just flagged.
 
-- Add `header.cost_ceiling_policy` + `policy_summary`; add `execution_contexts` (hermes_batch{primary: agy, forbid: [claude], cost_ceiling: true}, interactive_dev{primary: claude}, cross_review{primary: claude}); repoint tiers to contexts; add `routing_resolution_note` stating the maps are advisory today.
+A cost-ceiling-honoring `routing-config.yaml` that separates **execution context** from **tier**: `hermes_batch` → **primary `openai-codex` (gpt-5.5)**, fallback `agy`, **forbid `claude`** (cost ceiling), `cost_ceiling: true`; `interactive_dev` → primary claude, fallback [codex, agy]; `cross_review` unchanged (claude). Backed by a governance SSoT (`docs/governance/2026-06-17-cost-ceiling-policy.md`) referenced from the config header; model-registry + provider-capabilities reconciled; a regression-guard test that fails if a cost-ceiling context ever names Claude.
+
+- Add `header.cost_ceiling_policy` + `policy_summary` ("Claude reserved for interactive dev; Hermes = gpt-5.5/openai-codex; agy = cheap fallback/delegation lane; NO Claude for Hermes-context — cost ceiling"); add `execution_contexts` as above; repoint tiers to contexts; add `routing_resolution_note` stating the maps are advisory today.
 - **Scope boundary (deliberate):** this changes the declarative/advisory config + governance ONLY. Rewiring the 3 hardcoded executed routers to actually parse routing-config (collapsing the drifted copies into one executed SSoT) is larger → follow-up under #3058. The `routing_resolution_note` makes the advisory status explicit so no one believes the ceiling is runtime-enforced when it isn't.
 
 ## Files to change
@@ -51,7 +53,7 @@ hermes-context-forbids-claude; hermes-context-primary-is-agy; interactive-dev-pr
 
 ## Risks / open questions (HITL-critical)
 - **Advisory vs enforced:** is it acceptable to ship a "cost ceiling" the runtime routers don't read? The plan scopes executed-router rewiring to a #3058 follow-up; `routing_resolution_note` keeps it honest. **Confirm acceptable.**
-- **Hermes-backing conflict:** every config says Hermes = gpt-5.5/openai-codex; policy says agy/Gemini. **Does the operator intend to redefine Hermes's backing lane** (changes agents.hermes.provider + strategy note + line-934 baseline), or only which agent handles Hermes-CONTEXT tasks? Recorded inline, not auto-resolved.
+- **Hermes-backing conflict: RESOLVED (operator 2026-06-17)** — Hermes backing stays gpt-5.5/openai-codex; agy is the fallback/delegation lane only. `agents.hermes.provider` unchanged; line-934 baseline unaffected.
 - **agy↔gemini taxonomy:** use `agy` as a first-class token (→ Antigravity Gemini surface) or reuse `gemini`? Keep consistent with set-antigravity-default-model.sh.
 - **Test inversion:** flipping `test_simple_and_standard_route_to_claude` (tied to #1730) — confirm no other suite depends on it.
 

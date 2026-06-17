@@ -75,7 +75,7 @@ each-template-valid-yaml; each-matches-schema (`Draft7Validator`); gate-chain-or
 - Three YAML shapes in one dir → README documents which schema applies; `kind:` discriminator scopes the new schema.
 - Templates encode but don't enforce → position as Level-0/1; cross-ref real enforcers.
 - Provider-routing drift → reference `provider-routing-policy.yaml`, single source of truth.
-- **Open:** is #3191 really a child of #3058 (epic body omits it)? Confirm/relabel at approval.
+- **RESOLVED (operator 2026-06-17):** templates-as-data (Level-0/1) accepted — enforcement stays in the existing gates (`plan_approval_gate_check.py`/`completeness-gate.yml`); these templates encode but do not enforce. #3191 now listed under #3058 (epic body updated).
 - **Open:** `tdd-implementation.yaml` supersede vs coexist with `standard-development.yaml`? Recommend coexist.
 
 ## Adversarial review (T2 — Claude + Codex; Gemini optional 3rd)

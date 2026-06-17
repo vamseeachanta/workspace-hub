@@ -58,7 +58,7 @@ index-groups-by-class; index-excludes-self; index-deterministic (byte-identical,
 - **Churn:** bridge commits `.claude/memory/` daily across machines — INDEX + gemini slice MUST be deterministic (inherit curate's contract). Top defect-hunt.
 - **Gemini loader reality:** instruction must live in GEMINI.md (actually-loaded) not just SOUL.runtime.md (phantom). Verify Gemini surfaces it before claiming parity.
 - **Slice-owner asymmetry:** gemini slice must be gated by the same `SLICE_OWNER` guard + §8 pathspec as codex, else never-commits or per-machine divergence.
-- **Open:** recall as CLI-only (recommended, stdlib, runs under codex/agy) vs also MCP tool? INDEX taxonomy = frontmatter `type:` (recommended) vs semantic problem-classes? Flag at approval.
+- **RESOLVED (operator 2026-06-17):** recall = **CLI-only** (stdlib, zero-dep, runs under codex/agy); MCP deferred. INDEX taxonomy = frontmatter `type:` + slug prefix (the structured signal already present).
 
 ## Adversarial review (T2; default 3-agent since cross-provider artifact)
 PENDING. Force: determinism/churn (F1 hazard); slice-owner gating; self-indexing (INDEX excluded from §6 re-mirror); recall parity ORACLE (plant a known topic, assert identical ordered set per provider — not just "returns results", per #3116); leak polarity (gemini reuses F4 default-include).
