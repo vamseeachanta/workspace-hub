@@ -90,6 +90,16 @@ git_heal_index() {
     local git_dir="${GIT_SAFE_REPO:-.}"
     if ! git -C "$git_dir" status >/dev/null 2>&1; then
         _git_safe_log "WARNING: git index appears corrupt, attempting recovery"
+        # Don't yank index.lock out from under a LIVE git op (#3187 follow-up):
+        # only clear it when no git process is running. Uses the same pgrep-x-git
+        # liveness idiom as the #3187 reaper/fingerprint. A crashed op leaves no
+        # process (kernel closes its fds), so its orphan lock IS cleared; a live
+        # op's lock is left alone and recovery defers to the next cycle.
+        if [ -f "${git_dir}/.git/index.lock" ] && command -v pgrep >/dev/null 2>&1 \
+           && pgrep -x git >/dev/null 2>&1; then
+            _git_safe_log "index.lock held by a live git process — deferring index recovery"
+            return 1
+        fi
         # Remove stale lock if present
         rm -f "${git_dir}/.git/index.lock" 2>/dev/null || true
         # Rebuild index from HEAD
