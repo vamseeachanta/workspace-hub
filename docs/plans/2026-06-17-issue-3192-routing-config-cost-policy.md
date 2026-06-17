@@ -49,7 +49,7 @@ Create: `docs/governance/2026-06-17-cost-ceiling-policy.md`, `tests/config/test_
 Modify: `config/agents/routing-config.yaml`, `config/agents/provider-capabilities.yaml`, `config/agents/model-registry.yaml` (comment cross-ref, no model-ID churn), `tests/config/test_routing_config_observed_behavior.py` (replace the all-claude assertion), `docs/plans/README.md`. Update if flagged: `scripts/enforcement/model-id-baseline.txt:934`.
 
 ## TDD test list
-hermes-context-forbids-claude; hermes-context-primary-is-agy; interactive-dev-primary-is-claude; cost-policy-reference-resolves (file exists); cross-review-unchanged; simple-standard-no-longer-claude-only (inverts old guard); provider-caps-hermes-aligned. Red first.
+cost-ceiling-context-DECLARES-forbid-claude (declaration, not runtime enforcement); **hermes-context-primary-is-openai-codex**; **hermes-context-fallback-is-gemini** (agy = the Antigravity Gemini CLI surface → resolves to the `gemini` provider token, which exists in provider-capabilities); interactive-dev-primary-is-claude; cost-policy-reference-resolves (governance doc exists + declares the ceiling); cross-review-unchanged; simple-standard-context-honors-ceiling (replaces the old all-claude assertion — asserts SIMPLE/STANDARD primary is no longer hardcoded claude); provider-caps-hermes-aligned (provider-capabilities hermes.primary == routing-config agents.hermes.models.primary == gpt-5.5). Red first.
 
 ## Risks / open questions (HITL-critical)
 - **Advisory vs enforced:** is it acceptable to ship a "cost ceiling" the runtime routers don't read? The plan scopes executed-router rewiring to a #3058 follow-up; `routing_resolution_note` keeps it honest. **Confirm acceptable.**
@@ -57,8 +57,15 @@ hermes-context-forbids-claude; hermes-context-primary-is-agy; interactive-dev-pr
 - **agy↔gemini taxonomy:** use `agy` as a first-class token (→ Antigravity Gemini surface) or reuse `gemini`? Keep consistent with set-antigravity-default-model.sh.
 - **Test inversion:** flipping `test_simple_and_standard_route_to_claude` (tied to #1730) — confirm no other suite depends on it.
 
-## Adversarial review (T2; default 3-agent)
-PENDING. Force the 4 HITL questions above — especially advisory-vs-enforced honesty and the Hermes-backing conflict.
+## Adversarial review (T2 plan-stage) — DONE, findings folded in
+1 adversarial lens run 2026-06-17 (NON-APPROVE; 2 CRITICAL + 2 HIGH + 3 MED/LOW). Resolutions:
+- **CRITICAL — test name inversion** (`hermes-context-primary-is-agy` contradicted the design). FIXED in TDD list: primary = openai-codex, fallback = gemini.
+- **CRITICAL — advisory honesty.** FIX: the `routing_resolution_note` is a prominent top-of-file YAML comment reading "**This cost ceiling is ADVISORY ONLY — NOT enforced by tier_router.sh / task-dispatcher.py (they hold hardcoded chains). Do NOT rely on it to block Claude on Hermes tasks until the executed-router consolidation lands (#3058 follow-up).**" Guard test renamed to assert the config's *declared intent*, not runtime enforcement.
+- **HIGH — agy↔gemini taxonomy.** RESOLVED: routing-config uses the **`gemini`** provider token (exists in provider-capabilities); agy is documented as the Antigravity Gemini *CLI surface* that resolves to `gemini`. (First-class `agy` token is #3190's concern; #3192 doesn't reference a non-existent provider.)
+- **HIGH — baseline line 934.** FIX: do NOT claim "unaffected" — adding header/execution_contexts shifts lines; run the change, and if the hash moves, regenerate via `check-model-id-sourcing.sh --update-baseline` and commit it in the same PR.
+- **MED — test inversion spec** + **before/after YAML diff** included in the implementation; new assertion specified (SIMPLE/STANDARD primary no longer hardcoded claude). Only one dependent of the old test (none external) — safe.
+- **MED — governance ADR** `docs/governance/2026-06-17-cost-ceiling-policy.md` records the operator decision (Hermes stays openai-codex; agy = fallback; "agy powers Hermes" overridden) with the authority/date, referenced from the routing-config header.
+Cross-provider (Codex/Gemini) review via `plan-review-fanout.sh` recommended at code stage.
 
 ## Acceptance criteria
 Mirror issue #3192: execution contexts reflect Hermes→agy / Claude dev-only / agy fallback; cost-ceiling contexts forbid Claude; governance SSoT written + referenced; model-registry + provider-capabilities reconciled with Claude-on-Hermes flags; Hermes-backing conflict recorded for HITL; tests pass (incl. inverted guard); no regression; routing_resolution_note documents advisory status + deferred executed-router consolidation; model-id baseline clean/updated; review artifacts posted.

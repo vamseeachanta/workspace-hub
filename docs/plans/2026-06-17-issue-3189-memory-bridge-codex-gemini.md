@@ -60,8 +60,15 @@ index-groups-by-class; index-excludes-self; index-deterministic (byte-identical,
 - **Slice-owner asymmetry:** gemini slice must be gated by the same `SLICE_OWNER` guard + §8 pathspec as codex, else never-commits or per-machine divergence.
 - **RESOLVED (operator 2026-06-17):** recall = **CLI-only** (stdlib, zero-dep, runs under codex/agy); MCP deferred. INDEX taxonomy = frontmatter `type:` + slug prefix (the structured signal already present).
 
-## Adversarial review (T2; default 3-agent since cross-provider artifact)
-PENDING. Force: determinism/churn (F1 hazard); slice-owner gating; self-indexing (INDEX excluded from §6 re-mirror); recall parity ORACLE (plant a known topic, assert identical ordered set per provider — not just "returns results", per #3116); leak polarity (gemini reuses F4 default-include).
+## Adversarial review (T2 plan-stage) — DONE, findings folded in
+1 adversarial lens run 2026-06-17 (REQUEST-CHANGES; 1 BLOCKER + 4 MAJOR + 3 MINOR/NIT). Resolutions:
+- **BLOCKER — Gemini wiring phantom.** `install-soul-runtime.sh:79-84`: Gemini loads workspace `GEMINI.md` ONLY, not SOUL.md/SOUL.delta.md. FIX: the session-start memory-read instruction goes in **`GEMINI.md` ONLY** (≤20 lines); drop the SOUL.delta.md wiring (it's a no-op for Gemini's runtime).
+- **MAJOR — commit pathspec gap.** FIX: §8 pathspec must expand to include `config/agents/gemini/MEMORY.runtime.md` (else the gemini slice is staged-not-committed → per-machine divergence), gated by the same `SLICE_OWNER` guard as codex.
+- **MAJOR — self-indexing.** FIX: `build_topics_index.py` excludes `INDEX.md` from its own input AND the §6 mirror must not re-mirror INDEX.md; explicit `test_index_excludes_self` + byte-identical re-run test.
+- **MAJOR — determinism.** FIX: INDEX header is a STATIC literal (no generated-date); stable filename ordering; `originSessionId`/dates from frontmatter excluded from output. `test_index_deterministic` asserts byte-identical on repeat.
+- **MAJOR — recall parity oracle.** FIX: acceptance MANDATES a planted-oracle test — insert a known topic, assert codex/hermes/gemini recall return the IDENTICAL ordered set (verbatim), not just non-empty (per #3116).
+- **MINOR — gemini cap 7000** needs rationale (match codex context budget) + a `test_curate_gemini_excludes_claude_only` (F4 filter honored for gemini). **NIT — provider_harness_parity** `_memory_read()` must verify BOTH `config/agents/gemini/MEMORY.runtime.md` exists AND `GEMINI.md` carries the read instruction.
+Cross-provider (Codex/Gemini) review via `plan-review-fanout.sh` recommended at code stage.
 
 ## Acceptance criteria
 Mirror issue #3189: INDEX generated+regenerated class-grouped; gemini MEMORY.runtime.md + GEMINI.md/SOUL.delta wiring; recall skill invokable by all 3 providers returning identical ordered set; tests pass; no regression; abs-path + harness-size + legal scans pass; bridge dry-run produces artifacts without committing; two runs byte-identical (no churn); review artifacts posted.

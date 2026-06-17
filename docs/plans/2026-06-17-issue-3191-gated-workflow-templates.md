@@ -78,8 +78,16 @@ each-template-valid-yaml; each-matches-schema (`Draft7Validator`); gate-chain-or
 - **RESOLVED (operator 2026-06-17):** templates-as-data (Level-0/1) accepted — enforcement stays in the existing gates (`plan_approval_gate_check.py`/`completeness-gate.yml`); these templates encode but do not enforce. #3191 now listed under #3058 (epic body updated).
 - **Open:** `tdd-implementation.yaml` supersede vs coexist with `standard-development.yaml`? Recommend coexist.
 
-## Adversarial review (T2 — Claude + Codex; Gemini optional 3rd)
-PENDING — run before `status:plan-review`→approval. Pre-seeded defect hunts: schema-self-validation collision; dialect fragmentation (migrate legacy or leave?); provider-neutrality leakage in example blocks; gate-encoding-vs-enforcement over-claim; epic-linkage scope.
+## Adversarial review (T2 plan-stage) — DONE, findings folded in
+1 adversarial lens run 2026-06-17 (NON-APPROVE; 3 MAJOR + 4 MINOR). Resolutions:
+- **MAJOR — schema has no real validation entry point** (discriminator is naming-only; `validate_yaml.py` rejects these by design). FIX: the pytest suite IS the entry point — a fixture loads `schema/workflow.schema.json` and validates ONLY files with `kind: gated-workflow` (legacy dialects skipped). `validate_yaml.py` untouched.
+- **MAJOR — provider-neutrality must be scoped per-template.** FIX: all THREE new templates must be neutral; `tdd-implementation.yaml` is a provider-neutral REWRITE of `standard-development.yaml`'s shape (legacy left in place, marked deprecated). Neutrality test is per-template (incl. example blocks).
+- **MAJOR — README migration story missing.** FIX: README gets a "Choosing a workflow template" decision table covering all 8 files (5 legacy + 3 new), marking `standard-development.yaml`/`data-analysis.yaml` deprecated for new work.
+- **MINOR — jsonschema is a dev-only dep** (pyproject `dependency-groups.dev`). FIX: tests run under `uv run --group dev pytest ...`; documented in TDD section + acceptance.
+- **MINOR — fanout-reference test must verify the YAML actually calls the real path**, not just that the path exists. FIX: test extracts the runner field from the YAML and asserts it resolves to `scripts/review/plan-review-fanout.sh`.
+- **MINOR — tier mapping is reference data**, not hardcoded per template (tier is assigned by the human at plan-review). FIX: `config.tiers` documented as lookup-only; templates don't force a tier.
+- **MINOR — future-tense:** reframe Resource-Intel "Found:" as "currently exists" to avoid implying the plan authored existing files.
+Cross-provider (Codex/Gemini) review via `plan-review-fanout.sh` still recommended at code stage.
 
 ## Acceptance criteria
 Mirror issue #3191: 3 gate-chain templates schema-valid + provider-agnostic + inline-cited; review-workflow references real fanout + 3-agent default + degradation; tier depths exact; user_approval USER_ONLY; README instantiation section; tests pass; review artifacts posted.
