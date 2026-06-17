@@ -93,6 +93,46 @@ tasks:
       The sentinel is report-only; this is the missing repair arm. Provider-neutral by
       design — a SessionEnd hook would only fire after Claude.
 
+  - id: git-lock-reaper
+    label: Reap orphan .git/index.lock on dev-primary (#3187)
+    schedule: "*/5 * * * *"
+    machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
+    requires: [bash, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/maintenance/git-lock-reaper.sh
+      >> $WORKSPACE_HUB/logs/maintenance/git-lock-reaper-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/maintenance/git-lock-reaper-*.log
+    is_claude_task: false
+    description: >-
+      Every 5 min on dev-primary: detect a .git/index.lock that is BOTH older than
+      LOCK_REAPER_AGE_MINUTES (default 5) AND has no live `git` process, then remove it
+      with a stderr alert (cron -> mail). A zero-byte orphan lock silently froze ALL git
+      automation on ace-linux-1 for ~5h on 2026-06-17 (#3187). Dual-guard (age + no-live-git)
+      so it can never race-reap a live op's lock — unlike git-safe.sh:git_heal_index().
+
+  - id: return-to-main-guard
+    label: Restore dev-primary workspace-hub checkout to main when idle off-branch (#3187)
+    schedule: "*/30 * * * *"
+    machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
+    requires: [bash, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/maintenance/return-to-main-guard.sh
+      >> $WORKSPACE_HUB/logs/maintenance/return-to-main-guard-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/maintenance/return-to-main-guard-*.log
+    is_claude_task: false
+    description: >-
+      Every 30 min on dev-primary: when the workspace-hub checkout is parked off `main`
+      and idle, restore it to main so the ~50 crons that run `cd $WORKSPACE_HUB && bash
+      scripts/...` always see main's tree (#3187). REFUSES to act when staged changes are
+      present (user work in flight, exit 1 alert) or a git op is live; auto-stashes only
+      regenerable unstaged/untracked churn (disable with GUARD_AUTO_STASH=0).
+
   - id: parity-sentinel
     label: Behavioral parity instrumentation (#3061)
     schedule: "40 4 * * 1"
