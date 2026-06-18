@@ -213,11 +213,11 @@ if $SHOW_CONFIG; then
         fi
     done
     echo ""
-    echo "Routing Table:"
-    echo "  SIMPLE    -> codex  (fallback: gemini, claude)"
-    echo "  STANDARD  -> codex  (fallback: claude, gemini)"
-    echo "  COMPLEX   -> claude (fallback: gemini, codex)"
-    echo "  REASONING -> claude (fallback: gemini, codex)"
+    echo "Routing Table (live from routing-config.yaml tiers.*):"
+    # Rendered from the single source (#3209) — no hardcoded copy here.
+    _resolver --all-tiers 2>/dev/null \
+        | jq -r 'to_entries[] | "  \(.key): \(.value | join(" -> "))"' 2>/dev/null \
+        || echo "  (routing_resolver unavailable)"
     echo ""
     echo "Adaptive Routing: enabled (EWMA alpha=$_EWMA_ALPHA, min_ratings=$_EWMA_MIN_RATINGS)"
     echo ""

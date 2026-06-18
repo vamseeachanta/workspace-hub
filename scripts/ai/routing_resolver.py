@@ -30,6 +30,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -44,7 +45,9 @@ except ImportError:  # pragma: no cover - exercised only without uv/pyyaml
     import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-ROUTING_CONFIG = REPO_ROOT / "config" / "agents" / "routing-config.yaml"
+# The source-of-truth path is resolved per-call by _default_config_path() so the
+# ROUTING_CONFIG_PATH env override takes effect at runtime (tests point it at a
+# temp YAML to prove the table is read, not hardcoded — #3209 r1-F2).
 
 # Provider-token -> CLI-token. The single source of normalization. Carries the
 # full provider token-space (not just openai-codex) so a forbid authored in
@@ -57,9 +60,15 @@ TOKEN_TO_CLI = {
 
 EXIT_UNKNOWN_CONTEXT = 3
 
+KNOWN_TIERS = ("SIMPLE", "STANDARD", "COMPLEX", "REASONING")
+
 
 class UnknownContextError(ValueError):
     """Raised when an explicit context is not present in execution_contexts."""
+
+
+class UnknownTierError(ValueError):
+    """Raised when a tier is not present in routing-config.yaml tiers.*."""
 
 
 def cli(token: str) -> str:
@@ -70,8 +79,15 @@ def cli(token: str) -> str:
 _CACHE: dict[str, dict] = {}
 
 
+def _default_config_path() -> Path:
+    # Re-read the env each call so an in-process ROUTING_CONFIG_PATH override
+    # takes effect (subprocess callers get it via the env naturally).
+    return Path(os.environ.get(
+        "ROUTING_CONFIG_PATH", REPO_ROOT / "config" / "agents" / "routing-config.yaml"))
+
+
 def load_routing_config(path: Path | str | None = None) -> dict:
-    p = Path(path) if path is not None else ROUTING_CONFIG
+    p = Path(path) if path is not None else _default_config_path()
     key = str(p)
     if key not in _CACHE:
         with open(p) as fh:
@@ -118,6 +134,51 @@ def context_chain(name: str, cfg: dict | None = None) -> list[str]:
     return chain
 
 
+# ── Tier routing (#3209) ─────────────────────────────────────────────────────
+# routing-config.yaml `tiers.*` is the single source for the per-tier provider
+# chain. tier_router.sh's bash arrays are GENERATED from emit_bash_table() (not
+# read at runtime — avoids ~2s/call latency); task-dispatcher.py imports
+# tier_chain() directly. forbid is NOT applied here (that is context-only).
+
+def _tiers(cfg: dict | None) -> dict:
+    cfg = cfg if cfg is not None else load_routing_config()
+    return cfg.get("tiers", {}) or {}
+
+
+def tier_chain(tier: str, cfg: dict | None = None) -> list[str]:
+    """CLI-normalized [primary, *fallbacks] for `tier` (dedup, order-preserving)."""
+    t = _tiers(cfg).get(tier.upper())
+    if t is None:
+        raise UnknownTierError(tier)
+    chain: list[str] = []
+    for tok in [t.get("primary"), *(t.get("fallbacks") or [])]:
+        if not tok:
+            continue
+        c = cli(tok)
+        if c not in chain:
+            chain.append(c)
+    return chain
+
+
+def all_tier_chains(cfg: dict | None = None) -> dict[str, list[str]]:
+    return {tier: tier_chain(tier, cfg) for tier in _tiers(cfg)}
+
+
+def emit_bash_table(cfg: dict | None = None) -> str:
+    """Render the tier_router.sh `declare -A` blocks from the YAML (generator)."""
+    chains = {t: tier_chain(t, cfg) for t in KNOWN_TIERS}
+
+    def _row(idx: int) -> str:
+        return " ".join(f'[{t}]="{chains[t][idx] if idx < len(chains[t]) else ""}"'
+                        for t in KNOWN_TIERS)
+
+    return (
+        f"declare -A TIER_PRIMARY=( {_row(0)} )\n"
+        f"declare -A TIER_FALLBACK1=( {_row(1)} )\n"
+        f"declare -A TIER_FALLBACK2=( {_row(2)} )"
+    )
+
+
 def filter_candidates(candidates: list[str], context: str | None, cfg: dict | None = None,
                       fallback: bool = True) -> list[str]:
     """Drop forbidden providers from `candidates` for `context` (order-preserving).
@@ -147,31 +208,51 @@ def _parse_csv(value: str) -> list[str]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--context", required=True)
+    # Context modes (need --context) and tier modes (need --tier or neither) are
+    # one top-level mutually-exclusive action group (#3209 r1-F4).
+    parser.add_argument("--context")
+    parser.add_argument("--no-fallback", dest="fallback", action="store_false", default=True,
+                        help="With --filter: return [] when all forbidden (no context-chain fallback).")
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--filter", dest="filter_csv", metavar="c1,c2,c3")
     mode.add_argument("--chain", action="store_true")
     mode.add_argument("--forbidden", action="store_true")
     mode.add_argument("--json", dest="json_mode", action="store_true")
-    parser.add_argument("--no-fallback", dest="fallback", action="store_false", default=True,
-                        help="With --filter: return [] when all forbidden (no context-chain fallback).")
+    mode.add_argument("--tier", metavar="SIMPLE|STANDARD|COMPLEX|REASONING")
+    mode.add_argument("--all-tiers", dest="all_tiers", action="store_true")
+    mode.add_argument("--emit-bash-table", dest="emit_bash", action="store_true")
     args = parser.parse_args(argv)
 
+    tier_mode = args.tier is not None or args.all_tiers or args.emit_bash
+    if tier_mode and args.context:
+        parser.error("--context does not apply to --tier/--all-tiers/--emit-bash-table "
+                     "(tier routing has no cost-ceiling forbid)")
+
     try:
-        # Uniform fail-closed: an explicit unknown context errors in EVERY mode
-        # (review r3-F1), not just --filter/--chain/--json.
+        # Tier modes (read tiers.*; no context needed) ------------------------
+        if args.tier is not None:
+            print("\n".join(tier_chain(args.tier)))
+            return 0
+        if args.all_tiers:
+            print(json.dumps(all_tier_chains()))
+            return 0
+        if args.emit_bash:
+            print(emit_bash_table())
+            return 0
+
+        # Context modes (need --context; fail closed on unknown) --------------
+        if not args.context:
+            parser.error("--context is required for --filter/--chain/--forbidden/--json")
+        # Uniform fail-closed: an explicit unknown context errors in EVERY mode.
         if resolve_context(args.context) is None:
             raise UnknownContextError(args.context)
         if args.filter_csv is not None:
-            out = filter_candidates(_parse_csv(args.filter_csv), args.context, fallback=args.fallback)
-            print("\n".join(out))
+            print("\n".join(filter_candidates(_parse_csv(args.filter_csv), args.context, fallback=args.fallback)))
         elif args.chain:
             print("\n".join(context_chain(args.context)))
         elif args.forbidden:
             print("\n".join(sorted(forbidden_providers(args.context))))
         elif args.json_mode:
-            if resolve_context(args.context) is None:
-                raise UnknownContextError(args.context)
             ctx = resolve_context(args.context)
             print(json.dumps({
                 "context": args.context,
@@ -182,6 +263,9 @@ def main(argv: list[str] | None = None) -> int:
             }))
     except UnknownContextError as exc:
         print(f"routing_resolver: unknown context '{exc}' — failing closed (exit {EXIT_UNKNOWN_CONTEXT})", file=sys.stderr)
+        return EXIT_UNKNOWN_CONTEXT
+    except UnknownTierError as exc:
+        print(f"routing_resolver: unknown tier '{exc}' — failing closed (exit {EXIT_UNKNOWN_CONTEXT})", file=sys.stderr)
         return EXIT_UNKNOWN_CONTEXT
     return 0
 

@@ -41,6 +41,14 @@ def test_dispatcher_no_context_can_pick_claude():
     assert out.get("context") in (None, "")
 
 
+def test_dispatcher_simple_not_claude_first():
+    # #3209: cost-aligned tier preference — a neutral SIMPLE task is no longer
+    # claude-first (codex leads the SIMPLE chain).
+    out = _run("--task", "check the current status", "--tier", "simple")
+    assert out["recommended_agent"] != "claude"
+    assert out["recommended_agent"] == "codex"  # SIMPLE chain leads with codex
+
+
 def test_dispatcher_unknown_context_fails_closed():
     r = subprocess.run(
         [sys.executable, str(DISPATCHER), "--task", "x", "--tier", "simple",

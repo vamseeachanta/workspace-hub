@@ -23,27 +23,14 @@ _resolver() {
     fi
 }
 
-# --- Default routing table (used if YAML config not found) ---
-declare -A TIER_PRIMARY=(
-    [SIMPLE]="codex"
-    [STANDARD]="codex"
-    [COMPLEX]="claude"
-    [REASONING]="claude"
-)
-
-declare -A TIER_FALLBACK1=(
-    [SIMPLE]="gemini"
-    [STANDARD]="claude"
-    [COMPLEX]="gemini"
-    [REASONING]="gemini"
-)
-
-declare -A TIER_FALLBACK2=(
-    [SIMPLE]="claude"
-    [STANDARD]="gemini"
-    [COMPLEX]="codex"
-    [REASONING]="codex"
-)
+# >>> GENERATED FROM config/agents/routing-config.yaml tiers.* — DO NOT HAND-EDIT (#3209)
+# Regenerate:  uv run scripts/ai/routing_resolver.py --emit-bash-table
+# Drift-guard: tests/coordination/test_tier_table_no_drift.py (fails CI on divergence)
+# Cost-aligned single source: cheap tiers route to codex, not claude.
+declare -A TIER_PRIMARY=( [SIMPLE]="codex" [STANDARD]="codex" [COMPLEX]="claude" [REASONING]="claude" )
+declare -A TIER_FALLBACK1=( [SIMPLE]="gemini" [STANDARD]="claude" [COMPLEX]="gemini" [REASONING]="gemini" )
+declare -A TIER_FALLBACK2=( [SIMPLE]="claude" [STANDARD]="gemini" [COMPLEX]="codex" [REASONING]="codex" )
+# <<< END GENERATED
 
 # --- Function: check_provider_available ---
 # Checks if a provider's CLI tool is installed and reachable

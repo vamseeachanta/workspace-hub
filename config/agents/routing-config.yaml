@@ -4,15 +4,23 @@
 
 version: 2.0.0
 
+# Single source of truth for per-tier provider routing (#3209). Cost-aligned:
+# cheap tiers run codex (not claude) per the cost-ceiling policy. Authored in
+# CLI tokens (claude/codex/gemini); hermes is NOT a tier-CLI provider — it
+# routes via `dimensions` + `execution_contexts.hermes_batch`.
+# tier_router.sh's bash arrays are GENERATED from this block via
+#   uv run scripts/ai/routing_resolver.py --emit-bash-table
+# (CI drift-guard: tests/coordination/test_tier_table_no_drift.py). Do not let
+# the two diverge.
 tiers:
   SIMPLE:
-    primary: claude
-    fallbacks: [hermes, codex, gemini]
+    primary: codex
+    fallbacks: [gemini, claude]
     max_context_tokens: 8000
     description: Short factual queries, status checks, simple lookups
   STANDARD:
-    primary: claude
-    fallbacks: [codex, hermes, gemini]
+    primary: codex
+    fallbacks: [claude, gemini]
     max_context_tokens: 32000
     description: Implementation tasks, bug fixes, refactoring
   COMPLEX:
