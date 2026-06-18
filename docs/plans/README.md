@@ -492,3 +492,4 @@ Add one row per plan:
 | [#3209](https://github.com/vamseeachanta/workspace-hub/issues/3209) | Reconcile tier-table routing into one cost-aligned source | [Plan](2026-06-17-issue-3209-tier-table-single-source.md) | plan-approved | T2 | 2026-06-17 |
 | [#3206](https://github.com/vamseeachanta/workspace-hub/issues/3206) | Provider-harness parity — assert the Gemini memory surface | [Plan](2026-06-18-issue-3206-gemini-parity-memory-surface.md) | plan-approved | T2 | 2026-06-18 |
 | [#3208](https://github.com/vamseeachanta/workspace-hub/issues/3208) | Skill-index coherence/drift check (reshaped; generator fix + gate) | [Plan](2026-06-18-issue-3208-skill-index-coherence.md) | plan-approved | T2 | 2026-06-18 |
+| [#3207](https://github.com/vamseeachanta/workspace-hub/issues/3207) | agy headless dispatch wrapper (unblocked — agy 1.0.9 --print) | [Plan](2026-06-18-issue-3207-agy-headless-dispatch.md) | plan-approved | T2 | 2026-06-18 |

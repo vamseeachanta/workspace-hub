@@ -44,6 +44,7 @@ AGENT_DEFS_DIR = REPO_ROOT / "config" / "agents" / "agent-defs"
 WRAPPERS = {
     "codex": REPO_ROOT / "scripts" / "review" / "submit-to-codex.sh",
     "gemini": REPO_ROOT / "scripts" / "review" / "submit-to-gemini.sh",
+    "agy": REPO_ROOT / "scripts" / "review" / "submit-to-agy.sh",  # Antigravity headless (#3207)
     "claude": Path("<claude-subagent>"),  # materialized as a Claude subagent, not a wrapper
 }
 
@@ -194,7 +195,10 @@ def dispatch_run(dispatch: dict, content_file: str, provider: str) -> dict:
         env.pop("CLAUDECODE", None)  # #2684 stdin-hang
     elif provider == "gemini":
         env["GEMINI_CLI_TRUST_WORKSPACE"] = "true"
-    proc = subprocess.run(cmd, capture_output=True, text=True, env=env)
+    # agy (#3207) needs no env tweak — it ignores stdin and skips permissions in the
+    # wrapper. stdin=DEVNULL is set for ALL providers so a dispatched wrapper can never
+    # block on an inherited stdin under capture_output (r1-F9).
+    proc = subprocess.run(cmd, capture_output=True, text=True, env=env, stdin=subprocess.DEVNULL)
     return {"exit_code": proc.returncode, "stdout": proc.stdout, "stderr": proc.stderr}
 
 

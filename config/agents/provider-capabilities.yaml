@@ -26,26 +26,32 @@ capability_bindings:
     claude: {enforcement: enforced, native: [Read]}
     codex:  {enforcement: advisory}
     gemini: {enforcement: advisory}
+    agy:    {enforcement: advisory}   # #3207 headless dispatch (no harness-gateable native tools)
   search_code:
     claude: {enforcement: enforced, native: [Grep, Glob]}
     codex:  {enforcement: advisory}
     gemini: {enforcement: advisory}
+    agy:    {enforcement: advisory}
   run_shell:
     claude: {enforcement: enforced, native: [Bash]}
     codex:  {enforcement: advisory}
     gemini: {enforcement: advisory}
+    agy:    {enforcement: advisory}
   write_files:
     claude: {enforcement: enforced, native: [Write, Edit]}
     codex:  {enforcement: advisory}
     gemini: {enforcement: advisory}
+    agy:    {enforcement: advisory}
   web_search:
     claude: {enforcement: enforced, native: [WebSearch, WebFetch]}
     codex:  {enforcement: unsupported}   # codex exec has no web tool here
     gemini: {enforcement: advisory}
+    agy:    {enforcement: advisory}
   gui_automation:
     claude: {enforcement: unsupported}
     codex:  {enforcement: unsupported}
     gemini: {enforcement: unsupported}
+    agy:    {enforcement: unsupported}
 
 # Radar visualization: config/ai-tools/agent-capability-radar.html
 # Scores data: config/ai-tools/agent-capability-scores.yaml
