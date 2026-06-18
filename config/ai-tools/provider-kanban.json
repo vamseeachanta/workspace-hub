@@ -27,42 +27,37 @@
   "cards": [
     {
       "approval_blockers": [
+        "missing status:plan-review label",
         "no canonical plan file",
-        "reviews not clean: missing_review",
+        "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [
-          "status:plan-review",
-          "domain:harness",
-          "lane:claude"
-        ],
+        "labels": [],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
+        "provider_route": "codex",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "Reconcile tier-table routing into one cost-aligned source (codex for cheap tiers)"
+        "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
       "machine_ready": false,
       "machine_role": null,
       "machine_route": null,
-      "number": 3209,
+      "number": 3212,
       "pipeline_lane": "C",
       "plan": null,
-      "provider_route": "claude",
+      "provider_route": "codex",
       "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Reconcile tier-table routing into one cost-aligned source (codex for cheap tiers)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3209",
-      "warnings": [
-        "missing_review"
-      ]
+      "routing_reason": "implementation/test/fix language",
+      "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3212",
+      "warnings": []
     },
     {
       "approval_blockers": [
@@ -142,9 +137,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -152,6 +146,7 @@
       "hover": {
         "labels": [
           "priority:low",
+          "status:plan-review",
           "domain:harness",
           "lane:claude"
         ],
@@ -176,7 +171,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "provider_harness_parity: assert the Gemini memory surface (extend _memory_read)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3206",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8514,7 +8511,7 @@
       ]
     }
   ],
-  "generated_at": "2026-06-18T09:20:21Z",
+  "generated_at": "2026-06-18T13:20:29Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8522,42 +8519,37 @@
     "planning_feedstock": [
       {
         "approval_blockers": [
+          "missing status:plan-review label",
           "no canonical plan file",
-          "reviews not clean: missing_review",
+          "review evidence not clean",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [
-            "status:plan-review",
-            "domain:harness",
-            "lane:claude"
-          ],
+          "labels": [],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
+          "provider_route": "codex",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "Reconcile tier-table routing into one cost-aligned source (codex for cheap tiers)"
+          "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
         "machine_ready": false,
         "machine_role": null,
         "machine_route": null,
-        "number": 3209,
+        "number": 3212,
         "pipeline_lane": "C",
         "plan": null,
-        "provider_route": "claude",
+        "provider_route": "codex",
         "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Reconcile tier-table routing into one cost-aligned source (codex for cheap tiers)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3209",
-        "warnings": [
-          "missing_review"
-        ]
+        "routing_reason": "implementation/test/fix language",
+        "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3212",
+        "warnings": []
       },
       {
         "approval_blockers": [
@@ -8637,9 +8629,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8647,6 +8638,7 @@
         "hover": {
           "labels": [
             "priority:low",
+            "status:plan-review",
             "domain:harness",
             "lane:claude"
           ],
@@ -8671,7 +8663,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "provider_harness_parity: assert the Gemini memory surface (extend _memory_read)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3206",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -17017,9 +17011,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-06-18T09:20:15.904376Z",
+  "scorecard_generated_at": "2026-06-18T13:20:24.720396Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-18T09:20:15.760846Z",
+  "utilization_generated_at": "2026-06-18T13:20:24.567818Z",
   "warning_summary": {
     "approved_no_marker": 34,
     "approved_no_plan": 17,

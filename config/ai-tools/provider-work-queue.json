@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-18T09:20:18.367891Z",
+  "generated_at": "2026-06-18T13:20:27.089907Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-18T09:20:15.904376Z",
+  "scorecard_generated_at": "2026-06-18T13:20:24.720396Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 43,
-      "total_candidates": 178,
+      "total_candidates": 177,
       "top_issues": [
         {
           "number": 2686,
@@ -4259,10 +4259,11 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3206",
           "labels": [
             "priority:low",
+            "status:plan-review",
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-17T22:10:21Z",
+          "updatedAt": "2026-06-18T10:29:58Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -4740,28 +4741,6 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 3209,
-          "title": "Reconcile tier-table routing into one cost-aligned source (codex for cheap tiers)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3209",
-          "labels": [
-            "status:plan-review",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-18T04:14:42Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
         }
       ]
     },
@@ -4769,7 +4748,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 2,
-      "total_candidates": 18,
+      "total_candidates": 19,
       "top_issues": [
         {
           "number": 3030,
@@ -5383,6 +5362,23 @@
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
+            "implementation"
+          ]
+        },
+        {
+          "number": 3212,
+          "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3212",
+          "labels": [],
+          "updatedAt": "2026-06-18T10:17:06Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation"
           ]
         }
