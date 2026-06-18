@@ -5,6 +5,8 @@
 #
 # Options:
 #   --execute     Classify, recommend, and dispatch to agent
+#   --context NAME Apply an execution-context cost ceiling (e.g. hermes_batch);
+#                  forbidden providers are excluded; unknown context fails closed (#3205)
 #   --wrk WRK-NNN  Route a work queue item by its ID
 #   --rate <1-5> [provider/model]  Rate last routed agent (1=poor, 5=excellent)
 #   --stats       Show routing decision history and agent ratings
@@ -53,6 +55,7 @@ RATE_PROVIDER=""
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --execute)  EXECUTE=true; shift ;;
+        --context)  export ROUTE_CONTEXT="$2"; shift 2 ;;
         --wrk)      WRK_ID="$2"; shift 2 ;;
         --rate)     RATE_SCORE="$2"; RATE_PROVIDER="${3:-}"; shift 2; [[ -n "$RATE_PROVIDER" ]] && shift ;;
         --stats)    SHOW_STATS=true; shift ;;

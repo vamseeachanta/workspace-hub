@@ -117,11 +117,13 @@ agents:
 #   Gemini-backed -> the `gemini` token) is the cheap fallback/delegation lane;
 #   NO Claude for Hermes-context work.
 #
-# routing_resolution_note: ADVISORY ONLY. The executed routers
-#   (scripts/coordination/routing/lib/tier_router.sh, scripts/ai/task-dispatcher.py)
-#   hold hardcoded chains and do NOT parse this file. Do NOT rely on the cost
-#   ceiling to block Claude on Hermes tasks at runtime until the executed-router
-#   consolidation lands (#3058 follow-up). The guard test asserts DECLARED intent.
+# routing_resolution_note: ENFORCED at runtime as of #3205 (cost ceiling only).
+#   scripts/ai/routing_resolver.py is the single forbid-policy interpreter; it
+#   reads execution_contexts below and is consulted by tier_router.sh
+#   (route.sh + orchestrate.sh), provider_filter.sh, task-dispatcher.py, and
+#   overnight-batch-planner.py. Pass --context / ROUTE_CONTEXT to activate; an
+#   unknown context fails closed (exit 3), never claude. NOTE: the per-tier
+#   `tiers.*` table is NOT yet single-sourced — that reconciliation is #3209.
 cost_ceiling_policy: docs/governance/2026-06-17-cost-ceiling-policy.md
 execution_contexts:
   hermes_batch:               # docs / data-analysis / delegation / overnight-batch

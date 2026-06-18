@@ -61,6 +61,13 @@ LABEL_AGENT_MAP: dict[str, str] = {
 
 OVERNIGHT_LABELS = {"overnight", "overnight-batch", "batch"}
 
+# Overnight/batch work runs in the hermes_batch execution context, where the
+# cost ceiling forbids claude (#3205). The single resolver is the only place
+# forbid policy is interpreted.
+OVERNIGHT_CONTEXT = "hermes_batch"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import routing_resolver  # noqa: E402
+
 MODEL_REGISTRY = REPO_ROOT / "config" / "agents" / "model-registry.yaml"
 
 
@@ -156,7 +163,10 @@ def _synthetic_issues() -> list[dict]:
         {
             "number": 1823,
             "title": "Refactor authentication module with full test coverage",
-            "labels": [{"name": "agent:claude"}, {"name": "overnight"}, {"name": "refactor"}],
+            # agent:codex (not claude): overnight issues run under the hermes_batch
+            # cost ceiling, which forbids claude (#3205); an agent:claude overnight
+            # issue is now a hard error, so the demo fixture uses codex.
+            "labels": [{"name": "agent:codex"}, {"name": "overnight"}, {"name": "refactor"}],
             "body": "Rewrite auth.py to use JWT; add pytest suite with >=90% coverage.",
             "assignees": [],
         },
@@ -195,24 +205,64 @@ def _synthetic_issues() -> list[dict]:
 # Issue → agent resolution
 # ---------------------------------------------------------------------------
 
-def resolve_agent(issue: dict) -> str:
-    """Pick the best agent for an issue based on its labels."""
-    label_names = {lbl["name"] for lbl in issue.get("labels", [])}
+def _enforce_overnight_ceiling(agent: str, was_explicit: bool) -> str:
+    """Apply the hermes_batch cost ceiling to an overnight issue's agent (#3205).
 
-    # Explicit agent label wins
-    for lbl, agent in LABEL_AGENT_MAP.items():
-        if lbl in label_names:
-            return agent
+    - allowed agent: returned unchanged.
+    - forbidden via explicit `agent:<x>` label: HARD ERROR (surface the conflict,
+      don't silently downgrade).
+    - forbidden via heuristic/default: downgrade to the context primary.
+    """
+    forbid = routing_resolver.forbidden_providers(OVERNIGHT_CONTEXT)
+    if routing_resolver.cli(agent) not in forbid:
+        return agent
+    if was_explicit:
+        raise ValueError(
+            f"overnight issue explicitly requests agent '{agent}', forbidden by the "
+            f"'{OVERNIGHT_CONTEXT}' cost ceiling (forbidden: {sorted(forbid)}). "
+            f"Relabel the issue (e.g. agent:codex) or run it outside the overnight context."
+        )
+    chain = routing_resolver.context_chain(OVERNIGHT_CONTEXT)
+    if not chain:  # pathological: context forbids its entire chain
+        raise ValueError(
+            f"no allowed provider for context '{OVERNIGHT_CONTEXT}' — entire chain is forbidden")
+    return chain[0]
+
+
+def resolve_agent(issue: dict) -> str:
+    """Pick the best agent for an issue based on its labels (cost-ceiling aware)."""
+    label_names = {lbl["name"] for lbl in issue.get("labels", [])}
+    is_overnight = bool(OVERNIGHT_LABELS & label_names)
+
+    # Explicit agent label(s) win. With multiple explicit labels under an
+    # overnight ceiling, prefer a non-forbidden one and only hard-error if EVERY
+    # explicit choice is forbidden (review r3-F4).
+    explicit_agents = [agent for lbl, agent in LABEL_AGENT_MAP.items() if lbl in label_names]
+    if explicit_agents:
+        if is_overnight:
+            forbid = routing_resolver.forbidden_providers(OVERNIGHT_CONTEXT)
+            allowed = [a for a in explicit_agents if routing_resolver.cli(a) not in forbid]
+            if allowed:
+                return allowed[0]
+            # all explicit choices forbidden -> hard error via the enforcer
+            return _enforce_overnight_ceiling(explicit_agents[0], was_explicit=True)
+        return explicit_agents[0]
 
     # Heuristic fallback from title/body keywords
     text = (issue.get("title", "") + " " + (issue.get("body") or "")).lower()
     if any(kw in text for kw in ["pdf", "csv", "data", "report", "skill", "doc", "readme"]):
-        return "hermes"
-    if any(kw in text for kw in ["test", "refactor", "cleanup", "implement", "fix"]):
-        return "codex"
-    if any(kw in text for kw in ["architecture", "design", "complex", "review"]):
-        return "claude"
-    return "claude"  # safe default
+        chosen = "hermes"
+    elif any(kw in text for kw in ["test", "refactor", "cleanup", "implement", "fix"]):
+        chosen = "codex"
+    elif any(kw in text for kw in ["architecture", "design", "complex", "review"]):
+        chosen = "claude"
+    else:
+        chosen = "claude"  # default
+
+    if is_overnight:
+        # Heuristic pick under the ceiling -> downgrade (never hard-error).
+        return _enforce_overnight_ceiling(chosen, was_explicit=False)
+    return chosen
 
 
 # ---------------------------------------------------------------------------

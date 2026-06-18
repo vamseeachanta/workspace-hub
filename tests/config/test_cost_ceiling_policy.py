@@ -48,7 +48,8 @@ def test_cost_policy_reference_resolves():
     doc = REPO_ROOT / ref
     assert doc.exists(), f"cost-ceiling policy doc missing: {ref}"
     text = doc.read_text().lower()
-    assert "advisory only" in text, "policy doc must state the ceiling is advisory only"
+    # #3205 flipped the ceiling from advisory to runtime-enforced.
+    assert "enforced" in text, "policy doc must state the ceiling is enforced"
 
 
 def test_provider_caps_hermes_aligned():

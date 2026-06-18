@@ -35,6 +35,10 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 ROUTING_CONFIG = REPO_ROOT / "config" / "agents" / "routing-config.yaml"
 PROVIDER_CAPS   = REPO_ROOT / "config" / "agents" / "provider-capabilities.yaml"
 
+# Single forbid-policy interpreter (#3205) — never re-implement forbid logic here.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import routing_resolver  # noqa: E402
+
 
 # ---------------------------------------------------------------------------
 # Keyword signals per agent/dimension
@@ -199,6 +203,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Complexity tier for the task.",
     )
     parser.add_argument(
+        "--context", default=None,
+        help="Execution context for the cost ceiling (e.g. hermes_batch). "
+             "When set, providers forbidden for that context are excluded. "
+             "An unknown context fails closed (#3205).",
+    )
+    parser.add_argument(
         "--top", type=int, default=3,
         help="Number of alternatives to include in output (default: 3).",
     )
@@ -220,12 +230,36 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     scored = score_agents(args.task, args.tier, routing_cfg, provider_caps)
+
+    # Cost-ceiling enforcement (#3205): drop forbidden agents for the context.
+    forbidden: list[str] = []
+    if args.context:
+        try:
+            forbid = routing_resolver.forbidden_providers(args.context)
+        except routing_resolver.UnknownContextError:
+            print(json.dumps({"error": f"unknown context '{args.context}' — failing closed"}))
+            return routing_resolver.EXIT_UNKNOWN_CONTEXT
+        if routing_resolver.resolve_context(args.context) is None:
+            print(json.dumps({"error": f"unknown context '{args.context}' — failing closed"}))
+            return routing_resolver.EXIT_UNKNOWN_CONTEXT
+        forbidden = sorted(forbid)
+        filtered = [s for s in scored if routing_resolver.cli(s["agent"]) not in forbid]
+        if filtered:
+            scored = filtered
+        else:
+            # Everything scored is forbidden — fall to the context chain.
+            chain = routing_resolver.context_chain(args.context)
+            scored = [s for s in score_agents(args.task, args.tier, routing_cfg, provider_caps)
+                      if routing_resolver.cli(s["agent"]) in chain] or scored
+
     best   = scored[0]
     alts   = scored[1:args.top]
 
     result = {
         "task": args.task,
         "tier": args.tier.upper(),
+        "context": args.context,
+        "forbidden": forbidden,
         "recommended_agent": best["agent"],
         "model": best["model"],
         "provider": best["provider"],

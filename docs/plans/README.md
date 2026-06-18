@@ -488,3 +488,4 @@ Add one row per plan:
 | [#3190](https://github.com/vamseeachanta/workspace-hub/issues/3190) | Provider-neutral skill router + when_to_use (full-tree + agy via unsupported) | [Plan](2026-06-17-issue-3190-skill-router-when-to-use.md) | plan-review | T3 | 2026-06-17 |
 | [#3191](https://github.com/vamseeachanta/workspace-hub/issues/3191) | Gated workflow templates + cross-provider review workflow | [Plan](2026-06-17-issue-3191-gated-workflow-templates.md) | plan-review | T2 | 2026-06-17 |
 | [#3192](https://github.com/vamseeachanta/workspace-hub/issues/3192) | Reconcile routing-config.yaml with operator cost policy | [Plan](2026-06-17-issue-3192-routing-config-cost-policy.md) | plan-review | T2 | 2026-06-17 |
+| [#3205](https://github.com/vamseeachanta/workspace-hub/issues/3205) | Executed-router consolidation — enforce the routing cost ceiling at runtime | [Plan](2026-06-17-issue-3205-executed-router-consolidation.md) | plan-approved | T2 | 2026-06-17 |
