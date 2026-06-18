@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-17T21:20:15.647031Z",
+  "generated_at": "2026-06-18T01:20:23.718839Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-17T21:20:13.511256Z",
+  "scorecard_generated_at": "2026-06-18T01:20:21.740371Z",
   "recommended_provider_order": [
-    "codex",
     "gemini",
+    "codex",
     "claude"
   ],
   "provider_queues": {
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 43,
-      "total_candidates": 176,
+      "total_candidates": 178,
       "top_issues": [
         {
           "number": 2686,
@@ -572,7 +572,7 @@
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-17T15:18:55Z",
+          "updatedAt": "2026-06-17T22:27:45Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -585,30 +585,25 @@
           ]
         },
         {
-          "number": 2656,
-          "title": "chore(repo-structure): normalize workspace-hub folder/file structure",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2656",
+          "number": 3205,
+          "title": "Executed-router consolidation: make routing-config cost ceiling actually enforced",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3205",
           "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "cat:harness",
-            "machine:dev-primary",
+            "priority:high",
+            "status:plan-review",
             "status:plan-approved",
-            "dispatch:ready",
             "gate:completeness",
-            "domain:repo-organization-structure",
+            "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-10T16:11:50Z",
+          "updatedAt": "2026-06-18T00:27:27Z",
           "execution_ready": true,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "research",
             "implementation",
             "strategy"
           ]
@@ -873,10 +868,11 @@
             "machine:multi",
             "status:plan-approved",
             "gate:completeness",
+            "status:completeness-verified",
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-17T10:55:02Z",
+          "updatedAt": "2026-06-17T22:27:38Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -901,7 +897,7 @@
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-17T19:13:16Z",
+          "updatedAt": "2026-06-17T21:44:51Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -927,7 +923,7 @@
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-17T19:13:58Z",
+          "updatedAt": "2026-06-17T22:06:28Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2153,57 +2149,6 @@
           "updatedAt": "2026-06-13T21:42:39Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2650,
-          "title": "chore(knowledge): post-spinout cleanup for llm-wiki migration",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2650",
-          "labels": [
-            "priority:medium",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:knowledge-management-platform",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T12:58:11Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2652,
-          "title": "Daily repo readiness tracker",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2652",
-          "labels": [
-            "priority:medium",
-            "domain:automation",
-            "machine:dev-primary",
-            "repo-readiness",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-17T11:09:06Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4309,6 +4254,70 @@
           ]
         },
         {
+          "number": 3206,
+          "title": "provider_harness_parity: assert the Gemini memory surface (extend _memory_read)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3206",
+          "labels": [
+            "priority:low",
+            "domain:harness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-17T22:10:21Z",
+          "execution_ready": false,
+          "priority_rank": 3,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3207,
+          "title": "agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3207",
+          "labels": [
+            "priority:low",
+            "domain:harness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-17T22:10:24Z",
+          "execution_ready": false,
+          "priority_rank": 3,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3208,
+          "title": "skill-index coherence/drift check (curated graph vs full index)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3208",
+          "labels": [
+            "priority:low",
+            "domain:harness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-17T22:10:26Z",
+          "execution_ready": false,
+          "priority_rank": 3,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 3043,
           "title": "Model parity: make the repo ecosystem equivalent for Opus and Fable (run on multiple machines)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3043",
@@ -4524,7 +4533,7 @@
             "domain:tooling",
             "machine:multi"
           ],
-          "updatedAt": "2026-06-17T15:30:38Z",
+          "updatedAt": "2026-06-17T22:10:52Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4731,6 +4740,27 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3209,
+          "title": "Reconcile tier-table routing into one cost-aligned source (codex for cheap tiers)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3209",
+          "labels": [
+            "domain:harness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-17T23:59:04Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4738,7 +4768,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 2,
-      "total_candidates": 20,
+      "total_candidates": 18,
       "top_issues": [
         {
           "number": 3030,
@@ -5228,53 +5258,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2647,
-          "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
-          "labels": [
-            "priority:low",
-            "domain:notification",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:11:50Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2651,
-          "title": "Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2651",
-          "labels": [
-            "priority:low",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:document-intelligence-indexing",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:13:10Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
             "implementation"
           ]
         },

@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-17T21:20:17Z
+Generated: 2026-06-18T01:20:25Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,11 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3209 | Reconcile tier-table routing into one cost-aligned source (codex for cheap tiers) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3208 | skill-index coherence/drift check (curated graph vs full index) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3207 | agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3206 | provider_harness_parity: assert the Gemini memory surface (extend _memory_read) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3205 | Executed-router consolidation: make routing-config cost ceiling actually enforced | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
 | #3198 | bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3192 | Reconcile routing-config.yaml with operator cost policy (Hermes→agy, Claude dev-only) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3191 | Gated workflow templates (issue→plan→approve→implement→review→close) + cross-provider review workflow | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
@@ -238,11 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2660 | Compliance alert: W20 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2658 | O&G-Standards consolidator: 8 catalog-classification defects surfaced by parallel-agent ingest | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2657 | chore(provider-session): remediate Hermes llm-wiki spinout path drift | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2656 | chore(repo-structure): normalize workspace-hub folder/file structure | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2652 | Daily repo readiness tracker | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2651 | Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2650 | chore(knowledge): post-spinout cleanup for llm-wiki migration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2647 | ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
