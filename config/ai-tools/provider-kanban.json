@@ -61,9 +61,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "already has status:plan-approved",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -72,14 +71,17 @@
         "labels": [
           "priority:medium",
           "machine:multi",
+          "status:plan-review",
+          "status:plan-approved",
+          "gate:completeness",
           "domain:harness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `config/agents/routing-config.yaml` (111 lines) \u2014 `tiers.{SIMPLE,STANDARD,COMPLEX,REASONING}.primary` all `claude`; `agents.hermes` declares `provider: openai-codex`, `models.primary: gpt-5.5`.",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
+        "risks": "**Advisory vs enforced:** is it acceptable to ship a \"cost ceiling\" the runtime routers don't read? The plan scopes executed-router rewiring to a #3058 follow-up; `routing_resolution_note` keeps it honest. **Confirm acceptable.** | **Hermes-backing conflict: RESOLVED (operator 2026-06-17)** \u2014 Hermes backing stays gpt-5.5/openai-codex; agy is the fallback/delegation lane only. `agents.hermes.provid",
         "tests": "(no TDD section)",
         "title": "Reconcile routing-config.yaml with operator cost policy (Hermes\u2192agy, Claude dev-only)"
       },
@@ -90,19 +92,22 @@
       "machine_route": null,
       "number": 3192,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-06-17-issue-3192-routing-config-cost-policy.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Reconcile routing-config.yaml with operator cost policy (Hermes\u2192agy, Claude dev-only)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3192",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "dual_status_labels",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "already has status:plan-approved",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -111,14 +116,17 @@
         "labels": [
           "priority:medium",
           "machine:multi",
+          "status:plan-review",
+          "status:plan-approved",
+          "gate:completeness",
           "domain:harness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `.claude/workflows/` holds 5 YAMLs + a README, in **two informal schema dialects**:",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
+        "risks": "Three YAML shapes in one dir \u2192 README documents which schema applies; `kind:` discriminator scopes the new schema. | Templates encode but don't enforce \u2192 position as Level-0/1; cross-ref real enforcers. | Provider-routing drift \u2192 reference `provider-routing-policy.yaml`, single source of truth.",
         "tests": "(no TDD section)",
         "title": "Gated workflow templates (issue\u2192plan\u2192approve\u2192implement\u2192review\u2192close) + cross-provider review workflow"
       },
@@ -129,19 +137,22 @@
       "machine_route": null,
       "number": 3191,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-06-17-issue-3191-gated-workflow-templates.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Gated workflow templates (issue\u2192plan\u2192approve\u2192implement\u2192review\u2192close) + cross-provider review workflow",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3191",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "dual_status_labels",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "already has status:plan-approved",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -150,14 +161,17 @@
         "labels": [
           "priority:medium",
           "machine:multi",
+          "status:plan-review",
+          "status:plan-approved",
+          "gate:completeness",
           "domain:harness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- `scripts/ai/run_agent.py` (215) \u2014 `WRAPPERS` (44-48) = codex/gemini/claude only; `materialize_prompt()` (145-160) is the prepend seam; `dispatch_run()` shells `bash <wrapper> --file --prompt` with per-provider env; `--provider` is `choices=sorted(WRAPPERS)` so adding a key auto",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
+        "risks": "**HIGH \u2014 agy headless infeasibility: RESOLVED (operator 2026-06-17 = accept fail-closed agy).** Ship the fail-closed `submit-to-agy.sh` (writes skill-prepended prompt artifact + exit 3 for manual paste); verify `agy --help` at build time; file a follow-on to wire real exec when agy ships a headless flag. agy stays first-class in WRAPPERS + router. | **HIGH \u2014 backfill quality:** ~88% (~2751/3113) w",
         "tests": "(no TDD section)",
         "title": "Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills)"
       },
@@ -168,19 +182,22 @@
       "machine_route": null,
       "number": 3190,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-06-17-issue-3190-skill-router-when-to-use.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3190",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "dual_status_labels",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "already has status:plan-approved",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -189,14 +206,17 @@
         "labels": [
           "priority:medium",
           "machine:multi",
+          "status:plan-review",
+          "status:plan-approved",
+          "gate:completeness",
           "domain:harness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `scripts/memory/curate_readback_slice.py` \u2014 the ONE shared cross-provider read-back selector (`curate(source_dir, target, cap)`). Sources ONLY git-tracked `.claude/memory/` (machine-invariance F1), filters Claude-only entries by slug (F4), caps at entry boundaries (F5), ",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
+        "risks": "**Churn:** bridge commits `.claude/memory/` daily across machines \u2014 INDEX + gemini slice MUST be deterministic (inherit curate's contract). Top defect-hunt. | **Gemini loader reality:** instruction must live in GEMINI.md (actually-loaded) not just SOUL.runtime.md (phantom). Verify Gemini surfaces it before claiming parity. | **Slice-owner asymmetry:** gemini slice must be gated by the same `SLICE_",
         "tests": "(no TDD section)",
         "title": "Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall"
       },
@@ -207,13 +227,17 @@
       "machine_route": null,
       "number": 3189,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-06-17-issue-3189-memory-bridge-codex-gemini.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3189",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "dual_status_labels",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8505,7 +8529,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-06-17T17:20:25Z",
+  "generated_at": "2026-06-17T21:20:17Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8547,9 +8571,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "already has status:plan-approved",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8558,14 +8581,17 @@
           "labels": [
             "priority:medium",
             "machine:multi",
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness",
             "domain:harness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `config/agents/routing-config.yaml` (111 lines) \u2014 `tiers.{SIMPLE,STANDARD,COMPLEX,REASONING}.primary` all `claude`; `agents.hermes` declares `provider: openai-codex`, `models.primary: gpt-5.5`.",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
+          "risks": "**Advisory vs enforced:** is it acceptable to ship a \"cost ceiling\" the runtime routers don't read? The plan scopes executed-router rewiring to a #3058 follow-up; `routing_resolution_note` keeps it honest. **Confirm acceptable.** | **Hermes-backing conflict: RESOLVED (operator 2026-06-17)** \u2014 Hermes backing stays gpt-5.5/openai-codex; agy is the fallback/delegation lane only. `agents.hermes.provid",
           "tests": "(no TDD section)",
           "title": "Reconcile routing-config.yaml with operator cost policy (Hermes\u2192agy, Claude dev-only)"
         },
@@ -8576,19 +8602,22 @@
         "machine_route": null,
         "number": 3192,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-06-17-issue-3192-routing-config-cost-policy.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Reconcile routing-config.yaml with operator cost policy (Hermes\u2192agy, Claude dev-only)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3192",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "dual_status_labels",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "already has status:plan-approved",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8597,14 +8626,17 @@
           "labels": [
             "priority:medium",
             "machine:multi",
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness",
             "domain:harness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `.claude/workflows/` holds 5 YAMLs + a README, in **two informal schema dialects**:",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
+          "risks": "Three YAML shapes in one dir \u2192 README documents which schema applies; `kind:` discriminator scopes the new schema. | Templates encode but don't enforce \u2192 position as Level-0/1; cross-ref real enforcers. | Provider-routing drift \u2192 reference `provider-routing-policy.yaml`, single source of truth.",
           "tests": "(no TDD section)",
           "title": "Gated workflow templates (issue\u2192plan\u2192approve\u2192implement\u2192review\u2192close) + cross-provider review workflow"
         },
@@ -8615,19 +8647,22 @@
         "machine_route": null,
         "number": 3191,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-06-17-issue-3191-gated-workflow-templates.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Gated workflow templates (issue\u2192plan\u2192approve\u2192implement\u2192review\u2192close) + cross-provider review workflow",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3191",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "dual_status_labels",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "already has status:plan-approved",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8636,14 +8671,17 @@
           "labels": [
             "priority:medium",
             "machine:multi",
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness",
             "domain:harness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- `scripts/ai/run_agent.py` (215) \u2014 `WRAPPERS` (44-48) = codex/gemini/claude only; `materialize_prompt()` (145-160) is the prepend seam; `dispatch_run()` shells `bash <wrapper> --file --prompt` with per-provider env; `--provider` is `choices=sorted(WRAPPERS)` so adding a key auto",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
+          "risks": "**HIGH \u2014 agy headless infeasibility: RESOLVED (operator 2026-06-17 = accept fail-closed agy).** Ship the fail-closed `submit-to-agy.sh` (writes skill-prepended prompt artifact + exit 3 for manual paste); verify `agy --help` at build time; file a follow-on to wire real exec when agy ships a headless flag. agy stays first-class in WRAPPERS + router. | **HIGH \u2014 backfill quality:** ~88% (~2751/3113) w",
           "tests": "(no TDD section)",
           "title": "Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills)"
         },
@@ -8654,19 +8692,22 @@
         "machine_route": null,
         "number": 3190,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-06-17-issue-3190-skill-router-when-to-use.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3190",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "dual_status_labels",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "already has status:plan-approved",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8675,14 +8716,17 @@
           "labels": [
             "priority:medium",
             "machine:multi",
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness",
             "domain:harness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `scripts/memory/curate_readback_slice.py` \u2014 the ONE shared cross-provider read-back selector (`curate(source_dir, target, cap)`). Sources ONLY git-tracked `.claude/memory/` (machine-invariance F1), filters Claude-only entries by slug (F4), caps at entry boundaries (F5), ",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
+          "risks": "**Churn:** bridge commits `.claude/memory/` daily across machines \u2014 INDEX + gemini slice MUST be deterministic (inherit curate's contract). Top defect-hunt. | **Gemini loader reality:** instruction must live in GEMINI.md (actually-loaded) not just SOUL.runtime.md (phantom). Verify Gemini surfaces it before claiming parity. | **Slice-owner asymmetry:** gemini slice must be gated by the same `SLICE_",
           "tests": "(no TDD section)",
           "title": "Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall"
         },
@@ -8693,13 +8737,17 @@
         "machine_route": null,
         "number": 3189,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-06-17-issue-3189-memory-bridge-codex-gemini.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3189",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "dual_status_labels",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16995,20 +17043,20 @@
     "running_leased": []
   },
   "recommended_provider_order": [
+    "codex",
     "gemini",
-    "claude",
-    "codex"
+    "claude"
   ],
-  "scorecard_generated_at": "2026-06-17T17:20:20.170824Z",
+  "scorecard_generated_at": "2026-06-17T21:20:13.511256Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-17T17:20:20.026135Z",
+  "utilization_generated_at": "2026-06-17T21:20:13.371279Z",
   "warning_summary": {
-    "approved_no_marker": 30,
+    "approved_no_marker": 34,
     "approved_no_plan": 17,
-    "dual_status_labels": 11,
+    "dual_status_labels": 15,
     "legacy_review_no_sha": 1,
     "major_review": 1,
     "marker_without_open_approved_issue": 158,
-    "missing_review": 63
+    "missing_review": 67
   }
 }

@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-17T17:20:25Z
+Generated: 2026-06-17T21:20:17Z
 Mode: static (read-only)
 
 ## How to approve
@@ -44,10 +44,10 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
 | #3198 | bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3192 | Reconcile routing-config.yaml with operator cost policy (Hermes→agy, Claude dev-only) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3191 | Gated workflow templates (issue→plan→approve→implement→review→close) + cross-provider review workflow | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3190 | Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3189 | Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3192 | Reconcile routing-config.yaml with operator cost policy (Hermes→agy, Claude dev-only) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3191 | Gated workflow templates (issue→plan→approve→implement→review→close) + cross-provider review workflow | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3190 | Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3189 | Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3187 | ace-linux-1 chronically parks off main + stale index.lock froze primary git for 5h — add lock-reaper + return-to-main guard | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3186 | Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3184 | Harness install-doctor: scheduled repair arm for per-provider install drift (#3059 is report-only) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
