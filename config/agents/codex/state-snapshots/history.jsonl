@@ -1623,3 +1623,102 @@
 {"session_id":"019ecbd3-7647-7e10-a2b3-059693123ab3","ts":1781578403,"text":"next logical step"}
 {"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781578966,"text":"continue with recommended actions"}
 {"session_id":"019ecbd3-7647-7e10-a2b3-059693123ab3","ts":1781578998,"text":"continue with next logical step"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781601966,"text":"review work using subagents; continue"}
+{"session_id":"019ecbd3-7647-7e10-a2b3-059693123ab3","ts":1781602007,"text":"approved #291; continue"}
+{"session_id":"019ece22-464d-7db1-8cff-2f86e0dfb191","ts":1781602046,"text":"approved #2893; continue"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781603433,"text":"next logical step"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781603834,"text":"continue with recommended sequence"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781612808,"text":"continue"}
+{"session_id":"019ecbd3-7647-7e10-a2b3-059693123ab3","ts":1781612825,"text":"continue"}
+{"session_id":"019ece22-464d-7db1-8cff-2f86e0dfb191","ts":1781612861,"text":"approved #2893; continue"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781614575,"text":"approve Tier 0 cleanup"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781614710,"text":"identify the gh issue where we review /mnt/ace folders, index and document ingestion completion etc. for llm-wiki; Let us revisit and see what can be done to understand every document i.e. first know what is there.. then identify the top tier that will help enhance the repo ecosystem and engineering workflows; etc. etc."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781619169,"text":"create subissues to traverse through these one by one and add completion or data to it. Add the details to llm-wiki repo; want to keep data abstracted from public"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781619177,"text":"create subissues to traverse through these one by one and add completion or data to it. Add the details to llm-wiki repo issues; want to keep data abstracted from public"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781619203,"text":"create a new llm-wiki issue and link it to workspace-hub as necessary"}
+{"session_id":"019ece22-464d-7db1-8cff-2f86e0dfb191","ts":1781619241,"text":"document and prepare toe xit"}
+{"session_id":"019ecbd3-7647-7e10-a2b3-059693123ab3","ts":1781619255,"text":"CTAs"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781619275,"text":"approve the preserve-first path"}
+{"session_id":"019ece22-464d-7db1-8cff-2f86e0dfb191","ts":1781619286,"text":"CTAs"}
+{"session_id":"019ece22-464d-7db1-8cff-2f86e0dfb191","ts":1781619298,"text":"any low hanging actions or CTAs"}
+{"session_id":"019ecbd3-7647-7e10-a2b3-059693123ab3","ts":1781619422,"text":"approve #716; continue"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781621220,"text":"review all gh issues and bring the right data into this feature eg: https://github.com/vamseeachanta/llm-wiki/issues/125; can we review each subissue and a plan of attack.."}
+{"session_id":"019ecbd3-7647-7e10-a2b3-059693123ab3","ts":1781621226,"text":"approved #525; continue"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781621272,"text":"CTAs"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781621445,"text":"1. ok 2. resolve 3. resolve 4. ok 5. ok"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781622330,"text":"both using parallel agents"}
+{"session_id":"019ecbd3-7647-7e10-a2b3-059693123ab3","ts":1781622351,"text":"continue"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781622461,"text":"let us answer the following questions:\n\n where is the index? does it have document meta data and description mapped;  which folders and subfolders are most described and least described. we need answers for these.."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781623788,"text":"this is only referring to docs and O&G-Standards. why are all root folders not addressed?"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781623798,"text":"this is only referring to docs and O&G-Standards. why are all other root folders not addressed?"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781623974,"text":"CTAs"}
+{"session_id":"019ecbd3-7647-7e10-a2b3-059693123ab3","ts":1781624112,"text":"document and prepare to exit"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781624341,"text":"1, 2 done; continue"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781624851,"text":"1 done. 2. ok"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781624908,"text":"let us go through each interactively. I may be able to describe folders briefly and seek a way forward"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781625148,"text":"plan looks good"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781625171,"text":"we also want to understand what .ace-knowledge comprise of?"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781625664,"text":"document what we found so far. we want to leverage everything to prepare a proper index to get to analyze the work"}
+{"session_id":"019eb5a6-ecd5-7f72-b04f-7fe7f962a045","ts":1781625773,"text":"document and prepare to exit"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781628203,"text":"call to action?"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781629364,"text":"approved #725; go through each one by one"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781629378,"text":"approved #725; go through first batch one by one"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781630145,"text":"also, we spent a lot of time and ai credits to develop this. So use/leverage this to build the complete index"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781630692,"text":"ok"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781630734,"text":"a friend's repo to see his marketing videos as reference to understand or get ideas for deckhand marketing videos"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781631287,"text":"a client folder; place holder for raw and big file sizes for llm-wiki-client-g"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781640935,"text":"a client folder; place holder for raw and big file sizes for llm-wiki-<client>"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781641625,"text":"a github repo supplementary folder; place holder for raw and big file sizes for the github repo in /mnt/local-analysis/<rep>"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781643990,"text":"next"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781644050,"text":"client project archive. see what other info is required."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781651204,"text":"client project archive. we can abstract out a lot of data and use it for analysis as inputs. see what other info is required."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781659384,"text":"a github repo supplementary folder; place holder for raw and big file sizes for the github repo in /mnt/local-analysis/<rep>"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781662360,"text":"a github repo supplementary folder; place holder for raw and big file sizes for the github repo in /mnt/local-analysis/<repo>"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781662418,"text":"let us go through folders in quick fire consecutively so you can do the background notes later. Surface any followups later."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781662442,"text":"use parallel agent or do processing in background parallel agent etc."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781662564,"text":"client project archive. we can abstract out a lot of data and use it for analysis as inputs. see what other info is required."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781663030,"text":"client project archive. decide to delete if not necessary - check and decide"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781667723,"text":"client project archive. we can abstract out a lot of data and use it for analysis as inputs."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781668105,"text":"client project archive. decide to delete if not necessary - check and decide"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781668416,"text":"we have to review it via subfolders:\n\n2021-11-22-sd-HDD: Sabitha's harddrive and contents\narchive: aceengineer projects. Possibly legacy files will be very useful. feeds into the input data etc.\ndocument-index: useful for the main indexing (check)\nva-hdd-2: should get videos to upload in achantav@gmail.com account etc."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781668425,"text":"we have to review it via subfolders:\n\n2021-11-22-sd-HDD: Sabitha's harddrive and contents\narchive: aceengineer projects. Possibly legacy files will be very useful. feeds into the input data etc.\ndocument-index: useful for the main indexing (check)\nva-hdd-2: should get videos to upload in achantav@gmail.com youtube account etc."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781668684,"text":"projects done by aceengineer corporation; our own. can use data from it extensively."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781668748,"text":"client project reorganized by AI."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781668818,"text":"client project before reorganized by AI."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781668848,"text":"client project reorganized by AI."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781668891,"text":"client project before reorganized by AI."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781693345,"text":"starting personal investments folder; we should have a gh issue to send confidential information and docs to achantas-data and generic scripts etc. to assethold. A valuable financial analysis repo where an average (middle-class) person has to go through in his lifetime."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781693508,"text":"yes; also, by the way: we should open gh feature/issues/subissues for all this work"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781694021,"text":"this possibly is a version of already existing llm-wiki repo in ecosystem. review and delete if necessary. We need to get to cleaner state with this hard drive as soon as possible.  Let us create issues and look at low hanging fruit that we can take advantage of. This has been going on for a year with no confidence in the system"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781694057,"text":"make a note of this grievance in the epic/feature"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781694211,"text":"next"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781694760,"text":"client archive project; except confidential info... can go into appropriate repo in repo ecosystem"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781694769,"text":"client archive project; except confidential info... information/data can go into appropriate repo in repo ecosystem"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781695144,"text":"yes; continue"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781695155,"text":"cleanup"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781695178,"text":"we  want to move forward like the refactored code"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781696416,"text":"next logical step"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781696886,"text":"first batch loooks good. Hoever.. O&G-Standards, mkt-a-codes, /mnt/ace/docs/_standards may all have duplicates overlap etc. We need a dedicated issue to sovle this."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781697085,"text":"continue"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781703243,"text":"user CTAs"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781703362,"text":"approved; continue"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781707113,"text":"given the enormity of the task, can we start using another agent in parallel?"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781710301,"text":"what should we do next"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781710404,"text":"approved; continue"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781715891,"text":"user CTA"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781717173,"text":"user CTA"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781717253,"text":"proceed with #725;"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781720989,"text":"approved #732; continue"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781723957,"text":"next logical step"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781724197,"text":"approve planning for all related gh issues; unless user CTAs warrant my review"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781731355,"text":"approved #729, #728; continue"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781734381,"text":"next logical step"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781734862,"text":"use as many subagents as possible to get through the work;"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781740880,"text":"approved #730; continue"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781748054,"text":"user CTAs"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781748171,"text":"Approve #733 to proceed with mixed-owner archive routing using opaque lane IDs only: document-index = index support, archive = AceEngineer legacy/project inputs after\n     abstraction, va-hdd-2 = private media upload lane, 2021-11-22-sd-HDD = personal/mixed-owner quarantine by default."}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781748194,"text":"3; approve"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781748224,"text":"4: approve proof first"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781754938,"text":"conitnue"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781754948,"text":"user actions?"}
+{"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1781755094,"text":"approved #744; continue"}

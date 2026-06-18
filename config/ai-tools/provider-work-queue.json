@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-18T01:20:23.718839Z",
+  "generated_at": "2026-06-18T05:20:14.383594Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-18T01:20:21.740371Z",
+  "scorecard_generated_at": "2026-06-18T05:20:12.160581Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -596,7 +596,7 @@
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-18T00:27:27Z",
+          "updatedAt": "2026-06-18T01:59:52Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -4746,10 +4746,11 @@
           "title": "Reconcile tier-table routing into one cost-aligned source (codex for cheap tiers)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3209",
           "labels": [
+            "status:plan-review",
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-17T23:59:04Z",
+          "updatedAt": "2026-06-18T04:14:42Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -5410,7 +5411,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-17T04:00:04Z",
+          "updatedAt": "2026-06-18T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5507,7 +5508,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-17T04:00:04Z",
+          "updatedAt": "2026-06-18T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",

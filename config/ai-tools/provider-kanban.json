@@ -27,15 +27,15 @@
   "cards": [
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
+          "status:plan-review",
           "domain:harness",
           "lane:claude"
         ],
@@ -60,7 +60,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Reconcile tier-table routing into one cost-aligned source (codex for cheap tiers)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3209",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -179,7 +181,6 @@
     {
       "approval_blockers": [
         "already has status:plan-approved",
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -196,10 +197,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `config/agents/routing-config.yaml` \u2014 declarative SSoT. `tiers.*` all `primary: claude`; `execution_contexts.hermes_batch` has `forbid: [claude]`, `cost_ceiling: true`, `primary: openai-codex`, `fallbacks: [gemini]` (added #3192).",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk \u2014 bash\u2194python boundary cost:** `route_by_tier` shelling to `python3` adds per-route latency. Mitigation: only invoked when `ROUTE_CONTEXT` is set (interactive path untouched); resolver is import-light (yaml only). Routing is not a hot loop. | **Risk \u2014 token-space mismatch (r1-F3/F4):** `execution_contexts` uses `openai-codex`; the bash routers know `codex`. Mitigation: the resolver `cli()` ",
+        "tests": "TDD section present",
         "title": "Executed-router consolidation: make routing-config cost ceiling actually enforced"
       },
       "lane": "planning_feedstock",
@@ -209,7 +210,7 @@
       "machine_route": null,
       "number": 3205,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-06-17-issue-3205-executed-router-consolidation.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -217,7 +218,6 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3205",
       "warnings": [
         "approved_no_marker",
-        "approved_no_plan",
         "dual_status_labels",
         "missing_review"
       ]
@@ -8514,7 +8514,7 @@
       ]
     }
   ],
-  "generated_at": "2026-06-18T01:20:25Z",
+  "generated_at": "2026-06-18T05:20:16Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8522,15 +8522,15 @@
     "planning_feedstock": [
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
+            "status:plan-review",
             "domain:harness",
             "lane:claude"
           ],
@@ -8555,7 +8555,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Reconcile tier-table routing into one cost-aligned source (codex for cheap tiers)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3209",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -8674,7 +8676,6 @@
       {
         "approval_blockers": [
           "already has status:plan-approved",
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -8691,10 +8692,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `config/agents/routing-config.yaml` \u2014 declarative SSoT. `tiers.*` all `primary: claude`; `execution_contexts.hermes_batch` has `forbid: [claude]`, `cost_ceiling: true`, `primary: openai-codex`, `fallbacks: [gemini]` (added #3192).",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk \u2014 bash\u2194python boundary cost:** `route_by_tier` shelling to `python3` adds per-route latency. Mitigation: only invoked when `ROUTE_CONTEXT` is set (interactive path untouched); resolver is import-light (yaml only). Routing is not a hot loop. | **Risk \u2014 token-space mismatch (r1-F3/F4):** `execution_contexts` uses `openai-codex`; the bash routers know `codex`. Mitigation: the resolver `cli()` ",
+          "tests": "TDD section present",
           "title": "Executed-router consolidation: make routing-config cost ceiling actually enforced"
         },
         "lane": "planning_feedstock",
@@ -8704,7 +8705,7 @@
         "machine_route": null,
         "number": 3205,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-06-17-issue-3205-executed-router-consolidation.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -8712,7 +8713,6 @@
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3205",
         "warnings": [
           "approved_no_marker",
-          "approved_no_plan",
           "dual_status_labels",
           "missing_review"
         ]
@@ -17017,16 +17017,16 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-06-18T01:20:21.740371Z",
+  "scorecard_generated_at": "2026-06-18T05:20:12.160581Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-18T01:20:21.576761Z",
+  "utilization_generated_at": "2026-06-18T05:20:12.042893Z",
   "warning_summary": {
     "approved_no_marker": 34,
-    "approved_no_plan": 18,
+    "approved_no_plan": 17,
     "dual_status_labels": 16,
     "legacy_review_no_sha": 1,
     "major_review": 1,
     "marker_without_open_approved_issue": 158,
-    "missing_review": 67
+    "missing_review": 68
   }
 }

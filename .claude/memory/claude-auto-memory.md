@@ -117,7 +117,7 @@
 - [Codex sandbox under Claude — FIXED](feedback_codex_sandbox_write_blocked.md) — #2804: AppArmor profile granting userns to /usr/bin/bwrap + config network_access=true → Codex exec AND broker run shell+writes nested under Claude. Supersedes old "writes always blocked" workaround.
 - [Data-format guidelines](data_format_guidelines.md) — default YAML for agent-facing structured data; JSON only when machine-consumed
 - [Cross-machine execution](feedback_cross_machine_execution.md) — per-machine tasks via shared git repo, not SSH/rsync
-- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills under `~/.claude/plugins/cache/`; `git mv` cannot operate
+- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills under `~/.claude/plugins/cache/`; `git mv` cannot operate *stale: 2026-06-18*
 - [Plan past-tense drift](feedback_plan_past_tense_artifact_claims.md) — plans describing proposed work as committed artifacts trick reviewers; future tense only
 - [Multi-agent commit serialization](feedback_multi_agent_commit_serialization.md) — parallel agents race on git lock; serialize commits OR use worktrees. Umbrella covering: merge-race silent revert, retry-loop reset hazard, git switch --discard-changes, autostash replay, parallel-session staged-change bleedthrough (see topic files; pre-commit `git diff --cached --name-only` is the universal mitigation)
 - [Mock vs live invocation](feedback_mock_vs_live_invocation_divergence.md) — for external-CLI fixes, mocks pass what live CLIs reject; always live-repro before close
@@ -147,12 +147,12 @@
 - [Gmail filter-first over per-thread](feedback_gmail_filter_first_over_per_thread.md) — ingestion filters + "Apply to existing" handle ~80% of mail; reserve per-thread for ~20% residue
 - [claude-in-chrome session-scoped](feedback_claude_in_chrome_session_scoped.md) — `mcp__claude-in-chrome__*` binds main session; subagents can't drive Chrome; partition main=browser, sub=research
 - [Gmail bulk archive dialog-free](feedback_gmail_bulk_archive_no_confirm.md) — archive has no confirm dialog; delete/empty-trash/unsubscribe DO dialog and break claude-in-chrome
-- [gif_creator as proof pattern](feedback_gif_creator_as_proof_pattern.md) — `mcp__claude-in-chrome__gif_creator` captures 50 frames + click indicators; export to `docs/sessions/`
+- [gif_creator as proof pattern](feedback_gif_creator_as_proof_pattern.md) — `mcp__claude-in-chrome__gif_creator` captures 50 frames + click indicators; export to `docs/sessions/` *verified: 2026-06-18*
 - [superpowers/specs gitignored](feedback_superpowers_specs_gitignored.md) — brainstorming skill's `docs/superpowers/specs/` is gitignored (`.gitignore:438`); write to `docs/governance/` instead
 - [Hermes-active preflight check](feedback_hermes_active_preflight_check.md) — Hermes cleanup loops on main revert parallel commits in minutes; preflight pgrep, use worktree+branch if active
 - [NTFS dirty-volume mount path](feedback_ntfs_dirty_volume_mount_path.md) — `ntfs3` refuses dirty volumes; use `ntfs-3g` (FUSE) auto-replays journal; explicit uid/gid for ownership
 - [ntfs3 breaks IntxLNK symlinks](feedback_ntfs3_symlink_intxlnk.md) — in-kernel ntfs3 reads ntfs-3g symlinks as raw `IntxLNK`; stay on ntfs-3g for git repos. Verified 2026-05-01.
-- [Lane result path outside sandbox](feedback_lane_result_path_outside_sandbox.md) — provider-autofeed `agent-logs/...` paths blocked Read/Write/stat; fall back to `docs/sessions/` + ENV-MISMATCH banner
+- [Lane result path outside sandbox](feedback_lane_result_path_outside_sandbox.md) — provider-autofeed `agent-logs/...` paths blocked Read/Write/stat; fall back to `docs/sessions/` + ENV-MISMATCH banner *verified: 2026-06-18*
 - [Sparse-checkout: add not disable](feedback_sparse_checkout_add_not_disable.md) — acma-projects sparse only; `git sparse-checkout add <path>` not `disable` (hung 22min materializing ~329K files)
 - [Naive secret-scan FP cascade](feedback_naive_secret_scan_false_positive_cascade.md) — regex matches `secrets-scan.sh` paths, "tokens used" prose, argon2 comments; trust hardened pre-commit hook
 - [Origin committed with unresolved markers](feedback_origin_committed_with_unresolved_markers.md) — parallel sessions land half-resolved files; pull double-nests markers; `git checkout --ours` if HEAD clean
@@ -240,7 +240,7 @@
 - [AceEngineer copy canonical sources](project_aceengineer_copy_canonical_sources.md) — llm-wiki OUT OF SCOPE; real canonical = live site + aceengineer-strategy; first exec aces-#6
 - [Gmail MCP scope bump](project_gmail_mcp_scope_bump_decision.md) — #2423 mutation path is OAuth `gmail.modify` on claude_ai_Gmail MCP; browser only for UI tasks
 - [Issue #2460 approval binding](project_issue_2460_approval_binding.md) — CLOSED 2026-04-23; approval markers must be revision-bound (SHA + review paths), not mutable file-path refs
-- [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — `wiki/standards/<code-id>.md` routing across eng/marine/naval; #2471 is CSA-Z276-only (verified 2026-04-25)
+- [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — `wiki/standards/<code-id>.md` routing across eng/marine/naval; #2471 is CSA-Z276-only (verified 2026-04-25) *stale: 2026-06-18*
 - [llm-wiki PRIVACY FLIP 2026-05-20](project_llm_wiki_privacy_flip.md) — **vamseeachanta/llm-wiki PRIVATE as of 2026-05-20 21:30 CT**; supersedes spinout-public thesis; codes/standards data + client work land at full fidelity
 - [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — SUPERSEDED 2026-05-20 by privacy flip; historical context only
 - [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — partial supersede; "public + legally-sanitized" replaced by "private + full-fidelity"
@@ -270,7 +270,7 @@
 - [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access
 - [Gmail MCP scope](reference_gmail_mcp_scope.md) — read+compose only, no modify; archive/label/delete require browser or user UI
-- [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`
+- [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner` *verified: 2026-06-18*
 - [Claude Desktop on Linux](reference_claude_desktop_linux_aaddrick.md) — `aaddrick/claude-desktop-debian`; APT at `pkg.claude-desktop-debian.dev` post-April-2026
 - [Codex Desktop on Linux](reference_codex_desktop_linux_ilysenko.md) — `ilysenko/codex-desktop-linux` wraps OpenAI macOS DMG; build under `/mnt/ace/build/codex-desktop/`
 - [Claude Dreaming scope](reference_claude_dreaming_managed_agents.md) — Dreaming is Managed Agents only (2026-05-06 research preview); NOT in Claude Code CLI or Claude.ai
