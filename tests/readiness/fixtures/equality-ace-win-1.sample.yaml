@@ -68,6 +68,12 @@ dimensions:
         "memory:read": {status: present, reason: hermes_memory_store_found}
         "skills:invoke": {status: expected_divergence, reason: external_skill_dirs_configured}
         "workflow:gates": {status: present, reason: hermes_soul_runtime_active}
+      gemini:
+        present: true
+        installed: true
+        "memory:read": {status: present, reason: gemini_memory_runtime_found}
+        "skills:invoke": {status: expected_divergence, reason: gemini_skill_dispatch_unsupported}
+        "workflow:gates": {status: present, reason: gemini_soul_runtime_gates_found}
   behavior:
     enums: {b1: deny, b2: ok, b3: html, b4: pass}
     hashes: {b5: 4f2a9c1e7b0d6385}

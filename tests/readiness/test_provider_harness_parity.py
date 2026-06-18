@@ -45,6 +45,15 @@ def _workspace(tmp_path: Path) -> Path:
     (ws / "config" / "agents" / "hermes" / "SOUL.runtime.md").write_text(
         "Plan ALL issues\nUSER APPROVES\nTDD mandatory\n")
     (ws / "AGENTS.md").write_text("Plan ALL issues\nUSER APPROVES\nTDD mandatory\n")
+    # gemini: config-surface provider (#3206) — repo memory surface + gate SOUL +
+    # GEMINI.md read pointer.
+    (ws / "config" / "agents" / "gemini").mkdir(parents=True)
+    (ws / "config" / "agents" / "gemini" / "MEMORY.runtime.md").write_text(
+        "consolidated cross-provider memory\n")
+    (ws / "config" / "agents" / "gemini" / "SOUL.runtime.md").write_text(
+        "Plan ALL issues\nUSER APPROVES\nTDD mandatory\n")
+    (ws / "GEMINI.md").write_text(
+        "- Session start: read `config/agents/gemini/MEMORY.runtime.md`\n")
     return ws
 
 
@@ -60,7 +69,7 @@ def _bin_with(tmp_path: Path, *names: str) -> Path:
 
 def test_provider_harness_constants_use_exact_issue_capability_names():
     mod = _load_module()
-    assert mod.PROVIDERS == ("claude", "codex", "hermes")
+    assert mod.PROVIDERS == ("claude", "codex", "hermes", "gemini")
     assert mod.CAPABILITIES == ("memory:read", "skills:invoke", "workflow:gates")
     assert mod.provider_rows() == [
         "harness:claude:memory:read",
@@ -72,6 +81,9 @@ def test_provider_harness_constants_use_exact_issue_capability_names():
         "harness:hermes:memory:read",
         "harness:hermes:skills:invoke",
         "harness:hermes:workflow:gates",
+        "harness:gemini:memory:read",
+        "harness:gemini:skills:invoke",
+        "harness:gemini:workflow:gates",
     ]
 
 
@@ -319,4 +331,81 @@ def test_provider_harness_helper_json_round_trip(tmp_path, monkeypatch):
 
     assert res.returncode == 0, res.stderr
     data = json.loads(res.stdout)
-    assert set(data["providers"]) == {"claude", "codex", "hermes"}
+    assert set(data["providers"]) == {"claude", "codex", "hermes", "gemini"}
+
+
+# --- gemini config-surface provider (#3206) ---------------------------------
+
+def test_gemini_present_via_repo_surface_without_cli(tmp_path, monkeypatch):
+    # gemini is a config-surface provider: present from the repo surface even with
+    # no gemini CLI on PATH (so the surface is verified on every box).
+    mod = _load_module()
+    ws = _workspace(tmp_path)
+    home = tmp_path / "home"; home.mkdir()
+    monkeypatch.setenv("PATH", str(_bin_with(tmp_path, "claude")))  # no gemini binary
+    g = mod.collect_provider_harness(ws, home)["providers"]["gemini"]
+    assert g["installed"] is True
+    assert g["memory:read"] == {"status": "present", "reason": "gemini_memory_runtime_found"}
+    assert g["workflow:gates"]["status"] == "present"
+    assert g["skills:invoke"] == {"status": "expected_divergence",
+                                  "reason": "gemini_skill_dispatch_unsupported"}
+
+
+def test_gemini_memory_absent_without_pointer(tmp_path, monkeypatch):
+    mod = _load_module()
+    ws = _workspace(tmp_path)
+    (ws / "GEMINI.md").write_text("no read pointer here\n")
+    home = tmp_path / "home"; home.mkdir()
+    monkeypatch.setenv("PATH", str(_bin_with(tmp_path, "claude")))
+    g = mod.collect_provider_harness(ws, home)["providers"]["gemini"]
+    assert g["memory:read"]["status"] == "absent"
+
+
+def test_gemini_memory_absent_when_runtime_empty(tmp_path, monkeypatch):
+    mod = _load_module()
+    ws = _workspace(tmp_path)
+    (ws / "config" / "agents" / "gemini" / "MEMORY.runtime.md").write_text("")
+    home = tmp_path / "home"; home.mkdir()
+    monkeypatch.setenv("PATH", str(_bin_with(tmp_path, "claude")))
+    g = mod.collect_provider_harness(ws, home)["providers"]["gemini"]
+    assert g["memory:read"]["status"] == "absent"
+
+
+def test_gemini_workflow_gates_absent_without_phrases(tmp_path, monkeypatch):
+    mod = _load_module()
+    ws = _workspace(tmp_path)
+    (ws / "config" / "agents" / "gemini" / "SOUL.runtime.md").write_text("no gates\n")
+    home = tmp_path / "home"; home.mkdir()
+    monkeypatch.setenv("PATH", str(_bin_with(tmp_path, "claude")))
+    g = mod.collect_provider_harness(ws, home)["providers"]["gemini"]
+    assert g["workflow:gates"]["status"] == "absent"
+
+
+def test_gemini_not_installed_when_no_surface_and_no_cli(tmp_path, monkeypatch):
+    import shutil
+    mod = _load_module()
+    ws = _workspace(tmp_path)
+    shutil.rmtree(ws / "config" / "agents" / "gemini")
+    (ws / "GEMINI.md").unlink()
+    home = tmp_path / "home"; home.mkdir()
+    monkeypatch.setenv("PATH", str(_bin_with(tmp_path, "claude")))  # no gemini cli
+    g = mod.collect_provider_harness(ws, home)["providers"]["gemini"]
+    assert g["installed"] is False
+    assert g["memory:read"]["reason"] == "provider_not_installed"
+
+
+def test_gemini_repo_surface_present_does_not_install_codex(tmp_path, monkeypatch):
+    # The gemini surface exception must NOT leak into the generic invariant:
+    # repo runtime files still don't make codex/hermes "installed".
+    mod = _load_module()
+    ws = _workspace(tmp_path)
+    home = tmp_path / "home"; home.mkdir()
+    monkeypatch.setenv("PATH", str(_bin_with(tmp_path, "claude")))
+    providers = mod.collect_provider_harness(ws, home)["providers"]
+    assert providers["codex"]["installed"] is False
+    assert providers["hermes"]["installed"] is False
+
+
+def test_expected_divergence_includes_gemini_reason():
+    mod = _load_module()
+    assert mod.is_expected_divergence("gemini_skill_dispatch_unsupported") is True

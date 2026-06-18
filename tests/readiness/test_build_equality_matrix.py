@@ -75,6 +75,13 @@ def _report(machine: str, provenance: dict | None = None, **dims) -> dict:
                                           "reason": "external_skill_dirs_configured"},
                         "workflow:gates": {"status": "present", "reason": "hermes_soul_runtime_active"},
                     },
+                    "gemini": {
+                        "present": True, "installed": True,
+                        "memory:read": {"status": "present", "reason": "gemini_memory_runtime_found"},
+                        "skills:invoke": {"status": "expected_divergence",
+                                          "reason": "gemini_skill_dispatch_unsupported"},
+                        "workflow:gates": {"status": "present", "reason": "gemini_soul_runtime_gates_found"},
+                    },
                 },
             },
             "behavior": {"enums": {"b1": "deny", "b2": "ok", "b3": "html", "b4": "pass"},
@@ -339,6 +346,20 @@ def test_target_provider_parity_is_reference_based_on_claude_same_machine():
     reports = {"dev-primary": _provider_report("dev-primary", claude_absent)}
     assert bem.verdict_for("harness:codex:memory:read", "dev-primary", reports, {},
                            roster, TIER1) == "MISSING-EVIDENCE"
+
+
+def test_gemini_renders_and_skills_is_expected_divergence():
+    # #3206: gemini renders in the matrix; its dispatch-unsupported skills cap is
+    # EXPECTED-DIVERGENCE (a non-failure), not DIVERGES.
+    roster = {"dev-primary": {"status": "active"}}
+    reports = {"dev-primary": _provider_report("dev-primary")}
+    assert "harness:gemini:memory:read" in bem.DISPLAY_DIMS
+    assert bem.verdict_for("harness:gemini:memory:read", "dev-primary", reports, {},
+                           roster, TIER1) == "PARITY"
+    assert bem.verdict_for("harness:gemini:skills:invoke", "dev-primary", reports, {},
+                           roster, TIER1) == "EXPECTED-DIVERGENCE"
+    assert bem.verdict_for("harness:gemini:workflow:gates", "dev-primary", reports, {},
+                           roster, TIER1) == "PARITY"
 
 
 def test_provider_absent_yields_absent_not_diverges():

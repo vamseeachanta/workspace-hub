@@ -47,9 +47,11 @@ SOLVER_OK = {
 }
 # Uniform dims whose cross-machine difference is OS-driven, not a defect:
 EXPECTED_DIFF_DIMS = {"python_cmd"}
-PROVIDERS = ("claude", "codex", "hermes")
+PROVIDERS = ("claude", "codex", "hermes", "gemini")
 CAPABILITIES = ("memory:read", "skills:invoke", "workflow:gates")
-EXPECTED_DIVERGENCE_REASONS = {"external_skill_dirs_configured"}
+# Keep in sync with scripts/readiness/provider_harness_parity.py (#3206 / #3209
+# drift note): both copies must carry the same divergence reasons.
+EXPECTED_DIVERGENCE_REASONS = {"external_skill_dirs_configured", "gemini_skill_dispatch_unsupported"}
 
 # #2851 freshness guard: a report whose origin/main ref hasn't been refreshed within this
 # many hours can't be trusted to have a meaningful behind_main, so we fail closed. repo-sync

@@ -14,11 +14,14 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-PROVIDERS = ("claude", "codex", "hermes")
+PROVIDERS = ("claude", "codex", "hermes", "gemini")
 CAPABILITIES = ("memory:read", "skills:invoke", "workflow:gates")
 
 EXPECTED_DIVERGENCE_REASONS = {
     "external_skill_dirs_configured",
+    # gemini (agy) is router-first-class but dispatch-unsupported (#3190): no local
+    # skill adapter — a known, accepted gap, not a defect.
+    "gemini_skill_dispatch_unsupported",
 }
 
 GATE_PHRASES = ("Plan ALL issues", "USER APPROVES", "TDD mandatory")
@@ -86,7 +89,19 @@ def _local_runtime_exists(provider: str, home: Path) -> bool:
     return bool(path and path.exists() and path.is_file())
 
 
-def _installed(provider: str, home: Path) -> bool:
+def _gemini_memory_runtime(workspace: Path) -> Path:
+    return workspace / "config" / "agents" / "gemini" / "MEMORY.runtime.md"
+
+
+def _installed(provider: str, home: Path, workspace: Path | None = None) -> bool:
+    if provider == "gemini":
+        # Config-surface provider (#3206): gemini has no local CLI runtime — its
+        # presence IS the repo memory surface (so it is verifiable on every box,
+        # incl. the report-generating host). The `repo files don't flip installed`
+        # invariant remains for the CLI-install providers (codex/hermes) below.
+        if workspace is not None and _gemini_memory_runtime(workspace).is_file():
+            return True
+        return _command_exists("gemini")
     return _command_exists(provider) or _local_runtime_exists(provider, home)
 
 
@@ -115,6 +130,16 @@ def _memory_read(provider: str, workspace: Path, home: Path, installed: bool) ->
         if runtime.is_file() and has_memory_file:
             return _cap("present", "hermes_memory_store_found")
         return _cap("absent", "hermes_memory_store_missing")
+    if provider == "gemini":
+        # Repo memory surface (non-empty) + the GEMINI.md read pointer (#3206).
+        mem = _gemini_memory_runtime(workspace)
+        gemini_md = _read_text(workspace / "GEMINI.md")
+        # Full repo-relative path (not bare basename) so a mention of another
+        # provider's MEMORY.runtime.md can't false-positive (review r3-F3).
+        if mem.is_file() and _read_text(mem).strip() and \
+                "config/agents/gemini/MEMORY.runtime.md" in gemini_md:
+            return _cap("present", "gemini_memory_runtime_found")
+        return _cap("absent", "gemini_memory_runtime_missing")
     return _cap("unknown", "unknown_provider")
 
 
@@ -149,6 +174,10 @@ def _skills_invoke(provider: str, workspace: Path, home: Path, installed: bool) 
         if _has_any_entry(hermes_skills):
             return _cap("expected_divergence", "external_skill_dirs_configured")
         return _cap("absent", "hermes_skill_registry_missing")
+    if provider == "gemini":
+        # agy is router-first-class but dispatch-unsupported (#3190): no local skill
+        # adapter — an explicit, accepted divergence (not a defect).
+        return _cap("expected_divergence", "gemini_skill_dispatch_unsupported")
     return _cap("unknown", "unknown_provider")
 
 
@@ -161,6 +190,14 @@ def _workflow_gates(provider: str, workspace: Path, home: Path, installed: bool)
         text += "\n" + _read_text(workspace / "config" / "agents" / "claude" / "SOUL.runtime.md")
         if planning_skill.is_file() and _contains_all(text, GATE_PHRASES):
             return _cap("present", "hard_gates_runtime_found")
+        return _cap("absent", "hard_gates_runtime_missing")
+    if provider == "gemini":
+        # Repo-artifact gates (like claude), NOT a local CLI runtime — must precede
+        # the _local_runtime_path check below or gemini (runtime None) false-flags
+        # active_runtime_missing (#3206 r1-F2).
+        soul = workspace / "config" / "agents" / "gemini" / "SOUL.runtime.md"
+        if soul.is_file() and _contains_all(_read_text(soul), GATE_PHRASES):
+            return _cap("present", "gemini_soul_runtime_gates_found")
         return _cap("absent", "hard_gates_runtime_missing")
     runtime = _local_runtime_path(provider, home)
     if not runtime or not runtime.is_file():
@@ -179,7 +216,7 @@ def _workflow_gates(provider: str, workspace: Path, home: Path, installed: bool)
 def collect_provider_harness(workspace: Path, home: Path) -> dict[str, Any]:
     providers: dict[str, Any] = {}
     for provider in PROVIDERS:
-        installed = _installed(provider, home)
+        installed = _installed(provider, home, workspace)
         providers[provider] = {
             "present": installed,
             "installed": installed,
