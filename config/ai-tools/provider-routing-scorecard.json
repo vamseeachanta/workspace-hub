@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-18T05:20:12.160581Z",
+  "generated_at": "2026-06-18T09:20:15.904376Z",
   "current_week": "2026-W25",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-06-18T05:20:12.042893Z",
+    "utilization_generated_at": "2026-06-18T09:20:15.760846Z",
     "audit_generated_at": "2026-06-10T16:45:32Z"
   },
   "recommended_provider_order": [
@@ -58,8 +58,8 @@
       "reported_utilization_pct": 5.0,
       "quota_basis": "quota",
       "quota_source": "app-server-live",
-      "sessions_current_week": 86,
-      "post_records_current_week": 9510,
+      "sessions_current_week": 147,
+      "post_records_current_week": 15047,
       "audit_post_records": 60184,
       "missing_repo_reads": 1256,
       "python3_per_1k_records": 14.57,
@@ -68,23 +68,23 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 9182
+          "count": 14328
         },
         {
           "tool": "wait_agent",
-          "count": 82
+          "count": 176
         },
         {
           "tool": "spawn_agent",
-          "count": 56
+          "count": 125
         },
         {
           "tool": "close_agent",
-          "count": 42
+          "count": 107
         },
         {
           "tool": "Read",
-          "count": 36
+          "count": 76
         }
       ],
       "preferred_work": [

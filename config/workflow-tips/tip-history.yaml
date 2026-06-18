@@ -109,3 +109,5 @@ shown:
     tips: [bp-squash-merge, cc-pr-comments]
   - date: 2026-06-16
     tips: [gsd-note, eco-session-memory]
+  - date: 2026-06-18
+    tips: [cc-mobile, cc-sandbox]
