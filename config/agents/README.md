@@ -39,3 +39,23 @@ Drift between layers 2 and 3 is surfaced nightly by the `R-MODEL-DRIFT` check in
 - **Codex** — review lane + delegation target; CLI runs the model in `~/.codex/config.toml` (gpt-5.5).
 - **Hermes** — automation engine; runs gpt-5.5 via the openai-codex provider. NOT a Claude wrapper.
 - **Gemini** — third review lane; 2.5-pro is the dependable primary (3.1-pro-preview quota-starved on Pro plan).
+
+## Skill index — two artifacts (#3190 / #3208)
+
+The skill catalogue exists in two complementary forms; they are kept coherent by
+`scripts/enforcement/check-skill-index-coherence.py` (CI: enforcement-gate
+`skill-index-coherence`).
+
+| Artifact | Role | Shape | Hand-edit? |
+|---|---|---|---|
+| `.planning/skills/skills-knowledge-graph.yaml` | **curated** source: ~51 nodes with edges/feed-chains/domains, hand-authored. Ids are `<repo>/<skill>`. | small, relational | yes (source) |
+| `config/agents/skill-graph-index.yaml` | generated `by_domain` view of the curated graph (`skill_graph.sh --rebuild-index`). | small | no (generated) |
+| `config/agents/skill-index-full.yaml` | **generated** flat index: ONE entry per `SKILL.md` across the tree (833), for the provider-neutral router. Ids are the actual `.claude/skills` family path `<family>/…/<skill>`. | large (`build_skill_index.py`) | **never** |
+
+The two id namespaces differ on purpose (curated is repo-keyed; full is
+family-path-keyed), so coherence is checked by **skill basename**, not id
+equality. Regenerate the full index with
+`uv run python scripts/ai/build_skill_index.py` whenever a `SKILL.md` changes;
+CI fails if it drifts (`--check` must equal the committed file). `when_to_use`
+is sourced from each `SKILL.md` (frontmatter → `## When to Use…` → `## Trigger…`
+→ name/description backfill, recorded in `when_to_use_source`).

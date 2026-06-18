@@ -48,11 +48,20 @@ def _frontmatter_and_body(text: str):
 
 
 def _section(body: str, heading: str) -> str:
-    # capture text under "## <heading>" up to the next "## "
-    m = re.search(rf"(?im)^\s*##\s+{re.escape(heading)}\s*$(.*?)(?=^\s*##\s+|\Z)", body, re.S | re.M)
-    if not m:
-        return ""
-    return " ".join(m.group(1).split()).strip()
+    # Capture text under an ATX heading at depths ##..#### whose text matches
+    # <heading>, body running to the next ATX heading of any level (#3208).
+    # Prefer an EXACT heading ("## When to Use") over a PREFIX one ("## When to
+    # Use This Skill" / "## When To Use X vs Y") so a canonical section isn't
+    # mis-bound by an earlier comparison-style heading (review r3-F1).
+    h = re.escape(heading)
+    for pat in (
+        rf"(?im)^\s*#{{2,4}}\s+{h}\s*$(.*?)(?=^\s*#{{1,6}}\s+|\Z)",      # exact
+        rf"(?im)^\s*#{{2,4}}\s+{h}\b[^\n]*$(.*?)(?=^\s*#{{1,6}}\s+|\Z)",  # prefix
+    ):
+        m = re.search(pat, body, re.S | re.M)
+        if m:
+            return " ".join(m.group(1).split()).strip()
+    return ""
 
 
 def _normalize(val) -> str:
