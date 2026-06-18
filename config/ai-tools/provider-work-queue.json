@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-18T13:20:27.089907Z",
+  "generated_at": "2026-06-18T15:31:50.704581Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-18T13:20:24.720396Z",
+  "scorecard_generated_at": "2026-06-18T15:31:48.549927Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 43,
+      "execution_ready_count": 44,
       "total_candidates": 177,
       "top_issues": [
         {
@@ -604,6 +604,35 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2656,
+          "title": "chore(repo-structure): normalize workspace-hub folder/file structure",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2656",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "cat:harness",
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:repo-organization-structure",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-10T16:11:50Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -4249,28 +4278,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3206,
-          "title": "provider_harness_parity: assert the Gemini memory surface (extend _memory_read)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3206",
-          "labels": [
-            "priority:low",
-            "status:plan-review",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-18T10:29:58Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
             "implementation",
             "strategy"
           ]

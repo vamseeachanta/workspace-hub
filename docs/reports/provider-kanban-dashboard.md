@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-18T13:20:29Z
+Generated: 2026-06-18T15:31:53Z
 Mode: static (read-only)
 
 ## How to approve
@@ -46,7 +46,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3212 | cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB → managed cron jobs short-circuit (dev-secondary report pipeline re-broken) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3208 | skill-index coherence/drift check (curated graph vs full index) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3207 | agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3206 | provider_harness_parity: assert the Gemini memory surface (extend _memory_read) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3205 | Executed-router consolidation: make routing-config cost ceiling actually enforced | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3198 | bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3192 | Reconcile routing-config.yaml with operator cost policy (Hermes→agy, Claude dev-only) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
@@ -243,6 +242,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2660 | Compliance alert: W20 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2658 | O&G-Standards consolidator: 8 catalog-classification defects surfaced by parallel-agent ingest | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2657 | chore(provider-session): remediate Hermes llm-wiki spinout path drift | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
+| #2656 | chore(repo-structure): normalize workspace-hub folder/file structure | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 
 ## Lane: blocked (0)
 

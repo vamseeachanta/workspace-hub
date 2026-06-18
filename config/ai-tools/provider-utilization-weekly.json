@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T13:20:24.567818Z",
+  "generated_at": "2026-06-18T15:31:48.423882Z",
   "current_week": "2026-W25",
   "report_weeks": 8,
   "subscriptions": {
@@ -904,7 +904,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-06-18T13:20:05Z",
+        "quota_snapshot_ts": "2026-06-18T15:31:37Z",
         "top_tools": [
           {
             "tool": "unknown",
@@ -926,7 +926,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "app-server-live",
-        "quota_snapshot_ts": "2026-06-18T13:20:05Z",
+        "quota_snapshot_ts": "2026-06-18T15:31:37Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -964,7 +964,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "manual-snapshot",
-        "quota_snapshot_ts": "2026-06-18T13:20:05Z",
+        "quota_snapshot_ts": "2026-06-18T15:31:37Z",
         "top_tools": [
           {
             "tool": "Browser",
