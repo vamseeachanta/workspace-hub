@@ -29,8 +29,16 @@ source "$LIB_DIR/usage_bootstrap.sh"
 
 # --- Main Logic ---
 main() {
+    # Optional execution-context cost ceiling (#3205): `--context NAME` excludes
+    # forbidden providers (e.g. hermes_batch forbids claude). Honored by
+    # route_by_tier + filter_available_providers via the ROUTE_CONTEXT env.
+    if [[ "${1:-}" == "--context" ]]; then
+        export ROUTE_CONTEXT="$2"
+        shift 2
+    fi
+
     if [[ $# -eq 0 ]]; then
-        echo "Usage: $0 \"<task_description>\""
+        echo "Usage: $0 [--context NAME] \"<task_description>\""
         exit 1
     fi
 

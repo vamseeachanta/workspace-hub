@@ -9,6 +9,20 @@
 ROUTER_CONFIG_DIR="${CONFIG_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)/config}"
 ROUTING_CONFIG="${ROUTER_CONFIG_DIR}/agents/routing-config.yaml"
 
+# Single routing resolver (#3205) — the only forbid-policy interpreter.
+RESOLVER="${RESOLVER:-$(dirname "$ROUTER_CONFIG_DIR")/scripts/ai/routing_resolver.py}"
+
+# Invoke the resolver per the repo `uv run` contract, with a python3 fallback
+# (the resolver self-bootstraps pyyaml). Returns the resolver's exit code so
+# callers can fail closed on an unknown context (exit 3).
+_resolver() {
+    if command -v uv >/dev/null 2>&1; then
+        uv run --quiet "$RESOLVER" "$@"
+    else
+        python3 "$RESOLVER" "$@"
+    fi
+}
+
 # --- Default routing table (used if YAML config not found) ---
 declare -A TIER_PRIMARY=(
     [SIMPLE]="codex"
@@ -81,6 +95,25 @@ route_by_tier() {
         $dup || candidates+=("$fb")
     done
 
+    # Cost-ceiling enforcement (#3205): drop providers forbidden for the active
+    # execution context. Fail closed on an unknown/invalid context — never fall
+    # through to claude. Interactive path (no ROUTE_CONTEXT) is unchanged.
+    local forbidden=""
+    if [[ -n "${ROUTE_CONTEXT:-}" && ${#candidates[@]} -gt 0 ]]; then
+        local _csv; _csv="$(IFS=,; echo "${candidates[*]}")"
+        local _filtered
+        if ! _filtered="$(_resolver --context "$ROUTE_CONTEXT" --filter "$_csv")"; then
+            echo "route_by_tier: unknown/invalid context '$ROUTE_CONTEXT' — aborting (fail closed)" >&2
+            return 3
+        fi
+        mapfile -t candidates <<< "$_filtered"
+        # Defensive: drop any empty element introduced by a trailing newline.
+        local _clean=(); local c
+        for c in "${candidates[@]}"; do [[ -n "$c" ]] && _clean+=("$c"); done
+        candidates=("${_clean[@]}")
+        forbidden="$(_resolver --context "$ROUTE_CONTEXT" --forbidden | tr '\n' ' ' | sed 's/ *$//')"
+    fi
+
     for candidate in "${candidates[@]}"; do
         if check_provider_available "$candidate"; then
             chosen="$candidate"
@@ -93,10 +126,16 @@ route_by_tier() {
         fi
     done
 
-    # Emergency: no provider available
+    # Emergency: no provider available. Under a cost-ceiling context, NEVER
+    # default to claude — use the context's (CLI-normalized) primary instead.
     if [[ -z "$chosen" ]]; then
-        chosen="claude"
-        reason="Emergency: no CLI providers detected, defaulting to claude"
+        if [[ -n "${ROUTE_CONTEXT:-}" ]]; then
+            chosen="$(_resolver --context "$ROUTE_CONTEXT" --chain | head -1)"
+            reason="Emergency under context $ROUTE_CONTEXT: defaulting to context primary $chosen"
+        else
+            chosen="claude"
+            reason="Emergency: no CLI providers detected, defaulting to claude"
+        fi
     fi
 
     # Select best model for chosen provider (adaptive EWMA)
@@ -125,6 +164,8 @@ route_by_tier() {
         --arg model "${selected_model:-}" \
         --arg model_ewma "${model_ewma:-}" \
         --arg model_selection "$model_selection" \
+        --arg context "${ROUTE_CONTEXT:-}" \
+        --arg forbidden "${forbidden:-}" \
         '{
             provider: $provider,
             tier: $tier,
@@ -134,6 +175,8 @@ route_by_tier() {
             routing_chain: [$primary, $fallback1, $fallback2],
             model: $model,
             model_ewma: $model_ewma,
-            model_selection: $model_selection
+            model_selection: $model_selection,
+            context: $context,
+            forbidden: ($forbidden | if . == "" then [] else split(" ") end)
         }'
 }
