@@ -94,9 +94,9 @@ tasks:
       design — a SessionEnd hook would only fire after Claude.
 
   - id: git-lock-reaper
-    label: Reap orphan .git/index.lock on dev-primary (#3187)
+    label: Reap orphan .git/index.lock (dev-primary + dev-secondary) (#3187)
     schedule: "*/5 * * * *"
-    machines: [dev-primary, ace-linux-1]
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
     roles: [control-plane]
     requires: [bash, git]
     command: >-
@@ -107,11 +107,13 @@ tasks:
     log: logs/maintenance/git-lock-reaper-*.log
     is_claude_task: false
     description: >-
-      Every 5 min on dev-primary: detect a .git/index.lock that is BOTH older than
+      Every 5 min: detect a .git/index.lock that is BOTH older than
       LOCK_REAPER_AGE_MINUTES (default 10) AND has no live `git` process, then remove it
       with a stderr alert (cron -> mail). A zero-byte orphan lock silently froze ALL git
-      automation on ace-linux-1 for ~5h on 2026-06-17 (#3187). Dual-guard (age + no-live-git)
+      automation on ace-linux-1 for ~5h on 2026-06-17 (#3187), and recurred on ace-linux-2
+      on 2026-06-18 (blocked commits twice) — hence porting here. Dual-guard (age + no-live-git)
       so it can never race-reap a live op's lock — unlike git-safe.sh:git_heal_index().
+      The reaper script is machine-agnostic (resolves its own repo via git rev-parse).
 
   - id: return-to-main-guard
     label: Restore dev-primary workspace-hub checkout to main when idle off-branch (#3187)
