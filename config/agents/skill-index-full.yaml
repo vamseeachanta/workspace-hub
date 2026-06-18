@@ -48,8 +48,8 @@ skills:
   family: ai
   id: ai/prompting/agenta
   name: agenta
-  when_to_use: agenta LLM prompt management and evaluation platform. Version prompts, run A/B tests, evaluate with metrics, and deploy with confidence using Agenta's self-hosted solution. ai
-  when_to_use_source: backfill
+  when_to_use: '**USE when:** - Managing multiple versions of prompts in production - Need systematic A/B testing of prompt variations - Evaluating prompt quality with automated metrics - Collaborating on prompt development across teams - Requiring audit trails for prompt changes - Building LLM applications that need to iterate quickly - Need to compare different models with same prompts - Want a playground for rapid prompt experimentation - Self-hosting is required for security/compliance **DON''T USE when:** - Simple single-prompt applications - No need for prompt versioning or testing - Already using another prompt management system - Rapid prototyping without evaluation needs - Cost-sensitive projects (evaluation adds API calls)'
+  when_to_use_source: section
 - description: LLM application patterns, prompt optimization techniques, and AI-powered data analysis workflows.
   family: ai
   id: ai/prompting/ai-prompting
@@ -60,14 +60,14 @@ skills:
   family: ai
   id: ai/prompting/dspy
   name: dspy
-  when_to_use: dspy Build complex AI systems with declarative programming, optimize prompts automatically, create modular RAG systems and agents with DSPy - Stanford NLP's framework for systematic LM programming ai
-  when_to_use_source: backfill
+  when_to_use: 'Use DSPy when you need to: - **Build complex AI systems** with multiple components and workflows - **Program LMs declaratively** instead of manual prompt engineering - **Optimize prompts automatically** using data-driven methods - **Create modular AI pipelines** that are maintainable and portable - **Improve model outputs systematically** with optimizers - **Build RAG systems, agents, or classifiers** with better reliability **GitHub Stars**: 22,000+ | **Created By**: Stanford NLP'
+  when_to_use_source: section
 - description: Build production-ready LLM applications with chains, agents, memory, tools, and RAG pipelines using the LangChain framework
   family: ai
   id: ai/prompting/langchain
   name: langchain
-  when_to_use: langchain Build production-ready LLM applications with chains, agents, memory, tools, and RAG pipelines using the LangChain framework ai
-  when_to_use_source: backfill
+  when_to_use: '**USE when:** - Building complex LLM applications with multiple components - Need agents that can use tools and make autonomous decisions - Implementing RAG (Retrieval Augmented Generation) systems - Integrating with various LLM providers (OpenAI, Anthropic, local models) - Building chatbots with conversation memory - Processing and querying document collections - Need streaming responses for real-time applications - Orchestrating multi-step reasoning workflows **DON''T USE when:** - Simple single-prompt LLM calls (use direct API) - Optimizing prompts programmatically (use DSPy instead) - Building UI-focused chat applications (use Streamlit/Gradio directly) - Need minimal dependencies and maximum control - Performance-critical applications requiring custom optimizations'
+  when_to_use_source: section
 - description: Conversational data analysis using natural language queries on pandas DataFrames. Use when you want to ask plain-English questions about data, generate charts, explain transformations, or build exploratory analysis interfaces — all powered by an LLM backend. Supports OpenAI, Anthropic, Google Gemini, Azure OpenAI, and local models. Handles single DataFrames (SmartDataframe) and multi-table joins (SmartDatalake).
   family: ai
   id: ai/prompting/pandasai
@@ -78,8 +78,8 @@ skills:
   family: ai
   id: ai/prompting/prompt-engineering
   name: prompt-engineering
-  when_to_use: prompt-engineering Comprehensive prompting techniques including chain-of-thought, few-shot, zero-shot, system prompts, persona design, and evaluation patterns ai
-  when_to_use_source: backfill
+  when_to_use: '**USE when:** - Designing prompts from scratch for any use case - Learning core principles applicable across all LLMs - Need portable patterns not tied to specific frameworks - Building simple LLM integrations without heavy dependencies - Optimizing existing prompts for better results - Creating reusable prompt templates for teams - Debugging underperforming LLM applications - Teaching prompt engineering to others **DON''T USE when:** - Need framework-specific features (use LangChain/DSPy) - Require programmatic optimization (use DSPy) - Building production RAG systems (use LangChain) - Need conversation memory management (use frameworks)'
+  when_to_use_source: section
 - description: Class-level provider/session operations for Claude, Codex, Gemini, Hermes, quotas, audit exporters, readiness dispatch, and utilization scorecards.
   family: ai
   id: ai/provider-session-quota-operations
@@ -156,8 +156,8 @@ skills:
   family: autonomous-ai-agents
   id: autonomous-ai-agents/claude-print-stall-salvage
   name: claude-print-stall-salvage
-  when_to_use: claude-print-stall-salvage Recover delegated Claude Code print-mode runs that stall silently or produce partial edits in large worktrees. autonomous-ai-agents
-  when_to_use_source: backfill
+  when_to_use: '- `claude -p ... | tee <log>` has an empty or near-empty log for several minutes. - The process is still running, but the log is not growing. - `ps` shows Claude or a child process running a broad command such as `rg`, `git status`, or repo-wide scans. - `git status --short -- <owned paths>` shows useful partial edits despite no final Claude summary. - The delegated run has exceeded the expected wall-clock budget for a bounded issue.'
+  when_to_use_source: trigger
 - description: Delegate coding tasks to OpenAI Codex CLI agent. Use for building features, refactoring, PR reviews, and batch issue fixing. Requires the codex CLI and a git repository.
   family: autonomous-ai-agents
   id: autonomous-ai-agents/codex
@@ -168,20 +168,20 @@ skills:
   family: autonomous-ai-agents
   id: autonomous-ai-agents/codex-background-burn-orchestration
   name: codex-background-burn-orchestration
-  when_to_use: codex-background-burn-orchestration Run quota-aware Codex usage-burn waves as useful background issue-execution lanes, including Hermes stdin-close and sandbox recovery patterns. autonomous-ai-agents
-  when_to_use_source: backfill
+  when_to_use: 'Use this when the user asks to deliberately spend/burn Codex capacity over a short window, or to keep Codex productively occupied on approved work, especially phrases like: - "burn X% of Codex usage" - "use up Codex capacity over the next 24 hours" - "keep Codex lanes running" - "route underused Codex quota to approved issues" Class of task: quota-aware Codex lane orchestration that converts available Codex capacity into bounded, approved GitHub issue execution rather than synthetic token waste.'
+  when_to_use_source: trigger
 - description: Launch Codex CLI background runs in Hermes when Codex hangs at `Reading additional input from stdin...`; use explicit process stdin close and isolated worktrees.
   family: autonomous-ai-agents
   id: autonomous-ai-agents/codex-background-stdin-close
   name: codex-background-stdin-close
-  when_to_use: codex-background-stdin-close Launch Codex CLI background runs in Hermes when Codex hangs at `Reading additional input from stdin...`; use explicit process stdin close and isolated worktrees. autonomous-ai-agents
-  when_to_use_source: backfill
+  when_to_use: '- `codex exec ...` prints `Reading additional input from stdin...` and appears to hang. - `< /dev/null`, an empty pipe, or PTY launch does not make Codex proceed. - The task is a background Codex implementation/review lane that should continue while Hermes does other work. - Multiple Codex lanes are running and duplicate/stale launches must be avoided.'
+  when_to_use_source: trigger
 - description: Complete guide to using and extending Hermes Agent — CLI usage, setup, configuration, spawning additional agents, gateway platforms, skills, voice, tools, profiles, and a concise contributor reference. Load this skill when helping users configure Hermes, troubleshoot issues, spawn agent instances, or make code contributions.
   family: autonomous-ai-agents
   id: autonomous-ai-agents/hermes-agent
   name: hermes-agent
-  when_to_use: hermes-agent Complete guide to using and extending Hermes Agent — CLI usage, setup, configuration, spawning additional agents, gateway platforms, skills, voice, tools, profiles, and a concise contributor reference. Load this skill when helping users configure Hermes, troubleshoot issues, spawn agent instances, or make code contributions. autonomous-ai-agents
-  when_to_use_source: backfill
+  when_to_use: '| | `delegate_task` | Spawning `hermes` process | |-|-----------------|--------------------------| | Isolation | Separate conversation, shared process | Fully independent process | | Duration | Minutes (bounded by parent loop) | Hours/days | | Tool access | Subset of parent''s tools | Full tool access | | Interactive | No | Yes (PTY mode) | | Use case | Quick parallel subtasks | Long autonomous missions |'
+  when_to_use_source: section
 - description: Delegate coding tasks to OpenCode CLI agent for feature implementation, refactoring, PR review, and long-running autonomous sessions. Requires the opencode CLI installed and authenticated.
   family: autonomous-ai-agents
   id: autonomous-ai-agents/opencode
@@ -204,14 +204,14 @@ skills:
   family: business
   id: business/admin/expense-tracking
   name: expense-tracking
-  when_to_use: expense-tracking Track, categorize, and analyze business expenses including credit card statement import and monthly expense reports. business
-  when_to_use_source: backfill
+  when_to_use: 'Activate when the user mentions: - Expense tracking or expense management - Credit card statement import - Expense categorization - Business expense analysis - Monthly expense reports'
+  when_to_use_source: trigger
 - description: Automate invoice generation for engineering consulting services using YAML configuration and Word document templates.
   family: business
   id: business/admin/invoice-automation
   name: invoice-automation
-  when_to_use: invoice-automation Automate invoice generation for engineering consulting services using YAML configuration and Word document templates. business
-  when_to_use_source: backfill
+  when_to_use: 'Activate when the user mentions: - Invoice generation or creation - Client billing or billing cycles - Monthly invoices for clients (mkt-a, RII, lng-a, client-f) - Engineering consulting fees'
+  when_to_use_source: trigger
 - description: Systematically document multi-module system architectures including module boundaries, CLI commands, and architecture decisions.
   family: business
   id: business/admin/modular-architecture-documentation
@@ -234,8 +234,8 @@ skills:
   family: business
   id: business/admin/tax-preparation
   name: tax-preparation
-  when_to_use: tax-preparation Prepare corporate tax documents for AceEngineer Inc (C-Corp) including federal Form 1120, Texas franchise tax, R&D credit analysis, and strategic funding planning. business
-  when_to_use_source: backfill
+  when_to_use: 'Activate when the user mentions: - Tax preparation or tax documents - Corporate tax forms (1120) - R&D budget or R&D credit - Texas franchise tax - Officer compensation or payroll tax - Tax-year financial analysis'
+  when_to_use_source: trigger
 - description: Systematically modernize technology stacks by updating dependencies, replacing deprecated packages, and ensuring workspace-hub standards compliance.
   family: business
   id: business/admin/technology-stack-modernization
@@ -246,8 +246,8 @@ skills:
   family: business
   id: business/c-corp-tax-consultant
   name: c-corp-tax-consultant
-  when_to_use: c-corp-tax-consultant Tax optimization and filing guide for C-Corp commercial real estate entities. Covers Form 1120, cost segregation, NOL management, depreciation strategies, 1099 reconciliation, and legitimate tax minimization for NNN lease properties. Includes TX franchise tax filing procedures and direct e-filing research. business
-  when_to_use_source: backfill
+  when_to_use: '- Preparing Form 1120 for a C-Corp that owns rental real estate - Evaluating cost segregation vs standard depreciation - Managing NOL carryforwards - Reconciling 1099-MISC reported income vs actual deposits - Optimizing tax deductions for NNN properties - Filing Texas Franchise Tax - Researching direct e-filing options ---'
+  when_to_use_source: section
 - description: GTM demo execution for engineering AI chatbot presentations — system prompt authoring, demo scripting, ROI capture
   family: business
   id: business/client-demo/engineering-chatbot
@@ -642,20 +642,20 @@ skills:
   family: business
   id: business/tax-e-filing-research
   name: tax-e-filing-research
-  when_to_use: tax-e-filing-research Guide to directly e-filing federal Form 1120 and state franchise tax returns. Covers service comparison, cost analysis, step-by-step filing procedures, and paper filing alternatives for C-Corp entities. business
-  when_to_use_source: backfill
+  when_to_use: '- Preparing to e-file Form 1120 independently - Comparing e-filing service options for cost and features - Need step-by-step filing instructions - Paper filing backup plan ---'
+  when_to_use_source: section
 - description: Assemble and execute a packet-first TaxAct Business filing workflow for C-Corp Form 1120 returns using existing repo artifacts, with strict pre-submit gates and human approval.
   family: business_admin
   id: business_admin/taxact-business-c-corp-filing-packet
   name: taxact-business-c-corp-filing-packet
-  when_to_use: taxact-business-c-corp-filing-packet Assemble and execute a packet-first TaxAct Business filing workflow for C-Corp Form 1120 returns using existing repo artifacts, with strict pre-submit gates and human approval. business_admin
-  when_to_use_source: backfill
+  when_to_use: 'Use when: - the user wants to file or prepare a C-Corp return in TaxAct Business - the repo already contains corporate tax worksheets, guides, or support docs - the goal is to get to a deterministic file-now vs blocker decision quickly Common requests: - "review the corporate tax packet" - "get this 1120 ready for TaxAct" - "prepare the filing workflow for the business return" - "guide the TaxAct filing session"'
+  when_to_use_source: trigger
 - description: Operate ace-linux-1 as the continuous AI-agent control surface for overnight and continuous batches that keep GTM material moving toward client outreach.
   family: coordination
   id: coordination/ace-linux-1-control-surface
   name: ace-linux-1-control-surface
-  when_to_use: ace-linux-1-control-surface Operate ace-linux-1 as the continuous AI-agent control surface for overnight and continuous batches that keep GTM material moving toward client outreach. coordination
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when any of these are true: 1. A batch is already running and you need to inspect or reconcile it. 2. You are preparing an overnight prompt pack. 3. The user wants continuous GTM motion without losing approval control. 4. You need to update repo-backed memory so the control-surface pattern survives reboots and handoffs.'
+  when_to_use_source: trigger
 - description: Verify proposed copy changes to vamseeachanta/aceengineer-website against canonical sources in workspace-hub (llm-wiki, live site, strategy repo) before shipping. Produces a GitHub issue on the site repo documenting the check with a Match / Drift / Gap verdict.
   family: coordination
   id: coordination/aceengineer-website-copy-alignment
@@ -774,8 +774,8 @@ skills:
   family: coordination
   id: coordination/gh-work-planning-checklist
   name: gh-work-planning-checklist
-  when_to_use: gh-work-planning-checklist Compact live-execution checklist companion for the canonical gh-work-planning route. Use for fast operational tracking during issue planning without replacing the full route. coordination
-  when_to_use_source: backfill
+  when_to_use: 'Use when: - work starts from a GitHub issue - you need Issue -> Plan -> Approval -> Execution discipline - you want a short runbook while posting progress live Do not use this as a substitute for the full planning route.'
+  when_to_use_source: trigger
 - description: Reconcile issue workflow state when the user approves plans by applying GitHub labels directly, then surface remaining user-input work without misclassifying approved issues.
   family: coordination
   id: coordination/github-label-approval-reconciliation
@@ -852,8 +852,8 @@ skills:
   family: coordination
   id: coordination/oss-wiki-development-arc
   name: oss-wiki-development-arc
-  when_to_use: oss-wiki-development-arc Three-phase methodology (Substrate → Depth → Quality) for building open-source engineering wikis efficiently. Skip 70%+ of empirical iteration cost by pre-loading the pattern. coordination
-  when_to_use_source: backfill
+  when_to_use: '- Bootstrapping a new engineering/marine/scientific OSS wiki (greenfield) - Resuming work on a stalled wiki (which phase are we in?) - Diagnosing wiki-development thrash ("we keep adding pages but nothing improves") - Auditing a wiki for publication readiness'
+  when_to_use_source: section
 - description: Operate unattended overnight or background multi-agent waves with worktree isolation, artifact reconciliation, verification fallbacks, and closure-first batching.
   family: coordination
   id: coordination/overnight-worktree-agent-waves
@@ -986,8 +986,8 @@ skills:
   family: coordination
   id: coordination/subagent-sandbox-limitations
   name: subagent-sandbox-limitations
-  when_to_use: subagent-sandbox-limitations Critical limitations of delegate_task subagents — sandbox isolation prevents repo writes. Use for research/analysis only, not implementation. coordination
-  when_to_use_source: backfill
+  when_to_use: '**DO use delegate_task for:** - Research/analysis that only reads files - Generating summaries, reports, or markdown documents - Synthesis tasks (combining information from multiple sources) - Non-interactive brainstorm or planning - Tasks that produce output for the main agent to consume - Claude-backed read-only repo audits where you want concrete patch guidance but will apply changes in the main session'
+  when_to_use_source: section
 - description: Protocol for workers to capture and propagate discoveries back to the orchestrator and shared knowledge base. Phase 3 of orchestrator/worker context enforcement (#2020).
   family: coordination
   id: coordination/worker-discovery-protocol
@@ -1076,8 +1076,8 @@ skills:
   family: creative
   id: creative/design-md
   name: design-md
-  when_to_use: design-md Author/validate/export Google's DESIGN.md token spec files. creative
-  when_to_use_source: backfill
+  when_to_use: '- User asks for a DESIGN.md file, design tokens, or a design system spec - User wants consistent UI/brand across multiple projects or tools - User pastes an existing DESIGN.md and asks to lint, diff, export, or extend it - User asks to port a style guide into a format agents can consume - User wants contrast / WCAG accessibility validation on their color palette For purely visual inspiration or layout examples, use `popular-web-designs` instead. For *process and taste* when designing a one-off HTML artifact from scratch (prototype, deck, landing page, component lab), use `claude-design`. This skill is for the *formal spec file* itself.'
+  when_to_use_source: section
 - description: Create hand-drawn style diagrams using Excalidraw JSON format. Generate .excalidraw files for architecture diagrams, flowcharts, sequence diagrams, concept maps, and more. Files can be opened at excalidraw.com or uploaded for shareable links.
   family: creative
   id: creative/excalidraw
@@ -1088,8 +1088,8 @@ skills:
   family: creative
   id: creative/humanizer
   name: humanizer
-  when_to_use: 'humanizer Humanize text: strip AI-isms and add real voice. creative'
-  when_to_use_source: backfill
+  when_to_use: 'Load this skill whenever the user asks to: - "humanize", "de-AI", "de-slop", or "un-ChatGPT" a piece of text - rewrite something so it doesn''t sound like it was written by an LLM - edit a draft (blog post, essay, PR description, docs, memo, email, tweet, resume bullet) to sound more natural - match their voice in writing they''re producing - review text for AI tells before publishing Also apply this skill to **your own** output when writing user-facing prose — release notes, PR descriptions, documentation, long-form explanations, summaries. Hermes''s baseline voice already strips most of these, but a focused pass catches what slips through.'
+  when_to_use_source: section
 - description: 'Production pipeline for mathematical and technical animations using Manim Community Edition. Creates 3Blue1Brown-style explainer videos, algorithm visualizations, equation derivations, architecture diagrams, and data stories. Use when users request: animated explanations, math animations, concept visualizations, algorithm walkthroughs, technical explainers, 3Blue1Brown style videos, or any programmatic animation with geometric/mathematical content.'
   family: creative
   id: creative/manim-video
@@ -1142,8 +1142,8 @@ skills:
   family: data-science
   id: data-science/jupyter-live-kernel
   name: jupyter-live-kernel
-  when_to_use: jupyter-live-kernel Use a live Jupyter kernel for stateful, iterative Python execution via hamelnb. Load this skill when the task involves exploration, iteration, or inspecting intermediate results — data science, ML experimentation, API exploration, or building up complex code step-by-step. Uses terminal to run CLI commands against a live Jupyter kernel. No new tools required. data-science
-  when_to_use_source: backfill
+  when_to_use: '| Tool | Use When | |------|----------| | **This skill** | Iterative exploration, state across steps, data science, ML, "let me try this and check" | | `execute_code` | One-shot scripts needing hermes tool access (web_search, file ops). Stateless. | | `terminal` | Shell commands, builds, installs, git, process management | **Rule of thumb:** If you''d want a Jupyter notebook for the task, use this skill.'
+  when_to_use_source: section
 - description: Automatic exploratory data analysis and visualization with a single line of code - generates comprehensive charts, detects patterns, and exports to HTML/notebooks
   family: data
   id: data/analysis/autoviz
@@ -1154,8 +1154,8 @@ skills:
   family: data
   id: data/analysis/bsee-sodir-extraction
   name: bsee-sodir-extraction
-  when_to_use: bsee-sodir-extraction Extract and process energy data from BSEE (Gulf of Mexico) and SODIR (Norway) regulatory databases data
-  when_to_use_source: backfill
+  when_to_use: 'Use BSEE/SODIR data extraction when you need: - **Production data** - Oil, gas, water production by field/well - **Well information** - Directional surveys, completions, drilling data - **Field data** - Reserves, operators, development status - **HSE data** - Safety incidents, environmental compliance - **Economic analysis** - NPV calculations using regulatory data - **Regulatory compliance** - Track permits, violations, inspections **Data sources covered:** - **BSEE (US Gulf of Mexico)**: Production, wells, platforms, safety - **SODIR (Norway)**: Fields, production, wells, discoveries - **NPD FactPages**: Norwegian petroleum data (legacy)'
+  when_to_use_source: section
 - description: Build production-grade interactive dashboards with Plotly Dash - enterprise features, callbacks, and scalable deployment
   family: data
   id: data/analysis/dash
@@ -1394,8 +1394,8 @@ skills:
   family: data
   id: data/energy/energy-data-visualizer
   name: energy-data-visualizer
-  when_to_use: energy-data-visualizer Interactive visualization for oil and gas production data analysis using Plotly dashboards data
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when you need to: - Create production time series charts - Visualize decline curves and forecasts - Build economic scenario comparison charts - Generate field/block comparison visualizations - Create interactive HTML dashboards'
+  when_to_use_source: section
 - description: Perform offshore field development economic analysis with NPV, MIRR, IRR, and payback calculations. Use for investment analysis, cashflow modeling, BSEE data integration, development system classification, and Excel report generation.
   family: data
   id: data/energy/fdas-economics
@@ -1406,8 +1406,8 @@ skills:
   family: data
   id: data/energy/field-analyzer
   name: field-analyzer
-  when_to_use: field-analyzer Deepwater field-specific analysis for major Gulf of Mexico developments and production aggregation data
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when you need to: - Analyze specific deepwater fields (Anchor, Julia, Jack, St. Malo) - Aggregate production by field across multiple wells/leases - Compare field performance and economics - Build field-level type curves - Track development history and milestones'
+  when_to_use_source: section
 - description: Analyze BSEE HSE (Health, Safety, Environment) incident data for risk assessment. Use for operator safety scoring, incident trend analysis, compliance tracking, and ESG-integrated economic evaluation.
   family: data
   id: data/energy/hse-risk-analyzer
@@ -1442,8 +1442,8 @@ skills:
   family: data
   id: data/energy/metocean/visualizer
   name: metocean-visualizer
-  when_to_use: metocean-visualizer Create interactive metocean visualizations including time series plots, wave roses, scatter plots, geographic maps, and dashboards. Use for data exploration, reporting, and operational monitoring. data
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when you need to: - Plot wave data or create metocean dashboards - Visualize buoy observations or hindcast data - Generate wave roses or wind roses - Create time series charts for Hs, Tp, wind speed - Build scatter plots (Hs vs Tp, wind vs waves) - Map metocean stations with interactive overlays - Compare forecasts vs observations - Generate joint distribution contour plots - Create operational monitoring dashboards **Trigger phrases:** - "Plot wave data", "Create metocean dashboard" - "Visualize buoy observations", "Generate wave rose" - "Time series chart", "Scatter plot Hs vs Tp" - "Map metocean stations", "Interactive plot" - "Compare forecasts vs observations"'
+  when_to_use_source: section
 - description: Perform NPV analysis and economic evaluation for oil & gas assets. Use for cash flow modeling, price scenario analysis, Monte Carlo simulation, P10/P50/P90 probabilistic analysis, working interest calculations, and financial metrics (IRR, payback, NPV) for field development projects.
   family: data
   id: data/energy/npv-analyzer
@@ -1460,14 +1460,14 @@ skills:
   family: data
   id: data/energy/sodir-data-extractor
   name: sodir-data-extractor
-  when_to_use: sodir-data-extractor Extract and process Norwegian Petroleum Directorate field and production data from SODIR data
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when you need to: - Extract Norwegian continental shelf field data - Query SODIR production statistics - Compare Norwegian fields with GOM fields - Build cross-basin analysis datasets - Access historical NCS field performance'
+  when_to_use_source: section
 - description: Web scraping workflows for energy data collection from BSEE and BOEM using Scrapy
   family: data
   id: data/energy/web-scraper-energy
   name: web-scraper-energy
-  when_to_use: web-scraper-energy Web scraping workflows for energy data collection from BSEE and BOEM using Scrapy data
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when you need to: - Scrape BSEE/BOEM websites for data not in APIs - Collect lease sale results and bid data - Extract platform and facility information - Build automated data collection pipelines - Parse HTML tables into structured data'
+  when_to_use_source: section
 - description: Create interactive well production dashboards with real-time monitoring, verification integration, economic metrics, and multi-format exports. Use for well performance analysis, field aggregation, production forecasting, and API-driven dashboards.
   family: data
   id: data/energy/well-production-dashboard
@@ -1508,8 +1508,8 @@ skills:
   family: data
   id: data/office/docx-templates
   name: docx-templates
-  when_to_use: docx-templates Template-based Word document generation using Jinja2 syntax. Create reports, contracts, and documents with loops, conditionals, tables, and mail merge capabilities. data
-  when_to_use_source: backfill
+  when_to_use: '**USE when:** - Generating documents from templates with dynamic data - Creating mail merge documents from data sources - Building reports with loops and conditional sections - Need to maintain consistent formatting across generated documents - Generating contracts, invoices, letters from templates - Processing batch document generation from databases or spreadsheets - Templates need professional formatting preserved - Non-technical users maintain template design **DON''T USE when:** - Building documents programmatically from scratch (use python-docx) - Need complex document manipulation beyond template filling - PDF output is the final format (generate docx then convert) - Templates require complex macros or VBA - Real-time collaborative editing needed'
+  when_to_use_source: section
 - description: Automate Microsoft Office and PDF document workflows including generation, manipulation, and template-based document processing.
   family: data
   id: data/office/office-docs
@@ -1550,8 +1550,8 @@ skills:
   family: data
   id: data/research-and-literature-gathering
   name: research-and-literature-gathering
-  when_to_use: 'research-and-literature-gathering Systematic workflow for finding, downloading, and indexing engineering literature by domain. Covers the full lifecycle: discovery via standards ledger and doc index, web search for open-access PDFs, download script generation, PDF validation, catalogue YAML creation, and handoff to the 7-phase document-index-pipeline for indexing. Use when populating a new engineering domain with reference literature or when a WRK item requires domain-specific standards and textbooks. data'
-  when_to_use_source: backfill
+  when_to_use: 'Trigger this skill when: - A WRK item requires populating literature for an engineering domain - A new domain is being set up and needs reference material - An existing domain has gaps identified by Phase F of the document-index-pipeline - A calculation implementation needs standards/textbooks not yet downloaded - You see keywords like "gather literature", "download standards", "populate domain"'
+  when_to_use_source: section
 - description: 'Systematize research and literature gathering for engineering categories — queries doc index, capability map, and standards ledger to produce structured research briefs for calculation implementation. type: reference'
   family: data
   id: data/research-literature
@@ -1562,68 +1562,68 @@ skills:
   family: data
   id: data/scientific/api-integration
   name: api-integration
-  when_to_use: api-integration Integrate offshore engineering software APIs with mock testing for OrcaFlex, AQWA, and WAMIT data
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when you need to: - Integrate with OrcaFlex Python API - Integrate with ANSYS AQWA or WAMIT - Create mock APIs for testing without software licenses - Build automation workflows for marine analysis software - Develop robust error handling for API calls - Implement batch processing with external software APIs - Create abstraction layers over multiple analysis tools'
+  when_to_use_source: section
 - description: Generate parametric CAD geometry and finite element meshes using FreeCAD and GMSH
   family: data
   id: data/scientific/cad-mesh-generation
   name: cad-mesh-generation
-  when_to_use: cad-mesh-generation Generate parametric CAD geometry and finite element meshes using FreeCAD and GMSH data
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when you need to: - Create parametric CAD models of vessels, platforms, or structures - Generate meshes for finite element analysis (FEA) - Generate panel meshes for boundary element methods (BEM/hydrodynamics) - Automate geometry creation for marine structures - Export geometry to AQWA, WAMIT, ANSYS, or other analysis tools - Create complex geometries programmatically with Python - Perform mesh quality checks and refinement'
+  when_to_use_source: section
 - description: NumPy for matrix operations, FFT, linear algebra, and numerical computations in marine engineering
   family: data
   id: data/scientific/numpy-numerical-analysis
   name: numpy-numerical-analysis
-  when_to_use: numpy-numerical-analysis NumPy for matrix operations, FFT, linear algebra, and numerical computations in marine engineering data
-  when_to_use_source: backfill
+  when_to_use: 'Use NumPy numerical analysis when you need: - **Matrix operations** - 6DOF equations of motion, mass matrices, stiffness matrices - **FFT analysis** - Frequency domain analysis, spectral density, response spectra - **Linear algebra** - Solve linear systems, eigenvalue analysis, matrix decomposition - **Array operations** - Efficient computations on large datasets - **Numerical integration** - Time-stepping, ODE solvers - **Signal processing** - Filtering, windowing, convolution **Avoid when:** - Symbolic mathematics needed (use SymPy) - Sparse matrices dominate (use SciPy sparse) - GPU acceleration required (use CuPy or JAX) - Distributed computing needed (use Dask)'
+  when_to_use_source: section
 - description: Pandas for time series analysis, OrcaFlex results processing, and marine engineering data workflows
   family: data
   id: data/scientific/pandas-data-processing
   name: pandas-data-processing
-  when_to_use: pandas-data-processing Pandas for time series analysis, OrcaFlex results processing, and marine engineering data workflows data
-  when_to_use_source: backfill
+  when_to_use: 'Use Pandas data processing when you need: - **Time series analysis** - Wave elevation, vessel motions, mooring tensions - **OrcaFlex results** - Load simulation results, process RAOs, analyze dynamics - **Multi-format data** - CSV, Excel, HDF5, Parquet for large datasets - **Statistical analysis** - Summary statistics, rolling windows, resampling - **Data transformation** - Pivot, melt, merge, group operations - **Engineering reports** - Automated data extraction and summary generation **Avoid when:** - Real-time streaming data (use Polars or streaming libraries) - Extremely large datasets (>100GB) - use Dask, Vaex, or PySpark - Pure numerical computation (use NumPy directly) - Graph/network data (use NetworkX)'
+  when_to_use_source: section
 - description: Python for engineering analysis, numerical computing, and scientific workflows using NumPy, SciPy, SymPy
   family: data
   id: data/scientific/python-scientific-computing
   name: python-scientific-computing
-  when_to_use: python-scientific-computing Python for engineering analysis, numerical computing, and scientific workflows using NumPy, SciPy, SymPy data
-  when_to_use_source: backfill
+  when_to_use: 'Use Python scientific computing when you need: - **Numerical analysis** - Solving equations, optimization, integration - **Engineering calculations** - Stress, strain, dynamics, thermodynamics - **Matrix operations** - Linear algebra, eigenvalue problems - **Symbolic mathematics** - Analytical solutions, equation manipulation - **Data analysis** - Statistical analysis, curve fitting - **Simulations** - Physical systems, finite element preprocessing **Avoid when:** - Real-time performance critical (use C++/Fortran) - Simple calculations (use calculator or Excel) - No numerical computation needed'
+  when_to_use_source: section
 - description: YAML for configuration-driven engineering workflows, model setup, and analysis parameters
   family: data
   id: data/scientific/yaml-configuration
   name: yaml-configuration
-  when_to_use: yaml-configuration YAML for configuration-driven engineering workflows, model setup, and analysis parameters data
-  when_to_use_source: backfill
+  when_to_use: 'Use YAML configuration when you need: - **Configuration-driven workflows** - Separate data from code - **Reproducible analyses** - Version-controlled parameters - **Model templates** - Reusable configurations - **Complex nested structures** - Hierarchical data organization - **Human-readable configs** - Easy to review and modify - **Automated model generation** - OrcaFlex, FEA, CAD models **Avoid when:** - Binary data needed (use pickle, HDF5) - Extremely large datasets (use CSV, databases) - Real-time performance critical (use JSON)'
+  when_to_use_source: section
 - description: Create simple, responsive charts quickly with Chart.js using canvas-based rendering
   family: data
   id: data/visualization/chartjs
   name: chartjs
-  when_to_use: chartjs Create simple, responsive charts quickly with Chart.js using canvas-based rendering data
-  when_to_use_source: backfill
+  when_to_use: 'Use Chart.js when you need: - **Quick implementation** - Up and running in minutes - **Simple charts** - Line, bar, pie, doughnut, radar charts - **Minimal configuration** - Sensible defaults that work out of the box - **Small projects** - Lightweight library (60KB gzipped) - **Responsive charts** - Mobile-friendly by default - **No dependencies** - Standalone library **Avoid when:** - Complex customization needed (use D3.js) - 3D charts required (use Plotly) - Advanced scientific visualizations needed (use Plotly) - Large datasets >10k points (use Plotly with WebGL)'
+  when_to_use_source: section
 - description: Create custom, highly interactive data visualizations with D3.js (Data-Driven Documents)
   family: data
   id: data/visualization/d3js
   name: d3js
-  when_to_use: d3js Create custom, highly interactive data visualizations with D3.js (Data-Driven Documents) data
-  when_to_use_source: backfill
+  when_to_use: 'Use D3.js when you need: - **Complete customization** - Every aspect of the visualization controlled - **Complex interactions** - Advanced user interactions and transitions - **Unique visualizations** - Bespoke charts not available in other libraries - **Data-driven DOM manipulation** - Direct binding of data to DOM elements - **Custom animations** - Sophisticated transitions and effects **Avoid when:** - Simple charts with default styling are sufficient (use Chart.js) - Quick implementation is priority (use Plotly or Chart.js) - Team lacks JavaScript expertise'
+  when_to_use_source: section
 - description: Create powerful interactive charts with Apache ECharts - balanced ease-of-use and customization
   family: data
   id: data/visualization/echarts
   name: echarts
-  when_to_use: echarts Create powerful interactive charts with Apache ECharts - balanced ease-of-use and customization data
-  when_to_use_source: backfill
+  when_to_use: 'Use ECharts when you need: - **Balance of ease and power** - Easy to start, powerful when needed - **Broad chart variety** - 20+ chart types including geo maps - **TypeScript support** - Full type definitions - **Mobile responsiveness** - Built-in responsive design - **Large datasets** - Efficient rendering of 100k+ points - **Chinese/International** - Excellent i18n support **Avoid when:** - Ultimate customization needed (use D3.js) - Only need simple charts (use Chart.js) - 3D scientific visualizations (use Plotly)'
+  when_to_use_source: section
 - description: Create enterprise-grade interactive charts with Highcharts including stock and map visualizations
   family: data
   id: data/visualization/highcharts
   name: highcharts
-  when_to_use: highcharts Create enterprise-grade interactive charts with Highcharts including stock and map visualizations data
-  when_to_use_source: backfill
+  when_to_use: 'Use Highcharts when you need: - **Enterprise features** - Stock charts, Gantt charts, network diagrams - **Accessibility** - WCAG compliant, screen reader support - **Financial charts** - Advanced stock/trading visualizations - **Professional quality** - Polished, production-ready charts - **Export capabilities** - PDF, PNG, SVG, Excel exports built-in - **Commercial support** - Professional licensing and support available **License Note:** Highcharts is free for non-commercial use. Commercial use requires a license. **Avoid when:** - Budget constraints (use Chart.js or ECharts) - Maximum customization needed (use D3.js) - Only need basic charts (use Chart.js)'
+  when_to_use_source: section
 - description: Create interactive scientific and analytical charts with Plotly (JavaScript & Python)
   family: data
   id: data/visualization/plotly
   name: plotly
-  when_to_use: plotly Create interactive scientific and analytical charts with Plotly (JavaScript & Python) data
-  when_to_use_source: backfill
+  when_to_use: 'Use Plotly when you need: - **Scientific visualizations** - 3D plots, contours, heatmaps - **Statistical charts** - Box plots, violin plots, histograms - **Large datasets** - Efficient rendering of 100k+ points with WebGL - **Python/R integration** - Seamless integration with data science workflows - **Quick interactive plots** - High-level API with sensible defaults - **Dashboards** - Interactive dashboards with Plotly Dash **Avoid when:** - Maximum customization needed (use D3.js) - Extremely simple charts (use Chart.js) - File size is critical concern'
+  when_to_use_source: section
 - description: Generate interactive Plotly and Matplotlib visualizations from DataFrames with configurable templates and multi-format support.
   family: data
   id: data/visualization/plotly-visualization
@@ -1676,14 +1676,14 @@ skills:
   family: development
   id: development/devtools/pyproject-toml
   name: pyproject-toml
-  when_to_use: pyproject-toml Configure Python projects with pyproject.toml for modern packaging, tools, and dependency management development
-  when_to_use_source: backfill
+  when_to_use: 'Use pyproject.toml configuration when you need: - **Project metadata** - Name, version, description, authors - **Dependency management** - Core and optional dependencies - **Build configuration** - Setuptools, hatch, flit, or poetry - **Tool configuration** - pytest, ruff, mypy, black, isort - **Entry points** - CLI scripts and plugins - **Package discovery** - Source directory configuration **Avoid when:** - Legacy projects requiring setup.py (rare, migrate instead) - Non-Python projects'
+  when_to_use_source: section
 - description: UV for fast Python package management, virtual environments, and project workflows
   family: development
   id: development/devtools/uv-package-manager
   name: uv-package-manager
-  when_to_use: uv-package-manager UV for fast Python package management, virtual environments, and project workflows development
-  when_to_use_source: backfill
+  when_to_use: 'Use UV package manager when you need: - **Fast dependency installation** - 10-100x faster than pip - **Virtual environment management** - Create and manage venvs effortlessly - **Project initialization** - Start new Python projects quickly - **Dependency resolution** - Reliable, reproducible dependency trees - **Lock file management** - Ensure consistent environments across machines - **Python version management** - Install and switch Python versions **Avoid when:** - Legacy systems requiring pip compatibility (rare) - Conda-based scientific computing environments - Docker images with pre-installed pip workflows'
+  when_to_use_source: section
 - description: Disciplined diagnosis loop for hard bugs and performance regressions. Reproduce → minimise → hypothesise → instrument → fix → regression-test. Use when user says "diagnose this" / "debug this", reports a bug, says something is broken/throwing/failing, or describes a performance regression.
   family: development
   id: development/diagnose
@@ -1694,8 +1694,8 @@ skills:
   family: development
   id: development/doc-audit-and-close-workflow
   name: doc-audit-and-close-workflow
-  when_to_use: doc-audit-and-close-workflow A repeatable workflow for executing a batch of documentation, audit, or planning tasks. For each task, it audits the current state, creates a plan/report, commits the result, and closes the corresponding GitHub issue. The process is designed to be idempotent. development
-  when_to_use_source: backfill
+  when_to_use: 'When a user provides a list of structured tasks that each involve: 1. Auditing or analyzing a state. 2. Creating or updating a documentation or plan file (e.g., `.md`). 3. Committing the file to Git. 4. Closing a corresponding GitHub issue. This skill is ideal for cron jobs or scripted, multi-step administrative actions.'
+  when_to_use_source: trigger
 - description: Prevent deleted workflow/path references from creeping back into live docs by combining strict scans, legacy allowlists, and shared regex helpers.
   family: development
   id: development/docs-stale-reference-guardrails
@@ -1718,8 +1718,8 @@ skills:
   family: development
   id: development/documentation/gitbook
   name: gitbook
-  when_to_use: '### USE GitBook when: - **Team documentation** - Collaborative docs with multiple editors - **Product documentation** - User guides, API docs, tutorials - **Knowledge bases** - Internal wikis and knowledge management - **Multi-version docs** - Maintain docs for different product versions - **Git-based workflow** - Sync docs with GitHub/GitLab - **Custom branding** - Need custom domains and styling - **Access control** - Restrict docs to authenticated users ### DON''T USE GitBook when: - **Complex code docs** - Use Sphinx for Python API docs - **Static site control** - Use MkDocs or Docusaurus - **Offline-first** - GitBook is primarily cloud-hosted - **Self-hosted required** - GitBook is SaaS (legacy self-hosted deprecated)'
-  when_to_use_source: section
+  when_to_use: gitbook Publish documentation and books with GitBook including spaces, collections, variants, Git sync, collaboration, and API integration development
+  when_to_use_source: backfill
 - description: Create professional Markdown-based slide presentations with Marp. Covers themes, directives, speaker notes, presenter view, and export to PDF, HTML, and PPTX formats. Includes VS Code integration, CLI usage, and CI/CD automation.
   family: development
   id: development/documentation/marp
@@ -1862,8 +1862,8 @@ skills:
   family: development
   id: development/investigative-issue-workdown
   name: investigative-issue-workdown
-  when_to_use: investigative-issue-workdown A robust workflow for handling a batch of related investigative tasks that require file system research, documentation, and version control. development
-  when_to_use_source: backfill
+  when_to_use: Trigger this skill when you are assigned 2-5 related tasks in a single prompt, where each task follows a similar "investigate -> document -> commit -> close" lifecycle. It is particularly useful when the investigation involves searching across large or numerous directories.
+  when_to_use_source: section
 - description: Break a large umbrella GitHub issue into a layered tree of focused follow-on issues using read-only subagent analysis, then create the issues locally and update docs/parent issue with the issue map.
   family: development
   id: development/issue-tree-decomposition
@@ -1916,8 +1916,8 @@ skills:
   family: development
   id: development/semantic-taxonomy-reporting-consistency
   name: semantic-taxonomy-reporting-consistency
-  when_to_use: semantic-taxonomy-reporting-consistency Keep semantic-diff taxonomy summaries consistent with evidence tables when adding richer categories to legacy comparison/reporting pipelines. development
-  when_to_use_source: backfill
+  when_to_use: '- A producer emits per-diff records plus aggregate category counts - HTML/JSON reports show both summary counts and detailed evidence rows - Legacy buckets are being split into richer categories - There is risk that counts and visible evidence can drift apart'
+  when_to_use_source: trigger
 - description: Harden Bash automation scripts with TDD-first static and behavioral checks, safe Python invocation via uv, locking, persistent state, and review-driven correction loops.
   family: development
   id: development/shell-script-hardening-patterns
@@ -2096,8 +2096,8 @@ skills:
   family: devops
   id: devops/kanban-orchestrator
   name: kanban-orchestrator
-  when_to_use: kanban-orchestrator Decomposition playbook + specialist-roster conventions + anti-temptation rules for an orchestrator profile routing work through Kanban. The "don't do the work yourself" rule and the basic lifecycle are auto-injected into every kanban worker's system prompt; this skill is the deeper playbook when you're specifically playing the orchestrator role. devops
-  when_to_use_source: backfill
+  when_to_use: 'Create Kanban tasks when any of these are true: 1. **Multiple specialists are needed.** Research + analysis + writing is three profiles. 2. **The work should survive a crash or restart.** Long-running, recurring, or important. 3. **The user might want to interject.** Human-in-the-loop at any step. 4. **Multiple subtasks can run in parallel.** Fan-out for speed. 5. **Review / iteration is expected.** A reviewer profile loops on drafter output. 6. **The audit trail matters.** Board rows persist in SQLite forever. If *none* of those apply — it''s a small one-shot reasoning task — use `delegate_task` instead or answer the user directly.'
+  when_to_use_source: section
 - description: Create and manage webhook subscriptions for event-driven agent activation. Use when the user wants external services to trigger agent runs automatically.
   family: devops
   id: devops/webhook-subscriptions
@@ -2282,8 +2282,8 @@ skills:
   family: engineering
   id: engineering/cad/gmsh-meshing
   name: gmsh-meshing
-  when_to_use: gmsh-meshing gmsh Meshing Skill — CLI, .geo scripting, Python API, and solver integration engineering
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when you need to: - Generate surface panel meshes for BEM hydrodynamic solvers - Create structured (transfinite) or unstructured meshes - Script parametric geometries with .geo or Python API - Perform boolean/CSG operations via OpenCASCADE kernel - Import and remesh STEP, STL, or IGES geometry - Control mesh density with size fields (distance, threshold, background) - Export meshes to AQWA (.DAT), WAMIT (.GDF), Nemoh, or general formats (MSH, STL, VTK, UNV) - Batch-generate meshes from the command line **Cross-references:** - GDF/CDB export code → `skills/data/scientific/cad-mesh-generation/SKILL.md` - Mesh inspection/conversion → `skills/engineering/marine-offshore/mesh-utilities/SKILL.md`'
+  when_to_use_source: section
 - description: AI interface skill for PyVista 3D visualization --- VTK wrapper for mesh rendering, STL/OBJ/VTK I/O, scalar coloring, offscreen rendering, and engineering analysis post-processing.
   family: engineering
   id: engineering/cad/pyvista-3d
@@ -2300,8 +2300,8 @@ skills:
   family: engineering
   id: engineering/cfd/openfoam
   name: openfoam
-  when_to_use: openfoam OpenFOAM AI Interface Skill — case setup, CLI execution, output parsing, failure diagnosis, validation engineering
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when you need to: - Set up an OpenFOAM CFD case from scratch (geometry, mesh, BCs, solver) - Generate valid system dictionaries (controlDict, fvSchemes, fvSolution) - Run solvers in serial or parallel (simpleFoam, pimpleFoam, interFoam) - Parse solver logs for residuals, convergence, and Courant numbers - Diagnose solver failures (FPE, divergence, mesh quality, BC mismatches) - Validate results against known benchmarks (cavity, pitzDaily, damBreak) - Convert results for visualization (foamToVTK for ParaView)'
+  when_to_use_source: section
 - description: End-to-end CFD analysis workflow using OpenFOAM — from problem definition through meshing, solving, and post-processing to calculation report generation. Integrates with calculation-methodology (6-phase structure) and calculation-report (YAML → HTML rendering). Use when performing CFD analyses, not just setting up cases.
   family: engineering
   id: engineering/cfd/openfoam/analysis
@@ -2366,20 +2366,20 @@ skills:
   family: engineering
   id: engineering/gis/google-earth-engine
   name: google-earth-engine
-  when_to_use: google-earth-engine Google Earth Engine AI Interface Skill — ee Python API, authentication, image/collection operations, export workflows, GEBCO bathymetry, Sentinel, Landsat engineering
-  when_to_use_source: backfill
+  when_to_use: '- Access GEBCO bathymetry, EMODnet seabed, Copernicus marine data - Sentinel-2 / Landsat optical imagery for site characterisation - Time-series analysis (wind speed, SST, wave height) over AOI - Export processed rasters to GeoTIFF for local analysis - Compute statistics over polygon regions (pipeline corridor, lease block) - Interactive map visualisation via geemap in Jupyter notebooks ---'
+  when_to_use_source: section
 - description: Python GIS Ecosystem Skill — GDAL/OGR, Fiona, Shapely, Rasterio, GeoPandas, pyproj, Folium, xarray/rioxarray, Cartopy — foundational GIS libraries
   family: engineering
   id: engineering/gis/python-gis-ecosystem
   name: python-gis-ecosystem
-  when_to_use: python-gis-ecosystem Python GIS Ecosystem Skill — GDAL/OGR, Fiona, Shapely, Rasterio, GeoPandas, pyproj, Folium, xarray/rioxarray, Cartopy — foundational GIS libraries engineering
-  when_to_use_source: backfill
+  when_to_use: '- Load and manipulate vector data (wells, pipelines, lease blocks) - Reproject datasets between coordinate systems - Process raster data (bathymetry, metocean grids, satellite scenes) - Spatial joins and buffering in Python without QGIS GUI - Create interactive web maps (Folium) or static plots (Cartopy) - Process NetCDF metocean or oceanographic datasets (xarray/rioxarray) - Property valuation spatial analysis (WRK-022 context) ---'
+  when_to_use_source: section
 - description: QGIS AI Interface Skill — PyQGIS headless automation, Processing framework, vector/raster I/O, CRS transforms, well plotting from CSV, failure diagnosis
   family: engineering
   id: engineering/gis/qgis
   name: qgis
-  when_to_use: qgis QGIS AI Interface Skill — PyQGIS headless automation, Processing framework, vector/raster I/O, CRS transforms, well plotting from CSV, failure diagnosis engineering
-  when_to_use_source: backfill
+  when_to_use: '- Plot well locations from CSV files with lat/lon coordinates - Reproject vector/raster data between coordinate systems (WGS84, UTM) - Run QGIS Processing algorithms headlessly (no GUI) - Perform spatial joins, buffer analysis, and overlay operations - Export map layouts to PDF, PNG, SVG - Batch process shapefiles or GeoPackages via PyQGIS scripting ---'
+  when_to_use_source: section
 - description: Integrate with AQWA hydrodynamic software for RAO computation, damping analysis, and coefficient extraction. Hub skill — delegates to aqwa-input, aqwa-output, aqwa-reference for details.
   family: engineering
   id: engineering/marine-offshore/aqwa
@@ -2438,20 +2438,20 @@ skills:
   family: engineering
   id: engineering/marine-offshore/fatigue-analysis
   name: fatigue-analysis
-  when_to_use: fatigue-analysis Fatigue analysis for offshore structures including S-N curves, rainflow counting, Miner's rule, and DNV standards engineering
-  when_to_use_source: backfill
+  when_to_use: 'Use fatigue analysis when: - **Mooring line fatigue** - Calculate fatigue life of mooring components - **Riser fatigue** - Analyze fatigue damage in flexible and rigid risers - **Structural fatigue** - Assess fatigue in hull, joints, connections - **S-N curve analysis** - Apply appropriate fatigue curves - **Rainflow counting** - Process stress/load time series - **Miner''s rule** - Cumulative damage calculation - **Fatigue design** - Size components for target life'
+  when_to_use_source: section
 - description: Finite Element Analysis Analyst — slender structure FEA for marine and offshore systems
   family: engineering
   id: engineering/marine-offshore/fe-analyst
   name: fe-analyst
-  when_to_use: fe-analyst Finite Element Analysis Analyst — slender structure FEA for marine and offshore systems engineering
-  when_to_use_source: backfill
+  when_to_use: '- Setting up or reviewing OrcaFlex FE models for pipelines, risers, jumpers, moorings, or installation analyses - Designing the HTML report layout for an analysis type - Assessing mesh quality and discretization adequacy - Applying boundary conditions correctly for a structural scenario - Performing code checks (DNV, API, ISO) on results - Generating standardized analysis reports with Plotly interactive plots ---'
+  when_to_use_source: section
 - description: Hydrodynamic analysis using BEM, RAOs, added mass, damping, and wave loads for offshore structures
   family: engineering
   id: engineering/marine-offshore/hydrodynamic-analysis
   name: hydrodynamic-analysis
-  when_to_use: hydrodynamic-analysis Hydrodynamic analysis using BEM, RAOs, added mass, damping, and wave loads for offshore structures engineering
-  when_to_use_source: backfill
+  when_to_use: 'Use hydrodynamic analysis knowledge when: - **RAO calculation** - Response Amplitude Operators for vessel motions - **Added mass & damping** - Frequency-dependent hydrodynamic coefficients - **Wave loading** - Diffraction, Froude-Krylov, radiation forces - **BEM analysis** - Boundary Element Method for potential flow - **Software integration** - WAMIT, AQWA, OrcaWave workflows - **Frequency domain** - Linear wave theory analysis - **Time domain** - Convolution for time-domain simulations'
+  when_to_use_source: section
 - description: Manage hydrodynamic coefficients, wave spectra, and environmental loading for vessel response analysis. Use for 6×6 matrix management, wave spectrum modeling, OCIMF loading calculations, and RAO interpolation.
   family: engineering
   id: engineering/marine-offshore/hydrodynamics
@@ -2462,26 +2462,26 @@ skills:
   family: engineering
   id: engineering/marine-offshore/marine-offshore-engineering
   name: marine-offshore-engineering
-  when_to_use: marine-offshore-engineering Marine and offshore engineering fundamentals for platform design, subsea systems, and regulatory compliance engineering
-  when_to_use_source: backfill
+  when_to_use: 'Use this SME knowledge when: - **Platform design** - FPSOs, semi-submersibles, TLPs, SPARs - **Subsea systems** - Templates, manifolds, pipelines, umbilicals - **Marine operations** - Installation, commissioning, decommissioning - **Regulatory compliance** - DNV, API, ISO standards - **Environmental loading** - Wind, wave, current forces - **Station-keeping** - Mooring and dynamic positioning'
+  when_to_use_source: section
 - description: Assess offshore asset integrity, corrosion management, and life extension for aging marine structures
   family: engineering
   id: engineering/marine-offshore/marine-safety
   name: marine-safety
-  when_to_use: '### Use This Skill When: - Evaluating an asset for operation beyond its original design life. - Assessing the safety of a corroded pipeline or vessel. - Planning inspection campaigns (RBI). - Reviewing "Fitness for Service" reports. ### Do Not Use This Skill When: - Designing a *new* asset (use Structural Analysis or DNV Standards). - Calculating basic hydrostatics (use Marine Engineering).'
-  when_to_use_source: section
+  when_to_use: marine-safety Assess offshore asset integrity, corrosion management, and life extension for aging marine structures engineering
+  when_to_use_source: backfill
 - description: Quick mesh inspection, conversion, quality checks, and coarsening for hydrodynamic solvers
   family: engineering
   id: engineering/marine-offshore/mesh-utilities
   name: mesh-utilities
-  when_to_use: mesh-utilities Quick mesh inspection, conversion, quality checks, and coarsening for hydrodynamic solvers engineering
-  when_to_use_source: backfill
+  when_to_use: 'Use mesh utilities when you need to: - **Quick inspect** - View mesh statistics (panels, vertices, bounding box) before running solvers - **Format conversion** - Convert between GDF (OrcaWave/WAMIT), DAT (AQWA/NEMOH), and STL - **Quality validation** - Check watertightness, normals, aspect ratios, panel counts - **Mesh coarsening** - Reduce panel count for faster preliminary runs - **Pre-solver checks** - Validate mesh suitability for specific solvers (AQWA, OrcaWave, BEMRosetta)'
+  when_to_use_source: section
 - description: Mooring system design, analysis, and assessment for floating offshore platforms
   family: engineering
   id: engineering/marine-offshore/mooring-analysis
   name: mooring-analysis
-  when_to_use: mooring-analysis Mooring system design, analysis, and assessment for floating offshore platforms engineering
-  when_to_use_source: backfill
+  when_to_use: 'Use mooring analysis knowledge when: - **Station-keeping design** - FPSO, semi-sub, SPAR mooring - **Catenary analysis** - Static and dynamic behavior - **Tension calculations** - Pretension, extreme loads - **Fatigue assessment** - Mooring line fatigue life - **Anchor design** - Holding capacity verification - **Installation planning** - Pretension optimization'
+  when_to_use_source: section
 - description: Design and analyze mooring systems including CALM and SALM buoys, catenary moorings, and spread mooring configurations. Covers mooring line design, safety factors, environmental loading, and compliance with DNV, API, and ABS standards.
   family: engineering
   id: engineering/marine-offshore/mooring-design
@@ -2618,8 +2618,8 @@ skills:
   family: engineering
   id: engineering/marine-offshore/orcaflex/specialist
   name: orcaflex-specialist
-  when_to_use: orcaflex-specialist Automate OrcaFlex marine simulations via Python API for mooring, riser, and installation analysis engineering
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when you need to: - Automate OrcaFlex model creation and analysis - Build parametric OrcaFlex models via Python API - Perform batch simulations with varying parameters - Extract and process time series results - Validate OrcaFlex models against design criteria - Integrate OrcaFlex with external tools and workflows - Optimize mooring and riser configurations - Conduct sensitivity studies and Monte Carlo simulations'
+  when_to_use_source: section
 - description: Troubleshoot and resolve OrcaFlex static analysis convergence issues. Diagnose common problems including line connectivity, tensions, environmental conditions, and numerical instabilities.
   family: engineering
   id: engineering/marine-offshore/orcaflex/static-debug
@@ -2696,20 +2696,20 @@ skills:
   family: engineering
   id: engineering/marine-offshore/production-engineering
   name: production-engineering
-  when_to_use: '### Use This Skill When: - Designing or optimizing production systems. - Preparing for a **Surveillance Workshop**. - Troubleshooting well performance issues (e.g., sudden rate drop). - Evaluating EOR opportunities or managing existing EOR projects. - Reviewing "Lessons Learnt" for brownfield asset management. ### Do Not Use This Skill When: - Performing primary reservoir modeling (use Reservoir Engineering). - Conducting heavy structural analysis (use Structural Analysis). - Designing subsea hardware (use Subsea Engineering).'
-  when_to_use_source: section
+  when_to_use: production-engineering Monitor and optimize well performance, production surveillance, and enhanced oil recovery operations engineering
+  when_to_use_source: backfill
 - description: Perform probabilistic risk assessment with Monte Carlo simulations for offshore marine operations
   family: engineering
   id: engineering/marine-offshore/risk-assessment
   name: risk-assessment
-  when_to_use: risk-assessment Perform probabilistic risk assessment with Monte Carlo simulations for offshore marine operations engineering
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when you need to: - Perform Monte Carlo simulations for uncertainty quantification - Calculate system reliability and failure probabilities - Conduct sensitivity analysis to identify critical parameters - Create risk matrices for hazard assessment - Perform probabilistic design and analysis - Quantify uncertainties in marine operations - Make decisions under uncertainty with risk metrics - Validate designs against reliability targets'
+  when_to_use_source: section
 - description: 6DOF ship dynamics, equations of motion, seakeeping analysis, and natural frequency calculations
   family: engineering
   id: engineering/marine-offshore/ship-dynamics-6dof
   name: ship-dynamics-6dof
-  when_to_use: ship-dynamics-6dof 6DOF ship dynamics, equations of motion, seakeeping analysis, and natural frequency calculations engineering
-  when_to_use_source: backfill
+  when_to_use: 'Use 6DOF ship dynamics when: - **Equations of motion** - Set up and solve 6DOF coupled equations - **Natural frequencies** - Calculate natural periods for all DOFs - **Seakeeping analysis** - Predict vessel motions in waves - **Coupled dynamics** - Analyze roll-heave-pitch coupling - **Time-domain simulation** - Integrate equations of motion - **Frequency-domain analysis** - RAO-based motion prediction'
+  when_to_use_source: section
 - description: Perform signal processing, rainflow cycle counting, and spectral analysis for fatigue and time series data. Use for analyzing stress time histories, computing FFT/PSD, extracting fatigue cycles (ASTM E1049-85), and batch processing OrcaFlex signals.
   family: engineering
   id: engineering/marine-offshore/signal-analysis
@@ -2720,8 +2720,8 @@ skills:
   family: engineering
   id: engineering/marine-offshore/solver-benchmark
   name: solver-benchmark
-  when_to_use: solver-benchmark Run N-way diffraction solver benchmarks comparing AQWA, OrcaWave, and BEMRosetta results engineering
-  when_to_use_source: backfill
+  when_to_use: 'Use solver benchmarking when: - **Validating solver setups** - Confirm all solvers produce consistent results - **Cross-validating results** - Compare different solver outputs for the same hull - **Identifying solver quirks** - Find solver-specific behaviors or numerical differences - **Quality assurance** - Verify analysis methodology across tools - **Reporting** - Generate comparison reports for documentation'
+  when_to_use_source: section
 - description: Structural analysis for marine and offshore structures per DNV/API/ISO codes. Use when performing ULS/ALS limit state checks, column buckling, beam deflection, tubular joint capacity (DNV-RP-C203), or stiffened panel analysis. Covers section properties, combined loading, and ALS dented pipe assessment.
   family: engineering
   id: engineering/marine-offshore/structural-analysis
@@ -2738,8 +2738,8 @@ skills:
   family: engineering
   id: engineering/marine-offshore/wave-theory
   name: wave-theory
-  when_to_use: wave-theory Ocean wave theory including wave spectra, statistics, irregular seas, and wave transformation for offshore engineering engineering
-  when_to_use_source: backfill
+  when_to_use: 'Use wave theory knowledge when: - **Wave spectra** - JONSWAP, Pierson-Moskowitz, scatter diagrams - **Wave statistics** - Significant wave height, spectral parameters - **Irregular seas** - Generate time series from spectra - **Wave kinematics** - Particle velocities and accelerations - **Wave transformation** - Shoaling, refraction, diffraction - **Extreme values** - Design wave estimation'
+  when_to_use_source: section
 - description: AI-assisted maritime legal and casualty consulting — engineering-technical interface with admiralty proceedings
   family: engineering
   id: engineering/maritime-legal
@@ -2756,32 +2756,32 @@ skills:
   family: engineering
   id: engineering/standards/api
   name: api
-  when_to_use: '### Use This Skill When: - Specifying equipment for drilling or production operations. - Designing offshore structures (fixed or floating). - Verifying valve and pump requirements. - Conducting risk assessments (API 17N, API 14C). ### Do Not Use This Skill When: - Designing ship hulls (use Class Society rules like DNV/ABS). - Checking material testing protocols (use ASTM). - Checking European pressure vessel codes (use PED/EN).'
-  when_to_use_source: section
+  when_to_use: api Apply American Petroleum Institute codes and standards for offshore structures and production systems engineering
+  when_to_use_source: backfill
 - description: Reference ASTM standards for material properties, testing methods, and design code compliance
   family: engineering
   id: engineering/standards/astm
   name: astm
-  when_to_use: '### Use This Skill When: - Specifying material grades on engineering drawings. - Reviewing Material Test Reports (MTRs). - Defining Charpy impact test requirements for low-temperature service.'
-  when_to_use_source: section
+  when_to_use: astm Reference ASTM standards for material properties, testing methods, and design code compliance engineering
+  when_to_use_source: backfill
 - description: Apply DNV rules and recommended practices for offshore structures, pipelines, and marine classification
   family: engineering
   id: engineering/standards/dnv
   name: dnv
-  when_to_use: '### Use This Skill When: - Performing fatigue analysis (S-N curves). - Designing subsea pipelines or risers. - Classifying vessels or floating units. - Planning marine warranty surveys. ### Do Not Use This Skill When: - Designing wellhead equipment (use API). - Specifying raw material testing methods (use ASTM).'
-  when_to_use_source: section
+  when_to_use: dnv Apply DNV rules and recommended practices for offshore structures, pipelines, and marine classification engineering
+  when_to_use_source: backfill
 - description: Apply ISO standards for materials, corrosion, safety, and oil and gas industry compliance
   family: engineering
   id: engineering/standards/iso
   name: iso
-  when_to_use: '### Use This Skill When: - Selecting materials for sour service (H2S). - Working on international projects where API is not the governing code. - Specifying fasteners and bolts. - Establishing quality management protocols.'
-  when_to_use_source: section
+  when_to_use: iso Apply ISO standards for materials, corrosion, safety, and oil and gas industry compliance engineering
+  when_to_use_source: backfill
 - description: Apply NORSOK standards for Norwegian petroleum industry materials, safety, and structural design
   family: engineering
   id: engineering/standards/norsok
   name: norsok
-  when_to_use: '### Use This Skill When: - Designing for the North Sea or harsh cold-climate environments. - Defining Well Barrier Schematics (D-010). - Specifying high-durability coating systems (M-501).'
-  when_to_use_source: section
+  when_to_use: norsok Apply NORSOK standards for Norwegian petroleum industry materials, safety, and structural design engineering
+  when_to_use_source: backfill
 - description: Unit-safe engineering calculations with provenance tracking, dimensional consistency verification, and unit conversion across SI, inch, and metric systems.
   family: engineering
   id: engineering/units
@@ -2804,8 +2804,8 @@ skills:
   family: finance
   id: finance/c-corp-rd-tax-strategy
   name: c-corp-rd-tax-strategy
-  when_to_use: c-corp-rd-tax-strategy Tax optimization for C-Corp engineering consulting firms investing in AI/R&D. Covers §174 amortization, §41 R&D credits, loan-to-equity conversion, NOL planning, and AI growth funding models. finance
-  when_to_use_source: backfill
+  when_to_use: When a shareholder loan to the C-Corp is being used to fund R&D, and the ongoing imputed interest or repayment obligation is a problem.
+  when_to_use_source: section
 - description: Comprehensive tax consultant for C-Corp owners of NNN (triple-net) commercial properties. Covers Form 1120 preparation, cost segregation, depreciation schedules, NOL management, 1099 reconciliation, tenant reimbursement tracking, and IRS compliance.
   family: finance
   id: finance/tax-consultant-nnn-property
@@ -2990,8 +2990,8 @@ skills:
   family: media
   id: media/spotify
   name: spotify
-  when_to_use: 'spotify Spotify: play, search, queue, manage playlists and devices. media'
-  when_to_use_source: backfill
+  when_to_use: The user says something like "play X", "pause", "skip", "queue up X", "what's playing", "search for X", "add to my X playlist", "make a playlist", "save this to my library", etc.
+  when_to_use_source: section
 - description: Fetch YouTube video transcripts and transform them into structured content (chapters, summaries, threads, blog posts). Use when the user shares a YouTube URL or video link, asks to summarize a video, requests a transcript, or wants to extract and reformat content from any YouTube video.
   family: media
   id: media/youtube-content
@@ -3020,20 +3020,20 @@ skills:
   family: mlops
   id: mlops/cloud/modal
   name: modal-serverless-gpu
-  when_to_use: modal-serverless-gpu Serverless GPU cloud platform for running ML workloads. Use when you need on-demand GPU access without infrastructure management, deploying ML models as APIs, or running batch jobs with automatic scaling. mlops
-  when_to_use_source: backfill
+  when_to_use: '**Use Modal when:** - Running GPU-intensive ML workloads without managing infrastructure - Deploying ML models as auto-scaling APIs - Running batch processing jobs (training, inference, data processing) - Need pay-per-second GPU pricing without idle costs - Prototyping ML applications quickly - Running scheduled jobs (cron-like workloads) **Key features:** - **Serverless GPUs**: T4, L4, A10G, L40S, A100, H100, H200, B200 on-demand - **Python-native**: Define infrastructure in Python code, no YAML - **Auto-scaling**: Scale to zero, scale to 100+ GPUs instantly - **Sub-second cold starts**: Rust-based infrastructure for fast container launches - **Container caching**: Image layers cached for rapid iteration - **Web endpoints**: Deploy functions as REST APIs with zero-downtime updates **Use alternatives instead:** - **RunPod**: For longer-running pods with persistent state - **Lambda Labs**: For reserved GPU instances - **SkyPilot**: For multi-cloud orchestration and cost optimization - **Kubernetes**: For complex multi-service architectures'
+  when_to_use_source: section
 - description: Evaluates LLMs across 60+ academic benchmarks (MMLU, HumanEval, GSM8K, TruthfulQA, HellaSwag). Use when benchmarking model quality, comparing models, reporting academic results, or tracking training progress. Industry standard used by EleutherAI, HuggingFace, and major labs. Supports HuggingFace, vLLM, APIs.
   family: mlops
   id: mlops/evaluation/lm-evaluation-harness
   name: evaluating-llms-harness
-  when_to_use: evaluating-llms-harness Evaluates LLMs across 60+ academic benchmarks (MMLU, HumanEval, GSM8K, TruthfulQA, HellaSwag). Use when benchmarking model quality, comparing models, reporting academic results, or tracking training progress. Industry standard used by EleutherAI, HuggingFace, and major labs. Supports HuggingFace, vLLM, APIs. mlops
-  when_to_use_source: backfill
+  when_to_use: '**Use lm-evaluation-harness when:** - Benchmarking models for academic papers - Comparing model quality across standard tasks - Tracking training progress - Reporting standardized metrics (everyone uses same prompts) - Need reproducible evaluation **Use alternatives instead:** - **HELM** (Stanford): Broader evaluation (fairness, efficiency, calibration) - **AlpacaEval**: Instruction-following evaluation with LLM judges - **MT-Bench**: Conversational multi-turn evaluation - **Custom scripts**: Domain-specific evaluation'
+  when_to_use_source: section
 - description: Track ML experiments with automatic logging, visualize training in real-time, optimize hyperparameters with sweeps, and manage model registry with W&B - collaborative MLOps platform
   family: mlops
   id: mlops/evaluation/weights-and-biases
   name: weights-and-biases
-  when_to_use: weights-and-biases Track ML experiments with automatic logging, visualize training in real-time, optimize hyperparameters with sweeps, and manage model registry with W&B - collaborative MLOps platform mlops
-  when_to_use_source: backfill
+  when_to_use: 'Use Weights & Biases (W&B) when you need to: - **Track ML experiments** with automatic metric logging - **Visualize training** in real-time dashboards - **Compare runs** across hyperparameters and configurations - **Optimize hyperparameters** with automated sweeps - **Manage model registry** with versioning and lineage - **Collaborate on ML projects** with team workspaces - **Track artifacts** (datasets, models, code) with lineage **Users**: 200,000+ ML practitioners | **GitHub Stars**: 10.5k+ | **Integrations**: 100+'
+  when_to_use_source: section
 - description: Hugging Face Hub CLI (hf) — search, download, and upload models and datasets, manage repos, query datasets with SQL, deploy inference endpoints, manage Spaces and buckets.
   family: mlops
   id: mlops/huggingface-hub
@@ -3044,104 +3044,104 @@ skills:
   family: mlops
   id: mlops/inference/gguf
   name: gguf-quantization
-  when_to_use: gguf-quantization GGUF format and llama.cpp quantization for efficient CPU/GPU inference. Use when deploying models on consumer hardware, Apple Silicon, or when needing flexible quantization from 2-8 bit without GPU requirements. mlops
-  when_to_use_source: backfill
+  when_to_use: '**Use GGUF when:** - Deploying on consumer hardware (laptops, desktops) - Running on Apple Silicon (M1/M2/M3) with Metal acceleration - Need CPU inference without GPU requirements - Want flexible quantization (Q2_K to Q8_0) - Using local AI tools (LM Studio, Ollama, text-generation-webui) **Key advantages:** - **Universal hardware**: CPU, Apple Silicon, NVIDIA, AMD support - **No Python runtime**: Pure C/C++ inference - **Flexible quantization**: 2-8 bit with various methods (K-quants) - **Ecosystem support**: LM Studio, Ollama, koboldcpp, and more - **imatrix**: Importance matrix for better low-bit quality **Use alternatives instead:** - **AWQ/GPTQ**: Maximum accuracy with calibration on NVIDIA GPUs - **HQQ**: Fast calibration-free quantization for HuggingFace - **bitsandbytes**: Simple integration with transformers library - **TensorRT-LLM**: Production NVIDIA deployment with maximum speed'
+  when_to_use_source: section
 - description: Control LLM output with regex and grammars, guarantee valid JSON/XML/code generation, enforce structured formats, and build multi-step workflows with Guidance - Microsoft Research's constrained generation framework
   family: mlops
   id: mlops/inference/guidance
   name: guidance
-  when_to_use: guidance Control LLM output with regex and grammars, guarantee valid JSON/XML/code generation, enforce structured formats, and build multi-step workflows with Guidance - Microsoft Research's constrained generation framework mlops
-  when_to_use_source: backfill
+  when_to_use: 'Use Guidance when you need to: - **Control LLM output syntax** with regex or grammars - **Guarantee valid JSON/XML/code** generation - **Reduce latency** vs traditional prompting approaches - **Enforce structured formats** (dates, emails, IDs, etc.) - **Build multi-step workflows** with Pythonic control flow - **Prevent invalid outputs** through grammatical constraints **GitHub Stars**: 18,000+ | **From**: Microsoft Research'
+  when_to_use_source: section
 - description: Runs LLM inference on CPU, Apple Silicon, and consumer GPUs without NVIDIA hardware. Use for edge deployment, M1/M2/M3 Macs, AMD/Intel GPUs, or when CUDA is unavailable. Supports GGUF quantization (1.5-8 bit) for reduced memory and 4-10× speedup vs PyTorch on CPU.
   family: mlops
   id: mlops/inference/llama-cpp
   name: llama-cpp
-  when_to_use: llama-cpp Runs LLM inference on CPU, Apple Silicon, and consumer GPUs without NVIDIA hardware. Use for edge deployment, M1/M2/M3 Macs, AMD/Intel GPUs, or when CUDA is unavailable. Supports GGUF quantization (1.5-8 bit) for reduced memory and 4-10× speedup vs PyTorch on CPU. mlops
-  when_to_use_source: backfill
+  when_to_use: '**Use llama.cpp when:** - Running on CPU-only machines - Deploying on Apple Silicon (M1/M2/M3/M4) - Using AMD or Intel GPUs (no CUDA) - Edge deployment (Raspberry Pi, embedded systems) - Need simple deployment without Docker/Python **Use TensorRT-LLM instead when:** - Have NVIDIA GPUs (A100/H100) - Need maximum throughput (100K+ tok/s) - Running in datacenter with CUDA **Use vLLM instead when:** - Have NVIDIA GPUs - Need Python-first API - Want PagedAttention'
+  when_to_use_source: section
 - description: Remove refusal behaviors from open-weight LLMs using OBLITERATUS — mechanistic interpretability techniques (diff-in-means, SVD, whitened SVD, LEACE, SAE decomposition, etc.) to excise guardrails while preserving reasoning. 9 CLI methods, 28 analysis modules, 116 model presets across 5 compute tiers, tournament evaluation, and telemetry-driven recommendations. Use when a user wants to uncensor, abliterate, or remove refusal from an LLM.
   family: mlops
   id: mlops/inference/obliteratus
   name: obliteratus
-  when_to_use: obliteratus Remove refusal behaviors from open-weight LLMs using OBLITERATUS — mechanistic interpretability techniques (diff-in-means, SVD, whitened SVD, LEACE, SAE decomposition, etc.) to excise guardrails while preserving reasoning. 9 CLI methods, 28 analysis modules, 116 model presets across 5 compute tiers, tournament evaluation, and telemetry-driven recommendations. Use when a user wants to uncensor, abliterate, or remove refusal from an LLM. mlops
-  when_to_use_source: backfill
+  when_to_use: 'Trigger when the user: - Wants to "uncensor" or "abliterate" an LLM - Asks about removing refusal/guardrails from a model - Wants to create an uncensored version of Llama, Qwen, Mistral, etc. - Mentions "refusal removal", "abliteration", "weight projection" - Wants to analyze how a model''s refusal mechanism works - References OBLITERATUS, abliterator, or refusal directions'
+  when_to_use_source: section
 - description: Guarantee valid JSON/XML/code structure during generation, use Pydantic models for type-safe outputs, support local models (Transformers, vLLM), and maximize inference speed with Outlines - dottxt.ai's structured generation library
   family: mlops
   id: mlops/inference/outlines
   name: outlines
-  when_to_use: outlines Guarantee valid JSON/XML/code structure during generation, use Pydantic models for type-safe outputs, support local models (Transformers, vLLM), and maximize inference speed with Outlines - dottxt.ai's structured generation library mlops
-  when_to_use_source: backfill
+  when_to_use: 'Use Outlines when you need to: - **Guarantee valid JSON/XML/code** structure during generation - **Use Pydantic models** for type-safe outputs - **Support local models** (Transformers, llama.cpp, vLLM) - **Maximize inference speed** with zero-overhead structured generation - **Generate against JSON schemas** automatically - **Control token sampling** at the grammar level **GitHub Stars**: 8,000+ | **From**: dottxt.ai (formerly .txt)'
+  when_to_use_source: section
 - description: Serves LLMs with high throughput using vLLM's PagedAttention and continuous batching. Use when deploying production LLM APIs, optimizing inference latency/throughput, or serving models with limited GPU memory. Supports OpenAI-compatible endpoints, quantization (GPTQ/AWQ/FP8), and tensor parallelism.
   family: mlops
   id: mlops/inference/vllm
   name: serving-llms-vllm
-  when_to_use: serving-llms-vllm Serves LLMs with high throughput using vLLM's PagedAttention and continuous batching. Use when deploying production LLM APIs, optimizing inference latency/throughput, or serving models with limited GPU memory. Supports OpenAI-compatible endpoints, quantization (GPTQ/AWQ/FP8), and tensor parallelism. mlops
-  when_to_use_source: backfill
+  when_to_use: '**Use vLLM when:** - Deploying production LLM APIs (100+ req/sec) - Serving OpenAI-compatible endpoints - Limited GPU memory but need large models - Multi-user applications (chatbots, assistants) - Need low latency with high throughput **Use alternatives instead:** - **llama.cpp**: CPU/edge inference, single-user - **HuggingFace transformers**: Research, prototyping, one-off generation - **TensorRT-LLM**: NVIDIA-only, need absolute maximum performance - **Text-Generation-Inference**: Already in HuggingFace ecosystem'
+  when_to_use_source: section
 - description: PyTorch library for audio generation including text-to-music (MusicGen) and text-to-sound (AudioGen). Use when you need to generate music from text descriptions, create sound effects, or perform melody-conditioned music generation.
   family: mlops
   id: mlops/models/audiocraft
   name: audiocraft-audio-generation
-  when_to_use: audiocraft-audio-generation PyTorch library for audio generation including text-to-music (MusicGen) and text-to-sound (AudioGen). Use when you need to generate music from text descriptions, create sound effects, or perform melody-conditioned music generation. mlops
-  when_to_use_source: backfill
+  when_to_use: '**Use AudioCraft when:** - Need to generate music from text descriptions - Creating sound effects and environmental audio - Building music generation applications - Need melody-conditioned music generation - Want stereo audio output - Require controllable music generation with style transfer **Key features:** - **MusicGen**: Text-to-music generation with melody conditioning - **AudioGen**: Text-to-sound effects generation - **EnCodec**: High-fidelity neural audio codec - **Multiple model sizes**: Small (300M) to Large (3.3B) - **Stereo support**: Full stereo audio generation - **Style conditioning**: MusicGen-Style for reference-based generation **Use alternatives instead:** - **Stable Audio**: For longer commercial music generation - **Bark**: For text-to-speech with music/sound effects - **Riffusion**: For spectogram-based music generation - **OpenAI Jukebox**: For raw audio generation with lyrics'
+  when_to_use_source: section
 - description: OpenAI's model connecting vision and language. Enables zero-shot image classification, image-text matching, and cross-modal retrieval. Trained on 400M image-text pairs. Use for image search, content moderation, or vision-language tasks without fine-tuning. Best for general-purpose image understanding.
   family: mlops
   id: mlops/models/clip
   name: clip
-  when_to_use: clip OpenAI's model connecting vision and language. Enables zero-shot image classification, image-text matching, and cross-modal retrieval. Trained on 400M image-text pairs. Use for image search, content moderation, or vision-language tasks without fine-tuning. Best for general-purpose image understanding. mlops
-  when_to_use_source: backfill
+  when_to_use: '**Use when:** - Zero-shot image classification (no training data needed) - Image-text similarity/matching - Semantic image search - Content moderation (detect NSFW, violence) - Visual question answering - Cross-modal retrieval (image→text, text→image) **Metrics**: - **25,300+ GitHub stars** - Trained on 400M image-text pairs - Matches ResNet-50 on ImageNet (zero-shot) - MIT License **Use alternatives instead**: - **BLIP-2**: Better captioning - **LLaVA**: Vision-language chat - **Segment Anything**: Image segmentation'
+  when_to_use_source: section
 - description: Foundation model for image segmentation with zero-shot transfer. Use when you need to segment any object in images using points, boxes, or masks as prompts, or automatically generate all object masks in an image.
   family: mlops
   id: mlops/models/segment-anything
   name: segment-anything-model
-  when_to_use: segment-anything-model Foundation model for image segmentation with zero-shot transfer. Use when you need to segment any object in images using points, boxes, or masks as prompts, or automatically generate all object masks in an image. mlops
-  when_to_use_source: backfill
+  when_to_use: '**Use SAM when:** - Need to segment any object in images without task-specific training - Building interactive annotation tools with point/box prompts - Generating training data for other vision models - Need zero-shot transfer to new image domains - Building object detection/segmentation pipelines - Processing medical, satellite, or domain-specific images **Key features:** - **Zero-shot segmentation**: Works on any image domain without fine-tuning - **Flexible prompts**: Points, bounding boxes, or previous masks - **Automatic segmentation**: Generate all object masks automatically - **High quality**: Trained on 1.1 billion masks from 11 million images - **Multiple model sizes**: ViT-B (fastest), ViT-L, ViT-H (most accurate) - **ONNX export**: Deploy in browsers and edge devices **Use alternatives instead:** - **YOLO/Detectron2**: For real-time object detection with classes - **Mask2Former**: For semantic/panoptic segmentation with categories - **GroundingDINO + SAM**: For text-prompted segmentation - **SAM 2**: For video segmentation tasks'
+  when_to_use_source: section
 - description: State-of-the-art text-to-image generation with Stable Diffusion models via HuggingFace Diffusers. Use when generating images from text prompts, performing image-to-image translation, inpainting, or building custom diffusion pipelines.
   family: mlops
   id: mlops/models/stable-diffusion
   name: stable-diffusion-image-generation
-  when_to_use: stable-diffusion-image-generation State-of-the-art text-to-image generation with Stable Diffusion models via HuggingFace Diffusers. Use when generating images from text prompts, performing image-to-image translation, inpainting, or building custom diffusion pipelines. mlops
-  when_to_use_source: backfill
+  when_to_use: '**Use Stable Diffusion when:** - Generating images from text descriptions - Performing image-to-image translation (style transfer, enhancement) - Inpainting (filling in masked regions) - Outpainting (extending images beyond boundaries) - Creating variations of existing images - Building custom image generation workflows **Key features:** - **Text-to-Image**: Generate images from natural language prompts - **Image-to-Image**: Transform existing images with text guidance - **Inpainting**: Fill masked regions with context-aware content - **ControlNet**: Add spatial conditioning (edges, poses, depth) - **LoRA Support**: Efficient fine-tuning and style adaptation - **Multiple Models**: SD 1.5, SDXL, SD 3.0, Flux support **Use alternatives instead:** - **DALL-E 3**: For API-based generation without GPU - **Midjourney**: For artistic, stylized outputs - **Imagen**: For Google Cloud integration - **Leonardo.ai**: For web-based creative workflows'
+  when_to_use_source: section
 - description: OpenAI's general-purpose speech recognition model. Supports 99 languages, transcription, translation to English, and language identification. Six model sizes from tiny (39M params) to large (1550M params). Use for speech-to-text, podcast transcription, or multilingual audio processing. Best for robust, multilingual ASR.
   family: mlops
   id: mlops/models/whisper
   name: whisper
-  when_to_use: whisper OpenAI's general-purpose speech recognition model. Supports 99 languages, transcription, translation to English, and language identification. Six model sizes from tiny (39M params) to large (1550M params). Use for speech-to-text, podcast transcription, or multilingual audio processing. Best for robust, multilingual ASR. mlops
-  when_to_use_source: backfill
+  when_to_use: '**Use when:** - Speech-to-text transcription (99 languages) - Podcast/video transcription - Meeting notes automation - Translation to English - Noisy audio transcription - Multilingual audio processing **Metrics**: - **72,900+ GitHub stars** - 99 languages supported - Trained on 680,000 hours of audio - MIT License **Use alternatives instead**: - **AssemblyAI**: Managed API, speaker diarization - **Deepgram**: Real-time streaming ASR - **Google Speech-to-Text**: Cloud-based'
+  when_to_use_source: section
 - description: Expert guidance for fine-tuning LLMs with Axolotl - YAML configs, 100+ models, LoRA/QLoRA, DPO/KTO/ORPO/GRPO, multimodal support
   family: mlops
   id: mlops/training/axolotl
   name: axolotl
-  when_to_use: axolotl Expert guidance for fine-tuning LLMs with Axolotl - YAML configs, 100+ models, LoRA/QLoRA, DPO/KTO/ORPO/GRPO, multimodal support mlops
-  when_to_use_source: backfill
+  when_to_use: 'This skill should be triggered when: - Working with axolotl - Asking about axolotl features or APIs - Implementing axolotl solutions - Debugging axolotl code - Learning axolotl best practices'
+  when_to_use_source: section
 - description: Expert guidance for GRPO/RL fine-tuning with TRL for reasoning and task-specific model training
   family: mlops
   id: mlops/training/grpo-rl-training
   name: grpo-rl-training
-  when_to_use: grpo-rl-training Expert guidance for GRPO/RL fine-tuning with TRL for reasoning and task-specific model training mlops
-  when_to_use_source: backfill
+  when_to_use: 'Use GRPO training when you need to: - **Enforce specific output formats** (e.g., XML tags, JSON, structured reasoning) - **Teach verifiable tasks** with objective correctness metrics (math, coding, fact-checking) - **Improve reasoning capabilities** by rewarding chain-of-thought patterns - **Align models to domain-specific behaviors** without labeled preference data - **Optimize for multiple objectives** simultaneously (format + correctness + style) **Do NOT use GRPO for:** - Simple supervised fine-tuning tasks (use SFT instead) - Tasks without clear reward signals - When you already have high-quality preference pairs (use DPO/PPO instead) ---'
+  when_to_use_source: section
 - description: Parameter-efficient fine-tuning for LLMs using LoRA, QLoRA, and 25+ methods. Use when fine-tuning large models (7B-70B) with limited GPU memory, when you need to train <1% of parameters with minimal accuracy loss, or for multi-adapter serving. HuggingFace's official library integrated with transformers ecosystem.
   family: mlops
   id: mlops/training/peft
   name: peft-fine-tuning
-  when_to_use: peft-fine-tuning Parameter-efficient fine-tuning for LLMs using LoRA, QLoRA, and 25+ methods. Use when fine-tuning large models (7B-70B) with limited GPU memory, when you need to train <1% of parameters with minimal accuracy loss, or for multi-adapter serving. HuggingFace's official library integrated with transformers ecosystem. mlops
-  when_to_use_source: backfill
+  when_to_use: '**Use PEFT/LoRA when:** - Fine-tuning 7B-70B models on consumer GPUs (RTX 4090, A100) - Need to train <1% parameters (6MB adapters vs 14GB full model) - Want fast iteration with multiple task-specific adapters - Deploying multiple fine-tuned variants from one base model **Use QLoRA (PEFT + quantization) when:** - Fine-tuning 70B models on single 24GB GPU - Memory is the primary constraint - Can accept ~5% quality trade-off vs full fine-tuning **Use full fine-tuning instead when:** - Training small models (<1B parameters) - Need maximum quality and have compute budget - Significant domain shift requires updating all weights'
+  when_to_use_source: section
 - description: Expert guidance for Fully Sharded Data Parallel training with PyTorch FSDP - parameter sharding, mixed precision, CPU offloading, FSDP2
   family: mlops
   id: mlops/training/pytorch-fsdp
   name: pytorch-fsdp
-  when_to_use: pytorch-fsdp Expert guidance for Fully Sharded Data Parallel training with PyTorch FSDP - parameter sharding, mixed precision, CPU offloading, FSDP2 mlops
-  when_to_use_source: backfill
+  when_to_use: 'This skill should be triggered when: - Working with pytorch-fsdp - Asking about pytorch-fsdp features or APIs - Implementing pytorch-fsdp solutions - Debugging pytorch-fsdp code - Learning pytorch-fsdp best practices'
+  when_to_use_source: section
 - description: Fine-tune LLMs using reinforcement learning with TRL - SFT for instruction tuning, DPO for preference alignment, PPO/GRPO for reward optimization, and reward model training. Use when need RLHF, align model with preferences, or train from human feedback. Works with HuggingFace Transformers.
   family: mlops
   id: mlops/training/trl-fine-tuning
   name: fine-tuning-with-trl
-  when_to_use: fine-tuning-with-trl Fine-tune LLMs using reinforcement learning with TRL - SFT for instruction tuning, DPO for preference alignment, PPO/GRPO for reward optimization, and reward model training. Use when need RLHF, align model with preferences, or train from human feedback. Works with HuggingFace Transformers. mlops
-  when_to_use_source: backfill
+  when_to_use: '**Use TRL when:** - Need to align model with human preferences - Have preference data (chosen/rejected pairs) - Want to use reinforcement learning (PPO, GRPO) - Need reward model training - Doing RLHF (full pipeline) **Method selection**: - **SFT**: Have prompt-completion pairs, want basic instruction following - **DPO**: Have preferences, want simple alignment (no reward model needed) - **PPO**: Have reward model, need maximum control over RL - **GRPO**: Memory-constrained, want online RL - **Reward Model**: Building RLHF pipeline, need to score generations **Use alternatives instead:** - **HuggingFace Trainer**: Basic fine-tuning without RL - **Axolotl**: YAML-based training configuration - **LitGPT**: Educational, minimal fine-tuning - **Unsloth**: Fast LoRA training'
+  when_to_use_source: section
 - description: Expert guidance for fast fine-tuning with Unsloth - 2-5x faster training, 50-80% less memory, LoRA/QLoRA optimization
   family: mlops
   id: mlops/training/unsloth
   name: unsloth
-  when_to_use: unsloth Expert guidance for fast fine-tuning with Unsloth - 2-5x faster training, 50-80% less memory, LoRA/QLoRA optimization mlops
-  when_to_use_source: backfill
+  when_to_use: 'This skill should be triggered when: - Working with unsloth - Asking about unsloth features or APIs - Implementing unsloth solutions - Debugging unsloth code - Learning unsloth best practices'
+  when_to_use_source: section
 - description: Self-hosted no-code automation platform with visual flow builder, type-safe custom pieces, API integrations, and event-driven triggers
   family: operations
   id: operations/automation/activepieces
@@ -3316,14 +3316,14 @@ skills:
   family: productivity
   id: productivity/teams-meeting-pipeline
   name: teams-meeting-pipeline
-  when_to_use: teams-meeting-pipeline Operate the Teams meeting summary pipeline via Hermes CLI — summarize meetings, inspect pipeline status, replay jobs, manage Microsoft Graph subscriptions. productivity
-  when_to_use_source: backfill
+  when_to_use: 'The user is asking to: - summarize a Teams meeting / extract action items / pull meeting notes - check pipeline status, inspect a stored meeting job, or see recent meetings - replay / re-run a stored job that failed or needs a fresh summary - validate Microsoft Graph setup after changing env or config - troubleshoot "meeting summary never arrived" or "no new meetings are ingesting" - manage Graph webhook subscriptions (create, renew, delete, inspect) - set up automated subscription renewal (see pitfall below) Multilingual trigger examples (not exhaustive): - English: "summarize the Teams meeting", "pipeline status", "replay job X" - Turkish: "Teams meeting özetle", "action item çıkar", "toplantı notu", "pipeline durumu", "replay job"'
+  when_to_use_source: section
 - description: Jailbreak API-served LLMs using G0DM0D3 techniques — Parseltongue input obfuscation (33 techniques), GODMODE CLASSIC system prompt templates, ULTRAPLINIAN multi-model racing, encoding escalation, and Hermes-native prefill/system prompt integration. Use when a user wants to bypass safety filters, jailbreak a model, or red-team model robustness.
   family: red-teaming
   id: red-teaming/godmode
   name: godmode
-  when_to_use: godmode Jailbreak API-served LLMs using G0DM0D3 techniques — Parseltongue input obfuscation (33 techniques), GODMODE CLASSIC system prompt templates, ULTRAPLINIAN multi-model racing, encoding escalation, and Hermes-native prefill/system prompt integration. Use when a user wants to bypass safety filters, jailbreak a model, or red-team model robustness. red-teaming
-  when_to_use_source: backfill
+  when_to_use: 'Trigger when the user: - Wants to "jailbreak" a model via API - Asks about bypassing safety filters on Claude, GPT, Gemini, Grok, etc. - Wants to set up persistent jailbreaking in their Hermes config - Asks about Parseltongue, GODMODE, L1B3RT4S, or Pliny''s techniques - Wants to red-team a model''s safety training - Wants to race multiple models to find the least censored response - Mentions prefill engineering or system prompt injection for jailbreaking'
+  when_to_use_source: section
 - description: Search and retrieve academic papers from arXiv using their free REST API. No API key needed. Search by keyword, author, category, or ID. Combine with web_extract or the ocr-and-documents skill to read full paper content.
   family: research
   id: research/arxiv
@@ -3358,8 +3358,8 @@ skills:
   family: research
   id: research/llm-wiki-cadence-governance
   name: llm-wiki-cadence-governance
-  when_to_use: llm-wiki-cadence-governance Weekly governance workflow for keeping an llm-wiki repository current, code-development-useful, and connected to actionable GitHub issue planning. research
-  when_to_use_source: backfill
+  when_to_use: '- User asks to review, refresh, or maintain an `llm-wiki` repository. - User asks for a weekly cadence to keep AI/LLM concepts current. - User asks what GitHub issues should be opened from an llm-wiki architecture/content gap review. - A session produces llm-wiki maintenance artifacts that need durable closeout or restart handoff.'
+  when_to_use_source: trigger
 - description: Enforce the page-shape contract when a repo-side document or analysis output gets converted into an llm-wiki page. Use when (1) running `scripts/knowledge/llm_wiki.py ingest`, (2) writing or rewriting a wiki page from docs/reports/*, docs/handoffs/*, scripts/review/results/*, or calc citation outputs, (3) deciding whether a page should be split into a folder of sub-pages, (4) reviewing wiki PRs for length / diagram / divide-and-conquer compliance. Codifies the Karpathy + Astro-Han + lewislulu page rules applied to workspace-hub's domain-wiki layout under /mnt/local-analysis/llm-wiki/wikis/<domain>/. Sibling to research/llm-wiki (which owns the CLI ops) — this skill is the quality gate every converted page must clear before commit.
   family: research
   id: research/llm-wiki-page-shape-contract
@@ -3388,8 +3388,8 @@ skills:
   family: research
   id: research/ml-paper-writing
   name: ml-paper-writing
-  when_to_use: ml-paper-writing Write publication-ready ML/AI papers for NeurIPS, ICML, ICLR, ACL, AAAI, COLM. Use when drafting papers from research repos, structuring arguments, verifying citations, or preparing camera-ready submissions. Includes LaTeX templates, reviewer guidelines, and citation verification workflows. research
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when: - **Starting from a research repo** to write a paper - **Drafting or revising** specific sections - **Finding and verifying citations** for related work - **Formatting** for conference submission - **Resubmitting** to a different venue (format conversion) - **Iterating** on drafts with scientist feedback **Always remember**: First drafts are starting points for discussion, not final outputs. ---'
+  when_to_use_source: section
 - description: Query Polymarket prediction market data — search markets, get prices, orderbooks, and price history. Read-only via public REST APIs, no API key needed.
   family: research
   id: research/polymarket
@@ -3406,8 +3406,8 @@ skills:
   family: research
   id: research/research-paper-writing
   name: research-paper-writing
-  when_to_use: research-paper-writing End-to-end pipeline for writing ML/AI research papers — from experiment design through analysis, drafting, revision, and submission. Covers NeurIPS, ICML, ICLR, ACL, AAAI, COLM. Integrates automated experiment monitoring, statistical analysis, iterative writing, and citation verification. research
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when: - **Starting a new research paper** from an existing codebase or idea - **Designing and running experiments** to support paper claims - **Writing or revising** any section of a research paper - **Preparing for submission** to a specific conference - **Responding to reviews** with additional experiments or revisions - **Converting** a paper between conference formats'
+  when_to_use_source: section
 - description: Auto-query llm-wiki domains for relevant context before executing domain tasks
   family: research
   id: research/wiki-context
@@ -3442,14 +3442,14 @@ skills:
   family: science
   id: science/bio-research/scvi-tools
   name: scvi-tools
-  when_to_use: 'scvi-tools Deep learning for single-cell analysis using scvi-tools: data integration, batch correction, multi-modal analysis, reference mapping, and more. science'
-  when_to_use_source: backfill
+  when_to_use: '- When scvi-tools, scVI, scANVI, or related models are mentioned - When deep learning-based batch correction or integration is needed - When working with multi-modal data (CITE-seq, multiome) - When reference mapping or label transfer is required - When analyzing ATAC-seq or spatial transcriptomics data - When learning latent representations of single-cell data'
+  when_to_use_source: section
 - description: Performs quality control on single-cell RNA-seq data (.h5ad or .h5 files) using scverse best practices with MAD-based filtering and comprehensive visualizations.
   family: science
   id: science/bio-research/single-cell-rna-qc
   name: single-cell-rna-qc
-  when_to_use: single-cell-rna-qc Performs quality control on single-cell RNA-seq data (.h5ad or .h5 files) using scverse best practices with MAD-based filtering and comprehensive visualizations. science
-  when_to_use_source: backfill
+  when_to_use: 'Use when users: - Request quality control or QC on single-cell RNA-seq data - Want to filter low-quality cells or assess data quality - Need QC visualizations or metrics - Ask to follow scverse/scanpy best practices - Request MAD-based filtering or outlier detection **Supported input formats:** - `.h5ad` files (AnnData format from scanpy/Python workflows) - `.h5` files (10X Genomics Cell Ranger output) **Default recommendation**: Use Approach 1 (complete pipeline) unless the user has specific custom requirements or explicitly requests non-standard filtering logic.'
+  when_to_use_source: section
 - description: Control Philips Hue lights, rooms, and scenes via the OpenHue CLI. Turn lights on/off, adjust brightness, color, color temperature, and activate scenes.
   family: smart-home
   id: smart-home/openhue
@@ -3532,8 +3532,8 @@ skills:
   family: software-development
   id: software-development/gemini-review-capacity-recovery
   name: gemini-review-capacity-recovery
-  when_to_use: gemini-review-capacity-recovery Handle Gemini adversarial-review runs that emit repeated 429 capacity errors before either recovering with a real verdict or failing unavailable. software-development
-  when_to_use_source: backfill
+  when_to_use: 'Typical output starts with one or more retry blocks like: - `Attempt N failed with status 429` - `RESOURCE_EXHAUSTED` - `MODEL_CAPACITY_EXHAUSTED` This does **not** necessarily mean the run is unusable.'
+  when_to_use_source: trigger
 - description: Canonical GitHub issue execution route after plan approval — strengthened resource intelligence, TDD-first implementation, targeted validation, adversarial review, delegation controls for Claude agent teams, GitHub progress posting, future-issue capture, and commit/push with closeout discipline.
   family: software-development
   id: software-development/gh-work-execution
@@ -3544,8 +3544,8 @@ skills:
   family: software-development
   id: software-development/gh-work-execution-checklist
   name: gh-work-execution-checklist
-  when_to_use: gh-work-execution-checklist Compact live-execution checklist companion for approved GitHub issue work. Use during active implementation as a fast operational route; gh-work-execution remains the canonical source of truth. software-development
-  when_to_use_source: backfill
+  when_to_use: 'Use when: - the issue is already planned and approved - you need a fast execution checklist while working - you want to keep GitHub updates, validation, and closeout disciplined Do not use this instead of the canonical route when scope, delegation, policy, or closeout decisions are unclear.'
+  when_to_use_source: trigger
 - description: Audit a repo's live GSD/get-shit-done workflow state against docs, issues, and runtime outputs to find stale issues, automation reliability gaps, parser drift, migration residue, and policy contradictions.
   family: software-development
   id: software-development/gsd-operational-audit
@@ -3646,8 +3646,8 @@ skills:
   family: software-development
   id: software-development/single-terminal-gh-issue-prompts
   name: single-terminal-gh-issue-prompts
-  when_to_use: single-terminal-gh-issue-prompts Generate live issue-specific Claude prompts for a single terminal, with repo-aware path contracts and plan-gate safety checks. software-development
-  when_to_use_source: backfill
+  when_to_use: 'Use this skill when the user asks for any of: - "issue-specific prompts" - "10 gh issue prompts" - "Claude prompts for these issues" - "single terminal Claude agent-team prompts" - "prompts for actual repo issues"'
+  when_to_use_source: trigger
 - description: Write test suites for SKELETON packages (zero test coverage) to uplift them to DEVELOPMENT maturity. Handles non-importable modules, optional dependencies, separate sub-repos, and Flask/web packages without runtime.
   family: software-development
   id: software-development/skeleton-test-coverage-uplift
@@ -3700,8 +3700,8 @@ skills:
   family: travel
   id: travel/itinerary-design
   name: itinerary-design
-  when_to_use: itinerary-design Use when constructing a day-by-day itinerary inside a trip plan. Encodes base-count rules, jet-lag handling, transit-day discipline, slack budgeting, and the "last day = travel only" rule. Invoked by the trip-planner skill. travel
-  when_to_use_source: backfill
+  when_to_use: 'Render the itinerary as a 3-column table: `Day | Base | Plan`. The base column makes mid-trip moves visible. Bold the day-of-week label (e.g., `**Day 1 (Sat)**`) so the reader can map plans to specific calendar days.'
+  when_to_use_source: section
 - description: Use when recommending lodging inside a trip plan. Encodes the hotel-vs-Airbnb decision matrix, walk-distance gates, never-fabricate-listings rule, and the specific search-criteria template for Airbnb/Vrbo entries. Invoked by trip-planner.
   family: travel
   id: travel/lodging-selection
@@ -3760,8 +3760,8 @@ skills:
   family: workspace-hub-learned
   id: workspace-hub-learned/blocked-branch-preserve-tag-cleanup
   name: blocked-branch-preserve-tag-cleanup
-  when_to_use: blocked-branch-preserve-tag-cleanup Safely clean stale local branches that cannot be merged by preserving them with local tags before deletion workspace-hub-learned
-  when_to_use_source: backfill
+  when_to_use: '- `git merge` fails with `refusing to merge unrelated histories` - branch has no matching remote branch - branch has shared history but the diff is extremely large / artifact-heavy / conflict-heavy, making opportunistic cleanup riskier than preservation - repo hygiene is the goal, not historical branch recovery work'
+  when_to_use_source: trigger
 - description: Plan post-smoke CI hardening as a bounded blocker-removal tranche instead of overpromising full green. Includes issue-body alignment, follow-up split rules, honest review bookkeeping, and reliable local validation commands.
   family: workspace-hub-learned
   id: workspace-hub-learned/bounded-post-smoke-ci-hardening-plan
@@ -3814,8 +3814,8 @@ skills:
   family: workspace-hub-learned
   id: workspace-hub-learned/documentation-contract-plan-hardening
   name: documentation-contract-plan-hardening
-  when_to_use: documentation-contract-plan-hardening Harden a documentation/contract plan before adversarial review by mapping every issue-scope requirement to independent acceptance criteria and tests, especially for routing/indexing contracts. workspace-hub-learned
-  when_to_use_source: backfill
+  when_to_use: 'Use before sending any documentation/contract plan to Codex/Gemini/Claude for adversarial review, especially when: - the issue is in `cat:documentation` or `cat:harness` - the deliverable is a contract, policy, checklist, or governance doc - the issue body has a bulleted scope that can be converted into testable requirements - local reports or freshly generated artifacts are being cited as planning evidence'
+  when_to_use_source: section
 - description: Track all dirty/untracked workspace-hub changes, merge stale branches into main, clean remote/local branches, and remove stale worktrees while preserving tracked nested gitlinks.
   family: workspace-hub-learned
   id: workspace-hub-learned/full-branch-cleanup-and-worktree-hygiene
@@ -3850,8 +3850,8 @@ skills:
   family: workspace-hub-learned
   id: workspace-hub-learned/gtm-demo-validation-cache-regression-repair
   name: gtm-demo-validation-cache-regression-repair
-  when_to_use: gtm-demo-validation-cache-regression-repair Diagnose and repair GTM demo validation failures caused by legacy cache files missing intermediate chart data, especially in nested digitalmodel demo scripts using --from-cache. workspace-hub-learned
-  when_to_use_source: backfill
+  when_to_use: 'Typical symptom: - `PYTHONPATH=examples/demos/gtm:src uv run pytest examples/demos/gtm/tests/test_gtm_demos.py -q` - one failing demo, often Demo 2 wall thickness - error from cached path like `NameError: PipeDefinition is not defined` Root cause pattern: - the script''s cached mode assumes newly added intermediate keys exist in old committed JSON - legacy cache only contains core keys like `metadata/results/summary` - chart builders fall through into engineering-calculation code paths, which require symbols that cached mode never initialized'
+  when_to_use_source: trigger
 - description: Generate GTM demo GIF assets from validated HTML reports, including both report-scroll GIFs and one higher-fidelity workflow-style GIF, while avoiding Playwright/Python environment traps.
   family: workspace-hub-learned
   id: workspace-hub-learned/gtm-demo-workflow-gif-generation
@@ -3916,8 +3916,8 @@ skills:
   family: workspace-hub-learned
   id: workspace-hub-learned/large-parallel-planning-wave-environment-failure-handoff
   name: large-parallel-planning-wave-environment-failure-handoff
-  when_to_use: large-parallel-planning-wave-environment-failure-handoff Handle large pre-plan-review planning waves that succeed analytically but fail to persist artifacts due to quota exhaustion, sandbox write failures, or cancelled GitHub mutations. workspace-hub-learned
-  when_to_use_source: backfill
+  when_to_use: 'Typical signals: - Claude lanes exit with `You''ve hit your limit · resets 2pm (America/Chicago)` - fallback Codex lanes hit sandbox/runtime failures like `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted` - safe-path writes fail (`apply_patch` / local file creation) - GitHub issue comments / labels / branch creation are cancelled - workers can still gather high-quality evidence and even converge on review verdicts, but nothing durable lands'
+  when_to_use_source: trigger
 - description: Design overnight implementation prompts that begin with a live repo/CI precheck so workers continue from partial progress instead of replaying stale handoffs.
   family: workspace-hub-learned
   id: workspace-hub-learned/live-state-aware-overnight-implementation-prompts
@@ -3982,8 +3982,8 @@ skills:
   family: workspace-hub-learned
   id: workspace-hub-learned/overnight-worktree-claude-noop-recovery
   name: overnight-worktree-claude-noop-recovery
-  when_to_use: overnight-worktree-claude-noop-recovery Recover overnight Claude worktree batches that appear to succeed but produce no artifacts; harden rerun prompts and launch commands. workspace-hub-learned
-  when_to_use_source: backfill
+  when_to_use: '- Background `claude -p` jobs in separate worktrees - `process poll` shows `exit_code: 0` - stdout/log output is empty or unhelpful - expected result files under `docs/reports/` / `docs/plans/` / `scripts/review/results/` were not created'
+  when_to_use_source: trigger
 - description: Prevent false stalls and missing-log failures in overnight Claude worktree batches by pre-warming uv environments, using exact log-path directory creation, and interpreting buffered logs correctly.
   family: workspace-hub-learned
   id: workspace-hub-learned/overnight-worktree-uv-warmup-and-log-path-guardrails
@@ -4042,8 +4042,8 @@ skills:
   family: workspace-hub-learned
   id: workspace-hub-learned/plan-review-rerun-cli-drift-and-git-contention
   name: plan-review-rerun-cli-drift-and-git-contention
-  when_to_use: plan-review-rerun-cli-drift-and-git-contention Recover iterative plan-review work when provider CLI wrappers drift, fresh reviews expose stale governance text, and active git pre-push processes make committing unsafe. workspace-hub-learned
-  when_to_use_source: backfill
+  when_to_use: '- A plan has old review waves (`r2`, `r3`, etc.) and new review findings against newer text. - Provider fanout returns `UNAVAILABLE` due CLI syntax drift, not a substantive review. - A fresh review identifies stale plan metadata, stale issue-status claims, or stale approval-artifact wording. - `git add`, `git status`, `git commit`, or `git push` are blocked by active pre-push/git processes or `.git/index.lock`.'
+  when_to_use_source: trigger
 - description: Handle overnight planning-only lanes where plan revision/editing works but real cross-provider review dispatch is permission-blocked.
   family: workspace-hub-learned
   id: workspace-hub-learned/planning-lane-cross-review-permission-fallback
@@ -4108,8 +4108,8 @@ skills:
   family: workspace-hub-learned
   id: workspace-hub-learned/static-site-build-artifact-plan-review
   name: static-site-build-artifact-plan-review
-  when_to_use: static-site-build-artifact-plan-review Plan-review pattern for static-site fixes where the deployed artifact is generated from source files (e.g. sitemap/robots/static assets). Prevents review churn by separating durable regression checks from one-time migration verification and by validating built output, not just source files. workspace-hub-learned
-  when_to_use_source: backfill
+  when_to_use: '- "verify the built artifact, not just the source file" - "before/after evidence is underspecified" - "this is a one-time migration check, not a durable regression test" - "hard-coded count is brittle" - "structure claims need parser-based verification"'
+  when_to_use_source: trigger
 - description: Independently verify subagent-claimed file writes with filesystem and git checks before treating the artifact as real, before committing it, and before referencing the path in downstream prompts.
   family: workspace-hub-learned
   id: workspace-hub-learned/subagent-write-verification
@@ -5026,5 +5026,5 @@ skills:
   family: workspace-hub
   id: workspace-hub/worktree-pre-push-bypass-for-tier1-checks
   name: worktree-pre-push-bypass-for-tier1-checks
-  when_to_use: worktree-pre-push-bypass-for-tier1-checks Handle workspace-hub integration-branch pushes from isolated git worktrees when the pre-push hook incorrectly assumes sibling tier-1 repos exist under the worktree path. workspace-hub
-  when_to_use_source: backfill
+  when_to_use: 'Typical push failure output includes lines like: - `New branch — running all tier-1 repo checks.` - `ERROR: directory not found: /.../worktree/.../assetutilities` - `ERROR: directory not found: /.../worktree/.../digitalmodel` - `ERROR: Unknown repo ''OGManufacturing''` - `failed to push some refs` This happens especially for isolated integration worktrees such as: - `workspace-hub-integration-*` - other temporary review/landing worktrees created from `main`'
+  when_to_use_source: trigger

@@ -234,6 +234,33 @@ jobs:
           cat /tmp/model-id.log >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
+  skill-index-coherence:
+    name: Skill-Index Coherence
+    # #3208 (epic #3058): binds the curated skill graph and the generated full
+    # index. BLOCKING checks: (a) curated skill basename exists in the tree;
+    # (c) the full index is freshly regenerable (no diff). (b) authored-but-
+    # backfilled is advisory (stderr only). Runs red in PR checks on drift;
+    # becomes merge-blocking once added to the protected-branch ruleset.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+      - name: Check skill-index coherence
+        run: |
+          set -o pipefail
+          echo "## Skill-Index Coherence (#3208)" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          uv run python scripts/enforcement/check-skill-index-coherence.py 2>&1 | tee /tmp/skidx.log
+          rc=${PIPESTATUS[0]}
+          cat /tmp/skidx.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          exit $rc
+
   compliance-dashboard:
     name: Compliance Dashboard
     runs-on: ubuntu-latest
