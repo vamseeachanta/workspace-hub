@@ -489,3 +489,4 @@ Add one row per plan:
 | [#3191](https://github.com/vamseeachanta/workspace-hub/issues/3191) | Gated workflow templates + cross-provider review workflow | [Plan](2026-06-17-issue-3191-gated-workflow-templates.md) | plan-review | T2 | 2026-06-17 |
 | [#3192](https://github.com/vamseeachanta/workspace-hub/issues/3192) | Reconcile routing-config.yaml with operator cost policy | [Plan](2026-06-17-issue-3192-routing-config-cost-policy.md) | plan-review | T2 | 2026-06-17 |
 | [#3205](https://github.com/vamseeachanta/workspace-hub/issues/3205) | Executed-router consolidation — enforce the routing cost ceiling at runtime | [Plan](2026-06-17-issue-3205-executed-router-consolidation.md) | plan-approved | T2 | 2026-06-17 |
+| [#3209](https://github.com/vamseeachanta/workspace-hub/issues/3209) | Reconcile tier-table routing into one cost-aligned source | [Plan](2026-06-17-issue-3209-tier-table-single-source.md) | plan-approved | T2 | 2026-06-17 |

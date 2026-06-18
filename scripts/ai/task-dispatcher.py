@@ -32,7 +32,10 @@ except ImportError:
 # Paths
 # ---------------------------------------------------------------------------
 REPO_ROOT = Path(__file__).resolve().parents[2]
-ROUTING_CONFIG = REPO_ROOT / "config" / "agents" / "routing-config.yaml"
+# Honor ROUTING_CONFIG_PATH so this tool and the resolver read the SAME config
+# when the override is set (#3209 review r3-F3).
+ROUTING_CONFIG = Path(os.environ.get(
+    "ROUTING_CONFIG_PATH", REPO_ROOT / "config" / "agents" / "routing-config.yaml"))
 PROVIDER_CAPS   = REPO_ROOT / "config" / "agents" / "provider-capabilities.yaml"
 
 # Single forbid-policy interpreter (#3205) — never re-implement forbid logic here.
@@ -64,12 +67,19 @@ KEYWORD_SIGNALS: dict[str, list[str]] = {
     ],
 }
 
-TIER_AGENT_PREFERENCE: dict[str, list[str]] = {
-    "simple":    ["claude", "hermes", "codex", "gemini"],
-    "standard":  ["claude", "codex",  "hermes", "gemini"],
-    "complex":   ["claude", "gemini", "hermes", "codex"],
-    "reasoning": ["claude", "gemini", "hermes", "codex"],
-}
+KNOWN_AGENTS: list[str] = list(KEYWORD_SIGNALS.keys())  # hermes, claude, codex, gemini
+
+
+def tier_preference(tier: str) -> list[str]:
+    """Cost-aligned agent preference for a tier, sourced from routing-config.yaml
+    tiers.* (#3209). The tier chain (claude/codex/gemini) leads; agents not in the
+    chain (hermes) are appended so keyword/dimension signals can still surface them.
+    """
+    try:
+        chain = routing_resolver.tier_chain(tier)
+    except routing_resolver.UnknownTierError:
+        chain = routing_resolver.tier_chain("STANDARD")
+    return chain + [a for a in KNOWN_AGENTS if a not in chain]
 
 # Hermes specialises in data/doc/batch work — boost it for COMPLEX data tasks
 HERMES_BOOST_TIERS = {"complex", "reasoning"}
@@ -125,7 +135,7 @@ def score_agents(task: str, tier: str, routing_cfg: dict, provider_caps: dict) -
     task_lower = task.lower()
     tier_lower = tier.lower()
 
-    tier_pref = TIER_AGENT_PREFERENCE.get(tier_lower, TIER_AGENT_PREFERENCE["standard"])
+    tier_pref = tier_preference(tier_lower)
     known_agents = list(KEYWORD_SIGNALS.keys())
 
     scores: list[dict] = []

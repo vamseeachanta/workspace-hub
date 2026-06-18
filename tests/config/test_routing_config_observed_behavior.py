@@ -9,11 +9,15 @@ ROUTING = REPO_ROOT / "config" / "agents" / "routing-config.yaml"
 CAPS = REPO_ROOT / "config" / "agents" / "provider-capabilities.yaml"
 
 
-def test_simple_and_standard_route_to_claude():
+def test_simple_and_standard_route_to_codex():
+    # #3209: tiers reconciled to cost-aligned — cheap tiers route to codex, not
+    # claude (matches the executed router + the cost-ceiling policy).
     with open(ROUTING) as handle:
         data = yaml.safe_load(handle)
-    assert data["tiers"]["SIMPLE"]["primary"] == "claude"
-    assert data["tiers"]["STANDARD"]["primary"] == "claude"
+    assert data["tiers"]["SIMPLE"]["primary"] == "codex"
+    assert data["tiers"]["STANDARD"]["primary"] == "codex"
+    assert data["tiers"]["COMPLEX"]["primary"] == "claude"
+    assert data["tiers"]["REASONING"]["primary"] == "claude"
 
 
 def test_research_and_data_dimensions_point_to_hermes():
