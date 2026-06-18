@@ -73,7 +73,7 @@ def test_ps1_sample_output_parses_schema_v4_with_provider_harness():
     assert set(d["dimensions"]) == EXPECTED_DIMS
     ph = d["dimensions"]["provider_harness"]
     assert ph["schema_version"] == 1
-    assert set(ph["providers"]) == {"claude", "codex", "hermes"}
+    assert set(ph["providers"]) == {"claude", "codex", "hermes", "gemini"}
 
 
 # ════════════════════════════════════════════════════════════════════════════

@@ -176,8 +176,8 @@ def test_collect_emits_schema_v4_with_complete_provider_harness(tmp_path):
     d = _run(_fixture(tmp_path))
     harness = d["dimensions"]["provider_harness"]
     assert harness["schema_version"] == 1
-    assert set(harness["providers"]) == {"claude", "codex", "hermes"}
-    for provider in ("claude", "codex", "hermes"):
+    assert set(harness["providers"]) == {"claude", "codex", "hermes", "gemini"}
+    for provider in ("claude", "codex", "hermes", "gemini"):
         record = harness["providers"][provider]
         assert set(record) >= {"present", "installed", "memory:read",
                                "skills:invoke", "workflow:gates"}
