@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-19T09:20:30.518205Z",
+  "generated_at": "2026-06-19T13:20:46.027228Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-19T09:20:27.584518Z",
+  "scorecard_generated_at": "2026-06-19T13:20:43.275816Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 43,
-      "total_candidates": 176,
+      "execution_ready_count": 38,
+      "total_candidates": 175,
       "top_issues": [
         {
           "number": 2686,
@@ -559,30 +559,6 @@
           ]
         },
         {
-          "number": 3205,
-          "title": "Executed-router consolidation: make routing-config cost ceiling actually enforced",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3205",
-          "labels": [
-            "priority:high",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-18T01:59:52Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2656,
           "title": "chore(repo-structure): normalize workspace-hub folder/file structure",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2656",
@@ -863,109 +839,6 @@
           ]
         },
         {
-          "number": 3189,
-          "title": "Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3189",
-          "labels": [
-            "priority:medium",
-            "machine:multi",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-17T21:44:51Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3190,
-          "title": "Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3190",
-          "labels": [
-            "priority:medium",
-            "machine:multi",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-17T22:06:28Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3191,
-          "title": "Gated workflow templates (issue\u2192plan\u2192approve\u2192implement\u2192review\u2192close) + cross-provider review workflow",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3191",
-          "labels": [
-            "priority:medium",
-            "machine:multi",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-17T19:27:50Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3192,
-          "title": "Reconcile routing-config.yaml with operator cost policy (Hermes\u2192agy, Claude dev-only)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3192",
-          "labels": [
-            "priority:medium",
-            "machine:multi",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-17T19:14:09Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3027,
           "title": "chore(config): purge archived OGManufacturing from config artifacts (regenerate/hand-edit/delete; keep audit trail)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3027",
@@ -988,30 +861,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3207,
-          "title": "agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3207",
-          "labels": [
-            "priority:low",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-19T01:48:41Z",
-          "execution_ready": true,
-          "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
             "implementation",
             "strategy"
           ]
@@ -1366,6 +1215,30 @@
           ]
         },
         {
+          "number": 3214,
+          "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3214",
+          "labels": [
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness",
+            "domain:harness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-19T12:32:52Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2660,
           "title": "Compliance alert: W20 \u2014 0% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2660",
@@ -1499,6 +1372,34 @@
           "priority_rank": 0,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2645,
+          "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2645",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:operations",
+            "machine:dev-secondary",
+            "agent:claude",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:workstations-machine-bringup",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-10T12:58:16Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "existing claude agent label",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
@@ -2162,6 +2063,58 @@
           ]
         },
         {
+          "number": 2641,
+          "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2641",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:multi",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:marine-solver-queue",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-06-10T16:10:54Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2650,
+          "title": "chore(knowledge): post-spinout cleanup for llm-wiki migration",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2650",
+          "labels": [
+            "priority:medium",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:knowledge-management-platform",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-10T12:58:11Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2652,
           "title": "Daily repo readiness tracker",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2652",
@@ -2174,7 +2127,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-18T11:07:27Z",
+          "updatedAt": "2026-06-19T11:07:10Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3979,6 +3932,32 @@
           ]
         },
         {
+          "number": 2640,
+          "title": "feat(gtm): worldenergydata production decline forecast \u2014 shareable Jupyter notebook for GTM demo",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2640",
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:engineering",
+            "domain:gtm",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-10T16:11:42Z",
+          "execution_ready": false,
+          "priority_rank": 3,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2666,
           "title": "Multi-repo codex-burn-20260511 batch \u2014 2 unmerged branches remaining (assetutilities, worldenergydata)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2666",
@@ -4706,15 +4685,14 @@
           ]
         },
         {
-          "number": 3214,
-          "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3214",
+          "number": 3220,
+          "title": "Resolve 5 pre-existing dangling edges in skills-knowledge-graph (add node vs delete edge)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3220",
           "labels": [
-            "status:plan-review",
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-19T02:13:23Z",
+          "updatedAt": "2026-06-19T13:14:56Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4723,7 +4701,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation",
             "strategy"
           ]
         }
@@ -4733,7 +4710,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 2,
-      "total_candidates": 20,
+      "total_candidates": 21,
       "top_issues": [
         {
           "number": 3030,
@@ -5217,6 +5194,30 @@
           "updatedAt": "2026-06-10T15:58:50Z",
           "execution_ready": false,
           "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2647,
+          "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
+          "labels": [
+            "priority:low",
+            "domain:notification",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-10T16:11:50Z",
+          "execution_ready": false,
+          "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",

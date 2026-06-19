@@ -27,15 +27,15 @@
   "cards": [
     {
       "approval_blockers": [
+        "missing status:plan-review label",
         "no canonical plan file",
-        "reviews not clean: missing_review",
+        "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
-          "status:plan-review",
           "domain:harness",
           "lane:claude"
         ],
@@ -45,6 +45,45 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
+        "title": "Resolve 5 pre-existing dangling edges in skills-knowledge-graph (add node vs delete edge)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3220,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Resolve 5 pre-existing dangling edges in skills-knowledge-graph (add node vs delete edge)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3220",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "already has status:plan-approved",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "status:plan-review",
+          "status:plan-approved",
+          "gate:completeness",
+          "domain:harness",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "Curated `.planning/skills/skills-knowledge-graph.yaml` references skills with no SKILL.md in the active tree (allowlisted in `check-skill-index-coherence.py` `KNOWN_STALE_CURATED`):",
+        "provider_route": "claude",
+        "risks": "**OPEN DECISION 1 \u2014 the 1 residual advisory** (`github/github-repo-management`): normalize its heading to a recognized form (advisory\u21920, trivial one-file edit) vs leave it advisory (non-blocking). Recommend **normalize** for a clean zero. | **OPEN DECISION 2 \u2014 split or combined PR:** Part B (boundary fix, low-risk, recovers 42 skills now) vs Part A (graph surgery, higher-risk). Recommend **one PR,",
+        "tests": "TDD section present",
         "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings"
       },
       "lane": "planning_feedstock",
@@ -54,13 +93,15 @@
       "machine_route": null,
       "number": 3214,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-06-18-issue-3214-curated-graph-cleanup.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3214",
       "warnings": [
+        "approved_no_marker",
+        "dual_status_labels",
         "missing_review"
       ]
     },
@@ -100,94 +141,6 @@
     },
     {
       "approval_blockers": [
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:low",
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `scripts/ai/run_agent.py` \u2014 `WRAPPERS = {codex, gemini}` (l.44-46); `dispatch_run()` (l.186-199) runs `bash <wrapper> --file <f> --prompt <p>` with a per-provider env branch (codex pops `CLAUDECODE` #2684; gemini sets `GEMINI_CLI_TRUST_WORKSPACE`). `resolve_capabilities(",
-        "provider_route": "claude",
-        "risks": "**Open (approval):** scope = **dispatch-only** (recommended; matches the issue goal + agy's freeform `--print`). Alternative: also wire agy as a structured-review provider (prompt-for-JSON + `_parse_agy` + renderer `--provider agy`) \u2014 bigger, depends on agy honoring a schema via `--print`; propose as a follow-up. | **Risk \u2014 quota:** agy/Gemini quota is limited (TUI `/usage`); tests must stub agy. ",
-        "tests": "TDD section present",
-        "title": "agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3207,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-18-issue-3207-agy-headless-dispatch.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3207",
-      "warnings": [
-        "approved_no_marker",
-        "dual_status_labels",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:high",
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `config/agents/routing-config.yaml` \u2014 declarative SSoT. `tiers.*` all `primary: claude`; `execution_contexts.hermes_batch` has `forbid: [claude]`, `cost_ceiling: true`, `primary: openai-codex`, `fallbacks: [gemini]` (added #3192).",
-        "provider_route": "claude",
-        "risks": "**Risk \u2014 bash\u2194python boundary cost:** `route_by_tier` shelling to `python3` adds per-route latency. Mitigation: only invoked when `ROUTE_CONTEXT` is set (interactive path untouched); resolver is import-light (yaml only). Routing is not a hot loop. | **Risk \u2014 token-space mismatch (r1-F3/F4):** `execution_contexts` uses `openai-codex`; the bash routers know `codex`. Mitigation: the resolver `cli()` ",
-        "tests": "TDD section present",
-        "title": "Executed-router consolidation: make routing-config cost ceiling actually enforced"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3205,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-17-issue-3205-executed-router-consolidation.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Executed-router consolidation: make routing-config cost ceiling actually enforced",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3205",
-      "warnings": [
-        "approved_no_marker",
-        "dual_status_labels",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
         "missing status:plan-review label",
         "no canonical plan file",
         "review evidence not clean",
@@ -219,186 +172,6 @@
       "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3198",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "machine:multi",
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `config/agents/routing-config.yaml` (111 lines) \u2014 `tiers.{SIMPLE,STANDARD,COMPLEX,REASONING}.primary` all `claude`; `agents.hermes` declares `provider: openai-codex`, `models.primary: gpt-5.5`.",
-        "provider_route": "claude",
-        "risks": "**Advisory vs enforced:** is it acceptable to ship a \"cost ceiling\" the runtime routers don't read? The plan scopes executed-router rewiring to a #3058 follow-up; `routing_resolution_note` keeps it honest. **Confirm acceptable.** | **Hermes-backing conflict: RESOLVED (operator 2026-06-17)** \u2014 Hermes backing stays gpt-5.5/openai-codex; agy is the fallback/delegation lane only. `agents.hermes.provid",
-        "tests": "(no TDD section)",
-        "title": "Reconcile routing-config.yaml with operator cost policy (Hermes\u2192agy, Claude dev-only)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3192,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-17-issue-3192-routing-config-cost-policy.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Reconcile routing-config.yaml with operator cost policy (Hermes\u2192agy, Claude dev-only)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3192",
-      "warnings": [
-        "approved_no_marker",
-        "dual_status_labels",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "machine:multi",
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `.claude/workflows/` holds 5 YAMLs + a README, in **two informal schema dialects**:",
-        "provider_route": "claude",
-        "risks": "Three YAML shapes in one dir \u2192 README documents which schema applies; `kind:` discriminator scopes the new schema. | Templates encode but don't enforce \u2192 position as Level-0/1; cross-ref real enforcers. | Provider-routing drift \u2192 reference `provider-routing-policy.yaml`, single source of truth.",
-        "tests": "(no TDD section)",
-        "title": "Gated workflow templates (issue\u2192plan\u2192approve\u2192implement\u2192review\u2192close) + cross-provider review workflow"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3191,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-17-issue-3191-gated-workflow-templates.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Gated workflow templates (issue\u2192plan\u2192approve\u2192implement\u2192review\u2192close) + cross-provider review workflow",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3191",
-      "warnings": [
-        "approved_no_marker",
-        "dual_status_labels",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "machine:multi",
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- `scripts/ai/run_agent.py` (215) \u2014 `WRAPPERS` (44-48) = codex/gemini/claude only; `materialize_prompt()` (145-160) is the prepend seam; `dispatch_run()` shells `bash <wrapper> --file --prompt` with per-provider env; `--provider` is `choices=sorted(WRAPPERS)` so adding a key auto",
-        "provider_route": "claude",
-        "risks": "**HIGH \u2014 agy headless infeasibility: RESOLVED (operator 2026-06-17 = accept fail-closed agy).** Ship the fail-closed `submit-to-agy.sh` (writes skill-prepended prompt artifact + exit 3 for manual paste); verify `agy --help` at build time; file a follow-on to wire real exec when agy ships a headless flag. agy stays first-class in WRAPPERS + router. | **HIGH \u2014 backfill quality:** ~88% (~2751/3113) w",
-        "tests": "(no TDD section)",
-        "title": "Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3190,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-17-issue-3190-skill-router-when-to-use.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3190",
-      "warnings": [
-        "approved_no_marker",
-        "dual_status_labels",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "machine:multi",
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `scripts/memory/curate_readback_slice.py` \u2014 the ONE shared cross-provider read-back selector (`curate(source_dir, target, cap)`). Sources ONLY git-tracked `.claude/memory/` (machine-invariance F1), filters Claude-only entries by slug (F4), caps at entry boundaries (F5), ",
-        "provider_route": "claude",
-        "risks": "**Churn:** bridge commits `.claude/memory/` daily across machines \u2014 INDEX + gemini slice MUST be deterministic (inherit curate's contract). Top defect-hunt. | **Gemini loader reality:** instruction must live in GEMINI.md (actually-loaded) not just SOUL.runtime.md (phantom). Verify Gemini surfaces it before claiming parity. | **Slice-owner asymmetry:** gemini slice must be gated by the same `SLICE_",
-        "tests": "(no TDD section)",
-        "title": "Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3189,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-17-issue-3189-memory-bridge-codex-gemini.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3189",
-      "warnings": [
-        "approved_no_marker",
-        "dual_status_labels",
-        "missing_review"
-      ]
     },
     {
       "approval_blockers": [
@@ -8516,9 +8289,222 @@
       "title": "Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2651",
       "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:medium",
+          "machine:dev-primary",
+          "dispatch:ready",
+          "gate:completeness",
+          "domain:knowledge-management-platform",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "chore(knowledge): post-spinout cleanup for llm-wiki migration"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2650,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "chore(knowledge): post-spinout cleanup for llm-wiki migration",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2650",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:low",
+          "domain:notification",
+          "machine:dev-primary",
+          "dispatch:ready",
+          "gate:completeness",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2647,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:operations",
+          "machine:dev-secondary",
+          "agent:claude",
+          "dispatch:ready",
+          "gate:completeness",
+          "domain:workstations-machine-bringup",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2645,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "existing claude agent label",
+      "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2645",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:engineering",
+          "machine:multi",
+          "dispatch:ready",
+          "gate:completeness",
+          "domain:marine-solver-queue",
+          "lane:codex"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "Per user guidance, this plan starts with the basic machine/file/repo inventory before solver automation. The live inventory artifact is:",
+        "provider_route": "claude",
+        "risks": "**Risk:** Windows hosts have no SSH. Initial Task Scheduler installation/verification still requires physical/GUI access unless a remote management channel is added. | **Risk:** AQWA batch command details are not yet verified. The plan must include a probe/dry-run adapter before treating AQWA execution as production-ready. | **Risk:** Git-backed queue can conflict if multiple hosts push simultaneo",
+        "tests": "10 TDD tests defined",
+        "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2641,
+      "pipeline_lane": "C",
+      "plan": "docs/plans/2026-05-04-issue-2641-multimachine-solver-inbox-ingestion.md",
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2641",
+      "warnings": [
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:low",
+          "cat:engineering",
+          "domain:gtm",
+          "machine:dev-primary",
+          "dispatch:ready",
+          "gate:completeness",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "feat(gtm): worldenergydata production decline forecast \u2014 shareable Jupyter notebook for GTM demo"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2640,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "feat(gtm): worldenergydata production decline forecast \u2014 shareable Jupyter notebook for GTM demo",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2640",
+      "warnings": []
     }
   ],
-  "generated_at": "2026-06-19T09:20:32Z",
+  "generated_at": "2026-06-19T13:20:48Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8526,15 +8512,15 @@
     "planning_feedstock": [
       {
         "approval_blockers": [
+          "missing status:plan-review label",
           "no canonical plan file",
-          "reviews not clean: missing_review",
+          "review evidence not clean",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
-            "status:plan-review",
             "domain:harness",
             "lane:claude"
           ],
@@ -8544,6 +8530,45 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
+          "title": "Resolve 5 pre-existing dangling edges in skills-knowledge-graph (add node vs delete edge)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3220,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Resolve 5 pre-existing dangling edges in skills-knowledge-graph (add node vs delete edge)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3220",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "already has status:plan-approved",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness",
+            "domain:harness",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "Curated `.planning/skills/skills-knowledge-graph.yaml` references skills with no SKILL.md in the active tree (allowlisted in `check-skill-index-coherence.py` `KNOWN_STALE_CURATED`):",
+          "provider_route": "claude",
+          "risks": "**OPEN DECISION 1 \u2014 the 1 residual advisory** (`github/github-repo-management`): normalize its heading to a recognized form (advisory\u21920, trivial one-file edit) vs leave it advisory (non-blocking). Recommend **normalize** for a clean zero. | **OPEN DECISION 2 \u2014 split or combined PR:** Part B (boundary fix, low-risk, recovers 42 skills now) vs Part A (graph surgery, higher-risk). Recommend **one PR,",
+          "tests": "TDD section present",
           "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings"
         },
         "lane": "planning_feedstock",
@@ -8553,13 +8578,15 @@
         "machine_route": null,
         "number": 3214,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-06-18-issue-3214-curated-graph-cleanup.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3214",
         "warnings": [
+          "approved_no_marker",
+          "dual_status_labels",
           "missing_review"
         ]
       },
@@ -8599,94 +8626,6 @@
       },
       {
         "approval_blockers": [
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:low",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `scripts/ai/run_agent.py` \u2014 `WRAPPERS = {codex, gemini}` (l.44-46); `dispatch_run()` (l.186-199) runs `bash <wrapper> --file <f> --prompt <p>` with a per-provider env branch (codex pops `CLAUDECODE` #2684; gemini sets `GEMINI_CLI_TRUST_WORKSPACE`). `resolve_capabilities(",
-          "provider_route": "claude",
-          "risks": "**Open (approval):** scope = **dispatch-only** (recommended; matches the issue goal + agy's freeform `--print`). Alternative: also wire agy as a structured-review provider (prompt-for-JSON + `_parse_agy` + renderer `--provider agy`) \u2014 bigger, depends on agy honoring a schema via `--print`; propose as a follow-up. | **Risk \u2014 quota:** agy/Gemini quota is limited (TUI `/usage`); tests must stub agy. ",
-          "tests": "TDD section present",
-          "title": "agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3207,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-18-issue-3207-agy-headless-dispatch.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3207",
-        "warnings": [
-          "approved_no_marker",
-          "dual_status_labels",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:high",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `config/agents/routing-config.yaml` \u2014 declarative SSoT. `tiers.*` all `primary: claude`; `execution_contexts.hermes_batch` has `forbid: [claude]`, `cost_ceiling: true`, `primary: openai-codex`, `fallbacks: [gemini]` (added #3192).",
-          "provider_route": "claude",
-          "risks": "**Risk \u2014 bash\u2194python boundary cost:** `route_by_tier` shelling to `python3` adds per-route latency. Mitigation: only invoked when `ROUTE_CONTEXT` is set (interactive path untouched); resolver is import-light (yaml only). Routing is not a hot loop. | **Risk \u2014 token-space mismatch (r1-F3/F4):** `execution_contexts` uses `openai-codex`; the bash routers know `codex`. Mitigation: the resolver `cli()` ",
-          "tests": "TDD section present",
-          "title": "Executed-router consolidation: make routing-config cost ceiling actually enforced"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3205,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-17-issue-3205-executed-router-consolidation.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Executed-router consolidation: make routing-config cost ceiling actually enforced",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3205",
-        "warnings": [
-          "approved_no_marker",
-          "dual_status_labels",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
           "missing status:plan-review label",
           "no canonical plan file",
           "review evidence not clean",
@@ -8718,186 +8657,6 @@
         "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3198",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "machine:multi",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `config/agents/routing-config.yaml` (111 lines) \u2014 `tiers.{SIMPLE,STANDARD,COMPLEX,REASONING}.primary` all `claude`; `agents.hermes` declares `provider: openai-codex`, `models.primary: gpt-5.5`.",
-          "provider_route": "claude",
-          "risks": "**Advisory vs enforced:** is it acceptable to ship a \"cost ceiling\" the runtime routers don't read? The plan scopes executed-router rewiring to a #3058 follow-up; `routing_resolution_note` keeps it honest. **Confirm acceptable.** | **Hermes-backing conflict: RESOLVED (operator 2026-06-17)** \u2014 Hermes backing stays gpt-5.5/openai-codex; agy is the fallback/delegation lane only. `agents.hermes.provid",
-          "tests": "(no TDD section)",
-          "title": "Reconcile routing-config.yaml with operator cost policy (Hermes\u2192agy, Claude dev-only)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3192,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-17-issue-3192-routing-config-cost-policy.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Reconcile routing-config.yaml with operator cost policy (Hermes\u2192agy, Claude dev-only)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3192",
-        "warnings": [
-          "approved_no_marker",
-          "dual_status_labels",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "machine:multi",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `.claude/workflows/` holds 5 YAMLs + a README, in **two informal schema dialects**:",
-          "provider_route": "claude",
-          "risks": "Three YAML shapes in one dir \u2192 README documents which schema applies; `kind:` discriminator scopes the new schema. | Templates encode but don't enforce \u2192 position as Level-0/1; cross-ref real enforcers. | Provider-routing drift \u2192 reference `provider-routing-policy.yaml`, single source of truth.",
-          "tests": "(no TDD section)",
-          "title": "Gated workflow templates (issue\u2192plan\u2192approve\u2192implement\u2192review\u2192close) + cross-provider review workflow"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3191,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-17-issue-3191-gated-workflow-templates.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Gated workflow templates (issue\u2192plan\u2192approve\u2192implement\u2192review\u2192close) + cross-provider review workflow",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3191",
-        "warnings": [
-          "approved_no_marker",
-          "dual_status_labels",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "machine:multi",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- `scripts/ai/run_agent.py` (215) \u2014 `WRAPPERS` (44-48) = codex/gemini/claude only; `materialize_prompt()` (145-160) is the prepend seam; `dispatch_run()` shells `bash <wrapper> --file --prompt` with per-provider env; `--provider` is `choices=sorted(WRAPPERS)` so adding a key auto",
-          "provider_route": "claude",
-          "risks": "**HIGH \u2014 agy headless infeasibility: RESOLVED (operator 2026-06-17 = accept fail-closed agy).** Ship the fail-closed `submit-to-agy.sh` (writes skill-prepended prompt artifact + exit 3 for manual paste); verify `agy --help` at build time; file a follow-on to wire real exec when agy ships a headless flag. agy stays first-class in WRAPPERS + router. | **HIGH \u2014 backfill quality:** ~88% (~2751/3113) w",
-          "tests": "(no TDD section)",
-          "title": "Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3190,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-17-issue-3190-skill-router-when-to-use.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3190",
-        "warnings": [
-          "approved_no_marker",
-          "dual_status_labels",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "machine:multi",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `scripts/memory/curate_readback_slice.py` \u2014 the ONE shared cross-provider read-back selector (`curate(source_dir, target, cap)`). Sources ONLY git-tracked `.claude/memory/` (machine-invariance F1), filters Claude-only entries by slug (F4), caps at entry boundaries (F5), ",
-          "provider_route": "claude",
-          "risks": "**Churn:** bridge commits `.claude/memory/` daily across machines \u2014 INDEX + gemini slice MUST be deterministic (inherit curate's contract). Top defect-hunt. | **Gemini loader reality:** instruction must live in GEMINI.md (actually-loaded) not just SOUL.runtime.md (phantom). Verify Gemini surfaces it before claiming parity. | **Slice-owner asymmetry:** gemini slice must be gated by the same `SLICE_",
-          "tests": "(no TDD section)",
-          "title": "Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3189,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-17-issue-3189-memory-bridge-codex-gemini.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3189",
-        "warnings": [
-          "approved_no_marker",
-          "dual_status_labels",
-          "missing_review"
-        ]
       },
       {
         "approval_blockers": [
@@ -17015,6 +16774,219 @@
         "title": "Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2651",
         "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:medium",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:knowledge-management-platform",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "chore(knowledge): post-spinout cleanup for llm-wiki migration"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2650,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "chore(knowledge): post-spinout cleanup for llm-wiki migration",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2650",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:low",
+            "domain:notification",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2647,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:operations",
+            "machine:dev-secondary",
+            "agent:claude",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:workstations-machine-bringup",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2645,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "existing claude agent label",
+        "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2645",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:multi",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:marine-solver-queue",
+            "lane:codex"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "Per user guidance, this plan starts with the basic machine/file/repo inventory before solver automation. The live inventory artifact is:",
+          "provider_route": "claude",
+          "risks": "**Risk:** Windows hosts have no SSH. Initial Task Scheduler installation/verification still requires physical/GUI access unless a remote management channel is added. | **Risk:** AQWA batch command details are not yet verified. The plan must include a probe/dry-run adapter before treating AQWA execution as production-ready. | **Risk:** Git-backed queue can conflict if multiple hosts push simultaneo",
+          "tests": "10 TDD tests defined",
+          "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2641,
+        "pipeline_lane": "C",
+        "plan": "docs/plans/2026-05-04-issue-2641-multimachine-solver-inbox-ingestion.md",
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2641",
+        "warnings": [
+          "missing_review"
+        ]
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:engineering",
+            "domain:gtm",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "feat(gtm): worldenergydata production decline forecast \u2014 shareable Jupyter notebook for GTM demo"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2640,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "feat(gtm): worldenergydata production decline forecast \u2014 shareable Jupyter notebook for GTM demo",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2640",
+        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -17025,16 +16997,16 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-06-19T09:20:27.584518Z",
+  "scorecard_generated_at": "2026-06-19T13:20:43.275816Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-19T09:20:27.401634Z",
+  "utilization_generated_at": "2026-06-19T13:20:42.624217Z",
   "warning_summary": {
-    "approved_no_marker": 34,
+    "approved_no_marker": 29,
     "approved_no_plan": 17,
-    "dual_status_labels": 16,
+    "dual_status_labels": 11,
     "legacy_review_no_sha": 1,
     "major_review": 1,
     "marker_without_open_approved_issue": 158,
-    "missing_review": 68
+    "missing_review": 63
   }
 }

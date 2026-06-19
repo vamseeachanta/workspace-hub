@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-19T09:20:32Z
+Generated: 2026-06-19T13:20:48Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,15 +43,10 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #3214 | Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3220 | Resolve 5 pre-existing dangling edges in skills-knowledge-graph (add node vs delete edge) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3214 | Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3212 | cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB → managed cron jobs short-circuit (dev-secondary report pipeline re-broken) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3207 | agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #3205 | Executed-router consolidation: make routing-config cost ceiling actually enforced | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3198 | bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3192 | Reconcile routing-config.yaml with operator cost policy (Hermes→agy, Claude dev-only) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #3191 | Gated workflow templates (issue→plan→approve→implement→review→close) + cross-provider review workflow | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #3190 | Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #3189 | Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3186 | Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3182 | Provider-utilization tracker is blind to Hermes usage after ace-linux-2 migration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3179 | run-all-tests.sh (and peer gate scripts) mis-resolve REPO_ROOT under git hooks in a worktree → spurious pre-push FAIL | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: major_review,missing_review; static dashboard: real approval requires provider-kanban-server.py |
@@ -243,6 +238,11 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2656 | chore(repo-structure): normalize workspace-hub folder/file structure | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2652 | Daily repo readiness tracker | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2651 | Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2650 | chore(knowledge): post-spinout cleanup for llm-wiki migration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2647 | ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2645 | fix(workstations): normalize ace-linux-2 repo, mount, and path readiness | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2641 | feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2640 | feat(gtm): worldenergydata production decline forecast — shareable Jupyter notebook for GTM demo | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
