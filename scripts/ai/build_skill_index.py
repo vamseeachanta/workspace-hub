@@ -48,20 +48,45 @@ def _frontmatter_and_body(text: str):
 
 
 def _section(body: str, heading: str) -> str:
-    # Capture text under an ATX heading at depths ##..#### whose text matches
-    # <heading>, body running to the next ATX heading of any level (#3208).
-    # Prefer an EXACT heading ("## When to Use") over a PREFIX one ("## When to
-    # Use This Skill" / "## When To Use X vs Y") so a canonical section isn't
-    # mis-bound by an earlier comparison-style heading (review r3-F1).
-    h = re.escape(heading)
-    for pat in (
-        rf"(?im)^\s*#{{2,4}}\s+{h}\s*$(.*?)(?=^\s*#{{1,6}}\s+|\Z)",      # exact
-        rf"(?im)^\s*#{{2,4}}\s+{h}\b[^\n]*$(.*?)(?=^\s*#{{1,6}}\s+|\Z)",  # prefix
-    ):
-        m = re.search(pat, body, re.S | re.M)
-        if m:
-            return " ".join(m.group(1).split()).strip()
-    return ""
+    """Capture the text under an ATX heading matching `heading`, with a
+    DEPTH-RELATIVE boundary (#3214, fixing the #3208 #{1,6} regression).
+
+    - Match headings at depths ##..#### whose title equals `heading` (EXACT) or
+      starts with it on a word boundary (PREFIX, e.g. "## When to Use This Skill").
+    - Pick: prefer EXACT over PREFIX, then SHALLOWEST depth, then EARLIEST line —
+      so a canonical "## When to Use" is not mis-bound by a deeper/later
+      "### When to Use" subsection (r1-MAJOR-2).
+    - Capture body lines until the next heading of depth <= the matched depth, so
+      a `##` section keeps its `###` subsections but a `### Trigger` does NOT
+      swallow to EOF in an all-`###` file (r1-MAJOR-1).
+    """
+    lines = body.splitlines()
+    head_re = re.compile(r"^\s*(#{2,4})\s+(.*\S)\s*$")
+    h_lower = heading.lower()
+    hl = len(h_lower)
+    candidates = []  # (is_prefix, depth, line_idx) — matching is case-insensitive
+    for i, ln in enumerate(lines):
+        m = head_re.match(ln)
+        if not m:
+            continue
+        depth, title = len(m.group(1)), m.group(2).strip()
+        tl = title.lower()
+        if tl == h_lower:
+            candidates.append((0, depth, i))
+        elif tl.startswith(h_lower) and (len(tl) == hl or not tl[hl].isalnum()):
+            candidates.append((1, depth, i))
+    if not candidates:
+        return ""
+    candidates.sort()  # exact(0)<prefix(1), then shallowest depth, then earliest line
+    _, d, start = candidates[0]
+    any_head = re.compile(r"^\s*(#{1,6})\s+\S")
+    out = []
+    for ln in lines[start + 1:]:
+        hm = any_head.match(ln)
+        if hm and len(hm.group(1)) <= d:
+            break
+        out.append(ln)
+    return " ".join(" ".join(out).split()).strip()
 
 
 def _normalize(val) -> str:
