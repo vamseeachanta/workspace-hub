@@ -41,17 +41,20 @@ KNOWLEDGE_GRAPH = REPO / ".planning" / "skills" / "skills-knowledge-graph.yaml"
 GRAPH_INDEX = REPO / "config" / "agents" / "skill-graph-index.yaml"
 BUILDER = REPO / "scripts" / "ai" / "build_skill_index.py"
 
-# Curated graph references skills not present in .claude/skills. Allowlisted
-# pending the curated-graph cleanup (#3208 follow-up). New unlisted drift fails.
-KNOWN_STALE_CURATED = {
-    "workspace-hub/agent-orchestration",
-    "workspace-hub/compliance-check",
-    "workspace-hub/sparc-workflow",
-    "workspace-hub/workspace-cli",
-    "digitalmodel/orcaflex-modeling",
-    "digitalmodel/orcaflex-post-processing",
-    "digitalmodel/aqwa-analysis",
-    "assetutilities/pdf-utilities",
+# Curated graph references skills not present in .claude/skills. Emptied by #3214
+# (the 8 stale nodes were removed from the graph). New unlisted drift fails (a).
+KNOWN_STALE_CURATED: set[str] = set()
+
+# Pre-existing dangling EDGE endpoints (edges referencing node ids that were never
+# defined as nodes) — a SEPARATE drift class from the #3214 stale-node removal,
+# needing per-edge judgment (some are real skills missing a node def, some are
+# absent). Allowlisted pending the follow-up; NEW dangling edges fail check (d).
+KNOWN_DANGLING_EDGE_REFS = {
+    "eng/diffraction-spec-converter",
+    "engineering/marine-offshore/diffraction-analysis",
+    "engineering/marine-offshore/cathodic-protection",
+    "engineering/marine-offshore/risk-assessment",
+    "engineering/asset-integrity/fitness-for-service",
 }
 
 # Loose when-to-use/trigger heading the GENERATOR may not recognize (it matches
@@ -106,6 +109,27 @@ def check_b_advisory() -> list[str]:
     return advisories
 
 
+def check_d_graph_integrity(failures: list[str]) -> None:
+    """(d) BLOCKING — no dangling EDGE endpoints (#3214). Every edge from/to must
+    be a defined node id. Pre-existing dangling refs are allowlisted
+    (KNOWN_DANGLING_EDGE_REFS) pending the follow-up; a NEW dangling edge fails.
+
+    Coverage `coverage.*.skills` is intentionally NOT node-constrained (it lists a
+    domain's skills broadly, incl. non-curated ones) — so it is not checked here.
+    """
+    kg = _load_yaml(KNOWLEDGE_GRAPH)
+    node_ids = {n["id"] for n in kg.get("nodes", []) if isinstance(n, dict) and n.get("id")}
+    for e in kg.get("edges", []) or []:
+        if not isinstance(e, dict):
+            continue
+        for ep in (e.get("from"), e.get("to")):
+            if ep and ep not in node_ids and ep not in KNOWN_DANGLING_EDGE_REFS:
+                failures.append(
+                    f"(d) edge endpoint '{ep}' is not a defined node (dangling edge "
+                    f"{e.get('from')}->{e.get('to')}). Add the node, remove the edge, "
+                    f"or allowlist in KNOWN_DANGLING_EDGE_REFS with a tracking issue.")
+
+
 def check_c_determinism(failures: list[str]) -> None:
     cmd = (["uv", "run", "--quiet", str(BUILDER)] if _has_uv() else [sys.executable, str(BUILDER)])
     out = subprocess.run(cmd + ["--check"], capture_output=True, text=True, cwd=REPO)
@@ -128,6 +152,7 @@ def _has_uv() -> bool:
 def main() -> int:
     failures: list[str] = []
     check_a_coherence(failures)
+    check_d_graph_integrity(failures)
     check_c_determinism(failures)
     advisories = check_b_advisory()
 
