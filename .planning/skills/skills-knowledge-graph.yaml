@@ -640,6 +640,53 @@ nodes:
       - "Configurable chart types from data and YAML specs"
     python_packages: [plotly, pandas]
 
+  - id: "engineering/marine-offshore/diffraction-analysis"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [hydrodynamics, diffraction]
+    input_types: [vessel_geometry, environmental_data]
+    output_types: [rao, hydrodynamic_database]
+    capabilities:
+      - "Hydrodynamic diffraction analysis via AQWA and OrcaWave"
+      - "Extract RAOs and hydrodynamic databases for dynamic analysis"
+    python_packages: []
+
+  - id: "engineering/marine-offshore/cathodic-protection"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [corrosion, electrical]
+    input_types: [structure_geometry, environmental_data]
+    output_types: [cp_design, analysis_report]
+    capabilities:
+      - "Sacrificial-anode cathodic-protection design for hulls and pipelines"
+      - "Apply ABS GN Ships and DNV-RP-F103 standards"
+    python_packages: []
+
+  - id: "engineering/marine-offshore/risk-assessment"
+    repo: digitalmodel
+    category: engineering
+    domain: marine_offshore
+    sub_domains: [risk, reliability]
+    input_types: [failure_data, environmental_data]
+    output_types: [risk_metrics, analysis_report]
+    capabilities:
+      - "Probabilistic risk assessment with Monte Carlo simulation"
+    python_packages: [numpy]
+
+  - id: "engineering/asset-integrity/fitness-for-service"
+    repo: digitalmodel
+    category: engineering
+    domain: asset_integrity
+    sub_domains: [integrity, corrosion]
+    input_types: [inspection_data, ut_grid]
+    output_types: [ffs_assessment, remaining_life]
+    capabilities:
+      - "API 579-1/ASME FFS-1 fitness-for-service of corroded equipment"
+      - "RSF and MAWP re-rating, remaining-life projection"
+    python_packages: []
+
 # ─────────────────────────────────────────────
 # Relationship edges
 # ─────────────────────────────────────────────
@@ -825,12 +872,6 @@ edges:
     note: "Generative art delivered as interactive HTML artifacts"
 
   # ── Preserved v1 see_also edges ───────────
-  - from: "eng/diffraction-spec-converter"
-    to: "engineering/marine-offshore/diffraction-analysis"
-    type: see_also
-    source_file: "eng/diffraction-spec-converter.md"
-    note: "WRK-240 — spec_converter skill; references existing diffraction-analysis master skill"
-
   - from: "engineering/marine-offshore/cathodic-protection"
     to: "engineering/asset-integrity/fitness-for-service"
     type: see_also
@@ -977,15 +1018,15 @@ coverage:
 # Statistics
 # ─────────────────────────────────────────────
 stats:
-  total_nodes: 43
-  total_edges: 38
+  total_nodes: 47
+  total_edges: 37
   edge_type_counts:
     feeds: 15
     composition: 12
     dependency: 2
     alternative: 2
     shared_infra: 2
-    see_also: 5
+    see_also: 4
   domains_covered: 8
   domains_with_gaps_only: 1  # gis
   repos: 5
