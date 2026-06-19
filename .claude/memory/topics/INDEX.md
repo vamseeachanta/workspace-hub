@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (185)
+## Feedback — execution lessons & hazards (186)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
@@ -60,6 +60,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [cross-review-finds-what-self-review-misses](feedback_cross_review_finds_what_self_review_misses.md) — "Code-stage adversarial cross-review consistently finds defects that the implementing session's self-review misses — never skip the cross-review gate post-implementation, even when feeling confident"
 - [Dark intelligence for Excel calculation extraction](feedback_dark_intelligence_excel.md) — Use dark intelligence archive to extract calculation logic from legacy Excel files — strips client context, preserves engineering methodology, avoids legal issues
 - [feedback_delegate_heavy_work_to_codex_for_tokens](feedback_delegate_heavy_work_to_codex_for_tokens.md) — "Delegate heavy work (reviews, analysis, implementation) to the Codex broker + fresh-context subagents to conserve main-session Claude tokens."
+- [feedback_delegate_token_heavy_to_codex](feedback_delegate_token_heavy_to_codex.md) — Standing preference — delegate token-heavy work to Codex where feasible
 - [feedback_digitalmodel_reports_dir_gitignored](feedback_digitalmodel_reports_dir_gitignored.md) — "digitalmodel .gitignore ignores any reports/ dir — completeness HTML must go to a tracked path, not docs/reports/"
 - [discovery-first-on-stale-plan-approved](feedback_discovery_first_on_stale_plan_approved.md) — "Before executing a long-standing status:plan-approved issue, run a discovery pass against the codebase first — prior commits may have silently completed most or all of the scope. Skipping discovery wastes effort and risks duplicate-write conflicts."
 - [dispatch-local-marker-rationalization](feedback_dispatch_local_marker_rationalization.md) — "Hermes/agent dispatch lanes can rationalize a user execution-instruction as plan-approval and write the local approval marker (`.planning/plan-approved/<n>.md`) under the user's git identity even when the GH `status:plan-approved` label was correctly NOT set. Dispatch prompts must explicitly forbid local-marker writes, not just GH-label self-approval."

@@ -111,3 +111,5 @@ shown:
     tips: [gsd-note, eco-session-memory]
   - date: 2026-06-18
     tips: [cc-mobile, cc-sandbox]
+  - date: 2026-06-19
+    tips: [gsd-insert-phase, cc-hooks]

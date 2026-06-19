@@ -1,11 +1,11 @@
 generated: '2026-04-02T04:28:12'
-total_entries: 248
+total_entries: 250
 summary:
   by_type:
     tool: 98
     github_repo: 56
     data_api: 31
-    paper: 31
+    paper: 32
     tutorial: 15
     standard_portal: 9
     professional_body: 4
@@ -20,7 +20,7 @@ summary:
     data_science: 19
     general: 16
     pipeline: 13
-    cfd: 12
+    cfd: 13
     cad: 10
     sustainability: 10
     orcaflex: 6
@@ -31,7 +31,7 @@ summary:
   by_download_status:
     not_started: 221
     downloaded: 18
-    reference_only: 9
+    reference_only: 10
 entries:
 - id: awesome_mcp_servers
   url: https://github.com/punkpeye/awesome-mcp-servers
@@ -690,6 +690,24 @@ entries:
     \ on unstructured meshes. Aerodynamic shape optimization, compressible/incompressible flows, electrodynamics, chemically\
     \ reacting flows. C++ and Python. SU2 Foundation is a registered non-profit. Active GitHub development. Complements OpenFOAM\
     \ for adjoint-based shape optimization tasks.\n"
+- id: gnn_ship_hull_stress_surrogate_jena_2026
+  url: https://www.linkedin.com/posts/gabriel-weymouth-3a312489_how-fast-do-you-think-a-graph-neural-network-share-7473156153926098947-3-DR/
+  name: Graph Neural Network surrogate for ship-hull pressure & friction stresses (Jena et al.)
+  type: paper
+  domain: cfd
+  local_backup_path: ''
+  download_status: reference_only
+  last_checked: '2026-06-19'
+  relevance_score: 5
+  source_catalog: 'Manual add 2026-06-19 from LinkedIn post by Gabriel Weymouth (Symposium on Naval Hydrodynamics)'
+  notes: 'GNN surrogate that predicts pressure and friction stresses on ship hulls ~1M-100M x faster than RANS CFD.
+    Physical insight/constraints are embedded in the network to keep predictions accurate for hulls completely outside
+    the training distribution (out-of-distribution generalization). Authors: Sankalp Jena, Andrea Coraddu, Artur Lidtke;
+    presented at the Symposium on Naval Hydrodynamics. Precursor foil-application research is published online; the full
+    ship-hull paper was not yet published at post time (2026-06). Relevance: ML surrogate modeling for hull hydrodynamics
+    and resistance — complements the OpenFOAM/SU2/Nektar++ RANS tooling already cataloged in this domain.
+
+    '
 - id: github_com_dask_dask_70ea2c
   url: https://github.com/dask/dask
   name: Dask

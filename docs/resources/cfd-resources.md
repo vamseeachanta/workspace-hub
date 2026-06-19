@@ -1,12 +1,12 @@
 # Cfd Resources
 
-> Auto-generated on 2026-04-02 by generate-domain-resource-views.py
+> Auto-generated on 2026-06-19 by generate-domain-resource-views.py
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Online Resources | 12 |
+| Online Resources | 13 |
 | Standards | 0 |
 | Local Documents | 0 |
 | GitHub Repositories | 5 |
@@ -17,6 +17,7 @@
 
 | Name | Type | Status | Score | URL |
 |------|------|--------|-------|-----|
+| Graph Neural Network surrogate for ship-hull pressure & friction stresses (Jena et al.) | paper | 📄 reference_only | 5 | [https://www.linkedin.com/posts/gabriel-weymouth-3a312489_how...](https://www.linkedin.com/posts/gabriel-weymouth-3a312489_how-fast-do-you-think-a-graph-neural-network-share-7473156153926098947-3-DR/) |
 | Basilisk | github_repo | ⬜ not_started | 4 | [https://github.com/comphy-lab/basilisk-C](https://github.com/comphy-lab/basilisk-C) |
 | Basilisk (docs) | tool | ⬜ not_started | 4 | [https://basilisk.fr/](https://basilisk.fr/) |
 | Nektar++ | tool | ⬜ not_started | 4 | [https://gitlab.nektar.info/nektar/nektar](https://gitlab.nektar.info/nektar/nektar) |
