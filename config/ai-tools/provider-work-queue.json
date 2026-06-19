@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-19T01:20:21.291087Z",
+  "generated_at": "2026-06-19T05:20:15.974238Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-19T01:20:19.278959Z",
+  "scorecard_generated_at": "2026-06-19T05:20:14.062861Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -1004,7 +1004,7 @@
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-18T23:05:26Z",
+          "updatedAt": "2026-06-19T01:48:41Z",
           "execution_ready": true,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -4710,10 +4710,11 @@
           "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3214",
           "labels": [
+            "status:plan-review",
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-18T20:16:12Z",
+          "updatedAt": "2026-06-19T02:13:23Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -5414,7 +5415,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-18T04:00:03Z",
+          "updatedAt": "2026-06-19T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5511,7 +5512,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-18T04:00:03Z",
+          "updatedAt": "2026-06-19T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",

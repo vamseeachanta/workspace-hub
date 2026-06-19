@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-19T01:20:23Z
+Generated: 2026-06-19T05:20:18Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,9 +43,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #3214 | Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3214 | Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3212 | cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB → managed cron jobs short-circuit (dev-secondary report pipeline re-broken) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3207 | agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
+| #3207 | agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3205 | Executed-router consolidation: make routing-config cost ceiling actually enforced | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3198 | bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3192 | Reconcile routing-config.yaml with operator cost policy (Hermes→agy, Claude dev-only) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
