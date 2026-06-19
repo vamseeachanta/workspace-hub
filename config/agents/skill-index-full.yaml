@@ -264,8 +264,8 @@ skills:
   family: business
   id: business/communication/calendly-api
   name: calendly-api
-  when_to_use: calendly-api Calendly scheduling automation using REST API v2 for managing event types, availability, bookings, webhooks, and scheduling workflows business
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Automating interview scheduling workflows - Building meeting booking integrations - Creating round-robin scheduling systems - Tracking scheduled events programmatically - Integrating calendars with CRM systems - Building appointment reminders - Creating custom booking confirmation flows - Automating follow-up sequences after meetings - Syncing Calendly with external calendars - Building scheduling analytics dashboards ### DON''T USE when: - Simple calendar display (use Google Calendar API) - Real-time video calls (use Zoom/Teams API) - Complex resource scheduling (use specialized tools) - Internal meeting coordination only (use calendar apps) - One-off manual scheduling (use Calendly UI directly)'
+  when_to_use_source: section
 - description: Integrate team communication, collaboration tools, and scheduling workflows across platforms like Slack, email, and calendar systems.
   family: business
   id: business/communication/communication
@@ -288,14 +288,14 @@ skills:
   family: business
   id: business/communication/miro-api
   name: miro-api
-  when_to_use: miro-api Miro whiteboard automation using REST API v2 and Python SDK for creating boards, frames, shapes, connectors, and collaborative visual workflows business
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Automating sprint retrospective board creation - Building visual project status dashboards - Creating automated architecture diagrams - Setting up templated workshop boards - Integrating Miro with CI/CD pipelines - Automating user story mapping workflows - Creating visual incident response boards - Building automated onboarding boards - Generating meeting facilitation templates - Syncing data from external systems to Miro ### DON''T USE when: - Simple text-based collaboration (use Slack or Teams) - Document-focused workflows (use Notion or Confluence) - Code-focused diagramming (use Mermaid or PlantUML) - Real-time whiteboarding without persistence - Personal note-taking (use Obsidian)'
+  when_to_use_source: section
 - description: Slack bot development and workspace automation using Web API, Events API, Socket Mode, and Block Kit for building interactive messaging applications
   family: business
   id: business/communication/slack-api
   name: slack-api
-  when_to_use: slack-api Slack bot development and workspace automation using Web API, Events API, Socket Mode, and Block Kit for building interactive messaging applications business
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Building notification systems for CI/CD pipelines - Creating interactive bots for team workflows - Automating incident response and alerting - Building approval workflows with interactive messages - Integrating external services with Slack channels - Creating slash commands for common operations - Building internal tools with modal dialogs - Implementing scheduled message automation ### DON''T USE when: - Microsoft Teams is the primary platform (use teams-api) - Simple one-way notifications only (use incoming webhooks directly) - Need email-based workflows (different domain) - Slack Enterprise Grid with complex org requirements - Real-time gaming or high-frequency updates (consider WebSockets)'
+  when_to_use_source: section
 - description: Create custom animated GIFs for Slack reactions and celebrations. Use for team milestones, custom emoji reactions, inside jokes, and workplace fun.
   family: business
   id: business/communication/slack-gif-creator
@@ -306,8 +306,8 @@ skills:
   family: business
   id: business/communication/teams-api
   name: teams-api
-  when_to_use: teams-api Microsoft Teams automation using Graph API, Bot Framework, Adaptive Cards, and webhooks for enterprise messaging and collaboration business
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Building bots for Microsoft 365 organizations - Creating enterprise notification systems - Integrating with Azure DevOps and Microsoft ecosystem - Building approval workflows in Teams - Automating meeting scheduling and management - Creating messaging extensions for Teams apps - Implementing compliance-aware messaging solutions - Building internal tools with Adaptive Cards ### DON''T USE when: - Organization uses Slack primarily (use slack-api) - Need simple webhooks only (use incoming webhooks directly) - No Microsoft 365 subscription available - Building consumer-facing chat applications - Need real-time gaming or high-frequency updates'
+  when_to_use_source: section
 - description: Daily automated website updates with competitor analysis and content sync
   family: business
   id: business/content-design/aceengineer-website-update
@@ -564,8 +564,8 @@ skills:
   family: business
   id: business/productivity/notion-api
   name: notion-api
-  when_to_use: notion-api Notion API for workspace automation including databases, pages, blocks, query/filter syntax, and integration patterns business
-  when_to_use_source: backfill
+  when_to_use: '### USE Notion API when: - Automating database entries and updates - Building custom dashboards from Notion data - Syncing data between Notion and external systems - Creating pages programmatically from templates - Querying databases with complex filters - Building integrations with other productivity tools - Generating reports from Notion databases - Implementing workflow automations ### DON''T USE Notion API when: - Need real-time sync (API has rate limits) - Building chat/messaging features (use Slack API) - Need file storage solution (use dedicated storage) - Simple task management only (use Todoist API) - Need offline-first solution (use Obsidian) - Require sub-second response times'
+  when_to_use_source: section
 - description: Local-first knowledge management with markdown vaults, bidirectional linking, plugin ecosystem, and practical vault file operations.
   family: business
   id: business/productivity/obsidian
@@ -582,8 +582,8 @@ skills:
   family: business
   id: business/productivity/time-tracking
   name: time-tracking
-  when_to_use: time-tracking Time tracking integration patterns with RescueTime and Toggl APIs for automated time entry, reporting, analytics, and project/task attribution business
-  when_to_use_source: backfill
+  when_to_use: '### USE Time Tracking APIs when: - **Automating time entries** - Log time from scripts, CI/CD, or other tools - **Building productivity dashboards** - Aggregate time data for analysis - **Project billing** - Track billable hours automatically - **Focus time analysis** - Understand productivity patterns - **Team time management** - Aggregate team time data - **Integration pipelines** - Connect time tracking with task managers - **Automated reporting** - Generate time reports programmatically - **Custom analytics** - Build specialized productivity insights ### DON''T USE Time Tracking APIs when: - **Simple manual tracking** - Use native apps instead - **Real-time monitoring** - APIs have rate limits - **Invasive employee surveillance** - Ethical concerns - **Complex invoicing** - Use dedicated billing software'
+  when_to_use_source: section
 - description: Interactive daily productivity review with guided priority setting. Supports morning planning, midday check-ins, and end-of-day wrap-ups. Use for daily ritual or cron automation.
   family: business
   id: business/productivity/today
@@ -594,14 +594,14 @@ skills:
   family: business
   id: business/productivity/todoist-api
   name: todoist-api
-  when_to_use: todoist-api Task management API integration for Todoist with projects, tasks, labels, filters, webhooks, and Python SDK usage business
-  when_to_use_source: backfill
+  when_to_use: '### USE Todoist API when: - Automating task creation from external systems - Building integrations with other productivity tools - Creating custom task dashboards or reports - Implementing GTD workflows programmatically - Syncing tasks with calendar applications - Building CLI tools for task management - Automating recurring task patterns - Integrating with CI/CD for project tracking ### DON''T USE Todoist API when: - Need complex project management (use Jira, Asana) - Require database-style queries (use Notion API) - Need real-time collaboration on tasks (use Linear) - Building for enterprise with SSO requirements - Need Gantt charts or resource management'
+  when_to_use_source: section
 - description: Kanban board automation with Trello API including boards, lists, cards, members, webhooks, power-ups, and Python SDK (py-trello) integration
   family: business
   id: business/productivity/trello-api
   name: trello-api
-  when_to_use: trello-api Kanban board automation with Trello API including boards, lists, cards, members, webhooks, power-ups, and Python SDK (py-trello) integration business
-  when_to_use_source: backfill
+  when_to_use: '### USE Trello API when: - **Automating board management** - Create, update, archive boards programmatically - **Building workflow integrations** - Connect Trello with other tools - **Card automation** - Auto-create cards from external events - **Progress tracking** - Build dashboards from Trello data - **Notification systems** - React to board changes via webhooks - **Bulk operations** - Move/update many cards at once - **Custom reporting** - Extract data for analysis - **Power-up development** - Extend Trello functionality ### DON''T USE Trello API when: - **Need complex dependencies** - Use Jira or Asana - **Require time tracking** - Built-in feature limited, use Toggl integration - **Database-style queries** - Use Notion API instead - **Enterprise compliance** - May need Enterprise-grade solutions - **Complex workflows** - Consider Monday.com or Linear'
+  when_to_use_source: section
 - description: Gather actionable sales intelligence on companies and individuals before outreach
   family: business
   id: business/sales/account-research
@@ -986,7 +986,7 @@ skills:
   family: coordination
   id: coordination/subagent-sandbox-limitations
   name: subagent-sandbox-limitations
-  when_to_use: '**DO use delegate_task for:** - Research/analysis that only reads files - Generating summaries, reports, or markdown documents - Synthesis tasks (combining information from multiple sources) - Non-interactive brainstorm or planning - Tasks that produce output for the main agent to consume - Claude-backed read-only repo audits where you want concrete patch guidance but will apply changes in the main session'
+  when_to_use: '**DO use delegate_task for:** - Research/analysis that only reads files - Generating summaries, reports, or markdown documents - Synthesis tasks (combining information from multiple sources) - Non-interactive brainstorm or planning - Tasks that produce output for the main agent to consume - Claude-backed read-only repo audits where you want concrete patch guidance but will apply changes in the main session ### Strong pattern: delegate Claude for analysis, patch locally A reliable pattern is: 1. Use `delegate_task(..., acp_command=''claude'', acp_args=[''--acp'',''--stdio''])` for read-only analysis 2. Ask the Claude subagent for exact replacement text, prioritization, and caveats 3. Apply file edits yourself in the main session with `patch`/`write_file` 4. Verify locally with shell/tests This worked well for session-log ecosystem audits and policy-drift cleanup because: - Claude was good at scanning many files and returning implementation-ready findings - sandbox persistence limitations did not matter for read-only work - the main agent kept control of actual repo modifications and verification ### Strong pattern: delegate Claude for issue-tree expansion, create issues locally Another reliable use case is expanding an umbrella initiative into focused future GitHub issues. Pattern: 1. Keep the main session responsible for the actual `gh issue create` calls and documentation edits. 2. Split the analysis into 2-3 lanes with `delegate_task(..., acp_command=''claude'', acp_args=[''--acp'',''--stdio''])` — e.g. machine-readiness gaps, intelligence-accessibility gaps, reporting/governance gaps. 3. Ask each Claude subagent for only: proposed issue titles, rationale, and deliverables. Do **not** ask it to edit files or create issues. 4. In the main session, convert the returned proposals into concrete issue bodies, create the GitHub issues, and update the parent doc/umbrella issue yourself. 5. Comment on the parent issue with the new child-issue map so the decomposition is visible in GitHub history. 6. If the initiative is still too broad, repeat the process in waves: delegate another 2-3 Claude lanes focused on the newly created branches (for example Windows readiness, publication hardening, registry coherence), then create the next layer of child issues locally. 7. Keep one canonical doc or issue-map file updated after each wave so the hierarchy remains navigable as the issue tree deepens. Why this works: - the subagents contribute reasoning-heavy decomposition, which survives summary compression better than raw data gathering - the main session preserves control of numbering, labels, body wording, and doc updates - it is effective for turning broad recurring-maintenance initiatives into an actionable issue tree without risking sandbox write loss **DO NOT use delegate_task for:** - Creating or modifying source code files - Writing tests to disk - Committing to git - Modifying pyproject.toml or config files - Any task where the final output must be persisted to the workspace'
   when_to_use_source: section
 - description: Protocol for workers to capture and propagate discoveries back to the orchestrator and shared knowledge base. Phase 3 of orchestrator/worker context enforcement (#2020).
   family: coordination
@@ -1148,8 +1148,8 @@ skills:
   family: data
   id: data/analysis/autoviz
   name: autoviz
-  when_to_use: autoviz Automatic exploratory data analysis and visualization with a single line of code - generates comprehensive charts, detects patterns, and exports to HTML/notebooks data
-  when_to_use_source: backfill
+  when_to_use: '### USE AutoViz when: - **Quick EDA** - Need rapid insights into a new dataset - **Initial exploration** - Starting analysis on unfamiliar data - **Pattern discovery** - Automatically detect relationships between variables - **Presentation prep** - Need charts quickly for stakeholder meetings - **Large datasets** - Built-in sampling handles big data efficiently - **Feature analysis** - Understanding distribution and importance of features - **Correlation hunting** - Finding relationships without manual chart creation - **Report generation** - Export comprehensive HTML reports ### DON''T USE AutoViz when: - **Custom visualizations** - Need highly specific chart designs - **Interactive dashboards** - Use Streamlit or Dash instead - **Real-time data** - Streaming visualization requirements - **Production systems** - Charts for automated pipelines (use Plotly/Altair) - **Precise statistical tests** - Need formal hypothesis testing - **Domain-specific plots** - Specialized visualizations not in standard EDA'
+  when_to_use_source: section
 - description: Extract and process energy data from BSEE (Gulf of Mexico) and SODIR (Norway) regulatory databases
   family: data
   id: data/analysis/bsee-sodir-extraction
@@ -1160,8 +1160,8 @@ skills:
   family: data
   id: data/analysis/dash
   name: dash
-  when_to_use: dash Build production-grade interactive dashboards with Plotly Dash - enterprise features, callbacks, and scalable deployment data
-  when_to_use_source: backfill
+  when_to_use: '### USE Dash when: - **Production dashboards** - Building dashboards for business users - **Complex interactivity** - Need fine-grained control over updates - **Enterprise requirements** - Authentication, scaling, reliability needed - **Plotly ecosystem** - Already using Plotly for visualizations - **Custom components** - Need to extend with JavaScript/React - **Long-term projects** - Dashboard will be maintained and extended - **Multi-user access** - Multiple concurrent users accessing dashboards ### DON''T USE Dash when: - **Quick prototypes** - Use Streamlit for faster iteration - **Simple visualizations** - Static reports may suffice - **No interactivity needed** - Use static HTML/PDF reports - **Limited Python knowledge** - Steeper learning curve than Streamlit - **Single-user tools** - Jupyter notebooks may be simpler'
+  when_to_use_source: section
 - description: Data processing, visualization, exploratory data analysis, and dashboard patterns using Polars, Pandas, and Plotly.
   family: data
   id: data/analysis/data-analysis
@@ -1184,32 +1184,32 @@ skills:
   family: data
   id: data/analysis/great-tables
   name: great-tables
-  when_to_use: great-tables Publication-quality tables in Python with rich styling, formatting, conditional formatting, and export to HTML/images - inspired by R's gt package data
-  when_to_use_source: backfill
+  when_to_use: '### USE Great Tables when: - **Publication tables** - Creating tables for reports, papers, or presentations - **Data presentation** - Professional display of analysis results - **Conditional formatting** - Highlighting patterns with colors and icons - **Complex layouts** - Multi-level headers, grouped rows, footnotes - **HTML reports** - Interactive tables for web-based reports - **Quick formatting** - Need polished tables without manual styling - **Dashboard components** - Tables in Streamlit/Dash applications - **Export requirements** - Need PNG or PDF output ### DON''T USE Great Tables when: - **Large datasets** - Over 1000 rows for display (use pagination) - **Interactive editing** - Need editable cells (use Streamlit data_editor) - **Real-time updates** - Streaming data display - **Complex interactivity** - Sorting, filtering (use DataTables or AG Grid) - **Raw data exploration** - Use pandas display or ydata-profiling'
+  when_to_use_source: section
 - description: High-performance DataFrame library for fast data processing with lazy evaluation, parallel execution, and memory efficiency
   family: data
   id: data/analysis/polars
   name: polars
-  when_to_use: polars High-performance DataFrame library for fast data processing with lazy evaluation, parallel execution, and memory efficiency data
-  when_to_use_source: backfill
+  when_to_use: '### USE Polars when: - **Large datasets** - Working with data too large for pandas (10GB+) - **Performance critical** - Need maximum speed for data transformations - **Memory constrained** - Limited RAM requires efficient memory usage - **Parallel processing** - Want to utilize all CPU cores automatically - **Complex aggregations** - Group by, window functions, rolling calculations - **Lazy evaluation** - Query optimization before execution matters - **ETL pipelines** - Building production data pipelines - **Streaming data** - Processing data larger than memory ### DON''T USE Polars when: - **Pandas ecosystem required** - Need specific pandas-only libraries - **Small datasets** - Under 100MB where pandas is sufficient - **Legacy code** - Extensive existing pandas codebase - **Matplotlib/Seaborn direct integration** - These work better with pandas - **Time series with specialized needs** - Some pandas time series features are more mature'
+  when_to_use_source: section
 - description: Build interactive data applications and dashboards with pure Python - no frontend experience required
   family: data
   id: data/analysis/streamlit
   name: streamlit
-  when_to_use: streamlit Build interactive data applications and dashboards with pure Python - no frontend experience required data
-  when_to_use_source: backfill
+  when_to_use: '### USE Streamlit when: - **Rapid prototyping** - Need to build a data app quickly - **Internal tools** - Creating tools for your team - **Data exploration** - Interactive exploration of datasets - **Demo applications** - Showcasing data science projects - **ML model demos** - Building interfaces for model inference - **Simple dashboards** - Quick insights without complex setup - **Python-only development** - No JavaScript/frontend knowledge required ### DON''T USE Streamlit when: - **Complex interactivity** - Need fine-grained callback control (use Dash) - **Enterprise deployment** - Require advanced authentication/scaling (use Dash Enterprise) - **Custom components** - Heavy custom JavaScript requirements - **High-traffic production** - Thousands of concurrent users - **Real-time streaming** - Sub-second update requirements'
+  when_to_use_source: section
 - description: Automated EDA comparison reports with target analysis, feature comparison, and HTML report generation for pandas DataFrames
   family: data
   id: data/analysis/sweetviz
   name: sweetviz
-  when_to_use: sweetviz Automated EDA comparison reports with target analysis, feature comparison, and HTML report generation for pandas DataFrames data
-  when_to_use_source: backfill
+  when_to_use: '### USE Sweetviz when: - **Dataset comparison** - Comparing train vs test, before vs after, or any two datasets - **Target variable analysis** - Understanding how features relate to a target - **Quick EDA reports** - Need comprehensive EDA in one line of code - **Feature comparison** - Analyzing feature distributions across subsets - **HTML reports** - Creating shareable, interactive analysis reports - **Intra-set analysis** - Comparing subpopulations within a dataset - **Data validation** - Checking for data drift between datasets - **Feature selection** - Identifying important features for modeling ### DON''T USE Sweetviz when: - **Very large datasets** - Over 1M rows (use sampling) - **Streaming data** - Need real-time analysis - **Deep statistical tests** - Need p-values and hypothesis testing - **Custom visualizations** - Specific chart requirements - **Interactive dashboards** - Use Streamlit or Dash instead - **Text/NLP analysis** - Use dedicated NLP tools'
+  when_to_use_source: section
 - description: Automated data quality reports with comprehensive variable analysis, missing value detection, correlations, and HTML report generation - formerly pandas-profiling
   family: data
   id: data/analysis/ydata-profiling
   name: ydata-profiling
-  when_to_use: ydata-profiling Automated data quality reports with comprehensive variable analysis, missing value detection, correlations, and HTML report generation - formerly pandas-profiling data
-  when_to_use_source: backfill
+  when_to_use: '### USE YData Profiling when: - **Data quality assessment** - Evaluating dataset health and completeness - **Initial data exploration** - Understanding a new dataset quickly - **Missing value analysis** - Detecting patterns in missing data - **Variable analysis** - Understanding distributions and characteristics - **Data documentation** - Creating shareable data quality reports - **Dataset comparison** - Comparing training vs test data, or before/after - **Stakeholder reporting** - Generating professional HTML reports - **Data validation** - Checking data before ML model training ### DON''T USE YData Profiling when: - **Real-time analysis** - Need streaming data profiling - **Custom visualizations** - Specific chart requirements - **Interactive dashboards** - Use Streamlit or Dash instead - **Very large datasets** - Over 10M rows (use sampling or minimal mode) - **Production pipelines** - Need lightweight validation (use Great Expectations)'
+  when_to_use_source: section
 - description: Generate or improve a company-specific data analysis skill by extracting tribal knowledge from analysts
   family: data
   id: data/analytics/data-context-extractor
@@ -1520,26 +1520,26 @@ skills:
   family: data
   id: data/office/openpyxl
   name: openpyxl
-  when_to_use: openpyxl Create and manipulate Microsoft Excel workbooks programmatically. Build spreadsheets with formulas, charts, conditional formatting, and pivot tables. Handle large datasets efficiently with streaming mode. data
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Creating Excel reports with formulas and calculations - Generating spreadsheets from database queries - Automating financial reports and dashboards - Building Excel templates with formatting - Processing and transforming existing Excel files - Creating charts and visualizations in Excel - Applying conditional formatting rules - Building data entry forms with validation - Handling large datasets (100k+ rows) - Creating pivot tables programmatically ### DON''T USE when: - Only need to read data into pandas (use pandas.read_excel directly) - Need real-time Excel manipulation (use xlwings on Windows) - Working with .xls format (use xlrd/xlwt) - Creating complex macros (requires VBA) - Need Excel-specific features like Power Query'
+  when_to_use_source: section
 - description: Manipulate PDF documents programmatically. Merge, split, rotate, and watermark PDFs. Extract text and metadata. Handle form filling and encryption/decryption.
   family: data
   id: data/office/pypdf
   name: pypdf
-  when_to_use: pypdf Manipulate PDF documents programmatically. Merge, split, rotate, and watermark PDFs. Extract text and metadata. Handle form filling and encryption/decryption. data
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Merging multiple PDF files into a single document - Splitting large PDFs into smaller files - Extracting specific pages from PDFs - Adding watermarks or stamps to documents - Extracting text content for analysis - Reading or modifying PDF metadata - Filling PDF forms programmatically - Encrypting or decrypting PDF files - Adding page numbers or headers/footers - Rotating or reordering pages - Automating PDF workflows in pipelines ### DON''T USE when: - Creating PDFs from scratch (use reportlab or weasyprint) - Need advanced text layout control (use reportlab) - Converting other formats to PDF (use dedicated converters) - Need OCR for scanned documents (use pytesseract + pdf2image) - Working with complex form creation (use reportlab) - Need to edit existing text content (limited support)'
+  when_to_use_source: section
 - description: Create and manipulate Microsoft Word documents programmatically. Build reports, contracts, and documentation with full control over paragraphs, tables, headers, styles, and images.
   family: data
   id: data/office/python-docx
   name: python-docx
-  when_to_use: python-docx Create and manipulate Microsoft Word documents programmatically. Build reports, contracts, and documentation with full control over paragraphs, tables, headers, styles, and images. data
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Creating Word documents programmatically from data - Generating reports with consistent formatting - Building contracts, invoices, or legal documents - Automating template-based document creation - Modifying existing Word documents - Creating documents with complex table structures - Generating technical documentation with code blocks - Building multi-section documents with headers/footers - Creating documents with embedded images and charts - Batch processing document generation ### DON''T USE when: - Simple template filling (use docx-templates instead) - PDF generation is the final output (use pypdf or reportlab) - Need real-time collaborative editing - Document requires complex macros or VBA - Need to preserve complex Word features (use COM automation on Windows) - Only need to extract text from documents (use python-docx2txt)'
+  when_to_use_source: section
 - description: Create and manipulate PowerPoint presentations programmatically. Build slide decks with layouts, shapes, charts, tables, and images. Generate data-driven presentations from templates.
   family: data
   id: data/office/python-pptx
   name: python-pptx
-  when_to_use: python-pptx Create and manipulate PowerPoint presentations programmatically. Build slide decks with layouts, shapes, charts, tables, and images. Generate data-driven presentations from templates. data
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Generating presentations from data automatically - Creating standardized report presentations - Building slide decks with consistent branding - Automating dashboard presentations - Creating training materials from templates - Generating client presentations from databases - Building presentation pipelines for regular reports - Creating slides with charts and tables from data - Mass-producing presentations with variable content ### DON''T USE when: - Need real-time presentation editing (use PowerPoint) - Creating presentations with complex animations - Need advanced transitions (limited support) - Require embedded videos with playback controls - Need to preserve complex PowerPoint features - Creating presentations from scratch without Python (use PowerPoint)'
+  when_to_use_source: section
 - description: Convert Excel calculation spreadsheets to Python code — extract formulas, build dependency graphs, generate pytest tests using cell values as assertions, and produce dark-intelligence archive YAMLs.
   family: data
   id: data/office/xlsx-to-python
@@ -1712,32 +1712,32 @@ skills:
   family: development
   id: development/documentation/docusaurus
   name: docusaurus
-  when_to_use: docusaurus Build modern documentation websites with Docusaurus. Covers docs, blog, pages, versioning, i18n, search integration, and deployment patterns. React-based with MDX support for interactive documentation. development
-  when_to_use_source: backfill
+  when_to_use: '### USE When - Building documentation for open source projects - Need React components in documentation - Require multi-version documentation - Need internationalized documentation - Want blog functionality alongside docs - Building developer portals - Need fast, SEO-optimized static sites - Want MDX for interactive examples ### DON''T USE When - Simple single-page documentation (use basic HTML) - Python-specific API docs with autodoc (use Sphinx) - No React experience and simple needs (use MkDocs) - Need real-time collaborative editing (use GitBook) - Building slide presentations (use Marp)'
+  when_to_use_source: section
 - description: Publish documentation and books with GitBook including spaces, collections, variants, Git sync, collaboration, and API integration
   family: development
   id: development/documentation/gitbook
   name: gitbook
-  when_to_use: gitbook Publish documentation and books with GitBook including spaces, collections, variants, Git sync, collaboration, and API integration development
-  when_to_use_source: backfill
+  when_to_use: '### USE GitBook when: - **Team documentation** - Collaborative docs with multiple editors - **Product documentation** - User guides, API docs, tutorials - **Knowledge bases** - Internal wikis and knowledge management - **Multi-version docs** - Maintain docs for different product versions - **Git-based workflow** - Sync docs with GitHub/GitLab - **Custom branding** - Need custom domains and styling - **Access control** - Restrict docs to authenticated users ### DON''T USE GitBook when: - **Complex code docs** - Use Sphinx for Python API docs - **Static site control** - Use MkDocs or Docusaurus - **Offline-first** - GitBook is primarily cloud-hosted - **Self-hosted required** - GitBook is SaaS (legacy self-hosted deprecated)'
+  when_to_use_source: section
 - description: Create professional Markdown-based slide presentations with Marp. Covers themes, directives, speaker notes, presenter view, and export to PDF, HTML, and PPTX formats. Includes VS Code integration, CLI usage, and CI/CD automation.
   family: development
   id: development/documentation/marp
   name: marp
-  when_to_use: marp Create professional Markdown-based slide presentations with Marp. Covers themes, directives, speaker notes, presenter view, and export to PDF, HTML, and PPTX formats. Includes VS Code integration, CLI usage, and CI/CD automation. development
-  when_to_use_source: backfill
+  when_to_use: '### USE When - Creating presentations from Markdown content - Need quick slide creation without design overhead - Want version-controlled presentations (Git-friendly) - Require multiple output formats (PDF, HTML, PPTX) - Building automated presentation pipelines - Need consistent branding across presentations - Creating technical presentations with code - Need math equations in slides ### DON''T USE When - Need complex animations and transitions (use PowerPoint/Keynote) - Require real-time collaboration (use Google Slides) - Building interactive web applications (use reveal.js directly) - Need embedded videos with playback controls - Building documentation websites (use MkDocs or Docusaurus)'
+  when_to_use_source: section
 - description: Universal document converter for transforming Markdown to PDF, DOCX, HTML, LaTeX, and 40+ other formats. Covers templates, filters, citations with BibTeX/CSL, and batch conversion automation scripts.
   family: development
   id: development/documentation/pandoc
   name: pandoc
-  when_to_use: pandoc Universal document converter for transforming Markdown to PDF, DOCX, HTML, LaTeX, and 40+ other formats. Covers templates, filters, citations with BibTeX/CSL, and batch conversion automation scripts. development
-  when_to_use_source: backfill
+  when_to_use: '### USE When - Converting Markdown to PDF with professional formatting - Creating Word documents from Markdown sources - Need reproducible document builds from plain text - Managing academic papers with citations (BibTeX/CSL) - Batch converting multiple documents - Need custom templates for consistent branding - Converting between multiple documentation formats - Creating LaTeX documents from Markdown - Need cross-references (figures, tables, equations) - Building automated document pipelines ### DON''T USE When - Building documentation websites (use MkDocs or Sphinx) - Need interactive documentation (use web frameworks) - Require real-time collaborative editing (use Google Docs) - Building slide presentations (use Marp) - Need WYSIWYG editing (use Word directly) - Converting complex nested HTML (may lose formatting)'
+  when_to_use_source: section
 - description: Generate comprehensive Python documentation with Sphinx. Covers autodoc for API extraction, Napoleon for Google/NumPy docstrings, intersphinx for cross-references, and multiple output formats including HTML, PDF, and ePub.
   family: development
   id: development/documentation/sphinx
   name: sphinx
-  when_to_use: sphinx Generate comprehensive Python documentation with Sphinx. Covers autodoc for API extraction, Napoleon for Google/NumPy docstrings, intersphinx for cross-references, and multiple output formats including HTML, PDF, and ePub. development
-  when_to_use_source: backfill
+  when_to_use: '### USE When - Building Python library or package documentation - Need automatic API reference from docstrings - Require PDF or ePub documentation output - Using Google or NumPy docstring styles - Need cross-references between documentation projects - Deploying to Read the Docs - Building scientific or academic documentation - Need versioned API documentation - Working with large Python codebases - Require internationalized documentation ### DON''T USE When - Simple project documentation without API docs (use MkDocs) - Non-Python projects (use MkDocs or Docusaurus) - Need React components in docs (use Docusaurus) - Quick format conversion only (use Pandoc) - Building presentation slides (use Marp) - Collaborative wiki-style docs (use GitBook)'
+  when_to_use_source: section
 - description: 'Create distinctive, production-grade frontend interfaces with expert-level UX design. Use when building SaaS dashboards, landing pages, marketing sites, React/Vue components, HTML/CSS layouts, or any web UI. Combines bold aesthetic direction with systematic design tokens, WCAG accessibility, conversion optimization, and Tailwind/React best practices. Produces polished, memorable interfaces that avoid generic AI aesthetics while meeting professional standards. type: reference'
   family: development
   id: development/elite-frontend-ux
@@ -2468,8 +2468,8 @@ skills:
   family: engineering
   id: engineering/marine-offshore/marine-safety
   name: marine-safety
-  when_to_use: marine-safety Assess offshore asset integrity, corrosion management, and life extension for aging marine structures engineering
-  when_to_use_source: backfill
+  when_to_use: '### Use This Skill When: - Evaluating an asset for operation beyond its original design life. - Assessing the safety of a corroded pipeline or vessel. - Planning inspection campaigns (RBI). - Reviewing "Fitness for Service" reports. ### Do Not Use This Skill When: - Designing a *new* asset (use Structural Analysis or DNV Standards). - Calculating basic hydrostatics (use Marine Engineering).'
+  when_to_use_source: section
 - description: Quick mesh inspection, conversion, quality checks, and coarsening for hydrodynamic solvers
   family: engineering
   id: engineering/marine-offshore/mesh-utilities
@@ -2696,8 +2696,8 @@ skills:
   family: engineering
   id: engineering/marine-offshore/production-engineering
   name: production-engineering
-  when_to_use: production-engineering Monitor and optimize well performance, production surveillance, and enhanced oil recovery operations engineering
-  when_to_use_source: backfill
+  when_to_use: '### Use This Skill When: - Designing or optimizing production systems. - Preparing for a **Surveillance Workshop**. - Troubleshooting well performance issues (e.g., sudden rate drop). - Evaluating EOR opportunities or managing existing EOR projects. - Reviewing "Lessons Learnt" for brownfield asset management. ### Do Not Use This Skill When: - Performing primary reservoir modeling (use Reservoir Engineering). - Conducting heavy structural analysis (use Structural Analysis). - Designing subsea hardware (use Subsea Engineering).'
+  when_to_use_source: section
 - description: Perform probabilistic risk assessment with Monte Carlo simulations for offshore marine operations
   family: engineering
   id: engineering/marine-offshore/risk-assessment
@@ -2756,32 +2756,32 @@ skills:
   family: engineering
   id: engineering/standards/api
   name: api
-  when_to_use: api Apply American Petroleum Institute codes and standards for offshore structures and production systems engineering
-  when_to_use_source: backfill
+  when_to_use: '### Use This Skill When: - Specifying equipment for drilling or production operations. - Designing offshore structures (fixed or floating). - Verifying valve and pump requirements. - Conducting risk assessments (API 17N, API 14C). ### Do Not Use This Skill When: - Designing ship hulls (use Class Society rules like DNV/ABS). - Checking material testing protocols (use ASTM). - Checking European pressure vessel codes (use PED/EN).'
+  when_to_use_source: section
 - description: Reference ASTM standards for material properties, testing methods, and design code compliance
   family: engineering
   id: engineering/standards/astm
   name: astm
-  when_to_use: astm Reference ASTM standards for material properties, testing methods, and design code compliance engineering
-  when_to_use_source: backfill
+  when_to_use: '### Use This Skill When: - Specifying material grades on engineering drawings. - Reviewing Material Test Reports (MTRs). - Defining Charpy impact test requirements for low-temperature service.'
+  when_to_use_source: section
 - description: Apply DNV rules and recommended practices for offshore structures, pipelines, and marine classification
   family: engineering
   id: engineering/standards/dnv
   name: dnv
-  when_to_use: dnv Apply DNV rules and recommended practices for offshore structures, pipelines, and marine classification engineering
-  when_to_use_source: backfill
+  when_to_use: '### Use This Skill When: - Performing fatigue analysis (S-N curves). - Designing subsea pipelines or risers. - Classifying vessels or floating units. - Planning marine warranty surveys. ### Do Not Use This Skill When: - Designing wellhead equipment (use API). - Specifying raw material testing methods (use ASTM).'
+  when_to_use_source: section
 - description: Apply ISO standards for materials, corrosion, safety, and oil and gas industry compliance
   family: engineering
   id: engineering/standards/iso
   name: iso
-  when_to_use: iso Apply ISO standards for materials, corrosion, safety, and oil and gas industry compliance engineering
-  when_to_use_source: backfill
+  when_to_use: '### Use This Skill When: - Selecting materials for sour service (H2S). - Working on international projects where API is not the governing code. - Specifying fasteners and bolts. - Establishing quality management protocols.'
+  when_to_use_source: section
 - description: Apply NORSOK standards for Norwegian petroleum industry materials, safety, and structural design
   family: engineering
   id: engineering/standards/norsok
   name: norsok
-  when_to_use: norsok Apply NORSOK standards for Norwegian petroleum industry materials, safety, and structural design engineering
-  when_to_use_source: backfill
+  when_to_use: '### Use This Skill When: - Designing for the North Sea or harsh cold-climate environments. - Defining Well Barrier Schematics (D-010). - Specifying high-durability coating systems (M-501).'
+  when_to_use_source: section
 - description: Unit-safe engineering calculations with provenance tracking, dimensional consistency verification, and unit conversion across SI, inch, and metric systems.
   family: engineering
   id: engineering/units
@@ -3146,14 +3146,14 @@ skills:
   family: operations
   id: operations/automation/activepieces
   name: activepieces
-  when_to_use: activepieces Self-hosted no-code automation platform with visual flow builder, type-safe custom pieces, API integrations, and event-driven triggers operations
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Building business automations with type-safe custom components - Self-hosting is required for data sovereignty and compliance - Need modular, reusable automation pieces - Creating approval workflows with human-in-the-loop - Connecting APIs with visual flow builder - Teams need both no-code and code-first options - Require MIT-licensed open-source automation - Building internal tool automations ### DON''T USE when: - Complex DAG-based data pipeline orchestration (use Airflow) - CI/CD pipelines tightly coupled with git (use GitHub Actions) - Need 400+ pre-built integrations immediately (use n8n) - Sub-second latency requirements (use direct API calls) - Simple single-trigger cron jobs (use systemd timers)'
+  when_to_use_source: section
 - description: Python DAG workflow orchestration using Apache Airflow for data pipelines, ETL processes, and scheduled task automation
   family: operations
   id: operations/automation/airflow
   name: airflow
-  when_to_use: airflow Python DAG workflow orchestration using Apache Airflow for data pipelines, ETL processes, and scheduled task automation operations
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Building complex data pipelines with task dependencies - Orchestrating ETL/ELT workflows - Scheduling recurring batch jobs - Managing workflows with retries and error handling - Coordinating tasks across multiple systems - Need visibility into workflow execution history - Requiring audit trails and lineage tracking - Building ML pipeline orchestration ### DON''T USE when: - Real-time streaming data (use Kafka, Flink) - Simple cron jobs (use systemd timers, crontab) - CI/CD pipelines (use GitHub Actions, Jenkins) - Low-latency requirements (Airflow has scheduler overhead) - Simple single-task automation (overkill) - Need visual workflow design for non-developers (use n8n)'
+  when_to_use_source: section
 - description: Patterns for creating, testing, debugging, and maintaining cron-driven automation in workspace-hub, including log strategy, failure analysis, and safe git-aware job design.
   family: operations
   id: operations/automation/cron-job-management
@@ -3164,26 +3164,26 @@ skills:
   family: operations
   id: operations/automation/github-actions
   name: github-actions
-  when_to_use: github-actions CI/CD automation and workflow orchestration using GitHub Actions for builds, tests, deployments, and repository automation operations
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Building CI/CD pipelines for GitHub repositories - Automating tests across multiple OS/language versions - Creating release and deployment workflows - Publishing packages to npm, PyPI, Docker Hub - Automating issue triage and PR management - Scheduling periodic maintenance tasks - Building reusable workflow components - Implementing GitOps deployment patterns ### DON''T USE when: - Repository not hosted on GitHub (use Jenkins, GitLab CI) - Need complex DAG-based workflow orchestration (use Airflow) - Require visual workflow design (use n8n, Activepieces) - Self-hosted runners not available for compute-intensive tasks - Need real-time event processing (use dedicated message queues)'
+  when_to_use_source: section
 - description: Open-source workflow automation platform with visual node-based editor, 400+ integrations, webhooks, and self-hosted deployment capabilities
   family: operations
   id: operations/automation/n8n
   name: n8n
-  when_to_use: n8n Open-source workflow automation platform with visual node-based editor, 400+ integrations, webhooks, and self-hosted deployment capabilities operations
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Building integrations between 400+ services (Slack, Gmail, Notion, Airtable, etc.) - Creating visual workflows accessible to non-developers - Self-hosting is required for data sovereignty and compliance - Need webhook-triggered automations with real-time processing - Building internal tool automations and business process automation - Connecting APIs without writing extensive code - Rapid prototyping of automation workflows - Need human-in-the-loop approval workflows ### DON''T USE when: - Orchestrating complex data pipelines with dependencies (use Airflow) - CI/CD pipelines tightly coupled with git (use GitHub Actions) - Need sub-second latency requirements (use direct API calls) - Processing massive datasets (use dedicated ETL tools) - Require enterprise audit compliance out-of-box (evaluate requirements) - Simple single-trigger cron jobs (use systemd timers)'
+  when_to_use_source: section
 - description: Developer-first workflow engine that turns scripts into workflows and UIs, supporting Python, TypeScript, Go, and Bash with approval flows, schedule management, and self-hosted deployment
   family: operations
   id: operations/automation/windmill
   name: windmill
-  when_to_use: windmill Developer-first workflow engine that turns scripts into workflows and UIs, supporting Python, TypeScript, Go, and Bash with approval flows, schedule management, and self-hosted deployment operations
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Developers prefer writing code over visual tools - Need auto-generated UIs for script parameters - Building internal tools with minimal frontend work - Python, TypeScript, Go, or Bash are primary languages - Combining workflow automation with internal tools - Need code review and version control for automations - Require approval flows with audit trails - Self-hosting for data sovereignty ### DON''T USE when: - Non-developers need to build workflows (use n8n, Activepieces) - Need 400+ pre-built integrations (use n8n) - Complex DAG orchestration with dependencies (use Airflow) - CI/CD pipelines tightly coupled with git (use GitHub Actions) - Simple visual automation preferred (use Activepieces)'
+  when_to_use_source: section
 - description: Cross-platform hardware assessment and system maintenance — assess hardware, update OS/tools/custom software, and track changes over time via JSON changelogs
   family: operations
   id: operations/devops/hardware-assessment
   name: hardware-assessment
-  when_to_use: hardware-assessment Cross-platform hardware assessment and system maintenance — assess hardware, update OS/tools/custom software, and track changes over time via JSON changelogs operations
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Inventorying machines for consolidation or repurposing decisions - Comparing hardware specs across multiple devices - Planning GPU, RAM, or storage upgrades - Auditing SMART health status across storage devices - Keeping machines updated (OS packages, tools, custom software) - Tracking what changed after updates via changelogs - Documenting system configurations for compliance or handoff ### DON''T USE when: - You need real-time monitoring (use Prometheus/Grafana instead) - You need benchmark/performance data (this collects specs, not performance)'
+  when_to_use_source: section
 - description: Diagnose local machine slowness and apply CPU/IO/governor tuning. Use when work feels slow on ace-linux-1 / ace-linux-2 — Hermes lagging, git operations taking minutes, builds dragging, Claude Code feeling sluggish. Runs perf-bench.sh, identifies the dominant bottleneck (CPU governor, filesystem driver, NUMA, memory pressure, I/O contention), and applies fixes from the perf-tuning runbook.
   family: operations
   id: operations/devops/perf-tuning
@@ -3206,32 +3206,32 @@ skills:
   family: operations
   id: operations/devtools/cli-productivity
   name: cli-productivity
-  when_to_use: cli-productivity Essential CLI tools and shell productivity patterns for efficient terminal workflows operations
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Building efficient terminal workflows - Processing text and JSON data - Searching codebases quickly - Navigating file systems efficiently - Automating repetitive tasks - Creating shell functions and aliases - Building interactive scripts ### DON''T USE when: - GUI-based workflows are more appropriate - Processing binary data (use specialized tools) - Complex data analysis (use Python/Pandas) - Tasks requiring visual feedback'
+  when_to_use_source: section
 - description: Complete Docker containerization patterns with multi-stage builds for development and production workflows
   family: operations
   id: operations/devtools/docker
   name: docker
-  when_to_use: docker Complete Docker containerization patterns with multi-stage builds for development and production workflows operations
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Building reproducible development environments - Creating consistent CI/CD pipelines - Deploying microservices architectures - Isolating application dependencies - Packaging applications for distribution - Setting up local development with multiple services - Need portable environments across teams ### DON''T USE when: - Simple scripts that don''t need isolation - Applications that require direct hardware access - Environments where containers aren''t permitted - Tasks better suited for virtual machines (full OS isolation) - When simpler alternatives like venv suffice'
+  when_to_use_source: section
 - description: Advanced git workflows including rebase, worktrees, bisect, hooks, and monorepo patterns
   family: operations
   id: operations/devtools/git-advanced
   name: git-advanced
-  when_to_use: git-advanced Advanced git workflows including rebase, worktrees, bisect, hooks, and monorepo patterns operations
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Managing complex branch strategies - Working on multiple features simultaneously - Hunting down bugs with bisect - Maintaining clean commit history - Setting up team workflows with hooks - Managing multi-repo dependencies - Recovering from git mistakes ### DON''T USE when: - Simple linear development (basic git suffices) - Solo projects with simple history - When team isn''t familiar with advanced git - Time-critical fixes (use simple commits)'
+  when_to_use_source: section
 - description: macOS launcher automation with Raycast extensions (TypeScript/React) and Alfred workflows (AppleScript/Python) for keyboard-driven productivity
   family: operations
   id: operations/devtools/raycast-alfred
   name: raycast-alfred
-  when_to_use: raycast-alfred macOS launcher automation with Raycast extensions (TypeScript/React) and Alfred workflows (AppleScript/Python) for keyboard-driven productivity operations
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Building quick access tools for developer workflows - Automating repetitive macOS tasks - Creating custom search commands - Building clipboard history managers - Implementing text snippet expansion - Creating project launchers and switchers - Building API query tools - Automating application control - Creating custom keyboard shortcuts - Building team productivity tools ### DON''T USE when: - Cross-platform automation needed (use shell scripts) - Server-side automation (use cron/systemd) - GUI testing automation (use Playwright/Selenium) - Windows/Linux environments - Heavy computation tasks (use proper CLI tools)'
+  when_to_use_source: section
 - description: VS Code productivity optimization with essential extensions, settings sync, profiles, keybindings, snippets, and workspace configuration
   family: operations
   id: operations/devtools/vscode-extensions
   name: vscode-extensions
-  when_to_use: vscode-extensions VS Code productivity optimization with essential extensions, settings sync, profiles, keybindings, snippets, and workspace configuration operations
-  when_to_use_source: backfill
+  when_to_use: '### USE when: - Setting up a new development environment - Optimizing VS Code for specific languages/frameworks - Creating consistent team configurations - Building custom snippets and tasks - Configuring debugging for complex applications - Managing multiple project profiles - Automating repetitive editor tasks ### DON''T USE when: - Need full IDE features (use JetBrains IDEs) - Working exclusively in terminal (use vim/neovim) - Resource-constrained environments (use lighter editors) - Pair programming with different editors (standardize first)'
+  when_to_use_source: section
 - description: Survey, classify, and clean up `/mnt/local-analysis/` (or any sibling-to-workspace-hub directory holding orphan worktrees, codex-burn artifacts, agent log accumulations, and outer-clone duplicates) without losing useful code/work. Surfaces a tiered approval menu rather than baking decisions; defers all destructive ops until user confirms.
   family: operations
   id: operations/mnt-analysis-cleanup
