@@ -35,6 +35,43 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
+        "labels": [
+          "domain:harness",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3214,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3214",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
         "labels": [],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -61,9 +98,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -71,44 +107,7 @@
       "hover": {
         "labels": [
           "priority:low",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "skill-index coherence/drift check (curated graph vs full index)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3208,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "skill-index coherence/drift check (curated graph vs full index)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3208",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:low",
+          "status:plan-review",
           "domain:harness",
           "lane:claude"
         ],
@@ -133,7 +132,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3207",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -395,52 +396,6 @@
     },
     {
       "approval_blockers": [
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:high",
-          "machine:dev-primary",
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness",
-          "status:completeness-verified",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `scripts/maintenance/harness-install-doctor.sh` \u2014 #3184 repair arm, landed; schedules at `11 */6 * * *`; the triggering artifact that surfaced this issue.",
-        "provider_route": "claude",
-        "risks": "**Risk:** The `*/5 * * * *` reaper schedule means the reaper runs every 5 min. If a legitimate slow operation (large rebase, `git gc`) takes > 5 min but doesn't hold a live `pgrep -x git` process at the moment the reaper fires, the lock gets reaped mid-op. **Mitigation:** require both `pgrep -x git` empty AND `find -mmin +5`; the intersection of both is very narrow. Consider defaulting `LOCK_REAPE",
-        "tests": "17 TDD tests defined",
-        "title": "ace-linux-1 chronically parks off main + stale index.lock froze primary git for 5h \u2014 add lock-reaper + return-to-main guard"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3187,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-17-issue-3187-git-lock-reaper-return-to-main.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "ace-linux-1 chronically parks off main + stale index.lock froze primary git for 5h \u2014 add lock-reaper + return-to-main guard",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3187",
-      "warnings": [
-        "approved_no_marker",
-        "dual_status_labels",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
         "missing status:plan-review label",
         "no canonical plan file",
         "review evidence not clean",
@@ -476,51 +431,6 @@
       "title": "Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3186",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "machine:multi",
-          "status:plan-approved",
-          "gate:completeness",
-          "status:completeness-verified",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `scripts/monitoring/equivalence-sentinel.sh` (#3059) \u2014 fingerprints this box \u2192 publishes to the `equivalence-state` git ref \u2192 compares all boxes \u2192 alerts on WARNING/CRITICAL. **Report-only**: its final stage is `gh issue comment`; it never repairs. This is the gap the do",
-        "provider_route": "claude",
-        "risks": "**R1 \u2014 shadowing Codex `.system`** (already hit + reverted in prototype): mitigated by making Step 2 report-only; test enforces no-mutation. | **R2 \u2014 shared live clone**: workspace-hub is a shared checkout; work is isolated on a feature branch; commits use pathspec form per `feedback_multi_agent_commit_serialization`. | **R3 \u2014 cron noise**: doctor exits 0 when healthy and writes a dated log; only ",
-        "tests": "(no TDD section)",
-        "title": "Harness install-doctor: scheduled repair arm for per-provider install drift (#3059 is report-only)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3184,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-17-issue-3184-harness-install-doctor.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Harness install-doctor: scheduled repair arm for per-provider install drift (#3059 is report-only)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3184",
-      "warnings": [
-        "approved_no_marker",
-        "missing_review"
-      ]
     },
     {
       "approval_blockers": [
@@ -8517,14 +8427,134 @@
         "approved_no_marker",
         "missing_review"
       ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:medium",
+          "domain:automation",
+          "machine:dev-primary",
+          "repo-readiness",
+          "dispatch:ready",
+          "gate:completeness",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Daily repo readiness tracker"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2652,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Daily repo readiness tracker",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2652",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:low",
+          "machine:dev-primary",
+          "dispatch:ready",
+          "gate:completeness",
+          "domain:document-intelligence-indexing",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2651,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2651",
+      "warnings": []
     }
   ],
-  "generated_at": "2026-06-18T17:20:29Z",
+  "generated_at": "2026-06-18T21:20:19Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "domain:harness",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3214,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3214",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8561,9 +8591,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8571,44 +8600,7 @@
         "hover": {
           "labels": [
             "priority:low",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "skill-index coherence/drift check (curated graph vs full index)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3208,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "skill-index coherence/drift check (curated graph vs full index)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3208",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:low",
+            "status:plan-review",
             "domain:harness",
             "lane:claude"
           ],
@@ -8633,7 +8625,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3207",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -8895,52 +8889,6 @@
       },
       {
         "approval_blockers": [
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:high",
-            "machine:dev-primary",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "status:completeness-verified",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `scripts/maintenance/harness-install-doctor.sh` \u2014 #3184 repair arm, landed; schedules at `11 */6 * * *`; the triggering artifact that surfaced this issue.",
-          "provider_route": "claude",
-          "risks": "**Risk:** The `*/5 * * * *` reaper schedule means the reaper runs every 5 min. If a legitimate slow operation (large rebase, `git gc`) takes > 5 min but doesn't hold a live `pgrep -x git` process at the moment the reaper fires, the lock gets reaped mid-op. **Mitigation:** require both `pgrep -x git` empty AND `find -mmin +5`; the intersection of both is very narrow. Consider defaulting `LOCK_REAPE",
-          "tests": "17 TDD tests defined",
-          "title": "ace-linux-1 chronically parks off main + stale index.lock froze primary git for 5h \u2014 add lock-reaper + return-to-main guard"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3187,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-17-issue-3187-git-lock-reaper-return-to-main.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "ace-linux-1 chronically parks off main + stale index.lock froze primary git for 5h \u2014 add lock-reaper + return-to-main guard",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3187",
-        "warnings": [
-          "approved_no_marker",
-          "dual_status_labels",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
           "missing status:plan-review label",
           "no canonical plan file",
           "review evidence not clean",
@@ -8976,51 +8924,6 @@
         "title": "Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3186",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "status:completeness-verified",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `scripts/monitoring/equivalence-sentinel.sh` (#3059) \u2014 fingerprints this box \u2192 publishes to the `equivalence-state` git ref \u2192 compares all boxes \u2192 alerts on WARNING/CRITICAL. **Report-only**: its final stage is `gh issue comment`; it never repairs. This is the gap the do",
-          "provider_route": "claude",
-          "risks": "**R1 \u2014 shadowing Codex `.system`** (already hit + reverted in prototype): mitigated by making Step 2 report-only; test enforces no-mutation. | **R2 \u2014 shared live clone**: workspace-hub is a shared checkout; work is isolated on a feature branch; commits use pathspec form per `feedback_multi_agent_commit_serialization`. | **R3 \u2014 cron noise**: doctor exits 0 when healthy and writes a dated log; only ",
-          "tests": "(no TDD section)",
-          "title": "Harness install-doctor: scheduled repair arm for per-provider install drift (#3059 is report-only)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3184,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-17-issue-3184-harness-install-doctor.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Harness install-doctor: scheduled repair arm for per-provider install drift (#3059 is report-only)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3184",
-        "warnings": [
-          "approved_no_marker",
-          "missing_review"
-        ]
       },
       {
         "approval_blockers": [
@@ -17017,6 +16920,89 @@
           "approved_no_marker",
           "missing_review"
         ]
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:medium",
+            "domain:automation",
+            "machine:dev-primary",
+            "repo-readiness",
+            "dispatch:ready",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Daily repo readiness tracker"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2652,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Daily repo readiness tracker",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2652",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:low",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:document-intelligence-indexing",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2651,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2651",
+        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -17027,16 +17013,16 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-06-18T17:20:22.503656Z",
+  "scorecard_generated_at": "2026-06-18T21:20:14.987438Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-18T17:20:21.937072Z",
+  "utilization_generated_at": "2026-06-18T21:20:14.869211Z",
   "warning_summary": {
-    "approved_no_marker": 35,
+    "approved_no_marker": 33,
     "approved_no_plan": 17,
-    "dual_status_labels": 16,
+    "dual_status_labels": 15,
     "legacy_review_no_sha": 1,
     "major_review": 1,
     "marker_without_open_approved_issue": 158,
-    "missing_review": 68
+    "missing_review": 67
   }
 }

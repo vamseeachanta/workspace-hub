@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-18T17:20:25.704299Z",
+  "generated_at": "2026-06-18T21:20:17.031277Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-18T17:20:22.503656Z",
+  "scorecard_generated_at": "2026-06-18T21:20:14.987438Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 44,
-      "total_candidates": 177,
+      "execution_ready_count": 42,
+      "total_candidates": 176,
       "top_issues": [
         {
           "number": 2686,
@@ -559,32 +559,6 @@
           ]
         },
         {
-          "number": 3187,
-          "title": "ace-linux-1 chronically parks off main + stale index.lock froze primary git for 5h \u2014 add lock-reaper + return-to-main guard",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3187",
-          "labels": [
-            "priority:high",
-            "machine:dev-primary",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "status:completeness-verified",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-17T22:27:45Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3205,
           "title": "Executed-router consolidation: make routing-config cost ceiling actually enforced",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3205",
@@ -877,31 +851,6 @@
             "lane:claude"
           ],
           "updatedAt": "2026-06-16T13:09:52Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3184,
-          "title": "Harness install-doctor: scheduled repair arm for per-provider install drift (#3059 is report-only)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3184",
-          "labels": [
-            "priority:medium",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "status:completeness-verified",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-17T22:27:38Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2178,6 +2127,32 @@
           "updatedAt": "2026-06-13T21:42:39Z",
           "execution_ready": false,
           "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2652,
+          "title": "Daily repo readiness tracker",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2652",
+          "labels": [
+            "priority:medium",
+            "domain:automation",
+            "machine:dev-primary",
+            "repo-readiness",
+            "dispatch:ready",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-18T11:07:27Z",
+          "execution_ready": false,
+          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4288,10 +4263,11 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3207",
           "labels": [
             "priority:low",
+            "status:plan-review",
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-17T22:10:24Z",
+          "updatedAt": "2026-06-18T21:02:15Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -4299,28 +4275,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3208,
-          "title": "skill-index coherence/drift check (curated graph vs full index)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3208",
-          "labels": [
-            "priority:low",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-17T22:10:26Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation",
             "strategy"
           ]
@@ -4748,6 +4702,27 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3214,
+          "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3214",
+          "labels": [
+            "domain:harness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-18T20:16:12Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4755,7 +4730,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 2,
-      "total_candidates": 19,
+      "total_candidates": 20,
       "top_issues": [
         {
           "number": 3030,
@@ -5245,6 +5220,29 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2651,
+          "title": "Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2651",
+          "labels": [
+            "priority:low",
+            "machine:dev-primary",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:document-intelligence-indexing",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-10T16:13:10Z",
+          "execution_ready": false,
+          "priority_rank": 3,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
             "implementation"
           ]
         },
