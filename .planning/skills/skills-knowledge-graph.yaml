@@ -357,31 +357,6 @@ nodes:
     python_packages: []
 
   # ── workspace-hub / Operations ────────────
-  - id: "workspace-hub/agent-orchestration"
-    repo: workspace-hub
-    category: workspace_ops
-    domain: workspace_ops
-    sub_domains: [orchestration]
-    input_types: [task_spec, agent_config]
-    output_types: [orchestration_results, agent_logs]
-    capabilities:
-      - "Orchestrate AI agents via Claude Flow"
-      - "Swarm coordination and multi-agent workflows"
-      - "Task decomposition and parallel execution"
-    python_packages: []
-
-  - id: "workspace-hub/compliance-check"
-    repo: workspace-hub
-    category: workspace_ops
-    domain: workspace_ops
-    sub_domains: [compliance]
-    input_types: [codebase_path, rule_set]
-    output_types: [compliance_report, violation_list]
-    capabilities:
-      - "Verify coding standards and AI guidelines"
-      - "Enforce workspace compliance rules"
-    python_packages: []
-
   - id: "workspace-hub/repo-sync"
     repo: workspace-hub
     category: workspace_ops
@@ -394,57 +369,7 @@ nodes:
       - "Bulk pull, push, and status operations"
     python_packages: []
 
-  - id: "workspace-hub/sparc-workflow"
-    repo: workspace-hub
-    category: workspace_ops
-    domain: development
-    sub_domains: [workflows]
-    input_types: [task_description]
-    output_types: [spec, pseudocode, architecture, refinement, completion]
-    capabilities:
-      - "Apply SPARC methodology (Spec, Pseudocode, Architecture, Refinement, Completion)"
-      - "Systematic TDD-driven development workflow"
-    python_packages: []
-
-  - id: "workspace-hub/workspace-cli"
-    repo: workspace-hub
-    category: workspace_ops
-    domain: workspace_ops
-    sub_domains: [cli]
-    input_types: [cli_command]
-    output_types: [cli_output]
-    capabilities:
-      - "Unified CLI for repository management"
-      - "System configuration and status"
-    python_packages: []
-
   # ── digitalmodel ──────────────────────────
-  - id: "digitalmodel/orcaflex-modeling"
-    repo: digitalmodel
-    category: engineering
-    domain: marine_offshore
-    sub_domains: [mooring, riser, structural, hydrodynamics]
-    input_types: [yaml_config, orcaflex_model, csv_data]
-    output_types: [orcaflex_results, dat_files, sim_files]
-    capabilities:
-      - "Setup and configure OrcaFlex hydrodynamic simulations"
-      - "Universal runner for batch simulation execution"
-      - "Model parameterization from YAML configs"
-    python_packages: [OrcFxAPI]
-
-  - id: "digitalmodel/orcaflex-post-processing"
-    repo: digitalmodel
-    category: engineering
-    domain: marine_offshore
-    sub_domains: [mooring, riser, structural]
-    input_types: [sim_files, orcaflex_results, yaml_config]
-    output_types: [statistics_csv, html_report, plotly_figures]
-    capabilities:
-      - "Extract statistics from OrcaFlex results"
-      - "Generate graphs and HTML reports via OPP"
-      - "Batch post-processing across load cases"
-    python_packages: [OrcFxAPI, plotly, pandas]
-
   - id: "digitalmodel/mooring-design"
     repo: digitalmodel
     category: engineering
@@ -522,19 +447,6 @@ nodes:
       - "Wave spectra generation and manipulation"
       - "RAO interpolation and OCIMF loading calculation"
     python_packages: [numpy, scipy]
-
-  - id: "digitalmodel/aqwa-analysis"
-    repo: digitalmodel
-    category: engineering
-    domain: marine_offshore
-    sub_domains: [aqwa, hydrodynamics]
-    input_types: [aqwa_model, vessel_geometry]
-    output_types: [rao_data, hydrodynamic_coefficients, aqwa_results]
-    capabilities:
-      - "Integrate with AQWA for diffraction/radiation analysis"
-      - "Extract RAOs and hydrodynamic databases"
-      - "Convert AQWA output to OrcaFlex format"
-    python_packages: []
 
   - id: "digitalmodel/signal-analysis"
     repo: digitalmodel
@@ -716,18 +628,6 @@ nodes:
       - "Format conversion and transformation utilities"
     python_packages: [pandas, pyyaml]
 
-  - id: "assetutilities/pdf-utilities"
-    repo: assetutilities
-    category: utilities
-    domain: document_generation
-    sub_domains: [pdf]
-    input_types: [pdf_file]
-    output_types: [pdf_file, extracted_text]
-    capabilities:
-      - "PDF processing utilities (merge, split, extract)"
-      - "Lightweight alternative to full pdf skill"
-    python_packages: [pypdf]
-
   - id: "assetutilities/plotly-visualization"
     repo: assetutilities
     category: utilities
@@ -754,50 +654,10 @@ nodes:
 edges:
 
   # ── Marine/offshore pipeline flows ────────
-  - from: "digitalmodel/orcaflex-modeling"
-    to: "digitalmodel/orcaflex-post-processing"
-    type: feeds
-    note: "Simulation output (.sim) feeds into post-processing for statistics and reports"
-
-  - from: "digitalmodel/mooring-design"
-    to: "digitalmodel/orcaflex-modeling"
-    type: feeds
-    note: "Mooring configuration generates OrcaFlex model for dynamic analysis"
-
-  - from: "digitalmodel/catenary-riser"
-    to: "digitalmodel/orcaflex-modeling"
-    type: feeds
-    note: "Riser configuration generates OrcaFlex model for dynamic analysis"
-
-  - from: "digitalmodel/hydrodynamics"
-    to: "digitalmodel/orcaflex-modeling"
-    type: dependency
-    note: "OrcaFlex models require hydrodynamic coefficients and wave spectra"
-
-  - from: "digitalmodel/aqwa-analysis"
-    to: "digitalmodel/hydrodynamics"
-    type: feeds
-    note: "AQWA produces RAOs and hydrodynamic databases consumed by hydrodynamics skill"
-
-  - from: "digitalmodel/aqwa-analysis"
-    to: "digitalmodel/orcaflex-modeling"
-    type: feeds
-    note: "AQWA RAOs imported into OrcaFlex vessel types"
-
-  - from: "digitalmodel/orcaflex-post-processing"
-    to: "digitalmodel/fatigue-analysis"
-    type: feeds
-    note: "Post-processed stress histories feed fatigue damage calculations"
-
   - from: "digitalmodel/signal-analysis"
     to: "digitalmodel/fatigue-analysis"
     type: feeds
     note: "Rainflow cycle counts from signal analysis used in fatigue assessment"
-
-  - from: "digitalmodel/orcaflex-post-processing"
-    to: "digitalmodel/structural-analysis"
-    type: feeds
-    note: "Extracted loads feed structural stress and buckling checks"
 
   - from: "digitalmodel/viv-analysis"
     to: "digitalmodel/fatigue-analysis"
@@ -911,17 +771,7 @@ edges:
     type: dependency
     note: "Invoice generation uses python-docx for document creation"
 
-  - from: "workspace-hub/pdf"
-    to: "assetutilities/pdf-utilities"
-    type: alternative
-    note: "Both handle PDF operations; workspace-hub/pdf is more comprehensive"
-
   # ── Cross-domain data flows ───────────────
-  - from: "digitalmodel/orcaflex-post-processing"
-    to: "workspace-hub/engineering-report-generator"
-    type: feeds
-    note: "OrcaFlex results formatted into engineering reports"
-
   - from: "assetutilities/plotly-visualization"
     to: "workspace-hub/engineering-report-generator"
     type: feeds
@@ -959,30 +809,10 @@ edges:
     note: "Expense reports commonly exported as Excel spreadsheets"
 
   # ── Development/workspace flows ───────────
-  - from: "workspace-hub/skill-creator"
-    to: "workspace-hub/compliance-check"
-    type: composition
-    note: "New skills validated against compliance rules"
-
   - from: "workspace-hub/yaml-workflow-executor"
     to: "workspace-hub/data-pipeline-processor"
     type: composition
     note: "YAML workflows often orchestrate data pipeline steps"
-
-  - from: "workspace-hub/sparc-workflow"
-    to: "workspace-hub/webapp-testing"
-    type: composition
-    note: "SPARC TDD workflow uses testing skill for validation"
-
-  - from: "workspace-hub/agent-orchestration"
-    to: "workspace-hub/parallel-file-processor"
-    type: composition
-    note: "Multi-agent workflows may use parallel processing"
-
-  - from: "workspace-hub/repo-sync"
-    to: "workspace-hub/workspace-cli"
-    type: shared_infra
-    note: "Both operate on the multi-repo workspace infrastructure"
 
   - from: "workspace-hub/frontend-design"
     to: "workspace-hub/web-artifacts-builder"
@@ -1031,15 +861,12 @@ edges:
 coverage:
   marine_offshore:
     skills:
-      - "digitalmodel/orcaflex-modeling"
-      - "digitalmodel/orcaflex-post-processing"
       - "digitalmodel/mooring-design"
       - "digitalmodel/catenary-riser"
       - "digitalmodel/structural-analysis"
       - "digitalmodel/fatigue-analysis"
       - "digitalmodel/viv-analysis"
       - "digitalmodel/hydrodynamics"
-      - "digitalmodel/aqwa-analysis"
       - "digitalmodel/signal-analysis"
     gaps:
       - "Corrosion and cathodic protection analysis (exists as SKILL.md but not in SKILLS_INDEX)"
@@ -1075,7 +902,6 @@ coverage:
       - "workspace-hub/xlsx"
       - "workspace-hub/doc-coauthoring"
       - "workspace-hub/engineering-report-generator"
-      - "assetutilities/pdf-utilities"
       - "aceengineer-admin/invoice-automation"
     gaps:
       - "LaTeX document generation"
@@ -1089,7 +915,6 @@ coverage:
       - "workspace-hub/yaml-workflow-executor"
       - "workspace-hub/skill-creator"
       - "workspace-hub/web-artifacts-builder"
-      - "workspace-hub/sparc-workflow"
     gaps:
       - "CI/CD pipeline configuration (GitHub Actions authoring)"
       - "Database migration management"
@@ -1118,10 +943,7 @@ coverage:
 
   workspace_ops:
     skills:
-      - "workspace-hub/agent-orchestration"
-      - "workspace-hub/compliance-check"
       - "workspace-hub/repo-sync"
-      - "workspace-hub/workspace-cli"
       - "workspace-hub/ai-tool-assessment"
     gaps:
       - "Automated backup and disaster recovery"
@@ -1155,14 +977,14 @@ coverage:
 # Statistics
 # ─────────────────────────────────────────────
 stats:
-  total_nodes: 51
-  total_edges: 52
+  total_nodes: 43
+  total_edges: 38
   edge_type_counts:
-    feeds: 23
-    composition: 15
-    dependency: 3
-    alternative: 3
-    shared_infra: 3
+    feeds: 15
+    composition: 12
+    dependency: 2
+    alternative: 2
+    shared_infra: 2
     see_also: 5
   domains_covered: 8
   domains_with_gaps_only: 1  # gis
