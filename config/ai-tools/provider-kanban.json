@@ -98,6 +98,7 @@
     },
     {
       "approval_blockers": [
+        "already has status:plan-approved",
         "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
@@ -108,6 +109,8 @@
         "labels": [
           "priority:low",
           "status:plan-review",
+          "status:plan-approved",
+          "gate:completeness",
           "domain:harness",
           "lane:claude"
         ],
@@ -133,6 +136,9 @@
       "title": "agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3207",
       "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "dual_status_labels",
         "missing_review"
       ]
     },
@@ -8512,7 +8518,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-06-18T21:20:19Z",
+  "generated_at": "2026-06-19T01:20:23Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8591,6 +8597,7 @@
       },
       {
         "approval_blockers": [
+          "already has status:plan-approved",
           "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
@@ -8601,6 +8608,8 @@
           "labels": [
             "priority:low",
             "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness",
             "domain:harness",
             "lane:claude"
           ],
@@ -8626,6 +8635,9 @@
         "title": "agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3207",
         "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "dual_status_labels",
           "missing_review"
         ]
       },
@@ -17013,13 +17025,13 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-06-18T21:20:14.987438Z",
+  "scorecard_generated_at": "2026-06-19T01:20:19.278959Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-18T21:20:14.869211Z",
+  "utilization_generated_at": "2026-06-19T01:20:19.158718Z",
   "warning_summary": {
-    "approved_no_marker": 33,
-    "approved_no_plan": 17,
-    "dual_status_labels": 15,
+    "approved_no_marker": 34,
+    "approved_no_plan": 18,
+    "dual_status_labels": 16,
     "legacy_review_no_sha": 1,
     "major_review": 1,
     "marker_without_open_approved_issue": 158,

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T21:20:14.869211Z",
+  "generated_at": "2026-06-19T01:20:19.158718Z",
   "current_week": "2026-W25",
   "report_weeks": 8,
   "subscriptions": {
@@ -904,7 +904,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-06-18T21:20:05Z",
+        "quota_snapshot_ts": "2026-06-19T01:20:04Z",
         "top_tools": [
           {
             "tool": "unknown",
@@ -925,8 +925,8 @@
         "reported_utilization_pct": 8.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
-        "quota_source": "local-session-rate-limits",
-        "quota_snapshot_ts": "2026-06-18T21:20:05Z",
+        "quota_source": "app-server-live",
+        "quota_snapshot_ts": "2026-06-19T01:20:04Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -951,7 +951,7 @@
         ],
         "first_ts": "2026-06-15T09:07:58.453000Z",
         "last_ts": "2026-06-18T05:00:19.124000Z",
-        "note": "week_pct from local-session-rate-limits"
+        "note": "week_pct from app-server-live"
       },
       "gemini": {
         "provider": "gemini",
@@ -964,7 +964,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "manual-snapshot",
-        "quota_snapshot_ts": "2026-06-18T21:20:05Z",
+        "quota_snapshot_ts": "2026-06-19T01:20:04Z",
         "top_tools": [
           {
             "tool": "Browser",

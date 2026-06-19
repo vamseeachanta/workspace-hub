@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-18T21:20:17.031277Z",
+  "generated_at": "2026-06-19T01:20:21.291087Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-18T21:20:14.987438Z",
+  "scorecard_generated_at": "2026-06-19T01:20:19.278959Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 42,
+      "execution_ready_count": 43,
       "total_candidates": 176,
       "top_issues": [
         {
@@ -988,6 +988,30 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3207,
+          "title": "agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3207",
+          "labels": [
+            "priority:low",
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness",
+            "domain:harness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-18T23:05:26Z",
+          "execution_ready": true,
+          "priority_rank": 3,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]
@@ -4253,28 +4277,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3207,
-          "title": "agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3207",
-          "labels": [
-            "priority:low",
-            "status:plan-review",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-18T21:02:15Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
             "implementation",
             "strategy"
           ]
