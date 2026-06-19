@@ -140,9 +140,11 @@ def test_routed_skill_is_prepended_and_recorded():
     assert ".claude/skills/development/github/code-review/SKILL.md" in dispatch["prompt"]
 
 
-def test_agy_is_unsupported_for_dispatch_fails_closed():
-    # agy has no headless dispatch -> not a WRAPPERS/bindings provider -> every
-    # capability resolves unsupported -> resolve_capabilities raises (no fake wrapper).
+def test_agy_is_now_a_supported_dispatch_provider():
+    # #3207 (was #3190 fail-closed): agy 1.0.9 ships headless --print, so agy is
+    # now a WRAPPERS + capability_bindings provider — resolve no longer raises.
+    # (Full agy wiring is covered in test_run_agent_agy.py.)
     d = load_agent_def(REVIEWER_DEF)
-    with pytest.raises(UnsupportedCapabilityError):
-        resolve_capabilities(d, "agy", BINDINGS)
+    res = resolve_capabilities(d, "agy", BINDINGS)
+    assert res["unsupported"] == []
+    assert "agy" in module.WRAPPERS
