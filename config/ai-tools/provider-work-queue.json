@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-19T13:20:46.027228Z",
+  "generated_at": "2026-06-19T17:20:33.782047Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-19T13:20:43.275816Z",
+  "scorecard_generated_at": "2026-06-19T17:20:31.347263Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -14,6 +14,35 @@
       "execution_ready_count": 38,
       "total_candidates": 175,
       "top_issues": [
+        {
+          "number": 2628,
+          "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:harness",
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:testing-ci-health",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-11T07:14:01Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
         {
           "number": 2686,
           "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
@@ -217,23 +246,26 @@
             "implementation",
             "strategy"
           ]
-        },
+        }
+      ],
+      "full_candidates": [
         {
-          "number": 2760,
-          "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2760",
+          "number": 2628,
+          "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:engineering-calculations",
-            "domain:naval-architecture",
+            "cat:engineering",
+            "cat:harness",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
             "gate:completeness",
-            "lane:codex"
+            "domain:testing-ci-health",
+            "lane:claude"
           ],
-          "updatedAt": "2026-06-10T12:55:04Z",
+          "updatedAt": "2026-06-11T07:14:01Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -241,12 +273,11 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
-        }
-      ],
-      "full_candidates": [
+        },
         {
           "number": 2686,
           "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
@@ -1215,19 +1246,21 @@
           ]
         },
         {
-          "number": 3214,
-          "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3214",
+          "number": 2634,
+          "title": "Compliance alert: W19 \u2014 35% (high)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2634",
           "labels": [
-            "status:plan-review",
-            "status:plan-approved",
+            "priority:critical",
+            "machine:dev-primary",
+            "compliance-alert",
+            "dispatch:ready",
             "gate:completeness",
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-19T12:32:52Z",
-          "execution_ready": true,
-          "priority_rank": 4,
+          "updatedAt": "2026-06-10T16:15:52Z",
+          "execution_ready": false,
+          "priority_rank": 0,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4683,26 +4716,6 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 3220,
-          "title": "Resolve 5 pre-existing dangling edges in skills-knowledge-graph (add node vs delete edge)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3220",
-          "labels": [
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-19T13:14:56Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "strategy"
-          ]
         }
       ]
     },
@@ -4728,7 +4741,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -4749,7 +4762,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -4775,7 +4788,7 @@
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -4796,7 +4809,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -4822,7 +4835,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -4848,7 +4861,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -4873,7 +4886,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -4902,7 +4915,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -4926,7 +4939,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -4947,7 +4960,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -4973,7 +4986,7 @@
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -4994,7 +5007,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5020,7 +5033,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5046,7 +5059,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5071,7 +5084,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5100,7 +5113,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5128,7 +5141,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5157,7 +5170,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5178,7 +5191,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -5197,7 +5210,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5221,7 +5234,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5245,7 +5258,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -5269,7 +5282,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5292,7 +5305,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5315,7 +5328,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -5333,7 +5346,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -5353,7 +5366,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -5369,7 +5382,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -5385,7 +5398,7 @@
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"

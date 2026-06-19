@@ -35,86 +35,6 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Resolve 5 pre-existing dangling edges in skills-knowledge-graph (add node vs delete edge)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3220,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Resolve 5 pre-existing dangling edges in skills-knowledge-graph (add node vs delete edge)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3220",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "Curated `.planning/skills/skills-knowledge-graph.yaml` references skills with no SKILL.md in the active tree (allowlisted in `check-skill-index-coherence.py` `KNOWN_STALE_CURATED`):",
-        "provider_route": "claude",
-        "risks": "**OPEN DECISION 1 \u2014 the 1 residual advisory** (`github/github-repo-management`): normalize its heading to a recognized form (advisory\u21920, trivial one-file edit) vs leave it advisory (non-blocking). Recommend **normalize** for a clean zero. | **OPEN DECISION 2 \u2014 split or combined PR:** Part B (boundary fix, low-risk, recovers 42 skills now) vs Part A (graph surgery, higher-risk). Recommend **one PR,",
-        "tests": "TDD section present",
-        "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3214,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-18-issue-3214-curated-graph-cleanup.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3214",
-      "warnings": [
-        "approved_no_marker",
-        "dual_status_labels",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
         "labels": [],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -8502,94 +8422,104 @@
       "title": "feat(gtm): worldenergydata production decline forecast \u2014 shareable Jupyter notebook for GTM demo",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2640",
       "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:critical",
+          "machine:dev-primary",
+          "compliance-alert",
+          "dispatch:ready",
+          "gate:completeness",
+          "domain:harness",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Compliance alert: W19 \u2014 35% (high)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2634,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Compliance alert: W19 \u2014 35% (high)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2634",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "already has status:plan-approved",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:engineering",
+          "cat:harness",
+          "machine:dev-primary",
+          "status:plan-approved",
+          "dispatch:ready",
+          "gate:completeness",
+          "domain:testing-ci-health",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "- Found: `digitalmodel/.claude/quality-gates.yaml` \u2014 130-line LINEAR (tests \u2192 coverage \u2192 quality \u2192 security \u2192 docs) gate config; line 10 is the load-bearing single repo-wide pytest invocation with `--maxfail=20` that masks ~200+ failures (per #2616 sweep). `parallel_execution: fa",
+        "provider_route": "claude",
+        "risks": "**Risk-R1 (per-domain dep-install duplicate `uv` resolution work).** Each `uv run --with-editable . --with X --with Y \u2026` resolves the dep set fresh. Estimated cost increase: 16 domains \u00d7 ~15s of dep-resolve per run = 4 min added per full matrix run. Mitigation: GH Actions `uv-cache` action (`astral-sh/setup-uv@v3` with `enable-cache: true`) brings warm-cache resolve down to ~2-3s; estimated effect",
+        "tests": "18 TDD tests defined",
+        "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2628,
+      "pipeline_lane": "C",
+      "plan": "docs/plans/2026-05-03-issue-2628-digitalmodel-domain-divided-ci.md",
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
+      "warnings": [
+        "approved_no_marker",
+        "missing_review"
+      ]
     }
   ],
-  "generated_at": "2026-06-19T13:20:48Z",
+  "generated_at": "2026-06-19T17:20:37Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Resolve 5 pre-existing dangling edges in skills-knowledge-graph (add node vs delete edge)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3220,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Resolve 5 pre-existing dangling edges in skills-knowledge-graph (add node vs delete edge)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3220",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "Curated `.planning/skills/skills-knowledge-graph.yaml` references skills with no SKILL.md in the active tree (allowlisted in `check-skill-index-coherence.py` `KNOWN_STALE_CURATED`):",
-          "provider_route": "claude",
-          "risks": "**OPEN DECISION 1 \u2014 the 1 residual advisory** (`github/github-repo-management`): normalize its heading to a recognized form (advisory\u21920, trivial one-file edit) vs leave it advisory (non-blocking). Recommend **normalize** for a clean zero. | **OPEN DECISION 2 \u2014 split or combined PR:** Part B (boundary fix, low-risk, recovers 42 skills now) vs Part A (graph surgery, higher-risk). Recommend **one PR,",
-          "tests": "TDD section present",
-          "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3214,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-18-issue-3214-curated-graph-cleanup.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3214",
-        "warnings": [
-          "approved_no_marker",
-          "dual_status_labels",
-          "missing_review"
-        ]
-      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16987,6 +16917,96 @@
         "title": "feat(gtm): worldenergydata production decline forecast \u2014 shareable Jupyter notebook for GTM demo",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2640",
         "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:critical",
+            "machine:dev-primary",
+            "compliance-alert",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:harness",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Compliance alert: W19 \u2014 35% (high)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2634,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Compliance alert: W19 \u2014 35% (high)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2634",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:harness",
+            "machine:dev-primary",
+            "status:plan-approved",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:testing-ci-health",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "- Found: `digitalmodel/.claude/quality-gates.yaml` \u2014 130-line LINEAR (tests \u2192 coverage \u2192 quality \u2192 security \u2192 docs) gate config; line 10 is the load-bearing single repo-wide pytest invocation with `--maxfail=20` that masks ~200+ failures (per #2616 sweep). `parallel_execution: fa",
+          "provider_route": "claude",
+          "risks": "**Risk-R1 (per-domain dep-install duplicate `uv` resolution work).** Each `uv run --with-editable . --with X --with Y \u2026` resolves the dep set fresh. Estimated cost increase: 16 domains \u00d7 ~15s of dep-resolve per run = 4 min added per full matrix run. Mitigation: GH Actions `uv-cache` action (`astral-sh/setup-uv@v3` with `enable-cache: true`) brings warm-cache resolve down to ~2-3s; estimated effect",
+          "tests": "18 TDD tests defined",
+          "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2628,
+        "pipeline_lane": "C",
+        "plan": "docs/plans/2026-05-03-issue-2628-digitalmodel-domain-divided-ci.md",
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
+        "warnings": [
+          "approved_no_marker",
+          "missing_review"
+        ]
       }
     ],
     "qa_closeout": [],
@@ -16997,13 +17017,13 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-06-19T13:20:43.275816Z",
+  "scorecard_generated_at": "2026-06-19T17:20:31.347263Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-19T13:20:42.624217Z",
+  "utilization_generated_at": "2026-06-19T17:20:29.489199Z",
   "warning_summary": {
     "approved_no_marker": 29,
     "approved_no_plan": 17,
-    "dual_status_labels": 11,
+    "dual_status_labels": 10,
     "legacy_review_no_sha": 1,
     "major_review": 1,
     "marker_without_open_approved_issue": 158,

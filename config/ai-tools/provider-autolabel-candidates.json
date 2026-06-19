@@ -1,10 +1,48 @@
 {
-  "generated_at": "2026-06-19T13:20:46.216976Z",
+  "generated_at": "2026-06-19T17:20:33.918967Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 6,
   "applied": [],
   "candidates": [
+    {
+      "number": 2628,
+      "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:engineering",
+        "cat:harness",
+        "machine:dev-primary",
+        "status:plan-approved",
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:testing-ci-health",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-06-11T07:14:01Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
     {
       "number": 2686,
       "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
@@ -195,42 +233,6 @@
       "eligible": true
     },
     {
-      "number": 2760,
-      "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2760",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:engineering-calculations",
-        "domain:naval-architecture",
-        "machine:dev-primary",
-        "status:plan-approved",
-        "dispatch:ready",
-        "gate:completeness",
-        "lane:codex"
-      ],
-      "updatedAt": "2026-06-10T12:55:04Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
       "number": 3030,
       "title": "Dispatch-time codex weekly-quota gate: suspend lane:codex routing when available <10%",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3030",
@@ -246,7 +248,7 @@
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "implementation"
       ],
@@ -275,7 +277,7 @@
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "implementation"
       ],
@@ -302,7 +304,7 @@
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation"
@@ -336,7 +338,7 @@
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation"
@@ -403,7 +405,7 @@
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation"
@@ -436,7 +438,7 @@
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation"
@@ -473,7 +475,7 @@
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation"
