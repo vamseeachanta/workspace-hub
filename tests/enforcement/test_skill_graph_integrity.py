@@ -65,6 +65,51 @@ def test_graph_integrity_fails_on_new_dangling(tmp_path, monkeypatch):
     assert any("a/ghost" in f for f in fails)
 
 
+FOUR_ADDED = {
+    "engineering/marine-offshore/diffraction-analysis",
+    "engineering/marine-offshore/cathodic-protection",
+    "engineering/marine-offshore/risk-assessment",
+    "engineering/asset-integrity/fitness-for-service",
+}
+
+
+def test_dangling_allowlist_emptied_3220():
+    assert mod.KNOWN_DANGLING_EDGE_REFS == set()
+
+
+def test_four_skills_now_nodes_3220():
+    kg = yaml.safe_load(open(mod.KNOWLEDGE_GRAPH))
+    node_ids = {n["id"] for n in kg["nodes"]}
+    assert FOUR_ADDED <= node_ids
+
+
+def test_integrity_green_with_empty_allowlist_3220():
+    # the whole point of #3220: no dangling edges remain, allowlist empty.
+    fails: list[str] = []
+    mod.check_d_graph_integrity(fails)
+    assert fails == [], fails
+
+
+def test_absent_converter_edge_removed_3220():
+    kg = yaml.safe_load(open(mod.KNOWLEDGE_GRAPH))
+    for e in kg.get("edges", []):
+        assert "eng/diffraction-spec-converter" not in (e["from"], e["to"])
+
+
+def test_index_reflects_added_nodes_3220():
+    # the regenerated graph-index must surface the 4 nodes + the new bucket (F2/F3).
+    gi = mod.GRAPH_INDEX.read_text()
+    for sid in FOUR_ADDED:
+        assert sid in gi, sid
+    assert "asset_integrity" in gi
+
+
+def test_added_nodes_basename_in_tree_3220():
+    fails: list[str] = []
+    mod.check_a_coherence(fails)  # the 4 new ids must still satisfy (a)
+    assert fails == [], fails
+
+
 def test_graph_integrity_allowlist_suppresses(tmp_path, monkeypatch):
     g = tmp_path / "kg.yaml"
     g.write_text(yaml.safe_dump({

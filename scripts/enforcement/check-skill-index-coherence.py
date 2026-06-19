@@ -49,13 +49,7 @@ KNOWN_STALE_CURATED: set[str] = set()
 # defined as nodes) — a SEPARATE drift class from the #3214 stale-node removal,
 # needing per-edge judgment (some are real skills missing a node def, some are
 # absent). Allowlisted pending the follow-up; NEW dangling edges fail check (d).
-KNOWN_DANGLING_EDGE_REFS = {
-    "eng/diffraction-spec-converter",
-    "engineering/marine-offshore/diffraction-analysis",
-    "engineering/marine-offshore/cathodic-protection",
-    "engineering/marine-offshore/risk-assessment",
-    "engineering/asset-integrity/fitness-for-service",
-}
+KNOWN_DANGLING_EDGE_REFS: set[str] = set()  # emptied by #3220 (4 nodes added, 1 dead edge removed)
 
 # Loose when-to-use/trigger heading the GENERATOR may not recognize (it matches
 # only `#{2,4} When to Use…` / `Trigger…`). Used by the advisory check (b).

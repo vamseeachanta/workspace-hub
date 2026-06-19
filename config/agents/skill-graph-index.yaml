@@ -4,6 +4,8 @@ generated_at: "2026-06-19"
 source: .planning/skills/skills-knowledge-graph.yaml
 
 by_domain:
+  asset_integrity:
+    - engineering/asset-integrity/fitness-for-service
   business:
     - aceengineer-admin/expense-tracking
     - aceengineer-admin/invoice-automation
@@ -52,6 +54,9 @@ by_domain:
     - digitalmodel/signal-analysis
     - digitalmodel/structural-analysis
     - digitalmodel/viv-analysis
+    - engineering/marine-offshore/cathodic-protection
+    - engineering/marine-offshore/diffraction-analysis
+    - engineering/marine-offshore/risk-assessment
   workspace_ops:
     - workspace-hub/ai-tool-assessment
     - workspace-hub/repo-sync
@@ -109,6 +114,11 @@ by_input_type:
   environmental_data:
     - digitalmodel/catenary-riser
     - digitalmodel/mooring-design
+    - engineering/marine-offshore/cathodic-protection
+    - engineering/marine-offshore/diffraction-analysis
+    - engineering/marine-offshore/risk-assessment
+  failure_data:
+    - engineering/marine-offshore/risk-assessment
   feedback_notes:
     - workspace-hub/doc-coauthoring
   field_metadata:
@@ -131,6 +141,8 @@ by_input_type:
     - workspace-hub/slack-gif-creator
   incident_type:
     - worldenergydata/marine-safety-incidents
+  inspection_data:
+    - engineering/asset-integrity/fitness-for-service
   joint_data:
     - digitalmodel/fatigue-analysis
   json_data:
@@ -184,6 +196,8 @@ by_input_type:
     - digitalmodel/fatigue-analysis
   stress_history:
     - digitalmodel/fatigue-analysis
+  structure_geometry:
+    - engineering/marine-offshore/cathodic-protection
   subscription_data:
     - workspace-hub/ai-tool-assessment
   sync_config:
@@ -216,10 +230,13 @@ by_input_type:
     - workspace-hub/skill-creator
     - workspace-hub/slack-gif-creator
     - workspace-hub/web-artifacts-builder
+  ut_grid:
+    - engineering/asset-integrity/fitness-for-service
   vessel_data:
     - digitalmodel/mooring-design
   vessel_geometry:
     - digitalmodel/hydrodynamics
+    - engineering/marine-offshore/diffraction-analysis
   wave_data:
     - digitalmodel/hydrodynamics
   wellbore_id:
@@ -250,6 +267,8 @@ by_output_type:
     - digitalmodel/mooring-design
     - digitalmodel/structural-analysis
     - digitalmodel/viv-analysis
+    - engineering/marine-offshore/cathodic-protection
+    - engineering/marine-offshore/risk-assessment
     - worldenergydata/marine-safety-incidents
   announcement:
     - workspace-hub/internal-comms
@@ -273,6 +292,8 @@ by_output_type:
     - workspace-hub/repo-sync
   cpa_package:
     - aceengineer-admin/tax-preparation
+  cp_design:
+    - engineering/marine-offshore/cathodic-protection
   css_file:
     - workspace-hub/frontend-design
   css_variables:
@@ -303,6 +324,8 @@ by_output_type:
     - digitalmodel/viv-analysis
   fatigue_life:
     - digitalmodel/fatigue-analysis
+  ffs_assessment:
+    - engineering/asset-integrity/fitness-for-service
   field_metadata:
     - worldenergydata/sodir-data-extractor
   field_report:
@@ -323,6 +346,8 @@ by_output_type:
     - workspace-hub/engineering-report-generator
   hydrodynamic_coefficients:
     - digitalmodel/hydrodynamics
+  hydrodynamic_database:
+    - engineering/marine-offshore/diffraction-analysis
   incident_database:
     - worldenergydata/marine-safety-incidents
   json_data:
@@ -369,10 +394,16 @@ by_output_type:
     - worldenergydata/sodir-data-extractor
   rao_data:
     - digitalmodel/hydrodynamics
+  rao:
+    - engineering/marine-offshore/diffraction-analysis
+  remaining_life:
+    - engineering/asset-integrity/fitness-for-service
   revised_document:
     - workspace-hub/doc-coauthoring
   riser_config:
     - digitalmodel/catenary-riser
+  risk_metrics:
+    - engineering/marine-offshore/risk-assessment
   scraped_data:
     - worldenergydata/web-scraper-energy
   screenshots:
