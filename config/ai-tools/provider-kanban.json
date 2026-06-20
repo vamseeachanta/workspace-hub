@@ -39,6 +39,74 @@
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3224,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3224",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3223,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3223",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
         "provider_route": "codex",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
@@ -8422,104 +8490,82 @@
       "title": "feat(gtm): worldenergydata production decline forecast \u2014 shareable Jupyter notebook for GTM demo",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2640",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:critical",
-          "machine:dev-primary",
-          "compliance-alert",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Compliance alert: W19 \u2014 35% (high)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2634,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Compliance alert: W19 \u2014 35% (high)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2634",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:engineering",
-          "cat:harness",
-          "machine:dev-primary",
-          "status:plan-approved",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:testing-ci-health",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `digitalmodel/.claude/quality-gates.yaml` \u2014 130-line LINEAR (tests \u2192 coverage \u2192 quality \u2192 security \u2192 docs) gate config; line 10 is the load-bearing single repo-wide pytest invocation with `--maxfail=20` that masks ~200+ failures (per #2616 sweep). `parallel_execution: fa",
-        "provider_route": "claude",
-        "risks": "**Risk-R1 (per-domain dep-install duplicate `uv` resolution work).** Each `uv run --with-editable . --with X --with Y \u2026` resolves the dep set fresh. Estimated cost increase: 16 domains \u00d7 ~15s of dep-resolve per run = 4 min added per full matrix run. Mitigation: GH Actions `uv-cache` action (`astral-sh/setup-uv@v3` with `enable-cache: true`) brings warm-cache resolve down to ~2-3s; estimated effect",
-        "tests": "18 TDD tests defined",
-        "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2628,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-03-issue-2628-digitalmodel-domain-divided-ci.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
-      "warnings": [
-        "approved_no_marker",
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-06-20T09:20:34Z",
+  "generated_at": "2026-06-20T13:20:34Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3224,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3224",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3223,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3223",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16917,96 +16963,6 @@
         "title": "feat(gtm): worldenergydata production decline forecast \u2014 shareable Jupyter notebook for GTM demo",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2640",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:critical",
-            "machine:dev-primary",
-            "compliance-alert",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Compliance alert: W19 \u2014 35% (high)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2634,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Compliance alert: W19 \u2014 35% (high)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2634",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:testing-ci-health",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `digitalmodel/.claude/quality-gates.yaml` \u2014 130-line LINEAR (tests \u2192 coverage \u2192 quality \u2192 security \u2192 docs) gate config; line 10 is the load-bearing single repo-wide pytest invocation with `--maxfail=20` that masks ~200+ failures (per #2616 sweep). `parallel_execution: fa",
-          "provider_route": "claude",
-          "risks": "**Risk-R1 (per-domain dep-install duplicate `uv` resolution work).** Each `uv run --with-editable . --with X --with Y \u2026` resolves the dep set fresh. Estimated cost increase: 16 domains \u00d7 ~15s of dep-resolve per run = 4 min added per full matrix run. Mitigation: GH Actions `uv-cache` action (`astral-sh/setup-uv@v3` with `enable-cache: true`) brings warm-cache resolve down to ~2-3s; estimated effect",
-          "tests": "18 TDD tests defined",
-          "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2628,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-03-issue-2628-digitalmodel-domain-divided-ci.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
-        "warnings": [
-          "approved_no_marker",
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -17017,16 +16973,16 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-06-20T09:20:30.432045Z",
+  "scorecard_generated_at": "2026-06-20T13:20:30.735876Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-20T09:20:30.278394Z",
+  "utilization_generated_at": "2026-06-20T13:20:30.565325Z",
   "warning_summary": {
-    "approved_no_marker": 29,
+    "approved_no_marker": 28,
     "approved_no_plan": 17,
     "dual_status_labels": 10,
     "legacy_review_no_sha": 1,
     "major_review": 1,
     "marker_without_open_approved_issue": 158,
-    "missing_review": 63
+    "missing_review": 62
   }
 }

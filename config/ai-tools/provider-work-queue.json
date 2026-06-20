@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-20T09:20:32.423373Z",
+  "generated_at": "2026-06-20T13:20:32.852952Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-20T09:20:30.432045Z",
+  "scorecard_generated_at": "2026-06-20T13:20:30.735876Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -11,38 +11,9 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 38,
+      "execution_ready_count": 37,
       "total_candidates": 175,
       "top_issues": [
-        {
-          "number": 2628,
-          "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:testing-ci-health",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-11T07:14:01Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 2686,
           "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
@@ -246,26 +217,23 @@
             "implementation",
             "strategy"
           ]
-        }
-      ],
-      "full_candidates": [
+        },
         {
-          "number": 2628,
-          "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
+          "number": 2760,
+          "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2760",
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:engineering",
-            "cat:harness",
+            "cat:engineering-calculations",
+            "domain:naval-architecture",
             "machine:dev-primary",
             "status:plan-approved",
             "dispatch:ready",
             "gate:completeness",
-            "domain:testing-ci-health",
-            "lane:claude"
+            "lane:codex"
           ],
-          "updatedAt": "2026-06-11T07:14:01Z",
+          "updatedAt": "2026-06-10T12:55:04Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -273,11 +241,12 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "research",
             "implementation",
             "strategy"
           ]
-        },
+        }
+      ],
+      "full_candidates": [
         {
           "number": 2686,
           "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
@@ -1246,32 +1215,6 @@
           ]
         },
         {
-          "number": 2634,
-          "title": "Compliance alert: W19 \u2014 35% (high)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2634",
-          "labels": [
-            "priority:critical",
-            "machine:dev-primary",
-            "compliance-alert",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:15:52Z",
-          "execution_ready": false,
-          "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2660,
           "title": "Compliance alert: W20 \u2014 0% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2660",
@@ -2160,7 +2103,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-19T11:07:10Z",
+          "updatedAt": "2026-06-20T11:07:16Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4705,6 +4648,42 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3182",
           "labels": [],
           "updatedAt": "2026-06-16T18:30:11Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3223,
+          "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3223",
+          "labels": [],
+          "updatedAt": "2026-06-20T12:37:11Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3224,
+          "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3224",
+          "labels": [],
+          "updatedAt": "2026-06-20T12:33:25Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
