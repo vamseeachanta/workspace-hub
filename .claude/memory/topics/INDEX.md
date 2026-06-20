@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (186)
+## Feedback — execution lessons & hazards (187)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
@@ -169,6 +169,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [silent-verdict-flip-defect-class](feedback_silent_verdict_flip_defect_class.md) — Two implementations citing the same standard but using different sections/editions can return OPPOSITE stable/unstable verdicts at design margin. Found in cathodic protection (CP design materially undersized) and on-bottom stability (UNSTABLE vs STABLE for same scenario). Most insidious because both implementations claim standards compliance.
 - [feedback_skill_before_code](feedback_skill_before_code.md) — Always build/update a skill BEFORE writing implementation code — user has repeatedly asked for this workflow and it keeps being ignored
 - [skill_content_scanner_docs_tension](feedback_skill_content_scanner_docs_tension.md) — "Skills documenting Hermes/systemd/sudo ops trip the pre-commit credential-access scanner; use ${HERMES_HOME}/.env placeholder convention and push literal commands to docs/runbooks/ (unscanned)"
+- [feedback_small_calcs_into_digitalmodel_domains](feedback_small_calcs_into_digitalmodel_domains.md) — "Small one-off engineering calcs must land in the relevant digitalmodel domain module (reusable), not just as standalone scripts/briefs"
 - [Sparse-checkout: use `add`, never `disable`](feedback_sparse_checkout_add_not_disable.md) — When a file shows on GitHub but is missing locally in acma-projects, use `git sparse-checkout add <path>`; never `disable` (it tries to materialize ~329K files and hangs)
 - [sparse-worktree-commit-trap](feedback_sparse_worktree_commit_trap.md) — "In a sparse-checkout worktree, git add silently skips files outside the cone — verify the COMMITTED tree (git show HEAD), not the working tree, or you ship data loss"
 - [Specs and plans co-located with their workflow state](feedback_specs_plans_location.md) — Convention — specs, plans, and research co-locate with their phase in .planning/
