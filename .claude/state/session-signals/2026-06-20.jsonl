@@ -1,1 +1,3 @@
 {"ts":"2026-06-20T06:36:35Z","event":"stop_signal_captured","session_id":"e53f651d-d6a8-4587-b84a-8e931ca4be95"}
+{"ts":"2026-06-20T12:08:52Z","event":"session_tool_summary","session_id":"992af6b5-1420-5d13-ba12-2cdca261fee0","wrk":"none","tool_calls":1,"edits":0,"reads":2}
+{"ts":"2026-06-20T12:08:52Z","event":"stop_signal_captured","session_id":"992af6b5-1420-5d13-ba12-2cdca261fee0"}
