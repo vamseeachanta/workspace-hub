@@ -113,3 +113,5 @@ shown:
     tips: [cc-mobile, cc-sandbox]
   - date: 2026-06-19
     tips: [gsd-insert-phase, cc-hooks]
+  - date: 2026-06-21
+    tips: [cc-insights, cc-debug]

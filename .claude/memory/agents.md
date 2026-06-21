@@ -6,7 +6,7 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-06-20)
+## Synced from Hermes Memory (2026-06-21)
 
 ### Environment Facts
 
@@ -63,7 +63,7 @@ Context parity = compute parity. Zero waste everywhere.
 ## GSD Workflow
 
 GSD is the sole workflow system since 2026-03-25.
-- Plans live in `.planning/` within each repo *verified: 2026-06-21*
+- Plans live in `.planning/` within each repo
 - Long-duration plans live in `docs/plans/`
 - Use `/gsd:*` commands for task management
 
