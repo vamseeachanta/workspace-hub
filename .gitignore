@@ -586,3 +586,6 @@ config/.sibling-repos.local
 # templates (PII-free) document each format. Covers .vip-domains.local,
 # .branch-cleanup.local, .windows-repos.local, .repo-types.local, .ace-routes.local, …
 config/.*.local
+
+# Built static Pages output (regenerated in CI)
+public/
