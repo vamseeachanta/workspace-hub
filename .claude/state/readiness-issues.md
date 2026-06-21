@@ -1,9 +1,9 @@
-# Readiness Issues — 2026-06-20T02:14:32
+# Readiness Issues — 2026-06-21T02:14:37
 
 Nightly readiness: 8 failed, 16 passed
 
 ## Warnings
-- R1: memory files over 200 lines: claude-auto-memory.md:286L INDEX.md:212L
+- R1: memory files over 200 lines: claude-auto-memory.md:290L INDEX.md:213L
 - R-CODEX: MAX_TEAMMATES mismatch — CODEX.md=5 settings.json=
 - R-MODEL: stale model IDs found in scripts/: /mnt/local-analysis/workspace-hub/scripts/readiness/nightly-readiness.sh 
 - R-AI-CLI: 20 agent warning(s) — claude codex gemini see ai-readiness.jsonl
