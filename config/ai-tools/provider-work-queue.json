@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-21T09:20:25.295471Z",
+  "generated_at": "2026-06-21T13:20:34.854640Z",
   "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-21T09:20:23.004072Z",
+  "scorecard_generated_at": "2026-06-21T13:20:32.765696Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -1343,7 +1343,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-06-17T11:45:07Z",
+          "updatedAt": "2026-06-21T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -2103,7 +2103,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-20T11:07:16Z",
+          "updatedAt": "2026-06-21T11:08:06Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -5319,7 +5319,7 @@
           "labels": [
             "consistency-drift"
           ],
-          "updatedAt": "2026-06-14T11:15:39Z",
+          "updatedAt": "2026-06-21T11:15:04Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
