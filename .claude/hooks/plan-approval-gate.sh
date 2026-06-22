@@ -114,10 +114,10 @@ if [[ "$TOOL_NAME" == "Bash" && -n "$COMMAND" ]]; then
     has_approval && exit 0
     # FORCE_PLAN_GATE_STRICT=0 → warn only, do not block (#2127)
     if [[ "${FORCE_PLAN_GATE_STRICT:-1}" == "0" ]]; then
-      echo "[plan-gate] WARN: git push without plan approval (advisory mode)." >&2
+      echo "[plan-gate] WARN: git push without plan approval (advisory mode)." >&2  # hook-static-allow
       exit 0
     fi
-    echo "[plan-gate] BLOCKED: git push requires plan approval." >&2
+    echo "[plan-gate] BLOCKED: git push requires plan approval." >&2  # hook-static-allow
     printf '{"decision":"block","reason":"Plan approval required before pushing. No marker in .planning/plan-approved/."}\n'
     exit 0
   fi

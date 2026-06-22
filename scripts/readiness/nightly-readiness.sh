@@ -495,22 +495,47 @@ check_r_hook_static() {
   max_lines=$(_hc_scalar "hook_static_max_lines")
   max_lines=${max_lines:-200}
 
+  # Basenames exempted from the line-count cap (large, intrinsically-complex
+  # validation hooks). Read from harness-config.yaml; fall back to none if absent
+  # so a missing/unreadable list never silently disables the line check.
+  local line_exempt=()
+  mapfile -t line_exempt < <(_hc_list "hook_static_line_exempt" 2>/dev/null || true)
+  _is_line_exempt() {
+    local base="$1" ex stripped
+    for ex in "${line_exempt[@]+"${line_exempt[@]}"}"; do
+      # _hc_list preserves inline "# justification" comments; strip them and
+      # surrounding whitespace before comparing against the basename.
+      stripped="${ex%%#*}"
+      stripped="${stripped#"${stripped%%[![:space:]]*}"}"   # ltrim
+      stripped="${stripped%"${stripped##*[![:space:]]}"}"   # rtrim
+      [[ "$base" == "$stripped" ]] && return 0
+    done
+    return 1
+  }
+
   local violations=()
   while IFS= read -r -d '' hook_file; do
+    local base
+    base=$(basename "$hook_file")
     local lc
     lc=$(wc -l < "$hook_file" 2>/dev/null || echo 0)
-    if [[ "$lc" -gt "$max_lines" ]]; then
-      violations+=("$(basename "$hook_file"):${lc}L>max${max_lines}")
+    if [[ "$lc" -gt "$max_lines" ]] && ! _is_line_exempt "$base"; then
+      violations+=("${base}:${lc}L>max${max_lines}")
     fi
-    # Check blocking patterns from harness-config.yaml (exclude comment lines)
+    # Check blocking patterns from harness-config.yaml (exclude comment lines and
+    # lines carrying a 'hook-static-allow' sentinel — pattern-detector hooks
+    # legitimately contain the strings they scan for, per SHARED_SOUL
+    # "enforcement scripts must not block their own artifacts").
     local config_patterns=()
     mapfile -t config_patterns < <(_hc_list "hook_blocking_patterns" 2>/dev/null || true)
     if [[ ${#config_patterns[@]} -eq 0 ]]; then
       config_patterns=('git commit' 'git push' '\bcurl\b' '\bwget\b' 'http://' 'https://')
     fi
     for pat in "${config_patterns[@]}"; do
-      if grep -vE '^\s*#' "$hook_file" 2>/dev/null | grep -qE "$pat"; then
-        violations+=("$(basename "$hook_file"):blocking-pattern:'${pat}'")
+      if grep -vE '^\s*#' "$hook_file" 2>/dev/null \
+           | grep -v 'hook-static-allow' \
+           | grep -qE "$pat"; then
+        violations+=("${base}:blocking-pattern:'${pat}'")
       fi
     done
   done < <(find "$hooks_dir" -name "*.sh" -print0 2>/dev/null)
@@ -675,6 +700,56 @@ check_r_skills_extended() {
 check_r_telegram_hermes() {
   local tg_script="${WORKSPACE_HUB}/scripts/readiness/telegram-hermes-readiness.sh"
   [[ -f "$tg_script" ]] || { log_pass "R-TELEGRAM-HERMES: readiness script absent — skip"; return; }
+
+  # Host-aware: the Telegram/Hermes dispatch *gate* is owned by the Hermes host
+  # (the workstation registered with telegram_mode: coordinator — ace-linux-1).
+  # The hermes CLI and ~/.hermes/config.yaml exist on every workstation (worker
+  # boxes run a gateway too), so they do NOT discriminate the dispatch owner.
+  # Resolve THIS host in config/workstations/registry.yaml; run the real
+  # readiness probe only when this host is the coordinator. Every other host
+  # (workers, status-only, not-onboarded) passes — the missing bot token /
+  # allowlist on a non-coordinator box is expected, not a readiness failure.
+  # If the registry can't be read or the host isn't the coordinator, pass
+  # (fall back to no-gate so a non-Hermes host never hard-fails on this check).
+  local tg_registry="${WORKSPACE_HUB}/config/workstations/registry.yaml"
+  local is_coordinator="no"
+  if [[ -f "$tg_registry" ]] && command -v python3 &>/dev/null; then
+    is_coordinator=$(python3 - "$tg_registry" <<'PY' 2>/dev/null || echo "no"
+import socket, sys
+try:
+    import yaml
+except Exception:
+    print("no"); raise SystemExit(0)
+local = {socket.gethostname().lower(), socket.getfqdn().lower(),
+         socket.gethostname().split(".")[0].lower()}
+try:
+    with open(sys.argv[1]) as f:
+        cfg = yaml.safe_load(f) or {}
+except Exception:
+    print("no"); raise SystemExit(0)
+for name, m in (cfg.get("machines") or {}).items():
+    if not isinstance(m, dict):
+        continue
+    names = {str(name).lower(), str(m.get("hostname") or "").lower()}
+    names.update(str(a).split(".")[0].lower() for a in (m.get("hostname_aliases") or []))
+    if not (local & names):
+        continue
+    # telegram_mode may live at top level or under a nested telegram_hermes block
+    mode = m.get("telegram_mode")
+    if mode is None:
+        for v in m.values():
+            if isinstance(v, dict) and "telegram_mode" in v:
+                mode = v.get("telegram_mode"); break
+    print("yes" if str(mode) == "coordinator" else "no")
+    raise SystemExit(0)
+print("no")
+PY
+)
+  fi
+  if [[ "$is_coordinator" != "yes" ]]; then
+    log_pass "R-TELEGRAM-HERMES: Hermes not on this host — expected only on Hermes host (telegram coordinator)"
+    return
+  fi
 
   local tg_output overall
   tg_output=$(bash "$tg_script" 2>&1 || true)

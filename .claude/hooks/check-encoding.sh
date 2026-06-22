@@ -12,7 +12,7 @@ source "$REPO_ROOT/scripts/lib/uv-env.sh"
 uv_env_setup "$REPO_ROOT"
 
 command -v uv >/dev/null 2>&1 || {
-    echo "check-encoding: uv not found. Run: curl -LsSf https://astral.sh/uv/install.sh | sh"
+    echo "check-encoding: uv not found. Run: curl -LsSf https://astral.sh/uv/install.sh | sh"  # hook-static-allow
     exit 1
 }
 
