@@ -6,7 +6,7 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-06-21)
+## Synced from Hermes Memory (2026-06-22)
 
 ### Environment Facts
 
@@ -70,7 +70,7 @@ GSD is the sole workflow system since 2026-03-25.
 ## Skill System (Hermes)
 
 Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1.
-On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures. *verified: 2026-06-22*
+On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures.
 
 
 ### Harness Throughput Rule

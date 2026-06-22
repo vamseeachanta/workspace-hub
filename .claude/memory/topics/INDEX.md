@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (187)
+## Feedback — execution lessons & hazards (188)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
@@ -16,6 +16,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [Always adversarial review; scale depth not presence](feedback_always_adversarial_review_scale_depth.md) — Never offer to skip adversarial review based on T-class or scope; instead scale the review's depth, breadth, and provider count to the work
 - [feedback_amend_clobbers_parallel_branch_in_shared_checkout](feedback_amend_clobbers_parallel_branch_in_shared_checkout.md) — "In the shared main checkout, git commit --amend can land on a parallel session's branch because they moved HEAD between your edit and commit — always use a dedicated worktree."
 - [attestation enables plan-vs-reality contradiction detection](feedback_attestation_enables_contradiction_detection.md) — Cross-review attestation (#2405) is more than Class-B noise suppression — it unlocks a new adversarial-review mode where reviewers cite plan-vs-live-state contradictions as defects
+- [feedback_autorun_clobbers_subagent_worktree_commits](feedback_autorun_clobbers_subagent_worktree_commits.md) — "Autorun resets worktree branches to origin/main, clobbering un-pushed commits — push immediately"
 - [autostash-lock-race-workspace-hub](feedback_autostash_lock_race_workspace_hub.md) — "git rebase --autostash fails (\"Cannot autostash\") when statusline-command.sh git status loops race with stash creation on workspace-hub"
 - [autostash-replay-after-checkout-b](feedback_autostash_replay_after_checkout_b.md) — "When `git checkout -b` runs with a leftover autostash in `git stash list`, the stash can auto-apply to the new branch and silently revert tracked state. Always `git stash list` and drop unwanted autostashes BEFORE creating new branches, especially after operations like `git rebase --onto` that produce autostashes."
 - [Auto-sync as silent pusher (resolves contention, doesn't only cause it)](feedback_autosync_silent_pusher.md) — Workspace-hub's auto-sync also pushes local-ahead commits when its window opens — a `[rejected]` push from your shell may already have been resolved by auto-sync seconds later
