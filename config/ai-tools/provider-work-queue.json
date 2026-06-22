@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-22T09:20:26.928023Z",
+  "generated_at": "2026-06-22T17:21:10.253153Z",
   "current_week": "2026-W26",
-  "scorecard_generated_at": "2026-06-22T09:20:24.484567Z",
+  "scorecard_generated_at": "2026-06-22T17:21:07.229674Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -1357,6 +1357,27 @@
           ]
         },
         {
+          "number": 3226,
+          "title": "Compliance alert: W26 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3226",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-06-22T11:45:05Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2645,
           "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2645",
@@ -2103,7 +2124,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-21T11:08:06Z",
+          "updatedAt": "2026-06-22T11:06:58Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3908,32 +3929,6 @@
           ]
         },
         {
-          "number": 2640,
-          "title": "feat(gtm): worldenergydata production decline forecast \u2014 shareable Jupyter notebook for GTM demo",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2640",
-          "labels": [
-            "enhancement",
-            "priority:low",
-            "cat:engineering",
-            "domain:gtm",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:11:42Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2666,
           "title": "Multi-repo codex-burn-20260511 batch \u2014 2 unmerged branches remaining (assetutilities, worldenergydata)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2666",
@@ -4665,7 +4660,7 @@
           "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3223",
           "labels": [],
-          "updatedAt": "2026-06-22T04:21:36Z",
+          "updatedAt": "2026-06-22T15:48:44Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
