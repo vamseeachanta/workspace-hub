@@ -70,7 +70,7 @@ GSD is the sole workflow system since 2026-03-25.
 ## Skill System (Hermes)
 
 Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1.
-On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures.
+On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures. *verified: 2026-06-22*
 
 
 ### Harness Throughput Rule
