@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-21T21:23:47.550105Z",
-  "current_week": "2026-W25",
-  "scorecard_generated_at": "2026-06-21T21:23:06.700159Z",
+  "generated_at": "2026-06-22T01:20:34.149014Z",
+  "current_week": "2026-W26",
+  "scorecard_generated_at": "2026-06-22T01:20:31.602822Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -4665,7 +4665,7 @@
           "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3223",
           "labels": [],
-          "updatedAt": "2026-06-20T23:56:41Z",
+          "updatedAt": "2026-06-21T23:52:47Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
