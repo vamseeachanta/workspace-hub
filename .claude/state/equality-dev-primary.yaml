@@ -1,19 +1,19 @@
-generated_at: "2026-06-22T04:30:02"
+generated_at: "2026-06-22T11:59:32"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "f7bc89a59"
-  dirty: true
+  checkout_sha: "245eb3218"
+  dirty: false
   behind_main: 0
   ahead_main: 0
   origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 22687, disk_avail_gb: 839}
+    headroom: {ram_avail_mib: 22208, disk_avail_gb: 831}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -25,9 +25,9 @@ dimensions:
     - {name: aqwa, status: absent, evidence: absent}
     - {name: ansys, status: absent, evidence: absent}
   harness:
-    providers: {claude: absent, codex: present, gemini: present, hermes: present}
+    providers: {claude: absent, codex: present, gemini: present, hermes: absent}
     gh_auth: ok
-    python_cmd: uv-run
+    python_cmd: python
     readiness_ref: harness-readiness-ace-linux-1.yaml
     readiness_overall: fail
   skills: {repo_skill_count: 408}

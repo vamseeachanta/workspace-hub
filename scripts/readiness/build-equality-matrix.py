@@ -352,7 +352,11 @@ tbody th{{background:#edf2f7}}.conforms,.equal,.parity{{background:#c6f6d5}}
     REPORTS.mkdir(parents=True, exist_ok=True)
     out = REPORTS / f"{date.today().isoformat()}-machine-equality-matrix.html"
     out.write_text(html)
-    print(f"wrote {out} ({reporting}/{active} active reporting)")
+    # Stable (undated) alias so GitHub Pages serves a fixed "latest" URL that never
+    # changes as the dated reports roll over (published by scripts/build_pages.py).
+    latest = REPORTS / "machine-equality-matrix.html"
+    latest.write_text(html)
+    print(f"wrote {out} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
     if "--open" in sys.argv:
         import webbrowser
         webbrowser.open(out.as_uri())
