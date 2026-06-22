@@ -147,19 +147,24 @@ check_r_codex() {
 check_r_model() {
   local scripts_dir="${WORKSPACE_HUB}/scripts"
   [[ -d "$scripts_dir" ]] || { log_pass "R-MODEL: scripts/ absent — skip"; return; }
-  # Stale model patterns (pre-Claude 3 naming)
+  # Stale model patterns (pre-Claude 3 naming).
+  # The 'r-model-allow' sentinel below tags these as definitions, not usages,
+  # so the check does not match its own pattern strings (per-line sentinel per
+  # SHARED_SOUL "enforcement scripts must not block their own artifacts").
   local stale_patterns=(
-    'claude-2\b'
-    'claude-instant'
-    'claude-v1'
-    'claude-1\.'
+    'claude-2\b'        # r-model-allow
+    'claude-instant'    # r-model-allow
+    'claude-v1'         # r-model-allow
+    'claude-1\.'        # r-model-allow
   )
   local hits=()
   for pat in "${stale_patterns[@]}"; do
     while IFS= read -r match; do
       [[ -n "$match" ]] && hits+=("$match")
-    done < <(grep -rlo --include="*.sh" --include="*.py" --include="*.yaml" \
-      --include="*.yml" -E "$pat" "$scripts_dir" 2>/dev/null || true)
+    done < <(grep -rn --include="*.sh" --include="*.py" --include="*.yaml" \
+      --include="*.yml" -E "$pat" "$scripts_dir" 2>/dev/null \
+      | grep -v 'r-model-allow' \
+      | cut -d: -f1 | sort -u || true)
   done
   # Deduplicate
   local unique_hits

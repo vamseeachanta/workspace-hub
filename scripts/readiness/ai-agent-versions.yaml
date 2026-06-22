@@ -3,15 +3,21 @@
 #
 # cli_min: minimum acceptable version (semver, compared via sort -V)
 # default_model: expected default model ID for the agent
+#
+# NOTE: codex and gemini CLIs version on a pre-1.0 (0.x) scheme; their floors
+# must stay below the oldest deployed install or every nightly run false-warns
+# "below minimum". Fleet as of 2026-06-22: codex 0.136.0 (ace-linux-1) /
+# 0.141.0 (ace-linux-2); gemini 0.27.3 / 0.47.0. default_model values track
+# config/agents/model-registry.yaml latest_models.
 
 claude:
   cli_min: "1.0.0"
   default_model: "claude-sonnet-4-6"
 
 codex:
-  cli_min: "1.0.0"
-  default_model: "o4-mini"
+  cli_min: "0.136.0"
+  default_model: "gpt-5.5"
 
 gemini:
-  cli_min: "1.0.0"
+  cli_min: "0.27.0"
   default_model: "gemini-2.5-pro"
