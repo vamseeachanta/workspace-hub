@@ -6,10 +6,18 @@
 #   2. Run the CIM-backed Windows collector.
 #   3. Build the matrix with system python.
 #   4. Commit and push .claude/state/equality-<machine>.yaml when it changed.
+#   5. With -RefreshMatrix: ALSO commit+push the regenerated matrix HTML
+#      (docs/reports/<date>-machine-equality-matrix.html + the stable
+#      docs/reports/machine-equality-matrix.html alias) in the SAME commit, so
+#      the GitHub Pages live link redeploys from this machine's sync.
+#      OFF BY DEFAULT: scheduled runs stay state-only and let the Linux cron own
+#      the published matrix; -RefreshMatrix is for an explicit manual sync that
+#      should refresh the live link itself.
 
 [CmdletBinding()]
 param(
-    [string]$WorkspaceRoot = ""
+    [string]$WorkspaceRoot = "",
+    [switch]$RefreshMatrix
 )
 
 $ErrorActionPreference = 'Stop'
@@ -61,8 +69,13 @@ function Get-EqualityMachineLabel {
     }
 }
 
-function Get-MatrixReportPath {
-    return ("docs/reports/{0}-machine-equality-matrix.html" -f (Get-Date -Format "yyyy-MM-dd"))
+function Get-MatrixReportPaths {
+    # Both artifacts build-equality-matrix.py writes: the dated report AND the
+    # stable undated alias the GitHub Pages site publishes (scripts/build_pages.py).
+    return @(
+        ("docs/reports/{0}-machine-equality-matrix.html" -f (Get-Date -Format "yyyy-MM-dd")),
+        "docs/reports/machine-equality-matrix.html"
+    )
 }
 
 function Invoke-EqualityTranscript {
@@ -108,9 +121,13 @@ function Test-AheadCommitIsEqualityReport {
             return $false
         }
         foreach ($path in $paths) {
-            if ($path -ne $expectedPath) {
-                return $false
-            }
+            if ($path -eq $expectedPath) { continue }
+            # Tolerate matrix-report artifacts so a -RefreshMatrix commit (state +
+            # matrix HTML) is still recognized as an equality report and can be
+            # recovered/pushed by a later run, including a stale dated report.
+            if ($path -like "docs/reports/*-machine-equality-matrix.html") { continue }
+            if ($path -eq "docs/reports/machine-equality-matrix.html") { continue }
+            return $false
         }
     }
     return $true
@@ -205,26 +222,30 @@ function Confirm-FreshCheckout {
 }
 
 function Confirm-MatrixReportClean {
-    param([Parameter(Mandatory=$true)][string]$ReportPath)
+    param([Parameter(Mandatory=$true)][string[]]$ReportPaths)
 
-    $status = & git status --porcelain --untracked-files=all -- $ReportPath
-    if ($LASTEXITCODE -ne 0) {
-        throw "Unable to check matrix report worktree state"
-    }
-    if (-not [string]::IsNullOrWhiteSpace(($status -join ""))) {
-        throw "Matrix report path is already dirty; refusing to overwrite $ReportPath"
+    foreach ($ReportPath in $ReportPaths) {
+        $status = & git status --porcelain --untracked-files=all -- $ReportPath
+        if ($LASTEXITCODE -ne 0) {
+            throw "Unable to check matrix report worktree state"
+        }
+        if (-not [string]::IsNullOrWhiteSpace(($status -join ""))) {
+            throw "Matrix report path is already dirty; refusing to overwrite $ReportPath"
+        }
     }
 }
 
 function Clear-GeneratedMatrixReport {
-    param([Parameter(Mandatory=$true)][string]$ReportPath)
+    param([Parameter(Mandatory=$true)][string[]]$ReportPaths)
 
-    & git ls-files --error-unmatch -- $ReportPath *> $null
-    if ($LASTEXITCODE -eq 0) {
-        Invoke-Checked -File "git" -Arguments @("restore", "--worktree", "--", $ReportPath) `
-            -FailureMessage "Failed to restore generated matrix report"
-    } elseif (Test-Path $ReportPath) {
-        Remove-Item -LiteralPath $ReportPath -Force
+    foreach ($ReportPath in $ReportPaths) {
+        & git ls-files --error-unmatch -- $ReportPath *> $null
+        if ($LASTEXITCODE -eq 0) {
+            Invoke-Checked -File "git" -Arguments @("restore", "--worktree", "--", $ReportPath) `
+                -FailureMessage "Failed to restore generated matrix report"
+        } elseif (Test-Path $ReportPath) {
+            Remove-Item -LiteralPath $ReportPath -Force
+        }
     }
 }
 
@@ -238,7 +259,9 @@ function Confirm-PythonYaml {
 function Sync-EqualityState {
     param(
         [Parameter(Mandatory=$true)][string]$Branch,
-        [Parameter(Mandatory=$true)][string]$Machine
+        [Parameter(Mandatory=$true)][string]$Machine,
+        [switch]$RefreshMatrix,
+        [string[]]$ReportPaths = @()
     )
 
     $statePath = ".claude/state/equality-$Machine.yaml"
@@ -246,12 +269,19 @@ function Sync-EqualityState {
         throw "Expected equality state was not written: $statePath"
     }
 
-    Invoke-Checked -File "git" -Arguments @("add", "--", $statePath) `
-        -FailureMessage "Failed to stage equality state"
+    # With -RefreshMatrix the matrix HTML rides in the SAME commit as the state
+    # yaml, so the single-equality-commit invariant (and its recovery gate) holds.
+    $paths = @($statePath)
+    if ($RefreshMatrix) { $paths += $ReportPaths }
 
-    & git diff --cached --quiet -- $statePath
+    $addArgs = @("add", "--") + $paths
+    Invoke-Checked -File "git" -Arguments $addArgs `
+        -FailureMessage "Failed to stage equality artifacts"
+
+    $diffArgs = @("diff", "--cached", "--quiet", "--") + $paths
+    & git @diffArgs
     if ($LASTEXITCODE -eq 0) {
-        Write-Output "No equality state changes to commit."
+        Write-Output "No equality changes to commit."
         return
     }
 
@@ -261,21 +291,21 @@ function Sync-EqualityState {
         if ($ahead -gt 1 -or -not (Test-AheadCommitIsEqualityReport -Machine $Machine)) {
             throw "Local commits ahead of origin/main are not a single equality report; refusing to amend"
         }
-        $commitArgs = @("commit", "--amend", "--only", "-m", "chore: equality report from $machine", "--", $statePath)
+        $commitArgs = @("commit", "--amend", "--only", "-m", "chore: equality report from $machine", "--") + $paths
     } else {
-        $commitArgs = @("commit", "--only", "-m", "chore: equality report from $machine", "--", $statePath)
+        $commitArgs = @("commit", "--only", "-m", "chore: equality report from $machine", "--") + $paths
     }
 
     Invoke-Checked -File "git" -Arguments $commitArgs `
-        -FailureMessage "Failed to commit equality state"
+        -FailureMessage "Failed to commit equality artifacts"
 
     & git push origin $Branch
     if ($LASTEXITCODE -eq 0) {
-        Write-Output "Pushed equality state on branch $Branch."
+        Write-Output "Pushed equality artifacts on branch $Branch."
         return
     }
 
-    throw "Failed to push equality state; leaving local equality commit for the next scheduled retry"
+    throw "Failed to push equality artifacts; leaving local equality commit for the next scheduled retry"
 }
 
 $transcriptStarted = $false
@@ -289,9 +319,9 @@ try {
     Test-CommandAvailable -Name "python"
 
     $branch = Get-CurrentBranch
-    $matrixReport = Get-MatrixReportPath
+    $matrixReports = Get-MatrixReportPaths
     Confirm-FreshCheckout -Branch $branch -Machine $machine
-    Confirm-MatrixReportClean -ReportPath $matrixReport
+    Confirm-MatrixReportClean -ReportPaths $matrixReports
     Confirm-PythonYaml
 
     $collector = Join-Path $WorkspaceRoot "scripts\readiness\collect-equality.ps1"
@@ -302,9 +332,16 @@ try {
         -FailureMessage "collect-equality.ps1 failed"
     Invoke-Checked -File "python" -Arguments @($builder) `
         -FailureMessage "build-equality-matrix.py failed"
-    Clear-GeneratedMatrixReport -ReportPath $matrixReport
+    if (-not $RefreshMatrix) {
+        # Default: the published matrix is owned by the Linux cron / Pages build,
+        # so discard the locally regenerated reports and commit only the state yaml.
+        Clear-GeneratedMatrixReport -ReportPaths $matrixReports
+    }
 
-    Sync-EqualityState -Branch $branch -Machine $machine
+    Sync-EqualityState -Branch $branch -Machine $machine -RefreshMatrix:$RefreshMatrix -ReportPaths $matrixReports
+    if ($RefreshMatrix) {
+        Write-Output "RefreshMatrix: matrix HTML committed with the snapshot; GitHub Pages will redeploy from the push."
+    }
 } finally {
     if ($transcriptStarted) {
         Stop-Transcript | Out-Null

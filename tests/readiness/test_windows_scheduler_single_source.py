@@ -118,3 +118,17 @@ def test_wrapper_uses_python_not_uv():
     text = WRAPPER_PS1.read_text().lower()
     assert "python" in text
     assert "uv" not in text
+
+
+def test_wrapper_refresh_matrix_is_opt_in_and_same_commit():
+    text = WRAPPER_PS1.read_text()
+    # Opt-in switch parameter (default off so scheduled runs stay state-only).
+    assert "[switch]$RefreshMatrix" in text
+    # Publishes the stable Pages alias alongside the dated report.
+    assert "docs/reports/machine-equality-matrix.html" in text
+    assert "Get-MatrixReportPaths" in text
+    # Default mode discards the locally built matrix; refresh mode keeps + commits it.
+    assert "if (-not $RefreshMatrix)" in text
+    # Matrix HTML rides in the SAME equality commit (invariant preserved).
+    assert "-RefreshMatrix:$RefreshMatrix" in text
+    assert '"chore: equality report from $machine"' in text
