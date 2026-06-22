@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-21T17:20:23.951122Z",
+  "generated_at": "2026-06-21T21:22:48.199876Z",
   "current_week": "2026-W25",
   "report_weeks": 8,
   "subscriptions": {
@@ -904,7 +904,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-06-21T17:20:05Z",
+        "quota_snapshot_ts": "2026-06-21T21:20:39Z",
         "top_tools": [
           {
             "tool": "unknown",
@@ -925,12 +925,12 @@
         "sessions": 244,
         "post_records": 22648,
         "activity_utilization_pct": 58.3,
-        "quota_utilization_pct": 22.0,
-        "reported_utilization_pct": 22.0,
+        "quota_utilization_pct": 23.0,
+        "reported_utilization_pct": 23.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
-        "quota_source": "app-server-live",
-        "quota_snapshot_ts": "2026-06-21T17:20:05Z",
+        "quota_source": "local-session-rate-limits",
+        "quota_snapshot_ts": "2026-06-21T21:20:39Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -955,7 +955,7 @@
         ],
         "first_ts": "2026-06-15T09:07:58.453000Z",
         "last_ts": "2026-06-20T23:57:16.999000Z",
-        "note": "week_pct from app-server-live"
+        "note": "week_pct from local-session-rate-limits"
       },
       "gemini": {
         "provider": "gemini",
@@ -968,7 +968,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "manual-snapshot",
-        "quota_snapshot_ts": "2026-06-21T17:20:05Z",
+        "quota_snapshot_ts": "2026-06-21T21:20:39Z",
         "top_tools": [
           {
             "tool": "Browser",
