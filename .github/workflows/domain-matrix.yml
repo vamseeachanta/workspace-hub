@@ -31,6 +31,16 @@ on:
         type: string
         required: false
         default: "3.11"
+      python-setup:
+        description: >-
+          How to provision the Python interpreter in the domain jobs. "uv"
+          (default — current behavior) installs a uv-MANAGED interpreter via
+          `uv python install` (NOT on PATH as the system python). "setup-python"
+          uses actions/setup-python to put the interpreter ON PATH as the system
+          interpreter, which `uv pip install --system` requires (e.g. assethold).
+        type: string
+        required: false
+        default: "uv"
       install-cmd:
         description: "Command to install dependencies in each domain job."
         type: string
@@ -70,10 +80,42 @@ jobs:
         id: sel
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
           SELECTOR: ${{ inputs.selector }}
         run: |
           # Stdlib only — no dependency install needed (keeps discovery fast).
-          git diff --name-only "$BASE_SHA"...HEAD > changed-files.txt
+          #
+          # Resolve the changed-files set. On `pull_request` (the primary,
+          # required path) BASE_SHA is the PR base and the diff below is
+          # BYTE-FOR-BYTE the original behavior. On `push` / `workflow_dispatch`
+          # BASE_SHA is EMPTY, which would yield an empty/spurious matrix — so we
+          # fall back, in order, to: the push event's `before` SHA, then
+          # HEAD~1...HEAD. If even that is unavailable/invalid (e.g. an orphan or
+          # first commit), we treat it as a CORE change and fan out the full tree
+          # by feeding the selector a synthetic core path (pyproject.toml), which
+          # every repo's selector classifies as core -> scope=full.
+          set -o pipefail
+          if [ -n "$BASE_SHA" ]; then
+            # --- PRIMARY (pull_request): unchanged from the original behavior ---
+            git diff --name-only "$BASE_SHA"...HEAD > changed-files.txt
+          else
+            echo "::notice::PR base SHA empty (non-PR event) — using fallback diff"
+            DIFF_BASE=""
+            if [ -n "$PUSH_BEFORE" ] \
+               && [ "$PUSH_BEFORE" != "0000000000000000000000000000000000000000" ] \
+               && git cat-file -e "${PUSH_BEFORE}^{commit}" 2>/dev/null; then
+              DIFF_BASE="$PUSH_BEFORE"
+            elif git rev-parse --verify -q "HEAD~1^{commit}" >/dev/null; then
+              DIFF_BASE="HEAD~1"
+            fi
+            if [ -n "$DIFF_BASE" ]; then
+              echo "Fallback diff base: $DIFF_BASE"
+              git diff --name-only "${DIFF_BASE}"...HEAD > changed-files.txt
+            else
+              echo "::notice::no usable base commit — full fan-out via synthetic core path"
+              echo "pyproject.toml" > changed-files.txt
+            fi
+          fi
           echo "Changed files:"; cat changed-files.txt
           python3 "$SELECTOR" \
             --emit-matrix --files-from changed-files.txt >> "$GITHUB_OUTPUT"
@@ -99,8 +141,20 @@ jobs:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
-      - name: Set up Python
+      # Python provisioning is selected by `python-setup`:
+      #  * "uv" (default) — uv-MANAGED interpreter, NOT on PATH as system python.
+      #    Preserves the original behavior exactly for existing callers.
+      #  * "setup-python" — actions/setup-python puts the interpreter ON PATH as
+      #    the system python, which `uv pip install --system` requires.
+      - name: Set up Python (uv-managed)
+        if: ${{ inputs.python-setup == 'uv' }}
         run: uv python install ${{ inputs.python-version }}
+
+      - name: Set up Python (setup-python)
+        if: ${{ inputs.python-setup == 'setup-python' }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
 
       - name: Install dependencies
         run: ${{ inputs.install-cmd }}

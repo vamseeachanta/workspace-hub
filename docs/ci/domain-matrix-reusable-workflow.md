@@ -21,7 +21,9 @@ discover  ->  test-domain (matrix, fail-fast: false)  ->  aggregate
 - **`discover`** — checks out with `fetch-depth: 0`, diffs the PR base against
   `HEAD`, and runs the caller's selector with `--emit-matrix` to produce
   `matrix=<json>` and `scope=<str>` outputs. Stdlib only — no dependency install,
-  so discovery stays fast.
+  so discovery stays fast. On non-PR events (`push` / `workflow_dispatch`) the PR
+  base SHA is empty, so it falls back to a usable base — see
+  [Non-PR events](#non-pr-events-push--workflow_dispatch).
 - **`test-domain`** — `fromJSON(matrix)`, `fail-fast: false`, `max-parallel`
   from input. Installs deps, builds `--deselect` args from the quarantine file
   (supporting both `tests/`-prefixed and rootdir-relative node-id forms), runs
@@ -37,6 +39,7 @@ discover  ->  test-domain (matrix, fail-fast: false)  ->  aggregate
 |-------|---------|---------|
 | `selector` | `scripts/ci/select_test_targets.py` | Caller's stdlib selector supporting `--emit-matrix --files-from <file>`. |
 | `python-version` | `"3.11"` | Python version installed for the domain jobs. |
+| `python-setup` | `"uv"` | How to provision the interpreter in the domain jobs. See [Choosing `python-setup`](#choosing-python-setup). |
 | `install-cmd` | `uv sync --all-extras` | Dependency install command per domain job. |
 | `test-runner` | `uv run --with pytest-xdist pytest` | Command prefix used to run pytest on the shard targets. |
 | `max-parallel` | `10` | Bound on the matrix fan-out (core changes can be many domains). |
@@ -66,6 +69,69 @@ jobs:
 
 All inputs have sensible defaults, so a repo that follows the conventions can
 call it with no `with:` block at all.
+
+## Choosing `python-setup`
+
+The domain jobs need a Python interpreter before `install-cmd` runs. How that
+interpreter is provisioned matters because some install commands require the
+interpreter to be the **system** python on `PATH`:
+
+| `python-setup` | What runs | Interpreter location | Use when |
+|----------------|-----------|----------------------|----------|
+| `"uv"` *(default)* | `uv python install <version>` | uv-MANAGED — **not** on `PATH` as the system python | `install-cmd` is `uv sync …` / `uv run …` (the venv-based path; `worldenergydata`, `assetutilities`, `digitalmodel`). |
+| `"setup-python"` | `actions/setup-python@v5` (the `uv python install` step is **skipped**) | ON `PATH` as the system python | `install-cmd` is `uv pip install --system …` or any command that installs into the system interpreter (e.g. `assethold`). |
+
+`"uv"` is the original, unchanged behavior — existing callers are completely
+unaffected (a caller passing nothing, or `python-setup: uv`, runs exactly the
+same two steps as before).
+
+### Why `setup-python` is needed for `uv pip install --system`
+
+`uv python install` installs a **uv-managed** interpreter that is *not* exposed
+as the system `python` on `PATH`. `uv pip install --system` targets whatever
+interpreter is on `PATH` as the system python — with only a uv-managed
+interpreter present, it falls through to the runner's Debian `/usr` python, which
+is PEP-668 **externally-managed** and refuses the install. `actions/setup-python`
+puts a real interpreter on `PATH` as the system python, so `--system` installs
+land there. Repos on the `uv pip install --system` path (e.g. `assethold`)
+therefore pass `python-setup: setup-python`:
+
+```yaml
+jobs:
+  ci:
+    uses: vamseeachanta/workspace-hub/.github/workflows/domain-matrix.yml@main
+    with:
+      python-setup: setup-python
+      install-cmd: uv pip install --system -e ".[test]"
+```
+
+Implementation: the two provisioning steps are guarded by step-level `if:`
+conditions keyed on `inputs.python-setup` (`== 'uv'` vs `== 'setup-python'`), so
+exactly one runs. The `discover` job is unaffected — it runs the stdlib selector
+with the runner's system `python3` and needs no interpreter setup.
+
+## Non-PR events (push / workflow_dispatch)
+
+The `discover` job diffs the changed files to build the matrix. On
+`pull_request` (the primary, required path) it diffs the PR base SHA against
+`HEAD` — **unchanged**. On `push` / `workflow_dispatch` the PR base SHA is empty,
+which would otherwise yield an empty/spurious matrix, so `discover` falls back in
+order:
+
+1. **`pull_request`** — diff `github.event.pull_request.base.sha`...`HEAD`
+   (byte-for-byte the original behavior).
+2. **`push`** — if the base SHA is empty, diff the push event's `before` SHA
+   (`github.event.before`)...`HEAD`, provided it is a real, reachable commit
+   (not the all-zeros "new branch" sentinel).
+3. **`HEAD~1`** — if `before` is unusable, diff `HEAD~1`...`HEAD`.
+4. **Full fan-out** — if no usable base commit exists (orphan / first commit),
+   feed the selector a synthetic **core** path (`pyproject.toml`). Every repo's
+   selector classifies a core path as `scope=full`, so this fans out the whole
+   tree — the safe, fail-open default. (The selectors have no `--all` flag; the
+   synthetic-core-path trick is the portable way to force a full run.)
+
+The PR path is untouched; the fallback logic only executes when the PR base SHA
+is empty.
 
 ## Resulting status-check names — read this before migrating
 
