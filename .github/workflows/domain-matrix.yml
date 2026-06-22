@@ -1,0 +1,185 @@
+name: Domain Matrix (reusable)
+
+# Reusable "modular per-domain CI" workflow (worldenergydata#526 / #530, P4).
+#
+# Encapsulates the discover -> test-domain (matrix) -> aggregate scaffolding that
+# was duplicated across worldenergydata, assetutilities, and assethold. A PR fans
+# out into one job per touched domain (+ the always-on cross-cutting core), so a
+# red domain no longer blocks green siblings and they run in parallel.
+#
+# The caller keeps its OWN repo-specific selector (module layouts differ); only
+# the multi-job scaffolding + quarantine/exit-5 mechanics live here. The selector
+# must support `--emit-matrix --files-from <file>` and write `matrix=<json>` and
+# `scope=<str>` lines to $GITHUB_OUTPUT using the stdlib only (no install).
+#
+# CAVEAT: a reusable workflow's status-check name becomes
+# "<caller-job-id> / <reusable-job-name>" (e.g. "ci / Aggregate domain results").
+# This CHANGES required-check names. Repos WITHOUT branch protection adopt freely;
+# repos WITH protection need a one-time required-check rename on migration.
+# See docs/ci/domain-matrix-reusable-workflow.md.
+
+on:
+  workflow_call:
+    inputs:
+      selector:
+        description: "Path to the caller's stdlib selector supporting --emit-matrix."
+        type: string
+        required: false
+        default: "scripts/ci/select_test_targets.py"
+      python-version:
+        description: "Python version to install for the domain jobs."
+        type: string
+        required: false
+        default: "3.11"
+      install-cmd:
+        description: "Command to install dependencies in each domain job."
+        type: string
+        required: false
+        default: "uv sync --all-extras"
+      test-runner:
+        description: "Command prefix used to run pytest on the shard targets."
+        type: string
+        required: false
+        default: "uv run --with pytest-xdist pytest"
+      max-parallel:
+        description: "Bound on the matrix fan-out (core changes can be many domains)."
+        type: number
+        required: false
+        default: 10
+      quarantine-file:
+        description: "File of known-broken node-ids to --deselect (one per line, # comments)."
+        type: string
+        required: false
+        default: "scripts/ci/quarantine.txt"
+
+jobs:
+  # --------------------------------------------------------------- discover --
+  discover:
+    name: Discover domains
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.sel.outputs.matrix }}
+      scope: ${{ steps.sel.outputs.scope }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # need the base commit to diff changed files
+
+      - name: Select domain matrix
+        id: sel
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          SELECTOR: ${{ inputs.selector }}
+        run: |
+          # Stdlib only — no dependency install needed (keeps discovery fast).
+          git diff --name-only "$BASE_SHA"...HEAD > changed-files.txt
+          echo "Changed files:"; cat changed-files.txt
+          python3 "$SELECTOR" \
+            --emit-matrix --files-from changed-files.txt >> "$GITHUB_OUTPUT"
+          echo "--- matrix ---"; grep '^matrix=' "$GITHUB_OUTPUT" || true
+          echo "--- scope ---";  grep '^scope='  "$GITHUB_OUTPUT" || true
+
+  # ------------------------------------------------------------ test-domain --
+  test-domain:
+    name: Domain ${{ matrix.name }}
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # one red domain must not cancel the others
+      max-parallel: ${{ inputs.max-parallel }}
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        run: uv python install ${{ inputs.python-version }}
+
+      - name: Install dependencies
+        run: ${{ inputs.install-cmd }}
+
+      - name: Run domain tests (${{ matrix.name }})
+        env:
+          TARGETS: ${{ matrix.targets }}
+          MODE: ${{ matrix.mode }}
+          SHARD: ${{ matrix.name }}
+          TEST_RUNNER: ${{ inputs.test-runner }}
+          QUARANTINE_FILE: ${{ inputs.quarantine-file }}
+        run: |
+          # Build --deselect args for quarantined tests (known-broken on main,
+          # tracked by issues). They still RUN but do not block, at test
+          # granularity (never whole shards). The quarantine file may list
+          # node-ids in EITHER form — `tests/`-prefixed or rootdir-relative
+          # (some repos set rootdir=tests/ in pytest.ini, which strips the
+          # leading `tests/`). We emit a --deselect for BOTH forms so a single
+          # line matches regardless of the caller's rootdir.
+          DESELECT=()
+          if [ -f "$QUARANTINE_FILE" ]; then
+            while IFS= read -r raw; do
+              line="${raw%%#*}"
+              line="$(echo "$line" | xargs || true)"
+              [ -z "$line" ] && continue
+              DESELECT+=(--deselect "$line")
+              # Also emit the alternate rootdir-relative / tests-prefixed form.
+              if [ "${line#tests/}" != "$line" ]; then
+                DESELECT+=(--deselect "${line#tests/}")
+              else
+                DESELECT+=(--deselect "tests/${line}")
+              fi
+            done < "$QUARANTINE_FILE"
+          fi
+          [ "${#DESELECT[@]}" -gt 0 ] && echo "Quarantine: ${DESELECT[*]}"
+          XDIST=()
+          [ "$MODE" = "xdist" ] && XDIST=(-n auto)
+          echo "Shard '$SHARD' ($MODE): $TARGETS"
+          set +e
+          # shellcheck disable=SC2086 (TARGETS / TEST_RUNNER are intentional lists)
+          $TEST_RUNNER $TARGETS "${XDIST[@]}" "${DESELECT[@]}" \
+            --tb=short --junitxml="test-results-${SHARD}.xml"
+          rc=$?
+          set -e
+          # exit code 5 = "no tests collected" (empty / norecursedirs-excluded
+          # shard) — not a failure for a per-domain shard.
+          if [ "$rc" -eq 5 ]; then
+            echo "::notice::shard '$SHARD' collected no tests — treating as pass"
+            rc=0
+          fi
+          exit "$rc"
+
+      - name: Upload domain test results
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: test-results-${{ matrix.name }}
+          path: test-results-*.xml
+          if-no-files-found: ignore
+
+  # -------------------------------------------------------------- aggregate --
+  aggregate:
+    name: Aggregate domain results
+    needs: [discover, test-domain]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aggregate domain results
+        run: |
+          echo "discover:    ${{ needs.discover.result }}"
+          echo "test-domain: ${{ needs.test-domain.result }}"
+          echo "scope:       ${{ needs.discover.outputs.scope }}"
+          if [ "${{ needs.discover.result }}" != "success" ]; then
+            echo "::error::domain discovery failed"; exit 1
+          fi
+          # test-domain is a matrix; its result is 'success' only when every
+          # domain job passed (fail-fast is off, so all run to completion).
+          if [ "${{ needs.test-domain.result }}" != "success" ]; then
+            echo "::error::one or more domain jobs failed — see the Domain * jobs"
+            exit 1
+          fi
+          echo "All domains green ✅"
