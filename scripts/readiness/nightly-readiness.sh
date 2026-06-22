@@ -131,7 +131,10 @@ check_r_codex() {
   command -v jq &>/dev/null || { log_pass "R-CODEX: jq absent — skip"; return; }
   local codex_val settings_val
   codex_val=$(grep -oP 'MAX_TEAMMATES[=:]\s*\K[0-9]+' "$codex" 2>/dev/null | head -1 || echo "")
-  settings_val=$(jq -r '.maxTeammates // empty' "$settings" 2>/dev/null || echo "")
+  # settings.json carries the thread cap as the env var MAX_TEAMMATES (string),
+  # not a top-level maxTeammates key — read the real path so the check compares
+  # the operative value instead of always seeing empty.
+  settings_val=$(jq -r '.env.MAX_TEAMMATES // empty' "$settings" 2>/dev/null || echo "")
   if [[ -z "$codex_val" && -z "$settings_val" ]]; then
     log_pass "R-CODEX: MAX_TEAMMATES not configured — skip"
   elif [[ "$codex_val" == "$settings_val" ]]; then

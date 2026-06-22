@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 90,
   "env": {
-    "MAX_TEAMMATES": "10",
+    "MAX_TEAMMATES": "5",
     "REVIEW_GATE_STRICT": "1"
   },
   "permissions": {
