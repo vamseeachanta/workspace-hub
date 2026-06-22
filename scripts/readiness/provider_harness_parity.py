@@ -120,7 +120,12 @@ def _memory_read(provider: str, workspace: Path, home: Path, installed: bool) ->
     if provider == "codex":
         agents = workspace / "config" / "agents" / "codex" / "AGENTS.runtime.md"
         memory = workspace / "config" / "agents" / "codex" / "MEMORY.runtime.md"
-        if agents.is_file() and memory.is_file() and "memory" in _read_text(memory).lower():
+        # Non-empty readback slice — NOT a literal "memory" substring. The slice is
+        # curated by curate_readback_slice.py and legitimately may not contain the
+        # word "memory" (it holds memory ENTRIES), so the old substring check
+        # false-flagged a populated runtime as absent. Mirrors the gemini/hermes
+        # non-empty-content checks below.
+        if agents.is_file() and memory.is_file() and _read_text(memory).strip():
             return _cap("present", "codex_memory_runtime_found")
         return _cap("absent", "codex_memory_runtime_missing")
     if provider == "hermes":

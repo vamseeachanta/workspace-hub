@@ -155,6 +155,26 @@ def test_codex_memory_read_uses_runtime_and_readback_files(tmp_path, monkeypatch
         "reason": "codex_memory_runtime_missing",
     }
 
+    # A populated readback slice that does NOT contain the literal word "memory"
+    # must still read present — the curated slice holds memory ENTRIES, not the
+    # word itself (real-world false-absent fix).
+    (ws / "config" / "agents" / "codex" / "MEMORY.runtime.md").write_text(
+        "- [BSEE full-database analysis](project_bsee.md) — real DB on /mnt/ace\n"
+        "- [No local task IDs](feedback_no_reserved_wrk_ids.md) — GitHub issues only\n")
+    report = mod.collect_provider_harness(ws, home)
+    assert report["providers"]["codex"]["memory:read"] == {
+        "status": "present",
+        "reason": "codex_memory_runtime_found",
+    }
+
+    # An empty slice is still absent.
+    (ws / "config" / "agents" / "codex" / "MEMORY.runtime.md").write_text("   \n")
+    report = mod.collect_provider_harness(ws, home)
+    assert report["providers"]["codex"]["memory:read"] == {
+        "status": "absent",
+        "reason": "codex_memory_runtime_missing",
+    }
+
 
 def test_workflow_gates_requires_active_local_runtime_path(tmp_path, monkeypatch):
     mod = _load_module()
