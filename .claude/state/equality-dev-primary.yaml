@@ -1,11 +1,11 @@
-generated_at: "2026-06-22T11:59:32"
+generated_at: "2026-06-22T14:16:25"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "245eb3218"
+  checkout_sha: "6f4f62076"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 22208, disk_avail_gb: 831}
+    headroom: {ram_avail_mib: 22148, disk_avail_gb: 831}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -47,7 +47,7 @@ dimensions:
       codex:
         present: true
         installed: true
-        "memory:read": {status: absent, reason: codex_memory_runtime_missing}
+        "memory:read": {status: present, reason: codex_memory_runtime_found}
         "skills:invoke": {status: present, reason: codex_skill_adapter_found}
         "workflow:gates": {status: present, reason: codex_agents_runtime_active}
       hermes:
