@@ -44,7 +44,7 @@ mk_ws() {
 if [[ "${1:-} ${2:-}" == "plugin list" ]]; then
   for p in frontend-design skill-creator code-review pr-review-toolkit feature-dev \
             playground pyright-lsp claude-md-management hookify superpowers; do
-    echo "  > ${p}@claude-plugins-official"
+    echo "  ❯ ${p}@claude-plugins-official"
     echo "    Status: enabled"
   done
 fi

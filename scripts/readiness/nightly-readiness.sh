@@ -458,8 +458,11 @@ check_r_plugins() {
 
   while IFS= read -r plugin; do
     [[ -z "$plugin" ]] && continue
-    # Match exact plugin name: "  > plugin-name@..." or "  plugin-name" lines
-    if ! echo "$plugin_list" | grep -qE "(>|^)[[:space:]]*${plugin}(@|[[:space:]]|$)"; then
+    # Match the exact plugin name regardless of the bullet glyph: the real CLI
+    # prints a unicode "❯ plugin-name@marketplace" (U+276F), not ASCII ">", so the
+    # old '>'-anchored pattern false-reported every installed plugin as missing.
+    # Anchor on a non-name boundary before the name and @/space/EOL after it.
+    if ! echo "$plugin_list" | grep -qE "(^|[^[:alnum:]_-])${plugin}(@|[[:space:]]|$)"; then
       missing+=("$plugin")
     fi
   done < <(_hc_list "required_plugins")
