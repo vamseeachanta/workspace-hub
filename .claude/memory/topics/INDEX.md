@@ -5,10 +5,11 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (188)
+## Feedback — execution lessons & hazards (189)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
+- [feedback_add_lessons_routes_to_docs_lessons](feedback_add_lessons_routes_to_docs_lessons.md) — "\"add lessons: <url>\" requests → source-attributed markdown notes under workspace-hub docs/lessons/"
 - [--admin doesn't bypass repository rulesets — toggle enforcement instead](feedback_admin_flag_vs_rulesets_api.md) — gh's --admin flag bypasses classic branch protection but NOT newer repository rulesets; toggling ruleset enforcement is the admin escape hatch when no bypass_actors are configured.
 - [feedback-adversarial-review-before-user-approval](feedback_adversarial_review_before_user_approval.md) — Never bring work to user review/approval (or merge) until adversarial review has run and left evidence; self-review during build does NOT satisfy the gate
 - [adversarial_review_stance](feedback_adversarial_review_stance.md) — Every review prompt (plan, code, artifact) must force adversarial reviewer stance — not charitable reading. Rubber-stamp reviews cost more downstream than cold ones.
