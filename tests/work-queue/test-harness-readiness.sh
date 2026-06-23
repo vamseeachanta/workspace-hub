@@ -20,8 +20,13 @@ fail() { echo "  FAIL  $1"; fail=$((fail + 1)); errors+=("$1"); }
 
 # Create an isolated temp workspace for each test
 mk_ws() {
-  local ws
-  ws=$(mktemp -d)
+  local root ws
+  root=$(mktemp -d)
+  # Nest one level deep so dirname("$ws") is ALWAYS this isolated root, never a
+  # shared parent. T4 / R-PRECOMMIT create a sibling tier-1 repo at "$ws/../<repo>"
+  # (= "$root/<repo>") and rm -rf it; without nesting, a TMPDIR under
+  # /mnt/local-analysis would resolve that to the REAL sibling repo and delete it.
+  ws="${root}/hub"
   # Minimal workspace structure
   rm -f "${ws}/.claude/settings.json" 2>/dev/null; mkdir -p "${ws}/.claude"
   mkdir -p "${ws}/.claude/state"
@@ -48,7 +53,7 @@ STUB
   echo "$ws"
 }
 
-rm_ws() { rm -rf "$1"; }
+rm_ws() { rm -rf "$(dirname "$1")"; }  # remove the isolated root (hub + any test-created sibling repos)
 
 echo "=== WRK-1047 harness readiness tests ==="
 
