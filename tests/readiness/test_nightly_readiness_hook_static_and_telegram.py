@@ -227,5 +227,32 @@ def test_ai_cli_passes_when_clis_absent(tmp_path: Path) -> None:
     assert line.startswith("OK"), line
 
 
+# ── R1: auto-generated memory artifacts are exempt from the 200-line budget ──
+
+
+def test_r1_skips_managed_oversized_memory_file(tmp_path: Path) -> None:
+    """A >200-line memory file that declares itself managed/auto-generated must
+    NOT fail R1 — the budget targets hand-authored memory, not generated mirrors."""
+    ws, config = _mk_ws(tmp_path)
+    mem = ws / ".claude" / "memory"
+    mem.mkdir(parents=True)
+    body = "<!-- MANAGED by build_topics_index.py — do not hand-edit -->\n" + \
+        "".join(f"- entry {i}\n" for i in range(250))
+    (mem / "INDEX.md").write_text(body)
+    line = _line(_run(ws, config), "R1")
+    assert line.startswith("OK"), line
+
+
+def test_r1_still_fails_handauthored_oversized_memory_file(tmp_path: Path) -> None:
+    """A hand-authored (unmarked) >200-line memory file must still fail R1."""
+    ws, config = _mk_ws(tmp_path)
+    mem = ws / ".claude" / "memory"
+    mem.mkdir(parents=True)
+    (mem / "notes.md").write_text("# Notes\n" + "".join(f"- point {i}\n" for i in range(250)))
+    line = _line(_run(ws, config), "R1")
+    assert line.startswith("FAIL"), line
+    assert "notes.md" in line
+
+
 if __name__ == "__main__":  # pragma: no cover
     raise SystemExit(pytest.main([__file__, "-q"]))

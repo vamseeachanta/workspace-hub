@@ -46,6 +46,11 @@ check_r1() {
   [[ -d "$mem_dir" ]] || { log_pass "R1: memory/ absent — skip"; return; }
   local over=()
   while IFS= read -r -d '' f; do
+    # Skip auto-generated / managed memory artifacts (snapshots, topic indexes).
+    # The 200-line budget targets hand-authored memory that loads into context;
+    # generated mirrors grow with the corpus and declare themselves managed in
+    # their header (consistent with the enforcement-not-on-own-artifacts rule).
+    head -5 "$f" 2>/dev/null | grep -qiE 'managed by|auto-generated|do not hand-edit' && continue
     local lc
     lc=$(wc -l < "$f" 2>/dev/null || echo 0)
     [[ "$lc" -gt 200 ]] && over+=("$(basename "$f"):${lc}L")
