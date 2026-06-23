@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-23T09:20:40.600784Z",
+  "generated_at": "2026-06-23T13:20:41.820872Z",
   "current_week": "2026-W26",
-  "scorecard_generated_at": "2026-06-23T09:20:38.224299Z",
+  "scorecard_generated_at": "2026-06-23T13:20:39.337993Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -1361,10 +1361,11 @@
           "title": "Compliance alert: W26 \u2014 0% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3226",
           "labels": [
+            "priority:medium",
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-06-22T11:45:05Z",
+          "updatedAt": "2026-06-23T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -2124,7 +2125,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-22T11:06:58Z",
+          "updatedAt": "2026-06-23T11:07:36Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",

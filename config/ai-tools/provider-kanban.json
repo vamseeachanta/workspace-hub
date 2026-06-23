@@ -36,6 +36,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "priority:medium",
           "priority:critical",
           "compliance-alert"
         ],
@@ -8486,7 +8487,7 @@
       ]
     }
   ],
-  "generated_at": "2026-06-23T09:20:43Z",
+  "generated_at": "2026-06-23T13:20:44Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8503,6 +8504,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "priority:medium",
             "priority:critical",
             "compliance-alert"
           ],
@@ -16961,9 +16963,9 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-06-23T09:20:38.224299Z",
+  "scorecard_generated_at": "2026-06-23T13:20:39.337993Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-23T09:20:38.075328Z",
+  "utilization_generated_at": "2026-06-23T13:20:39.156830Z",
   "warning_summary": {
     "approved_no_marker": 28,
     "approved_no_plan": 17,

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T09:20:38.075328Z",
+  "generated_at": "2026-06-23T13:20:39.156830Z",
   "current_week": "2026-W26",
   "report_weeks": 8,
   "subscriptions": {
@@ -871,7 +871,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-06-23T09:20:04Z",
+        "quota_snapshot_ts": "2026-06-23T13:20:05Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -883,12 +883,12 @@
         "sessions": 30,
         "post_records": 3218,
         "activity_utilization_pct": 8.3,
-        "quota_utilization_pct": 32.0,
-        "reported_utilization_pct": 32.0,
+        "quota_utilization_pct": 33.0,
+        "reported_utilization_pct": 33.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "app-server-live",
-        "quota_snapshot_ts": "2026-06-23T09:20:04Z",
+        "quota_snapshot_ts": "2026-06-23T13:20:05Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -926,7 +926,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "manual-snapshot",
-        "quota_snapshot_ts": "2026-06-23T09:20:04Z",
+        "quota_snapshot_ts": "2026-06-23T13:20:05Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
