@@ -208,5 +208,24 @@ def test_telegram_passes_when_registry_absent(tmp_path: Path) -> None:
     assert _line(out, "R-TELEGRAM-HERMES").startswith("OK")
 
 
+# ── R-AI-CLI: absent CLIs / cross-host rows don't fail ───────────────────────
+
+
+def test_ai_cli_passes_when_clis_absent(tmp_path: Path) -> None:
+    """The harness is provider-neutral: a host that doesn't run a given CLI emits
+    a "CLI not found in PATH" row (empty version), which must NOT fail R-AI-CLI.
+
+    The minimal test PATH (/usr/bin:/bin:/usr/local/bin) has none of
+    claude/codex/gemini, so ai-agent-readiness.sh writes three empty-version warn
+    rows for this host. Before the host/version-aware fix a blind tail counted
+    them as 3 warnings → FAIL; now they're skipped → OK. Also implicitly checks
+    the per-host filter (only this host's latest status per agent is counted).
+    """
+    ws, config = _mk_ws(tmp_path)
+    out = _run(ws, config)
+    line = _line(out, "R-AI-CLI")
+    assert line.startswith("OK"), line
+
+
 if __name__ == "__main__":  # pragma: no cover
     raise SystemExit(pytest.main([__file__, "-q"]))

@@ -324,13 +324,26 @@ check_r_ai_cli() {
   local jsonl="${STATE_DIR}/session-signals/ai-readiness.jsonl"
   [[ -f "$jsonl" ]] || { log_pass "R-AI-CLI: no ai-readiness.jsonl yet — skip"; return; }
 
-  # Only examine the latest run: take the last 20 rows (> 3 agents + quota rows per run)
-  # This avoids a growing warn count from historical appended rows.
-  local warn_count
-  warn_count=$(tail -20 "$jsonl" | grep -c '"status":"warn"' 2>/dev/null || echo 0)
-  local agents_with_warn
-  agents_with_warn=$(tail -20 "$jsonl" | grep '"status":"warn"' 2>/dev/null \
-    | grep -oP '"agent":"\K[^"]*' | sort -u | tr '\n' ' ' || true)
+  # The jsonl is git-synced across machines and append-only, so a blind tail
+  # mixes other hosts' rows (e.g. claude absent on the Hermes host) and stale
+  # historical warns. Count only THIS host's LATEST status per agent, and only
+  # for an INSTALLED CLI: a "CLI not found in PATH" row (empty version) is
+  # expected — the harness is provider-neutral and not every workstation runs
+  # every provider. Genuine warns (installed-but-below-minimum / unreadable)
+  # carry a non-empty version and still fail the check.
+  local host_short
+  host_short=$(hostname -s 2>/dev/null || hostname | cut -d. -f1)
+  local warn_count=0 agents_with_warn="" agent last_row
+  for agent in claude codex gemini; do
+    last_row=$(grep "\"host\":\"${host_short}\"" "$jsonl" 2>/dev/null \
+      | grep "\"agent\":\"${agent}\"" | tail -1 || true)
+    [[ -z "$last_row" ]] && continue
+    if grep -q '"status":"warn"' <<<"$last_row" \
+       && ! grep -q '"version":""' <<<"$last_row"; then
+      warn_count=$((warn_count + 1))
+      agents_with_warn+="${agent} "
+    fi
+  done
 
   if [[ "$warn_count" -eq 0 ]]; then
     log_pass "R-AI-CLI: all AI agents present and at minimum version"
