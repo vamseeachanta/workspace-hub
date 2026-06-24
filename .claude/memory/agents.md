@@ -1,7 +1,7 @@
 # Agent Workflow Facts
 
 > Git-tracked. Applies to all AI agents working in this repo on any machine.
-> Refreshed by `scripts/memory/bridge-hermes-claude.sh` — edit the template,
+> Refreshed by `scripts/memory/bridge-hermes-claude.sh` — edit the template, *verified: 2026-06-24*
 > not the generated file.
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
@@ -69,7 +69,7 @@ GSD is the sole workflow system since 2026-03-25.
 
 ## Skill System (Hermes)
 
-Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1.
+Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1. *stale: 2026-06-24*
 On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures.
 
 
