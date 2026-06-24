@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-23T21:20:30.915006Z",
+  "generated_at": "2026-06-24T01:22:19.542961Z",
   "current_week": "2026-W26",
-  "scorecard_generated_at": "2026-06-23T21:20:28.005005Z",
+  "scorecard_generated_at": "2026-06-24T01:22:14.149314Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 37,
-      "total_candidates": 175,
+      "total_candidates": 174,
       "top_issues": [
         {
           "number": 2686,
@@ -2050,33 +2050,6 @@
           "updatedAt": "2026-06-13T21:42:39Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2641,
-          "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2641",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "machine:multi",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-solver-queue",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-06-10T16:10:54Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4698,7 +4671,7 @@
       "provider": "codex",
       "routing_priority": "high",
       "execution_ready_count": 2,
-      "total_candidates": 21,
+      "total_candidates": 22,
       "top_issues": [
         {
           "number": 3030,
@@ -5368,6 +5341,23 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3212",
           "labels": [],
           "updatedAt": "2026-06-18T10:17:06Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3231,
+          "title": "Isolate concurrent agent sessions per repo (worktree-per-session) \u2014 shared-clone HEAD thrash",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3231",
+          "labels": [],
+          "updatedAt": "2026-06-23T23:30:01Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
