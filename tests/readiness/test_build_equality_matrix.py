@@ -453,6 +453,54 @@ def test_matrix_renders_nine_provider_capability_rows_for_four_active_machines(t
     assert "EXPECTED-DIVERGENCE" in html
 
 
+def test_json_emit_returns_verdict_map(tmp_path, monkeypatch, capsys):
+    # --json prints {machine: {dim: verdict}} and writes NO HTML (tooling path for
+    # reconcile-ecosystem.sh). --machine scopes it to one column.
+    state = tmp_path / "state"; state.mkdir()
+    reports_dir = tmp_path / "reports"
+    cfg = tmp_path / "harness-config.yaml"
+    machines = {m: {"status": "active"} for m in ("dev-primary", "dev-secondary")}
+    cfg.write_text(yaml.safe_dump({"workstations": machines, "tier1_repos": TIER1}))
+    for machine in machines:
+        (state / f"equality-{machine}.yaml").write_text(yaml.safe_dump(_provider_report(machine)))
+    monkeypatch.setattr(bem, "STATE", state)
+    monkeypatch.setattr(bem, "REPORTS", reports_dir)
+    monkeypatch.setattr(bem, "CONFIG", cfg)
+    monkeypatch.setattr(bem.sys, "argv", ["build-equality-matrix.py", "--json"])
+
+    bem.main()
+
+    import json as _json
+    out = _json.loads(capsys.readouterr().out)
+    assert set(out) == {"dev-primary", "dev-secondary"}
+    assert out["dev-primary"]["compute"] in {
+        "CONFORMS", "BELOW-BASELINE", "MISSING-EVIDENCE", "MISSING-BASELINE"}
+    assert "harness:claude:memory:read" in out["dev-primary"]
+    # --json must not write the HTML alias
+    assert not (reports_dir / "machine-equality-matrix.html").exists()
+
+
+def test_json_emit_machine_scoped(tmp_path, monkeypatch, capsys):
+    state = tmp_path / "state"; state.mkdir()
+    reports_dir = tmp_path / "reports"
+    cfg = tmp_path / "harness-config.yaml"
+    machines = {m: {"status": "active"} for m in ("dev-primary", "dev-secondary")}
+    cfg.write_text(yaml.safe_dump({"workstations": machines, "tier1_repos": TIER1}))
+    for machine in machines:
+        (state / f"equality-{machine}.yaml").write_text(yaml.safe_dump(_provider_report(machine)))
+    monkeypatch.setattr(bem, "STATE", state)
+    monkeypatch.setattr(bem, "REPORTS", reports_dir)
+    monkeypatch.setattr(bem, "CONFIG", cfg)
+    monkeypatch.setattr(bem.sys, "argv",
+                        ["build-equality-matrix.py", "--json", "--machine", "dev-secondary"])
+
+    bem.main()
+
+    import json as _json
+    out = _json.loads(capsys.readouterr().out)
+    assert set(out) == {"dev-secondary"}
+
+
 # ── uniform-dim equality + ties (C1) ────────────────────────────────────────
 def test_matrix_pending_under_two():
     assert bem.uniform_verdict("skills", ["407"]) == "PENDING"
