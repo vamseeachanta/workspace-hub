@@ -5946,9 +5946,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -5960,6 +5959,7 @@
           "cat:ai-orchestration",
           "domain:ai-config",
           "machine:dev-primary",
+          "status:plan-review",
           "dispatch:ready",
           "gate:completeness",
           "lane:claude"
@@ -5985,7 +5985,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "fix(gemini): remove unsupported permissionMode keys from agent definitions",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2730",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -7959,9 +7961,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -7973,6 +7974,7 @@
           "cat:harness",
           "domain:workflow",
           "machine:dev-primary",
+          "status:plan-review",
           "dispatch:ready",
           "gate:completeness",
           "lane:claude"
@@ -7998,7 +8000,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "feat(workflow): HTML PR explainer artifact (author-side) \u2014 diff + annotations + focus callouts",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2664",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8477,7 +8481,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-06-24T09:20:46Z",
+  "generated_at": "2026-06-24T13:20:44Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -14404,9 +14408,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -14418,6 +14421,7 @@
             "cat:ai-orchestration",
             "domain:ai-config",
             "machine:dev-primary",
+            "status:plan-review",
             "dispatch:ready",
             "gate:completeness",
             "lane:claude"
@@ -14443,7 +14447,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "fix(gemini): remove unsupported permissionMode keys from agent definitions",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2730",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16417,9 +16423,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -16431,6 +16436,7 @@
             "cat:harness",
             "domain:workflow",
             "machine:dev-primary",
+            "status:plan-review",
             "dispatch:ready",
             "gate:completeness",
             "lane:claude"
@@ -16456,7 +16462,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "feat(workflow): HTML PR explainer artifact (author-side) \u2014 diff + annotations + focus callouts",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2664",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16943,9 +16951,9 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-06-24T09:20:41.930037Z",
+  "scorecard_generated_at": "2026-06-24T13:20:39.500769Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-24T09:20:41.719854Z",
+  "utilization_generated_at": "2026-06-24T13:20:39.369580Z",
   "warning_summary": {
     "approved_no_marker": 28,
     "approved_no_plan": 17,
@@ -16953,6 +16961,6 @@
     "legacy_review_no_sha": 1,
     "major_review": 1,
     "marker_without_open_approved_issue": 158,
-    "missing_review": 61
+    "missing_review": 63
   }
 }

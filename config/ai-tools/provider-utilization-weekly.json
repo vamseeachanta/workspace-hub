@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T09:20:41.719854Z",
+  "generated_at": "2026-06-24T13:20:39.369580Z",
   "current_week": "2026-W26",
   "report_weeks": 8,
   "subscriptions": {
@@ -871,7 +871,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-06-24T09:20:04Z",
+        "quota_snapshot_ts": "2026-06-24T13:20:05Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -883,12 +883,12 @@
         "sessions": 54,
         "post_records": 6023,
         "activity_utilization_pct": 15.5,
-        "quota_utilization_pct": 38.0,
-        "reported_utilization_pct": 38.0,
+        "quota_utilization_pct": 40.0,
+        "reported_utilization_pct": 40.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
-        "quota_source": "app-server-live",
-        "quota_snapshot_ts": "2026-06-24T09:20:04Z",
+        "quota_source": "local-session-rate-limits",
+        "quota_snapshot_ts": "2026-06-24T13:20:05Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -913,7 +913,7 @@
         ],
         "first_ts": "2026-06-22T03:51:52.343000Z",
         "last_ts": "2026-06-24T03:08:34.471000Z",
-        "note": "week_pct from app-server-live"
+        "note": "week_pct from local-session-rate-limits"
       },
       "gemini": {
         "provider": "gemini",
@@ -926,7 +926,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "manual-snapshot",
-        "quota_snapshot_ts": "2026-06-24T09:20:04Z",
+        "quota_snapshot_ts": "2026-06-24T13:20:05Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
