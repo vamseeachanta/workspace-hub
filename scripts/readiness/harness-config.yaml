@@ -66,7 +66,7 @@ workstations:
     ssh_target: null
     linux_reachable: false
     report_path: .claude/state/harness-readiness-ace-win-1.yaml
-    notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
+    notes: "Scout-only (recon + verification); bug fixes OK, NO feature dev (OS-equivalent dev lives on the Linux boxes). Licensed Windows host — primary role: licensed solver runs. Windows/Git Bash; Windows Task Scheduler writes report to shared mount."
     role: licensed-solver
     # ram_gib_min restored (#2816 W4, owner-confirmed 2026-05-31): collect-equality.ps1 now yields a
     # trustworthy ram_total_mib via CIM. Floor = 12 GiB. Evidence: the paired ace-win-2
@@ -87,7 +87,7 @@ workstations:
     ssh_target: null
     linux_reachable: false
     report_path: .claude/state/harness-readiness-ace-win-2.yaml
-    notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
+    notes: "Scout-only (recon + verification); bug fixes OK, NO feature dev (OS-equivalent dev lives on the Linux boxes). Licensed Windows host — primary role: document ingestion, email, marketing & admin. Windows/Git Bash; Windows Task Scheduler writes report to shared mount."
     role: licensed-solver
     # ram_gib_min restored (#2816 W4, owner-confirmed 2026-05-31): measured ram_total_mib on this box
     # (acma-ws014) = 15982 MiB (~16 GB physical) via collect-equality.ps1 -Stdout on 2026-05-31.

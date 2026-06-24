@@ -317,6 +317,47 @@ BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd
                      "kanban", "memory", "behavior", "scheduler"]
 DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
+# ── render grouping (#2801 collapsible-rows enhancement) ─────────────────────
+# The matrix assesses TWO equivalences on one page — machine equivalence (is each box
+# up to its declared hardware/solver baseline?) and repo/harness equivalence (are the
+# clones, skills, and runtime config identical across boxes?). Rows are grouped so each
+# group collapses to a single per-machine rollup the user can scan first ("what really
+# matters / what work is needed where"), then expand for the per-dimension detail.
+# Groups don't reorder DISPLAY_DIMS (the verdict engine + tests key off that list);
+# they only drive HTML layout. Every BASE_DISPLAY_DIM + provider row lands in exactly
+# one group.
+GROUPS = [
+    ("machine", "Machine equivalence — hardware &amp; solvers", ["compute", "solvers"]),
+    ("repo", "Repo equivalence — clones · skills · kanban · memory",
+        ["data_access", "skills", "kanban", "memory"]),
+    ("config", "Harness equivalence — providers · python · behavior · scheduler",
+        ["harness", "python_cmd", "behavior", "scheduler"]),
+    ("provider", "Provider capability parity — per runtime", provider_rows()),
+]
+
+# Worst-of severity for the collapsed group rollup. Higher = more operator attention.
+# A group's rollup cell shows the worst verdict among its dims for that machine; an
+# all-good group collapses to a single green "OK" so a clean box reads at a glance.
+ROLLUP_SEVERITY = {
+    "BELOW-BASELINE": 6, "DIVERGES": 6,
+    "MISSING-BASELINE": 5, "NO-MAJORITY": 5,
+    "MISSING-EVIDENCE": 4, "PENDING": 4,
+    "STALE-CHECKOUT": 3,
+    "EXPECTED-DIFF": 1, "EXPECTED-DIVERGENCE": 1, "UNREACHABLE": 1, "ABSENT": 1,
+    "CONFORMS": 0, "EQUAL": 0, "PARITY": 0,
+}
+
+
+def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
+    """(label, css_class) for a group's per-machine rollup cell. Unknown verdicts grade
+    at MISSING-EVIDENCE severity (fail-soft, never silently 'OK')."""
+    if not verdicts:
+        return ("n/a", "na")
+    worst = max(verdicts, key=lambda v: ROLLUP_SEVERITY.get(v, 4))
+    if ROLLUP_SEVERITY.get(worst, 4) == 0:
+        return ("OK", "ok")
+    return (worst, worst.lower())
+
 
 def main() -> None:
     config = yaml.safe_load(CONFIG.read_text()) if CONFIG.exists() else {}
@@ -325,29 +366,94 @@ def main() -> None:
     probed = (config.get("tier1_repos") or TIER1_DEFAULT)
     reports = load_reports()
 
+    machines = list(roster)
+    # Compute every verdict once (cells + rollups both consume it).
+    vmap = {(dim, m): verdict_for(dim, m, reports, baselines, roster, probed)
+            for dim in DISPLAY_DIMS for m in machines}
+
+    # --json: emit the verdict map for tooling (reconcile-ecosystem.sh consumes this
+    # instead of scraping HTML). Optionally scope to one machine via --machine <slug>.
+    if "--json" in sys.argv:
+        only = None
+        if "--machine" in sys.argv:
+            idx = sys.argv.index("--machine")
+            only = sys.argv[idx + 1] if idx + 1 < len(sys.argv) else None
+        targets = [only] if only else machines
+        emit = {m: {dim: vmap[(dim, m)] for dim in DISPLAY_DIMS}
+                for m in targets if m in roster}
+        print(json.dumps(emit, indent=2))
+        return
+
     rows = []
-    for dim in DISPLAY_DIMS:
-        cells = "".join(
-            f'<td class="{verdict_for(dim, m, reports, baselines, roster, probed).lower()}">'
-            f'{verdict_for(dim, m, reports, baselines, roster, probed)}</td>'
-            for m in roster)
-        rows.append(f"<tr><th>{dim}</th>{cells}</tr>")
-    cols = "".join(f"<th>{m}<br><small>{roster[m].get('status')}</small></th>" for m in roster)
+    for gid, title, dims in GROUPS:
+        # Collapsed group header: per-machine worst-of rollup + twist toggle.
+        rollups = "".join(
+            (lambda lab, cls: f'<td class="{cls}">{lab}</td>')(
+                *rollup_verdict([vmap[(d, m)] for d in dims]))
+            for m in machines)
+        rows.append(
+            f'<tr class="grp" data-group="{gid}">'
+            f'<th><span class="twist">&#9654;</span> {title} '
+            f'<small>({len(dims)} checks)</small></th>{rollups}</tr>')
+        # Detail rows (default collapsed). Per-dimension <th>{dim}</th> kept verbatim
+        # so the verdict-engine HTML contract / tests stay stable.
+        for dim in dims:
+            cells = "".join(f'<td class="{vmap[(dim, m)].lower()}">{vmap[(dim, m)]}</td>'
+                            for m in machines)
+            rows.append(f'<tr class="detail" data-group="{gid}"><th>{dim}</th>{cells}</tr>')
+
+    cols = "".join(
+        f"<th>{m}<br><small>{roster[m].get('role', '—')}<br>{roster[m].get('status')}</small></th>"
+        for m in machines)
     reporting = sum(1 for m in roster if roster[m].get("status") == "active" and m in reports)
     active = sum(1 for m in roster if roster[m].get("status") == "active")
 
+    # Per-machine notes (config `notes` field, public-safe role-slug prose). Rendered so
+    # the operator can see "what each box is for + what work belongs there" beside the grid.
+    machine_notes = "".join(
+        f"<li><b>{m}</b> <small>({roster[m].get('role', '—')})</small> — {roster[m]['notes']}</li>"
+        for m in machines if roster[m].get("notes"))
+    notes_block = f"<ul>{machine_notes}</ul>" if machine_notes else ""
+
     html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>Machine-Equality Matrix — #2801</title>
-<style>body{{font:14px/1.5 system-ui,sans-serif;margin:2rem}}table{{border-collapse:collapse}}
-th,td{{border:1px solid #ddd;padding:.4rem .6rem;font-size:.8rem}}thead th{{background:#2d3748;color:#fff}}
-tbody th{{background:#edf2f7}}.conforms,.equal,.parity{{background:#c6f6d5}}
+<style>body{{font:14px/1.5 system-ui,sans-serif;margin:2rem;max-width:1100px}}table{{border-collapse:collapse;width:100%}}
+th,td{{border:1px solid #ddd;padding:.4rem .6rem;font-size:.8rem;text-align:center}}thead th{{background:#2d3748;color:#fff}}
+tbody th{{background:#edf2f7;text-align:left}}.conforms,.equal,.parity,.ok{{background:#c6f6d5}}.ok{{font-weight:700}}
 .below-baseline,.diverges{{background:#fed7d7}}.no-majority,.missing-baseline{{background:#feebc8}}
 .expected-diff,.expected-divergence{{background:#e9d8fd}}
-.pending,.missing-evidence{{background:#fffaf0}}.unreachable,.absent{{background:#f7fafc;color:#a0aec0}}
-.stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}</style></head>
-<body><h1>Machine-Equality Matrix</h1>
-<p>#2801 · {date.today().isoformat()} · reporting {reporting}/{active} active machines</p>
-<table><thead><tr><th>Dimension</th>{cols}</tr></thead><tbody>{''.join(rows)}</tbody></table></body></html>"""
+.pending,.missing-evidence{{background:#fffaf0}}.unreachable,.absent,.na{{background:#f7fafc;color:#a0aec0}}
+.stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}
+tr.grp{{cursor:pointer}}tr.grp th,tr.grp td{{background:#1a202c;color:#fff;border-color:#2d3748}}
+tr.grp .twist{{color:#90cdf4;font-size:.7rem}}tr.grp td{{font-weight:700}}
+tr.detail{{display:none}}tr.detail th{{padding-left:1.8rem;font-weight:400}}
+.note{{background:#fffaf0;border-left:4px solid #ed8936;padding:.5rem .9rem;margin:.6rem 0;border-radius:4px}}
+.legend span{{display:inline-block;padding:.15rem .5rem;margin:.12rem;border-radius:3px;font-size:.72rem;border:1px solid #ccc}}</style>
+<noscript><style>tr.detail{{display:table-row}}</style></noscript></head>
+<body><h1>Machine &amp; Repo Equivalence Matrix</h1>
+<p>#2801 · {date.today().isoformat()} · reporting {reporting}/{active} active machines ·
+<small>rows are grouped &amp; <b>collapsed by default</b> — click a dark group row to expand its per-dimension detail.</small></p>
+<div class="note"><b>Work policy.</b> All development work — anything requiring OS equivalence — happens on the
+<b>Linux boxes</b> (dev-primary, dev-secondary). The Windows hosts (ace-win-1, ace-win-2) are <b>scout-only</b>
+(reconnaissance &amp; verification); <b>bug fixes are allowed</b> there, feature development is not. Both are
+<b>licensed Windows hosts</b>: <b>ace-win-1</b> primarily runs <b>licensed solver runs</b>; <b>ace-win-2</b> primarily
+handles <b>document ingestion, email, marketing &amp; admin</b>. Green/OK = at parity, nothing to do; red/orange =
+work needed on that box; purple = intended difference (not a defect).</div>
+<table><thead><tr><th>Group / Dimension</th>{cols}</tr></thead><tbody>{''.join(rows)}</tbody></table>
+{f'<h3>Machine notes</h3>{notes_block}' if notes_block else ''}
+<p class="legend"><b>Legend:</b>
+<span class="ok">OK / CONFORMS / EQUAL / PARITY</span><span class="below-baseline">BELOW-BASELINE / DIVERGES</span>
+<span class="no-majority">NO-MAJORITY / MISSING-BASELINE</span><span class="missing-evidence">PENDING / MISSING-EVIDENCE</span>
+<span class="expected-diff">EXPECTED-DIFF / EXPECTED-DIVERGENCE</span><span class="stale-checkout">STALE-CHECKOUT</span>
+<span class="absent">UNREACHABLE / ABSENT / n/a</span></p>
+<script>
+document.querySelectorAll('tr.grp').forEach(function(h){{
+  h.addEventListener('click',function(){{
+    var g=h.dataset.group,open=h.classList.toggle('open');
+    h.querySelector('.twist').innerHTML=open?'&#9660;':'&#9654;';
+    document.querySelectorAll('tr.detail[data-group="'+g+'"]').forEach(function(r){{
+      r.style.display=open?'table-row':'none';}});}});}});
+</script></body></html>"""
 
     REPORTS.mkdir(parents=True, exist_ok=True)
     out = REPORTS / f"{date.today().isoformat()}-machine-equality-matrix.html"
