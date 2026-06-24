@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-24T13:20:44Z
+Generated: 2026-06-24T17:21:35Z
 Mode: static (read-only)
 
 ## How to approve
@@ -185,7 +185,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2733 | epic: make Hermes agent memory canonical across all AI providers | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2732 | feat(data-governance): canonical first/second-level mount and folder taxonomy for repo ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2731 | feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2730 | fix(gemini): remove unsupported permissionMode keys from agent definitions | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2730 | fix(gemini): remove unsupported permissionMode keys from agent definitions | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2723 | chore(enforcement): clean up dead code in .git/hooks/pre-commit (deferred from #2722) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2721 | fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts — retrofit with `script -qc` | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2718 | audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -231,7 +231,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2667 | Feature: Domain Knowledge Sweep — systematic multi-source research → coverage map → implementation issues | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2666 | Multi-repo codex-burn-20260511 batch — 2 unmerged branches remaining (assetutilities, worldenergydata) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2665 | feat(kanban): provider-credit approval dashboard and dispatch gates | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2664 | feat(workflow): HTML PR explainer artifact (author-side) — diff + annotations + focus callouts | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2664 | feat(workflow): HTML PR explainer artifact (author-side) — diff + annotations + focus callouts | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2663 | chore(harness): adopt HTML as default artifact format — .claude/rules/artifact-format.md | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2662 | GTM client-artifact layout inconsistent across repos — no shared bundle convention | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2660 | Compliance alert: W20 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
