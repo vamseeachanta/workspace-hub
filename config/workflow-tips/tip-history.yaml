@@ -117,3 +117,5 @@ shown:
     tips: [cc-insights, cc-debug]
   - date: 2026-06-22
     tips: [cc-voice, bp-challenge-claude]
+  - date: 2026-06-23
+    tips: [cc-loop, eco-capability-map]

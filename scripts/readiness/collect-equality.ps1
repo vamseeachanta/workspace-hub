@@ -141,11 +141,51 @@ if ($null -ne $disk -and $null -ne $disk.FreeSpace) {
 $gpu = (Get-CimInstance Win32_VideoController | Select-Object -First 1 -ExpandProperty Name -ErrorAction SilentlyContinue)
 $env:EQ_GPU_MODEL = if ([string]::IsNullOrWhiteSpace($gpu)) { 'none' } else { $gpu }
 
+# ------ resolve Git Bash (MSYS/MINGW) explicitly --- NOT the WSL stub ------------------------------------------
+# Bare `bash` on Windows commonly resolves to the WSL launcher (C:\...\WindowsApps\bash.exe), which
+# runs as Linux (uname -> Linux): it sees the repo only as /mnt/c/... (not C:/...), self-reports
+# os: linux, and DROPS the EQ_* Windows compute overrides this script exports (WSL doesn't inherit
+# Windows env vars). The collector is contracted to run under Git Bash (uname -> MINGW), so it must
+# invoke Git Bash directly rather than whatever PATH finds first.
+function Resolve-GitBash {
+    $candidates = New-Object System.Collections.Generic.List[string]
+    $gitCmd = (Get-Command git -ErrorAction SilentlyContinue).Source
+    if ($gitCmd) {
+        $gitRoot = Split-Path -Parent (Split-Path -Parent $gitCmd)   # e.g. C:\Program Files\Git
+        $candidates.Add((Join-Path $gitRoot 'bin\bash.exe'))
+        $candidates.Add((Join-Path $gitRoot 'usr\bin\bash.exe'))
+    }
+    $candidates.Add('C:\Program Files\Git\bin\bash.exe')
+    $candidates.Add('C:\Program Files\Git\usr\bin\bash.exe')
+    $candidates.Add('C:\Program Files (x86)\Git\bin\bash.exe')
+    $candidates.Add("$env:LOCALAPPDATA\Programs\Git\bin\bash.exe")
+    foreach ($c in ($candidates | Select-Object -Unique)) {
+        if ($c -and (Test-Path $c)) {
+            # Reject a WSL/Linux bash: the collector requires the MSYS/MINGW runtime.
+            $uname = (& $c -c 'uname -s' 2>$null)
+            if ($uname -match '^(MINGW|MSYS|CYGWIN)') { return $c }
+        }
+    }
+    return $null
+}
+
+$bashExe = Resolve-GitBash
+if ([string]::IsNullOrWhiteSpace($bashExe)) {
+    throw ("collect-equality.ps1: could not find a Git Bash (MSYS/MINGW) bash.exe; bare 'bash' on " +
+           "this host resolves to the WSL stub, which cannot run this collector. Install Git for " +
+           "Windows or ensure its bash.exe is discoverable.")
+}
+Write-Verbose "collect-equality.ps1: using Git Bash at $bashExe"
+
 # ------ delegate to the canonical .sh (schema/provenance/solvers/idempotency single-sourced there) ---------
-$shPath = Join-Path $ScriptDir 'collect-equality.sh'
+# Normalize the script path to forward slashes before handing it to Git Bash: bash treats the
+# backslashes in a Windows path (C:\ws\...) as escape characters and collapses them
+# (C:wsworkspace-hub...), so argv[0] becomes an unfindable path. Git Bash accepts the forward-slash
+# form (C:/ws/...), and the .sh's own `dirname "${BASH_SOURCE[0]}"` resolves from it.
+$shPath = (Join-Path $ScriptDir 'collect-equality.sh') -replace '\\', '/'
 $shArgs = @($shPath)
 if ($Stdout) { $shArgs += '--stdout' }
 if (-not [string]::IsNullOrWhiteSpace($Machine)) { $shArgs += @('--machine', $Machine) }
 
-& bash @shArgs
+& $bashExe @shArgs
 exit $LASTEXITCODE

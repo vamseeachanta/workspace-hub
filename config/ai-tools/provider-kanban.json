@@ -35,7 +35,42 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Isolate concurrent agent sessions per repo (worktree-per-session) \u2014 shared-clone HEAD thrash"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3231,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "Isolate concurrent agent sessions per repo (worktree-per-session) \u2014 shared-clone HEAD thrash",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3231",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
         "labels": [
+          "priority:medium",
           "priority:critical",
           "compliance-alert"
         ],
@@ -5911,9 +5946,7 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -5925,16 +5958,17 @@
           "cat:ai-orchestration",
           "domain:ai-config",
           "machine:dev-primary",
+          "status:plan-review",
           "dispatch:ready",
           "gate:completeness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `.gemini/agents/gsd-executor.md` \u2014 `permissionMode: acceptEdits` on line 4 (SHA `9770309eeb84e6178b48ebf900edd14ef85a9270`, confirmed via MCP read 2026-06-24)",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** `permissionMode` may be valid in a *newer* Gemini CLI version rather than an obsolete one \u2014 implementer must run `gemini --version` and confirm schema before removing. If upgrading the CLI would make the key valid, the correct fix is a CLI upgrade + note, not removal. | **Risk:** Other `.gemini/agents/*.md` files may have `permissionMode` not listed in the issue body \u2014 plan covers all fi",
+        "tests": "5 TDD tests defined",
         "title": "fix(gemini): remove unsupported permissionMode keys from agent definitions"
       },
       "lane": "planning_feedstock",
@@ -5944,13 +5978,15 @@
       "machine_route": null,
       "number": 2730,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-06-24-issue-2730-gemini-agent-remove-permissionmode.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "fix(gemini): remove unsupported permissionMode keys from agent definitions",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2730",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -7924,9 +7960,7 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -7938,16 +7972,17 @@
           "cat:harness",
           "domain:workflow",
           "machine:dev-primary",
+          "status:plan-review",
           "dispatch:ready",
           "gate:completeness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `.github/` directory \u2014 contains `ISSUE_TEMPLATE/`, `workflow-templates/`, `workflows/` subdirs (confirmed via MCP listing 2026-06-24). **No `pull_request_template.md` exists** \u2014 this plan creates it.",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** `pull_request_template.md` will appear in every future PR's diff when the template is first added to the repo \u2014 this is expected one-time noise; note in the PR description. | **Risk:** Pilot HTML generation requires Claude Code or equivalent to be running with access to a real PR diff \u2014 if no suitable PR is available at implementation time, the implementer may use the PR that merges this",
+        "tests": "9 TDD tests defined",
         "title": "feat(workflow): HTML PR explainer artifact (author-side) \u2014 diff + annotations + focus callouts"
       },
       "lane": "planning_feedstock",
@@ -7957,13 +7992,15 @@
       "machine_route": null,
       "number": 2664,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-06-24-issue-2664-html-pr-explainer-author-side.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "feat(workflow): HTML PR explainer artifact (author-side) \u2014 diff + annotations + focus callouts",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2664",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8440,53 +8477,9 @@
       "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2645",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:engineering",
-          "machine:multi",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:marine-solver-queue",
-          "lane:codex"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "Per user guidance, this plan starts with the basic machine/file/repo inventory before solver automation. The live inventory artifact is:",
-        "provider_route": "claude",
-        "risks": "**Risk:** Windows hosts have no SSH. Initial Task Scheduler installation/verification still requires physical/GUI access unless a remote management channel is added. | **Risk:** AQWA batch command details are not yet verified. The plan must include a probe/dry-run adapter before treating AQWA execution as production-ready. | **Risk:** Git-backed queue can conflict if multiple hosts push simultaneo",
-        "tests": "10 TDD tests defined",
-        "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2641,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-04-issue-2641-multimachine-solver-inbox-ingestion.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2641",
-      "warnings": [
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-06-23T05:20:35Z",
+  "generated_at": "2026-06-24T17:21:35Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8502,7 +8495,42 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Isolate concurrent agent sessions per repo (worktree-per-session) \u2014 shared-clone HEAD thrash"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3231,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "Isolate concurrent agent sessions per repo (worktree-per-session) \u2014 shared-clone HEAD thrash",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3231",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
           "labels": [
+            "priority:medium",
             "priority:critical",
             "compliance-alert"
           ],
@@ -14378,9 +14406,7 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -14392,16 +14418,17 @@
             "cat:ai-orchestration",
             "domain:ai-config",
             "machine:dev-primary",
+            "status:plan-review",
             "dispatch:ready",
             "gate:completeness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `.gemini/agents/gsd-executor.md` \u2014 `permissionMode: acceptEdits` on line 4 (SHA `9770309eeb84e6178b48ebf900edd14ef85a9270`, confirmed via MCP read 2026-06-24)",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** `permissionMode` may be valid in a *newer* Gemini CLI version rather than an obsolete one \u2014 implementer must run `gemini --version` and confirm schema before removing. If upgrading the CLI would make the key valid, the correct fix is a CLI upgrade + note, not removal. | **Risk:** Other `.gemini/agents/*.md` files may have `permissionMode` not listed in the issue body \u2014 plan covers all fi",
+          "tests": "5 TDD tests defined",
           "title": "fix(gemini): remove unsupported permissionMode keys from agent definitions"
         },
         "lane": "planning_feedstock",
@@ -14411,13 +14438,15 @@
         "machine_route": null,
         "number": 2730,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-06-24-issue-2730-gemini-agent-remove-permissionmode.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "fix(gemini): remove unsupported permissionMode keys from agent definitions",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2730",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16391,9 +16420,7 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -16405,16 +16432,17 @@
             "cat:harness",
             "domain:workflow",
             "machine:dev-primary",
+            "status:plan-review",
             "dispatch:ready",
             "gate:completeness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `.github/` directory \u2014 contains `ISSUE_TEMPLATE/`, `workflow-templates/`, `workflows/` subdirs (confirmed via MCP listing 2026-06-24). **No `pull_request_template.md` exists** \u2014 this plan creates it.",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** `pull_request_template.md` will appear in every future PR's diff when the template is first added to the repo \u2014 this is expected one-time noise; note in the PR description. | **Risk:** Pilot HTML generation requires Claude Code or equivalent to be running with access to a real PR diff \u2014 if no suitable PR is available at implementation time, the implementer may use the PR that merges this",
+          "tests": "9 TDD tests defined",
           "title": "feat(workflow): HTML PR explainer artifact (author-side) \u2014 diff + annotations + focus callouts"
         },
         "lane": "planning_feedstock",
@@ -16424,13 +16452,15 @@
         "machine_route": null,
         "number": 2664,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-06-24-issue-2664-html-pr-explainer-author-side.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "feat(workflow): HTML PR explainer artifact (author-side) \u2014 diff + annotations + focus callouts",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2664",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16907,50 +16937,6 @@
         "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2645",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "machine:multi",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-solver-queue",
-            "lane:codex"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "Per user guidance, this plan starts with the basic machine/file/repo inventory before solver automation. The live inventory artifact is:",
-          "provider_route": "claude",
-          "risks": "**Risk:** Windows hosts have no SSH. Initial Task Scheduler installation/verification still requires physical/GUI access unless a remote management channel is added. | **Risk:** AQWA batch command details are not yet verified. The plan must include a probe/dry-run adapter before treating AQWA execution as production-ready. | **Risk:** Git-backed queue can conflict if multiple hosts push simultaneo",
-          "tests": "10 TDD tests defined",
-          "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2641,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-04-issue-2641-multimachine-solver-inbox-ingestion.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2641",
-        "warnings": [
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -16961,9 +16947,9 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-06-23T05:20:29.008750Z",
+  "scorecard_generated_at": "2026-06-24T17:21:31.155093Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-23T05:20:28.403973Z",
+  "utilization_generated_at": "2026-06-24T17:21:27.444634Z",
   "warning_summary": {
     "approved_no_marker": 28,
     "approved_no_plan": 17,
@@ -16971,6 +16957,6 @@
     "legacy_review_no_sha": 1,
     "major_review": 1,
     "marker_without_open_approved_issue": 158,
-    "missing_review": 62
+    "missing_review": 63
   }
 }

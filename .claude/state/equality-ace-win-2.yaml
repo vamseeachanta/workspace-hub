@@ -1,19 +1,19 @@
-generated_at: "2026-06-09T14:24:28"
-schema_version: 3
+generated_at: "2026-06-23T18:48:28"
+schema_version: 4
 machine: "ace-win-2"
 host: "acma-ws014"
 os: windows
 status: active
 provenance:
-  checkout_sha: "0ee920eae"
+  checkout_sha: "0e2055222"
   dirty: false
   behind_main: 0
   ahead_main: 0
   origin_ref_age_h: 0
 dimensions:
   compute:
-    static: {cores: 32, ram_total_mib: 15982, gpu_model: "NVIDIA T1000 8GB"}
-    headroom: {ram_avail_mib: 2814, disk_avail_gb: 247}
+    static: {cores: 32, ram_total_mib: 16014, gpu_model: "NVIDIA T1000 8GB"}
+    headroom: {ram_avail_mib: 2931, disk_avail_gb: 229}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -30,11 +30,38 @@ dimensions:
     python_cmd: python
     readiness_ref: harness-readiness-acma-ws014.yaml
     readiness_overall: fail
-  skills: {repo_skill_count: 405}
+  skills: {repo_skill_count: 407}
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: absent
     context_md_mtime: "2026-05-30T08:15:31"
+  provider_harness:
+    schema_version: 1
+    providers:
+      claude:
+        present: true
+        installed: true
+        "memory:read": {status: present, reason: claude_memory_context_found}
+        "skills:invoke": {status: present, reason: repo_skill_tree_found}
+        "workflow:gates": {status: present, reason: hard_gates_runtime_found}
+      codex:
+        present: true
+        installed: true
+        "memory:read": {status: present, reason: codex_memory_runtime_found}
+        "skills:invoke": {status: absent, reason: adapter_not_directory_or_symlink}
+        "workflow:gates": {status: absent, reason: active_runtime_missing}
+      hermes:
+        present: true
+        installed: true
+        "memory:read": {status: absent, reason: hermes_memory_store_missing}
+        "skills:invoke": {status: absent, reason: hermes_skill_registry_missing}
+        "workflow:gates": {status: absent, reason: active_runtime_missing}
+      gemini:
+        present: true
+        installed: true
+        "memory:read": {status: present, reason: gemini_memory_runtime_found}
+        "skills:invoke": {status: expected_divergence, reason: gemini_skill_dispatch_unsupported}
+        "workflow:gates": {status: present, reason: gemini_soul_runtime_gates_found}
   behavior:
     enums: {b1: deny, b2: ok, b3: html, b4: pass}
     hashes: {b5: 2a21ba0731d11660}

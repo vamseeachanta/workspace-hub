@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-23T05:20:31.828885Z",
+  "generated_at": "2026-06-24T17:21:33.750812Z",
   "current_week": "2026-W26",
-  "scorecard_generated_at": "2026-06-23T05:20:29.008750Z",
+  "scorecard_generated_at": "2026-06-24T17:21:31.155093Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 37,
-      "total_candidates": 175,
+      "total_candidates": 174,
       "top_issues": [
         {
           "number": 2686,
@@ -1361,10 +1361,11 @@
           "title": "Compliance alert: W26 \u2014 0% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3226",
           "labels": [
+            "priority:medium",
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-06-22T11:45:05Z",
+          "updatedAt": "2026-06-24T11:45:08Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -2060,33 +2061,6 @@
           ]
         },
         {
-          "number": 2641,
-          "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2641",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "machine:multi",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-solver-queue",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-06-10T16:10:54Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2650,
           "title": "chore(knowledge): post-spinout cleanup for llm-wiki migration",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2650",
@@ -2124,7 +2098,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-22T11:06:58Z",
+          "updatedAt": "2026-06-24T11:06:35Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2228,11 +2202,12 @@
             "cat:harness",
             "domain:workflow",
             "machine:dev-primary",
+            "status:plan-review",
             "dispatch:ready",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-10T16:26:17Z",
+          "updatedAt": "2026-06-24T13:11:01Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2981,11 +2956,12 @@
             "cat:ai-orchestration",
             "domain:ai-config",
             "machine:dev-primary",
+            "status:plan-review",
             "dispatch:ready",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-10T12:55:50Z",
+          "updatedAt": "2026-06-24T13:10:59Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4697,7 +4673,7 @@
       "provider": "codex",
       "routing_priority": "high",
       "execution_ready_count": 2,
-      "total_candidates": 21,
+      "total_candidates": 22,
       "top_issues": [
         {
           "number": 3030,
@@ -5377,6 +5353,23 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 3231,
+          "title": "Isolate concurrent agent sessions per repo (worktree-per-session) \u2014 shared-clone HEAD thrash",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3231",
+          "labels": [],
+          "updatedAt": "2026-06-23T23:30:01Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
         }
       ]
     },
@@ -5403,7 +5396,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-23T04:00:03Z",
+          "updatedAt": "2026-06-24T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5500,7 +5493,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-23T04:00:03Z",
+          "updatedAt": "2026-06-24T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
