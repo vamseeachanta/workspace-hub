@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-25T01:20:46.650711Z",
+  "generated_at": "2026-06-25T05:20:38.648860Z",
   "current_week": "2026-W26",
-  "scorecard_generated_at": "2026-06-25T01:20:44.137895Z",
+  "scorecard_generated_at": "2026-06-25T05:20:35.655607Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -5396,7 +5396,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-24T04:00:03Z",
+          "updatedAt": "2026-06-25T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5493,7 +5493,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-24T04:00:03Z",
+          "updatedAt": "2026-06-25T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",

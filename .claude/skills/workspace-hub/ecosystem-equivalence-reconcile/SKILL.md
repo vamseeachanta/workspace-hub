@@ -1,13 +1,26 @@
 ---
 name: ecosystem-equivalence-reconcile
-description: Bring THE CURRENT computer back to ecosystem + machine-equality equivalence — clean repo-hygiene drift (dirty trees, stale branches/worktrees/stashes) and remediate every non-OK equality-matrix verdict. Report-first; destructive actions are guard-gated and opt-in.
+description: "Bring THE CURRENT computer back to ecosystem + machine-equality equivalence\
+  \ \u2014 clean repo-hygiene drift (dirty trees, stale branches/worktrees/stashes)\
+  \ and remediate every non-OK equality-matrix verdict. Report-first; destructive\
+  \ actions are guard-gated and opt-in."
 type: workflow
 version: 1.0.0
 category: workspace-hub
 last_updated: 2026-06-24
 source: internal
-tags: [equality, hygiene, reconcile, corrective-action, worktree, branches, multi-machine]
-related_skills: [repo-ecosystem-hygiene, worktree-branch-sync-hygiene, repo-sync, machine-equality-matrix-live-link]
+tags:
+- equality
+- hygiene
+- reconcile
+- corrective-action
+- worktree
+- branches
+- multi-machine
+related_skills:
+- repo-ecosystem-hygiene
+- worktree-branch-sync-hygiene
+- repo-sync
 freedom: low
 ---
 
