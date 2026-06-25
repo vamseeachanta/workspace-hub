@@ -3,6 +3,8 @@
 This document is the single onboarding reference for the mandatory issue planning workflow.
 All agents (Claude, Codex, Gemini, Hermes) must follow this workflow for every GitHub issue.
 
+> **One-page method reference:** [#3237](https://github.com/vamseeachanta/workspace-hub/issues/3237) is the timeless overview of the full issue lifecycle (plan → review → implement → HTML artifact → live link → close), with a live flowchart at <https://vamseeachanta.github.io/workspace-hub/issue-workflow-lifecycle.html>.
+
 ## Why Planning Is Mandatory
 
 Historical data shows that agents skipping the planning step produced incorrect implementations, wasted tokens, and created rework. The planning workflow catches problems before implementation begins, when they are cheapest to fix.
