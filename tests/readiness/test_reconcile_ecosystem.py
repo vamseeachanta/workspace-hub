@@ -61,6 +61,16 @@ def test_destructive_ops_are_guard_gated():
     assert "safe-remove-worktree" in TEXT
 
 
+def test_guard_is_invoked_in_target_repo_cwd():
+    # worktree_guard reads `git worktree list` from CWD, so for a SIBLING repo it must run
+    # with that repo as cwd — otherwise it checks workspace-hub's worktrees (wrong repo) and
+    # a sibling branch checked out in a worktree would wrongly pass the guard.
+    assert re.search(r"cd \"\$repo\" && python3 \"\$GUARD\" safe-delete-branch", TEXT), \
+        "guard execution must be repo-scoped (cd \"$repo\")"
+    # the printed NEEDS-APPROVAL command must be repo-scoped too
+    assert "cd '$repo' && python3 '$GUARD' safe-delete-branch" in TEXT
+
+
 def test_dirty_work_is_never_silently_discarded():
     # The only thing the driver does with a dirty tree is `stash push` (recoverable) or surface it.
     assert "stash push" in TEXT

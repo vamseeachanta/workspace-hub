@@ -134,7 +134,7 @@ scan_repo() {
     b="${b#"${b%%[![:space:]]*}"}"; b="${b#\* }"; [ -z "$b" ] && continue
     [ "$b" = "$cur" ] && continue
     [[ "$b" =~ $SAFE_BRANCH_RE ]] || continue
-    if [ "$DESTRUCTIVE_OK" = 1 ] && python3 "$GUARD" safe-delete-branch "$b" >/dev/null 2>&1 </dev/null; then
+    if [ "$DESTRUCTIVE_OK" = 1 ] && ( cd "$repo" && python3 "$GUARD" safe-delete-branch "$b" ) >/dev/null 2>&1 </dev/null; then
       add AUTO-SAFE "$name" "delete merged safe-pattern branch '$b'" \
         "git -C '$repo' branch -d '$b'"
     else
@@ -163,12 +163,12 @@ scan_repo() {
         [ "$b" = "main" ] && continue
         grep -qx "$b" <<< "$merged_prs" || continue                         # PR merged ⇒ in main
         git -C "$repo" merge-base --is-ancestor "$b" origin/main 2>/dev/null && continue  # ancestry pass owns it
-        if [ "$DESTRUCTIVE_OK" = 1 ] && python3 "$GUARD" safe-delete-branch "$b" >/dev/null 2>&1 </dev/null; then
+        if [ "$DESTRUCTIVE_OK" = 1 ] && ( cd "$repo" && python3 "$GUARD" safe-delete-branch "$b" ) >/dev/null 2>&1 </dev/null; then
           add AUTO-SAFE "$name" "delete squash-merged branch '$b' (PR merged, not in ancestry)" \
             "git -C '$repo' branch -D '$b'"
         else
           add NEEDS-APPROVAL "$name" "squash-merged branch '$b' (guard/host policy held)" \
-            "python3 '$GUARD' safe-delete-branch '$b'"
+            "cd '$repo' && python3 '$GUARD' safe-delete-branch '$b'"
         fi
       done <<< "$all_b"
     fi
@@ -178,7 +178,7 @@ scan_repo() {
   local wt; wt=$(git -C "$repo" worktree list --porcelain 2>/dev/null | grep -c '^worktree ' || true)
   if [ "${wt:-0}" -gt 1 ]; then
     add NEEDS-APPROVAL "$name" "$((wt-1)) linked worktree(s) — prune only via guard ownership" \
-      "git -C '$repo' worktree list  # then: python3 '$GUARD' safe-remove-worktree <dir> <owner>"
+      "git -C '$repo' worktree list  # then: cd '$repo' && python3 '$GUARD' safe-remove-worktree <dir> <owner>"
   fi
 
   # stale stashes (≥ STALE_DAYS): surface only, never auto-drop
