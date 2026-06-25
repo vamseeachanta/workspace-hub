@@ -11,6 +11,7 @@ on:
       - 'docs/REPO_MISSION_PORTFOLIO.md'
       - 'docs/SKILLS_INDEX.md'
       - 'docs/reports/machine-equality-matrix.html'
+      - 'docs/reports/issue-workflow-lifecycle.html'
       - 'scripts/build_pages.py'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
