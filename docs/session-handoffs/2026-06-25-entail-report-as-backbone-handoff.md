@@ -2,7 +2,9 @@
 
 **Date:** 2026-06-25
 **Trigger:** Operator directive — incorporate the engineering-report concepts from [Entail's 2026 LinkedIn post](https://www.linkedin.com/posts/we-gave-liv-inger-bangstad-and-julie-anne-share-7475494525399027712-zwEp/) (Liv-Inger Bangstad / Julie Anne Holm) into the llm-wiki and the repo ecosystem.
-**Status:** Documentation + issues COMPLETE. Implementation NOT started (tackle when possible).
+**Status:** Documentation + issues COMPLETE and **ALL MERGED to main** (2026-06-25). Implementation of the 5 issues NOT started (tackle when possible).
+
+> **Update 2026-06-25 (post-merge):** all artifacts are now committed, merged, and pushed to origin main — nothing uncommitted remains. The "commit when ready" section near the bottom is superseded; see **§Final landed state**.
 
 ---
 
@@ -49,22 +51,28 @@ The building-block report pattern already exists in **exactly one** module —
 
 **Constraints:** digitalmodel is PR-only (never self-merge; CI baseline is red — compare PR check set vs. bare main). UV-module workflow contract: `uv run python -m digitalmodel.reporting <input.yml>`.
 
-## Uncommitted changes — commit when ready (not committed this session per "commit only when asked")
+## Final landed state (2026-06-25 — supersedes the "commit when ready" plan)
 
-```bash
-# llm-wiki
-cd /mnt/local-analysis/llm-wiki
-git add wikis/engineering/wiki/concepts/report-as-backbone.md \
-        wikis/engineering/wiki/sources/2026-06-25-entail-report-as-backbone.md \
-        wikis/engineering/wiki/index.md wikis/engineering/wiki/log.md
-git commit -m "engineering wiki: add report-as-backbone concept + Entail source (incorporate Entail 2026 framing)"
+All work is merged to origin main on both repos. Nothing uncommitted remains for this initiative.
 
-# workspace-hub
-cd /mnt/local-analysis/workspace-hub
-git add analysis/entail-report-as-backbone-ecosystem-mapping-2026-06-25.md \
-        docs/session-handoffs/2026-06-25-entail-report-as-backbone-handoff.md
-git commit -m "analysis: Entail report-as-backbone ecosystem mapping + session handoff"
-```
+| Repo | PR | Merge result |
+|------|----|--------------|
+| llm-wiki | [#791](https://github.com/vamseeachanta/llm-wiki/pull/791) | MERGED `8ccce3f5c` + corruption-fix `106a7428b` |
+| workspace-hub | [#3241](https://github.com/vamseeachanta/workspace-hub/pull/3241) | MERGED |
+
+**Verified on origin/main (llm-wiki engineering index.md):** `page_count: 129`, `## Concepts (106 pages)`, `## Sources (27 pages)`, both new rows present, single frontmatter (no duplication).
+
+### ⚠️ Merge-corruption incident + fix (lesson)
+The llm-wiki PR branch was 1 ahead / 183 behind a very active concurrent session. The `ort` auto-merge **silently spliced** two divergent `index.md` versions — duplicate frontmatter blocks (112/27 + 127/26) and duplicate `## Concepts` headers (54 + 105) — with **no conflict markers**. Caught in post-merge verification.
+
+- **Fixed-forward** in `106a7428b`: rebuilt `index.md`/`log.md` from the clean upstream base (`e6b5c92b3`) + only the report-as-backbone edits → final counts 127→129 / 105→106 / 26→27. No concurrent work reverted.
+- The whole merge/fix was done in an **isolated git worktree** so the shared clone's other-session WIP (`marine-engineering/index.md`, `log.md`, `scripts/enforcement/check-no-conflict-markers.sh`) was never touched.
+- **Lesson:** after merging a long-diverged branch into a count-table/frontmatter file, always grep the merged result for duplicated frontmatter keys / section headers — textual auto-merge can corrupt without conflicting.
+
+### Repo states at exit
+- **llm-wiki** shared clone (`/mnt/local-analysis/llm-wiki`): on `main` (local stale at `90e4612c2`); origin main = `106a7428b`. Other-session WIP (3 files) intact — that session pulls when ready.
+- **workspace-hub** (`/mnt/local-analysis/workspace-hub`): on `main`, synced with origin (0/0).
+- No external actions taken beyond GitHub PRs/issues. digitalmodel issues filed only (no code).
 
 ## Pointers
 - Durable concept: llm-wiki `wikis/engineering/wiki/concepts/report-as-backbone.md`
