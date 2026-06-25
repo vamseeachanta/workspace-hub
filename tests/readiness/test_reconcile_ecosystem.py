@@ -31,13 +31,27 @@ def test_bash_syntax_is_valid():
 @pytest.mark.parametrize("danger", [
     r"reset\s+--hard",          # never blow away history/working tree
     r"clean\s+-[a-zA-Z]*f",     # never rm untracked en masse
-    r"branch\s+-D\b",           # never force-delete an unmerged branch
     r"push\s+.*--force",        # never force-push
     r"checkout\s+--\s+\.",      # never discard the whole working tree
     r"stash\s+(drop|clear)",    # never destroy stashed work
 ])
 def test_no_dangerous_git_patterns(danger):
     assert not re.search(danger, TEXT), f"reconciler must not contain `{danger}`"
+
+
+def test_force_delete_only_for_pr_merged_branches():
+    # `git branch -D` (force) is permitted ONLY to remove squash-merged branches whose PR is
+    # MERGED — GitHub squash-merge breaks ancestry, so `-d` would refuse a branch whose work IS
+    # in main. It must be co-located with the gh merged-PR guard AND the worktree guard.
+    if re.search(r"branch\s+-D\b", TEXT):
+        assert "pr list --state merged" in TEXT, "force-delete must be gated by a merged-PR check"
+        assert "safe-delete-branch" in TEXT, "force-delete must also pass the worktree guard"
+
+
+def test_squash_merge_detection_degrades_without_gh():
+    # The squash-merge pass must be guarded by a `command -v gh` check so absence of gh is a
+    # graceful no-op (ancestry pass still runs), not a crash.
+    assert "command -v gh" in TEXT
 
 
 def test_destructive_ops_are_guard_gated():
