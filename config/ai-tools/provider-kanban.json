@@ -35,6 +35,44 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
+        "labels": [
+          "cat:documentation",
+          "domain:workflow",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "docs(workflow): canonical lifecycle for a typical GitHub issue \u2014 plan \u2192 review \u2192 implement \u2192 HTML artifact \u2192 live link"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3237,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "docs(workflow): canonical lifecycle for a typical GitHub issue \u2014 plan \u2192 review \u2192 implement \u2192 HTML artifact \u2192 live link",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3237",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
         "labels": [],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -8433,58 +8471,52 @@
       "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:operations",
-          "machine:dev-secondary",
-          "agent:claude",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:workstations-machine-bringup",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2645,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "existing claude agent label",
-      "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2645",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-06-25T09:25:38Z",
+  "generated_at": "2026-06-25T13:20:52Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "cat:documentation",
+            "domain:workflow",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "docs(workflow): canonical lifecycle for a typical GitHub issue \u2014 plan \u2192 review \u2192 implement \u2192 HTML artifact \u2192 live link"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3237,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "docs(workflow): canonical lifecycle for a typical GitHub issue \u2014 plan \u2192 review \u2192 implement \u2192 HTML artifact \u2192 live link",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3237",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16893,63 +16925,19 @@
         "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:operations",
-            "machine:dev-secondary",
-            "agent:claude",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:workstations-machine-bringup",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2645,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "existing claude agent label",
-        "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2645",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
     "running_leased": []
   },
   "recommended_provider_order": [
+    "codex",
     "gemini",
-    "claude",
-    "codex"
+    "claude"
   ],
-  "scorecard_generated_at": "2026-06-25T09:25:10.327818Z",
+  "scorecard_generated_at": "2026-06-25T13:20:47.364975Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-25T09:25:05.208056Z",
+  "utilization_generated_at": "2026-06-25T13:20:46.372769Z",
   "warning_summary": {
     "approved_no_marker": 28,
     "approved_no_plan": 17,
