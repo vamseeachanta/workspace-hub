@@ -359,6 +359,108 @@ def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
     return (worst, worst.lower())
 
 
+# ── remediation playbook (verdict → action) — keep in sync with the verdict→fix table in
+#    .claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md + reconcile-ecosystem.sh
+OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGENCE",
+               "UNREACHABLE", "ABSENT"}
+
+
+def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
+    """(action, owner, by_design) for a non-OK cell; None if the cell needs no action.
+    by_design=True means the cell can't/shouldn't reach green — it's expected, not a defect."""
+    if verdict in OK_VERDICTS:
+        return None
+    is_provider = dim.startswith("harness:")
+    if verdict == "MISSING-EVIDENCE":
+        if is_provider:
+            return ("capability not detected — or no Claude baseline on this host "
+                    "(a Hermes-only box grades provider rows MISSING-EVIDENCE by design)",
+                    "by-design / operator", True)
+        return ("no fresh report on this box — run the collector "
+                "(equality-matrix-cron.sh; equality-report.ps1 on Windows)", "this box", False)
+    if verdict == "STALE-CHECKOUT":
+        return ("checkout dirty / behind / stale ref — clean the tree, git fetch origin main, re-collect",
+                "this box", False)
+    if verdict == "BELOW-BASELINE":
+        if dim == "solvers":
+            return ("solver licence probe emits 'present', baseline wants 'licensed' — "
+                    "Windows licence-probe follow-up", "operator (Windows)", True)
+        if dim == "data_access":
+            return ("a required tier-1 repo isn't cloned here — clone the missing sibling", "this box", False)
+        if dim == "compute":
+            return ("under the declared cores/ram/gpu floor — upgrade box or retune harness-config floor",
+                    "operator", False)
+        return ("below the declared baseline — inspect this box's equality report", "operator", False)
+    if verdict in ("DIVERGES", "NO-MAJORITY"):
+        if is_provider:
+            return ("capability diverges from the Claude baseline — refresh the report; "
+                    "if persistent, install/repair that provider on this box", "this box", False)
+        if dim == "skills":
+            return ("skills count differs — usually a tracked symlink materialized as a text file; "
+                    "git config core.symlinks true, then rm + git checkout the symlink paths", "this box", False)
+        if dim in ("harness", "behavior"):
+            return ("runtime/config drift — rebuild + install the soul runtime, then re-collect", "this box", False)
+        if dim == "scheduler":
+            return ("cron jobs differ — reconcile via setup-cron.sh --check, then re-collect", "this box", False)
+        return ("differs from peers — OFTEN a stale-peer artifact; refresh ALL machines' reports first, "
+                "then reconcile any genuine config drift", "all boxes", False)
+    if verdict == "MISSING-BASELINE":
+        return ("no declared baseline for this dim — add one in harness-config.yaml", "operator", False)
+    return ("investigate this cell's report", "operator", False)
+
+
+def _short_dim(dim: str) -> str:
+    return dim[len("harness:"):] if dim.startswith("harness:") else dim
+
+
+def equivalence_section(vmap: dict, machines: list[str], roster: dict,
+                        reporting_set: set[str]) -> str:
+    """Per-machine 'what to do to reach equivalence' cards, generated from live verdicts."""
+    cards = []
+    for m in machines:
+        if roster[m].get("status") != "active":
+            continue
+        gaps = [(d, vmap[(d, m)]) for d in DISPLAY_DIMS if remediate(d, vmap[(d, m)])]
+        role = roster[m].get("role", "—")
+        if not gaps:
+            cards.append(f'<div class="fix-card ok-card"><b>{m}</b> '
+                         f'<small>({role})</small> — ✅ at equivalence, nothing to do.</div>')
+            continue
+        # A box with NO report at all: every cell is MISSING-EVIDENCE for one reason (no report).
+        # One action fixes all of them — don't mislabel its provider rows "by design".
+        if m not in reporting_set:
+            cards.append(
+                f'<div class="fix-card"><b>{m}</b> <small>({role}, {len(gaps)} gaps)</small>'
+                f'<div class="head">➤ Not reporting — run the collector once to populate all '
+                f'{len(gaps)} cells.</div><ul><li>collector: '
+                f'<code>bash scripts/readiness/equality-matrix-cron.sh</code> '
+                f'(Windows: <code>scripts\\windows\\equality-report.ps1</code>) <small>[this box]</small>'
+                f'</li></ul></div>')
+            continue
+        # bucket gaps by identical remediation so repeated dims collapse into one line
+        bucket: dict[tuple[str, str, bool], list[str]] = {}
+        for d, v in gaps:
+            bucket.setdefault(remediate(d, v), []).append(d)  # type: ignore[arg-type]
+        if any(v in ("DIVERGES", "NO-MAJORITY") for _, v in gaps):
+            head = ("Mostly cross-machine divergence — often a stale peer report. "
+                    "Refresh EVERY machine's report first, then reconcile any real drift.")
+        else:
+            head = "Targeted fixes below."
+        items = []
+        for (action, owner, design), dims in bucket.items():
+            shown = [_short_dim(x) for x in dims]
+            label = (", ".join(shown) if len(shown) <= 4
+                     else f"{len(shown)} rows ({shown[0]} …)")
+            tag = ' <i>(by design — not a defect)</i>' if design else ''
+            items.append(f'<li class="{"design" if design else ""}"><code>{label}</code> → '
+                         f'{action} <small>[{owner}]</small>{tag}</li>')
+        cards.append(
+            f'<div class="fix-card"><b>{m}</b> <small>({role}, {len(gaps)} gap'
+            f'{"s" if len(gaps) != 1 else ""})</small>'
+            f'<div class="head">➤ {head}</div><ul>{"".join(items)}</ul></div>')
+    return "".join(cards)
+
+
 def main() -> None:
     config = yaml.safe_load(CONFIG.read_text()) if CONFIG.exists() else {}
     roster = load_roster(config)
@@ -415,6 +517,9 @@ def main() -> None:
         for m in machines if roster[m].get("notes"))
     notes_block = f"<ul>{machine_notes}</ul>" if machine_notes else ""
 
+    # "Achieving equivalence" — per-machine actions generated from the live verdicts.
+    equiv_cards = equivalence_section(vmap, machines, roster, set(reports))
+
     html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>Machine-Equality Matrix — #2801</title>
 <style>body{{font:14px/1.5 system-ui,sans-serif;margin:2rem;max-width:1100px}}table{{border-collapse:collapse;width:100%}}
@@ -428,7 +533,13 @@ tr.grp{{cursor:pointer}}tr.grp th,tr.grp td{{background:#1a202c;color:#fff;borde
 tr.grp .twist{{color:#90cdf4;font-size:.7rem}}tr.grp td{{font-weight:700}}
 tr.detail{{display:none}}tr.detail th{{padding-left:1.8rem;font-weight:400}}
 .note{{background:#fffaf0;border-left:4px solid #ed8936;padding:.5rem .9rem;margin:.6rem 0;border-radius:4px}}
-.legend span{{display:inline-block;padding:.15rem .5rem;margin:.12rem;border-radius:3px;font-size:.72rem;border:1px solid #ccc}}</style>
+.legend span{{display:inline-block;padding:.15rem .5rem;margin:.12rem;border-radius:3px;font-size:.72rem;border:1px solid #ccc}}
+.prompt{{background:#1a202c;color:#e2e8f0;padding:.6rem .9rem;border-radius:6px;margin:.6rem 0;font-size:.82rem}}
+.prompt code{{background:#2d3748;color:#90cdf4;padding:.05rem .3rem;border-radius:3px}}
+.fix-card{{border:1px solid #e2e8f0;border-left:4px solid #ed8936;border-radius:6px;padding:.5rem .8rem;margin:.5rem 0}}
+.fix-card.ok-card{{border-left-color:#48bb78}}.fix-card .head{{color:#c05621;font-weight:600;margin:.2rem 0}}
+.fix-card ul{{margin:.3rem 0 .1rem;padding-left:1.2rem}}.fix-card li{{margin:.15rem 0}}
+.fix-card li.design{{color:#718096}}.fix-card code{{background:#edf2f7;padding:.03rem .25rem;border-radius:3px;font-size:.76rem}}</style>
 <noscript><style>tr.detail{{display:table-row}}</style></noscript></head>
 <body><h1>Machine &amp; Repo Equivalence Matrix</h1>
 <p>#2801 · {date.today().isoformat()} · reporting {reporting}/{active} active machines ·
@@ -441,6 +552,15 @@ handles <b>document ingestion, email, marketing &amp; admin</b>. Green/OK = at p
 work needed on that box; purple = intended difference (not a defect).</div>
 <table><thead><tr><th>Group / Dimension</th>{cols}</tr></thead><tbody>{''.join(rows)}</tbody></table>
 {f'<h3>Machine notes</h3>{notes_block}' if notes_block else ''}
+<h2>Achieving equivalence — what to do</h2>
+<div class="prompt"><b>To reconcile a box →</b> from <code>workspace-hub</code> run
+<code>git pull --ff-only &amp;&amp; bash scripts/readiness/reconcile-ecosystem.sh</code> (read-only plan),
+then <code>--apply</code> for the guard-gated safe fixes, or <code>--apply --equality</code> to refresh that
+box's column here. Claude Code / Gemini CLI: <code>/reconcile-ecosystem</code>. Each box reconciles its own column.</div>
+<p><small>Cards below are generated from the live verdicts. <b>Most "divergences" are stale-report
+artifacts</b> — a single out-of-date report skews the cross-machine vote, so the first move is almost always
+to refresh <i>every</i> active machine's report, then re-judge what genuinely differs.</small></p>
+{equiv_cards}
 <p class="legend"><b>Legend:</b>
 <span class="ok">OK / CONFORMS / EQUAL / PARITY</span><span class="below-baseline">BELOW-BASELINE / DIVERGES</span>
 <span class="no-majority">NO-MAJORITY / MISSING-BASELINE</span><span class="missing-evidence">PENDING / MISSING-EVIDENCE</span>

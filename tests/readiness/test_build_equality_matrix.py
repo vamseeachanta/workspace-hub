@@ -480,6 +480,57 @@ def test_json_emit_returns_verdict_map(tmp_path, monkeypatch, capsys):
     assert not (reports_dir / "machine-equality-matrix.html").exists()
 
 
+def test_remediate_skips_ok_verdicts():
+    for v in ("CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "UNREACHABLE", "ABSENT"):
+        assert bem.remediate("skills", v) is None
+
+
+def test_remediate_provider_missing_evidence_is_by_design():
+    action, owner, by_design = bem.remediate("harness:codex:memory:read", "MISSING-EVIDENCE")
+    assert by_design is True and "Hermes-only" in action
+
+
+def test_remediate_non_provider_missing_evidence_is_actionable():
+    action, owner, by_design = bem.remediate("kanban", "MISSING-EVIDENCE")
+    assert by_design is False and owner == "this box" and "collector" in action
+
+
+def test_remediate_solvers_below_baseline_by_design():
+    action, owner, by_design = bem.remediate("solvers", "BELOW-BASELINE")
+    assert by_design is True and "licence" in action.lower()
+
+
+def test_remediate_skills_diverges_points_at_symlink_repair():
+    action, _, by_design = bem.remediate("skills", "DIVERGES")
+    assert by_design is False and "symlink" in action
+
+
+def test_equivalence_section_renders_with_prompt(tmp_path, monkeypatch):
+    state = tmp_path / "state"; state.mkdir()
+    reports_dir = tmp_path / "reports"
+    cfg = tmp_path / "harness-config.yaml"
+    # one reporting machine + one rostered-but-not-reporting → 'Not reporting' card
+    cfg.write_text(yaml.safe_dump({"workstations": {
+        "dev-primary": {"status": "active", "compute_floor": {"cores_min": 8},
+                        "required_data_access": ["digitalmodel"],
+                        "solvers_baseline": {"orcaflex": "absent", "orcawave": "absent",
+                                             "aqwa": "absent", "ansys": "absent"}},
+        "ace-win-1": {"status": "active"}},
+        "tier1_repos": TIER1}))
+    (state / "equality-dev-primary.yaml").write_text(yaml.safe_dump(
+        _report("dev-primary", data_access=[{"repo": "digitalmodel", "mode": "sibling"}],
+                solvers=_solvers())))
+    monkeypatch.setattr(bem, "STATE", state)
+    monkeypatch.setattr(bem, "REPORTS", reports_dir)
+    monkeypatch.setattr(bem, "CONFIG", cfg)
+    bem.main()
+    html = (reports_dir / "machine-equality-matrix.html").read_text()
+    assert "Achieving equivalence" in html
+    assert "reconcile-ecosystem.sh" in html        # the prompt is embedded
+    assert "/reconcile-ecosystem" in html
+    assert "Not reporting" in html                 # ace-win-1 has no report
+
+
 def test_json_emit_machine_scoped(tmp_path, monkeypatch, capsys):
     state = tmp_path / "state"; state.mkdir()
     reports_dir = tmp_path / "reports"
