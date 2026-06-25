@@ -35,7 +35,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || (cd "$SCRIPT_DIR/../.." && pwd))"
 GUARD="${REPO_ROOT}/scripts/lib/worktree_guard.py"
 BUILD_MATRIX="${REPO_ROOT}/scripts/readiness/build-equality-matrix.py"
-COLLECT="${REPO_ROOT}/scripts/readiness/collect-equality.sh"
+# Canonical equality entry points — reconcile DELEGATES here rather than re-implementing the
+# collect+build chain, so it stays single-sourced with the cron + operator-refresh paths:
+#   equality-matrix-cron.sh    = collect THIS box + rebuild matrix (fail-loud, no push)
+#   refresh-equality-matrix.sh = fresh-main -> cron -> commit+push (publishes the live link)
+CRON="${REPO_ROOT}/scripts/readiness/equality-matrix-cron.sh"
+REFRESH="${REPO_ROOT}/scripts/readiness/refresh-equality-matrix.sh"
 SIBLING_ROOT="$(dirname "$REPO_ROOT")"
 
 # Branch names safe to auto-delete once merged (mirrors daily-cleanup.sh SAFE_BRANCH_RE).
@@ -138,6 +143,37 @@ scan_repo() {
     fi
   done <<< "$merged"
 
+  # squash-merged-stale branches: GitHub squash-merge does NOT preserve ancestry, so a branch
+  # whose PR is MERGED is invisible to `git branch --merged` and the ancestry pass above — it
+  # accumulates forever. Detect via PR state (gh). The merged PR is the proof the work is in
+  # main, which is why `branch -D` (force) is correct here (git can't see the squash as an
+  # ancestor). Gated on: PR merged AND worktree_guard approval AND DESTRUCTIVE_OK. Degrades
+  # to a no-op if gh is unavailable/unauthenticated (the ancestry pass still runs).
+  local nbranch; nbranch=$(git -C "$repo" branch 2>/dev/null | grep -c . || echo 0)
+  if [ "${nbranch:-0}" -gt 1 ] && command -v gh >/dev/null 2>&1; then
+    local gh_run=(gh pr list --state merged --limit 500 --json headRefName -q '.[].headRefName')
+    command -v timeout >/dev/null 2>&1 && gh_run=(timeout 25 "${gh_run[@]}")
+    local merged_prs all_b
+    merged_prs=$(cd "$repo" && "${gh_run[@]}" 2>/dev/null </dev/null)
+    if [ -n "$merged_prs" ]; then
+      all_b=$(git -C "$repo" branch --format='%(refname:short)' 2>/dev/null </dev/null)
+      while IFS= read -r b; do
+        [ -z "$b" ] && continue
+        [ "$b" = "$cur" ] && continue
+        [ "$b" = "main" ] && continue
+        grep -qx "$b" <<< "$merged_prs" || continue                         # PR merged ⇒ in main
+        git -C "$repo" merge-base --is-ancestor "$b" origin/main 2>/dev/null && continue  # ancestry pass owns it
+        if [ "$DESTRUCTIVE_OK" = 1 ] && python3 "$GUARD" safe-delete-branch "$b" >/dev/null 2>&1 </dev/null; then
+          add AUTO-SAFE "$name" "delete squash-merged branch '$b' (PR merged, not in ancestry)" \
+            "git -C '$repo' branch -D '$b'"
+        else
+          add NEEDS-APPROVAL "$name" "squash-merged branch '$b' (guard/host policy held)" \
+            "python3 '$GUARD' safe-delete-branch '$b'"
+        fi
+      done <<< "$all_b"
+    fi
+  fi
+
   # worktrees: deny-by-default — only surface; removal needs ownership proof
   local wt; wt=$(git -C "$repo" worktree list --porcelain 2>/dev/null | grep -c '^worktree ' || true)
   if [ "${wt:-0}" -gt 1 ]; then
@@ -170,14 +206,14 @@ equality_plan() {
     case "$verdict" in
       STALE-CHECKOUT)
         add AUTO-SAFE "$MACHINE" "[$dim] STALE — clean tree + fetch, then re-collect" \
-          "git -C '$REPO_ROOT' fetch origin main && bash '$COLLECT'" ;;
+          "git -C '$REPO_ROOT' fetch origin main && bash '$CRON'" ;;
       MISSING-EVIDENCE)
         if printf '%s' "$dim" | grep -q '^harness:'; then
           add NEEDS-APPROVAL "$MACHINE" "[$dim] provider capability absent (or no Claude baseline on host)" \
             "verify provider install/auth; on a Hermes-only host this is by-design"
         else
           add AUTO-SAFE "$MACHINE" "[$dim] no fresh report — collect equality on this box" \
-            "bash '$COLLECT'"
+            "bash '$CRON'"
         fi ;;
       BELOW-BASELINE)
         case "$dim" in
@@ -191,11 +227,11 @@ equality_plan() {
           skills) add NEEDS-APPROVAL "$MACHINE" "[skills] likely tracked-symlink-materialized-as-text — repair (rm+checkout tracked paths)" \
                     "git -C '$REPO_ROOT' config core.symlinks true; for s in .codex/skills .gemini/skills; do rm -f \"\$s\" && git -C '$REPO_ROOT' checkout -- \"\$s\"; done" ;;
           harness|behavior) add NEEDS-APPROVAL "$MACHINE" "[$dim] runtime/config drift — rebuild soul runtime + re-collect" \
-                    "bash scripts/agents/build-soul-runtime.sh && bash scripts/agents/install-soul-runtime.sh && bash '$COLLECT'" ;;
+                    "bash scripts/agents/build-soul-runtime.sh && bash scripts/agents/install-soul-runtime.sh && bash '$CRON'" ;;
           scheduler) add NEEDS-APPROVAL "$MACHINE" "[scheduler] cron drift — reconcile jobs then re-collect" \
-                    "bash scripts/cron/setup-cron.sh --check && bash '$COLLECT'" ;;
+                    "bash scripts/cron/setup-cron.sh --check && bash '$CRON'" ;;
           *) add NEEDS-APPROVAL "$MACHINE" "[$dim] diverges from peers — stale report? re-collect, else reconcile config" \
-                    "bash '$COLLECT'" ;;
+                    "bash '$CRON'" ;;
         esac ;;
       *) add NEEDS-APPROVAL "$MACHINE" "[$dim] verdict $verdict — investigate" "inspect equality-$MACHINE.yaml" ;;
     esac
@@ -250,16 +286,19 @@ if [ "$APPLY" = 1 ]; then
     [ -z "$row" ] && continue
     IFS=$'\t' read -r rcls name act cmd <<<"$row"
     [ "$rcls" = "AUTO-SAFE" ] || continue
-    # equality re-collect actions only run when DO_EQUALITY (avoid surprise heavy ops)
-    if printf '%s' "$cmd" | grep -q "$COLLECT" && [ "$DO_EQUALITY" = 0 ]; then
-      echo "  ~ skip (needs --equality): [$name] $act"; continue
+    # Equality-refresh actions funnel through the canonical cron ONCE below — don't run
+    # them per-item (that would re-collect+rebuild N times).
+    if printf '%s' "$cmd" | grep -q "$CRON"; then
+      echo "  ~ defer to canonical equality refresh: [$name] $act"; continue
     fi
     echo "  + [$name] $act"
     if ! bash -c "$cmd"; then echo "    ! failed: $cmd" >&2; rc=1; fi
   done
   if [ "$DO_EQUALITY" = 1 ]; then
-    echo "  + rebuild matrix"
-    uv run --script "$BUILD_MATRIX" >/dev/null 2>&1 || rc=1
+    echo "  + refresh equality (fetch + equality-matrix-cron.sh: collect this box + rebuild matrix)"
+    git -C "$REPO_ROOT" fetch origin main >/dev/null 2>&1 || true
+    bash "$CRON" || rc=1
+    echo "    (to publish the live Pages link, run: bash '$REFRESH')"
   fi
   exit "$rc"
 fi
