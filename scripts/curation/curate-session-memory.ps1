@@ -85,6 +85,17 @@ if (Get-Command uv -ErrorAction SilentlyContinue) {
     Fail 'no python runtime (uv/python) available'
 }
 
+# ── 1b. skill-currency audit (#3249) — best-effort; must not block the curation run ──
+# Without this the skill_currency cell is permanently MISSING-EVIDENCE on Windows boxes.
+$skillAudit = (Join-Path $RepoRoot 'scripts/curation/audit_skill_currency.py')
+if (Get-Command uv -ErrorAction SilentlyContinue) {
+    & uv run --no-project --with pyyaml python $skillAudit
+    if ($LASTEXITCODE -ne 0) { Write-Error 'skill-currency audit failed (soft)' }
+} elseif (Get-Command python -ErrorAction SilentlyContinue) {
+    & python $skillAudit
+    if ($LASTEXITCODE -ne 0) { Write-Error 'skill-currency audit failed (soft)' }
+}
+
 # ── 2. refresh THIS box's equality column (Windows collector + matrix build) ──
 $collector = (Join-Path $ScriptDir '..\readiness\collect-equality.ps1')
 & $collector
