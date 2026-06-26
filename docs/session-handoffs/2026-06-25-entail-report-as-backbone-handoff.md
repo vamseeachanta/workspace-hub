@@ -2,9 +2,15 @@
 
 **Date:** 2026-06-25
 **Trigger:** Operator directive — incorporate the engineering-report concepts from [Entail's 2026 LinkedIn post](https://www.linkedin.com/posts/we-gave-liv-inger-bangstad-and-julie-anne-share-7475494525399027712-zwEp/) (Liv-Inger Bangstad / Julie Anne Holm) into the llm-wiki and the repo ecosystem.
-**Status:** Documentation + issues COMPLETE and **ALL MERGED to main** (2026-06-25). Implementation of the 5 issues NOT started (tackle when possible).
+**Status:** Documentation + issues COMPLETE and merged (2026-06-25). **Keystone A implemented + MERGED** (2026-06-26). B/C/D/E pending.
 
-> **Update 2026-06-25 (post-merge):** all artifacts are now committed, merged, and pushed to origin main — nothing uncommitted remains. The "commit when ready" section near the bottom is superseded; see **§Final landed state**.
+> **Update 2026-06-25 (post-merge):** all docs/wiki artifacts committed, merged, pushed. The "commit when ready" section near the bottom is superseded; see **§Final landed state**.
+
+> **Update 2026-06-26 (implementation, keystone A):** [digitalmodel#1018](https://github.com/vamseeachanta/digitalmodel/issues/1018) implemented and **MERGED via PR [#1030](https://github.com/vamseeachanta/digitalmodel/pull/1030)** (squash). New package `src/digitalmodel/reporting/` (`ReportBlock`/`ReportBlockFn`, `ReportDataModel`, `SectionMode`/`ReportSection`/`ReportBackbone`, `ReportRenderer`); diffraction adopts it with **zero behavior change** proven by a 4-fixture golden byte-identical test; 125 tests pass. PDF deferred. CI was UNSTABLE only from the known-red baseline (`tests-hydrodynamics-diffraction` passed; reporting tests are pure-python). Built amid an active concurrent **#1023 floating-wind** session in the shared digitalmodel clone (HEAD-switch hazard) — rebuilt the PR from an isolated worktree and de-contaminated the shared tree; verified no leakage either direction.
+>
+> **B [#1019] + D [#1021] are now UNBLOCKED** (depend only on A). C [#1020] + E [workspace-hub#3239] need A+B. **Do digitalmodel work in an isolated worktree** (shared clone is contended; needs a `../assetutilities` symlink for `uv`).
+>
+> Other open digitalmodel PRs at exit (other workstreams, NOT this initiative, unverified by this session — owner to review/merge): #962 (corpus fatigue methods), #871 (Collide PE solver), #869 (riser M-T screening).
 
 ---
 
