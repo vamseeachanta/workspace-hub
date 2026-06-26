@@ -3,8 +3,11 @@
 # This is the EXACT shape collect-equality.sh emits when collect-equality.ps1 computes Windows
 # compute via CIM and exports EQ_CORES / EQ_RAM_TOTAL_MIB / EQ_RAM_AVAIL_MIB / EQ_DISK_AVAIL_GB /
 # EQ_GPU_MODEL (the .ps1 is a thin compute overlay; schema/provenance/solvers/idempotency stay
-# single-sourced in the .sh — see the plan PART A design). Consumed by the Linux-runnable contract
-# tests in test_collect_equality_ps1_schema.py, which PowerShell cannot run on.
+# single-sourced in the .sh — see the plan PART A design). The session_curation block is ALSO
+# single-sourced in the .sh (it reads .claude/state/session-curation-<machine>.json directly via jq;
+# the .ps1 contributes nothing to it), so it reaches Windows purely through the .sh delegation.
+# Consumed by the Linux-runnable contract tests in test_collect_equality_ps1_schema.py, which
+# PowerShell cannot run on.
 #
 # Provenance is a fresh, clean, current checkout (dirty:false / behind_main:0 / ahead_main:0 /
 # origin_ref_age_h:1) so is_stale()==False. Compute satisfies ace-win-1's compute_floor
@@ -81,3 +84,8 @@ dimensions:
     has_repo_sync: true
     has_parity_review: true
     job_count: 4
+  session_curation:
+    last_curated_at: "2026-05-30T03:55:12"
+    sessions_24h: 47
+    providers_active: "claude,codex,gemini,hermes"
+    memory_files_changed: 6

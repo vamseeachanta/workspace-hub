@@ -55,10 +55,11 @@ def _win1_baseline() -> dict:
 
 
 # ════════════════════════════════════════════════════════════════════════════
-# 1. Golden fixture parses to schema_version 4 with provenance + all 10 dims
+# 1. Golden fixture parses to schema_version 4 with provenance + all 11 dims
 # ════════════════════════════════════════════════════════════════════════════
 EXPECTED_DIMS = {"compute", "data_access", "solvers", "harness", "skills",
-                 "kanban", "memory", "behavior", "scheduler", "provider_harness"}
+                 "kanban", "memory", "behavior", "scheduler", "provider_harness",
+                 "session_curation"}
 
 
 def test_ps1_sample_output_parses_schema_v4_with_provider_harness():
@@ -69,7 +70,7 @@ def test_ps1_sample_output_parses_schema_v4_with_provider_harness():
     # provenance block present with the freshness fields is_stale() consumes
     p = d["provenance"]
     assert set(p) >= {"checkout_sha", "dirty", "behind_main", "ahead_main", "origin_ref_age_h"}
-    # all 10 dimensions present
+    # all 11 dimensions present (session_curation added in the #2816 follow-on)
     assert set(d["dimensions"]) == EXPECTED_DIMS
     ph = d["dimensions"]["provider_harness"]
     assert ph["schema_version"] == 1
