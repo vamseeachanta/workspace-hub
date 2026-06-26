@@ -97,4 +97,4 @@ dimensions:
     gemini_expected: 9
     codex_present: true
     hermes_present: true
-    index_stale: false
+    index_dangling: 0

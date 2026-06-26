@@ -250,9 +250,17 @@ def skill_currency_verdict(report: dict) -> str:
         unexpected = 0
     if unexpected > 0:
         return "SKILLS-DRIFTED"
-    if sc.get("index_stale") is True:
+    # Index integrity via dangling-entry count. None ⇒ the index was UNREADABLE while the tree read
+    # fine — fail-closed to INDEX-STALE (a broken index needs regeneration), never silently green.
+    idx = sc.get("index_dangling")
+    if idx is None:
         return "SKILLS-INDEX-STALE"
-    if isinstance(sc.get("gemini_expected"), int) and sc.get("gemini_expected", 0) > 0:
+    if not isinstance(idx, int) or isinstance(idx, bool):
+        return "MISSING-EVIDENCE"
+    if idx > 0:
+        return "SKILLS-INDEX-STALE"
+    expected = sc.get("gemini_expected")
+    if isinstance(expected, int) and not isinstance(expected, bool) and expected > 0:
         return "EXPECTED-DIVERGENCE"
     return "SKILLS-CURRENT"
 

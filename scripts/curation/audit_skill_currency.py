@@ -65,8 +65,11 @@ def machine_label() -> str:
 
 def _git_tree_skillmd(prefix: str) -> list[str] | None:
     """Tracked SKILL.md paths under `prefix` in the committed tree (HEAD). None on git failure."""
-    r = subprocess.run(["git", "-C", str(REPO), "ls-tree", "-r", "--name-only", "HEAD", prefix],
-                       capture_output=True, text=True)
+    try:
+        r = subprocess.run(["git", "-C", str(REPO), "ls-tree", "-r", "--name-only", "HEAD", prefix],
+                           capture_output=True, text=True, timeout=30)
+    except (subprocess.TimeoutExpired, OSError):
+        return None                                      # hung/locked git ⇒ no evidence (fail-closed)
     if r.returncode != 0:
         return None
     return [ln for ln in r.stdout.splitlines() if ln.endswith("/SKILL.md")]
@@ -81,7 +84,7 @@ def _families(prefix: str) -> set[str] | None:
     fams = set()
     for p in paths:
         parts = p.split("/")
-        if len(parts) > plen:
+        if len(parts) > plen and parts[plen] != "SKILL.md":   # skip a SKILL.md directly under root
             fams.add(parts[plen])
     return fams
 
@@ -119,7 +122,10 @@ def audit(machine: str) -> dict:
     gemini = _families(GEMINI_PREFIX)
     allow = _load_allow()
 
-    gemini_present = gemini is not None and (REPO / GEMINI_PREFIX).exists()
+    # Presence from the COMMITTED tree (non-empty family set), NOT a working-tree stat — staying on
+    # the same basis as the comparison so a working-tree delete during skill-dev can't silently
+    # disable drift detection (the module's stated WIP-immunity).
+    gemini_present = gemini is not None and len(gemini) > 0
     gemini_unexpected = gemini_expected = 0
     if canonical is not None and gemini is not None and gemini_present:
         diff = canonical ^ gemini

@@ -165,7 +165,7 @@ fi
 # References the audit state written by scripts/curation/audit_skill_currency.py (never re-runs it).
 # Missing/garbled file -> audited_at null / canonical_count 0 -> matrix grades MISSING-EVIDENCE.
 skc_file="${STATE_DIR}/skill-currency-${MACHINE}.json"
-skc_audited="null"; skc_cc=0; skc_gp=false; skc_gu=0; skc_ge=0; skc_cp=false; skc_hp=false; skc_idx=false
+skc_audited="null"; skc_cc=0; skc_gp=false; skc_gu=0; skc_ge=0; skc_cp=false; skc_hp=false; skc_dangling="null"
 if [[ -f "$skc_file" ]] && have jq; then
   _ska=$(jq -r '.audited_at // empty' "$skc_file" 2>/dev/null)
   [[ -n "$_ska" ]] && skc_audited="\"$(yesc "$_ska")\""
@@ -175,7 +175,10 @@ if [[ -f "$skc_file" ]] && have jq; then
   skc_gp=$(jq -r 'if .gemini_present then "true" else "false" end' "$skc_file" 2>/dev/null); [[ "$skc_gp" == "true" ]] || skc_gp=false
   skc_cp=$(jq -r 'if .codex_present then "true" else "false" end' "$skc_file" 2>/dev/null); [[ "$skc_cp" == "true" ]] || skc_cp=false
   skc_hp=$(jq -r 'if .hermes_present then "true" else "false" end' "$skc_file" 2>/dev/null); [[ "$skc_hp" == "true" ]] || skc_hp=false
-  skc_idx=$(jq -r 'if .index_stale then "true" else "false" end' "$skc_file" 2>/dev/null); [[ "$skc_idx" == "true" ]] || skc_idx=false
+  # index_dangling stays NULL when absent/unreadable so the matrix fails closed (a null index can
+  # never grade green). A clean index emits 0; a rotted one emits the dangling count.
+  _skd=$(jq -r 'if (.index_dangling|type)=="number" then .index_dangling else "null" end' "$skc_file" 2>/dev/null)
+  [[ "$_skd" =~ ^[0-9]+$ ]] && skc_dangling="$_skd"
 fi
 
 # ── 7. BEHAVIOR — deterministic, SANDBOXED probe corpus (DG4/DC1) ────────────
@@ -383,7 +386,7 @@ ${provider_harness_yaml}
     gemini_expected: ${skc_ge}
     codex_present: ${skc_cp}
     hermes_present: ${skc_hp}
-    index_stale: ${skc_idx}
+    index_dangling: ${skc_dangling}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 

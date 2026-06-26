@@ -25,7 +25,7 @@ def _rep(**sc) -> dict:
     """A report carrying a skill_currency dimension built from the given fields."""
     base = {"audited_at": "2026-06-26T12:00:00+00:00", "canonical_count": 44,
             "gemini_present": True, "gemini_unexpected": 0, "gemini_expected": 0,
-            "codex_present": True, "hermes_present": True, "index_stale": False}
+            "codex_present": True, "hermes_present": True, "index_dangling": 0}
     base.update(sc)
     return {"dimensions": {"skill_currency": base}}
 
@@ -42,16 +42,21 @@ def test_drifted_on_unexpected():
 def test_drifted_dominates_index_stale_and_expected():
     # unexpected drift is the highest-severity signal — it wins even with index stale + expected extras
     assert bem.skill_currency_verdict(
-        _rep(gemini_unexpected=1, index_stale=True, gemini_expected=9)) == "SKILLS-DRIFTED"
+        _rep(gemini_unexpected=1, index_dangling=5, gemini_expected=9)) == "SKILLS-DRIFTED"
 
 
 def test_index_stale_when_no_unexpected():
-    assert bem.skill_currency_verdict(_rep(index_stale=True)) == "SKILLS-INDEX-STALE"
+    assert bem.skill_currency_verdict(_rep(index_dangling=5)) == "SKILLS-INDEX-STALE"
 
 
 def test_index_stale_dominates_expected_divergence():
     assert bem.skill_currency_verdict(
-        _rep(index_stale=True, gemini_expected=9)) == "SKILLS-INDEX-STALE"
+        _rep(index_dangling=5, gemini_expected=9)) == "SKILLS-INDEX-STALE"
+
+
+def test_unreadable_index_not_green():
+    # index unreadable (null) while the tree read fine ⇒ INDEX-STALE, never silently green
+    assert bem.skill_currency_verdict(_rep(index_dangling=None)) == "SKILLS-INDEX-STALE"
 
 
 def test_expected_divergence_when_only_allowlisted_extras():
