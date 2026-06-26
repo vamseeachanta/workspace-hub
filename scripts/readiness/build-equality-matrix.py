@@ -350,7 +350,7 @@ def load_reports() -> dict[str, dict]:
     for f in sorted(STATE.glob("equality-*.yaml")):
         machine = f.stem[len("equality-"):]
         try:
-            out[machine] = yaml.safe_load(f.read_text()) or {}
+            out[machine] = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
         except yaml.YAMLError as e:
             out[machine] = {"_error": str(e)}
     return out
@@ -510,7 +510,7 @@ def equivalence_section(vmap: dict, machines: list[str], roster: dict,
 
 
 def main() -> None:
-    config = yaml.safe_load(CONFIG.read_text()) if CONFIG.exists() else {}
+    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8")) if CONFIG.exists() else {}
     roster = load_roster(config)
     baselines = load_baselines(config)
     probed = (config.get("tier1_repos") or TIER1_DEFAULT)
