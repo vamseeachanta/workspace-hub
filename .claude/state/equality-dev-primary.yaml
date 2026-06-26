@@ -1,11 +1,11 @@
-generated_at: "2026-06-22T14:16:25"
+generated_at: "2026-06-25T16:01:30"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "6f4f62076"
+  checkout_sha: "609e2c879"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 22148, disk_avail_gb: 831}
+    headroom: {ram_avail_mib: 22557, disk_avail_gb: 811}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -25,25 +25,25 @@ dimensions:
     - {name: aqwa, status: absent, evidence: absent}
     - {name: ansys, status: absent, evidence: absent}
   harness:
-    providers: {claude: absent, codex: present, gemini: present, hermes: absent}
+    providers: {claude: present, codex: present, gemini: present, hermes: present}
     gh_auth: ok
-    python_cmd: python
+    python_cmd: uv-run
     readiness_ref: harness-readiness-ace-linux-1.yaml
     readiness_overall: fail
-  skills: {repo_skill_count: 408}
+  skills: {repo_skill_count: 415}
   kanban: {dispatch_queues: "dev-primary,dev-secondary,home-win,_leader-state,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-06-22T04:25:01"
+    context_md_mtime: "2026-06-25T04:25:03"
   provider_harness:
     schema_version: 1
     providers:
       claude:
-        present: false
-        installed: false
-        "memory:read": {status: absent, reason: provider_not_installed}
-        "skills:invoke": {status: absent, reason: provider_not_installed}
-        "workflow:gates": {status: absent, reason: provider_not_installed}
+        present: true
+        installed: true
+        "memory:read": {status: present, reason: claude_memory_context_found}
+        "skills:invoke": {status: present, reason: repo_skill_tree_found}
+        "workflow:gates": {status: present, reason: hard_gates_runtime_found}
       codex:
         present: true
         installed: true

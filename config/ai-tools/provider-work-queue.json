@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-25T13:20:49.586782Z",
+  "generated_at": "2026-06-25T21:20:45.700048Z",
   "current_week": "2026-W26",
-  "scorecard_generated_at": "2026-06-25T13:20:47.364975Z",
+  "scorecard_generated_at": "2026-06-25T21:20:43.467778Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -4648,7 +4648,7 @@
             "domain:workflow",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-25T12:40:33Z",
+          "updatedAt": "2026-06-25T19:36:47Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -5161,30 +5161,6 @@
           ]
         },
         {
-          "number": 2647,
-          "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
-          "labels": [
-            "priority:low",
-            "domain:notification",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:11:50Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 2651,
           "title": "Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2651",
@@ -5354,6 +5330,27 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3231",
           "labels": [],
           "updatedAt": "2026-06-23T23:30:01Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3239,
+          "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
+          "labels": [
+            "enhancement",
+            "domain:reporting",
+            "domain:gtm"
+          ],
+          "updatedAt": "2026-06-25T19:22:00Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

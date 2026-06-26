@@ -36,6 +36,44 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "enhancement",
+          "domain:reporting",
+          "domain:gtm"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3239,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "cat:documentation",
           "domain:workflow",
           "lane:claude"
@@ -8430,55 +8468,52 @@
       "title": "chore(knowledge): post-spinout cleanup for llm-wiki migration",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2650",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:low",
-          "domain:notification",
-          "machine:dev-primary",
-          "dispatch:ready",
-          "gate:completeness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2647,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "codex",
-      "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
-      "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-06-25T13:20:52Z",
+  "generated_at": "2026-06-25T21:20:48Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "domain:reporting",
+            "domain:gtm"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3239,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16884,47 +16919,6 @@
         "title": "chore(knowledge): post-spinout cleanup for llm-wiki migration",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2650",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:low",
-            "domain:notification",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2647,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "codex",
-        "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
-        "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16935,9 +16929,9 @@
     "gemini",
     "claude"
   ],
-  "scorecard_generated_at": "2026-06-25T13:20:47.364975Z",
+  "scorecard_generated_at": "2026-06-25T21:20:43.467778Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-25T13:20:46.372769Z",
+  "utilization_generated_at": "2026-06-25T21:20:43.231061Z",
   "warning_summary": {
     "approved_no_marker": 28,
     "approved_no_plan": 17,
