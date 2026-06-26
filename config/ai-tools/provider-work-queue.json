@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-26T01:20:49.105503Z",
+  "generated_at": "2026-06-26T05:20:42.857333Z",
   "current_week": "2026-W26",
-  "scorecard_generated_at": "2026-06-26T01:20:46.987267Z",
+  "scorecard_generated_at": "2026-06-26T05:20:40.136524Z",
   "recommended_provider_order": [
+    "codex",
     "gemini",
-    "claude",
-    "codex"
+    "claude"
   ],
   "provider_queues": {
     "claude": {
@@ -4665,7 +4665,7 @@
     },
     "codex": {
       "provider": "codex",
-      "routing_priority": "high",
+      "routing_priority": "highest",
       "execution_ready_count": 2,
       "total_candidates": 22,
       "top_issues": [
@@ -4684,8 +4684,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "implementation"
           ]
@@ -4705,8 +4705,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "implementation"
           ]
@@ -4731,8 +4731,8 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation",
@@ -4752,8 +4752,8 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -4778,8 +4778,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -4804,8 +4804,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -4829,8 +4829,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -4858,8 +4858,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -4882,8 +4882,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "implementation"
           ]
@@ -4903,8 +4903,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "implementation"
           ]
@@ -4929,8 +4929,8 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation",
@@ -4950,8 +4950,8 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -4976,8 +4976,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -5002,8 +5002,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -5027,8 +5027,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -5056,8 +5056,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -5084,8 +5084,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -5113,8 +5113,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -5134,8 +5134,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "implementation"
           ]
@@ -5153,8 +5153,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -5177,8 +5177,8 @@
           "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "implementation"
           ]
@@ -5201,8 +5201,8 @@
           "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -5224,8 +5224,8 @@
           "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -5247,8 +5247,8 @@
           "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "implementation"
           ]
@@ -5265,8 +5265,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "implementation"
           ]
@@ -5285,8 +5285,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "implementation"
           ]
@@ -5301,8 +5301,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "implementation"
           ]
@@ -5317,8 +5317,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -5334,8 +5334,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -5355,8 +5355,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_priority": "highest",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation"
@@ -5387,7 +5387,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-25T04:00:03Z",
+          "updatedAt": "2026-06-26T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5484,7 +5484,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-25T04:00:03Z",
+          "updatedAt": "2026-06-26T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
