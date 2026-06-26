@@ -1,0 +1,126 @@
+"""TDD tests for #3249 — the skill_currency matrix line item (epic #3248).
+
+Targets build_equality_matrix.skill_currency_verdict (the verdict state machine) in isolation,
+plus structural wiring, mirroring test_session_curation_freshness.py. The heavy audit (git-tree
+family diff, allowlist, index dangling-check) lives in scripts/curation/audit_skill_currency.py and
+emits FACTS into the dimension; the matrix maps facts→verdict, so the verdict is unit-testable here.
+"""
+from __future__ import annotations
+
+import importlib.util
+import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+MODULE_PATH = REPO_ROOT / "scripts" / "readiness" / "build-equality-matrix.py"
+
+spec = importlib.util.spec_from_file_location("build_equality_matrix", MODULE_PATH)
+assert spec is not None and spec.loader is not None
+bem = importlib.util.module_from_spec(spec)
+sys.modules["build_equality_matrix"] = bem
+spec.loader.exec_module(bem)
+
+
+def _rep(**sc) -> dict:
+    """A report carrying a skill_currency dimension built from the given fields."""
+    base = {"audited_at": "2026-06-26T12:00:00+00:00", "canonical_count": 44,
+            "gemini_present": True, "gemini_unexpected": 0, "gemini_expected": 0,
+            "codex_present": True, "hermes_present": True, "index_stale": False}
+    base.update(sc)
+    return {"dimensions": {"skill_currency": base}}
+
+
+# ── verdict precedence: DRIFTED > INDEX-STALE > EXPECTED-DIVERGENCE > CURRENT ──
+def test_current_when_clean():
+    assert bem.skill_currency_verdict(_rep()) == "SKILLS-CURRENT"
+
+
+def test_drifted_on_unexpected():
+    assert bem.skill_currency_verdict(_rep(gemini_unexpected=2)) == "SKILLS-DRIFTED"
+
+
+def test_drifted_dominates_index_stale_and_expected():
+    # unexpected drift is the highest-severity signal — it wins even with index stale + expected extras
+    assert bem.skill_currency_verdict(
+        _rep(gemini_unexpected=1, index_stale=True, gemini_expected=9)) == "SKILLS-DRIFTED"
+
+
+def test_index_stale_when_no_unexpected():
+    assert bem.skill_currency_verdict(_rep(index_stale=True)) == "SKILLS-INDEX-STALE"
+
+
+def test_index_stale_dominates_expected_divergence():
+    assert bem.skill_currency_verdict(
+        _rep(index_stale=True, gemini_expected=9)) == "SKILLS-INDEX-STALE"
+
+
+def test_expected_divergence_when_only_allowlisted_extras():
+    assert bem.skill_currency_verdict(_rep(gemini_expected=9)) == "EXPECTED-DIVERGENCE"
+
+
+def test_unexpected_ignored_when_gemini_absent():
+    # a stale gemini_unexpected count must not red the cell when the gemini surface isn't present
+    assert bem.skill_currency_verdict(
+        _rep(gemini_present=False, gemini_unexpected=5)) == "SKILLS-CURRENT"
+
+
+# ── fail-closed: missing / garbled evidence ──
+def test_missing_dimension():
+    assert bem.skill_currency_verdict({"dimensions": {}}) == "MISSING-EVIDENCE"
+
+
+def test_non_dict_dimension():
+    for bad in ("x", 1, ["a"], None):
+        assert bem.skill_currency_verdict({"dimensions": {"skill_currency": bad}}) == "MISSING-EVIDENCE"
+
+
+def test_missing_audited_at():
+    r = _rep()
+    del r["dimensions"]["skill_currency"]["audited_at"]
+    assert bem.skill_currency_verdict(r) == "MISSING-EVIDENCE"
+
+
+def test_unreadable_canonical_count():
+    # canonical_count absent / None / 0 ⇒ the tree couldn't be read ⇒ no evidence (fail-closed)
+    for bad in (None, 0, "44", -1):
+        assert bem.skill_currency_verdict(_rep(canonical_count=bad)) == "MISSING-EVIDENCE"
+
+
+def test_garbled_unexpected_with_gemini_present():
+    assert bem.skill_currency_verdict(_rep(gemini_unexpected="two")) == "MISSING-EVIDENCE"
+
+
+# ── structural wiring ──
+def test_dimension_registered():
+    assert "skill_currency" in bem.BASE_DISPLAY_DIMS
+    assert "skill_currency" in bem.DISPLAY_DIMS
+
+
+def test_current_is_ok_verdict():
+    assert "SKILLS-CURRENT" in bem.OK_VERDICTS
+    # EXPECTED-DIVERGENCE already an OK/expected verdict in the engine
+    assert "EXPECTED-DIVERGENCE" in bem.OK_VERDICTS
+
+
+def test_group_present():
+    groups = {g[0]: g for g in bem.GROUPS}
+    assert "skills-currency" in groups
+    assert groups["skills-currency"][2] == ["skill_currency"]
+
+
+def test_severity_ordering():
+    sev = bem.ROLLUP_SEVERITY
+    assert sev["SKILLS-DRIFTED"] > sev["SKILLS-INDEX-STALE"] > sev["SKILLS-CURRENT"]
+    assert sev["SKILLS-CURRENT"] == 0
+
+
+def test_verdict_routes_through_verdict_for():
+    # a fresh (non-stale) report graded via the public orchestrator returns the freshness-family verdict
+    from datetime import datetime  # noqa: F401  (ensure module import side-effects ok)
+    rep = _rep()
+    rep.update({"machine": "dev-primary", "os": "linux", "status": "active",
+                "provenance": {"checkout_sha": "abc", "dirty": False, "behind_main": 0,
+                               "ahead_main": 0, "origin_ref_age_h": 1}})
+    roster = {"dev-primary": {"status": "active"}}
+    v = bem.verdict_for("skill_currency", "dev-primary", {"dev-primary": rep}, {}, roster, [])
+    assert v == "SKILLS-CURRENT"
