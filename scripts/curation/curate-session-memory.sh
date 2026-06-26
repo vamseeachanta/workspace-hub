@@ -27,6 +27,15 @@ else
   fail "no python runtime (uv/python3) available"
 fi
 
+# Audit cross-provider skill currency (#3249) — writes skill-currency-<machine>.json for the
+# skill_currency matrix cell. Best-effort: a failed audit must not block the curation run.
+SKILL_AUDIT="$REPO_ROOT/scripts/curation/audit_skill_currency.py"
+if command -v uv >/dev/null 2>&1; then
+  uv run --no-project --with pyyaml python "$SKILL_AUDIT" || echo "skill-currency audit failed (soft)" >&2
+elif command -v python3 >/dev/null 2>&1; then
+  python3 "$SKILL_AUDIT" || echo "skill-currency audit failed (soft)" >&2
+fi
+
 # Refresh this box's equality column so the freshness cell + render are current. The matrix
 # build is NOT optional — skipping it would freeze the rendered cell (weakening the dead-man's
 # switch) while still reporting pass. So fail loudly if no python can build it.

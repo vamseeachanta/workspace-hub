@@ -89,3 +89,12 @@ dimensions:
     sessions_24h: 47
     providers_active: "claude,codex,gemini,hermes"
     memory_files_changed: 6
+  skill_currency:
+    audited_at: "2026-05-30T03:55:12+00:00"
+    canonical_count: 44
+    gemini_present: true
+    gemini_unexpected: 0
+    gemini_expected: 9
+    codex_present: true
+    hermes_present: true
+    index_dangling: 0

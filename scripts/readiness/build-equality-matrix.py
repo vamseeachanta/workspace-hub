@@ -227,6 +227,44 @@ def freshness_verdict(report: dict, now: datetime | None = None) -> str:
     return "CURATED-EXPIRED"
 
 
+# ── skill-currency verdict (cross-provider skill drift vs canonical; #3249) ──
+def skill_currency_verdict(report: dict) -> str:
+    """Map the audit FACTS (emitted by audit_skill_currency.py) to a verdict. Precedence:
+    SKILLS-DRIFTED (unexpected family diff) > SKILLS-INDEX-STALE (index has dangling entries) >
+    EXPECTED-DIVERGENCE (only allowlisted provider-specific families differ) > SKILLS-CURRENT.
+    Fail-closed (MISSING-EVIDENCE) when the audit couldn't read the tree or a count is garbled —
+    an unreadable surface must never grade green."""
+    sc = report.get("dimensions", {}).get("skill_currency")
+    if not isinstance(sc, dict):
+        return "MISSING-EVIDENCE"
+    if not isinstance(sc.get("audited_at"), str):
+        return "MISSING-EVIDENCE"
+    cc = sc.get("canonical_count")
+    if not isinstance(cc, int) or isinstance(cc, bool) or cc <= 0:   # tree unreadable ⇒ no evidence
+        return "MISSING-EVIDENCE"
+    if sc.get("gemini_present"):
+        unexpected = sc.get("gemini_unexpected")
+        if not isinstance(unexpected, int) or isinstance(unexpected, bool):
+            return "MISSING-EVIDENCE"
+    else:
+        unexpected = 0
+    if unexpected > 0:
+        return "SKILLS-DRIFTED"
+    # Index integrity via dangling-entry count. None ⇒ the index was UNREADABLE while the tree read
+    # fine — fail-closed to INDEX-STALE (a broken index needs regeneration), never silently green.
+    idx = sc.get("index_dangling")
+    if idx is None:
+        return "SKILLS-INDEX-STALE"
+    if not isinstance(idx, int) or isinstance(idx, bool):
+        return "MISSING-EVIDENCE"
+    if idx > 0:
+        return "SKILLS-INDEX-STALE"
+    expected = sc.get("gemini_expected")
+    if isinstance(expected, int) and not isinstance(expected, bool) and expected > 0:
+        return "EXPECTED-DIVERGENCE"
+    return "SKILLS-CURRENT"
+
+
 # ── value extraction for uniform dims ────────────────────────────────────────
 def extract_value(dim: str, report: dict):
     d = report.get("dimensions", {})
@@ -332,6 +370,8 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return provider_row_verdict(dim, rep)
     if dim == "session_curation":           # freshness family — graded vs real now, not peers
         return freshness_verdict(rep)
+    if dim == "skill_currency":             # cross-provider skill-drift family — per-box facts
+        return skill_currency_verdict(rep)
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
@@ -357,7 +397,8 @@ def load_reports() -> dict[str, dict]:
 
 
 BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
-                     "kanban", "memory", "behavior", "scheduler", "session_curation"]
+                     "kanban", "memory", "behavior", "scheduler", "session_curation",
+                     "skill_currency"]
 DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
 # ── render grouping (#2801 collapsible-rows enhancement) ─────────────────────
@@ -377,18 +418,19 @@ GROUPS = [
         ["harness", "python_cmd", "behavior", "scheduler"]),
     ("provider", "Provider capability parity — per runtime", provider_rows()),
     ("curation", "Session analysis &amp; memory curation — daily freshness", ["session_curation"]),
+    ("skills-currency", "Skill currency — all providers up to date vs canonical", ["skill_currency"]),
 ]
 
 # Worst-of severity for the collapsed group rollup. Higher = more operator attention.
 # A group's rollup cell shows the worst verdict among its dims for that machine; an
 # all-good group collapses to a single green "OK" so a clean box reads at a glance.
 ROLLUP_SEVERITY = {
-    "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6,
-    "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5,
+    "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6, "SKILLS-DRIFTED": 6,
+    "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5, "SKILLS-INDEX-STALE": 5,
     "MISSING-EVIDENCE": 4, "PENDING": 4,
     "STALE-CHECKOUT": 3,
     "EXPECTED-DIFF": 1, "EXPECTED-DIVERGENCE": 1, "UNREACHABLE": 1, "ABSENT": 1,
-    "CONFORMS": 0, "EQUAL": 0, "PARITY": 0, "CURATED-FRESH": 0,
+    "CONFORMS": 0, "EQUAL": 0, "PARITY": 0, "CURATED-FRESH": 0, "SKILLS-CURRENT": 0,
 }
 
 
@@ -406,7 +448,7 @@ def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
 # ── remediation playbook (verdict → action) — keep in sync with the verdict→fix table in
 #    .claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md + reconcile-ecosystem.sh
 OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGENCE",
-               "UNREACHABLE", "ABSENT", "CURATED-FRESH"}
+               "UNREACHABLE", "ABSENT", "CURATED-FRESH", "SKILLS-CURRENT"}
 
 
 def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
@@ -454,6 +496,13 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
         return ("session analysis + memory curation is stale (>12h orange / >24h red) — run "
                 "the collector (bash scripts/curation/curate-session-memory.sh; "
                 "curate-session-memory.ps1 on Windows) or repair the every-6h cron", "this box", False)
+    if verdict == "SKILLS-DRIFTED":
+        return ("a provider's skill families UNEXPECTEDLY differ from canonical — reconcile via "
+                "scripts/propagate-ecosystem.sh, or if the difference is intended, allowlist it in "
+                "harness-config.yaml expected_skill_divergence", "this box", False)
+    if verdict == "SKILLS-INDEX-STALE":
+        return ("the skills index has dangling entries (paths no longer in the tree) — regenerate "
+                ".claude/skills-index.yaml (skills-curation cron / generator)", "this box", False)
     return ("investigate this cell's report", "operator", False)
 
 
@@ -572,8 +621,8 @@ def main() -> None:
 <title>Machine-Equality Matrix — #2801</title>
 <style>body{{font:14px/1.5 system-ui,sans-serif;margin:2rem;max-width:1100px}}table{{border-collapse:collapse;width:100%}}
 th,td{{border:1px solid #ddd;padding:.4rem .6rem;font-size:.8rem;text-align:center}}thead th{{background:#2d3748;color:#fff}}
-tbody th{{background:#edf2f7;text-align:left}}.conforms,.equal,.parity,.ok,.curated-fresh{{background:#c6f6d5}}.ok{{font-weight:700}}
-.below-baseline,.diverges,.curated-expired{{background:#fed7d7}}.no-majority,.missing-baseline,.curated-stale{{background:#feebc8}}
+tbody th{{background:#edf2f7;text-align:left}}.conforms,.equal,.parity,.ok,.curated-fresh,.skills-current{{background:#c6f6d5}}.ok{{font-weight:700}}
+.below-baseline,.diverges,.curated-expired,.skills-drifted{{background:#fed7d7}}.no-majority,.missing-baseline,.curated-stale,.skills-index-stale{{background:#feebc8}}
 .expected-diff,.expected-divergence{{background:#e9d8fd}}
 .pending,.missing-evidence{{background:#fffaf0}}.unreachable,.absent,.na{{background:#f7fafc;color:#a0aec0}}
 .stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}
@@ -614,6 +663,7 @@ to refresh <i>every</i> active machine's report, then re-judge what genuinely di
 <span class="no-majority">NO-MAJORITY / MISSING-BASELINE</span><span class="missing-evidence">PENDING / MISSING-EVIDENCE</span>
 <span class="expected-diff">EXPECTED-DIFF / EXPECTED-DIVERGENCE</span><span class="stale-checkout">STALE-CHECKOUT</span>
 <span class="curated-fresh">CURATED-FRESH ≤12h</span><span class="curated-stale">CURATED-STALE &gt;12h</span><span class="curated-expired">CURATED-EXPIRED &gt;24h</span>
+<span class="skills-current">SKILLS-CURRENT</span><span class="skills-index-stale">SKILLS-INDEX-STALE</span><span class="skills-drifted">SKILLS-DRIFTED</span>
 <span class="absent">UNREACHABLE / ABSENT / n/a</span></p>
 <script>
 document.querySelectorAll('tr.grp').forEach(function(h){{

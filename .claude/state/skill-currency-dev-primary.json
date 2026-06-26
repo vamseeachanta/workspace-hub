@@ -1,0 +1,13 @@
+{
+  "machine": "dev-primary",
+  "audited_at": "2026-06-26T19:32:31+00:00",
+  "canonical_count": 44,
+  "gemini_present": true,
+  "gemini_unexpected": 0,
+  "gemini_expected": 9,
+  "codex_present": true,
+  "hermes_present": true,
+  "index_dangling": 202,
+  "index_stale": true,
+  "schema_version": 1
+}
