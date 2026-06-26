@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-25T21:20:48Z
+Generated: 2026-06-26T01:20:51Z
 Mode: static (read-only)
 
 ## How to approve

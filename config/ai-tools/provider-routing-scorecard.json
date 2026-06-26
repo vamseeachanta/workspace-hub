@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-25T21:20:43.467778Z",
+  "generated_at": "2026-06-26T01:20:46.987267Z",
   "current_week": "2026-W26",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-06-25T21:20:43.231061Z",
+    "utilization_generated_at": "2026-06-26T01:20:46.498662Z",
     "audit_generated_at": "2026-06-22T09:15:04Z"
   },
   "recommended_provider_order": [
-    "codex",
     "gemini",
-    "claude"
+    "claude",
+    "codex"
   ],
   "recommendations": [
     {
@@ -81,11 +81,11 @@
     },
     {
       "provider": "codex",
-      "status": "underused",
-      "priority": "highest",
-      "reported_utilization_pct": 0.0,
+      "status": "needs_cleanup",
+      "priority": "high",
+      "reported_utilization_pct": 40.0,
       "quota_basis": "quota",
-      "quota_source": "app-server-live",
+      "quota_source": "local-session-rate-limits",
       "sessions_current_week": 60,
       "post_records_current_week": 6931,
       "audit_post_records": 121856,
@@ -196,7 +196,7 @@
     }
   ],
   "summary": {
-    "highest_priority_provider": "codex",
-    "highest_priority_reason": "Route bounded implementation/test/refactor issues to Codex immediately."
+    "highest_priority_provider": "gemini",
+    "highest_priority_reason": "Batch 5-6 related research/recon tasks into Gemini sessions."
   }
 }
