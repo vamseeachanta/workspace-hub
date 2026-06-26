@@ -121,3 +121,5 @@ shown:
     tips: [cc-loop, eco-capability-map]
   - date: 2026-06-25
     tips: [cc-schedule-cloud, cc-fork]
+  - date: 2026-06-26
+    tips: [cc-cowork, cc-rename-resume]
