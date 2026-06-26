@@ -1,11 +1,11 @@
-generated_at: "2026-06-23T18:48:28"
+generated_at: "2026-06-26T05:36:01"
 schema_version: 4
 machine: "ace-win-2"
 host: "acma-ws014"
 os: windows
 status: active
 provenance:
-  checkout_sha: "0e2055222"
+  checkout_sha: "9007c5f2f"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 16014, gpu_model: "NVIDIA T1000 8GB"}
-    headroom: {ram_avail_mib: 2931, disk_avail_gb: 229}
+    headroom: {ram_avail_mib: 4037, disk_avail_gb: 225}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -30,11 +30,11 @@ dimensions:
     python_cmd: python
     readiness_ref: harness-readiness-acma-ws014.yaml
     readiness_overall: fail
-  skills: {repo_skill_count: 407}
+  skills: {repo_skill_count: 414}
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: absent
-    context_md_mtime: "2026-05-30T08:15:31"
+    context_md_mtime: "2026-06-26T05:26:33"
   provider_harness:
     schema_version: 1
     providers:
