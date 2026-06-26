@@ -1,8 +1,8 @@
 # Provider routing scorecard
 
-Generated: 2026-06-26T09:20:48.366521Z
+Generated: 2026-06-26T13:20:46.277520Z
 Current week: 2026-W26
-Recommended provider order: codex, gemini, claude
+Recommended provider order: gemini, claude, codex
 
 This scorecard combines provider utilization with session-audit hygiene to decide where the next work packets should go.
 
@@ -37,10 +37,10 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 ## codex
 
-- Status: underused
-- Priority: highest
-- Current-week reported utilization: 0.0%
-- Quota basis: quota (app-server-live)
+- Status: needs_cleanup
+- Priority: high
+- Current-week reported utilization: 40.0%
+- Quota basis: quota (local-session-rate-limits)
 - Current-week sessions / post records: 60 / 6931
 - Audit post records: 121856
 - Missing repo reads: 1690
