@@ -178,6 +178,8 @@ data/document-index/*.jsonl.backup-*
 !.claude/state/patterns/
 !.claude/state/harness-readiness-ace-win-1.yaml
 !.claude/state/equality-*.yaml
+!.claude/state/session-curation-*.json
+!.claude/state/session-curation-*.md
 !.claude/state/reflect-history/
 !.claude/state/trends/
 !.claude/state/session-signals/

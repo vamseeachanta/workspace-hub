@@ -146,6 +146,21 @@ ctx="${WS}/.claude/memory/context.md"; ctx_mtime="absent"
 [[ -f "$ctx" ]] && ctx_mtime=$(date -r "$ctx" +%Y-%m-%dT%H:%M:%S 2>/dev/null || echo unknown)
 hermes_home="absent"; [[ -d "${HOME:-/nonexistent}/.hermes" ]] && hermes_home="present"
 
+# ── 6b. SESSION CURATION — freshness of the daily session-analysis + memory curation ──
+# References the state written by scripts/curation/curate_session_memory.py (never re-runs it,
+# mirroring how harness REFERENCES the readiness file). Missing/garbled file → last_curated_at
+# null → the matrix grades MISSING-EVIDENCE. last_curated_at is INTENTIONALLY in the canonical
+# payload (not a volatile-exclude) so each fresh curation forces a rewrite carrying the new stamp.
+sc_file="${STATE_DIR}/session-curation-${MACHINE}.json"
+sc_last="null"; sc_24h=0; sc_provs=""; sc_memchg=0
+if [[ -f "$sc_file" ]] && have jq; then
+  _scl=$(jq -r '.last_curated_at // empty' "$sc_file" 2>/dev/null)
+  [[ -n "$_scl" ]] && sc_last="\"$(yesc "$_scl")\""
+  sc_24h=$(jq -r '.sessions_24h // 0' "$sc_file" 2>/dev/null); [[ "$sc_24h" =~ ^[0-9]+$ ]] || sc_24h=0
+  sc_provs=$(jq -r '(.providers_active // []) | join(",")' "$sc_file" 2>/dev/null)
+  sc_memchg=$(jq -r '.memory_files_changed // 0' "$sc_file" 2>/dev/null); [[ "$sc_memchg" =~ ^[0-9]+$ ]] || sc_memchg=0
+fi
+
 # ── 7. BEHAVIOR — deterministic, SANDBOXED probe corpus (DG4/DC1) ────────────
 # CC3: guard mktemp (never let SBX become /sbx → rm -rf /). GC4: trap-based cleanup.
 SBX_PARENT="$(mktemp -d 2>/dev/null)" || { echo "mktemp failed" >&2; exit 1; }
@@ -338,6 +353,11 @@ ${provider_harness_yaml}
     has_repo_sync: ${has_sync}
     has_parity_review: ${has_parity}
     job_count: ${job_count}
+  session_curation:
+    last_curated_at: ${sc_last}
+    sessions_24h: ${sc_24h}
+    providers_active: "$(yesc "$sc_provs")"
+    memory_files_changed: ${sc_memchg}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 

@@ -21,7 +21,7 @@ import json
 import re
 import sys
 from collections import Counter
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 import yaml
@@ -52,6 +52,14 @@ CAPABILITIES = ("memory:read", "skills:invoke", "workflow:gates")
 # Keep in sync with scripts/readiness/provider_harness_parity.py (#3206 / #3209
 # drift note): both copies must carry the same divergence reasons.
 EXPECTED_DIVERGENCE_REASONS = {"external_skill_dirs_configured", "gemini_skill_dispatch_unsupported"}
+
+# Session-curation freshness thresholds: the "session analysis & memory curation" line item
+# grades on TIME-SINCE-LAST-CURATION, computed at BUILD time vs real now — NOT the COLD/UNIFORM
+# model. ≤12h fresh (green), ≤24h stale (orange), >24h expired (red). This is precisely why the
+# matrix must rebuild at least DAILY independent of the curation cron: a frozen render would never
+# age a dead curation past green (the dead-man's-switch). See schedule-tasks.yaml equality-matrix-refresh.
+CURATION_STALE_H = 12
+CURATION_EXPIRED_H = 24
 
 # #2851 freshness guard: a report whose origin/main ref hasn't been refreshed within this
 # many hours can't be trusted to have a meaningful behind_main, so we fail closed. repo-sync
@@ -186,6 +194,39 @@ def uniform_verdict(dim: str, values: list) -> str:
     return "NO-MAJORITY" if len(tied) > 1 else "DIVERGES"
 
 
+# ── session-curation freshness (time-since-last-run, graded at build time) ───
+def freshness_verdict(report: dict, now: datetime | None = None) -> str:
+    """Grade the session-curation cell by age of `last_curated_at` vs now.
+    CURATED-FRESH ≤12h · CURATED-STALE ≤24h · CURATED-EXPIRED >24h · MISSING-EVIDENCE on
+    no/garbled/future stamp (fail-closed: an untrustworthy timestamp is never 'fresh')."""
+    sc = report.get("dimensions", {}).get("session_curation")
+    if not isinstance(sc, dict):
+        return "MISSING-EVIDENCE"
+    stamp = sc.get("last_curated_at")
+    if not isinstance(stamp, str):
+        return "MISSING-EVIDENCE"
+    try:
+        ts = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+    except ValueError:
+        return "MISSING-EVIDENCE"
+    # Compare in UTC. The collector emits an aware UTC stamp; a legacy naive stamp is assumed
+    # UTC so a fleet of boxes in different timezones (macbook travels; Windows hosts) can't
+    # mask real staleness by grading a remote local stamp against the build box's local clock.
+    now = now or datetime.now(timezone.utc)
+    if ts.tzinfo is None:
+        ts = ts.replace(tzinfo=timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    age_h = (now - ts).total_seconds() / 3600.0
+    if age_h < 0:                       # future stamp ⇒ clock skew / untrustworthy ⇒ fail closed
+        return "MISSING-EVIDENCE"
+    if age_h <= CURATION_STALE_H:
+        return "CURATED-FRESH"
+    if age_h <= CURATION_EXPIRED_H:
+        return "CURATED-STALE"
+    return "CURATED-EXPIRED"
+
+
 # ── value extraction for uniform dims ────────────────────────────────────────
 def extract_value(dim: str, report: dict):
     d = report.get("dimensions", {})
@@ -289,6 +330,8 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return "STALE-CHECKOUT"
     if parse_provider_row(dim) is not None:
         return provider_row_verdict(dim, rep)
+    if dim == "session_curation":           # freshness family — graded vs real now, not peers
+        return freshness_verdict(rep)
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
@@ -314,7 +357,7 @@ def load_reports() -> dict[str, dict]:
 
 
 BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
-                     "kanban", "memory", "behavior", "scheduler"]
+                     "kanban", "memory", "behavior", "scheduler", "session_curation"]
 DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
 # ── render grouping (#2801 collapsible-rows enhancement) ─────────────────────
@@ -333,18 +376,19 @@ GROUPS = [
     ("config", "Harness equivalence — providers · python · behavior · scheduler",
         ["harness", "python_cmd", "behavior", "scheduler"]),
     ("provider", "Provider capability parity — per runtime", provider_rows()),
+    ("curation", "Session analysis &amp; memory curation — daily freshness", ["session_curation"]),
 ]
 
 # Worst-of severity for the collapsed group rollup. Higher = more operator attention.
 # A group's rollup cell shows the worst verdict among its dims for that machine; an
 # all-good group collapses to a single green "OK" so a clean box reads at a glance.
 ROLLUP_SEVERITY = {
-    "BELOW-BASELINE": 6, "DIVERGES": 6,
-    "MISSING-BASELINE": 5, "NO-MAJORITY": 5,
+    "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6,
+    "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5,
     "MISSING-EVIDENCE": 4, "PENDING": 4,
     "STALE-CHECKOUT": 3,
     "EXPECTED-DIFF": 1, "EXPECTED-DIVERGENCE": 1, "UNREACHABLE": 1, "ABSENT": 1,
-    "CONFORMS": 0, "EQUAL": 0, "PARITY": 0,
+    "CONFORMS": 0, "EQUAL": 0, "PARITY": 0, "CURATED-FRESH": 0,
 }
 
 
@@ -362,7 +406,7 @@ def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
 # ── remediation playbook (verdict → action) — keep in sync with the verdict→fix table in
 #    .claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md + reconcile-ecosystem.sh
 OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGENCE",
-               "UNREACHABLE", "ABSENT"}
+               "UNREACHABLE", "ABSENT", "CURATED-FRESH"}
 
 
 def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
@@ -406,6 +450,10 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
                 "then reconcile any genuine config drift", "all boxes", False)
     if verdict == "MISSING-BASELINE":
         return ("no declared baseline for this dim — add one in harness-config.yaml", "operator", False)
+    if verdict in ("CURATED-STALE", "CURATED-EXPIRED"):
+        return ("session analysis + memory curation is stale (>12h orange / >24h red) — run "
+                "the collector (bash scripts/curation/curate-session-memory.sh; "
+                "curate-session-memory.ps1 on Windows) or repair the every-6h cron", "this box", False)
     return ("investigate this cell's report", "operator", False)
 
 
@@ -524,8 +572,8 @@ def main() -> None:
 <title>Machine-Equality Matrix — #2801</title>
 <style>body{{font:14px/1.5 system-ui,sans-serif;margin:2rem;max-width:1100px}}table{{border-collapse:collapse;width:100%}}
 th,td{{border:1px solid #ddd;padding:.4rem .6rem;font-size:.8rem;text-align:center}}thead th{{background:#2d3748;color:#fff}}
-tbody th{{background:#edf2f7;text-align:left}}.conforms,.equal,.parity,.ok{{background:#c6f6d5}}.ok{{font-weight:700}}
-.below-baseline,.diverges{{background:#fed7d7}}.no-majority,.missing-baseline{{background:#feebc8}}
+tbody th{{background:#edf2f7;text-align:left}}.conforms,.equal,.parity,.ok,.curated-fresh{{background:#c6f6d5}}.ok{{font-weight:700}}
+.below-baseline,.diverges,.curated-expired{{background:#fed7d7}}.no-majority,.missing-baseline,.curated-stale{{background:#feebc8}}
 .expected-diff,.expected-divergence{{background:#e9d8fd}}
 .pending,.missing-evidence{{background:#fffaf0}}.unreachable,.absent,.na{{background:#f7fafc;color:#a0aec0}}
 .stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}
@@ -565,6 +613,7 @@ to refresh <i>every</i> active machine's report, then re-judge what genuinely di
 <span class="ok">OK / CONFORMS / EQUAL / PARITY</span><span class="below-baseline">BELOW-BASELINE / DIVERGES</span>
 <span class="no-majority">NO-MAJORITY / MISSING-BASELINE</span><span class="missing-evidence">PENDING / MISSING-EVIDENCE</span>
 <span class="expected-diff">EXPECTED-DIFF / EXPECTED-DIVERGENCE</span><span class="stale-checkout">STALE-CHECKOUT</span>
+<span class="curated-fresh">CURATED-FRESH ≤12h</span><span class="curated-stale">CURATED-STALE &gt;12h</span><span class="curated-expired">CURATED-EXPIRED &gt;24h</span>
 <span class="absent">UNREACHABLE / ABSENT / n/a</span></p>
 <script>
 document.querySelectorAll('tr.grp').forEach(function(h){{
