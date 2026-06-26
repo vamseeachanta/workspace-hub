@@ -36,6 +36,15 @@ elif command -v python3 >/dev/null 2>&1; then
   python3 "$SKILL_AUDIT" || echo "skill-currency audit failed (soft)" >&2
 fi
 
+# Detect NEW cross-provider skill drift + alert (#3250) — reads the skill-currency state above,
+# alerts via notify.sh only on newly-appeared unexpected drift. Best-effort, after the audit.
+SKILL_DRIFT="$REPO_ROOT/scripts/curation/detect_skill_drift.py"
+if command -v uv >/dev/null 2>&1; then
+  uv run --no-project --with pyyaml python "$SKILL_DRIFT" || echo "skill-drift detect failed (soft)" >&2
+elif command -v python3 >/dev/null 2>&1; then
+  python3 "$SKILL_DRIFT" || echo "skill-drift detect failed (soft)" >&2
+fi
+
 # Refresh this box's equality column so the freshness cell + render are current. The matrix
 # build is NOT optional — skipping it would freeze the rendered cell (weakening the dead-man's
 # switch) while still reporting pass. So fail loudly if no python can build it.

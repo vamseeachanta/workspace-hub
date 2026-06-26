@@ -181,6 +181,7 @@ data/document-index/*.jsonl.backup-*
 !.claude/state/session-curation-*.json
 !.claude/state/session-curation-*.md
 !.claude/state/skill-currency-*.json
+!.claude/state/skill-drift-*.json
 !.claude/state/reflect-history/
 !.claude/state/trends/
 !.claude/state/session-signals/
