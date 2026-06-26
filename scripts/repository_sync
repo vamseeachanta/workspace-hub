@@ -1440,8 +1440,48 @@ show_configuration_menu() {
     done
 }
 
+# Layout guard — delegate to the layout-aware ecosystem driver on sibling layouts.
+#
+# repository_sync resolves every repo relative to WORKSPACE_ROOT (the hub) and expects the
+# nested layout (hub/<repo>). On hosts where the ecosystem repos are SIBLINGS of the hub
+# (e.g. Windows host ace-win-2, where they live under the hub's parent dir), that resolution
+# finds nothing. When such a layout is detected for a sync/pull/status-style invocation, hand
+# off to scripts/sync/sync-ecosystem.sh, which covers every git repo in the detected root.
+#
+# Nested (Linux default) layout is untouched: the guard returns immediately when the hub has
+# any nested git repo, or when WS_ECOSYSTEM_ROOT is set, or for non-mappable commands.
+_delegate_if_sibling_layout() {
+    local cmd="${1:-}"
+    case "$cmd" in
+        ""|sync|pull|status|auto|auto-sync) ;;   # mode-mappable, repo-touching commands only
+        *) return 0 ;;
+    esac
+    [ -n "${WS_ECOSYSTEM_ROOT:-}" ] && return 0   # explicit root: trust built-in resolution
+
+    local hub="$WORKSPACE_ROOT" d
+    for d in "$hub"/*/; do
+        [ -e "${d}.git" ] && return 0             # nested layout present -> use built-in behavior
+    done
+
+    local parent sib=0
+    parent="$(cd "$hub/.." && pwd)" || return 0
+    for d in "$parent"/*/; do [ -e "${d}.git" ] && sib=$((sib+1)); done
+    [ "$sib" -ge 2 ] || return 0                  # not a clear sibling layout -> use built-in behavior
+
+    local driver="$hub/scripts/sync/sync-ecosystem.sh"
+    [ -f "$driver" ] || return 0
+
+    local mode="full"
+    case "$cmd" in pull) mode="pull" ;; status) mode="status" ;; esac
+    echo "repository_sync: sibling layout detected — delegating to sync-ecosystem.sh (--mode $mode)" >&2
+    exec bash "$driver" --mode "$mode"
+}
+
 # Main command handler
 main() {
+    # Sibling-layout hosts hand off before any repos.conf-relative work happens.
+    _delegate_if_sibling_layout "$@"
+
     cd "$WORKSPACE_ROOT"
 
     # Parse repos from repos.conf
