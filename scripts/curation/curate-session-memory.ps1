@@ -90,20 +90,20 @@ if (Get-Command uv -ErrorAction SilentlyContinue) {
 $skillAudit = (Join-Path $RepoRoot 'scripts/curation/audit_skill_currency.py')
 if (Get-Command uv -ErrorAction SilentlyContinue) {
     & uv run --no-project --with pyyaml python $skillAudit
-    if ($LASTEXITCODE -ne 0) { Write-Error 'skill-currency audit failed (soft)' }
+    if ($LASTEXITCODE -ne 0) { Write-Warning 'skill-currency audit failed (soft)' }
 } elseif (Get-Command python -ErrorAction SilentlyContinue) {
     & python $skillAudit
-    if ($LASTEXITCODE -ne 0) { Write-Error 'skill-currency audit failed (soft)' }
+    if ($LASTEXITCODE -ne 0) { Write-Warning 'skill-currency audit failed (soft)' }
 }
 
 # ── 1c. skill-drift detect + alert (#3250) — best-effort, after the audit ────
 $skillDrift = (Join-Path $RepoRoot 'scripts/curation/detect_skill_drift.py')
 if (Get-Command uv -ErrorAction SilentlyContinue) {
     & uv run --no-project --with pyyaml python $skillDrift
-    if ($LASTEXITCODE -ne 0) { Write-Error 'skill-drift detect failed (soft)' }
+    if ($LASTEXITCODE -ne 0) { Write-Warning 'skill-drift detect failed (soft)' }
 } elseif (Get-Command python -ErrorAction SilentlyContinue) {
     & python $skillDrift
-    if ($LASTEXITCODE -ne 0) { Write-Error 'skill-drift detect failed (soft)' }
+    if ($LASTEXITCODE -ne 0) { Write-Warning 'skill-drift detect failed (soft)' }
 }
 
 # ── 2. refresh THIS box's equality column (Windows collector + matrix build) ──

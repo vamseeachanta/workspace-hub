@@ -223,10 +223,13 @@ def _default_notify(alert: dict) -> None:
     """Real notifier: append one JSONL event via scripts/notify.sh (source=cron, job=skill-drift)."""
     status = alert.get("status", "fail")
     detail = f"{alert.get('kind', '?')}: {alert.get('detail', '')}"
-    subprocess.run(
-        ["bash", str(NOTIFY_SH), "cron", "skill-drift", status, detail],
-        check=False,
-    )
+    try:
+        subprocess.run(
+            ["bash", str(NOTIFY_SH), "cron", "skill-drift", status, detail],
+            check=False, timeout=30,
+        )
+    except (subprocess.TimeoutExpired, OSError):
+        pass                                         # a wedged notify.sh must never stall the cron
 
 
 def publish_drift(machine: str) -> str:
@@ -252,9 +255,12 @@ def publish_drift(machine: str) -> str:
 def run_cli(args: argparse.Namespace, notify_fn: Callable[[dict], None] = _default_notify) -> int:
     """Gather audit state, decide, persist, and fire one notify_fn per alert. Returns exit code.
 
-    Returns 1 when a NEW drift fired (so a cron can branch on it), else 0. notify_fn is injectable so
-    tests assert call counts without shelling out. The machine label is borrowed from the audit so
-    every filename keys off the SAME label that wrote skill-currency-<machine>.json.
+    Returns 0 on any SUCCESSFUL run — clean OR new-drift-detected — so the exit code is NOT
+    overloaded: the notify.sh alert is the drift signal, not the exit code. (A non-zero exit would
+    otherwise abort the Windows cron under $ErrorActionPreference='Stop' exactly when drift fires,
+    skipping the matrix rebuild.) A genuine internal error propagates as an exception → non-zero.
+    notify_fn is injectable so tests assert call counts without shelling out. The machine label is
+    borrowed from the audit so every filename keys off the SAME label that wrote skill-currency-<machine>.json.
     """
     machine = audit_skill_currency.machine_label()
     facts = _read_json(STATE / f"skill-currency-{machine}.json")
@@ -279,7 +285,7 @@ def run_cli(args: argparse.Namespace, notify_fn: Callable[[dict], None] = _defau
                   file=sys.stderr)
     else:
         print(f"skill-drift: no new alert (signature={sig})")
-    return 1 if result["new_drift"] else 0
+    return 0   # success (clean or drift-detected); the alert is the signal, not the exit code
 
 
 def _build_parser() -> argparse.ArgumentParser:

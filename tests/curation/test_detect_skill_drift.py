@@ -202,7 +202,7 @@ def test_run_cli_injected_notify(tmp_path, monkeypatch):
     state = _setup_state(tmp_path, monkeypatch, "dev-primary", _drift_facts(["x"]))
     calls = []
     rc = det.run_cli(SimpleNamespace(include_index=False, publish=False), notify_fn=calls.append)
-    assert rc == 1
+    assert rc == 0   # success even on new-drift (exit code not overloaded; the alert is the signal)
     assert len(calls) == 1
     assert (state / "skill-drift-report-dev-primary.json").exists()
     assert (state / "skill-drift-dev-primary.json").exists()
