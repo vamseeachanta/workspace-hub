@@ -37,6 +37,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import subprocess
 import sys
 import time
 from datetime import datetime, timezone
@@ -55,6 +56,7 @@ MAX_FILES_PER_PROVIDER = 20000
 MAX_ENTRIES_WALKED = 300000
 SCAN_DEADLINE_S = 8.0
 RECENT_WINDOW_H = 24
+PUBLISH_TIMEOUT_S = 90          # hard cap on the git-ref publish — a hung push must not stall cron
 
 # Provider → (home-relative roots to scan, in preference order; file suffixes of interest).
 # First existing root wins for the "newest" probe; counts aggregate across all that exist.
@@ -235,20 +237,26 @@ def render_digest(state: dict, providers: dict, changed: list[str]) -> str:
     return "\n".join(lines)
 
 
-def publish_fingerprint(machine: str, state: dict) -> str:
-    """Publish this box's fingerprint to the dedicated ref via the equivalence-state store."""
-    sys.path.insert(0, str(REPO / "scripts" / "monitoring"))
+def publish_fingerprint(machine: str) -> str:
+    """Publish this box's fingerprint to the dedicated ref via the equivalence-state CLI, in a
+    BOUNDED subprocess. The git push has no internal timeout and CAN hang (network/auth/lock —
+    observed: a sibling publish stuck >1h), so we cap it and fail soft: a hung or failed publish
+    must never stall the daily curation cron, whose state JSON is already written before this runs.
+    Subprocess (not import) so the timeout actually kills the blocked git child; portable to Windows."""
+    state_file = STATE / f"session-curation-{machine}.json"
+    cli = REPO / "scripts" / "monitoring" / "equivalence_state.py"
+    if not state_file.exists() or not cli.exists():
+        return "publish-skipped (no state/cli)"
     try:
-        import equivalence_state as store  # type: ignore
-    except ImportError:
-        return "store-import-failed"
-    try:
-        ok = store.publish(str(REPO), machine, json.dumps(state, indent=1), ref=CURATION_REF)
-        return "published" if ok else "publish-lost-cas"
-    except Exception as e:  # noqa: BLE001 — publish is a best-effort fleet slice; a missing git
-        # binary (FileNotFoundError), a network/auth hiccup, or a plumbing edge case must NEVER
-        # fail the local curation, whose state JSON is already written before this is called.
+        r = subprocess.run(
+            [sys.executable, str(cli), "publish", "--repo", str(REPO),
+             "--role", machine, "--file", str(state_file), "--ref", CURATION_REF],
+            capture_output=True, text=True, timeout=PUBLISH_TIMEOUT_S)
+    except subprocess.TimeoutExpired:
+        return f"publish-timeout ({PUBLISH_TIMEOUT_S}s)"
+    except Exception as e:  # noqa: BLE001 — best-effort fleet slice; never fail local curation
         return f"publish-error: {str(e)[:80]}"
+    return "published" if r.returncode == 0 else f"publish-rc{r.returncode}"
 
 
 def collect_fleet() -> str:
@@ -300,7 +308,7 @@ def main(argv=None) -> int:
     STATE.mkdir(parents=True, exist_ok=True)
     (STATE / f"session-curation-{machine}.json").write_text(json.dumps(state, indent=2) + "\n")
     (STATE / f"session-curation-digest-{machine}.md").write_text(render_digest(state, providers, changed))
-    pub = "skipped" if a.no_publish else publish_fingerprint(machine, state)
+    pub = "skipped" if a.no_publish else publish_fingerprint(machine)
     print(f"curated {machine}: {state['sessions_24h']} sessions/24h across "
           f"{len(state['providers_active'])} providers, {state['memory_files_changed']} memory Δ "
           f"(publish: {pub})")
