@@ -157,6 +157,21 @@ fi
 _nightly_exit=0
 bash scripts/learning/comprehensive-learning.sh || _nightly_exit=$?
 
+# Step 3f: auto-graduate high-confidence correction candidates to DRAFT proposals (#3252, epic #3248).
+# Best-effort so a graduation failure never aborts the nightly. The module self-guards on
+# machine_label() (dev-primary/ace-linux-1 only) and signals via state JSON + notify.sh, never via a
+# non-zero exit. Runs AFTER the pipeline refreshes candidates and BEFORE the artifact commit/redact.
+echo "--- Graduate correction candidates $(date +%Y-%m-%dT%H:%M:%S) ---"
+_GRADUATE="scripts/curation/graduate_corrections.py"
+if command -v uv >/dev/null 2>&1; then
+  uv run --no-project --with pyyaml python "$_GRADUATE" || \
+    echo "WARNING: correction graduation failed (uv) — see above"
+elif command -v python3 >/dev/null 2>&1; then
+  python3 "$_GRADUATE" || echo "WARNING: correction graduation failed (python3) — see above"
+else
+  echo "WARNING: no uv/python3 to run correction graduation — skipped"
+fi
+
 # Step 10: commit all learning artifacts to git (best-effort — #1780)
 echo "--- Commit learning artifacts $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/cron/commit-learning-artifacts.sh 2>&1 || \
