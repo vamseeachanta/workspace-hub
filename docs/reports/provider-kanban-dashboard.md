@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-27T09:20:43Z
+Generated: 2026-06-27T13:20:53Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,10 +43,10 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #3256 | Self-improvement: adaptive correction-confidence threshold + Gemini-specific skill detection — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3254 | Self-improvement: repeating drift patterns trigger skill-update candidates — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3253 | Self-improvement: Hermes pattern auto-promotion into canonical skills — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3252 | Self-improvement: auto-graduate high-confidence correction candidates to skills — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3256 | Self-improvement: adaptive correction-confidence threshold + Gemini-specific skill detection — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
+| #3254 | Self-improvement: repeating drift patterns trigger skill-update candidates — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
+| #3253 | Self-improvement: Hermes pattern auto-promotion into canonical skills — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
+| #3252 | Self-improvement: auto-graduate high-confidence correction candidates to skills — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3248 | Epic: robust cross-provider self-improvement & skill-currency ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3239 | Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3237 | docs(workflow): canonical lifecycle for a typical GitHub issue — plan → review → implement → HTML artifact → live link | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |

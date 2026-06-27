@@ -28,8 +28,9 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -37,7 +38,9 @@
       "hover": {
         "labels": [
           "cat:skills-improvement",
-          "domain:ai-orchestration"
+          "domain:ai-orchestration",
+          "status:plan-approved",
+          "gate:completeness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -60,13 +63,18 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Self-improvement: adaptive correction-confidence threshold + Gemini-specific skill detection \u2014 epic #3248",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3256",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -74,7 +82,9 @@
       "hover": {
         "labels": [
           "cat:skills-improvement",
-          "domain:ai-orchestration"
+          "domain:ai-orchestration",
+          "status:plan-approved",
+          "gate:completeness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -97,13 +107,18 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Self-improvement: repeating drift patterns trigger skill-update candidates \u2014 epic #3248",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3254",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -111,7 +126,9 @@
       "hover": {
         "labels": [
           "cat:skills-improvement",
-          "domain:ai-orchestration"
+          "domain:ai-orchestration",
+          "status:plan-approved",
+          "gate:completeness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -134,13 +151,18 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Self-improvement: Hermes pattern auto-promotion into canonical skills \u2014 epic #3248",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3253",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -148,7 +170,9 @@
       "hover": {
         "labels": [
           "cat:skills-improvement",
-          "domain:ai-orchestration"
+          "domain:ai-orchestration",
+          "status:plan-approved",
+          "gate:completeness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -171,7 +195,11 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Self-improvement: auto-graduate high-confidence correction candidates to skills \u2014 epic #3248",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3252",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8435,7 +8463,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-06-27T09:20:43Z",
+  "generated_at": "2026-06-27T13:20:53Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8444,8 +8472,9 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8453,7 +8482,9 @@
         "hover": {
           "labels": [
             "cat:skills-improvement",
-            "domain:ai-orchestration"
+            "domain:ai-orchestration",
+            "status:plan-approved",
+            "gate:completeness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8476,13 +8507,18 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Self-improvement: adaptive correction-confidence threshold + Gemini-specific skill detection \u2014 epic #3248",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3256",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
           "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8490,7 +8526,9 @@
         "hover": {
           "labels": [
             "cat:skills-improvement",
-            "domain:ai-orchestration"
+            "domain:ai-orchestration",
+            "status:plan-approved",
+            "gate:completeness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8513,13 +8551,18 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Self-improvement: repeating drift patterns trigger skill-update candidates \u2014 epic #3248",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3254",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
           "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8527,7 +8570,9 @@
         "hover": {
           "labels": [
             "cat:skills-improvement",
-            "domain:ai-orchestration"
+            "domain:ai-orchestration",
+            "status:plan-approved",
+            "gate:completeness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8550,13 +8595,18 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Self-improvement: Hermes pattern auto-promotion into canonical skills \u2014 epic #3248",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3253",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
           "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8564,7 +8614,9 @@
         "hover": {
           "labels": [
             "cat:skills-improvement",
-            "domain:ai-orchestration"
+            "domain:ai-orchestration",
+            "status:plan-approved",
+            "gate:completeness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8587,7 +8639,11 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Self-improvement: auto-graduate high-confidence correction candidates to skills \u2014 epic #3248",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3252",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16859,16 +16915,16 @@
     "gemini",
     "claude"
   ],
-  "scorecard_generated_at": "2026-06-27T09:20:39.227208Z",
+  "scorecard_generated_at": "2026-06-27T13:20:48.860293Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-27T09:20:39.088190Z",
+  "utilization_generated_at": "2026-06-27T13:20:48.682535Z",
   "warning_summary": {
-    "approved_no_marker": 27,
-    "approved_no_plan": 17,
+    "approved_no_marker": 31,
+    "approved_no_plan": 21,
     "dual_status_labels": 10,
     "legacy_review_no_sha": 1,
     "major_review": 1,
     "marker_without_open_approved_issue": 159,
-    "missing_review": 61
+    "missing_review": 65
   }
 }

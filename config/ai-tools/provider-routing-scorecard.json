@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-27T09:20:39.227208Z",
+  "generated_at": "2026-06-27T13:20:48.860293Z",
   "current_week": "2026-W26",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-06-27T09:20:39.088190Z",
+    "utilization_generated_at": "2026-06-27T13:20:48.682535Z",
     "audit_generated_at": "2026-06-22T09:15:04Z"
   },
   "recommended_provider_order": [
@@ -57,7 +57,7 @@
       "priority": "highest",
       "reported_utilization_pct": 0.0,
       "quota_basis": "quota",
-      "quota_source": "app-server-live",
+      "quota_source": "local-session-rate-limits",
       "sessions_current_week": 60,
       "post_records_current_week": 6931,
       "audit_post_records": 121856,

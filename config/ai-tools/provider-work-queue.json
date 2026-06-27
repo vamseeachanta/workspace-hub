@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-27T09:20:41.220237Z",
+  "generated_at": "2026-06-27T13:20:51.030723Z",
   "current_week": "2026-W26",
-  "scorecard_generated_at": "2026-06-27T09:20:39.227208Z",
+  "scorecard_generated_at": "2026-06-27T13:20:48.860293Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 35,
+      "execution_ready_count": 39,
       "total_candidates": 175,
       "top_issues": [
         {
@@ -1157,6 +1157,91 @@
           ]
         },
         {
+          "number": 3252,
+          "title": "Self-improvement: auto-graduate high-confidence correction candidates to skills \u2014 epic #3248",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3252",
+          "labels": [
+            "cat:skills-improvement",
+            "domain:ai-orchestration",
+            "status:plan-approved",
+            "gate:completeness"
+          ],
+          "updatedAt": "2026-06-27T11:55:52Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "strategy"
+          ]
+        },
+        {
+          "number": 3253,
+          "title": "Self-improvement: Hermes pattern auto-promotion into canonical skills \u2014 epic #3248",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3253",
+          "labels": [
+            "cat:skills-improvement",
+            "domain:ai-orchestration",
+            "status:plan-approved",
+            "gate:completeness"
+          ],
+          "updatedAt": "2026-06-27T12:48:49Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "strategy"
+          ]
+        },
+        {
+          "number": 3254,
+          "title": "Self-improvement: repeating drift patterns trigger skill-update candidates \u2014 epic #3248",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3254",
+          "labels": [
+            "cat:skills-improvement",
+            "domain:ai-orchestration",
+            "status:plan-approved",
+            "gate:completeness"
+          ],
+          "updatedAt": "2026-06-27T11:55:55Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3256,
+          "title": "Self-improvement: adaptive correction-confidence threshold + Gemini-specific skill detection \u2014 epic #3248",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3256",
+          "labels": [
+            "cat:skills-improvement",
+            "domain:ai-orchestration",
+            "status:plan-approved",
+            "gate:completeness"
+          ],
+          "updatedAt": "2026-06-27T11:55:56Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "strategy"
+          ]
+        },
+        {
           "number": 2660,
           "title": "Compliance alert: W20 \u2014 0% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2660",
@@ -1307,7 +1392,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-06-26T11:45:06Z",
+          "updatedAt": "2026-06-27T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -4570,83 +4655,6 @@
           "work_type": [
             "research",
             "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3252,
-          "title": "Self-improvement: auto-graduate high-confidence correction candidates to skills \u2014 epic #3248",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3252",
-          "labels": [
-            "cat:skills-improvement",
-            "domain:ai-orchestration"
-          ],
-          "updatedAt": "2026-06-26T16:57:31Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "strategy"
-          ]
-        },
-        {
-          "number": 3253,
-          "title": "Self-improvement: Hermes pattern auto-promotion into canonical skills \u2014 epic #3248",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3253",
-          "labels": [
-            "cat:skills-improvement",
-            "domain:ai-orchestration"
-          ],
-          "updatedAt": "2026-06-26T16:57:33Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "strategy"
-          ]
-        },
-        {
-          "number": 3254,
-          "title": "Self-improvement: repeating drift patterns trigger skill-update candidates \u2014 epic #3248",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3254",
-          "labels": [
-            "cat:skills-improvement",
-            "domain:ai-orchestration"
-          ],
-          "updatedAt": "2026-06-26T16:57:35Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3256,
-          "title": "Self-improvement: adaptive correction-confidence threshold + Gemini-specific skill detection \u2014 epic #3248",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3256",
-          "labels": [
-            "cat:skills-improvement",
-            "domain:ai-orchestration"
-          ],
-          "updatedAt": "2026-06-26T16:57:38Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
             "strategy"
           ]
         }
