@@ -1,0 +1,14 @@
+{
+  "machine": "dev-primary",
+  "evaluated_at": "2026-06-26T23:52:20+00:00",
+  "signature": "CLEAN",
+  "drift_present": false,
+  "new_drift": false,
+  "recovered": false,
+  "include_index": false,
+  "gemini_present": true,
+  "gemini_unexpected": 0,
+  "gemini_unexpected_families": [],
+  "index_dangling": 202,
+  "schema_version": 1
+}

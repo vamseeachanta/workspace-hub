@@ -126,7 +126,9 @@ def audit(machine: str) -> dict:
     # the same basis as the comparison so a working-tree delete during skill-dev can't silently
     # disable drift detection (the module's stated WIP-immunity).
     gemini_present = gemini is not None and len(gemini) > 0
+    # init BEFORE the guard so the gemini-absent path can't NameError on these (#3250 review)
     gemini_unexpected = gemini_expected = 0
+    unexpected_families: list[str] = []
     if canonical is not None and gemini is not None and gemini_present:
         diff = canonical ^ gemini
         # Allowlist match: an entry ending in '-' is an explicit PREFIX (e.g. 'source-command-');
@@ -135,8 +137,10 @@ def audit(machine: str) -> dict:
         def _allowed(f: str) -> bool:
             return any(f.startswith(p) if p.endswith("-") else f == p for p in allow)
         expected = {f for f in diff if _allowed(f)}
+        unexpected = diff - expected
         gemini_expected = len(expected)
-        gemini_unexpected = len(diff - expected)
+        gemini_unexpected = len(unexpected)
+        unexpected_families = sorted(unexpected)            # named for the #3250 drift alert
 
     dangling = _index_dangling()
     return {
@@ -145,12 +149,13 @@ def audit(machine: str) -> dict:
         "canonical_count": (len(canonical) if canonical is not None else None),
         "gemini_present": gemini_present,
         "gemini_unexpected": gemini_unexpected,
+        "gemini_unexpected_families": unexpected_families,   # names for the #3250 drift detector
         "gemini_expected": gemini_expected,
         "codex_present": (Path.home() / ".codex" / "skills").exists(),
         "hermes_present": (REPO / CANONICAL_PREFIX).exists(),
         "index_dangling": (dangling if dangling is not None else None),
         "index_stale": (dangling is not None and dangling > 0),
-        "schema_version": 1,
+        "schema_version": 2,
     }
 
 
