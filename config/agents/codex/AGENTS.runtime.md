@@ -198,7 +198,7 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 - **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
 - **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
 - **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
-- **business_admin/** — 2 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
+- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
 - **business-marketing/** — 1 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
 - **coordination/** — 59 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
@@ -229,7 +229,6 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 - **red-teaming/** — 1 skill(s); `ls .claude/skills/red-teaming/*/SKILL.md` to enumerate
 - **research/** — 15 skill(s); `ls .claude/skills/research/*/SKILL.md` to enumerate
 - **science/** — 6 skill(s); `ls .claude/skills/science/*/SKILL.md` to enumerate
-- **session-logs/** — 0 skill(s); `ls .claude/skills/session-logs/*/SKILL.md` to enumerate
 - **smart-home/** — 1 skill(s); `ls .claude/skills/smart-home/*/SKILL.md` to enumerate
 - **social-media/** — 2 skill(s); `ls .claude/skills/social-media/*/SKILL.md` to enumerate
 - **software-development/** — 35 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
