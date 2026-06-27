@@ -707,6 +707,11 @@ tr.detail{{display:none}}tr.detail th{{padding-left:1.8rem;font-weight:400}}
 .legend span{{display:inline-block;padding:.15rem .5rem;margin:.12rem;border-radius:3px;font-size:.72rem;border:1px solid #ccc}}
 .prompt{{background:#1a202c;color:#e2e8f0;padding:.6rem .9rem;border-radius:6px;margin:.6rem 0;font-size:.82rem}}
 .prompt code{{background:#2d3748;color:#90cdf4;padding:.05rem .3rem;border-radius:3px}}
+.genprompt{{background:#ebf8ff;border:1px solid #90cdf4;border-left:4px solid #3182ce;padding:.6rem .9rem;margin:.7rem 0;border-radius:6px;font-size:.85rem}}
+.genprompt .cmd{{display:flex;align-items:center;gap:.5rem;margin:.45rem 0}}
+.genprompt .cmd>code{{background:#1a202c;color:#90cdf4;padding:.35rem .55rem;border-radius:4px;font-size:.82rem;flex:1;overflow-x:auto;white-space:nowrap}}
+.genprompt small code{{background:#dbeafe;color:#1e40af;padding:.02rem .25rem;border-radius:3px}}
+.copybtn{{background:#3182ce;color:#fff;border:0;padding:.32rem .75rem;border-radius:4px;cursor:pointer;font-size:.75rem;flex:none}}.copybtn:active{{background:#2c5282}}
 .fix-card{{border:1px solid #e2e8f0;border-left:4px solid #ed8936;border-radius:6px;padding:.5rem .8rem;margin:.5rem 0}}
 .fix-card.ok-card{{border-left-color:#48bb78}}.fix-card .head{{color:#c05621;font-weight:600;margin:.2rem 0}}
 .fix-card ul{{margin:.3rem 0 .1rem;padding-left:1.2rem}}.fix-card li{{margin:.15rem 0}}
@@ -721,6 +726,12 @@ tr.detail{{display:none}}tr.detail th{{padding-left:1.8rem;font-weight:400}}
 <b>licensed Windows hosts</b>: <b>ace-win-1</b> primarily runs <b>licensed solver runs</b>; <b>ace-win-2</b> primarily
 handles <b>document ingestion, email, marketing &amp; admin</b>. Green/OK = at parity, nothing to do; red/orange =
 work needed on that box; purple = intended difference (not a defect).</div>
+<div class="genprompt"><b>🔄 Refresh equivalence on ANY machine</b> — paste on the box you are on (from <code>$WORKSPACE_HUB</code>):
+<div class="cmd"><code id="genprompt-cmd">cd "$WORKSPACE_HUB" &amp;&amp; git pull --ff-only &amp;&amp; bash scripts/curation/curate-session-memory.sh</code><button class="copybtn" onclick="copyGenPrompt(this)">copy</button></div>
+<small>Regenerates this box's session-curation · skill-currency · memory-freshness · skill-link cells and rebuilds this dashboard.
+See the whole fleet: <code>uv run --script scripts/curation/curate_session_memory.py --collect</code> ·
+Full reconciliation (read-only plan, then <code>--apply</code>): <code>bash scripts/readiness/reconcile-ecosystem.sh</code> ·
+Claude Code / Gemini CLI: <code>/reconcile-ecosystem</code>. Works identically on every machine (Linux &amp; Windows Git Bash).</small></div>
 <table><thead><tr><th>Group / Dimension</th>{cols}</tr></thead><tbody>{''.join(rows)}</tbody></table>
 {f'<h3>Machine notes</h3>{notes_block}' if notes_block else ''}
 <h2>Achieving equivalence — what to do</h2>
@@ -748,6 +759,13 @@ document.querySelectorAll('tr.grp').forEach(function(h){{
     h.querySelector('.twist').innerHTML=open?'&#9660;':'&#9654;';
     document.querySelectorAll('tr.detail[data-group="'+g+'"]').forEach(function(r){{
       r.style.display=open?'table-row':'none';}});}});}});
+function copyGenPrompt(btn){{
+  var t=document.getElementById('genprompt-cmd').textContent, done=function(){{
+    var o=btn.textContent;btn.textContent='copied!';setTimeout(function(){{btn.textContent=o;}},1200);}};
+  if(navigator.clipboard&&navigator.clipboard.writeText){{navigator.clipboard.writeText(t).then(done,done);}}
+  else{{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();
+    try{{document.execCommand('copy');}}catch(e){{}}document.body.removeChild(ta);done();}}
+}}
 </script></body></html>"""
 
     REPORTS.mkdir(parents=True, exist_ok=True)
