@@ -54,6 +54,10 @@ elif command -v python3 >/dev/null 2>&1; then
   python3 "$MEM_FRESH" || echo "memory-freshness audit failed (soft)" >&2
 fi
 
+# Audit shared-skill-link health (#3251) — report-only; writes skill-link-health-<machine>.json for
+# the skill_link_health matrix cell. Best-effort; the default mode mutates nothing.
+bash "$REPO_ROOT/scripts/skills/resync-skill-links.sh" || echo "skill-link-health audit failed (soft)" >&2
+
 # Refresh this box's equality column so the freshness cell + render are current. The matrix
 # build is NOT optional — skipping it would freeze the rendered cell (weakening the dead-man's
 # switch) while still reporting pass. So fail loudly if no python can build it.

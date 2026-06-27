@@ -116,6 +116,17 @@ if (Get-Command uv -ErrorAction SilentlyContinue) {
     if ($LASTEXITCODE -ne 0) { Write-Warning 'memory-freshness audit failed (soft)' }
 }
 
+# ── 1e. skill-link-health audit (#3251) — BASH engine via Git Bash; best-effort ──
+# resync-skill-links.sh is bash; invoke it through the resolved Git Bash. If Git Bash is absent the
+# skill_link_health cell stays MISSING-EVIDENCE (honest scoping — no silent green).
+$bashForSkills = Resolve-GitBash
+if ($null -ne $bashForSkills) {
+    $resync = (Join-Path $RepoRoot 'scripts/skills/resync-skill-links.sh') -replace '\\', '/'
+    try { & $bashForSkills $resync 2>$null | Out-Null } catch { Write-Warning 'skill-link-health audit failed (soft)' }
+} else {
+    Write-Warning 'skill-link-health audit skipped — Git Bash not found'
+}
+
 # ── 2. refresh THIS box's equality column (Windows collector + matrix build) ──
 $collector = (Join-Path $ScriptDir '..\readiness\collect-equality.ps1')
 & $collector

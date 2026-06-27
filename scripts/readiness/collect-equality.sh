@@ -196,6 +196,21 @@ if [[ -f "$mf_file" ]] && have jq; then
   [[ -n "$_mff" ]] && mf_fresh="\"$(yesc "$_mff")\""
 fi
 
+# ── 6e. SKILL-LINK HEALTH — shared-skill links propagated to ecosystem repos (#3251) ──
+# References resync-skill-links.sh state (never re-runs it). Missing/garbled -> null/0 -> the matrix
+# grades MISSING-EVIDENCE. repairable stays in the canonical payload so a fresh audit forces a rewrite.
+slh_file="${STATE_DIR}/skill-link-health-${MACHINE}.json"
+slh_audited="null"; slh_repos=0; slh_healthy=0; slh_repairable=0; slh_worst="null"
+if [[ -f "$slh_file" ]] && have jq; then
+  _sla=$(jq -r '.audited_at // empty' "$slh_file" 2>/dev/null)
+  [[ -n "$_sla" ]] && slh_audited="\"$(yesc "$_sla")\""
+  slh_repos=$(jq -r '.repos_total // 0' "$slh_file" 2>/dev/null); [[ "$slh_repos" =~ ^[0-9]+$ ]] || slh_repos=0
+  slh_healthy=$(jq -r '.healthy // 0' "$slh_file" 2>/dev/null); [[ "$slh_healthy" =~ ^[0-9]+$ ]] || slh_healthy=0
+  slh_repairable=$(jq -r '.repairable // 0' "$slh_file" 2>/dev/null); [[ "$slh_repairable" =~ ^[0-9]+$ ]] || slh_repairable=0
+  _slw=$(jq -r '.worst_state // empty' "$slh_file" 2>/dev/null)
+  [[ -n "$_slw" ]] && slh_worst="\"$(yesc "$_slw")\""
+fi
+
 # ── 7. BEHAVIOR — deterministic, SANDBOXED probe corpus (DG4/DC1) ────────────
 # CC3: guard mktemp (never let SBX become /sbx → rm -rf /). GC4: trap-based cleanup.
 SBX_PARENT="$(mktemp -d 2>/dev/null)" || { echo "mktemp failed" >&2; exit 1; }
@@ -406,6 +421,12 @@ ${provider_harness_yaml}
     audited_at: ${mf_audited}
     worst_age_hours: ${mf_worst}
     freshness: ${mf_fresh}
+  skill_link_health:
+    audited_at: ${slh_audited}
+    repos_total: ${slh_repos}
+    healthy: ${slh_healthy}
+    repairable: ${slh_repairable}
+    worst_state: ${slh_worst}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 

@@ -183,6 +183,7 @@ data/document-index/*.jsonl.backup-*
 !.claude/state/skill-currency-*.json
 !.claude/state/skill-drift-*.json
 !.claude/state/memory-freshness-*.json
+!.claude/state/skill-link-health-*.json
 !.claude/state/reflect-history/
 !.claude/state/trends/
 !.claude/state/session-signals/
