@@ -1,40 +1,40 @@
 {
   "machine": "dev-primary",
-  "audited_at": "2026-06-27T11:48:33+00:00",
+  "audited_at": "2026-06-27T17:47:05+00:00",
   "surfaces": {
     "context_md": {
       "present": true,
       "refreshed_at": "2026-06-26T08:00:34-05:00",
-      "age_hours": 22.8,
+      "age_hours": 28.775,
       "signal": "git-commit"
     },
     "agents_md": {
       "present": true,
-      "refreshed_at": "2026-06-27T04:01:16-05:00",
-      "age_hours": 2.788,
+      "refreshed_at": "2026-06-27T08:02:09-05:00",
+      "age_hours": 4.749,
       "signal": "git-commit"
     },
     "codex_runtime": {
       "present": true,
-      "refreshed_at": "2026-06-26T08:00:34-05:00",
-      "age_hours": 22.8,
+      "refreshed_at": "2026-06-27T08:02:09-05:00",
+      "age_hours": 4.749,
       "signal": "git-commit"
     },
     "gemini_runtime": {
       "present": true,
-      "refreshed_at": "2026-06-26T08:00:34-05:00",
-      "age_hours": 22.8,
+      "refreshed_at": "2026-06-27T08:02:09-05:00",
+      "age_hours": 4.749,
       "signal": "git-commit"
     },
     "hermes_memories": {
       "present": true,
       "refreshed_at": "2026-06-27T09:25:02+00:00",
-      "age_hours": 2.392,
+      "age_hours": 8.368,
       "signal": "file-mtime"
     }
   },
-  "newest_refresh": "2026-06-27T09:25:02+00:00",
-  "worst_age_hours": 22.8,
+  "newest_refresh": "2026-06-27T08:02:09-05:00",
+  "worst_age_hours": 28.775,
   "freshness": "MEMORY-FRESH",
   "schema_version": 1
 }

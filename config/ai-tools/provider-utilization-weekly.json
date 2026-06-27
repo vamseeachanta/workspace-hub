@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-27T13:20:48.682535Z",
+  "generated_at": "2026-06-27T17:20:45.127396Z",
   "current_week": "2026-W26",
   "report_weeks": 8,
   "subscriptions": {
@@ -871,7 +871,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-06-27T13:20:05Z",
+        "quota_snapshot_ts": "2026-06-27T17:20:04Z",
         "top_tools": [
           {
             "tool": "Read",
@@ -893,7 +893,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "local-session-rate-limits",
-        "quota_snapshot_ts": "2026-06-27T13:20:05Z",
+        "quota_snapshot_ts": "2026-06-27T17:20:04Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -931,7 +931,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "manual-snapshot",
-        "quota_snapshot_ts": "2026-06-27T13:20:05Z",
+        "quota_snapshot_ts": "2026-06-27T17:20:04Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,

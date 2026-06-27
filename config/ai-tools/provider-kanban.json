@@ -8463,7 +8463,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-06-27T13:20:53Z",
+  "generated_at": "2026-06-27T17:20:49Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -16915,9 +16915,9 @@
     "gemini",
     "claude"
   ],
-  "scorecard_generated_at": "2026-06-27T13:20:48.860293Z",
+  "scorecard_generated_at": "2026-06-27T17:20:45.306823Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-27T13:20:48.682535Z",
+  "utilization_generated_at": "2026-06-27T17:20:45.127396Z",
   "warning_summary": {
     "approved_no_marker": 31,
     "approved_no_plan": 21,
