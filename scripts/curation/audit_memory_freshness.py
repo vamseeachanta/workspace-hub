@@ -142,8 +142,8 @@ def freshness_category(worst_age_hours, stale_h: float = MEMORY_STALE_H,
                        expired_h: float = MEMORY_EXPIRED_H) -> str:
     """Pure tier map for a single worst (oldest) age. None ⇒ MISSING-EVIDENCE; a negative age
     (future stamp ⇒ clock skew) ⇒ MISSING-EVIDENCE (fail-closed). Boundaries inclusive."""
-    if not isinstance(worst_age_hours, (int, float)):
-        return MISSING_EVIDENCE
+    if isinstance(worst_age_hours, bool) or not isinstance(worst_age_hours, (int, float)):
+        return MISSING_EVIDENCE          # bool is an int subclass — exclude it (matrix-parity)
     if worst_age_hours < 0:
         return MISSING_EVIDENCE
     if worst_age_hours <= stale_h:
@@ -157,7 +157,7 @@ def categorize(ages, stale_h: float = MEMORY_STALE_H, expired_h: float = MEMORY_
     """Pure facts→verdict: `ages` = the per-surface age_hours of the PRESENT surfaces. The OLDEST
     present surface dominates. Empty (no present surface proved a timestamp) ⇒ MISSING-EVIDENCE.
     Any negative age (clock skew) ⇒ MISSING-EVIDENCE (fail-closed)."""
-    valid = [a for a in ages if isinstance(a, (int, float))]
+    valid = [a for a in ages if isinstance(a, (int, float)) and not isinstance(a, bool)]
     if not valid:
         return MISSING_EVIDENCE
     if any(a < 0 for a in valid):

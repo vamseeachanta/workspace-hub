@@ -77,6 +77,17 @@ def test_future_or_negative_failclosed():
     assert bem.memory_freshness_verdict(_rep(worst=-5.0), now=NOW) == "MISSING-EVIDENCE"
 
 
+# ── threshold-drift guard: the engine + matrix duplicate MEMORY_STALE_H/EXPIRED_H ──
+def test_thresholds_in_sync_with_engine():
+    eng_path = REPO_ROOT / "scripts" / "curation" / "audit_memory_freshness.py"
+    espec = importlib.util.spec_from_file_location("audit_memory_freshness", eng_path)
+    eng = importlib.util.module_from_spec(espec)
+    sys.modules["audit_memory_freshness"] = eng
+    espec.loader.exec_module(eng)
+    assert eng.MEMORY_STALE_H == bem.MEMORY_STALE_H
+    assert eng.MEMORY_EXPIRED_H == bem.MEMORY_EXPIRED_H
+
+
 # ── wiring ──
 def test_wiring():
     assert "memory_freshness" in bem.BASE_DISPLAY_DIMS
