@@ -1,0 +1,89 @@
+generated_at: "2026-06-27T15:00:52"
+schema_version: 4
+machine: "ace-win-1"
+host: "acma-hou-rds02"
+os: windows
+status: active
+provenance:
+  checkout_sha: "5abc12ea1"
+  dirty: false
+  behind_main: 0
+  ahead_main: 0
+  origin_ref_age_h: 0
+dimensions:
+  compute:
+    static: {cores: 64, ram_total_mib: 261848, gpu_model: "ASPEED Graphics Family(WDDM)"}
+    headroom: {ram_avail_mib: 233765, disk_avail_gb: 1095}
+  data_access:
+    - {repo: assetutilities, mode: sibling}
+    - {repo: digitalmodel, mode: sibling}
+    - {repo: worldenergydata, mode: sibling}
+    - {repo: assethold, mode: nested}
+  solvers:
+    - {name: orcaflex, status: present, evidence: root}
+    - {name: orcawave, status: absent, evidence: absent}
+    - {name: aqwa, status: present, evidence: root}
+    - {name: ansys, status: present, evidence: root}
+  harness:
+    providers: {claude: present, codex: absent, gemini: absent, hermes: absent}
+    gh_auth: absent
+    python_cmd: python
+    readiness_ref: harness-readiness-acma-hou-rds02.yaml
+    readiness_overall: missing
+  skills: {repo_skill_count: 415}
+  kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
+  memory:
+    hermes_home: absent
+    context_md_mtime: "2026-06-26T12:20:42"
+  provider_harness:
+    schema_version: 1
+    providers:
+      claude:
+        present: false
+        installed: false
+        "memory:read": {status: unknown, reason: collector_unavailable}
+        "skills:invoke": {status: unknown, reason: collector_unavailable}
+        "workflow:gates": {status: unknown, reason: collector_unavailable}
+      codex:
+        present: false
+        installed: false
+        "memory:read": {status: unknown, reason: collector_unavailable}
+        "skills:invoke": {status: unknown, reason: collector_unavailable}
+        "workflow:gates": {status: unknown, reason: collector_unavailable}
+      hermes:
+        present: false
+        installed: false
+        "memory:read": {status: unknown, reason: collector_unavailable}
+        "skills:invoke": {status: unknown, reason: collector_unavailable}
+        "workflow:gates": {status: unknown, reason: collector_unavailable}
+  behavior:
+    enums: {b1: n/a, b2: ok, b3: html, b4: pass}
+    hashes: {b5: n/a}
+  scheduler:
+    has_repo_sync: false
+    has_parity_review: false
+    job_count: 0
+  session_curation:
+    last_curated_at: null
+    sessions_24h: 0
+    providers_active: ""
+    memory_files_changed: 0
+  skill_currency:
+    audited_at: null
+    canonical_count: 0
+    gemini_present: false
+    gemini_unexpected: 0
+    gemini_expected: 0
+    codex_present: false
+    hermes_present: false
+    index_dangling: null
+  memory_freshness:
+    audited_at: null
+    worst_age_hours: null
+    freshness: null
+  skill_link_health:
+    audited_at: null
+    repos_total: 0
+    healthy: 0
+    repairable: 0
+    worst_state: null
