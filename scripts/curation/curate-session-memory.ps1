@@ -106,6 +106,16 @@ if (Get-Command uv -ErrorAction SilentlyContinue) {
     if ($LASTEXITCODE -ne 0) { Write-Warning 'skill-drift detect failed (soft)' }
 }
 
+# ── 1d. memory-freshness audit (#3255) — best-effort, after skill drift ──────
+$memFresh = (Join-Path $RepoRoot 'scripts/curation/audit_memory_freshness.py')
+if (Get-Command uv -ErrorAction SilentlyContinue) {
+    & uv run --no-project --with pyyaml python $memFresh
+    if ($LASTEXITCODE -ne 0) { Write-Warning 'memory-freshness audit failed (soft)' }
+} elseif (Get-Command python -ErrorAction SilentlyContinue) {
+    & python $memFresh
+    if ($LASTEXITCODE -ne 0) { Write-Warning 'memory-freshness audit failed (soft)' }
+}
+
 # ── 2. refresh THIS box's equality column (Windows collector + matrix build) ──
 $collector = (Join-Path $ScriptDir '..\readiness\collect-equality.ps1')
 & $collector
