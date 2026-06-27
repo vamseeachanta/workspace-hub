@@ -85,6 +85,18 @@ if (Get-Command uv -ErrorAction SilentlyContinue) {
     Fail 'no python runtime (uv/python) available'
 }
 
+# ── 1a2. regenerate the per-machine skills index before the audit (no rot) ────
+$genIndex = (Join-Path $RepoRoot 'scripts/skills/generate_skills_index.py')
+if (Test-Path $genIndex) {
+    if (Get-Command uv -ErrorAction SilentlyContinue) {
+        & uv run --no-project --with pyyaml python $genIndex
+        if ($LASTEXITCODE -ne 0) { Write-Warning 'skills-index regen failed (soft)' }
+    } elseif (Get-Command python -ErrorAction SilentlyContinue) {
+        & python $genIndex
+        if ($LASTEXITCODE -ne 0) { Write-Warning 'skills-index regen failed (soft)' }
+    }
+}
+
 # ── 1b. skill-currency audit (#3249) — best-effort; must not block the curation run ──
 # Without this the skill_currency cell is permanently MISSING-EVIDENCE on Windows boxes.
 $skillAudit = (Join-Path $RepoRoot 'scripts/curation/audit_skill_currency.py')

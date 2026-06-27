@@ -27,6 +27,17 @@ else
   fail "no python runtime (uv/python3) available"
 fi
 
+# Regenerate the (gitignored, per-machine) skills index BEFORE the skill-currency audit so the
+# index never rots (the audit grades SKILLS-INDEX-STALE on dangling entries). Best-effort.
+GEN_INDEX="$REPO_ROOT/scripts/skills/generate_skills_index.py"
+if [[ -f "$GEN_INDEX" ]]; then
+  if command -v uv >/dev/null 2>&1; then
+    uv run --no-project --with pyyaml python "$GEN_INDEX" || echo "skills-index regen failed (soft)" >&2
+  elif command -v python3 >/dev/null 2>&1; then
+    python3 "$GEN_INDEX" || echo "skills-index regen failed (soft)" >&2
+  fi
+fi
+
 # Audit cross-provider skill currency (#3249) — writes skill-currency-<machine>.json for the
 # skill_currency matrix cell. Best-effort: a failed audit must not block the curation run.
 SKILL_AUDIT="$REPO_ROOT/scripts/curation/audit_skill_currency.py"
