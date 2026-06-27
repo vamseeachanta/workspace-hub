@@ -157,6 +157,21 @@ fi
 _nightly_exit=0
 bash scripts/learning/comprehensive-learning.sh || _nightly_exit=$?
 
+# Step 3g: adapt the session_corrections confidence threshold (#3256 — best-effort, dormant-by-design).
+# Reads the git-tracked correction-promotions.yaml; holds at 80 until a human-provenance reviewed_by
+# marker lands. Writes .claude/state/correction-confidence-threshold.json (committed by Step 10).
+# $PYTHON is resolved by the python-resolver this orchestrator already sources (preflight).
+echo "--- Adaptive correction threshold $(date +%Y-%m-%dT%H:%M:%S) ---"
+${PYTHON} scripts/learnings/adapt-correction-threshold.py || \
+  echo "WARNING: correction-threshold adaptation failed — session_corrections gate falls back to 80"
+
+# Step 3h: classify candidate skill families as gemini-specific / shared / gemini-drift (#3256 —
+# best-effort). Reuses audit_skill_currency family/allowlist machinery; writes JSON only (never
+# skill-candidates.md), reading candidate family names READ-ONLY from skill-candidates.md.
+echo "--- Skill-scope classification $(date +%Y-%m-%dT%H:%M:%S) ---"
+${PYTHON} scripts/curation/classify_skill_scope.py --from-candidates || \
+  echo "WARNING: skill-scope classification failed — see above"
+
 # Step 10: commit all learning artifacts to git (best-effort — #1780)
 echo "--- Commit learning artifacts $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/cron/commit-learning-artifacts.sh 2>&1 || \
