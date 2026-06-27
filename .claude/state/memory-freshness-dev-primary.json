@@ -1,40 +1,40 @@
 {
   "machine": "dev-primary",
-  "audited_at": "2026-06-27T00:06:11+00:00",
+  "audited_at": "2026-06-27T03:57:08+00:00",
   "surfaces": {
     "context_md": {
       "present": true,
       "refreshed_at": "2026-06-26T08:00:34-05:00",
-      "age_hours": 11.094,
+      "age_hours": 14.943,
       "signal": "git-commit"
     },
     "agents_md": {
       "present": true,
       "refreshed_at": "2026-06-26T08:00:34-05:00",
-      "age_hours": 11.094,
+      "age_hours": 14.943,
       "signal": "git-commit"
     },
     "codex_runtime": {
       "present": true,
       "refreshed_at": "2026-06-26T08:00:34-05:00",
-      "age_hours": 11.094,
+      "age_hours": 14.943,
       "signal": "git-commit"
     },
     "gemini_runtime": {
       "present": true,
       "refreshed_at": "2026-06-26T08:00:34-05:00",
-      "age_hours": 11.094,
+      "age_hours": 14.943,
       "signal": "git-commit"
     },
     "hermes_memories": {
       "present": true,
       "refreshed_at": "2026-06-26T09:25:02+00:00",
-      "age_hours": 14.686,
+      "age_hours": 18.535,
       "signal": "file-mtime"
     }
   },
   "newest_refresh": "2026-06-26T08:00:34-05:00",
-  "worst_age_hours": 14.686,
+  "worst_age_hours": 18.535,
   "freshness": "MEMORY-FRESH",
   "schema_version": 1
 }

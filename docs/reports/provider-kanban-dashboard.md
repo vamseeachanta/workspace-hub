@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-26T13:20:50Z
+Generated: 2026-06-27T01:20:48Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,12 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3256 | Self-improvement: adaptive correction-confidence threshold + Gemini-specific skill detection — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3254 | Self-improvement: repeating drift patterns trigger skill-update candidates — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3253 | Self-improvement: Hermes pattern auto-promotion into canonical skills — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3252 | Self-improvement: auto-graduate high-confidence correction candidates to skills — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3249 | Self-improvement: cross-provider skill-currency matrix line item (PRIMARY) — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
+| #3248 | Epic: robust cross-provider self-improvement & skill-currency ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3239 | Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3237 | docs(workflow): canonical lifecycle for a typical GitHub issue — plan → review → implement → HTML artifact → live link | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3231 | Isolate concurrent agent sessions per repo (worktree-per-session) — shared-clone HEAD thrash | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -237,12 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2663 | chore(harness): adopt HTML as default artifact format — .claude/rules/artifact-format.md | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2662 | GTM client-artifact layout inconsistent across repos — no shared bundle convention | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2660 | Compliance alert: W20 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2658 | O&G-Standards consolidator: 8 catalog-classification defects surfaced by parallel-agent ingest | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2657 | chore(provider-session): remediate Hermes llm-wiki spinout path drift | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2656 | chore(repo-structure): normalize workspace-hub folder/file structure | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2652 | Daily repo readiness tracker | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2651 | Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2650 | chore(knowledge): post-spinout cleanup for llm-wiki migration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

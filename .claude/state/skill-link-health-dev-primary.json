@@ -1,16 +1,16 @@
 {
   "machine": "dev-primary",
-  "audited_at": "2026-06-27T00:20:21+00:00",
+  "audited_at": "2026-06-27T03:57:35+00:00",
   "platform": "unix",
   "repos_total": 14,
-  "healthy": 16,
-  "missing": 12,
+  "healthy": 28,
+  "missing": 0,
   "dangling": 0,
   "flattened": 0,
   "modified_real_dir": 0,
   "template_absent": 14,
-  "repairable": 12,
-  "unexpected_missing_repos": ["CAD-DEVELOPMENTS", "deckhand", "deckhand-live", "llm-wiki", "sabithaandkrishnaestates", "worldenergydata"],
-  "worst_state": "MISSING",
+  "repairable": 0,
+  "unexpected_missing_repos": [],
+  "worst_state": "TEMPLATE-ABSENT",
   "schema_version": 1
 }
