@@ -2950,11 +2950,47 @@ skills:
   name: find-nearby
   when_to_use: find-nearby Find nearby places (restaurants, cafes, bars, pharmacies, etc.) using OpenStreetMap. Works with coordinates, addresses, cities, zip codes, or Telegram location pins. No API keys needed. leisure
   when_to_use_source: backfill
+- description: Run the weekly marketing/BD review that turns activity into tracked, advancing opportunities. Pull a funnel snapshot against the KPI spine, enforce pipeline hygiene, focus on priority + at-risk deals, and end with written, owned action items. Guards against vanity metrics and leads falling through the cracks.
+  family: marketing
+  id: marketing/bd-pipeline-review
+  name: bd-pipeline-review
+  when_to_use: bd-pipeline-review Run the weekly marketing/BD review that turns activity into tracked, advancing opportunities. Pull a funnel snapshot against the KPI spine, enforce pipeline hygiene, focus on priority + at-risk deals, and end with written, owned action items. Guards against vanity metrics and leads falling through the cracks. marketing
+  when_to_use_source: backfill
+- description: Produce and refresh branded, single-page capability one-pagers, pamphlets, and management decks/plans — brief → who/what/why-us + concrete proof → segment tailoring → brand/voice + claims check → clean layout → render HTML to PDF. Reuses an approved-claims library so claims are written once and reused (incl. proposal/expert-witness support).
+  family: marketing
+  id: marketing/capability-collateral
+  name: capability-collateral
+  when_to_use: capability-collateral Produce and refresh branded, single-page capability one-pagers, pamphlets, and management decks/plans — brief → who/what/why-us + concrete proof → segment tailoring → brand/voice + claims check → clean layout → render HTML to PDF. Reuses an approved-claims library so claims are written once and reused (incl. proposal/expert-witness support). marketing
+  when_to_use_source: backfill
+- description: Produce a planned, on-voice content pipeline from a few content pillars — map each piece to a funnel stage + persona, atomize one core asset into many derivatives, schedule with owner/status, attach a distribution plan, and pass a quality gate. Built for steady B2B technical-content cadence (incl. data-backed seasonal series).
+  family: marketing
+  id: marketing/content-calendar
+  name: content-calendar
+  when_to_use: content-calendar Produce a planned, on-voice content pipeline from a few content pillars — map each piece to a funnel stage + persona, atomize one core asset into many derivatives, schedule with owner/status, attach a distribution plan, and pass a quality gate. Built for steady B2B technical-content cadence (incl. data-backed seasonal series). marketing
+  when_to_use_source: backfill
+- description: Run the LinkedIn organic funnel — reactions/likes → page follows → engaged followers → conversations. Covers the concrete platform levers (invite-to-follow, the Premium-page auto-invite of reactors, comment-gating, newsletters, page CTA buttons, personal-profile reach) and the compliant ways to pull contact data. Converts engagement into tracked conversations, not vanity metrics.
+  family: marketing
+  id: marketing/linkedin-funnel-ops
+  name: linkedin-funnel-ops
+  when_to_use: linkedin-funnel-ops Run the LinkedIn organic funnel — reactions/likes → page follows → engaged followers → conversations. Covers the concrete platform levers (invite-to-follow, the Premium-page auto-invite of reactors, comment-gating, newsletters, page CTA buttons, personal-profile reach) and the compliant ways to pull contact data. Converts engagement into tracked conversations, not vanity metrics. marketing
+  when_to_use_source: backfill
 - description: Review external LinkedIn posts and fold reusable insights into ACE-style GTM docs, capability maps, and content calendars.
   family: marketing
   id: marketing/linkedin-post-to-gtm-ingestion
   name: linkedin-post-to-gtm-ingestion
   when_to_use: linkedin-post-to-gtm-ingestion Review external LinkedIn posts and fold reusable insights into ACE-style GTM docs, capability maps, and content calendars. marketing
+  when_to_use_source: backfill
+- description: Turn a marketing/BD objective into a measurable, time-boxed campaign plan with ICP, message + proof, channel mix, asset list, a conversion funnel + flowchart, KPI targets with a named tracking mechanism, and an owner/RACI. The spine the other marketing skills execute against.
+  family: marketing
+  id: marketing/marketing-campaign-plan
+  name: marketing-campaign-plan
+  when_to_use: marketing-campaign-plan Turn a marketing/BD objective into a measurable, time-boxed campaign plan with ICP, message + proof, channel mix, asset list, a conversion funnel + flowchart, KPI targets with a named tracking mechanism, and an owner/RACI. The spine the other marketing skills execute against. marketing
+  when_to_use_source: backfill
+- description: Build warm-first, ICP-matched outreach sequences that book conversations and drive vendor/supplier registrations and RFQs. Validate the list against the ICP, research a real trigger per contact, run a multi-touch multi-channel cadence with reply branching, and guarantee no contact exits without a logged next step. Honest, tracked, relationship-aware.
+  family: marketing
+  id: marketing/targeted-outreach-sequence
+  name: targeted-outreach-sequence
+  when_to_use: targeted-outreach-sequence Build warm-first, ICP-matched outreach sequences that book conversations and drive vendor/supplier registrations and RFQs. Validate the list against the ICP, research a real trigger per contact, run a multi-touch multi-channel cadence with reply branching, and guarantee no contact exits without a logged next step. Honest, tracked, relationship-aware. marketing
   when_to_use_source: backfill
 - description: Use the mcporter CLI to list, configure, auth, and call MCP servers/tools directly (HTTP or stdio), including ad-hoc servers, config edits, and CLI/type generation.
   family: mcp
@@ -4194,6 +4230,12 @@ skills:
   name: domain-knowledge-sweep
   when_to_use: domain-knowledge-sweep Systematic multi-source research of an engineering domain. Spawns parent issue → 6 research subissues (Standards, Academic, Industry, LinkedIn-marketing, Code-audit, Synthesis) → gap implementation subissues. Replaces LinkedIn-only extraction with defensible comprehensive sourcing. workspace-hub
   when_to_use_source: backfill
+- description: Bring THE CURRENT computer back to ecosystem + machine-equality equivalence — clean repo-hygiene drift (dirty trees, stale branches/worktrees/stashes) and remediate every non-OK equality-matrix verdict. Report-first; destructive actions are guard-gated and opt-in.
+  family: workspace-hub
+  id: workspace-hub/ecosystem-equivalence-reconcile
+  name: ecosystem-equivalence-reconcile
+  when_to_use: ecosystem-equivalence-reconcile Bring THE CURRENT computer back to ecosystem + machine-equality equivalence — clean repo-hygiene drift (dirty trees, stale branches/worktrees/stashes) and remediate every non-OK equality-matrix verdict. Report-first; destructive actions are guard-gated and opt-in. workspace-hub
+  when_to_use_source: backfill
 - description: 'Canonical names, abbreviations, and relationship vocabulary for the workspace-hub ecosystem. Load this when naming repos, modules, machines, files, or expanding acronyms to ensure consistency across humans and agents. type: reference'
   family: workspace-hub
   id: workspace-hub/ecosystem-terminology
@@ -4986,6 +5028,12 @@ skills:
   name: session-corpus-audit
   when_to_use: '- Auditing agent activity patterns across Claude, Hermes, and Codex - Identifying skill gaps from repeated manual workflows - Producing tool/file frequency baselines for planning - Assessing skill-to-work alignment (are hot skills actually being used?) - Cross-agent comparison of work patterns'
   when_to_use_source: section
+- description: Operate and reason about the 'session analysis & memory curation' line item of the machine-equality matrix — the per-box engine that analyzes every AI-provider session log + curates the memory delta, its daily-freshness verdict (green ≤12h / orange >12h / red >24h), the dead-man's-switch rebuild, and the cross-machine fingerprint transfer. Use to read, refresh, or debug the cell.
+  family: workspace-hub
+  id: workspace-hub/session-curation
+  name: session-curation
+  when_to_use: session-curation Operate and reason about the 'session analysis & memory curation' line item of the machine-equality matrix — the per-box engine that analyzes every AI-provider session log + curates the memory delta, its daily-freshness verdict (green ≤12h / orange >12h / red >24h), the dead-man's-switch rebuild, and the cross-machine fingerprint transfer. Use to read, refresh, or debug the cell. workspace-hub
+  when_to_use_source: backfill
 - description: Fast, verified multi-repo synchronization across all workspace-hub submodules including pull, push, and submodule pointer updates.
   family: workspace-hub
   id: workspace-hub/sync
