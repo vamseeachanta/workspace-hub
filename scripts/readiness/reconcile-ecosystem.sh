@@ -201,7 +201,7 @@ equality_plan() {
     local dim verdict; dim=$(printf '%s' "$line" | sed -E 's/^"([^"]+)".*/\1/')
     verdict=$(printf '%s' "$line" | sed -E 's/.*"([A-Z-]+)"$/\1/')
     case "$verdict" in
-      CONFORMS|EQUAL|PARITY|EXPECTED-DIFF|EXPECTED-DIVERGENCE|UNREACHABLE|ABSENT|CURATED-FRESH|SKILLS-CURRENT|MEMORY-FRESH) continue ;;
+      CONFORMS|EQUAL|PARITY|EXPECTED-DIFF|EXPECTED-DIVERGENCE|UNREACHABLE|ABSENT|CURATED-FRESH|SKILLS-CURRENT|MEMORY-FRESH|SKILL-LINKS-OK) continue ;;
     esac
     case "$verdict" in
       STALE-CHECKOUT)
