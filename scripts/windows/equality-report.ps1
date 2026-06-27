@@ -330,6 +330,9 @@ try {
     Invoke-Checked -File "powershell" -Arguments @(
         "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $collector, "-Machine", $machine) `
         -FailureMessage "collect-equality.ps1 failed"
+    # PS 5.1 defaults python file reads to cp1252; force UTF-8 so the matrix
+    # build doesn't crash on non-ASCII state-yaml content (#2998).
+    $env:PYTHONUTF8 = '1'
     Invoke-Checked -File "python" -Arguments @($builder) `
         -FailureMessage "build-equality-matrix.py failed"
     if (-not $RefreshMatrix) {
