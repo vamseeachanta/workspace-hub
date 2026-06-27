@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (189)
+## Feedback — execution lessons & hazards (191)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
@@ -63,6 +63,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [Dark intelligence for Excel calculation extraction](feedback_dark_intelligence_excel.md) — Use dark intelligence archive to extract calculation logic from legacy Excel files — strips client context, preserves engineering methodology, avoids legal issues
 - [feedback_delegate_heavy_work_to_codex_for_tokens](feedback_delegate_heavy_work_to_codex_for_tokens.md) — "Delegate heavy work (reviews, analysis, implementation) to the Codex broker + fresh-context subagents to conserve main-session Claude tokens."
 - [feedback_delegate_token_heavy_to_codex](feedback_delegate_token_heavy_to_codex.md) — Standing preference — delegate token-heavy work to Codex where feasible
+- [feedback_dev_primary_equality_green_is_self_healing](feedback_dev_primary_equality_green_is_self_healing.md) — "Don't manually chase dev-primary's equality-matrix \"green\" — STALE-CHECKOUT is a lagging, self-healing indicator; chasing it on the shared churning checkout risks clobbering concurrent cron/session work"
 - [feedback_digitalmodel_reports_dir_gitignored](feedback_digitalmodel_reports_dir_gitignored.md) — "digitalmodel .gitignore ignores any reports/ dir — completeness HTML must go to a tracked path, not docs/reports/"
 - [discovery-first-on-stale-plan-approved](feedback_discovery_first_on_stale_plan_approved.md) — "Before executing a long-standing status:plan-approved issue, run a discovery pass against the codebase first — prior commits may have silently completed most or all of the scope. Skipping discovery wastes effort and risks duplicate-write conflicts."
 - [dispatch-local-marker-rationalization](feedback_dispatch_local_marker_rationalization.md) — "Hermes/agent dispatch lanes can rationalize a user execution-instruction as plan-approval and write the local approval marker (`.planning/plan-approved/<n>.md`) under the user's git identity even when the GH `status:plan-approved` label was correctly NOT set. Dispatch prompts must explicitly forbid local-marker writes, not just GH-label self-approval."
@@ -70,6 +71,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [edit-tool-freshness-window-after-writes](feedback_edit_tool_freshness_window_after_writes.md) — "Edit tool's freshness guard can silently invalidate after a long Write chain in the same turn; Edits to a previously-edited file return \"File has not been read yet\" and fail silently — applies most often to index.md / log.md updates batched with content writes"
 - [Email cross-noise — someone else's account emails misrouted to user's Gmail](feedback_email_cross_noise.md) — Pattern where third parties sign up for services using the user's Gmail by mistake, causing account/overdue/statement emails from those services to arrive for a non-existent relationship
 - [Emergency-stop recovery during destructive sweeps](feedback_emergency_stop_recovery_pattern.md) — When a destructive script's verification step reveals a problem AFTER kickoff, kill -P stops the next iteration in time; partial deletion is recoverable via parent-repo worktree registry
+- [feedback_epic_wrapup_issues_then_parallel_agents](feedback_epic_wrapup_issues_then_parallel_agents.md) — "At epic/feature wrap-up, open issues for follow-on candidates and pursue them via parallel agents + dynamic workflows"
 - [feedback-externalize-all-config-to-yaml](feedback_externalize_all_config_to_yaml.md) — "All work config (members, repos, data locations, material/code constants, thresholds) must live in reviewable/editable/trackable .yml — never hardcoded — because deliverables are industry-grade (many companies, not 1-2)"
 - [fetch-remote-before-resolving-issue](feedback_fetch_remote_before_resolving_issue.md) — "Before implementing a fix for a tracked issue, fetch origin and check whether that issue was already solved and pushed from another machine — local state alone hides it."
 - [feedback_g1_landing_worktree_destruction_and_push_gate](feedback_g1_landing_worktree_destruction_and_push_gate.md) — "Landing feature work from the ace-linux-1 workspace-hub checkout — worktree destruction, pre-push gate block, and the API-bypass denial"
