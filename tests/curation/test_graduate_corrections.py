@@ -191,15 +191,16 @@ def _setup(tmp_path, monkeypatch, label="dev-primary", rows=None):
 
 # ── machine guard ───────────────────────────────────────────────────────────
 def test_machine_guard_noop_off_dev_primary(tmp_path, monkeypatch):
+    # ELIGIBLE rows are present (same data as the on-dev-primary passing tests, which
+    # DO produce a draft) — so ONLY the dev-primary machine guard can suppress them.
+    # Deleting `if machine not in DEV_HOSTS: return 0` must make this test FAIL.
     state, grad = _setup(tmp_path, monkeypatch, label="ace-win-1",
                          rows=[_row(1, "a", 313, ".claude/rules/x.md")])
-    # candidate read must never happen off-host: point the reader at a poisoned path
-    monkeypatch.setattr(gc, "PROMOTIONS_FILE", tmp_path / "DOES_NOT_EXIST.yaml")
     calls = []
     rc = gc.run_cli(SimpleNamespace(), notify_fn=calls.append)
     assert rc == 0
-    assert calls == []
-    assert not (grad / "drafts").exists()
+    assert calls == []                       # guard fires before evaluate -> no notify
+    assert not (grad / "drafts").exists()     # guard fires before render -> zero drafts
 
 
 # ── renderer: quarantine + no canonical SKILL.md ────────────────────────────
