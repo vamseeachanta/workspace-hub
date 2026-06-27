@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-27T01:20:48Z
+Generated: 2026-06-27T05:21:44Z
 Mode: static (read-only)
 
 ## How to approve
@@ -47,7 +47,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3254 | Self-improvement: repeating drift patterns trigger skill-update candidates — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3253 | Self-improvement: Hermes pattern auto-promotion into canonical skills — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3252 | Self-improvement: auto-graduate high-confidence correction candidates to skills — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3249 | Self-improvement: cross-provider skill-currency matrix line item (PRIMARY) — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
 | #3248 | Epic: robust cross-provider self-improvement & skill-currency ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3239 | Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3237 | docs(workflow): canonical lifecycle for a typical GitHub issue — plan → review → implement → HTML artifact → live link | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -243,6 +242,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2663 | chore(harness): adopt HTML as default artifact format — .claude/rules/artifact-format.md | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2662 | GTM client-artifact layout inconsistent across repos — no shared bundle convention | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2660 | Compliance alert: W20 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2658 | O&G-Standards consolidator: 8 catalog-classification defects surfaced by parallel-agent ingest | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

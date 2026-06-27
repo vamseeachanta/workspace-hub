@@ -175,51 +175,6 @@
     },
     {
       "approval_blockers": [
-        "already has status:plan-approved",
-        "no canonical plan file",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "cat:skills-improvement",
-          "domain:ai-orchestration",
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Self-improvement: cross-provider skill-currency matrix line item (PRIMARY) \u2014 epic #3248"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3249,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Self-improvement: cross-provider skill-currency matrix line item (PRIMARY) \u2014 epic #3248",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3249",
-      "warnings": [
-        "approved_no_marker",
-        "approved_no_plan",
-        "dual_status_labels",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
         "missing status:plan-review label",
         "no canonical plan file",
         "review evidence not clean",
@@ -8434,9 +8389,53 @@
       "title": "Compliance alert: W20 \u2014 0% (critical)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2660",
       "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:medium",
+          "cat:tooling",
+          "cat:data",
+          "machine:dev-primary",
+          "llm-wiki",
+          "dispatch:ready",
+          "gate:completeness",
+          "domain:knowledge-management-corpus",
+          "lane:codex"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "O&G-Standards consolidator: 8 catalog-classification defects surfaced by parallel-agent ingest"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2658,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "O&G-Standards consolidator: 8 catalog-classification defects surfaced by parallel-agent ingest",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2658",
+      "warnings": []
     }
   ],
-  "generated_at": "2026-06-27T01:20:48Z",
+  "generated_at": "2026-06-27T05:21:44Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8589,51 +8588,6 @@
         "title": "Self-improvement: auto-graduate high-confidence correction candidates to skills \u2014 epic #3248",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3252",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "already has status:plan-approved",
-          "no canonical plan file",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "cat:skills-improvement",
-            "domain:ai-orchestration",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Self-improvement: cross-provider skill-currency matrix line item (PRIMARY) \u2014 epic #3248"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3249,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Self-improvement: cross-provider skill-currency matrix line item (PRIMARY) \u2014 epic #3248",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3249",
-        "warnings": [
-          "approved_no_marker",
-          "approved_no_plan",
-          "dual_status_labels",
-          "missing_review"
-        ]
       },
       {
         "approval_blockers": [
@@ -16851,26 +16805,70 @@
         "title": "Compliance alert: W20 \u2014 0% (critical)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2660",
         "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:medium",
+            "cat:tooling",
+            "cat:data",
+            "machine:dev-primary",
+            "llm-wiki",
+            "dispatch:ready",
+            "gate:completeness",
+            "domain:knowledge-management-corpus",
+            "lane:codex"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "O&G-Standards consolidator: 8 catalog-classification defects surfaced by parallel-agent ingest"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2658,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "O&G-Standards consolidator: 8 catalog-classification defects surfaced by parallel-agent ingest",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2658",
+        "warnings": []
       }
     ],
     "qa_closeout": [],
     "running_leased": []
   },
   "recommended_provider_order": [
-    "codex",
     "gemini",
-    "claude"
+    "claude",
+    "codex"
   ],
-  "scorecard_generated_at": "2026-06-27T01:20:44.227891Z",
+  "scorecard_generated_at": "2026-06-27T05:21:39.937370Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-27T01:20:44.051350Z",
+  "utilization_generated_at": "2026-06-27T05:21:39.653875Z",
   "warning_summary": {
-    "approved_no_marker": 28,
-    "approved_no_plan": 18,
-    "dual_status_labels": 11,
+    "approved_no_marker": 27,
+    "approved_no_plan": 17,
+    "dual_status_labels": 10,
     "legacy_review_no_sha": 1,
     "major_review": 1,
     "marker_without_open_approved_issue": 159,
-    "missing_review": 62
+    "missing_review": 61
   }
 }

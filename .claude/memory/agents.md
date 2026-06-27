@@ -87,7 +87,7 @@ Establish weekly GTM targets interactively with the owner, then turn them into b
 
 ## ACE Engineer GTM Context
 
-- `aceengineer-strategy/` — private nested repo with full GTM strategy
+- `aceengineer-strategy/` — private nested repo with full GTM strategy *stale: 2026-06-27*
 - 20+ prospects identified; ICP: offshore firms 10-50 engineers
 - Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`)
 - Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron)

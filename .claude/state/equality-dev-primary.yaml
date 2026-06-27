@@ -1,11 +1,11 @@
-generated_at: "2026-06-26T22:57:36"
+generated_at: "2026-06-27T00:48:34"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "e5580718f"
+  checkout_sha: "f8add3d08"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 21797, disk_avail_gb: 804}
+    headroom: {ram_avail_mib: 21898, disk_avail_gb: 809}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -25,7 +25,7 @@ dimensions:
     - {name: aqwa, status: absent, evidence: absent}
     - {name: ansys, status: absent, evidence: absent}
   harness:
-    providers: {claude: present, codex: present, gemini: present, hermes: present}
+    providers: {claude: absent, codex: present, gemini: present, hermes: present}
     gh_auth: ok
     python_cmd: uv-run
     readiness_ref: harness-readiness-ace-linux-1.yaml
@@ -39,11 +39,11 @@ dimensions:
     schema_version: 1
     providers:
       claude:
-        present: true
-        installed: true
-        "memory:read": {status: present, reason: claude_memory_context_found}
-        "skills:invoke": {status: present, reason: repo_skill_tree_found}
-        "workflow:gates": {status: present, reason: hard_gates_runtime_found}
+        present: false
+        installed: false
+        "memory:read": {status: absent, reason: provider_not_installed}
+        "skills:invoke": {status: absent, reason: provider_not_installed}
+        "workflow:gates": {status: absent, reason: provider_not_installed}
       codex:
         present: true
         installed: true
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: true
     job_count: 58
   session_curation:
-    last_curated_at: "2026-06-27T03:57:02+00:00"
+    last_curated_at: "2026-06-27T05:47:01+00:00"
     sessions_24h: 205
     providers_active: "claude,codex,gemini,hermes"
     memory_files_changed: 0
   skill_currency:
-    audited_at: "2026-06-27T03:56:55+00:00"
+    audited_at: "2026-06-27T05:48:33+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,11 +84,11 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-06-27T03:57:08+00:00"
-    worst_age_hours: 18.535
+    audited_at: "2026-06-27T05:48:33+00:00"
+    worst_age_hours: 20.392
     freshness: "MEMORY-FRESH"
   skill_link_health:
-    audited_at: "2026-06-27T03:57:35+00:00"
+    audited_at: "2026-06-27T05:48:34+00:00"
     repos_total: 14
     healthy: 28
     repairable: 0
