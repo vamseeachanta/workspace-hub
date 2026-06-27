@@ -44,7 +44,7 @@ if [[ -z "$MACHINE" ]]; then
   case "$HOST" in
     ace-linux-1*) MACHINE="dev-primary";; ace-linux-2*) MACHINE="dev-secondary";;
     *macbook*) MACHINE="macbook-portable";;
-    ace-win-1*|licensed-win-1*|acma-ansys05*) MACHINE="ace-win-1";;
+    ace-win-1*|licensed-win-1*|acma-ansys05*|acma-hou-rds02*) MACHINE="ace-win-1";;
     ace-win-2*|licensed-win-2*|acma-ws014*) MACHINE="ace-win-2";;
     *)
       if [[ "$OS" == "windows" ]]; then

@@ -63,6 +63,7 @@ function Get-EqualityMachineLabel {
     switch -Wildcard ($hostName) {
         "ace-win-1" { return "ace-win-1" }
         "acma-ansys05*" { return "ace-win-1" }
+        "acma-hou-rds02*" { return "ace-win-1" }
         "ace-win-2" { return "ace-win-2" }
         "acma-ws014*" { return "ace-win-2" }
         default { throw "Unknown Windows equality host '$hostName'; refusing to assume a ace-win-* identity" }
