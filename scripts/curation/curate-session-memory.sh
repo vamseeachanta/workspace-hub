@@ -45,6 +45,15 @@ elif command -v python3 >/dev/null 2>&1; then
   python3 "$SKILL_DRIFT" || echo "skill-drift detect failed (soft)" >&2
 fi
 
+# Audit memory freshness (#3255) — writes memory-freshness-<machine>.json for the memory_freshness
+# matrix cell. Best-effort; must not block the curation run.
+MEM_FRESH="$REPO_ROOT/scripts/curation/audit_memory_freshness.py"
+if command -v uv >/dev/null 2>&1; then
+  uv run --no-project --with pyyaml python "$MEM_FRESH" || echo "memory-freshness audit failed (soft)" >&2
+elif command -v python3 >/dev/null 2>&1; then
+  python3 "$MEM_FRESH" || echo "memory-freshness audit failed (soft)" >&2
+fi
+
 # Refresh this box's equality column so the freshness cell + render are current. The matrix
 # build is NOT optional — skipping it would freeze the rendered cell (weakening the dead-man's
 # switch) while still reporting pass. So fail loudly if no python can build it.

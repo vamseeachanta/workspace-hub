@@ -181,6 +181,21 @@ if [[ -f "$skc_file" ]] && have jq; then
   [[ "$_skd" =~ ^[0-9]+$ ]] && skc_dangling="$_skd"
 fi
 
+# ── 6d. MEMORY FRESHNESS — staleness of memory surfaces (#3255) ───────────────
+# References the audit state from scripts/curation/audit_memory_freshness.py (never re-runs it).
+# audited_at null / worst_age_hours null -> matrix grades MISSING-EVIDENCE. worst_age_hours stays
+# in the canonical payload so a refreshed audit forces a rewrite.
+mf_file="${STATE_DIR}/memory-freshness-${MACHINE}.json"
+mf_audited="null"; mf_worst="null"; mf_fresh="null"
+if [[ -f "$mf_file" ]] && have jq; then
+  _mfa=$(jq -r '.audited_at // empty' "$mf_file" 2>/dev/null)
+  [[ -n "$_mfa" ]] && mf_audited="\"$(yesc "$_mfa")\""
+  _mfw=$(jq -r 'if (.worst_age_hours|type)=="number" then .worst_age_hours else "null" end' "$mf_file" 2>/dev/null)
+  [[ "$_mfw" =~ ^[0-9]+(\.[0-9]+)?$ ]] && mf_worst="$_mfw"
+  _mff=$(jq -r '.freshness // empty' "$mf_file" 2>/dev/null)
+  [[ -n "$_mff" ]] && mf_fresh="\"$(yesc "$_mff")\""
+fi
+
 # ── 7. BEHAVIOR — deterministic, SANDBOXED probe corpus (DG4/DC1) ────────────
 # CC3: guard mktemp (never let SBX become /sbx → rm -rf /). GC4: trap-based cleanup.
 SBX_PARENT="$(mktemp -d 2>/dev/null)" || { echo "mktemp failed" >&2; exit 1; }
@@ -387,6 +402,10 @@ ${provider_harness_yaml}
     codex_present: ${skc_cp}
     hermes_present: ${skc_hp}
     index_dangling: ${skc_dangling}
+  memory_freshness:
+    audited_at: ${mf_audited}
+    worst_age_hours: ${mf_worst}
+    freshness: ${mf_fresh}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 

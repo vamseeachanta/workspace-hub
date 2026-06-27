@@ -60,6 +60,12 @@ EXPECTED_DIVERGENCE_REASONS = {"external_skill_dirs_configured", "gemini_skill_d
 # age a dead curation past green (the dead-man's-switch). See schedule-tasks.yaml equality-matrix-refresh.
 CURATION_STALE_H = 12
 CURATION_EXPIRED_H = 24
+# Memory-freshness thresholds (#3255) — keep in sync with audit_memory_freshness.py
+# (MEMORY_STALE_H / MEMORY_EXPIRED_H). The daily bridge cadence = 1 missed run at 36h,
+# ~3 at 72h. Recomputed at BUILD time (worst surface age + time-since-audit) so a dead audit
+# ages the cell past green — the same dead-man's-switch as session_curation.
+MEMORY_STALE_H = 36
+MEMORY_EXPIRED_H = 72
 
 # #2851 freshness guard: a report whose origin/main ref hasn't been refreshed within this
 # many hours can't be trusted to have a meaningful behind_main, so we fail closed. repo-sync
@@ -265,6 +271,39 @@ def skill_currency_verdict(report: dict) -> str:
     return "SKILLS-CURRENT"
 
 
+# ── memory-freshness verdict (#3255) — recomputed vs now (dead-man's-switch) ──
+def memory_freshness_verdict(report: dict, now: datetime | None = None) -> str:
+    """Grade memory staleness from the audit's worst (oldest) surface age, RECOMPUTED at build
+    time: current_age = worst_age_hours + (now - audited_at). So a dead audit cron ages the cell
+    (the frozen state file can't stay falsely green). MEMORY-FRESH ≤36h / MEMORY-STALE ≤72h /
+    MEMORY-EXPIRED >72h. Fail-closed MISSING-EVIDENCE on missing/garbled/future evidence."""
+    mf = report.get("dimensions", {}).get("memory_freshness")
+    if not isinstance(mf, dict):
+        return "MISSING-EVIDENCE"
+    stamp = mf.get("audited_at")
+    worst = mf.get("worst_age_hours")
+    if not isinstance(stamp, str) or isinstance(worst, bool) or not isinstance(worst, (int, float)):
+        return "MISSING-EVIDENCE"
+    try:
+        ts = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+    except ValueError:
+        return "MISSING-EVIDENCE"
+    now = now or datetime.now(timezone.utc)
+    if ts.tzinfo is None:
+        ts = ts.replace(tzinfo=timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    since_audit_h = (now - ts).total_seconds() / 3600.0
+    if since_audit_h < 0 or worst < 0:          # future stamp / negative age ⇒ untrustworthy
+        return "MISSING-EVIDENCE"
+    current_age = worst + since_audit_h
+    if current_age <= MEMORY_STALE_H:
+        return "MEMORY-FRESH"
+    if current_age <= MEMORY_EXPIRED_H:
+        return "MEMORY-STALE"
+    return "MEMORY-EXPIRED"
+
+
 # ── value extraction for uniform dims ────────────────────────────────────────
 def extract_value(dim: str, report: dict):
     d = report.get("dimensions", {})
@@ -372,6 +411,8 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return freshness_verdict(rep)
     if dim == "skill_currency":             # cross-provider skill-drift family — per-box facts
         return skill_currency_verdict(rep)
+    if dim == "memory_freshness":           # memory-staleness family — recomputed vs now
+        return memory_freshness_verdict(rep)
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
@@ -398,7 +439,7 @@ def load_reports() -> dict[str, dict]:
 
 BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
                      "kanban", "memory", "behavior", "scheduler", "session_curation",
-                     "skill_currency"]
+                     "skill_currency", "memory_freshness"]
 DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
 # ── render grouping (#2801 collapsible-rows enhancement) ─────────────────────
@@ -419,18 +460,19 @@ GROUPS = [
     ("provider", "Provider capability parity — per runtime", provider_rows()),
     ("curation", "Session analysis &amp; memory curation — daily freshness", ["session_curation"]),
     ("skills-currency", "Skill currency — all providers up to date vs canonical", ["skill_currency"]),
+    ("memory-freshness", "Memory freshness — memory surfaces refreshed recently", ["memory_freshness"]),
 ]
 
 # Worst-of severity for the collapsed group rollup. Higher = more operator attention.
 # A group's rollup cell shows the worst verdict among its dims for that machine; an
 # all-good group collapses to a single green "OK" so a clean box reads at a glance.
 ROLLUP_SEVERITY = {
-    "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6, "SKILLS-DRIFTED": 6,
-    "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5, "SKILLS-INDEX-STALE": 5,
+    "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6, "SKILLS-DRIFTED": 6, "MEMORY-EXPIRED": 6,
+    "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5, "SKILLS-INDEX-STALE": 5, "MEMORY-STALE": 5,
     "MISSING-EVIDENCE": 4, "PENDING": 4,
     "STALE-CHECKOUT": 3,
     "EXPECTED-DIFF": 1, "EXPECTED-DIVERGENCE": 1, "UNREACHABLE": 1, "ABSENT": 1,
-    "CONFORMS": 0, "EQUAL": 0, "PARITY": 0, "CURATED-FRESH": 0, "SKILLS-CURRENT": 0,
+    "CONFORMS": 0, "EQUAL": 0, "PARITY": 0, "CURATED-FRESH": 0, "SKILLS-CURRENT": 0, "MEMORY-FRESH": 0,
 }
 
 
@@ -448,7 +490,7 @@ def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
 # ── remediation playbook (verdict → action) — keep in sync with the verdict→fix table in
 #    .claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md + reconcile-ecosystem.sh
 OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGENCE",
-               "UNREACHABLE", "ABSENT", "CURATED-FRESH", "SKILLS-CURRENT"}
+               "UNREACHABLE", "ABSENT", "CURATED-FRESH", "SKILLS-CURRENT", "MEMORY-FRESH"}
 
 
 def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
@@ -503,6 +545,9 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
     if verdict == "SKILLS-INDEX-STALE":
         return ("the skills index has dangling entries (paths no longer in the tree) — regenerate "
                 ".claude/skills-index.yaml (skills-curation cron / generator)", "this box", False)
+    if verdict in ("MEMORY-STALE", "MEMORY-EXPIRED"):
+        return ("memory surfaces are stale (>36h orange / >72h red) — run the memory bridge "
+                "(scripts/memory/bridge-hermes-claude.sh) or repair its cron", "this box", False)
     return ("investigate this cell's report", "operator", False)
 
 
@@ -621,8 +666,8 @@ def main() -> None:
 <title>Machine-Equality Matrix — #2801</title>
 <style>body{{font:14px/1.5 system-ui,sans-serif;margin:2rem;max-width:1100px}}table{{border-collapse:collapse;width:100%}}
 th,td{{border:1px solid #ddd;padding:.4rem .6rem;font-size:.8rem;text-align:center}}thead th{{background:#2d3748;color:#fff}}
-tbody th{{background:#edf2f7;text-align:left}}.conforms,.equal,.parity,.ok,.curated-fresh,.skills-current{{background:#c6f6d5}}.ok{{font-weight:700}}
-.below-baseline,.diverges,.curated-expired,.skills-drifted{{background:#fed7d7}}.no-majority,.missing-baseline,.curated-stale,.skills-index-stale{{background:#feebc8}}
+tbody th{{background:#edf2f7;text-align:left}}.conforms,.equal,.parity,.ok,.curated-fresh,.skills-current,.memory-fresh{{background:#c6f6d5}}.ok{{font-weight:700}}
+.below-baseline,.diverges,.curated-expired,.skills-drifted,.memory-expired{{background:#fed7d7}}.no-majority,.missing-baseline,.curated-stale,.skills-index-stale,.memory-stale{{background:#feebc8}}
 .expected-diff,.expected-divergence{{background:#e9d8fd}}
 .pending,.missing-evidence{{background:#fffaf0}}.unreachable,.absent,.na{{background:#f7fafc;color:#a0aec0}}
 .stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}
@@ -664,6 +709,7 @@ to refresh <i>every</i> active machine's report, then re-judge what genuinely di
 <span class="expected-diff">EXPECTED-DIFF / EXPECTED-DIVERGENCE</span><span class="stale-checkout">STALE-CHECKOUT</span>
 <span class="curated-fresh">CURATED-FRESH ≤12h</span><span class="curated-stale">CURATED-STALE &gt;12h</span><span class="curated-expired">CURATED-EXPIRED &gt;24h</span>
 <span class="skills-current">SKILLS-CURRENT</span><span class="skills-index-stale">SKILLS-INDEX-STALE</span><span class="skills-drifted">SKILLS-DRIFTED</span>
+<span class="memory-fresh">MEMORY-FRESH ≤36h</span><span class="memory-stale">MEMORY-STALE &gt;36h</span><span class="memory-expired">MEMORY-EXPIRED &gt;72h</span>
 <span class="absent">UNREACHABLE / ABSENT / n/a</span></p>
 <script>
 document.querySelectorAll('tr.grp').forEach(function(h){{
