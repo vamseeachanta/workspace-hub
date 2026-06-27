@@ -210,6 +210,17 @@ hub="$(new_sandbox meta)"; add_repo "$hub" repo-x nested >/dev/null
 WORKSPACE_HUB="$hub" bash "$RESYNC" --machine custom-label >/dev/null 2>&1
 assert_file "test_machine_arg_override" "$hub/.claude/state/skill-link-health-custom-label.json"
 
+# ── T17: WORKTREE excluded (.git file → /worktrees/), SUBMODULE + clone KEPT ──
+# The worktree-skip must drop only worktrees, never genuine submodules (whose .git is ALSO a file).
+hub="$(new_sandbox meta)"
+add_repo "$hub" real-clone nested >/dev/null                                # no .git ⇒ a real target
+wt="$hub/wt-checkout"; mkdir -p "$wt/.claude/skills"
+printf 'gitdir: /somewhere/.git/worktrees/wt-checkout\n' > "$wt/.git"        # worktree ⇒ EXCLUDED
+sm="$hub/a-submodule"; mkdir -p "$sm/.claude/skills"
+printf 'gitdir: ../.git/modules/a-submodule\n' > "$sm/.git"                  # submodule ⇒ KEPT
+json="$(run_report "$hub")"
+assert_eq "test_worktree_excluded_submodule_kept" "$(jget "$json" repos_total)" "2"
+
 # ── Summary ─────────────────────────────────────────────────────────────────
 echo ""
 echo "================================"

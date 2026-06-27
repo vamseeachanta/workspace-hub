@@ -50,6 +50,12 @@ def test_missing_audited_at():
     assert bem.skill_link_health_verdict(r) == "MISSING-EVIDENCE"
 
 
+def test_zero_repos_is_no_evidence_not_healthy():
+    # nothing discovered ⇒ MISSING-EVIDENCE, never a silent green (fail-open guard)
+    for bad in (0, None, "0", True, -1):
+        assert bem.skill_link_health_verdict(_rep(repos_total=bad)) == "MISSING-EVIDENCE"
+
+
 def test_garbled_repairable():
     for bad in (None, "12", True, 1.5):
         assert bem.skill_link_health_verdict(_rep(repairable=bad)) == "MISSING-EVIDENCE"

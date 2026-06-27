@@ -171,11 +171,13 @@ discover_repos() {
     excluded=false
     for ex in "${EXCLUDE_DIRS[@]}"; do [[ "$dir_name" == "$ex" ]] && excluded=true && break; done
     [[ "$excluded" == "true" ]] && continue
-    # Skip git WORKTREES — their .git is a FILE (gitdir pointer), not a dir. A worktree only carries
-    # .claude/skills/ because it's a checkout of a repo that has it; it is NOT a propagation target,
-    # and counting its un-linked shared dirs as "MISSING" would keep the cell permanently red on every
-    # box that has worktrees in flight. Only canonical clones (.git is a dir) are real link targets.
-    [[ -f "$repo_dir/.git" ]] && continue
+    # Skip git WORKTREES (but NOT submodules). A worktree's .git is a FILE whose gitdir points into a
+    # ".../worktrees/<name>" path; a submodule's .git file points into ".../modules/<name>". We only
+    # drop worktrees — they carry .claude/skills/ as transient checkouts, are not stable propagation
+    # targets, and counting their un-linked shared dirs as MISSING would keep the cell permanently red
+    # on every box with worktrees in flight. (propagate-ecosystem.sh may still touch a worktree
+    # idempotently under --apply; we simply don't audit worktree link health here.)
+    if [[ -f "$repo_dir/.git" ]] && grep -q '/worktrees/' "$repo_dir/.git" 2>/dev/null; then continue; fi
     [[ -d "$repo_dir/.claude/skills" ]] && echo "${repo_dir%/}"
   done | sort -u
 }

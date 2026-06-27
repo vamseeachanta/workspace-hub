@@ -314,6 +314,9 @@ def skill_link_health_verdict(report: dict) -> str:
         return "MISSING-EVIDENCE"
     if not isinstance(slh.get("audited_at"), str):
         return "MISSING-EVIDENCE"
+    repos = slh.get("repos_total")
+    if isinstance(repos, bool) or not isinstance(repos, int) or repos <= 0:
+        return "MISSING-EVIDENCE"        # nothing discovered ⇒ no evidence, NOT silently 'healthy'
     repairable = slh.get("repairable")
     if isinstance(repairable, bool) or not isinstance(repairable, int):
         return "MISSING-EVIDENCE"
