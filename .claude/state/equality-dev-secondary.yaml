@@ -1,19 +1,19 @@
-generated_at: "2026-06-26T18:46:14"
+generated_at: "2026-06-27T07:05:07"
 schema_version: 4
 machine: "dev-secondary"
 host: "ace-linux-2"
 os: linux
 status: active
 provenance:
-  checkout_sha: "f0b8c9d18"
-  dirty: true
+  checkout_sha: "6b3f103d8"
+  dirty: false
   behind_main: 0
   ahead_main: 0
   origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA T400 4GB"}
-    headroom: {ram_avail_mib: 23183, disk_avail_gb: 851}
+    headroom: {ram_avail_mib: 24116, disk_avail_gb: 851}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -68,7 +68,7 @@ dimensions:
   scheduler:
     has_repo_sync: true
     has_parity_review: false
-    job_count: 22
+    job_count: 23
   session_curation:
     last_curated_at: null
     sessions_24h: 0
@@ -83,3 +83,13 @@ dimensions:
     codex_present: false
     hermes_present: false
     index_dangling: null
+  memory_freshness:
+    audited_at: null
+    worst_age_hours: null
+    freshness: null
+  skill_link_health:
+    audited_at: null
+    repos_total: 0
+    healthy: 0
+    repairable: 0
+    worst_state: null
