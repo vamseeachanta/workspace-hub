@@ -157,7 +157,6 @@ fi
 _nightly_exit=0
 bash scripts/learning/comprehensive-learning.sh || _nightly_exit=$?
 
-<<<<<<< HEAD
 # Step 3f: auto-graduate high-confidence correction candidates to DRAFT proposals (#3252, epic #3248).
 # Best-effort so a graduation failure never aborts the nightly. The module self-guards on
 # machine_label() (dev-primary/ace-linux-1 only) and signals via state JSON + notify.sh, never via a
