@@ -1,7 +1,7 @@
 generated_at: "2026-06-27T15:00:52"
 schema_version: 4
 machine: "ace-win-1"
-host: "acma-hou-rds02"
+host: "acma-ansys05"
 os: windows
 status: active
 provenance:
@@ -28,7 +28,7 @@ dimensions:
     providers: {claude: present, codex: absent, gemini: absent, hermes: absent}
     gh_auth: absent
     python_cmd: python
-    readiness_ref: harness-readiness-acma-hou-rds02.yaml
+    readiness_ref: harness-readiness-acma-ansys05.yaml
     readiness_overall: missing
   skills: {repo_skill_count: 415}
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
