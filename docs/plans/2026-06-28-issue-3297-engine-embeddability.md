@@ -1,5 +1,10 @@
 # Plan for #3297: wf-api(assetutilities) — make the engine embeddable (injected root, no cwd-coupled side effects)
 
+> **Wave-2 cross-repo addendum (2026-06-28).** Wave-2 consumers exposed three contract points folded in here:
+> 1. **`_config_dir_path` rebase (added to `configure_embed`):** quickcheck/config-dir-relative routers (e.g. digitalmodel wall-thickness) write to `cfg["_config_dir_path"]` (default `cwd`), NOT `Analysis.result_folder` — so `configure_embed` now sets `cfg["_config_dir_path"] = root_folder`, guaranteeing **every** router's writes land under the injected root. Test: `test_embed_rebases_config_dir_path`.
+> 2. **Canonical signature (do not mis-mirror):** `configure_embed(self, cfg, basename, root_folder, log_to_file=False)` takes **NO `library_name`** (it skips the `unify_*` step, the only consumer of `library_name`). Adopters must call it positionally as such — NOT like the regular `configure(cfg, library_name, basename, ...)`.
+> 3. **Per-repo engines:** this issue covers **assetutilities'** engine (worldenergydata reuses it). **digitalmodel** and **assethold** have their OWN engines → separate embed-port prereqs **#3307** (digitalmodel) and **#3308** (assethold) mirror this design. The shared `assetutilities.workflow_api.ResultEnvelope` types are imported by all; only engine dispatch is per-repo.
+>
 > **Status:** draft
 > **Complexity:** T3
 > **Date:** 2026-06-28
@@ -157,6 +162,10 @@ def configure_embed(self, cfg, basename, root_folder, log_to_file=False):
     analysis_root_folder = root_folder                          # INJECTED, authoritative; never os.getcwd()
     result_folder_dict, _ = self.configure_result_folder(analysis_root_folder)   # creates results/{,Data,Plot}
     log_folder = os.path.join(analysis_root_folder, "logs")     # value carried; NOT created here (set_logging gates it)
+    # CROSS-REPO FIX (Wave-2): quickcheck/config-dir-relative routers (e.g. digitalmodel wall-thickness)
+    # write to cfg["_config_dir_path"] (default Path.cwd()), NOT Analysis.result_folder. Rebase it to the
+    # injected root so EVERY router's writes land under root_folder — not just routers that honor result_folder.
+    cfg["_config_dir_path"] = analysis_root_folder              # config-relative outputs resolve under <root>
 
     app_config_params = {"Analysis": {
         "basename": basename,

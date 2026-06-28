@@ -165,8 +165,12 @@ class ResultEnvelope:                     # stdlib dataclass, NOT Pydantic (no h
     warnings: list[str]
     def to_dict() / from_dict()  # lossless round-trip; canonical sorted-key order
 
-def code_version() -> dict:
-    pkg = importlib.metadata.version("assetutilities")        # package_version
+# CROSS-REPO FIX (Wave-2): PARAMETERIZED by package so each adopting repo stamps its OWN version.
+# (Wave-2 #3287 showed a hardcoded "assetutilities" makes an assethold envelope report the wrong version.)
+# Default "assetutilities" keeps assetutilities-native calls identical; adopters pass their package:
+#   digitalmodel -> code_version("digitalmodel"), assethold -> code_version("assethold"), etc.
+def code_version(package_name="assetutilities") -> dict:
+    pkg = importlib.metadata.version(package_name)            # package_version (caller's package)
     sha = _git_sha_or_none()                                  # git rev-parse HEAD, best-effort
     return {"package_version": pkg, "git_sha": sha}           # both keys always present
 
@@ -430,6 +434,7 @@ Focused confirmation that the R3 cfg-dump MAJOR is closed: **APPROVE — no rema
 
 ## Risks and Open Questions
 
+- **Cross-repo scope (Wave-2 finding).** This `run_workflow` lives in `assetutilities.workflow_api` and calls **assetutilities'** engine via the #3297 embed path; **worldenergydata** reuses that engine so it's covered. **digitalmodel** and **assethold** have their OWN engines → they provide their own `run_workflow` dispatch via the per-repo embed-port prereqs **#3307** (digitalmodel) / **#3308** (assethold), **reusing the shared `ResultEnvelope` + helpers exported here** (`code_version(package_name)` now parameterized so each stamps its own version). So #3282 ships the shared types + the assetutilities runner; per-repo runners are their adoption issues. This is a scope boundary, not a defect.
 - **Risk — hard dependency on #3297.** #3282 cannot land until #3297's `engine(embed=True, root_folder=, log_to_file=)` is merged. Mitigation: the embed-path tests are written test-first and run green only after #3297 lands; the non-embed tests (envelope round-trip, hashing, build_cfg merge, registry schema) are independent and can be developed in parallel. Critical path: **#3297 → #3282 → #3283**. **Sequencing note (#3295, R3 MINOR-2):** #3295 owns the `schema_version: 2` superset reconciliation; #3282's registry edit (adopting `2` + `invocation:` + the #3282-owned `result:` descriptor) must land **after or with** #3295 to avoid a `workflows.yaml` meaning-collision / merge conflict. Treat #3295 as a co-dependency of #3282's registry change, not just #3297.
 - **Risk — embed path must capture every write.** Side-effect-freeness depends on #3297's `configure_embed` routing **all** result + log writes under `root_folder` (verified in #3297: `analysis_root_folder = root_folder`; `configure_result_folder(root_folder)` → `<root>/results`; `log_to_file=False` → no `logs/`, no `.log`). Guardrail: `test_run_workflow_writes_nothing_outside_tempdir` snapshots the repo `examples/.../results/` dir before/after and asserts no change, plus asserts no `.log`/`logs/` anywhere. If any future router writes outside `result_folder` (a hardcoded path), that test catches it.
 - **Risk — emitted filenames are cfg-derived, not registry-declared.** The embed path's `file_name` comes from `basename` (+ `overwrite.output`), so the real outputs (`data_exploration_FST*.csv`) differ from the registry `outputs:` (`input_FST*.csv`). Mitigation: `extract_result` **globs the injected root** and never matches registry names; the registry `outputs:` is documented as documentary (expected-count cross-check only). This is the explicit Wave-1c MAJOR fix.
