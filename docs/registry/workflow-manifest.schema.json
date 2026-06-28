@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/vamseeachanta/workspace-hub/docs/registry/workflow-manifest.schema.json",
+  "title": "Ecosystem workflow discovery manifest (#3284)",
+  "description": "Aggregates every tier-1 repo's docs/registry/workflows.yaml into a single provenance-stamped manifest. The per-workflow field-set is exactly what the reference resolver deckhand/src/deckhand/capability_smoke.py consumes, so a consumer can round-trip an entry through resolve_workflow().",
+  "type": "object",
+  "required": [
+    "manifest_version", "generated_at", "generator", "resolver",
+    "repos", "workflow_count", "workflows", "latest_by_routing_id", "warnings"
+  ],
+  "properties": {
+    "manifest_version": {
+      "type": "integer",
+      "description": "Manifest-format version, independent of per-repo registry schema_version."
+    },
+    "generated_at": {
+      "type": "string",
+      "description": "ISO-8601 UTC generation timestamp. EXCLUDED from --check stale comparison."
+    },
+    "generator": { "type": "string", "const": "scripts/workflow/generate_workflow_manifest.py" },
+    "resolver": {
+      "type": "string",
+      "const": "deckhand/src/deckhand/capability_smoke.py",
+      "description": "The reference resolver whose consumed field-set this manifest targets (D1)."
+    },
+    "repos": {
+      "type": "array",
+      "description": "Per-repo provenance + status entry.",
+      "items": {
+        "type": "object",
+        "required": ["repo", "status", "registry_sha256"],
+        "properties": {
+          "repo": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["ok", "missing-registry", "unparseable-registry"]
+          },
+          "schema_version": {
+            "type": ["integer", "null"],
+            "description": "Per-repo declared registry schema_version, recorded not assumed (target = v2 additive superset, D1)."
+          },
+          "registry_sha256": {
+            "type": ["string", "null"],
+            "description": "SHA-256 of the raw registry text. Null for non-ok repos. The --check stale gate compares only this set."
+          },
+          "git_sha": { "type": ["string", "null"], "description": "Best-effort repo HEAD." },
+          "row_count": { "type": "integer" }
+        }
+      }
+    },
+    "workflow_count": { "type": "integer" },
+    "workflows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "workflow_id", "routing_id", "id", "repo", "version", "status", "latest",
+          "input", "outputs", "runtime", "invocation", "license_gated",
+          "request_schema", "response_schema", "result", "determinism"
+        ],
+        "properties": {
+          "workflow_id": {
+            "type": "string",
+            "description": "repo:id@version (D4) — disambiguates duplicate ids across versions."
+          },
+          "routing_id": { "type": "string", "description": "repo:id — unversioned routing key; resolve via latest_by_routing_id." },
+          "id": { "type": "string" },
+          "repo": { "type": "string" },
+          "version": { "type": "integer", "description": "Unversioned row == 1 (mirrors capability_smoke._row_version)." },
+          "status": { "type": "string", "description": "Routing triple status (default 'stable')." },
+          "latest": { "type": "boolean" },
+          "basename": { "type": ["string", "null"] },
+          "title": { "type": ["string", "null"] },
+          "input": {
+            "type": ["string", "null"],
+            "description": "Per-row input PRESERVED (D4) — the resolver fails closed without it."
+          },
+          "outputs": { "type": "array" },
+          "runtime": { "type": ["string", "null"] },
+          "invocation": {
+            "type": ["string", "null"],
+            "description": "TOP-LEVEL registry invocation template, {input}-only substitution (D1). NEVER falls back to a per-row test nodeid. Null + warning for pre-#3295 registries."
+          },
+          "license_gated": {
+            "type": "boolean",
+            "description": "Derives from runtime == 'requires-license' (D4). data_source.network_required does NOT set this."
+          },
+          "request_schema": {
+            "description": "Structured descriptor passthrough (D1) — null when absent, NO str coercion. #3295 reserves the slot, #3282 owns the shape."
+          },
+          "response_schema": { "description": "Structured descriptor passthrough (D1) — null when absent, NO str coercion." },
+          "result": {
+            "description": "Registry 'result:' location descriptor (owned by #3282) — null until populated."
+          },
+          "data_source": {
+            "description": "Informational network/fixture passthrough — NOT the license gate."
+          },
+          "determinism": {
+            "type": "null",
+            "description": "Reserved-null passthrough (D3/D6) — #3283 (Wave 2) populates via key-allowlist, NOT a registry heuristic."
+          }
+        }
+      }
+    },
+    "latest_by_routing_id": {
+      "type": "object",
+      "description": "routing_id -> resolved workflow_id when unpinned: latest-stable (latest:true stable row if flagged, else highest stable version, else highest of any status). Mirrors capability_smoke._select_version (D4).",
+      "additionalProperties": { "type": "string" }
+    },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  }
+}
