@@ -174,6 +174,10 @@ data/document-index/*.jsonl.backup-*
 # Raw transcripts (sessions/, archive/, session-reports/) stay local — too large
 /docs/strategy/gtm/job-market-scan/archive/
 !.claude/state/candidates/
+# #3253: Hermes-pattern last-seen signature is per-machine RUNTIME spam-suppression state — keep it
+# untracked so the bridge's §8 stash/pop never churns it (the candidate *.md IS tracked + committed
+# by commit-learning-artifacts.sh).
+.claude/state/candidates/hermes-patterns-last-seen-*.json
 !.claude/state/corrections/
 !.claude/state/patterns/
 !.claude/state/harness-readiness-ace-win-1.yaml
