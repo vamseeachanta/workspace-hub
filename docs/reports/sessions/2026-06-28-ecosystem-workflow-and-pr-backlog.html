@@ -1,32 +1,30 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Session Review · 2026-06-28 · Ecosystem workflow directive + PR backlog merge</title>
+<title>Session · 2026-06-28 · Session live-link (lean) + PR backlog clear</title>
 <style>
-:root{--fg:#1a2230;--muted:#5b6675;--bg:#f7f8fa;--card:#fff;--line:#e2e6ec;--brand:#5b3fd6;--ok:#1a7f4b;--warn:#b06a00;--hold:#9a3412}
+:root{--fg:#1a2230;--muted:#5b6675;--bg:#f7f8fa;--card:#fff;--line:#e2e6ec;--brand:#5b3fd6;--warn:#b06a00}
 *{box-sizing:border-box}
 body{margin:0;font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--fg);background:var(--bg)}
-header{padding:22px;background:var(--card);border-bottom:1px solid var(--line)}
-header h1{font-size:22px;margin:0 0 4px}
-header .meta{color:var(--muted);font-size:14px}
+header{padding:20px 22px;background:var(--card);border-bottom:1px solid var(--line)}
+header h1{font-size:20px;margin:0 0 4px}
+header .meta{color:var(--muted);font-size:13px}
 header .home{color:var(--brand);text-decoration:none;font-size:13px}
-main{max-width:920px;margin:0 auto;padding:24px 22px}
-section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:0 0 18px}
-section h2{font-size:16px;margin:0 0 12px;border-bottom:1px solid var(--line);padding-bottom:8px}
-.kpis{display:flex;gap:10px;flex-wrap:wrap}
-.kpi{flex:1 1 120px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
-.kpi .n{font-size:26px;font-weight:700}
-.kpi .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
-th{background:#f0f3f7}
-a{color:var(--brand)}
-ul{margin:6px 0;padding-left:20px}li{margin:3px 0}
-footer{color:var(--muted);font-size:13px;text-align:center;padding:18px}
+header .headline{margin:8px 0 0;font-size:15px}
+main{max-width:860px;margin:0 auto;padding:20px 22px}
+.refs{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:4px 18px}
+.row{display:flex;gap:14px;padding:9px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.row:last-child{border-bottom:0}
+.k{flex:0 0 92px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.v{flex:1;font-size:14px}
+.v a{color:var(--brand);text-decoration:none}.v a:hover{text-decoration:underline}
+.sep{color:var(--line);margin:0 3px}
+.warn{color:var(--warn)}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:16px}
 .idx{list-style:none;padding:0}.idx li{margin:0 0 10px;padding:0}
 .idx a{font-weight:600;font-size:16px}.idx .d{color:var(--muted);font-size:13px}
 </style></head>
 <body>
-<header><a class="home" href="../index.html">← workspace-hub</a><h1>Session Review — Ecosystem workflow directive + PR backlog merge</h1><div class="meta">2026-06-28 · workspace-hub · lane:claude · public-safe (issue/PR numbers + verdicts only)</div></header>
-<main><section><h2>At a glance</h2><div class="kpis"><div class="kpi"><div class="n">9</div><div class="l">PRs merged</div></div><div class="kpi"><div class="n">2</div><div class="l">conflicts resolved</div></div><div class="kpi"><div class="n">1</div><div class="l">issue filed</div></div><div class="kpi"><div class="n">approved</div><div class="l">plan #3298</div></div><div class="kpi"><div class="n">1</div><div class="l">PR needs a call</div></div></div><p>Stopped the sync-cycle churn: routed work through the repo workflow, cleared the PR backlog (9 of 10 merged), and stood up the per-session live-link review doc (#3298). This page is the first generator-produced instance of that deliverable.</p></section><section><h2>Pull requests</h2><table><thead><tr><th>PR</th><th>What</th><th>Status</th></tr></thead><tbody><tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3273">#3273</a></td><td>recurring drift classes → parked skill-update candidates (#3254)</td><td>merged</td></tr><tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3274">#3274</a></td><td>Hermes pattern → skill/memory candidate emitter (#3253)</td><td>merged</td></tr><tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3275">#3275</a></td><td>auto-graduate correction candidates to DRAFT skills (#3252)</td><td>merged (conflict resolved)</td></tr><tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3276">#3276</a></td><td>adaptive correction-confidence threshold + Gemini skill detection (#3256)</td><td>merged (conflict resolved)</td></tr><tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3017">#3017</a></td><td>incident-to-issue evidence-research skill ref</td><td>merged</td></tr><tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3003">#3003</a></td><td>epic #2998 Windows-rollout entry prompt handoff</td><td>merged</td></tr><tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3020">#3020</a></td><td>epic #2998 Windows-host cutover runbook + handoff</td><td>merged</td></tr><tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/2982">#2982</a></td><td>F3 registry-driven dispatch + provider-routing policy (#2970)</td><td>merged</td></tr><tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3244">#3244</a></td><td>ecosystem reconcile handoff; baseline-red check fixed via branch update</td><td>merged</td></tr><tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3280">#3280</a></td><td>100+ file bridge-managed memory sweep; conflicts on generated matrix HTML</td><td>HELD — user call</td></tr></tbody></table></section><section><h2>Issues &amp; plans</h2><table><thead><tr><th>Issue</th><th>State</th><th>Note</th></tr></thead><tbody><tr><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3298">#3298</a></td><td>plan-approved</td><td>per-session live-link HTML review doc; publish mode = sanitized-public; implemented this session (TDD)</td></tr><tr><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/2110">#2110</a></td><td>cross-linked</td><td>machine-readable session-close report; #3298 consumes its payload</td></tr></tbody></table></section><section><h2>Decisions</h2><ul><li>Publish mode = sanitized-public: live Pages link carries only issue/PR numbers + verdicts; full-fidelity stays local; fail-closed sanitization gate.</li><li>Did NOT --admin-override a failing required check (#3244) — fixed the cause (branch staleness) instead.</li><li>Did NOT self-approve the plan gate — user approved the mode in-window before implementation.</li></ul></section><section><h2>Artifacts</h2><ul><li>feedback-ecosystem-workflow-and-session-live-link.md (memory directive)</li><li>docs/plans/2026-06-28-issue-3298-session-review-html.md (approved plan)</li><li>scripts/workflow/session_review_sanitize.py + build_session_review.py (generator, 15 tests)</li><li>docs/reports/sessions/ (this page, index, manifest) + build_pages.py publish wire-up</li></ul></section><section><h2>Next steps</h2><ul><li>Merge PR #3299 once green — it lands the generator + this page + Pages wire-up.</li><li>Decide on #3280 (merge the memory sweep or close/repackage).</li><li>Future sessions: emit a payload → run build_session_review.py → page auto-publishes to the live index.</li></ul></section></main><footer>workspace-hub · session review · generated by build_session_review.py · ecosystem-workflow-and-pr-backlog</footer>
+<header><a class="home" href="../index.html">← workspace-hub</a><h1>Session live-link (lean) + PR backlog clear</h1><div class="meta">2026-06-28 · session record · lane:claude · public-safe (references only)</div><p class="headline">Cleared the PR backlog (9 merged), shipped the per-session live-link doc (#3298), then refined it to a lean reference layer (#3306). Substance lives in canonical homes; this page just points.</p></header>
+<main><div class="refs"><div class="row"><span class="k">Issues</span><span class="v"><a href="https://github.com/vamseeachanta/workspace-hub/issues/3306">lean reference-layer refinement</a> <span class="sep">·</span> <a href="https://github.com/vamseeachanta/workspace-hub/issues/3298">live-link session-review (v1)</a> <span class="sep">·</span> <a href="https://github.com/vamseeachanta/workspace-hub/issues/2110">machine-readable session-close (sibling)</a></span></div><div class="row"><span class="k">PRs</span><span class="v"><a href="https://github.com/vamseeachanta/workspace-hub/pull/3299">feature (merged)</a> <span class="sep">·</span> <a href="https://github.com/vamseeachanta/workspace-hub/pull/3304">handoff extract (merged)</a></span></div><div class="row"><span class="k">Plans</span><span class="v"><a href="https://github.com/vamseeachanta/workspace-hub/blob/main/docs/plans/2026-06-28-issue-3306-lean-session-review.md">lean-design plan</a> <span class="sep">·</span> <a href="https://github.com/vamseeachanta/workspace-hub/blob/main/docs/plans/2026-06-28-issue-3298-session-review-html.md">v1 plan</a></span></div><div class="row"><span class="k">Decisions</span><span class="v"><a href="https://github.com/vamseeachanta/workspace-hub/issues/3298">publish-mode = sanitized-public</a> <span class="sep">·</span> <a href="https://github.com/vamseeachanta/workspace-hub/issues/3306">lean reference layer + canonical homes</a></span></div><div class="row"><span class="k">Record</span><span class="v"><a href="https://github.com/vamseeachanta/workspace-hub/blob/main/docs/session-handoffs/2026-06-28-session-live-link-lean-and-pr-backlog.md">session record (log + decisions)</a></span></div><div class="row"><span class="k">Reports</span><span class="v"><a href="https://github.com/vamseeachanta/workspace-hub/blob/main/docs/reports/sessions/index.html">all session reviews</a></span></div></div></main><footer>workspace-hub · session record · references canonical homes (code→PRs · plans→docs/plans · decisions→issue/PR · log→handoff) · ecosystem-workflow-and-pr-backlog</footer>
 </body></html>
