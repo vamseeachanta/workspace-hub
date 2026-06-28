@@ -19,6 +19,10 @@ Create, search, triage, and manage GitHub issues. Each section shows `gh` first,
 - Authenticated with GitHub (see `github-auth` skill)
 - Inside a git repo with a GitHub remote, or specify the repo explicitly
 
+### Private repos behind Deckhand shims
+
+When operating on a private repo whose `git`/`gh` binaries are wrapped by Deckhand scope shims, do not assume ordinary `gh issue list --repo ...` will work from every chat/session. First verify the session has the identity fields the shim needs (`HERMES_SESSION_USER_ID`, `HERMES_SESSION_PLATFORM`, `HERMES_SESSION_CHAT_ID`) and that the current chat is bound to a scope that authorizes the target repo. If `gh` fails closed with `unknown operator` or no active scope, report that as an authorization/context gap, not as “no issues.” For read-only status requests, fall back to durable repo-local handoff/issue-map documents only as clearly labeled secondary evidence, and keep direct GitHub issue state marked unverified until an authorized Deckhand/`gh` path succeeds. Avoid browser or unauthenticated REST as the primary path for private repos; 404 commonly means private/auth-blocked, not absent.
+
 ### Setup
 
 ```bash
@@ -138,7 +142,8 @@ Before creating a new feature issue, do a quick grounding pass to avoid duplicat
 10. If ending a session with a linked issue tree, produce a restart-safe closeout: issue states/gate labels, artifact paths, validation results, pushed commits, remote-ref sync evidence, and preserved unrelated worktrees. See `references/issue-tree-exit-closeout.md`.
 11. If you accidentally create an issue with unresolved placeholders, fix it immediately with `gh issue edit --body-file ...` and then re-verify the rendered body.
 12. For layered architecture/governance issue trees, see `references/layered-architecture-review-issue-tree.md`; it includes parent/child issue structure, data/execution/report layer scope, and the rule that output/report residency must mirror input/data residency unless an explicit promotion gate says otherwise.
-13. Before closing layered architecture contract implementation issues, run the closeout checks in `references/layered-architecture-contract-closeout.md`; in particular, schema readiness gates must reject placeholder checksums and any unresolved adversarial `MAJOR` blocks commit/close.
+13. When researching a user-referenced incident from another chat/channel, distinguish the observed runtime/chat failure from adjacent GitHub asset/workflow issues. Use `references/incident-to-issue-evidence-research.md` to search session history, inspect candidate issue bodies/comments, extract evidence, and explicitly report any gap where no direct issue exists.
+14. Before closing layered architecture contract implementation issues, run the closeout checks in `references/layered-architecture-contract-closeout.md`; in particular, schema readiness gates must reject placeholder checksums and any unresolved adversarial `MAJOR` blocks commit/close.
 14. For per-machine repository placement decisions, create one decision issue per machine in the user's requested order and do not perform repo moves/deletes/sync changes inside issue creation. Use `references/machine-repo-placement-decision-issues.md` for the reusable issue body shape and verification checklist. Keep delegation/dispatch strategy independent from repo placement unless a separate approved delegation plan explicitly requires otherwise; repo placement should be justified by locality, canonical source of truth, storage footprint, sync/backup risk, licensed tooling, and machine role. When the first machine issue establishes the baseline, include a completion note/acceptance criterion that the story leaves a reusable pattern for consistent tier-1 repo folder structure, methodical primary/reference placement decisions, and repo harness/file ecosystem handling through a single repo-tracked authority.
 15. For revisions to completed/closed work, prefer a new open revision issue with a parent link-back comment when the closed issue should remain the baseline trace. Use `references/closed-issue-revision-thread.md` for the body shape and verification checklist.
 
