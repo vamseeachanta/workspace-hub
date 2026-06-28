@@ -15,6 +15,7 @@ Run:  python3 scripts/build_pages.py   (writes public/, gitignored)
 from __future__ import annotations
 
 import html
+import json
 import re
 from pathlib import Path
 
@@ -122,12 +123,45 @@ hr{border:0;border-top:1px solid var(--line);margin:1.4em 0}
 """
 
 
+# Per-session review pages (#3298) publish from an enumerated manifest, never a
+# glob: build_session_review.py writes docs/reports/sessions/manifest.json listing
+# exactly the pages to copy. Pages are sanitized at generation time (public-safe
+# by construction), so this builder copies them verbatim — stdlib only here.
+SESSIONS_SRC = ROOT / "docs/reports/sessions"
+
+
 def nav_html() -> str:
-    items = [(slug, title) for slug, (_f, title) in PAGES.items()]
-    items += [(slug, title) for slug, (_f, title) in HTML_PAGES.items()]
+    items = [(f"{slug}.html", title) for slug, (_f, title) in PAGES.items()]
+    items += [(f"{slug}.html", title) for slug, (_f, title) in HTML_PAGES.items()]
+    if (SESSIONS_SRC / "index.html").exists():
+        items.append(("sessions/index.html", "Sessions"))
     return '<nav>' + " · ".join(
-        f'<a href="{slug}.html">{title}</a>' for slug, title in items
+        f'<a href="{href}">{title}</a>' for href, title in items
     ) + '</nav>'
+
+
+def build_sessions() -> list[str]:
+    """Copy the session index + each manifest-enumerated session page into
+    public/sessions/. Enumeration-driven (no glob), mirroring the source tree so
+    the index's relative links resolve identically when published."""
+    manifest = SESSIONS_SRC / "manifest.json"
+    if not manifest.exists():
+        return []
+    out_dir = PUBLIC / "sessions"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    built: list[str] = []
+    idx = SESSIONS_SRC / "index.html"
+    if idx.exists():
+        (out_dir / "index.html").write_text(idx.read_text(encoding="utf-8"), encoding="utf-8")
+        built.append("sessions/index.html")
+    for entry in json.loads(manifest.read_text(encoding="utf-8")):
+        src = SESSIONS_SRC / entry["file"]
+        if src.exists():
+            (out_dir / entry["file"]).write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+            built.append(f"sessions/{entry['file']}")
+        else:
+            print(f"  WARN: manifest lists {entry['file']} but it is missing, skipping")
+    return built
 
 
 def shell(title: str, body: str) -> str:
@@ -163,7 +197,10 @@ def build():
             continue
         (PUBLIC / f"{slug}.html").write_text(path.read_text(encoding="utf-8"), encoding="utf-8")
         built.append(slug)
+    session_pages = build_sessions()
     print(f"Built {len(built)} pages: {', '.join(s + '.html' for s in built)}")
+    if session_pages:
+        print(f"Published {len(session_pages)} session page(s): {', '.join(session_pages)}")
 
 
 if __name__ == "__main__":
