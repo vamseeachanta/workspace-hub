@@ -135,8 +135,11 @@ A digitalmodel `engine(cfg=..., embed=True, root_folder=<dir>, log_to_file=False
 ```
 # ---------------- digitalmodel/src/digitalmodel/engine.py ----------------
 # Additive params; existing callers (embed=False, root_folder=None) byte-identical.
+# log_to_file DEFAULT IS TRUE — mirrors #3297's engine signature EXACTLY. Forced .log/logs/
+# on every plain engine(<file>) CLI run is preserved by this default. Log suppression on the
+# embed path comes from the CALLER passing log_to_file=False (run_workflow), NOT from the default.
 def engine(inputfile=None, cfg=None, config_flag=True,
-           root_folder=None, log_to_file=False, embed=False) -> dict:
+           root_folder=None, log_to_file=True, embed=False) -> dict:
 
     cfg_argv_dict = {}
     if cfg is None:
@@ -155,6 +158,9 @@ def engine(inputfile=None, cfg=None, config_flag=True,
         # Per-call instance => no engine.py:57 module-singleton re-entrancy leak.
         # configure_embed (from #3297) sets analysis_root_folder=root, log folders under root,
         # AND cfg["_config_dir_path"] = root_folder. Positional call — NO library_name.
+        # log_to_file is the engine PARAM (default True) — the embed caller (#3285 run_workflow)
+        # passes log_to_file=False to suppress the .log/logs/ for an in-process run. configure_embed's
+        # OWN default is False, but the engine NEVER relies on that: suppression is caller-driven.
         cfg_base = ConfigureApplicationInputs().configure_embed(
             cfg, basename, root_folder, log_to_file=log_to_file)
         # DELIBERATELY DO NOT re-copy _config_dir_path/_config_file_path from the original cfg
@@ -163,12 +169,16 @@ def engine(inputfile=None, cfg=None, config_flag=True,
         cfg_base = fm.router(cfg_base)
         # configure_embed already created results/{,Data,Plot}; NO second configure_result_folder.
     elif config_flag:
-        # ---- DEFAULT / FILE PATH (unchanged; root_folder threaded additively) ----
+        # ---- DEFAULT / FILE PATH (byte-identical; root_folder threaded additively) ----
         fm = FileManagement()
-        ... existing pytest-argv shuffle around app_manager.configure(...) ...
+        ... existing pytest-argv shuffle around BOTH app_manager.configure(...) sites (:105 + :111) ...
+        # DO NOT thread log_to_file here. The default/file path MUST keep configure()'s internal
+        # forced-logging default (log_to_file=True) so every plain engine(<file>) CLI run still
+        # emits .log + creates logs/ — threading the engine param would risk suppressing them and
+        # break the byte-identical guarantee. Only root_folder is threaded (additive; None => today).
         cfg_base = app_manager.configure(cfg, library_name, basename, cfg_argv_dict,
                                          inputfile=inputfile,
-                                         root_folder=root_folder, log_to_file=log_to_file)  # see Open decision
+                                         root_folder=root_folder)  # log_to_file NOT passed — see Open decision 1
         if "_config_file_path" in cfg: cfg_base["_config_file_path"] = cfg["_config_file_path"]   # :115-116 unchanged
         if "_config_dir_path"  in cfg: cfg_base["_config_dir_path"]  = cfg["_config_dir_path"]    # :117-118 unchanged
         cfg_base = fm.router(cfg_base)
@@ -188,7 +198,7 @@ def engine(inputfile=None, cfg=None, config_flag=True,
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `digitalmodel/src/digitalmodel/engine.py` | add optional `root_folder=None`, `log_to_file=False`, `embed=False` params; add the `embed` branch (per-call `ConfigureApplicationInputs().configure_embed(cfg, basename, root_folder, log_to_file=)`, **no** `library_name`, **skip** the `:114-118` `_config_dir_path` re-copy, **skip** the second `configure_result_folder`); thread `root_folder`/`log_to_file` into the default-path `app_manager.configure(...)` call (additive — see Open decision) |
+| Modify | `digitalmodel/src/digitalmodel/engine.py` | add optional `root_folder=None`, **`log_to_file=True`** (mirror #3297 EXACTLY — NOT `False`), `embed=False` params; add the `embed` branch (per-call `ConfigureApplicationInputs().configure_embed(cfg, basename, root_folder, log_to_file=)`, **no** `library_name`, **skip** the `:114-118` `_config_dir_path` re-copy, **skip** the second `configure_result_folder`); thread **only `root_folder`** into BOTH default-path `app_manager.configure(...)` sites (`:105` + `:111`) — **do NOT thread `log_to_file`** (the default/file path must keep configure()'s forced-logging default so plain CLI runs stay byte-identical; see Open decision 1) |
 | Create | `digitalmodel/tests/test_engine_embed_root.py` | TDD: embed isolation / `_config_dir_path` rebase / re-entrancy / no-file logging / backward-compat default + signature guard |
 | Update | docs/plans/README.md | add this plan to the Plan Index |
 
@@ -206,11 +216,12 @@ def engine(inputfile=None, cfg=None, config_flag=True,
 | test_embed_rebases_config_dir_path | **(crux)** embed sets `cfg_base["_config_dir_path"] == root_folder`, NOT the input-file dir or cwd | `engine(cfg=<wt cfg>, embed=True, root_folder=<tmpA>)` | returned `cfg_base["_config_dir_path"] == str(<tmpA>)` |
 | test_embed_quickcheck_writes_under_root | the wall-thickness router writes html/json/csv **under** `<tmpA>` and nothing at cwd | embed run from a scratch cwd, `root_folder=<tmpA>`, relative output paths in cfg | quickcheck `report_html`/`result_json`/`result_csv` all under `<tmpA>`; scratch cwd unchanged |
 | test_embed_writes_only_under_root | results dir + cfg-dump land under root, nothing outside | embed run, `root_folder=<tmpA>` | `<tmpA>/results/...` exists; no new dirs at cwd or input dir |
-| test_embed_no_logfile_no_logs_dir | `log_to_file=False` (default for embed) writes no `.log`, creates no `logs/` | `engine(cfg=..., embed=True, root_folder=<tmpA>, log_to_file=False)` | no `*.log` anywhere; `<tmpA>/logs` absent; stdout logging still emits |
+| test_embed_no_logfile_no_logs_dir | **the CALLER passing `log_to_file=False`** (NOT a default) writes no `.log`, creates no `logs/` | `engine(cfg=..., embed=True, root_folder=<tmpA>, log_to_file=False)` | no `*.log` anywhere; `<tmpA>/logs` absent; stdout logging still emits |
+| test_embed_default_log_to_file_true_writes_log | **(mirror-guard)** an embed call WITHOUT an explicit `log_to_file` inherits the `True` default and DOES write a `.log` under root (proves suppression is caller-driven, not a default) | `engine(cfg=..., embed=True, root_folder=<tmpA>)` (no `log_to_file`) | `<tmpA>/logs/*.log` present (log_to_file=True flowed to configure_embed) |
 | test_embed_repeated_calls_reentrant | **(re-entrancy)** two sequential embed calls with different roots stay isolated (per-call instance, no `engine.py:57` singleton bleed) | embed `<tmpA>` then embed `<tmpB>` | each writes only under its own root; call-1 state never affects call-2 |
 | test_embed_skips_config_dir_recopy | the `:114-118` original-cfg re-copy does NOT run in embed mode (a stale `_config_dir_path` on the input cfg does not survive) | `engine(cfg={... "_config_dir_path": "/stale/dir" ...}, embed=True, root_folder=<tmpA>)` | `cfg_base["_config_dir_path"] == str(<tmpA>)`, not `/stale/dir` |
 | test_default_path_unchanged_golden | **(backward-compat)** file/default path with no `embed`/`root_folder` lands outputs in the same locations as before, `_config_dir_path` = input-file dir | `engine(<abs wall_thickness .yml>)` | outputs under the input file's dir; `cfg_base["_config_dir_path"] == dirname(input)` (today's contract) |
-| test_engine_signature_additive | the three new params default to embed-off / today's behavior | `inspect.signature(engine)` | params `root_folder=None, log_to_file=False, embed=False` present with defaults; positional callers unaffected |
+| test_engine_signature_additive | the three new params default to embed-off / today's behavior; **`log_to_file` default is `True`** (mirrors #3297, preserves forced CLI logging) | `inspect.signature(engine)` | params present with defaults **`root_folder=None, log_to_file=True, embed=False`** (assert `log_to_file` default is `True`, NOT `False`); positional callers unaffected |
 | test_existing_engine_suite_passes | no regression in the existing engine tests | `tests/test_engine.py` (+ a wall-thickness CLI test) | all pass |
 
 ---
@@ -218,7 +229,8 @@ def engine(inputfile=None, cfg=None, config_flag=True,
 ## Acceptance Criteria
 
 - [ ] New tests pass: `cd digitalmodel && uv run pytest tests/test_engine_embed_root.py -v` (per repo memory: digitalmodel may need `.venv/bin/python` / `PYTHONPATH=src` if `uv` is broken — runner picks the working invocation).
-- [ ] **Embed path isolates writes** — `engine(cfg=..., embed=True, root_folder=<tmpdir>)` writes only under `<tmpdir>` (results + cfg-dump + quickcheck html/json/csv), no `logs/`, no `.log`, nothing at cwd or the input dir. (`test_embed_quickcheck_writes_under_root` + `test_embed_writes_only_under_root` + `test_embed_no_logfile_no_logs_dir`)
+- [ ] **Embed path isolates writes** — `engine(cfg=..., embed=True, root_folder=<tmpdir>)` writes only under `<tmpdir>` (results + cfg-dump + quickcheck html/json/csv), nothing at cwd or the input dir. With the CALLER passing `log_to_file=False` (the #3285 run_workflow shape) there is additionally no `logs/`, no `.log`. (`test_embed_quickcheck_writes_under_root` + `test_embed_writes_only_under_root` + `test_embed_no_logfile_no_logs_dir`)
+- [ ] **`log_to_file` default mirrors #3297 (=`True`)** — the engine signature default is `log_to_file=True`, NOT `False`; an embed call without an explicit `log_to_file` writes a `.log` (suppression is caller-driven), and every plain `engine(<file>)` CLI run keeps its forced `.log`/`logs/`. `log_to_file` is NOT threaded into the default-path `configure(...)`. (`test_engine_signature_additive` + `test_embed_default_log_to_file_true_writes_log` + `test_default_path_unchanged_golden`)
 - [ ] **`_config_dir_path` rebased to root** and not clobbered by the `:114-118` re-copy. (`test_embed_rebases_config_dir_path` + `test_embed_skips_config_dir_recopy`)
 - [ ] **Re-entrant** — repeated in-process embed calls with different roots stay isolated via a per-call `ConfigureApplicationInputs()` instance. (`test_embed_repeated_calls_reentrant`)
 - [ ] **Backward compatible (default byte-identical)** — no `embed`, no `root_folder` → output locations + `_config_dir_path`=input-file dir unchanged. (`test_default_path_unchanged_golden` + `test_engine_signature_additive`)
@@ -231,16 +243,27 @@ def engine(inputfile=None, cfg=None, config_flag=True,
 
 ## Adversarial Review Summary
 
+### Round-1 — verdict: **MAJOR** — ADDRESSED in this revision
+
+| Round-1 finding | Disposition |
+|---|---|
+| **MAJOR — engine signature default `log_to_file=False` does NOT mirror #3297 (whose engine default is `log_to_file=True`).** With a `False` default, a plain `engine(<file>)` CLI run that does not pass `log_to_file` would thread `False` into the default-path `configure(...)`, suppressing the forced `.log` + `logs/` on every CLI run and BREAKING the byte-identical guarantee. The embed path must suppress logs via the CALLER passing `log_to_file=False` (`#3285 run_workflow` → `engine(embed=True, root_folder=, log_to_file=False)`), never via the engine default. | **FIXED.** Engine signature default changed to `log_to_file=True` (mirrors #3297 `engine.py` exactly). `log_to_file` is **no longer threaded** into the default-path `configure(...)` call — only `root_folder` is — so the file/default path keeps configure()'s forced-logging default and stays byte-identical. The embed branch still passes the engine `log_to_file` param through to `configure_embed(... log_to_file=)`; suppression is caller-driven. New guard tests: `test_engine_signature_additive` (asserts default `True`), `test_embed_default_log_to_file_true_writes_log` (embed without explicit flag inherits `True` and writes a `.log`). AC + Files-to-Change + Open decision 1 + pseudocode all corrected. |
+
+### Round-2 (this revision) — verdict: **PENDING**
+
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | PENDING | |
 | Codex | PENDING | |
 | Gemini | PENDING | |
 
-**Overall result:** PENDING (dispatch T3 wave via `scripts/review/plan-review-fanout.sh` once #3297's contract is owner-approved).
+**Overall result:** Round-1 MAJOR addressed; **Round-2 PENDING** — re-dispatch the T3 wave via `scripts/review/plan-review-fanout.sh` once #3297's contract is owner-approved. Status stays `draft`.
 
-Revisions made based on review:
-- (none yet — initial draft)
+Revisions made based on Round-1 review:
+- Engine signature default `log_to_file` flipped `False → True` to mirror #3297 exactly (preserves forced CLI `.log`/`logs/`).
+- Stopped threading `log_to_file` into the default-path `configure(...)`; thread only `root_folder` (Open decision 1 narrowed accordingly).
+- Added `test_embed_default_log_to_file_true_writes_log`; corrected `test_engine_signature_additive` to assert `log_to_file=True`; clarified `test_embed_no_logfile_no_logs_dir` that suppression is caller-driven.
+- Updated the embed-isolation AC + added a dedicated `log_to_file`-default-mirror AC.
 
 ---
 
@@ -251,9 +274,9 @@ Revisions made based on review:
 - **Risk (the `:114-118` re-copy):** digitalmodel's engine uniquely re-copies `_config_dir_path` from the original cfg onto `cfg_base` on the default path — assetutilities' engine has no such block. The embed branch MUST bypass it, else the #3297 rebase is silently undone and every config-relative router escapes the root. `test_embed_skips_config_dir_recopy` is the explicit guard. This is the single most important digitalmodel-specific delta vs #3297.
 - **Risk (absolute-path escape — surfaced by Step-1.5):** `wall_thickness_quickcheck._resolve_path` returns absolute output paths verbatim (reproduced: `absolute escapes root: True`). If an embed cfg specifies absolute quickcheck output paths, the rebase cannot contain them. This matches assetutilities' own behavior (no `os.chdir`; relative-only sandboxing) and is acceptable for #3282/#3285's built cfgs (which use relative paths). Documented as an isolation boundary, not a regression. **Generalizable finding** — candidate for promotion to a shared note if other adopters' routers also resolve absolute paths verbatim (per the "promote generalizable review findings" rule).
 - **Risk (re-entrancy):** the default path keeps the `engine.py:57` module singleton (byte-identical); only the embed branch uses a per-call instance. `save_cfg` (`engine.py:597`) stays on the singleton but reads cfg only (no instance state), so it is safe in embed mode. Process-global logging reconfiguration (loguru/basicConfig) on each call is a residual shared with #3297 — acceptable for the single-threaded repeated-call use case; flag if #3283's harness runs digitalmodel workflows concurrently.
-- **Risk (T3 blast radius):** `engine.py` is digitalmodel's central dispatch for ~80 basenames. Mitigation: all three new params default to today's behavior; the embed branch is unreachable without `embed=True`; the default/`config_flag` path is left byte-identical except the additive `root_folder`/`log_to_file` pass-through to `configure()`. `test_default_path_unchanged_golden` + `test_existing_engine_suite_passes` are the guardrails.
+- **Risk (T3 blast radius):** `engine.py` is digitalmodel's central dispatch for ~80 basenames. Mitigation: all three new params default to today's behavior (`root_folder=None`, **`log_to_file=True`**, `embed=False`); the embed branch is unreachable without `embed=True`; the default/`config_flag` path is left byte-identical except the additive `root_folder` (None→today) pass-through to `configure()` — **`log_to_file` is NOT passed to `configure()` on the default path**, so the forced CLI logging is untouched. `test_default_path_unchanged_golden` + `test_existing_engine_suite_passes` are the guardrails.
 - **Out of scope (documented):** the legacy `asset_integrity/common/ApplicationManager.py` fork is not on the `engine()` path (no live import) — #3307 does not port an embed path into it. If a future asset_integrity workflow needs in-process embedding through *that* fork, file a follow-on.
-- **Open decision 1 — file-path `root_folder` threading:** the issue scope names only `engine(embed=True, root_folder=, log_to_file=False)`. The plan additionally threads `root_folder`/`log_to_file` into the default-path `app_manager.configure(...)` to fully mirror #3297. **Recommendation:** include it (cheap, additive, defaults to None→today). Alternative: embed-only (drop the default-path thread) to minimize blast radius. Flag for owner.
+- **Open decision 1 — file-path `root_folder` threading:** the issue scope names only `engine(embed=True, root_folder=, log_to_file=False)`. The plan additionally threads **only `root_folder`** (NOT `log_to_file`) into BOTH default-path `app_manager.configure(...)` sites (`:105` + `:111`) to mirror #3297's file-path root override. **`log_to_file` is deliberately NOT threaded into the default path** — the file/default path must keep configure()'s internal forced-logging default (`log_to_file=True`) so a plain `engine(<file>)` CLI run still emits `.log` + creates `logs/`; threading the engine param there would risk suppressing the forced log and break the byte-identical guarantee. **Recommendation:** thread `root_folder` (cheap, additive, defaults to None→today); never thread `log_to_file`. Alternative: embed-only (drop even the `root_folder` thread) to minimize blast radius. Flag for owner.
 - **Open decision 2 — cross-repo id resolution:** N/A for #3307 — this plan provides only the engine entrypoint; resolving `repo:id@version` and creating registry rows belong to #3284/#3285. No id resolver is touched here.
 - **Open question — test cache fixture:** `test_embed_quickcheck_writes_under_root` needs a small pre-seeded quickcheck `cache` so `quick_check.run_from_cache(cache_path)` succeeds offline. Plan to reuse an existing fixture under `examples/structural/wall_thickness_quickcheck/data/` or synthesize a minimal cache in the test; the runner picks whichever is hermetic.
 
