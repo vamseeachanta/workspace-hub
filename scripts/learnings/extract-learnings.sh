@@ -24,6 +24,49 @@ MAX_ISSUES_PER_SESSION="${MAX_ISSUES_PER_SESSION:-3}"
 # Labels for auto-created issues
 DEFAULT_LABELS="cat:platform,domain:knowledge,auto-generated"
 
+# ── Adaptive session_corrections bar (#3256, scoped to the corrections population) ──
+# The session_corrections signal type uses an ADAPTIVE threshold (computed nightly by
+# scripts/learnings/adapt-correction-threshold.py into the JSON below); the OTHER four signal types
+# keep the static AUTO_ISSUE_THRESHOLD=70 above. The adapter is dormant-by-design (#3256), so until
+# a human-provenance writer lands this resolves to 80 — the historical session_corrections
+# pass-point (an 80-score session_corrections signal passed under the old global 70 too).
+#
+# Round-2 major #1: do NOT `source scripts/lib/python-resolver.sh` here. Its body runs
+#   PYTHON=$(_py_find_working) || { …; exit 1; }   (python-resolver.sh:21-24)
+# SOURCED into this per-commit hook, that explicit `exit 1` would TERMINATE the hook on a
+# python-broken box — a `|| PYTHON=python3` guard at the source site cannot catch a process exit,
+# defeating the fail-soft-to-80 guarantee on exactly the heterogeneous boxes the resolver defends.
+# Use an inline guarded helper that replicates the resolver's shim-rejection (invoke-and-assert)
+# WITHOUT a fatal exit; the read is a trivial json.load any python3/python can do.
+THRESHOLD_STATE="${REPO_ROOT}/.claude/state/correction-confidence-threshold.json"
+_pick_python() {                              # echoes a working interpreter, else returns 1 (no exit)
+  local c
+  for c in python3 python; do
+    if command -v "$c" >/dev/null 2>&1 \
+       && "$c" -c 'import sys; assert sys.version_info[0] >= 3' >/dev/null 2>&1; then
+      echo "$c"; return 0
+    fi
+  done
+  return 1
+}
+_session_corr_threshold() {                   # echoes an int in [0,100] or returns 1 (never exits)
+  [[ -f "$THRESHOLD_STATE" ]] || return 1
+  local py; py="$(_pick_python)" || return 1  # no working python ⇒ caller falls back to 80
+  "$py" - "$THRESHOLD_STATE" <<'PY' 2>/dev/null
+import json, sys
+try:
+    t = json.load(open(sys.argv[1])).get("threshold")
+    assert isinstance(t, (int, float)) and not isinstance(t, bool) and 0 <= t <= 100
+    print(int(t))
+except Exception:
+    sys.exit(1)
+PY
+}
+# Precedence: explicit env override → adaptive JSON → 80. `|| echo 80` makes EVERY failure mode (no
+# file, no working python, garbled json) fail soft; the substitution lives inside a `${x:-…}`
+# default so the command-substitution always exits 0 and nothing can abort the hook under `set -e`.
+SESSION_CORR_THRESHOLD="${SESSION_CORR_THRESHOLD:-$(_session_corr_threshold || echo 80)}"
+
 # ── Inputs ──────────────────────────────────────────────────────────
 LATEST_COMMIT="${1:-HEAD}"
 SESSION_LOG="${REPO_ROOT}/logs/orchestrator/sessions/latest.jsonl"
@@ -203,7 +246,10 @@ main() {
       score=$((score + 10))
     fi
     
-    if [[ $score -ge $AUTO_ISSUE_THRESHOLD ]]; then
+    # #3256: session_corrections uses the adaptive bar; the other four types keep the static 70.
+    local effective="$AUTO_ISSUE_THRESHOLD"
+    [[ "$type" == "session_corrections" ]] && effective="$SESSION_CORR_THRESHOLD"
+    if [[ $score -ge $effective ]]; then
       echo "[LEARNING] High-confidence signal ($score/100): $signal"
       echo "[LEARNING] Would create issue: $signal"
       

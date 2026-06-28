@@ -128,6 +128,8 @@ STATE_FILES=(
   .claude/state/readiness-issues.md
   .claude/state/session-health.yaml
   .claude/state/correction-trend-meta.json
+  .claude/state/correction-confidence-threshold.json
+  .claude/state/skill-scope-classification.json
 )
 
 staged=0

@@ -157,6 +157,7 @@ fi
 _nightly_exit=0
 bash scripts/learning/comprehensive-learning.sh || _nightly_exit=$?
 
+<<<<<<< HEAD
 # Step 3f: auto-graduate high-confidence correction candidates to DRAFT proposals (#3252, epic #3248).
 # Best-effort so a graduation failure never aborts the nightly. The module self-guards on
 # machine_label() (dev-primary/ace-linux-1 only) and signals via state JSON + notify.sh, never via a
@@ -187,6 +188,21 @@ if [[ "$_agg_host" == "dev-primary" || "$_agg_host" == "ace-linux-1" ]]; then
 else
   echo "  Skipping drift candidate aggregation (single-machine aggregator: dev-primary/ace-linux-1)"
 fi
+
+# Step 3h: adapt the session_corrections confidence threshold (#3256 — best-effort, dormant-by-design).
+# Reads the git-tracked correction-promotions.yaml; holds at 80 until a human-provenance reviewed_by
+# marker lands. Writes .claude/state/correction-confidence-threshold.json (committed by Step 10).
+# $PYTHON is resolved by the python-resolver this orchestrator already sources (preflight).
+echo "--- Adaptive correction threshold $(date +%Y-%m-%dT%H:%M:%S) ---"
+${PYTHON} scripts/learnings/adapt-correction-threshold.py || \
+  echo "WARNING: correction-threshold adaptation failed — session_corrections gate falls back to 80"
+
+# Step 3i: classify candidate skill families as gemini-specific / shared / gemini-drift (#3256 —
+# best-effort). Reuses audit_skill_currency family/allowlist machinery; writes JSON only (never
+# skill-candidates.md), reading candidate family names READ-ONLY from skill-candidates.md.
+echo "--- Skill-scope classification $(date +%Y-%m-%dT%H:%M:%S) ---"
+${PYTHON} scripts/curation/classify_skill_scope.py --from-candidates || \
+  echo "WARNING: skill-scope classification failed — see above"
 
 # Step 10: commit all learning artifacts to git (best-effort — #1780)
 echo "--- Commit learning artifacts $(date +%Y-%m-%dT%H:%M:%S) ---"

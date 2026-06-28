@@ -89,6 +89,19 @@ def _families(prefix: str) -> set[str] | None:
     return fams
 
 
+def _allowed(f: str, allow: list[str]) -> bool:
+    """True if family ``f`` matches the gemini allowlist.
+
+    An allowlist entry ending in ``-`` is an explicit PREFIX (e.g. ``source-command-``); any
+    other entry must match EXACTLY (e.g. ``memory``), so a bare ``memory`` can never silently
+    allowlist an unrelated ``memory-bank`` family and hide real drift (review axis #4).
+
+    Module-level (was nested in ``audit()``) so it is the SINGLE source of truth reused by
+    ``classify_skill_scope.py`` (#3256) — behavior-identical to the prior nested def.
+    """
+    return any(f.startswith(p) if p.endswith("-") else f == p for p in allow)
+
+
 def _load_allow() -> list[str]:
     try:
         cfg = yaml.safe_load(HARNESS_CONFIG.read_text()) if HARNESS_CONFIG.exists() else {}
@@ -131,12 +144,11 @@ def audit(machine: str) -> dict:
     unexpected_families: list[str] = []
     if canonical is not None and gemini is not None and gemini_present:
         diff = canonical ^ gemini
-        # Allowlist match: an entry ending in '-' is an explicit PREFIX (e.g. 'source-command-');
-        # any other entry must match EXACTLY (e.g. 'memory'), so a bare 'memory' can never silently
-        # allowlist an unrelated 'memory-bank' family and hide real drift (review axis #4).
-        def _allowed(f: str) -> bool:
-            return any(f.startswith(p) if p.endswith("-") else f == p for p in allow)
-        expected = {f for f in diff if _allowed(f)}
+        # Allowlist match via the module-level _allowed (single source of truth, #3256): an entry
+        # ending in '-' is an explicit PREFIX (e.g. 'source-command-'); any other entry must match
+        # EXACTLY (e.g. 'memory'), so a bare 'memory' can never silently allowlist an unrelated
+        # 'memory-bank' family and hide real drift (review axis #4).
+        expected = {f for f in diff if _allowed(f, allow)}
         unexpected = diff - expected
         gemini_expected = len(expected)
         gemini_unexpected = len(unexpected)
