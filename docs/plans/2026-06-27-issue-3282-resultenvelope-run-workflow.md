@@ -1,38 +1,34 @@
 # Plan for #3282: wf-api(assetutilities) — ResultEnvelope + run_workflow() + registry result descriptor
 
-> ⛔ **BLOCKED on #3297 (2026-06-28).** Wave-1c review proved the per-call temp-dir sandbox is insufficient: the engine is **cwd-coupled** — `configure()` forces `analysis_root_folder=os.getcwd()`, `set_logging()` writes `<cwd>/logs/<name>.log`, and `configure_result_folder()` creates `<cwd>/results/{,Data,Plot}` outside the sandbox; plus a basename mismatch (`data_exploration_FST*.csv` vs registry `input_FST*.csv`) empties `extract_result`. Owner decision: split out the engine-embeddability fix as prereq **#3297** (engine honors an injected root, no cwd side effects), then this envelope sits cleanly on top (no chdir). This plan will be re-scoped onto #3297 (Wave 1d) and the basename-derivation fix folded in. NOT plan-review-ready until #3297 lands.
+> **Depends on #3297 (engine embeddability).** This plan is re-scoped (Wave-1d) onto the #3297 **embed contract**: `run_workflow` will call the dedicated embed path `engine(cfg=<built cfg>, embed=True, root_folder=<tempdir>, log_to_file=False)` — **NOT** `engine(cfg=..., config_flag=True)` and **NOT** a `persist=False` "sandbox" hack. The prior "persist=False suppresses writes / sandbox result_folder" design was retired by the Wave-1c review, which proved the engine is **cwd-coupled** (`config_flag=True` discards the caller cfg at `generateYMLInput`, and even with the cfg honored the result/log folders resolve under `os.getcwd()` not an injected root). #3297 (now at plan-review, no-MAJOR) adds `ConfigureApplicationInputs.configure_embed(cfg, basename, root_folder, log_to_file=False)` — it **merges** the caller cfg (does not discard it), routes **all** writes (results + logs) under `root_folder`, and uses no-file logging. #3282 consumes that path. **#3282 cannot land until #3297 lands** (the `embed=True` parameter must exist). This plan owns **zero** engine/ApplicationManager edits — it only *calls* `engine(embed=True)`.
 >
-> **Status:** draft (blocked on #3297)
-> **Complexity:** T2 (new module + 2 method edits; foundational blast radius — review at T3 depth)
-> **Date:** 2026-06-27 (revised 2026-06-28 R3 — Round-2 MAJOR cleared: side-effect-freeness now via a per-call temp-dir SANDBOX of the result folder, file-output `result_hash` over file CONTENTS, csv_utilities removed as a demo target; R2 = Round-1 MAJOR cleared + owner D1/D3/D6 baked in)
+> **Status:** draft (depends on #3297)
+> **Complexity:** T2 (new `workflow_api` package; consumes the #3297 embed path; foundational blast radius — review at T3 depth)
+> **Date:** 2026-06-27 (re-scoped 2026-06-28 Wave-1d onto the #3297 embed contract — see "Revision note (Wave-1d)")
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3282
 > **Epic:** https://github.com/vamseeachanta/workspace-hub/issues/3281
+> **Depends on:** https://github.com/vamseeachanta/workspace-hub/issues/3297 (engine embeddability — MUST land first)
 > **Client:** N/A — no wiki content touched
-> **Lane:** lane:claude (contract/API design; light edits)
+> **Lane:** lane:claude (contract/API design; no engine edits owned here)
 > **Review artifacts:** scripts/review/results/2026-06-27-plan-3282-claude.md | ...-codex.md | ...-gemini.md
 
 ---
 
-## Revision note (2026-06-28, Round-2 prep)
+## Revision note (2026-06-28, Wave-1d — re-scope onto the #3297 embed contract)
 
-This plan was returned **MAJOR** at Round-1. This revision (a) clears every Round-1 finding against the **real** `/mnt/local-analysis/assetutilities` checkout, and (b) bakes in the owner-confirmed cross-cutting decisions (2026-06-28) that settle three former Open Questions. The substantive changes since Round-1:
+The Wave-1c review (Round-2 MAJOR) proved the prior side-effect-freeness mechanism was unsound: pointing `cfg.Analysis.result_folder` / `analysis_root_folder` at a tempdir and calling `engine(cfg=..., config_flag=True, persist=False)` does **not** isolate the call, because (a) `config_flag=True` silently **discards** the caller's in-memory cfg at `generateYMLInput` (`ApplicationManager.py:194-196`) — so the tempdir overrides on the caller cfg never even reach the engine — and (b) the engine forces `analysis_root_folder = os.getcwd()` and writes `<cwd>/logs/<name>.log` + `<cwd>/results/{,Data,Plot}` regardless. The fix is a **separate prerequisite**, #3297, which adds a real embed path. This revision re-scopes #3282 onto it. The substantive changes since Wave-1c:
 
-1. **Result location is a DECLARED registry contract (`result:` descriptor), not an assumption.** The old plan assumed `cfg[basename]` is the result payload. Verified false: `data_exploration.py:115-117` sets `cfg[basename]` to a dict of **file paths** (built at `:113` as `{"data": <filepath>, "label": ...}`, after writing the real CSVs at `:111`), and `csv_utilities_router.py` `router()` simply `return cfg` — there is **no** `cfg["csv_utilities"]` result key at all. Per owner decision **D1**, #3282 **OWNS** the `result:` descriptor shape `{kind: in_memory|files, key: <cfg key> (in_memory) | outputs: [...] (files)}`. (Round-1 Finding 4, escalated to a design blocker — RESOLVED.)
-2. **`persist=False` guards ONLY the file write, never `standardize_yml_data`** (Round-1 Finding 2). Verified at `ApplicationManager.py:370-378`: line 375 `cfg_base = self.standardize_yml_data(cfg_base)` runs **before** line 377 `save_data.saveDataYaml(...)` inside the same method. Suppressing the whole call would skip numpy→list / `Path`→str / np-scalar normalization (`standardize_yml_data`, lines 380-401), so the in-memory `result_hash` would be computed over different bytes than the persisted file. Standardization now always runs; only `saveDataYaml` is gated.
-3. **Schema: adopt the unified v2 SUPERSET, no v3** (Round-1 Finding 3 + owner decision **D1**). The Round-1 fear was a collision between assetutilities `schema_version: 1` and digitalmodel `schema_version: 2`. That fear is now SETTLED: v2 is **defined as an additive superset** (deckhand routing triple `version`/`status`/`latest` **+** `invocation` **+** reserved `request_schema`/`response_schema` **+** `result`). #3282 adopts v2 on the assetutilities registry, adding the **required top-level `invocation:` key** (`"uv run python -m assetutilities {input}"`, `{input}`-only substitution — `capability_smoke.py` is the reference resolver) and the per-row `result:` descriptor it owns. #3295 owns the formal cross-registry reconciliation and **reserves** the structured (NOT typed-string) `request_schema`/`response_schema` slots pending #3282. **No v3 bump.**
-4. **Determinism FIELDS are computed, not hardcoded** (owner decision **D3**). The Round-1 pseudocode hardcoded `"reproducible": True` — fixed. `#3282` OWNS `input_hash`, `result_hash`, a **computed** `reproducible`, and `provenance.code_version = {package_version, git_sha}`. File-output `result_hash` hashes **sorted basenames** (location-independent), never absolute paths. *(SUPERSEDED by R3 — Round-2 found basename-only hashing content-blind; `result_hash` now hashes `basename → sha256(file contents)`. See the Round-3 prep note.)* The golden harness + the volatile-field **key-allowlist** spec is #3283's, which is **DEFERRED to Wave 2** (D6) — so #3282 computes `reproducible` itself via an opt-in double-run, defaulting to `None` ("not checked") rather than a fabricated `True`.
-5. **Error enveloping is fail-closed from the first line** (Round-1 Finding 5). Registry resolution and cfg build move INSIDE the guarded region so an unknown id returns a `status=="error"` envelope, not a raw traceback. `input_hash` volatile-key exclusion is explicitly specified (Round-1 Finding 6).
-6. **Import is SLOW, not a hang** (Round-1 reproduction honesty correction). The Round-1 note claimed the re-run "timed out at import." A 2026-06-28 bounded live run (`timeout 90 .venv/bin/python -c "from assetutilities.engine import engine"`) **succeeded in ~29.4 s** — heavy transitive imports (`WebScraping`/`TextAnalytics`/`DownloadDataFromURL`), not a deadlock. AC#1's empirical demonstration is therefore achievable; the prior "blocked" was a too-short timeout. Recorded below as a *slow cold-import* risk, not a blocker.
+1. **Side-effect-freeness now comes from the #3297 EMBED PATH, not a persist/sandbox hack.** `run_workflow` calls `engine(cfg=<built cfg>, embed=True, root_folder=tempfile.mkdtemp(), log_to_file=False)`. #3297's `configure_embed` **merges** the caller cfg (preserving it), points `result_folder`/`analysis_root_folder` at the injected `root_folder`, creates `<root>/results/{,Data,Plot}`, and logs to stdout only (no `.log`, no `logs/` dir). `run_workflow` then reads + content-hashes the emitted outputs from that tempdir and `shutil.rmtree`s it. **All** "persist=False suppresses the write" / "sandbox the result_folder" framing is removed — the embed path's injected `root_folder` is the isolation mechanism, and the rmtree of a throwaway dir is the cleanup.
 
----
+2. **Basename-derivation residual (Wave-1c MAJOR) fixed by globbing the injected root.** Because the embed path HONORS the caller cfg, the output `file_name` derives from the **cfg** (`basename: data_exploration` + `default.config.overwrite.output: True` ⇒ `file_name == "data_exploration"`, verified below), so the router writes `data_exploration_FST1.csv` / `data_exploration_FST2.csv` into `<root>/results/` — **NOT** the registry's declared `input_FST*.csv` (the `input_` prefix only arises on the CLI **file** path, where `customYaml` is the `input.yml` path). `extract_result` therefore reads the **actually emitted** files by **globbing the injected root** (`<root>/results/*`), never by matching registry `outputs:` names. The registry `outputs:` list degrades to documentary/expected-count metadata, not a literal filename oracle.
 
-## Revision note (2026-06-28, Round-3 prep — Round-2 MAJOR cleared)
+3. **`result_hash` for `kind:files` = content hash of the emitted files.** Read each emitted file in the tempdir, hash `sorted(basename) → sha256(file CONTENTS)`. Location-independent (basename-keyed, drops the throwaway abs path) AND content-sensitive (a changed output value flips the hash). `compute_reproducible` does a **true double-run content comparison** (two fresh embed runs, each with its own `root_folder`, compare content hashes). The Wave-1c basename-only tautology is gone.
 
-Round-2 returned **MAJOR** with three findings, each re-verified against the live `/mnt/local-analysis/assetutilities` checkout and now structurally fixed (not just re-worded):
+4. **csv_utilities removed as the files demo; data_exploration is the demo.** `csv_utilities` is **not** a registry row and its `router()` `return cfg` writes nothing — `run_workflow("csv_utilities")` would error at registry resolution. The `kind:files` branch is demonstrated on **`data_exploration`** (a real registry row that writes 2 CSVs). `kind:in_memory` is documented as **supported-but-currently-unexercised** — all 9 registry workflows are file-writing and `cfg[basename]` holds **paths/echoed input**, not data — so the plan claims **no** in_memory demo that no row satisfies.
 
-1. **`persist=False` is NOT side-effect-free — routers write files themselves.** Verified: `data_exploration.py:83`, `:93`, and `:111` call `df.to_csv(...)` / `df_statistics.to_csv(...)` into `cfg["Analysis"]["result_folder"]` **inside the router**, before `engine.py:120 save_cfg`. `persist=False` would gate **only** `ApplicationManager.py:377 saveDataYaml` (the cfg-dump), so `engine(cfg=..., persist=False)` still litters the example/result dir on every call. **Fix (owner-locked):** `run_workflow` makes the call genuinely side-effect-free by **sandboxing the result folder per call** — `tempfile.mkdtemp()`, then point `cfg.Analysis.result_folder` + `analysis_root_folder` (and, robustly, `cfg.file_management.output_directory`) at the temp dir **before** `engine(cfg=..., config_flag=True, persist=False)`, so **all** router writes land in the throwaway dir; `shutil.rmtree` after extraction. `persist=False` still gates only the `save_cfg` cfg-dump; the **sandbox** is what neutralizes router writes. (Verified at `ApplicationManager.py:299`: an *absolute* `file_management.output_directory` is returned verbatim as `result_folder` by `configure_result_folder`, surviving `configure()`'s reset of `analysis_root_folder` to `os.getcwd()` on the in-memory `inputfile=None` path — this is why the abs-`output_directory` override is the robust sandbox hook.)
-2. **csv_utilities is NOT a registry row and writes nothing.** Verified: the registry has **9 rows** (visualization, data_exploration, excel_utilities, zip_utilities, yaml_utilities, file_management, file_edit, word_utilities, reportgen) — **no `csv_utilities`** — and `csv_utilities_router.py` `router()` just `return cfg`. So `run_workflow("csv_utilities")` would error at registry resolution and any "csv_utilities files demo" AC is unsatisfiable. **Fix:** csv_utilities is **removed as a demo target** everywhere; the `kind=="files"` branch is demonstrated on **data_exploration** (a real registry row that writes 2 CSVs). `csv_utilities_router.py` remains cited only as **evidence** that `cfg[basename]` is an unreliable result locator (the design-hole proof), never as a runnable target.
-3. **basename-only file hash is content-blind → vacuous determinism.** Verified: the R2 `result_hash` hashed `sorted(os.path.basename(p) ...)` only; data_exploration always emits the same 2 basenames, so `reproducible` was tautologically `True` regardless of content drift. **Fix (owner-locked):** `kind=="files"` `result_hash` now **reads each output file in the sandbox and hashes `basename → sha256(content)` (sorted by basename)** — both location-independent (basename-keyed) **and** content-sensitive (a changed output value flips the hash). `in_memory` is documented as **supported-but-currently-unexercised** (all 9 registry rows are file-writing; `cfg[basename]` holds paths/echoes, not data), so the plan claims **no** in_memory demo that no registry row satisfies.
+5. **`build_cfg(row, params)` is specified.** Start from the registry row's `basename` + its example `input` (loaded), deep-merge caller `params`, hand the merged cfg to the embed path. The example-file load interacts with assetutilities#88 (example not in wheel); the **params-dict primary path** (`run_workflow(id, params=<dict>)` / `run_workflow(cfg=<dict>)`) avoids it — documented under Risks.
+
+6. **#3282 owns ZERO engine edits.** The Wave-1c `engine.persist` / `save_cfg.persist` edits are **deleted** from this plan — they belong to the retired persist mechanism. #3282 only consumes `engine(embed=True, root_folder=..., log_to_file=False)`, which #3297 provides. The schema-reservation work (#3295), the `result:` descriptor ownership, `ResultEnvelope` as a stdlib dataclass, `provenance.code_version = {package_version, git_sha}`, and the `input_hash` volatile-key allowlist are all retained from Wave-1c.
 
 ---
 
@@ -40,19 +36,17 @@ Round-2 returned **MAJOR** with three findings, each re-verified against the liv
 
 ### Existing repo code (verified 2026-06-28 against `/mnt/local-analysis/assetutilities`)
 
-- **Found** `src/assetutilities/engine.py:27` — `def engine(inputfile: str = None, cfg: dict = None, config_flag: bool = True) -> dict`. When `cfg` is supplied, `engine.py:29 if cfg is None` is skipped, so `cfg_argv_dict` stays `{}` and `inputfile` stays `None`. With `config_flag=True` (default) the in-memory branch runs `app_manager.configure(cfg, library_name, basename, {}, None)` (`:45`), `fm.router` (`:46`), `configure_result_folder(None, cfg_base)` (`:47-49`), dispatches on `basename` (`:55-114`), and returns `cfg_base` (`:121`). This is the exact path `run_workflow` uses.
-- **Found** `engine.py:116-117` — `save_application_cfg(cfg_base)` runs **only** when `cfg is None` (the file-path branch), so it is irrelevant to the in-memory API path.
-- **Found** `engine.py:120` — `cfg_base = app_manager.save_cfg(cfg_base=cfg_base)` runs **unconditionally** on every call. This is **one** of two file-write side effects; `persist=False` gates only this one. The **other** is the per-router output write (next item), which `persist=False` cannot touch — both must be neutralized for a truly side-effect-free call.
-- **Found** `src/assetutilities/common/ApplicationManager.py:284-335` — `configure_result_folder(analysis_root_folder, cfg_with_fm)`: when `file_management.output_directory` is **absolute** (`:299 os.path.isabs`), it is returned **verbatim** as `result_folder` (`:300`); otherwise `result_folder = <analysis_root_folder>/results` (`:304`). Since `engine.py:45 configure()` resets `analysis_root_folder` to `os.getcwd()` on the in-memory (`inputfile=None`) path, the robust per-call sandbox hook is setting `cfg.file_management.output_directory` to an **absolute temp dir** — it survives `configure()` and forces every router write into the sandbox.
-- **Found** `src/assetutilities/common/ApplicationManager.py:370-378` — `save_cfg(self, cfg_base)` does, in order: compute `output_dir`/`filename_path` (`:371-374`); **`:375 cfg_base = self.standardize_yml_data(cfg_base)`** (load-bearing normalization); **`:377 save_data.saveDataYaml(cfg_base, filename_path, default_flow_style=False)`** (the write); `:378 return`. **Confirmed**: standardization precedes the write inside the same method — guarding the whole call kills both. The persist guard must wrap **only `:377`** (and the `:371-374` path computation, which is only needed for the write).
-- **Found** `ApplicationManager.py:380-401` — `standardize_yml_data` recursively converts `dict`/`list` children, `Path`→`str` (`:391-392`), `np.ndarray`→`list` (`:393-394`), np-int→`int` (`:395-397`), np-float→`float` (`:398-400`). Exactly the normalization the determinism hash needs; must always run.
-- **Found** `src/assetutilities/modules/data_exploration/data_exploration.py:83/93/106-117` — writes the real CSVs at `:83`, `:93` (summary tables) and `:111` (`df_statistics.to_csv`) to `cfg["Analysis"]["result_folder"]` **inside the router, before `engine.py:120 save_cfg`**, then sets `cfg[cfg["basename"]] = {"df_basic_statistics": {"groups": [...]}}` where each element (`:113`) is `{"data": <filepath>, "label": <label>}`. So even when `cfg[basename]` IS a dict, it holds **file paths, not data**. The registry already lists those CSVs under `outputs:`. **Consequence (Round-2 Finding 1):** `persist=False` does NOT suppress these router writes — only the per-call result-folder **sandbox** does. With the example input (`file_name="input"`, labels `FST1`/`FST2`) the basenames are `input_FST1.csv`/`input_FST2.csv`, matching the registry `outputs:` and the sandbox-relative resolution.
-- **Found** `src/assetutilities/modules/csv_utilities/csv_utilities_router.py` — `router(self, cfg)` does a no-op encoding check and `return cfg`. There is **no** `cfg["csv_utilities"]` result key. **Confirmed**: `cfg[basename]` is a per-workflow-inconsistent, unreliable result locator — the core design hole.
-- **Found** `docs/registry/workflows.yaml` — `schema_version: 1`, `repo: assetutilities`, `issue: 3063`, **9 rows** (visualization, data_exploration, excel_utilities, zip_utilities, yaml_utilities, file_management, file_edit, word_utilities, reportgen). Each row carries `id`, `basename`, `input`, `outputs:` (list of produced files), `test`, `runtime`. **There is NO top-level `invocation:` key** (verified by `grep`). The `outputs:` list is the existing authoritative declaration of where file results land.
-- **Found** `digitalmodel/docs/registry/workflows.yaml` — `schema_version: 2`, top-level `invocation: "uv run python -m digitalmodel {input}"`, plus the deckhand versioned-routing triple (`version`/`status`/`latest`, all optional). This is the v2 superset assetutilities aligns to.
-- **Found** `deckhand/src/deckhand/capability_smoke.py:231` — `template = str(registry.get("invocation") or "uv run python -m {pkg} {input}")` then `:232 rendered = template.replace("{input}", input_rel)`. **Confirms D1**: `capability_smoke.py` is the reference resolver; it reads the top-level `invocation:` key and performs **`{input}`-only** substitution (falling back to a `{pkg}` default only when the key is absent). The schema doc must name it.
-- **Verified (live, 2026-06-28)** — `timeout 90 .venv/bin/python -c "from assetutilities.engine import engine"` → **`IMPORT OK 29.4 s`**. The import is slow but does **not** hang. No existing test references `save_cfg` / `persist` / `standardize_yml_data` (`grep` over `tests/` clean) — the two method edits have **no contradicting test**.
-- **Gap** — no `workflow_api/` package anywhere under `src/assetutilities` (the `ResultEnvelope` + `run_workflow()` surface is greenfield — confirmed `ls` returns nothing).
+- **Prereq (#3297) embed path** — `engine(inputfile=None, cfg=None, config_flag=True, root_folder=None, log_to_file=True, embed=False)`. When `embed=True` (the path #3282 uses), the engine calls a **per-call** `ConfigureApplicationInputs().configure_embed(cfg, basename, root_folder, log_to_file=log_to_file)` which **bypasses `unify_application_and_default_and_custom_yamls`** (the step that discards the caller cfg on `config_flag=True`), **merges** the computed `Analysis` params **into** the caller cfg, points `analysis_root_folder`/`result_folder` at the injected `root_folder`, and runs `set_logging` in no-file mode when `log_to_file=False`. Per #3297's plan, `engine(embed=True)` then runs `fm.router(cfg_base)`, dispatches on `basename`, and `save_cfg(cfg_base)` writes the cfg-dump into `<root>/results/` (inside the sandbox, so harmless). **This is the exact path `run_workflow` calls. #3282 does not edit it.**
+- **Verified — file_name derivation (Wave-1c MAJOR root cause), `ApplicationManager.py:228-282` + `:337-347`:** `get_application_configuration_parameters` (the **CLI/file** path) sets `custom_file_name = os.path.split(self.ApplicationInputFile)[1].split(".")[0]` (`:240`) — i.e. `"input"` for `.../data_exploration/input.yml` — then `configure_overwrite_filenames` (`:337-339`) sets `cfg.Analysis.file_name = file_name_for_overwrite = custom_file_name` when `cfg["default"]["config"]["overwrite"]["output"] is True`. So the **CLI** path yields `file_name == "input"` ⇒ outputs `input_FST*.csv` (matching the registry `outputs:`). The **embed** path (#3297 `configure_embed`) instead sets `custom_file_name = basename` (`= "data_exploration"`, no `meta.label`) and `file_name_for_overwrite = custom_file_name`, and the SAME `configure_overwrite_filenames` (reused by `configure_embed`) collapses `file_name` to `"data_exploration"`. **Net: the embed path emits `data_exploration_FST1.csv` / `data_exploration_FST2.csv`, NOT `input_FST*.csv`.** This is why `extract_result` must glob the injected root, not match registry names.
+- **Verified — router output naming, `data_exploration.py:78-93` + `:106-113`:** every CSV is written to `os.path.join(cfg["Analysis"]["result_folder"], cfg["Analysis"]["file_name"] + "_" + label + ".csv")`, where `label` ∈ {`FST1`, `FST2`} comes from `data.groups[].label` in the input. So filename = `<file_name>_<label>.csv`. Confirms the prefix is fully cfg-derived (`file_name`), and the labels are data-derived (`FST1`/`FST2`).
+- **Verified — example input, `examples/workflows/data_exploration/input.yml`:** `basename: data_exploration`; `data.groups` labels `FST1`/`FST2` (sample_1.csv / sample_2.csv); `default.config.overwrite.output: True`. So under the embed path the two emitted basenames are deterministically `data_exploration_FST1.csv` and `data_exploration_FST2.csv`.
+- **Verified — result folder location, `ApplicationManager.py:284-335`:** `configure_result_folder(analysis_root_folder)` builds `result_folder = <analysis_root_folder>/results` (default `output_directory == "results"`, relative; resolved against the root) and creates `results/{,Data,Plot}`. In the embed path `analysis_root_folder == root_folder == <tempdir>`, so the CSVs land in `<tempdir>/results/`. `extract_result` globs there (the engine returns the resolved `cfg_base["Analysis"]["result_folder"]`, which `run_workflow` reads back to locate the glob root robustly).
+- **Verified — `data_exploration.py:115-117`:** `cfg[cfg["basename"]] = {"df_basic_statistics": {"groups": [{"data": <filepath>, "label": ...}, ...]}}` — i.e. `cfg[basename]` holds **file paths**, not data. Evidence that `cfg[basename]` is an unreliable result locator (the design hole the `result:` descriptor closes).
+- **Verified — `csv_utilities_router.py`:** `router(self, cfg)` does a no-op check and `return cfg`. There is **no** `cfg["csv_utilities"]` result key, and csv_utilities is **not** one of the 9 registry rows. Cited only as evidence of the `cfg[basename]` design hole — **never a runnable demo target**.
+- **Verified — `docs/registry/workflows.yaml`:** `schema_version: 1`, `repo: assetutilities`, `issue: 3063`, **9 rows** (visualization, data_exploration, excel_utilities, zip_utilities, yaml_utilities, file_management, file_edit, word_utilities, reportgen). The `data_exploration` row declares `outputs: [examples/workflows/data_exploration/results/input_FST1.csv, .../input_FST2.csv]` — the **CLI-path** filenames; the embed path emits `data_exploration_FST*.csv` instead, which is exactly why `extract_result` cannot trust these names. No top-level `invocation:` key yet (added here).
+- **Verified — `digitalmodel/docs/registry/workflows.yaml`:** `schema_version: 2`, top-level `invocation: "uv run python -m digitalmodel {input}"`, deckhand routing triple. The v2 superset assetutilities aligns to.
+- **Verified — `deckhand/src/deckhand/capability_smoke.py:231-232`:** `template = str(registry.get("invocation") or "uv run python -m {pkg} {input}")`; `rendered = template.replace("{input}", input_rel)`. The reference `invocation:` resolver — `{input}`-only substitution. Named in `SCHEMA.md`.
+- **Gap** — no `workflow_api/` package anywhere under `src/assetutilities` (`ResultEnvelope` + `run_workflow()` are greenfield).
 - **Gap** — `engine()` returns the whole mutated `cfg`; no typed result payload, no provenance, no determinism hash, no declared result location.
 
 ### Standards
@@ -63,72 +57,71 @@ None — contract/infra work, no domain knowledge. (`Client: N/A`.)
 
 ### Documents consulted
 - Epic [#3281](https://github.com/vamseeachanta/workspace-hub/issues/3281) — defines the `ResultEnvelope` field set and the in-process-only scope (HTTP deferred to a later child).
-- [#3295](https://github.com/vamseeachanta/workspace-hub/issues/3295) (OPEN) — reconcile registry `schema_version` into a unified **v2 superset**; per **D1** it owns the cross-registry reconciliation and **reserves** the structured `request_schema`/`response_schema` slots pending #3282. #3282 contributes the `result:` descriptor shape into that superset.
-- [#3283](https://github.com/vamseeachanta/workspace-hub/issues/3283) — golden-determinism harness + volatile-field **key-allowlist** spec. Per **D6** this is **DEFERRED to Wave 2** and is NOT a dependency of #3282; #3282 computes `reproducible` itself (opt-in double-run).
+- [#3297](https://github.com/vamseeachanta/workspace-hub/issues/3297) (OPEN, plan-review) — **the dependency.** Engine embeddability: adds `engine(embed=True, root_folder=, log_to_file=)` + `ConfigureApplicationInputs.configure_embed(...)`. #3282 calls that embed path; it cannot land until #3297 lands. Plan: `docs/plans/2026-06-28-issue-3297-engine-embeddability.md`.
+- [#3295](https://github.com/vamseeachanta/workspace-hub/issues/3295) (OPEN) — reconcile registry `schema_version` into a unified **v2 superset**; it owns the cross-registry reconciliation and **reserves** the structured `request_schema`/`response_schema` slots pending #3282. #3282 contributes the `result:` descriptor shape into that superset.
+- [#3283](https://github.com/vamseeachanta/workspace-hub/issues/3283) — golden-determinism harness + volatile-field **key-allowlist** spec; **DEFERRED to Wave 2** (D6), NOT a dependency of #3282; #3282 computes `reproducible` itself (opt-in double-run).
 - [#3050](https://github.com/vamseeachanta/workspace-hub/issues/3050) / [#3067](https://github.com/vamseeachanta/workspace-hub/issues/3067) — upstream CLI/registry contract epic; the API-contract doc is a companion deliverable, not this issue.
 - digitalmodel `results.json {meta, lookup, index, curves}` (buckling/FFS) — precedent for a structured result payload.
 
 ### Gaps identified
 - No shared `ResultEnvelope` type (greenfield).
 - No `run_workflow(id, params)` entrypoint (greenfield).
-- Two write sites block a side-effect-free in-process call: (a) `save_cfg`'s cfg-dump (gated by `persist=False`) and (b) the per-router output writes (`data_exploration.py:83/93/111`, etc.) which `persist=False` cannot touch and which a per-call temp-dir **sandbox** of the result folder neutralizes.
 - The registry lacks a top-level `invocation:` key and a uniform per-row `result:` descriptor — both added by this plan.
+- The engine has no embed path yet — **closed by #3297 (dependency), not by #3282.**
 
 ### Evidence (embedded verification)
 
-**Issue statuses** (verified 2026-06-28 via `gh issue view`): `#3282` OPEN (this issue); `#3295` OPEN (schema reconciliation / unblocks #3282); `#3283` OPEN (deferred Wave 2); `#3281` OPEN (parent epic).
+**Issue statuses** (verified 2026-06-28 via `gh issue view`): `#3282` OPEN (this issue); `#3297` OPEN/plan-review (the dependency); `#3295` OPEN (schema reconciliation); `#3283` OPEN (deferred Wave 2); `#3281` OPEN (parent epic).
 
-**Line excerpts** (`engine.py`):
+**file_name derivation — embed vs CLI** (`ApplicationManager.py`):
 ```
-27:  def engine(inputfile: str = None, cfg: dict = None, config_flag: bool = True) -> dict:
-116:    if cfg is None:
-117:        save_application_cfg(cfg_base=cfg_base)
-120:    cfg_base = app_manager.save_cfg(cfg_base=cfg_base)   # <-- UNCONDITIONAL file write
-121:    return cfg_base
-```
-
-**Line excerpts** (`ApplicationManager.save_cfg`, the Round-1 Finding 2 site):
-```
-370:  def save_cfg(self, cfg_base):
-371:      output_dir = cfg_base.Analysis["analysis_root_folder"]
-373:      filename = cfg_base.Analysis["file_name"]
-374:      filename_path = os.path.join(output_dir, "results", filename)
-375:      cfg_base = self.standardize_yml_data(cfg_base)   # <-- normalization (MUST always run)
-377:      save_data.saveDataYaml(cfg_base, filename_path, default_flow_style=False)  # <-- guard THIS only
-378:      return cfg_base
+240:  custom_file_name = os.path.split(self.ApplicationInputFile)[1].split(".")[0]   # CLI path -> "input"
+338:  if cfg["default"]["config"]["overwrite"]["output"] is True:
+339:      cfg["Analysis"]["file_name"] = cfg["Analysis"]["file_name_for_overwrite"]   # collapse to custom_file_name
+# embed path (#3297 configure_embed): custom_file_name = basename = "data_exploration"
+#   -> file_name_for_overwrite = "data_exploration" -> (overwrite True) file_name = "data_exploration"
 ```
 
-**Line excerpts** (design-hole sites + resolver):
+**Router output naming** (`data_exploration.py`):
 ```
-data_exploration.py:111:   df_statistics.to_csv(filename, index=False)              # real result -> file
-data_exploration.py:113:   basic_statistic_array.append({"data": filename, ...})    # paths, not data
-data_exploration.py:115:   cfg[cfg["basename"]] = {...}                             # holds paths
-csv_utilities_router.py:    return cfg                                              # NO result key at all
+106-108: filename = os.path.join(cfg["Analysis"]["result_folder"],
+                                 cfg["Analysis"]["file_name"] + "_" + label + ".csv")
+111:     df_statistics.to_csv(filename, index=False)     # -> <root>/results/data_exploration_FST{1,2}.csv (embed)
+115:     cfg[cfg["basename"]] = {...}                     # holds paths, not data
+```
+
+**Design-hole + resolver:**
+```
+csv_utilities_router.py:    return cfg                                              # NO result key; NOT a registry row
 capability_smoke.py:231:    template = str(registry.get("invocation") or "...{pkg} {input}")
 capability_smoke.py:232:    rendered = template.replace("{input}", input_rel)        # {input}-ONLY substitution
 ```
 
-(Distinct sources: issue body + #3295 body + engine.py + ApplicationManager.py + data_exploration.py + csv_utilities_router.py + both registry files + capability_smoke.py + live import run = 9+.)
+(Distinct sources: issue body + #3297 plan + #3295 body + engine.py + ApplicationManager.py + data_exploration.py + input.yml + csv_utilities_router.py + both registry files + capability_smoke.py = 10+.)
 
 ---
 
 ## Step 1.5 — Reproduction
 
-**Claim under test:** `engine(cfg=<dict>, config_flag=True)` (the exact path `run_workflow` uses) runs end-to-end and returns a populated dict **without an input file**, AND `cfg[basename]` is *not* a usable result payload.
+**Claim under test:** the #3297 embed path `engine(cfg=<built cfg>, embed=True, root_folder=<tempdir>, log_to_file=False)` (a) honors the caller's in-memory cfg, (b) writes its outputs **only** under `root_folder` (as `data_exploration_FST*.csv`, NOT `input_FST*.csv`), (c) creates no `.log`/`logs/`, so a content hash over the emitted files is well-defined; AND `cfg[basename]` is NOT a usable result payload (holds file paths).
 
-**Prior in-session reproduction (captured Round-1):**
+**Wave-1c evidence that the OLD path failed (retained for the audit trail):**
+- `config_flag=True` discards the caller cfg at `generateYMLInput` (`ApplicationManager.py:194-196`) — proven in #3297's Round-1 review by a sentinel `cfg["Analysis"]["analysis_root_folder"]` returning **absent**. ⇒ the prior tempdir overrides on the caller cfg never reached the engine.
+- `data_exploration.py:111` writes CSVs into `cfg["Analysis"]["result_folder"]` which (on `config_flag=True`) resolved under `os.getcwd()`, not any caller-supplied tempdir. ⇒ the prior "sandbox the result_folder" plan littered the cwd.
+
+**This plan's reproduction (to run at implementation time, AFTER #3297 lands):**
 ```
-$ uv run python repro_cfg.py   # engine(cfg=<dict from data_exploration input.yml>, config_flag=True)
-... data_exploration, application ... END
-RESULT TYPE: dict
-result[data_exploration] type: <holds file-path dict, not data>
-IN-MEMORY cfg PATH: WORKS
+# embed path, from a scratch cwd:
+cb = engine(cfg=build_cfg(data_exploration_row, params=None), embed=True,
+            root_folder="/tmp/auwf_probe", log_to_file=False)
+# EXPECT: /tmp/auwf_probe/results/data_exploration_FST1.csv and _FST2.csv exist;
+#         NO *.log anywhere; /tmp/auwf_probe/logs absent;
+#         cwd has no new results/ or logs/;
+#         cb["data_exploration"] holds file PATHS (not data) -> cfg[basename] is not the result locator.
 ```
-Established: (a) the in-memory `cfg` path **works** (returns a dict, runs the router) — no engine-rebuild scope expansion; (b) `cfg[basename]` is the wrong result locator.
+Because #3297 is the dependency, AC#1's empirical demonstration is gated on #3297 landing; until then the design conclusion stands on #3297's verified call-chain trace + the file_name/router static analysis above.
 
-**2026-06-28 import characterization (honest correction to Round-1):** Round-1 claimed the re-run "timed out at import." A bounded re-run — `timeout 90 .venv/bin/python -c "from assetutilities.engine import engine"` — **succeeded in ~29.4 s** (`IMPORT OK 29.4 s`). The earlier "timeout" was a too-short bound, not a deadlock. The import is **slow** (heavy transitive `WebScraping`/`TextAnalytics`/`DownloadDataFromURL` loads at module top) but not broken. This is recorded as a *slow cold-import* risk only; it does **not** block AC#1's empirical demonstration under the repo pytest harness.
-
-**Static corroboration:** the dispatch trace `engine.py:43→45→46→47→55..114` with `cfg supplied / config_flag=True` is unambiguous; `data_exploration.py:111/113/115` and `csv_utilities_router.py` directly show the result-location inconsistency. The design conclusion holds independent of runtime.
+**Static corroboration:** the embed dispatch trace `engine(embed=True) → configure_embed → fm.router → basename dispatch → save_cfg(into <root>/results)` (from #3297's pseudocode) + the `file_name == "data_exploration"` derivation + `data_exploration.py:106-111` jointly fix the emitted filenames as `data_exploration_FST{1,2}.csv` under `<root>/results/`. The design conclusion holds independent of runtime.
 
 ---
 
@@ -137,21 +130,22 @@ Established: (a) the in-memory `cfg` path **works** (returns a dict, runs the ro
 | Artifact | Path |
 |---|---|
 | This plan | docs/plans/2026-06-27-issue-3282-resultenvelope-run-workflow.md |
+| Dependency plan (#3297) | docs/plans/2026-06-28-issue-3297-engine-embeddability.md |
 | Envelope impl | `assetutilities/src/assetutilities/workflow_api/envelope.py` |
-| Result-locator + runner impl | `assetutilities/src/assetutilities/workflow_api/runner.py` |
+| Result-locator + runner impl (consumes `engine(embed=True)`) | `assetutilities/src/assetutilities/workflow_api/runner.py` |
 | Package init | `assetutilities/src/assetutilities/workflow_api/__init__.py` |
-| Engine edit | `assetutilities/src/assetutilities/engine.py` |
-| save_cfg edit | `assetutilities/src/assetutilities/common/ApplicationManager.py` |
 | Registry (v2 superset: `invocation` + per-row `result`) | `assetutilities/docs/registry/workflows.yaml` |
 | Schema doc (names `result:` shape + `invocation` + capability_smoke.py resolver) | `assetutilities/docs/registry/SCHEMA.md` |
 | Tests | `assetutilities/tests/workflow_api/test_envelope.py`, `test_runner.py` |
 | Plan reviews | scripts/review/results/2026-06-27-plan-3282-{claude,codex,gemini}.md |
 
+> **Note:** `assetutilities/src/assetutilities/engine.py` and `.../common/ApplicationManager.py` are **NOT** in #3282's change set — they are edited by #3297 (the dependency). #3282 only *imports and calls* `engine(embed=True)`.
+
 ---
 
 ## Deliverable
 
-A `workflow_api` package in `assetutilities/src/` exposing `run_workflow(workflow_id, params=None, cfg=None, verify_reproducible=False) -> ResultEnvelope` — a typed, **genuinely side-effect-free** in-process call over the existing `engine()`. Side-effect-freeness is achieved by **sandboxing the result folder per call**: the runner creates a `tempfile.mkdtemp()` dir, points the cfg's result/analysis folders (and the abs `file_management.output_directory`) at it before `engine(cfg=..., config_flag=True, persist=False)` so **all router file-writes** land in the throwaway dir, then `shutil.rmtree`s it after extraction (`persist=False` separately gates only the `save_cfg` cfg-dump). The result location is **declared per-workflow** (registry `result:` descriptor, `kind: in_memory | files`) rather than assumed. Plus the `ResultEnvelope` type with **computed** determinism fields (`input_hash`, `result_hash` over **file contents** for `kind:files`, `reproducible`, `provenance.code_version = {package_version, git_sha}`), a `persist=False` path that preserves `standardize_yml_data`, the registry's required top-level `invocation:` key, the per-row `result:` descriptor (#3282-owned), and a registry `SCHEMA.md` naming `capability_smoke.py` as the reference invocation resolver — all TDD-covered.
+A `workflow_api` package in `assetutilities/src/` exposing `run_workflow(workflow_id, params=None, cfg=None, verify_reproducible=False) -> ResultEnvelope` — a typed, **genuinely side-effect-free** in-process call built on the **#3297 embed path**. Side-effect-freeness is achieved by `engine(cfg=<built cfg>, embed=True, root_folder=tempfile.mkdtemp(), log_to_file=False)`: the embed path routes **all** result + log writes under the injected `root_folder` and emits no `.log`; `run_workflow` reads + content-hashes the emitted outputs from that tempdir, then `shutil.rmtree`s it — leaving the repo/example dirs byte-for-byte untouched. The result location is **declared per-workflow** (registry `result:` descriptor, `kind: in_memory | files`); for `kind:files` the **actually emitted** files are discovered by **globbing the injected root** (the embed-path file_name is cfg-derived — `data_exploration_FST*.csv`, not the registry's `input_FST*.csv`). Plus the `ResultEnvelope` type with **computed** determinism fields (`input_hash`, `result_hash` over **file contents** for `kind:files`, `reproducible` via a true double-run content comparison, `provenance.code_version = {package_version, git_sha}`), the registry's required top-level `invocation:` key, the per-row `result:` descriptor (#3282-owned), and a registry `SCHEMA.md` naming `capability_smoke.py` as the reference invocation resolver — all TDD-covered. **No engine/ApplicationManager edits owned here** (those are #3297's).
 
 ---
 
@@ -160,7 +154,7 @@ A `workflow_api` package in `assetutilities/src/` exposing `run_workflow(workflo
 ```python
 # ── envelope.py ────────────────────────────────────────────────
 @dataclass
-class ResultEnvelope:
+class ResultEnvelope:                     # stdlib dataclass, NOT Pydantic (no hard dep in the shared lib)
     workflow_id: str
     status: str                  # "ok" | "error"
     result: dict                 # the DECLARED result payload (see ResultLocator), never the whole cfg
@@ -171,7 +165,6 @@ class ResultEnvelope:
     warnings: list[str]
     def to_dict() / from_dict()  # lossless round-trip; canonical sorted-key order
 
-# Provenance shape SETTLED by owner decision D3 (was a Round-1 Open Question):
 def code_version() -> dict:
     pkg = importlib.metadata.version("assetutilities")        # package_version
     sha = _git_sha_or_none()                                  # git rev-parse HEAD, best-effort
@@ -185,11 +178,9 @@ def canonical_input(cfg) -> str:
 def input_hash(cfg)  -> sha256(canonical_input(cfg))
 
 def result_hash(payload) -> str:
-    # payload is ALREADY standardize_yml_data-normalized (numpy->list, Path->str) -> bytes match persist=True.
-    # R2-FIX: for kind=="files", hash basename -> sha256(FILE CONTENTS), sorted by basename.
-    #   Location-independent (basename-keyed, drops sandbox abs path) AND content-sensitive
-    #   (a changed output value flips the hash) -> real determinism, not the old basename-only tautology.
-    #   extract_result has already read each file in the sandbox into payload["outputs"][i]["sha256"].
+    # kind=="files": hash sorted(basename) -> sha256(FILE CONTENTS). Location-independent (basename-keyed,
+    #   drops the throwaway tempdir abs path) AND content-sensitive (a changed output value flips the hash).
+    #   extract_result has ALREADY read each emitted file in the tempdir into payload["outputs"][i]["sha256"].
     if payload.get("kind") == "files":
         canon = {"kind": "files",
                  "files": sorted((f["basename"], f["sha256"]) for f in payload.get("outputs", []))}
@@ -197,66 +188,92 @@ def result_hash(payload) -> str:
         canon = payload                                       # in_memory: hash the standardized value
     return sha256(json.dumps(canon, sort_keys=True, default=str))
 
-# reproducible is COMPUTED, never hardcoded (D3). Default None == "not checked".
-# Content-sensitive now: each run uses its OWN sandbox; result_hash compares file CONTENTS by basename,
-# so a deterministic workflow -> equal hashes -> True, while drifted output bytes -> False.
+# reproducible is COMPUTED, never hardcoded. Default None == "not checked".
+# True double-run content comparison: each run uses its OWN embed root_folder; result_hash compares
+# file CONTENTS by basename -> deterministic workflow -> equal hashes -> True; drifted bytes -> False.
 def compute_reproducible(rerun_fn, first_hash, verify: bool):
     if not verify:
         return None                                           # honest: not a fabricated True
-    _, _, second_hash = rerun_fn()                            # second invocation in a FRESH sandbox
-    return second_hash == first_hash                          # True / False, measured over contents
+    _, _, second_hash = rerun_fn()                            # second embed run in a FRESH root_folder
+    return second_hash == first_hash                          # measured over emitted-file CONTENTS
 
-# ── ResultLocator: the design-hole fix (shape OWNED by #3282 per D1) ──
+# ── ResultLocator: the design-hole fix (shape OWNED by #3282) ──
 #   result:
 #     kind: files            # "files" (default) | "in_memory"
 #     key: data_exploration  # for in_memory: cfg[key] is the payload
-#     outputs: [...]         # for files: defaults to the row's existing `outputs:` list
-#   NOTE: kind=="in_memory" is SUPPORTED but currently UNEXERCISED — all 9 registry rows are
-#   file-writing (cfg[basename] holds paths/echoes input, not data), so #3282 demos kind=="files"
-#   on data_exploration and only documents the in_memory shape. No in_memory demo is claimed.
-def extract_result(cfg_base, locator, sandbox) -> (payload: dict, warnings: list):
+#     outputs: [...]         # for files: DOCUMENTARY (expected count / human reference) — NOT a filename
+#                            #   oracle. The embed path's file_name is cfg-derived, so the real emitted
+#                            #   names (data_exploration_FST*.csv) differ from these CLI-path names.
+#   NOTE: kind=="in_memory" is SUPPORTED but currently UNEXERCISED — all 9 registry rows are file-writing
+#   (cfg[basename] holds paths/echoes input, not data). #3282 demos kind=="files" on data_exploration and
+#   only documents the in_memory shape. No in_memory demo is claimed.
+def extract_result(cfg_base, locator, root_folder) -> (payload: dict, warnings: list):
     if locator.kind == "in_memory":
         if locator.key not in cfg_base:
             return {"kind": "in_memory", "value": None}, \
-                   [f"declared in_memory result_key '{locator.key}' absent from cfg"]  # NOT silent {}
+                   [f"declared in_memory result_key '{locator.key}' absent from cfg"]   # NOT silent {}
         return {"kind": "in_memory", "value": cfg_base[locator.key]}, []
-    else:  # kind == "files" — read CONTENTS from the per-call sandbox, by basename
-        wanted = sorted(os.path.basename(p) for p in (locator.outputs or []))
+    else:  # kind == "files" — read the ACTUALLY emitted files by GLOBBING the injected root
+        # The embed path resolves outputs into <root_folder>/results/ ; read the engine-resolved folder
+        # back from cfg_base for robustness, fall back to <root_folder>/results.
+        results_dir = cfg_base.get("Analysis", {}).get("result_folder") \
+                      or os.path.join(root_folder, "results")
+        # CRITICAL (R4 MAJOR): engine.py:120 ALWAYS calls save_cfg, which writes a cfg-DUMP
+        # <results_dir>/<file_name>.yml into this SAME dir (saveData.saveDataYaml appends ".yml").
+        # That dump embeds the tempdir abspath + a start_time datetime (standardize_yml_data does NOT
+        # convert datetime), so globbing it would (a) inflate the file count and (b) make result_hash
+        # location- AND time-dependent -> reproducible spuriously False. It MUST be excluded. Its name is
+        # exactly <file_name>.yml (no "_<label>" suffix); genuine router outputs are <file_name>_<label>.<ext>.
+        file_name = cfg_base.get("Analysis", {}).get("file_name", "")
+        cfg_dump = os.path.abspath(os.path.join(results_dir, file_name + ".yml"))
+        emitted = sorted(p for p in glob.glob(os.path.join(results_dir, "*"))
+                         if os.path.isfile(p) and os.path.abspath(p) != cfg_dump)  # REAL outputs only
         files, warns = [], []
-        for name in wanted:
-            path = os.path.join(sandbox, name)                # router wrote here (abs output_directory)
-            if os.path.exists(path):
-                with open(path, "rb") as fh:
-                    files.append({"basename": name,
-                                  "sha256": sha256(fh.read()).hexdigest(),
-                                  "size": os.path.getsize(path)})
-            else:
-                warns.append(f"declared output missing in sandbox: {name}")
-        # payload carries basenames + per-file content digest (NOT dead sandbox paths -> dir is rmtree'd)
+        for path in emitted:
+            with open(path, "rb") as fh:
+                files.append({"basename": os.path.basename(path),
+                              "sha256": sha256(fh.read()).hexdigest(),
+                              "size": os.path.getsize(path)})
+        if not files:
+            warns.append(f"declared kind:files workflow emitted no files under {results_dir}")
+        # Optional: cross-check emitted COUNT against len(locator.outputs) and warn on mismatch
+        # (documentary only — names are NOT compared, since embed file_name != registry CLI names).
+        if locator.outputs and len(files) != len(locator.outputs):
+            warns.append(f"emitted {len(files)} files; registry outputs lists {len(locator.outputs)}")
+        # payload carries basenames + per-file content digest (NOT dead tempdir paths -> dir is rmtree'd)
         return {"kind": "files", "outputs": files}, warns
 
 # ── runner.py ─────────────────────────────────────────────────
-# Per-call SANDBOX: every engine() invocation runs with its result folder pointed at a throwaway
-# temp dir, so NO router write ever touches the repo/example dirs. persist=False ALSO gates the
-# save_cfg cfg-dump; the two together make the call genuinely side-effect-free.
+# Each engine() invocation runs via the #3297 EMBED PATH with root_folder=<throwaway tempdir>, so NO
+# result/log write ever touches the repo/example dirs. The tempdir is rmtree'd after content extraction.
 def _run_once(cfg, locator) -> (payload, warns, rhash):
-    sandbox = tempfile.mkdtemp(prefix="auwf_")
+    root = tempfile.mkdtemp(prefix="auwf_")
     try:
-        c = copy.deepcopy(cfg)
-        c.setdefault("Analysis", {})["analysis_root_folder"] = sandbox
-        c["Analysis"]["result_folder"]                       = sandbox
-        # ABS output_directory survives configure()/configure_result_folder (ApplicationManager.py:299)
-        c.setdefault("file_management", {})["output_directory"] = sandbox
-        cb = engine(cfg=c, config_flag=True, persist=False)  # routers write INTO sandbox; no cfg-dump
-        payload, warns = extract_result(cb, locator, sandbox)  # read CONTENTS before teardown
+        basename = cfg["basename"]                            # e.g. "data_exploration"
+        # THE #3297 EMBED PATH — honors caller cfg, routes ALL writes under root, no .log:
+        cb = engine(cfg=copy.deepcopy(cfg), embed=True, root_folder=root, log_to_file=False)
+        payload, warns = extract_result(cb, locator, root)    # read emitted-file CONTENTS before teardown
         rhash = result_hash(payload)
         return payload, warns, rhash
     finally:
-        shutil.rmtree(sandbox, ignore_errors=True)           # throwaway -> repo/example dirs untouched
+        shutil.rmtree(root, ignore_errors=True)               # throwaway -> repo/example dirs untouched
+
+def build_cfg(row, params) -> dict:
+    # Start from the registry row's basename + its example input (loaded), then deep-merge caller params.
+    cfg = {"basename": row["basename"]}
+    if row.get("input"):
+        # NOTE (R4 MINOR): this loads examples/workflows/<slug>/input.yml — a packaged-EXAMPLE gap that is
+        # RELATED TO but DISTINCT FROM assetutilities#88 (which is specifically `base_configs/modules/**`).
+        # So run_workflow(id, params=...) STILL hits this example load. Only the run_workflow(cfg=<full dict>)
+        # entrypoint (which skips build_cfg entirely) is load-free. Recommended #88-/example-free path: pass cfg=.
+        cfg = deep_merge(cfg, load_yaml(resolve_example_path(row["input"])))
+    if params:
+        cfg = deep_merge(cfg, params)                         # caller params win
+    return cfg
 
 def run_workflow(workflow_id=None, params=None, cfg=None, verify_reproducible=False) -> ResultEnvelope:
     wid = workflow_id or "(inline-cfg)"
-    try:                                                  # fail-closed from the FIRST line (Finding 5)
+    try:                                                  # fail-closed from the FIRST line
         if cfg is None:
             row     = resolve_registry_row(workflow_id)   # unknown id -> raises -> caught below
             cfg     = build_cfg(row, params)
@@ -265,35 +282,22 @@ def run_workflow(workflow_id=None, params=None, cfg=None, verify_reproducible=Fa
             row     = lookup_row_for_cfg(cfg)             # may be None
             locator = ResultLocator.from_row(row) if row else ResultLocator.default_for(cfg)
         ihash          = input_hash(cfg)
-        payload, warns, rhash = _run_once(cfg, locator)   # sandboxed; side-effect-free
+        payload, warns, rhash = _run_once(cfg, locator)   # embed path; side-effect-free
         repro          = compute_reproducible(lambda: _run_once(cfg, locator), rhash,
-                                              verify_reproducible)   # None unless asked; FRESH sandbox
+                                              verify_reproducible)   # None unless asked; FRESH root_folder
         return ResultEnvelope(wid, "ok", payload,
                               provenance(ihash), {"result_hash": rhash, "reproducible": repro},
                               None, warns)
     except Exception as e:
         return ResultEnvelope(wid, "error", {}, provenance(None),
                               {"result_hash": None, "reproducible": None}, None, [str(e)])
-
-# ── engine.py edit (minimal, backward-compatible) ─────────────
-def engine(inputfile=None, cfg=None, config_flag=True, persist=True) -> dict:
-    ...                                                   # unchanged dispatch
-    cfg_base = app_manager.save_cfg(cfg_base=cfg_base, persist=persist)   # thread persist through
-    return cfg_base
-
-# ── ApplicationManager.save_cfg edit (Finding 2 fix) ──────────
-def save_cfg(self, cfg_base, persist=True):
-    cfg_base = self.standardize_yml_data(cfg_base)        # ALWAYS — normalization is load-bearing
-    if persist:                                           # guard ONLY the write + its path computation
-        output_dir    = cfg_base.Analysis["analysis_root_folder"]
-        filename_path = os.path.join(output_dir, "results", cfg_base.Analysis["file_name"])
-        save_data.saveDataYaml(cfg_base, filename_path, default_flow_style=False)
-    return cfg_base
 ```
+
+> **No engine.py / ApplicationManager.py pseudocode here** — #3282 consumes `engine(embed=True, root_folder=, log_to_file=)` exactly as #3297 defines it. The `engine.persist` / `save_cfg.persist` edits from the retired Wave-1c design are deleted.
 
 ---
 
-## Registry change (v2 superset — D1)
+## Registry change (v2 superset)
 
 ```yaml
 # docs/registry/workflows.yaml
@@ -305,18 +309,19 @@ workflows:
   - id: data_exploration
     basename: data_exploration
     input: examples/workflows/data_exploration/input.yml
-    outputs:
+    outputs:                                       # DOCUMENTARY (CLI-path names); NOT a runtime oracle
       - examples/workflows/data_exploration/results/input_FST1.csv
       - examples/workflows/data_exploration/results/input_FST2.csv
     result:                                        # #3282-OWNED descriptor; optional per row
-      kind: files                                  # defaults to the row's `outputs:` when omitted
+      kind: files                                  # embed path emits data_exploration_FST*.csv -> extract_result
+                                                   #   GLOBS the injected root; does not match `outputs:` names
     test: uv run python -m assetutilities examples/workflows/data_exploration/input.yml
     runtime: fast
   # ... remaining 8 rows unchanged; `result:` is optional (kind: files default) ...
 ```
 
 - `request_schema:` / `response_schema:` are **structured (not typed-string) descriptors RESERVED by #3295**; #3282 does NOT populate them and does NOT impose a `str` invariant.
-- `docs/registry/SCHEMA.md` (new) documents: the `result:` descriptor shape (`kind: files` default vs `kind: in_memory`), the required `invocation:` key with `{input}`-only substitution, and names `deckhand/src/deckhand/capability_smoke.py` as the reference resolver. **No v3.** It also records that `kind: in_memory` is **supported but currently unexercised** — all 9 rows are file-writing (`cfg[basename]` holds paths/echoes, not data), so no row sets `kind: in_memory` yet.
+- `docs/registry/SCHEMA.md` (new) documents: the `result:` descriptor shape (`kind: files` default vs `kind: in_memory`); that the per-row `outputs:` list is **documentary** (CLI-path filenames) and the runtime files-branch discovers emitted files by **globbing the injected embed root** (because the embed-path `file_name` is cfg-derived, not input-file-derived); the required `invocation:` key with `{input}`-only substitution; and names `deckhand/src/deckhand/capability_smoke.py` as the reference resolver. **No v3.** It also records that `kind: in_memory` is **supported but currently unexercised** — all 9 rows are file-writing (`cfg[basename]` holds paths/echoes, not data), so no row sets `kind: in_memory` yet.
 
 ---
 
@@ -325,15 +330,15 @@ workflows:
 | Action | Path | Reason |
 |---|---|---|
 | Create | `assetutilities/src/assetutilities/workflow_api/__init__.py` | export `run_workflow`, `ResultEnvelope` |
-| Create | `assetutilities/src/assetutilities/workflow_api/envelope.py` | `ResultEnvelope` dataclass + `input_hash`/`result_hash` (file-CONTENTS hash for `kind:files`)/`code_version`/`compute_reproducible` + volatile-key spec |
-| Create | `assetutilities/src/assetutilities/workflow_api/runner.py` | `run_workflow`, registry resolution, `ResultLocator`, per-call temp-dir **sandbox** (`_run_once`: mkdtemp → engine → rmtree), `extract_result` (in_memory + files-from-sandbox branches) |
-| Modify | `assetutilities/src/assetutilities/engine.py` | add `persist: bool = True` param; thread into `save_cfg` (no dispatch change) |
-| Modify | `assetutilities/src/assetutilities/common/ApplicationManager.py` | `save_cfg(cfg_base, persist=True)` — standardize ALWAYS, gate only `saveDataYaml` + its path computation |
+| Create | `assetutilities/src/assetutilities/workflow_api/envelope.py` | `ResultEnvelope` stdlib dataclass + `input_hash`/`result_hash` (file-CONTENTS hash for `kind:files`)/`code_version`/`compute_reproducible` + volatile-key spec |
+| Create | `assetutilities/src/assetutilities/workflow_api/runner.py` | `run_workflow`, registry resolution, `build_cfg`, `ResultLocator`, `_run_once` (calls **`engine(embed=True, root_folder=mkdtemp(), log_to_file=False)`** → extract → rmtree), `extract_result` (in_memory + files-by-glob-of-injected-root branches) |
 | Modify | `assetutilities/docs/registry/workflows.yaml` | `schema_version: 2`; add top-level `invocation:`; add optional per-row `result:` descriptor |
-| Create | `assetutilities/docs/registry/SCHEMA.md` | document `result:` shape, `invocation:` substitution, name `capability_smoke.py` resolver |
+| Create | `assetutilities/docs/registry/SCHEMA.md` | document `result:` shape, `outputs:`-is-documentary + glob-the-injected-root semantics, `invocation:` substitution, name `capability_smoke.py` resolver |
 | Create | `assetutilities/tests/workflow_api/test_envelope.py` | envelope + hashing + reproducible TDD |
-| Create | `assetutilities/tests/workflow_api/test_runner.py` | runner + locator + registry TDD |
+| Create | `assetutilities/tests/workflow_api/test_runner.py` | runner + locator + registry + side-effect-freeness TDD |
 | Update | docs/plans/README.md | index row (workspace-hub) |
+
+> **Dependency, not owned here:** `assetutilities/src/assetutilities/engine.py` (`embed`/`root_folder`/`log_to_file` params) and `.../common/ApplicationManager.py` (`configure_embed`) are edited by **#3297**. #3282 imports and calls them; it does not modify them.
 
 ---
 
@@ -344,36 +349,37 @@ workflows:
 | test_envelope_roundtrip | `to_dict`/`from_dict` lossless | populated envelope | equal envelope |
 | test_input_hash_excludes_volatile_keys | two cfgs differing only in `Analysis`/`default`/`cfg_array` → same `input_hash` | two cfgs | identical hash |
 | test_input_hash_changes_on_real_input | changing a real (non-volatile) input key changes the hash | two cfgs | different hash |
-| test_result_hash_over_standardized_payload | `result_hash` is stable and computed over normalized payload (numpy→list applied) | payload w/ numpy types | hash equal to post-standardize hash |
-| test_result_hash_files_content_sensitive | **R2-FIX**: same basenames + same bytes → identical `result_hash`; **one output's bytes changed → DIFFERENT `result_hash`** (content-sensitive, not the old basename-only tautology) | two file payloads (equal vs one byte-differing) | equal-then-different hash |
-| test_result_hash_files_location_independent | **R2-FIX**: same basenames + same contents under different sandbox dirs (and reordered) → identical `result_hash` (basename-keyed, path-dropped) | two file payloads | same hash both ways |
-| test_provenance_code_version_shape | **D3**: `provenance.code_version` has both `package_version` and `git_sha` keys (git_sha may be `None`) | envelope | both keys present |
-| test_reproducible_not_hardcoded_default_none | **D3**: `verify_reproducible=False` → `determinism.reproducible is None` (NOT `True`) | run w/o verify | `reproducible is None` |
-| test_reproducible_computed_true_on_double_run | `verify_reproducible=True` on a deterministic workflow → `reproducible is True` via measured second run | data_exploration | `reproducible is True` |
-| test_save_cfg_persist_false_no_write_but_standardizes | `save_cfg(cfg, persist=False)` writes no file AND still returns a standardized dict (Path/np converted) | cfg w/ Path + np values | no file; values normalized |
-| test_save_cfg_persist_true_backward_compat | default `persist=True` writes the same results file as before | a basename | file created (unchanged) |
-| test_engine_persist_param_threads_through | `engine(cfg=..., persist=False)` skips the `save_cfg` cfg-dump while `persist=True` writes it (`save_cfg` write-site gating only) | data_exploration cfg | dump vs no-dump |
-| test_run_workflow_sandboxes_router_writes | **R2-FIX (Finding 1)**: `run_workflow("data_exploration", ...)` writes **NOTHING** outside the temp sandbox — the repo `examples/workflows/data_exploration/results/` dir is byte-for-byte unchanged (snapshot before/after), and the sandbox is rmtree'd | run + dir snapshot | no file written outside temp dir; sandbox gone |
-| test_locator_files_reads_contents_from_sandbox | **R2-FIX**: `extract_result(..., sandbox)` for data_exploration returns `{kind: files, outputs: [{basename, sha256, size}, ...]}` read from the sandbox (NOT abs repo paths) | data_exploration cfg_base + sandbox | per-file content digests |
+| test_result_hash_files_content_sensitive | same basenames + same bytes → identical `result_hash`; **one output's bytes changed → DIFFERENT `result_hash`** (content-sensitive, not basename-only) | two file payloads (equal vs one byte-differing) | equal-then-different hash |
+| test_result_hash_files_location_independent | same basenames + same contents under different tempdirs (and reordered) → identical `result_hash` (basename-keyed, path-dropped) | two file payloads | same hash both ways |
+| test_provenance_code_version_shape | `provenance.code_version` has both `package_version` and `git_sha` keys (git_sha may be `None`) | envelope | both keys present |
+| test_reproducible_not_hardcoded_default_none | `verify_reproducible=False` → `determinism.reproducible is None` (NOT `True`) | run w/o verify | `reproducible is None` |
+| test_reproducible_computed_true_on_double_run | `verify_reproducible=True` on `data_exploration` → `reproducible is True` via two embed runs comparing **file contents** | data_exploration | `reproducible is True` |
+| test_run_workflow_writes_nothing_outside_tempdir | **(embed-path isolation)** `run_workflow("data_exploration", ...)` writes **NOTHING** outside its `mkdtemp` root — the repo `examples/workflows/data_exploration/results/` dir is byte-for-byte unchanged (snapshot before/after), no `.log`/`logs/` anywhere, and the temp root is rmtree'd | run + dir snapshot | nothing written outside temp dir; sandbox gone |
+| test_extract_result_globs_injected_root_real_filenames | **(basename-derivation fix)** `extract_result(cfg_base, locator, root)` for data_exploration returns the **actually emitted** `data_exploration_*.csv` files read by **globbing the injected root** — NOT the registry's `input_FST*.csv` names. Assert against the demo's *real* emitted set (verified empirically at impl time — the router may emit label `_FST*` and/or column `_<col>`/`_T` variants; do NOT hard-code exactly 2) | data_exploration cfg_base + embed root | per-file content digests for the REAL emitted names |
+| test_extract_result_excludes_save_cfg_dump | **(R4 MAJOR fix)** the `save_cfg` cfg-dump `<file_name>.yml` written into `<root>/results/` by `engine.py:120` is **EXCLUDED** from the emitted-file list and the content hash, so `result_hash` is not poisoned by the dump's tempdir-abspath + `start_time` datetime | data_exploration embed run | outputs exclude `data_exploration.yml`; `result_hash` stable across two runs in different tempdirs |
 | test_locator_in_memory_missing_key_warns_not_silent | declared `in_memory` key absent → warning appended, NOT silent `{}` | cfg_base missing key | warnings non-empty |
-| test_locator_files_missing_output_warns | a declared output file absent → warning, status still ok | cfg_base w/ no file | warning present |
+| test_locator_files_emits_no_files_warns | a `kind:files` run that emits nothing → warning, status still ok | cfg_base w/ empty results | warning present |
 | test_run_workflow_by_id_returns_envelope | resolves a registry id → ok envelope w/ declared result | `run_workflow("data_exploration", params=...)` | `status=="ok"`, populated `result` |
 | test_run_workflow_unknown_id_error_envelope | unknown id is enveloped, NOT raised (fail-closed) | `run_workflow("nope")` | `status=="error"`, warning carries message |
 | test_run_workflow_engine_error_envelope | a router exception → error envelope, not a raw traceback | cfg that makes a router raise | `status=="error"`, warning carries message |
+| test_build_cfg_merges_params_over_example | `build_cfg(row, params)` loads the example input then deep-merges params (params win) | data_exploration row + override params | merged cfg has params values |
 | test_registry_schema_v2_invocation_and_optional_result | registry parses at `schema_version: 2`; top-level `invocation == "uv run python -m assetutilities {input}"`; all 9 rows valid with `result:` optional | current registry | version 2, invocation present, rows valid |
+
+> **Dependency note:** the embed-path tests (`test_run_workflow_writes_nothing_outside_tempdir`, `test_extract_result_globs_injected_root_real_filenames`, `test_reproducible_computed_true_on_double_run`, `test_run_workflow_by_id_returns_envelope`) require `engine(embed=True)` from **#3297**. They are written test-first but go green only once #3297 has landed — explicit ordering gate.
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] `from assetutilities.workflow_api import run_workflow, ResultEnvelope` works; `run_workflow` returns a populated `ResultEnvelope` for ≥1 existing workflow (`data_exploration`), demonstrated **empirically by a passing test under the repo pytest harness** (import is slow ~30 s but loads green — Step 1.5).
-- [ ] `ResultEnvelope.result` carries the **declared** result (`kind:files` branch demonstrated on **`data_exploration`**, a real registry row — **csv_utilities is NOT a target**: it is not a registry row and writes nothing), never the whole `cfg`, and never silently returns `{}`/`None` on a missing declared key (warning emitted).
-- [ ] **`run_workflow` is genuinely side-effect-free (R2-FIX, Finding 1):** a call writes **nothing** outside its per-call `tempfile.mkdtemp()` sandbox — the repo `examples/.../results/` dir is unchanged before/after — and the sandbox is `shutil.rmtree`'d. Router writes are neutralized by the **sandbox**, not by `persist=False`.
-- [ ] `save_cfg(cfg, persist=False)` writes no cfg-dump file but **still standardizes** (numpy→list, Path→str); `persist=True` default is byte-for-byte the prior behavior (existing suite green).
-- [ ] `engine(..., persist=False)` skips the `save_cfg` cfg-dump; default `persist=True` unchanged. (Full side-effect-freeness of `run_workflow` comes from the runner sandbox, above — `persist` alone does not stop router writes.)
-- [ ] Determinism fields are **computed, not hardcoded** (D3): `input_hash`, `result_hash` present; `reproducible` is `None` when unchecked and a measured `True`/`False` under `verify_reproducible=True`; `provenance.code_version == {package_version, git_sha}`. File-output `result_hash` is over **file CONTENTS** (basename → sha256(content), sorted) — **content-sensitive** (a changed output value flips the hash) AND location-independent.
+- [ ] **#3297 has landed** (`engine(cfg=..., embed=True, root_folder=, log_to_file=)` exists and is merged). #3282 does not merge before #3297.
+- [ ] `from assetutilities.workflow_api import run_workflow, ResultEnvelope` works; `run_workflow` returns a populated `ResultEnvelope` for `data_exploration` via the **embed path** `engine(cfg=..., embed=True, root_folder=<mkdtemp>, log_to_file=False)`, demonstrated **empirically by a passing test under the repo pytest harness**.
+- [ ] **`run_workflow` is genuinely side-effect-free:** a call writes **nothing** outside its per-call `tempfile.mkdtemp()` root — the repo `examples/.../results/` dir is unchanged before/after, no `.log`, no `logs/` — and the root is `shutil.rmtree`'d. Isolation comes from the **embed path's injected `root_folder`** (not `persist=False`, which is removed).
+- [ ] **Basename-derivation fix:** `ResultEnvelope.result` for `kind:files` carries the **actually emitted** files discovered by **globbing the injected root** (`data_exploration_FST1.csv` / `data_exploration_FST2.csv`), **NOT** the registry's `input_FST*.csv` names. The `kind:files` branch is demonstrated on **`data_exploration`** (a real registry row); **csv_utilities is NOT a target** (not a registry row, writes nothing). Result is never the whole `cfg`, and never silently `{}`/`None` on a missing declared key (warning emitted).
+- [ ] Determinism fields are **computed, not hardcoded**: `input_hash`, `result_hash` present; `reproducible` is `None` when unchecked and a measured `True`/`False` under `verify_reproducible=True` via a **true double-run content comparison** (two embed runs, each its own `root_folder`); `provenance.code_version == {package_version, git_sha}`. File-output `result_hash` is over **file CONTENTS** (sorted basename → sha256(content)) — content-sensitive AND location-independent.
 - [ ] `kind:in_memory` is documented as **supported-but-currently-unexercised** (all 9 registry rows are file-writing); the plan claims **no** in_memory demo.
-- [ ] Registry adopts the **v2 superset** (D1): `schema_version: 2`, required top-level `invocation: "uv run python -m assetutilities {input}"`, optional per-row `result:` descriptor; all 9 existing rows still validate; `request_schema`/`response_schema` left RESERVED for #3295. `SCHEMA.md` names `capability_smoke.py` as the reference resolver. **No v3.**
+- [ ] `build_cfg(row, params)` starts from the row's basename + loaded example input, deep-merges caller params (params win), and hands the merged cfg to the embed path; the params-dict primary path avoids the assetutilities#88 wheel-package-data gap (documented).
+- [ ] Registry adopts the **v2 superset**: `schema_version: 2`, required top-level `invocation: "uv run python -m assetutilities {input}"`, optional per-row `result:` descriptor; all 9 existing rows still validate; `request_schema`/`response_schema` left RESERVED for #3295. `SCHEMA.md` names `capability_smoke.py` as the reference resolver and documents that `outputs:` is documentary (glob the injected root at runtime). **No v3.**
+- [ ] **#3282 owns no engine/ApplicationManager edits** — it only consumes `engine(embed=True)`; the diff touches only `workflow_api/`, the registry, `SCHEMA.md`, and tests.
 - [ ] `uv run pytest assetutilities/tests/workflow_api/ -v` green; full `assetutilities` suite shows no regression.
 - [ ] Review artifacts posted under scripts/review/results/.
 
@@ -381,58 +387,64 @@ workflows:
 
 ## Adversarial Review Summary
 
-<!-- Round 3 PENDING — re-review after this revision. Round-2 returned MAJOR (now addressed). Not approval-ready until populated with no-MAJOR verdicts. Status stays draft. -->
+<!-- Re-scoped onto #3297 (Wave-1d). Prior Round-1 + Round-2 MAJOR findings addressed via the #3297 re-scope. New round PENDING — re-review after this revision. Not approval-ready until populated with no-MAJOR verdicts. Status stays draft. -->
 
-### Round 1 (2026-06-27) — verdict: **MAJOR** (Claude inline; 3 MAJOR + 1 design-blocker + 3 MINOR = 7 distinct findings)
-
-| Provider | Verdict | Key findings |
-|---|---|---|
-| Claude | **MAJOR** | M1 Step 1.5 tested the *file* path, not the in-memory `cfg` path; M2 `persist=False` guarding the whole `save_cfg` also suppresses `standardize_yml_data` → in-memory `result_hash` ≠ persisted bytes; M3 `schema_version: 2` collides with digitalmodel's `2`. Design-blocker: `cfg[basename]` is not the result payload. MINORs: m1 pilot unverified, m2 error-envelope pre-`try` gap, m3 `input_hash` volatile set undefined. |
-| Codex | UNAVAILABLE | rc=3 — `codex exec` stdin-hangs under Claude-Code Bash (`CLAUDECODE` env). Re-run pending via `env -u CLAUDECODE`. |
-| Gemini | UNAVAILABLE | hung on interactive browser-auth; needs operator login. T3→T2 degrade per cross-review routing rule. |
-
-**How this revision resolves Round 1 (each finding re-verified against the live checkout):**
-- **M1 (in-memory path):** the in-memory `cfg`/`config_flag=True` path is the explicit Step 1.5 target; the prior in-session run + static dispatch trace stand. The Round-1 "import timed out" note was a too-short timeout — a 2026-06-28 bounded re-run loads green in ~29.4 s. AC#1 demands a passing harness test as evidence.
-- **M2 (standardization):** `save_cfg` standardizes ALWAYS and gates only `saveDataYaml` (+ its path computation), verified against `ApplicationManager.py:375/377`. `result_hash` is over the standardized payload. Test `test_save_cfg_persist_false_no_write_but_standardizes`.
-- **M3 (schema collision):** RESOLVED by D1 — v2 is the additive superset; assetutilities adopts `schema_version: 2` + required `invocation:` key + the #3282-owned `result:` descriptor; #3295 reserves `request_schema`/`response_schema`. No v3.
-- **Design-blocker (`cfg[basename]`):** replaced by the per-workflow declared `ResultLocator` (`kind: in_memory | files`) sourced from the registry `result:`/`outputs:`.
-- **m2 (error envelope):** resolution + cfg build inside the guarded region; unknown id → error envelope (test pinned).
-- **m3 (input_hash):** explicit `VOLATILE_TOP_KEYS = {"Analysis", "default", "cfg_array"}` + sorted-key JSON canonicalization.
-- **New (D3 determinism):** `reproducible` is now computed (default `None`, measured under `verify_reproducible=True`) — the Round-1 hardcoded `True` is removed; `provenance.code_version = {package_version, git_sha}`. (Round-2 superseded the file-output `result_hash` from sorted basenames to **file CONTENTS** — see Round-2 resolution below.)
-
-### Round 2 (2026-06-28) — verdict: **MAJOR** (3 findings; now addressed by the R3 revision above)
+### Round 1 (2026-06-27) — verdict: **MAJOR** (3 MAJOR + 1 design-blocker + 3 MINOR)
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | **MAJOR** | F1 `persist=False` is NOT side-effect-free — routers write output files themselves (`data_exploration.py:83/93/111`) before `save_cfg`, so `engine(persist=False)` still writes the example/result dir on every call; the "no file write" Deliverable/pseudocode/Risk and the `test_engine_persist_param_threads_through` row were false. F2 `csv_utilities` cited as a files-branch demo target but it is NOT one of the 9 registry rows and its router `return cfg` writes nothing → `run_workflow("csv_utilities")` errors at registry resolution; AC unsatisfiable. F3 `kind:files` `result_hash` hashed only sorted basenames (never content); data_exploration always emits the same 2 basenames → `reproducible` tautologically `True` regardless of content drift → determinism AC vacuous. |
+| Claude | **MAJOR** | M1 Step 1.5 tested the *file* path, not the in-memory `cfg` path; M2 `persist=False` guarding the whole `save_cfg` also suppresses `standardize_yml_data`; M3 `schema_version: 2` collides with digitalmodel's `2`. Design-blocker: `cfg[basename]` is not the result payload. MINORs: m1 pilot unverified, m2 error-envelope pre-`try` gap, m3 `input_hash` volatile set undefined. |
+| Codex | UNAVAILABLE | rc=3 — `codex exec` stdin-hangs under Claude-Code Bash. Re-run pending via `env -u CLAUDECODE`. |
+| Gemini | UNAVAILABLE | hung on interactive browser-auth; needs operator login. T3→T2 degrade. |
+
+### Round 2 / Wave-1c (2026-06-28) — verdict: **MAJOR** (3 findings)
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | **MAJOR** | F1 `persist=False` + "sandbox the result_folder" is NOT side-effect-free — `config_flag=True` discards the caller cfg before the tempdir overrides apply, and the engine is cwd-coupled (writes `<cwd>/logs`, `<cwd>/results`); F2 csv_utilities cited as a files demo but it is not a registry row and writes nothing; F3 `kind:files` `result_hash` hashed basenames only → tautological `reproducible: True`. |
 | Codex | UNAVAILABLE | re-run pending via `env -u CLAUDECODE`. |
-| Gemini | UNAVAILABLE | needs operator browser-auth. T3→T2 degrade per cross-review routing rule. |
+| Gemini | UNAVAILABLE | needs operator browser-auth. T3→T2 degrade. |
 
-**How the R3 revision resolves Round 2 (each finding re-verified against the live checkout, owner-locked design applied):**
-- **F1 (side-effect-freeness):** the runner now **sandboxes the result folder per call** (`_run_once`: `tempfile.mkdtemp()` → set `cfg.Analysis.result_folder`/`analysis_root_folder` + abs `cfg.file_management.output_directory` → `engine(cfg=..., config_flag=True, persist=False)` → `shutil.rmtree`). All router writes land in the throwaway dir; the repo/example dirs are untouched. `persist=False` is reframed to gate **only** the `save_cfg` cfg-dump. Verified at `ApplicationManager.py:299` (abs `output_directory` survives `configure_result_folder`). Test `test_run_workflow_sandboxes_router_writes`; `test_engine_persist_param_threads_through` reworded to assert dump-gating only.
-- **F2 (csv_utilities):** removed as a demo target everywhere; the `kind:files` branch is demonstrated on **data_exploration** (a real registry row). `csv_utilities_router.py` is retained only as evidence of the `cfg[basename]` design hole. `kind:in_memory` documented as supported-but-currently-unexercised.
-- **F3 (content-blind hash):** `kind:files` `result_hash` now reads each sandbox output file and hashes `basename → sha256(content)` (sorted) — content-sensitive AND location-independent. Tests `test_result_hash_files_content_sensitive` + `test_result_hash_files_location_independent`; `compute_reproducible` compares content hashes across two fresh sandboxes.
+**How the Wave-1d re-scope resolves Rounds 1–2 (re-verified against the live `/mnt/local-analysis/assetutilities` checkout):**
+- **R1-M1 / R1-design-blocker (in-memory path + `cfg[basename]`):** the cwd-coupling that broke the in-memory path is fixed **out of band by #3297's embed path**, which #3282 now calls; the result locator is the per-workflow declared `ResultLocator` (registry `result:`), not `cfg[basename]`.
+- **R1-M3 (schema collision):** v2 is the additive superset; assetutilities adopts `schema_version: 2` + `invocation:` + the #3282-owned `result:`; #3295 reserves `request_schema`/`response_schema`. No v3.
+- **R2-F1 (side-effect-freeness):** the runner calls the **#3297 embed path** `engine(cfg=..., embed=True, root_folder=mkdtemp(), log_to_file=False)` — which honors the caller cfg AND routes all result+log writes under the injected root AND emits no `.log` — then `rmtree`s the root. The retired `persist=False`/"sandbox the result_folder" mechanism is removed entirely; `engine.persist`/`save_cfg.persist` edits dropped from the change set. Test `test_run_workflow_writes_nothing_outside_tempdir`.
+- **R2-F1 residual — basename derivation (Wave-1c MAJOR):** because the embed path honors the cfg, `file_name == "data_exploration"` (verified: `configure_overwrite_filenames` collapses `file_name` to `basename` under `overwrite.output: True`), so the router emits `data_exploration_FST*.csv` — **not** the registry's `input_FST*.csv`. `extract_result` now **globs the injected root** for the real emitted files instead of matching registry `outputs:` names. Tests `test_extract_result_globs_injected_root_real_filenames`.
+- **R2-F2 (csv_utilities):** removed as a demo target everywhere; `kind:files` is demonstrated on **data_exploration**; csv_utilities retained only as evidence of the `cfg[basename]` design hole; `kind:in_memory` documented as supported-but-currently-unexercised.
+- **R2-F3 (content-blind hash):** `kind:files` `result_hash` reads each emitted file in the tempdir and hashes `basename → sha256(content)` (sorted) — content-sensitive AND location-independent; `compute_reproducible` compares content hashes across two fresh embed roots. Tests `test_result_hash_files_content_sensitive` + `test_result_hash_files_location_independent`.
 
-### Round 3 (2026-06-28)
-(PENDING — re-review after this revision; Claude inline + Codex via `env -u CLAUDECODE`. **Overall result: PENDING.**)
+### Round 3 / Wave-1d re-scope (2026-06-28) — verdict: **MAJOR** (correctness) + **MINOR** (dependency)
+
+| Lens | Verdict | Key findings → disposition |
+|---|---|---|
+| Correctness | **MAJOR** | `extract_result` globbed the `save_cfg` cfg-dump (`<file_name>.yml`, written by `engine.py:120` into `<root>/results/`), which embeds the tempdir abspath + a `start_time` datetime → poisoned the file list and made `result_hash` non-deterministic (R2-F3 *relocated* from "always True" to "spuriously False"). **FIXED:** `extract_result` now excludes `<file_name>.yml` (via `cfg_base.Analysis["file_name"]`) before listing/hashing; test `test_extract_result_excludes_save_cfg_dump`. Confirmed CLOSED by review: side-effect-freeness, basename mismatch (glob is correct), csv_utilities. |
+| Dependency/determinism | **MINOR** | Confirmed determinism is now genuinely content-sensitive, #3297 dep prominent, in_memory honest, #3295 reservation respected. MINORs folded: (m1) "params avoids #88" over-claimed — only `cfg=<dict>` is example-load-free, and the example gap ≠ #88's `base_configs`; (m2) #3295 owns the `schema_version: 2` bump — sequencing now noted; (m3) "exactly 2 files" softened (router has a column-keyed branch). |
+
+### Round 4 / Wave-1d confirm (2026-06-28) — verdict: **APPROVE**
+
+Focused confirmation that the R3 cfg-dump MAJOR is closed: **APPROVE — no remaining defects.** Verified against real code: the exclusion keys off `cfg_base.Analysis["file_name"]` (the same key `save_cfg` uses at `ApplicationManager.py:373`) — strongest possible coupling; the non-determinism root (`start_time` datetime not handled by `standardize_yml_data`) is removed; `test_extract_result_excludes_save_cfg_dump` asserts both exclusion + cross-tempdir hash stability; degrades safely under a custom `output_directory`. Only the documented generalization-MINOR remains (yaml-output collision → clean fix = #3297 embed-mode cfg-dump suppression). 
+
+**Overall result (planning): NO-MAJOR — surfaced to `status:plan-review`.** Implementation still gated behind (a) USER approval and (b) **#3297 landing first** (hard dependency) + **#3295 co-landing** for the registry bump.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk — slow cold import (~30 s), NOT a hang.** `engine.py` imports `WebScraping`/`TextAnalytics`/`DownloadDataFromURL` at module load; the first `run_workflow` call inherits a ~30 s import cost (measured 2026-06-28). Mitigation: implementation re-verifies the in-memory path runs green under the repo pytest harness; if the cost is unacceptable, file a follow-on to lazy-import the heavy routers in `engine.py`. Not a blocker for AC#1.
-- **Risk — persist guard correctness.** Splitting `save_cfg` must not change the `persist=True` output. The byte-for-byte test (`test_save_cfg_persist_true_backward_compat`) plus the full existing suite are the guardrails. The `output_dir`/`filename_path` computation moves inside the `persist` branch (only needed for the write), removing the in-memory path's dependency on `Analysis["analysis_root_folder"]`.
-- **Risk — sandbox must actually capture every router write.** The side-effect-freeness claim depends on `cfg.file_management.output_directory = <abs sandbox>` being honored by `configure_result_folder` (verified: `ApplicationManager.py:299` returns an absolute `output_directory` verbatim as `result_folder`, surviving `configure()`'s reset of `analysis_root_folder` to cwd on the in-memory path). Guardrail: `test_run_workflow_sandboxes_router_writes` snapshots the repo `examples/.../results/` dir before/after and asserts **no** change. If any future router writes outside `result_folder` (e.g., a hardcoded path), that test catches it and the sandbox set is widened. Demonstrated on `data_exploration`; per-workflow `result:` population is the adoption children ([#3285](https://github.com/vamseeachanta/workspace-hub/issues/3285)/[#3286](https://github.com/vamseeachanta/workspace-hub/issues/3286)).
-- **Risk — result-locator coverage.** The `files` default covers the file-writing registry rows (data_exploration, excel_utilities, zip_utilities, word_utilities, visualization, …). `in_memory` is opt-in per row and **currently unexercised** (no registry row exposes data via `cfg[basename]`). #3282 demonstrates `files` on `data_exploration` and documents the convention. **Scope boundary, not a defect.**
-- **Risk — reproducible double-run cost/side effects.** `verify_reproducible=True` runs the engine twice; each run does the ~30 s import once (warm thereafter) and writes only into its **own** per-call temp sandbox, which is `rmtree`'d — never the repo/example dirs. Default is `False` (→ `reproducible=None`) so the common path pays nothing. The formal cross-run volatile-field **key-allowlist** is #3283's (Wave 2, D6); #3282's content-hash `result_hash` (basename → sha256(content), standardized payload) is sufficient — and now genuinely content-sensitive — for the in-process double-run comparison.
-- **Risk — registry reconciliation overlap with #3295.** #3282 lands `schema_version: 2` + `invocation:` + per-row `result:` (all additive/optional). #3295 owns the formal cross-registry reconciliation and the `request_schema`/`response_schema` slot reservation. If #3295 renames a field, a fast follow-up adjusts; the `result:` shape itself is #3282-owned and stable.
+- **Risk — hard dependency on #3297.** #3282 cannot land until #3297's `engine(embed=True, root_folder=, log_to_file=)` is merged. Mitigation: the embed-path tests are written test-first and run green only after #3297 lands; the non-embed tests (envelope round-trip, hashing, build_cfg merge, registry schema) are independent and can be developed in parallel. Critical path: **#3297 → #3282 → #3283**. **Sequencing note (#3295, R3 MINOR-2):** #3295 owns the `schema_version: 2` superset reconciliation; #3282's registry edit (adopting `2` + `invocation:` + the #3282-owned `result:` descriptor) must land **after or with** #3295 to avoid a `workflows.yaml` meaning-collision / merge conflict. Treat #3295 as a co-dependency of #3282's registry change, not just #3297.
+- **Risk — embed path must capture every write.** Side-effect-freeness depends on #3297's `configure_embed` routing **all** result + log writes under `root_folder` (verified in #3297: `analysis_root_folder = root_folder`; `configure_result_folder(root_folder)` → `<root>/results`; `log_to_file=False` → no `logs/`, no `.log`). Guardrail: `test_run_workflow_writes_nothing_outside_tempdir` snapshots the repo `examples/.../results/` dir before/after and asserts no change, plus asserts no `.log`/`logs/` anywhere. If any future router writes outside `result_folder` (a hardcoded path), that test catches it.
+- **Risk — emitted filenames are cfg-derived, not registry-declared.** The embed path's `file_name` comes from `basename` (+ `overwrite.output`), so the real outputs (`data_exploration_FST*.csv`) differ from the registry `outputs:` (`input_FST*.csv`). Mitigation: `extract_result` **globs the injected root** and never matches registry names; the registry `outputs:` is documented as documentary (expected-count cross-check only). This is the explicit Wave-1c MAJOR fix.
+- **Risk — result-locator coverage.** The `files` default covers the file-writing registry rows (data_exploration, excel_utilities, zip_utilities, word_utilities, visualization, …). `in_memory` is opt-in per row and **currently unexercised** (no registry row exposes data via `cfg[basename]`). #3282 demonstrates `files` on `data_exploration` and documents the convention. Scope boundary, not a defect.
+- **Risk — `save_cfg` cfg-dump exclusion (R3 MAJOR fix) and its generalization edge.** `extract_result` excludes `<file_name>.yml` (the `save_cfg` dump) so it cannot poison the file list/hash. This is unambiguous for the `data_exploration` demo (outputs are `*.csv`). **Generalization edge:** a future `kind:files` row whose *genuine* output is itself `<file_name>.yml` (e.g. a `yaml_utilities`-style workflow) would be wrongly excluded. **Clean general fix (recommended #3297 refinement):** have the #3297 embed path **skip the `save_cfg` cfg-dump write entirely** in embed mode (an embedder reads results via `extract_result` and never needs the persisted cfg YAML) — then `extract_result` globs a clean dir with no exclusion needed and no collision risk. The #3282-side exclusion remains as belt-and-suspenders. Flagged to #3297; not a blocker for the `data_exploration` demo scope.
+- **Risk — reproducible double-run cost/side effects.** `verify_reproducible=True` runs the embed path twice; each run writes only into its **own** `mkdtemp` root (rmtree'd), never the repo/example dirs. Default is `False` (→ `reproducible=None`) so the common path pays nothing. The formal cross-run volatile-field key-allowlist is #3283's (Wave 2); #3282's content-hash `result_hash` is sufficient — and genuinely content-sensitive — for the in-process double-run comparison.
+- **Risk — registry reconciliation overlap with #3295.** #3282 lands `schema_version: 2` + `invocation:` + per-row `result:` (all additive/optional). #3295 owns the formal cross-registry reconciliation and the `request_schema`/`response_schema` reservation. If #3295 renames a field, a fast follow-up adjusts; the `result:` shape is #3282-owned and stable.
 - **Risk — dependency weight.** `ResultEnvelope` is a stdlib `dataclass` (not Pydantic) to avoid a hard dep in the shared lib; serialization via explicit `to_dict`/`from_dict`. worldenergydata may later adapt it to its Pydantic surface (#3286).
-- **Risk — wheel packaging ([assetutilities #88]).** `run_workflow(workflow_id=...)` loading a packaged example input hits the example-not-in-wheel gap. Mitigation: primary path is `run_workflow(id, params=<dict>)` / `run_workflow(cfg=<dict>)`, needing no packaged example. Note the dependency; do not block.
+- **Risk — wheel packaging ([assetutilities #88]).** `build_cfg(row, params)` loading a packaged example input hits the example-not-in-wheel gap. Mitigation: the **primary path is the params dict** (`run_workflow(id, params=<dict>)` / `run_workflow(cfg=<dict>)`), needing no packaged example; the example-load path is a convenience for in-repo runs. Note the dependency; do not block.
+- **Risk — slow cold import (~30 s), NOT a hang.** `engine.py` imports `WebScraping`/`TextAnalytics`/`DownloadDataFromURL` at module load (measured ~29.4 s, 2026-06-28); the first `run_workflow` call inherits it. Mitigation: implementation re-verifies the embed path runs green under the repo pytest harness; if unacceptable, file a follow-on to lazy-import the heavy routers. Not a blocker.
 
-**Open Questions:** none outstanding. The three former Round-1 open questions are now SETTLED by owner decisions: schema version (D1 — v2 superset, no v3), `provenance.code_version` shape (D3 — `{package_version, git_sha}`), and file-output `result_hash` (D3 + R2-fix — over **file CONTENTS**: `basename → sha256(content)`, sorted; content-sensitive AND location-independent). The Round-2 owner-locked design (per-call result-folder **sandbox** for side-effect-freeness, csv_utilities removed as a demo target, content-hash determinism) is baked into the plan above.
+**Open Questions:** none outstanding. Schema version (v2 superset, no v3), `provenance.code_version` shape (`{package_version, git_sha}`), and file-output `result_hash` (over **file CONTENTS**: sorted basename → sha256(content)) are settled. The side-effect-freeness mechanism is now the **#3297 embed path** (`engine(embed=True, root_folder=, log_to_file=False)`), not a persist/sandbox hack; csv_utilities is removed as a demo target; the basename-derivation residual is fixed by globbing the injected root.
 
 ---
 
 ## Complexity: T2
 
-**T2** — one new small package (3 files) + two minimal backward-compatible method edits (`engine.persist`, `save_cfg.persist`) + additive v2-superset registry fields + a schema doc, TDD throughout. Flagged for **T3-depth review** because it is the foundational contract the rest of epic #3281 inherits.
+**T2** — one new small package (3 source files) + a schema doc + additive v2-superset registry fields, TDD throughout, consuming the #3297 embed path with **zero** engine/ApplicationManager edits owned here. Flagged for **T3-depth review** because it is the foundational contract the rest of epic #3281 inherits, and because it depends on the T3 #3297 change.
