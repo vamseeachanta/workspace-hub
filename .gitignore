@@ -207,6 +207,7 @@ data/document-index/*.jsonl.backup-*
 !.claude/state/session-health.yaml
 !.claude/state/skill-eval-results/
 !.claude/state/correction-trend-meta.json
+!.claude/state/graduation/
 
 # Claude-flow runtime (never synced)
 .hive-mind/

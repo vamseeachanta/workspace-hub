@@ -93,7 +93,7 @@ if [[ -f "$PII_MAP" && -f "$PII_REDACTOR" ]]; then
   log "Codename-redacting client identifiers from learning state..."
   uv run python "$PII_REDACTOR" --map "$PII_MAP" --root "$WORKSPACE_HUB" \
     .claude/state/corrections .claude/state/patterns .claude/state/reflect-history \
-    .claude/state/cc-insights .claude/state/candidates .claude/state/trends \
+    .claude/state/cc-insights .claude/state/candidates .claude/state/graduation .claude/state/trends \
     .claude/state/session-signals .claude/state/skill-eval-results \
     config/agents/claude/memory-snapshots config/agents/codex/state-snapshots \
     config/agents/gemini/state-snapshots 2>&1 || log "WARNING: client redaction had errors"
@@ -111,6 +111,7 @@ STATE_DIRS=(
   .claude/state/reflect-history/
   .claude/state/cc-insights/
   .claude/state/candidates/
+  .claude/state/graduation/
   .claude/state/trends/
   .claude/state/session-signals/
   .claude/state/skill-eval-results/
