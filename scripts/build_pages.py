@@ -37,9 +37,14 @@ PAGES = {
 # The issue-lifecycle flowchart is a self-contained Mermaid diagram of the
 # canonical GitHub-issue workflow method (plan/review/implement/publish/close) —
 # no hostnames, IPs, or client data; tracks issue #3237.
+# The model-generation pipeline work-review summarizes public OSS engineering in
+# vamseeachanta/digitalmodel (MIT) — pipeline diagram, status matrix, merged-PR
+# list, and the no-silent-assumptions design note; no hostnames, IPs, or client
+# data (all PR/issue references are to the public digitalmodel repo).
 HTML_PAGES = {
     "machine-equality-matrix": ("docs/reports/machine-equality-matrix.html", "Machine Equality"),
     "issue-workflow-lifecycle": ("docs/reports/issue-workflow-lifecycle.html", "Issue Lifecycle"),
+    "orcaflex-pipeline-worklog": ("docs/reports/orcaflex-pipeline-worklog.html", "Model-Gen Pipeline"),
 }
 
 _LINK = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
