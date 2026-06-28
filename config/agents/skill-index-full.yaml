@@ -194,6 +194,12 @@ skills:
   name: corporate-tax-strategic-planning
   when_to_use: '- User wants to reduce corporate tax to a specific target (reverse engineering) - User wants to model retained earnings + R&D budget across multiple years - User asks about funding future growth from current-year earnings - User wants to evaluate tax impact of different spending strategies - User asks about loan structuring between related entities'
   when_to_use_source: section
+- description: Weekly sync that diffs new Deckhand API paths (workflows) against a saved snapshot and opens HITL draft PRs to keep the resume, LinkedIn, website api-catalog, and repo READMEs in step with the live API catalog. Never publishes or merges.
+  family: business-marketing
+  id: business-marketing/deckhand-api-presence-sync
+  name: deckhand-api-presence-sync
+  when_to_use: '- The weekly cadence fires (see **Cadence & install**), OR - The owner asks to re-sync presence surfaces after new workflows landed.'
+  when_to_use_source: section
 - description: Turn interactive weekly GTM priorities into agent-executable packets and run productivity-flow reviews that reduce owner orchestration time.
   family: business-marketing
   id: business-marketing/weekly-gtm-productivity-steering

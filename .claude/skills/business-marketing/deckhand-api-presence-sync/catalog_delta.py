@@ -56,6 +56,35 @@ STATUS_BY_RESIDENCY = {
     "none": "internal",
 }
 
+# This file lives in the PUBLIC workspace-hub repo. Only generic, publicly-safe
+# rows may be persisted or printed: `live_public` paths (open public report URL)
+# and `roadmap` domains (generic community names). Private/internal rows carry
+# client scope codenames in their `ref`/`scope`/`description` and MUST NOT be
+# written here — they are reduced to a de-identified aggregate count.
+PUBLIC_SAFE_STATUSES = {"live_public", "roadmap"}
+# Whitelisted keys for persisted/printed records — defense-in-depth against any
+# future field that could carry a client identifier.
+PUBLIC_SAFE_KEYS = (
+    "ref", "kind", "channel_domain", "subdomains",
+    "status", "claimable_public", "report_url_hint",
+)
+
+
+def public_safe(paths: list[dict]) -> list[dict]:
+    """Project to publicly-safe records: drop private/internal rows entirely,
+    and keep only whitelisted (generic) fields on the rows that remain."""
+    out = []
+    for p in paths:
+        if p.get("status") not in PUBLIC_SAFE_STATUSES:
+            continue
+        out.append({k: p[k] for k in PUBLIC_SAFE_KEYS if k in p})
+    return out
+
+
+def private_internal_count(paths: list[dict]) -> int:
+    """De-identified aggregate: how many paths exist that are NOT publicly safe."""
+    return sum(1 for p in paths if p.get("status") not in PUBLIC_SAFE_STATUSES)
+
 
 def _default_catalog() -> Path:
     """Resolve the Deckhand catalog without hardcoding an absolute path.
@@ -173,12 +202,17 @@ def compute_delta(current: list[dict], snapshot: dict) -> dict:
     }
 
 
-def write_snapshot(path: Path, current: list[dict]) -> None:
+def write_snapshot(path: Path, current_public: list[dict], *, private_count: int) -> None:
+    """Persist ONLY the publicly-safe projection (see PUBLIC_SAFE_STATUSES).
+    `current_public` must already be the output of public_safe()."""
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source": "deckhand/config/deckhand/routing/domain-workflows.yaml",
-        "paths": current,
+        "note": "Public-safe projection — live_public + roadmap only; private/internal "
+                "client paths are reduced to private_internal_count (no codenames).",
+        "private_internal_count": private_count,
+        "paths": current_public,
     }
     with open(path, "w") as f:
         json.dump(payload, f, indent=2, sort_keys=True)
@@ -203,28 +237,36 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     catalog = load_catalog(catalog_path)
-    current = extract_paths(catalog)
+    current_full = extract_paths(catalog)
+    # Everything persisted or printed is the public-safe projection. The full
+    # list is used only for the de-identified private aggregate count.
+    current = public_safe(current_full)
+    priv_count = private_internal_count(current_full)
 
     if args.emit_current:
-        json.dump({"source": str(catalog_path), "paths": current}, sys.stdout, indent=2)
+        json.dump(
+            {"source": str(catalog_path), "private_internal_count": priv_count, "paths": current},
+            sys.stdout, indent=2,
+        )
         sys.stdout.write("\n")
         return 0
 
     snapshot = load_snapshot(args.snapshot)
     delta = compute_delta(current, snapshot)
+    delta["counts"]["private_internal_count"] = priv_count
     json.dump(delta, sys.stdout, indent=2)
     sys.stdout.write("\n")
 
     c = delta["counts"]
     print(
-        f"\n[delta] current={c['current_total']} "
-        f"live_public={c['current_live_public']} "
+        f"\n[delta] public={c['current_total']} "
+        f"live_public={c['current_live_public']} private_internal={priv_count} "
         f"new={c['new']} removed={c['removed']} status_changed={c['status_changed']}",
         file=sys.stderr,
     )
 
     if args.update_snapshot:
-        write_snapshot(args.snapshot, current)
+        write_snapshot(args.snapshot, current, private_count=priv_count)
         print(f"[snapshot] updated {args.snapshot}", file=sys.stderr)
 
     return 0

@@ -1,66 +1,23 @@
 {
-  "generated_at": "2026-06-28T12:40:34.966414+00:00",
+  "generated_at": "2026-06-28T13:35:32.645211+00:00",
+  "note": "Public-safe projection \u2014 live_public + roadmap only; private/internal client paths are reduced to private_internal_count (no codenames).",
   "paths": [
-    {
-      "channel_domain": null,
-      "claimable_public": false,
-      "description": "FDAS Lower Tertiary delivery \u2014 run an already-built worldenergydata workflow (field economics, PR #494 / worldenergydata#500; or per-well benchmarking, worldenergydata#499) and deliver it as a branded report plus an llm-wiki-fdas PR via the private-client promotion path (deckhand#457). Compute is public+built; the new piece is private-client delivery.",
-      "kind": "workflow",
-      "owner_repo": "deckhand",
-      "ref": "fdas_client_economics_delivery",
-      "residency": "client-wiki",
-      "scope": "fdas",
-      "status": "live_private",
-      "subdomains": null
-    },
     {
       "channel_domain": "floating-marine",
       "claimable_public": true,
-      "description": "Open Deck floating/marine mooring screening workflow.",
       "kind": "workflow",
-      "owner_repo": "deckhand",
       "ref": "floating_marine_mooring_screen",
       "report_url_hint": "https://vamseeachanta.github.io/deckhand-sandbox/.../floating_marine_mooring_screen/report.html",
-      "residency": "public-sandbox",
-      "scope": "open-deck",
       "status": "live_public",
       "subdomains": [
         "mooring"
       ]
     },
     {
-      "channel_domain": null,
-      "claimable_public": false,
-      "description": "HDIC scope-level summary-first engineering answer workflow.",
-      "kind": "workflow",
-      "owner_repo": "deckhand",
-      "ref": "hdic_client_engineering_summary",
-      "residency": "client-wiki",
-      "scope": "hdic",
-      "status": "live_private",
-      "subdomains": null
-    },
-    {
-      "channel_domain": null,
-      "claimable_public": false,
-      "description": "Open Deck main-room router defers domain asks to the right public channel.",
-      "kind": "workflow",
-      "owner_repo": "deckhand",
-      "ref": "open_deck_public_router",
-      "residency": "none",
-      "scope": "open-deck",
-      "status": "internal",
-      "subdomains": null
-    },
-    {
       "channel_domain": "cad",
       "claimable_public": false,
-      "description": "Bound channel domain 'cad' \u2014 escalate-only, workflow row owed later.",
       "kind": "roadmap",
-      "owner_repo": "deckhand",
       "ref": "roadmap:cad",
-      "residency": "none",
-      "scope": null,
       "status": "roadmap",
       "subdomains": [
         "cad"
@@ -69,24 +26,16 @@
     {
       "channel_domain": "codes-standards-maritime-law",
       "claimable_public": false,
-      "description": "Bound channel domain 'codes-standards-maritime-law' \u2014 escalate-only, workflow row owed later.",
       "kind": "roadmap",
-      "owner_repo": "deckhand",
       "ref": "roadmap:codes-standards-maritime-law",
-      "residency": "none",
-      "scope": null,
       "status": "roadmap",
       "subdomains": []
     },
     {
       "channel_domain": "electrical",
       "claimable_public": false,
-      "description": "Bound channel domain 'electrical' \u2014 escalate-only, workflow row owed later.",
       "kind": "roadmap",
-      "owner_repo": "deckhand",
       "ref": "roadmap:electrical",
-      "residency": "none",
-      "scope": null,
       "status": "roadmap",
       "subdomains": [
         "electrical"
@@ -95,12 +44,8 @@
     {
       "channel_domain": "manufacturing",
       "claimable_public": false,
-      "description": "Bound channel domain 'manufacturing' \u2014 escalate-only, workflow row owed later.",
       "kind": "roadmap",
-      "owner_repo": "deckhand",
       "ref": "roadmap:manufacturing",
-      "residency": "none",
-      "scope": null,
       "status": "roadmap",
       "subdomains": [
         "manufacturing"
@@ -109,12 +54,8 @@
     {
       "channel_domain": "wells-subsurface",
       "claimable_public": false,
-      "description": "Bound channel domain 'wells-subsurface' \u2014 escalate-only, workflow row owed later.",
       "kind": "roadmap",
-      "owner_repo": "deckhand",
       "ref": "roadmap:wells-subsurface",
-      "residency": "none",
-      "scope": null,
       "status": "roadmap",
       "subdomains": [
         "wells",
@@ -122,36 +63,17 @@
       ]
     },
     {
-      "channel_domain": null,
-      "claimable_public": false,
-      "description": "Software-ops incident or task workflow for tooling, automation, and gateway operations.",
-      "kind": "workflow",
-      "owner_repo": "deckhand",
-      "ref": "software_ops_incident_or_task",
-      "residency": "none",
-      "scope": "software-ops",
-      "status": "internal",
-      "subdomains": [
-        "tooling",
-        "automation",
-        "gateway-ops"
-      ]
-    },
-    {
       "channel_domain": "subsea-pipelines-integrity",
       "claimable_public": true,
-      "description": "Open Deck subsea pipeline wall-thickness screening workflow.",
       "kind": "workflow",
-      "owner_repo": "deckhand",
       "ref": "subsea_pipeline_wall_thickness_screen",
       "report_url_hint": "https://vamseeachanta.github.io/deckhand-sandbox/.../subsea_pipeline_wall_thickness_screen/report.html",
-      "residency": "public-sandbox",
-      "scope": "open-deck",
       "status": "live_public",
       "subdomains": [
         "pipeline"
       ]
     }
   ],
+  "private_internal_count": 4,
   "source": "deckhand/config/deckhand/routing/domain-workflows.yaml"
 }
