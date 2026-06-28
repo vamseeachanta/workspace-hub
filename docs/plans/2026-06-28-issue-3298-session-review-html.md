@@ -35,7 +35,7 @@ No relevant wiki pages (workspace-hub-internal harness artifact; out of scope of
 
 ## Key design decision (REQUIRES USER APPROVAL)
 
-GitHub Pages for `workspace-hub` is **public**. A raw session-review can leak client identifiers (ACMA / Seadrill / Baez / …) and host/path data. Choose the publish mode:
+GitHub Pages for `workspace-hub` is **public**. A raw session-review can leak client identifiers (active client / project codenames) and host/path data. Choose the publish mode:
 
 1. **Sanitized public (recommended).** Published page carries only issue/PR numbers (as links), abstract slugs, verdicts, counts, and next-step headers — same public-safe posture as `machine-equality-matrix.html`. Full-fidelity (with names) stays in a local/private copy. Keeps a true live link with zero PII surface. A `legal-sanity-scan` gate runs on the published artifact and fails closed.
 2. **Private surface.** Full-fidelity published to an authenticated/private location; no public Pages live-link.
