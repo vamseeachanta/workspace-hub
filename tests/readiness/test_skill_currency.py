@@ -129,3 +129,34 @@ def test_verdict_routes_through_verdict_for():
     roster = {"dev-primary": {"status": "active"}}
     v = bem.verdict_for("skill_currency", "dev-primary", {"dev-primary": rep}, {}, roster, [])
     assert v == "SKILLS-CURRENT"
+
+
+# ── #3256 audit refactor regression: module-level _allowed parity + audit() unchanged ──
+import importlib.util as _ilu  # noqa: E402
+
+_ASC_PATH = REPO_ROOT / "scripts" / "curation" / "audit_skill_currency.py"
+_aspec = _ilu.spec_from_file_location("audit_skill_currency", _ASC_PATH)
+assert _aspec is not None and _aspec.loader is not None
+asc = _ilu.module_from_spec(_aspec)
+sys.modules["audit_skill_currency"] = asc
+_aspec.loader.exec_module(asc)
+
+
+def test_allowed_module_level_prefix_vs_exact():
+    # entry ending in '-' is a PREFIX; everything else is EXACT (no substring over-match)
+    assert asc._allowed("source-command-a", ["source-command-"]) is True
+    assert asc._allowed("memory", ["memory"]) is True
+    assert asc._allowed("memory-bank", ["memory"]) is False          # exact, not substring
+    assert asc._allowed("anything", []) is False
+
+
+def test_audit_output_unchanged_after_refactor():
+    # audit() must still return the same schema_version and key set after extracting _allowed.
+    out = asc.audit("dev-primary")
+    assert out["schema_version"] == 2
+    expected_keys = {
+        "machine", "audited_at", "canonical_count", "gemini_present", "gemini_unexpected",
+        "gemini_unexpected_families", "gemini_expected", "codex_present", "hermes_present",
+        "index_dangling", "index_stale", "schema_version",
+    }
+    assert set(out.keys()) == expected_keys

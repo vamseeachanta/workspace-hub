@@ -188,6 +188,8 @@ data/document-index/*.jsonl.backup-*
 !.claude/state/skill-drift-*.json
 !.claude/state/memory-freshness-*.json
 !.claude/state/skill-link-health-*.json
+!.claude/state/correction-confidence-threshold.json
+!.claude/state/skill-scope-classification.json
 !.claude/state/reflect-history/
 !.claude/state/trends/
 !.claude/state/session-signals/
