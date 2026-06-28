@@ -497,3 +497,4 @@ Add one row per plan:
 | [#3207](https://github.com/vamseeachanta/workspace-hub/issues/3207) | agy headless dispatch wrapper (unblocked — agy 1.0.9 --print) | [Plan](2026-06-18-issue-3207-agy-headless-dispatch.md) | plan-approved | T2 | 2026-06-18 |
 | [#3214](https://github.com/vamseeachanta/workspace-hub/issues/3214) | Curated-graph cleanup + when_to_use boundary regression fix | [Plan](2026-06-18-issue-3214-curated-graph-cleanup.md) | plan-approved | T2 | 2026-06-18 |
 | [#3220](https://github.com/vamseeachanta/workspace-hub/issues/3220) | Resolve 5 pre-existing dangling edges (add 4 nodes + delete 1) | [Plan](2026-06-19-issue-3220-dangling-edges.md) | plan-approved | T2 | 2026-06-19 |
+| [#3254](https://github.com/vamseeachanta/workspace-hub/issues/3254) | Recurring drift patterns trigger skill-update candidates (epic #3248) | [Plan](2026-06-27-3254-recurring-drift-skill-update-candidates.md) | plan-approved | T2 | 2026-06-27 |

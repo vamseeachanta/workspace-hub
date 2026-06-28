@@ -157,6 +157,22 @@ fi
 _nightly_exit=0
 bash scripts/learning/comprehensive-learning.sh || _nightly_exit=$?
 
+# Step 3g: aggregate recurring drift classes into parked skill-update candidates (#3254 — gap #5)
+# Placed AFTER Step 3e (comprehensive-learning.sh, the Claude drift producer) and BEFORE Step 10
+# (commit), so Codex(3d)+Hermes(3f)+Claude(3e) drift for the day is all present, then committed.
+# Single-machine aggregator guard mirrors comprehensive-learning.sh:29 (dev-primary OR ace-linux-1)
+# for defense-in-depth: this block writes+commits a candidate file, so an explicit host guard prevents
+# multi-box candidate churn if the nightly were ever mis-scheduled.
+_agg_host="$(hostname | tr '[:upper:]' '[:lower:]')"
+if [[ "$_agg_host" == "dev-primary" || "$_agg_host" == "ace-linux-1" ]]; then
+  echo "--- Drift candidate aggregation $(date +%Y-%m-%dT%H:%M:%S) ---"
+  source scripts/lib/python-resolver.sh
+  ${PYTHON} scripts/session/aggregate_drift_candidates.py \
+    || echo "WARNING: drift candidate aggregation failed (soft)"   # best-effort; never abort nightly
+else
+  echo "  Skipping drift candidate aggregation (single-machine aggregator: dev-primary/ace-linux-1)"
+fi
+
 # Step 10: commit all learning artifacts to git (best-effort — #1780)
 echo "--- Commit learning artifacts $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/cron/commit-learning-artifacts.sh 2>&1 || \
