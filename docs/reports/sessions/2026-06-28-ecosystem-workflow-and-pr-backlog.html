@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session Review · 2026-06-28 · ecosystem workflow + PR backlog</title>
+<style>
+:root{--fg:#1a2230;--muted:#5b6675;--bg:#f7f8fa;--card:#fff;--line:#e2e6ec;--brand:#5b3fd6;--ok:#1a7f4b;--warn:#b06a00;--hold:#9a3412}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--fg);background:var(--bg)}
+header{padding:22px;background:var(--card);border-bottom:1px solid var(--line)}
+header h1{font-size:22px;margin:0 0 4px}
+header .meta{color:var(--muted);font-size:14px}
+main{max-width:920px;margin:0 auto;padding:24px 22px}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:0 0 18px}
+section h2{font-size:16px;margin:0 0 12px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{flex:1 1 120px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.kpi .n{font-size:26px;font-weight:700}
+.kpi .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#f0f3f7}
+a{color:var(--brand)}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:20px}
+.t-ok{background:#e3f5ea;color:var(--ok)}
+.t-run{background:#eaf0fb;color:var(--brand)}
+.t-hold{background:#fbeae3;color:var(--hold)}
+.t-warn{background:#fdf3e3;color:var(--warn)}
+ul{margin:6px 0;padding-left:20px}
+li{margin:3px 0}
+footer{color:var(--muted);font-size:13px;text-align:center;padding:18px}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px;font-size:13px}
+.note{font-size:13px;color:var(--muted)}
+</style></head>
+<body>
+<header>
+  <h1>Session Review — Ecosystem workflow directive + PR backlog merge</h1>
+  <div class="meta">2026-06-28 · workspace-hub · lane:claude · <span class="note">sample artifact for <a href="https://github.com/vamseeachanta/workspace-hub/issues/3298">#3298</a> · public-safe (issue/PR numbers + verdicts only)</span></div>
+</header>
+<main>
+
+<section>
+  <h2>At a glance</h2>
+  <div class="kpis">
+    <div class="kpi"><div class="n">8</div><div class="l">PRs merged</div></div>
+    <div class="kpi"><div class="n">2</div><div class="l">conflicts resolved</div></div>
+    <div class="kpi"><div class="n">1</div><div class="l">issue filed</div></div>
+    <div class="kpi"><div class="n">1</div><div class="l">plan → plan-review</div></div>
+    <div class="kpi"><div class="n">2</div><div class="l">PRs needing a call</div></div>
+  </div>
+  <p style="margin:14px 0 0">Goal: stop the sync-cycle churn, route work through the repo workflow, clear the PR backlog, and stand up the per-session live-link review doc the user asked for. This page is itself the first instance of that deliverable.</p>
+</section>
+
+<section>
+  <h2>Pull requests merged (squash)</h2>
+  <table>
+    <thead><tr><th>PR</th><th>What</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3273">#3273</a></td><td>recurring drift classes → parked skill-update candidates (#3254)</td><td><span class="tag t-ok">merged</span></td></tr>
+      <tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3274">#3274</a></td><td>Hermes pattern → skill/memory candidate emitter (#3253)</td><td><span class="tag t-ok">merged</span></td></tr>
+      <tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3275">#3275</a></td><td>auto-graduate correction candidates to DRAFT skills (#3252)</td><td><span class="tag t-ok">merged (conflict resolved)</span></td></tr>
+      <tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3276">#3276</a></td><td>adaptive correction-confidence threshold + Gemini skill detection (#3256)</td><td><span class="tag t-ok">merged (conflict resolved)</span></td></tr>
+      <tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3017">#3017</a></td><td>incident-to-issue evidence-research skill ref</td><td><span class="tag t-ok">merged</span></td></tr>
+      <tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3003">#3003</a></td><td>epic #2998 Windows-rollout entry prompt handoff</td><td><span class="tag t-ok">merged</span></td></tr>
+      <tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3020">#3020</a></td><td>epic #2998 Windows-host cutover runbook + handoff</td><td><span class="tag t-ok">merged</span></td></tr>
+      <tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/2982">#2982</a></td><td>F3 registry-driven dispatch + provider-routing policy (#2970)</td><td><span class="tag t-ok">merged</span></td></tr>
+    </tbody>
+  </table>
+  <p class="note">Conflicts in #3275/#3276 were additive (parallel-epic branches each appended a stage to <code>scripts/cron/comprehensive-learning-nightly.sh</code> and a row to <code>docs/plans/README.md</code>) — resolved keep-both, renumbered cron steps 3f→3i, <code>bash -n</code> validated.</p>
+</section>
+
+<section>
+  <h2>Needs a decision (not auto-merged)</h2>
+  <table>
+    <thead><tr><th>PR</th><th>Why held</th><th>State</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3244">#3244</a></td><td>docs-only handoff; failing <em>Skill-Index Coherence</em> check was baseline-red (branch behind main; index is current on main). Branch updated to re-run CI — should go green, then merge normally (no <code>--admin</code> bypass).</td><td><span class="tag t-run">CI re-running</span></td></tr>
+      <tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3280">#3280</a></td><td>Titled a handoff but sweeps 100+ bridge-managed <code>.claude/memory/</code> files (auto-memory mirror + agents.md, +789/-617) and conflicts on the generated equality-matrix HTML. Not a normal feature merge — user call.</td><td><span class="tag t-hold">flagged</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Issues &amp; plans</h2>
+  <ul>
+    <li><a href="https://github.com/vamseeachanta/workspace-hub/issues/3298">#3298</a> <strong>filed</strong> — per-session live-link HTML work-review doc (human-facing companion to <a href="https://github.com/vamseeachanta/workspace-hub/issues/2110">#2110</a>). Plan written → <span class="tag t-run">status:plan-review</span>. Carries one open <strong>design decision</strong> (sanitized-public vs private vs both) for user approval.</li>
+    <li><a href="https://github.com/vamseeachanta/workspace-hub/issues/2110">#2110</a> <strong>cross-linked</strong> — machine-readable session-close report; #3298 consumes its payload rather than re-deriving.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Artifacts produced</h2>
+  <ul>
+    <li>Memory note <code>feedback-ecosystem-workflow-and-session-live-link.md</code> — the standing directive (workflow-routed work, no sync churn, mergeable PRs, session live-link).</li>
+    <li>Plan <code>docs/plans/2026-06-28-issue-3298-session-review-html.md</code>.</li>
+    <li>This page <code>docs/reports/sessions/2026-06-28-ecosystem-workflow-and-pr-backlog.html</code> — first instance of the #3298 deliverable.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Decisions &amp; guardrails honored</h2>
+  <ul>
+    <li>Did <strong>not</strong> <code>--admin</code>-override a failing required check — fixed the cause (branch staleness) instead.</li>
+    <li>Did <strong>not</strong> self-approve the plan gate — #3298 sits at <code>status:plan-review</code> awaiting the user.</li>
+    <li>Conflict resolutions validated (<code>bash -n</code>, marker-grep clean) before push; a stray merge marker was caught and fixed with a follow-up commit rather than a force-push.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Next steps</h2>
+  <ul>
+    <li><strong>Approve #3298 plan + pick the sanitization mode</strong> (recommend Option 1, sanitized-public) → then implement generator + index + Pages wire-up + tests, making this a true live link.</li>
+    <li><strong>Merge #3244</strong> once its re-run CI is green.</li>
+    <li><strong>Decide on #3280</strong> — merge the memory sweep, or close/repackage it.</li>
+  </ul>
+</section>
+
+</main>
+<footer>workspace-hub · session review · generated by hand as the #3298 sample · public-safe</footer>
+</body></html>
