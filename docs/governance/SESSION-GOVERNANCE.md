@@ -546,37 +546,9 @@ The workspace-hub version is canonical for detailed signal analysis.
 - Hermes tracks session metrics and generates session reports
 - Inter-session continuity validation
 
-## Per-session live-link work-review doc (#3298)
-
-Every session ships a **human-facing, live-linked HTML review** so the user can
-quickly see what that session did. It is the companion to the machine-readable
-session-close report (#2110): #2110 emits the structured payload, #3298 renders
-the reviewable page.
-
-**Emit → land flow:**
-1. A session builds a payload JSON (`{slug, date, title, lane, summary, kpis,
-   issues, prs, decisions, artifacts, next_steps}`) — full-fidelity, kept LOCAL
-   (`docs/reports/sessions/payloads/` is gitignored; payloads may name clients).
-2. `uv run python scripts/workflow/build_session_review.py <payload.json>` renders
-   `docs/reports/sessions/<date>-<slug>.html`, updates `manifest.json`, and
-   regenerates `index.html`.
-3. **Publish mode = sanitized-public.** The renderer runs `session_review_sanitize`
-   (deny-list from `.legal-deny-list.yaml` + abs-path/IP/hostname scrub) and a
-   fail-closed `assert_clean` gate before writing — published pages carry only
-   issue/PR numbers, verdicts, and abstract slugs. The test
-   `test_committed_session_pages_pass_sanitization` re-verifies every committed
-   page against the live deny-list.
-4. `scripts/build_pages.py` copies the index + each manifest-enumerated page
-   (no glob) into `public/sessions/` → live at
-   `vamseeachanta.github.io/workspace-hub/sessions/index.html`.
-
-Full-fidelity detail stays in the local payload; only the sanitized page is
-published. Markdown session-handoffs (`docs/session-handoffs/`) remain for deep
-narrative; the HTML review is for quick at-a-glance review.
-
 ## References
 
-- Issue: #3298 (live-link session review), #2110 (machine-readable report), #1839, #2020, #2027, #2028 (CI enforcement)
+- Issue: #1839, #2020, #2027, #2028 (CI enforcement)
 - Trust Architecture: `docs/governance/TRUST-ARCHITECTURE.md`
 - Review Routing Policy: `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
 - Session failures analysis: `docs/reports/session-failures-and-refactor-review.md`

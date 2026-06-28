@@ -602,6 +602,3 @@ config/.*.local
 
 # Built static Pages output (regenerated in CI)
 public/
-
-# #3298 session-review payloads are full-fidelity (may name clients) — keep local
-docs/reports/sessions/payloads/
