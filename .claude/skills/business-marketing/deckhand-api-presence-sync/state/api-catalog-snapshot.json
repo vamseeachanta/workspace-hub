@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-06-28T13:35:32.645211+00:00",
+  "note": "Public-safe projection \u2014 live_public + roadmap only; private/internal client paths are reduced to private_internal_count (no codenames).",
+  "paths": [
+    {
+      "channel_domain": "floating-marine",
+      "claimable_public": true,
+      "kind": "workflow",
+      "ref": "floating_marine_mooring_screen",
+      "report_url_hint": "https://vamseeachanta.github.io/deckhand-sandbox/.../floating_marine_mooring_screen/report.html",
+      "status": "live_public",
+      "subdomains": [
+        "mooring"
+      ]
+    },
+    {
+      "channel_domain": "cad",
+      "claimable_public": false,
+      "kind": "roadmap",
+      "ref": "roadmap:cad",
+      "status": "roadmap",
+      "subdomains": [
+        "cad"
+      ]
+    },
+    {
+      "channel_domain": "codes-standards-maritime-law",
+      "claimable_public": false,
+      "kind": "roadmap",
+      "ref": "roadmap:codes-standards-maritime-law",
+      "status": "roadmap",
+      "subdomains": []
+    },
+    {
+      "channel_domain": "electrical",
+      "claimable_public": false,
+      "kind": "roadmap",
+      "ref": "roadmap:electrical",
+      "status": "roadmap",
+      "subdomains": [
+        "electrical"
+      ]
+    },
+    {
+      "channel_domain": "manufacturing",
+      "claimable_public": false,
+      "kind": "roadmap",
+      "ref": "roadmap:manufacturing",
+      "status": "roadmap",
+      "subdomains": [
+        "manufacturing"
+      ]
+    },
+    {
+      "channel_domain": "wells-subsurface",
+      "claimable_public": false,
+      "kind": "roadmap",
+      "ref": "roadmap:wells-subsurface",
+      "status": "roadmap",
+      "subdomains": [
+        "wells",
+        "field-development"
+      ]
+    },
+    {
+      "channel_domain": "subsea-pipelines-integrity",
+      "claimable_public": true,
+      "kind": "workflow",
+      "ref": "subsea_pipeline_wall_thickness_screen",
+      "report_url_hint": "https://vamseeachanta.github.io/deckhand-sandbox/.../subsea_pipeline_wall_thickness_screen/report.html",
+      "status": "live_public",
+      "subdomains": [
+        "pipeline"
+      ]
+    }
+  ],
+  "private_internal_count": 4,
+  "source": "deckhand/config/deckhand/routing/domain-workflows.yaml"
+}
