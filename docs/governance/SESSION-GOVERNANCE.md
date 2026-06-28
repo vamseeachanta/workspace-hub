@@ -565,11 +565,18 @@ beyond an optional one-line headline.
 | Reports | `docs/reports/<file>` |
 
 **Emit → land flow:**
-1. A session writes a **reference payload** JSON: `{slug, date, title, lane,
-   headline?, refs:[{type, label, num|path|href}]}` where `type ∈
-   issue|pr|commit|plan|decision|handoff|report|link`. Full-fidelity payloads
-   stay LOCAL (`docs/reports/sessions/payloads/` is gitignored). It also writes
-   its `docs/session-handoffs/` record (the log + decisions narrative).
+1. A session gets its **reference payload** one of two ways:
+   - **Auto-derive from git (#3311, preferred):** `build_session_review.py --from-git
+     --since <ref>` derives `refs` from the session's commits + changed docs in
+     `<base>..HEAD` — PRs from the `(#NNN)` squash-merge subject, issues from other
+     `#NNN`, and `docs/plans|session-handoffs|governance/*-decision|reports` files
+     → typed refs. Add `--emit-payload <path>` to write a draft for curation.
+   - **By hand:** write the payload JSON `{slug, date, title, lane, headline?,
+     refs:[{type, label, num|path|href}]}`, `type ∈
+     issue|pr|commit|plan|decision|handoff|report|link`.
+   Either way the session also writes its `docs/session-handoffs/` record (the log
+   + decisions narrative). Full-fidelity payloads stay LOCAL
+   (`docs/reports/sessions/payloads/` is gitignored).
 2. `uv run python scripts/workflow/build_session_review.py <payload.json>` renders
    a lean grouped link-index `docs/reports/sessions/<date>-<slug>.html`, updates
    `manifest.json`, and regenerates `index.html`. `num` → GitHub issue/PR/commit
