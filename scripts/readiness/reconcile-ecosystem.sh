@@ -47,6 +47,13 @@ SIBLING_ROOT="$(dirname "$REPO_ROOT")"
 SAFE_BRANCH_RE='^(chore/auto-|bot/|claude-session/|pages/)'
 STALE_DAYS="${RECONCILE_STALE_DAYS:-14}"
 
+# Python for the worktree guard. Prefer a WORKING python3, else python. On Windows Git Bash bare
+# `python3` is commonly the Microsoft Store stub (prints an install message, exits non-zero) while
+# `python` is a real interpreter — probe by RUNNING it, not `command -v` (the stub is on PATH).
+if python3 -c '' >/dev/null 2>&1; then PY=python3
+elif python -c '' >/dev/null 2>&1; then PY=python
+else PY=python3; fi
+
 APPLY=0; STASH_DIRTY=0; DO_EQUALITY=0; AS_JSON=0
 for a in "$@"; do
   case "$a" in
@@ -134,12 +141,12 @@ scan_repo() {
     b="${b#"${b%%[![:space:]]*}"}"; b="${b#\* }"; [ -z "$b" ] && continue
     [ "$b" = "$cur" ] && continue
     [[ "$b" =~ $SAFE_BRANCH_RE ]] || continue
-    if [ "$DESTRUCTIVE_OK" = 1 ] && ( cd "$repo" && python3 "$GUARD" safe-delete-branch "$b" ) >/dev/null 2>&1 </dev/null; then
+    if [ "$DESTRUCTIVE_OK" = 1 ] && ( cd "$repo" && "$PY" "$GUARD" safe-delete-branch "$b" ) >/dev/null 2>&1 </dev/null; then
       add AUTO-SAFE "$name" "delete merged safe-pattern branch '$b'" \
         "git -C '$repo' branch -d '$b'"
     else
       add NEEDS-APPROVAL "$name" "merged branch '$b' (guard/host policy held)" \
-        "python3 '$GUARD' safe-delete-branch '$b'"
+        "$PY '$GUARD' safe-delete-branch '$b'"
     fi
   done <<< "$merged"
 
@@ -163,12 +170,12 @@ scan_repo() {
         [ "$b" = "main" ] && continue
         grep -qx "$b" <<< "$merged_prs" || continue                         # PR merged ⇒ in main
         git -C "$repo" merge-base --is-ancestor "$b" origin/main 2>/dev/null && continue  # ancestry pass owns it
-        if [ "$DESTRUCTIVE_OK" = 1 ] && ( cd "$repo" && python3 "$GUARD" safe-delete-branch "$b" ) >/dev/null 2>&1 </dev/null; then
+        if [ "$DESTRUCTIVE_OK" = 1 ] && ( cd "$repo" && "$PY" "$GUARD" safe-delete-branch "$b" ) >/dev/null 2>&1 </dev/null; then
           add AUTO-SAFE "$name" "delete squash-merged branch '$b' (PR merged, not in ancestry)" \
             "git -C '$repo' branch -D '$b'"
         else
           add NEEDS-APPROVAL "$name" "squash-merged branch '$b' (guard/host policy held)" \
-            "cd '$repo' && python3 '$GUARD' safe-delete-branch '$b'"
+            "cd '$repo' && $PY '$GUARD' safe-delete-branch '$b'"
         fi
       done <<< "$all_b"
     fi
@@ -201,7 +208,7 @@ equality_plan() {
     local dim verdict; dim=$(printf '%s' "$line" | sed -E 's/^"([^"]+)".*/\1/')
     verdict=$(printf '%s' "$line" | sed -E 's/.*"([A-Z-]+)"$/\1/')
     case "$verdict" in
-      CONFORMS|EQUAL|PARITY|EXPECTED-DIFF|EXPECTED-DIVERGENCE|UNREACHABLE|ABSENT) continue ;;
+      CONFORMS|EQUAL|PARITY|EXPECTED-DIFF|EXPECTED-DIVERGENCE|UNREACHABLE|ABSENT|CURATED-FRESH|SKILLS-CURRENT|MEMORY-FRESH|SKILL-LINKS-OK) continue ;;
     esac
     case "$verdict" in
       STALE-CHECKOUT)

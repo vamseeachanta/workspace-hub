@@ -157,6 +157,52 @@ fi
 _nightly_exit=0
 bash scripts/learning/comprehensive-learning.sh || _nightly_exit=$?
 
+# Step 3f: auto-graduate high-confidence correction candidates to DRAFT proposals (#3252, epic #3248).
+# Best-effort so a graduation failure never aborts the nightly. The module self-guards on
+# machine_label() (dev-primary/ace-linux-1 only) and signals via state JSON + notify.sh, never via a
+# non-zero exit. Runs AFTER the pipeline refreshes candidates and BEFORE the artifact commit/redact.
+echo "--- Graduate correction candidates $(date +%Y-%m-%dT%H:%M:%S) ---"
+_GRADUATE="scripts/curation/graduate_corrections.py"
+if command -v uv >/dev/null 2>&1; then
+  uv run --no-project --with pyyaml python "$_GRADUATE" || \
+    echo "WARNING: correction graduation failed (uv) — see above"
+elif command -v python3 >/dev/null 2>&1; then
+  python3 "$_GRADUATE" || echo "WARNING: correction graduation failed (python3) — see above"
+else
+  echo "WARNING: no uv/python3 to run correction graduation — skipped"
+fi
+
+# Step 3g: aggregate recurring drift classes into parked skill-update candidates (#3254 — gap #5)
+# Placed AFTER Step 3e (comprehensive-learning.sh, the Claude drift producer) and BEFORE Step 10
+# (commit), so Codex(3d)+Hermes(3f)+Claude(3e) drift for the day is all present, then committed.
+# Single-machine aggregator guard mirrors comprehensive-learning.sh:29 (dev-primary OR ace-linux-1)
+# for defense-in-depth: this block writes+commits a candidate file, so an explicit host guard prevents
+# multi-box candidate churn if the nightly were ever mis-scheduled.
+_agg_host="$(hostname | tr '[:upper:]' '[:lower:]')"
+if [[ "$_agg_host" == "dev-primary" || "$_agg_host" == "ace-linux-1" ]]; then
+  echo "--- Drift candidate aggregation $(date +%Y-%m-%dT%H:%M:%S) ---"
+  source scripts/lib/python-resolver.sh
+  ${PYTHON} scripts/session/aggregate_drift_candidates.py \
+    || echo "WARNING: drift candidate aggregation failed (soft)"   # best-effort; never abort nightly
+else
+  echo "  Skipping drift candidate aggregation (single-machine aggregator: dev-primary/ace-linux-1)"
+fi
+
+# Step 3h: adapt the session_corrections confidence threshold (#3256 — best-effort, dormant-by-design).
+# Reads the git-tracked correction-promotions.yaml; holds at 80 until a human-provenance reviewed_by
+# marker lands. Writes .claude/state/correction-confidence-threshold.json (committed by Step 10).
+# $PYTHON is resolved by the python-resolver this orchestrator already sources (preflight).
+echo "--- Adaptive correction threshold $(date +%Y-%m-%dT%H:%M:%S) ---"
+${PYTHON} scripts/learnings/adapt-correction-threshold.py || \
+  echo "WARNING: correction-threshold adaptation failed — session_corrections gate falls back to 80"
+
+# Step 3i: classify candidate skill families as gemini-specific / shared / gemini-drift (#3256 —
+# best-effort). Reuses audit_skill_currency family/allowlist machinery; writes JSON only (never
+# skill-candidates.md), reading candidate family names READ-ONLY from skill-candidates.md.
+echo "--- Skill-scope classification $(date +%Y-%m-%dT%H:%M:%S) ---"
+${PYTHON} scripts/curation/classify_skill_scope.py --from-candidates || \
+  echo "WARNING: skill-scope classification failed — see above"
+
 # Step 10: commit all learning artifacts to git (best-effort — #1780)
 echo "--- Commit learning artifacts $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/cron/commit-learning-artifacts.sh 2>&1 || \

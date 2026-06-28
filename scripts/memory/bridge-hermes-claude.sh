@@ -314,6 +314,30 @@ fi
 echo ""
 
 # ---------------------------------------------------------------------------
+# 7c. Emit Hermes-pattern CANDIDATES (#3253, epic #3248) — review-gated.
+#   Writes ONLY .claude/state/candidates/hermes-pattern-candidates.md (status: candidate);
+#   never a canonical surface. Promotion stays the HUMAN owner-review gate (same as #3252).
+#   Self-contained launcher (HPY) — does NOT reference RBPY, which is scoped only inside the §7b
+#   read-back guard and would be UNBOUND here (under `set -u` an unbound expansion aborts the shell
+#   BEFORE the `||` guard runs). Rule-4 guarded: HPY is assigned on both if/else branches before
+#   use, and the call is `|| echo …(soft)`-guarded, so no path through §7c can abort the bridge.
+# ---------------------------------------------------------------------------
+EXTRACT="${REPO_ROOT}/scripts/memory/extract_hermes_patterns.py"
+if [[ -f "${EXTRACT}" ]]; then
+    if command -v uv >/dev/null 2>&1 && uv run --no-project python -c "print(1)" >/dev/null 2>&1; then
+        HPY=(uv run --no-project python)
+    else
+        HPY=(python3)
+    fi
+    if "${HPY[@]}" "${EXTRACT}" >/dev/null 2>&1; then
+        echo "  ✅ .claude/state/candidates/hermes-pattern-candidates.md (Hermes pattern candidates)"
+    else
+        echo "  ⚠️  WARN: hermes-pattern candidate emit failed (soft)" >&2
+    fi
+fi
+echo ""
+
+# ---------------------------------------------------------------------------
 # 8. Commit (only if --commit flag and changes exist)
 # ---------------------------------------------------------------------------
 if [[ "${COMMIT_MODE}" == "--commit" ]]; then

@@ -8,7 +8,9 @@
   so this script computes those Windows-hard fields via CIM, exports them as EQ_* environment
   overrides, then delegates to `bash scripts/readiness/collect-equality.sh`.
 
-  Schema, the provenance block, solver probes, behaviour probes, and the canonical-hash
+  Schema, the provenance block, solver probes, behaviour probes, the session_curation freshness
+  read (the .sh reads .claude/state/session-curation-<machine>.json directly via jq --- it is NOT a
+  Windows-hard CIM field, so this overlay contributes nothing to it), and the canonical-hash
   commit-on-change idempotency stay SINGLE-SOURCED in the .sh --- this script only fills the five
   Windows compute fields. That avoids the schema-drift trap of a standalone reimplementation.
 

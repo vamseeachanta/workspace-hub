@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-25T13:20:47.364975Z",
+  "generated_at": "2026-06-27T05:21:39.937370Z",
   "current_week": "2026-W26",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-06-25T13:20:46.372769Z",
+    "utilization_generated_at": "2026-06-27T05:21:39.653875Z",
     "audit_generated_at": "2026-06-22T09:15:04Z"
   },
   "recommended_provider_order": [
-    "codex",
     "gemini",
-    "claude"
+    "claude",
+    "codex"
   ],
   "recommendations": [
     {
@@ -20,8 +20,8 @@
       "reported_utilization_pct": 0.0,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 0,
-      "post_records_current_week": 0,
+      "sessions_current_week": 1,
+      "post_records_current_week": 5,
       "audit_post_records": 119505,
       "missing_repo_reads": 9448,
       "python3_per_1k_records": 9.0,
@@ -29,36 +29,8 @@
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
-          "tool": "Bash",
-          "count": 64154
-        },
-        {
           "tool": "Read",
-          "count": 21375
-        },
-        {
-          "tool": "Edit",
-          "count": 9507
-        },
-        {
-          "tool": "Write",
-          "count": 8424
-        },
-        {
-          "tool": "unknown",
-          "count": 7805
-        },
-        {
-          "tool": "Grep",
-          "count": 2613
-        },
-        {
-          "tool": "Agent",
-          "count": 1380
-        },
-        {
-          "tool": "ToolSearch",
-          "count": 681
+          "count": 5
         }
       ],
       "preferred_work": [
@@ -81,11 +53,11 @@
     },
     {
       "provider": "codex",
-      "status": "underused",
-      "priority": "highest",
-      "reported_utilization_pct": 0.0,
+      "status": "needs_cleanup",
+      "priority": "high",
+      "reported_utilization_pct": 40.0,
       "quota_basis": "quota",
-      "quota_source": "app-server-live",
+      "quota_source": "local-session-rate-limits",
       "sessions_current_week": 60,
       "post_records_current_week": 6931,
       "audit_post_records": 121856,
@@ -196,7 +168,7 @@
     }
   ],
   "summary": {
-    "highest_priority_provider": "codex",
-    "highest_priority_reason": "Route bounded implementation/test/refactor issues to Codex immediately."
+    "highest_priority_provider": "gemini",
+    "highest_priority_reason": "Batch 5-6 related research/recon tasks into Gemini sessions."
   }
 }

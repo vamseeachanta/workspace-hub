@@ -146,6 +146,71 @@ ctx="${WS}/.claude/memory/context.md"; ctx_mtime="absent"
 [[ -f "$ctx" ]] && ctx_mtime=$(date -r "$ctx" +%Y-%m-%dT%H:%M:%S 2>/dev/null || echo unknown)
 hermes_home="absent"; [[ -d "${HOME:-/nonexistent}/.hermes" ]] && hermes_home="present"
 
+# ── 6b. SESSION CURATION — freshness of the daily session-analysis + memory curation ──
+# References the state written by scripts/curation/curate_session_memory.py (never re-runs it,
+# mirroring how harness REFERENCES the readiness file). Missing/garbled file → last_curated_at
+# null → the matrix grades MISSING-EVIDENCE. last_curated_at is INTENTIONALLY in the canonical
+# payload (not a volatile-exclude) so each fresh curation forces a rewrite carrying the new stamp.
+sc_file="${STATE_DIR}/session-curation-${MACHINE}.json"
+sc_last="null"; sc_24h=0; sc_provs=""; sc_memchg=0
+if [[ -f "$sc_file" ]] && have jq; then
+  _scl=$(jq -r '.last_curated_at // empty' "$sc_file" 2>/dev/null)
+  [[ -n "$_scl" ]] && sc_last="\"$(yesc "$_scl")\""
+  sc_24h=$(jq -r '.sessions_24h // 0' "$sc_file" 2>/dev/null); [[ "$sc_24h" =~ ^[0-9]+$ ]] || sc_24h=0
+  sc_provs=$(jq -r '(.providers_active // []) | join(",")' "$sc_file" 2>/dev/null)
+  sc_memchg=$(jq -r '.memory_files_changed // 0' "$sc_file" 2>/dev/null); [[ "$sc_memchg" =~ ^[0-9]+$ ]] || sc_memchg=0
+fi
+
+# ── 6c. SKILL CURRENCY — cross-provider skill drift vs canonical (#3249) ──────
+# References the audit state written by scripts/curation/audit_skill_currency.py (never re-runs it).
+# Missing/garbled file -> audited_at null / canonical_count 0 -> matrix grades MISSING-EVIDENCE.
+skc_file="${STATE_DIR}/skill-currency-${MACHINE}.json"
+skc_audited="null"; skc_cc=0; skc_gp=false; skc_gu=0; skc_ge=0; skc_cp=false; skc_hp=false; skc_dangling="null"
+if [[ -f "$skc_file" ]] && have jq; then
+  _ska=$(jq -r '.audited_at // empty' "$skc_file" 2>/dev/null)
+  [[ -n "$_ska" ]] && skc_audited="\"$(yesc "$_ska")\""
+  skc_cc=$(jq -r '.canonical_count // 0' "$skc_file" 2>/dev/null); [[ "$skc_cc" =~ ^[0-9]+$ ]] || skc_cc=0
+  skc_gu=$(jq -r '.gemini_unexpected // 0' "$skc_file" 2>/dev/null); [[ "$skc_gu" =~ ^[0-9]+$ ]] || skc_gu=0
+  skc_ge=$(jq -r '.gemini_expected // 0' "$skc_file" 2>/dev/null); [[ "$skc_ge" =~ ^[0-9]+$ ]] || skc_ge=0
+  skc_gp=$(jq -r 'if .gemini_present then "true" else "false" end' "$skc_file" 2>/dev/null); [[ "$skc_gp" == "true" ]] || skc_gp=false
+  skc_cp=$(jq -r 'if .codex_present then "true" else "false" end' "$skc_file" 2>/dev/null); [[ "$skc_cp" == "true" ]] || skc_cp=false
+  skc_hp=$(jq -r 'if .hermes_present then "true" else "false" end' "$skc_file" 2>/dev/null); [[ "$skc_hp" == "true" ]] || skc_hp=false
+  # index_dangling stays NULL when absent/unreadable so the matrix fails closed (a null index can
+  # never grade green). A clean index emits 0; a rotted one emits the dangling count.
+  _skd=$(jq -r 'if (.index_dangling|type)=="number" then .index_dangling else "null" end' "$skc_file" 2>/dev/null)
+  [[ "$_skd" =~ ^[0-9]+$ ]] && skc_dangling="$_skd"
+fi
+
+# ── 6d. MEMORY FRESHNESS — staleness of memory surfaces (#3255) ───────────────
+# References the audit state from scripts/curation/audit_memory_freshness.py (never re-runs it).
+# audited_at null / worst_age_hours null -> matrix grades MISSING-EVIDENCE. worst_age_hours stays
+# in the canonical payload so a refreshed audit forces a rewrite.
+mf_file="${STATE_DIR}/memory-freshness-${MACHINE}.json"
+mf_audited="null"; mf_worst="null"; mf_fresh="null"
+if [[ -f "$mf_file" ]] && have jq; then
+  _mfa=$(jq -r '.audited_at // empty' "$mf_file" 2>/dev/null)
+  [[ -n "$_mfa" ]] && mf_audited="\"$(yesc "$_mfa")\""
+  _mfw=$(jq -r 'if (.worst_age_hours|type)=="number" then .worst_age_hours else "null" end' "$mf_file" 2>/dev/null)
+  [[ "$_mfw" =~ ^[0-9]+(\.[0-9]+)?$ ]] && mf_worst="$_mfw"
+  _mff=$(jq -r '.freshness // empty' "$mf_file" 2>/dev/null)
+  [[ -n "$_mff" ]] && mf_fresh="\"$(yesc "$_mff")\""
+fi
+
+# ── 6e. SKILL-LINK HEALTH — shared-skill links propagated to ecosystem repos (#3251) ──
+# References resync-skill-links.sh state (never re-runs it). Missing/garbled -> null/0 -> the matrix
+# grades MISSING-EVIDENCE. repairable stays in the canonical payload so a fresh audit forces a rewrite.
+slh_file="${STATE_DIR}/skill-link-health-${MACHINE}.json"
+slh_audited="null"; slh_repos=0; slh_healthy=0; slh_repairable=0; slh_worst="null"
+if [[ -f "$slh_file" ]] && have jq; then
+  _sla=$(jq -r '.audited_at // empty' "$slh_file" 2>/dev/null)
+  [[ -n "$_sla" ]] && slh_audited="\"$(yesc "$_sla")\""
+  slh_repos=$(jq -r '.repos_total // 0' "$slh_file" 2>/dev/null); [[ "$slh_repos" =~ ^[0-9]+$ ]] || slh_repos=0
+  slh_healthy=$(jq -r '.healthy // 0' "$slh_file" 2>/dev/null); [[ "$slh_healthy" =~ ^[0-9]+$ ]] || slh_healthy=0
+  slh_repairable=$(jq -r '.repairable // 0' "$slh_file" 2>/dev/null); [[ "$slh_repairable" =~ ^[0-9]+$ ]] || slh_repairable=0
+  _slw=$(jq -r '.worst_state // empty' "$slh_file" 2>/dev/null)
+  [[ -n "$_slw" ]] && slh_worst="\"$(yesc "$_slw")\""
+fi
+
 # ── 7. BEHAVIOR — deterministic, SANDBOXED probe corpus (DG4/DC1) ────────────
 # CC3: guard mktemp (never let SBX become /sbx → rm -rf /). GC4: trap-based cleanup.
 SBX_PARENT="$(mktemp -d 2>/dev/null)" || { echo "mktemp failed" >&2; exit 1; }
@@ -338,6 +403,30 @@ ${provider_harness_yaml}
     has_repo_sync: ${has_sync}
     has_parity_review: ${has_parity}
     job_count: ${job_count}
+  session_curation:
+    last_curated_at: ${sc_last}
+    sessions_24h: ${sc_24h}
+    providers_active: "$(yesc "$sc_provs")"
+    memory_files_changed: ${sc_memchg}
+  skill_currency:
+    audited_at: ${skc_audited}
+    canonical_count: ${skc_cc}
+    gemini_present: ${skc_gp}
+    gemini_unexpected: ${skc_gu}
+    gemini_expected: ${skc_ge}
+    codex_present: ${skc_cp}
+    hermes_present: ${skc_hp}
+    index_dangling: ${skc_dangling}
+  memory_freshness:
+    audited_at: ${mf_audited}
+    worst_age_hours: ${mf_worst}
+    freshness: ${mf_fresh}
+  skill_link_health:
+    audited_at: ${slh_audited}
+    repos_total: ${slh_repos}
+    healthy: ${slh_healthy}
+    repairable: ${slh_repairable}
+    worst_state: ${slh_worst}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 

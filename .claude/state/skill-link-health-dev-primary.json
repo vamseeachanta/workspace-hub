@@ -1,0 +1,16 @@
+{
+  "machine": "dev-primary",
+  "audited_at": "2026-06-27T05:48:34+00:00",
+  "platform": "unix",
+  "repos_total": 14,
+  "healthy": 28,
+  "missing": 0,
+  "dangling": 0,
+  "flattened": 0,
+  "modified_real_dir": 0,
+  "template_absent": 14,
+  "repairable": 0,
+  "unexpected_missing_repos": [],
+  "worst_state": "TEMPLATE-ABSENT",
+  "schema_version": 1
+}

@@ -197,15 +197,15 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 - **ai/** — 15 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
 - **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
 - **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
-- **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
-- **business-marketing/** — 1 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
 - **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
 - **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
+- **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
+- **business-marketing/** — 1 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
 - **coordination/** — 59 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
 - **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
 - **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate
+- **data/** — 82 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
 - **data-science/** — 1 skill(s); `ls .claude/skills/data-science/*/SKILL.md` to enumerate
-- **data/** — 81 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
 - **development/** — 71 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
 - **devops/** — 7 skill(s); `ls .claude/skills/devops/*/SKILL.md` to enumerate
 - **devtools/** — 1 skill(s); `ls .claude/skills/devtools/*/SKILL.md` to enumerate
@@ -219,10 +219,10 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 - **gaming/** — 2 skill(s); `ls .claude/skills/gaming/*/SKILL.md` to enumerate
 - **github/** — 19 skill(s); `ls .claude/skills/github/*/SKILL.md` to enumerate
 - **leisure/** — 1 skill(s); `ls .claude/skills/leisure/*/SKILL.md` to enumerate
-- **marketing/** — 1 skill(s); `ls .claude/skills/marketing/*/SKILL.md` to enumerate
+- **marketing/** — 7 skill(s); `ls .claude/skills/marketing/*/SKILL.md` to enumerate
 - **mcp/** — 2 skill(s); `ls .claude/skills/mcp/*/SKILL.md` to enumerate
 - **media/** — 5 skill(s); `ls .claude/skills/media/*/SKILL.md` to enumerate
-- **memory/** — 2 skill(s); `ls .claude/skills/memory/*/SKILL.md` to enumerate
+- **memory/** — 3 skill(s); `ls .claude/skills/memory/*/SKILL.md` to enumerate
 - **mlops/** — 21 skill(s); `ls .claude/skills/mlops/*/SKILL.md` to enumerate
 - **operations/** — 17 skill(s); `ls .claude/skills/operations/*/SKILL.md` to enumerate
 - **productivity/** — 11 skill(s); `ls .claude/skills/productivity/*/SKILL.md` to enumerate
@@ -234,8 +234,8 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 - **software-development/** — 35 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
 - **test-dummy-validation/** — 1 skill(s); `ls .claude/skills/test-dummy-validation/*/SKILL.md` to enumerate
 - **travel/** — 8 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
+- **workspace-hub/** — 149 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
 - **workspace-hub-learned/** — 69 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
-- **workspace-hub/** — 146 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
 
 ## Universal rules (inlined for Codex)
 > Claude reads .claude/rules/ natively; these are inlined here because Codex has no native rules loader. Domain/Claude-only rules (goal-invocation, calc-citation, wiki-routing) stay path-references.

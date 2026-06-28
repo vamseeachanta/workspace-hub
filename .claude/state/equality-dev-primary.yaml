@@ -1,11 +1,11 @@
-generated_at: "2026-06-22T14:16:25"
+generated_at: "2026-06-27T00:48:34"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "6f4f62076"
+  checkout_sha: "f8add3d08"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 22148, disk_avail_gb: 831}
+    headroom: {ram_avail_mib: 21898, disk_avail_gb: 809}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -25,16 +25,16 @@ dimensions:
     - {name: aqwa, status: absent, evidence: absent}
     - {name: ansys, status: absent, evidence: absent}
   harness:
-    providers: {claude: absent, codex: present, gemini: present, hermes: absent}
+    providers: {claude: absent, codex: present, gemini: present, hermes: present}
     gh_auth: ok
-    python_cmd: python
+    python_cmd: uv-run
     readiness_ref: harness-readiness-ace-linux-1.yaml
     readiness_overall: fail
-  skills: {repo_skill_count: 408}
+  skills: {repo_skill_count: 416}
   kanban: {dispatch_queues: "dev-primary,dev-secondary,home-win,_leader-state,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-06-22T04:25:01"
+    context_md_mtime: "2026-06-26T04:25:01"
   provider_harness:
     schema_version: 1
     providers:
@@ -68,4 +68,28 @@ dimensions:
   scheduler:
     has_repo_sync: true
     has_parity_review: true
-    job_count: 56
+    job_count: 58
+  session_curation:
+    last_curated_at: "2026-06-27T05:47:01+00:00"
+    sessions_24h: 205
+    providers_active: "claude,codex,gemini,hermes"
+    memory_files_changed: 0
+  skill_currency:
+    audited_at: "2026-06-27T05:48:33+00:00"
+    canonical_count: 44
+    gemini_present: true
+    gemini_unexpected: 0
+    gemini_expected: 9
+    codex_present: true
+    hermes_present: true
+    index_dangling: 0
+  memory_freshness:
+    audited_at: "2026-06-27T05:48:33+00:00"
+    worst_age_hours: 20.392
+    freshness: "MEMORY-FRESH"
+  skill_link_health:
+    audited_at: "2026-06-27T05:48:34+00:00"
+    repos_total: 14
+    healthy: 28
+    repairable: 0
+    worst_state: "TEMPLATE-ABSENT"

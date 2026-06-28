@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-06-25T13:20:49.586782Z",
+  "generated_at": "2026-06-27T05:21:42.095657Z",
   "current_week": "2026-W26",
-  "scorecard_generated_at": "2026-06-25T13:20:47.364975Z",
+  "scorecard_generated_at": "2026-06-27T05:21:39.937370Z",
   "recommended_provider_order": [
-    "codex",
     "gemini",
-    "claude"
+    "claude",
+    "codex"
   ],
   "provider_queues": {
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 37,
-      "total_candidates": 174,
+      "execution_ready_count": 35,
+      "total_candidates": 175,
       "top_issues": [
         {
           "number": 2686,
@@ -555,64 +555,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "strategy"
-          ]
-        },
-        {
-          "number": 2656,
-          "title": "chore(repo-structure): normalize workspace-hub folder/file structure",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2656",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:repo-organization-structure",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:11:50Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2657,
-          "title": "chore(provider-session): remediate Hermes llm-wiki spinout path drift",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2657",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "cat:harness",
-            "domain:session",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:17:17Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
             "strategy"
           ]
         },
@@ -1365,7 +1307,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-06-25T11:45:07Z",
+          "updatedAt": "2026-06-26T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -2022,57 +1964,6 @@
           "updatedAt": "2026-06-13T21:42:39Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2650,
-          "title": "chore(knowledge): post-spinout cleanup for llm-wiki migration",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2650",
-          "labels": [
-            "priority:medium",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:knowledge-management-platform",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T12:58:11Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2652,
-          "title": "Daily repo readiness tracker",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2652",
-          "labels": [
-            "priority:medium",
-            "domain:automation",
-            "machine:dev-primary",
-            "repo-readiness",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-25T11:08:09Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4648,7 +4539,7 @@
             "domain:workflow",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-25T12:40:33Z",
+          "updatedAt": "2026-06-25T19:36:47Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4660,14 +4551,112 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3248,
+          "title": "Epic: robust cross-provider self-improvement & skill-currency ecosystem",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3248",
+          "labels": [
+            "cat:skills-improvement",
+            "domain:ai-orchestration"
+          ],
+          "updatedAt": "2026-06-27T00:30:37Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3252,
+          "title": "Self-improvement: auto-graduate high-confidence correction candidates to skills \u2014 epic #3248",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3252",
+          "labels": [
+            "cat:skills-improvement",
+            "domain:ai-orchestration"
+          ],
+          "updatedAt": "2026-06-26T16:57:31Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "strategy"
+          ]
+        },
+        {
+          "number": 3253,
+          "title": "Self-improvement: Hermes pattern auto-promotion into canonical skills \u2014 epic #3248",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3253",
+          "labels": [
+            "cat:skills-improvement",
+            "domain:ai-orchestration"
+          ],
+          "updatedAt": "2026-06-26T16:57:33Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "strategy"
+          ]
+        },
+        {
+          "number": 3254,
+          "title": "Self-improvement: repeating drift patterns trigger skill-update candidates \u2014 epic #3248",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3254",
+          "labels": [
+            "cat:skills-improvement",
+            "domain:ai-orchestration"
+          ],
+          "updatedAt": "2026-06-26T16:57:35Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3256,
+          "title": "Self-improvement: adaptive correction-confidence threshold + Gemini-specific skill detection \u2014 epic #3248",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3256",
+          "labels": [
+            "cat:skills-improvement",
+            "domain:ai-orchestration"
+          ],
+          "updatedAt": "2026-06-26T16:57:38Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "strategy"
+          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
-      "routing_priority": "highest",
+      "routing_priority": "high",
       "execution_ready_count": 2,
-      "total_candidates": 22,
+      "total_candidates": 21,
       "top_issues": [
         {
           "number": 3030,
@@ -4684,8 +4673,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -4705,8 +4694,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -4731,8 +4720,8 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -4752,8 +4741,8 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -4778,8 +4767,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -4804,8 +4793,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -4829,8 +4818,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -4858,8 +4847,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -4882,8 +4871,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -4903,8 +4892,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -4929,8 +4918,8 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -4950,8 +4939,8 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -4976,8 +4965,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5002,8 +4991,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5027,8 +5016,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5056,8 +5045,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5084,8 +5073,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5113,8 +5102,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5134,8 +5123,8 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -5153,57 +5142,10 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2647,
-          "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
-          "labels": [
-            "priority:low",
-            "domain:notification",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:11:50Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2651,
-          "title": "Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2651",
-          "labels": [
-            "priority:low",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:document-intelligence-indexing",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:13:10Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
             "implementation"
           ]
         },
@@ -5225,8 +5167,8 @@
           "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5248,8 +5190,8 @@
           "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5271,8 +5213,8 @@
           "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -5289,8 +5231,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -5309,8 +5251,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -5325,8 +5267,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation"
           ]
@@ -5341,8 +5283,8 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5358,8 +5300,29 @@
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3239,
+          "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
+          "labels": [
+            "enhancement",
+            "domain:reporting",
+            "domain:gtm"
+          ],
+          "updatedAt": "2026-06-25T19:22:00Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation"
@@ -5390,7 +5353,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-25T04:00:03Z",
+          "updatedAt": "2026-06-27T04:01:02Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5487,7 +5450,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-25T04:00:03Z",
+          "updatedAt": "2026-06-27T04:01:02Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",

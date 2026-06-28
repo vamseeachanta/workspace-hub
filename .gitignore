@@ -174,10 +174,22 @@ data/document-index/*.jsonl.backup-*
 # Raw transcripts (sessions/, archive/, session-reports/) stay local — too large
 /docs/strategy/gtm/job-market-scan/archive/
 !.claude/state/candidates/
+# #3253: Hermes-pattern last-seen signature is per-machine RUNTIME spam-suppression state — keep it
+# untracked so the bridge's §8 stash/pop never churns it (the candidate *.md IS tracked + committed
+# by commit-learning-artifacts.sh).
+.claude/state/candidates/hermes-patterns-last-seen-*.json
 !.claude/state/corrections/
 !.claude/state/patterns/
 !.claude/state/harness-readiness-ace-win-1.yaml
 !.claude/state/equality-*.yaml
+!.claude/state/session-curation-*.json
+!.claude/state/session-curation-*.md
+!.claude/state/skill-currency-*.json
+!.claude/state/skill-drift-*.json
+!.claude/state/memory-freshness-*.json
+!.claude/state/skill-link-health-*.json
+!.claude/state/correction-confidence-threshold.json
+!.claude/state/skill-scope-classification.json
 !.claude/state/reflect-history/
 !.claude/state/trends/
 !.claude/state/session-signals/
@@ -197,6 +209,7 @@ data/document-index/*.jsonl.backup-*
 !.claude/state/session-health.yaml
 !.claude/state/skill-eval-results/
 !.claude/state/correction-trend-meta.json
+!.claude/state/graduation/
 
 # Claude-flow runtime (never synced)
 .hive-mind/

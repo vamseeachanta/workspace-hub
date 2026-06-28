@@ -127,6 +127,18 @@ hermes:
     - external_skills_dir  # skills.external_dirs path exists and has SKILL.md files
     - config_managed_keys  # managed keys match template values
 
+# #3249 skill-currency line item: families that LEGITIMATELY differ between a provider's skill
+# surface and canonical `.claude/skills` are NOT drift. Listed as name-prefixes; a family whose
+# diff matches any prefix grades EXPECTED-DIVERGENCE (purple), only UNEXPECTED diffs grade
+# SKILLS-DRIFTED (red). When a provider intentionally adds/drops a family, update this list — that
+# review prompt is the point. Baseline captured 2026-06-26 from the live .agents/skills diff.
+expected_skill_divergence:
+  gemini:
+    - source-command-       # Gemini-CLI command-sourced skill families (gsd-*, compound, learn)
+    - workspace_hub_learned # Gemini-side learned-skill staging dir
+    - digitalmodel          # domain skill family not propagated to the Gemini surface
+    - memory                # memory-systems family not on the Gemini surface
+
 prerequisites:
   - jq
   - git

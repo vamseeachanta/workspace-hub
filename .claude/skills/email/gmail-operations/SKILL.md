@@ -13,9 +13,15 @@ Use for Gmail/himalaya setup and recurring inbox operations: triage, extraction 
 
 ## Class-Level Workflow
 1. Confirm account context and OAuth/token health first.
-2. Classify mail by action class: triage, extract/archive, attachment processing, unsubscribe, contact/touchbase.
-3. Preserve source message identifiers in extracted artifacts.
-4. Keep destructive mail actions batched and reviewable.
+2. Use live Gmail/himalaya/API access as the source of truth. Do **not** treat cached Claude/Hermes tool-result files, old session transcripts, or browser history as evidence of current email state; those are only historical hints.
+3. If live email access is unavailable, fail closed: say email verification is blocked, name the missing access class, and convert the task into a concrete follow-up checklist rather than implying the inbox was checked.
+4. Classify mail by action class: triage, extract/archive, attachment processing, unsubscribe, contact/touchbase.
+5. Preserve source message identifiers in extracted artifacts.
+6. Keep destructive mail actions batched and reviewable.
+
+## Live-Access Pitfall: Coordination Reminders
+
+For appointment/reminder coordination that asks to “check email,” first verify a real mail client/API path is authenticated. Browser Gmail redirects to login, stale MCP result files, or previous session snippets are not sufficient. If blocked, create/update the coordination artifact with explicit checklist items like “check email/portal/texts for confirmation,” and report the email check as blocked rather than silently substituting historical evidence. See `references/live-email-source-of-truth.md`.
 
 ## Consolidated Session Learnings
 

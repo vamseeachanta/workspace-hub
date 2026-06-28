@@ -67,6 +67,48 @@ tasks:
       Complements the weekly equality-report (#2801) with focused alerting on the
       model-parity-critical dimensions. Set EQUIV_ALERT_ISSUE=<n> to post drift to an issue.
 
+  - id: session-curation
+    label: Session analysis + memory curation (machine-equivalence line item)
+    schedule: "47 */6 * * *"
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2]
+    roles: [control-plane, comms-dispatch, sim-worker]
+    requires: [bash, python3, uv, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/curation/curate-session-memory.sh
+      >> $WORKSPACE_HUB/logs/monitoring/session-curation-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/monitoring/session-curation-*.log
+    is_claude_task: false
+    description: >-
+      Per-box every 6h: analyze ALL AI-provider session logs (Claude/Codex/Gemini/Hermes)
+      + curate the memory delta, publish a fingerprint to the session-curation-state git
+      ref for cross-machine transfer, then refresh this box's equality column. Drives the
+      "session analysis & memory curation" matrix cell (freshness: <=12h green / >12h orange
+      / >24h red). The 6h cadence keeps a healthy box comfortably under the 12h staleness
+      threshold. Windows boxes run the same engine via Git Bash (curate-session-memory.ps1
+      is the Task-Scheduler-native companion).
+
+  - id: equality-matrix-refresh
+    label: Daily equality-matrix rebuild (freshness dead-man's-switch for session-curation)
+    schedule: "50 5 * * *"
+    machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
+    requires: [bash, python3, uv, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/readiness/collect-equality.sh &&
+      uv run --no-project --with pyyaml python scripts/readiness/build-equality-matrix.py
+      >> $WORKSPACE_HUB/logs/quality/equality-refresh-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/quality/equality-refresh-*.log
+    is_claude_task: false
+    description: >-
+      Daily rebuild of the equality matrix on the control-plane box, INDEPENDENT of the
+      session-curation cron, so a DEAD curation cron still ages its freshness cell past
+      green (orange >12h, red >24h). Without this daily rebuild the weekly equality-report
+      (#2801) would freeze the last-green render and the dead-man's-switch would never fire.
+
   # Linux-only (v1); Windows Task Scheduler parity deferred per epic #3058.
   - id: harness-install-doctor
     label: Harness install-doctor — REPAIR arm for equivalence-sentinel (#3058/#3059)
