@@ -178,6 +178,25 @@ MOCK
   rm -rf "$td"
 }
 
+# #3294: the guard KEEPS its CLAUDECODE==1 -> return 3 safety net for direct
+# callers that do NOT strip the env (the fanout/submit dispatchers now strip it
+# before calling, but this branch still protects un-migrated callers). Pinned
+# here so a future cleanup cannot silently delete the safety net.
+test_guard_returns_3_under_claudecode() {
+  run_test "guard returns rc=3 with #2684 message when CLAUDECODE=1 (retained safety net, #3294)"
+  local td; td="$(mktemp -d)"; make_bin_dir "$td"; write_codex_mock "$td/bin" "codex-cli 0.123.0"
+  local out rc=0
+  # 0.123.0 is below the floor (would normally be OK rc=0), so a rc=3 here proves
+  # the CLAUDECODE branch fired BEFORE the version-band check.
+  out="$(run_guard_with_path "$td/bin" CLAUDECODE=1)" || rc=$?
+  if [[ "$rc" -eq 3 && "$out" == *"INCOMPATIBLE"* && "$out" == *"#2684"* ]]; then
+    pass "CLAUDECODE=1 returns rc=3 with #2684 reference"
+  else
+    fail "CLAUDECODE=1 should return rc=3 with #2684" "rc=$rc out=$out"
+  fi
+  rm -rf "$td"
+}
+
 test_pin_codex_idempotent() {
   run_test "pin script is idempotent when codex is already pinned"
   local td; td="$(mktemp -d)"; make_bin_dir "$td"; write_codex_mock "$td/bin" "codex-cli 0.123.0"
@@ -265,6 +284,7 @@ test_guard_unparseable_version
 test_guard_alpha_blocks
 test_guard_alpha_below_floor_passes
 test_guard_version_command_timeout
+test_guard_returns_3_under_claudecode
 test_pin_codex_idempotent
 test_pin_codex_drift_detection
 test_verify_setup_warns_on_unpinned

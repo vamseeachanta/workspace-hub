@@ -133,6 +133,21 @@ normalize_provider_output() {
   rm -f "$err"
 }
 
+# #3294: non-interactive gemini auth probe (defense-in-depth, NOT the primary fix).
+# Test-overridable: GEMINI_NO_AUTH=1 forces the no-auth branch; GEMINI_AUTH_PROBE
+# (a shell snippet) overrides the probe entirely.
+gemini_auth_present() {
+  if [[ "${GEMINI_NO_AUTH:-0}" == "1" ]]; then
+    return 1
+  fi
+  if [[ -n "${GEMINI_AUTH_PROBE:-}" ]]; then
+    eval "$GEMINI_AUTH_PROBE"
+    return $?
+  fi
+  [[ -n "${GEMINI_API_KEY:-}" || -n "${GOOGLE_API_KEY:-}" \
+     || -f "${GEMINI_HOME:-$HOME/.gemini}/oauth_creds.json" ]]
+}
+
 invoke_provider() {
   local prov="$1"
   local out="$OUTPUT_DIR/${TODAY}-plan-${ISSUE_NUM}-${prov}.md"
@@ -172,23 +187,42 @@ invoke_provider() {
       # for provider timeout.
       # shellcheck source=/dev/null
       source "$SCRIPT_DIR/lib/codex-version-guard.sh"
+      # #3294: make the codex leg headless. Run the version guard with CLAUDECODE
+      # stripped (subshell scope) so its env-branch (codex-version-guard.sh:37-40)
+      # does NOT fire — the version-band check then governs. Then run codex exec
+      # with CLAUDECODE removed from the subprocess env (env -u CLAUDECODE) so the
+      # upstream openai/codex#19945 stdin-hang does not reproduce. The guard's
+      # CLAUDECODE safety-net branch is retained for un-migrated direct callers
+      # (see scripts/review/tests/test_codex_version_guard.sh). Keeps </dev/null +
+      # timeout. See workspace-hub #3294 / #2684.
       local guard_msg guard_rc=0
-      guard_msg="$(codex_version_guard_check)" || guard_rc=$?
+      guard_msg="$(unset CLAUDECODE; codex_version_guard_check)" || guard_rc=$?
       if [[ "$guard_rc" -eq 3 ]]; then
         printf '%s\n' "$guard_msg" > "$err"
         rc=3
       else
-        timeout -k 5s "${timeout_s}s" codex exec "$combined" > "$out" 2>"$err" </dev/null || rc=$?
+        env -u CLAUDECODE timeout -k 5s "${timeout_s}s" codex exec "$combined" > "$out" 2>"$err" </dev/null || rc=$?
       fi
       ;;
     gemini)
       local combined
       combined="$(printf '%s\n\n--- PLAN (%s) ---\n%s' \
         "$(cat "$PROMPT_FILE")" "$PLAN_FILE" "$(cat "$PLAN_FILE")")"
-      # cwd=/tmp dodges the .gemini/agents/*.md permissionMode validation bug.
-      # GEMINI_CLI_TRUST_WORKSPACE avoids noninteractive rc=55 trust prompts.
-      ( cd /tmp && GEMINI_CLI_TRUST_WORKSPACE="${GEMINI_CLI_TRUST_WORKSPACE:-true}" \
-          timeout -k 5s "${timeout_s}s" gemini -p "$combined" ) > "$out" 2>"$err" || rc=$?
+      # #3294: optional non-gating fast-path — when no non-interactive gemini auth
+      # is configured, skip the invocation and emit a fast UNAVAILABLE instead of
+      # waiting on (and timing out) an interactive auth prompt. Defense-in-depth
+      # only; the load-bearing fix is the </dev/null below.
+      if ! gemini_auth_present; then
+        printf 'no non-interactive gemini auth configured (GEMINI_API_KEY/GOOGLE_API_KEY/~/.gemini/oauth_creds.json)\n' > "$err"
+        rc=1
+      else
+        # cwd=/tmp dodges the .gemini/agents/*.md permissionMode validation bug.
+        # GEMINI_CLI_TRUST_WORKSPACE avoids noninteractive rc=55 trust prompts.
+        # #3294 PRIMARY FIX: close stdin with </dev/null so an interactive [Y/n]
+        # auth prompt gets EOF and aborts in seconds instead of blocking to timeout.
+        ( cd /tmp && GEMINI_CLI_TRUST_WORKSPACE="${GEMINI_CLI_TRUST_WORKSPACE:-true}" \
+            timeout -k 5s "${timeout_s}s" gemini -p "$combined" </dev/null ) > "$out" 2>"$err" || rc=$?
+      fi
       ;;
     *)
       echo "unknown provider: $prov" >&2

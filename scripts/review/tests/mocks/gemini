@@ -10,6 +10,7 @@ capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/gemini.capture"
   printf '\n'
   echo "PWD: $PWD"
   echo "GEMINI_CLI_TRUST_WORKSPACE: ${GEMINI_CLI_TRUST_WORKSPACE:-}"
+  echo "CLAUDECODE: ${CLAUDECODE:-(unset)}"
   echo "STDIN:"
   if [[ ! -t 0 ]]; then cat; else echo "(no stdin)"; fi
 } > "$capture"

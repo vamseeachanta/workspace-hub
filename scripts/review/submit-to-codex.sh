@@ -5,6 +5,14 @@
 #   submit-to-codex.sh --commit <sha> [--prompt <prompt>]
 set -euo pipefail
 
+# #3294: run headless. This script exists solely to invoke codex; strip
+# CLAUDECODE globally so the version guard's env-branch (codex-version-guard.sh)
+# does not fire and `run_codex_exec` runs without the upstream openai/codex#19945
+# stdin-hang under Claude-Code Bash. Nothing downstream branches on CLAUDECODE
+# (the renderer is a pure `uv run python` child; the attestation script reads
+# files), so the blast radius is the codex subprocess only. See #3294 / #2684.
+unset CLAUDECODE
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="${REPO_ROOT:-$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || true)}"
 RENDERER="${SCRIPT_DIR}/render-structured-review.py"
