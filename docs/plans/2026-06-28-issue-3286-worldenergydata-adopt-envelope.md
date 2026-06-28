@@ -5,9 +5,9 @@
 > **Date:** 2026-06-28
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3286
 > **Epic:** https://github.com/vamseeachanta/workspace-hub/issues/3281
-> **Depends on (HARD — must land first):** [#3297](https://github.com/vamseeachanta/workspace-hub/issues/3297) (assetutilities engine embeddability) → [#3282](https://github.com/vamseeachanta/workspace-hub/issues/3282) (`ResultEnvelope` + `run_workflow` + `ResultLocator`/hashing). Co-dependency: [#3295](https://github.com/vamseeachanta/workspace-hub/issues/3295) (registry schema v2 — wed registry is **already** v2, so minimal).
+> **Depends on (HARD — must land first):** [#3297](https://github.com/vamseeachanta/workspace-hub/issues/3297) (assetutilities engine embeddability — provides `ConfigureApplicationInputs.configure_embed`, which wed's engine imports and **reuses**) → [#3282](https://github.com/vamseeachanta/workspace-hub/issues/3282) (`ResultEnvelope` + `run_workflow` + `ResultLocator`/hashing; `code_version(package_name)` is **parameterized** — wed passes `code_version("worldenergydata")`). Co-dependency: [#3295](https://github.com/vamseeachanta/workspace-hub/issues/3295) (registry schema v2 — wed registry is **already** v2, so minimal). **NO per-repo embed PORT for wed** (contrast digitalmodel #3307 / assethold #3308): wed imports assetutilities' `ConfigureApplicationInputs` directly (engine.py:5,21), so #3297's `configure_embed` lands in the shared class — wed only adds a thin call-site branch.
 > **Client:** N/A — no wiki content touched
-> **Lane:** lane:codex (heavy engineering: a wed-engine embed edit mirroring #3297 + a runner + a query base + an HSE query surface across two packages)
+> **Lane:** lane:codex (heavy engineering: a wed-engine embed **call-site** reusing #3297's `configure_embed` + a runner + a query base + an HSE query surface across two packages)
 > **Review artifacts:** scripts/review/results/2026-06-28-plan-3286-claude.md | ...-codex.md | ...-gemini.md
 
 ---
@@ -16,11 +16,13 @@
 
 This plan **consumes** the epic-#3281 envelope contract exactly as defined by its upstream children; it does **not** modify or redesign that contract. The upstream contract is **no-MAJOR after multi-round adversarial review but is at `status:plan-review` and NOT owner-approved**. Therefore:
 
-- **#3286 cannot be implemented before #3297 and #3282 land.** It imports `ResultEnvelope`, `run_workflow`, the `input_hash`/`result_hash`/`code_version`/`compute_reproducible` primitives, and the `ResultLocator`/`extract_result` machinery from `assetutilities.workflow_api` (the #3282 deliverable), and it mirrors the #3297 `engine(embed=True, root_folder=, log_to_file=)` embed path onto **worldenergydata's own engine** (`worldenergydata.engine.engine`, which is a *separate* engine from the assetutilities one — see Resource Intel). Both must exist first.
-- The contract surface this plan binds to (verbatim, from the orchestrator brief and the #3282 plan):
+- **#3286 cannot be implemented before #3297 and #3282 land.** It imports `ResultEnvelope`, `run_workflow`, the `input_hash`/`result_hash`/`code_version`/`compute_reproducible` primitives, and the `ResultLocator`/`extract_result` machinery from `assetutilities.workflow_api` (the #3282 deliverable). For embeddability it adds a thin `embed` BRANCH to **worldenergydata's own engine** (`worldenergydata.engine.engine`, a *separate* engine function from assetutilities' — see Resource Intel) that **calls assetutilities' `ConfigureApplicationInputs.configure_embed`** (provided by #3297). wed **reuses** that shared `configure_embed`; it does **not** port/reimplement it. Both prereqs must exist first.
+- The contract surface this plan binds to (verbatim, from the re-locked contract + the #3282/#3297 plans):
   - `from assetutilities.workflow_api import run_workflow, ResultEnvelope`
   - `ResultEnvelope` = **stdlib dataclass** (NOT Pydantic): `{workflow_id, status, result, provenance{code_version{package_version, git_sha}, standard_revisions[], data_as_of, input_hash}, determinism{result_hash, reproducible}, confidence, warnings}`.
-  - Result LOCATION = registry `result:` descriptor `{kind: in_memory(key) | files(glob the injected root, content-hash sorted basenames, EXCLUDE the `save_cfg` `<file_name>.yml` dump)}`. **#3282 OWNS** the determinism fields + the `result:` descriptor; **#3286 reuses them, owns none.**
+  - **`run_workflow(workflow_id, params=None, cfg=None) -> ResultEnvelope`** (stdlib dataclass). `code_version(package_name="assetutilities")` is **parameterized** — wed passes `code_version("worldenergydata")` so wed envelopes stamp wed's version, never assetutilities'.
+  - **Canonical embed signature (do NOT mis-mirror):** `configure_embed(self, cfg, basename, root_folder, log_to_file=False)` — **NO `library_name`** (that arg belongs only to the regular `configure(cfg, library_name, basename, …)`; passing it to `configure_embed` is a `TypeError`). It sets `analysis_root_folder=root`, log folders under root, AND `cfg["_config_dir_path"]=root`. `engine(cfg=…, embed=True, root_folder=, log_to_file=False)` is the embed path; default (no root) is byte-identical.
+  - Result LOCATION = registry `result:` descriptor `{kind: in_memory(key) | files(glob the injected root, content-hash sorted basenames, EXCLUDE the `save_cfg` `<file_name>.yml` dump)}`. **#3282 OWNS** the determinism fields + the `result:` descriptor; **#3286 reuses them, owns none.** Cross-repo id resolution (`repo:id@version`) is **#3284-owned**; this plan uses **bare single-registry ids** (e.g. `bsee-production-summary`) against wed's own `docs/registry/workflows.yaml`, so it does NOT gate on #3284.
 - **Per-issue extra gate.** Because #3286 edits worldenergydata's *shared* engine (blast radius across every wed router), it carries an **extra adoption cross-review gate** analogous to the assethold `#3066` gate referenced for the assethold adoption child. Recorded under Acceptance Criteria; do not waive.
 
 ---
@@ -48,14 +50,14 @@ None — contract/infra/query-surface work, no domain knowledge authored. `Clien
 ### Documents consulted
 - Epic [#3281](https://github.com/vamseeachanta/workspace-hub/issues/3281) — "Deterministic Workflow API"; #3286 is the worldenergydata adoption child.
 - [#3282 plan](2026-06-27-issue-3282-resultenvelope-run-workflow.md) — `ResultEnvelope` dataclass, `run_workflow` over the #3297 embed path, `ResultLocator`/`extract_result` (glob injected root, exclude `save_cfg` dump), `input_hash`/`result_hash`/`code_version`/`compute_reproducible`. **The primitives #3286 imports.**
-- [#3297 plan](2026-06-28-issue-3297-engine-embeddability.md) — `engine(embed=True, root_folder=, log_to_file=)` + `ConfigureApplicationInputs.configure_embed`. **wed's engine uses the SAME `ConfigureApplicationInputs`**, so once #3297 lands, wed's engine can call `configure_embed` too — the wed embed edit is a thin mirror.
+- [#3297 plan](2026-06-28-issue-3297-engine-embeddability.md) — `engine(embed=True, root_folder=, log_to_file=)` + `ConfigureApplicationInputs.configure_embed`. **wed's engine uses the SAME `ConfigureApplicationInputs`**, so once #3297 lands, wed's engine can call `configure_embed` too — the wed embed edit is a thin **call-site** (reuse, NOT a port) using the canonical `configure_embed(cfg, basename, root_folder, log_to_file=)` signature (no `library_name`).
 - [#3295 plan](2026-06-28-issue-3295-registry-schema-v2-reconcile.md) — schema v2 additive superset; wed registry already conforms.
 - [#3284 plan](2026-06-28-issue-3284-discovery-manifest.md) — discovery manifest aggregates per-repo registries; wed's already-v2 registry + the new `result:` descriptors feed it. Not a dependency; documented for downstream awareness.
 - wed [#363](https://github.com/vamseeachanta/worldenergydata/issues/363) — `hse_api` parity with marine_safety. **`status:plan-approved`, lane:claude.** Heavy ACs (async pooling, Pydantic config, CLI bridge, notebook, EPA-TRI 51.5K live, OSHA-post-dedup) with **hard data dependencies**: wed **#359** (catalog wiring) + HSE DB population (statistics stubs 53 KB, OSHA dedup unverified, EPA-TRI field-drop per WRK-012). **Scoping consequence below.**
 
 ### Gaps identified (what #3286 must build)
 1. **No reusable typed-query base** — marine_safety + bsee each hand-roll the same filter-normalization. Greenfield: `worldenergydata.common.query_api.TypedQuery` (+ `FilterSpec`).
-2. **wed's engine has no embed path** — needed so a wed workflow runs side-effect-free for `run_workflow`. Greenfield edit mirroring #3297, on `worldenergydata.engine.engine`.
+2. **wed's engine has no embed path** — needed so a wed workflow runs side-effect-free for `run_workflow`. Additive `embed` branch on `worldenergydata.engine.engine` that **calls** assetutilities' `ConfigureApplicationInputs.configure_embed(cfg, basename, root_folder, log_to_file=)` (the #3297 deliverable, reused — NOT ported). wed has **no** config-relative router of its own (`grep -rn "_config_dir_path\|path_resolver\|PathResolver" src/ packages/*/src` = **0 hits**), so the single `configure_embed` call (which sets `cfg["_config_dir_path"]=root`) already isolates every wed router's writes under root.
 3. **No wed `run_workflow`** — #3282's `run_workflow` drives the *assetutilities* engine, not wed's. Greenfield: `worldenergydata.workflow_api.run_workflow` reusing #3282's envelope/locator/hashing primitives but driving wed's embeddable engine.
 4. **No `JobResult → ResultEnvelope` adapter** — greenfield: `worldenergydata.scheduler.envelope_adapter`.
 5. **No `hse_api`** — greenfield query surface on the new base + `wed.hse_api` lazy wiring; **scoped** (see Risks/Open) to the query-surface ACs of #363, deferring its live-data/CLI/notebook/async ACs to #363's own #359 + DB-population dependencies.
@@ -106,6 +108,30 @@ HSE_API_ABSENT: module 'worldenergydata' has no attribute 'hse_api'
 - Confirms: (a) `wed.marine_safety_api.incidents.query(source="maib")` is a **live, working** typed-query surface returning 50 rows with the documented columns — the base must preserve this behavior byte-for-byte; (b) `wed.hse_api` genuinely **does not exist** today (the #363 gap is real, not already-shipped).
 - Failure mode matches issue claim: YES.
 
+**Reproduction — embed call-site claims (Step 1.5, verified 2026-06-28 @ `03ed99b3`):**
+```
+# (a) wed's DEFAULT path calls configure() with library_name (the 4-arg shape the Wave-2 plan
+#     wrongly mirrored into configure_embed):
+$ grep -n "app_manager.configure(" src/worldenergydata/engine.py
+63: cfg_base = app_manager.configure(cfg, library_name, basename, cfg_argv_dict)
+66: cfg_base = app_manager.configure(cfg, library_name, basename, cfg_argv_dict, inputfile=inputfile)
+
+# (b) wed imports assetutilities' ConfigureApplicationInputs directly (so #3297's configure_embed
+#     is REUSED, no port):
+$ grep -n "ConfigureApplicationInputs\|^library_name\|save_cfg" src/worldenergydata/engine.py
+5:  from assetutilities.common.ApplicationManager import ConfigureApplicationInputs
+21: app_manager = ConfigureApplicationInputs()
+25: library_name = "worldenergydata"
+149: app_manager.save_cfg(cfg_base=cfg_base)
+
+# (c) wed has NO config-relative router of its own -> configure_embed's _config_dir_path=root
+#     rebase (done inside assetutilities) is sufficient; nothing to rebase wed-side:
+$ grep -rn "_config_dir_path\|path_resolver\|PathResolver" src/ packages/*/src
+(no output — 0 hits)
+```
+- Confirms: the canonical `configure_embed(cfg, basename, root_folder, log_to_file=)` signature carries **NO `library_name`** (library_name is the regular `configure()`'s 2nd positional arg, lines 63/66) — the prior plan's `configure_embed(cfg, library_name, basename, …)` would raise `TypeError`. wed **reuses** assetutilities' `configure_embed` (engine.py:5,21) — no per-repo port. wed has no config-relative router, so the assetutilities-side `_config_dir_path=root` rebase fully covers wed. wed always calls `save_cfg` (line 149) → the `extract_result` `save_cfg`-dump exclusion (#3282) applies unchanged.
+- Failure mode matches issue claim (Wave-2 MAJOR = `TypeError` on the embed call): YES.
+
 (Distinct sources: issue body + #3282 plan + #3297 plan + #3295 plan + #363 issue + marine_safety/api.py + scheduler base.py + engine.py + hse models.py + wed `__init__.py` + registry = 11.)
 
 ---
@@ -120,7 +146,7 @@ HSE_API_ABSENT: module 'worldenergydata' has no attribute 'hse_api'
 | Typed-query base | `worldenergydata-core/src/worldenergydata/common/query_api/base.py` |
 | Base package init | `worldenergydata-core/src/worldenergydata/common/query_api/__init__.py` |
 | wed runner (consumes assetutilities primitives) | `worldenergydata/src/worldenergydata/workflow_api/runner.py` + `__init__.py` |
-| wed engine embed edit (mirror #3297) | `worldenergydata/src/worldenergydata/engine.py` |
+| wed engine embed call-site (reuses #3297 `configure_embed`, NOT a port) | `worldenergydata/src/worldenergydata/engine.py` |
 | Scheduler adapter | `worldenergydata-scheduler/src/worldenergydata/scheduler/envelope_adapter.py` |
 | marine_safety re-expressed on base | `worldenergydata-marine_safety/src/worldenergydata/marine_safety/api.py` |
 | HSE query API | `worldenergydata-bsee/src/worldenergydata/hse/api.py` |
@@ -181,13 +207,15 @@ class TypedQuery(ABC):
         # Lazy import keeps the base free of a hard assetutilities import until envelopes are requested.
         from assetutilities.workflow_api import ResultEnvelope
         from assetutilities.workflow_api.envelope import input_hash, code_version
+        # code_version is PARAMETERIZED by package (#3282 Wave-2 fix). wed stamps its OWN version,
+        # NOT assetutilities' — call code_version("worldenergydata") everywhere below.
         norm = self._normalize(**kwargs)
         df = self._execute(norm)
         return ResultEnvelope(
             workflow_id=self.query_id, status="ok",
             result={"kind": "dataframe", "records": int(len(df)),
                     "columns": list(df.columns)},                 # NOT the whole frame
-            provenance={"code_version": code_version(), "standard_revisions": [],
+            provenance={"code_version": code_version("worldenergydata"), "standard_revisions": [],
                         "data_as_of": data_as_of, "input_hash": input_hash(_hashable(norm))},
             determinism={"result_hash": _df_content_hash(df),     # sha256 of canonical CSV bytes
                          "reproducible": None},                   # query determinism not asserted here
@@ -222,18 +250,32 @@ class StatisticsQuery(TypedQuery):    # query_id="hse.statistics"; SafetyStatist
 class EpaTriQuery(TypedQuery):        # query_id="hse.epa_tri"; ToxicRelease (naics/chemical_carcinogen passthrough)
 incidents, penalties, statistics, epa_tri = IncidentsQuery(), PenaltiesQuery(), StatisticsQuery(), EpaTriQuery()
 
-# ── worldenergydata/engine.py (embed edit, mirror #3297) ──────────
+# ── worldenergydata/engine.py (embed edit — CALL-SITE for the #3297 configure_embed, NOT a port) ──
+# wed imports assetutilities' ConfigureApplicationInputs (engine.py:5,21), so #3297's configure_embed
+# lands in THAT shared class; wed only adds a thin `embed` BRANCH that CALLS it. No reimplementation
+# (contrast digitalmodel #3307 / assethold #3308, which fork ApplicationManager and must PORT it).
 def engine(inputfile=None, cfg=None, config_flag=True,
            embed=False, root_folder=None, log_to_file=True) -> dict:
-    ... resolve basename ...
+    ... resolve basename (UNCHANGED: cfg["basename"] | cfg["meta"]["basename"]) ...
     if embed:                                          # NEW path — honors cfg, routes writes under root
-        cfg_base = app_manager.configure_embed(cfg, library_name, basename,
-                                               root_folder=root_folder, log_to_file=log_to_file)
+        # CANONICAL #3297 signature: configure_embed(cfg, basename, root_folder, log_to_file=) —
+        # POSITIONAL, NO library_name. (library_name belongs ONLY to the regular configure(); passing
+        # it here is a TypeError — the Wave-2 MAJOR this revision fixes.) Per-call instance mirrors
+        # #3297's re-entrancy fix (NOT the module-level `app_manager` singleton).
+        cfg_base = ConfigureApplicationInputs().configure_embed(
+            cfg, basename, root_folder, log_to_file=log_to_file)
+        # configure_embed already set cfg["_config_dir_path"]=root + analysis_root_folder=root +
+        # result/log folders under root. wed has NO separate config-relative router (grep for
+        # path_resolver/_config_dir_path in wed src = 0 hits), so this single assetutilities call
+        # fully isolates every wed router's writes under root — nothing more to rebase wed-side.
         cfg_base = FileManagement().router(cfg_base)
     elif config_flag:                                  # UNCHANGED default path (byte-identical to today)
-        ...existing app_manager.configure + fm.router + configure_result_folder...
+        ...existing app_manager.configure(cfg, library_name, basename, cfg_argv_dict[, inputfile])
+           + fm.router + configure_result_folder(None, cfg_base)...
     else:
         cfg_base = cfg
+    ...UNCHANGED basename dispatch + app_manager.save_cfg(cfg_base) (engine.py:149)...
+    return cfg_base
     ...UNCHANGED basename dispatch to wed routers (bsee/fdas/marine_safety/...)...
     return cfg_base
 
@@ -261,11 +303,11 @@ def run_workflow(workflow_id=None, params=None, cfg=None, verify_reproducible=Fa
         payload, warns, rhash = _once()
         repro = compute_reproducible(_once, rhash, verify_reproducible)   # None unless asked
         return ResultEnvelope(workflow_id or "(inline-cfg)", "ok", payload,
-            {"code_version": code_version(), "standard_revisions": [], "data_as_of": None, "input_hash": ihash},
+            {"code_version": code_version("worldenergydata"), "standard_revisions": [], "data_as_of": None, "input_hash": ihash},
             {"result_hash": rhash, "reproducible": repro}, None, warns)
     except Exception as e:
         return ResultEnvelope(workflow_id or "(inline-cfg)", "error", {},
-            {"code_version": code_version(), "standard_revisions": [], "data_as_of": None, "input_hash": None},
+            {"code_version": code_version("worldenergydata"), "standard_revisions": [], "data_as_of": None, "input_hash": None},
             {"result_hash": None, "reproducible": None}, None, [str(e)])
 
 # ── scheduler/envelope_adapter.py ─────────────────────────────────
@@ -283,7 +325,7 @@ def job_result_to_envelope(result: "JobResult", *, metadata_path=None, input_has
                 "start_time": result.start_time.isoformat(), "end_time": result.end_time.isoformat(),
                 "duration_s": (result.end_time - result.start_time).total_seconds(),
                 "retryable": result.retryable},
-        provenance={"code_version": code_version(), "standard_revisions": [],
+        provenance={"code_version": code_version("worldenergydata"), "standard_revisions": [],
                     "data_as_of": data_as_of, "input_hash": input_hash_value},
         determinism={"result_hash": None, "reproducible": None},   # network refresh = non-deterministic, honest None
         confidence=None, warnings=warnings)
@@ -301,7 +343,7 @@ def job_result_to_envelope(result: "JobResult", *, metadata_path=None, input_has
 | Create | `worldenergydata-bsee/src/worldenergydata/hse/api.py` | `IncidentsQuery`/`PenaltiesQuery`/`StatisticsQuery`/`EpaTriQuery` on the base + singletons |
 | Modify | `worldenergydata-bsee/src/worldenergydata/hse/__init__.py` | export the api module / singletons |
 | Modify | `worldenergydata/src/worldenergydata/__init__.py` | lazy `wed.hse_api` attribute in `__getattr__` (mirror `marine_safety_api`) |
-| Modify | `worldenergydata/src/worldenergydata/engine.py` | add `embed`/`root_folder`/`log_to_file` params + `configure_embed` path (mirror #3297); default path byte-identical |
+| Modify | `worldenergydata/src/worldenergydata/engine.py` | add `embed`/`root_folder`/`log_to_file` params + an `embed` branch that **calls** assetutilities' `ConfigureApplicationInputs().configure_embed(cfg, basename, root_folder, log_to_file=)` — POSITIONAL, **NO `library_name`** (reuses #3297, not a port); per-call instance (not the module singleton); default path byte-identical |
 | Create | `worldenergydata/src/worldenergydata/workflow_api/__init__.py` | export `run_workflow` |
 | Create | `worldenergydata/src/worldenergydata/workflow_api/runner.py` | `run_workflow` + `_resolve_wed_registry_row`; reuses assetutilities `ResultLocator`/`extract_result`/`build_cfg`/hashing |
 | Create | `worldenergydata-scheduler/src/worldenergydata/scheduler/envelope_adapter.py` | `job_result_to_envelope` + `_read_last_refresh` |
@@ -334,7 +376,8 @@ def job_result_to_envelope(result: "JobResult", *, metadata_path=None, input_has
 | test_hse_statistics_query | `statistics.query(year=..., metric=..., grouping=...)` returns grouped stats | filters | DataFrame |
 | test_hse_epa_tri_query | `epa_tri.query(naics=..., chemical_carcinogen=...)` over ToxicRelease | filters | DataFrame |
 | test_hse_api_lazy_attr | `import worldenergydata as wed; wed.hse_api.incidents` resolves via `__getattr__` (was AttributeError pre-change) | attr access | singleton, no error |
-| test_run_workflow_wed_returns_envelope | `run_workflow("bsee-production-summary")` → `ResultEnvelope(status="ok")` with `kind:files` payload from the injected root | registry id | ok envelope, populated result |
+| test_engine_embed_calls_configure_embed_without_library_name | `engine(cfg=..., embed=True, root_folder=<tmp>)` invokes `ConfigureApplicationInputs.configure_embed(cfg, basename, root_folder, log_to_file=)` POSITIONALLY with **NO `library_name`** — does not raise `TypeError` (Wave-2 MAJOR regression guard); asserted by spying on `configure_embed` args (basename is 2nd positional, not `library_name`) | embed call | configure_embed called as `(cfg, basename, root_folder, log_to_file=False)`; no TypeError |
+| test_run_workflow_wed_returns_envelope | `run_workflow("bsee-production-summary")` → `ResultEnvelope(status="ok")` with `kind:files` payload from the injected root; `provenance.code_version["package_version"]` is **worldenergydata's** version (via `code_version("worldenergydata")`), not assetutilities' | registry id | ok envelope, populated result, wed version stamped |
 | test_run_workflow_writes_nothing_outside_tempdir | wed run writes nothing outside its `mkdtemp` root; repo `examples/.../outputs/` unchanged before/after; no `.log`/`logs/` | run + dir snapshot | nothing leaked |
 | test_run_workflow_unknown_id_error_envelope | unknown id → `status="error"`, message in warnings (fail-closed, not raised) | "nope" | error envelope |
 | test_run_workflow_excludes_save_cfg_dump | the `save_cfg` `<file_name>.yml` dump is excluded from payload + result_hash (inherits #3282 `extract_result`) | wed run | dump absent; hash stable across two roots |
@@ -352,7 +395,7 @@ def job_result_to_envelope(result: "JobResult", *, metadata_path=None, input_has
 - [ ] **Typed-query base** `worldenergydata.common.query_api.TypedQuery` + `FilterSpec` exists; extracts the singular/plural + single-year normalization; `query_envelope()` emits a contract-shaped `ResultEnvelope` (records/columns result, populated `provenance.input_hash`, content-sensitive `determinism.result_hash`, `reproducible=None`).
 - [ ] **Behavior preserved (regression):** `wed.marine_safety_api.incidents.query(source="maib")` returns the SAME 50 rows / 10 columns as before the refactor; `trends`/`top_types`/`correlations`/`risk_hotspots` unchanged. Reproduction golden recorded in `test_marine_safety_query_unchanged`.
 - [ ] **hse_api on the base:** `wed.hse_api.incidents/penalties/statistics/epa_tri .query(...)` return typed DataFrames on the generalized base, lazily wired through `worldenergydata.__init__.__getattr__` (mirrors `marine_safety_api`), with tests. **Scope boundary (see Open Decisions):** this closes the *query-surface* ACs of wed#363; its live-data/async-pooling/CLI-bridge/notebook ACs remain gated on wed#359 + HSE DB population and stay open under #363.
-- [ ] **`run_workflow` for a wed workflow:** `worldenergydata.workflow_api.run_workflow("bsee-production-summary")` returns a populated `ResultEnvelope`, demonstrated by a passing test under the repo pytest harness, driven by a wed **engine embed path** (`engine(embed=True, root_folder=<mkdtemp>, log_to_file=False)`) that is **genuinely side-effect-free** (repo `examples/.../outputs/` byte-unchanged, no `.log`/`logs/`, tempdir rmtree'd). The wed-engine **default path is byte-identical to today** (`embed=False`).
+- [ ] **`run_workflow` for a wed workflow:** `worldenergydata.workflow_api.run_workflow("bsee-production-summary")` returns a populated `ResultEnvelope`, demonstrated by a passing test under the repo pytest harness, driven by a wed **engine embed branch** that **calls assetutilities' `configure_embed(cfg, basename, root_folder, log_to_file=)`** (canonical signature — **NO `library_name`**; per-call `ConfigureApplicationInputs()` instance) and is **genuinely side-effect-free** (repo `examples/.../outputs/` byte-unchanged, no `.log`/`logs/`, tempdir rmtree'd). `provenance.code_version` is stamped via `code_version("worldenergydata")` (wed's own version). The wed-engine **default path is byte-identical to today** (`embed=False`). wed **reuses** assetutilities' `configure_embed` — no per-repo port (contrast digitalmodel #3307 / assethold #3308).
 - [ ] **Scheduler adapter:** `job_result_to_envelope(JobResult, metadata_path=...)` maps success→ok / failure→error / skipped→ok+warning, carries `records_updated`/timing in `result`, populates `provenance.data_as_of` from `_metadata.json["last_refresh"]` (None when absent), and keeps `determinism` honest (`result_hash=None`, `reproducible=None`).
 - [ ] **No assetutilities edits owned here** — diff touches only worldenergydata packages (core/marine_safety/bsee/scheduler/root) + the wed registry + tests.
 - [ ] `uv run pytest worldenergydata/tests/{common,marine_safety,hse,workflow_api,scheduler}/ -v` green; full wed suite shows no regression (note: use `.venv/bin/python -m pytest` per repo memory if `uv` is broken on the box).
@@ -363,22 +406,26 @@ def job_result_to_envelope(result: "JobResult", *, metadata_path=None, input_has
 
 ## Adversarial Review Summary
 
-<!-- PENDING — no provider artifacts yet. Plan stays `draft` until a real review wave lands with no-MAJOR verdicts. -->
+**Wave-2: MAJOR (1) — ADDRESSED in this revision.** The wed engine-embed pseudocode mis-mirrored the *regular* `configure(cfg, library_name, basename, …)` signature into the embed call — `app_manager.configure_embed(cfg, library_name, basename, root_folder=…, log_to_file=…)` — which would raise `TypeError` against #3297's canonical `configure_embed(self, cfg, basename, root_folder, log_to_file=False)` (no `library_name`). Disposition:
+
+- **Wave-2-M1 (mis-mirrored signature → TypeError):** the embed call is corrected to the canonical positional form `ConfigureApplicationInputs().configure_embed(cfg, basename, root_folder, log_to_file=log_to_file)` — **no `library_name`** — and switched from the module-level `app_manager` singleton to a **per-call instance** (mirroring #3297's re-entrancy fix). Verified against the live wed `engine.py` (default path calls `configure(cfg, library_name, basename, cfg_argv_dict)` at lines 63/66 — proving `library_name` is a `configure()` arg, not a `configure_embed` arg). New regression test `test_engine_embed_calls_configure_embed_without_library_name`.
+- **Re-locked contract folded in:** `run_workflow(workflow_id, params=None, cfg=None) -> ResultEnvelope` (stdlib dataclass); `code_version("worldenergydata")` (parameterized — wed stamps its own version) replaces bare `code_version()` everywhere; `configure_embed` sets `cfg["_config_dir_path"]=root` and wed has **no** config-relative router of its own (grep = 0 hits), so the single reused call covers all wed writes; cross-repo id resolution is #3284-owned and this plan uses **bare single-registry ids** (no #3284 gate).
+- **"Reuse not port" clarified:** wed imports assetutilities' `ConfigureApplicationInputs` directly, so #3297's `configure_embed` is reused — wed adds only a call-site branch, **no per-repo port** (contrast digitalmodel #3307 / assethold #3308, which fork ApplicationManager).
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | — |
-| Codex | PENDING | — |
-| Gemini | PENDING | — |
+| Claude | Wave-2: MAJOR | mis-mirrored `configure_embed` call passed `library_name` → TypeError against canonical #3297 signature |
+| Codex | PENDING (Wave-3) | — |
+| Gemini | PENDING (Wave-3) | — |
 
-**Overall result:** PENDING (not approval-ready; not surfaced to `status:plan-review` until a no-MAJOR wave exists).
+**Overall result:** Wave-2 MAJOR addressed; **Wave-3 PENDING** (re-dispatch the T3 wave via `scripts/review/plan-review-fanout.sh`). Plan stays `draft`; not surfaced to `status:plan-review` until a no-MAJOR wave lands.
 
 ---
 
 ## Risks and Open Questions
 
 - **Risk — hard dependency chain.** Critical path: **#3297 → #3282 → #3286**. The base's `query_envelope`, the runner, and the scheduler adapter all import from `assetutilities.workflow_api`, which does not exist until #3282 lands; the wed engine embed path needs `configure_embed` from #3297. Mitigation: the **dependency-free** pieces (the `TypedQuery` normalization, the marine_safety behavior-preservation refactor, the hse query DataFrames) are written + landable test-first independent of the envelope; the envelope-bound tests go green only after the prereqs land. Do not merge before both prereqs.
-- **Risk — wed engine is a SECOND engine.** `run_workflow` from #3282 drives the *assetutilities* engine; a wed workflow (`bsee`, `fdas`, …) runs through `worldenergydata.engine.engine`. This plan adds a wed-side embed path (mirroring #3297) + a wed-side runner, **reusing** #3282's `ResultLocator`/`extract_result`/hashing primitives (NOT duplicating envelope logic). If #3282 later parametrizes `run_workflow` by an injectable engine, the wed runner collapses to a thin call — a clean follow-on, not a blocker.
+- **Risk — wed engine is a SECOND engine, but REUSES assetutilities' `configure_embed`.** `run_workflow` from #3282 drives the *assetutilities* engine; a wed workflow (`bsee`, `fdas`, …) runs through `worldenergydata.engine.engine`. This plan adds a wed-side embed **branch** (which **calls** assetutilities' `ConfigureApplicationInputs.configure_embed` — wed imports that class directly at engine.py:5,21, so there is **no port**, unlike digitalmodel #3307 / assethold #3308) + a wed-side runner, **reusing** #3282's `ResultLocator`/`extract_result`/hashing primitives (NOT duplicating envelope logic). The embed call must use the **canonical signature** `configure_embed(cfg, basename, root_folder, log_to_file=)` — NEVER pass `library_name` (the Wave-2 MAJOR). If #3282 later parametrizes `run_workflow` by an injectable engine, the wed runner collapses to a thin call — a clean follow-on, not a blocker.
 - **Risk — wed-engine default-path regression.** The `embed=False` branch must stay byte-identical (every wed router depends on it; #3297's review found 2 wed fixtures pinned to the default `update_deep` clobber). Guardrail: `test_run_workflow_writes_nothing_outside_tempdir` + a default-path snapshot test; full-suite regression gate; T3 code-stage review (extra adoption gate).
 - **Open Decision — placement of the typed-query base.** Recommended: `worldenergydata.common.query_api` in `worldenergydata-core` (lowest blast radius; both marine_safety and bsee already depend on core; keeps #3286 inside wed). **Alternative** (issue text "likely co-located with Child 1 in assetutilities"): promote the base into `assetutilities` so non-wed repos inherit it too. Recommend **wed-core now, promotion to assetutilities as a follow-on** once a 2nd repo needs it. Flag for user.
 - **Open Decision — wed#363 scope boundary.** #363 is `status:plan-approved` with heavy ACs (async pooling, Pydantic config, CLI bridge `worldenergydata hse incidents query …`, `notebooks/quickstart_hse.py`, EPA-TRI 51.5K **live**, OSHA **post-dedup**) and **hard data dependencies** (wed#359 catalog wiring + HSE DB population; statistics stubs 53 KB, OSHA dedup unverified, EPA-TRI field-drop per WRK-012). #3286 should deliver the **query surface on the generalized base** (incidents/penalties/statistics/epa_tri `.query()` + `wed.hse_api` wiring + tests), testable offline against the DB models with a **synthetic/sample fallback mirroring marine_safety's default**. The live-data + CLI + notebook + async ACs stay under #363 gated on #359 + population. Confirm this split with the user (and whether #363 closes here or stays open for its remaining ACs).
