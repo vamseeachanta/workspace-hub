@@ -12,6 +12,7 @@ capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/codex.capture"
   for a in "$@"; do printf ' %s' "$a"; done
   printf '\n'
   echo "PWD: $PWD"
+  echo "CLAUDECODE: ${CLAUDECODE:-(unset)}"
   echo "STDIN:"
   if [[ ! -t 0 ]]; then cat; else echo "(no stdin)"; fi
 } > "$capture"
