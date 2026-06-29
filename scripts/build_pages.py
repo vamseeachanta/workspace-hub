@@ -42,10 +42,18 @@ PAGES = {
 # vamseeachanta/digitalmodel (MIT) — pipeline diagram, status matrix, merged-PR
 # list, and the no-silent-assumptions design note; no hostnames, IPs, or client
 # data (all PR/issue references are to the public digitalmodel repo).
+# The Deckhand API-reposition work-review summarizes the PUBLIC API-centric
+# reposition (POST /api/run → report_url contract, public read tier, website
+# API-first reframe, determinism/honesty posture with a live-vs-roadmap table);
+# it references only public repos (aceengineer-website, deckhand-sandbox,
+# digitalmodel, worldenergydata), refers to the private Deckhand engine
+# generically, and contains no client codenames, hostnames, IPs, paths, private
+# PR numbers, or secrets.
 HTML_PAGES = {
     "machine-equality-matrix": ("docs/reports/machine-equality-matrix.html", "Machine Equality"),
     "issue-workflow-lifecycle": ("docs/reports/issue-workflow-lifecycle.html", "Issue Lifecycle"),
     "orcaflex-pipeline-worklog": ("docs/reports/orcaflex-pipeline-worklog.html", "Model-Gen Pipeline"),
+    "deckhand-api-reposition": ("docs/reports/deckhand-api-reposition-worklog.html", "Deckhand API"),
 }
 
 _LINK = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
