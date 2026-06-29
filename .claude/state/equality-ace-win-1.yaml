@@ -1,19 +1,19 @@
-generated_at: "2026-06-28T19:22:56"
+generated_at: "2026-06-28T19:26:28"
 schema_version: 4
 machine: "ace-win-1"
 host: "acma-hou-rds02"
 os: windows
 status: active
 provenance:
-  checkout_sha: "0f7a97b53"
+  checkout_sha: "ccaf40b01"
   dirty: false
   behind_main: 0
   ahead_main: 0
   origin_ref_age_h: 0
 dimensions:
   compute:
-    static: {cores: 64, ram_total_mib: unknown, gpu_model: "none"}
-    headroom: {ram_avail_mib: unknown, disk_avail_gb: unknown}
+    static: {cores: 64, ram_total_mib: 261848, gpu_model: "ASPEED Graphics Family(WDDM)"}
+    headroom: {ram_avail_mib: 233666, disk_avail_gb: 1095}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
