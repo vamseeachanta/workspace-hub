@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deckhand API-Centric Reposition · workspace-hub</title>
+<style>
+:root{--fg:#1a2230;--muted:#5b6675;--bg:#f7f8fa;--card:#fff;--line:#e2e6ec;--brand:#5b3fd6;--ok:#1f9d55;--new:#b45309;--newbg:#fff7ed}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--fg);background:var(--bg)}
+header.site{padding:14px 22px;background:var(--card);border-bottom:1px solid var(--line);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+footer.site{padding:14px 22px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;margin-top:48px;background:var(--card)}
+.home{color:var(--brand);font-weight:700;text-decoration:none}
+nav a{color:var(--muted);text-decoration:none;font-size:14px}
+nav a:hover{color:var(--brand)}
+main{max-width:1080px;margin:0 auto;padding:28px 22px}
+h1{font-size:28px;margin:0 0 4px}
+h2{font-size:20px;margin:1.8em 0 .5em;border-bottom:1px solid var(--line);padding-bottom:.25em}
+.sub{color:var(--muted);margin:0 0 22px}
+a{color:var(--brand)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+/* pipeline */
+.pipe{display:flex;gap:0;flex-wrap:wrap;align-items:stretch}
+.stage{flex:1 1 150px;min-width:140px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;position:relative;text-align:center}
+.stage .k{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.stage .v{font-weight:700;margin:4px 0 2px}
+.stage .d{font-size:12.5px;color:var(--muted)}
+.arrow{align-self:center;color:var(--brand);font-size:22px;padding:0 6px;flex:0 0 auto}
+.stage.live{border-color:var(--ok)}
+.stage.live .v{color:var(--ok)}
+.legend{display:flex;gap:20px;flex-wrap:wrap;margin:14px 0 0;font-size:13.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:14px;height:14px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.15)}
+/* matrix */
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--card);margin-top:6px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#f0f3f7}
+td.mature{color:var(--ok)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;vertical-align:middle}
+.tag.live{background:#e7f6ee;color:var(--ok)}
+.tag.road{background:var(--newbg);color:var(--new)}
+.tw{overflow-x:auto}
+.note{background:#f0f3f7;border-left:3px solid var(--brand);border-radius:6px;padding:14px 18px;margin:8px 0 0}
+.note strong{color:var(--fg)}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#0f1722;color:#cfe3ff;padding:14px;border-radius:8px;overflow-x:auto;font-size:13px;margin:6px 0}
+pre code{background:none;color:inherit;padding:0}
+</style>
+</head>
+<body>
+<header class="site">
+  <a class="home" href="index.html">workspace-hub</a>
+  <nav><a href="index.html">Overview</a> · <a href="https://vamseeachanta.github.io/deckhand-sandbox/">deckhand-sandbox</a> · <a href="https://github.com/vamseeachanta/workspace-hub">source</a></nav>
+</header>
+<main>
+  <h1>Deckhand &mdash; the API for real-world work</h1>
+  <p class="sub">Session work review &mdash; 2026-06-28 &middot; repositioning every public surface around the <strong>API call</strong> as the atomic unit of work. Public read tier: <a href="https://vamseeachanta.github.io/deckhand-sandbox/api/">vamseeachanta.github.io/deckhand-sandbox/api/</a>.</p>
+
+  <div class="note">
+    <strong>One-line finding.</strong> The mental model flips from <em>chat-message-centric</em> ("drive engineering work from a chat message") to <em>API-centric</em>: every workflow is an <strong>API path</strong>, and calling it returns a single <strong>standards-traceable HTML report URL</strong>. Chat becomes one client of the API, not the headline. The word "AI" is dropped as a descriptor &mdash; the product is deterministic computation built on real code plus industry codes &amp; standards, not a model.
+  </div>
+
+  <h2>The unifying contract</h2>
+  <div class="card">
+    <p style="margin-top:0">Every surface points at one contract. A workflow is addressed as a path; one call returns a report URL you can open, cite, and audit.</p>
+    <pre><code>POST /api/run
+  { ref, domain, subdomain, inputs }
+    &rarr; { status, report_url, artifacts, coordinate, duration_s }</code></pre>
+    <p style="margin-bottom:0"><code>report_url</code> resolves to a self-contained HTML report whose every standards-derived value is traceable to the code clause or industry standard it came from. The same call is reachable from a chat client, a script, or a browser &mdash; the interface is the API, and chat is just one caller.</p>
+  </div>
+
+  <h2>Why API-first</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:20px">
+      <li><strong>Addressable.</strong> Each workflow has a stable path (<code>domain / subdomain / workflow</code>). The catalog of paths <em>is</em> the product surface.</li>
+      <li><strong>Composable.</strong> A call returns structured artifacts plus a report URL, so calls chain into pipelines without a human in the loop.</li>
+      <li><strong>Deterministic.</strong> Same inputs &rarr; same result. No stochastic answer; the output is computed from real code and published codes &amp; standards (e.g. DNV-traceable mooring / pipeline screens).</li>
+      <li><strong>Auditable.</strong> The report URL is the receipt &mdash; a reviewer opens it and checks every value against its cited basis.</li>
+    </ul>
+  </div>
+
+  <h2>Surfaces being repositioned</h2>
+  <div class="pipe">
+    <div class="stage live"><div class="k">Read tier</div><div class="v">Public API index</div><div class="d">Browsable path catalog at deckhand-sandbox/api/</div></div>
+    <div class="arrow">&rarr;</div>
+    <div class="stage"><div class="k">Website</div><div class="v">API-first reframe</div><div class="d">aceengineer-website hero + API reference pages</div></div>
+    <div class="arrow">&rarr;</div>
+    <div class="stage"><div class="k">Engine</div><div class="v">/api/run</div><div class="d">The Deckhand engine mints report_url per call</div></div>
+    <div class="arrow">&rarr;</div>
+    <div class="stage live"><div class="k">Proof</div><div class="v">Demo gallery</div><div class="d">Live offshore reports on deckhand-sandbox</div></div>
+  </div>
+  <div class="legend">
+    <span><span class="sw" style="background:#e7f6ee;border-color:#1f9d55"></span> Public &amp; live today</span>
+    <span><span class="sw" style="background:#fff;border-color:#e2e6ec"></span> Reframe in progress (public repos)</span>
+  </div>
+  <p class="sub" style="margin-top:14px">The Deckhand engine repository is private; this review refers to it generically. All public proof lives in the named public repos below.</p>
+
+  <h2>What is live vs roadmap (honesty table)</h2>
+  <div class="tw">
+  <table>
+    <thead>
+      <tr>
+        <th style="width:24%">Domain</th>
+        <th>Status</th>
+        <th>Basis / what backs the claim</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Offshore engineering</strong><br><span style="color:var(--muted);font-size:12.5px">mooring &amp; pipeline screens</span></td>
+        <td><span class="tag live">LIVE</span></td>
+        <td class="mature">Deterministic, codes-&amp;-standards-traceable (DNV basis); live report cards published on the public demo gallery. This is the proof the whole reposition stands on.</td>
+      </tr>
+      <tr>
+        <td><strong>CAD / CAM</strong></td>
+        <td><span class="tag road">ROADMAP</span></td>
+        <td>Named as trajectory only. Not a shipped capability; framed as a future API path, never as delivered work.</td>
+      </tr>
+      <tr>
+        <td><strong>Manufacturing</strong></td>
+        <td><span class="tag road">ROADMAP</span></td>
+        <td>Onboarding direction. Listed in the path catalog as an uncovered domain; no live workflow yet.</td>
+      </tr>
+      <tr>
+        <td><strong>Support &amp; safety</strong></td>
+        <td><span class="tag road">ROADMAP</span></td>
+        <td>Trajectory. Broad-domain framing stays tied to the catalog; claims never outrun what is actually runnable.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Determinism &amp; honesty posture</h2>
+  <div class="note">
+    <strong>Claims stay tied to what is runnable.</strong> The public narrative leads with the one domain that is live, deterministic, and standards-traceable (offshore), and frames every other domain as trajectory &mdash; an API path the catalog already names but has not yet shipped. "AI" is intentionally dropped as a descriptor: a caller does not buy a model, they call a path and get a report computed from real code and published industry standards. Determinism is the feature &mdash; the same inputs return the same audited report URL every time, which is what makes the output defensible to a reviewer or regulator.
+  </div>
+
+  <h2>Public repositories</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:20px">
+      <li><a href="https://github.com/vamseeachanta/aceengineer-website">aceengineer-website</a> &mdash; the website being reframed API-first (hero + API reference pages).</li>
+      <li><a href="https://github.com/vamseeachanta/deckhand-sandbox">deckhand-sandbox</a> &mdash; public read tier &amp; demo gallery; hosts the browsable API path catalog and live offshore report cards.</li>
+      <li><a href="https://github.com/vamseeachanta/digitalmodel">digitalmodel</a> &mdash; MIT-licensed engineering compute the deterministic workflows build on.</li>
+      <li><a href="https://github.com/vamseeachanta/worldenergydata">worldenergydata</a> &mdash; public energy-data source-of-truth feeding domain workflows.</li>
+    </ul>
+    <p class="sub" style="margin:12px 0 0">The Deckhand engine itself is a private repository and is referred to generically throughout; no private links or identifiers appear here.</p>
+  </div>
+</main>
+<footer class="site">
+  <p>Work-review artifact &middot; public-safe (public reposition summary, no client or private data) &middot; published from the workspace-hub Pages allowlist. <a href="https://github.com/vamseeachanta/workspace-hub">source</a></p>
+</footer>
+</body>
+</html>

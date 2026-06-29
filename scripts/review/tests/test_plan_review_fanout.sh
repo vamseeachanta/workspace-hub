@@ -519,29 +519,136 @@ test_claude_case_branch_documents_2683() {
   fi
 }
 
-test_fanout_codex_unavailable_under_claudecode_env() {
-  run_test "codex env-guard emits UNAVAILABLE when CLAUDECODE=1 (#2684)"
+# #3294: INVERTS the former test_fanout_codex_unavailable_under_claudecode_env.
+# The fanout codex leg now STRIPS CLAUDECODE before the guard + exec, so codex
+# actually runs under CLAUDECODE=1 instead of degrading to UNAVAILABLE.
+test_codex_leg_strips_claudecode() {
+  run_test "codex subprocess sees CLAUDECODE unset even when wrapper runs with CLAUDECODE=1 (#3294)"
 
   local td; td="$(mktemp -d)"
-  # Pass CLAUDECODE=1 via extra_env (NOT prefix-assignment) so it lands AFTER
-  # run_wrapper_under_mocks's default `unset CLAUDECODE`. The unset prevents
-  # other tests from accidentally tripping the #2684 env-guard when the test
-  # runner itself is under Claude-Code Bash.
+  run_wrapper_under_mocks "$td" "CLAUDECODE=1" >/dev/null 2>&1 || true
+
+  local cap="$td/captures/codex.capture"
+  if [[ ! -f "$cap" ]]; then
+    fail "codex capture file not written ($cap) — codex exec was skipped despite the strip"
+    rm -rf "$td"; return
+  fi
+  local cc_line; cc_line="$(grep '^CLAUDECODE:' "$cap" || true)"
+  if [[ "$cc_line" == 'CLAUDECODE: (unset)' ]]; then
+    pass "codex subprocess saw CLAUDECODE stripped"
+  else
+    fail "codex subprocess saw CLAUDECODE not stripped" "$cc_line"
+  fi
+  rm -rf "$td"
+}
+
+test_codex_produces_review_under_claudecode() {
+  run_test "under CLAUDECODE=1 the codex artifact is a real review AND codex exec ran (#3294, inverts #2684 fanout test)"
+
+  local td; td="$(mktemp -d)"
   run_wrapper_under_mocks "$td" "CLAUDECODE=1" >/dev/null 2>&1 || true
 
   local codex_art cap
   codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
   cap="$td/captures/codex.capture"
   if [[ -z "$codex_art" ]]; then
-    fail "codex artifact missing after CLAUDECODE=1 env guard"
-  elif ! grep -qF 'UNAVAILABLE' "$codex_art"; then
-    fail "CLAUDECODE=1 did not produce UNAVAILABLE artifact" "$(head -20 "$codex_art")"
-  elif ! grep -qF '#2684' "$codex_art"; then
-    fail "UNAVAILABLE artifact missing #2684 reference" "$(head -20 "$codex_art")"
-  elif [[ -f "$cap" ]] && grep -qF 'ARGV: exec' "$cap"; then
-    fail "codex exec was invoked despite CLAUDECODE env guard" "$(head -5 "$cap")"
+    fail "codex artifact missing under CLAUDECODE=1"
+  elif grep -qF 'UNAVAILABLE' "$codex_art"; then
+    fail "codex degraded to UNAVAILABLE under CLAUDECODE=1 (strip not applied)" "$(head -20 "$codex_art")"
+  elif ! grep -q '^## Verdict' "$codex_art" || ! grep -qF 'Mock finding from codex' "$codex_art"; then
+    fail "codex artifact is not a real review" "$(head -20 "$codex_art")"
+  elif [[ ! -f "$cap" ]] || ! grep -qF 'ARGV: exec' "$cap"; then
+    fail "codex exec did not actually run under CLAUDECODE=1" "$([[ -f $cap ]] && head -5 "$cap")"
   else
-    pass "CLAUDECODE=1 guard wrote UNAVAILABLE and skipped codex exec"
+    pass "codex produced a real review and codex exec ran under CLAUDECODE=1"
+  fi
+  rm -rf "$td"
+}
+
+test_codex_guard_still_blocks_genuine_bad_version() {
+  run_test "stripping CLAUDECODE does not defeat the version-band guard (#3294)"
+
+  local td; td="$(mktemp -d)"
+  run_wrapper_under_mocks "$td" "CLAUDECODE=1" "PLAN_REVIEW_CODEX_VERSION=codex-cli 0.128.0" >/dev/null 2>&1 || true
+
+  local codex_art cap
+  codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
+  cap="$td/captures/codex.capture"
+  if [[ -z "$codex_art" ]]; then
+    fail "codex artifact missing after bad-version guard under CLAUDECODE=1"
+  elif ! grep -qF 'UNAVAILABLE' "$codex_art"; then
+    fail "bad version did not produce UNAVAILABLE despite strip" "$(head -20 "$codex_art")"
+  elif ! grep -qF 'INCOMPATIBLE' "$codex_art"; then
+    fail "UNAVAILABLE artifact missing INCOMPATIBLE reason" "$(head -20 "$codex_art")"
+  elif [[ -f "$cap" ]] && grep -qF 'ARGV: exec' "$cap"; then
+    fail "codex exec ran despite genuine bad-version guard" "$(head -5 "$cap")"
+  else
+    pass "version-band guard still blocks bad version after CLAUDECODE strip"
+  fi
+  rm -rf "$td"
+}
+
+test_gemini_leg_closes_stdin() {
+  run_test "gemini leg gets EOF on stdin (no interactive hang) — primary #3294 fix"
+
+  local td; td="$(mktemp -d)"
+  run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
+
+  local cap="$td/captures/gemini.capture"
+  if [[ ! -f "$cap" ]]; then
+    fail "gemini capture file not written ($cap)"
+    rm -rf "$td"; return
+  fi
+  # The STDIN section of the capture must be empty (mock cat'd /dev/null -> EOF).
+  local stdin_body; stdin_body="$(awk '/^STDIN:$/{flag=1;next}flag' "$cap")"
+  if ! grep -qF '</dev/null' "$WRAPPER"; then
+    fail "gemini leg source does not close stdin with </dev/null"
+  elif [[ -z "$stdin_body" ]]; then
+    pass "gemini stdin reached EOF (empty capture body) and source closes stdin"
+  else
+    fail "gemini stdin was not empty/EOF" "$stdin_body"
+  fi
+  rm -rf "$td"
+}
+
+test_gemini_unavailable_when_no_auth() {
+  run_test "no gemini auth -> fast UNAVAILABLE, no gemini invocation (#3294 fast-path)"
+
+  local td; td="$(mktemp -d)"
+  run_wrapper_under_mocks "$td" "GEMINI_NO_AUTH=1" >/dev/null 2>&1 || true
+
+  local gemini_art cap
+  gemini_art="$(ls "$td/results/"*-plan-9999-gemini.md 2>/dev/null | head -1)"
+  cap="$td/captures/gemini.capture"
+  if [[ -z "$gemini_art" ]]; then
+    fail "gemini artifact missing under GEMINI_NO_AUTH=1"
+  elif ! grep -qF 'UNAVAILABLE' "$gemini_art"; then
+    fail "no-auth did not produce UNAVAILABLE artifact" "$(head -20 "$gemini_art")"
+  elif ! grep -qiF 'auth' "$gemini_art"; then
+    fail "UNAVAILABLE artifact missing auth reason" "$(head -20 "$gemini_art")"
+  elif [[ -f "$cap" ]]; then
+    fail "gemini was invoked despite no-auth fast-path" "$(head -5 "$cap")"
+  else
+    pass "no-auth fast-path wrote UNAVAILABLE and skipped gemini"
+  fi
+  rm -rf "$td"
+}
+
+test_fanout_no_provider_hangs_under_claudecode() {
+  run_test "CLAUDECODE=1 run yields 3 non-empty artifacts with no hang (#3294 e2e)"
+
+  local td; td="$(mktemp -d)"
+  run_wrapper_under_mocks "$td" "CLAUDECODE=1" >/dev/null 2>&1 || true
+
+  local missing=() prov art
+  for prov in claude codex gemini; do
+    art="$(ls "$td/results/"*-plan-9999-"$prov".md 2>/dev/null | head -1)"
+    [[ -n "$art" && -s "$art" ]] || missing+=("$prov")
+  done
+  if (( ${#missing[@]} != 0 )); then
+    fail "missing/empty artifacts under CLAUDECODE=1" "${missing[*]}"
+  else
+    pass "3 non-empty artifacts produced under CLAUDECODE=1"
   fi
   rm -rf "$td"
 }
@@ -585,7 +692,12 @@ test_codex_stderr_review_is_promoted_to_artifact
 test_empty_provider_output_becomes_unavailable_stub
 test_provider_timeout_becomes_unavailable_stub
 test_partial_stderr_timeout_becomes_unavailable_stub
-test_fanout_codex_unavailable_under_claudecode_env
+test_codex_leg_strips_claudecode
+test_codex_produces_review_under_claudecode
+test_codex_guard_still_blocks_genuine_bad_version
+test_gemini_leg_closes_stdin
+test_gemini_unavailable_when_no_auth
+test_fanout_no_provider_hangs_under_claudecode
 test_fanout_codex_unavailable_on_bad_version
 test_claude_invocation_sets_plugin_dir_override
 test_claude_case_branch_documents_2683

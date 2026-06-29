@@ -565,11 +565,18 @@ beyond an optional one-line headline.
 | Reports | `docs/reports/<file>` |
 
 **Emit → land flow:**
-1. A session writes a **reference payload** JSON: `{slug, date, title, lane,
-   headline?, refs:[{type, label, num|path|href}]}` where `type ∈
-   issue|pr|commit|plan|decision|handoff|report|link`. Full-fidelity payloads
-   stay LOCAL (`docs/reports/sessions/payloads/` is gitignored). It also writes
-   its `docs/session-handoffs/` record (the log + decisions narrative).
+1. A session gets its **reference payload** one of two ways:
+   - **Auto-derive from git (#3311, preferred):** `build_session_review.py --from-git
+     --since <ref>` derives `refs` from the session's commits + changed docs in
+     `<base>..HEAD` — PRs from the `(#NNN)` squash-merge subject, issues from other
+     `#NNN`, and `docs/plans|session-handoffs|governance/*-decision|reports` files
+     → typed refs. Add `--emit-payload <path>` to write a draft for curation.
+   - **By hand:** write the payload JSON `{slug, date, title, lane, headline?,
+     refs:[{type, label, num|path|href}]}`, `type ∈
+     issue|pr|commit|plan|decision|handoff|report|link`.
+   Either way the session also writes its `docs/session-handoffs/` record (the log
+   + decisions narrative). Full-fidelity payloads stay LOCAL
+   (`docs/reports/sessions/payloads/` is gitignored).
 2. `uv run python scripts/workflow/build_session_review.py <payload.json>` renders
    a lean grouped link-index `docs/reports/sessions/<date>-<slug>.html`, updates
    `manifest.json`, and regenerates `index.html`. `num` → GitHub issue/PR/commit
@@ -587,6 +594,37 @@ beyond an optional one-line headline.
 
 The page is the index of pointers; the substance lives — and is edited and
 versioned — in each artifact's canonical home.
+
+### Auto-emit at session end (#3316)
+
+`.claude/hooks/session-review-page.sh` closes the loop so step 1's payload is
+derived with **zero manual commands**:
+- **SessionStart** (`… start`) records `origin/main` as the session's git base →
+  `.claude/state/session-review/start-ref`.
+- **SessionEnd** (`… emit`) fetches, and if commits landed in `<base>..origin/main`
+  runs `build_session_review.py --from-git --since <base>` to render the lean page
+  into the working tree, then notifies with the path.
+
+The hook is **fail-open** (always exits 0; never blocks a session) and **does not
+commit or push** — publishing stays a deliberate commit (auto-push across the
+shared checkout is a known hazard). `SESSION_REVIEW_STAGE=1` only `git add`s the
+page; `SESSION_REVIEW_PAGE=false` disables the hook.
+
+**Activation is a deliberate, user-approved step** (it auto-executes commands at
+session start/end). Add to `.claude/settings.json` under `hooks`:
+
+```jsonc
+"SessionStart": [ { "hooks": [
+  { "type": "command",
+    "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-toplevel)}/.claude/hooks/session-review-page.sh\" start 2>/dev/null || true",
+    "timeout": 5 } ] } ],
+"SessionEnd": [ { "hooks": [
+  { "type": "command",
+    "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-toplevel)}/.claude/hooks/session-review-page.sh\" emit 2>/dev/null || true",
+    "timeout": 60 } ] } ]
+```
+
+Until registered, the hook script ships inert (safe default).
 
 ## References
 

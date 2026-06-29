@@ -24,8 +24,12 @@ Payload schema (all fields optional except slug+date+title):
 """
 from __future__ import annotations
 
+import argparse
+import datetime
 import html
 import json
+import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -227,16 +231,120 @@ def build(payload: dict, sessions_dir: Path, patterns: list[tuple[str, bool]],
     return entry
 
 
+# ── #3311: derive the reference payload from the session's git footprint ──────
+
+# docs path prefix → ref type. Order matters: first match wins. The session
+# pages dir is excluded so a page never references itself.
+_PATH_RULES = [
+    ("docs/reports/sessions/", None),                 # skip: our own output
+    ("docs/plans/", "plan"),
+    ("docs/session-handoffs/", "handoff"),
+    ("docs/governance/", "decision"),                 # narrowed to *-decision.md below
+    ("docs/reports/", "report"),
+]
+_SUBJECT_PR_RE = re.compile(r"\(#(\d+)\)\s*$")         # squash-merge subject convention
+_ISSUE_RE = re.compile(r"#(\d+)")
+
+
+def _ordered_unique(nums):
+    seen, out = set(), []
+    for n in nums:
+        if n not in seen:
+            seen.add(n); out.append(n)
+    return out
+
+
+def derive_refs(commit_messages: list[str], changed_files: list[str]) -> list[dict]:
+    """Pure derivation of `refs` from a git range. PRs come from the
+    `(#NNN)` squash-merge subject convention; other `#NNN` tokens are issues;
+    changed docs map to typed refs by path. Network-free and deterministic."""
+    pr_nums, issue_nums = [], []
+    for msg in commit_messages:
+        lines = msg.splitlines()
+        m = _SUBJECT_PR_RE.search(lines[0]) if lines else None
+        if m:
+            pr_nums.append(int(m.group(1)))
+        issue_nums += [int(n) for n in _ISSUE_RE.findall(msg)]
+    prs = _ordered_unique(pr_nums)
+    issues = [n for n in _ordered_unique(issue_nums) if n not in set(prs)]
+
+    refs: list[dict] = [{"type": "pr", "num": n} for n in prs]
+    refs += [{"type": "issue", "num": n} for n in issues]
+    for f in changed_files:
+        f = f.strip()
+        if not f:
+            continue
+        for prefix, rtype in _PATH_RULES:
+            if f.startswith(prefix):
+                if rtype is None:
+                    break  # excluded
+                if rtype == "decision" and not f.endswith("-decision.md"):
+                    break  # only *-decision.md under governance are decisions
+                refs.append({"type": rtype, "label": f.rsplit("/", 1)[-1], "path": f})
+                break
+    return refs
+
+
+def _git(args: list[str], repo_root: Path) -> str:
+    return subprocess.run(["git", "-C", str(repo_root), *args],
+                          capture_output=True, text=True, check=True).stdout
+
+
+def derive_payload_from_git(base: str, repo_root: Path, *, slug=None, title=None,
+                            headline=None, date=None, lane="claude") -> dict:
+    """Gather commit messages + changed files in `<base>..HEAD` and build a v2
+    payload. Thin wrapper around the pure `derive_refs`."""
+    raw = _git(["log", "--format=%B%x00", f"{base}..HEAD"], repo_root)
+    commit_messages = [m.strip() for m in raw.split("\0") if m.strip()]
+    changed = _git(["diff", "--name-only", f"{base}...HEAD"], repo_root).splitlines()
+    refs = derive_refs(commit_messages, changed)
+    if slug is None:
+        branch = _git(["rev-parse", "--abbrev-ref", "HEAD"], repo_root).strip()
+        slug = re.sub(r"[^a-z0-9]+", "-", branch.lower()).strip("-") or "session"
+    return {
+        "slug": slug,
+        "date": date or datetime.date.today().isoformat(),
+        "title": title or slug.replace("-", " "),
+        "lane": lane,
+        "headline": headline or "",
+        "refs": refs,
+    }
+
+
 def main(argv: list[str]) -> int:
-    if len(argv) != 1:
-        print("usage: build_session_review.py <payload.json>", file=sys.stderr)
-        return 2
+    p = argparse.ArgumentParser(description="Render a lean session-review page.")
+    p.add_argument("payload", nargs="?", help="payload JSON path (manual mode)")
+    p.add_argument("--from-git", action="store_true",
+                   help="derive the payload from the session's git footprint")
+    p.add_argument("--since", default="origin/main",
+                   help="base ref for --from-git (default: merge-base with origin/main)")
+    p.add_argument("--slug"); p.add_argument("--title"); p.add_argument("--headline")
+    p.add_argument("--date")
+    p.add_argument("--emit-payload", help="with --from-git: write the derived payload here "
+                                          "for curation instead of rendering")
+    a = p.parse_args(argv)
     repo_root = Path(__file__).resolve().parents[2]
-    payload = json.loads(Path(argv[0]).read_text(encoding="utf-8"))
     patterns = sani.load_deny_patterns(repo_root / ".legal-deny-list.yaml")
     sessions_dir = repo_root / "docs" / "reports" / "sessions"
+
+    if a.from_git:
+        base = _git(["merge-base", "HEAD", a.since], repo_root).strip() if "/" in a.since else a.since
+        payload = derive_payload_from_git(base, repo_root, slug=a.slug, title=a.title,
+                                          headline=a.headline, date=a.date)
+        if a.emit_payload:
+            Path(a.emit_payload).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+            print(f"Wrote derived payload to {a.emit_payload} "
+                  f"({len(payload['refs'])} refs) — curate then render it.")
+            return 0
+    elif a.payload:
+        payload = json.loads(Path(a.payload).read_text(encoding="utf-8"))
+    else:
+        p.error("provide a payload JSON path, or --from-git")
+        return 2
+
     entry = build(payload, sessions_dir, patterns, public=True, repo_root=repo_root)
-    print(f"Wrote {sessions_dir / entry['file']} and refreshed index ({entry['slug']})")
+    print(f"Wrote {sessions_dir / entry['file']} and refreshed index "
+          f"({entry['slug']}, {len(payload.get('refs', []))} refs)")
     return 0
 
 
