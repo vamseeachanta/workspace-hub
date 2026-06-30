@@ -30,6 +30,29 @@ history, each tagged **TRACKED** (still in current tree — keep) or **GONE**
 (already deleted — safe to strip). The reclaim estimate is the sum of GONE bytes.
 If `.git` is small or all big blobs are TRACKED, stop — a rewrite isn't warranted.
 
+## Step 1.5 — Reachable or unreachable? (decides the whole approach)
+
+Before planning a rewrite, find out whether the bloat is *reachable history* or
+just *unreachable cruft* — they need completely different fixes:
+
+```
+# reachable bytes (what a fresh mirror clone would keep) vs on-disk store:
+git rev-list --disk-usage --objects --all      # reachable bytes
+du -sb "$(git rev-parse --path-format=absolute --git-common-dir)"   # on-disk bytes
+```
+- **reachable ≈ on-disk** → bloat lives in reachable history → go to step 3
+  (`filter-repo` + operator force-push). [most repos]
+- **reachable ≪ on-disk** (e.g. 0.2 GB reachable, 2.4 GB on disk) → the rest is
+  **unreachable cruft** (classic on a shared repo whose cron auto-sync does
+  repeated `git reset --hard origin/main`). Reclaim it with **NO history rewrite
+  and NO force-push** — pause auto-sync, then:
+  ```
+  git reflog expire --expire=now --all && git gc --prune=now
+  ```
+  Plain `git gc` (Step 2) only prunes cruft older than 2 weeks, so active churn
+  needs `--prune=now` + the reflog expiry. Then apply step 3 only to any
+  reachable remainder. The analyzer script prints this VERDICT automatically.
+
 ## Step 2 — Safe non-rewrite wins (no force-push, do always)
 
 ```
@@ -40,7 +63,8 @@ git update-index --untracked-cache
 - Skip `feature.manyFiles` — it flips `index.skipHash`/index v4, which can break
   cron/auto-sync tooling on a shared store.
 - `gc` consolidates and re-deltas (faster object access) but does **not** shrink
-  reclaimable history — reachable blobs stay. That needs step 3.
+  reclaimable *reachable* history — that needs step 3 (or, for unreachable cruft,
+  the `--prune=now` in step 1.5).
 - Run `git gc` only when no auto-sync / concurrent git op is mid-flight.
 
 ## Step 3 — Plan the rewrite (target only GONE blobs)

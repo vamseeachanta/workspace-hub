@@ -21,6 +21,22 @@ du -sh "$GITCOMMON" 2>/dev/null || true
 echo "== object counts (high count/many packs/loose => run 'git gc') =="
 git count-objects -vH | grep -E '^count:|^size:|^in-pack:|^packs:|^size-pack:'
 
+echo "== reachable vs on-disk — decides the WHOLE approach =="
+# reachable = bytes of objects reachable from any ref (what a fresh mirror clone keeps).
+# If that is much smaller than the on-disk store, the rest is UNREACHABLE cruft
+# (e.g. from auto-sync 'git reset --hard' churn) — reclaimable by a prune with NO
+# history rewrite and NO force-push. If reachable ~= on-disk, the bloat is in
+# reachable history and needs filter-repo (steps 3-6).
+REACH="$(git rev-list --disk-usage --objects --all 2>/dev/null || echo 0)"
+DISK="$(du -sb "$GITCOMMON" 2>/dev/null | cut -f1)"
+awk -v r="$REACH" -v d="${DISK:-0}" 'BEGIN{
+  printf "  reachable=%.2f GiB   on-disk=%.2f GiB\n", r/1073741824, d/1073741824;
+  if (d>0 && r < d*0.6)
+    print "  >> VERDICT: large UNREACHABLE cruft. Reclaim with NO force-push:\n     git reflog expire --expire=now --all && git gc --prune=now\n     (plain git gc keeps cruft <2 weeks old). filter-repo only for any reachable remainder below.";
+  else
+    print "  >> VERDICT: bloat is mostly REACHABLE history -> needs filter-repo + force-push (steps 3-6).";
+}'
+
 TRACKED="$(mktemp)"; BLOBS="$(mktemp)"
 trap 'rm -f "$TRACKED" "$BLOBS"' EXIT
 
