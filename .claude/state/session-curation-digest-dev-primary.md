@@ -1,66 +1,66 @@
 # Session-curation digest — dev-primary
-_Curated 2026-06-30T05:47:02+00:00 · transferable to sibling machines via `session-curation-state` ref_
+_Curated 2026-06-30T11:47:04+00:00 · transferable to sibling machines via `session-curation-state` ref_
 
 ## Provider session activity (this box)
 | Provider | Present | Sessions | Last 24h | Newest |
 |---|---|---|---|---|
-| claude | yes | 5317 | 81 | 2026-06-30T00:33:55 |
-| codex | yes | 3116 | 65 | 2026-06-30T00:25:40 |
-| gemini | yes | 2169 | 0 | 2026-06-28T05:06:47 |
+| claude | yes | 5365 | 111 | 2026-06-30T06:43:29 |
+| codex | yes | 3121 | 61 | 2026-06-30T06:41:09 |
+| gemini | yes | 2170 | 1 | 2026-06-30T06:30:15 |
 | hermes | yes | 6676 | 0 | 2026-06-10T04:04:28 |
 
-## Memory delta — 96 file(s) changed since last curation
+## Memory delta — 200 file(s) changed since last curation
+- `KNOWLEDGE.md`
+- `agents.md`
+- `claude-auto-memory.md`
+- `context.md`
 - `topics/INDEX.md`
 - `topics/ai-orchestration.md`
 - `topics/data_format_guidelines.md`
-- `topics/feedback_llm_wiki_hyphen_module_path_pattern.md`
-- `topics/feedback_llm_wiki_relocation_firewall_gate.md`
-- `topics/feedback_local_venv_pytest_import_hang.md`
-- `topics/feedback_memory_aspire_to_hermes_level.md`
-- `topics/feedback_merge_race_silent_revert.md`
-- `topics/feedback_mnt_ace_corpus_claims_unreliable.md`
-- `topics/feedback_mock_vs_live_invocation_divergence.md`
-- `topics/feedback_multi_agent_commit_serialization.md`
-- `topics/feedback_multi_session_swarm.md`
-- `topics/feedback_n_night_blocker_promote_to_replan.md`
-- `topics/feedback_naive_secret_scan_false_positive_cascade.md`
-- `topics/feedback_narrow_grep_false_dead_before_deletion.md`
-- `topics/feedback_never_offer_to_self_label_plan_approved.md`
-- `topics/feedback_no_jargon.md`
-- `topics/feedback_no_materialize_into_foreign_worktree.md`
-- `topics/feedback_no_reserved_wrk_ids.md`
-- `topics/feedback_no_shortcuts_knowledge.md`
-- `topics/feedback_ntfs3_symlink_intxlnk.md`
-- `topics/feedback_ntfs_dirty_volume_mount_path.md`
-- `topics/feedback_offrepo_intel_routing.md`
-- `topics/feedback_one_task_at_a_time.md`
-- `topics/feedback_opportunity_data_to_aceengineer_strategy.md`
-- `topics/feedback_origin_committed_with_unresolved_markers.md`
-- `topics/feedback_orphan_lock_doom_loop_monitor_reap.md`
-- `topics/feedback_parallel_agent_write_only_pattern.md`
-- `topics/feedback_parallel_agents_shared_mutable_tool_path.md`
-- `topics/feedback_parallel_branch_checkout_working_dir.md`
-- `topics/feedback_parallel_gh_issue_create_reverses_numbers.md`
-- `topics/feedback_parallel_session_staged_change_bleedthrough.md`
-- `topics/feedback_parallel_subagent_shared_target_manifest_deferral.md`
-- `topics/feedback_path_parent_infinite_loop.md`
-- `topics/feedback_pdf_esignature_style_default.md`
-- `topics/feedback_pdf_ocr_fallback_chain.md`
-- `topics/feedback_per_repo_metadata_is_firewall.md`
-- `topics/feedback_permission_gate_blocks_cross_review.md`
-- `topics/feedback_plan_past_tense_artifact_claims.md`
-- `topics/feedback_plugin_cache_not_repo_tracked.md`
-- `topics/feedback_plumbing_synthesis_for_locked_index.md`
-- `topics/feedback_porting_issues_private_not_public_hub.md`
-- `topics/feedback_post_commit_autosync_defeats_test_gate.md`
-- `topics/feedback_pre_completion_cleanup_audit_gate.md`
-- `topics/feedback_pre_push_hook_no_verify_for_preservation.md`
-- `topics/feedback_prepush_hooks_sigpipe_and_sibling_layout.md`
-- `topics/feedback_prepush_no_verify_allowed_on_feature_branch.md`
-- `topics/feedback_private_llm_wiki_relaxed_copyright.md`
-- `topics/feedback_python_m_build_no_isolation_flag.md`
-- `topics/feedback_qg_maxfail_undercounts.md`
-- … and 46 more
+- `topics/feedback_3provider_review_wrappers_env_workarounds.md`
+- `topics/feedback_add_lessons_routes_to_docs_lessons.md`
+- `topics/feedback_admin_flag_vs_rulesets_api.md`
+- `topics/feedback_adversarial_review_before_user_approval.md`
+- `topics/feedback_adversarial_review_stance.md`
+- `topics/feedback_agent_can_verify_but_not_self_merge_pr.md`
+- `topics/feedback_agent_cannot_enable_security_gate_bypass.md`
+- `topics/feedback_always_adversarial_review_scale_depth.md`
+- `topics/feedback_amend_clobbers_parallel_branch_in_shared_checkout.md`
+- `topics/feedback_attestation_enables_contradiction_detection.md`
+- `topics/feedback_autorun_clobbers_subagent_worktree_commits.md`
+- `topics/feedback_autostash_lock_race_workspace_hub.md`
+- `topics/feedback_autostash_replay_after_checkout_b.md`
+- `topics/feedback_autosync_silent_pusher.md`
+- `topics/feedback_bare_dir_gitignore_swallows_libs.md`
+- `topics/feedback_browser_capture_to_disk_webgl.md`
+- `topics/feedback_bulk_comment_cumulative_volume_threshold.md`
+- `topics/feedback_bundle_orphan_sha_from_worktree.md`
+- `topics/feedback_chained_git_op_under_heavy_load.md`
+- `topics/feedback_chatgpt_share_dom_duplication.md`
+- `topics/feedback_check_issue_state_before_implementing_on_detached_head.md`
+- `topics/feedback_check_parallel_work.md`
+- `topics/feedback_ci_baseline_red_not_pr_broken.md`
+- `topics/feedback_claude_desktop_agent_mode_embeds_cli.md`
+- `topics/feedback_claude_dream_is_crossprovider_consolidator.md`
+- `topics/feedback_claude_in_chrome_file_upload_no_host_paths.md`
+- `topics/feedback_claude_in_chrome_session_scoped.md`
+- `topics/feedback_closes_trailer_fires_once.md`
+- `topics/feedback_codes_standards_data_in_private_wiki.md`
+- `topics/feedback_codex_bootstrap_untracked_sed_origin.md`
+- `topics/feedback_codex_bwrap_transient_under_concurrency.md`
+- `topics/feedback_codex_cli_0_124_upstream_regression.md`
+- `topics/feedback_codex_exec_cpu_starved_in_claude_sandbox.md`
+- `topics/feedback_codex_exec_cwd_is_sandbox_root.md`
+- `topics/feedback_codex_needs_pushed_artifact.md`
+- `topics/feedback_codex_reaches_mnt_ace.md`
+- `topics/feedback_codex_sandbox_fallback_paths.md`
+- `topics/feedback_codex_sandbox_no_execution.md`
+- `topics/feedback_codex_sandbox_uv_cache_readonly.md`
+- `topics/feedback_codex_sandbox_write_blocked.md`
+- `topics/feedback_codex_sustained_major_loop.md`
+- `topics/feedback_codex_worktree_sandbox_three_layer.md`
+- `topics/feedback_commit_attestation_narrow_scope.md`
+- … and 150 more
 
 ## Fleet transfer
 - Fingerprint published to git ref `session-curation-state` (per-machine blob).
