@@ -221,6 +221,22 @@ if [[ -x "${SET_AGY_MODEL}" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
+# 2.11. Install voice dictation (free/local push-to-talk; RSI relief)
+#       Linux: installs tools/voice-dictation/ (faster-whisper STT + hotkey
+#       inject via xdotool/wtype) and binds a GNOME hotkey. macOS/Windows:
+#       prints the OS-native dictation reminder (Fn-Fn / Win+H) and no-ops —
+#       native is better than our tool there. Idempotent; never sudo-installs
+#       (it reports missing apt deps for the user to install). Skips gracefully
+#       on headless / non-GNOME machines (prints the manual bind target).
+# ---------------------------------------------------------------------------
+INSTALL_VOICE="${REPO_ROOT}/scripts/agents/install-voice-dictation.sh"
+if [[ -x "${INSTALL_VOICE}" ]]; then
+    echo ""
+    echo -e "${CYAN}Installing voice dictation (free/local push-to-talk)...${NC}"
+    bash "${INSTALL_VOICE}" || true
+fi
+
+# ---------------------------------------------------------------------------
 # 3. Remind about bridge script (Linux/Hermes machines only)
 # ---------------------------------------------------------------------------
 if [[ -d "${HOME}/.hermes" ]]; then
