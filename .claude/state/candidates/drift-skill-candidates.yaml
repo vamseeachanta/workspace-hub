@@ -1,0 +1,42 @@
+generated_at: '2026-06-30T07:28:03Z'
+machine: dev-primary
+window_days: 14
+recur_days: 3
+schema_version: 1
+candidates:
+- drift_class: git_missing_wrk_ref
+  kind: skill-guide
+  target: git-workflow rule (WRK/issue ref in commit)
+  action: Propose a skill-guide note or a documented skill-exception for missing issue
+    refs in commits
+  distinct_days: 3
+  distinct_sessions: 4
+  total_violations: 20
+  providers:
+    claude: 2
+    codex: 2
+  first_seen: '2026-06-20T07:16:52Z'
+  last_seen: '2026-06-30T07:17:14Z'
+  window_days: 14
+  rationale: "git_missing_wrk_ref drifted on 3 distinct days over 14d \u2014 repeated\
+    \ rule miss; capture as guidance or sanctioned exception."
+  status: candidate
+  active: true
+- drift_class: python_runtime
+  kind: skill-guide
+  target: '.claude/rules/coding-style.md (Python runtime: `uv run` vs bare python3)'
+  action: Propose a skill-guide note or a documented skill-exception for bare python3
+    usage
+  distinct_days: 8
+  distinct_sessions: 35
+  total_violations: 158
+  providers:
+    codex: 33
+    claude: 2
+  first_seen: '2026-06-18T07:15:57Z'
+  last_seen: '2026-06-30T07:17:10Z'
+  window_days: 14
+  rationale: "python_runtime drifted on 8 distinct days over 14d \u2014 repeated rule\
+    \ miss; capture as guidance or sanctioned exception."
+  status: candidate
+  active: true

@@ -1824,3 +1824,26 @@
 {"session_id":"019ee0df-3684-7a20-824e-75070560ed54","ts":1782318460,"text":"exit"}
 {"session_id":"019ed081-fd73-73e3-94b3-639474739207","ts":1782318464,"text":"exit"}
 {"session_id":"019ee0df-3684-7a20-824e-75070560ed54","ts":1782320521,"text":"exit"}
+{"session_id":"019f1125-a8b9-7da3-a925-a3ccfabab35d","ts":1782699291,"text":"review the index file for /mnt/ace; review what files such that they are\n- mapped for type, description, expected % ingestion into llm-wiki if undertaken by extension type, detailed content analysis, % ingested success. ingestion ease/difficulty rank\nfollowing this, we will figure out how to use each extension etc."}
+{"session_id":"019f1125-a8b9-7da3-a925-a3ccfabab35d","ts":1782701554,"text":"create an epic and gh issues ; this work is expected to go in waves progressively. following this, we will review each issue one by one and come up with a plan. Each gh issue will have an associated raw-to-knowledge-playbook issue/skill-group that will always be used and updated to get this work going"}
+{"session_id":"019f1125-a8b9-7da3-a925-a3ccfabab35d","ts":1782701619,"text":"the table was a very good summary i found over the last 1 year of work.."}
+{"session_id":"019f1125-a8b9-7da3-a925-a3ccfabab35d","ts":1782729218,"text":"continue with recommendations; plan as many issues as possible using parallel agents"}
+{"session_id":"019f1125-a8b9-7da3-a925-a3ccfabab35d","ts":1782746480,"text":"next logical step"}
+{"session_id":"019f13fd-f561-7aa2-8db1-b02fbdfdb2c1","ts":1782747093,"text":"we are currently doing field development for the offshore industry in worldenergydata repo using bsee data and other data sources. Now, we want to extend that to onshore using the following article.\n\nIdentify the entire lifecycle (well, field, production data), refresh cycle, save data to /mnt/ace, perform similar analysis for production etc. all the way to field development and architecture etc.\n\nLet me know if you have any questions\n\nhttps://www.linkedin.com/posts/dmatranga_i-have-a-client-who-owns-both-a-pipeline-ugcPost-7475252039833239552-aWZK/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAFdG9kB103ydcFGign1_8EYQx7YwiUPV4k\n\nhttps://patchops.ai/"}
+{"session_id":"019f1125-a8b9-7da3-a925-a3ccfabab35d","ts":1782747130,"text":"continue with recommended sequence"}
+{"session_id":"019f13fd-f561-7aa2-8db1-b02fbdfdb2c1","ts":1782748059,"text":"decide on questions interactively one by one"}
+{"session_id":"019f13fd-f561-7aa2-8db1-b02fbdfdb2c1","ts":1782763010,"text":"continue with recommendation. prepare gh issues and continue work"}
+{"session_id":"019f1125-a8b9-7da3-a925-a3ccfabab35d","ts":1782763100,"text":"continue with recommended action"}
+{"session_id":"019f1125-a8b9-7da3-a925-a3ccfabab35d","ts":1782764187,"text":"approved #50; continue"}
+{"session_id":"019f13fd-f561-7aa2-8db1-b02fbdfdb2c1","ts":1782764255,"text":"approved; continue"}
+{"session_id":"019f13fd-f561-7aa2-8db1-b02fbdfdb2c1","ts":1782765827,"text":"also check this out..if helpful.. https://github.com/derrickturk/rrc-scraper/blob/6dce564695df739c43cb257472fbdb455fdd1b2e/RRCScraper.py"}
+{"session_id":"019f1125-a8b9-7da3-a925-a3ccfabab35d","ts":1782769604,"text":"continue work"}
+{"session_id":"019f13fd-f561-7aa2-8db1-b02fbdfdb2c1","ts":1782769613,"text":"continue work"}
+{"session_id":"019f13fd-f561-7aa2-8db1-b02fbdfdb2c1","ts":1782769638,"text":"get data from the direct source. helps with reliability."}
+{"session_id":"019f13fd-f561-7aa2-8db1-b02fbdfdb2c1","ts":1782776055,"text":"commit, track changes, commmit, pr, merge to main origin; continue"}
+{"session_id":"019f1125-a8b9-7da3-a925-a3ccfabab35d","ts":1782776933,"text":"continue"}
+{"session_id":"019f1125-a8b9-7da3-a925-a3ccfabab35d","ts":1782785778,"text":"continue work"}
+{"session_id":"019f13fd-f561-7aa2-8db1-b02fbdfdb2c1","ts":1782785785,"text":"continue"}
+{"session_id":"019f15cc-7bb6-7580-bded-5fa0d67b2a87","ts":1782785843,"text":"make a note in the repo that: there is an ongoing sale negotiation for vakalpudi site with the following caveats:\n- 6 month timeline\n- 10 L deposit\nINR 9000 per sq.yard (Gajam)"}
+{"session_id":"019f15cc-7bb6-7580-bded-5fa0d67b2a87","ts":1782786412,"text":"document and prepare to exit"}
+{"session_id":"019f13fd-f561-7aa2-8db1-b02fbdfdb2c1","ts":1782786884,"text":"approved. continue"}

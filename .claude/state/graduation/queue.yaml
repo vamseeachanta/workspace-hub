@@ -1,0 +1,55 @@
+drafts:
+- slug: skill-md-authoring
+  theme: SKILL.md authoring
+  correction_count: 313
+  target_skill: superpowers/writing-skills
+  target_kind: existing_skill
+  action: Add skill authoring checklist to writing-skills skill
+  rationale: '313 corrections to SKILL.md files across sessions suggests agents frequently
+    need multiple passes to get skill format right. A pre-write checklist would reduce
+    iteration.
+
+    '
+  files:
+  - SKILL.md
+  source_rank: 1
+  source_theme: SKILL.md authoring
+  status: draft-parked
+  owner_review: pending
+  created_at: '2026-06-30T07:28:02+00:00'
+- slug: shell-script-edits
+  theme: Shell script edits
+  correction_count: 169
+  target_skill: .claude/rules/coding-style.md
+  target_kind: rule
+  action: Add shell script edit safety rules to coding-style
+  rationale: 'Shell scripts are edited frequently with corrections, often for quoting,
+    path handling, and error handling. Strengthen rules.
+
+    '
+  files:
+  - daily-reflect.sh
+  - check-all.sh
+  source_rank: 2
+  source_theme: Shell script edits
+  status: draft-parked
+  owner_review: pending
+  created_at: '2026-06-30T07:28:02+00:00'
+- slug: memory-file-management
+  theme: Memory file management
+  correction_count: 96
+  target_skill: auto memory (system prompt)
+  target_kind: memory
+  action: Tighten memory index size enforcement
+  rationale: '96 corrections to MEMORY.md suggest agents repeatedly exceed the 200-line
+    limit or make formatting errors.
+
+    '
+  files:
+  - MEMORY.md
+  source_rank: 3
+  source_theme: Memory file management
+  status: draft-parked
+  owner_review: pending
+  created_at: '2026-06-30T07:28:02+00:00'
+updated_at: '2026-06-30T07:28:02+00:00'
