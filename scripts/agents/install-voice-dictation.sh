@@ -52,6 +52,20 @@ ln -sfn "${TOOL_SRC}" "${SHARE_DIR}"
 ln -sfn "${LAUNCH}" "${BIN_LINK}"
 echo -e "${GREEN}✅ linked ${SHARE_DIR} → tools/voice-dictation; codex-dictate on PATH${NC}"
 
+# 1.5) No sound card / mic? (e.g. a headless VNC *target* like ace-linux-2.)
+# Such a machine can't dictate locally — and doesn't need to: dictate on the
+# machine that HAS the mic and let VNC/ssh forward the typed TEXT into this
+# one's focused window. Use /proc/asound/cards so this works even before
+# alsa-utils is installed. Keep the symlink so a later USB mic + re-run just
+# works; skip the model download + hotkey (which would bind to a failing tool).
+if [[ ! -r /proc/asound/cards ]] || ! grep -qE '^[[:space:]]*[0-9]+[[:space:]]' /proc/asound/cards; then
+  echo -e "${YELLOW}No sound card / capture device on this machine.${NC}"
+  echo "  Dictate on a machine that HAS a mic; let VNC/ssh forward the typed text"
+  echo "  into this one's focused window. Skipping faster-whisper + hotkey here."
+  echo -e "${GREEN}voice-dictation: tool linked (inactive without a mic).${NC}"
+  exit 0
+fi
+
 # 2) Report missing system deps (sudo apt is the user's call, never silent here).
 missing_apt=()
 command -v arecord  >/dev/null 2>&1 || missing_apt+=("alsa-utils")
