@@ -1511,19 +1511,20 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "status:plan-review"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
+        "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
         "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)"
@@ -1536,28 +1537,31 @@
       "number": 3212,
       "pipeline_lane": "C",
       "plan": null,
-      "provider_route": "codex",
+      "provider_route": "claude",
       "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
+      "routing_reason": "strategy/workflow/architecture language",
       "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3212",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "status:plan-review"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
+        "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
         "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)"
@@ -1570,12 +1574,14 @@
       "number": 3198,
       "pipeline_lane": "C",
       "plan": null,
-      "provider_route": "codex",
+      "provider_route": "claude",
       "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
+      "routing_reason": "strategy/workflow/architecture language",
       "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3198",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8428,7 +8434,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-07-01T09:21:00Z",
+  "generated_at": "2026-07-01T13:21:03Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -9920,19 +9926,20 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "status:plan-review"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
+          "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
           "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)"
@@ -9945,28 +9952,31 @@
         "number": 3212,
         "pipeline_lane": "C",
         "plan": null,
-        "provider_route": "codex",
+        "provider_route": "claude",
         "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
+        "routing_reason": "strategy/workflow/architecture language",
         "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3212",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "status:plan-review"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
+          "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
           "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)"
@@ -9979,12 +9989,14 @@
         "number": 3198,
         "pipeline_lane": "C",
         "plan": null,
-        "provider_route": "codex",
+        "provider_route": "claude",
         "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
+        "routing_reason": "strategy/workflow/architecture language",
         "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3198",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16845,9 +16857,9 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-07-01T09:20:56.123064Z",
+  "scorecard_generated_at": "2026-07-01T13:20:59.094616Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-01T09:20:55.976232Z",
+  "utilization_generated_at": "2026-07-01T13:20:58.973463Z",
   "warning_summary": {
     "approved_no_marker": 48,
     "approved_no_plan": 20,
@@ -16855,7 +16867,7 @@
     "legacy_review_no_sha": 2,
     "major_review": 2,
     "marker_without_open_approved_issue": 160,
-    "missing_review": 78,
+    "missing_review": 80,
     "unavailable_review": 1,
     "unknown_review": 1
   }

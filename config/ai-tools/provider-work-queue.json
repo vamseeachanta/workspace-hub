@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-01T09:20:58.268467Z",
+  "generated_at": "2026-07-01T13:21:01.710384Z",
   "current_week": "2026-W27",
-  "scorecard_generated_at": "2026-07-01T09:20:56.123064Z",
+  "scorecard_generated_at": "2026-07-01T13:20:59.094616Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 55,
-      "total_candidates": 176,
+      "total_candidates": 178,
       "top_issues": [
         {
           "number": 2694,
@@ -1765,7 +1765,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-06-30T11:45:09Z",
+          "updatedAt": "2026-07-01T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -4486,6 +4486,43 @@
           ]
         },
         {
+          "number": 3198,
+          "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3198",
+          "labels": [
+            "status:plan-review"
+          ],
+          "updatedAt": "2026-07-01T13:12:19Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation"
+          ]
+        },
+        {
+          "number": 3212,
+          "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3212",
+          "labels": [
+            "status:plan-review"
+          ],
+          "updatedAt": "2026-07-01T13:12:18Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
           "number": 3223,
           "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3223",
@@ -4606,7 +4643,7 @@
       "provider": "codex",
       "routing_priority": "high",
       "execution_ready_count": 2,
-      "total_candidates": 21,
+      "total_candidates": 19,
       "top_issues": [
         {
           "number": 3030,
@@ -5180,39 +5217,6 @@
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 3198,
-          "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3198",
-          "labels": [],
-          "updatedAt": "2026-06-17T15:08:44Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 3212,
-          "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3212",
-          "labels": [],
-          "updatedAt": "2026-06-18T10:17:06Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
             "implementation"
           ]
         },

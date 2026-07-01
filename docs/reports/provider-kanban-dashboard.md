@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-01T09:21:00Z
+Generated: 2026-07-01T13:21:03Z
 Mode: static (read-only)
 
 ## How to approve
@@ -79,8 +79,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3226 | Compliance alert: W26 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3224 | Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3223 | Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3212 | cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB → managed cron jobs short-circuit (dev-secondary report pipeline re-broken) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3198 | bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3212 | cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB → managed cron jobs short-circuit (dev-secondary report pipeline re-broken) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3198 | bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3186 | Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3182 | Provider-utilization tracker is blind to Hermes usage after ace-linux-2 migration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3179 | run-all-tests.sh (and peer gate scripts) mis-resolve REPO_ROOT under git hooks in a worktree → spurious pre-push FAIL | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: major_review,missing_review; static dashboard: real approval requires provider-kanban-server.py |
