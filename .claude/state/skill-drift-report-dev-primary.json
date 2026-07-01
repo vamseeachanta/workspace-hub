@@ -1,6 +1,6 @@
 {
   "machine": "dev-primary",
-  "evaluated_at": "2026-06-30T11:47:40+00:00",
+  "evaluated_at": "2026-06-30T23:47:11+00:00",
   "signature": "CLEAN",
   "drift_present": false,
   "new_drift": false,
