@@ -1,5 +1,12 @@
 [
   {
+    "slug": "main",
+    "date": "2026-07-01",
+    "title": "main",
+    "lane": "claude",
+    "file": "2026-07-01-main.html"
+  },
+  {
     "slug": "ecosystem-workflow-and-pr-backlog",
     "date": "2026-06-28",
     "title": "Self-publishing session live-link + PR backlog clear",
