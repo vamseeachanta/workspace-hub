@@ -650,6 +650,12 @@ skills:
   name: tax-e-filing-research
   when_to_use: '- Preparing to e-file Form 1120 independently - Comparing e-filing service options for cost and features - Need step-by-step filing instructions - Paper filing backup plan ---'
   when_to_use_source: section
+- description: 'Assemble a ready-to-file personal federal tax packet from existing repo artifacts: computation draft, filing checklist, entry guide, and optimization review.'
+  family: business_admin
+  id: business_admin/personal-tax-filing-packet
+  name: personal-tax-filing-packet
+  when_to_use: 'Use when the user wants to prepare or finalize a personal federal tax filing and there is already a workspace/repo with draft tax materials. Common requests: - "let us prepare the filing for personal taxes" - "review my personal tax package" - "what is ready for filing?" - "summarize the return and next steps"'
+  when_to_use_source: trigger
 - description: Assemble and execute a packet-first TaxAct Business filing workflow for C-Corp Form 1120 returns using existing repo artifacts, with strict pre-submit gates and human approval.
   family: business_admin
   id: business_admin/taxact-business-c-corp-filing-packet
@@ -1378,6 +1384,12 @@ skills:
   name: xlsx
   when_to_use: '- Reading and analyzing Excel data with pandas - Creating formatted spreadsheets programmatically - Building financial models with formulas - Generating reports with charts and graphs - Automating data entry and updates - Converting between Excel and other formats - Batch processing multiple spreadsheets - Creating templates for repeated use'
   when_to_use_source: section
+- description: Proactively surface what DATA the ecosystem already has for an engineering domain — before starting analysis, points to the consolidated data-source catalog, any latent ACE_SHARE project precedent, and the domain-database issue that curates it. Use when work touches an engineering domain (riser, mooring, pipeline, structural/FFS, naval-arch/hydro, metocean, materials, production, geotech, drilling, CAD/sim, or financial/asset), when someone asks 'do we have data for X', 'where do we get X data', 'build the X database', or before implementing a calculation that needs reference data.
+  family: data
+  id: data/ecosystem-data-sources
+  name: ecosystem-data-sources
+  when_to_use: ecosystem-data-sources Proactively surface what DATA the ecosystem already has for an engineering domain — before starting analysis, points to the consolidated data-source catalog, any latent ACE_SHARE project precedent, and the domain-database issue that curates it. Use when work touches an engineering domain (riser, mooring, pipeline, structural/FFS, naval-arch/hydro, metocean, materials, production, geotech, drilling, CAD/sim, or financial/asset), when someone asks 'do we have data for X', 'where do we get X data', 'build the X database', or before implementing a calculation that needs reference data. data
+  when_to_use_source: backfill
 - description: Analyze drilling performance and metrics using API 12-digit well numbering system. Use for drilling time analysis, cost benchmarking, well comparison, sidetracks tracking, and drilling efficiency metrics across GOM fields.
   family: data
   id: data/energy/api12-drilling-analyzer
