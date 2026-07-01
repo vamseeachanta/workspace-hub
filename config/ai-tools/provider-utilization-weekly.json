@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-01T05:20:56.675013Z",
+  "generated_at": "2026-07-01T09:20:55.976232Z",
   "current_week": "2026-W27",
   "report_weeks": 8,
   "subscriptions": {
@@ -125,7 +125,7 @@
         "provider": "hermes",
         "week": "2026-W20",
         "sessions": 1612,
-        "post_records": 865695,
+        "post_records": 923408,
         "activity_utilization_pct": 92.0,
         "quota_utilization_pct": null,
         "reported_utilization_pct": 92.0,
@@ -136,23 +136,23 @@
         "top_tools": [
           {
             "tool": "Read",
-            "count": 342555
+            "count": 365392
           },
           {
             "tool": "Bash",
-            "count": 287235
+            "count": 306384
           },
           {
             "tool": "Grep",
-            "count": 98205
+            "count": 104752
           },
           {
             "tool": "Edit",
-            "count": 81105
+            "count": 86512
           },
           {
             "tool": "Write",
-            "count": 39285
+            "count": 41904
           }
         ],
         "first_ts": "2026-05-11T03:33:36.180121Z",
@@ -263,7 +263,7 @@
         "provider": "hermes",
         "week": "2026-W21",
         "sessions": 1264,
-        "post_records": 527325,
+        "post_records": 562480,
         "activity_utilization_pct": 56.0,
         "quota_utilization_pct": null,
         "reported_utilization_pct": 56.0,
@@ -274,23 +274,23 @@
         "top_tools": [
           {
             "tool": "Read",
-            "count": 219180
+            "count": 233792
           },
           {
             "tool": "Bash",
-            "count": 176235
+            "count": 187984
           },
           {
             "tool": "Grep",
-            "count": 64215
+            "count": 68496
           },
           {
             "tool": "Write",
-            "count": 25155
+            "count": 26832
           },
           {
             "tool": "Browser",
-            "count": 19635
+            "count": 20944
           }
         ],
         "first_ts": "2026-05-18T03:37:47.975757Z",
@@ -833,7 +833,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-07-01T05:20:05Z",
+        "quota_snapshot_ts": "2026-07-01T09:20:05Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -842,39 +842,39 @@
       "codex": {
         "provider": "codex",
         "week": "2026-W27",
-        "sessions": 63,
-        "post_records": 5840,
-        "activity_utilization_pct": 15.0,
+        "sessions": 130,
+        "post_records": 12216,
+        "activity_utilization_pct": 31.5,
         "quota_utilization_pct": 29.0,
         "reported_utilization_pct": 29.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "app-server-live",
-        "quota_snapshot_ts": "2026-07-01T05:20:05Z",
+        "quota_snapshot_ts": "2026-07-01T09:20:05Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 5681
+            "count": 11904
           },
           {
             "tool": "wait_agent",
-            "count": 44
+            "count": 80
           },
           {
             "tool": "update_plan",
-            "count": 33
+            "count": 75
           },
           {
             "tool": "spawn_agent",
-            "count": 32
+            "count": 69
           },
           {
             "tool": "close_agent",
-            "count": 29
+            "count": 61
           }
         ],
         "first_ts": "2026-06-29T02:15:10.311000Z",
-        "last_ts": "2026-06-30T05:25:22.273000Z",
+        "last_ts": "2026-07-01T05:10:56.225000Z",
         "note": "week_pct from app-server-live"
       },
       "gemini": {
@@ -888,7 +888,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "manual-snapshot",
-        "quota_snapshot_ts": "2026-07-01T05:20:05Z",
+        "quota_snapshot_ts": "2026-07-01T09:20:05Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,

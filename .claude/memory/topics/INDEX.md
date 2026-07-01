@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (192)
+## Feedback — execution lessons & hazards (193)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
@@ -22,6 +22,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [autostash-lock-race-workspace-hub](feedback_autostash_lock_race_workspace_hub.md) — "git rebase --autostash fails (\"Cannot autostash\") when statusline-command.sh git status loops race with stash creation on workspace-hub"
 - [autostash-replay-after-checkout-b](feedback_autostash_replay_after_checkout_b.md) — "When `git checkout -b` runs with a leftover autostash in `git stash list`, the stash can auto-apply to the new branch and silently revert tracked state. Always `git stash list` and drop unwanted autostashes BEFORE creating new branches, especially after operations like `git rebase --onto` that produce autostashes."
 - [Auto-sync as silent pusher (resolves contention, doesn't only cause it)](feedback_autosync_silent_pusher.md) — Workspace-hub's auto-sync also pushes local-ahead commits when its window opens — a `[rejected]` push from your shell may already have been resolved by auto-sync seconds later
+- [feedback_avoid_ace_branding](feedback_avoid_ace_branding.md) — "Don't brand as \"A&CE\"; use \"AceEngineer\" or just describe the work"
 - [feedback_bare_dir_gitignore_swallows_libs](feedback_bare_dir_gitignore_swallows_libs.md) — "Bare directory patterns in workspace-hub .gitignore (lib/, reports/) silently untrack paths tree-wide; verify git tracking before committing a script fix"
 - [feedback-browser-capture-to-disk-webgl](feedback_browser_capture_to_disk_webgl.md) — How to get web imagery into a file for video/PDF pipelines — bridge save_to_disk writes no host file; headless chrome --screenshot works but has no WebGL (no Google Earth/Street View)
 - [feedback_bulk_comment_cumulative_volume_threshold](feedback_bulk_comment_cumulative_volume_threshold.md) — "GitHub addComment secondary rate-limit is cumulative-volume-aware, not just rate-aware — ~500 posts on a single token in ~25min trips it even at 30/min pacing"
