@@ -270,6 +270,17 @@
         ]
       }
     ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-toplevel)}/.claude/hooks/ecosystem-data-nudge.sh\" 2>/dev/null || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "SessionEnd": [
       {
         "hooks": [
