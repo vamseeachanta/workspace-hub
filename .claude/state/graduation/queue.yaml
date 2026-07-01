@@ -52,4 +52,22 @@ drafts:
   status: draft-parked
   owner_review: pending
   created_at: '2026-06-30T07:28:02+00:00'
-updated_at: '2026-06-30T07:28:02+00:00'
+- slug: python-data-handling
+  theme: Python data handling
+  correction_count: 93
+  target_skill: .claude/rules/coding-style.md
+  target_kind: rule
+  action: Add Python data module patterns to coding-style
+  rationale: 'Data handling modules and __init__.py files have high correction rates,
+    suggesting initialization and import patterns need guidance.
+
+    '
+  files:
+  - data.py
+  - __init__.py
+  source_rank: 4
+  source_theme: Python data handling
+  status: draft-parked
+  owner_review: pending
+  created_at: '2026-07-01T07:25:21+00:00'
+updated_at: '2026-07-01T07:25:21+00:00'

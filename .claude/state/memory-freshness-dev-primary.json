@@ -1,40 +1,40 @@
 {
   "machine": "dev-primary",
-  "audited_at": "2026-06-30T23:47:11+00:00",
+  "audited_at": "2026-07-01T05:47:05+00:00",
   "surfaces": {
     "context_md": {
       "present": true,
       "refreshed_at": "2026-06-26T08:00:34-05:00",
-      "age_hours": 106.777,
+      "age_hours": 112.775,
       "signal": "git-commit"
     },
     "agents_md": {
       "present": true,
       "refreshed_at": "2026-06-30T08:02:49-05:00",
-      "age_hours": 10.74,
+      "age_hours": 16.738,
       "signal": "git-commit"
     },
     "codex_runtime": {
       "present": true,
       "refreshed_at": "2026-06-30T08:02:49-05:00",
-      "age_hours": 10.74,
+      "age_hours": 16.738,
       "signal": "git-commit"
     },
     "gemini_runtime": {
       "present": true,
       "refreshed_at": "2026-06-30T08:02:49-05:00",
-      "age_hours": 10.74,
+      "age_hours": 16.738,
       "signal": "git-commit"
     },
     "hermes_memories": {
       "present": true,
       "refreshed_at": "2026-06-30T09:25:02+00:00",
-      "age_hours": 14.369,
+      "age_hours": 20.368,
       "signal": "file-mtime"
     }
   },
   "newest_refresh": "2026-06-30T08:02:49-05:00",
-  "worst_age_hours": 106.777,
+  "worst_age_hours": 112.775,
   "freshness": "MEMORY-EXPIRED",
   "schema_version": 1
 }
