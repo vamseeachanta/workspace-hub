@@ -35,8 +35,43 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "chore(repo-health): git bloat reduction campaign \u2014 reclaim ~12 GiB across repos (slim-git-history)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3325,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "chore(repo-health): git bloat reduction campaign \u2014 reclaim ~12 GiB across repos (slim-git-history)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3325",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
         "labels": [
           "priority:medium",
+          "priority:critical",
           "compliance-alert"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -67,10 +102,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3308.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -103,6 +137,7 @@
       "title": "wf-api(assethold): engine embed-port \u2014 mirror #3297 for assethold's own engine [prereq for #3287]",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3308",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -111,10 +146,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3307.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -147,6 +181,7 @@
       "title": "wf-api(digitalmodel): engine embed-port \u2014 mirror #3297 for digitalmodel's own engine [prereq for #3285]",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3307",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -311,10 +346,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3297.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -347,6 +381,7 @@
       "title": "wf-api(assetutilities): make the engine embeddable \u2014 injected root, no cwd-coupled side effects [PREREQ for #3282]",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3297",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -355,10 +390,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3296.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -391,6 +425,7 @@
       "title": "seamless(governance): evidence-threshold approval evolution (graduate routine approvals off user-gate)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3296",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -399,10 +434,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3295.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -435,6 +469,7 @@
       "title": "seamless(contract): reconcile registry schema_version into a unified v2 superset (unblocks #3282)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3295",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -443,10 +478,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3294.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -479,6 +513,7 @@
       "title": "seamless(review): make adversarial-review dispatchers run headless (codex env -u CLAUDECODE, gemini non-interactive)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3294",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -487,10 +522,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3293.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -523,6 +557,7 @@
       "title": "seamless(ci): fix two startup-failing docs.yml (worldenergydata, assethold)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3293",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -531,10 +566,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3292.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -567,6 +601,7 @@
       "title": "seamless(ci): digitalmodel touched-domain-only on push + clear baseline red",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3292",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -575,10 +610,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3291.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -611,6 +645,7 @@
       "title": "seamless(ci): uv caching across assetutilities / assethold / digitalmodel test workflows",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3291",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -699,10 +734,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3288.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -735,6 +769,7 @@
       "title": "wf-api(deckhand): EXECUTE leg consumes run_workflow + renders envelope [GTM payoff]",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3288",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -743,10 +778,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3287.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -779,6 +813,7 @@
       "title": "wf-api(assethold): adopt ResultEnvelope after #3066 engine wiring [gated]",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3287",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -787,10 +822,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3286.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -823,6 +857,7 @@
       "title": "wf-api(worldenergydata): adopt envelope + generalize typed-query base; scheduler JobResult; hse_api (#363)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3286",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -831,10 +866,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3285.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -867,6 +901,7 @@
       "title": "wf-api(digitalmodel): adopt ResultEnvelope + schemas + goldens (FFS, buckling, mooring, wall-thickness)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3285",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -875,10 +910,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3284.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -911,6 +945,7 @@
       "title": "wf-api(ecosystem): discovery manifest \u2014 aggregate callable workflows + schemas across repos",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3284",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -919,10 +954,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3283.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -955,6 +989,7 @@
       "title": "wf-api(ecosystem): determinism harness \u2014 provenance stamp + result hash + golden-baseline template",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3283",
       "warnings": [
+        "approved_no_marker",
         "missing_review"
       ]
     },
@@ -963,10 +998,9 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: major_review,unavailable_review,unknown_review",
-        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": ".planning/plan-approved/3282.md",
+      "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -999,6 +1033,7 @@
       "title": "wf-api(assetutilities): ResultEnvelope + run_workflow() + registry request/response schema [FOUNDATIONAL]",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3282",
       "warnings": [
+        "approved_no_marker",
         "legacy_review_no_sha",
         "major_review",
         "unavailable_review",
@@ -8391,52 +8426,9 @@
       "title": "R2 \u2014 Subsea Pipelines: Academic sources sweep (Bai & Bai, Palmer & King, Kyriakides & Corona, Guo)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2689",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "cat:engineering",
-          "cat:research",
-          "machine:dev-primary",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:pipeline-subsea",
-          "lane:codex"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "R1 \u2014 Subsea Pipelines: Standards & Codes inventory (DNV-OS-F101, F105, F109, F110, API RP 1111, ASME B31.4/.8)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2688,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "R1 \u2014 Subsea Pipelines: Standards & Codes inventory (DNV-OS-F101, F105, F109, F110, API RP 1111, ASME B31.4/.8)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2688",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-06-30T09:21:03Z",
+  "generated_at": "2026-07-01T01:20:54Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8452,8 +8444,43 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "chore(repo-health): git bloat reduction campaign \u2014 reclaim ~12 GiB across repos (slim-git-history)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3325,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "chore(repo-health): git bloat reduction campaign \u2014 reclaim ~12 GiB across repos (slim-git-history)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3325",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
           "labels": [
             "priority:medium",
+            "priority:critical",
             "compliance-alert"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8484,10 +8511,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3308.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8520,6 +8546,7 @@
         "title": "wf-api(assethold): engine embed-port \u2014 mirror #3297 for assethold's own engine [prereq for #3287]",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3308",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -8528,10 +8555,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3307.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8564,6 +8590,7 @@
         "title": "wf-api(digitalmodel): engine embed-port \u2014 mirror #3297 for digitalmodel's own engine [prereq for #3285]",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3307",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -8728,10 +8755,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3297.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8764,6 +8790,7 @@
         "title": "wf-api(assetutilities): make the engine embeddable \u2014 injected root, no cwd-coupled side effects [PREREQ for #3282]",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3297",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -8772,10 +8799,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3296.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8808,6 +8834,7 @@
         "title": "seamless(governance): evidence-threshold approval evolution (graduate routine approvals off user-gate)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3296",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -8816,10 +8843,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3295.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8852,6 +8878,7 @@
         "title": "seamless(contract): reconcile registry schema_version into a unified v2 superset (unblocks #3282)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3295",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -8860,10 +8887,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3294.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8896,6 +8922,7 @@
         "title": "seamless(review): make adversarial-review dispatchers run headless (codex env -u CLAUDECODE, gemini non-interactive)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3294",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -8904,10 +8931,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3293.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8940,6 +8966,7 @@
         "title": "seamless(ci): fix two startup-failing docs.yml (worldenergydata, assethold)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3293",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -8948,10 +8975,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3292.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8984,6 +9010,7 @@
         "title": "seamless(ci): digitalmodel touched-domain-only on push + clear baseline red",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3292",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -8992,10 +9019,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3291.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -9028,6 +9054,7 @@
         "title": "seamless(ci): uv caching across assetutilities / assethold / digitalmodel test workflows",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3291",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -9116,10 +9143,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3288.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -9152,6 +9178,7 @@
         "title": "wf-api(deckhand): EXECUTE leg consumes run_workflow + renders envelope [GTM payoff]",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3288",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -9160,10 +9187,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3287.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -9196,6 +9222,7 @@
         "title": "wf-api(assethold): adopt ResultEnvelope after #3066 engine wiring [gated]",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3287",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -9204,10 +9231,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3286.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -9240,6 +9266,7 @@
         "title": "wf-api(worldenergydata): adopt envelope + generalize typed-query base; scheduler JobResult; hse_api (#363)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3286",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -9248,10 +9275,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3285.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -9284,6 +9310,7 @@
         "title": "wf-api(digitalmodel): adopt ResultEnvelope + schemas + goldens (FFS, buckling, mooring, wall-thickness)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3285",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -9292,10 +9319,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3284.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -9328,6 +9354,7 @@
         "title": "wf-api(ecosystem): discovery manifest \u2014 aggregate callable workflows + schemas across repos",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3284",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -9336,10 +9363,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3283.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -9372,6 +9398,7 @@
         "title": "wf-api(ecosystem): determinism harness \u2014 provenance stamp + result hash + golden-baseline template",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3283",
         "warnings": [
+          "approved_no_marker",
           "missing_review"
         ]
       },
@@ -9380,10 +9407,9 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: major_review,unavailable_review,unknown_review",
-          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": ".planning/plan-approved/3282.md",
+        "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -9416,6 +9442,7 @@
         "title": "wf-api(assetutilities): ResultEnvelope + run_workflow() + registry request/response schema [FOUNDATIONAL]",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3282",
         "warnings": [
+          "approved_no_marker",
           "legacy_review_no_sha",
           "major_review",
           "unavailable_review",
@@ -16808,49 +16835,6 @@
         "title": "R2 \u2014 Subsea Pipelines: Academic sources sweep (Bai & Bai, Palmer & King, Kyriakides & Corona, Guo)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2689",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "cat:engineering",
-            "cat:research",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:pipeline-subsea",
-            "lane:codex"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "R1 \u2014 Subsea Pipelines: Standards & Codes inventory (DNV-OS-F101, F105, F109, F110, API RP 1111, ASME B31.4/.8)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2688,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "R1 \u2014 Subsea Pipelines: Standards & Codes inventory (DNV-OS-F101, F105, F109, F110, API RP 1111, ASME B31.4/.8)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2688",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16861,11 +16845,11 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-06-30T09:20:58.816252Z",
+  "scorecard_generated_at": "2026-07-01T01:20:50.639563Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-06-30T09:20:58.603794Z",
+  "utilization_generated_at": "2026-07-01T01:20:50.516367Z",
   "warning_summary": {
-    "approved_no_marker": 32,
+    "approved_no_marker": 48,
     "approved_no_plan": 20,
     "dual_status_labels": 10,
     "legacy_review_no_sha": 2,

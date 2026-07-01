@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-06-30T09:21:03Z
+Generated: 2026-07-01T01:20:54Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3325 | chore(repo-health): git bloat reduction campaign — reclaim ~12 GiB across repos (slim-git-history) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3321 | Compliance alert: W27 — 78% (medium) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3308 | wf-api(assethold): engine embed-port — mirror #3297 for assethold's own engine [prereq for #3287] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #3307 | wf-api(digitalmodel): engine embed-port — mirror #3297 for digitalmodel's own engine [prereq for #3285] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
@@ -242,7 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2691 | R4 — Subsea Pipelines: LinkedIn expert mapping (marketing surface) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2690 | R3 — Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/Saipem, OrcaFlex/SAGE Profile) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2689 | R2 — Subsea Pipelines: Academic sources sweep (Bai & Bai, Palmer & King, Kyriakides & Corona, Guo) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2688 | R1 — Subsea Pipelines: Standards & Codes inventory (DNV-OS-F101, F105, F109, F110, API RP 1111, ASME B31.4/.8) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

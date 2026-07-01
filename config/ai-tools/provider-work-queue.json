@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-30T09:21:01.002768Z",
+  "generated_at": "2026-07-01T01:20:52.655441Z",
   "current_week": "2026-W27",
-  "scorecard_generated_at": "2026-06-30T09:20:58.816252Z",
+  "scorecard_generated_at": "2026-07-01T01:20:50.639563Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 55,
-      "total_candidates": 177,
+      "total_candidates": 176,
       "top_issues": [
         {
           "number": 2694,
@@ -1757,6 +1757,28 @@
           ]
         },
         {
+          "number": 3321,
+          "title": "Compliance alert: W27 \u2014 78% (medium)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3321",
+          "labels": [
+            "priority:medium",
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-06-30T11:45:09Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2709,
           "title": "feat(solver-queue): add AQWA runner adapter and schema extension",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2709",
@@ -2448,33 +2470,6 @@
           "updatedAt": "2026-06-28T10:00:38Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2688,
-          "title": "R1 \u2014 Subsea Pipelines: Standards & Codes inventory (DNV-OS-F101, F105, F109, F110, API RP 1111, ASME B31.4/.8)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2688",
-          "labels": [
-            "priority:medium",
-            "cat:engineering",
-            "cat:research",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:pipeline-subsea",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-06-10T12:56:53Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -3818,27 +3813,6 @@
           ]
         },
         {
-          "number": 3321,
-          "title": "Compliance alert: W27 \u2014 78% (medium)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3321",
-          "labels": [
-            "priority:medium",
-            "compliance-alert"
-          ],
-          "updatedAt": "2026-06-29T11:45:21Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2691,
           "title": "R4 \u2014 Subsea Pipelines: LinkedIn expert mapping (marketing surface)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2691",
@@ -4632,7 +4606,7 @@
       "provider": "codex",
       "routing_priority": "high",
       "execution_ready_count": 2,
-      "total_candidates": 20,
+      "total_candidates": 21,
       "top_issues": [
         {
           "number": 3030,
@@ -5269,6 +5243,23 @@
             "domain:gtm"
           ],
           "updatedAt": "2026-06-25T19:22:00Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3325,
+          "title": "chore(repo-health): git bloat reduction campaign \u2014 reclaim ~12 GiB across repos (slim-git-history)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3325",
+          "labels": [],
+          "updatedAt": "2026-06-30T15:32:20Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
