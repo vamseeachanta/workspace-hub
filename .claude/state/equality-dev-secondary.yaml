@@ -1,11 +1,11 @@
-generated_at: "2026-06-27T07:09:11"
+generated_at: "2026-06-29T19:02:35"
 schema_version: 4
 machine: "dev-secondary"
 host: "ace-linux-2"
 os: linux
 status: active
 provenance:
-  checkout_sha: "4b25793bd"
+  checkout_sha: "f32f3038d"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA T400 4GB"}
-    headroom: {ram_avail_mib: 24066, disk_avail_gb: 851}
+    headroom: {ram_avail_mib: 23608, disk_avail_gb: 850}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -30,7 +30,7 @@ dimensions:
     python_cmd: uv-run
     readiness_ref: harness-readiness-ace-linux-2.yaml
     readiness_overall: fail
-  skills: {repo_skill_count: 415}
+  skills: {repo_skill_count: 416}
   kanban: {dispatch_queues: "dev-primary,dev-secondary,home-win,_leader-state,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: false
     job_count: 23
   session_curation:
-    last_curated_at: "2026-06-27T12:07:27+00:00"
-    sessions_24h: 13
+    last_curated_at: "2026-06-30T00:01:10+00:00"
+    sessions_24h: 27
     providers_active: "claude,codex,gemini,hermes"
-    memory_files_changed: 193
+    memory_files_changed: 0
   skill_currency:
-    audited_at: "2026-06-27T12:07:35+00:00"
+    audited_at: "2026-06-30T00:01:25+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,11 +84,11 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-06-27T12:07:36+00:00"
-    worst_age_hours: 23.117
-    freshness: "MEMORY-FRESH"
+    audited_at: "2026-06-30T00:01:24+00:00"
+    worst_age_hours: 83.014
+    freshness: "MEMORY-EXPIRED"
   skill_link_health:
-    audited_at: "2026-06-27T12:08:56+00:00"
+    audited_at: "2026-06-30T00:01:20+00:00"
     repos_total: 18
     healthy: 34
     repairable: 0
