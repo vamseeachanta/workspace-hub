@@ -23,5 +23,11 @@ fail() {
 
 bash "$REPO_ROOT/scripts/readiness/collect-equality.sh" || fail "collect-equality.sh failed"
 uv run --script "$REPO_ROOT/scripts/readiness/build-equality-matrix.py" || fail "build-equality-matrix.py failed (deps/build)"
-bash "$REPO_ROOT/scripts/notify.sh" cron equality-matrix pass "matrix rebuilt" || true
+# Publish evidence + render to origin/main via a sparse worktree. The matrix only
+# compares machines equally when every box's evidence reaches origin; the old
+# delegation to repo-sync went dark whenever the interactive checkout diverged
+# (non-FF pile-up) or the sync cron died.
+bash "$REPO_ROOT/scripts/readiness/publish-equality.sh" --rebuild \
+  || fail "publish-equality.sh failed (evidence not on origin)"
+bash "$REPO_ROOT/scripts/notify.sh" cron equality-matrix pass "matrix rebuilt + published" || true
 echo "equality-matrix-cron OK"

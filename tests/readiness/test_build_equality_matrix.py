@@ -608,16 +608,24 @@ def test_harness_config_real_roster_and_baselines():
 
 def test_wiring_single_source_schedule():
     # DC5: the schedule lives in the ONE canonical source (schedule-tasks.yaml), weekly,
-    # all 4 active machines, invoking both collector and matrix builder, with a Windows render path.
+    # all 4 active machines, with a Windows render path. The command routes through the
+    # fail-loud wrapper (#2972), which must carry collector + builder + publisher — so
+    # the collect/build/publish chain stays single-sourced one hop deeper.
     tasks = yaml.safe_load(
         (REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml").read_text())["tasks"]
     eq = next(t for t in tasks if t["id"] == "equality-report")
     assert eq["schedule"].split()[-1] == "1"            # weekly, Monday
-    assert "collect-equality.sh" in eq["command"]
-    assert "build-equality-matrix.py" in eq["command"]
+    assert "equality-matrix-cron.sh" in eq["command"]
+    wrapper = (REPO_ROOT / "scripts" / "readiness" / "equality-matrix-cron.sh").read_text()
+    assert "collect-equality.sh" in wrapper
+    assert "build-equality-matrix.py" in wrapper
+    assert "publish-equality.sh" in wrapper
     for m in ("dev-primary", "dev-secondary", "ace-win-1", "ace-win-2"):
         assert m in eq["machines"]
     assert (REPO_ROOT / "scripts" / "windows" / "equality-report.ps1").exists()
+    # The daily dead-man's-switch rebuild routes through the SAME wrapper.
+    refresh = next(t for t in tasks if t["id"] == "equality-matrix-refresh")
+    assert "equality-matrix-cron.sh" in refresh["command"]
 
 
 def test_verdict_behavior_is_uniform_not_expected_diff():

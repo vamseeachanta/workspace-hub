@@ -52,27 +52,15 @@ fi
 bash "$REPO_ROOT/scripts/readiness/equality-matrix-cron.sh" "${cron_args[@]}" \
   || { echo "equality-matrix-cron.sh failed" >&2; exit 1; }
 
-# ------ 3/3  commit + push the equality artifacts (manual on-demand only) ----------------
-step "3/3  Commit + push equality artifacts"
-today="$(date +%F)"
-artifacts=(
-  "docs/reports/${today}-machine-equality-matrix.html"
-  "docs/reports/machine-equality-matrix.html"
-)
-# Stage the matrix HTML + any changed per-machine state yaml (scoped; no blanket add).
-git add -- "${artifacts[@]}" 2>/dev/null || true
-while IFS= read -r f; do
-  [[ -n "$f" ]] && git add -- "$f"
-done < <(git status --porcelain -- '.claude/state/equality-*.yaml' | awk '{print $2}')
-
-if git diff --cached --quiet; then
-  echo "No equality changes to commit (canonical payload unchanged)."
-else
-  host="$(hostname | tr '[:upper:]' '[:lower:]')"
-  git commit -m "chore: equality report from ${host}" || { echo "commit failed" >&2; exit 1; }
-  git push origin main || { echo "push failed; left local commit for repo-sync retry" >&2; exit 1; }
-  echo "Pushed equality artifacts; GitHub Pages will redeploy."
-fi
+# ------ 3/3  publish ---------------------------------------------------------------------
+step "3/3  Publish"
+# Publishing now lives INSIDE equality-matrix-cron.sh (publish-equality.sh: sparse
+# worktree, newer-evidence-only, render rebuilt from the union of freshest evidence),
+# so manual and scheduled runs share one commit+push path and a machine with a stale
+# view can never clobber a peer's fresher state. Nothing further to do here — the
+# inline `git commit && git push origin main` this step used to carry failed outright
+# whenever local main had diverged, which is exactly when publishing matters most.
+echo "Publish handled by equality-matrix-cron.sh (publish-equality.sh); nothing to do."
 
 # ------ verify --------------------------------------------------------------------------
 step "Provenance + commit"
