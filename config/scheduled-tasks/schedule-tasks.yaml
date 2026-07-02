@@ -93,8 +93,14 @@ tasks:
       is the Task-Scheduler-native companion).
 
   - id: equality-matrix-refresh
-    label: Daily equality-matrix rebuild (freshness dead-man's-switch for session-curation)
-    schedule: "50 5 * * *"
+    label: 6-hourly equality-matrix rebuild (freshness dead-man's-switch for session-curation)
+    # 6-hourly (was daily): the committed render is the fleet's canonical comparison
+    # surface and must track the 6h curation cadence — a daily rebuild left freshness
+    # cells up to 24h behind reality (user directive 2026-07-02: "update the equality
+    # matrix always"). :50 offset keeps it 3min behind the :47 curation run, so each
+    # rebuild grades the curation stamp it just produced. Idempotent commit-on-change —
+    # a no-op cycle publishes nothing.
+    schedule: "50 */6 * * *"
     machines: [dev-primary, ace-linux-1]
     roles: [control-plane]
     requires: [bash, python3, uv, git]
@@ -106,13 +112,13 @@ tasks:
     log: logs/quality/equality-refresh-*.log
     is_claude_task: false
     description: >-
-      Daily rebuild + publish of the equality matrix on the control-plane box
+      6-hourly rebuild + publish of the equality matrix on the control-plane box
       (equality-matrix-cron.sh: collect + build + publish-equality.sh), INDEPENDENT of
       the session-curation cron, so a DEAD curation cron still ages its freshness cell
-      past green (orange >12h, red >24h). Without this daily rebuild the weekly
+      past green (orange >12h, red >24h). Without this independent rebuild the weekly
       equality-report (#2801) would freeze the last-green render and the
-      dead-man's-switch would never fire. Publishing to origin/main here also keeps the
-      COMMITTED render fresh daily — the fleet compares against origin, not any one
+      dead-man's-switch would never fire. Publishing to origin/main every cycle keeps
+      the COMMITTED render current — the fleet compares against origin, not any one
       box's working tree.
 
   # Linux-only (v1); Windows Task Scheduler parity deferred per epic #3058.
