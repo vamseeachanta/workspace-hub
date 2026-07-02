@@ -130,3 +130,21 @@ exclusions:
   - "*.dat"
 
 default_severity: "block"
+
+# Riser-projects provenance names (dm#1259 gate-prep, 2026-07-02).
+# SCOPE NOTE: only low-collision compound names go here — famous public-domain
+# field/rig names (which legitimately appear in worldenergydata's regulatory
+# datasets) are enforced instead by digitalmodel's scoped provenance-token
+# tripwire (tests/riser_database/test_provenance_tripwire.py), to avoid
+# reddening wed scans (lesson from dm#1245 review).
+riser_project_provenance:
+  - pattern: "Zohr Deep"
+    case_sensitive: false
+  - pattern: "GEB Deep"
+    case_sensitive: false
+  - pattern: "Rosa 312"
+    case_sensitive: false
+  - pattern: "Piklis"
+    case_sensitive: false
+  - pattern: "Jujak"
+    case_sensitive: false
