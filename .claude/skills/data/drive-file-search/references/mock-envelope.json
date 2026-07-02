@@ -1,0 +1,94 @@
+{
+  "query": "mooring line fatigue screening",
+  "generated_at": "2026-07-02T12:00:00+00:00",
+  "indexes_queried": [
+    "ace_knowledge",
+    "master_document_index",
+    "dde_literature_catalog"
+  ],
+  "coverage_gaps": [
+    {
+      "id": "dde_literature_catalog",
+      "path": "data/document-index/dde-literature-catalog.yaml",
+      "reason": "unreachable"
+    }
+  ],
+  "results": [
+    {
+      "canonical_path": "/mnt/ace/projects/example-fpso/mooring/line-fatigue-screening.xlsx",
+      "raw_path": "/mnt/ace/projects/example-fpso/mooring/line-fatigue-screening.xlsx",
+      "source_index": "ace_knowledge",
+      "adapter": "sqlite_fts",
+      "score": 0.94,
+      "rank_basis": "fts_bm25",
+      "meta": {
+        "file_name": "line-fatigue-screening.xlsx",
+        "file_size": 412688,
+        "modified_date": "2024-11-18",
+        "engineering_domain": "mooring",
+        "query_tokens": ["mooring", "line", "fatigue", "screening"]
+      }
+    },
+    {
+      "canonical_path": "/mnt/ace/projects/example-fpso/mooring/fatigue-postprocess.py",
+      "raw_path": "/mnt/ace/projects/example-fpso/mooring/fatigue-postprocess.py",
+      "source_index": "ace_knowledge",
+      "adapter": "sqlite_fts",
+      "score": 0.87,
+      "rank_basis": "fts_bm25",
+      "meta": {
+        "file_name": "fatigue-postprocess.py",
+        "file_size": 18240,
+        "modified_date": "2024-11-20",
+        "engineering_domain": "mooring",
+        "query_tokens": ["mooring", "line", "fatigue", "screening"]
+      }
+    },
+    {
+      "canonical_path": "/mnt/dde/literature/fatigue/chain-fatigue-review.pdf",
+      "raw_path": "/mnt/remote/ace-linux-2/dde/literature/fatigue/chain-fatigue-review.pdf",
+      "source_index": "master_document_index",
+      "adapter": "jsonl",
+      "score": 0.75,
+      "rank_basis": "token_match",
+      "meta": {
+        "domain": "mooring",
+        "summary": "review of chain fatigue screening methods",
+        "matched_tokens": 3,
+        "total_tokens": 4,
+        "query_tokens": ["mooring", "line", "fatigue", "screening"]
+      }
+    },
+    {
+      "canonical_path": "/mnt/ace/projects/example-semisub/mooring/line-tension-summary.csv",
+      "raw_path": "/mnt/ace/projects/example-semisub/mooring/line-tension-summary.csv",
+      "source_index": "master_document_index",
+      "adapter": "jsonl",
+      "score": 0.62,
+      "rank_basis": "token_match",
+      "meta": {
+        "domain": "mooring",
+        "summary": "mooring line tension summary table",
+        "matched_tokens": 2,
+        "total_tokens": 4,
+        "query_tokens": ["mooring", "line", "fatigue", "screening"]
+      }
+    },
+    {
+      "canonical_path": "/mnt/ace/standards/example-org/offshore-mooring-design-practice.pdf",
+      "raw_path": "/mnt/ace/standards/example-org/offshore-mooring-design-practice.pdf",
+      "source_index": "master_document_index",
+      "adapter": "jsonl",
+      "score": 0.58,
+      "rank_basis": "token_match",
+      "meta": {
+        "domain": "mooring",
+        "org": "example-org",
+        "summary": "recommended practice for offshore mooring design",
+        "matched_tokens": 2,
+        "total_tokens": 4,
+        "query_tokens": ["mooring", "line", "fatigue", "screening"]
+      }
+    }
+  ]
+}
