@@ -746,14 +746,15 @@ def test_matrix_stale_excluded_two_fresh_equal():
 
 def test_matrix_stale_not_in_majority():
     # 2 fresh disagree + 1 stale matching one side → NO-MAJORITY (the stale report must NOT
-    # break the tie by lending its vote to one side) (BC4).
+    # break the tie by lending its vote to one side) (BC4). Vehicle is kanban — skills no
+    # longer majority-votes (SHA-aware: same-SHA mismatch is DIVERGES regardless of ties).
     roster = {"dev-primary": {"status": "active"}, "dev-secondary": {"status": "active"},
               "ace-win-1": {"status": "active"}}
-    reports = {"dev-primary": _report("dev-primary", skills={"repo_skill_count": 407}),
-               "dev-secondary": _report("dev-secondary", skills={"repo_skill_count": 401}),
+    reports = {"dev-primary": _report("dev-primary", kanban={"dispatch_queues": "dev-primary,multi"}),
+               "dev-secondary": _report("dev-secondary", kanban={"dispatch_queues": "dev-primary"}),
                "ace-win-1": _report("ace-win-1", provenance=_prov(dirty=True),
-                                         skills={"repo_skill_count": 407})}
-    assert bem.verdict_for("skills", "dev-primary", reports, {}, roster, TIER1) == "NO-MAJORITY"
+                                         kanban={"dispatch_queues": "dev-primary,multi"})}
+    assert bem.verdict_for("kanban", "dev-primary", reports, {}, roster, TIER1) == "NO-MAJORITY"
 
 
 def test_matrix_fresh_unaffected():
@@ -783,3 +784,61 @@ def test_matrix_stale_renders_in_html(tmp_path, monkeypatch):
     html = next(reports_dir.glob("*-machine-equality-matrix.html")).read_text()
     assert "stale-checkout" in html               # CSS class present (lowercased verdict)
     assert "STALE-CHECKOUT" in html               # visible cell text
+
+
+# ── collector-artifact fixes: SHA-aware skills verdict + order-insensitive kanban ──
+def _two_box(dim: str, val_a, val_b, prov_b: dict | None = None) -> str:
+    roster = {"dev-primary": {"status": "active"}, "dev-secondary": {"status": "active"}}
+    ra, rb = _report("dev-primary"), _report("dev-secondary", provenance=prov_b)
+    ra["dimensions"][dim] = val_a
+    rb["dimensions"][dim] = val_b
+    return bem.verdict_for(dim, "dev-primary", {"dev-primary": ra, "dev-secondary": rb},
+                           {}, roster, TIER1)
+
+
+def test_skills_count_mismatch_across_shas_is_expected_diff():
+    # Evidence collected days apart sits at different SHAs; a count delta there is
+    # checkout skew (the 417/416/415 fleet reading), not divergence.
+    verdict = _two_box("skills", {"repo_skill_count": 417}, {"repo_skill_count": 416},
+                       prov_b={**FRESH_PROV, "checkout_sha": "def5678"})
+    assert verdict == "EXPECTED-DIFF"
+
+
+def test_skills_count_mismatch_same_sha_diverges():
+    # Same SHA, different count = dirty overlay / partial checkout — the real signal.
+    verdict = _two_box("skills", {"repo_skill_count": 417}, {"repo_skill_count": 416})
+    assert verdict == "DIVERGES"
+
+
+def test_skills_equal_counts_across_shas_equal():
+    verdict = _two_box("skills", {"repo_skill_count": 417}, {"repo_skill_count": 417},
+                       prov_b={**FRESH_PROV, "checkout_sha": "def5678"})
+    assert verdict == "EQUAL"
+
+
+def test_skills_mismatch_without_sha_fail_closed_diverges():
+    # A mismatch that includes a report with no checkout_sha cannot be attributed to
+    # checkout skew — fail closed, never silently EXPECTED-DIFF.
+    prov_no_sha = {k: v for k, v in FRESH_PROV.items() if k != "checkout_sha"}
+    verdict = _two_box("skills", {"repo_skill_count": 417}, {"repo_skill_count": 416},
+                       prov_b=prov_no_sha)
+    assert verdict == "DIVERGES"
+
+
+def test_kanban_queue_order_is_ignored():
+    # Locale collation (Linux) vs byte order (Git Bash on Windows) emitted the SAME
+    # queue set as differently-ordered strings; membership, not order, is compared.
+    verdict = _two_box("kanban",
+                       {"dispatch_queues": "dev-primary,home-win,_leader-state"},
+                       {"dispatch_queues": "_leader-state,dev-primary,home-win"},
+                       prov_b={**FRESH_PROV, "checkout_sha": "def5678"})
+    assert verdict == "EQUAL"
+
+
+def test_kanban_membership_difference_still_diverges():
+    roster = {m: {"status": "active"} for m in ("a", "b", "c")}
+    reports = {m: _report(m) for m in roster}
+    reports["a"]["dimensions"]["kanban"] = {"dispatch_queues": "dev-primary,multi"}
+    reports["b"]["dimensions"]["kanban"] = {"dispatch_queues": "dev-primary,multi"}
+    reports["c"]["dimensions"]["kanban"] = {"dispatch_queues": "dev-primary,multi,rogue"}
+    assert bem.verdict_for("kanban", "a", reports, {}, roster, TIER1) == "DIVERGES"

@@ -598,3 +598,12 @@ def test_collect_origin_ref_age_refreshed_not_frozen(tmp_path):
     out.write_text(re.sub(r"origin_ref_age_h: .*", "origin_ref_age_h: 999", out.read_text()))
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     assert "origin_ref_age_h: 999" not in out.read_text()               # refreshed, not frozen
+
+
+def test_collect_kanban_queue_order_is_byte_sorted(tmp_path):
+    # LC_ALL=C: '_leader-state' sorts FIRST (byte order, matching Git Bash on Windows).
+    # Locale collation buried it mid-list, so the same queue set graded DIVERGES across OSes.
+    ws = _fixture(tmp_path)
+    (ws / ".claude" / "dispatch" / "_leader-state.yaml").write_text("x")
+    d = _run(ws)
+    assert d["dimensions"]["kanban"]["dispatch_queues"] == "_leader-state,dev-primary,multi"
