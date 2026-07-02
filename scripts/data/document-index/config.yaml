@@ -30,7 +30,10 @@ sources:
                  .py, .m, .inp, .dat, .mac, .f, .for, .bas]
 
   dde_project:
-    enabled: true
+    # WARNING: dde rows in index.jsonl survive RESUME runs only — a --force rebuild
+    # merges from {} + enabled sources and DROPS all 495,487 dde rows.
+    # Superseded 2026-07 by /mnt/dde/.dde-knowledge/index.db (#3334)
+    enabled: false
     paths:
       - /mnt/remote/dev-secondary/dde/documents
       - /mnt/remote/dev-secondary/dde/0000 O&G

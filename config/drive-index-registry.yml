@@ -17,6 +17,17 @@ indexes:
       base_table: assets
       path_column: file_path
       select_columns: [file_name, file_size, modified_date, engineering_domain]
+  - id: dde_knowledge
+    adapter: sqlite_fts
+    path: /mnt/dde/.dde-knowledge/index.db
+    coverage: {drives: [/mnt/dde], subtree: /mnt/dde}
+    freshness: {built_at: "pending production build"}
+    builder: scripts/data/drive-index/build_drive_index.py
+    adapter_params:
+      fts_table: assets_fts
+      base_table: assets
+      path_column: file_path
+      select_columns: [file_name, file_size, modified_date, engineering_domain]
   - id: og_standards_inventory
     adapter: sqlite_fts
     path: "/mnt/ace/O&G-Standards/_inventory.db"

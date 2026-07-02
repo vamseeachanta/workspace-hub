@@ -1,0 +1,74 @@
+version: 1
+drives:
+  dde:
+    root: /mnt/dde
+    canonical_prefix: /mnt/dde
+    db: /mnt/dde/.dde-knowledge/index.db
+    excludes:
+      - $RECYCLE.BIN
+      - System Volume Information
+      - .dde-knowledge
+    classification:
+      defaults:
+        asset_type: file
+        discipline: general
+        engineering_domain: general
+        content_category: file
+      topdirs:
+        0000 O&G:
+          discipline: engineering
+          engineering_domain: oil_and_gas
+          content_category: standards
+        ABSG:
+          discipline: engineering
+          engineering_domain: marine
+          content_category: project
+        Literature:
+          discipline: research
+          engineering_domain: literature
+          content_category: literature
+        Orcaflex:
+          discipline: engineering
+          engineering_domain: offshore_analysis
+          content_category: simulation
+        documents:
+          discipline: documents
+          engineering_domain: general
+          content_category: documents
+        dropbox_contents:
+          discipline: documents
+          engineering_domain: general
+          content_category: documents
+        g-drive:
+          discipline: documents
+          engineering_domain: general
+          content_category: documents
+        o-drive:
+          discipline: documents
+          engineering_domain: general
+          content_category: documents
+        Temp - Oil&Gas:
+          discipline: engineering
+          engineering_domain: oil_and_gas
+          content_category: temp
+      extensions:
+        .pdf: document
+        .doc: document
+        .docx: document
+        .xls: spreadsheet
+        .xlsx: spreadsheet
+        .csv: spreadsheet
+        .ppt: presentation
+        .pptx: presentation
+        .txt: text
+        .md: text
+        .py: code
+        .m: code
+        .inp: analysis_input
+        .dat: data
+        .mac: code
+        .f: code
+        .for: code
+        .bas: code
+        .dwg: cad
+        .dxf: cad
