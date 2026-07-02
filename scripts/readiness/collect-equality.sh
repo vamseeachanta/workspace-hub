@@ -125,6 +125,15 @@ else
 fi
 
 # ── 3. HARNESS (reference readiness; gh_auth as ENUM, never the token) ───────
+# Cron carries a minimal PATH that hides user-installed provider CLIs (claude in
+# ~/.npm-global/bin; uv/codex in ~/.local/bin), so an unattended run reported
+# providers as 'absent' that every interactive shell can see — a false NO-MAJORITY
+# in the harness row. Append (not prepend: system binaries keep precedence) the
+# well-known user bin dirs so cron and interactive collections probe the same PATH.
+for _ubin in "${HOME:-}/.npm-global/bin" "${HOME:-}/.local/bin"; do
+  [[ -d "$_ubin" && ":$PATH:" != *":$_ubin:"* ]] && PATH="$PATH:$_ubin"
+done
+export PATH
 readiness_file="harness-readiness-${MACHINE}.yaml"
 [[ -f "${STATE_DIR}/${readiness_file}" ]] || readiness_file="harness-readiness-${HOST}.yaml"
 readiness_overall="missing"
@@ -138,7 +147,10 @@ prov() { have "$1" && echo present || echo absent; }
 skills=$(find "${WS}/.claude/skills" -maxdepth 3 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
 
 # ── 5. KANBAN ────────────────────────────────────────────────────────────────
-queues=$(find "${WS}/.claude/dispatch" -maxdepth 1 -name '*.yaml' 2>/dev/null | sed 's#.*/##;s#\.yaml$##' | sort | paste -sd',' -)
+# LC_ALL=C: locale collation buried '_leader-state' mid-list while PowerShell sorts
+# ordinal (underscore first) — same queue set diffed as DIVERGES across OSes. Byte
+# order matches the Windows collector's output.
+queues=$(find "${WS}/.claude/dispatch" -maxdepth 1 -name '*.yaml' 2>/dev/null | sed 's#.*/##;s#\.yaml$##' | LC_ALL=C sort | paste -sd',' -)
 : "${queues:=none}"
 
 # ── 6. MEMORY ────────────────────────────────────────────────────────────────

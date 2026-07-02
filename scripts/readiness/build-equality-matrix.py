@@ -200,6 +200,29 @@ def uniform_verdict(dim: str, values: list) -> str:
     return "NO-MAJORITY" if len(tied) > 1 else "DIVERGES"
 
 
+def skills_verdict(pairs: list) -> str:
+    """repo_skill_count is fully determined by the checkout SHA, and machines self-report
+    days apart (weekly Windows cadence vs daily Linux), so clones at DIFFERENT SHAs
+    legitimately count differently — pure checkout skew that graded DIVERGES forever
+    (e.g. 417/416/415 across four boxes). Only a count mismatch at the SAME SHA is real
+    divergence (dirty overlay / partial checkout / broken skill links); cross-SHA
+    mismatches grade EXPECTED-DIFF. Fail-closed: a mismatch involving a report with no
+    checkout_sha cannot be attributed to skew and stays DIVERGES."""
+    real = [(sha, count) for sha, count in pairs if count not in (None, "unknown", "n/a")]
+    if len(real) < 2:
+        return "PENDING"
+    if len({count for _, count in real}) == 1:
+        return "EQUAL"
+    by_sha: dict = {}
+    for sha, count in real:
+        by_sha.setdefault(sha, set()).add(count)
+    if any(len(counts) > 1 for counts in by_sha.values()):
+        return "DIVERGES"
+    if None in by_sha or "" in by_sha:
+        return "DIVERGES"
+    return "EXPECTED-DIFF"
+
+
 # ── session-curation freshness (time-since-last-run, graded at build time) ───
 def freshness_verdict(report: dict, now: datetime | None = None) -> str:
     """Grade the session-curation cell by age of `last_curated_at` vs now.
@@ -333,7 +356,12 @@ def extract_value(dim: str, report: dict):
     if dim == "skills":
         return d.get("skills", {}).get("repo_skill_count")
     if dim == "kanban":
-        return d.get("kanban", {}).get("dispatch_queues")
+        q = d.get("kanban", {}).get("dispatch_queues")
+        # Canonicalize as a sorted membership list: historical evidence was emitted under
+        # locale-dependent collation on Linux vs byte order under Git Bash, so the SAME
+        # queue set arrived as differently-ordered strings and graded DIVERGES. Order is
+        # a collector artifact; membership is the signal.
+        return ",".join(sorted(q.split(","))) if isinstance(q, str) else q
     if dim == "memory":
         return d.get("memory", {}).get("hermes_home")
     if dim == "behavior":
@@ -438,12 +466,15 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
     # manufacture a false EQUAL/DIVERGES/NO-MAJORITY for the fresh machines (A2/BC4).
-    values = [extract_value(dim, reports[m]) for m in roster
-              if roster[m].get("status") == "active"
-              and isinstance(reports.get(m), dict) and "_error" not in reports[m]
-              and isinstance(reports[m].get("dimensions"), dict)
-              and not is_stale(reports[m])]
-    return uniform_verdict(dim, values)
+    fresh = [m for m in roster
+             if roster[m].get("status") == "active"
+             and isinstance(reports.get(m), dict) and "_error" not in reports[m]
+             and isinstance(reports[m].get("dimensions"), dict)
+             and not is_stale(reports[m])]
+    if dim == "skills":
+        return skills_verdict([(reports[m].get("provenance", {}).get("checkout_sha"),
+                                extract_value(dim, reports[m])) for m in fresh])
+    return uniform_verdict(dim, [extract_value(dim, reports[m]) for m in fresh])
 
 
 # ── load + render ────────────────────────────────────────────────────────────
