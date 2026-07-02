@@ -35,16 +35,16 @@ sources:
     # Superseded 2026-07 by /mnt/dde/.dde-knowledge/index.db (#3334)
     enabled: false
     paths:
-      - /mnt/remote/dev-secondary/dde/documents
-      - /mnt/remote/dev-secondary/dde/0000 O&G
-      - /mnt/remote/dev-secondary/dde/Literature
-      - /mnt/remote/dev-secondary/dde/Orcaflex
-      - /mnt/remote/dev-secondary/dde/ABSG
-      - /mnt/remote/dev-secondary/dde/g-drive
-      - /mnt/remote/dev-secondary/dde/o-drive
-      - /mnt/remote/dev-secondary/dde/dropbox_contents
-      - "/mnt/remote/dev-secondary/dde/Temp - Oil&Gas"
-    host: dev-secondary
+      - /mnt/dde/documents
+      - /mnt/dde/0000 O&G
+      - /mnt/dde/Literature
+      - /mnt/dde/Orcaflex
+      - /mnt/dde/ABSG
+      - /mnt/dde/g-drive
+      - /mnt/dde/o-drive
+      - /mnt/dde/dropbox_contents
+      - "/mnt/dde/Temp - Oil&Gas"
+    host: ace-linux-2
     source_type: dde_project
     extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf, .doc, .xls,
                  .py, .m, .inp, .dat, .mac, .f, .for, .bas]
@@ -163,7 +163,7 @@ cad_extensions:
 
 output:
   index_path: data/document-index/index.jsonl
-  summaries_dir: /mnt/remote/ace-linux-1/ace/data/document-index/summaries
+  summaries_dir: /mnt/ace/data/document-index/summaries
   enhancement_plan: data/document-index/enhancement-plan.yaml
   registry_path: data/document-index/registry.yaml
 

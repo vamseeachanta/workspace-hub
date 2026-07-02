@@ -24,6 +24,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
+from _pathnorm_shim import canonicalize
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [shard-%(shard)s] %(levelname)s %(message)s",
@@ -33,7 +35,7 @@ logging.basicConfig(
 HUB_ROOT = Path(__file__).resolve().parents[3]
 DB_PATH = Path("/mnt/ace/O&G-Standards/_inventory.db")
 INDEX_PATH = HUB_ROOT / "data/document-index/index.jsonl"
-_DEFAULT_SUMMARIES = "/mnt/remote/ace-linux-1/ace/data/document-index/summaries"
+_DEFAULT_SUMMARIES = "/mnt/ace/data/document-index/summaries"
 SUMMARIES_DIR = Path(os.environ.get("SUMMARIES_DIR", _DEFAULT_SUMMARIES))
 
 MAX_TEXT_CHARS = 5000   # ~1200 tokens — cover page + abstract + scope
@@ -286,18 +288,9 @@ def process_og_row(row: tuple, validate: bool = False) -> bool:
     return True
 
 
-PATH_REMAPS = [
-    ("/mnt/remote/ace-linux-2/dde/", "/mnt/dde/"),
-    ("/mnt/remote/dev-secondary/dde/", "/mnt/dde/"),
-]
-
-
 def _remap_path(path: str) -> str:
-    """Resolve cross-host mount paths to local equivalents."""
-    for remote, local in PATH_REMAPS:
-        if path.startswith(remote):
-            return local + path[len(remote):]
-    return path
+    """Resolve cross-host mount paths to canonical drive paths."""
+    return canonicalize(path)
 
 
 def process_index_record(rec: dict) -> bool:

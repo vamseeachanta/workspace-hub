@@ -178,7 +178,7 @@ source_families:
     target_wiki_domains: [engineering, marine-engineering, naval-architecture]
     gap_fill_value: high
     token_cost_estimate: high
-    mount_dependency: "/mnt/ace-data/digitalmodel/docs/domains"
+    mount_dependency: "/mnt/ace/digitalmodel/docs/domains"
     network_dependency: none
     related_issues: ['#2034', '#2039']
     batch_pack_ref: null
@@ -229,7 +229,7 @@ source_families:
     target_wiki_domains: [engineering, marine-engineering]
     gap_fill_value: medium
     token_cost_estimate: high
-    mount_dependency: "/mnt/remote/ace-linux-2/dde/Literature"
+    mount_dependency: "/mnt/dde/Literature"
     network_dependency: remote-mount-required
     related_issues: ['#2034']
     batch_pack_ref: null
