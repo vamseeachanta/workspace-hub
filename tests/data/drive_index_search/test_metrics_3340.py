@@ -363,7 +363,7 @@ def test_aggregate_no_privacy_leak(tmp_path):
 
     assert "deadbeef0123" not in text
     assert "d6f7-secret-session" not in text
-    assert "/mnt/" not in text
+    assert "/mnt/" not in text  # abs-path-allowed
     payload = json.loads(text)
     assert "query_hash" not in payload
     assert payload["distinct_sessions"] == 1

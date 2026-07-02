@@ -49,10 +49,10 @@ def test_playbook_required_sections():
 
 def test_playbook_canonical_paths_only():
     text = _text()
-    assert "/mnt/remote/" not in text  # transport alias is described, never spelled
-    for match in re.finditer(r"/mnt/[^\s`)\"',;]*", text):
+    assert "/mnt/remote/" not in text  # transport alias is described, never spelled  # abs-path-allowed
+    for match in re.finditer(r"/mnt/[^\s`)\"',;]*", text):  # abs-path-allowed
         token = match.group(0)
-        assert token.startswith(("/mnt/ace", "/mnt/dde", "/mnt/<drive>")), (
+        assert token.startswith(("/mnt/ace", "/mnt/dde", "/mnt/<drive>")), (  # abs-path-allowed
             f"non-canonical drive path in playbook: {token}"
         )
 
