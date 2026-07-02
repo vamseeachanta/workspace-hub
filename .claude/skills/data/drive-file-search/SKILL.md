@@ -42,7 +42,7 @@ FILE-level asks only; domain-catalog asks belong to `ecosystem-data-sources`.
 
 3. **Run the ONE command** (read-only):
 
-   `uv run python scripts/data/drive-index-search/search.py "<terms>" [--domain <d>] --json --limit 20`
+   `uv run python scripts/data/drive-index-search/search.py "<terms>" [--domain <d>] --json --limit 20 --caller skill`
 
    (`python3` works when uv is broken.)
 
@@ -75,5 +75,7 @@ FILE-level asks only; domain-catalog asks belong to `ecosystem-data-sources`.
   is the gated act. De-id stays on lane:claude.
 - **Unreachable drive is normal** (dde often unmounted): present partial results plus
   the coverage_gaps caveat; never mount, never sudo.
+- **Usage playbook** (#3340): integration points, freshness authority, metrics, and the
+  full de-id checklist live in `docs/guides/drive-file-search-playbook.md`.
 
 **Related**: `ecosystem-data-sources` (DATA/domain-catalog level).

@@ -137,4 +137,11 @@ echo "[drive-file] This prompt suggests prior work may exist on the shared drive
 { : > "$STATE"; } 2>/dev/null \
     || { mkdir -p "$STATE_DIR" && : > "$STATE"; } 2>/dev/null \
     || true
+# #3340 nudge-firing metrics: ONE fail-open JSONL line so aggregate_metrics.py
+# can join nudge sessions to CLI invocations (nudge->invocation conversion).
+# mkdir -p pins the metrics dir (plan r1 F5 — never rely on weekly/.gitkeep
+# alone); the append never blocks or fails the hook.
+{ mkdir -p "$WS/data/drive-index-search/metrics" \
+    && printf '{"ts":"%s","session":"%s"}\n' "$(date -u +%FT%TZ)" "$SID" \
+        >> "$WS/data/drive-index-search/metrics/nudges.jsonl"; } 2>/dev/null || true
 exit 0

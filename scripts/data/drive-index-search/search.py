@@ -8,11 +8,14 @@ import os
 import queue
 import sys
 import threading
+import time
 
 from adapters import ADAPTER_TYPES
 from adapters.base import AdapterError, tokenize
 from merge import ranked_merge
 from registry import RegistryError, load_registry
+
+import metrics
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -25,7 +28,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--registry", default="config/drive-index-registry.yml")
     parser.add_argument("--index", action="append", default=[])
     parser.add_argument("--timeout-per-index", type=float, default=60.0)
+    parser.add_argument("--session", default=None)  # #3340 metrics join key
+    parser.add_argument("--caller", default="manual")  # #3340 integration-point attribution
     args = parser.parse_args(argv)
+    t_start = time.monotonic()
 
     try:
         registry = load_registry(args.registry)
@@ -57,10 +63,10 @@ def main(argv: list[str] | None = None) -> int:
     for result in all_results:
         result.meta.setdefault("query_tokens", tokens)
     merged = ranked_merge(all_results, registry.alias_map, args.limit)
-    _emit(args.query, [index.id for index in selected], gaps, merged, args.as_json)
-    if selected and reachable_count == 0:
-        return 2
-    return 0
+    envelope = _emit(args.query, [index.id for index in selected], gaps, merged, args.as_json)
+    exit_code = 2 if (selected and reachable_count == 0) else 0
+    metrics.emit_invocation(args, envelope, exit_code, t_start)  # fail-open (#3340)
+    return exit_code
 
 
 def _select_indexes(indexes, drive: str | None, domain: str | None, index_ids: set[str]):
@@ -100,7 +106,7 @@ def _run_with_timeout(index, adapter, tokens, limit, timeout):
     return output.get_nowait()
 
 
-def _emit(query: str, indexes_queried: list[str], gaps: list[dict], results, as_json: bool) -> None:
+def _emit(query: str, indexes_queried: list[str], gaps: list[dict], results, as_json: bool) -> dict:
     payload = {
         "query": query,
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -110,11 +116,12 @@ def _emit(query: str, indexes_queried: list[str], gaps: list[dict], results, as_
     }
     if as_json:
         print(json.dumps(payload, indent=2, sort_keys=True))
-        return
+        return payload
     for result in payload["results"]:
         print(f"{result['score']:.3f}\t{result['source_index']}\t{result['canonical_path']}")
     for gap in gaps:
         print(f"gap\t{gap['id']}\t{gap['reason']}", file=sys.stderr)
+    return payload
 
 
 if __name__ == "__main__":

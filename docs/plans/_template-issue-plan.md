@@ -30,7 +30,9 @@
      
      Issue-class bundles — consult at minimum:
      - ALL issues: prior plans (docs/plans/), existing code in affected paths, recent related issues,
-       intelligence entry points (docs/document-intelligence/README.md or data-intelligence-map.md)
+       intelligence entry points (docs/document-intelligence/README.md or data-intelligence-map.md),
+       drive-file index (run the drive-file-search skill or `scripts/data/drive-index-search/search.py "<terms>" --json --caller plan-resource-intel`;
+       cite hits under "Documents consulted" with canonical /mnt/<drive> paths, de-id per docs/guides/drive-file-search-playbook.md; state "no relevant drive files" if empty)
      - Engineering: + standards-transfer-ledger.yaml, code-registry.yaml, relevant domain wiki, online-resource-registry.yaml
      - Data Pipeline: + registry.yaml, pipeline config, resource-intelligence-maturity.yaml
      - Documentation: + governance docs in target dir, CONTROL_PLANE_CONTRACT.md, durable-vs-transient boundary (#2209)

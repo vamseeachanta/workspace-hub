@@ -45,6 +45,7 @@ Before writing anything, search all available sources. The retrieval contract (#
 - **Existing code**: search relevant repos in affected paths for prior implementations
 - **Recent issues**: related open/closed issues that may overlap or conflict
 - **Intelligence entry points**: `docs/document-intelligence/README.md` (when available per #2104) or `docs/document-intelligence/data-intelligence-map.md`
+- **Drive-file index**: run the drive-file-search skill or `scripts/data/drive-index-search/search.py "<terms>" --json --caller plan-resource-intel`; cite hits with canonical `/mnt/<drive>` paths de-identified per [the usage playbook](../guides/drive-file-search-playbook.md), or state "no relevant drive files"
 
 **Issue-class-specific additions:**
 
