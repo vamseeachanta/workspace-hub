@@ -1,0 +1,10 @@
+catalog:
+  items:
+    - title: Installation Guide
+      domain: literature
+      notes: mooring installation guide
+      path: /legacy/dde/literature/install-guide.pdf
+    - title: Fatigue Memo
+      domain: literature
+      notes: fatigue memo
+      source_dir: /legacy/dde/literature/fatigue
