@@ -1,0 +1,65 @@
+version: 1
+canonical_aliases:
+  /mnt/remote/ace-linux-2/dde: /mnt/dde
+  /mnt/remote/dev-secondary/dde: /mnt/dde
+defaults:
+  staleness_days: 90
+indexes:
+  - id: ace_knowledge
+    adapter: sqlite_fts
+    path: /mnt/ace/.ace-knowledge/index.db
+    coverage: {drives: [/mnt/ace], subtree: /mnt/ace}
+    domains: [engineering, marine, drilling, cad, standards]
+    freshness: {built_at: "2026-03-26", staleness_days: 120}
+    builder: null
+    adapter_params:
+      fts_table: assets_fts
+      base_table: assets
+      path_column: file_path
+      select_columns: [file_name, file_size, modified_date, engineering_domain]
+  - id: og_standards_inventory
+    adapter: sqlite_fts
+    path: "/mnt/ace/O&G-Standards/_inventory.db"
+    coverage: {drives: [/mnt/ace], subtree: "/mnt/ace/O&G-Standards"}
+    freshness: {built_at: "2025-12-28", staleness_days: 120}
+    builder: null
+    adapter_params:
+      fts_table: documents_fts
+      base_table: documents
+      path_column: file_path
+      select_columns: [filename, organization, doc_type, doc_number, title]
+  - id: cad_readability
+    adapter: tsv
+    path: /mnt/ace/_cad-index/cad-readability-index.tsv
+    coverage: {drives: [/mnt/ace]}
+    domains: [cad, engineering]
+    freshness: {built_at: "2026-06-26", staleness_days: 90}
+    builder: null
+    adapter_params:
+      path_column: path
+      search_columns: [path, name_description, project]
+      passthrough_columns: [format, readability, size, mtime]
+  - id: master_document_index
+    adapter: jsonl
+    path: data/document-index/index.jsonl
+    coverage: {drives: [/mnt/ace, /mnt/dde, /mnt/local-analysis]}
+    freshness:
+      built_at: "2026-04-17"
+      staleness_days: 90
+      note: "Frozen 2026-04-17; dde rows may be lost if rebuilt with stale --force source config before #3334/#3337 remediation."
+    builder: scripts/data/document-index/phase-a-index.py
+    adapter_params:
+      path_field: path
+      search_fields: [path, summary, domain, org, doc_number]
+      sidecar: null
+  - id: dde_literature_catalog
+    adapter: yaml_catalog
+    path: data/document-index/dde-literature-catalog.yaml
+    coverage: {drives: [/mnt/dde]}
+    domains: [literature, standards, engineering]
+    freshness: {built_at: "2026-07-02", staleness_days: 90}
+    builder: null
+    adapter_params:
+      items_key: auto
+      path_fields: [path, source_dir]
+      text_fields: [title, domain, notes]

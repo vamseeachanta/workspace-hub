@@ -1,0 +1,49 @@
+version: 1
+canonical_aliases:
+  /legacy/dde: /canonical/dde
+defaults:
+  staleness_days: 30
+indexes:
+  - id: fixture_sqlite
+    adapter: sqlite_fts
+    path: fixtures/fixture.db
+    coverage: {drives: [/fixture/ace], subtree: /fixture/ace}
+    domains: [marine, engineering]
+    adapter_params:
+      fts_table: assets_fts
+      base_table: assets
+      path_column: file_path
+      select_columns: [file_name, file_size, modified_date, engineering_domain]
+  - id: fixture_jsonl
+    adapter: jsonl
+    path: fixtures/fixture.jsonl
+    coverage: {drives: [/fixture/ace, /canonical/dde]}
+    domains: [marine]
+    adapter_params:
+      path_field: path
+      search_fields: [path, summary, domain, org]
+      sidecar: null
+  - id: fixture_tsv
+    adapter: tsv
+    path: fixtures/fixture.tsv
+    coverage: {drives: [/fixture/ace]}
+    adapter_params:
+      path_column: path
+      search_columns: [path, name_description, project]
+      passthrough_columns: [format, readability, size, mtime]
+  - id: fixture_yaml
+    adapter: yaml_catalog
+    path: fixtures/fixture-catalog.yaml
+    coverage: {drives: [/canonical/dde]}
+    adapter_params:
+      items_key: auto
+      path_fields: [path, source_dir]
+      text_fields: [title, domain, notes]
+  - id: fixture_missing
+    adapter: jsonl
+    path: fixtures/does-not-exist.jsonl
+    coverage: {drives: [/canonical/dde]}
+    adapter_params:
+      path_field: path
+      search_fields: [path, summary]
+      sidecar: null
