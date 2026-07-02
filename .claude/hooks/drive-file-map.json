@@ -1,0 +1,64 @@
+{
+  "_note": "Hand-curated config for drive-file-nudge.sh (#3339, epic #3333). NOT generated — unlike ecosystem-domain-map.json (which gen_domain_pointers.py owns). Engineering-domain keywords are deliberately NOT duplicated here: the hook reads them from ecosystem-domain-map.json at runtime (Tier 2 degrades off if that map is absent).",
+  "tier1_intent_phrases": [
+    "similar past work",
+    "search the drives",
+    "prior project files",
+    "like we did before",
+    "we did before",
+    "previous project",
+    "past project",
+    "have we done this before"
+  ],
+  "tier2_intent_phrases": [
+    "do we have",
+    "reuse",
+    "precedent",
+    "similar work"
+  ],
+  "artifact_nouns": [
+    "drawing",
+    "drawings",
+    "report",
+    "reports",
+    "spec",
+    "specs",
+    "template",
+    "example",
+    "model",
+    "models",
+    "calc",
+    "calcs",
+    "deck",
+    "dataset",
+    "document",
+    "documents",
+    "file",
+    "files"
+  ],
+  "data_ask_exclusions": [
+    "do we have data",
+    "data for",
+    "data on"
+  ],
+  "software_context_exclusions": [
+    "ci pipeline",
+    "build pipeline",
+    "data pipeline",
+    "deployment pipeline"
+  ],
+  "coverage_fallback": {
+    "ace": "~1.2M",
+    "dde": "~0.5M",
+    "as_of": "2026-07-02"
+  },
+  "skill_ref": "drive-file-search (#3338)",
+  "precomputed": {
+    "_note": "Authoring-time ERE-escaped alternation joins of the lists above (plan D4/F3: zero runtime joins). Keep in sync with the lists — test_map_precomputed_consistency pins list<->join equality.",
+    "tier1_re": "similar past work|search the drives|prior project files|like we did before|we did before|previous project|past project|have we done this before",
+    "tier2_re": "do we have|reuse|precedent|similar work",
+    "artifact_re": "drawing|drawings|report|reports|spec|specs|template|example|model|models|calc|calcs|deck|dataset|document|documents|file|files",
+    "data_ask_re": "do we have data|data for|data on",
+    "software_context_exclusions_re": "ci pipeline|build pipeline|data pipeline|deployment pipeline"
+  }
+}
