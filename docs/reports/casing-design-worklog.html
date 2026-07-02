@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Casing Design Capability · workspace-hub</title>
+<style>
+:root{--fg:#1a2230;--muted:#5b6675;--bg:#f7f8fa;--card:#fff;--line:#e2e6ec;--brand:#5b3fd6;--ok:#1f9d55;--new:#b45309;--newbg:#fff7ed}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--fg);background:var(--bg)}
+header.site{padding:14px 22px;background:var(--card);border-bottom:1px solid var(--line);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+footer.site{padding:14px 22px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;margin-top:48px;background:var(--card)}
+.home{color:var(--brand);font-weight:700;text-decoration:none}
+nav a{color:var(--muted);text-decoration:none;font-size:14px}
+nav a:hover{color:var(--brand)}
+main{max-width:1080px;margin:0 auto;padding:28px 22px}
+h1{font-size:28px;margin:0 0 4px}
+h2{font-size:20px;margin:1.8em 0 .5em;border-bottom:1px solid var(--line);padding-bottom:.25em}
+.sub{color:var(--muted);margin:0 0 22px}
+a{color:var(--brand)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+.pipe{display:flex;gap:0;flex-wrap:wrap;align-items:stretch}
+.stage{flex:1 1 150px;min-width:140px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;position:relative;text-align:center}
+.stage .k{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.stage .v{font-weight:700;margin:4px 0 2px}
+.stage .d{font-size:12.5px;color:var(--muted)}
+.arrow{align-self:center;color:var(--brand);font-size:22px;padding:0 6px;flex:0 0 auto}
+.stage.live{border-color:var(--ok)}
+.stage.live .v{color:var(--ok)}
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--card);margin-top:6px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#f0f3f7}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;vertical-align:middle}
+.tag.live{background:#e7f6ee;color:var(--ok)}
+.tag.road{background:var(--newbg);color:var(--new)}
+.tw{overflow-x:auto}
+.note{background:#f0f3f7;border-left:3px solid var(--brand);border-radius:6px;padding:14px 18px;margin:8px 0 0}
+.note strong{color:var(--fg)}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#0f1722;color:#cfe3ff;padding:14px;border-radius:8px;overflow-x:auto;font-size:13px;margin:6px 0}
+pre code{background:none;color:inherit;padding:0}
+</style>
+</head>
+<body>
+<header class="site">
+  <a class="home" href="index.html">workspace-hub</a>
+  <nav><a href="index.html">Overview</a> · <a href="https://vamseeachanta.github.io/digitalmodel/capabilities/">digitalmodel capabilities</a> · <a href="https://github.com/vamseeachanta/workspace-hub">source</a></nav>
+</header>
+<main>
+  <h1>Production casing design — algorithms, explorer &amp; wiki notes</h1>
+  <p class="sub">Session work review &mdash; 2026-07-02 &middot; a public technical presentation turned into a tested <strong>design-check layer</strong> in digitalmodel, an interactive explorer on the capabilities page, and citable wiki notes &mdash; the full repo-ecosystem loop in one pass.</p>
+
+  <div class="note">
+    <strong>One-line finding.</strong> digitalmodel already had the <em>ratings</em> layer (API&nbsp;5C3 burst / 4-regime collapse / body yield &mdash; what a casing product can take). The source deck prescribes the <em>design</em> layer &mdash; what the well asks of it: load cases, design factors, sour-service screening and frac limits. That gap is now closed with ~50% reuse of existing code, and the published worked example (5-1/2&quot; 23# P110 &rarr; <strong>14,520 psi</strong> Barlow burst) is preserved as a golden test.
+  </div>
+
+  <h2>Source</h2>
+  <p>B.&nbsp;Hansen (Devon Energy), <em>Production Casing Design Considerations</em>, EPA Hydraulic Fracturing Technical Workshop &mdash; Session&nbsp;2: Well Design, August&nbsp;2011 (public EPA workshop material, 41 pages). Standards referenced: API&nbsp;5C3 / API&nbsp;TR&nbsp;5C3 (pipe performance), API&nbsp;5CT (grades), NACE&nbsp;MR0175 / ISO&nbsp;15156 (sour service).</p>
+
+  <h2>The pipeline this session shipped</h2>
+  <div class="pipe">
+    <div class="stage live"><div class="k">Intake</div><div class="v">PDF &rarr; issue</div><div class="d">41-slide deck distilled into a build plan (dm&nbsp;#1290)</div></div>
+    <div class="arrow">&rarr;</div>
+    <div class="stage live"><div class="k">Algorithms</div><div class="v">casing_design.py</div><div class="d">load cases &middot; DF engine &middot; NACE screen &middot; frac limits</div></div>
+    <div class="arrow">&rarr;</div>
+    <div class="stage live"><div class="k">Proof</div><div class="v">69 new tests</div><div class="d">golden 14,520 psi &middot; drift guard &middot; 137 green</div></div>
+    <div class="arrow">&rarr;</div>
+    <div class="stage live"><div class="k">Publish</div><div class="v">Explorer + PDFs</div><div class="d">capabilities card &middot; one-pagers &middot; API envelope</div></div>
+    <div class="arrow">&rarr;</div>
+    <div class="stage live"><div class="k">Knowledge</div><div class="v">llm-wiki notes</div><div class="d">concept + source pages, indexed</div></div>
+  </div>
+
+  <h2>What the algorithms cover</h2>
+  <div class="tw"><table>
+    <tr><th>Block</th><th>Contents</th><th>Provenance</th></tr>
+    <tr><td><strong>Load cases</strong></td><td>Tubing leak (SITP on packer fluid) &middot; injection down casing / frac screen-out &middot; external backup profile (mud &rarr; TOC, cement mix-water &rarr; outer shoe, pore below) &middot; full-evacuation collapse</td><td>Deck pp. 11&ndash;14</td></tr>
+    <tr><td><strong>Design factors</strong></td><td><code>DF = rating / load &ge; DF_min</code> over depth with governing depth per mode; defaults burst 1.25 (1.1 if SICP &lt; 5,000 psi), collapse 1.1, tension 1.4, compression 1.2, Von Mises triaxial 1.25 &mdash; fully configurable</td><td>Deck p. 8 (operator minimums)</td></tr>
+    <tr><td><strong>Pipe performance</strong></td><td>Barlow burst (0.875 wall factor, rounds to 10 psi), 4-regime API collapse, body yield (rounds to 1,000 lbf) &mdash; reused from the existing ratings module; VME triaxial reuses the design-envelope helpers</td><td>API 5C3; deck pp. 16&ndash;19</td></tr>
+    <tr><td><strong>Stimulation</strong></td><td>Max allowable frac surface pressure (closed-form over the depth grid) &middot; ballooning tension adder <code>2&nu;&middot;&Delta;P<sub>i</sub>&middot;A<sub>i</sub></code> &middot; cooling adder <code>E&middot;&alpha;&middot;&Delta;T&middot;A</code></td><td>Deck pp. 36, 39&ndash;40</td></tr>
+    <tr><td><strong>Sour service</strong></td><td>H<sub>2</sub>S partial pressure <code>ppm&middot;P/10<sup>6</sup> &gt; 0.05 psia</code> with 65 / 265 psia (gas / oil) qualifiers; grade temperature windows (all-temp grades; N80Q &amp; C95 &ge; 150&deg;F; N80 &amp; P110 &ge; 175&deg;F; Q125 &ge; 225&deg;F)</td><td>NACE MR0175 Table A.3; deck pp. 25&ndash;26</td></tr>
+    <tr><td><strong>Connections</strong></td><td>STC / LTC / BTC / MTC / IJ / FJ classes: tension efficiency vs pipe body, ultimate-vs-yield basis, and the &lt;3% of length / &gt;90% of failures / 10&ndash;50% of cost facts</td><td>Deck pp. 28&ndash;34</td></tr>
+  </table></div>
+
+  <h2>Deliverables</h2>
+  <div class="tw"><table>
+    <tr><th>Artifact</th><th>Where</th><th>Status</th></tr>
+    <tr><td>Design-check module + 42 unit tests</td><td><code>digitalmodel/src/digitalmodel/well/tubulars/casing_design.py</code> &middot; <a href="https://github.com/vamseeachanta/digitalmodel/issues/1290">#1290</a> &rarr; <a href="https://github.com/vamseeachanta/digitalmodel/pull/1300">PR #1300</a></td><td><span class="tag live">MERGED</span></td></tr>
+    <tr><td>Interactive explorer (8 products, pass/fail, Plotly depth profiles, Barlow panel, NACE + connections tables) + frozen-JSON drift guard (27 tests)</td><td><a href="https://vamseeachanta.github.io/digitalmodel/well/casing-design-explorer.html">digitalmodel/well/casing-design-explorer.html</a></td><td><span class="tag live">LIVE</span></td></tr>
+    <tr><td>Capabilities section &ldquo;Well construction &mdash; casing &amp; tubulars&rdquo; + one-pager PDFs + workflow-API envelope</td><td><a href="https://vamseeachanta.github.io/digitalmodel/capabilities/">digitalmodel/capabilities/</a></td><td><span class="tag live">LIVE</span></td></tr>
+    <tr><td>Wiki notes: concept page (operator-practice casing design) + source page (Hansen 2011)</td><td><code>llm-wiki/wikis/drilling-engineering/wiki/{concepts,sources}/</code> &middot; PR #817</td><td><span class="tag live">MERGED</span></td></tr>
+  </table></div>
+
+  <h2>Why it matters</h2>
+  <p>Every prior capability (rudder manoeuvring, dynacard troubleshooting, container utilization) followed the same flywheel: public source &rarr; issue-planned algorithms &rarr; golden-number tests &rarr; frozen-artifact explorer with a CI drift guard &rarr; capabilities card &rarr; wiki knowledge page. Casing design now joins that catalog, and the design-check layer composes cleanly with the existing tubular ratings and VME envelopes &mdash; nothing was duplicated.</p>
+
+  <div class="note"><strong>Verification posture.</strong> The build script is byte-reproducible (two consecutive runs produce identical files); the drift-guard test re-runs every published product case against the live checker so a published design factor cannot silently drift; and the explorer&rsquo;s JavaScript only reads the frozen JSON &mdash; no physics re-implementation to diverge.</div>
+</main>
+<footer class="site">workspace-hub &middot; session work review &middot; 2026-07-02 &middot; public OSS engineering in <a href="https://github.com/vamseeachanta/digitalmodel">vamseeachanta/digitalmodel</a> (MIT); no client data.</footer>
+</body>
+</html>

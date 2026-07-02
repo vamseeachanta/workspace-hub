@@ -49,11 +49,17 @@ PAGES = {
 # digitalmodel, worldenergydata), refers to the private Deckhand engine
 # generically, and contains no client codenames, hostnames, IPs, paths, private
 # PR numbers, or secrets.
+# The casing-design work-review summarizes public OSS engineering in
+# vamseeachanta/digitalmodel (MIT): a public EPA-workshop presentation (Hansen,
+# Devon Energy, 2011) turned into the well/tubulars casing design-check layer,
+# capabilities explorer and llm-wiki notes; only public repo/issue/PR
+# references, no hostnames, IPs, or client data.
 HTML_PAGES = {
     "machine-equality-matrix": ("docs/reports/machine-equality-matrix.html", "Machine Equality"),
     "issue-workflow-lifecycle": ("docs/reports/issue-workflow-lifecycle.html", "Issue Lifecycle"),
     "orcaflex-pipeline-worklog": ("docs/reports/orcaflex-pipeline-worklog.html", "Model-Gen Pipeline"),
     "deckhand-api-reposition": ("docs/reports/deckhand-api-reposition-worklog.html", "Deckhand API"),
+    "casing-design-worklog": ("docs/reports/casing-design-worklog.html", "Casing Design"),
 }
 
 _LINK = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
