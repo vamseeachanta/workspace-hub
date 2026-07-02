@@ -1,11 +1,11 @@
-generated_at: "2026-07-02T06:57:12"
+generated_at: "2026-07-02T07:00:21"
 schema_version: 4
 machine: "dev-secondary"
 host: "ace-linux-2"
 os: linux
 status: active
 provenance:
-  checkout_sha: "e6151f032"
+  checkout_sha: "45333ff40"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,12 +13,12 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA T400 4GB"}
-    headroom: {ram_avail_mib: 21778, disk_avail_gb: 207}
+    headroom: {ram_avail_mib: 21728, disk_avail_gb: 833}
   data_access:
     - {repo: assetutilities, mode: sibling}
-    - {repo: digitalmodel, mode: absent}
-    - {repo: worldenergydata, mode: absent}
-    - {repo: assethold, mode: absent}
+    - {repo: digitalmodel, mode: sibling}
+    - {repo: worldenergydata, mode: sibling}
+    - {repo: assethold, mode: sibling}
   solvers:
     - {name: orcaflex, status: absent, evidence: absent}
     - {name: orcawave, status: absent, evidence: absent}
@@ -29,12 +29,12 @@ dimensions:
     gh_auth: ok
     python_cmd: uv-run
     readiness_ref: harness-readiness-ace-linux-2.yaml
-    readiness_overall: missing
+    readiness_overall: fail
   skills: {repo_skill_count: 418}
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-07-02T06:56:27"
+    context_md_mtime: "2026-06-26T14:06:44"
   provider_harness:
     schema_version: 1
     providers:
