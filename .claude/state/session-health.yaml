@@ -1,5 +1,5 @@
-run_at: "2026-07-01T07:16:17Z"
-total_duration_s: 1
+run_at: "2026-07-02T12:09:57Z"
+total_duration_s: 10
 all_healthy: true
 repos:
   assethold: {status: skip, passed: 0, failed: 0, duration_s: 0}

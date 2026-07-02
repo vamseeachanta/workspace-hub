@@ -1,10 +1,8 @@
-# Readiness Issues — 2026-07-01T02:13:32
+# Readiness Issues — 2026-07-02T07:09:29
 
-Nightly readiness: 4 failed, 20 passed
+Nightly readiness: 2 failed, 22 passed
 
 ## Warnings
-- R-REGISTRY: model-registry.yaml 16d old — run update-model-ids.sh
-- R-PLUGINS: claude CLI not found
+- R-REGISTRY: model-registry.yaml 17d old — run update-model-ids.sh
 - R-PRECOMMIT: assetutilities:legal-sanity-scan.sh entry missing worldenergydata:legal-sanity-scan.sh entry missing assethold:legal-sanity-scan.sh entry missing
-- R-TELEGRAM-HERMES: readiness failed — run scripts/readiness/telegram-hermes-readiness.sh
 
