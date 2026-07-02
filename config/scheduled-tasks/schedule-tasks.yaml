@@ -50,6 +50,54 @@ tasks:
       nightly readiness. Single source for both Linux cron and Windows Task Scheduler
       per this file's HARD RULE (#2801 DC5).
 
+  - id: drive-index-refresh-ace
+    label: Ace drive-index refresh (#3336)
+    schedule: "30 2 * * 0"
+    machines: [ace-linux-1]
+    roles: [control-plane]
+    requires: [bash, python3, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      mkdir -p $WORKSPACE_HUB/logs/drive-index &&
+      cd $WORKSPACE_HUB &&
+      bash scripts/data/drive-index/refresh-drive-index.sh ace
+      >> $WORKSPACE_HUB/logs/drive-index/refresh-ace-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/drive-index/refresh-ace-*.log
+    is_claude_task: false
+    description: Weekly Sunday 02:30 metadata-only in-place refresh of /mnt/ace/.ace-knowledge/index.db.
+
+  - id: drive-index-refresh-dde
+    label: DDE drive-index refresh (#3336)
+    schedule: "30 3 * * 0"
+    machines: [dev-secondary, ace-linux-2]
+    roles: [comms-dispatch, sim-worker]
+    requires: [bash, python3, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      mkdir -p $WORKSPACE_HUB/logs/drive-index &&
+      cd $WORKSPACE_HUB &&
+      bash scripts/data/drive-index/refresh-drive-index.sh dde
+      >> $WORKSPACE_HUB/logs/drive-index/refresh-dde-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/drive-index/refresh-dde-*.log
+    is_claude_task: false
+    description: Weekly Sunday 03:30 metadata refresh of /mnt/dde/.dde-knowledge/index.db; fails loud until the production DB exists.
+
+  - id: drive-index-refresh-cad
+    label: CAD readability index refresh (#3336)
+    schedule: "0 5 * * 0"
+    machines: [ace-linux-1]
+    roles: [control-plane]
+    requires: [bash, python3, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      mkdir -p $WORKSPACE_HUB/logs/drive-index &&
+      cd $WORKSPACE_HUB &&
+      bash scripts/data/drive-index/refresh-drive-index.sh cad
+      >> $WORKSPACE_HUB/logs/drive-index/refresh-cad-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/drive-index/refresh-cad-*.log
+    is_claude_task: false
+    description: Weekly Sunday 05:00 raw scan plus parameterized CAD readability TSV rebuild.
+
   - id: equivalence-sentinel
     label: Machine-equivalence drift sentinel (#3059)
     schedule: "17 */6 * * *"
