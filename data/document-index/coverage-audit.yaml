@@ -16,13 +16,13 @@ index:
 
 # ─── 2. SUMMARY STORAGE ─────────────────────────────────────────────
 summaries:
-  canonical_location: "/mnt/remote/ace-linux-1/ace/data/document-index/summaries/"
+  canonical_location: "/mnt/ace/data/document-index/summaries/"
   local_copy: data/document-index/summaries/   # relative to repo root
   local_file_count: 717140     # via os.scandir(); includes stubs and orphans
   local_dir_size_mb: 155
   ace_drive_accessible: false
   ace_drive_paths_checked:
-    - "/mnt/remote/ace-linux-1/ace/data/document-index/summaries/"
+    - "/mnt/ace/data/document-index/summaries/"
     - "/mnt/ace/data/document-index/summaries/"
   local_accessible: true
   note: >
@@ -208,7 +208,7 @@ accessibility:
   config_file: accessible
   scripts: accessible
   finding: >
-    The canonical summaries path (/mnt/remote/ace-linux-1/ace/data/document-index/summaries/)
+    The canonical summaries path (/mnt/ace/data/document-index/summaries/)
     is NOT accessible from this machine. Scripts fall back to the local copy, which works
     but may be stale if the ace drive has newer summaries. The config.yaml hardcodes the
     ace path; the $SUMMARIES_DIR env var override mechanism documented in
@@ -335,7 +335,7 @@ recommendations:
     action: "Run Phase B on dde_project native-readable docs (17K records)"
     impact: "Would add ~17K summaries, boosting coverage from 31% to 44%"
     estimated_cost: "$15-25 at Haiku rates (17K docs x ~$0.001/doc)"
-    prerequisite: "Ensure /mnt/remote/dev-secondary/dde/ paths accessible from summarization host"
+    prerequisite: "Ensure /mnt/dde/ paths accessible from summarization host"
 
   - priority: high
     action: "Run Phase B on ace_project native-readable docs (14.3K records)"

@@ -2,8 +2,8 @@
 """
 Cross-Drive Deduplication Audit Script (GitHub Issue #1757)
 
-Compares files between /mnt/ace (local NVMe) and the DDE remote drive
-(/mnt/remote/ace-linux-2/dde/) to identify duplicates and unique files.
+Compares files between /mnt/ace and /mnt/dde to identify duplicates and
+unique files.
 
 Strategy:
   1. First pass: index files by (filename, file_size) — cheap metadata only
@@ -29,12 +29,12 @@ from pathlib import Path
 DRIVE_PAIRS = [
     {
         "ace_path": "/mnt/ace/docs/",
-        "dde_path": "/mnt/remote/ace-linux-2/dde/documents/",
+        "dde_path": "/mnt/dde/documents/",
         "label": "project-docs",
     },
     {
         "ace_path": "/mnt/ace/O&G-Standards/",
-        "dde_path": "/mnt/remote/ace-linux-2/dde/0000 O&G/0000 Codes & Standards/",
+        "dde_path": "/mnt/dde/0000 O&G/0000 Codes & Standards/",
         "label": "og-standards",
     },
 ]

@@ -1,7 +1,9 @@
 version: 1
 canonical_aliases:
+  /mnt/remote/ace-linux-1/ace: /mnt/ace
   /mnt/remote/ace-linux-2/dde: /mnt/dde
   /mnt/remote/dev-secondary/dde: /mnt/dde
+  /mnt/ace-data: /mnt/ace
 defaults:
   staleness_days: 90
 indexes:

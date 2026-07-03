@@ -1,13 +1,13 @@
 # DDE Oil and Gas Codes - Cross-Drive Deduplication Scan
 # GitHub Issue: #1608
 # Generated: 2026-04-03
-# Source: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/
+# Source: /mnt/dde/0000 O&G/Oil and Gas Codes/
 # Compared with: /mnt/ace/O&G-Standards/
 
 scan_metadata:
   generated: '2026-04-03T07:56:00+00:00'
   source_drive: dde
-  source_path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/
+  source_path: /mnt/dde/0000 O&G/Oil and Gas Codes/
   comparison_target: /mnt/ace/O&G-Standards/
   scan_type: cross-drive-dedup
   issue_ref: '#1608'
@@ -29,7 +29,7 @@ summary:
 
 subdirectories:
   - name: API Standards
-    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/API Standards
+    path: /mnt/dde/0000 O&G/Oil and Gas Codes/API Standards
     total_files: 186
     file_types:
       pdf: 63
@@ -49,7 +49,7 @@ subdirectories:
     notes: Fully duplicated in ACE raw. 18 also in organized API folder.
 
   - name: API Stds
-    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/API Stds
+    path: /mnt/dde/0000 O&G/Oil and Gas Codes/API Stds
     total_files: 116
     file_types:
       pdf: 113
@@ -63,7 +63,7 @@ subdirectories:
       is likely a Thumbs.db or similar metadata file.
 
   - name: ASTM Standards
-    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/ASTM Standards
+    path: /mnt/dde/0000 O&G/Oil and Gas Codes/ASTM Standards
     total_files: 32
     file_types:
       pdf: 32
@@ -73,7 +73,7 @@ subdirectories:
     notes: Fully duplicated. 15 also in organized ASTM folder.
 
   - name: BSI Standards
-    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/BSI Standards
+    path: /mnt/dde/0000 O&G/Oil and Gas Codes/BSI Standards
     total_files: 2
     file_types:
       pdf: 1
@@ -84,7 +84,7 @@ subdirectories:
     notes: Fully duplicated in both organized and raw.
 
   - name: DNV Standards
-    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/DNV Standards
+    path: /mnt/dde/0000 O&G/Oil and Gas Codes/DNV Standards
     total_files: 11
     file_types:
       pdf: 8
@@ -96,7 +96,7 @@ subdirectories:
     notes: Fully duplicated in raw. Only 1 in organized DNV folder.
 
   - name: ISO Standards
-    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/ISO Standards
+    path: /mnt/dde/0000 O&G/Oil and Gas Codes/ISO Standards
     total_files: 49
     file_types:
       pdf: 47
@@ -108,7 +108,7 @@ subdirectories:
     notes: Fully duplicated in raw. None in organized ISO folder (different filenames).
 
   - name: MIL Standards
-    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/MIL Standards
+    path: /mnt/dde/0000 O&G/Oil and Gas Codes/MIL Standards
     total_files: 1
     file_types:
       pdf: 1
@@ -118,7 +118,7 @@ subdirectories:
     notes: Single file, duplicated in raw.
 
   - name: Norsok
-    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/Norsok
+    path: /mnt/dde/0000 O&G/Oil and Gas Codes/Norsok
     total_files: 1
     file_types:
       pdf: 1
@@ -128,7 +128,7 @@ subdirectories:
     notes: Single file, duplicated in raw.
 
   - name: British Library
-    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/British Library
+    path: /mnt/dde/0000 O&G/Oil and Gas Codes/British Library
     total_files: 19
     file_types:
       doc: 19
@@ -138,7 +138,7 @@ subdirectories:
     notes: All .doc files. 18 also in organized directories.
 
   - name: Papers
-    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/Papers
+    path: /mnt/dde/0000 O&G/Oil and Gas Codes/Papers
     total_files: 175
     file_types:
       pdf: 137
@@ -152,7 +152,7 @@ subdirectories:
     notes: Fully duplicated in raw. Only 5 in organized directories.
 
   - name: root_level_files
-    path: /mnt/remote/ace-linux-2/dde/0000 O&G/Oil and Gas Codes/
+    path: /mnt/dde/0000 O&G/Oil and Gas Codes/
     total_files: 6
     files:
       - DNVOS-F101.pdf
