@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import make_raw_byte_file, rows
+from drive_index_build_helpers import make_raw_byte_file, rows
 
 
 def run_metadata(builder, profile, batch_size=3, limit=None):

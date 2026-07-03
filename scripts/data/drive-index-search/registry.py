@@ -72,6 +72,9 @@ def load_registry(path: str | Path = "config/drive-index-registry.yml") -> Regis
         coverage = raw["coverage"]
         if not isinstance(coverage, dict) or not coverage.get("drives"):
             raise RegistryError(f"{index_id}: coverage.drives is required")
+        freshness = raw.get("freshness")
+        if freshness is not None:
+            _validate_freshness(index_id, freshness)
         raw_path = Path(raw["path"])
         index_path = raw_path
         if not index_path.is_absolute():
@@ -89,7 +92,7 @@ def load_registry(path: str | Path = "config/drive-index-registry.yml") -> Regis
                 coverage=coverage,
                 domains=raw.get("domains"),
                 adapter_params=raw.get("adapter_params") or {},
-                freshness=raw.get("freshness"),
+                freshness=freshness,
                 builder=raw.get("builder"),
             )
         )
@@ -98,3 +101,16 @@ def load_registry(path: str | Path = "config/drive-index-registry.yml") -> Regis
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[3]
+
+
+def _validate_freshness(index_id: str, freshness: Any) -> None:
+    if not isinstance(freshness, dict):
+        raise RegistryError(f"{index_id}: freshness must be a mapping")
+    if "row_count" in freshness and not isinstance(freshness["row_count"], int):
+        raise RegistryError(f"{index_id}: freshness.row_count must be an integer")
+    if "as_of" in freshness and not isinstance(freshness["as_of"], str):
+        raise RegistryError(f"{index_id}: freshness.as_of must be a string")
+    if "state_file" in freshness and not isinstance(freshness["state_file"], str):
+        raise RegistryError(f"{index_id}: freshness.state_file must be a string")
+    if "staleness_days" in freshness and not isinstance(freshness["staleness_days"], int):
+        raise RegistryError(f"{index_id}: freshness.staleness_days must be an integer")
