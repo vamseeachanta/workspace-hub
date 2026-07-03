@@ -86,7 +86,7 @@ actions:
     effort: low
     description: >
       build-capability-map.py is fully functional but has two path issues:
-      (1) SUMMARIES_DIR defaults to /mnt/remote/ace-linux-1/... which is
+      (1) SUMMARIES_DIR defaults to /mnt/ace/... which is
       not accessible from ace-linux-2; (2) output dir specs/capability-map/
       does not exist yet. The script already has a CAPMAP_USE_PHASE_B env var
       to enable reading real summaries (default: synthetic from index fields).

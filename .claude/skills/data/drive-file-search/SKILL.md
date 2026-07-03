@@ -30,12 +30,12 @@ FILE-level asks only; domain-catalog asks belong to `ecosystem-data-sources`.
 ## Procedure
 
 1. **Extract context** (full detail + worked walkthrough:
-   `references/context-extraction.md`). Fail-soft signals: repo name; issue title/labels;
-   engineering domain via keywords read live from `.claude/hooks/ecosystem-domain-map.json`
+   `references/context-extraction.md`). Signals: repo; issue title/labels;
+   domain via keywords read live from `.claude/hooks/ecosystem-domain-map.json`
    (generated — never hand-copy its keywords here); artifact-type hints
    (calcs → xlsx/py/csv; CAD → dwg/ipt/step; standards → pdf; simulation → dat/sim/yml/owr).
 
-2. **Build the query** — 2–5 deduped terms (matched domain keyword + 1–3 issue-title
+2. **Build the query** — 2–5 deduped terms (domain keyword + 1–3 title
    words). Pass `--domain <d>` only if `<d>` appears in a `domains:` list in
    `config/drive-index-registry.yml`; else fold the domain word into the terms
    (unknown `--domain` = empty selection, exit 0).
@@ -44,10 +44,10 @@ FILE-level asks only; domain-catalog asks belong to `ecosystem-data-sources`.
 
    `uv run python scripts/data/drive-index-search/search.py "<terms>" [--domain <d>] --json --limit 20 --caller skill`
 
-   (`python3` works when uv is broken.)
+   (`python3` if uv is broken.)
 
 4. **Branch on exit code**:
-   - `0` — parse the JSON envelope on stdout (covers partial AND empty results — always
+   - `0` — parse the JSON envelope (covers partial and empty results — always
      check `coverage_gaps`).
    - `2` — registry error OR zero reachable indexes: name the down indexes/drives,
      point to `scripts/setup/canonical-drive-links.sh` (PR #3341 if absent), offer
@@ -55,15 +55,15 @@ FILE-level asks only; domain-catalog asks belong to `ecosystem-data-sources`.
    - CLI missing — cite issue #3335, fall back to `ecosystem-data-sources`; never
      run ad-hoc drive crawls (bounded reads only).
 
-5. **Present top 10**. Required per result: `canonical_path`, `source_index`, `score`,
+5. **Present top 10**. Per result: `canonical_path`, `source_index`, `score`,
    `rank_basis` (`meta.*` optional; `raw_path` never shown). Show the canonical
    `/mnt/...` path; why relevant: matched terms, `rank_basis`, extension-vs-hint
-   (reorder within equal-score groups only); source index + freshness caveat from the
+   (reorder within equal scores only); source index + freshness caveat from the
    registry's `freshness/built_at` ("freshness unknown" if absent). Quote each
-   `coverage_gaps` `reason` VERBATIM (opaque free text — never pattern-match or
-   paraphrase); name the excluded drive. Offer exactly three next actions: open one
-   listed file (bounded read); record chosen paths under "Documents consulted" in the
-   plan's Resource Intelligence section; refine terms, re-run once.
+   `coverage_gaps` `reason` VERBATIM (opaque free text — never
+   paraphrase); name the excluded drive. Offer three next actions: open one
+   listed file (bounded read); record chosen paths under "Documents consulted" in
+   the plan's Resource Intel section; refine terms, re-run once.
 
 ## Guardrails (never violate)
 
@@ -73,9 +73,9 @@ FILE-level asks only; domain-catalog asks belong to `ecosystem-data-sources`.
   tokens; if found, describe as metadata only ("a past <domain> deliverable on
   /mnt/ace") or redact. In-session display is fine; persisting into public artifacts
   is the gated act. De-id stays on lane:claude.
-- **Unreachable drive is normal** (dde often unmounted): present partial results plus
+- **Unreachable drive is normal**: present partial results plus
   the coverage_gaps caveat; never mount, never sudo.
-- **Usage playbook** (#3340): integration points, freshness authority, metrics, and the
-  full de-id checklist live in `docs/guides/drive-file-search-playbook.md`.
+- **Usage playbook** (#3340): integration points, freshness authority, metrics, and
+  de-id checklist: `docs/guides/drive-file-search-playbook.md`.
 
 **Related**: `ecosystem-data-sources` (DATA/domain-catalog level).

@@ -399,11 +399,11 @@ def _skill_triggers():
         return None
     m = re.search(r"^---\s*$(.*?)^---\s*$", text, re.S | re.M)
     block = m.group(1) if m else text
-    tm = re.search(r"^triggers:\s*$((?:\n\s+-\s+.*)+)", block, re.M)
+    tm = re.search(r"^triggers:\s*$((?:\n\s*-\s+.*)+)", block, re.M)
     if not tm:
         return None
     return [
-        re.sub(r"^\s+-\s+", "", line).strip().strip("\"'")
+        re.sub(r"^\s*-\s+", "", line).strip().strip("\"'")
         for line in tm.group(1).strip("\n").splitlines()
     ]
 

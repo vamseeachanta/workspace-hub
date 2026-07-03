@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import os
 import sqlite3
 import sys
@@ -61,36 +62,17 @@ UPSERT_SQL = f"""
 INSERT INTO assets ({", ".join(ASSET_COLUMNS)})
 VALUES ({", ".join("?" for _ in ASSET_COLUMNS)})
 ON CONFLICT(file_path) DO UPDATE SET
-    id=excluded.id,
-    asset_type=excluded.asset_type,
-    file_name=excluded.file_name,
-    file_extension=excluded.file_extension,
     file_size=excluded.file_size,
     modified_date=excluded.modified_date,
-    source_root=excluded.source_root,
-    discipline=excluded.discipline,
-    project_code=excluded.project_code,
-    folder_phase=excluded.folder_phase,
-    title=excluded.title,
-    description=excluded.description,
-    content_category=excluded.content_category,
-    engineering_domain=excluded.engineering_domain,
     scan_date=excluded.scan_date,
-    extraction_status=excluded.extraction_status,
-    anonymized_title=excluded.anonymized_title,
-    language=excluded.language,
-    page_count=excluded.page_count,
-    word_count=excluded.word_count,
-    last_extracted=excluded.last_extracted,
-    status='active',
-    canonical_path=excluded.canonical_path
+    status='active'
 """
 
 
 @dataclass
 class Profile:
     name: str
-    root: Path
+    roots: list[Path]
     canonical_prefix: str
     db: Path
     excludes: set[str]
@@ -98,14 +80,19 @@ class Profile:
     extension_map: dict[str, str]
     defaults: dict[str, str]
 
+    @property
+    def root(self) -> Path:
+        return self.roots[0]
+
 
 def load_profile(config_path: Path, drive: str, db_override: Path | None = None) -> Profile:
     data = yaml.safe_load(config_path.read_text()) or {}
     raw = data["drives"][drive]
     classification = raw.get("classification", {})
+    roots = raw.get("roots") or [raw["root"]]
     return Profile(
         name=drive,
-        root=Path(raw["root"]),
+        roots=[Path(root) for root in roots],
         canonical_prefix=raw["canonical_prefix"].rstrip("/"),
         db=db_override or Path(raw["db"]),
         excludes=set(raw.get("excludes", [])),
@@ -140,8 +127,28 @@ def sanitize_text(value: Any) -> Any:
 
 
 def canonical_path(path: Path, profile: Profile) -> str:
-    rel = path.relative_to(profile.root)
-    return sanitize_text(profile.canonical_prefix + "/" + rel.as_posix())
+    root = root_for_path(path, profile)
+    if len(profile.roots) == 1:
+        rel = path.relative_to(root)
+        return sanitize_text(profile.canonical_prefix + "/" + rel.as_posix())
+    rel = path.relative_to(root)
+    return sanitize_text(canonical_root(root, profile) + "/" + rel.as_posix())
+
+
+def canonical_root(root: Path, profile: Profile) -> str:
+    if len(profile.roots) == 1:
+        return profile.canonical_prefix
+    return sanitize_text(profile.canonical_prefix + "/" + sanitize_text(root.name))
+
+
+def root_for_path(path: Path, profile: Profile) -> Path:
+    for root in profile.roots:
+        try:
+            path.relative_to(root)
+            return root
+        except ValueError:
+            continue
+    raise ValueError(f"{path} is outside profile roots")
 
 
 def iter_files(root: Path, excludes: set[str]) -> Iterable[Path]:
@@ -174,7 +181,7 @@ class ScanError:
 
 
 def classify(path: Path, profile: Profile) -> dict[str, str | None]:
-    rel = path.relative_to(profile.root)
+    rel = path.relative_to(root_for_path(path, profile))
     top = sanitize_text(rel.parts[0]) if rel.parts else ""
     mapped = profile.topdir_map.get(top, {})
     ext = path.suffix.lower()
@@ -189,8 +196,9 @@ def classify(path: Path, profile: Profile) -> dict[str, str | None]:
 
 def row_for_file(path: Path, profile: Profile, scan_date: str) -> tuple[Any, ...]:
     stat = path.stat()
+    root = root_for_path(path, profile)
     canonical = canonical_path(path, profile)
-    rel_parent = sanitize_text(path.parent.relative_to(profile.root).as_posix())
+    rel_parent = sanitize_text(path.parent.relative_to(root).as_posix())
     info = classify(path, profile)
     values = {
         "id": hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:32],
@@ -201,7 +209,7 @@ def row_for_file(path: Path, profile: Profile, scan_date: str) -> tuple[Any, ...
         "file_size": stat.st_size,
         "content_hash": None,
         "modified_date": datetime.fromtimestamp(stat.st_mtime, timezone.utc).isoformat(),
-        "source_root": profile.canonical_prefix,
+        "source_root": canonical_root(root, profile),
         "discipline": info["discipline"],
         "project_code": info["project_code"],
         "folder_phase": None,
@@ -222,7 +230,7 @@ def row_for_file(path: Path, profile: Profile, scan_date: str) -> tuple[Any, ...
     return tuple(sanitize_text(values[col]) for col in ASSET_COLUMNS)
 
 
-def unchanged_active(conn: sqlite3.Connection, row: tuple[Any, ...]) -> bool:
+def existing_row_state(conn: sqlite3.Connection, row: tuple[Any, ...]) -> tuple[str, bool] | None:
     file_path = row[ASSET_COLUMNS.index("file_path")]
     size = row[ASSET_COLUMNS.index("file_size")]
     mtime = row[ASSET_COLUMNS.index("modified_date")]
@@ -230,7 +238,14 @@ def unchanged_active(conn: sqlite3.Connection, row: tuple[Any, ...]) -> bool:
         "SELECT file_size, modified_date, status FROM assets WHERE file_path = ?",
         (file_path,),
     ).fetchone()
-    return bool(found and found[0] == size and found[1] == mtime and found[2] == "active")
+    if not found:
+        return None
+    return found[2], bool(found[0] == size and found[1] == mtime)
+
+
+def unchanged_active(conn: sqlite3.Connection, row: tuple[Any, ...]) -> bool:
+    state = existing_row_state(conn, row)
+    return bool(state and state[1] and state[0] == "active")
 
 
 def execute_many(conn: sqlite3.Connection, rows: list[tuple[Any, ...]]) -> None:
@@ -259,58 +274,118 @@ def set_state(conn: sqlite3.Connection, key: str, value: Any) -> None:
     )
 
 
-def metadata_pass(profile: Profile, *, batch_size: int, limit: int | None = None) -> dict[str, int]:
+def metadata_pass(
+    profile: Profile,
+    *,
+    batch_size: int,
+    limit: int | None = None,
+    incremental: bool = False,
+    prune: bool = True,
+) -> dict[str, int]:
     conn = open_db(profile.db)
     scan_date = datetime.now(timezone.utc).isoformat()
+    started_at = datetime.now(timezone.utc).isoformat()
     start = time.monotonic()
     seen: set[str] = set()
     batch: list[tuple[Any, ...]] = []
-    stats = {"files": 0, "errors": 0, "skipped": 0}
+    stats = {"files": 0, "errors": 0, "skipped": 0, "rows_added": 0, "rows_updated": 0, "rows_pruned": 0}
     try:
-        for item in iter_files(profile.root, profile.excludes):
-            if isinstance(item, ScanError):
-                stats["errors"] += 1
-                continue
-            try:
-                row = row_for_file(item, profile, scan_date)
-                seen.add(row[ASSET_COLUMNS.index("file_path")])
-                stats["files"] += 1
-                if unchanged_active(conn, row):
-                    stats["skipped"] += 1
-                else:
-                    batch.append(row)
-            except OSError:
-                stats["errors"] += 1
-            if len(batch) >= batch_size:
-                stats["errors"] += write_batch(conn, batch)
-                conn.commit()
-                set_state(conn, "files_seen", stats["files"])
-                conn.commit()
-                batch.clear()
+        for root in profile.roots:
+            for item in iter_files(root, profile.excludes):
+                if isinstance(item, ScanError):
+                    stats["errors"] += 1
+                    continue
+                try:
+                    row = row_for_file(item, profile, scan_date)
+                    seen.add(row[ASSET_COLUMNS.index("file_path")])
+                    stats["files"] += 1
+                    state = existing_row_state(conn, row)
+                    if incremental and state and state[1] and state[0] == "active":
+                        stats["skipped"] += 1
+                    else:
+                        if state is None:
+                            stats["rows_added"] += 1
+                        else:
+                            stats["rows_updated"] += 1
+                        batch.append(row)
+                except OSError:
+                    stats["errors"] += 1
+                if len(batch) >= batch_size:
+                    stats["errors"] += write_batch(conn, batch)
+                    conn.commit()
+                    set_state(conn, "files_seen", stats["files"])
+                    conn.commit()
+                    batch.clear()
+                if limit is not None and stats["files"] >= limit:
+                    break
             if limit is not None and stats["files"] >= limit:
                 break
         if batch:
             stats["errors"] += write_batch(conn, batch)
-        mark_removed(conn, profile, seen)
+        if prune:
+            stats["rows_pruned"] = mark_removed(conn, profile, seen)
         conn.execute("INSERT INTO assets_fts(assets_fts) VALUES('rebuild')")
         stats["duration_seconds"] = int(time.monotonic() - start)
+        stats["duration_s"] = stats["duration_seconds"]
+        stats["row_count"] = conn.execute("SELECT count(*) FROM assets").fetchone()[0]
         for key, value in stats.items():
             set_state(conn, key, value)
         set_state(conn, "last_scan_date", scan_date)
         conn.commit()
+        finished_at = datetime.now(timezone.utc).isoformat()
+        write_refresh_state(
+            profile,
+            {
+                "index_id": profile.name,
+                "host": os.uname().nodename if hasattr(os, "uname") else "",
+                "started_at": started_at,
+                "finished_at": finished_at,
+                "status": "failed" if stats["errors"] else "ok",
+                "row_count": stats["row_count"],
+                "rows_added": stats["rows_added"],
+                "rows_updated": stats["rows_updated"],
+                "rows_pruned": stats["rows_pruned"],
+                "duration_s": stats["duration_s"],
+                "error": f"{stats['errors']} scan error(s)" if stats["errors"] else None,
+            },
+        )
         return stats
     finally:
         conn.close()
 
 
-def mark_removed(conn: sqlite3.Connection, profile: Profile, seen: set[str]) -> None:
-    rows = conn.execute(
-        "SELECT file_path FROM assets WHERE source_root = ? AND status = 'active'",
-        (profile.canonical_prefix,),
-    ).fetchall()
-    for (file_path,) in rows:
-        if file_path not in seen:
-            conn.execute("UPDATE assets SET status = 'removed' WHERE file_path = ?", (file_path,))
+def write_refresh_state(profile: Profile, payload: dict[str, Any]) -> None:
+    state_path = profile.db.parent / "refresh-state.json"
+    tmp_path = state_path.with_suffix(state_path.suffix + ".tmp")
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    tmp_path.replace(state_path)
+
+
+def local_path_from_canonical(file_path: str, profile: Profile) -> Path:
+    for root in profile.roots:
+        source_root = canonical_root(root, profile)
+        try:
+            rel = Path(file_path).relative_to(source_root)
+        except ValueError:
+            continue
+        return root / rel
+    return profile.root / Path(file_path).relative_to(profile.canonical_prefix)
+
+
+def mark_removed(conn: sqlite3.Connection, profile: Profile, seen: set[str]) -> int:
+    removed = 0
+    for root in profile.roots:
+        source_root = canonical_root(root, profile)
+        rows = conn.execute(
+            "SELECT file_path FROM assets WHERE source_root = ? AND status = 'active'",
+            (source_root,),
+        ).fetchall()
+        for (file_path,) in rows:
+            if file_path not in seen:
+                conn.execute("UPDATE assets SET status = 'removed' WHERE file_path = ?", (file_path,))
+                removed += 1
+    return removed
 
 
 def hash_incremental(profile: Profile, batch_size: int, limit: int | None = None) -> dict[str, int]:
@@ -323,7 +398,7 @@ def hash_incremental(profile: Profile, batch_size: int, limit: int | None = None
         for (file_path,) in rows:
             if limit is not None and hashed >= limit:
                 break
-            local = profile.root / Path(file_path).relative_to(profile.canonical_prefix)
+            local = local_path_from_canonical(file_path, profile)
             try:
                 digest = compute_hash(local)
                 conn.execute("UPDATE assets SET content_hash = ? WHERE file_path = ?", (digest, file_path))
@@ -350,16 +425,18 @@ def compute_hash(path: Path) -> str:
 
 
 def count_walk(profile: Profile) -> int:
-    return sum(1 for item in iter_files(profile.root, profile.excludes) if not isinstance(item, ScanError))
+    return sum(1 for root in profile.roots for item in iter_files(root, profile.excludes) if not isinstance(item, ScanError))
 
 
 def reconcile(profile: Profile) -> int:
     conn = open_db(profile.db)
     try:
         walk_count = count_walk(profile)
+        roots = [canonical_root(root, profile) for root in profile.roots]
+        placeholders = ", ".join("?" for _ in roots)
         db_count = conn.execute(
-            "SELECT count(*) FROM assets WHERE source_root = ? AND status = 'active'",
-            (profile.canonical_prefix,),
+            f"SELECT count(*) FROM assets WHERE source_root IN ({placeholders}) AND status = 'active'",
+            roots,
         ).fetchone()[0]
     finally:
         conn.close()
@@ -375,6 +452,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--drive", required=True)
     parser.add_argument("--db", type=Path)
     parser.add_argument("--hash", choices=["none", "incremental"], default="none")
+    parser.add_argument("--incremental", action="store_true")
+    parser.add_argument("--prune", action="store_true")
     parser.add_argument("--batch-size", type=int, default=2000)
     parser.add_argument("--reconcile", action="store_true")
     parser.add_argument("--limit", type=int)
@@ -385,7 +464,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.hash == "incremental":
         print(hash_incremental(profile, args.batch_size, args.limit))
     else:
-        print(metadata_pass(profile, batch_size=args.batch_size, limit=args.limit))
+        print(metadata_pass(profile, batch_size=args.batch_size, limit=args.limit, incremental=args.incremental, prune=args.prune))
     return 0
 
 

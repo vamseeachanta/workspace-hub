@@ -45,8 +45,8 @@ source_roots:
   availability_check_ref: scripts/readiness/check-network-mounts.sh
 - source_id: research_literature_local
   document_intelligence_bucket: research_literature
-  mount_root: /mnt/ace-data/digitalmodel/docs/domains
-  symlink_note: /mnt/ace-data is a symlink to /mnt/ace (local drive /dev/sda1)
+  mount_root: /mnt/ace/digitalmodel/docs/domains
+  symlink_note: /mnt/ace-data is a symlink to /mnt/ace (local drive /dev/sda1)  # transport-path-allowed
   local_or_remote: local
   canonical_storage_policy: downloaded research literature organized by engineering
     domain (rw NFS to ace-linux-2)
@@ -77,7 +77,7 @@ source_roots:
   document_intelligence_bucket: dde_project
   mount_root: ''
   mount_root_env_var: DDE_PROJECT_REMOTE_ROOT
-  mount_root_example: /mnt/remote/<workstation>/dde
+  mount_root_example: /mnt/remote/<workstation>/dde  # transport-path-allowed
   environment_specific: true
   local_or_remote: remote
   index_artifact_ref: data/document-index/index.jsonl
@@ -96,7 +96,7 @@ source_roots:
     in resources.yaml and continue with indexed evidence only
 - source_id: dde_standards_remote
   document_intelligence_bucket: dde_standards
-  mount_root: /mnt/remote/ace-linux-2/dde/0000 O&G
+  mount_root: /mnt/dde/0000 O&G
   local_or_remote: remote
   canonical_storage_policy: legacy standards collection with unique orgs (ASME, AWS,
     NACE, ASCE, HSE, IEC, etc.) not present in /mnt/ace/O&G-Standards
@@ -113,7 +113,7 @@ source_roots:
     \ index)\n"
 - source_id: dde_literature_remote
   document_intelligence_bucket: dde_literature
-  mount_root: /mnt/remote/ace-linux-2/dde/Literature
+  mount_root: /mnt/dde/Literature
   local_or_remote: remote
   canonical_storage_policy: historical literature collection (engineering, O&G, business,
     career)
@@ -134,7 +134,7 @@ source_roots:
     '
 - source_id: dde_engineering_remote
   document_intelligence_bucket: dde_engineering
-  mount_root: /mnt/remote/ace-linux-2/dde
+  mount_root: /mnt/dde
   local_or_remote: remote
   canonical_storage_policy: legacy engineering work archive (OrcaFlex models, MATLAB
     code, project backups)
@@ -175,7 +175,7 @@ source_roots:
   mount_root: /mnt/ace/docs/literature/dde
   local_or_remote: local
   canonical_storage_policy: migrated from DDE remote drive
-  provenance_rule: local copy of /mnt/remote/ace-linux-2/dde/Literature
+  provenance_rule: local copy of /mnt/remote/ace-linux-2/dde/Literature  # transport-path-allowed
   dedup_rule: prefer local copy, DDE remote is archival
   migration_date: '2026-04-05'
 - source_id: mkt-a_codes_local

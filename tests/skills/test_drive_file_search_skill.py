@@ -43,7 +43,7 @@ MAX_WORDS = 500
 
 # Single source of truth for the #3335 --json envelope schema
 # (scripts/data/drive-index-search/search.py::_emit + adapters/base.py::as_dict).
-ENVELOPE_TOP_KEYS = {"query", "generated_at", "indexes_queried", "coverage_gaps", "results"}
+ENVELOPE_TOP_KEYS = {"query", "generated_at", "indexes_queried", "index_status", "coverage_gaps", "results"}
 RESULT_KEYS = {"canonical_path", "raw_path", "source_index", "adapter", "score", "rank_basis", "meta"}
 GAP_KEYS = {"id", "path", "reason"}
 

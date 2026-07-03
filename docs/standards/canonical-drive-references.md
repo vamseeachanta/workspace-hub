@@ -17,6 +17,19 @@ Repos, scripts, configs, docs, and agent prompts reference the canonical
 path only. The transport path (`/mnt/remote/...`) is plumbing — never
 hardcode it in ecosystem code.
 
+## Index artifacts and enforcement
+
+Drive-index live configs and small catalogs store canonical `/mnt/<drive>`
+paths only. Historical aliases remain legal only in the shared alias map at
+`config/drive-index-registry.yml` and in frozen legacy artifacts that are
+normalized at read time by `scripts/data/drive-index-search/pathnorm.py`.
+
+Run `scripts/enforcement/check-canonical-drive-paths.sh` to reject new
+transport-path aliases in tracked drive-index YAML/JSON configs. YAML lines
+that intentionally document transport plumbing may use the trailing
+`# transport-path-allowed` sentinel; JSON files must use the baseline because
+JSON has no comments.
+
 ## Drive registry
 
 | Drive | Canonical path | Owner host | Physical FS | Transport (on non-owners) | Setup script |
