@@ -1,20 +1,20 @@
 {
   "machine": "dev-secondary",
-  "last_curated_at": "2026-07-03T17:47:03+00:00",
+  "last_curated_at": "2026-07-03T23:47:02+00:00",
   "providers": {
-    "claude": 914,
+    "claude": 915,
     "codex": 353,
     "gemini": 44,
     "hermes": 106
   },
-  "sessions_24h": 98,
+  "sessions_24h": 88,
   "providers_active": [
     "claude",
     "codex",
     "gemini",
     "hermes"
   ],
-  "memory_files_changed": 1,
+  "memory_files_changed": 10,
   "digest_ref": "session-curation-state",
   "schema_version": 1
 }
