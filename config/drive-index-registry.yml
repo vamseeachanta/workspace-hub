@@ -10,10 +10,20 @@ indexes:
   - id: ace_knowledge
     adapter: sqlite_fts
     path: /mnt/ace/.ace-knowledge/index.db
-    coverage: {drives: [/mnt/ace], subtree: /mnt/ace}
+    coverage:
+      drives: [/mnt/ace]
+      roots:
+        - /mnt/ace/docs/disciplines
+        - /mnt/ace/O&G-Standards
+        - /mnt/ace/_ss_repo
     domains: [engineering, marine, drilling, cad, standards]
-    freshness: {built_at: "2026-03-26", staleness_days: 120}
-    builder: null
+    freshness:
+      built_at: "2026-03-26"
+      as_of: "2026-07-02"
+      row_count: 1188891
+      staleness_days: 14
+      state_file: /mnt/ace/.ace-knowledge/refresh-state.json
+    builder: "aceengineer-admin: aceengineer_admin.knowledge CLI (`aceengineer-admin knowledge scan-all`); refresh metadata via scripts/data/drive-index/build_drive_index.py --drive ace --incremental --prune; spec .planning/archive/modules/ace-knowledge-index-system.md"
     adapter_params:
       fts_table: assets_fts
       base_table: assets
@@ -23,7 +33,12 @@ indexes:
     adapter: sqlite_fts
     path: /mnt/dde/.dde-knowledge/index.db
     coverage: {drives: [/mnt/dde], subtree: /mnt/dde}
-    freshness: {built_at: "pending production build"}
+    freshness:
+      built_at: "pending production build"
+      as_of: "pending production build"
+      row_count: 0
+      staleness_days: 14
+      state_file: /mnt/dde/.dde-knowledge/refresh-state.json
     builder: scripts/data/drive-index/build_drive_index.py
     adapter_params:
       fts_table: assets_fts
@@ -34,7 +49,13 @@ indexes:
     adapter: sqlite_fts
     path: "/mnt/ace/O&G-Standards/_inventory.db"
     coverage: {drives: [/mnt/ace], subtree: "/mnt/ace/O&G-Standards"}
-    freshness: {built_at: "2025-12-28", staleness_days: 120}
+    freshness:
+      built_at: "2025-12-28"
+      as_of: "2025-12-28"
+      row_count: 1043616
+      staleness_days: 90
+      refresh: none
+      reason: "rebuild = full text-extraction pipeline; out of v1 - #3340"
     builder: null
     adapter_params:
       fts_table: documents_fts
@@ -46,8 +67,13 @@ indexes:
     path: /mnt/ace/_cad-index/cad-readability-index.tsv
     coverage: {drives: [/mnt/ace]}
     domains: [cad, engineering]
-    freshness: {built_at: "2026-06-26", staleness_days: 90}
-    builder: null
+    freshness:
+      built_at: "2026-06-26"
+      as_of: "2026-06-26"
+      row_count: 464170
+      staleness_days: 14
+      state_file: /mnt/ace/_cad-index/refresh-state.json
+    builder: scripts/data/drive-index/cad/
     adapter_params:
       path_column: path
       search_columns: [path, name_description, project]
@@ -58,7 +84,11 @@ indexes:
     coverage: {drives: [/mnt/ace, /mnt/dde, /mnt/local-analysis]}
     freshness:
       built_at: "2026-04-17"
-      staleness_days: 90
+      as_of: "2026-04-17"
+      row_count: 627411
+      staleness_days: 60
+      refresh: none
+      reason: "dde coverage deprecated per #3334(b); superseded for file search - #3340"
       note: "Frozen 2026-04-17; dde rows may be lost if rebuilt with stale --force source config before #3334/#3337 remediation."
     builder: scripts/data/document-index/phase-a-index.py
     adapter_params:
@@ -70,7 +100,11 @@ indexes:
     path: data/document-index/dde-literature-catalog.yaml
     coverage: {drives: [/mnt/dde]}
     domains: [literature, standards, engineering]
-    freshness: {built_at: "2026-07-02", staleness_days: 90}
+    freshness:
+      built_at: "2026-07-02"
+      as_of: "2026-07-02"
+      row_count: 87
+      staleness_days: 90
     builder: null
     adapter_params:
       items_key: auto

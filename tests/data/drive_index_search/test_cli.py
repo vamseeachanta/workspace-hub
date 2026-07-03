@@ -73,6 +73,7 @@ def test_cli_json_schema(fixture_registry):
         "query",
         "generated_at",
         "indexes_queried",
+        "index_status",
         "coverage_gaps",
         "results",
     }

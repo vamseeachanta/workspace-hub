@@ -13,6 +13,7 @@ from adapters import ADAPTER_TYPES
 from adapters.base import AdapterError, tokenize
 from merge import ranked_merge
 from registry import RegistryError, load_registry
+from staleness import compute_index_status, stale_warnings
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -36,8 +37,11 @@ def main(argv: list[str] | None = None) -> int:
 
     tokens = tokenize(args.query)
     selected = _select_indexes(registry.indexes, args.drive, args.domain, set(args.index))
+    index_status = compute_index_status(selected, registry.defaults)
+    for warning in stale_warnings(index_status):
+        print(warning, file=sys.stderr)
     if not selected:
-        _emit(args.query, [], [], [], args.as_json)
+        _emit(args.query, [], [], [], args.as_json, index_status)
         return 0
 
     all_results = []
@@ -57,7 +61,7 @@ def main(argv: list[str] | None = None) -> int:
     for result in all_results:
         result.meta.setdefault("query_tokens", tokens)
     merged = ranked_merge(all_results, registry.alias_map, args.limit)
-    _emit(args.query, [index.id for index in selected], gaps, merged, args.as_json)
+    _emit(args.query, [index.id for index in selected], gaps, merged, args.as_json, index_status)
     if selected and reachable_count == 0:
         return 2
     return 0
@@ -100,11 +104,12 @@ def _run_with_timeout(index, adapter, tokens, limit, timeout):
     return output.get_nowait()
 
 
-def _emit(query: str, indexes_queried: list[str], gaps: list[dict], results, as_json: bool) -> None:
+def _emit(query: str, indexes_queried: list[str], gaps: list[dict], results, as_json: bool, index_status: list[dict] | None = None) -> None:
     payload = {
         "query": query,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "indexes_queried": indexes_queried,
+        "index_status": index_status or [],
         "coverage_gaps": gaps,
         "results": [result.as_dict() for result in results],
     }

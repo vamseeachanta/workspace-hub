@@ -8,7 +8,12 @@
     "we did before",
     "previous project",
     "past project",
-    "have we done this before"
+    "have we done this before",
+    "do we have files for",
+    "do we have examples of",
+    "do we have precedent for",
+    "prior project",
+    "past project files"
   ],
   "tier2_intent_phrases": [
     "do we have",
@@ -55,7 +60,7 @@
   "skill_ref": "drive-file-search (#3338)",
   "precomputed": {
     "_note": "Authoring-time ERE-escaped alternation joins of the lists above (plan D4/F3: zero runtime joins). Keep in sync with the lists — test_map_precomputed_consistency pins list<->join equality.",
-    "tier1_re": "similar past work|search the drives|prior project files|like we did before|we did before|previous project|past project|have we done this before",
+    "tier1_re": "similar past work|search the drives|prior project files|like we did before|we did before|previous project|past project|have we done this before|do we have files for|do we have examples of|do we have precedent for|prior project|past project files",
     "tier2_re": "do we have|reuse|precedent|similar work",
     "artifact_re": "drawing|drawings|report|reports|spec|specs|template|example|model|models|calc|calcs|deck|dataset|document|documents|file|files",
     "data_ask_re": "do we have data|data for|data on",

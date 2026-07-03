@@ -1,5 +1,47 @@
 version: 1
 drives:
+  ace:
+    roots:
+      - /mnt/ace/docs/disciplines
+      - /mnt/ace/O&G-Standards
+      - /mnt/ace/_ss_repo
+    canonical_prefix: /mnt/ace
+    db: /mnt/ace/.ace-knowledge/index.db
+    excludes:
+      - .ace-knowledge
+      - _cad-index
+      - $RECYCLE.BIN
+      - System Volume Information
+    classification:
+      defaults:
+        asset_type: file
+        discipline: general
+        engineering_domain: general
+        content_category: file
+      extensions:
+        .pdf: document
+        .doc: document
+        .docx: document
+        .xls: spreadsheet
+        .xlsx: spreadsheet
+        .csv: spreadsheet
+        .ppt: presentation
+        .pptx: presentation
+        .txt: text
+        .md: text
+        .py: code
+        .m: code
+        .inp: analysis_input
+        .dat: data
+        .mac: code
+        .f: code
+        .for: code
+        .bas: code
+        .dwg: cad
+        .dxf: cad
+        .step: cad
+        .stp: cad
+        .sldprt: cad
   dde:
     root: /mnt/dde
     canonical_prefix: /mnt/dde
