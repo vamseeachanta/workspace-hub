@@ -29,6 +29,16 @@
   - `/mnt/local-analysis/assethold/` — separate git repo
   - `/mnt/local-analysis/aceengineer-strategy/` — private GTM strategy repo (sibling, not nested)
 
+## Canonical Drives & File Search
+
+- **`/mnt/ace` and `/mnt/dde` resolve on EVERY machine** — physical on the owner
+  (ace→ace-linux-1, dde→ace-linux-2), NFS symlink elsewhere. Always reference the
+  canonical `/mnt/<drive>` path, never a transport path like `/mnt/remote/<owner>/<drive>`.
+  Convention: `docs/standards/canonical-drive-references.md`; aliases in `config/drive-index-registry.yml`.
+- **Find related files across the drives** via the `drive-file-search` skill, or directly:
+  `python3 scripts/data/drive-index-search/search.py "<query>" [--index dde_knowledge|ace_knowledge] [--json]`.
+  Queries the registered SQLite-FTS drive indexes (dde ≈1.35M files, ace ≈1.19M).
+
 ## Windows Path Conventions
 
 - MINGW64 bash: paths use `/d/workspace-hub/` (not `D:\workspace-hub`)
