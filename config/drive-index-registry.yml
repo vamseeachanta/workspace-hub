@@ -34,9 +34,9 @@ indexes:
     path: /mnt/dde/.dde-knowledge/index.db
     coverage: {drives: [/mnt/dde], subtree: /mnt/dde}
     freshness:
-      built_at: "pending production build"
-      as_of: "pending production build"
-      row_count: 0
+      built_at: "2026-07-02"
+      as_of: "2026-07-03"
+      row_count: 1346317
       staleness_days: 14
       state_file: /mnt/dde/.dde-knowledge/refresh-state.json
     builder: scripts/data/drive-index/build_drive_index.py
