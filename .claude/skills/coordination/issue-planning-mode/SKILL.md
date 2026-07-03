@@ -34,7 +34,7 @@ Canonical execution method: non-trivial work must be classified up front as `sin
 
 1. Read the full issue body — scope, acceptance criteria, references
 2. Classify complexity: T1 (trivial), T2 (standard), T3 (complex)
-3. Search existing code, standards, documents, and prior plans before writing
+3. Search existing code, standards, documents, and prior plans before writing. Universal Resource-Intel source (ALL issues): the drive-file index — run the drive-file-search skill or `scripts/data/drive-index-search/search.py "<terms>" --json --caller plan-resource-intel`, cite hits under "Documents consulted" (de-id per `docs/guides/drive-file-search-playbook.md`), or state "no relevant drive files"
 4. Classify execution mode for the next stage: `single-lane`, `parallel-readonly`, or `parallel-worktree`. For planning, default to `parallel-readonly` evidence gathering when the issue is broad enough to benefit; the main orchestrator still owns the canonical plan.
 
 ### Step 1.5: Reproduce the alleged failure (verify-against-repo-state)

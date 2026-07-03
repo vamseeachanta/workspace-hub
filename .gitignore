@@ -605,3 +605,8 @@ public/
 
 # #3298 session-review payloads are full-fidelity (may name clients) — keep local
 docs/reports/sessions/payloads/
+
+# #3340 drive-index-search metrics: raw invocation/nudge JSONL is per-machine,
+# local-only (session ids + query hashes); committed counts-only weekly
+# aggregates live in data/drive-index-search/metrics/weekly/ (NOT ignored)
+data/drive-index-search/metrics/*.jsonl
