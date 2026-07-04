@@ -1161,3 +1161,17 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#790
+    title: 'feat(circle): generalize the live engineering bridge to the RISER asset (#768 pattern)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/790
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:reports
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

@@ -6451,8 +6451,8 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - status:plan-review
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -6791,8 +6791,8 @@ cards:
       - feature
       - cat:engineering
       - domain:naval-architecture
+      - status:working
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -6871,10 +6871,10 @@ cards:
     title: 'twin B: ML residual-correction seam — physics baseline + learned correction (measured − predicted)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1374
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
-      - status:working
+      - status:done
       - status:plan-approved
       - lane:claude
     initial_status: triage
@@ -6948,7 +6948,7 @@ cards:
     title: 'capabilities page: Fatigue section — S-N curves, Efthymiou SCF, rainflow, crack growth'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1382
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - status:needs-plan
@@ -6960,7 +6960,7 @@ cards:
     title: 'capabilities page: VIV screening section — DNV-RP-F105 vortex-induced vibration'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1383
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - status:needs-plan
@@ -6984,7 +6984,7 @@ cards:
     title: 'capabilities page: Production engineering section — nodal analysis, IPR/VLP, ESP'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1385
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - status:needs-plan
@@ -6996,7 +6996,7 @@ cards:
     title: 'capabilities page: Drilling engineering section — pore pressure, swab/surge, kick, ROP'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1386
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - status:needs-plan
@@ -7008,7 +7008,7 @@ cards:
     title: 'capabilities page: Field development section — concept screening, CAPEX/OPEX, NPV'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1387
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - status:needs-plan

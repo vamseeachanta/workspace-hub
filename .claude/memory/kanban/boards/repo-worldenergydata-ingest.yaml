@@ -937,13 +937,13 @@ cards:
     title: 'feat(norway): Sodir end-to-end pilot — refresh → normalize → concept screening → FDAS economics → report'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/716
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
       - cat:engineering
       - cat:data
-      - status:plan-approved
+      - status:done
       - domain:ingest
       - lane:codex
     initial_status: triage
