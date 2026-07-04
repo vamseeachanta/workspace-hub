@@ -49,6 +49,7 @@ class ReconcileResult:
     changed_files: list[Path]
     oversized: list[tuple[str, int]] = field(default_factory=list)
     count_drift: list[tuple[str, int, int]] = field(default_factory=list)
+    skipped: list[str] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -434,6 +435,17 @@ def unified_diff(before: dict[Path, str], after: dict[Path, str], root: Path) ->
     return "".join(chunks)
 
 
+def _is_unresolvable_repo_error(exc: Exception) -> bool:
+    """True only for the 'repo renamed/removed/no access' fetch failure.
+
+    Scoped narrowly to the GraphQL "Could not resolve to a Repository" message
+    so that transient failures (rate limit, network, auth) are NOT swallowed —
+    those must still raise and fail the reconcile rather than silently drop a
+    repo's board. See #3380.
+    """
+    return "could not resolve to a repository" in str(exc).lower()
+
+
 def build_live_cards(
     repos: list[str],
     issue_fetcher: Callable[[str], list[dict]],
@@ -443,10 +455,26 @@ def build_live_cards(
     existing_counts: dict[str, int],
     allow_empty_repos: set[str],
     allow_shrink_repos: set[str],
-) -> dict[str, tuple[Path, dict]]:
+) -> tuple[dict[str, tuple[Path, dict]], list[str]]:
     live = {}
+    skipped: list[str] = []
     for repo in repos:
-        issues = issue_fetcher(repo)
+        try:
+            issues = issue_fetcher(repo)
+        except RuntimeError as exc:
+            if _is_unresolvable_repo_error(exc):
+                # Repo was renamed/removed (or the token lost access). Skip it and
+                # leave its board untouched — do NOT let one dead repo wedge the
+                # whole reconcile. It is excluded from the active-rebuild set by
+                # the caller so its existing cards are preserved verbatim. #3380
+                print(
+                    f"WARNING: skipping {repo}: repository not resolvable "
+                    "(renamed/removed/no access)",
+                    file=sys.stderr,
+                )
+                skipped.append(repo)
+                continue
+            raise
         existing_count = existing_counts.get(repo, 0)
         if len(issues) < existing_count:
             if not issues and repo in allow_empty_repos:
@@ -470,7 +498,7 @@ def build_live_cards(
             card = card_for_issue(repo, issue, existing.get(key))
             board = target_board(repo, card["gh_labels"], repo_boards, domain_boards)
             live[key] = (board, card)
-    return live
+    return live, skipped
 
 
 def rebuild_boards(
@@ -525,7 +553,7 @@ def reconcile_kanban(
     board_data = {path: load_yaml(path) for path in files}
     before = {path: path.read_text(encoding="utf-8") for path in files}
     existing = existing_cards(board_data, files)
-    live = build_live_cards(
+    live, skipped = build_live_cards(
         repos,
         issue_fetcher,
         repo_boards,
@@ -535,7 +563,12 @@ def reconcile_kanban(
         allow_empty_repos or set(),
         allow_shrink_repos or set(),
     )
-    rebuilt = rebuild_boards(board_data, files, set(repos), live)
+    # A skipped (unresolvable) repo must be EXCLUDED from the active-rebuild set,
+    # otherwise rebuild_boards would drop its existing github_issue cards (they are
+    # absent from `live`) and silently empty its board. Excluding it preserves the
+    # board verbatim. #3380
+    active_for_rebuild = set(repos) - set(skipped)
+    rebuilt = rebuild_boards(board_data, files, active_for_rebuild, live)
     after = {}
     for path in files:
         after[path] = before[path] if rebuilt[path] == board_data[path] else dump_yaml(rebuilt[path])
@@ -550,6 +583,7 @@ def reconcile_kanban(
         changed_files=changed_files,
         oversized=board_size_report(rebuilt, limit=size_limit),
         count_drift=card_count_drift(rebuilt, entries),
+        skipped=skipped,
     )
 
 
@@ -615,6 +649,15 @@ def main(argv: list[str] | None = None) -> int:
         print("kanban reconcile: no changes")
     if args.dry_run:
         print("DRY-RUN: no files written")
+
+    # Surface unresolvable repos that were skipped (renamed/removed/no access).
+    # Informational — the run still succeeds for every resolvable repo. #3380
+    if result.skipped:
+        print(
+            f"\nNOTE: skipped {len(result.skipped)} unresolvable repo(s): "
+            f"{', '.join(result.skipped)}",
+            file=sys.stderr,
+        )
 
     # On-demand card_count recompute (writes manifest.yaml; skipped in dry-run).
     counts_fixed = False
