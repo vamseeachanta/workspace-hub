@@ -6451,7 +6451,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
-      - status:plan-review
+      - status:working
       - lane:claude
     initial_status: triage
     priority: 0
@@ -6746,8 +6746,8 @@ cards:
       - feature
       - cat:engineering
       - domain:naval-architecture
+      - status:working
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []

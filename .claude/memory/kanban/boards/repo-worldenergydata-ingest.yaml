@@ -977,7 +977,7 @@ cards:
       - cat:engineering
       - priority:medium
       - cat:data
-      - status:plan-review
+      - status:plan-approved
       - domain:ingest
       - lane:codex
     initial_status: triage
