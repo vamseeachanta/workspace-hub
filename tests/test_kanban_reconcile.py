@@ -671,3 +671,139 @@ def test_workflow_contract_keeps_phase_2_cron_active_and_push_retry_bounded():
     assert "non-fast-forward" in run
     assert "fetch first" in run
     assert "git pull --rebase" not in run
+
+
+# --- #3380: an unresolvable repo (renamed/removed) must be skipped, not crash ---
+
+UNRESOLVABLE_MSG = (
+    "gh api graphql failed for vamseeachanta/gone-repo (cursor=None): "
+    "GraphQL: Could not resolve to a Repository with the name "
+    "'vamseeachanta/gone-repo'. (repository)"
+)
+
+
+def seed_two_repo_kanban(root: Path) -> Path:
+    """Manifest with two repo-tier boards — one resolvable, one renamed away."""
+    kanban = root / ".claude/memory/kanban"
+    write_yaml(
+        kanban / "manifest.yaml",
+        {
+            "manifest": {
+                "boards": [
+                    {
+                        "slug": "repo-workspace-hub",
+                        "tier": "repo",
+                        "repo": "vamseeachanta/workspace-hub",
+                        "file": "boards/repo-workspace-hub.yaml",
+                    },
+                    {
+                        "slug": "repo-gone",
+                        "tier": "repo",
+                        "repo": "vamseeachanta/gone-repo",
+                        "file": "boards/repo-gone.yaml",
+                    },
+                ]
+            }
+        },
+    )
+    write_yaml(
+        kanban / "boards/repo-workspace-hub.yaml",
+        {
+            "board": {
+                "slug": "repo-workspace-hub",
+                "tier": "repo",
+                "repo": "vamseeachanta/workspace-hub",
+            },
+            "cards": [],
+        },
+    )
+    write_yaml(
+        kanban / "boards/repo-gone.yaml",
+        {
+            "board": {
+                "slug": "repo-gone",
+                "tier": "repo",
+                "repo": "vamseeachanta/gone-repo",
+            },
+            "cards": [
+                {
+                    "idempotency_key": "gh:vamseeachanta/gone-repo#1",
+                    "title": "card on unresolvable repo must survive the skip",
+                    "source": "github_issue",
+                    "source_url": "https://github.com/vamseeachanta/gone-repo/issues/1",
+                    "gh_state": "open",
+                    "gh_labels": [],
+                    "initial_status": "triage",
+                    "priority": 0,
+                }
+            ],
+        },
+    )
+    return kanban
+
+
+def test_reconcile_skips_unresolvable_repo_and_leaves_board_untouched(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+):
+    reconcile = load_reconcile()
+    kanban = seed_two_repo_kanban(tmp_path)
+    gone_board = kanban / "boards/repo-gone.yaml"
+    before = gone_board.read_bytes()
+
+    def fetcher(repo: str) -> list[dict]:
+        if repo == "vamseeachanta/gone-repo":
+            raise RuntimeError(UNRESOLVABLE_MSG)
+        return [issue(2802, "fresh issue")]
+
+    result = reconcile.reconcile_kanban(kanban, issue_fetcher=fetcher, dry_run=False)
+
+    assert result.skipped == ["vamseeachanta/gone-repo"]
+    err = capsys.readouterr().err
+    assert "WARNING: skipping vamseeachanta/gone-repo" in err
+    assert "not resolvable" in err
+    # the skipped repo's board is untouched — its cards survive
+    assert gone_board.read_bytes() == before
+    # the resolvable repo still reconciled
+    keys = [
+        card["idempotency_key"]
+        for card in read_yaml(kanban / "boards/repo-workspace-hub.yaml")["cards"]
+    ]
+    assert keys == ["gh:vamseeachanta/workspace-hub#2802"]
+
+
+def test_reconcile_other_fetch_errors_still_raise(tmp_path: Path):
+    # Only the resolve-failure class is skippable; rate limit / network / auth
+    # errors must still fail the reconcile (no silent partial state).
+    reconcile = load_reconcile()
+    kanban = seed_two_repo_kanban(tmp_path)
+
+    def fetcher(repo: str) -> list[dict]:
+        if repo == "vamseeachanta/gone-repo":
+            raise RuntimeError(
+                "gh api graphql failed for vamseeachanta/gone-repo "
+                "(cursor=None): API rate limit exceeded"
+            )
+        return [issue(2802, "fresh issue")]
+
+    with pytest.raises(RuntimeError, match="rate limit"):
+        reconcile.reconcile_kanban(kanban, issue_fetcher=fetcher, dry_run=True)
+
+
+def test_main_exits_zero_and_prints_skip_summary(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    reconcile = load_reconcile()
+    kanban = seed_two_repo_kanban(tmp_path)
+
+    def fake_fetch(repo: str, *, page_size: int = 100, runner=None) -> list[dict]:
+        if repo == "vamseeachanta/gone-repo":
+            raise RuntimeError(UNRESOLVABLE_MSG)
+        return [issue(2802, "fresh issue")]
+
+    monkeypatch.setattr(reconcile, "fetch_repo_issues", fake_fetch)
+
+    rc = reconcile.main(["--kanban-root", str(kanban)])
+
+    assert rc == 0
+    err = capsys.readouterr().err
+    assert "skipped 1 unresolvable repo(s): vamseeachanta/gone-repo" in err
