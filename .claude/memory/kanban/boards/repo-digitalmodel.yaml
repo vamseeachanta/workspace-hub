@@ -6448,10 +6448,10 @@ cards:
     title: 'envelopes F: capabilities page — drilling riser operating-envelope explorer'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1284
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
-      - status:working
+      - status:done
       - lane:claude
     initial_status: triage
     priority: 0
@@ -6885,10 +6885,10 @@ cards:
     title: 'twin C: DP drift-off dynamics — watch-circle under thruster loss'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1375
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
-      - status:working
+      - status:done
       - lane:claude
     initial_status: triage
     priority: 0
@@ -6901,8 +6901,8 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - status:working
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -7020,7 +7020,7 @@ cards:
     title: 'Wall-thickness & cathodic-protection live explorers + 1-pager PDFs (follow-on to #1380)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1388
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - status:needs-plan

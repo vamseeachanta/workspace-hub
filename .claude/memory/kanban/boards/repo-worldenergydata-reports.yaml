@@ -881,9 +881,9 @@ cards:
       - cat:engineering
       - priority:medium
       - cat:data
+      - status:plan-approved
       - domain:reports
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []

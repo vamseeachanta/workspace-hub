@@ -2915,18 +2915,6 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#806
-    title: 'feat(spain): live CORES XLSX download lane (crude oil + natural gas)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/806
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:data
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#807
     title: 'feat(spain): per-field CORES crude density / API table (tonnes→bbl)'
     source: github_issue

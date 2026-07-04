@@ -22159,12 +22159,11 @@ cards:
     title: 'fix(ci): Kanban Reconcile workflow failing on latest runs — board/issue state drifting'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3380
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:high
       - status:plan-approved
       - status:needs-plan
-      - gate:completeness
       - lane:codex
     initial_status: triage
     priority: 1

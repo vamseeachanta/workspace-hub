@@ -994,9 +994,9 @@ cards:
       - cat:engineering
       - priority:medium
       - cat:data
+      - status:plan-review
       - domain:ingest
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1225,6 +1225,21 @@ cards:
       - domain:ingest
       - lane:codex
       - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#806
+    title: 'feat(spain): live CORES XLSX download lane (crude oil + natural gas)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/806
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - status:plan-approved
+      - domain:ingest
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
