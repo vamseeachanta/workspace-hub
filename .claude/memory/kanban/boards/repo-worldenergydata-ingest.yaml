@@ -971,13 +971,13 @@ cards:
     title: 'feat(brazil_anp): Brazil ANP end-to-end chain — production/wells → field development analysis'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/718
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
       - priority:medium
       - cat:data
-      - status:plan-approved
+      - status:done
       - domain:ingest
       - lane:codex
     initial_status: triage
@@ -1158,9 +1158,9 @@ cards:
     gh_labels:
       - enhancement
       - cat:data
+      - status:plan-approved
       - domain:ingest
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []

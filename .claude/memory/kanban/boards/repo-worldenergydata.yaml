@@ -2522,12 +2522,13 @@ cards:
     title: 'fix(brazil_anp): scheduler refresh endpoint returns 404 for configured 2025 semester query'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/459
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - bug
       - priority:high
       - cat:data
       - cat:automation
+      - status:done
       - lane:claude
     initial_status: triage
     priority: 1
@@ -2897,6 +2898,79 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/780
     gh_state: open
     gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#802
+    title: "fix(ci): 'Changelog Check' is required but skips on chore/ci PRs → dependabot PRs permanently unmergeable"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/802
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#806
+    title: 'feat(spain): live CORES XLSX download lane (crude oil + natural gas)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/806
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#807
+    title: 'feat(spain): per-field CORES crude density / API table (tonnes→bbl)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/807
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#808
+    title: 'feat(spain): model CORES gas revenue in the reference chain'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/808
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#809
+    title: 'feat(spain): SpainCoresRefreshJob scheduler job'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/809
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#810
+    title: 'feat(spain): CORES field-development HTML report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/810
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
     initial_status: triage
     priority: 0
     gh_assignees: []
