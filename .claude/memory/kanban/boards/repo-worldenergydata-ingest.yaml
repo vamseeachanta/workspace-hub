@@ -920,7 +920,7 @@ cards:
     title: 'feat(adapters): F2 — country adapter contract (FDAS adapter + FieldConcept normalizer + conformance suite)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/715
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -943,9 +943,9 @@ cards:
       - priority:high
       - cat:engineering
       - cat:data
+      - status:plan-approved
       - domain:ingest
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -960,9 +960,9 @@ cards:
       - cat:engineering
       - priority:medium
       - cat:data
+      - status:plan-approved
       - domain:ingest
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1123,12 +1123,12 @@ cards:
     title: 'feat(colorado_ecmc): ingest FacilityDetail Form 5A initial-test pressures'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/751
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
       - cat:data
-      - status:plan-approved
+      - status:done
       - domain:ingest
       - lane:codex
     initial_status: triage
@@ -1160,6 +1160,36 @@ cards:
       - cat:data
       - domain:ingest
       - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#783
+    title: 'feat(fdas): per-country wells/drilling-timeline source (F2 deferred — DataVic has spud+water-depth)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/783
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#784
+    title: 'refactor(fdas): reconcile bsee_adapter MONTHLY_*_VOLUME -> _BBL/_MCF (public API)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/784
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:ingest
+      - lane:claude
       - status:needs-plan
     initial_status: triage
     priority: 0

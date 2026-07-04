@@ -6435,10 +6435,10 @@ cards:
     title: 'envelopes E: drilling riser operability ATLAS — precomputed envelopes'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1283
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
-      - status:working
+      - status:done
       - lane:claude
     initial_status: triage
     priority: 0
@@ -6776,8 +6776,8 @@ cards:
       - feature
       - cat:engineering
       - domain:naval-architecture
+      - status:working
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -6835,8 +6835,8 @@ cards:
       - feature
       - cat:engineering
       - domain:naval-architecture
+      - status:working
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -6874,8 +6874,9 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - status:working
+      - status:plan-approved
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -6935,7 +6936,7 @@ cards:
     title: 'capabilities page: Naval architecture section — stability, resistance, scantlings, hull girder'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1381
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - status:needs-plan
@@ -6971,7 +6972,7 @@ cards:
     title: 'capabilities page: Geotechnical section — piles, anchors, mudmats, scour (API RP 2GEO)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1384
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - status:needs-plan
