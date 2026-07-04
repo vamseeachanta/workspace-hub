@@ -105,3 +105,15 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#885
+    title: orcaflex-strength-post template can't post-process itself — derive summary_settings/RangeGraph from high-level flags
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/885
+    gh_state: open
+    gh_labels:
+      - domain:solver
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

@@ -594,6 +594,7 @@ cards:
       - cat:harness
       - domain:workflow
       - machine:dev-primary
+      - status:plan-review
       - dispatch:ready
       - gate:completeness
       - lane:claude
@@ -873,3 +874,16 @@ cards:
       Audit focus:
 
       - Was `issue-planning-mode` used for all issues?'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3237
+    title: 'docs(workflow): canonical lifecycle for a typical GitHub issue — plan → review → implement → HTML artifact → live link'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3237
+    gh_state: open
+    gh_labels:
+      - cat:documentation
+      - domain:workflow
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

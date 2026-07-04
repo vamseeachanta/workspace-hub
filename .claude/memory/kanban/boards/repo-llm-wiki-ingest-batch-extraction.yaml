@@ -317,9 +317,10 @@ cards:
     title: 'Re-parse candidates + queue duplicate-row provenance (from #135 vision batches)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/291
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:high
+      - status:plan-approved
       - domain:ingest-batch-extraction
       - lane:codex
     initial_status: triage

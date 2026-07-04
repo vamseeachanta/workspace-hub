@@ -594,3 +594,210 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#489
+    title: 'feat(provenance): always-on data-vintage stamp on grounding cards + close HSE refresh provenance gap (#486 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/489
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - domain:quality
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#493
+    title: "Lower Tertiary 3D well-path: select Julia wells by lease (G20351), not 'JU' name-prefix — DC101↔JU101 API collision"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/493
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:data
+      - domain:quality
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#496
+    title: 'ci: extend module-scoped PR gate to all modules + skip non-code paths (parity with digitalmodel)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/496
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:automation
+      - status:plan-review
+      - domain:quality
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#523
+    title: 'fix(ci): hse scheduler/MODULE_INDEX drift (quarantined in PR gate)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/523
+    gh_state: closed
+    gh_labels:
+      - domain:quality
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#524
+    title: 'fix(ci): repo_structure contract flags site_assets/*threejs.html (quarantined in PR gate)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/524
+    gh_state: closed
+    gh_labels:
+      - domain:quality
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#526
+    title: 'epic: modular per-domain CI/CD for faster, isolated deployments'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/526
+    gh_state: open
+    gh_labels:
+      - status:plan-approved
+      - domain:quality
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#527
+    title: 'P1: domain-matrix PR gate (worldenergydata)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/527
+    gh_state: closed
+    gh_labels:
+      - domain:quality
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#529
+    title: 'P3: independent per-domain package artifacts (design spike + split)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/529
+    gh_state: open
+    gh_labels:
+      - domain:quality
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#530
+    title: 'P4: extract reusable domain-matrix workflow + template to key repos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/530
+    gh_state: open
+    gh_labels:
+      - domain:quality
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#558
+    title: 'test: well_production_dashboard lazy_loading tests use fragile src.-prefixed patch (quarantined)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/558
+    gh_state: closed
+    gh_labels:
+      - domain:quality
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#560
+    title: 'perf: test_financial_calculation_performance wall-clock budget flaky on CI (#529)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/560
+    gh_state: open
+    gh_labels:
+      - domain:quality
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#561
+    title: 'src: worldenergydata package-level lazy attribute access for bsee/fdas (TestPackageLevelImports) (#529)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/561
+    gh_state: closed
+    gh_labels:
+      - domain:quality
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#589
+    title: 'chore(quality): data-quality guardrail for the intervention DB (WAR null depth, registry undercount, subsea ambiguity) (#582 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/589
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - domain:quality
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#599
+    title: 'chore(quality): vessel-fleet dedup + provenance guardrail (#591 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/599
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - domain:quality
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#628
+    title: 'feat(analysis): RLWI / dedicated-intervention-fleet WAR coverage probe (B)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/628
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - domain:quality
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#747
+    title: 'fix(data): reconcile Lower-Tertiary field YAML gate dates + operators vs public record'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/747
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:data
+      - domain:quality
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

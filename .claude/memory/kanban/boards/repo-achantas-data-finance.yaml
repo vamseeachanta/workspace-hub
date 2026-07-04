@@ -202,3 +202,16 @@ cards:
       ### Entity
 
       - Taxpayers: Vamsee Achanta & Sabitha Deepthimahanti (Married Filing Jointly)'
+  - idempotency_key: gh:vamseeachanta/achantas-data#142
+    title: Interactive HTML portfolio dashboard (Phase 0 research → build) — capital at work, cash on sidelines, switchable charts
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/142
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:finance
+      - priority:medium
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

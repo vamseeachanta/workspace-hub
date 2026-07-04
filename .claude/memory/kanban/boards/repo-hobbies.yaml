@@ -19,3 +19,13 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/hobbies#3
+    title: 'Pages demo: family knowledge-base hub (gardening guides, 50 golden rules, team assets)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/hobbies/issues/3
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

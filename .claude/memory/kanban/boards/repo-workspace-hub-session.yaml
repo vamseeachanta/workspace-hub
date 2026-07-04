@@ -1391,3 +1391,63 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3298
+    title: 'feat(session): per-session live-link HTML work-review doc (human-facing companion to #2110)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3298
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:session
+      - agent:claude
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3306
+    title: 'feat(session): make the live-link review a lean reference layer (artifacts in canonical homes) — refines #3298'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3306
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:session
+      - agent:claude
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3311
+    title: 'feat(session): auto-derive the lean reference payload from git footprint (--from-git) — emit side of #3306'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3311
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:session
+      - agent:claude
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3316
+    title: 'feat(session): SessionEnd hook auto-emits the live-link review (closes the loop) — #2110 hook slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3316
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:session
+      - agent:claude
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

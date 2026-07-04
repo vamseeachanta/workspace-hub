@@ -401,3 +401,16 @@ cards:
       All test paths verified at digitalmodel HEAD `08e9c333`. Total covered: **11 failures across 4 clusters**.
 
       ---'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#833
+    title: 'Parametric: wire refresh --check into CI (drift gate)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/833
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:qa
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

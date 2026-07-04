@@ -298,7 +298,7 @@ cards:
 
       - analysis/code/model/reporting artifacts -> `assethold`'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2539
-    title: 'chore(client-b): sanity-check and migrate useful code/data/analysis to Tier-1 repos'
+    title: 'chore(rock-oil-field): sanity-check and migrate useful code/data/analysis to Tier-1 repos'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2539
     gh_state: open
@@ -320,7 +320,7 @@ cards:
 
       ## Scope'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2545
-    title: 'chore(client-d): extract useful installation-project information and archive or retire repo'
+    title: 'chore(saipem): extract useful installation-project information and archive or retire repo'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2545
     gh_state: open
@@ -342,7 +342,7 @@ cards:
 
       ## Scope'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2547
-    title: 'chore(client-f): extract useful client information and archive repo'
+    title: 'chore(seanation): extract useful client information and archive repo'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2547
     gh_state: open
@@ -386,7 +386,7 @@ cards:
 
       ## Scope'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2784
-    title: Confirm and delete mkt-a-freeze-work snapshot
+    title: Confirm and delete acma-projects-freeze-work snapshot
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2784
     gh_state: open

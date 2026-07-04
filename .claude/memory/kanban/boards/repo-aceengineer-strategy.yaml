@@ -828,7 +828,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#69
-    title: lng-a (Mo Dessoukey) prospective-client follow-up — post-demo 2026-06-05 outcome capture + BD next steps
+    title: Doris (Mo Dessoukey) prospective-client follow-up — post-demo 2026-06-05 outcome capture + BD next steps
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/69
     gh_state: open
@@ -851,6 +851,374 @@ cards:
       - strategy
       - domain:commercial
       - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#76
+    title: Deckhand onboarding CTA — copy, brand, and invite/QR assets (deckhand#405/#409)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/76
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#77
+    title: '[Epic] GTM, SEO & funding/acquisition positioning 2026-2027'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/77
+    gh_state: closed
+    gh_labels:
+      - priority:P1
+      - epic
+      - strategy
+      - domain:gtm
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#78
+    title: S1 — Competitive narrative vs Prometheus + category definition
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/78
+    gh_state: closed
+    gh_labels:
+      - priority:P1
+      - strategy
+      - domain:gtm
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#79
+    title: S2 — SEO keyword & topic-cluster strategy
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/79
+    gh_state: closed
+    gh_labels:
+      - priority:P1
+      - strategy
+      - domain:gtm
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#80
+    title: S3 — Fundraising / acquisition thesis + data-room outline
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/80
+    gh_state: closed
+    gh_labels:
+      - priority:P2
+      - strategy
+      - domain:commercial
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#81
+    title: S4 — Target acquirer / investor map
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/81
+    gh_state: closed
+    gh_labels:
+      - priority:P2
+      - strategy
+      - domain:commercial
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#82
+    title: S5 — Client-targeting campaign tied to relaunch + Open Deck
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/82
+    gh_state: closed
+    gh_labels:
+      - priority:P1
+      - strategy
+      - domain:gtm
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#83
+    title: S6 — PR / launch plan for the relaunch
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/83
+    gh_state: closed
+    gh_labels:
+      - priority:P2
+      - strategy
+      - domain:gtm
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#84
+    title: '[Epic] CAD & Manufacturing market pitch — productize the live channels into demos, proofs, and outreach'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/84
+    gh_state: open
+    gh_labels:
+      - epic
+      - domain:gtm
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#85
+    title: Positioning & ICP + pitch narrative for CAD/manufacturing firms
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/85
+    gh_state: open
+    gh_labels:
+      - domain:gtm
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#86
+    title: Outreach pitch package (deck + pamphlet) for CAD/manufacturing firms
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/86
+    gh_state: open
+    gh_labels:
+      - domain:gtm
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#89
+    title: 'Pages demo: agent-orchestrated GTM operating system (methodology, synthetic pipeline)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/89
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#92
+    title: FPSO market intelligence — 40B CAPEX / Brazil-led; supplier landscape (BD signal)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/92
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#94
+    title: '[Epic] Deckhand = the API for real-world work — reposition every surface around the API call'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/94
+    gh_state: open
+    gh_labels:
+      - epic
+      - strategy
+      - domain:gtm
+      - domain:product
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#101
+    title: Open-Deck Wave 0 launch — operator-only blockers
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/101
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#102
+    title: '[epic] Client outreach email drafting via Gmail (Open-Deck Wave 0+)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/102
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#103
+    title: Open-Deck email template library (canary/warm/network/cold/referral)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/103
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#104
+    title: 'Draft-generation pipeline: action_queue -> personalized Gmail drafts (create_draft, never-send)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/104
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#105
+    title: 'Champion personalization data (prior-work hook per warm account; discipline -> Deck #1 piece)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/105
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#106
+    title: Pre-send HITL guardrail + checklist for client drafts
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/106
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#107
+    title: Wave 0 canary draft batch (Subsea7 / Spire / Frontier Deepwater)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/107
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#116
+    title: 'EPIC: Tug Performance & Safety Analysis — service one-pager & GTM'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/116
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#117
+    title: 'Finalize tug brochure: branding, contact, firm name; export client PDF'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/117
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#118
+    title: Identify target tug operators / ports for outreach
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/118
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#119
+    title: 'Outreach plan: email + LinkedIn angle to marine-technology audience'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/119
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#120
+    title: 'New venture: Corner Store Concierge — back-office service for independent gas stations'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/120
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#134
+    title: 'Academia one-sheet: Engineering Flywheel vision + elevator pitch'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/134
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#137
+    title: Elliott Services (inspection/MI firm) — prospect notes + FFS support one-sheet
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/137
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#144
+    title: "Epic: propagate the new digitalmodel 'moored' logo across strategy assets"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/144
+    gh_state: closed
+    gh_labels:
+      - epic
+      - domain:product
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#145
+    title: 'Lane A: update Subsea7 pre-read one-pager to new logo + tagline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/145
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:product
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#146
+    title: 'Lane B: flatten 2 non-portable <pattern> rope SVGs (PDF-safety)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/146
+    gh_state: closed
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#147
+    title: 'Lane C (DECISION): does Deckhand adopt the new bollard mark?'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/147
+    gh_state: closed
+    gh_labels:
+      - strategy
+      - domain:product
     initial_status: triage
     priority: 0
     gh_assignees: []

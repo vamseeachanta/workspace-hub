@@ -77,7 +77,7 @@ cards:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-approved
+      - status:blocked
       - machine:dev-primary
       - domain:ingest-corpus-acquisition
       - lane:codex
@@ -130,12 +130,12 @@ cards:
     title: '[corpus-ingest] production-engineering — API production specs + SPE technical papers'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/106
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-approved
+      - status:done
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
@@ -168,12 +168,12 @@ cards:
     title: '[corpus-ingest] electrical-instrumentation — marine/shipboard electrical (IEC 60092-series, 61363-1, 61892-7; IEEE 45)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/108
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-approved
+      - status:done
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
@@ -188,12 +188,12 @@ cards:
     title: '[corpus-ingest] materials-and-mechanical — ASTM, SAE, ANSI mechanical'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/109
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-approved
+      - status:done
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
@@ -213,7 +213,7 @@ cards:
       - documentation
       - priority:medium
       - cat:data
-      - status:plan-approved
+      - status:blocked
       - machine:dev-primary
       - domain:ingest-corpus-acquisition
       - lane:codex
@@ -284,7 +284,7 @@ cards:
 
       **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
   - idempotency_key: gh:vamseeachanta/llm-wiki#115
-    title: '[specialist-corpus] vendor-contractor pdfs — 2H, client-d, lng-a, client-a, OGManufacturing, umbilical, client-f, client-b'
+    title: '[specialist-corpus] vendor-contractor pdfs — 2H, saipem, doris, frontierdeepwater, OGManufacturing, umbilical, seanation, rock-oil-field'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/115
     gh_state: closed
@@ -313,6 +313,7 @@ cards:
       - priority:medium
       - cat:data
       - status:plan-approved
+      - status:blocked
       - machine:dev-primary
       - domain:ingest-corpus-acquisition
       - lane:codex
@@ -363,7 +364,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - status:plan-approved
+      - status:blocked
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
@@ -465,7 +466,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#128
-    title: '[client-wiki] client-c triage manifest (76 mixed dirs) — blocking'
+    title: '[client-wiki] client_projects triage manifest (76 mixed dirs) — blocking'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/128
     gh_state: open
@@ -729,10 +730,10 @@ cards:
     title: '[electrical-instrumentation] locked IEC/IEEE metadata-only lane'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/525
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
-      - status:plan-review
+      - status:done
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
@@ -745,11 +746,10 @@ cards:
     title: '[electrical-instrumentation] IEEE 45 interpretation and support-reference routing'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/526
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
-      - status:plan-approved
-      - status:plan-review
+      - status:done
       - machine:dev-primary
       - agent:codex
       - domain:ingest-corpus-acquisition
@@ -1110,7 +1110,533 @@ cards:
       - agent:codex
       - domain:ingest-corpus-acquisition
       - lane:codex
+      - status:implemented
     initial_status: triage
     priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#717
+    title: '[private-data-map] Traverse /mnt/ace inventory one item at a time for llm-wiki coverage and completion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/717
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - machine:dev-primary
+      - cat:data-pipeline
+      - llm-wiki
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#718
+    title: '[private-data-map] Build ingest gate/readiness matrix for corpus traversal'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/718
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - machine:dev-primary
+      - cat:data-pipeline
+      - llm-wiki
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#719
+    title: '[private-data-map] Resolve O&G document-support disposition before standards completion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/719
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - machine:dev-primary
+      - cat:data-pipeline
+      - llm-wiki
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#720
+    title: '[private-data-map] Harden content-value filters before broad traversal'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/720
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - machine:dev-primary
+      - cat:data-pipeline
+      - llm-wiki
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#721
+    title: '[private-data-map] Follow through conference canary dispositions before scale-out'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/721
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - machine:dev-primary
+      - cat:data-pipeline
+      - llm-wiki
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#722
+    title: '[private-data-map] Audit open domain parents for actual remaining ingestion deltas'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/722
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - machine:dev-primary
+      - cat:data-pipeline
+      - llm-wiki
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#723
+    title: '[private-data-map] Build client/private routing decision queue'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/723
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - machine:dev-primary
+      - cat:data-pipeline
+      - llm-wiki
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#725
+    title: '[private-data-map] Build all-root /mnt/ace semantic analysis index'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/725
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - status:plan-approved
+      - machine:dev-primary
+      - cat:data-pipeline
+      - llm-wiki
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#746
+    title: '[private-data-map] Plan O&G document-support extraction follow-up from safe disposition ledger'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/746
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - cat:data-pipeline
+      - llm-wiki
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#747
+    title: '[private-data-map] Plan O&G document-support conversion-tooling follow-up from safe disposition ledger'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/747
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - cat:data-pipeline
+      - llm-wiki
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#748
+    title: '[private-data-map] Resolve client/private routing boundary-review queue'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/748
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:document-intelligence
+      - cat:data-pipeline
+      - llm-wiki
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+      - gate:completeness
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#756
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-001 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/756
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#757
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-002 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/757
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest-corpus-acquisition
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#758
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-003 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/758
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest-corpus-acquisition
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#759
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-004 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/759
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest-corpus-acquisition
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#760
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-005 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/760
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest-corpus-acquisition
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#761
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-006 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/761
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest-corpus-acquisition
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#762
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-007 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/762
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest-corpus-acquisition
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#763
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-008 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/763
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest-corpus-acquisition
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#767
+    title: '[corpus-ingest] Extract & route the AceEngineer/Achanta Google Drive corpus (4.7GB / 11k files) — dense priority data'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/767
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - cat:document-intelligence
+      - status:plan-review
+      - route:C
+      - domain:ingest-corpus-acquisition
+      - gate:completeness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#769
+    title: '[corpus-ingest] Batch 1 — Engineering knowledge → llm-wiki (de-identified)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/769
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering-methodology
+      - status:plan-review
+      - route:C
+      - domain:ingest-corpus-acquisition
+      - gate:completeness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#770
+    title: '[corpus-ingest] Batch 2 — Finance / tax / audit → aceengineer-admin (restricted)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/770
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - route:B
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#771
+    title: '[corpus-ingest] Batch 3 — HR / people / payroll → aceengineer-admin (PII, aggregate-only)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/771
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - route:B
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#772
+    title: '[corpus-ingest] Batch 4 — Proposals / NDAs / clients / ops → aceengineer-admin'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/772
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:operations
+      - status:plan-review
+      - route:B
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#773
+    title: '[corpus-ingest] Batch 5 — Personal / family / immigration / legal → achantas-data (PII)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/773
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - route:B
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#774
+    title: '[corpus-ingest] Batch 6 — De-identified reusable methods → digitalmodel (PUBLIC, gated)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/774
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:engineering-calculations
+      - status:plan-review
+      - route:C
+      - domain:ingest-corpus-acquisition
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#775
+    title: '[corpus-ingest] Batch 7 — OCR triage of scanned docs → route by content'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/775
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:document-intelligence
+      - status:plan-review
+      - route:A
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#776
+    title: '[corpus-ingest] Batch 8 — Archive index sweep (8,504 backup files, index-only)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/776
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:data
+      - status:plan-review
+      - route:A
+      - domain:ingest-corpus-acquisition
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#779
+    title: '[corpus-ingest] Reusable assets → ecosystem: O&G database, Excel datasets/models, posters/brochures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/779
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - route:C
+      - domain:ingest-corpus-acquisition
+      - gate:completeness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#789
+    title: '[corpus-ingest] DNV next-wave privacy-safe classifier and batch planner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/789
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#790
+    title: '[corpus-ingest] DNV blank-code private identity-review lane'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/790
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest-corpus-acquisition
+      - lane:codex
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
     gh_assignees: []
     body_excerpt: ''

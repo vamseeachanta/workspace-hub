@@ -141,3 +141,120 @@ cards:
     initial_status: triage
     priority: 0
     body_excerpt: "- [ ] GrabCAD Inventory\n  - [ ] Create GrabCAD account \n  - [ ] add the CT reel and injector head drawings as part of your portfolio"
+  - idempotency_key: gh:vamseeachanta/digitalmodel#819
+    title: CAD geometry-verification demo (plate-buckling + render, packaged)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/819
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:cad
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1004
+    title: '[Epic] Catalog & understand existing CAD/CAM models on the ace share — foundation for manufacturing CAD/CAM automation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1004
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering-models
+      - domain:cad
+      - lane:claude
+      - host:ace-linux-1
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1005
+    title: '[CAD discovery 1/5] Full CAD/CAM file inventory on /mnt/ace (ace-linux-1)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1005
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering-models
+      - domain:cad
+      - lane:claude
+      - host:ace-linux-1
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1006
+    title: '[CAD discovery 2/5] CAD software-ecosystem & format profile + automation-surface'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1006
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering-models
+      - domain:cad
+      - lane:claude
+      - host:ace-linux-1
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1007
+    title: '[CAD discovery 3/5] Project → domain/client map of CAD-bearing folders'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1007
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering-models
+      - domain:cad
+      - lane:claude
+      - host:ace-linux-1
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1008
+    title: '[CAD discovery 4/5] Deep-dive sample: representative assemblies & CAM/NC sets'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1008
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering-models
+      - domain:cad
+      - lane:claude
+      - host:ace-linux-1
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1009
+    title: '[CAD discovery 5/5] Synthesis: CAD/CAM automation-opportunity report mapped to manufacturing strategy'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1009
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering-models
+      - domain:cad
+      - lane:claude
+      - host:ace-linux-1
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1038
+    title: '[Adapters] Evaluate baidu/Unlimited-OCR (DeepSeek-OCR, MIT) as the scanned-doc OCR engine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1038
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:document-intelligence
+      - cat:tooling
+      - domain:cad
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

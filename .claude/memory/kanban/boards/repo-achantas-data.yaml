@@ -49,3 +49,23 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#137
+    title: 'Pages demo: redacted personal-records vault organizer (synthetic manifest)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/137
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#141
+    title: Family — devaKrishna MRI reschedule + cost tracking (Memorial Hermann)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/141
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

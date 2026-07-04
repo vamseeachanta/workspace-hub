@@ -313,6 +313,7 @@ cards:
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-structure
+      - lane:codex
       - lane:claude
     gh_assignees: []
     initial_status: triage

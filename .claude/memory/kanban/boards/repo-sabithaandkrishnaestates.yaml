@@ -162,3 +162,27 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#42
+    title: 'Reminder 2026-06-16: FD30150 — PHFM variance + HOA reimbursement follow-ups'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/42
+    gh_state: open
+    gh_labels:
+      - reminder
+      - fd30150
+      - maintenance
+      - lease
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#43
+    title: 'Pages demo: corporate investment-management methodology (redacted CRE/estate)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/43
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

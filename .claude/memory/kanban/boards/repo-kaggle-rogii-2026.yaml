@@ -178,3 +178,13 @@ cards:
       ## Three fixes
 
       1. **Advancing anchor.** v1 pinned the search prior at heel-exit TVT with a per-row drift bound, so by mid-toe the search radius spanned the whole typewell. v2 must update the anchor to the last predicted TVT after each row.'
+  - idempotency_key: gh:vamseeachanta/kaggle-rogii-2026#12
+    title: 'Pages demo: ROGII wellbore-geology (TVT) prediction — baseline results, viz, roadmap'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/kaggle-rogii-2026/issues/12
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

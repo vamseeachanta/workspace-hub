@@ -740,6 +740,7 @@ cards:
       - cat:ai-orchestration
       - domain:ai-config
       - machine:dev-primary
+      - status:plan-review
       - dispatch:ready
       - gate:completeness
       - lane:claude
@@ -1019,11 +1020,31 @@ cards:
     title: 'Model parity: de-prescription sweep — strip Fable-degrading scaffolding from skills/prompts — epic #3043'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3106
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:ai-config
       - domain:ai-orchestration
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3331
+    title: 'feat(codex): frontier-model harness and memory parity hardening'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3331
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-config
+      - domain:ai-orchestration
+      - machine:multi
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

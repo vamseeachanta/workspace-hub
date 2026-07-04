@@ -62,3 +62,51 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1018
+    title: Extract shared digitalmodel.reporting block library (report-as-backbone)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1018
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1019
+    title: Report blocks read from single source of truth + mandatory provenance
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1019
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1020
+    title: Migrate fatigue_reporting onto the report block backbone (tracer bullet)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1020
+    gh_state: closed
+    gh_labels:
+      - refactor
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1021
+    title: Skeleton-first report CLI (python -m digitalmodel.reporting)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1021
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:gtm
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

@@ -717,8 +717,269 @@ cards:
     title: 'Rigging compute logic is broken: get_twinpathslings_model recursion + get_shackle subcategory mismatch (blocks rigging workflow onboarding)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/773
+    gh_state: closed
+    gh_labels:
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#776
+    title: 'Ship fatigue (ShipFatigueAnalysis) is hollow: wrong class imported, no methods, no fixtures, mock-only test (blocks ship_design workflow onboarding)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/776
+    gh_state: closed
+    gh_labels:
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#794
+    title: '[Epic] Parametric Refresh — atlas-backed instant answers for existing workflows'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/794
     gh_state: open
     gh_labels:
+      - enhancement
+      - domain:core
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#795
+    title: 'Parametric Refresh: atlas + manifest spec (ADR)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/795
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#799
+    title: 'Parametric Refresh: atlas refresh automation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/799
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#800
+    title: 'Parametric Refresh: fan-out to remaining fast/medium workflows'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/800
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#821
+    title: 'Rig Capability Assessment workflow (stages 1–4): onshore rig screen + weighted fit scoring for field development'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/821
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#826
+    title: Vessel database for diffraction + installation-envelope analysis
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/826
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#828
+    title: 'Parametric: adaptive grid auto-densification on gate failure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/828
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#829
+    title: 'Parametric: derived/computed axes (collapse coupled inputs, e.g. stress)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/829
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#830
+    title: 'Parametric: local-residual confidence bands (not global max error)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/830
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#831
+    title: 'Parametric: staleness fingerprinting for licensed-solver libraries (#801 follow-up)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/831
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#832
+    title: 'Parametric: multi-response atlases (predict a vector per point)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/832
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#835
+    title: 'Parametric: atlas catalog / coverage report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/835
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#857
+    title: 'vessel_db: unified per-field confidence tiers + vessel capability score'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/857
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#881
+    title: 'installation: reusable vessel suitability API (confidence-weighted) over the fleet'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/881
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#883
+    title: 'installation: vessel suitability report generator (confidence-badged HTML + markdown)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/883
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#888
+    title: 'vessel_db: cross-store provenance + consistency audit'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/888
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#896
+    title: 'diffraction: prepare OrcaWave decks from vessel DB (parametric mesh + mass props)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/896
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#898
+    title: 'benchmark: unit_box.gdf has inverted panel normals (negative heave stiffness)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/898
+    gh_state: open
+    gh_labels:
+      - bug
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#901
+    title: 'diffraction: add run_orcawave engine operation (single-input licensed solve) for the licensed-run lane'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/901
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:core
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1095
+    title: '[Epic] LLM spec-authoring: project SSOT → analysis SSOT (spec YAML) → licensed input — the model-generation pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1095
+    gh_state: open
+    gh_labels:
+      - enhancement
       - domain:core
     initial_status: triage
     priority: 0

@@ -663,3 +663,226 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3184
+    title: 'Harness install-doctor: scheduled repair arm for per-provider install drift (#3059 is report-only)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3184
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - machine:multi
+      - status:plan-approved
+      - gate:completeness
+      - status:completeness-verified
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3186
+    title: 'Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3186
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3187
+    title: ace-linux-1 chronically parks off main + stale index.lock froze primary git for 5h — add lock-reaper + return-to-main guard
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3187
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - machine:dev-primary
+      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
+      - status:completeness-verified
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3189
+    title: Bridge cross-provider memory to Codex/agy + topics INDEX + provider-neutral recall
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3189
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - machine:multi
+      - status:plan-review
+      - status:plan-approved
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3190
+    title: Provider-neutral skill router + when_to_use frontmatter (Codex/agy self-serve skills)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3190
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - machine:multi
+      - status:plan-review
+      - status:plan-approved
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3191
+    title: Gated workflow templates (issue→plan→approve→implement→review→close) + cross-provider review workflow
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3191
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - machine:multi
+      - status:plan-review
+      - status:plan-approved
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3192
+    title: Reconcile routing-config.yaml with operator cost policy (Hermes→agy, Claude dev-only)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3192
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - machine:multi
+      - status:plan-review
+      - status:plan-approved
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3196
+    title: 'Harden git_heal_index: defer index recovery when a live git process holds index.lock'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3196
+    gh_state: closed
+    gh_labels:
+      - priority:low
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3205
+    title: 'Executed-router consolidation: make routing-config cost ceiling actually enforced'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3205
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:plan-review
+      - status:plan-approved
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3206
+    title: 'provider_harness_parity: assert the Gemini memory surface (extend _memory_read)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3206
+    gh_state: closed
+    gh_labels:
+      - priority:low
+      - status:plan-review
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3207
+    title: agy headless dispatch wrapper (promote agy from unsupported to a real WRAPPERS provider)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3207
+    gh_state: closed
+    gh_labels:
+      - priority:low
+      - status:plan-review
+      - status:plan-approved
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3208
+    title: skill-index coherence/drift check (curated graph vs full index)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3208
+    gh_state: closed
+    gh_labels:
+      - priority:low
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3209
+    title: Reconcile tier-table routing into one cost-aligned source (codex for cheap tiers)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3209
+    gh_state: closed
+    gh_labels:
+      - status:plan-review
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3214
+    title: 'Reconcile curated skill graph: 8 stale nodes + 43 unrecognized when_to_use headings'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3214
+    gh_state: closed
+    gh_labels:
+      - status:plan-review
+      - status:plan-approved
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3220
+    title: Resolve 5 pre-existing dangling edges in skills-knowledge-graph (add node vs delete edge)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3220
+    gh_state: closed
+    gh_labels:
+      - status:plan-review
+      - status:plan-approved
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

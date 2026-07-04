@@ -169,3 +169,15 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#62
+    title: 'repo_structure contract missing mkdocs.pages.yml (Domain repo_structure shard red on PR #61)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/62
+    gh_state: closed
+    gh_labels:
+      - cat:ci
+      - domain:infra
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

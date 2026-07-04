@@ -232,7 +232,7 @@ cards:
 
       ## Affected tests (16)'
   - idempotency_key: gh:vamseeachanta/digitalmodel#644
-    title: 'lng-a GTM: cathodic protection analysis/requirements for structures — add demo_06 worked example + promote tier'
+    title: 'Doris GTM: cathodic protection analysis/requirements for structures — add demo_06 worked example + promote tier'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/644
     gh_state: open
@@ -304,5 +304,17 @@ cards:
       - lane:codex
     initial_status: triage
     priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#792
+    title: Make DNV-RP-F103 citation resolvable offline + register cathodic-protection-pipeline demo
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/792
+    gh_state: closed
+    gh_labels:
+      - domain:subsea-cp-integrity
+      - lane:codex
+    initial_status: triage
+    priority: 0
     gh_assignees: []
     body_excerpt: ''

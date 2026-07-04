@@ -283,7 +283,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2569
-    title: 'docs(mkt-a): B1528 proj-a rudder source pack and benchmark extraction'
+    title: 'docs(acma): B1528 SIROCCO rudder source pack and benchmark extraction'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2569
     gh_state: closed
@@ -301,7 +301,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2570
-    title: 'feat(naval-arch): B1528 proj-a yaw-moment input and interactive static report'
+    title: 'feat(naval-arch): B1528 SIROCCO yaw-moment input and interactive static report'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2570
     gh_state: closed
@@ -318,7 +318,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2571
-    title: 'feat(naval-arch): B1528 proj-a time-trace benchmark report with rudder inflow feedback'
+    title: 'feat(naval-arch): B1528 SIROCCO time-trace benchmark report with rudder inflow feedback'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2571
     gh_state: closed
@@ -350,7 +350,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2642
-    title: 'feat(naval-arch): B1528 proj-a moored-current rudder force component report'
+    title: 'feat(naval-arch): B1528 SIROCCO moored-current rudder force component report'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2642
     gh_state: closed

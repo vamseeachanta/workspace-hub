@@ -332,7 +332,7 @@ cards:
     title: 'feat(openfoam): create 2D ballast-tank sloshing starter case'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/639
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
       - cat:engineering
@@ -362,7 +362,7 @@ cards:
     title: 'feat(openfoam): add ballast-tank fill-level and roll-frequency sweep runner'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/641
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
       - cat:engineering
@@ -392,7 +392,7 @@ cards:
     title: 'feat(hydro): couple CFD-derived sloshing response into roll time-domain analysis'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/643
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
       - cat:engineering
@@ -407,7 +407,7 @@ cards:
     title: 'feat(openfoam): prescribed single-DOF tank motion engine (dynamicMeshDict)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/658
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
       - cat:engineering
@@ -422,7 +422,7 @@ cards:
     title: 'feat(openfoam): partial-fill setFields wrapper (wire SloshingSetup.fill_level)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/659
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
       - cat:engineering
@@ -437,7 +437,7 @@ cards:
     title: 'feat(cfd-post): FFT fluid natural-frequency extraction + analytical check'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/660
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
       - cat:engineering
@@ -452,7 +452,7 @@ cards:
     title: 'feat(cfd-post): named wall pressure-tap function objects'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/661
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
       - cat:engineering

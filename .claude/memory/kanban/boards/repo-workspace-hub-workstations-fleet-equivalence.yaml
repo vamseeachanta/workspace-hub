@@ -414,7 +414,7 @@ cards:
       - priority:medium
       - cat:tooling
       - machine:multi
-      - status:needs-plan
+      - status:plan-approved
       - gate:completeness
       - domain:workstations-fleet-equivalence
       - lane:claude

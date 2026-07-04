@@ -264,7 +264,7 @@ cards:
     priority: 0
     body_excerpt: "- [ ] setup linux machine\n  - [ ] ?"
   - idempotency_key: gh:vamseeachanta/assetutilities#31
-    title: tech debt | mkt-a | Source Files | Sync vs. Copy
+    title: tech debt | ACMA | Source Files | Sync vs. Copy
     source: github_issue
     source_url: https://github.com/vamseeachanta/assetutilities/issues/31
     gh_state: open
@@ -836,6 +836,66 @@ cards:
     gh_labels:
       - bug
       - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assetutilities#96
+    title: 'Pages demo: visualization-template gallery + DNV calc routines + traceable units engine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assetutilities/issues/96
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assetutilities#99
+    title: 'CI: quarantine network-dependent tests (web_scraping, download_data) in domain matrix'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assetutilities/issues/99
+    gh_state: open
+    gh_labels:
+      - bug
+      - domain:ci-packaging
+      - priority:medium
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assetutilities#100
+    title: 'bug: TOCTOU race in ApplicationManager.configure_result_folder (os.mkdir) fails under parallel test execution'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assetutilities/issues/100
+    gh_state: closed
+    gh_labels:
+      - bug
+      - domain:library-core
+      - priority:medium
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assetutilities#101
+    title: "bug: yml_utilities engine config resolution breaks under pytest-xdist (KeyError: 'input_directory')"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assetutilities/issues/101
+    gh_state: closed
+    gh_labels:
+      - bug
+      - domain:library-core
+      - priority:medium
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assetutilities#109
+    title: 'ConfigureApplicationInputs: add root_folder override + configure_embed for injected-root runs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assetutilities/issues/109
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
     initial_status: triage
     priority: 0
     gh_assignees: []

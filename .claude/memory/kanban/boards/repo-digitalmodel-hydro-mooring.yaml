@@ -160,3 +160,17 @@ cards:
       Surfaced during execution of #555 (PR #587). The diameter-slice expansion to `[:24]` fixed `test_get_chain_by_specification` but not this test, which has an orthogonal root cause.
 
       ## Root cause'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#796
+    title: 'Parametric Refresh: mooring_fatigue atlas, end-to-end (Phase 1 pilot)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/796
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - dispatch:ready
+      - domain:hydro-mooring
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

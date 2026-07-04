@@ -47,7 +47,7 @@ cards:
 
       Plan a bounded curated extraction pass for the SESA FLNG Terminal / lng-a `62092_sesa` corpus now represented metadata-first in the LLM-wikis.'
   - idempotency_key: gh:vamseeachanta/llm-wiki#15
-    title: 'META: resolve standards-routing for maritime-law / lng-projects / mkt-a (post-#2615 deferred Open Questions)'
+    title: 'META: resolve standards-routing for maritime-law / lng-projects / acma-projects (post-#2615 deferred Open Questions)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/15
     gh_state: closed
@@ -205,7 +205,7 @@ cards:
 
       Execute the already-designed external-source Batch Pack 1 so the repo promotes metadata-rich online data APIs and standards portals into wiki-ready stubs for the thin LLM-wiki domains.'
   - idempotency_key: gh:vamseeachanta/llm-wiki#26
-    title: 'feat(knowledge): execute Batch Pack 4 for non-mkt-a standards summary promotion'
+    title: 'feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/26
     gh_state: open
@@ -541,7 +541,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#46
-    title: 'governance(llm-wiki): prepare client-a source-family clearance checklist'
+    title: 'governance(llm-wiki): prepare Frontier Deepwater source-family clearance checklist'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/46
     gh_state: closed
@@ -1258,7 +1258,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#99
-    title: 'docs(governance): note that /mnt/ace/client-b/ is wrong-domain for reservoir-eng / formation-eval local-corpus walks'
+    title: 'docs(governance): note that /mnt/ace/rock-oil-field/ is wrong-domain for reservoir-eng / formation-eval local-corpus walks'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/99
     gh_state: closed
@@ -1332,7 +1332,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/llm-wiki#123
-    title: 'epic(mkt-a): client project data-cycle readiness and private llm-wiki launch'
+    title: 'epic(acma): client project data-cycle readiness and private llm-wiki launch'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/123
     gh_state: open
@@ -1570,15 +1570,16 @@ cards:
     title: '[deckhand-compliance] US offshore pipeline regulations for wall-thickness workflow'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/704
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - enhancement
-      - status:pending
+      - status:done
       - cat:knowledge-domain
       - domain:marine
       - domain:standards
       - llm-wiki
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1587,15 +1588,16 @@ cards:
     title: '[deckhand-compliance] International offshore pipeline standards for wall-thickness workflow'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/705
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - enhancement
-      - status:pending
+      - status:done
       - cat:knowledge-domain
       - domain:marine
       - domain:standards
       - llm-wiki
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1604,16 +1606,17 @@ cards:
     title: '[deckhand-compliance] US OCS and floating-system regulations for mooring workflow'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/706
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - enhancement
-      - status:pending
+      - status:closed
       - cat:knowledge-domain
       - domain:marine
       - domain:standards
       - domain:maritime-law
       - llm-wiki
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1622,16 +1625,405 @@ cards:
     title: '[deckhand-compliance] International mooring and stationkeeping standards for mooring workflow'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/707
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - enhancement
-      - status:pending
+      - status:closed
       - cat:knowledge-domain
       - domain:marine
       - domain:standards
       - domain:maritime-law
       - llm-wiki
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#726
+    title: Author DNV-RP-F103 standards wiki page (unblocks CP submarine-pipeline calc citation)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/726
+    gh_state: closed
+    gh_labels:
+      - cat:documentation
+      - domain:standards
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#728
+    title: '[private-routing] Split investments workspace into confidential docs and reusable analysis tooling'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/728
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - gate:completeness
+      - status:completeness-verified
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#729
+    title: '[private-index] Approve de-identified abstraction schema for client project archives'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/729
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - gate:completeness
+      - status:completeness-verified
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#730
+    title: '[private-index] Compare AI-reorganized client archives against pre-AI baselines'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/730
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - gate:completeness
+      - status:completeness-verified
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#731
+    title: '[private-index] Inventory repo-supplemental raw and large-file folders'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/731
+    gh_state: closed
+    gh_labels:
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#732
+    title: '[private-index] Review migration residue and cleanup candidates safely'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/732
+    gh_state: closed
+    gh_labels:
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#733
+    title: '[private-index] Segment mixed owner archive root by subfolder policy'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/733
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - gate:completeness
+      - status:completeness-verified
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#734
+    title: '[private-index] Build AceEngineer-owned project corpus analysis pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/734
+    gh_state: closed
+    gh_labels:
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#735
+    title: '[private-index] Finish quick-fire root traversal and refresh generated artifacts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/735
+    gh_state: closed
+    gh_labels:
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#736
+    title: '[cleanup-candidate] Verify whether llm-wiki-archive is redundant and safe to remove'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/736
+    gh_state: open
+    gh_labels:
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#738
+    title: '[private-index] Resolve standards corpus overlap across O&G-Standards, acma-codes, and docs standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/738
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#744
+    title: '[governance] Restore completeness gate tooling for private-index issue closeout'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/744
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - status:plan-approved
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#754
+    title: 'Pages demo: engineering-wiki rendering pipeline + public-safe knowledge-graph manifests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/754
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#783
+    title: Ingest DNV 2.7-1 / DNVGL-ST-E271 (offshore containers) into marine-engineering wiki
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/783
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#795
+    title: 'EPIC: Tug safety & casualty knowledge base'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/795
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#796
+    title: Promote IMO 1985 casualty distributions + tug stability curves to reference pages
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/796
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#797
+    title: Girting/capsize casualty case file (MAIB Biter and prior conventional-tug capsizes)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/797
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#798
+    title: Evaluate USCG/MARAD marine-casualty data as the tug-incident source (fill the gap)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/798
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#799
+    title: 'EPIC: Ecosystem Data-Source Catalog → Domain Databases → Capabilities Flywheel'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/799
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - lane:claude
+      - status:needs-plan
+      - epic
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#800
+    title: F1 — Consolidated Data-Source Catalog + capabilities HTML page
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/800
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#801
+    title: F2 — Auto-suggestion bootstrap wiring (proactive data surfacing)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/801
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#802
+    title: F3 — Provider-routing guide (lane dispatch reference)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/802
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#803
+    title: C1 — International regulator data clusters (one issue per region)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/803
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#804
+    title: C2 — US state-waters data (TX RRC + Louisiana SONRIS)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/804
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#805
+    title: C3 — Metocean design-hindcast feed (CMEMS/ERA5/NCEI/HURDAT2)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/805
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#806
+    title: C4 — Geohazard / geospatial layers (MarineCadastre/EMODnet/USGS)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/806
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#807
+    title: C5 — Cross-jurisdiction HSE/incident benchmarking (NOPSEMA/OSPAR/PHMSA)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/807
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#808
+    title: C6 — Licensed/NOC procurement register (DISKOS/BDEP/raw G&G)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/808
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:data
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#809
+    title: C7 — New domains (umbilicals/dynamic-cables, installation/lifting, corrosion/CP)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/809
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#811
+    title: 'Riser projects wiki: ingest ACE_SHARE 2H riser project archive into wikis/riser-projects/'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/811
+    gh_state: open
+    gh_labels:
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#815
+    title: 'Integrity-corpus intake: subsea RBI pilot + drilling riser joint FFS/IM + corrosion/MI analytics (de-identified notes)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/815
+    gh_state: closed
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []

@@ -763,3 +763,28 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#834
+    title: 'Parametric: extend the sparse-library model to OrcaFlex (#801 follow-up)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/834
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:solver-orcaflex
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1096
+    title: 'feat(orcaflex): inverse resolver + assumption ledger (outcome → ProjectInputSpec) — mirror diffraction resolve()'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1096
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:solver-orcaflex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

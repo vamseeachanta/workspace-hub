@@ -118,3 +118,38 @@ cards:
 
 
       A&CE''s distinctive position: engineering analytics built on public regulatory data (BSEE, EPA, OSHA, PHMSA, USCG, IMO). Operators and engineering firms can verify the data source — every pattern A&CE surfaces gains credibility-by-source. This issue tracks the long-term pipeline of analytical artifacts that exercise that capability.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#486
+    title: 'epic(grounded-analysis): real-incident grounding for every engineering analysis — Deckhand demo stream #3 (#423 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/486
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:data
+      - cat:business
+      - status:plan-review
+      - domain:gtm
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#490
+    title: 'feat(demo): end-to-end mooring-fatigue grounded card — first published artifact (#486 child, tracer)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/490
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:business
+      - status:plan-review
+      - domain:gtm
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

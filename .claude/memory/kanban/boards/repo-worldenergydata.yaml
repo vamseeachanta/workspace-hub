@@ -1098,7 +1098,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#209
-    title: 'WRK-275: mkt-a repo content index — catalog projects, codes & standards, and key reference docs'
+    title: 'WRK-275: acma-projects repo content index — catalog projects, codes & standards, and key reference docs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/209
     gh_state: closed
@@ -1272,7 +1272,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#221
-    title: 'WRK-274: client-d repo content index — searchable catalog of disciplines, project files, and key docs'
+    title: 'WRK-274: saipem repo content index — searchable catalog of disciplines, project files, and key docs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/221
     gh_state: closed
@@ -1287,7 +1287,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#222
-    title: 'WRK-275: mkt-a repo content index — catalog projects, codes & standards, and key reference docs'
+    title: 'WRK-275: acma-projects repo content index — catalog projects, codes & standards, and key reference docs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/222
     gh_state: closed
@@ -2448,7 +2448,7 @@ cards:
 
       Revise the hurricane planning/mooring infographic using `worldenergydata` marine safety incident data and the reviewed document `Hurricane Planning and Mooring R0-4revisions.docx` so the artifact clearly positions hurricane mooring analysis as a risk-avoidance decision tool.'
   - idempotency_key: gh:vamseeachanta/worldenergydata#406
-    title: 'gtm: send capability/GTM intro email to Chuck White (client-a EVP)'
+    title: 'gtm: send capability/GTM intro email to Chuck White (Frontier Deepwater EVP)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/406
     gh_state: closed
@@ -2549,14 +2549,15 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#466
-    title: 'ci: optimize PR check time — module-scoped test selection'
+    title: 'ci: accelerate PR merge — core/auxiliary test tiering + kill up-to-date re-run cascade (module selection already done)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/466
     gh_state: open
     gh_labels:
+      - priority:high
       - priority:medium
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#467
@@ -2564,6 +2565,337 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/467
     gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#504
+    title: 'vessel_fleet: ingest additional off-repo brochure-digitized heavy-lift & pipelay fleet CSVs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/504
+    gh_state: closed
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#505
+    title: 'vessel_fleet: ingest off-repo multi-service installation vessel (MSIV) brochure dataset'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/505
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#515
+    title: 'Registry: add algorithm-version dimension to workflows.yaml (schema_version 2)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/515
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#521
+    title: 'docs(reference): add petroleum-domain reference notes (reserves, IPR, petrophysics)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/521
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#543
+    title: Incorporate global O&G fields/facilities/rigs reference dataset
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/543
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#603
+    title: Frontier deepwater basins dataset — Namibia / Guyana / Suriname
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/603
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#640
+    title: 'research(field-dev): honest spar-vs-semisub discriminator (calibration v4)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/640
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#641
+    title: 'feat(field-dev): full-field 3D assembly — trees + manifolds + flowline/umbilical routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/641
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#642
+    title: 'feat(field-dev): deterministic flow-assurance risk screening'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/642
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#643
+    title: 'feat(field-dev): parametric CAPEX/OPEX cost estimator per concept'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/643
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#644
+    title: 'feat(field-dev): interactive HTML playbook with live recommendation grid'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/644
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#651
+    title: 'Lower Tertiary: reconcile assumption decks + extend to after-tax (Tier 2/3 from V50)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/651
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#675
+    title: 'Redesign capabilities page: deckhand style, WED logo, a live link for every work'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/675
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#679
+    title: D6 — Establish the metocean database (design conditions + site climate + provenance)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/679
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - cat:data
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#680
+    title: D8 — Establish the production-reservoir database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/680
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - cat:data
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#681
+    title: D11 — Establish the drilling-well database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/681
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - cat:data
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#683
+    title: "Capabilities page: wire 'Run live' Telegram deep-links to @the_deckhand_bot"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/683
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#698
+    title: 'vessel_fleet: riser-handling columns for drilling_rigs + drilling_riser_components growth (dm#1279 pair)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/698
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#700
+    title: 'vessel_fleet: construction_vessels curated CSV — purge poster column-bleed junk rows + add 7 missing 2011-poster vessels'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/700
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#701
+    title: 'vessel_fleet: extend construction-vessel schema with pipelay firing-line + burial capability fields (2011 poster backfill)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/701
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#735
+    title: 'refactor(fdas): consolidate duplicate NPV surface (economics/dcf vs fdas/core/financial)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/735
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#736
+    title: 'feat(fdas): consume fiscal-terms revenue seams (price_marker + discount + after-tax) — feeds #716'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/736
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#737
+    title: 'feat(fdas): sliding-scale royalty seam (production-rate bands) — feeds #718 Brazil'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/737
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#742
+    title: 'vessel_fleet: wellhead/conductor moment-capacity + flex-joint angular-rating columns (dm#1345 pair)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/742
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#774
+    title: 'epic(insights): life-cycle insight family — both-altitudes, all-regions, + development-type comparison'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/774
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#775
+    title: 'feat(insights): drilling-performance insight — GoM Lower Tertiary (front-door + Drill stage card)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/775
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#776
+    title: 'feat(insights): region × development-type comparison — dry-tree vs wet-tree vs other'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/776
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#777
+    title: 'feat(insights): decommissioning — light up Abandon stage + P&A liability-wave page'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/777
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#778
+    title: 'feat(insights): intervention brief integration — link #582 into Workover stage + capabilities front door'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/778
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#779
+    title: 'feat(insights): all-regions field atlas page — global coverage w/ honest density badges'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/779
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#780
+    title: 'feat(insights): Life-cycle Insights hub page + capabilities/site wiring'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/780
+    gh_state: open
     gh_labels: []
     initial_status: triage
     priority: 0

@@ -177,3 +177,17 @@ cards:
       ## Test nodeid
 
       `tests/marine_ops/marine_engineering/integration/test_hydro_rao_integration.py::TestHydroRAOIntegration::test_coupling_terms_affect_response`'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#797
+    title: 'Parametric Refresh: linear-physics atlas (rao_tabulation)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/797
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - dispatch:ready
+      - domain:hydro-rao-seakeeping
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

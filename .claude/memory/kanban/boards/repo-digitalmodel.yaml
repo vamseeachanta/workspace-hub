@@ -3516,7 +3516,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/digitalmodel#598
-    title: 'feat(naval-architecture): proj-a current-heading/rudder force component chart set'
+    title: 'feat(naval-architecture): SIROCCO current-heading/rudder force component chart set'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/598
     gh_state: closed
@@ -3550,7 +3550,7 @@ cards:
 
       ## Required work'
   - idempotency_key: gh:vamseeachanta/digitalmodel#616
-    title: 'feat(marine_ops): polar plot with vessel silhouette and on-body force vectors — reusable across OCIMF explorer, proj-a review, future studies'
+    title: 'feat(marine_ops): polar plot with vessel silhouette and on-body force vectors — reusable across OCIMF explorer, SIROCCO review, future studies'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/616
     gh_state: closed
@@ -3773,6 +3773,3268 @@ cards:
     gh_state: open
     gh_labels:
       - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#785
+    title: Onboard ship_design (SEASAM combined-fatigue) as durable workflow — restore data fixtures from history
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/785
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#788
+    title: 12 non-Python files with .py extension break imports + mypy (3 break live import chains)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/788
+    gh_state: closed
+    gh_labels:
+      - bug
+      - status:plan-approved
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#836
+    title: '[Epic] Collide PE Problem of the Day — solve the series (hottest first)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/836
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#837
+    title: '[Epic] Deckhand-routed Claude API solver for Collide PE problems (Telegram transport)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/837
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#838
+    title: 'Solve: PE Problem 6/19/2026 — Productivity index — current & post-modification oil rate'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/838
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#839
+    title: 'Solve: PE Problem 4/20/2026 — Tertiary thermal EOR (steam, heavy crude)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/839
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#840
+    title: 'Solve: PE Problem 1/15/2026 — Standing valve purpose in a gas-lift configuration'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/840
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#841
+    title: 'Solve: PE Problem 3/5/2026 — Depletion drive with limited aquifer support'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/841
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#842
+    title: 'Solve: PE Problem 5/21/2026 — OOIP volumetrics + primary/secondary recoverable'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/842
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#843
+    title: "Solve: PE Problem 5/19/2026 — Fluid's internal resistance to flow"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/843
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#844
+    title: 'Solve: PE Problem 5/8/2026 — Curved component at the front of the walking beam'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/844
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#845
+    title: 'Solve: PE Problem 6/3/2026 — Main purpose of drilling fluid (multiple choice)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/845
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#846
+    title: 'Solve: PE Problem 4/13/2026 — Real-time formation measurement from the drill string'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/846
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#847
+    title: 'Solve: PE Problem 1/4/2026 — Underbalanced drilling well control (give 3)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/847
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#848
+    title: 'Solve: PE Problem 4/23/2026 — Electrochemical/chemical degradation of metal infrastructure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/848
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#851
+    title: 'API: post Collide PE problem to Telegram for Deckhand to consume'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/851
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#852
+    title: 'vessel_db: off-repo RAO library adapter for real model-test/computed RAOs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/852
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#853
+    title: 'vessel_db: diffraction-setup consumer (particulars + gyradii -> mass/inertia -> OrcaWave/AQWA input)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/853
+    gh_state: closed
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#859
+    title: 'Solve: PE Problem 1/12/2026 — acid job above fracture pressure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/859
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#860
+    title: 'Solve: PE Problem 3/6/2026 — drive mechanism in unconventional wells'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/860
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#861
+    title: 'Solve: PE Problem 4/24/2026 — what an SP log actually measures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/861
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#862
+    title: 'Solve: PE Problem 6/17/2026 — depositional environment (MC)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/862
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#863
+    title: 'Solve: PE Problem 2/12/2026 — components of a conventional petroleum system'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/863
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#864
+    title: 'Solve: PE Problem 4/15/2026 — high potassium on spectral gamma (mineral)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/864
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#865
+    title: 'Solve: PE Problem 4/22/2026 — three main types of artificial lift'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/865
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#866
+    title: 'Solve: PE Problem 3/1/2026 — modified Archie for shaly sands'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/866
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#867
+    title: 'Solve: PE Problem 3/26/2026 — new wellbore branching off existing (technique)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/867
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#868
+    title: 'Solve: PE Problem 4/3/2026 — volatile distillate hydrocarbon'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/868
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#872
+    title: 'Solve: PE Problem 4/16/2026 — semilog buildup analysis technique'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/872
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#873
+    title: 'Solve: PE Problem 4/17/2026 — map flow paths injector→producer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/873
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#874
+    title: 'Solve: PE Problem 3/25/2026 — adaptive closed-loop annular pressure control'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/874
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#875
+    title: 'Solve: PE Problem 4/4/2026 — mobile well-intervention unit'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/875
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#876
+    title: 'Solve: PE Problem 6/15/2026 — drilling trouble in reactive shale (MC)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/876
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:collide-pe
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#877
+    title: 'field_development: absolute-CAPEX override for concept screening'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/877
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:naval-architecture
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#884
+    title: python -m digitalmodel --help crashes (should exit 0) — blocks licensed-run verify marker
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/884
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#890
+    title: '[Epic] Quantify the UDW well-access supply–demand gap (Frontier article support)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/890
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - cat:research
+      - lane:claude
+      - domain:udw-well-access
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#891
+    title: UDW intervention-demand model (BSEE well inventory → rig-days/yr to 2035)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/891
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - lane:claude
+      - domain:udw-well-access
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#892
+    title: HP-MODU fleet supply & demand-crossover model (20K/15K/10K rig-days)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/892
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - lane:claude
+      - domain:udw-well-access
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#893
+    title: Dry-tree vs subsea recovery comparison (Mars Miocene vs Julia/Stones LT)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/893
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - lane:claude
+      - domain:udw-well-access
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#894
+    title: Aggregate deferred/stranded-barrels estimate across the Lower Tertiary
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/894
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - lane:claude
+      - domain:udw-well-access
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#895
+    title: TLP/Spar/FrPS water-depth workability boundary map
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/895
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - lane:claude
+      - domain:udw-well-access
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#899
+    title: Acquire external UDW rig-fleet & dayrate data (sourced) to back the supply model
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/899
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - lane:claude
+      - domain:udw-well-access
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#903
+    title: 'Data-quality guardrail: WAR reporting-lag & OGOR partial-year must not be read as trend'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/903
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:data
+      - lane:claude
+      - domain:udw-well-access
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#904
+    title: 'rao-spectral-fatigue: spectral fatigue from a stress RAO + wave spectrum (flywheel loop 3)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/904
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#906
+    title: 'vessel-seakeeping: seakeeping operability from motion RAOs + a sea state (flywheel loop 4)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/906
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#909
+    title: 'mudmat-bearing-capacity: shallow-foundation bearing-capacity screening (flywheel loop 5)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/909
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#911
+    title: 'lifting-lug-design: padeye strength screening (flywheel loop 6)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/911
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#913
+    title: 'Pages demo: OrcaWave/AQWA hydro benchmarks, OCIMF explorer, fatigue & subsea analysis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/913
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#914
+    title: Re-run FrPS/APS-vs-20K-subsea economics at a current price deck
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/914
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - lane:claude
+      - domain:udw-well-access
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#916
+    title: 'inspection-planning: remaining life + next-inspection interval (flywheel loop 7)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/916
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#918
+    title: 'span-rectification: intermediate-support design for an over-long free span (flywheel loop 8)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/918
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#920
+    title: 'esp-pump-hydraulics: ESP sizing — TDH, stages, motor (flywheel loop 9)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/920
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#922
+    title: 'Registry: add algorithm-version dimension to workflows.yaml (schema_version 2)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/922
+    gh_state: closed
+    gh_labels:
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#924
+    title: 'weather-window: marine-operation workability + window-fit screening (flywheel loop 10)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/924
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#926
+    title: 'liquefaction-triggering: Seed-Idriss simplified screening (flywheel loop 11)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/926
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#928
+    title: Linux-side postprocessing orchestrator for licensed OrcaWave/OrcaFlex runs
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/928
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#929
+    title: 'Bulk diffraction model generator: fleet deck-gen over installation_vessels() + batch config'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/929
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#930
+    title: Vessel envelope analysis by typical operation (Hs/Tp limit surface; DNV-RP-H103/ST-N001)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/930
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#932
+    title: 'Canary: mooring-fatigue v2 (free-corrosion S-N basis) — exercise versioned routing end-to-end'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/932
+    gh_state: closed
+    gh_labels:
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#937
+    title: 'docs(vessel-db): add OSV vessel_type controlled vocabulary + mooring-line-types reference'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/937
+    gh_state: closed
+    gh_labels:
+      - documentation
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#938
+    title: 'EPIC: Solver run preparedness — programs (AQWA/ANSYS), use-case templates, parametrics plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/938
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#939
+    title: 'AQWA: deployable licensed-run program (run_aqwa engine op + allowlist)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/939
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#940
+    title: 'ANSYS: deployable licensed-run program (greenfield solver runner)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/940
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#941
+    title: OrcaFlex use-case template catalog + gap-fill (dispatchable input.yml per use-case)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/941
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#942
+    title: OrcaWave use-case template catalog + gap-fill (dispatchable spec per use-case)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/942
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#943
+    title: 'Parametrics plan: systematic sweeps over prepared use-cases → atlases + lane dispatch'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/943
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#948
+    title: ANSYS padeye/lifting-lug APDL template (first run_ansys use-case)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/948
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#949
+    title: 'ci: root-cause of 9-domain quality-gates baseline failure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/949
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#951
+    title: ANSYS pressure-vessel template (run_ansys use-case) + dedup duplicate generate_pv_apdl
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/951
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#952
+    title: ANSYS mudmat/foundation template (run_ansys use-case)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/952
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#953
+    title: 'OrcaWave gap specs: mean-drift, field-points, control-surface (dispatchable templates)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/953
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#958
+    title: 'OrcaFlex pipelay templates: J-lay + reel-lay (dispatchable input.yml)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/958
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#959
+    title: OrcaFlex FOWT mooring template (dispatchable input.yml)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/959
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#960
+    title: OrcaFlex riser-fatigue template (dispatchable input.yml)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/960
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#961
+    title: OrcaFlex extreme-value post template (Gumbel/Weibull)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/961
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#968
+    title: 'Parametrics P0: sweep harness + one offline pilot per solver'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/968
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#971
+    title: 'Parametrics P2 (first cut): bridge a sweep into the parametric Atlas + interpolated query'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/971
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#973
+    title: Parametric structural utilization atlas for DNV 2.7-1 offshore containers (CCUs)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/973
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#974
+    title: 'Mooring system resilience screening: integrity + anchoring envelope (Intermoor themes)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/974
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#975
+    title: 'Parametrics: serve sweep-built atlases via parametric_query (FOWT handler)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/975
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#978
+    title: 'Reference: public datasets for agentic AI in chemical/process manufacturing (fault detection)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/978
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#990
+    title: 'Trace offshore-container utilization model factors to DNVGL-ST-E271 + emit calc citations (follow-up to #973)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/990
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#996
+    title: 'Wire mooring-resilience safety factors to DNV-OS-E301 citations (follow-up to #974)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/996
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1000
+    title: 'Cite mooring-resilience foundation safety factor (1.5) to DNV-OS-E301 (follow-up to #996)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1000
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1002
+    title: 'Quality Gates red on main: hardcoded /mnt/local-analysis path in wed_adapter.py'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1002
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:ci
+      - cat:maintenance
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1011
+    title: '[Epic] File-format adapter review — read & convert all CAD/CAM + engineering files on the ace share'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1011
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1012
+    title: '[Adapters 1/5] CAD-geometry adapter matrix (STEP/IGES/Parasolid/DWG/DXF/SolidWorks/Inventor/STL)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1012
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1013
+    title: '[Adapters 2/5] Simulation/analysis adapter catalog (OrcaFlex/AQWA/ANSYS/CalculiX/mesh)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1013
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1014
+    title: '[Adapters 3/5] Office/other document adapter matrix (pdf/docx/xlsx/msg/...)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1014
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1015
+    title: '[Adapters 4/5] Evaluate license-free CAD readers on real share files'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1015
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1016
+    title: '[Adapters 5/5] Recommend & scaffold the digitalmodel/cad/ adapter package'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1016
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1017
+    title: '[Adapters 6/6] CAD-AI spike: shape-similarity + feature recognition (UV-Net/AAGNet) for dedup/variant leverage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1017
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1022
+    title: '[Epic] Floating-wind global sizing & concept screening (PyFloatSizer-class)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1022
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-models
+      - domain:floating-wind
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1023
+    title: '[FW sizing 1/6] Parametric floater archetype models (semi-sub/spar/TLP/barge)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1023
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-models
+      - domain:floating-wind
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1024
+    title: '[FW sizing 2/6] Concept-screening orchestrator (variants × load cases → result table)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1024
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-models
+      - domain:floating-wind
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1025
+    title: '[FW sizing 3/6] Solver integration tier (OrcaWave/OrcaFlex per-variant, licensed-run lane)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1025
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-models
+      - domain:floating-wind
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1026
+    title: '[FW sizing 4/6] Data-driven trade-space analysis (Pareto fronts + correlation maps)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1026
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-models
+      - domain:floating-wind
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1027
+    title: '[FW sizing 5/6] Concept Data Sheet report on the reporting backbone (#1018)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1027
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-models
+      - domain:floating-wind
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1028
+    title: '[FW sizing 6/6] Dispatch (floating_wind_sizing) + registry + atlas + example'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1028
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-models
+      - domain:floating-wind
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1034
+    title: Pore-pressure prediction with uncertainty bands + safe-drilling-window communication
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1034
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-models
+      - domain:well
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1035
+    title: Loading computer / onboard stability (intact + damage + longitudinal strength)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1035
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-models
+      - domain:naval-architecture
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1036
+    title: Swab/surge tripping-pressure calculator (well_hydraulics)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1036
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-models
+      - domain:well
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1037
+    title: Deepwater dual-gradient / narrow-window drilling screen
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1037
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering-models
+      - domain:well
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1043
+    title: Ship-plate buckling parametric utility curves + fill panel-buckling gap
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1043
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1045
+    title: Validate stiffened-panel buckling solver vs DNV-RP-C201 and promote to production
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1045
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1047
+    title: Interactive design-window explorer for stiffened-panel buckling
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1047
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1049
+    title: Add frame-span dropdown to the panel design-window explorer
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1049
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1051
+    title: Add shear-load slider to the panel design-window explorer
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1051
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1053
+    title: Lean demo outputs (gitignore big artifacts) + one-page PDF design brief
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1053
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1057
+    title: 'EPIC: Fitness-For-Service (FFS) decision layer — field-to-office metal-loss assessment'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1057
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1058
+    title: 'FFS #1: Consolidate on Phase-1 assessment path + canonical FFS data model'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1058
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1059
+    title: 'FFS #2: Inspector measurement-sufficiency engine (sufficient / take N more / escalate)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1059
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1060
+    title: 'FFS #3: Pipeline corroded-strength — B31G / Modified B31G / RSTRENG'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1060
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1061
+    title: 'FFS #10: Validation vs API 579 / B31G worked examples + golden tests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1061
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1062
+    title: 'FFS #4: Pipeline FFS via DNV-RP-F101 (corroded pipelines, single + interacting defects)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1062
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1063
+    title: 'FFS #5: Plate / stiffened-panel metal-loss FFS (re-check buckling at reduced thickness)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1063
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1064
+    title: 'FFS #6: Level 3 (advanced) escalation interface + handoff'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1064
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1065
+    title: 'FFS #7: FFS acceptance curves + parametric screening'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1065
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1066
+    title: 'FFS #8: Indexed FFS lookup + Deckhand API'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1066
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1067
+    title: 'FFS #9: Interactive FFS field dashboard + one-page PDF'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1067
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1080
+    title: 'EPIC: Ship structural strength expansion + unified material matrix + code provenance'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1080
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1081
+    title: 'Ship-struct A1: Grillage / cross-stiffened panel buckling'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1081
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1082
+    title: 'Ship-struct A2: Hull-girder ultimate strength + wave bending envelope'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1082
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1083
+    title: 'Ship-struct A3: Girder & web-frame buckling'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1083
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1084
+    title: 'Ship-struct A4: Class-rule scantling checks (min thickness, section modulus)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1084
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1085
+    title: 'Ship-struct A5: Corrugated bulkhead buckling'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1085
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1086
+    title: 'Ship-struct A6: Connection & bracket stress-concentration (DNV-RP-C203)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1086
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1087
+    title: 'Tubulars B1: API 5L line pipe product matrix (sizes x schedules x grades)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1087
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1088
+    title: 'Tubulars B2: Unified material grade matrix (full API 5L + IACS marine)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1088
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1089
+    title: 'Tubulars B3: Migrate scattered material tables to the unified matrix'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1089
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1090
+    title: 'Tubulars D1: API 5CT casing & tubing — product matrix + capacity (API 5C3/TR 5C3)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1090
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1091
+    title: 'Tubulars D2: API 11B sucker rod (rod pump) string matrix + loading'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1091
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1092
+    title: 'Provenance C1: Carry governing code reference in every strength-method result'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1092
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1093
+    title: 'Provenance C2: Code-citation fixes + code-coverage register'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1093
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1094
+    title: 'Adversarial review findings: FFS strength methods (applicability limits + extensions)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1094
+    gh_state: open
+    gh_labels:
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1105
+    title: 'feat(marine_ops): deterministic installation-vessel pamphlet workflow (vessel + envelopes + weather-window + DP/mooring risk + provenance)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1105
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1111
+    title: 'feat(installation_pamphlet): vessel-specific BokaLift-2 RAO via OrcaWave diffraction — retire ship-shaped proxy (T3)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1111
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1112
+    title: 'feat(installation_pamphlet): per-structure splash-zone Hs/Tp envelope (DNV-RP-H103 slamming) — T5'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1112
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1113
+    title: 'feat(catalog): subsea PLET / manifold / SPS structure catalog (retire installation_pamphlet manifold proxy, T8)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1113
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1142
+    title: 'chore(repo-health): digitalmodel checkout degraded — git ops time out from untracked test-output explosion + >540s import'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1142
+    gh_state: open
+    gh_labels:
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1146
+    title: 'FFS: implement DNV-RP-F101 Sec 3.7.4 combined-loading H1 factor (currently stubbed)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1146
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1147
+    title: 'materials: converge scattered grade tables to canonical ISO values (per #1089 delta report)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1147
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1148
+    title: 'fatigue: Efthymiou short-chord F2/F3 factors for pinned-fixity + bending load cases'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1148
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1152
+    title: '[Epic] Open simulation workflows → future Deckhand API paths (FEA + licensed solvers)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1152
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1153
+    title: 'Workflow: flange / bolted-connection analysis (ASME Sec VIII Div 1 App 2 / Taylor Forge)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1153
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1154
+    title: 'Workflow: 2nd-order / QTF vessel motions — mean & slow-drift (Newman approximation)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1154
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1155
+    title: Wire licensed-solver workflows (OrcaFlex/OrcaWave/AQWA/ANSYS) as authenticated/licensed-lane API paths
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1155
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1161
+    title: '[Epic] CFD capability — activate OpenFOAM stack for 2D/3D marine + external-aero (consolidates existing backlog)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1161
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1165
+    title: 'feat(openfoam): dam-break (Martin & Moyce) — foundational interFoam VOF free-surface validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1165
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1166
+    title: 'feat(openfoam): laminar cylinder Re=100 — foundational vortex-shedding (Cd/St) validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1166
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1167
+    title: 'feat(openfoam): laminar flat plate (Blasius) — foundational boundary-layer validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1167
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1168
+    title: 'feat(openfoam): turbulent flat plate ZPG (k-omega SST) — NASA TMR/Wieghardt Cf validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1168
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1169
+    title: 'feat(openfoam): floating-body 6-DOF free-decay (interFoam + sixDoFRigidBodyMotion) — heave-period validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1169
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1170
+    title: 'feat(openfoam): regular-wave numerical wave tank (interFoam) — Stokes propagation validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1170
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1171
+    title: 'feat(openfoam): wave loading on a vertical cylinder — MacCamy-Fuchs/Morison force validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1171
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1172
+    title: 'feat(openfoam): dam break against an obstacle (green-water impact) — Kleefsman pressure validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1172
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1173
+    title: 'feat(openfoam): calm-water hull resistance (interFoam towing) — Wigley/KCS Ct validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1173
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1174
+    title: 'feat(openfoam): NACA0012 airfoil polar (simpleFoam k-omega SST) — Ladson lift/drag validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1174
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1175
+    title: 'feat(openfoam): backward-facing step (pitzDaily) — reattachment-length validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1175
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1176
+    title: 'feat(openfoam): square-cylinder bluff-body wind load — Lyn & Rodi Cd/St validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1176
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1177
+    title: 'feat(openfoam): turbulent cylinder Re=3900 (LES) — Kravchenko & Moin wake validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1177
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1179
+    title: 'feat(cfd): ephemeral remote-CFD lifecycle scripts over SSH (provision → run → fetch → teardown → cleanup → close)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1179
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1180
+    title: 'Redesign capabilities page: deckhand style, digitalmodel logo, a live link for every work'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1180
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1182
+    title: 'seismic/response_spectrum: elastic + constant-ductility response spectra, SDOF/Newmark, and strong-motion intensity measures from an accelerogram'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1182
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1184
+    title: 'seismic: code design spectra (ASCE 7 / Eurocode 8) + spectral matching & ground-motion scaling'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1184
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1185
+    title: 'seismic: 1D site-response / ground-motion propagation (SHAKE-style equivalent-linear)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1185
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1186
+    title: 'seismic: multi-component / HVSR microtremor array + instrument-response deconvolution'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1186
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1187
+    title: 'seismic: multi-DOF / full-FEA seismic time-history (route via AQWA/ANSYS)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1187
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1188
+    title: 'seismic: interactive browser front-end for strong-motion analysis (workspace-hub Pages)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1188
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1192
+    title: 'fix(cfd): validation cases generate non-runnable solver setup — simpleFoam/pimpleFoam diverge at iter 1 (#1167/#1166)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1192
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - domain:cfd
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1193
+    title: 'EPIC: Tug analysis toolkit (power, stability, fendering, towing, emissions)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1193
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1194
+    title: 'Tug: bollard-pull & escort-performance prediction module'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1194
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1195
+    title: 'Tug: intact/dynamic stability + girting heeling-arm check'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1195
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1196
+    title: 'Tug: fender-height optimization vs assisted-fleet hull-geometry envelope'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1196
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1197
+    title: 'Tug: towline load & breaking-strength / class safety-factor verification'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1197
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1198
+    title: 'Tug: hybrid power sizing & fuel/emissions compliance model'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1198
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1199
+    title: D1 — Establish the riser database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1199
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - lane:claude
+      - epic
+      - lane:frontier-pending
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1200
+    title: D2 — Establish the mooring database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1200
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1201
+    title: D3 — Establish the pipeline-subsea database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1201
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1202
+    title: D4 — Establish the structural-ffs reference database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1202
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1203
+    title: D5 — Establish the naval-arch-hydro database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1203
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - lane:claude
+      - lane:frontier-pending
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1204
+    title: D7 — Establish the materials-standards database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1204
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1205
+    title: D9 — Establish the geotech database (soil profiles, CPT, p-y/t-z, anchor/pile)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1205
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - lane:claude
+      - lane:frontier-pending
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1206
+    title: D12 — Establish the cad-simulation database (geometry + solver-deck + results catalog)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1206
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - lane:claude
+      - lane:frontier-pending
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1207
+    title: Rudder database + low-speed manoeuvring & station-keeping capability (SIROCCO worked example)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1207
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1213
+    title: "Capabilities page: 'Run live' deep-links + implement workflow_api.run_workflow"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1213
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1215
+    title: "Harness regression: engine.py passes root_folder= to assetutilities configure() that doesn't accept it (118 durable-workflow tests fail)"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1215
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1220
+    title: '[Epic] Floating-wind TOTEX/LCOE economics layer — translate O&G cost-reduction levers into the concept screen'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1220
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:naval-architecture
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1221
+    title: 'floating_wind: LCOE/TOTEX core engine (CAPEX+OPEX+DECOMEX → $/MWh)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1221
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:naval-architecture
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1222
+    title: 'floating_wind: reliability→OPEX driver (API 17N / TRL)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1222
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:naval-architecture
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1223
+    title: 'floating_wind: cost-driver sensitivity sweep engine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1223
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:naval-architecture
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1224
+    title: 'floating_wind: add LCOE objective to tradespace Pareto ranking'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1224
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:naval-architecture
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1225
+    title: 'floating_wind: DNV-RP-A203 / TRL technology-qualification gate scorer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1225
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:naval-architecture
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1226
+    title: 'floating_wind: Cost Data Sheet report + uv-workflow router + golden test'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1226
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:naval-architecture
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1229
+    title: 'Pre-existing baseline-red: routing-contract drift, config-registry inheritance, legacy catenary'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1229
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1234
+    title: 'CI health: 4 domain-test shards red on main (stale-test backlog)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1234
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1245
+    title: '#1199a — Riser DB loader + schema + tabular tables + leak gate'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1245
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - status:done
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1246
+    title: '#1199b — Wire constant-bearing riser calc modules to the DB'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1246
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - status:done
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1247
+    title: '#1199c — orcaflex riser citation surface (net-new)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1247
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1248
+    title: '#1199d — result_precedent from ACE_SHARE (T3, frontier)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1248
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - lane:claude
+      - lane:frontier-pending
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1249
+    title: 'floating_wind: turbine-size + farm-size economies-of-scale (unlock deck $51/MWh 2040 pathway)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1249
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:naval-architecture
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1250
+    title: 'Bump assetutilities pin + remove engine root_folder/configure_embed shim once #106 is released'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1250
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1256
+    title: 'floating_wind: standardization & learning-curve lever (JIP33 / design-one-build-many)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1256
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:naval-architecture
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1257
+    title: Dynacard troubleshooting use cases + capabilities-page section (artificial lift)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1257
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1259
+    title: 'riser_database: add riser_stackup table referencing llm-wiki RSU registry ids'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1259
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+      - cat:data
+      - status:done
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1261
+    title: 'fix(openfoam): cylinder validation builder case fails a real solve — missing div scheme + no shedding seed'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1261
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1263
+    title: 'Dynacard: classifier fails on solver-transformed cards (NORMAL → WORN_BARREL end-to-end)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1263
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1266
+    title: 'Capabilities page: shipped capabilities missing from the live gallery (floating wind, mooring resilience, DNV 2.7-1 container, vessel DB + suitability, diffraction deck-prep)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1266
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1268
+    title: 'capabilities #ffs: make the FFS section the audience one-pager for inspection/MI service firms'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1268
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1269
+    title: 'ffs: API 579-1 Part 6 pitting assessment (router currently raises out-of-scope)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1269
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1270
+    title: 'ffs: API 579-1 Part 9 crack-like flaws — Level 1/2 FAD (activate the Level 3 escalation path)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1270
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1271
+    title: 'ffs: API 579-1 Part 12 dent and dent-gouge assessment'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1271
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1272
+    title: 'ffs: RBI tie-in — FFS outputs feeding API 580/581-style risk ranking and inspection intervals'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1272
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1273
+    title: 'ffs: implement the RE_RATE decision branch (MAWP re-rate exists but is not wired)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1273
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1274
+    title: 'ffs: damage-mechanism roadmap — API 579 Parts 3 (brittle fracture), 7 (HIC/blisters), 10 (creep)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1274
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1276
+    title: 'feat(cfd): upgrade verification suite to interactive capability pages — Plotly charts, VIV + dam-break animations, realistic use-case framing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1276
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1277
+    title: 'ci: pre-existing baseline-red tests in misc / specialized / infrastructure-other shards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1277
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1279
+    title: 'EPIC: rig-specific drilling riser analysis → operating envelopes → capabilities page'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1279
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - cat:data
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1280
+    title: 'envelopes B: stack-up assembly engine — RiserStackup model from RSU registry + rig interface'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1280
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+      - status:done
+      - status:plan-approved
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1281
+    title: 'envelopes C: operating-envelope engine — offset x current x wave vs code limits'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1281
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:plan-approved
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1282
+    title: 'envelopes D: metocean input schema + offline fixtures for envelope runs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1282
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+      - status:plan-approved
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1283
+    title: 'envelopes E: drilling riser operability ATLAS — precomputed envelopes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1283
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:working
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1284
+    title: 'envelopes F: capabilities page — drilling riser operating-envelope explorer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1284
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1285
+    title: 'floating_wind: collaboration / JIP technology de-risking overlay (qualification gate)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1285
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - domain:naval-architecture
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1288
+    title: 'Dynacard: field example-card library (300+ cards), troubleshooting guide, POC settings & alarms engine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1288
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1290
+    title: 'Casing design algorithms: load cases + design-factor checks + sour-service screen (production casing, Hansen/Devon EPA workshop)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1290
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1292
+    title: 'capability: drilling riser joint FFS/IM workflow — Level-1 flaw-acceptance charts + string-zone placement'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1292
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1293
+    title: 'fixtures: anonymized riser UT C-scan grids + GML results register + flaw register (real inspection data)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1293
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1294
+    title: 'capability: galvanic compatibility screening — per-environment couple matrix + heatmap explorer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1294
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1295
+    title: 'capability: produced-water mineral-scale saturation-index workflow (SI trending + brine mixing + inhibitor dose)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1295
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1296
+    title: 'ffs: composite-repair selection helper behind the REPAIR verdict (ISO 24817 / ASME PCC-2 categories)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1296
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1297
+    title: 'vessel_db: wed_adapter cannot find WED curated datasets (resolves wrong path, returns 0 rows)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1297
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1299
+    title: 'Dynacard automation ideas backlog: surveillance KPIs, valve checks, gas-handling advisor (from training-doc mining)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1299
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1302
+    title: 'feat(openfoam): wave-excited floating body — long-wave heave RAO limit validation (combines #1170 + #1169)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1302
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1305
+    title: 'Durable workflow: casing-design — production casing design check via registry (POST /api/run)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1305
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1311
+    title: 'Casing design: biaxial collapse derating under axial tension (API 5C3 reduced-yield)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1311
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1312
+    title: 'Baseline-red cleanup: infrastructure-other / misc / orcaflex-solver / specialized shards fail on every PR'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1312
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1313
+    title: 'Tubing design counterpart: API tubing catalog + production tubing design checks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1313
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1318
+    title: Restore mooring-tension-iteration test inputs (relocated off-repo at slimming) + engine routing
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1318
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1322
+    title: 'ops(pages): GitHub Pages deploy step timing out since 2026-07-02 15:54 UTC — site frozen at 4ecf4faf'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1322
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1324
+    title: CFD heave-RAO curve — sweep wave-excited body across resonance, spot-check vs potential-flow diffraction reference (#1161)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1324
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+      - domain:cfd
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1332
+    title: 'CFD: free-decay heave damping test for the overset floating body (attribute #1324 resonance gap)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1332
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1338
+    title: 'baseline-red: abs-path gate trips on test_assembly_golden.py (missing allowlist marker from #1280)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1338
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1345
+    title: 'envelopes C2 (#1281b): flex-joint refinement + AMJIG criteria + WH/conductor-moment'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1345
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+      - status:done
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1346
+    title: 'envelopes C3 (#1281c): solver-backed dynamic tier stub via parametric.library'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1346
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+      - status:done
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1350
+    title: riser-fatigue atlas reports STALE on main but `refresh --apply` is a no-op (regeneration writes nothing)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1350
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1351
+    title: "Logo: make the bollard show what we're moored to (principles / codes & standards)"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1351
+    gh_state: closed
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1353
+    title: SloshingCouplingModel.from_sweep_manifest rejects dm#641 manifest ("points" wrapper key)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1353
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1356
+    title: 'EPIC: Short-horizon vessel/structure MOTION forecast → operability go/no-go → capabilities page'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1356
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - domain:naval-architecture
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1357
+    title: '[#1356-A] wave_forecast: phase-resolved surface synthesis + predictable-zone-bounded forecast'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1357
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - domain:naval-architecture
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1358
+    title: '[#1356-B] motion_forecast: time-domain 6-DOF motion reconstruction via RAO/IRF (keystone)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1358
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - domain:naval-architecture
+      - status:working
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1359
+    title: '[#1356-C] Derived operability quantities + rolling go/no-go with lead time'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1359
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - domain:naval-architecture
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1360
+    title: '[#1356-D] Learning loop: forecast-vs-measured skill, recalibration, engineering feedback'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1360
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - domain:naval-architecture
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1361
+    title: '[#1356-E] Live interactive demo → repo capabilities page'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1361
+    gh_state: closed
+    gh_labels:
+      - feature
+      - cat:engineering
+      - cat:website
+      - domain:naval-architecture
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1365
+    title: 'envelopes D-follow-up: CMEMS (Copernicus Marine) metocean client + attribution'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1365
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1367
+    title: '[#1356-F] Real-time MMS / measurement-system ingest — measured-motion mode + reconciliation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1367
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - domain:naval-architecture
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1372
+    title: 'EPIC: Hybrid physics+ML digital twin — drilling-riser operability & wellhead integrity'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1372
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1373
+    title: 'twin A: telemetry ingestion — vessel offset / DP thruster / measured tensions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1373
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+      - status:done
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1374
+    title: 'twin B: ML residual-correction seam — physics baseline + learned correction (measured − predicted)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1374
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1375
+    title: 'twin C: DP drift-off dynamics — watch-circle under thruster loss'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1375
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1376
+    title: 'twin D: real-time operability/integrity monitoring surface'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1376
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1377
+    title: 'twin E: integration + live demo loop'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1377
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1380
+    title: 'capabilities page: add missing Wall-thickness sizing/checks and Cathodic protection sections'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1380
+    gh_state: closed
+    gh_labels:
+      - cat:engineering
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1381
+    title: 'capabilities page: Naval architecture section — stability, resistance, scantlings, hull girder'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1381
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1382
+    title: 'capabilities page: Fatigue section — S-N curves, Efthymiou SCF, rainflow, crack growth'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1382
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1383
+    title: 'capabilities page: VIV screening section — DNV-RP-F105 vortex-induced vibration'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1383
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1384
+    title: 'capabilities page: Geotechnical section — piles, anchors, mudmats, scour (API RP 2GEO)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1384
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1385
+    title: 'capabilities page: Production engineering section — nodal analysis, IPR/VLP, ESP'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1385
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1386
+    title: 'capabilities page: Drilling engineering section — pore pressure, swab/surge, kick, ROP'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1386
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1387
+    title: 'capabilities page: Field development section — concept screening, CAPEX/OPEX, NPV'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1387
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1388
+    title: 'Wall-thickness & cathodic-protection live explorers + 1-pager PDFs (follow-on to #1380)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1388
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1391
+    title: 'EPIC: capabilities-page content expansion — 7 verified drop-in sections (naval-arch, fatigue, VIV, geotech, production, drilling, field-dev)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1391
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - epic
     initial_status: triage
     priority: 0
     gh_assignees: []

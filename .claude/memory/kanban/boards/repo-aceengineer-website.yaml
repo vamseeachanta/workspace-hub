@@ -175,3 +175,209 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#19
+    title: '[Epic] Relaunch aceengineer.com for the evolved AI-engineering ecosystem'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/19
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - content
+      - design-system
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#20
+    title: W1 — Information architecture & new sitemap
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/20
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#21
+    title: 'W2 — Homepage reposition: AI engineering firm for offshore energy'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/21
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#22
+    title: W3 — Deckhand product page + Open Deck funnel
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/22
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#23
+    title: W4 — Platform / digitalmodel page
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/23
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#24
+    title: W5 — Solutions-by-domain pages
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/24
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#25
+    title: W6 — Proof page (determinism, standards, case studies)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/25
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#26
+    title: W7 — Brand / design-system refresh
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/26
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#27
+    title: W8 — Programmatic-SEO content engine
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/27
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#28
+    title: W9 — Demo gallery integration
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/28
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#29
+    title: W10 — Lead capture & analytics wired to onboarding source-tags
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/29
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#30
+    title: W11 — Vision / where-this-is-going surface
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/30
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#32
+    title: Reconcile legacy engineering.html / energy.html with the new Solutions IA
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/32
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - content
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#33
+    title: "Vercel deploy fails: vercel.json schema rejects 'public' (and 'name')"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/33
+    gh_state: closed
+    gh_labels:
+      - bug
+      - priority:high
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#38
+    title: Website CAD/Manufacturing landing section
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/38
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#40
+    title: 'Pages demo: client-side engineering calculators + frozen field-economics/standards demos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/40
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#44
+    title: 'W: API reference + API-path catalog pages (deckhand-api.html + api-catalog.html)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/44
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

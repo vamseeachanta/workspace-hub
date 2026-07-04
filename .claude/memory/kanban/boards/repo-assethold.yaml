@@ -232,3 +232,43 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#59
+    title: 'Pages demo: portfolio-strategy signals + real-estate underwriting (SYNTHETIC data only)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/59
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#67
+    title: Portfolio Returns Analyzer — config-driven, offline interactive dashboard (assess any portfolio)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/67
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#74
+    title: D10 — Establish the asset-financial database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/74
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

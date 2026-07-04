@@ -1002,6 +1002,251 @@ cards:
       - domain:ai-orchestration
       - domain:skill-improvement
       - machine:multi
+      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
+      - status:completeness-verified
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3114
+    title: 'feat(ecosystem): Omnigent-lens — make repo ecosystem AI-provider- & OS/machine-equivalent [gap-analysis umbrella; extends #2887/#2967/#3058]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3114
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3116
+    title: 'feat(harness): G1 portable agent-definition format — define once, run on any harness (Claude/Codex/Gemini) [sub of #3058, umbrella #3114]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3116
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3117
+    title: 'feat(harness): G2 AGENTS.md portability — cross-harness instruction convention [sub of #3058, umbrella #3114]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3117
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3118
+    title: 'feat(harness): G3 MCP-first tool exposure — provider-portable tools [sub of #3058, umbrella #3114]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3118
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3119
+    title: 'feat(harness): G4 budget-as-policy — stateful cost/token guardrail at harness layer [sub of #1838, umbrella #3114]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3119
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+      - status:blocked
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3120
+    title: 'feat(harness): G5 cross-surface session continuity — resumable session object [sub of #2998, umbrella #3114]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3120
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:ai-orchestration
+      - cat:harness
+      - domain:ai-orchestration
+      - status:blocked
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3137
+    title: 'Skill-invocation: capture Skill-tool calls (id→short_name resolution) — follow-on to #3112'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3137
+    gh_state: open
+    gh_labels:
+      - domain:ai-orchestration
+      - domain:skill-improvement
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3138
+    title: 'Skill-invocation: backfill historical events from transcripts — follow-on to #3112'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3138
+    gh_state: open
+    gh_labels:
+      - domain:ai-orchestration
+      - domain:skill-improvement
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3248
+    title: 'Epic: robust cross-provider self-improvement & skill-currency ecosystem'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3248
+    gh_state: open
+    gh_labels:
+      - cat:skills-improvement
+      - domain:ai-orchestration
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3249
+    title: 'Self-improvement: cross-provider skill-currency matrix line item (PRIMARY) — epic #3248'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3249
+    gh_state: closed
+    gh_labels:
+      - cat:skills-improvement
+      - domain:ai-orchestration
+      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
+      - status:completeness-verified
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3250
+    title: 'Self-improvement: cross-provider skill-drift detector + alert — epic #3248'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3250
+    gh_state: closed
+    gh_labels:
+      - cat:skills-improvement
+      - domain:ai-orchestration
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3251
+    title: 'Self-improvement: re-sync skills to tier-1 + external repos (no freeze-at-link) — epic #3248'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3251
+    gh_state: closed
+    gh_labels:
+      - cat:skills-improvement
+      - domain:ai-orchestration
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3252
+    title: 'Self-improvement: auto-graduate high-confidence correction candidates to skills — epic #3248'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3252
+    gh_state: open
+    gh_labels:
+      - cat:skills-improvement
+      - domain:ai-orchestration
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3253
+    title: 'Self-improvement: Hermes pattern auto-promotion into canonical skills — epic #3248'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3253
+    gh_state: open
+    gh_labels:
+      - cat:skills-improvement
+      - domain:ai-orchestration
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3254
+    title: 'Self-improvement: repeating drift patterns trigger skill-update candidates — epic #3248'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3254
+    gh_state: open
+    gh_labels:
+      - cat:skills-improvement
+      - domain:ai-orchestration
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3255
+    title: 'Self-improvement: memory-staleness alerting (generalize session-curation freshness) — epic #3248'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3255
+    gh_state: closed
+    gh_labels:
+      - cat:skills-improvement
+      - domain:ai-orchestration
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3256
+    title: 'Self-improvement: adaptive correction-confidence threshold + Gemini-specific skill detection — epic #3248'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3256
+    gh_state: open
+    gh_labels:
+      - cat:skills-improvement
+      - domain:ai-orchestration
+      - status:plan-approved
+      - gate:completeness
     initial_status: triage
     priority: 0
     gh_assignees: []
