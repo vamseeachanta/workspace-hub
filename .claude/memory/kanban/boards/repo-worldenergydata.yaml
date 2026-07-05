@@ -2943,11 +2943,11 @@ cards:
     title: 'feat(spain): SpainCoresRefreshJob scheduler job'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/809
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
-      - status:plan-approved
+      - status:done
       - lane:codex
     initial_status: triage
     priority: 0
@@ -3106,6 +3106,18 @@ cards:
     gh_labels:
       - enhancement
       - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#833
+    title: Probabilistic reserves/production forecasting (P10/P50/P90 fan charts) via Monte Carlo UQ
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/833
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []

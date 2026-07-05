@@ -7040,3 +7040,14 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1427
+    title: Monte Carlo uncertainty-quantification engine (LHS + tornado + P10/P50/P90) — reusable digitalmodel module
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1427
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
