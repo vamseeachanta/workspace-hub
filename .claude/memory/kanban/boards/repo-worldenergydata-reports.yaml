@@ -1200,7 +1200,7 @@ cards:
     gh_labels:
       - enhancement
       - cat:data
-      - status:plan-review
+      - status:plan-approved
       - domain:reports
       - lane:codex
     initial_status: triage
