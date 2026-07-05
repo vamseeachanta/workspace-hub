@@ -2963,3 +2963,88 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#814
+    title: 'feat(canada): live C-NLOER PDF download + refresh lane (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/814
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#815
+    title: 'feat(canada): per-field development-concept override (GBS vs FPSO/subsea) (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/815
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#816
+    title: 'feat(canada): CNSOER Sable + Deep Panuke legacy gas ingest + gas revenue (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/816
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#817
+    title: 'feat(canada): Hibernia 1997-2001 HTML-modal production backfill (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/817
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#818
+    title: 'feat(canada): ArcGIS Development-Wells water-depth + FieldConcept enrichment (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/818
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#819
+    title: 'chore(canada): owner legal read before public exposure of C-NLOER data (#719 gate)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/819
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#822
+    title: 'feat(dev): add black/isort/flake8 pre-commit so lint fails locally, not at merge'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/822
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - status:plan-approved
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

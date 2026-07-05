@@ -6898,10 +6898,10 @@ cards:
     title: 'twin D: real-time operability/integrity monitoring surface'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1376
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
-      - status:working
+      - status:done
       - lane:claude
     initial_status: triage
     priority: 0
@@ -6914,8 +6914,8 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - status:working
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []

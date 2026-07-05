@@ -22169,3 +22169,16 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3382
+    title: 'chore(dev-workflow): standardize + roll formatting pre-commit (black/isort/flake8) across Python repos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3382
+    gh_state: open
+    gh_labels:
+      - status:plan-approved
+      - gate:completeness
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

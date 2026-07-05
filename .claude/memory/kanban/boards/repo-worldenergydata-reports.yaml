@@ -875,7 +875,7 @@ cards:
     title: 'feat(reports): cross-country field-development benchmark report → capabilities page'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/723
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
