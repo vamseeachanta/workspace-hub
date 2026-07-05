@@ -1,4 +1,4 @@
-generated_at: "2026-07-05T16:21:16"
+generated_at: "2026-07-05T16:34:23"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
@@ -7,13 +7,13 @@ status: active
 provenance:
   checkout_sha: "50d9dbffe"
   dirty: false
-  behind_main: 0
+  behind_main: 2
   ahead_main: 0
   origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 23848, disk_avail_gb: 730}
+    headroom: {ram_avail_mib: 23014, disk_avail_gb: 729}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -34,7 +34,7 @@ dimensions:
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-07-05T04:25:04"
+    context_md_mtime: "2026-07-05T16:28:52"
   provider_harness:
     schema_version: 1
     providers:
@@ -70,10 +70,10 @@ dimensions:
     has_parity_review: true
     job_count: 59
   session_curation:
-    last_curated_at: "2026-07-01T11:47:02+00:00"
-    sessions_24h: 122
+    last_curated_at: "2026-07-05T21:34:04+00:00"
+    sessions_24h: 153
     providers_active: "claude,codex,gemini,hermes"
-    memory_files_changed: 200
+    memory_files_changed: 194
   skill_currency:
     audited_at: "2026-07-01T11:47:05+00:00"
     canonical_count: 44
