@@ -6,18 +6,27 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-07-01)
+## Synced from Hermes Memory (2026-07-04)
 
 ### Environment Facts
 
-- `claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only.
-- Workspace-hub tier-1 repos live as siblings under `/mnt/local-analysis/<repo>`; `workspace-hub` at `/mnt/local-analysis/workspace-hub` is the harness/control-plane, not a parent for nested tier-1 checkouts. Classify role/remote/dirty state before cleanup/sync/move/delete. Agent worktrees default to `/mnt/local-analysis/agent-worktrees/<repo>-issue-<N>-<slug>`.
-- ace-linux-2 is reachable by SSH from ace-linux-1 as `ace-linux-2`; live probe showed `/mnt/local-analysis/workspace-hub` exists as a git repo, `/mnt/local-analysis/digitalmodel` and `/mnt/local-analysis/worldenergydata` were absent, and `/mnt/dde` exists but no tier-1 checkouts were present there.
+- ace-linux-2 display: NVIDIA T400 (PCI 81:00.0) uses nvidia-580-open driver. Two failure modes: (1) kernel upgrade without matching linux-modules-nvidia-580-open-$KERN package → 640x480 framebuffer fallback (most common after reboot), (2) KVM EDID drop. Fix script: scripts/operations/system/fix-kvm-display-ace-linux-2.sh. Skill: ace-linux-2-display-troubleshooting.
+- Hermes CLI on this machine uses ~/.hermes/config.yaml with many populated skills.external_dirs entries pointing at /mnt/workspace-hub and multiple repo .claude/skills directories; do not assume repo skills are unavailable locally without checking the live config.
+- workspace-hub local repos aceengineer-admin, achantas-data, investments, and sabithaandkrishnaestates use SSH GitHub remotes because gh HTTPS token is invalid while SSH auth for git@github.com works.
+- software-ops channel: Deckhand-as-software primary, digressions allowed if flagged multidisciplinary and kept threaded. Don’t infer standalone messages belong to prior threads unless obvious; ask if needed. First etiquette violation gets brief advisory; later repeats usually ignored.
+- baez Telegram: Deckhand stays within transportation/engineering/economics unless explicitly asked for multi-domain work; confirm before other domains.
+- FDAS Telegram deliverables: save under /mnt/local-analysis/llm-wiki-fdas/deckhand-deliverables/YYYY/YYYY-MM-DD/<topic-slug>/ with manifest.yaml, report.html, inputs.yaml, results.yaml side by side; reply with report path plainly on its own line. Report sections: executive summary, objective, inputs & assumptions, methodology, results, conclusions, limitations, references, provenance. Pipeline wall-thickness screens require manifest.yaml design_questions keys exactly buckle_arrestors, alternate_branch, design_basis_caveat; mirror basis in results.yaml/report.html.
 
 ### User Profile
 
-- User requires zero-waste AI spend and throughput-first workstation planning. Repo placement/interactions, memory, skills, tools, artifacts, output formats, and file structure are canonical infrastructure; workspace-hub memory/skills/tools are SSoT for sibling repos rather than local-only duplicates. User prefers tier-1 repo placement decided machine-by-machine via GitHub issues in explicit sequence (ace-linux-1, ace-linux-2, then licensed Windows hosts), independent from delegation/dispatch strategy. In marine/offshore force reviews, user expects component/resultant comparisons side-by-side using existing basecase assumptions and GitHub issue comments as the correction surface.
-- User wants private llm-wiki maintained weekly as code-development leverage: store client/project data with key-information abstractions while public repos/docs remain redacted/public-safe; review LLM concepts, assess repo architecture/content gaps, and open actionable GitHub issues. User expects active post-session learning after non-trivial sessions: patch loaded/governing class-level skills first, prefer concise references under umbrellas over one-off skills, and treat “nothing to save” as rare. User expects repo-ecosystem claims about native Claude usage / Hermes Agent routing to be verified against Claude logs and concrete evidence before answering.
+- User prefers GitHub issue work to use parallel agents where possible, especially Claude agent teams/delegated subagents for deeper analysis/planning.
+- User prefers approved GitHub issue work dispatched via file-based Claude prompt packs with loop/status monitoring and built-in adversarial implementation review.
+- When using Claude CLI subprocesses, the user expects the proper `claude -p` invocation format rather than `--print`.
+- User wants core engineering work learnings to be made portable across the repo ecosystem and usable on other machines, especially for workflows like OpenFOAM development and Blender animations.
+- User may review and approve planning work directly on GitHub issue web pages by applying the `status:plan-approved` label.
+- User expects learning passes to actively update class-level skills when there is real signal, preferring loaded/existing umbrella skills plus concise references over narrow one-session skills.
+- User prefers interactive local review/rating web apps to include a simple Submit button rather than requiring manual export/download/upload workflows.
+- User expects operational CTAs to be explicit and directly executable, including the exact command/message to send and what to do next.
 
 
 <!-- BRIDGE:END -->
