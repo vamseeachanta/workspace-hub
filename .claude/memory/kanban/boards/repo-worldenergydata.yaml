@@ -2947,7 +2947,6 @@ cards:
     gh_labels:
       - enhancement
       - cat:data
-      - status:plan-review
       - status:plan-approved
       - lane:codex
     initial_status: triage
@@ -3079,6 +3078,30 @@ cards:
     title: 'feat(australia): NOPTA/GA wells + water-depth enrichment for FieldConcept (#721 follow-on)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/825
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#831
+    title: 'fix(benchmark): refresh field-benchmark artifact — Australia missing, Spain-only-real (#723 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/831
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#832
+    title: 'refactor(benchmark): reconcile the two divergent economics stacks (#723 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/832
     gh_state: open
     gh_labels:
       - enhancement
