@@ -2947,6 +2947,9 @@ cards:
     gh_labels:
       - enhancement
       - cat:data
+      - status:plan-review
+      - status:plan-approved
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3039,12 +3042,48 @@ cards:
     title: 'feat(dev): add black/isort/flake8 pre-commit so lint fails locally, not at merge'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/822
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:high
       - status:plan-approved
       - lane:codex
     initial_status: triage
     priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#823
+    title: 'feat(australia): production feed (AEMO GBB / PEPS-SA) → real economics (#721 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/823
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#824
+    title: 'feat(australia): gas-price fiscal marker for AU (not WTI) (#721/#714 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/824
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#825
+    title: 'feat(australia): NOPTA/GA wells + water-depth enrichment for FieldConcept (#721 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/825
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
     gh_assignees: []
     body_excerpt: ''

@@ -139,7 +139,7 @@ cards:
     title: Restore broken modules.* compatibility shims after bsee and marine_safety consolidation
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/278
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - machine:dev-primary
@@ -1022,7 +1022,7 @@ cards:
     title: 'feat(australia): NEW source — NOPIMS/NOPTA/GA/state portals investigation → ingest → field development chain'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/721
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
