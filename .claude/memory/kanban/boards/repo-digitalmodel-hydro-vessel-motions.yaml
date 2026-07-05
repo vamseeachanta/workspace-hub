@@ -478,3 +478,78 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1429
+    title: '[Epic] CFD-benchmarked sloshing master curve — overlay measured 2D VOF points on the analytical explorer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1429
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - domain:hydro-vessel-motions
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1430
+    title: 'feat(cfd): rectangular free-decay natural-frequency benchmark battery'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1430
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:hydro-vessel-motions
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1431
+    title: 'feat(cfd): rectangular forced-roll resonance across 2-3 roll periods'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1431
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:hydro-vessel-motions
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1432
+    title: 'feat(capabilities): overlay measured CFD points on the sloshing master curve'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1432
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:hydro-vessel-motions
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1433
+    title: 'proposal(cfd): further sloshing CFD benchmarking plan (cylinders, high-fill, 3D)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1433
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - domain:hydro-vessel-motions
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
