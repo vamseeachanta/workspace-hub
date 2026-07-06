@@ -1378,6 +1378,12 @@ skills:
   name: xlsx
   when_to_use: '- Reading and analyzing Excel data with pandas - Creating formatted spreadsheets programmatically - Building financial models with formulas - Generating reports with charts and graphs - Automating data entry and updates - Converting between Excel and other formats - Batch processing multiple spreadsheets - Creating templates for repeated use'
   when_to_use_source: section
+- description: Surface SPECIFIC FILES on the shared drives (/mnt/ace, /mnt/dde) relevant to the current task — the FILE-level complement to ecosystem-data-sources (domain-catalog level). Extracts query terms from work context, runs the drive-index CLI once, presents ranked canonical paths with freshness caveats. Use for similar-past-work, prior-project, or files/examples/precedent asks; when domain work needs past deliverables (mooring calc → xlsx/py; CAD → dwg/step; standards → PDF inventory).
+  family: data
+  id: data/drive-file-search
+  name: drive-file-search
+  when_to_use: drive-file-search Surface SPECIFIC FILES on the shared drives (/mnt/ace, /mnt/dde) relevant to the current task — the FILE-level complement to ecosystem-data-sources (domain-catalog level). Extracts query terms from work context, runs the drive-index CLI once, presents ranked canonical paths with freshness caveats. Use for similar-past-work, prior-project, or files/examples/precedent asks; when domain work needs past deliverables (mooring calc → xlsx/py; CAD → dwg/step; standards → PDF inventory). data
+  when_to_use_source: backfill
 - description: Proactively surface what DATA the ecosystem already has for an engineering domain — before starting analysis, points to the consolidated data-source catalog, any latent ACE_SHARE project precedent, and the domain-database issue that curates it. Use when work touches an engineering domain (riser, mooring, pipeline, structural/FFS, naval-arch/hydro, metocean, materials, production, geotech, drilling, CAD/sim, or financial/asset), when someone asks 'do we have data for X', 'where do we get X data', 'build the X database', or before implementing a calculation that needs reference data.
   family: data
   id: data/ecosystem-data-sources
