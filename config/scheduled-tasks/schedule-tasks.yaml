@@ -630,7 +630,7 @@ tasks:
     prefer: dev-primary
     command: >-
       cd $WORKSPACE_HUB &&
-      bash scripts/memory/bridge-hermes-claude.sh
+      bash scripts/memory/bridge-hermes-claude.sh --commit
       >> $WORKSPACE_HUB/logs/orchestrator/memory-bridge/hermes-claude-$(date +\%Y\%m\%d).log 2>&1
     log: logs/orchestrator/memory-bridge/hermes-claude-*.log
     is_claude_task: false

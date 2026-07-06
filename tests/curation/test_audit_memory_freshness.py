@@ -1,9 +1,13 @@
-"""TDD tests for #3255 — the memory-freshness audit engine (epic #3248).
+"""TDD tests for #3255 + #3384 — the memory-freshness audit engine (epic #3248).
 
-Targets scripts/curation/audit_memory_freshness.py: the pure verdict tiers (freshness_category /
-categorize) and the audit() fact-emitter. The git `git log` runner (`_git_commit_iso`) is
-monkeypatched everywhere so the suite never depends on real repo history; one regression test
-proves the bridged surfaces take their clock from the git commit time, NOT file mtime.
+Targets scripts/curation/audit_memory_freshness.py.
+
+#3384 change: freshness is clocked by the daily BRIDGE HEARTBEAT (a committed liveness marker),
+not by the deterministic/byte-invariant content surfaces. The four content surfaces
+(context.md / agents.md / codex+gemini slices) are graded by FILESYSTEM PRESENCE (exists + non-empty)
+so a deleted/clobbered surface is caught — git-commit-history presence would report a deleted path as
+still-present via its last commit. `_git_commit_iso` is monkeypatched so the suite never depends on
+real repo history; presence is exercised against a temp `amf.REPO`.
 """
 from __future__ import annotations
 
@@ -60,12 +64,10 @@ def test_category_negative_is_missing_evidence():
 
 # ── pure verdict: categorize (list of present ages) ──────────────────────────────────────────────
 def test_worst_surface_dominates():
-    # one fresh (1h) + one expired (80h) ⇒ the oldest drives the verdict
     assert amf.categorize([1, 80]) == "MEMORY-EXPIRED"
 
 
 def test_absent_surface_ignored():
-    # only the present surface (1h) is in the list ⇒ fresh
     assert amf.categorize([1]) == "MEMORY-FRESH"
 
 
@@ -74,7 +76,6 @@ def test_missing_evidence_no_present_surface():
 
 
 def test_missing_evidence_future_stamp_failclosed():
-    # a future stamp anywhere (clock skew) fails the whole verdict closed
     assert amf.categorize([1, -3, 50]) == "MISSING-EVIDENCE"
 
 
@@ -82,120 +83,155 @@ def test_categorize_ignores_non_numeric():
     assert amf.categorize([None, "x"]) == "MISSING-EVIDENCE"
 
 
-# ── audit() fact-emitter (git runner monkeypatched) ──────────────────────────────────────────────
+# ── #3384 surface topology ───────────────────────────────────────────────────────────────────────
+def test_heartbeat_is_the_recency_git_surface():
+    # THE liveness clock is the bridge heartbeat, not the byte-invariant content surfaces.
+    assert amf.RECENCY_GIT_SURFACES == {
+        "bridge_heartbeat": ".claude/state/memory-bridge-heartbeat.json"
+    }
+
+
+def test_content_surfaces_are_presence_only():
+    # context.md / agents.md / slices are graded present/absent, NOT recency-clocked.
+    assert set(amf.PRESENCE_SURFACES) == {
+        "context_md", "agents_md", "codex_runtime", "gemini_runtime"
+    }
+    assert amf.PRESENCE_SURFACES["context_md"] == ".claude/memory/context.md"
+    assert amf.PRESENCE_SURFACES["codex_runtime"] == "config/agents/codex/MEMORY.runtime.md"
+
+
+# ── audit() fact-emitter (git runner monkeypatched; presence against temp REPO) ──────────────────
 def _patch_git(monkeypatch, mapping):
-    """mapping: {rel_path: iso|None}; unmapped paths return None (fail-closed)."""
+    """mapping: {rel_path: iso|None}; unmapped ⇒ None (fail-closed)."""
     monkeypatch.setattr(amf, "_git_commit_iso", lambda rel: mapping.get(rel))
 
 
-def test_audit_all_git_surfaces_fresh(monkeypatch, tmp_path):
-    mapping = {rel: _iso_ago(2) for rel in amf.GIT_SURFACES.values()}
-    _patch_git(monkeypatch, mapping)
-    monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "nope")  # absent hermes
-    state = amf.audit(machine="dev-primary", now=NOW)
-    assert state["machine"] == "dev-primary"
-    assert state["freshness"] == "MEMORY-FRESH"
-    assert state["surfaces"]["context_md"]["present"] is True
-    assert state["surfaces"]["context_md"]["signal"] == "git-commit"
-    assert abs(state["surfaces"]["context_md"]["age_hours"] - 2.0) < 1e-6
-    assert state["surfaces"]["hermes_memories"]["present"] is False
-    assert state["worst_age_hours"] is not None
+def _make_presence(monkeypatch, repo: Path, present=True):
+    """Create (or omit) the 4 presence content surfaces under a temp REPO."""
+    monkeypatch.setattr(amf, "REPO", repo)
+    if present:
+        for rel in amf.PRESENCE_SURFACES.values():
+            p = repo / rel
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text("content\n")
 
 
-def test_audit_worst_surface_drives_freshness(monkeypatch, tmp_path):
-    mapping = {
-        ".claude/memory/context.md": _iso_ago(1),
-        ".claude/memory/agents.md": _iso_ago(1),
-        "config/agents/codex/MEMORY.runtime.md": _iso_ago(1),
-        "config/agents/gemini/MEMORY.runtime.md": _iso_ago(80),  # stale provider runtime
-    }
-    _patch_git(monkeypatch, mapping)
+def test_audit_fresh_from_heartbeat(monkeypatch, tmp_path):
+    # heartbeat 2h old, content present ⇒ FRESH (content byte-age is irrelevant now)
+    _patch_git(monkeypatch, {amf.RECENCY_GIT_SURFACES["bridge_heartbeat"]: _iso_ago(2)})
     monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "nope")
+    _make_presence(monkeypatch, tmp_path, present=True)
+    state = amf.audit(machine="dev-primary", now=NOW)
+    assert state["freshness"] == "MEMORY-FRESH"
+    hb = state["surfaces"]["bridge_heartbeat"]
+    assert hb["present"] is True and hb["signal"] == "git-commit"
+    assert abs(hb["age_hours"] - 2.0) < 1e-6
+    # content surfaces are present but presence-signalled (not recency)
+    assert state["surfaces"]["context_md"]["present"] is True
+    assert state["surfaces"]["context_md"]["signal"] == "presence"
+    assert state["surfaces"]["context_md"]["age_hours"] is None
+
+
+def test_audit_expired_dead_heartbeat(monkeypatch, tmp_path):
+    # heartbeat 80h old ⇒ EXPIRED even though content is present (bridge dead)
+    _patch_git(monkeypatch, {amf.RECENCY_GIT_SURFACES["bridge_heartbeat"]: _iso_ago(80)})
+    monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "nope")
+    _make_presence(monkeypatch, tmp_path, present=True)
     state = amf.audit(machine="m", now=NOW)
     assert state["freshness"] == "MEMORY-EXPIRED"
     assert abs(state["worst_age_hours"] - 80.0) < 1e-6
-    # newest_refresh is the most-recently refreshed present surface (the 1h ones)
-    assert state["newest_refresh"] == _iso_ago(1)
 
 
-def test_audit_git_unavailable_failcloses(monkeypatch, tmp_path):
-    # git missing / not-a-repo ⇒ runner returns None ⇒ every bridged surface absent
-    monkeypatch.setattr(amf, "_git_commit_iso", lambda rel: None)
+def test_audit_content_byte_age_does_not_starve_clock(monkeypatch, tmp_path):
+    """#3384 core: a byte-invariant content surface committed 200h ago must NOT drive EXPIRED —
+    only the heartbeat (fresh) + hermes clock freshness."""
+    _patch_git(monkeypatch, {amf.RECENCY_GIT_SURFACES["bridge_heartbeat"]: _iso_ago(3)})
     monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "nope")
+    _make_presence(monkeypatch, tmp_path, present=True)
     state = amf.audit(machine="m", now=NOW)
-    for key in amf.GIT_SURFACES:
-        assert state["surfaces"][key]["present"] is False
+    assert state["freshness"] == "MEMORY-FRESH"  # heartbeat 3h wins; content age irrelevant
+
+
+def test_audit_missing_on_deleted_content_surface(monkeypatch, tmp_path):
+    """r2 Finding 2: a content surface that EXISTED then was DELETED must read MISSING-EVIDENCE.
+    Filesystem presence catches this; git-log-history would not."""
+    _patch_git(monkeypatch, {amf.RECENCY_GIT_SURFACES["bridge_heartbeat"]: _iso_ago(2)})
+    monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "nope")
+    _make_presence(monkeypatch, tmp_path, present=True)
+    (tmp_path / amf.PRESENCE_SURFACES["context_md"]).unlink()  # delete a present surface
+    state = amf.audit(machine="m", now=NOW)
+    assert state["surfaces"]["context_md"]["present"] is False
+    assert state["freshness"] == "MISSING-EVIDENCE"
+
+
+def test_audit_missing_on_empty_content_surface(monkeypatch, tmp_path):
+    # a zero-byte surface is not "present" (clobbered-to-empty case)
+    _patch_git(monkeypatch, {amf.RECENCY_GIT_SURFACES["bridge_heartbeat"]: _iso_ago(2)})
+    monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "nope")
+    _make_presence(monkeypatch, tmp_path, present=True)
+    (tmp_path / amf.PRESENCE_SURFACES["agents_md"]).write_text("")  # truncate
+    state = amf.audit(machine="m", now=NOW)
+    assert state["surfaces"]["agents_md"]["present"] is False
+    assert state["freshness"] == "MISSING-EVIDENCE"
+
+
+def test_audit_first_run_no_heartbeat_failcloses(monkeypatch, tmp_path):
+    # before the first heartbeat commit lands: heartbeat absent, no hermes ⇒ MISSING-EVIDENCE
+    _patch_git(monkeypatch, {})  # heartbeat unmapped ⇒ None
+    monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "nope")
+    _make_presence(monkeypatch, tmp_path, present=True)
+    state = amf.audit(machine="m", now=NOW)
+    assert state["surfaces"]["bridge_heartbeat"]["present"] is False
     assert state["freshness"] == "MISSING-EVIDENCE"
     assert state["worst_age_hours"] is None
 
 
-def test_audit_bridged_surface_uses_git_commit_not_mtime(monkeypatch, tmp_path):
-    """CORE must-fix #1: the freshness clock for a git-bridged surface is the git COMMIT time,
-    immune to a freshly-bumped file mtime. We feed an OLD commit iso through the runner; the audit
-    must report exactly that old stamp (signal git-commit), never a 'now' mtime."""
+def test_audit_heartbeat_uses_git_commit_not_mtime(monkeypatch, tmp_path):
     old = _iso_ago(100)
-    _patch_git(monkeypatch, {rel: old for rel in amf.GIT_SURFACES.values()})
+    _patch_git(monkeypatch, {amf.RECENCY_GIT_SURFACES["bridge_heartbeat"]: old})
     monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "nope")
+    _make_presence(monkeypatch, tmp_path, present=True)
     state = amf.audit(machine="m", now=NOW)
-    rec = state["surfaces"]["context_md"]
-    assert rec["refreshed_at"] == old
-    assert rec["signal"] == "git-commit"
-    assert state["freshness"] == "MEMORY-EXPIRED"  # 100h > 72h, NOT fresh-from-mtime
+    hb = state["surfaces"]["bridge_heartbeat"]
+    assert hb["refreshed_at"] == old and hb["signal"] == "git-commit"
+    assert state["freshness"] == "MEMORY-EXPIRED"
 
 
-def test_audit_hermes_surface_uses_local_mtime(monkeypatch, tmp_path):
-    # local (non-git) surface: freshness clock = real file mtime
+def test_audit_hermes_co_signal_drives_expired(monkeypatch, tmp_path):
+    # a fresh heartbeat but a genuinely-dead Hermes still trips EXPIRED (max over recency surfaces)
+    _patch_git(monkeypatch, {amf.RECENCY_GIT_SURFACES["bridge_heartbeat"]: _iso_ago(2)})
     hdir = tmp_path / "hermes"
     hdir.mkdir()
     f = hdir / "MEMORY.md"
     f.write_text("x")
-    target = NOW - timedelta(hours=5)
     import os
+    target = NOW - timedelta(hours=90)
     os.utime(f, (target.timestamp(), target.timestamp()))
     monkeypatch.setattr(amf, "HERMES_DIR", hdir)
-    monkeypatch.setattr(amf, "_git_commit_iso", lambda rel: None)  # isolate hermes
+    _make_presence(monkeypatch, tmp_path, present=True)
     state = amf.audit(machine="m", now=NOW)
-    rec = state["surfaces"]["hermes_memories"]
-    assert rec["present"] is True
-    assert rec["signal"] == "file-mtime"
-    assert abs(rec["age_hours"] - 5.0) < 0.01
-    assert state["freshness"] == "MEMORY-FRESH"
-
-
-def test_audit_hermes_absent_marked(monkeypatch, tmp_path):
-    monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "absent")
-    _patch_git(monkeypatch, {rel: _iso_ago(1) for rel in amf.GIT_SURFACES.values()})
-    state = amf.audit(machine="m", now=NOW)
-    assert state["surfaces"]["hermes_memories"]["present"] is False
-
-
-def test_audit_machine_label_reused(monkeypatch, tmp_path):
-    # machine label comes from audit_skill_currency.machine_label, not a re-impl
-    sys.path.insert(0, str(REPO_ROOT / "scripts" / "curation"))
-    import audit_skill_currency
-    monkeypatch.setattr(audit_skill_currency, "machine_label", lambda: "fake-box")
-    monkeypatch.setattr(amf, "_git_commit_iso", lambda rel: None)
-    monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "nope")
-    state = amf.audit(now=NOW)  # machine=None ⇒ derives via reused label
-    assert state["machine"] == "fake-box"
+    assert state["surfaces"]["hermes_memories"]["signal"] == "file-mtime"
+    assert state["freshness"] == "MEMORY-EXPIRED"
+    assert abs(state["worst_age_hours"] - 90.0) < 0.01
 
 
 def test_audit_emits_no_abs_paths_and_iso_stamps(monkeypatch, tmp_path):
-    _patch_git(monkeypatch, {rel: _iso_ago(3) for rel in amf.GIT_SURFACES.values()})
+    _patch_git(monkeypatch, {amf.RECENCY_GIT_SURFACES["bridge_heartbeat"]: _iso_ago(3)})
     monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "nope")
+    _make_presence(monkeypatch, tmp_path, present=True)
     state = amf.audit(machine="m", now=NOW)
     blob = json.dumps(state)
-    assert "/mnt/" not in blob and str(REPO_ROOT) not in blob  # abs-path-allowed
-    # every present surface's refreshed_at parses as ISO
+    assert "/mnt/" not in blob and str(REPO_ROOT) not in blob and str(tmp_path) not in blob
     for s in state["surfaces"].values():
-        if s["present"]:
+        if s["present"] and s["refreshed_at"] is not None:
             assert amf._parse_iso(s["refreshed_at"]) is not None
-    assert state["schema_version"] == 1
+    assert state["schema_version"] >= 1
 
 
 def test_audit_writes_state_file(monkeypatch, tmp_path):
-    _patch_git(monkeypatch, {rel: _iso_ago(1) for rel in amf.GIT_SURFACES.values()})
+    _patch_git(monkeypatch, {amf.RECENCY_GIT_SURFACES["bridge_heartbeat"]: _iso_ago(1)})
     monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "nope")
+    _make_presence(monkeypatch, tmp_path, present=True)
     monkeypatch.setattr(amf, "STATE", tmp_path / "state")
     monkeypatch.setattr(amf, "_now", lambda: NOW)
     rc = amf.main(["--machine", "boxx"])
@@ -205,6 +241,17 @@ def test_audit_writes_state_file(monkeypatch, tmp_path):
     data = json.loads(out.read_text())
     assert data["machine"] == "boxx"
     assert data["freshness"] == "MEMORY-FRESH"
+
+
+def test_audit_machine_label_reused(monkeypatch, tmp_path):
+    sys.path.insert(0, str(REPO_ROOT / "scripts" / "curation"))
+    import audit_skill_currency
+    monkeypatch.setattr(audit_skill_currency, "machine_label", lambda: "fake-box")
+    monkeypatch.setattr(amf, "_git_commit_iso", lambda rel: None)
+    monkeypatch.setattr(amf, "HERMES_DIR", tmp_path / "nope")
+    _make_presence(monkeypatch, tmp_path, present=True)
+    state = amf.audit(now=NOW)
+    assert state["machine"] == "fake-box"
 
 
 def test_thresholds_documented_constants():

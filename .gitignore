@@ -180,6 +180,9 @@ data/document-index/*.jsonl.backup-*
 .claude/state/candidates/hermes-patterns-last-seen-*.json
 !.claude/state/corrections/
 !.claude/state/patterns/
+# #3384: the memory-bridge liveness heartbeat MUST be committed — its git-commit time is the
+# freshness clock for memory_freshness (audit_memory_freshness.py). Date-only, machine-independent.
+!.claude/state/memory-bridge-heartbeat.json
 !.claude/state/harness-readiness-ace-win-1.yaml
 !.claude/state/equality-*.yaml
 !.claude/state/session-curation-*.json
