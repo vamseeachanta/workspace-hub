@@ -19,7 +19,7 @@
 2. **Review economics:** r1 plan/code reviews go to cheaper lanes (Codex/Sonnet); premium models only for r2+ or T2-scope reviews.
 3. **Start-of-task grounding:** before building, verify the working branch against `origin/main` and the issue/PR state (`gh issue view` / `gh pr list --search`) — see `feedback_check_issue_state_before_implementing_on_detached_head` and `feedback_verify_generated_state_against_origin_not_working_copy`.
 4. **Self-merge:** governed by [`merge-authorization.md`](merge-authorization.md) — default is verify green + hand the human the command; agent-run merges only under an explicit, per-PR, non-sticky authorization (owner-adopted policy, #3390 item 4).
-5. **Automate waiting:** if you catch yourself polling a merge or a slow op in the foreground, switch to a background watcher immediately — don't re-derive this per session.
+5. **Automate waiting:** if you catch yourself polling a merge or a slow op in the foreground, switch to a background watcher immediately — don't re-derive this per session. Canonical merge babysitter (Level 2 per [`patterns.md`](patterns.md)): `scripts/operations/merge-when-clean.sh <pr> [--repo owner/name]` — watch-only by default, prints the merge command on CLEAN; `--merge` only under an explicit per-PR authorization ([`merge-authorization.md`](merge-authorization.md)).
 
 **Do NOT apply when:** the user explicitly names the model/provider for a task — their directive wins.
 
