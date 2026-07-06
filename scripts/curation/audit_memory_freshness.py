@@ -62,14 +62,25 @@ MEMORY_STALE = "MEMORY-STALE"
 MEMORY_EXPIRED = "MEMORY-EXPIRED"
 MISSING_EVIDENCE = "MISSING-EVIDENCE"
 
-# Surface key → repo-relative path; freshness clock = git last-commit time of the path.
-GIT_SURFACES = {
+# #3384: freshness is clocked by the daily BRIDGE HEARTBEAT (a committed liveness marker), NOT by the
+# deterministic/byte-invariant content surfaces. context.md is a static heredoc and the read-back
+# slices are deterministic (no timestamp) — on a quiet day they never diff, so their git-commit clock
+# cannot advance and would false-trip EXPIRED even on a healthy daily bridge. The heartbeat changes
+# once/day → guarantees one commit/day → its commit time is the honest "bridge ran" signal.
+RECENCY_GIT_SURFACES = {
+    "bridge_heartbeat": ".claude/state/memory-bridge-heartbeat.json",  # clock = git last-commit time
+}
+# Content surfaces graded by FILESYSTEM PRESENCE (exists + non-empty), NOT recency. A git-log clock
+# reports a DELETED path as still-present via its last commit (#3384 r2 Finding 2), so presence must
+# be a real filesystem check.
+PRESENCE_SURFACES = {
     "context_md": ".claude/memory/context.md",
     "agents_md": ".claude/memory/agents.md",
     "codex_runtime": "config/agents/codex/MEMORY.runtime.md",
     "gemini_runtime": "config/agents/gemini/MEMORY.runtime.md",
 }
-# Machine-LOCAL surface (not git-tracked) → freshness clock = newest file mtime.
+# Machine-LOCAL surface (not git-tracked) → freshness clock = newest file mtime. Co-liveness signal:
+# a genuinely-dead Hermes still legitimately trips the cell (max over recency surfaces).
 HERMES_DIR = Path.home() / ".hermes" / "memories"
 
 
@@ -137,6 +148,17 @@ def _surface_record(refreshed_at: str | None, signal: str, now: datetime) -> dic
     return {"present": True, "refreshed_at": refreshed_at, "age_hours": age, "signal": signal}
 
 
+def _presence_record(rel: str, now: datetime) -> dict:
+    """Content surface graded by filesystem presence (exists + non-empty), not recency. Filesystem —
+    NOT git history — so a committed-then-deleted/emptied path reads absent (#3384 r2 Finding 2)."""
+    try:
+        p = REPO / rel
+        present = p.is_file() and p.stat().st_size > 0
+    except OSError:
+        present = False
+    return {"present": present, "refreshed_at": None, "age_hours": None, "signal": "presence"}
+
+
 # ── Pure verdict ────────────────────────────────────────────────────────────────────────────────
 def freshness_category(worst_age_hours, stale_h: float = MEMORY_STALE_H,
                        expired_h: float = MEMORY_EXPIRED_H) -> str:
@@ -173,15 +195,24 @@ def audit(machine: str | None = None, now: datetime | None = None) -> dict:
         machine = audit_skill_currency.machine_label()
 
     surfaces: dict[str, dict] = {}
-    for key, rel in GIT_SURFACES.items():
+    for key, rel in RECENCY_GIT_SURFACES.items():                # liveness clock = git commit time
         surfaces[key] = _surface_record(_git_commit_iso(rel), "git-commit", now)
     surfaces["hermes_memories"] = _surface_record(_hermes_mtime_iso(), "file-mtime", now)
+    for key, rel in PRESENCE_SURFACES.items():                   # content = filesystem presence only
+        surfaces[key] = _presence_record(rel, now)
 
-    present = [s for s in surfaces.values() if s["present"] and s["age_hours"] is not None]
-    worst_age = max((s["age_hours"] for s in present), default=None)        # oldest present surface
+    # Freshness tier comes ONLY from the recency surfaces (heartbeat liveness + hermes local liveness);
+    # the byte-invariant content surfaces never advance a commit clock, so they must not be graded here.
+    recency = [surfaces[k] for k in RECENCY_GIT_SURFACES] + [surfaces["hermes_memories"]]
+    present = [s for s in recency if s["present"] and s["age_hours"] is not None]
+    worst_age = max((s["age_hours"] for s in present), default=None)        # oldest present recency surface
     newest = min(present, key=lambda s: s["age_hours"], default=None)       # most-recently refreshed
     newest_refresh = newest["refreshed_at"] if newest else None
-    freshness = categorize([s["age_hours"] for s in present])
+
+    # Presence gate (fail-closed): a content surface that should exist but is absent/empty ⇒ the whole
+    # audit is MISSING-EVIDENCE regardless of heartbeat freshness (catches a deleted/clobbered surface).
+    content_absent = any(not surfaces[k]["present"] for k in PRESENCE_SURFACES)
+    freshness = MISSING_EVIDENCE if content_absent else categorize([s["age_hours"] for s in present])
 
     return {
         "machine": machine,
@@ -190,7 +221,7 @@ def audit(machine: str | None = None, now: datetime | None = None) -> dict:
         "newest_refresh": newest_refresh,
         "worst_age_hours": worst_age,
         "freshness": freshness,
-        "schema_version": 1,
+        "schema_version": 2,
     }
 
 

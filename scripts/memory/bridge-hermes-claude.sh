@@ -341,50 +341,13 @@ echo ""
 # 8. Commit (only if --commit flag and changes exist)
 # ---------------------------------------------------------------------------
 if [[ "${COMMIT_MODE}" == "--commit" ]]; then
-    cd "${REPO_ROOT}"
-    # Diff-aware: only commit if something actually changed
-    git add .claude/memory/
-    # Codex + Gemini read-back slices (#2841/#3189) — staged only on the designated slice owner
-    if [[ "${SLICE_OWNER}" == true ]]; then
-        git add config/agents/codex/MEMORY.runtime.md config/agents/gemini/MEMORY.runtime.md 2>/dev/null || true
-    fi
-    if git diff --cached --quiet; then
-        echo "[bridge] No changes to commit — .claude/memory/ is already up to date"
-        exit 0
-    fi
-
-    # Stash any unrelated uncommitted changes so pull --rebase works
-    HAS_STASH=false
-    if ! git diff-index --quiet HEAD -- 2>/dev/null; then
-        echo "[bridge] Uncommitted changes detected — stashing before pull..."
-        git stash push -m "pre-bridge-stash"
-        HAS_STASH=true
-    fi
-
-    # Pathspec-scoped commit (repo multi-agent-commit-serialization rule) — never sweep
-    # unrelated staged changes from a parallel session.
-    git commit -m "chore(memory): auto-refresh memory bridge (${TIMESTAMP})" -- .claude/memory/ config/agents/codex/MEMORY.runtime.md config/agents/gemini/MEMORY.runtime.md
-    echo "[bridge] Committed. Pulling with rebase before push..."
-
-    # Pull with rebase — abort if conflicts
-    if ! git pull --rebase --autostash 2>&1; then
-        echo "[bridge] ERROR: rebase conflict during pull — resolve manually, then git push"
-        # Restore stashed changes if we stashed
-        if [[ "${HAS_STASH}" = true ]]; then
-            echo "[bridge] Restoring previously stashed changes..."
-            git stash pop --index 2>/dev/null || true
-        fi
-        exit 1
-    fi
-
-    git push
-    echo -e "${GREEN}[bridge] Done — committed and pushed.${NC}"
-
-    # Restore stashed changes if we stashed
-    if [[ "${HAS_STASH}" = true ]]; then
-        echo "[bridge] Restoring previously stashed changes..."
-        git stash pop 2>/dev/null || echo "[bridge] WARNING: stash pop failed — run 'git stash pop' manually"
-    fi
+    # #3384: commit path extracted to a unit-tested helper. It fixes the self-stash bug (the old
+    # inline block stashed its own staged changes before committing → committed nothing for ~6 weeks),
+    # writes the daily machine-independent liveness heartbeat, and does a bounded non-FF push retry.
+    # The whole commit is owner-gated inside the helper (avoids cross-machine snapshot thrash).
+    # shellcheck source=scripts/memory/bridge-commit.sh
+    source "${REPO_ROOT}/scripts/memory/bridge-commit.sh"
+    bridge_commit_and_push "${REPO_ROOT}" "${SLICE_OWNER}" "${TIMESTAMP}"
 else
     echo -e "${YELLOW}[bridge] Dry-run complete. Add --commit to commit and push.${NC}"
 fi
