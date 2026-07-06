@@ -6,6 +6,40 @@
 # Usage: analyze-repo-bloat.sh [repo-path] [top-N]
 # Never writes to the repo. Heavy on large repos (walks all history) — give it time.
 set -euo pipefail
+
+# --------------------------------------------------------------------------- #
+# Post-rewrite content-parity gate (SKILL.md step 6).
+# A GONE-blob strip MUST leave the live HEAD tree byte-identical — it only removes
+# already-deleted historical blobs. If HEAD's tree changed, the rewrite dropped a
+# still-tracked deliverable: the failure mode that silently lost digitalmodel #989
+# (the DNV-OS-F101 module) in the 2026-06 history slim.
+# Run AFTER filter-repo, BEFORE the operator force-pushes; a non-zero exit gates it.
+#   analyze-repo-bloat.sh --verify-parity <pre-rewrite-backup> <post-rewrite-live>
+# --------------------------------------------------------------------------- #
+if [ "${1:-}" = "--verify-parity" ]; then
+  BACKUP="${2:?usage: --verify-parity <pre-rewrite-backup-repo> <post-rewrite-live-repo>}"
+  LIVE="${3:?usage: --verify-parity <pre-rewrite-backup-repo> <post-rewrite-live-repo>}"
+  bt="$(git -C "$BACKUP" rev-parse 'HEAD^{tree}')" \
+    || { echo "cannot read backup HEAD tree: $BACKUP" >&2; exit 2; }
+  lt="$(git -C "$LIVE" rev-parse 'HEAD^{tree}')" \
+    || { echo "cannot read live HEAD tree: $LIVE" >&2; exit 2; }
+  echo "== content-parity gate: pre-rewrite backup vs post-rewrite live =="
+  echo "  backup HEAD tree: $bt"
+  echo "  live   HEAD tree: $lt"
+  if [ "$bt" = "$lt" ]; then
+    echo "  >> PASS: live tree is byte-identical — the strip dropped no tracked"
+    echo "     deliverable. Safe to force-push."
+    exit 0
+  fi
+  echo "  >> FAIL: the rewrite CHANGED the live tree. Paths present in the backup but"
+  echo "     dropped or altered in the rewritten repo (must be EMPTY for a blob-strip):"
+  diff <(git -C "$BACKUP" -c core.quotePath=false ls-tree -r HEAD | sort) \
+       <(git -C "$LIVE" -c core.quotePath=false ls-tree -r HEAD | sort) \
+    | grep '^<' | sed 's/^< /       /' | head -50 || true
+  echo "  >> DO NOT force-push. A GONE-blob strip must leave HEAD's tree unchanged."
+  exit 1
+fi
+
 REPO="${1:-.}"
 TOPN="${2:-30}"
 cd "$REPO"
