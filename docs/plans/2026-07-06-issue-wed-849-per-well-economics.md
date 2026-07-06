@@ -1,6 +1,6 @@
 # Plan for worldenergydata#849: Per-well economics drill-down — D&C days → cost, production → revenue on the well timeline
 
-> **Status:** adversarial-reviewed (r1 Claude MAJOR/8 + r2 Codex MAJOR/11 → r3 inline patch, this revision)
+> **Status:** plan-approved — owner approval 2026-07-06 (in-session). Marker: `.planning/plan-approved/wed-849.md`. (History: r1 MAJOR/8 + r2 MAJOR/11 → r3 → approved.)
 > **Complexity:** T2
 > **Date:** 2026-07-06 (r3 same day)
 > **Issue:** https://github.com/vamseeachanta/worldenergydata/issues/849 (repo: **worldenergydata** — attestation-vs-repo mismatch is a known tooling artifact; all evidence wed-repo-qualified)
