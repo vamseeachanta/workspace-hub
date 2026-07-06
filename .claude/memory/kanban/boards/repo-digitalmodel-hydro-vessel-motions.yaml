@@ -553,3 +553,31 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1437
+    title: 'feat(cfd-viz): free-surface (VOF) field visualizations for the sloshing study page'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1437
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:hydro-vessel-motions
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1439
+    title: 'feat(compute-opt): CFD runtime characterization — mesh/params → machine effectiveness & runtime prediction'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1439
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:hydro-vessel-motions
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

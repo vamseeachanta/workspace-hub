@@ -1253,9 +1253,24 @@ cards:
       - enhancement
       - cat:data
       - status:plan-review
+      - status:plan-approved
       - domain:ingest
       - lane:codex
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#842
+    title: Ingest Keathley Canyon deepwater BSEE data so Buckskin (and other KC fields) flow into the LT completion/economics pipeline
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/842
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

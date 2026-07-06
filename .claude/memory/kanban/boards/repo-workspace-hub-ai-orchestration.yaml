@@ -1260,6 +1260,21 @@ cards:
       - bug
       - cat:bugfix
       - domain:ai-orchestration
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3387
+    title: 'Bridge step-5 snapshot is non-monotonic — compacted live index can overwrite a richer committed memory snapshot (child of #3384)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3387
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:bugfix
+      - domain:ai-orchestration
       - status:needs-plan
     initial_status: triage
     priority: 0
