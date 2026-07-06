@@ -27,7 +27,7 @@ Root-cause + plan + 2 adversarial review rounds documented on #3384 and in `docs
    - `autoapply-completeness-label.yml` (`d418833ae`, #2798) **intentionally** adds `gate:completeness` to every `status:plan-approved` issue ("comprehensive for NEW work"; only-adds-a-label, safe by construction).
    - `completeness-gate.yml` reopens on `issues.closed` when the issue is opted-in but lacks a computed completeness record + owner `status:completeness-verified` label.
    - **The friction:** a PR-merge auto-close (`Closes #NNNN`) fires the gate before any completeness record is computed → reopen. #3384 hit this; the user cleared it by removing `gate:completeness` then closing.
-   - **This is an owner-level process decision, not a defect:** either (a) compute+stamp the completeness record during the PR before merge, or (b) exempt PR-merge closes from the gate, or (c) accept the manual remove-label+close for merge-closed issues. Recommend the owner decide before "fixing" — no code change was made.
+   - **Filed as [#3389](https://github.com/vamseeachanta/workspace-hub/issues/3389)** (`status:needs-plan`) — workflow friction (not a config bug). Fix options in the issue: (a) exempt PR-merge closes, (b) compute+stamp the record during the PR, or (c) restore true opt-in by guarding autoapply. Owner decides direction at plan stage; no enforcement workflow was changed this session.
 
 ## Key behavioral lessons (candidate memory)
 - **Never fake a green.** Every STALE/EXPIRED/reopened signal this session was surfaced honestly rather than papered over; that is what found a 6-week-dead subsystem instead of a cosmetic dashboard fix.
