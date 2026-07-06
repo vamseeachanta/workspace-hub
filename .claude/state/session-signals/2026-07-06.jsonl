@@ -72,3 +72,5 @@
 {"ts":"2026-07-06T12:34:01Z","event":"stop_signal_captured","session_id":"5ce47526-9d4e-41a6-9033-75d1011691ff"}
 {"ts":"2026-07-06T12:37:00Z","event":"session_tool_summary","session_id":"5ce47526-9d4e-41a6-9033-75d1011691ff","wrk":"none","tool_calls":750,"edits":223,"reads":156}
 {"ts":"2026-07-06T12:37:00Z","event":"stop_signal_captured","session_id":"5ce47526-9d4e-41a6-9033-75d1011691ff"}
+{"ts":"2026-07-06T13:05:08Z","event":"session_tool_summary","session_id":"e47e128d-01cf-5ce5-9bbe-820436903ad3","wrk":"none","tool_calls":16,"edits":0,"reads":24}
+{"ts":"2026-07-06T13:05:08Z","event":"stop_signal_captured","session_id":"e47e128d-01cf-5ce5-9bbe-820436903ad3"}
