@@ -1211,7 +1211,7 @@ cards:
     title: 'feat(benchmark): phase-norm layer — field vs play vs country on every life-cycle stage'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/848
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
