@@ -1185,6 +1185,7 @@ cards:
       - cat:engineering
       - priority:medium
       - cat:data
+      - status:plan-approved
       - domain:reports
       - lane:codex
       - status:needs-plan
@@ -1226,7 +1227,7 @@ cards:
     title: 'feat(wells): per-well economics drill-down — D&C days → cost, production → revenue on the well timeline'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/849
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
@@ -1245,9 +1246,9 @@ cards:
     gh_labels:
       - enhancement
       - cat:engineering
+      - status:plan-review
       - domain:reports
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []

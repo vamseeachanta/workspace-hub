@@ -90,6 +90,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:gtm
+      - lane:codex
       - lane:claude
     gh_assignees: []
     initial_status: triage

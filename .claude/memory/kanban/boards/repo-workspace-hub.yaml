@@ -21023,9 +21023,10 @@ cards:
       - priority:high
       - cat:engineering
       - domain:workflow-standardization
-      - status:needs-plan
+      - status:plan-approved
       - dispatch:ready
       - gate:completeness
+      - lane:codex
       - lane:claude
     initial_status: triage
     priority: 1
@@ -21041,9 +21042,10 @@ cards:
       - priority:high
       - cat:engineering
       - domain:workflow-standardization
-      - status:needs-plan
+      - status:plan-approved
       - dispatch:ready
       - gate:completeness
+      - lane:codex
       - lane:claude
     initial_status: triage
     priority: 1
@@ -21059,9 +21061,10 @@ cards:
       - priority:high
       - cat:engineering
       - domain:workflow-standardization
-      - status:needs-plan
+      - status:plan-approved
       - dispatch:ready
       - gate:completeness
+      - lane:codex
       - lane:claude
     initial_status: triage
     priority: 1
@@ -21071,13 +21074,13 @@ cards:
     title: 'uv-workflow(assethold): wire portfolio/options/property/risk/dividend/fundamentals into engine + fix substring bug'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3066
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
       - cat:engineering
       - domain:workflow-standardization
-      - status:needs-plan
+      - status:done
       - dispatch:ready
       - gate:completeness
       - lane:claude
@@ -21096,6 +21099,7 @@ cards:
       - cat:documentation
       - domain:workflow-standardization
       - status:plan-review
+      - status:plan-approved
       - dispatch:ready
       - gate:completeness
       - lane:claude
@@ -22192,6 +22196,9 @@ cards:
       - priority:medium
       - cat:documentation
       - cat:website
+      - status:plan-approved
+      - gate:completeness
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -22213,7 +22220,7 @@ cards:
     title: Model-routing + session-audit improvement slate (Fable 5 / Opus 4.8 / Codex)
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3390
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - cat:ai-orchestration

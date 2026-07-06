@@ -252,6 +252,9 @@ cards:
       - priority:medium
       - cat:data
       - cat:tooling
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -270,5 +273,18 @@ cards:
       - status:needs-plan
     initial_status: triage
     priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/assethold#75
+    title: "Tier-1 report uplift: screening_status + self-contained HTML report per registered workflow; fix broken 'assethold' console script"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/assethold/issues/75
+    gh_state: open
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 0
     gh_assignees: []
     body_excerpt: ''

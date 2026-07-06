@@ -721,7 +721,9 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - status:plan-approved
       - domain:subsea-risers
+      - lane:codex
       - lane:claude
     initial_status: triage
     priority: 0
