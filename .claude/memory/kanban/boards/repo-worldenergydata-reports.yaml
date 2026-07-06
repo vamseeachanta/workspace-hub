@@ -1246,7 +1246,7 @@ cards:
     gh_labels:
       - enhancement
       - cat:engineering
-      - status:plan-review
+      - status:plan-approved
       - domain:reports
       - lane:claude
     initial_status: triage

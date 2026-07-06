@@ -7074,10 +7074,10 @@ cards:
     title: Add repo-level units regression test (kN<->N factor-1000 trap)
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1447
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering-calculations
-      - status:working
+      - status:done
       - status:plan-approved
       - lane:claude
     initial_status: triage
