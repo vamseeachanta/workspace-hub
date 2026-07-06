@@ -1,19 +1,19 @@
-generated_at: "2026-07-06T00:47:09"
+generated_at: "2026-07-06T06:47:33"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "0c5e979b9"
-  dirty: false
-  behind_main: 0
+  checkout_sha: "445608d22"
+  dirty: true
+  behind_main: 1
   ahead_main: 0
   origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 22389, disk_avail_gb: 730}
+    headroom: {ram_avail_mib: 22292, disk_avail_gb: 731}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -30,11 +30,11 @@ dimensions:
     python_cmd: uv-run
     readiness_ref: harness-readiness-ace-linux-1.yaml
     readiness_overall: fail
-  skills: {repo_skill_count: 420}
+  skills: {repo_skill_count: 421}
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-07-05T19:57:34"
+    context_md_mtime: "2026-07-06T04:25:01"
   provider_harness:
     schema_version: 1
     providers:
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: true
     job_count: 59
   session_curation:
-    last_curated_at: "2026-07-06T05:47:02+00:00"
-    sessions_24h: 126
+    last_curated_at: "2026-07-06T11:47:03+00:00"
+    sessions_24h: 128
     providers_active: "claude,codex,gemini,hermes"
     memory_files_changed: 200
   skill_currency:
-    audited_at: "2026-07-06T05:47:08+00:00"
+    audited_at: "2026-07-06T11:47:21+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,11 +84,11 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-06T05:47:08+00:00"
-    worst_age_hours: 28.798
+    audited_at: "2026-07-06T11:47:23+00:00"
+    worst_age_hours: 2.37
     freshness: "MEMORY-FRESH"
   skill_link_health:
-    audited_at: "2026-07-06T05:47:09+00:00"
+    audited_at: "2026-07-06T11:47:33+00:00"
     repos_total: 14
     healthy: 28
     repairable: 0
