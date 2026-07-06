@@ -1,6 +1,6 @@
 # Plan for worldenergydata#848: Phase-norm layer — field vs play vs country on every life-cycle stage
 
-> **Status:** adversarial-reviewed (r1 Claude MAJOR + r2 Codex MAJOR → r3 inline patch, this revision)
+> **Status:** plan-approved — owner approval 2026-07-06 (in-session): **play-norms-only v1**, country = ROADMAP badges via wed#681. Marker: `.planning/plan-approved/wed-848.md`. (History: r1 Claude MAJOR + r2 Codex MAJOR → r3 inline patch → approved.)
 > **Complexity:** T2 — justified post-descope: one data family (FDAS V30 xlsx + benchmark CSV), one new src module, one builder, one template block; country baselines explicitly deferred (below), so no new ingest surface. Upgrade to T3 only if country baselines are pulled back into scope.
 > **Date:** 2026-07-06 (r3 revision same day)
 > **Issue:** https://github.com/vamseeachanta/worldenergydata/issues/848 (repo: **worldenergydata**, NOT workspace-hub — attestation in r2 resolved the number against workspace-hub; all issue/path evidence below is wed-repo-qualified)
