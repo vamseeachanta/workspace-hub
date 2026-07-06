@@ -5715,7 +5715,10 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1182
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -6851,7 +6854,7 @@ cards:
     title: 'EPIC: Hybrid physics+ML digital twin — drilling-riser operability & wellhead integrity'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1372
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - lane:claude
@@ -6917,10 +6920,10 @@ cards:
     title: 'twin E: integration + live demo loop'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1377
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
-      - status:working
+      - status:done
       - lane:claude
     initial_status: triage
     priority: 0
@@ -7066,6 +7069,9 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - status:plan-approved
+      - status:plan-review
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -7080,6 +7086,17 @@ cards:
       - status:done
       - status:plan-approved
       - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1453
+    title: 'assembly engine wave-2: 3 new golden 16Q contracts (RSU-0010/0012, 0014, 0023) + first registry batch run'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1453
+    gh_state: open
+    gh_labels:
+      - cat:engineering
     initial_status: triage
     priority: 0
     gh_assignees: []

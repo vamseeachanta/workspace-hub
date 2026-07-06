@@ -86,6 +86,7 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - domain:models
+      - lane:codex
       - lane:claude
     gh_assignees: []
     initial_status: triage
@@ -159,7 +160,7 @@ cards:
     title: Portfolio performance benchmark vs SPY
     source: github_issue
     source_url: https://github.com/vamseeachanta/assethold/issues/27
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - machine:dev-primary

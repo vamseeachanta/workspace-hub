@@ -68,6 +68,7 @@ cards:
       - dispatch:ready
       - domain:reports
       - lane:codex
+      - lane:claude
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -1242,7 +1243,7 @@ cards:
     title: 'feat(nav): drill-down spine — breadcrumb + consistent up/down links across Region▸Play▸Field▸Well▸Stage'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/850
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering

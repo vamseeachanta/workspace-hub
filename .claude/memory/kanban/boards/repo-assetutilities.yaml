@@ -848,7 +848,10 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/assetutilities/issues/96
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -860,7 +863,9 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - status:plan-approved
       - domain:ci-packaging
+      - lane:claude
       - priority:medium
     initial_status: triage
     priority: 0

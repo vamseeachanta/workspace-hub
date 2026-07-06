@@ -474,6 +474,7 @@ cards:
     gh_labels:
       - priority:medium
       - machine:dev-primary
+      - status:plan-approved
       - status:needs-plan
       - dispatch:ready
       - gate:completeness
