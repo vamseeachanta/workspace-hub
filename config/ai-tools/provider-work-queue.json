@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-06T09:21:09.679238Z",
+  "generated_at": "2026-07-06T13:21:12.112751Z",
   "current_week": "2026-W28",
-  "scorecard_generated_at": "2026-07-06T09:21:07.508928Z",
+  "scorecard_generated_at": "2026-07-06T13:21:09.792076Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 53,
+      "execution_ready_count": 52,
       "total_candidates": 177,
       "top_issues": [
         {
@@ -687,33 +687,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "strategy"
-          ]
-        },
-        {
-          "number": 2711,
-          "title": "feat(provider-data): service-provider data library \u2014 Helix 15k IRS pilot",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2711",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-solver-queue",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-06-10T16:26:36Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
             "strategy"
           ]
         },
@@ -1711,6 +1684,27 @@
           ]
         },
         {
+          "number": 3392,
+          "title": "Compliance alert: W28 \u2014 11% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3392",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-07-06T11:45:12Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2717,
           "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2717",
@@ -2458,31 +2452,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "strategy"
-          ]
-        },
-        {
-          "number": 2713,
-          "title": "infra: gemini 0.42.0 headless mode reports run_shell_command not found \u2014 blocks cross-review",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2713",
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "domain:ai-orchestration",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T12:56:09Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
             "strategy"
           ]
         },
@@ -3608,6 +3577,28 @@
             "lane:claude"
           ],
           "updatedAt": "2026-07-03T15:55:42Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3390,
+          "title": "Model-routing + session-audit improvement slate (Fable 5 / Opus 4.8 / Codex)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3390",
+          "labels": [
+            "priority:medium",
+            "cat:ai-orchestration",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-06T12:11:47Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",

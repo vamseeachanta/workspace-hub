@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-06T09:21:11Z
+Generated: 2026-07-06T13:21:14Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3392 | Compliance alert: W28 — 11% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3390 | Model-routing + session-audit improvement slate (Fable 5 / Opus 4.8 / Codex) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3389 | Completeness gate reopens PR-merge-closed plan-approved issues (workflow friction, not a config bug) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3387 | Bridge step-5 snapshot is non-monotonic — compacted live index can overwrite a richer committed memory snapshot (child of #3384) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3385 | Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -241,8 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2716 | cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2715 | bug(infra): codex-cli 0.130.0 stdin-hang regression (recurrence of v0.124 #2479) + Hermes route affected | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2714 | research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2713 | infra: gemini 0.42.0 headless mode reports run_shell_command not found — blocks cross-review | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2711 | feat(provider-data): service-provider data library — Helix 15k IRS pilot | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 
 ## Lane: blocked (0)
 
