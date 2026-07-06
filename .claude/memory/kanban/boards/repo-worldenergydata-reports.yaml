@@ -1207,3 +1207,48 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#848
+    title: 'feat(benchmark): phase-norm layer — field vs play vs country on every life-cycle stage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/848
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - status:plan-approved
+      - domain:reports
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#849
+    title: 'feat(wells): per-well economics drill-down — D&C days → cost, production → revenue on the well timeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/849
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - status:plan-approved
+      - domain:reports
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#850
+    title: 'feat(nav): drill-down spine — breadcrumb + consistent up/down links across Region▸Play▸Field▸Well▸Stage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/850
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

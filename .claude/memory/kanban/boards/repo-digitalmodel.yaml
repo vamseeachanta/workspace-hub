@@ -7051,3 +7051,25 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1444
+    title: "feat(capabilities): IA simplification — cluster 22 sections, 'recently added' catch-up strip, citable reference index"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1444
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1447
+    title: Add repo-level units regression test (kN<->N factor-1000 trap)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1447
+    gh_state: open
+    gh_labels:
+      - cat:engineering-calculations
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

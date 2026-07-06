@@ -1269,8 +1269,37 @@ cards:
       - enhancement
       - priority:high
       - cat:data
+      - status:plan-approved
       - domain:ingest
     initial_status: triage
     priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#847
+    title: 'feat(data): ingest BOEM free reserves + discovery dates into the refresh pipeline (Table 4 validation)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/847
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - status:plan-approved
+      - domain:ingest
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#855
+    title: 'data: BOEM FieldReserves family — sources discovered during WO-validation research (future ingestion)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/855
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
     gh_assignees: []
     body_excerpt: ''

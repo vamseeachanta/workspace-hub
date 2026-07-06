@@ -3098,3 +3098,29 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#844
+    title: 'feat(cost): living cost-basis time-series — drilling/completion/service/production/operating costs over time for field economics'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/844
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#846
+    title: 'bug(fdas): full-raw D&C extraction overshoots Jack St Malo (+119 vs World Oil April 2026)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/846
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - priority:low
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

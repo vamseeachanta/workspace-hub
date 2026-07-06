@@ -1255,13 +1255,12 @@ cards:
     title: 'Bridge memory-source regen produces stale slices on the owner box → memory_freshness stuck EXPIRED (was: audit metric)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3384
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - bug
       - cat:bugfix
       - domain:ai-orchestration
       - status:plan-approved
-      - gate:completeness
     initial_status: triage
     priority: 0
     gh_assignees: []
