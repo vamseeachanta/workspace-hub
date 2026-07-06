@@ -1,13 +1,12 @@
 # GTM Trend Report — Week-over-Week Hiring Momentum
 
-> Generated: 2026-06-22
-> Total scans to date: 11
+> Generated: 2026-07-06
+> Total scans to date: 12
 
 ## Scan History
 
 | Date | Total Jobs | New | Returning | Companies |
 |------|-----------|-----|-----------|-----------|
-| 2026-04-02 | 708 | 707 | 1 | 460 |
 | 2026-04-13 | 738 | 671 | 67 | 376 |
 | 2026-04-20 | 587 | 492 | 95 | 314 |
 | 2026-05-04 | 664 | 622 | 42 | 333 |
@@ -17,6 +16,7 @@
 | 2026-06-01 | 1105 | 1077 | 28 | 555 |
 | 2026-06-15 | 1010 | 983 | 27 | 441 |
 | 2026-06-22 | 905 | 880 | 25 | 422 |
+| 2026-07-06 | 1150 | 1123 | 27 | 475 |
 
 ## 📈 Trending UP — Companies Hiring MORE This Week
 
@@ -25,45 +25,45 @@ These companies have MORE open roles than last scan — they are getting busier.
 
 | Company | This Week | Last Week | Change | Priority? |
 |---------|-----------|-----------|--------|-----------|
-| **Deloitte** | 32 | 4 | +28 |  |
-| **Seatrium** | 21 | 5 | +16 |  |
-| **TIC - The Industrial Company** | 15 | 1 | +14 |  |
-| **Hermeus** | 12 | 1 | +11 |  |
-| **TechnipFMC** | 15 | 5 | +10 | ✅ |
+| **Blue Origin** | 29 | 8 | +21 |  |
+| **Oceaneering** | 22 | 7 | +15 | ✅ |
+| **Amentum** | 13 | 1 | +12 |  |
+| **EY** | 108 | 96 | +12 |  |
+| **Panthalassa** | 15 | 4 | +11 |  |
+| **Northrop Grumman** | 18 | 9 | +9 |  |
+| **Saronic Technologies** | 18 | 9 | +9 |  |
 | **Global Connect Technologies** | 10 | 2 | +8 |  |
-| **Saronic Technologies** | 9 | 1 | +8 |  |
 | **Trendsetter Engineering, Inc.** | 10 | 2 | +8 |  |
-| **WSP in the U.S.** | 8 | 1 | +7 |  |
-| **DNV** | 12 | 5 | +7 | ✅ |
+| **GE Vernova** | 11 | 4 | +7 | ✅ |
+| **Anduril Industries** | 9 | 2 | +7 |  |
 | **Hanwha Ocean** | 7 | 1 | +6 |  |
-| **Bechtel Corporation** | 7 | 1 | +6 |  |
+| **Kiewit** | 7 | 1 | +6 |  |
+| **Insight Global** | 9 | 3 | +6 |  |
 | **Hadron Energy, Inc.** | 8 | 2 | +6 |  |
 | **INEOS Olefins & Polymers USA, LLC** | 7 | 1 | +6 |  |
 | **Advanced Technology and Research Corporation** | 7 | 1 | +6 |  |
-| **Northrop Grumman** | 9 | 4 | +5 |  |
 | **Audubon Companies** | 6 | 1 | +5 |  |
 | **GC-Squared Resources, LLC** | 6 | 1 | +5 |  |
-| **Boeing** | 7 | 3 | +4 |  |
-| **Raytheon** | 5 | 1 | +4 |  |
+| **Foley & Lardner LLP** | 6 | 1 | +5 |  |
 
 ## ➡️ Consistently Busy — Stable High Hiring
 
 | Company | Roles (stable) | Priority? |
 |---------|---------------|-----------|
 | ABS | 13 | ✅ |
+| WSP in the U.S. | 8 |  |
+| Boeing | 7 |  |
 | Orsted | 6 | ✅ |
-| Acuren | 6 |  |
 | Gilead Sciences | 6 |  |
-| Körber Supply Chain | 6 |  |
+| ExxonMobil | 5 | ✅ |
 | Mammoet | 5 |  |
-| Helix Energy Solutions Group | 5 |  |
+| Core Group Resources | 5 |  |
+| Mainspring Energy | 5 |  |
 | HDR | 4 |  |
 | Siemens Gamesa | 4 |  |
 | Energy Sciences | 4 |  |
 | Re:Build Manufacturing | 4 |  |
 | Altrad Sparrows – Americas | 4 |  |
-| Yamaha Motor Corporation, USA | 4 |  |
-| Worley | 3 | ✅ |
 | AECOM | 3 |  |
 
 ## 🔥 Persistent Openings — Hard to Fill = Consulting Gold
@@ -73,38 +73,38 @@ They are the most likely to accept a consulting alternative.
 
 | Weeks Seen | Title | Company | Score | First Seen |
 |------------|-------|---------|-------|------------|
-| 10 | Engineering | TechnipFMC | 100 | 2026-04-02 |
-| 10 | Subsea Operations | TechnipFMC | 100 | 2026-04-02 |
-| 10 | Analyst Coverage & Consensus | SBM Offshore | 100 | 2026-04-02 |
-| 10 | Engineering Reviews | ABS | 100 | 2026-04-02 |
-| 10 | Engineering Applications | ABS | 100 | 2026-04-02 |
-| 10 | Marine Engineering Applications | ABS | 100 | 2026-04-02 |
-| 10 | Offshore Engineering Applications | ABS | 100 | 2026-04-02 |
-| 10 | Subsea Solutions | ABS | 100 | 2026-04-02 |
-| 10 | Subsea Mining | ABS | 100 | 2026-04-02 |
-| 10 | Rules and Guides for Naval Ships | ABS | 100 | 2026-04-02 |
-| 10 | Subsea Processing Systems | ABS | 100 | 2026-04-02 |
-| 10 | Engineering Software | ABS | 100 | 2026-04-02 |
-| 10 | Analysts coverage | Bureau Veritas | 100 | 2026-04-02 |
-| 10 | Subsea services | DOF Subsea | 100 | 2026-04-02 |
-| 10 | Digital - Engineering Suite | Chart Industries | 100 | 2026-04-02 |
-| 10 | Analyst Coverage | Chart Industries | 100 | 2026-04-02 |
-| 10 | Engineering &
+| 11 | Engineering | TechnipFMC | 100 | 2026-04-02 |
+| 11 | Subsea Operations | TechnipFMC | 100 | 2026-04-02 |
+| 11 | Analyst Coverage & Consensus | SBM Offshore | 100 | 2026-04-02 |
+| 11 | Engineering Reviews | ABS | 100 | 2026-04-02 |
+| 11 | Engineering Applications | ABS | 100 | 2026-04-02 |
+| 11 | Marine Engineering Applications | ABS | 100 | 2026-04-02 |
+| 11 | Offshore Engineering Applications | ABS | 100 | 2026-04-02 |
+| 11 | Subsea Solutions | ABS | 100 | 2026-04-02 |
+| 11 | Subsea Mining | ABS | 100 | 2026-04-02 |
+| 11 | Rules and Guides for Naval Ships | ABS | 100 | 2026-04-02 |
+| 11 | Subsea Processing Systems | ABS | 100 | 2026-04-02 |
+| 11 | Engineering Software | ABS | 100 | 2026-04-02 |
+| 11 | Analysts coverage | Bureau Veritas | 100 | 2026-04-02 |
+| 11 | Subsea services | DOF Subsea | 100 | 2026-04-02 |
+| 11 | Digital - Engineering Suite | Chart Industries | 100 | 2026-04-02 |
+| 11 | Analyst Coverage | Chart Industries | 100 | 2026-04-02 |
+| 11 | Engineering &
                             Technolo | GE Vernova | 100 | 2026-04-02 |
-| 10 | Engineering & Technology | GE Vernova | 100 | 2026-04-02 |
-| 9 | Engineering Reviews | ABS | 100 | 2026-04-13 |
-| 9 | Engineering Applications | ABS | 100 | 2026-04-13 |
-| 9 | Engineering Reviews | ABS | 100 | 2026-04-13 |
-| 9 | Subsea Solutions | ABS | 100 | 2026-04-13 |
-| 8 | Corpus Christi Pipeline | Cheniere Energy | 100 | 2026-04-20 |
-| 8 | Creole Trail Pipeline | Cheniere Energy | 100 | 2026-04-20 |
+| 11 | Engineering & Technology | GE Vernova | 100 | 2026-04-02 |
+| 10 | Engineering Reviews | ABS | 100 | 2026-04-13 |
+| 10 | Engineering Applications | ABS | 100 | 2026-04-13 |
+| 10 | Engineering Reviews | ABS | 100 | 2026-04-13 |
+| 10 | Subsea Solutions | ABS | 100 | 2026-04-13 |
+| 9 | Corpus Christi Pipeline | Cheniere Energy | 100 | 2026-04-20 |
+| 9 | Creole Trail Pipeline | Cheniere Energy | 100 | 2026-04-20 |
 | 3 | CareersEngineering ·  3 min readEngineering succes | Worley | 115 | 2026-04-02 |
 
 ## Cumulative Statistics
 
-- **7919** unique job postings tracked all-time
-- **2257** unique companies seen
-- **11** scans completed
+- **9042** unique job postings tracked all-time
+- **2426** unique companies seen
+- **12** scans completed
 
 ---
 
