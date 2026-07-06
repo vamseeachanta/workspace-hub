@@ -6,3 +6,5 @@
 {"ts":"2026-07-05T12:11:18Z","event":"session_tool_summary","session_id":"ed6267df-f967-5ebc-b5e9-2428c9bbea4b","wrk":"none","tool_calls":2,"edits":0,"reads":2}
 {"ts":"2026-07-05T14:08:06Z","event":"stop_signal_captured","session_id":"2b9b8328-650d-59b0-b516-8953724b1006"}
 {"ts":"2026-07-05T14:08:06Z","event":"session_tool_summary","session_id":"2b9b8328-650d-59b0-b516-8953724b1006","wrk":"none","tool_calls":11,"edits":0,"reads":0}
+{"ts":"2026-07-06T02:33:19Z","event":"session_tool_summary","session_id":"af41ea2c-faba-49ca-afe2-bdb4e1725f83","wrk":"none","tool_calls":36,"edits":12,"reads":4}
+{"ts":"2026-07-06T02:57:40Z","event":"session_tool_summary","session_id":"af41ea2c-faba-49ca-afe2-bdb4e1725f83","wrk":"none","tool_calls":84,"edits":46,"reads":18}

@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-01T13:21:03Z
+Generated: 2026-07-06T01:21:17Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,20 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3384 | Bridge memory-source regen produces stale slices on the owner box → memory_freshness stuck EXPIRED (was: audit metric) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3382 | chore(dev-workflow): standardize + roll formatting pre-commit (black/isort/flake8) across Python repos | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
+| #3374 | spike(capability): prognostics/RUL from public benchmark datasets (C-MAPSS, IMS, FEMTO, OSI) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3373 | feat(gdrive): cloud-sunset (~6mo) with verified local-of-record + final refresh | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3372 | feat(backup): redundancy & backup policy for critical data (>=2 copies, >=1 offline) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3371 | feat(data): critical-data inventory & retention tiering (fingertip-access catalog) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3370 | EPIC: Repo-ecosystem data retention, backup & fingertip-access (keep data close, back up critical, exploit benchmark data) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3368 | Day-to-day friction guards (session-grounded suite) — reduce recurring time-sinks | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3366 | Auto-memory MEMORY.md index over load limit (52KB > 24.4KB) — compaction + thresholds policy | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3362 | Drive-file-search 30-day metrics review (review after 2026-08-01): unified-DB build/no-build decision | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3358 | Propagate UserPromptSubmit hooks cross-repo (propagate-ecosystem.sh is Stop-hook-only) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3349 | Perf: ecosystem-data-nudge.sh UserPromptSubmit hook runs 270-460ms per prompt (budget: 50ms) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3347 | bug(cron): setup-cron fingerprint false-SKIP + false-ADD — daily equality-matrix-refresh never installs; 2 tasks duplicate on every --apply | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3331 | feat(codex): frontier-model harness and memory parity hardening | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3325 | chore(repo-health): git bloat reduction campaign — reclaim ~12 GiB across repos (slim-git-history) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3321 | Compliance alert: W27 — 78% (medium) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3308 | wf-api(assethold): engine embed-port — mirror #3297 for assethold's own engine [prereq for #3287] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
@@ -229,20 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2711 | feat(provider-data): service-provider data library — Helix 15k IRS pilot | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2710 | feat(solver-queue): conversational submit UX — /solver-submit skill + interactive CLI | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2709 | feat(solver-queue): add AQWA runner adapter and schema extension | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2707 | chore(skills): curation judgments — single-skill stragglers, eng/ flat-files, session-logs/ relocation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2704 | spike(doc-intel): cloud embeddings comparison — Voyage + OpenAI text-embed-3 (deferred from #2403) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2701 | audit(harness): 17 status:plan-approved issues missing .planning/plan-approved/ markers — restore user-in-loop contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2700 | feat(ai-orchestration): "Memory-to-Surface" map maintenance contract for AI_ECOSYSTEM_DESIGN.md §E | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2699 | chore(ai-tools): refresh agent-capability-scores.yaml from 2026-04/05 incident data | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2698 | feat(ai-orchestration): migration plan for AI_ECOSYSTEM_DESIGN.md adoption (day-1 / month-1 / quarter-1) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2697 | chore(ai-tools): refresh subscriptions.yaml with current Codex paid plan + bump declared totals | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2695 | feat(harness): /goal use-case catalog for repo ecosystem (claude+codex+hermes) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2694 | Epic: Cross-domain duplicate-implementation cleanup (catenary, PipeCapacity, cathodic protection, natural-period, hydro-matrix, on-bottom stability) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2693 | R6 — Subsea Pipelines: Coverage map synthesis + gap subissue spawning | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2692 | R5 — Subsea Pipelines: Comprehensive code coverage audit (digitalmodel subsea/geotechnical/cathodic_protection/orcaflex) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2691 | R4 — Subsea Pipelines: LinkedIn expert mapping (marketing surface) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2690 | R3 — Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/Saipem, OrcaFlex/SAGE Profile) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2689 | R2 — Subsea Pipelines: Academic sources sweep (Bai & Bai, Palmer & King, Kyriakides & Corona, Guo) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

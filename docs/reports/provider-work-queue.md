@@ -1,7 +1,7 @@
 # Provider work queue
 
-Generated: 2026-07-01T13:21:01.710384Z
-Current week: 2026-W27
+Generated: 2026-07-06T01:21:15.033504Z
+Current week: 2026-W28
 Recommended provider order: gemini, claude, codex
 
 Execution-ready means the issue already carries `status:plan-approved`. agent:* labels are routing hints only and do not grant execution approval.
@@ -9,12 +9,11 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 55
+- Execution-ready candidates: 54
 - Total routed candidates: 178
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2694 Epic: Cross-domain duplicate-implementation cleanup (catenary, PipeCapacity, cathodic protection, natural-period, hydro-matrix, on-bottom stability) | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:bugfix, domain:refactor, machine:dev-primary |
 | #2738 feat(hermes): harden ace-linux-1 Telegram gateway as dispatch coordinator | yes | existing claude agent label | enhancement, priority:high, cat:ai-orchestration, cat:operations, machine:ace-linux-1, agent:claude |
 | #2739 feat(hermes): promote ace-linux-2 as first Telegram/Hermes dispatch worker | yes | existing claude agent label | enhancement, priority:high, cat:ai-orchestration, cat:operations, machine:ace-linux-2, agent:claude |
 | #2751 Cross-platform harness setup: integrate AI-provider bootstrap, auth orchestration, macOS+PowerShell, per-machine status registry | yes | strategy/workflow/architecture language | priority:high, cat:harness, domain:machine-setup, machine:dev-primary, status:plan-approved, dispatch:ready |
@@ -22,6 +21,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #2755 throughput(workstations): activate ace-linux-2 provider/machine lane | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:operations, status:working, machine:ace-linux-2 |
 | #2760 revise(naval-arch): B1528 SIROCCO force calculation review updates | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering-calculations, domain:naval-architecture, machine:dev-primary, status:plan-approved |
 | #2778 feat(architecture): codify retrieval-time wiki-sibling routing rule + planning/citation/frontmatter plumbing | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, cat:harness, machine:dev-primary, status:plan-approved |
+| #2815 feat(workstations): Windows Task Scheduler reads schedule-tasks.yaml + EqualityReport live-validation [#2801 family] | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, machine:ace-win-1, status:plan-review, status:plan-approved |
 
 ## codex
 
