@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-06T01:21:15.033504Z",
+  "generated_at": "2026-07-06T09:21:09.679238Z",
   "current_week": "2026-W28",
-  "scorecard_generated_at": "2026-07-06T01:21:13.019421Z",
+  "scorecard_generated_at": "2026-07-06T09:21:07.508928Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 54,
-      "total_candidates": 178,
+      "execution_ready_count": 53,
+      "total_candidates": 177,
       "top_issues": [
         {
           "number": 2738,
@@ -687,35 +687,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "strategy"
-          ]
-        },
-        {
-          "number": 2710,
-          "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2710",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:work-queue",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:26:32Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
             "strategy"
           ]
         },
@@ -1729,33 +1700,6 @@
           "updatedAt": "2026-07-05T11:45:34Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2709,
-          "title": "feat(solver-queue): add AQWA runner adapter and schema extension",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2709",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:ace-win-1",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-solver-queue",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-06-10T16:26:28Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4551,16 +4495,16 @@
           ]
         },
         {
-          "number": 3384,
-          "title": "Bridge memory-source regen produces stale slices on the owner box \u2192 memory_freshness stuck EXPIRED (was: audit metric)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3384",
+          "number": 3387,
+          "title": "Bridge step-5 snapshot is non-monotonic \u2014 compacted live index can overwrite a richer committed memory snapshot (child of #3384)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3387",
           "labels": [
             "bug",
             "cat:bugfix",
             "domain:ai-orchestration",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-06T00:55:15Z",
+          "updatedAt": "2026-07-06T08:40:40Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4572,6 +4516,27 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3389,
+          "title": "Completeness gate reopens PR-merge-closed plan-approved issues (workflow friction, not a config bug)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3389",
+          "labels": [
+            "cat:bugfix",
+            "domain:tooling",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-06T09:11:06Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4579,7 +4544,7 @@
       "provider": "codex",
       "routing_priority": "high",
       "execution_ready_count": 2,
-      "total_candidates": 19,
+      "total_candidates": 20,
       "top_issues": [
         {
           "number": 3030,
@@ -5049,6 +5014,28 @@
           ]
         },
         {
+          "number": 3385,
+          "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation",
+            "cat:website"
+          ],
+          "updatedAt": "2026-07-06T07:46:21Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
           "number": 2753,
           "title": "Operational tracker: fresh-machine setup runs (evergreen \u2014 do not close)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2753",
@@ -5236,7 +5223,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-05T04:01:50Z",
+          "updatedAt": "2026-07-06T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5308,7 +5295,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-05T04:01:50Z",
+          "updatedAt": "2026-07-06T04:00:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",

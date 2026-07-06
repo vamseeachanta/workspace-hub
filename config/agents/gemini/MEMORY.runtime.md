@@ -1,5 +1,6 @@
 <!-- MANAGED by curate_readback_slice.py — do not hand-edit; regenerate via bridge-hermes-claude.sh -->
 
+- [Completion D&C reconcile vs WO Article](project_completion_dc_reconciliation_wo_article.md) — 2026-07-05: Roy QA/QC. **wed PR #841 OPEN** (Total-D&C col + /completion/verification.html). WED D&C 22,478 ≈ Roy 21,944 (page headlined drilling-only 11,124). OPEN: Buckskin missing (crosswalk gap), Shenandoah −357. NEXT: merge #841 → reply Roy
 - [RUNSPEC Monte Carlo UQ ingest](project_runspec_monte_carlo_uq_ingest.md) — 2026-07-05: 3 issues (llm-wiki #822, dm #1427, wed #833). NEXT: land #822 via claim+worktree+PR
 - [Tank sloshing → dm capability + Scott email](project_tank_sloshing_capability.md) — 2026-07-05: dm PRs #1424/#1425/#1428 MERGED (live sloshing-explorer + master curve); llm-wiki **PR #825 MERGED** (anti-roll-tank Kapsenberg&Carette 2022 ingest, open-access); Scott email STAGED (not sent)
 - [wed Well Pressure Atlas page](project_wed_pressure_atlas_page.md) — 2026-07-04: **wed PR #829 OPEN** (merge → pressure-atlas/ live); feeds Reed email
@@ -39,7 +40,5 @@
 - [Chuck's UDW well access article](project_chuck_udw_well_access_article_backing.md) — 2026-06-19: thesis=ACCESS/CONCENTRATION. Epic #890 dormant. Memo UNCOMMITTED
 - [FDAS public tier + HSE finding](project_fdas_public_tier_dashboard_hse.md) — 2026-06-25: **HSE does NOT favor dry-tree — don't pitch HSE**. OPEN: dashboard + Roy email
 - [Lower Tertiary V50 gold standard](project_lt_v50_gold_standard.md) — 2026-06-27: V50 = V30 on latest OGOR-A; PRs #650/#651; +14% oil/+$432M NPV (still neg)
-- [Session-curation + skill-currency epic](project_session_curation_line_item_and_skill_currency_epic.md) — 2026-06-26: Epic #3248; push-to-state-refs hangs non-interactively
-- [wed reorg + pipeline merge](project_worldenergydata_reorg_and_pipeline_merge.md) — 2026-06-26: src→packages monorepo (import paths preserved)
 - Windows (MINGW64): paths use `/d/workspace-hub/` in bash (not `D:\`)
-_[108 entries omitted: oversize/over-cap]_
+_[110 entries omitted: oversize/over-cap]_

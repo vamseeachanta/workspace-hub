@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-07-05
+> Last captured: 2026-07-06
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -12,6 +12,7 @@
 > topic file in this directory.
 
 ## Active & Recent Projects
+- [Completion D&C reconcile vs WO Article](project_completion_dc_reconciliation_wo_article.md) — 2026-07-05: Roy QA/QC. **wed PR #841 OPEN** (Total-D&C col + /completion/verification.html). WED D&C 22,478 ≈ Roy 21,944 (page headlined drilling-only 11,124). OPEN: Buckskin missing (crosswalk gap), Shenandoah −357. NEXT: merge #841 → reply Roy
 - [RUNSPEC Monte Carlo UQ ingest](project_runspec_monte_carlo_uq_ingest.md) — 2026-07-05: 3 issues (llm-wiki #822, dm #1427, wed #833). NEXT: land #822 via claim+worktree+PR
 - [Tank sloshing → dm capability + Scott email](project_tank_sloshing_capability.md) — 2026-07-05: dm PRs #1424/#1425/#1428 MERGED (live sloshing-explorer + master curve); llm-wiki **PR #825 MERGED** (anti-roll-tank Kapsenberg&Carette 2022 ingest, open-access); Scott email STAGED (not sent)
 - [wed Well Pressure Atlas page](project_wed_pressure_atlas_page.md) — 2026-07-04: **wed PR #829 OPEN** (merge → pressure-atlas/ live); feeds Reed email

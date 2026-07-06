@@ -36,6 +36,44 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:bugfix",
+          "domain:tooling",
+          "status:needs-plan"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Completeness gate reopens PR-merge-closed plan-approved issues (workflow friction, not a config bug)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3389,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Completeness gate reopens PR-merge-closed plan-approved issues (workflow friction, not a config bug)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3389",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "bug",
           "cat:bugfix",
           "domain:ai-orchestration",
@@ -47,21 +85,60 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "Bridge memory-source regen produces stale slices on the owner box \u2192 memory_freshness stuck EXPIRED (was: audit metric)"
+        "title": "Bridge step-5 snapshot is non-monotonic \u2014 compacted live index can overwrite a richer committed memory snapshot (child of #3384)"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
       "machine_ready": false,
       "machine_role": null,
       "machine_route": null,
-      "number": 3384,
+      "number": 3387,
       "pipeline_lane": "C",
       "plan": null,
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "Bridge memory-source regen produces stale slices on the owner box \u2192 memory_freshness stuck EXPIRED (was: audit metric)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3384",
+      "title": "Bridge step-5 snapshot is non-monotonic \u2014 compacted live index can overwrite a richer committed memory snapshot (child of #3384)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3387",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:documentation",
+          "cat:website"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3385,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
       "warnings": []
     },
     {
@@ -8284,106 +8361,52 @@
         "approved_no_marker",
         "missing_review"
       ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:ai-orchestration",
-          "cat:harness",
-          "domain:work-queue",
-          "machine:dev-primary",
-          "status:plan-approved",
-          "dispatch:ready",
-          "gate:completeness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `scripts/solver/submit-job.sh:1-44` \u2014 the authoritative single-source-of-truth CLI; accepts positional args `<solver> <input_file> [description]`; **validates BOTH solver enum (lines 13-16) AND input-file existence (lines 18-23)** before any git operation (commit at line",
-        "provider_route": "claude",
-        "risks": "**Risk:** Tests must always set `SUBMIT_JOB_OVERRIDE` \u2014 a forgotten override would silently invoke the real `submit-job.sh` and push to git. Mitigation: `test_submit_interactive.sh` will export `SUBMIT_JOB_OVERRIDE` once at the top of the test harness (not per-test) AND `test_no_queue_file_leakage` (new in r3) snapshots `git status --short queue/pending/` before/after each delegation-mock test and",
-        "tests": "15 TDD tests defined",
-        "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2710,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-14-issue-2710-solver-submit-ux.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2710",
-      "warnings": [
-        "approved_no_marker",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:engineering",
-          "machine:ace-win-1",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:marine-solver-queue",
-          "lane:codex"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "Two rounds of adversarial review have caught defects in the AQWA invocation contract (executable path, error-scrape file, pydantic-validator hook semantics, skip placement). The r2 Claude review's closing diagnosis is load-bearing: **\"Until the live smoke validation actually runs",
-        "provider_route": "claude",
-        "risks": "**Open (blocking for implementation): Which licensed Windows host holds the AQWA license?** `docs/ops/2026-05-04-multimachine-baseline-inventory.md` \u00a71 states licensed-win-2 is the \"preferred AQWA fallback/parallel host until live probes confirm exact licenses.\" licensed-win-1 lists \"OrcaWave/OrcaFlex/ANSYS\" broadly. Exact ANSYS/AQWA install and license-server address on each host are unconfirmed.",
-        "tests": "21 TDD tests defined",
-        "title": "feat(solver-queue): add AQWA runner adapter and schema extension"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2709,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-14-issue-2709-aqwa-runner-adapter.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(solver-queue): add AQWA runner adapter and schema extension",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2709",
-      "warnings": [
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-07-06T01:21:17Z",
+  "generated_at": "2026-07-06T09:21:11Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "cat:bugfix",
+            "domain:tooling",
+            "status:needs-plan"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Completeness gate reopens PR-merge-closed plan-approved issues (workflow friction, not a config bug)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3389,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Completeness gate reopens PR-merge-closed plan-approved issues (workflow friction, not a config bug)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3389",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8406,21 +8429,60 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "Bridge memory-source regen produces stale slices on the owner box \u2192 memory_freshness stuck EXPIRED (was: audit metric)"
+          "title": "Bridge step-5 snapshot is non-monotonic \u2014 compacted live index can overwrite a richer committed memory snapshot (child of #3384)"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
         "machine_ready": false,
         "machine_role": null,
         "machine_route": null,
-        "number": 3384,
+        "number": 3387,
         "pipeline_lane": "C",
         "plan": null,
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "Bridge memory-source regen produces stale slices on the owner box \u2192 memory_freshness stuck EXPIRED (was: audit metric)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3384",
+        "title": "Bridge step-5 snapshot is non-monotonic \u2014 compacted live index can overwrite a richer committed memory snapshot (child of #3384)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3387",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation",
+            "cat:website"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3385,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
         "warnings": []
       },
       {
@@ -16643,98 +16705,6 @@
           "approved_no_marker",
           "missing_review"
         ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:work-queue",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `scripts/solver/submit-job.sh:1-44` \u2014 the authoritative single-source-of-truth CLI; accepts positional args `<solver> <input_file> [description]`; **validates BOTH solver enum (lines 13-16) AND input-file existence (lines 18-23)** before any git operation (commit at line",
-          "provider_route": "claude",
-          "risks": "**Risk:** Tests must always set `SUBMIT_JOB_OVERRIDE` \u2014 a forgotten override would silently invoke the real `submit-job.sh` and push to git. Mitigation: `test_submit_interactive.sh` will export `SUBMIT_JOB_OVERRIDE` once at the top of the test harness (not per-test) AND `test_no_queue_file_leakage` (new in r3) snapshots `git status --short queue/pending/` before/after each delegation-mock test and",
-          "tests": "15 TDD tests defined",
-          "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2710,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-14-issue-2710-solver-submit-ux.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2710",
-        "warnings": [
-          "approved_no_marker",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:ace-win-1",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-solver-queue",
-            "lane:codex"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "Two rounds of adversarial review have caught defects in the AQWA invocation contract (executable path, error-scrape file, pydantic-validator hook semantics, skip placement). The r2 Claude review's closing diagnosis is load-bearing: **\"Until the live smoke validation actually runs",
-          "provider_route": "claude",
-          "risks": "**Open (blocking for implementation): Which licensed Windows host holds the AQWA license?** `docs/ops/2026-05-04-multimachine-baseline-inventory.md` \u00a71 states licensed-win-2 is the \"preferred AQWA fallback/parallel host until live probes confirm exact licenses.\" licensed-win-1 lists \"OrcaWave/OrcaFlex/ANSYS\" broadly. Exact ANSYS/AQWA install and license-server address on each host are unconfirmed.",
-          "tests": "21 TDD tests defined",
-          "title": "feat(solver-queue): add AQWA runner adapter and schema extension"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2709,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-14-issue-2709-aqwa-runner-adapter.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(solver-queue): add AQWA runner adapter and schema extension",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2709",
-        "warnings": [
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -16745,17 +16715,17 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-07-06T01:21:13.019421Z",
+  "scorecard_generated_at": "2026-07-06T09:21:07.508928Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-06T01:21:12.863502Z",
+  "utilization_generated_at": "2026-07-06T09:21:07.355230Z",
   "warning_summary": {
-    "approved_no_marker": 48,
+    "approved_no_marker": 47,
     "approved_no_plan": 21,
     "dual_status_labels": 10,
     "legacy_review_no_sha": 2,
     "major_review": 2,
-    "marker_without_open_approved_issue": 161,
-    "missing_review": 78,
+    "marker_without_open_approved_issue": 162,
+    "missing_review": 76,
     "unavailable_review": 1,
     "unknown_review": 1
   }

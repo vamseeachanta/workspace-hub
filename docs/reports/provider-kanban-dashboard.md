@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-06T01:21:17Z
+Generated: 2026-07-06T09:21:11Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,7 +43,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #3384 | Bridge memory-source regen produces stale slices on the owner box → memory_freshness stuck EXPIRED (was: audit metric) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3389 | Completeness gate reopens PR-merge-closed plan-approved issues (workflow friction, not a config bug) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3387 | Bridge step-5 snapshot is non-monotonic — compacted live index can overwrite a richer committed memory snapshot (child of #3384) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3385 | Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3382 | chore(dev-workflow): standardize + roll formatting pre-commit (black/isort/flake8) across Python repos | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3374 | spike(capability): prognostics/RUL from public benchmark datasets (C-MAPSS, IMS, FEMTO, OSI) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3373 | feat(gdrive): cloud-sunset (~6mo) with verified local-of-record + final refresh | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -241,8 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2714 | research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2713 | infra: gemini 0.42.0 headless mode reports run_shell_command not found — blocks cross-review | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2711 | feat(provider-data): service-provider data library — Helix 15k IRS pilot | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2710 | feat(solver-queue): conversational submit UX — /solver-submit skill + interactive CLI | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2709 | feat(solver-queue): add AQWA runner adapter and schema extension | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 
 ## Lane: blocked (0)
 
