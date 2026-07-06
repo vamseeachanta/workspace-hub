@@ -71,13 +71,13 @@ tasks:
     schedule: "*/15 * * * *"
     machines: [dev-secondary, ace-linux-2]
     roles: [comms-dispatch, sim-worker]
-    requires: [bash, python3, uv, git]
+    requires: [bash, python3, git]
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       . $HOME/.deckhand/licensed-run.env &&
       cd /mnt/local-analysis/deckhand-ops &&
       git pull --ff-only -q ;
-      uv run --with pyyaml python scripts/deckhand/licensed-run-ops.py alarm --no-telegram
+      python3 scripts/deckhand/licensed-run-ops.py alarm --no-telegram
       >> $HOME/.deckhand/licensed-run-alarm.log 2>&1
     log: ~/.deckhand/licensed-run-alarm.log
     is_claude_task: false
