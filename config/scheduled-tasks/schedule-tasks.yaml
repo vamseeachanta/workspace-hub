@@ -66,6 +66,30 @@ tasks:
     is_claude_task: false
     description: Weekly Sunday 02:30 metadata-only in-place refresh of /mnt/ace/.ace-knowledge/index.db.
 
+  - id: licensed-run-alarm
+    label: Licensed-run lane watchdog (deckhand#527)
+    schedule: "*/15 * * * *"
+    machines: [dev-secondary, ace-linux-2]
+    roles: [comms-dispatch, sim-worker]
+    requires: [bash, python3, uv, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      . $HOME/.deckhand/licensed-run.env &&
+      cd /mnt/local-analysis/deckhand-ops &&
+      git pull --ff-only -q ;
+      uv run --with pyyaml python scripts/deckhand/licensed-run-ops.py alarm --no-telegram
+      >> $HOME/.deckhand/licensed-run-alarm.log 2>&1
+    log: ~/.deckhand/licensed-run-alarm.log
+    is_claude_task: false
+    description: >-
+      Every 15 min on the licensed-run producer: licensed-run-ops alarm trips (exit 4)
+      when an approved queue request has no result past 30 min or the ace-win-2 agent
+      heartbeat goes stale (deckhand#527 — a run once sat unconsumed 7 days, silently).
+      Uses dedicated clones (/mnt/local-analysis/deckhand-ops + ~/.deckhand/queue-watch)
+      so its fetch+reset never clobbers an operator's shared checkout. Runs --no-telegram
+      (log-only) until the owner wires DECKHAND_LICENSED_RUN_TELEGRAM_BOT_TOKEN +
+      DECKHAND_LICENSED_RUNS_CHANNEL_ID in ~/.deckhand/licensed-run.env, then drop the flag.
+
   - id: drive-index-refresh-dde
     label: DDE drive-index refresh (#3336)
     schedule: "30 3 * * 0"
