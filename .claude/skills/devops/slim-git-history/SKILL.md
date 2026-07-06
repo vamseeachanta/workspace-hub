@@ -17,6 +17,12 @@ digitalmodel #1142 pattern). Works per-repo; repeat across repos.
   (client reports, datasets) are often deliberately version-controlled. The
   TRACKED-vs-GONE classification in step 1 exists to prevent this.
 - **Always back up before any rewrite** (mirror clone or `git bundle`).
+- **A blob-strip must leave `HEAD`'s tree byte-identical.** It only removes
+  already-deleted (GONE) blobs, so the *current* tree cannot change. Verify this
+  with the **content-parity gate** (`analyze-repo-bloat.sh --verify-parity`, step 6)
+  BEFORE the force-push — a non-zero exit means the rewrite dropped a live
+  deliverable. This is the guard that would have caught the 2026-06 slim silently
+  dropping digitalmodel #989 (the DNV-OS-F101 module) from `main`.
 - The **non-rewrite wins (step 2) are always safe** — do them regardless, even if
   the rewrite is deferred.
 
@@ -87,9 +93,15 @@ The agent stops here and hands the operator this sequence:
 ```
 git clone --mirror <repo> ../<repo>-backup.git     # 1. backup
 git filter-repo <planned args>                      # 2. rewrite (in a fresh clone)
-git push --force --all && git push --force --tags    # 3. force-push (OPERATOR)
-git gc --prune=now --aggressive                      # 4. reclaim locally
+# 3. CONTENT-PARITY GATE — must print PASS (exit 0) before pushing (#989 guard):
+bash <workspace-hub>/.claude/skills/devops/slim-git-history/scripts/analyze-repo-bloat.sh \
+     --verify-parity ../<repo>-backup.git .
+git push --force --all && git push --force --tags    # 4. force-push (OPERATOR) — only after PASS
+git gc --prune=now --aggressive                      # 5. reclaim locally
 ```
+> If step 3 prints **FAIL**, the rewrite dropped a still-tracked file — **stop, do
+> not push**, and narrow the filter (a `--strip-blobs-bigger-than` threshold that
+> also caught a TRACKED deliverable is the usual cause; switch to `--path`).
 
 ## Step 5 — Coordination (shared-repo hazards)
 
@@ -103,9 +115,18 @@ git gc --prune=now --aggressive                      # 4. reclaim locally
 ## Step 6 — Verify
 
 ```
+# CONTENT PARITY (the load-bearing check — run BEFORE force-push, gates it):
+analyze-repo-bloat.sh --verify-parity ../<repo>-backup.git .   # must print PASS
 du -sh .git              # confirm shrink
 git fsck --full          # integrity
 git clone <remote> /tmp/smoke && cd /tmp/smoke && git log --oneline -1   # fresh-clone smoke test
 ```
+
+**Why parity is first:** `du`/`fsck`/smoke-test confirm the repo is *smaller* and
+*internally intact* — but a rewrite that silently dropped a merged deliverable
+passes all three (it's smaller, it fsck's clean, it clones). Only the parity gate
+compares the live `HEAD` tree against the pre-rewrite backup and fails when a
+tracked file vanished. A GONE-blob strip must leave the tree byte-identical; any
+diff is a dropped deliverable (the digitalmodel #989 failure mode).
 
 See [scripts/analyze-repo-bloat.sh](scripts/analyze-repo-bloat.sh) for the analysis details.
