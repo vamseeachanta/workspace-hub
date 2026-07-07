@@ -260,6 +260,7 @@ function check_r_precommit:
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Codex r1 | MAJOR | Readiness validation was optional/grep-only; ACs did not execute actual precommit hook wiring; temp fixture isolation was underspecified; resolver lacked traversal validation; remediation guidance would recreate stale config. |
+| Codex r2 | UNAVAILABLE | Codex CLI stdin regression/timeout after the r1 plan patch; no usable review signal. The r1 MAJOR findings remain the latest substantive review evidence. |
 
 **Overall result:** FAIL - re-draft required before approval.
 
@@ -269,6 +270,7 @@ Revisions made based on review:
 - Specified scanner fixture isolation by copying the scanner into a temporary `workspace-hub/scripts/legal/` tree.
 - Added actual `.pre-commit-config.yaml` hook-entry parse/resolve/run acceptance criteria.
 - Added `scripts/readiness/remediate-harness.sh` to prevent stale remediation guidance from recreating the defect.
+- Recorded the second Codex attempt as unavailable; no approval-state movement because no no-MAJOR review exists.
 
 ---
 
