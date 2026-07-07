@@ -7108,7 +7108,7 @@ cards:
     title: 'feat(capabilities): close the 10 section one-pager PDF gaps (#1444 reference index)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1456
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - status:plan-approved
@@ -7120,7 +7120,7 @@ cards:
     title: 'assembly wave-4: string weight from wiki joint schedules → validate against endpoint contracts (lift batch past 4/19)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1458
-    gh_state: open
+    gh_state: closed
     gh_labels: []
     initial_status: triage
     priority: 0

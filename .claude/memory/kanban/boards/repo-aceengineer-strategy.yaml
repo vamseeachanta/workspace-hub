@@ -1223,3 +1223,19 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#153
+    title: 'Subsea7 meeting deck: expand FDG pre-read into 10-slide Marp presentation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/153
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:P1
+      - strategy
+      - status:scoping
+      - domain:gtm
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
