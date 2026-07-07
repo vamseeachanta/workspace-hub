@@ -38,3 +38,15 @@ Every issue: plan (workspace-hub `docs/plans/2026-07-06-issue-*`) → 2-provider
 
 ## No-external-action status
 No emails sent, no publishes beyond the four owner-merged PRs and GitHub issues/comments; no secrets touched; no destructive git anywhere (one `reset --hard` inside a throwaway sparse push-worktree only).
+
+---
+
+## Entry prompt for the dm#1456 implementation session
+
+> Paste-ready; the fresh session must verify the approval gate itself.
+
+Preflight: (1) `gh issue view 1456 --repo vamseeachanta/digitalmodel --json labels,state` — implement ONLY on `status:plan-approved`; if `status:plan-review`, surface for owner approval and STOP (never self-approve). (2) Read the r3 plan `docs/plans/2026-07-06-issue-dm-1456-section-onepager-gaps.md` + both intel comments on the issue. (3) Check parallel dm lanes (open PRs + worktrees).
+
+Task: 10 `kind="section"` SPECS entries (sec-fatigue, sec-cfd, sec-wall-thickness, sec-viv, sec-field-development, sec-naval-architecture, sec-geotechnical, sec-production-engineering, sec-drilling-engineering, sec-cathodic) + PDFs + inventory regen + 3 tests (ratchet w/ empty `onepager_exempt`, pdf-committed, standards-grounding), single PR.
+
+Load-bearing: sparse worktree (`--no-checkout` + set `scripts/capabilities docs/api docs/capability-map tests .claude assets/logo` — logo read at import); dm env `.venv/bin/python` (uv broken); **NEVER argless build_onepagers** (churns all 49 PDFs — scoped ids only; Chrome sandbox-override per #1411); single-push-when-locally-green (freshness gate red mid-lane otherwise); grounding grep test per #1391; `pdftocairo` + `pdftotext` checks per svg-pdf-portability rule; diff allowlist = SPECS + 10 PDFs + 2 capability-map artifacts + test file; owner reviews authored claims + merges himself.
