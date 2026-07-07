@@ -40,6 +40,17 @@
 None sent (no emails, no publishes). GitHub-only: PR #1460 (merged by owner), issue comments on #1456, diagnosis comment on #1459.
 
 ## Next steps (one at a time)
-1. **Merge #1459 after the `ttf` rename lands** — wave-4 lane owns it; if that session went dark, a fresh session may land the rename once `git -C /mnt/local-analysis/digitalmodel worktree list` is stable and no new pushes hit `feat/schedule-assembly-1458`.
-2. Then per riser memory: wave-5 wiki PR.
-3. workspace-hub equality wedge on ace-linux-1 needs the documented recovery (owner-gated).
+1. ~~**Merge #1459 after the `ttf` rename lands**~~ — RESOLVED, see addendum.
+2. Then per riser memory: wave-5 wiki PR — DONE by the riser lane (llm-wiki #829 + dm #1463 merged 2026-07-07).
+3. workspace-hub equality wedge on ace-linux-1 needs the documented recovery (owner-gated). **STILL OPEN — the only carry-forward.**
+
+---
+
+## Addendum (2026-07-07, same session, post-exit-prep)
+
+The owner's paste-back merge sweep landed [dm#1459](https://github.com/vamseeachanta/digitalmodel/pull/1459) **while `tests-contracts` was still red**, putting the unsuffixed `top_tension_factor` on dm main (units-contract #1447 gate broken for the four scanned packages).
+
+- **Fast-follow [dm PR #1462](https://github.com/vamseeachanta/digitalmodel/pull/1462) MERGED (owner-run) + content-verified on origin/main**: `top_tension_factor` → `ttf` (API RP 16Q's own abbreviation; dimensionless, so a unit suffix would be wrong and `LEGACY_ALLOWLIST` is frozen). 3 usages; `tests/contracts` 10/10; full PR CI green + CLEAN before the merge command was handed over.
+- Units contract #1447 now has **three live catches** (NeoSight twin PR, #1459, plus its allowlist discipline shaping this fix).
+- **Lesson for merge sweeps**: a paste-back sweep merges whatever is listed, green or not — verify each swept PR's checks first (`gh pr checks <N>`), or use `scripts/operations/merge-when-clean.sh`. After any sweep, verify main's gates by content.
+- Hotfix worktree/branch cleaned; local `llm-wiki` clone on ace-linux-1 noted stale (missing riser-projects RSU source pages → `tests/drilling_riser/test_schedule_assembly.py` fails locally, green in CI; pull llm-wiki main before local riser test runs).
