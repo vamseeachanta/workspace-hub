@@ -976,7 +976,7 @@ cards:
     title: 'feat(hub): economics as a hub subsection + demote well-benchmarking to a small button'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/757
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering

@@ -1227,13 +1227,28 @@ cards:
     title: 'Subsea7 meeting deck: expand FDG pre-read into 10-slide Marp presentation'
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/153
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:P1
       - strategy
       - status:plan-approved
       - domain:gtm
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#155
+    title: 'repo-structure contract: classify tracked .codex root drift'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/155
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:P2
+      - status:scoping
+      - domain:operations-governance
       - lane:codex
     initial_status: triage
     priority: 0
