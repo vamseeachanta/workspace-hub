@@ -1243,6 +1243,20 @@ cards:
     title: 'repo-structure contract: classify tracked .codex root drift'
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/155
+    gh_state: closed
+    gh_labels:
+      - bug
+      - priority:P2
+      - domain:operations-governance
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#156
+    title: 'provider adapter symlinks: replace or formalize tracked .codex/.gemini skill links'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/156
     gh_state: open
     gh_labels:
       - bug

@@ -1248,12 +1248,11 @@ cards:
     title: 'feat(spain): per-field CORES crude density / API table (tonnes→bbl)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/807
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
-      - status:plan-review
-      - status:plan-approved
+      - status:done
       - domain:ingest
       - lane:codex
     initial_status: triage

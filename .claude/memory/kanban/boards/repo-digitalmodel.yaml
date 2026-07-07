@@ -7177,7 +7177,7 @@ cards:
     title: '[#1471] Shared brand-token stylesheet — single source of truth for palette/type/layout'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1472
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
     initial_status: triage
@@ -7188,7 +7188,7 @@ cards:
     title: '[#1471] Layout + single-screen-fit standard (doc + codify from exemplar)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1473
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
     initial_status: triage
