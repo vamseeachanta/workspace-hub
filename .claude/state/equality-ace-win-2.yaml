@@ -1,11 +1,11 @@
-generated_at: "2026-07-06T21:25:30"
+generated_at: "2026-07-06T21:44:40"
 schema_version: 4
 machine: "ace-win-2"
 host: "acma-ws014"
 os: windows
 status: active
 provenance:
-  checkout_sha: "27afe953f"
+  checkout_sha: "ce5a36be7"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 16014, gpu_model: "NVIDIA T1000 8GB"}
-    headroom: {ram_avail_mib: 3392, disk_avail_gb: 221}
+    headroom: {ram_avail_mib: 3216, disk_avail_gb: 221}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
