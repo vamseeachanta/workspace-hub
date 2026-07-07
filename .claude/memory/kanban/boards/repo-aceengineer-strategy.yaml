@@ -1232,7 +1232,7 @@ cards:
       - enhancement
       - priority:P1
       - strategy
-      - status:scoping
+      - status:plan-approved
       - domain:gtm
       - lane:codex
     initial_status: triage

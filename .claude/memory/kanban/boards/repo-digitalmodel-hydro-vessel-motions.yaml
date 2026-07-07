@@ -581,3 +581,18 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1467
+    title: '[#1356-G] Field pilot: instrumented vessel motion-forecast validation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1467
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - domain:hydro-vessel-motions
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

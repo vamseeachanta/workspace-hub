@@ -3152,3 +3152,13 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#888
+    title: Promote wed canonical to V50 basis + rigorous V50-vs-wed reconciliation tables (retire V30)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/888
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

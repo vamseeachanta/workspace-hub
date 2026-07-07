@@ -6386,7 +6386,7 @@ cards:
     title: 'EPIC: rig-specific drilling riser analysis → operating envelopes → capabilities page'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1279
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - cat:data
@@ -6414,10 +6414,10 @@ cards:
     title: 'envelopes C: operating-envelope engine — offset x current x wave vs code limits'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1281
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
-      - status:plan-approved
+      - status:done
       - lane:claude
     initial_status: triage
     priority: 0
@@ -7122,6 +7122,108 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1458
     gh_state: closed
     gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1468
+    title: 'AMJIG per-category envelope criteria — RULING (a): named identifier, values wiki-side; maintain 16Q AND 16Q+AMJIG criteria sets'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1468
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1469
+    title: 'Populate solver-backed envelope tier (C3 stub) — dynamic coverage: per-seastate envelopes, drift-off, recoil, hang-off dynamics'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1469
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1470
+    title: 'Registry batch coverage: lift 8/21 runnable via wave-6 extraction + missing-input closure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1470
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1471
+    title: 'EPIC: Brand & layout consistency for public capability pages — shared design tokens + single-screen-fit standard'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1471
+    gh_state: open
+    gh_labels:
+      - feature
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1472
+    title: '[#1471] Shared brand-token stylesheet — single source of truth for palette/type/layout'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1472
+    gh_state: open
+    gh_labels:
+      - feature
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1473
+    title: '[#1471] Layout + single-screen-fit standard (doc + codify from exemplar)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1473
+    gh_state: open
+    gh_labels:
+      - feature
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1474
+    title: '[#1471] Migrate 87 designed API pages to shared tokens + fit standard (by domain)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1474
+    gh_state: open
+    gh_labels:
+      - feature
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1475
+    title: '[#1471] Accessibility baseline for public capability pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1475
+    gh_state: open
+    gh_labels:
+      - feature
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1476
+    title: '[#1471] CI guard against brand/layout drift'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1476
+    gh_state: open
+    gh_labels:
+      - feature
     initial_status: triage
     priority: 0
     gh_assignees: []

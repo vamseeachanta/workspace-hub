@@ -981,9 +981,9 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - status:plan-review
+      - status:plan-approved
       - domain:reports
-      - lane:claude
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
