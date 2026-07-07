@@ -22244,3 +22244,27 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3397
+    title: 'bug(readiness): R-HOOKS false-missing on Windows CRLF paths'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3397
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3398
+    title: 'chore(harness): add legal-sanity precommit entries for assetutilities and worldenergydata'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3398
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

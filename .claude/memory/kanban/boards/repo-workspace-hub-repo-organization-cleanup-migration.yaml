@@ -475,7 +475,6 @@ cards:
       - priority:medium
       - machine:dev-primary
       - status:plan-approved
-      - status:needs-plan
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration

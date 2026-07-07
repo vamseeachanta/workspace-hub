@@ -3124,6 +3124,30 @@ cards:
       - bug
       - cat:engineering
       - priority:low
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#875
+    title: 'FDAS pipeline: fix latent bugs before wed is the general canonical tool'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/875
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#879
+    title: 'data: V30/V50 baseline references data/wti-monthly.csv which is absent'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/879
+    gh_state: open
+    gh_labels:
+      - cat:data
     initial_status: triage
     priority: 0
     gh_assignees: []

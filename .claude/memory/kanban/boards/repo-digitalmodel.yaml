@@ -6176,6 +6176,7 @@ cards:
       - cat:engineering
       - priority:high
       - cat:data
+      - status:plan-approved
       - lane:codex
       - lane:claude
       - status:needs-plan
@@ -6540,7 +6541,10 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1296
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -7066,7 +7070,7 @@ cards:
     title: "feat(capabilities): IA simplification — cluster 22 sections, 'recently added' catch-up strip, citable reference index"
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1444
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - status:plan-approved
@@ -7093,9 +7097,31 @@ cards:
     title: 'assembly engine wave-2: 3 new golden 16Q contracts (RSU-0010/0012, 0014, 0023) + first registry batch run'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1453
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1456
+    title: 'feat(capabilities): close the 10 section one-pager PDF gaps (#1444 reference index)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1456
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1458
+    title: 'assembly wave-4: string weight from wiki joint schedules → validate against endpoint contracts (lift batch past 4/19)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1458
+    gh_state: open
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []

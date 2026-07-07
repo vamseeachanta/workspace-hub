@@ -942,14 +942,15 @@ cards:
     title: 'feat(registry): canonical fields.yml crosswalk (id ⇄ name ⇄ BSEE lease/block ⇄ slug)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/755
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
       - cat:engineering
+      - status:done
+      - status:plan-approved
       - domain:reports
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -963,9 +964,10 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
+      - status:working
+      - status:plan-approved
       - domain:reports
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []

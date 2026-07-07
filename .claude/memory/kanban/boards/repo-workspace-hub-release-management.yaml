@@ -545,6 +545,7 @@ cards:
       - cat:harness
       - domain:release-management
       - status:plan-review
+      - status:plan-approved
       - gate:completeness
       - lane:claude
     gh_assignees: []
