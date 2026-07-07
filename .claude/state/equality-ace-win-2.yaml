@@ -1,19 +1,19 @@
-generated_at: "2026-06-27T14:36:46"
+generated_at: "2026-07-06T21:16:25"
 schema_version: 4
 machine: "ace-win-2"
 host: "acma-ws014"
 os: windows
 status: active
 provenance:
-  checkout_sha: "1ecb872da"
+  checkout_sha: "ea243c83a"
   dirty: false
   behind_main: 0
   ahead_main: 0
   origin_ref_age_h: 0
 dimensions:
   compute:
-    static: {cores: 32, ram_total_mib: unknown, gpu_model: "none"}
-    headroom: {ram_avail_mib: unknown, disk_avail_gb: unknown}
+    static: {cores: 32, ram_total_mib: 16014, gpu_model: "NVIDIA T1000 8GB"}
+    headroom: {ram_avail_mib: 2563, disk_avail_gb: 220}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -30,7 +30,7 @@ dimensions:
     python_cmd: python
     readiness_ref: harness-readiness-acma-ws014.yaml
     readiness_overall: fail
-  skills: {repo_skill_count: 415}
+  skills: {repo_skill_count: 420}
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: absent
@@ -48,8 +48,8 @@ dimensions:
         present: true
         installed: true
         "memory:read": {status: present, reason: codex_memory_runtime_found}
-        "skills:invoke": {status: absent, reason: adapter_not_directory_or_symlink}
-        "workflow:gates": {status: absent, reason: active_runtime_missing}
+        "skills:invoke": {status: present, reason: codex_skill_adapter_found}
+        "workflow:gates": {status: present, reason: codex_agents_runtime_active}
       hermes:
         present: true
         installed: true
