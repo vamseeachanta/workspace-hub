@@ -200,14 +200,14 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 - **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
 - **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
-- **business-marketing/** — 1 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
+- **business-marketing/** — 2 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
 - **coordination/** — 59 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
 - **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
 - **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate
-- **data/** — 82 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
+- **data/** — 84 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
 - **data-science/** — 1 skill(s); `ls .claude/skills/data-science/*/SKILL.md` to enumerate
 - **development/** — 71 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
-- **devops/** — 7 skill(s); `ls .claude/skills/devops/*/SKILL.md` to enumerate
+- **devops/** — 8 skill(s); `ls .claude/skills/devops/*/SKILL.md` to enumerate
 - **devtools/** — 1 skill(s); `ls .claude/skills/devtools/*/SKILL.md` to enumerate
 - **digitalmodel/** — 8 skill(s); `ls .claude/skills/digitalmodel/*/SKILL.md` to enumerate
 - **email/** — 10 skill(s); `ls .claude/skills/email/*/SKILL.md` to enumerate
@@ -235,7 +235,7 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 - **test-dummy-validation/** — 1 skill(s); `ls .claude/skills/test-dummy-validation/*/SKILL.md` to enumerate
 - **travel/** — 8 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
 - **workspace-hub/** — 149 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
-- **workspace-hub-learned/** — 69 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
+- **workspace-hub-learned/** — 70 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
 
 ## Universal rules (inlined for Codex)
 > Claude reads .claude/rules/ natively; these are inlined here because Codex has no native rules loader. Domain/Claude-only rules (goal-invocation, calc-citation, wiki-routing) stay path-references.
