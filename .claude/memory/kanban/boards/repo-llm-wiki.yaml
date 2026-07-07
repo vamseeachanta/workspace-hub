@@ -2032,7 +2032,7 @@ cards:
     title: '[ingest] Kostro (2026) — RUNSPEC Monte Carlo (browser-based reservoir UQ) → reservoir-engineering source'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/822
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - documentation
       - enhancement
