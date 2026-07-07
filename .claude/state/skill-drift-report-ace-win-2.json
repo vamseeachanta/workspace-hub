@@ -1,0 +1,14 @@
+{
+  "machine": "ace-win-2",
+  "evaluated_at": "2026-07-07T02:18:04+00:00",
+  "signature": "CLEAN",
+  "drift_present": false,
+  "new_drift": false,
+  "recovered": false,
+  "include_index": false,
+  "gemini_present": true,
+  "gemini_unexpected": 0,
+  "gemini_unexpected_families": [],
+  "index_dangling": 0,
+  "schema_version": 1
+}

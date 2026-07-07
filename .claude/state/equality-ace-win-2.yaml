@@ -1,11 +1,11 @@
-generated_at: "2026-07-06T21:16:25"
+generated_at: "2026-07-06T21:25:30"
 schema_version: 4
 machine: "ace-win-2"
 host: "acma-ws014"
 os: windows
 status: active
 provenance:
-  checkout_sha: "ea243c83a"
+  checkout_sha: "27afe953f"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 16014, gpu_model: "NVIDIA T1000 8GB"}
-    headroom: {ram_avail_mib: 2563, disk_avail_gb: 220}
+    headroom: {ram_avail_mib: 3392, disk_avail_gb: 221}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -70,26 +70,26 @@ dimensions:
     has_parity_review: false
     job_count: 0
   session_curation:
-    last_curated_at: null
-    sessions_24h: 0
-    providers_active: ""
+    last_curated_at: "2026-07-07T02:18:00+00:00"
+    sessions_24h: 7
+    providers_active: "claude,codex"
     memory_files_changed: 0
   skill_currency:
-    audited_at: null
-    canonical_count: 0
-    gemini_present: false
+    audited_at: "2026-07-07T02:18:03+00:00"
+    canonical_count: 44
+    gemini_present: true
     gemini_unexpected: 0
-    gemini_expected: 0
-    codex_present: false
-    hermes_present: false
-    index_dangling: null
+    gemini_expected: 9
+    codex_present: true
+    hermes_present: true
+    index_dangling: 0
   memory_freshness:
-    audited_at: null
+    audited_at: "2026-07-07T02:18:04+00:00"
     worst_age_hours: null
-    freshness: null
+    freshness: "MISSING-EVIDENCE"
   skill_link_health:
-    audited_at: null
-    repos_total: 0
-    healthy: 0
+    audited_at: "2026-07-07T02:25:21+00:00"
+    repos_total: 6
+    healthy: 12
     repairable: 0
-    worst_state: null
+    worst_state: "TEMPLATE-ABSENT"
