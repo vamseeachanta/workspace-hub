@@ -6566,6 +6566,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1299
     gh_state: open
     gh_labels:
+      - status:working
       - status:plan-approved
       - lane:codex
       - lane:claude
@@ -7228,6 +7229,16 @@ cards:
     gh_state: closed
     gh_labels:
       - feature
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1495
+    title: Onboard dedicated CFD compute box + offload CFD from ace-linux-2
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1495
+    gh_state: open
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []

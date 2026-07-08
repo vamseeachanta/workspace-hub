@@ -22279,3 +22279,14 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3402
+    title: '[#3401] Brand consolidation: workspace-hub (per-repo canonical + standards) — PLAN'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3402
+    gh_state: open
+    gh_labels:
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
