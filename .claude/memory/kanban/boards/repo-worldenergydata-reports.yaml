@@ -1282,3 +1282,19 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#907
+    title: 'feat(insights): Na Kika / Coulomb transaction lifecycle and economics package'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/907
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:reports
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

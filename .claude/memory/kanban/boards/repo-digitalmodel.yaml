@@ -6542,6 +6542,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1296
     gh_state: open
     gh_labels:
+      - status:working
       - status:plan-approved
       - lane:codex
       - lane:claude
@@ -7133,6 +7134,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - status:working
       - lane:codex
     initial_status: triage
     priority: 0
