@@ -3179,7 +3179,7 @@ cards:
     title: Add wed-latest component breakdown to FDAS V50 comparison
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/904
-    gh_state: open
+    gh_state: closed
     gh_labels: []
     initial_status: triage
     priority: 0
