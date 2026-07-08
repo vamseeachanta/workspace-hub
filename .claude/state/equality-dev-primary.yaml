@@ -1,19 +1,19 @@
-generated_at: "2026-07-08T12:47:06"
+generated_at: "2026-07-08T14:09:08"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "7356d7e0b"
+  checkout_sha: "fcfde6fd8"
   dirty: false
-  behind_main: 5
-  ahead_main: 2
+  behind_main: 0
+  ahead_main: 0
   origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 23378, disk_avail_gb: 720}
+    headroom: {ram_avail_mib: 22285, disk_avail_gb: 720}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: true
     job_count: 63
   session_curation:
-    last_curated_at: "2026-07-08T17:47:01+00:00"
-    sessions_24h: 29
+    last_curated_at: "2026-07-08T09:54:34+00:00"
+    sessions_24h: 65
     providers_active: "claude,codex,gemini,hermes"
-    memory_files_changed: 0
+    memory_files_changed: 200
   skill_currency:
-    audited_at: "2026-07-08T17:47:05+00:00"
+    audited_at: "2026-07-08T09:54:38+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,11 +84,11 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-08T17:47:05+00:00"
-    worst_age_hours: 8.368
+    audited_at: "2026-07-08T09:54:38+00:00"
+    worst_age_hours: 0.494
     freshness: "MEMORY-FRESH"
   skill_link_health:
-    audited_at: "2026-07-08T17:47:06+00:00"
+    audited_at: "2026-07-08T09:54:40+00:00"
     repos_total: 14
     healthy: 28
     repairable: 0
