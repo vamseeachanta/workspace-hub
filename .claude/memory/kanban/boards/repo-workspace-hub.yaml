@@ -22080,7 +22080,8 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3368
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-review
     initial_status: triage
     priority: 0
     gh_assignees: []

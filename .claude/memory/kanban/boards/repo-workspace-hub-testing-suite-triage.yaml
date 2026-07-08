@@ -301,6 +301,7 @@ cards:
       - cat:engineering
       - machine:dev-primary
       - agent:gemini
+      - status:plan-review
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
