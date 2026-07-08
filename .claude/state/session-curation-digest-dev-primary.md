@@ -1,15 +1,16 @@
 # Session-curation digest — dev-primary
-_Curated 2026-07-06T11:47:03+00:00 · transferable to sibling machines via `session-curation-state` ref_
+_Curated 2026-07-08T09:54:34+00:00 · transferable to sibling machines via `session-curation-state` ref_
 
 ## Provider session activity (this box)
 | Provider | Present | Sessions | Last 24h | Newest |
 |---|---|---|---|---|
-| claude | yes | 5863 | 80 | 2026-07-06T06:46:37 |
-| codex | yes | 3420 | 45 | 2026-07-06T06:09:22 |
-| gemini | yes | 2176 | 3 | 2026-07-06T02:14:04 |
+| claude | yes | 5954 | 23 | 2026-07-08T04:19:52 |
+| codex | yes | 3490 | 42 | 2026-07-08T04:54:33 |
+| gemini | yes | 2177 | 0 | 2026-07-07T04:17:24 |
 | hermes | yes | 6676 | 0 | 2026-06-10T04:04:28 |
 
 ## Memory delta — 200 file(s) changed since last curation
+- `KNOWLEDGE.md`
 - `agents.md`
 - `claude-auto-memory.md`
 - `context.md`
@@ -23,7 +24,6 @@ _Curated 2026-07-06T11:47:03+00:00 · transferable to sibling machines via `sess
 - `topics/feedback_adversarial_review_stance.md`
 - `topics/feedback_agent_can_verify_but_not_self_merge_pr.md`
 - `topics/feedback_agent_cannot_enable_security_gate_bypass.md`
-- `topics/feedback_agent_prompts_with_stories.md`
 - `topics/feedback_always_adversarial_review_scale_depth.md`
 - `topics/feedback_always_update_equality_matrix.md`
 - `topics/feedback_amend_clobbers_parallel_branch_in_shared_checkout.md`
