@@ -49,6 +49,18 @@ Do not drop these until a later explicit cleanup pass:
 
 The newest stash contains generated equality, curation, provider dashboard, and report deltas. It was intentionally preserved rather than dropped.
 
+## Cleanup audit at exit
+
+Verdict buckets:
+
+- **CLEAN:** `workspace-hub` tracked working tree is clean and synced after this handoff commit.
+- **EXPECTED:** the preserve branches and stashes listed above are intentional safety nets from the equality/curation replay.
+- **DEFER:** `/mnt/local-analysis/.cleanup-trash/20260616-095709` still exists from an earlier cleanup pass.
+- **DEFER:** `/tmp` contains recent unrelated artifacts such as `wo-june-2026-*`, `codex-plan-907*.log`, `wed-na-kika-drive-search*.err`, `wt-1296/`, and the active `publish-equality-ace-linux-1.lock`.
+- **DEFER:** `/mnt/local-analysis` has many legitimate sibling repos/worktrees plus older top-level reports/artifacts. Do not dispose of these opportunistically; use the repo-ecosystem hygiene workflow if cleanup is desired.
+
+No destructive cleanup was performed in this closeout.
+
 ## Remaining matrix gaps
 
 These are no longer checkout contamination:
