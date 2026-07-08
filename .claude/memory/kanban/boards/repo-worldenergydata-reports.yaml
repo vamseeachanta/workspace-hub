@@ -1256,3 +1256,29 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#899
+    title: 'FDAS canonical: write V50 assumptions change log'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/899
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - domain:reports
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#901
+    title: 'FDAS canonical: generate official V50 financial workbook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/901
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - domain:reports
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

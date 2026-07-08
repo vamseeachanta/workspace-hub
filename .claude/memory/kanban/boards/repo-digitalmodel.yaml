@@ -7157,6 +7157,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - status:working
       - lane:codex
     initial_status: triage
     priority: 0
@@ -7199,7 +7200,7 @@ cards:
     title: '[#1471] Migrate 87 designed API pages to shared tokens + fit standard (by domain)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1474
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
     initial_status: triage
