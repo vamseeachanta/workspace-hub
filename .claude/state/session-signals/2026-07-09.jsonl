@@ -19,3 +19,4 @@
 {"ts":"2026-07-09T06:37:45Z","event":"stop_signal_captured","session_id":"6e12289a-fd3a-441e-a738-f9695a45e551"}
 {"ts":"2026-07-09T11:11:34Z","event":"stop_signal_captured","session_id":"9774ffa1-2950-51c3-8686-9045e088f991"}
 {"ts":"2026-07-09T11:11:34Z","event":"session_tool_summary","session_id":"9774ffa1-2950-51c3-8686-9045e088f991","wrk":"none","tool_calls":21,"edits":2,"reads":0}
+{"ts":"2026-07-09T12:10:57Z","event":"stop_signal_captured","session_id":"92595536-5d57-5805-b2ad-b3e15de8eeaa"}
