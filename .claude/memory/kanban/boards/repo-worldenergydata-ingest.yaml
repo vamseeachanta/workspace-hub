@@ -1319,3 +1319,99 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#911
+    title: 'feat(us-onshore): source readiness matrix for state regulator, EIA, BLM, county, lease, mineral, and title data'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/911
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#912
+    title: 'feat(arkansas): source-discover AOGC wells, production, permits, fields, and lease-relevant datasets'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/912
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#913
+    title: 'feat(landman): acquire BLM MLRS federal lease and public land records into canonical storage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/913
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#914
+    title: 'feat(landman): catalog county recorder coverage and title-chain feasibility by priority county'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/914
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#915
+    title: 'feat(us-onshore): prepare TX/KS/OK/CO downloaded datasets for underwriting joins'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/915
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#919
+    title: 'feat(west_africa): Nigeria NUPRC/EITI scheduled ingest + FDAS/PSC field chain'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/919
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

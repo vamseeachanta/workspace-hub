@@ -1298,3 +1298,36 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#916
+    title: 'feat(underwriting): generate first landman diligence pack from wells, production, pressure, lease/title gaps, infrastructure, and HSE'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/916
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - cat:business
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#918
+    title: 'feat(country-coverage): materialized-data inventory badges for international readiness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/918
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
