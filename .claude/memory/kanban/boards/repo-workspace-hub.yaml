@@ -22302,8 +22302,22 @@ cards:
       - cat:harness
       - domain:agent-ux
       - machine:dev-primary
-      - status:needs-plan
+      - status:plan-review
       - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3404
+    title: Explore direct SSH path to gpu-claw without WireGuard dependency
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3404
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - domain:machine-setup
     initial_status: triage
     priority: 0
     gh_assignees: []
