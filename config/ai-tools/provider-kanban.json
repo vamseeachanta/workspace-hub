@@ -27,7 +27,51 @@
   "cards": [
     {
       "approval_blockers": [
+        "no canonical plan file",
         "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "cat:harness",
+          "machine:multi",
+          "status:plan-review",
+          "gate:completeness",
+          "domain:harness",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3408,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3408",
+      "warnings": [
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -36,10 +80,51 @@
         "labels": [
           "enhancement",
           "priority:medium",
+          "cat:operations",
+          "domain:machine-setup"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Explore direct SSH path to gpu-claw without WireGuard dependency"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3404,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Explore direct SSH path to gpu-claw without WireGuard dependency",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3404",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "already has status:plan-approved",
+        "reviews not clean: missing_review",
+        "issue already has approval marker on disk",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": ".planning/plan-approved/3403.md",
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:medium",
           "cat:harness",
           "domain:agent-ux",
           "machine:dev-primary",
-          "status:plan-review",
+          "status:plan-approved",
+          "gate:completeness",
           "lane:codex"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8293,96 +8378,9 @@
       "title": "fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts \u2014 retrofit with `script -qc`",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2721",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "cat:ai-orchestration",
-          "cat:harness",
-          "domain:ai-config",
-          "machine:dev-primary",
-          "dispatch:ready",
-          "gate:completeness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2718,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "codex",
-      "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
-      "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:engineering",
-          "machine:ace-win-1",
-          "machine:ace-win-2",
-          "dispatch:ready",
-          "gate:completeness",
-          "domain:marine-solver-queue",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2717,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2717",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-07-09T05:21:23Z",
+  "generated_at": "2026-07-09T09:21:31Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8390,7 +8388,51 @@
     "planning_feedstock": [
       {
         "approval_blockers": [
+          "no canonical plan file",
           "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "cat:harness",
+            "machine:multi",
+            "status:plan-review",
+            "gate:completeness",
+            "domain:harness",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3408,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3408",
+        "warnings": [
+          "missing_review"
+        ]
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8399,10 +8441,51 @@
           "labels": [
             "enhancement",
             "priority:medium",
+            "cat:operations",
+            "domain:machine-setup"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Explore direct SSH path to gpu-claw without WireGuard dependency"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3404,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Explore direct SSH path to gpu-claw without WireGuard dependency",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3404",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
+          "reviews not clean: missing_review",
+          "issue already has approval marker on disk",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": ".planning/plan-approved/3403.md",
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:medium",
             "cat:harness",
             "domain:agent-ux",
             "machine:dev-primary",
-            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness",
             "lane:codex"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -16656,93 +16739,6 @@
         "title": "fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts \u2014 retrofit with `script -qc`",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2721",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:ai-config",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2718,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "codex",
-        "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
-        "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:ace-win-1",
-            "machine:ace-win-2",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-solver-queue",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2717,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2717",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16753,9 +16749,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-07-09T05:21:19.519923Z",
+  "scorecard_generated_at": "2026-07-09T09:21:27.258090Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-09T05:21:19.365754Z",
+  "utilization_generated_at": "2026-07-09T09:21:27.089628Z",
   "warning_summary": {
     "approved_no_marker": 54,
     "approved_no_plan": 28,
@@ -16763,7 +16759,7 @@
     "legacy_review_no_sha": 2,
     "major_review": 2,
     "marker_without_open_approved_issue": 161,
-    "missing_review": 86,
+    "missing_review": 87,
     "unavailable_review": 1,
     "unknown_review": 1
   }

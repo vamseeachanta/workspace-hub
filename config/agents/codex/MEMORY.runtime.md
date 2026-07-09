@@ -1,14 +1,15 @@
 <!-- MANAGED by curate_readback_slice.py — do not hand-edit; regenerate via bridge-hermes-claude.sh -->
 
-- [Completion D&C reconcile vs WO Article](project_completion_dc_reconciliation_wo_article.md) — 2026-07-05: Roy QA/QC. **wed PR #841 OPEN** (Total-D&C col + /completion/verification.html). WED D&C 22,478 ≈ Roy 21,944 (page headlined drilling-only 11,124). OPEN: Buckskin missing (crosswalk gap), Shenandoah −357. NEXT: merge #841 → reply Roy
-- [RUNSPEC Monte Carlo UQ ingest](project_runspec_monte_carlo_uq_ingest.md) — 2026-07-05: 3 issues (llm-wiki #822, dm #1427, wed #833). NEXT: land #822 via claim+worktree+PR
+- [Riser stack-up registry expansion](project_riser_stackup_registry_expansion.md) — 2026-07-07 ✅ COMPLETE: registry 9→84, 5 waves/7 PRs merged, **EPIC #1279 CLOSED**; remainder → lane:codex #1468/#1469/#1470 (handoff-ready). ✅ SESSION CLOSED — NEXT (human): launch Codex on `/tmp/handoff-1468-codex.md`; durable artifacts at wshub `coordination/riser-stackup/`; KEEP worktree wt-llmwiki-rsu (= LLM_WIKI_PATH for dm in-context tests)
+- [Completion D&C reconcile vs WO Article](project_completion_dc_reconciliation_wo_article.md) — 2026-07-07 **V50 PROMOTION DONE** (PRs #889+#891 merged/live): Roy's V50 script run + V50-vs-wed reconciliation (D&C=wed to the day; JSM gap −$3.1B = discount-convention + $103M tax). Handover `/mnt/local-analysis/HANDOVER_codex_fdas_v50.md`; detail+open-tasks in topic file
+- [RUNSPEC Monte Carlo UQ ingest](project_runspec_monte_carlo_uq_ingest.md) — 2026-07-06: llm-wiki #822 ✅ DONE (PR #827 MERGED after rescuing the ingest from auto-sync-clobbered PR #824). NEXT: plan dm #1427 (MC UQ engine); wed #833 also open
 - [Tank sloshing → dm capability + Scott email](project_tank_sloshing_capability.md) — 2026-07-05: dm PRs #1424/#1425/#1428 MERGED (live sloshing-explorer + master curve); llm-wiki **PR #825 MERGED** (anti-roll-tank Kapsenberg&Carette 2022 ingest, open-access); Scott email STAGED (not sent)
-- [wed Well Pressure Atlas page](project_wed_pressure_atlas_page.md) — 2026-07-04: **wed PR #829 OPEN** (merge → pressure-atlas/ live); feeds Reed email
-- [dm capabilities page expansion](project_dm_capabilities_page_expansion.md) — 2026-07-04: EPIC #1391 built; wave 1 live, **wave 2 PR #1396 OPEN**
+- [wed Well Pressure Atlas page](project_wed_pressure_atlas_page.md) — 2026-07-06 ✅ PR #829 MERGED, page LIVE (HTTP 200 verified). Feeds Reed email (still staged, user-gated)
+- [dm capabilities page expansion](project_dm_capabilities_page_expansion.md) — 2026-07-07 ✅ #1456/#1444 DONE (PR #1460 merged; 10 one-pagers + bijection/pdf/grounding CI ratchet). Backlog: revamp lane owns index.html card-wiring
 - [Richard D'Souza outreach + llm-wiki deepwater](project_richard_dsouza_outreach.md) — 2026-07-04: email STAGED in Drafts (not sent); llm-wiki PR not opened; HOLDING for field-dev
 - [Ecosystem review 2026-07-04 (Fable 5)](project_ecosystem_review_2026_07_04.md) — 12 issues lane-labeled/6 repos; NEXT: CI-recovery slice (wed #526 + wshub #3380)
-- [wed field-hub top-down IA](project_wed_field_hub_ia_epic.md) — 2026-07-04: **EPIC #754 + #755-761**; well tracer built. NEXT: #755 fields.yml crosswalk
-- [Digital-twin destination (NeoSight)](project_digital_twin_destination_neosight.md) — 2026-07-05: **EPIC dm #1372 6/7 MERGED**; twin E #1377 on `feat/twin-loop-1377` needs suites→PR. Resume `/tmp/handoff-twin-epic-1372.md`
+- [wed field-hub top-down IA](project_wed_field_hub_ia_epic.md) — 2026-07-07: #755 (PR #876: canonical fields.yml v2 + loader + 23 tests) + #756 (PR #882) + #848/#849/#850 DONE/LIVE; V30/V50 audit → wed#879. #757 plan-APPROVED → lane:codex (handoff `/tmp/handoff-757-codex.md`). Remaining #759/#761
+- [Digital-twin destination (NeoSight)](project_digital_twin_destination_neosight.md) — 2026-07-06 ✅ **EPIC dm #1372 COMPLETE 7/7, CLOSED** (twin E PR #1450 MERGED; GO deliberately unreachable under zero-thrust-credit screen — documented; units contract #1447 made its first live catch on this PR)
 - [Motion-forecast offering (dm #1356)](project_motion_forecast_offering_epic.md) — 2026-07-04: **CORE COMPLETE**; #1357 → **PR #1402 OPEN**. NEXT: merge #1402
 - [Field-dev life-cycle poster](project_field_development_lifecycle_megaproject_poster.md) — 2026-07-03: **Epic wed #738 OPEN**. NEXT: owner review → 9 LT fields → LNG variant
 - [digitalmodel "moored" logo](project_digitalmodel_logo_moored_mark.md) — 2026-07-04 ✅ COMPLETE: dm #1352 merged; propagation #144 CLOSED
@@ -35,10 +36,4 @@
 - [Howard Day GT-R CFD (NDA)](project_howard_day_cfd_landspeed_study.md) — 2026-06-27: drag&lift analytically FIRST; authorize L1 only; HD waiting since May 11
 - [Contact directory collation](project_contact_directory_collation.md) — 2026-06-28: master_contacts.csv (2,690 deduped). UNCOMMITTED
 - [ACMA Noble warm-window notes](project_acma_noble_warm_window_call_2026_06_26.md) — 2026-06-26: Noble #38 time-sensitive; 4 files UNCOMMITTED
-- [Subsea intervention DB epic (wed #582)](project_subsea_intervention_database_epic.md) — 2026-06-25: #585 @ plan-review; feeds dm #890
-- [Collide PE solver (dm #836)](project_collide_pe_solver_program.md) — 2026-06-19: 161 posts scraped; branch committed not pushed. NEXT: push+PR (user-gated)
-- [Chuck's UDW well access article](project_chuck_udw_well_access_article_backing.md) — 2026-06-19: thesis=ACCESS/CONCENTRATION. Epic #890 dormant. Memo UNCOMMITTED
-- [FDAS public tier + HSE finding](project_fdas_public_tier_dashboard_hse.md) — 2026-06-25: **HSE does NOT favor dry-tree — don't pitch HSE**. OPEN: dashboard + Roy email
-- [Lower Tertiary V50 gold standard](project_lt_v50_gold_standard.md) — 2026-06-27: V50 = V30 on latest OGOR-A; PRs #650/#651; +14% oil/+$432M NPV (still neg)
-- Windows (MINGW64): paths use `/d/workspace-hub/` in bash (not `D:\`)
-_[110 entries omitted: oversize/over-cap]_
+_[118 entries omitted: oversize/over-cap]_

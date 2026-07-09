@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-07-09T05:21:21.923804Z
+Generated: 2026-07-09T09:21:29.488816Z
 Apply mode: False
 Threshold: 0.9
 
@@ -17,7 +17,7 @@ Threshold: 0.9
 | #3143 bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3239 Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone) | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3026 ace-linux-2: gnome-shell crash recovery (2026-06-10) + /dev/sda end-of-life replacement plan | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
-| #2718 audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2750 Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2763 plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2854 gap(memory): Hermes read-back leg missing — consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex) | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #3031 triage: backfill placeholder bodies on gh-next-id.sh / backfill-github-refs.sh created issues | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |

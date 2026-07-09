@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-09T05:21:21.760498Z",
+  "generated_at": "2026-07-09T09:21:29.315652Z",
   "current_week": "2026-W28",
-  "scorecard_generated_at": "2026-07-09T05:21:19.519923Z",
+  "scorecard_generated_at": "2026-07-09T09:21:27.258090Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 58,
-      "total_candidates": 177,
+      "execution_ready_count": 59,
+      "total_candidates": 178,
       "top_issues": [
         {
           "number": 2738,
@@ -1056,6 +1056,33 @@
           ]
         },
         {
+          "number": 3403,
+          "title": "Repair Linux voice dictation rollout and VNC consistency contract",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3403",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "domain:agent-ux",
+            "machine:dev-primary",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-07-09T08:19:52Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 3027,
           "title": "chore(config): purge archived OGManufacturing from config artifacts (regenerate/hand-edit/delete; keep audit trail)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3027",
@@ -1664,7 +1691,7 @@
             "status:plan-approved",
             "gate:completeness"
           ],
-          "updatedAt": "2026-07-09T01:00:31Z",
+          "updatedAt": "2026-07-09T08:01:39Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1848,34 +1875,6 @@
           "updatedAt": "2026-07-08T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2717,
-          "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2717",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "machine:ace-win-1",
-            "machine:ace-win-2",
-            "dispatch:ready",
-            "gate:completeness",
-            "domain:marine-solver-queue",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T12:55:59Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -3555,19 +3554,16 @@
           ]
         },
         {
-          "number": 3403,
-          "title": "Repair Linux voice dictation rollout and VNC consistency contract",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3403",
+          "number": 3404,
+          "title": "Explore direct SSH path to gpu-claw without WireGuard dependency",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3404",
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:harness",
-            "domain:agent-ux",
-            "machine:dev-primary",
-            "status:plan-review",
-            "lane:codex"
+            "cat:operations",
+            "domain:machine-setup"
           ],
-          "updatedAt": "2026-07-09T03:58:12Z",
+          "updatedAt": "2026-07-09T07:46:38Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3576,7 +3572,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation",
             "strategy"
           ]
         },
@@ -4514,6 +4509,31 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3408,
+          "title": "Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3408",
+          "labels": [
+            "cat:harness",
+            "machine:multi",
+            "status:plan-review",
+            "gate:completeness",
+            "domain:harness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-09T08:18:12Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4521,7 +4541,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 20,
+      "total_candidates": 19,
       "top_issues": [
         {
           "number": 3385,
@@ -4664,32 +4684,6 @@
           ]
         },
         {
-          "number": 2718,
-          "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
-          "labels": [
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:ai-config",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:18:13Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 2750,
           "title": "Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2750",
@@ -4703,6 +4697,35 @@
             "lane:claude"
           ],
           "updatedAt": "2026-06-10T12:55:23Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2763,
+          "title": "plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2763",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:ai-orchestration",
+            "cat:operations",
+            "cat:harness",
+            "domain:automation",
+            "machine:dev-primary",
+            "status:needs-plan",
+            "dispatch:ready",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-10T16:13:01Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4847,32 +4870,6 @@
           "updatedAt": "2026-06-10T16:11:42Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2718,
-          "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
-          "labels": [
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:ai-config",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:18:13Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",

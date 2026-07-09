@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-09T05:21:19.519923Z",
+  "generated_at": "2026-07-09T09:21:27.258090Z",
   "current_week": "2026-W28",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-07-09T05:21:19.365754Z",
+    "utilization_generated_at": "2026-07-09T09:21:27.089628Z",
     "audit_generated_at": "2026-07-06T09:15:03Z"
   },
   "recommended_provider_order": [
@@ -17,11 +17,11 @@
       "provider": "claude",
       "status": "underused",
       "priority": "high",
-      "reported_utilization_pct": 4.0,
+      "reported_utilization_pct": 4.2,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 14,
-      "post_records_current_week": 1608,
+      "sessions_current_week": 15,
+      "post_records_current_week": 1703,
       "audit_post_records": 120449,
       "missing_repo_reads": 9448,
       "python3_per_1k_records": 9.15,
@@ -34,7 +34,7 @@
         },
         {
           "tool": "unknown",
-          "count": 364
+          "count": 459
         },
         {
           "tool": "Edit",
@@ -71,11 +71,11 @@
       "provider": "codex",
       "status": "underused",
       "priority": "highest",
-      "reported_utilization_pct": 4.0,
+      "reported_utilization_pct": 6.0,
       "quota_basis": "quota",
       "quota_source": "app-server-live",
-      "sessions_current_week": 99,
-      "post_records_current_week": 10644,
+      "sessions_current_week": 133,
+      "post_records_current_week": 14522,
       "audit_post_records": 164514,
       "missing_repo_reads": 1690,
       "python3_per_1k_records": 16.33,
@@ -84,23 +84,23 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 10275
+          "count": 14035
         },
         {
           "tool": "wait_agent",
-          "count": 123
+          "count": 151
         },
         {
           "tool": "spawn_agent",
-          "count": 91
+          "count": 107
         },
         {
           "tool": "close_agent",
-          "count": 84
+          "count": 98
         },
         {
           "tool": "update_plan",
-          "count": 46
+          "count": 90
         }
       ],
       "preferred_work": [

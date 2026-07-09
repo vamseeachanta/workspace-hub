@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (211)
+## Feedback — execution lessons & hazards (212)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
@@ -74,6 +74,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [discovery-first-on-stale-plan-approved](feedback_discovery_first_on_stale_plan_approved.md) — "Before executing a long-standing status:plan-approved issue, run a discovery pass against the codebase first — prior commits may have silently completed most or all of the scope. Skipping discovery wastes effort and risks duplicate-write conflicts."
 - [dispatch-local-marker-rationalization](feedback_dispatch_local_marker_rationalization.md) — "Hermes/agent dispatch lanes can rationalize a user execution-instruction as plan-approval and write the local approval marker (`.planning/plan-approved/<n>.md`) under the user's git identity even when the GH `status:plan-approved` label was correctly NOT set. Dispatch prompts must explicitly forbid local-marker writes, not just GH-label self-approval."
 - [Doc-counter rules expressed as write-time computations, not frozen integers](feedback_doc_counter_rule_writetime.md) — When a plan modifies a phantom-counter in a wiki/docs page, the acceptance criterion must be a write-time recompute rule, not a hardcoded post-add integer
+- [feedback_document_discovered_data_sources_as_issues](feedback_document_discovered_data_sources_as_issues.md) — "Owner directive 2026-07-06: any data source discovered during research gets documented immediately as a GitHub data issue for future ingestion"
 - [edit-tool-freshness-window-after-writes](feedback_edit_tool_freshness_window_after_writes.md) — "Edit tool's freshness guard can silently invalidate after a long Write chain in the same turn; Edits to a previously-edited file return \"File has not been read yet\" and fail silently — applies most often to index.md / log.md updates batched with content writes"
 - [Email cross-noise — someone else's account emails misrouted to user's Gmail](feedback_email_cross_noise.md) — Pattern where third parties sign up for services using the user's Gmail by mistake, causing account/overdue/statement emails from those services to arrive for a non-existent relationship
 - [feedback-emails-are-ephemeral-strategy-repo-is-ssot](feedback_emails_are_ephemeral_strategy_repo_is_ssot.md) — "Email is transient for the user — once work is done the inbox is cleaned out; anything important is committed to aceengineer-strategy, then move on"

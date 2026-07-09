@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-07-06
+> Last captured: 2026-07-09
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -12,15 +12,16 @@
 > topic file in this directory.
 
 ## Active & Recent Projects
-- [Completion D&C reconcile vs WO Article](project_completion_dc_reconciliation_wo_article.md) — 2026-07-05: Roy QA/QC. **wed PR #841 OPEN** (Total-D&C col + /completion/verification.html). WED D&C 22,478 ≈ Roy 21,944 (page headlined drilling-only 11,124). OPEN: Buckskin missing (crosswalk gap), Shenandoah −357. NEXT: merge #841 → reply Roy
-- [RUNSPEC Monte Carlo UQ ingest](project_runspec_monte_carlo_uq_ingest.md) — 2026-07-05: 3 issues (llm-wiki #822, dm #1427, wed #833). NEXT: land #822 via claim+worktree+PR
+- [Riser stack-up registry expansion](project_riser_stackup_registry_expansion.md) — 2026-07-07 ✅ COMPLETE: registry 9→84, 5 waves/7 PRs merged, **EPIC #1279 CLOSED**; remainder → lane:codex #1468/#1469/#1470 (handoff-ready). ✅ SESSION CLOSED — NEXT (human): launch Codex on `/tmp/handoff-1468-codex.md`; durable artifacts at wshub `coordination/riser-stackup/`; KEEP worktree wt-llmwiki-rsu (= LLM_WIKI_PATH for dm in-context tests)
+- [Completion D&C reconcile vs WO Article](project_completion_dc_reconciliation_wo_article.md) — 2026-07-07 **V50 PROMOTION DONE** (PRs #889+#891 merged/live): Roy's V50 script run + V50-vs-wed reconciliation (D&C=wed to the day; JSM gap −$3.1B = discount-convention + $103M tax). Handover `/mnt/local-analysis/HANDOVER_codex_fdas_v50.md`; detail+open-tasks in topic file
+- [RUNSPEC Monte Carlo UQ ingest](project_runspec_monte_carlo_uq_ingest.md) — 2026-07-06: llm-wiki #822 ✅ DONE (PR #827 MERGED after rescuing the ingest from auto-sync-clobbered PR #824). NEXT: plan dm #1427 (MC UQ engine); wed #833 also open
 - [Tank sloshing → dm capability + Scott email](project_tank_sloshing_capability.md) — 2026-07-05: dm PRs #1424/#1425/#1428 MERGED (live sloshing-explorer + master curve); llm-wiki **PR #825 MERGED** (anti-roll-tank Kapsenberg&Carette 2022 ingest, open-access); Scott email STAGED (not sent)
-- [wed Well Pressure Atlas page](project_wed_pressure_atlas_page.md) — 2026-07-04: **wed PR #829 OPEN** (merge → pressure-atlas/ live); feeds Reed email
-- [dm capabilities page expansion](project_dm_capabilities_page_expansion.md) — 2026-07-04: EPIC #1391 built; wave 1 live, **wave 2 PR #1396 OPEN**
+- [wed Well Pressure Atlas page](project_wed_pressure_atlas_page.md) — 2026-07-06 ✅ PR #829 MERGED, page LIVE (HTTP 200 verified). Feeds Reed email (still staged, user-gated)
+- [dm capabilities page expansion](project_dm_capabilities_page_expansion.md) — 2026-07-07 ✅ #1456/#1444 DONE (PR #1460 merged; 10 one-pagers + bijection/pdf/grounding CI ratchet). Backlog: revamp lane owns index.html card-wiring
 - [Richard D'Souza outreach + llm-wiki deepwater](project_richard_dsouza_outreach.md) — 2026-07-04: email STAGED in Drafts (not sent); llm-wiki PR not opened; HOLDING for field-dev
 - [Ecosystem review 2026-07-04 (Fable 5)](project_ecosystem_review_2026_07_04.md) — 12 issues lane-labeled/6 repos; NEXT: CI-recovery slice (wed #526 + wshub #3380)
-- [wed field-hub top-down IA](project_wed_field_hub_ia_epic.md) — 2026-07-04: **EPIC #754 + #755-761**; well tracer built. NEXT: #755 fields.yml crosswalk
-- [Digital-twin destination (NeoSight)](project_digital_twin_destination_neosight.md) — 2026-07-05: **EPIC dm #1372 6/7 MERGED**; twin E #1377 on `feat/twin-loop-1377` needs suites→PR. Resume `/tmp/handoff-twin-epic-1372.md`
+- [wed field-hub top-down IA](project_wed_field_hub_ia_epic.md) — 2026-07-07: #755 (PR #876: canonical fields.yml v2 + loader + 23 tests) + #756 (PR #882) + #848/#849/#850 DONE/LIVE; V30/V50 audit → wed#879. #757 plan-APPROVED → lane:codex (handoff `/tmp/handoff-757-codex.md`). Remaining #759/#761
+- [Digital-twin destination (NeoSight)](project_digital_twin_destination_neosight.md) — 2026-07-06 ✅ **EPIC dm #1372 COMPLETE 7/7, CLOSED** (twin E PR #1450 MERGED; GO deliberately unreachable under zero-thrust-credit screen — documented; units contract #1447 made its first live catch on this PR)
 - [Motion-forecast offering (dm #1356)](project_motion_forecast_offering_epic.md) — 2026-07-04: **CORE COMPLETE**; #1357 → **PR #1402 OPEN**. NEXT: merge #1402
 - [Field-dev life-cycle poster](project_field_development_lifecycle_megaproject_poster.md) — 2026-07-03: **Epic wed #738 OPEN**. NEXT: owner review → 9 LT fields → LNG variant
 - [digitalmodel "moored" logo](project_digitalmodel_logo_moored_mark.md) — 2026-07-04 ✅ COMPLETE: dm #1352 merged; propagation #144 CLOSED
@@ -60,16 +61,18 @@
 - [Share live session skill](project_share_live_session_skill.md) — `/share-live-session`: agent can't do private→public publish push → HUMAN runs it
 
 ## Key Lessons (how to work)
-- [Equality wedge ≠ drift recovery](feedback_equality_wedge_vs_drift_recovery.md) — when local main is BOTH ahead (unpushed auto-sync) AND behind origin/main, the auto-sync push is rejected non-FF every tick → loop can't self-heal → matrix grades dev-primary STALE. Fix (destructive, control-plane, get OK): prove regenerable → backup tag → `reset --hard origin/main` → re-green via `scripts/readiness/equality-matrix-cron.sh`. 2026-07-05 ace-linux-1 cleared
-- [Vamsee's technical-outreach email style](feedback_vamsee_technical_outreach_email_style.md) — for prospect follow-ups: reply into the EXISTING thread (search `to:<email>` in:sent first, don't invent a subject); personalize greeting ("Chief Reed,"); cut conclusion-claims (humble); every capability gets a LIVE link (build the page if missing); expand with warm extra offers of help + one concrete ask. Companion to [[feedback_vamsee_email_style_skestates]]
+- [Fable 5 vs Opus 4.8 session audit + routing](reference_fable5_vs_opus48_session_comparison.md) — 186-session audit: Fable=orchestration/planning, Opus=execution/merge-CI. Slate #3390 landed rules model-routing (#3391) + merge-authorization (#3393 per-PR non-sticky) + merge-when-clean.sh (#3394)
+- [Equality wedge ≠ drift recovery](feedback_equality_wedge_vs_drift_recovery.md) — local main BOTH ahead (unpushed auto-sync) AND behind origin → non-FF push loop can't self-heal → matrix STALE. Fix (destructive, get OK): prove regenerable → backup tag → `reset --hard origin/main` → re-green cron
+- [Vamsee's technical-outreach email style](feedback_vamsee_technical_outreach_email_style.md) — prospect follow-ups: reply into EXISTING thread (search `to:<email> in:sent`); personalized humble greeting; every capability gets a LIVE link; warm offers + one ask. [[feedback_vamsee_email_style_skestates]]
 - [Strict-up-to-date ruleset blocks green-PR merge](feedback_strict_uptodate_ruleset_no_admin_bypass.md) — `--admin` does NOT bypass repo *rulesets* (separate bypass list); on a churning main use a background merge-when-CLEAN loop, or owner adds admin to ruleset bypass / flips `strict_required_status_checks_policy` off
 - [Required check must never skip](feedback_required_check_must_not_skip.md) — a required status check with a job-level `if:` deadlocks PRs at BLOCKED forever (skipped ≠ success); signature = BLOCKED + one check `skipping`; fix = job always runs (advisory logic in a non-failing step)
 - [Verify against the real CI lint toolchain pre-push](feedback_verify_against_real_ci_lint_toolchain.md) — run the repo's EXACT black/isort/flake8 (same version/config, verify the binary exists); ruff ≠ black; an absent binary "passes" silently → false-negative red PR
 - [Batch-merge PRs: no rebase, trust CLEAN](feedback_dependabot_merge_no_rebase_trust_clean.md) — under non-strict rulesets don't `update-branch` (cancels queued CI → livelock); merge only on `mergeStateStatus==CLEAN` (not hand-counted `gh pr checks` — missing≠pending); always verify MERGED on remote
 - [Unique live links → traffic + credibility](feedback_unique_live_links_traffic_credibility.md) — every capability/skill links to its OWN purpose-built, indexable live page (specific title), never a shared "dashboards" section; N distinct pages = N front doors
-- [Always update the equality matrix](feedback_always_update_equality_matrix.md) — end equality/fleet-touching work with `publish-equality.sh --repo /mnt/local-analysis/workspace-hub --rebuild`; agent CAN run this *stale: 2026-07-09*
+- [Always update the equality matrix](feedback_always_update_equality_matrix.md) — end equality/fleet-touching work with `publish-equality.sh --repo /mnt/local-analysis/workspace-hub --rebuild`; agent CAN run this
 - [One task at a time](feedback_one_task_at_a_time.md) — end turns with summary + exactly ONE next task, never an option menu
 - [Keep data at fingertips](feedback_keep_data_at_fingertips.md) — in cleanup/dedup, delete only regenerable cruft; keep + back up data even if re-fetchable (re-fetchable ≠ disposable)
+- [Document discovered data sources as GH data issues](feedback_document_discovered_data_sources_as_issues.md) — research side-finds (new source URLs/artifacts) get filed immediately as `cat:data` issues (one per source family, verified URL + consumer); pilot wed #855
 - [Avoid "A&CE" branding](feedback_avoid_ace_branding.md) — describe the work or use "AceEngineer"; Deckhand unaffected
 - [Agent can verify but NOT self-merge its own PR](feedback_agent_can_verify_but_not_self_merge_pr.md) — hand human `gh pr merge <N> --squash --delete-branch --repo owner/name`
 - [Epic wrap-up → open issues + parallel agents](feedback_epic_wrapup_issues_then_parallel_agents.md) — no dangling "candidate next work" lists; ~3 concurrent lanes; pre-make worktrees sequentially

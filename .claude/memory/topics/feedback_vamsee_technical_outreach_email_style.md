@@ -1,4 +1,4 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-07-06
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-07-09
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_vamsee_technical_outreach_email_style.md
 
 ---
@@ -43,3 +43,13 @@ actually sent. The edits are the signal:
 personalized greeting; state what you did + give live links (one per capability, build the page if missing);
 drop conclusion-claims; end with expansive, informal offers of further help + one concrete ask (well name /
 location / API for analog assessment). Keep the honest-data discipline from the artifacts themselves.
+
+**2026-07-06 update — observed SENT email vs staged draft (BSEE Field Data | QA/QC to Roy):** the user rewrote the agent draft into something far tighter. Deltas to apply next time:
+- **Much shorter**: ~6 flowing sentences, no bullet lists, no section structure. The draft's bulleted "brief update" was still too long.
+- **New focused subject** for a work item: broke out of the long social thread into `"<topic> | QA/QC"` (pipe separator) — thread-reply is for conversation; a work item gets its own clean subject.
+- **Narrow recipients**: To the counterpart + cc only the second stakeholder (Roy + Chuck), NOT the whole group thread.
+- **Open by agreeing/mirroring** the counterpart's last point ("Agree, we have to trust things so we can move forward together...").
+- **Embed the ask early and directly**: "Let me know if the days are acceptable?"
+- **Juxtapose both sides' artifacts**: our validation link "vs. our WO April 2026 article:" + the published nxtbook URL — invite comparison, don't just present ours.
+- **Forward-motion close**: "Let us get a resolution and cross this bridge; Following this, we can build further insights..."
+- Sign-off: "Have a very nice day, / Thank you very much, / Vamsee".
