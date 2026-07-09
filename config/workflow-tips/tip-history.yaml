@@ -127,3 +127,5 @@ shown:
     tips: [eco-compound, bp-compact-50pct]
   - date: 2026-07-06
     tips: [cc-context, eco-reflect]
+  - date: 2026-07-09
+    tips: [bp-settings-not-claude-md, eco-repo-sync]
