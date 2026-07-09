@@ -4188,6 +4188,12 @@ skills:
   name: user-approved-plan-state-sync
   when_to_use: '- User says they approve an issue/plan and asks to create `.planning/plan-approved/<issue>.md`, move labels to `status:plan-approved`, or proceed to implementation. - User says they already approved the recommendation/plan. - User says approval was done "via label", "label-based", or similar, meaning the live GitHub `status:plan-approved` label is the approval source. - GitHub issue already has `status:plan-approved`. - Local repo is missing one or more of: - `.planning/plan-approved/<issue>.md` - local plan header `> **Status:** plan-approved` - `docs/plans/README.md` row with `plan-approved`'
   when_to_use_source: section
+- description: Build worldenergydata drill-down pages (field hub, well timelines, insight/norm pages) with the proven validate-first playbook, the fractal IA grammar, honesty rules, and the exact wed CI gotchas.
+  family: workspace-hub-learned
+  id: workspace-hub-learned/wed-field-hub-drilldown-pages
+  name: wed-field-hub-drilldown-pages
+  when_to_use: wed-field-hub-drilldown-pages Build worldenergydata drill-down pages (field hub, well timelines, insight/norm pages) with the proven validate-first playbook, the fractal IA grammar, honesty rules, and the exact wed CI gotchas. workspace-hub-learned
+  when_to_use_source: backfill
 - description: Plan the first repo-mission canonicalization packet for the workspace ecosystem by reusing the existing control-plane issue, locking Wave-1 scope, and making review criteria deterministic.
   family: workspace-hub-learned
   id: workspace-hub-learned/workspace-hub-mission-contract-first-packet
