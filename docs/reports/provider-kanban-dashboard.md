@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-06T13:21:14Z
+Generated: 2026-07-08T21:21:25Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,18 +43,20 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3401 | EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3398 | chore(harness): add legal-sanity precommit entries for assetutilities and worldenergydata | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3397 | bug(readiness): R-HOOKS false-missing on Windows CRLF paths | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3392 | Compliance alert: W28 — 11% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3390 | Model-routing + session-audit improvement slate (Fable 5 / Opus 4.8 / Codex) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3389 | Completeness gate reopens PR-merge-closed plan-approved issues (workflow friction, not a config bug) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3387 | Bridge step-5 snapshot is non-monotonic — compacted live index can overwrite a richer committed memory snapshot (child of #3384) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3385 | Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3385 | Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3382 | chore(dev-workflow): standardize + roll formatting pre-commit (black/isort/flake8) across Python repos | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3374 | spike(capability): prognostics/RUL from public benchmark datasets (C-MAPSS, IMS, FEMTO, OSI) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3373 | feat(gdrive): cloud-sunset (~6mo) with verified local-of-record + final refresh | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3372 | feat(backup): redundancy & backup policy for critical data (>=2 copies, >=1 offline) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3371 | feat(data): critical-data inventory & retention tiering (fingertip-access catalog) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3370 | EPIC: Repo-ecosystem data retention, backup & fingertip-access (keep data close, back up critical, exploit benchmark data) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3368 | Day-to-day friction guards (session-grounded suite) — reduce recurring time-sinks | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3368 | Day-to-day friction guards (session-grounded suite) — reduce recurring time-sinks | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3366 | Auto-memory MEMORY.md index over load limit (52KB > 24.4KB) — compaction + thresholds policy | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3362 | Drive-file-search 30-day metrics review (review after 2026-08-01): unified-DB build/no-build decision | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3358 | Propagate UserPromptSubmit hooks cross-repo (propagate-ecosystem.sh is Stop-hook-only) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -91,11 +93,11 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3253 | Self-improvement: Hermes pattern auto-promotion into canonical skills — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3252 | Self-improvement: auto-graduate high-confidence correction candidates to skills — epic #3248 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3248 | Epic: robust cross-provider self-improvement & skill-currency ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3239 | Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3239 | Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3237 | docs(workflow): canonical lifecycle for a typical GitHub issue — plan → review → implement → HTML artifact → live link | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3231 | Isolate concurrent agent sessions per repo (worktree-per-session) — shared-clone HEAD thrash | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3226 | Compliance alert: W26 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3224 | Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3224 | Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3223 | Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3212 | cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB → managed cron jobs short-circuit (dev-secondary report pipeline re-broken) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3198 | bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
@@ -122,11 +124,10 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3077 | Orchestrator consistency drift (2026-06-14) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3074 | Harden: provider-behavior parity across machines (SOUL.runtime per provider) — epic #3058 | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
 | #3073 | Client-identifier in a public skill slug — rename or route private (no-client-PII) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #3067 | uv-workflow(workspace-hub): write the canonical UV workflow contract standard doc | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #3066 | uv-workflow(assethold): wire portfolio/options/property/risk/dividend/fundamentals into engine + fix substring bug | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3065 | uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3064 | uv-workflow(worldenergydata): clean-clone verify all 9 + offline fixtures for data loaders | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3063 | uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3067 | uv-workflow(workspace-hub): write the canonical UV workflow contract standard doc | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3065 | uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
+| #3064 | uv-workflow(worldenergydata): clean-clone verify all 9 + offline fixtures for data loaders | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
+| #3063 | uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3062 | Harden: skill/state sprawl cleanup + retrieval quality — epic #3058 | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3061 | Harden: continuous parity instrumentation — epic #3058 | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; no canonical plan file; reviews not clean: missing_review |
 | #3058 | Epic: Harden the repo ecosystem — enforce equivalence, model-sourcing, parity baselines, retrieval | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -242,7 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2717 | infra: live AQWA env access on licensed Windows host — prerequisite for #2709 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2716 | cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2715 | bug(infra): codex-cli 0.130.0 stdin-hang regression (recurrence of v0.124 #2479) + Hermes route affected | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2714 | research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

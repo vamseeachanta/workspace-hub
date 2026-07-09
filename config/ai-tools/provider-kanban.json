@@ -35,6 +35,116 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3401,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3401",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "status:needs-plan",
+          "lane:codex"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "Execution mode for implementation: `single-lane` for the first implementation pass. Although eventual file changes span sibling repos, the edits are coupled through one scanner contract and one readiness check, so serialization is safer than parallel writes.",
+        "provider_route": "claude",
+        "risks": "**Risk:** editing sibling repo precommit configs without scanner resolution would produce hooks that look present but fail at runtime. This plan makes scanner resolution a required part of the issue. | **Risk:** assetutilities lacks a local `.legal-deny-list.yaml`. The hook can still use the global deny list, but a local deny-list follow-up may be needed if assetutilities has repo-specific legal t",
+        "tests": "7 TDD tests defined",
+        "title": "chore(harness): add legal-sanity precommit entries for assetutilities and worldenergydata"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3398,
+      "pipeline_lane": "C",
+      "plan": "docs/plans/2026-07-07-issue-3398-tier1-legal-sanity-precommit.md",
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "chore(harness): add legal-sanity precommit entries for assetutilities and worldenergydata",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3398",
+      "warnings": [
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "status:needs-plan",
+          "lane:codex"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "Execution mode for implementation: `single-lane`. The change is small and tightly scoped to one readiness check plus regression tests.",
+        "provider_route": "claude",
+        "risks": "**Risk:** stripping `\\r` in the wrong place could alter intentionally literal hook command strings. Mitigation: normalize only the extracted path token, not the full JSON command. | **Risk:** a broad \"remove all control characters\" patch could hide malformed settings. Mitigation: strip only carriage return and keep `R-SETTINGS` as the JSON validity gate. | **Open:** none.",
+        "tests": "5 TDD tests defined",
+        "title": "bug(readiness): R-HOOKS false-missing on Windows CRLF paths"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3397,
+      "pipeline_lane": "C",
+      "plan": "docs/plans/2026-07-07-issue-3397-readiness-hooks-crlf-normalization.md",
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "bug(readiness): R-HOOKS false-missing on Windows CRLF paths",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3397",
+      "warnings": [
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
         "labels": [
           "priority:critical",
           "compliance-alert"
@@ -60,44 +170,6 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Compliance alert: W28 \u2014 11% (critical)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3392",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "cat:ai-orchestration",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Model-routing + session-audit improvement slate (Fable 5 / Opus 4.8 / Codex)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3390,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Model-routing + session-audit improvement slate (Fable 5 / Opus 4.8 / Codex)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3390",
       "warnings": []
     },
     {
@@ -180,8 +252,9 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -191,7 +264,10 @@
           "enhancement",
           "priority:medium",
           "cat:documentation",
-          "cat:website"
+          "cat:website",
+          "status:plan-approved",
+          "gate:completeness",
+          "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -214,7 +290,11 @@
       "routing_reason": "implementation/test/fix language",
       "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -463,21 +543,21 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "status:plan-review"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "**Item 3 (gh-auth preflight) \u2014 ALREADY IMPLEMENTED:**",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** `gh pr checks` output format may vary by GitHub CLI version. The script must handle both `jq` parse failures (non-JSON output) and empty results gracefully. | **Risk:** When the PR is first opened and CI hasn't run yet, `gh pr checks` returns an empty list. Script should print \"No check results yet for PR #N\" and exit 0 rather than failing. | **Risk:** `compact-memory.py` uses `MEMORY.md",
+        "tests": "13 TDD tests defined",
         "title": "Day-to-day friction guards (session-grounded suite) \u2014 reduce recurring time-sinks"
       },
       "lane": "planning_feedstock",
@@ -487,13 +567,15 @@
       "machine_route": null,
       "number": 3368,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-07-08-issue-3368-ci-classifier-memory-compaction.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Day-to-day friction guards (session-grounded suite) \u2014 reduce recurring time-sinks",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3368",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -2004,8 +2086,9 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -2014,7 +2097,11 @@
         "labels": [
           "enhancement",
           "domain:reporting",
-          "domain:gtm"
+          "domain:gtm",
+          "status:plan-approved",
+          "gate:completeness",
+          "lane:codex",
+          "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2037,7 +2124,11 @@
       "routing_reason": "implementation/test/fix language",
       "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -2152,14 +2243,19 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "status:plan-approved",
+          "gate:completeness",
+          "lane:claude"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -2181,7 +2277,11 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3224",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -3231,6 +3331,7 @@
     },
     {
       "approval_blockers": [
+        "already has status:plan-approved",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -3243,6 +3344,7 @@
           "cat:documentation",
           "domain:workflow-standardization",
           "status:plan-review",
+          "status:plan-approved",
           "dispatch:ready",
           "gate:completeness",
           "lane:claude"
@@ -3269,57 +3371,17 @@
       "title": "uv-workflow(workspace-hub): write the canonical UV workflow contract standard doc",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3067",
       "warnings": [
+        "approved_no_marker",
+        "dual_status_labels",
         "missing_review"
       ]
     },
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:engineering",
-          "domain:workflow-standardization",
-          "status:needs-plan",
-          "dispatch:ready",
-          "gate:completeness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "uv-workflow(assethold): wire portfolio/options/property/risk/dividend/fundamentals into engine + fix substring bug"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3066,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "uv-workflow(assethold): wire portfolio/options/property/risk/dividend/fundamentals into engine + fix substring bug",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3066",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -3330,9 +3392,10 @@
           "priority:high",
           "cat:engineering",
           "domain:workflow-standardization",
-          "status:needs-plan",
+          "status:plan-approved",
           "dispatch:ready",
           "gate:completeness",
+          "lane:codex",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3356,13 +3419,18 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3065",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -3373,9 +3441,10 @@
           "priority:high",
           "cat:engineering",
           "domain:workflow-standardization",
-          "status:needs-plan",
+          "status:plan-approved",
           "dispatch:ready",
           "gate:completeness",
+          "lane:codex",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3399,13 +3468,18 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "uv-workflow(worldenergydata): clean-clone verify all 9 + offline fixtures for data loaders",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3064",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -3416,9 +3490,10 @@
           "priority:high",
           "cat:engineering",
           "domain:workflow-standardization",
-          "status:needs-plan",
+          "status:plan-approved",
           "dispatch:ready",
           "gate:completeness",
+          "lane:codex",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3442,7 +3517,11 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3063",
-      "warnings": []
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8304,57 +8383,124 @@
       "title": "bug(infra): codex-cli 0.130.0 stdin-hang regression (recurrence of v0.124 #2479) + Hermes route affected",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2715",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:low",
-          "cat:knowledge-domain",
-          "cat:research",
-          "domain:research",
-          "machine:dev-primary",
-          "dispatch:ready",
-          "gate:completeness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2714,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2714",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-07-06T13:21:14Z",
+  "generated_at": "2026-07-08T21:21:25Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3401,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3401",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "status:needs-plan",
+            "lane:codex"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "Execution mode for implementation: `single-lane` for the first implementation pass. Although eventual file changes span sibling repos, the edits are coupled through one scanner contract and one readiness check, so serialization is safer than parallel writes.",
+          "provider_route": "claude",
+          "risks": "**Risk:** editing sibling repo precommit configs without scanner resolution would produce hooks that look present but fail at runtime. This plan makes scanner resolution a required part of the issue. | **Risk:** assetutilities lacks a local `.legal-deny-list.yaml`. The hook can still use the global deny list, but a local deny-list follow-up may be needed if assetutilities has repo-specific legal t",
+          "tests": "7 TDD tests defined",
+          "title": "chore(harness): add legal-sanity precommit entries for assetutilities and worldenergydata"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3398,
+        "pipeline_lane": "C",
+        "plan": "docs/plans/2026-07-07-issue-3398-tier1-legal-sanity-precommit.md",
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "chore(harness): add legal-sanity precommit entries for assetutilities and worldenergydata",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3398",
+        "warnings": [
+          "missing_review"
+        ]
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "status:needs-plan",
+            "lane:codex"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "Execution mode for implementation: `single-lane`. The change is small and tightly scoped to one readiness check plus regression tests.",
+          "provider_route": "claude",
+          "risks": "**Risk:** stripping `\\r` in the wrong place could alter intentionally literal hook command strings. Mitigation: normalize only the extracted path token, not the full JSON command. | **Risk:** a broad \"remove all control characters\" patch could hide malformed settings. Mitigation: strip only carriage return and keep `R-SETTINGS` as the JSON validity gate. | **Open:** none.",
+          "tests": "5 TDD tests defined",
+          "title": "bug(readiness): R-HOOKS false-missing on Windows CRLF paths"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3397,
+        "pipeline_lane": "C",
+        "plan": "docs/plans/2026-07-07-issue-3397-readiness-hooks-crlf-normalization.md",
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "bug(readiness): R-HOOKS false-missing on Windows CRLF paths",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3397",
+        "warnings": [
+          "missing_review"
+        ]
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8390,44 +8536,6 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Compliance alert: W28 \u2014 11% (critical)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3392",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "cat:ai-orchestration",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Model-routing + session-audit improvement slate (Fable 5 / Opus 4.8 / Codex)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3390,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Model-routing + session-audit improvement slate (Fable 5 / Opus 4.8 / Codex)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3390",
         "warnings": []
       },
       {
@@ -8510,8 +8618,9 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8521,7 +8630,10 @@
             "enhancement",
             "priority:medium",
             "cat:documentation",
-            "cat:website"
+            "cat:website",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8544,7 +8656,11 @@
         "routing_reason": "implementation/test/fix language",
         "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -8793,21 +8909,21 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "status:plan-review"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "**Item 3 (gh-auth preflight) \u2014 ALREADY IMPLEMENTED:**",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** `gh pr checks` output format may vary by GitHub CLI version. The script must handle both `jq` parse failures (non-JSON output) and empty results gracefully. | **Risk:** When the PR is first opened and CI hasn't run yet, `gh pr checks` returns an empty list. Script should print \"No check results yet for PR #N\" and exit 0 rather than failing. | **Risk:** `compact-memory.py` uses `MEMORY.md",
+          "tests": "13 TDD tests defined",
           "title": "Day-to-day friction guards (session-grounded suite) \u2014 reduce recurring time-sinks"
         },
         "lane": "planning_feedstock",
@@ -8817,13 +8933,15 @@
         "machine_route": null,
         "number": 3368,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-07-08-issue-3368-ci-classifier-memory-compaction.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Day-to-day friction guards (session-grounded suite) \u2014 reduce recurring time-sinks",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3368",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -10334,8 +10452,9 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -10344,7 +10463,11 @@
           "labels": [
             "enhancement",
             "domain:reporting",
-            "domain:gtm"
+            "domain:gtm",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:codex",
+            "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10367,7 +10490,11 @@
         "routing_reason": "implementation/test/fix language",
         "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -10482,14 +10609,19 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -10511,7 +10643,11 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3224",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -11561,6 +11697,7 @@
       },
       {
         "approval_blockers": [
+          "already has status:plan-approved",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -11573,6 +11710,7 @@
             "cat:documentation",
             "domain:workflow-standardization",
             "status:plan-review",
+            "status:plan-approved",
             "dispatch:ready",
             "gate:completeness",
             "lane:claude"
@@ -11599,57 +11737,17 @@
         "title": "uv-workflow(workspace-hub): write the canonical UV workflow contract standard doc",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3067",
         "warnings": [
+          "approved_no_marker",
+          "dual_status_labels",
           "missing_review"
         ]
       },
       {
         "approval_blockers": [
           "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "domain:workflow-standardization",
-            "status:needs-plan",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "uv-workflow(assethold): wire portfolio/options/property/risk/dividend/fundamentals into engine + fix substring bug"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3066,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "uv-workflow(assethold): wire portfolio/options/property/risk/dividend/fundamentals into engine + fix substring bug",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3066",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -11660,9 +11758,10 @@
             "priority:high",
             "cat:engineering",
             "domain:workflow-standardization",
-            "status:needs-plan",
+            "status:plan-approved",
             "dispatch:ready",
             "gate:completeness",
+            "lane:codex",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11686,13 +11785,18 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3065",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
           "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -11703,9 +11807,10 @@
             "priority:high",
             "cat:engineering",
             "domain:workflow-standardization",
-            "status:needs-plan",
+            "status:plan-approved",
             "dispatch:ready",
             "gate:completeness",
+            "lane:codex",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11729,13 +11834,18 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "uv-workflow(worldenergydata): clean-clone verify all 9 + offline fixtures for data loaders",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3064",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
           "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -11746,9 +11856,10 @@
             "priority:high",
             "cat:engineering",
             "domain:workflow-standardization",
-            "status:needs-plan",
+            "status:plan-approved",
             "dispatch:ready",
             "gate:completeness",
+            "lane:codex",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11772,7 +11883,11 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3063",
-        "warnings": []
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16634,49 +16749,6 @@
         "title": "bug(infra): codex-cli 0.130.0 stdin-hang regression (recurrence of v0.124 #2479) + Hermes route affected",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2715",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:low",
-            "cat:knowledge-domain",
-            "cat:research",
-            "domain:research",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2714,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2714",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16687,17 +16759,17 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-07-06T13:21:09.792076Z",
+  "scorecard_generated_at": "2026-07-08T21:21:21.336551Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-06T13:21:09.655817Z",
+  "utilization_generated_at": "2026-07-08T21:21:21.107768Z",
   "warning_summary": {
-    "approved_no_marker": 46,
-    "approved_no_plan": 21,
-    "dual_status_labels": 10,
+    "approved_no_marker": 53,
+    "approved_no_plan": 27,
+    "dual_status_labels": 11,
     "legacy_review_no_sha": 2,
     "major_review": 2,
-    "marker_without_open_approved_issue": 162,
-    "missing_review": 75,
+    "marker_without_open_approved_issue": 161,
+    "missing_review": 84,
     "unavailable_review": 1,
     "unknown_review": 1
   }

@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-06T13:21:12.262245Z",
+  "generated_at": "2026-07-08T21:21:23.721455Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 6,
+  "eligible_count": 7,
   "applied": [],
   "candidates": [
     {
@@ -228,6 +228,40 @@
       "eligible": true
     },
     {
+      "number": 3385,
+      "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:documentation",
+        "cat:website",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-07-06T19:24:03Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
       "number": 3030,
       "title": "Dispatch-time codex weekly-quota gate: suspend lane:codex routing when available <10%",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3030",
@@ -274,6 +308,39 @@
       "provider_priority": "high",
       "provider_status": "needs_cleanup",
       "work_type": [
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.75,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3239,
+      "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
+      "labels": [
+        "enhancement",
+        "domain:reporting",
+        "domain:gtm",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:codex",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-07-06T23:03:22Z",
+      "execution_ready": true,
+      "priority_rank": 4,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
         "implementation"
       ],
       "target_label": "agent:codex",
@@ -417,79 +484,6 @@
         "lane:claude"
       ],
       "updatedAt": "2026-06-10T12:55:23Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2763,
-      "title": "plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2763",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:ai-orchestration",
-        "cat:operations",
-        "cat:harness",
-        "domain:automation",
-        "machine:dev-primary",
-        "status:needs-plan",
-        "dispatch:ready",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-06-10T16:13:01Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2764,
-      "title": "fix(operations): harden Hermes session exporter for undated session files",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2764",
-      "labels": [
-        "bug",
-        "priority:medium",
-        "cat:operations",
-        "cat:harness",
-        "domain:ai-orchestration",
-        "machine:dev-primary",
-        "status:needs-plan",
-        "dispatch:ready",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-06-10T16:13:09Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",

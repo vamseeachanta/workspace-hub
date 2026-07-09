@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-07-06T13:21:12.112751Z
+Generated: 2026-07-08T21:21:23.538805Z
 Current week: 2026-W28
 Recommended provider order: gemini, claude, codex
 
@@ -9,7 +9,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 52
+- Execution-ready candidates: 57
 - Total routed candidates: 177
 
 | Issue | Ready | Why routed here | Labels |
@@ -26,19 +26,19 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## codex
 
 - Routing priority: high
-- Execution-ready candidates: 2
+- Execution-ready candidates: 4
 - Total routed candidates: 20
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
+| #3385 Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links) | yes | implementation/test/fix language | enhancement, priority:medium, cat:documentation, cat:website, status:plan-approved, gate:completeness |
 | #3030 Dispatch-time codex weekly-quota gate: suspend lane:codex routing when available <10% | yes | implementation/test/fix language | domain:ai-tools, status:plan-approved, gate:completeness, lane:claude |
 | #3143 bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session | yes | implementation/test/fix language | bug, cat:harness/ops, status:plan-approved, gate:completeness |
+| #3239 Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone) | yes | implementation/test/fix language | enhancement, domain:reporting, domain:gtm, status:plan-approved, gate:completeness, lane:codex |
 | #2880 feat(codex): make yolo-equivalent permission defaults travel across machines | no | existing codex agent label | enhancement, priority:high, cat:harness, domain:ai-config, machine:multi, agent:codex |
 | #3026 ace-linux-2: gnome-shell crash recovery (2026-06-10) + /dev/sda end-of-life replacement plan | no | implementation/test/fix language | priority:high, lane:claude |
 | #2718 audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | no | implementation/test/fix language | priority:medium, cat:ai-orchestration, cat:harness, domain:ai-config, machine:dev-primary, dispatch:ready |
 | #2750 Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay | no | implementation/test/fix language | priority:medium, cat:harness, machine:dev-primary, dispatch:ready, gate:completeness, domain:harness |
-| #2763 plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent | no | implementation/test/fix language | enhancement, priority:medium, cat:ai-orchestration, cat:operations, cat:harness, domain:automation |
-| #2764 fix(operations): harden Hermes session exporter for undated session files | no | implementation/test/fix language | bug, priority:medium, cat:operations, cat:harness, domain:ai-orchestration, machine:dev-primary |
 
 ## gemini
 

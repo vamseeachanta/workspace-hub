@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-06T13:21:12.112751Z",
+  "generated_at": "2026-07-08T21:21:23.538805Z",
   "current_week": "2026-W28",
-  "scorecard_generated_at": "2026-07-06T13:21:09.792076Z",
+  "scorecard_generated_at": "2026-07-08T21:21:21.336551Z",
   "recommended_provider_order": [
     "gemini",
     "claude",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 52,
+      "execution_ready_count": 57,
       "total_candidates": 177,
       "top_issues": [
         {
@@ -498,6 +498,90 @@
           ]
         },
         {
+          "number": 3063,
+          "title": "uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3063",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:workflow-standardization",
+            "status:plan-approved",
+            "dispatch:ready",
+            "gate:completeness",
+            "lane:codex",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-06T18:35:45Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3064,
+          "title": "uv-workflow(worldenergydata): clean-clone verify all 9 + offline fixtures for data loaders",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3064",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:workflow-standardization",
+            "status:plan-approved",
+            "dispatch:ready",
+            "gate:completeness",
+            "lane:codex",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-06T18:35:45Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3065,
+          "title": "uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3065",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:workflow-standardization",
+            "status:plan-approved",
+            "dispatch:ready",
+            "gate:completeness",
+            "lane:codex",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-06T18:35:48Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 3282,
           "title": "wf-api(assetutilities): ResultEnvelope + run_workflow() + registry request/response schema [FOUNDATIONAL]",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3282",
@@ -787,6 +871,33 @@
             "lane:claude"
           ],
           "updatedAt": "2026-06-16T13:09:52Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3067,
+          "title": "uv-workflow(workspace-hub): write the canonical UV workflow contract standard doc",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3067",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation",
+            "domain:workflow-standardization",
+            "status:plan-review",
+            "status:plan-approved",
+            "dispatch:ready",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-06T18:35:52Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1369,6 +1480,28 @@
           ]
         },
         {
+          "number": 3224,
+          "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3224",
+          "labels": [
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-06T23:03:22Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 3252,
           "title": "Self-improvement: auto-graduate high-confidence correction candidates to skills \u2014 epic #3248",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3252",
@@ -1691,7 +1824,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-07-06T11:45:12Z",
+          "updatedAt": "2026-07-08T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -2237,88 +2370,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-14T03:14:31Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3063,
-          "title": "uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3063",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "domain:workflow-standardization",
-            "status:needs-plan",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-13T21:42:35Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3064,
-          "title": "uv-workflow(worldenergydata): clean-clone verify all 9 + offline fixtures for data loaders",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3064",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "domain:workflow-standardization",
-            "status:needs-plan",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-17T13:17:05Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3065,
-          "title": "uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3065",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "domain:workflow-standardization",
-            "status:needs-plan",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-13T21:42:39Z",
+          "updatedAt": "2026-07-07T02:29:17Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -3442,59 +3494,6 @@
           ]
         },
         {
-          "number": 3066,
-          "title": "uv-workflow(assethold): wire portfolio/options/property/risk/dividend/fundamentals into engine + fix substring bug",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3066",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "domain:workflow-standardization",
-            "status:needs-plan",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-13T21:42:41Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3067,
-          "title": "uv-workflow(workspace-hub): write the canonical UV workflow contract standard doc",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3067",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "domain:workflow-standardization",
-            "status:plan-review",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-17T13:21:01Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3349,
           "title": "Perf: ecosystem-data-nudge.sh UserPromptSubmit hook runs 270-460ms per prompt (budget: 50ms)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3349",
@@ -3579,55 +3578,6 @@
           "updatedAt": "2026-07-03T15:55:42Z",
           "execution_ready": false,
           "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3390,
-          "title": "Model-routing + session-audit improvement slate (Fable 5 / Opus 4.8 / Codex)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3390",
-          "labels": [
-            "priority:medium",
-            "cat:ai-orchestration",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-06T12:11:47Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2714,
-          "title": "research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2714",
-          "labels": [
-            "priority:low",
-            "cat:knowledge-domain",
-            "cat:research",
-            "domain:research",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T19:57:58Z",
-          "execution_ready": false,
-          "priority_rank": 3,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4331,24 +4281,6 @@
           ]
         },
         {
-          "number": 3224,
-          "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3224",
-          "labels": [],
-          "updatedAt": "2026-06-20T12:33:25Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3237,
           "title": "docs(workflow): canonical lifecycle for a typical GitHub issue \u2014 plan \u2192 review \u2192 implement \u2192 HTML artifact \u2192 live link",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3237",
@@ -4472,8 +4404,10 @@
           "number": 3368,
           "title": "Day-to-day friction guards (session-grounded suite) \u2014 reduce recurring time-sinks",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3368",
-          "labels": [],
-          "updatedAt": "2026-07-03T15:44:15Z",
+          "labels": [
+            "status:plan-review"
+          ],
+          "updatedAt": "2026-07-08T13:20:15Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4528,15 +4462,100 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3397,
+          "title": "bug(readiness): R-HOOKS false-missing on Windows CRLF paths",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3397",
+          "labels": [
+            "status:needs-plan",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-07-07T04:27:15Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3398,
+          "title": "chore(harness): add legal-sanity precommit entries for assetutilities and worldenergydata",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3398",
+          "labels": [
+            "status:needs-plan",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-07-07T04:38:18Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3401,
+          "title": "EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3401",
+          "labels": [],
+          "updatedAt": "2026-07-07T11:37:35Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "high",
-      "execution_ready_count": 2,
+      "execution_ready_count": 4,
       "total_candidates": 20,
       "top_issues": [
+        {
+          "number": 3385,
+          "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation",
+            "cat:website",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-06T19:24:03Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
         {
           "number": 3030,
           "title": "Dispatch-time codex weekly-quota gate: suspend lane:codex routing when available <10%",
@@ -4576,6 +4595,31 @@
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
+            "implementation"
+          ]
+        },
+        {
+          "number": 3239,
+          "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
+          "labels": [
+            "enhancement",
+            "domain:reporting",
+            "domain:gtm",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:codex",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-06T23:03:22Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
             "implementation"
           ]
         },
@@ -4677,66 +4721,34 @@
             "research",
             "implementation"
           ]
-        },
-        {
-          "number": 2763,
-          "title": "plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2763",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:operations",
-            "cat:harness",
-            "domain:automation",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:13:01Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2764,
-          "title": "fix(operations): harden Hermes session exporter for undated session files",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2764",
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness",
-            "domain:ai-orchestration",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T16:13:09Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
         }
       ],
       "full_candidates": [
+        {
+          "number": 3385,
+          "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation",
+            "cat:website",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-06T19:24:03Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
         {
           "number": 3030,
           "title": "Dispatch-time codex weekly-quota gate: suspend lane:codex routing when available <10%",
@@ -4776,6 +4788,31 @@
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
+            "implementation"
+          ]
+        },
+        {
+          "number": 3239,
+          "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
+          "labels": [
+            "enhancement",
+            "domain:reporting",
+            "domain:gtm",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:codex",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-06T23:03:22Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
             "implementation"
           ]
         },
@@ -5005,28 +5042,6 @@
           ]
         },
         {
-          "number": 3385,
-          "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "cat:website"
-          ],
-          "updatedAt": "2026-07-06T07:46:21Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 2753,
           "title": "Operational tracker: fresh-machine setup runs (evergreen \u2014 do not close)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2753",
@@ -5152,27 +5167,6 @@
           ]
         },
         {
-          "number": 3239,
-          "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
-          "labels": [
-            "enhancement",
-            "domain:reporting",
-            "domain:gtm"
-          ],
-          "updatedAt": "2026-06-25T19:22:00Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 3325,
           "title": "chore(repo-health): git bloat reduction campaign \u2014 reclaim ~12 GiB across repos (slim-git-history)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3325",
@@ -5214,7 +5208,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-06T04:00:03Z",
+          "updatedAt": "2026-07-08T04:00:04Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5286,7 +5280,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-06T04:00:03Z",
+          "updatedAt": "2026-07-08T04:00:04Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",

@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-06T13:21:09.792076Z",
+  "generated_at": "2026-07-08T21:21:21.336551Z",
   "current_week": "2026-W28",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-07-06T13:21:09.655817Z",
+    "utilization_generated_at": "2026-07-08T21:21:21.107768Z",
     "audit_generated_at": "2026-07-06T09:15:03Z"
   },
   "recommended_provider_order": [
@@ -17,11 +17,11 @@
       "provider": "claude",
       "status": "underused",
       "priority": "high",
-      "reported_utilization_pct": 2.0,
+      "reported_utilization_pct": 3.0,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
       "sessions_current_week": 4,
-      "post_records_current_week": 814,
+      "post_records_current_week": 1222,
       "audit_post_records": 120449,
       "missing_repo_reads": 9448,
       "python3_per_1k_records": 9.15,
@@ -30,23 +30,23 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 500
+          "count": 751
         },
         {
           "tool": "Edit",
-          "count": 96
+          "count": 165
         },
         {
           "tool": "Read",
-          "count": 84
+          "count": 140
         },
         {
           "tool": "unknown",
-          "count": 73
+          "count": 79
         },
         {
           "tool": "Write",
-          "count": 39
+          "count": 60
         }
       ],
       "preferred_work": [
@@ -71,11 +71,11 @@
       "provider": "codex",
       "status": "needs_cleanup",
       "priority": "high",
-      "reported_utilization_pct": 48.0,
+      "reported_utilization_pct": 74.0,
       "quota_basis": "quota",
       "quota_source": "app-server-live",
-      "sessions_current_week": 16,
-      "post_records_current_week": 853,
+      "sessions_current_week": 99,
+      "post_records_current_week": 10644,
       "audit_post_records": 164514,
       "missing_repo_reads": 1690,
       "python3_per_1k_records": 16.33,
@@ -84,19 +84,23 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 807
-        },
-        {
-          "tool": "spawn_agent",
-          "count": 16
+          "count": 10275
         },
         {
           "tool": "wait_agent",
-          "count": 15
+          "count": 123
+        },
+        {
+          "tool": "spawn_agent",
+          "count": 91
         },
         {
           "tool": "close_agent",
-          "count": 15
+          "count": 84
+        },
+        {
+          "tool": "update_plan",
+          "count": 46
         }
       ],
       "preferred_work": [

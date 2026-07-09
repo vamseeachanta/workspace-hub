@@ -1,19 +1,17 @@
 # Session-curation digest — dev-primary
-_Curated 2026-07-08T09:54:34+00:00 · transferable to sibling machines via `session-curation-state` ref_
+_Curated 2026-07-08T23:47:06+00:00 · transferable to sibling machines via `session-curation-state` ref_
 
 ## Provider session activity (this box)
 | Provider | Present | Sessions | Last 24h | Newest |
 |---|---|---|---|---|
-| claude | yes | 5954 | 23 | 2026-07-08T04:19:52 |
-| codex | yes | 3490 | 42 | 2026-07-08T04:54:33 |
+| claude | yes | 5958 | 14 | 2026-07-08T18:19:52 |
+| codex | yes | 3504 | 29 | 2026-07-08T18:46:57 |
 | gemini | yes | 2177 | 0 | 2026-07-07T04:17:24 |
 | hermes | yes | 6676 | 0 | 2026-06-10T04:04:28 |
 
 ## Memory delta — 200 file(s) changed since last curation
-- `KNOWLEDGE.md`
 - `agents.md`
 - `claude-auto-memory.md`
-- `context.md`
 - `topics/INDEX.md`
 - `topics/ai-orchestration.md`
 - `topics/data_format_guidelines.md`
@@ -60,6 +58,8 @@ _Curated 2026-07-08T09:54:34+00:00 · transferable to sibling machines via `sess
 - `topics/feedback_codex_sandbox_uv_cache_readonly.md`
 - `topics/feedback_codex_sandbox_write_blocked.md`
 - `topics/feedback_codex_sustained_major_loop.md`
+- `topics/feedback_codex_worktree_sandbox_three_layer.md`
+- `topics/feedback_commit_attestation_narrow_scope.md`
 - … and 150 more
 
 ## Fleet transfer
