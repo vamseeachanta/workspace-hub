@@ -22302,7 +22302,8 @@ cards:
       - cat:harness
       - domain:agent-ux
       - machine:dev-primary
-      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
       - lane:codex
     initial_status: triage
     priority: 0

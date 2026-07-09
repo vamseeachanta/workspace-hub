@@ -886,3 +886,19 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3408
+    title: Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3408
+    gh_state: open
+    gh_labels:
+      - cat:harness
+      - machine:multi
+      - status:plan-review
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
