@@ -120,28 +120,7 @@ def md_to_html(md: str) -> str:
     return "\n".join(out)
 
 
-STYLE = """:root{--fg:#1a2230;--muted:#5b6675;--bg:#f7f8fa;--card:#fff;--line:#e2e6ec;--brand:#5b3fd6}
-*{box-sizing:border-box}
-body{margin:0;font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--fg);background:var(--bg)}
-header.site,footer.site{padding:14px 22px;background:var(--card);border-bottom:1px solid var(--line);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-footer.site{border-top:1px solid var(--line);border-bottom:0;color:var(--muted);font-size:14px;margin-top:48px}
-.home{color:var(--brand);font-weight:700;text-decoration:none}
-nav a{color:var(--muted);text-decoration:none;font-size:14px}
-nav a:hover{color:var(--brand)}
-main{max-width:900px;margin:0 auto;padding:28px 22px}
-h1{font-size:28px}
-.content h2{margin-top:1.5em;border-bottom:1px solid var(--line);padding-bottom:.2em}
-.tw{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:14px;background:var(--card)}
-th,td{border:1px solid var(--line);padding:6px 10px;text-align:left}
-th{background:#f0f3f7}
-pre{background:#0f1722;color:#cfe3ff;padding:14px;border-radius:8px;overflow-x:auto;font-size:13px}
-code{background:#eef1f5;padding:1px 5px;border-radius:4px}
-a{color:var(--brand)}
-hr{border:0;border-top:1px solid var(--line);margin:1.4em 0}
-:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:3px}
-.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-"""
+STYLE = (ROOT / "docs" / "assets" / "brand.css").read_text(encoding="utf-8")
 
 
 # Per-session review pages (#3298) publish from an enumerated manifest, never a
