@@ -221,6 +221,19 @@ if [[ -x "${SET_AGY_MODEL}" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
+# 2.11. Install local Linux voice dictation hotkey (per #3403)
+#       Idempotent and nonfatal: Linux machines with a usable mic converge to
+#       Super+Shift+V; machines without mic/STT prerequisites keep bootstrap
+#       green and leave an inert/manual guidance path.
+# ---------------------------------------------------------------------------
+VOICE_DICTATION_INSTALLER="${REPO_ROOT}/scripts/agents/install-voice-dictation.sh"
+if [[ -x "${VOICE_DICTATION_INSTALLER}" ]]; then
+    echo ""
+    echo -e "${CYAN}Installing local voice dictation hotkey...${NC}"
+    bash "${VOICE_DICTATION_INSTALLER}" || true
+fi
+
+# ---------------------------------------------------------------------------
 # 3. Remind about bridge script (Linux/Hermes machines only)
 # ---------------------------------------------------------------------------
 if [[ -d "${HOME}/.hermes" ]]; then
