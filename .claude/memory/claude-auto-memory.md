@@ -67,7 +67,7 @@
 - [Verify against the real CI lint toolchain pre-push](feedback_verify_against_real_ci_lint_toolchain.md) — run the repo's EXACT black/isort/flake8 (same version/config, verify the binary exists); ruff ≠ black; an absent binary "passes" silently → false-negative red PR
 - [Batch-merge PRs: no rebase, trust CLEAN](feedback_dependabot_merge_no_rebase_trust_clean.md) — under non-strict rulesets don't `update-branch` (cancels queued CI → livelock); merge only on `mergeStateStatus==CLEAN` (not hand-counted `gh pr checks` — missing≠pending); always verify MERGED on remote
 - [Unique live links → traffic + credibility](feedback_unique_live_links_traffic_credibility.md) — every capability/skill links to its OWN purpose-built, indexable live page (specific title), never a shared "dashboards" section; N distinct pages = N front doors
-- [Always update the equality matrix](feedback_always_update_equality_matrix.md) — end equality/fleet-touching work with `publish-equality.sh --repo /mnt/local-analysis/workspace-hub --rebuild`; agent CAN run this
+- [Always update the equality matrix](feedback_always_update_equality_matrix.md) — end equality/fleet-touching work with `publish-equality.sh --repo /mnt/local-analysis/workspace-hub --rebuild`; agent CAN run this *stale: 2026-07-09*
 - [One task at a time](feedback_one_task_at_a_time.md) — end turns with summary + exactly ONE next task, never an option menu
 - [Keep data at fingertips](feedback_keep_data_at_fingertips.md) — in cleanup/dedup, delete only regenerable cruft; keep + back up data even if re-fetchable (re-fetchable ≠ disposable)
 - [Avoid "A&CE" branding](feedback_avoid_ace_branding.md) — describe the work or use "AceEngineer"; Deckhand unaffected

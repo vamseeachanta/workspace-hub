@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-09T01:21:30.444561Z",
+  "generated_at": "2026-07-09T05:21:21.760498Z",
   "current_week": "2026-W28",
-  "scorecard_generated_at": "2026-07-09T01:21:28.265209Z",
+  "scorecard_generated_at": "2026-07-09T05:21:19.519923Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -2529,33 +2529,6 @@
           ]
         },
         {
-          "number": 2716,
-          "title": "cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2716",
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:infrastructure",
-            "domain:refactor",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-10T12:56:02Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2721,
           "title": "fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts \u2014 retrofit with `script -qc`",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2721",
@@ -3569,6 +3542,32 @@
             "lane:claude"
           ],
           "updatedAt": "2026-07-03T15:55:42Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3403,
+          "title": "Repair Linux voice dictation rollout and VNC consistency contract",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3403",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "domain:agent-ux",
+            "machine:dev-primary",
+            "status:plan-review",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-07-09T03:58:12Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -5201,7 +5200,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-08T04:00:04Z",
+          "updatedAt": "2026-07-09T04:00:34Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5273,7 +5272,7 @@
             "domain:knowledge-management-platform",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-08T04:00:04Z",
+          "updatedAt": "2026-07-09T04:00:34Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",

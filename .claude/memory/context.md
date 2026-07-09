@@ -39,7 +39,7 @@
 
 Memory travels with the repo via git. No Hermes needed on Windows.
 
-1. **Hermes (ace-linux-1)**: Writes authoritative facts to `~/.hermes/memories/`
+1. **Hermes (ace-linux-1)**: Writes authoritative facts to `~/.hermes/memories/` *stale: 2026-07-09*
 2. **Bridge script** (`scripts/memory/bridge-hermes-claude.sh`): Reads Hermes memory
    (if present), injects it into `agents.md` via template, regenerates `context.md`,
    snapshots Claude auto-memory, mirrors topic files, commits and pushes.

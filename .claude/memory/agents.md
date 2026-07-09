@@ -1,7 +1,7 @@
 # Agent Workflow Facts
 
 > Git-tracked. Applies to all AI agents working in this repo on any machine.
-> Refreshed by `scripts/memory/bridge-hermes-claude.sh` — edit the template,
+> Refreshed by `scripts/memory/bridge-hermes-claude.sh` — edit the template, *verified: 2026-07-09*
 > not the generated file.
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->

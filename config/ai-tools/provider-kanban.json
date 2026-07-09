@@ -27,6 +27,48 @@
   "cards": [
     {
       "approval_blockers": [
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:harness",
+          "domain:agent-ux",
+          "machine:dev-primary",
+          "status:plan-review",
+          "lane:codex"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "- Found: local branch `feat/voice-dictation-ecosystem` contains the previous implementation source:",
+        "provider_route": "claude",
+        "risks": "**Risk:** The Plantronics device can appear/disappear during a session; tests must not depend on live hardware except for the final smoke test. | **Risk:** `faster-whisper` may download the selected model on first run; installer should report this but avoid doing uncontrolled sudo/system changes. | **Risk:** GNOME hotkey binding in headless/non-GNOME sessions can fail; installer should skip gracef",
+        "tests": "36 TDD tests defined",
+        "title": "Repair Linux voice dictation rollout and VNC consistency contract"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3403,
+      "pipeline_lane": "C",
+      "plan": "docs/plans/2026-07-09-issue-3403-voice-dictation-vnc-contract.md",
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Repair Linux voice dictation rollout and VNC consistency contract",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3403",
+      "warnings": [
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
         "missing status:plan-review label",
         "already has status:plan-approved",
         "no canonical plan file",
@@ -8338,57 +8380,56 @@
       "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2717",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "priority:medium",
-          "cat:infrastructure",
-          "domain:refactor",
-          "machine:dev-primary",
-          "dispatch:ready",
-          "gate:completeness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2716,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2716",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-07-09T01:21:32Z",
+  "generated_at": "2026-07-09T05:21:23Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "domain:agent-ux",
+            "machine:dev-primary",
+            "status:plan-review",
+            "lane:codex"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "- Found: local branch `feat/voice-dictation-ecosystem` contains the previous implementation source:",
+          "provider_route": "claude",
+          "risks": "**Risk:** The Plantronics device can appear/disappear during a session; tests must not depend on live hardware except for the final smoke test. | **Risk:** `faster-whisper` may download the selected model on first run; installer should report this but avoid doing uncontrolled sudo/system changes. | **Risk:** GNOME hotkey binding in headless/non-GNOME sessions can fail; installer should skip gracef",
+          "tests": "36 TDD tests defined",
+          "title": "Repair Linux voice dictation rollout and VNC consistency contract"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3403,
+        "pipeline_lane": "C",
+        "plan": "docs/plans/2026-07-09-issue-3403-voice-dictation-vnc-contract.md",
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Repair Linux voice dictation rollout and VNC consistency contract",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3403",
+        "warnings": [
+          "missing_review"
+        ]
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16702,49 +16743,6 @@
         "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2717",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:infrastructure",
-            "domain:refactor",
-            "machine:dev-primary",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2716,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2716",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16755,9 +16753,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-07-09T01:21:28.265209Z",
+  "scorecard_generated_at": "2026-07-09T05:21:19.519923Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-09T01:21:28.043268Z",
+  "utilization_generated_at": "2026-07-09T05:21:19.365754Z",
   "warning_summary": {
     "approved_no_marker": 54,
     "approved_no_plan": 28,
@@ -16765,7 +16763,7 @@
     "legacy_review_no_sha": 2,
     "major_review": 2,
     "marker_without_open_approved_issue": 161,
-    "missing_review": 85,
+    "missing_review": 86,
     "unavailable_review": 1,
     "unknown_review": 1
   }

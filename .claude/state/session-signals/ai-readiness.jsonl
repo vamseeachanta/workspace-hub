@@ -562,3 +562,9 @@
 {"ts":"2026-07-07T03:03:20Z","host":"ACMA-WS014","agent":"claude","status":"ok","version":"2.1.202","message":"version 2.1.202 ok; expected model claude-sonnet-4-6"}
 {"ts":"2026-07-07T03:03:20Z","host":"ACMA-WS014","agent":"codex","status":"ok","version":"0.142.5","message":"version 0.142.5 ok; expected model gpt-5.5"}
 {"ts":"2026-07-07T03:03:20Z","host":"ACMA-WS014","agent":"gemini","status":"warn","version":"","message":"CLI not found in PATH"}
+{"ts":"2026-07-09T07:14:17Z","host":"ace-linux-1","agent":"claude","status":"warn","version":"","message":"CLI not found in PATH"}
+{"ts":"2026-07-09T07:14:17Z","host":"ace-linux-1","agent":"codex","status":"ok","version":"0.136.0","message":"version 0.136.0 ok; expected model gpt-5.5"}
+{"ts":"2026-07-09T07:14:17Z","host":"ace-linux-1","agent":"gemini","status":"ok","version":"0.27.3","message":"version 0.27.3 ok; expected model gemini-2.5-pro"}
+{"ts":"2026-07-09T07:15:13Z","host":"ace-linux-1","agent":"claude","status":"warn","version":"","message":"CLI not found in PATH"}
+{"ts":"2026-07-09T07:15:13Z","host":"ace-linux-1","agent":"codex","status":"ok","version":"0.136.0","message":"version 0.136.0 ok; expected model gpt-5.5"}
+{"ts":"2026-07-09T07:15:13Z","host":"ace-linux-1","agent":"gemini","status":"ok","version":"0.27.3","message":"version 0.27.3 ok; expected model gemini-2.5-pro"}
