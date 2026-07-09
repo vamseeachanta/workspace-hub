@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-09T13:21:27.281225Z",
+  "generated_at": "2026-07-09T17:21:18.420073Z",
   "current_week": "2026-W28",
-  "scorecard_generated_at": "2026-07-09T13:21:25.175588Z",
+  "scorecard_generated_at": "2026-07-09T17:21:16.095413Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -4522,7 +4522,7 @@
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-09T08:18:12Z",
+          "updatedAt": "2026-07-09T17:00:53Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",

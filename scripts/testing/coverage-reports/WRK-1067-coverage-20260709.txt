@@ -1,4 +1,4 @@
-coverage-ratchet report — 2026-07-09T11:59:12Z
+coverage-ratchet report — 2026-07-09T17:52:09Z
 ============================================================
   PASS    assethold  actual=76.9%  floor=74.9%  baseline=76.9%
   PASS    assetutilities  actual=41.2%  floor=39.2%  baseline=41.2%
