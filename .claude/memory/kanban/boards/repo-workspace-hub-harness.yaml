@@ -894,7 +894,7 @@ cards:
     gh_labels:
       - cat:harness
       - machine:multi
-      - status:plan-review
+      - status:plan-approved
       - gate:completeness
       - domain:harness
       - lane:claude
