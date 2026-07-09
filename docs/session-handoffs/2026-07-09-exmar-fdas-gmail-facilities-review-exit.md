@@ -157,6 +157,13 @@ Suggested external framing if replying before a full matrix is ready:
 - No raw email content or attachments were committed.
 - Gmail token files may have been refreshed locally by the API calls.
 
+Final repository state at exit:
+
+- `llm-wiki-fdas`: local commit `6ea00c8 docs: add Exmar FDAS topsides basis`; pushed to remote branch `docs/exmar-fdas-topsides-basis-20260709`.
+- `workspace-hub`: local commits include `cbc8b1d80 docs: add Exmar FDAS exit handoff` and `8e9fe4c08 docs: route Exmar FDAS basis to private wiki`; the later final-state note is in the current handoff commit.
+- `workspace-hub` handoff push target `handoff/exmar-fdas-20260709` was attempted but stopped after the new-branch pre-push hook went quiet following `assetutilities` PASS. `git ls-remote --heads origin handoff/exmar-fdas-20260709` returned no branch.
+- `workspace-hub` remains divergent and dirty from unrelated control-plane/generated state; do not clean or revert it as part of this FDAS handoff.
+
 ## Cleanup Notes
 
 Known unrelated workspace state before this handoff:
