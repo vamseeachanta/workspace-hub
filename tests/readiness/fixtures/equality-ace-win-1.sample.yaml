@@ -108,3 +108,16 @@ dimensions:
     healthy: 42
     repairable: 0
     worst_state: HEALTHY
+  harness_checkup:
+    audited_at: "2026-05-30T03:55:12+00:00"
+    cc_version: "2.1.205"
+    cc_latest: "2.1.205"
+    version_current: true
+    install_method: "npm-global"
+    duplicate_installs: 0
+    settings_parse_ok: true
+    broken_agents: 0
+    unused_skills: 3
+    unused_plugins: 0
+    default_mode: "auto"
+    auto_mode_default: true

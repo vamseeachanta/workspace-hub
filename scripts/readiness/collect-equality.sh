@@ -223,6 +223,30 @@ if [[ -f "$slh_file" ]] && have jq; then
   [[ -n "$_slw" ]] && slh_worst="\"$(yesc "$_slw")\""
 fi
 
+# ── 6f. HARNESS CHECKUP — /doctor hygiene facts (#3408) ──────────────────────
+# References the audit state from scripts/curation/audit_harness_checkup.py (never re-runs it).
+# Missing/garbled file -> audited_at null -> matrix grades MISSING-EVIDENCE. audited_at stays in the
+# canonical payload so a fresh audit forces a rewrite. Every field is type-gated on read (boolean/
+# number/string as declared, else null) so a malformed audit can never inject garbage into the graded
+# cells — allowlist-safe by construction (the audit emits counts/booleans/enums/version strings only).
+hc_file="${STATE_DIR}/harness-checkup-${MACHINE}.json"
+hc_audited="null"; hc_ver="null"; hc_latest="null"; hc_vcur="null"; hc_install="null"
+hc_dupe="null"; hc_sok="null"; hc_bad="null"; hc_uskill="null"; hc_uplug="null"; hc_mode="null"; hc_auto="null"
+if [[ -f "$hc_file" ]] && have jq; then
+  _hca=$(jq -r '.audited_at // empty' "$hc_file" 2>/dev/null);   [[ -n "$_hca" ]] && hc_audited="\"$(yesc "$_hca")\""
+  _hcv=$(jq -r '.cc_version // empty' "$hc_file" 2>/dev/null);   [[ -n "$_hcv" ]] && hc_ver="\"$(yesc "$_hcv")\""
+  _hcl=$(jq -r '.cc_latest // empty' "$hc_file" 2>/dev/null);    [[ -n "$_hcl" ]] && hc_latest="\"$(yesc "$_hcl")\""
+  _hci=$(jq -r '.install_method // empty' "$hc_file" 2>/dev/null); [[ -n "$_hci" ]] && hc_install="\"$(yesc "$_hci")\""
+  _hcm=$(jq -r '.default_mode // empty' "$hc_file" 2>/dev/null); [[ -n "$_hcm" ]] && hc_mode="\"$(yesc "$_hcm")\""
+  _hcvc=$(jq -r 'if (.version_current|type)=="boolean" then .version_current else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcvc" == "true" || "$_hcvc" == "false" ]] && hc_vcur="$_hcvc"
+  _hcso=$(jq -r 'if (.settings_parse_ok|type)=="boolean" then .settings_parse_ok else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcso" == "true" || "$_hcso" == "false" ]] && hc_sok="$_hcso"
+  _hcau=$(jq -r 'if (.auto_mode_default|type)=="boolean" then .auto_mode_default else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcau" == "true" || "$_hcau" == "false" ]] && hc_auto="$_hcau"
+  _hcd=$(jq -r 'if (.duplicate_installs|type)=="number" then .duplicate_installs else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcd" =~ ^[0-9]+$ ]] && hc_dupe="$_hcd"
+  _hcb=$(jq -r 'if (.broken_agents|type)=="number" then .broken_agents else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcb" =~ ^[0-9]+$ ]] && hc_bad="$_hcb"
+  _hcus=$(jq -r 'if (.unused_skills|type)=="number" then .unused_skills else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcus" =~ ^[0-9]+$ ]] && hc_uskill="$_hcus"
+  _hcup=$(jq -r 'if (.unused_plugins|type)=="number" then .unused_plugins else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcup" =~ ^[0-9]+$ ]] && hc_uplug="$_hcup"
+fi
+
 # ── 7. BEHAVIOR — deterministic, SANDBOXED probe corpus (DG4/DC1) ────────────
 # CC3: guard mktemp (never let SBX become /sbx → rm -rf /). GC4: trap-based cleanup.
 SBX_PARENT="$(mktemp -d 2>/dev/null)" || { echo "mktemp failed" >&2; exit 1; }
@@ -439,6 +463,19 @@ ${provider_harness_yaml}
     healthy: ${slh_healthy}
     repairable: ${slh_repairable}
     worst_state: ${slh_worst}
+  harness_checkup:
+    audited_at: ${hc_audited}
+    cc_version: ${hc_ver}
+    cc_latest: ${hc_latest}
+    version_current: ${hc_vcur}
+    install_method: ${hc_install}
+    duplicate_installs: ${hc_dupe}
+    settings_parse_ok: ${hc_sok}
+    broken_agents: ${hc_bad}
+    unused_skills: ${hc_uskill}
+    unused_plugins: ${hc_uplug}
+    default_mode: ${hc_mode}
+    auto_mode_default: ${hc_auto}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 

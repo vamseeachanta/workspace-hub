@@ -67,6 +67,11 @@ CURATION_EXPIRED_H = 24
 MEMORY_STALE_H = 36
 MEMORY_EXPIRED_H = 72
 
+# Harness-checkup clutter threshold (#3408) — keep in sync with audit_harness_checkup.py
+# (CLUTTER_SKILLS). More lifetime-unused user skills than this grades the box's checkup cell
+# CHECKUP-DRIFTED (a SOFT signal — extension clutter — never red).
+CHECKUP_CLUTTER_SKILLS = 15
+
 # #2851 freshness guard: a report whose origin/main ref hasn't been refreshed within this
 # many hours can't be trusted to have a meaningful behind_main, so we fail closed. repo-sync
 # pulls ~every 4h, so 12h is a generous trust window.
@@ -346,6 +351,36 @@ def skill_link_health_verdict(report: dict) -> str:
     return "SKILL-LINKS-DRIFTED" if repairable > 0 else "SKILL-LINKS-OK"
 
 
+# ── harness-checkup verdict (#3408) — /doctor hygiene per box ────────────────
+def harness_checkup_verdict(report: dict) -> str:
+    """Map the audit_harness_checkup.py facts to a verdict. Fail-closed MISSING-EVIDENCE on
+    missing/garbled facts or absent core evidence (settings_parse_ok / install_method). Mirrors
+    the audit's pure checkup_category — hard defects (broken settings / duplicate installs / broken
+    agents) → CHECKUP-BROKEN (red); soft drift (behind latest / non-auto default / extension
+    clutter) → CHECKUP-DRIFTED (amber). version_current None (no network) is NOT drift."""
+    hc = report.get("dimensions", {}).get("harness_checkup")
+    if not isinstance(hc, dict) or not isinstance(hc.get("audited_at"), str):
+        return "MISSING-EVIDENCE"
+    sok = hc.get("settings_parse_ok")
+    install = hc.get("install_method")
+    if sok is None or not isinstance(install, str) or not install:
+        return "MISSING-EVIDENCE"            # could not audit ⇒ never silently green
+    dup = hc.get("duplicate_installs")
+    bad = hc.get("broken_agents")
+    if (sok is False
+            or (isinstance(dup, int) and not isinstance(dup, bool) and dup > 0)
+            or (isinstance(bad, int) and not isinstance(bad, bool) and bad > 0)):
+        return "CHECKUP-BROKEN"
+    us = hc.get("unused_skills")
+    up = hc.get("unused_plugins")
+    if (hc.get("version_current") is False
+            or hc.get("auto_mode_default") is False
+            or (isinstance(us, int) and not isinstance(us, bool) and us > CHECKUP_CLUTTER_SKILLS)
+            or (isinstance(up, int) and not isinstance(up, bool) and up > 0)):
+        return "CHECKUP-DRIFTED"
+    return "CHECKUP-OK"
+
+
 # ── value extraction for uniform dims ────────────────────────────────────────
 def extract_value(dim: str, report: dict):
     d = report.get("dimensions", {})
@@ -462,6 +497,8 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return memory_freshness_verdict(rep)
     if dim == "skill_link_health":          # shared-skill-link propagation — per-box facts
         return skill_link_health_verdict(rep)
+    if dim == "harness_checkup":            # /doctor hygiene — per-box facts (currency/settings/mode)
+        return harness_checkup_verdict(rep)
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
@@ -491,7 +528,7 @@ def load_reports() -> dict[str, dict]:
 
 BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
                      "kanban", "memory", "behavior", "scheduler", "session_curation",
-                     "skill_currency", "memory_freshness", "skill_link_health"]
+                     "skill_currency", "memory_freshness", "skill_link_health", "harness_checkup"]
 DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
 # ── render grouping (#2801 collapsible-rows enhancement) ─────────────────────
@@ -514,6 +551,7 @@ GROUPS = [
     ("skills-currency", "Skill currency — all providers up to date vs canonical", ["skill_currency"]),
     ("memory-freshness", "Memory freshness — memory surfaces refreshed recently", ["memory_freshness"]),
     ("skill-links", "Skill-link health — shared skills propagated to ecosystem repos", ["skill_link_health"]),
+    ("harness-checkup", "Harness checkup — /doctor hygiene per box (version · settings · mode)", ["harness_checkup"]),
 ]
 
 # Worst-of severity for the collapsed group rollup. Higher = more operator attention.
@@ -521,13 +559,14 @@ GROUPS = [
 # all-good group collapses to a single green "OK" so a clean box reads at a glance.
 ROLLUP_SEVERITY = {
     "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6, "SKILLS-DRIFTED": 6, "MEMORY-EXPIRED": 6,
+    "CHECKUP-BROKEN": 6,
     "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5, "SKILLS-INDEX-STALE": 5, "MEMORY-STALE": 5,
-    "SKILL-LINKS-DRIFTED": 5,
+    "SKILL-LINKS-DRIFTED": 5, "CHECKUP-DRIFTED": 5,
     "MISSING-EVIDENCE": 4, "PENDING": 4,
     "STALE-CHECKOUT": 3,
     "EXPECTED-DIFF": 1, "EXPECTED-DIVERGENCE": 1, "UNREACHABLE": 1, "ABSENT": 1,
     "CONFORMS": 0, "EQUAL": 0, "PARITY": 0, "CURATED-FRESH": 0, "SKILLS-CURRENT": 0, "MEMORY-FRESH": 0,
-    "SKILL-LINKS-OK": 0,
+    "SKILL-LINKS-OK": 0, "CHECKUP-OK": 0,
 }
 
 
@@ -546,7 +585,7 @@ def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
 #    .claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md + reconcile-ecosystem.sh
 OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGENCE",
                "UNREACHABLE", "ABSENT", "CURATED-FRESH", "SKILLS-CURRENT", "MEMORY-FRESH",
-               "SKILL-LINKS-OK"}
+               "SKILL-LINKS-OK", "CHECKUP-OK"}
 
 
 def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
@@ -608,6 +647,14 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
         return ("shared-skill links are missing/broken on ecosystem repos (froze at link time) — "
                 "re-sync via scripts/skills/resync-skill-links.sh --apply (or propagate-ecosystem.sh "
                 "--skills-only)", "this box", False)
+    if verdict == "CHECKUP-BROKEN":
+        return ("harness hygiene is broken — a settings file fails to parse, there are duplicate "
+                "claude installs, or an agent def is broken/colliding; run /doctor on this box and "
+                "apply its fixes", "this box", False)
+    if verdict == "CHECKUP-DRIFTED":
+        return ("harness hygiene drift — behind the latest release, auto mode isn't the default, or "
+                "unused skills/plugins have accumulated; run /doctor (claude update; set auto default; "
+                "prune unused extensions)", "this box", False)
     return ("investigate this cell's report", "operator", False)
 
 

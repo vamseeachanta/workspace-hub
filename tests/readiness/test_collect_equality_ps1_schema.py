@@ -59,7 +59,8 @@ def _win1_baseline() -> dict:
 # ════════════════════════════════════════════════════════════════════════════
 EXPECTED_DIMS = {"compute", "data_access", "solvers", "harness", "skills",
                  "kanban", "memory", "behavior", "scheduler", "provider_harness",
-                 "session_curation", "skill_currency", "memory_freshness", "skill_link_health"}
+                 "session_curation", "skill_currency", "memory_freshness", "skill_link_health",
+                 "harness_checkup"}
 
 
 def test_ps1_sample_output_parses_schema_v4_with_provider_harness():
@@ -70,7 +71,7 @@ def test_ps1_sample_output_parses_schema_v4_with_provider_harness():
     # provenance block present with the freshness fields is_stale() consumes
     p = d["provenance"]
     assert set(p) >= {"checkout_sha", "dirty", "behind_main", "ahead_main", "origin_ref_age_h"}
-    # all 14 dimensions present (session_curation added in the #2816 follow-on)
+    # all 15 dimensions present (harness_checkup added in #3408)
     assert set(d["dimensions"]) == EXPECTED_DIMS
     ph = d["dimensions"]["provider_harness"]
     assert ph["schema_version"] == 1
