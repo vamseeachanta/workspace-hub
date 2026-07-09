@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-09T09:21:29.315652Z",
+  "generated_at": "2026-07-09T13:21:27.281225Z",
   "current_week": "2026-W28",
-  "scorecard_generated_at": "2026-07-09T09:21:27.258090Z",
+  "scorecard_generated_at": "2026-07-09T13:21:25.175588Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -1069,7 +1069,7 @@
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-09T08:19:52Z",
+          "updatedAt": "2026-07-09T09:55:57Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1872,7 +1872,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-07-08T11:45:07Z",
+          "updatedAt": "2026-07-09T11:45:28Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
