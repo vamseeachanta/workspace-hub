@@ -139,6 +139,8 @@ pre{background:#0f1722;color:#cfe3ff;padding:14px;border-radius:8px;overflow-x:a
 code{background:#eef1f5;padding:1px 5px;border-radius:4px}
 a{color:var(--brand)}
 hr{border:0;border-top:1px solid var(--line);margin:1.4em 0}
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:3px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 """
 
 
