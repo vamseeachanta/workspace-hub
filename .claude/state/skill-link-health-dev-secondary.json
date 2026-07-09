@@ -1,16 +1,16 @@
 {
   "machine": "dev-secondary",
-  "audited_at": "2026-07-04T23:47:07+00:00",
+  "audited_at": "2026-07-09T05:47:14+00:00",
   "platform": "unix",
-  "repos_total": 18,
+  "repos_total": 19,
   "healthy": 34,
-  "missing": 0,
+  "missing": 2,
   "dangling": 0,
   "flattened": 0,
   "modified_real_dir": 2,
-  "template_absent": 18,
-  "repairable": 0,
-  "unexpected_missing_repos": [],
-  "worst_state": "MODIFIED-REAL-DIR",
+  "template_absent": 19,
+  "repairable": 2,
+  "unexpected_missing_repos": ["deckhand-ops"],
+  "worst_state": "MISSING",
   "schema_version": 1
 }
