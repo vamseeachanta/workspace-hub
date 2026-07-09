@@ -1,6 +1,6 @@
 # Plan for #3408: Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix
 
-> **Status:** draft
+> **Status:** adversarial-reviewed (r1) → plan-review (awaiting USER approval; r2 pending)
 > **Complexity:** T3
 > **Date:** 2026-07-09
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3408
@@ -47,8 +47,8 @@ No relevant wiki pages (harness-internal).
 **File existence** (verified 2026-07-09 on origin/main `371d3114b`):
 - EXISTS: scripts/readiness/collect-equality.sh, scripts/readiness/build-equality-matrix.py
 - EXISTS: scripts/monitoring/equivalence-fingerprint.sh, scripts/maintenance/harness-install-doctor.sh
-- EXISTS: scripts/curation/audit_memory_freshness.py, audit_skill_currency.py
-- MISSING (this plan creates): scripts/curation/audit_harness_checkup.py, scripts/curation/audit-harness-checkup.ps1, .claude/state/harness-checkup-<machine>.json
+- EXISTS: scripts/curation/audit_memory_freshness.py, audit_skill_currency.py (both pure Python, NO .ps1 companion — the pattern the new audit follows)
+- MISSING (this plan creates): scripts/curation/audit_harness_checkup.py, .claude/state/harness-checkup-<machine>.json
 
 **Line excerpts** (`collect-equality.sh` §6d, the pattern to mirror):
 ```
@@ -77,8 +77,7 @@ Distinct sources consulted: 7 (issue + 6 files/registries). Minimum 3 met.
 | Artifact | Path |
 |---|---|
 | This plan | docs/plans/2026-07-09-issue-3408-harness-checkup-equality-dimension.md |
-| Audit (new) | scripts/curation/audit_harness_checkup.py |
-| Audit Windows companion (new) | scripts/curation/audit-harness-checkup.ps1 |
+| Audit (new, pure Python — cross-platform, no .ps1 needed) | scripts/curation/audit_harness_checkup.py |
 | Audit tests (new) | tests/curation/test_audit_harness_checkup.py |
 | Collector edit | scripts/readiness/collect-equality.sh (+ collect-equality.ps1 parity) |
 | Matrix edit | scripts/readiness/build-equality-matrix.py |
@@ -113,8 +112,9 @@ def main():
       "duplicate_installs": count_extra_installs(),        # which -a claude vs installMethod
       "settings_parse_ok": all(jq_empty(f) for f in settings_cascade),
       "broken_agents": count_bad_or_colliding_agent_defs(),
-      "unused_skills": count_zero_use_user_skills(),       # skillUsage==0 & no window hits
-      "unused_plugins": count_zero_use_plugins(),
+      "unused_skills": count_zero_lifetime_skills(),       # skillUsage counter==0 ONLY — no
+                                                          # daily transcript scan (r1 perf finding)
+      "unused_plugins": count_zero_lifetime_plugins(),     # pluginUsage counter==0 (seed-time caveat)
       "default_mode": read(".permissions.defaultMode"),    # enum
       "auto_mode_default": (default_mode == "auto"),
     }
@@ -127,8 +127,10 @@ def harness_checkup_verdict(report):
     if not hc or hc.get("audited_at") is None:  return "missing-evidence"
     if hc["settings_parse_ok"] is False or hc["duplicate_installs"] > 0 \
        or hc["broken_agents"] > 0:              return "red"
-    if hc["version_current"] is False or not hc["auto_mode_default"] \
-       or hc["unused_skills"] > CLUTTER or hc["unused_plugins"] > 0:  return "amber"
+    if hc["version_current"] is False or not hc["auto_mode_default"]:  return "amber"
+    # unused-extension clutter is a SOFT signal only (varies with normal use) -> never red,
+    # amber only past a threshold; keeps a box from being perpetually amber for owning skills.
+    if hc["unused_skills"] > CLUTTER or hc["unused_plugins"] > 0:      return "amber"
     return "green"
 ```
 
@@ -138,8 +140,7 @@ def harness_checkup_verdict(report):
 
 | Action | Path | Reason |
 |---|---|---|
-| Create | scripts/curation/audit_harness_checkup.py | doctor-hygiene fact audit (facts-only) |
-| Create | scripts/curation/audit-harness-checkup.ps1 | Windows schema-parity companion |
+| Create | scripts/curation/audit_harness_checkup.py | doctor-hygiene fact audit (facts-only; pure Python, cross-platform) |
 | Create | tests/curation/test_audit_harness_checkup.py | TDD for the audit |
 | Modify | scripts/readiness/collect-equality.sh | add §6f `harness_checkup:` block (read fail-closed) |
 | Modify | scripts/readiness/collect-equality.ps1 | keep YAML schema parity with the .sh |
@@ -175,7 +176,7 @@ def harness_checkup_verdict(report):
 - [ ] `uv run pytest tests/curation/test_audit_harness_checkup.py tests/readiness/test_build_equality_matrix.py tests/readiness/test_collect_equality.py -v` passes
 - [ ] `collect-equality.sh --stdout` on this box emits a `harness_checkup:` block with the 12 facts, no disallowed content (grep the output for abs paths / tokens / names → empty)
 - [ ] `build-equality-matrix.py` renders the new row across all boxes; a box with no state file grades MISSING-EVIDENCE (fail-closed), not green
-- [ ] `.ps1` companions keep YAML schema parity (existing `test_collect_equality_ps1_schema.py` still green)
+- [ ] `collect-equality.ps1` new read-block keeps YAML schema parity with the `.sh` (existing `test_collect_equality_ps1_schema.py` still green)
 - [ ] Daily schedule entry validates: `uv run python scripts/cron/validate-schedule.py`
 - [ ] Legal/security scan clean: `scripts/legal/legal-sanity-scan.sh`
 - [ ] Review artifacts posted (T3 → 3 providers)
@@ -184,15 +185,22 @@ def harness_checkup_verdict(report):
 
 ## Adversarial Review Summary
 
-<!-- Filled after Step 4 (T3 = Claude + Codex + Gemini). Not posted to GitHub until populated. -->
+<!-- r1 = Claude inline (this session). r2 (Codex + Gemini) dispatched per T3 on plan-approval,
+     or now on request — held to cheaper lanes per .claude/rules/model-routing.md (r1 → inline;
+     premium/multi-provider dispatch for r2+). -->
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | pending | |
-| Codex | pending | |
-| Gemini | pending | |
+| Claude (r1, inline) | MINOR | (1) Proposed a `.ps1` audit companion that isn't needed — the audit is pure Python and runs cross-platform, matching `audit_memory_freshness.py`/`audit_skill_currency.py` (no `.ps1`); only the collector `.ps1` needs the read-block. (2) `unused_*` counts were speced off a daily full transcript scan — too heavy per box; reduced to `skillUsage`/`pluginUsage` lifetime counters. (3) Grading unused clutter could pin a box perpetually amber — softened to a threshold-gated soft-amber (never red). |
+| Codex (r2) | pending | dispatch on approval or request |
+| Gemini (r2) | pending | dispatch on approval or request |
 
-**Overall result:** pending
+**Overall result:** r1 PASS with revisions applied (all three findings folded into this draft). r2 pending — not blocking plan-review, required before code merge (T3).
+
+Revisions made based on r1:
+- Dropped `scripts/curation/audit-harness-checkup.ps1` from Artifact Map / Files to Change / evidence.
+- `unused_skills`/`unused_plugins` now computed from usage counters only (no transcript scan); added perf + `cc_latest` churn notes to Risks.
+- Verdict: unused clutter is soft-amber, threshold-gated, never red.
 
 ---
 
@@ -200,7 +208,9 @@ def harness_checkup_verdict(report):
 
 - **Risk — allowlist leakage:** the audit touches secret-adjacent files (`~/.claude.json`, settings). It must emit ONLY counts/booleans/enums/version strings. Mitigation: `assert_allowlist_safe()` + a dedicated test + the collector's own §-block re-validates on read.
 - **Risk — network in a cron:** the latest-version lookup runs from `$HOME` with a pinned registry and honors `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC`; failure degrades to `cc_latest=null` → version_current null (not red). Daily cadence bounds egress.
-- **Risk — Windows parity:** `.ps1` companions must stay schema-identical or `test_collect_equality_ps1_schema.py` fails. Keep field set minimal.
+- **Risk — Windows parity:** only `collect-equality.ps1` (the collector) needs its new read-block kept schema-identical to the `.sh` or `test_collect_equality_ps1_schema.py` fails. The audit itself is pure Python and runs natively on Windows via `python` — no `.ps1` audit companion (r1 finding; matches `audit_memory_freshness.py`/`audit_skill_currency.py`).
+- **Perf (r1 finding):** `unused_skills`/`unused_plugins` are computed from the `skillUsage`/`pluginUsage` lifetime counters ONLY — NOT a daily full transcript scan across ~50 sessions on every box. Loses window-nuance the interactive `/doctor` has, but a cross-box hygiene count doesn't need it; cheap and deterministic.
+- **Churn (r1 note):** `cc_latest` sits in the canonical payload, so an upstream release flips it on every box → a rewrite that release-day. Acceptable: the daily `audited_at` already forces a rewrite each run, consistent with the existing `memory_freshness`/`skill_currency` "audited_at forces rewrite" design.
 - **Open (for approval):** clutter thresholds — `unused_skills > N` amber (propose N=15) and `unused_plugins > 0` amber. Confirm N.
 - **Open (for approval):** dimension name `harness_checkup` vs `harness_hygiene`. Propose `harness_checkup` (matches issue + /doctor mental model).
 
