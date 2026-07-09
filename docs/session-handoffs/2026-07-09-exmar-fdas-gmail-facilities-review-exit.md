@@ -4,7 +4,7 @@
 
 User asked to review whether Gmail can be accessed via CLI, inspect the Exmar/FDAS email context, and determine whether topsides/process-module/process-facility information can be collected online or from existing local data.
 
-This was a read-only research/review session except for OAuth token refresh side effects from Gmail API access and this handoff document.
+This was a research/review/documentation session. File-writing side effects are limited to OAuth token refresh from Gmail API access, this control-plane handoff, and the private FDAS wiki page named below.
 
 ## Suggested Skills
 
@@ -12,6 +12,8 @@ This was a read-only research/review session except for OAuth token refresh side
 - `email/gmail-data-extraction`
 - `email/gmail-headless-oauth`
 - `field-dev-code-recon`
+- `research/llm-wiki-public-private-routing`
+- `research/llm-wiki-page-shape-contract`
 - `coordination/pre-completion-cleanup-audit`
 
 ## Completed Actions
@@ -28,6 +30,18 @@ This was a read-only research/review session except for OAuth token refresh side
 - Parsed the Dec. 2025 attached DOCX from Gmail in memory only; no attachment was written to the repo.
 - Cross-checked local structured offshore-facility data under `gdrive-extraction/staging/worldenergydata-seed/og-website-db/`.
 - Searched public web sources for Exmar OPTI, Who Dat, Delta House, and Horn Mountain process/payload benchmarks.
+- Routed the detailed FDAS/Exmar technical basis to the private `llm-wiki-fdas` repo after the user's routing correction.
+- Created private wiki page: `llm-wiki-fdas/pages/exmar-fdas-topsides-process-basis-2026.md`.
+
+## Canonical Technical Artifact
+
+The detailed Exmar/FDAS topsides, process-facility, and freestanding-riser basis belongs canonically in the private `llm-wiki-fdas` repo, not in `workspace-hub`.
+
+Canonical page:
+
+- `/mnt/local-analysis/llm-wiki-fdas/pages/exmar-fdas-topsides-process-basis-2026.md`
+
+This `workspace-hub` document is the operational exit handoff. Future technical edits should update the private wiki page and its FDAS knowledge-map/index entries.
 
 ## Current Findings
 
@@ -138,7 +152,8 @@ Suggested external framing if replying before a full matrix is ready:
 
 - No GitHub issue was opened or closed in this session.
 - No implementation work was performed.
-- No tests were required or run.
+- No code tests were required or run.
+- `uv run scripts/gen_index.py` in `llm-wiki-fdas` currently fails on unrelated pre-existing report metadata: `reports/figures/README.md` is missing `name`, `description`, and `issue` frontmatter. The new `pages/README.md` row was therefore updated manually.
 - No raw email content or attachments were committed.
 - Gmail token files may have been refreshed locally by the API calls.
 
