@@ -1,10 +1,44 @@
 {
-  "generated_at": "2026-07-08T21:21:23.721455Z",
+  "generated_at": "2026-07-09T01:21:30.624671Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 7,
   "applied": [],
   "candidates": [
+    {
+      "number": 3385,
+      "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:documentation",
+        "cat:website",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-07-06T19:24:03Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
     {
       "number": 2751,
       "title": "Cross-platform harness setup: integrate AI-provider bootstrap, auth orchestration, macOS+PowerShell, per-machine status registry",
@@ -228,40 +262,6 @@
       "eligible": true
     },
     {
-      "number": 3385,
-      "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:documentation",
-        "cat:website",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-07-06T19:24:03Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
       "number": 3030,
       "title": "Dispatch-time codex weekly-quota gate: suspend lane:codex routing when available <10%",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3030",
@@ -276,17 +276,17 @@
       "priority_rank": 4,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_priority": "highest",
+      "provider_status": "underused",
       "work_type": [
         "implementation"
       ],
       "target_label": "agent:codex",
-      "confidence": 0.75,
+      "confidence": 0.8,
       "confidence_reasons": [
         "execution-ready",
         "strong-codex-language-match",
-        "provider-high-priority"
+        "provider-highest-priority"
       ],
       "eligible": false
     },
@@ -305,17 +305,17 @@
       "priority_rank": 4,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_priority": "highest",
+      "provider_status": "underused",
       "work_type": [
         "implementation"
       ],
       "target_label": "agent:codex",
-      "confidence": 0.75,
+      "confidence": 0.8,
       "confidence_reasons": [
         "execution-ready",
         "strong-codex-language-match",
-        "provider-high-priority"
+        "provider-highest-priority"
       ],
       "eligible": false
     },
@@ -337,18 +337,113 @@
       "priority_rank": 4,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_priority": "highest",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation"
       ],
       "target_label": "agent:codex",
-      "confidence": 0.75,
+      "confidence": 0.8,
       "confidence_reasons": [
         "execution-ready",
         "strong-codex-language-match",
-        "provider-high-priority"
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3026,
+      "title": "ace-linux-2: gnome-shell crash recovery (2026-06-10) + /dev/sda end-of-life replacement plan",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3026",
+      "labels": [
+        "priority:high",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-06-10T16:11:42Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2718,
+      "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
+      "labels": [
+        "priority:medium",
+        "cat:ai-orchestration",
+        "cat:harness",
+        "domain:ai-config",
+        "machine:dev-primary",
+        "dispatch:ready",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-06-10T16:18:13Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2750,
+      "title": "Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2750",
+      "labels": [
+        "priority:medium",
+        "cat:harness",
+        "machine:dev-primary",
+        "dispatch:ready",
+        "gate:completeness",
+        "domain:harness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-06-10T12:55:23Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
       ],
       "eligible": false
     },
@@ -405,101 +500,6 @@
         "priority-labeled",
         "strong-gemini-language-match",
         "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 3026,
-      "title": "ace-linux-2: gnome-shell crash recovery (2026-06-10) + /dev/sda end-of-life replacement plan",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3026",
-      "labels": [
-        "priority:high",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-06-10T16:11:42Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2718,
-      "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
-      "labels": [
-        "priority:medium",
-        "cat:ai-orchestration",
-        "cat:harness",
-        "domain:ai-config",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-06-10T16:18:13Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2750,
-      "title": "Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2750",
-      "labels": [
-        "priority:medium",
-        "cat:harness",
-        "machine:dev-primary",
-        "dispatch:ready",
-        "gate:completeness",
-        "domain:harness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-06-10T12:55:23Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
       ],
       "eligible": false
     }

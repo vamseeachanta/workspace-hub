@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-08T21:21:25Z
+Generated: 2026-07-09T01:21:32Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3402 | [#3401] Brand consolidation: workspace-hub (per-repo canonical + standards) — PLAN | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3401 | EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3398 | chore(harness): add legal-sanity precommit entries for assetutilities and worldenergydata | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3397 | bug(readiness): R-HOOKS false-missing on Windows CRLF paths | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
@@ -242,7 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2718 | audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2717 | infra: live AQWA env access on licensed Windows host — prerequisite for #2709 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2716 | cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2715 | bug(infra): codex-cli 0.130.0 stdin-hang regression (recurrence of v0.124 #2479) + Hermes route affected | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
