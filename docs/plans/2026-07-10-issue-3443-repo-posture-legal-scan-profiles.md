@@ -397,11 +397,11 @@ The focused and full pytest suites, runtime generation, staged checks, and commi
 | Codex internal — policy/security r2 | MAJOR, addressed in revision 3 | Required trust roots/signature format, realizable attestation carrier, exact ruleset semantics, gate-owned publishing, JSON/dependency contract, private-store residency, and semantic bypass checks |
 | Codex internal — transaction/coverage r2 | MAJOR, addressed in revision 3 | Required authoritative artifact enumeration/transport, leases on every ref write, live revocation, live visibility, mutable-metadata invalidation, private journal contract, token-coverage proof, and exact verification commands |
 | Codex internal — TDD/enforcement r2 | MAJOR, addressed in revision 3 | Required full reduction/exit semantics, signature authority, semantic bypass classification, remote enforcement identity, legacy-exclusion migration, and executable acceptance commands |
-| Claude | PENDING | Provider-diverse review will run on the revised, pushed artifact |
-| Codex | PENDING | Provider-diverse review will run on the revised, pushed artifact |
-| Gemini | PENDING | Provider-diverse review will run on the revised, pushed artifact |
+| Claude | UNAVAILABLE | Claude Code 2.1.206 returned no output within the canonical 240-second fanout or 120-second short-prompt retry |
+| Codex | UNAVAILABLE | Codex CLI 0.144.0 hit Windows command-length failure inline; the short GitHub-reference retry returned no usable verdict within 120 seconds |
+| Gemini | UNAVAILABLE | No non-interactive Gemini authentication was configured |
 
-**Overall result:** BLOCKED pending adversarial review and user approval.
+**Overall result:** BLOCKED. Two internal adversarial rounds materially improved the plan, but all three formal provider legs were unavailable. The plan will remain `draft`/`status:needs-plan`; it will not be surfaced for user approval or implementation until provider-diverse review succeeds.
 
 ---
 
