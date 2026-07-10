@@ -182,7 +182,7 @@ def test_algorithm_and_run_identity_fail_closed() -> None:
     }
     assert set(eligibility.values()) == {"reject"}
     valid_fixture = {condition: False for condition in eligibility}
-    assert not any(valid_fixture)
+    assert not any(valid_fixture.values())
     for condition in eligibility:
         invalid_fixture = valid_fixture | {condition: True}
         assert eligibility[condition] == "reject"
@@ -346,8 +346,8 @@ def test_issue_graph_is_complete_acyclic_and_independently_gated() -> None:
 def test_html_manual_matches_contract() -> None:
     contract = load_contract()
     parser = parse_manual()
+    manual_html = MANUAL_PATH.read_text(encoding="utf-8")
     text = " ".join(parser.text)
-
     assert parser.structure_errors == []
     assert parser.tag_stack == []
     assert len(parser.ids) == len(set(parser.ids))
@@ -360,9 +360,10 @@ def test_html_manual_matches_contract() -> None:
     for record in RECORDS:
         assert record.replace("_", " ").title() in text
     for state in contract["promotion"]["states"]:
-        assert state.replace("_", " ").title() in text
-    assert "Inputs" in text and "Inputs Mandatory section" in text
-    assert "Outputs" in text and "Outputs Mandatory section" in text
+        assert state.replace("_", " ") in text.lower()
+    assert '<tr><td>Inputs</td><td>' in manual_html
+    assert '<tr><td>Outputs</td><td>' in manual_html
+    assert manual_html.count("<td>Mandatory section</td>") == 2
     input_example = next(block for block in parser.pre_blocks if '"record_type": "input"' in block)
     assert '"run_id"' not in input_example
     assert any('"record_type": "run_input_membership"' in block for block in parser.pre_blocks)
@@ -387,7 +388,7 @@ def test_visual_inspection_evidence_is_durable() -> None:
     evidence = VISUAL_EVIDENCE_PATH.read_text(encoding="utf-8")
     assert "1440 x 1000" in evidence
     assert "390 x 844" in evidence
-    assert "9e84189867cf33fa64132ac0f3703e9976919f85a623826b5df817ebc8715bc2" in evidence
+    assert "70996003ff5a0cf0facb5482bb2c9f32dc26339f6d35978c49332f86d9a97b92" in evidence
     assert "9507c8fefcc3902d693d90d6fa5689f3df33deb59d59135c23b4667f6a86543f" in evidence
     assert "PASS" in evidence
 

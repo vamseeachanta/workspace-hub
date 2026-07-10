@@ -46,66 +46,46 @@ decisions:
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3429
 
 dataset_ownership:
+  namespace:
+    candidate: aceengineer
+    normatively_locked: false
+    authenticated_namespace_preflight_required: true
+    settled_by: publisher
   repositories:
     digitalmodel:
       source_repository: https://github.com/vamseeachanta/digitalmodel
-      dataset: aceengineer/digitalmodel-runs
+      dataset_template: "{hf_org}/digitalmodel-runs"
       owns_domain_records: true
       contains_source_repository: false
     worldenergydata:
       source_repository: https://github.com/vamseeachanta/worldenergydata
-      dataset: aceengineer/worldenergydata-runs
+      dataset_template: "{hf_org}/worldenergydata-runs"
       owns_domain_records: true
       contains_source_repository: false
   catalog:
     owner: workspace-hub
     contains_domain_run_records: false
-    fields:
-      - repository
-      - dataset
-      - supported_contract_versions
-      - last_verified_revision
-      - report_index
+    fields: [repository, dataset, supported_contract_versions, last_verified_revision, report_index]
 
 identity:
   digest: sha256
   domain_separation_required: true
   canonical_serialization_owner: identity
   algorithm_version_id:
-    required_components:
-      - algorithm_id
-      - semantic_version
-      - clean_git_commit
-      - input_schema_version
-      - output_schema_version
-      - environment_digest
+    required_components: [algorithm_id, semantic_version, clean_git_commit,
+      input_schema_version, output_schema_version, environment_digest]
   input_set_id:
-    required_components:
-      - sorted_role
-      - input_record_id
+    required_components: [sorted_role, input_record_id]
     independent_of_run_id: true
   run_id:
-    required_components:
-      - algorithm_version_id
-      - input_set_id
-      - execution_parameters
-      - seed
-    forbidden_components:
-      - output_set_id
-      - attempt_id
-      - retry_count
-      - publication_state
-      - tenant_id
-      - customer_id
+    required_components: [algorithm_version_id, input_set_id, execution_parameters, seed]
+    forbidden_components: [output_set_id, attempt_id, retry_count, publication_state,
+      tenant_id, customer_id, request_id, session_id, user_id]
   output_equality:
     default: raw_bytes_sha256
     mismatch_action: reject_without_mutation
-    semantic_exception_requires:
-      - canonicalizer_id
-      - canonicalizer_version
-      - raw_hash
-      - semantic_hash
-      - explicit_approval
+    semantic_exception_requires: [canonicalizer_id, canonicalizer_version, raw_hash,
+      semantic_hash, explicit_approval]
     undeclared_normalization: presentation_only
   eligibility:
     dirty_source: reject
@@ -116,44 +96,21 @@ identity:
     implicit_execution_default: reject
 
 public_input_policy:
-  required_evidence:
-    - redistribution_rights
-    - schema_version
-    - snapshot_pin
-    - content_hash
-    - complete_replay_location
-  allowed_replay_locations:
-    - content_addressed_dataset_object
-    - stable_public_uri_with_immutable_digest
-    - accepted_upstream_public_run
-  rejection_reasons:
-    - restricted
-    - pointer_only
-    - ambiguous_license
-    - mutable_unpinned
-    - unhashed
-    - schema_invalid
-    - incomplete
-    - private
-    - path_leaking
+  required_evidence: [redistribution_rights, schema_version, snapshot_pin, content_hash,
+    complete_replay_location]
+  allowed_replay_locations: [content_addressed_dataset_object,
+    stable_public_uri_with_immutable_digest, accepted_upstream_public_run]
+  rejection_reasons: [restricted, pointer_only, ambiguous_license, mutable_unpinned,
+    unhashed, schema_invalid, incomplete, private, path_leaking]
   absolute_local_paths: forbidden
 
 failure_policy:
   reproducible_failures_may_publish: true
   transient_infrastructure_failures_may_publish: false
-  normalization_requires:
-    - failure_phase
-    - failure_code
-    - failure_signature
-    - curated_diagnostic_digests
-    - replay_evidence
-  eligible_surfaces:
-    - run_health
-    - diagnostics
-  forbidden_surfaces:
-    - metric_observations
-    - insights
-    - decision_briefs
+  normalization_requires: [failure_phase, failure_code, failure_signature,
+    curated_diagnostic_digests, replay_evidence]
+  eligible_surfaces: [run_health, diagnostics]
+  forbidden_surfaces: [metric_observations, insights, decision_briefs]
 
 metrics:
   scope: single_algorithm
@@ -282,7 +239,11 @@ promotion:
   rejection_from_any_nonterminal_state: true
   run_records_mutate_on_acceptance: false
   acceptance_record: append_only_publication
-  orphan_candidate_recovery: resume
+  orphan_candidate_recovery:
+    action: resume
+    owner: publisher
+    resume_from: hf_candidate
+    rejection_disposition: append_rejected_disposition
 
 compatibility:
   result_envelope:
@@ -305,10 +266,10 @@ compatibility:
       - runner
       - provenance_adapter
       - golden_harness
-      - golden_fixture_1
-      - golden_fixture_2
-      - golden_fixture_3
-      - golden_fixture_4
+      - tests/workflow_api/goldens/buckling_parametric.json
+      - tests/workflow_api/goldens/ffs_metal_loss.json
+      - tests/workflow_api/goldens/mooring_mbl.json
+      - tests/workflow_api/goldens/wall_thickness.json
   worldenergydata:
     fetched_ref: origin/main@0c5393b18590
     source_snapshot_timestamp_hardening_required: true
@@ -326,11 +287,7 @@ compatibility:
 ecosystem_propagation:
   shared_schema_authority: workspace-hub
   discovery_manifest: docs/registry/workflow-manifest.json
-  observed_registered_repositories:
-    - assetutilities
-    - digitalmodel
-    - worldenergydata
-    - assethold
+  observed_registered_repositories: [assetutilities, digitalmodel, worldenergydata, assethold]
   fresh_manifest_required_before_adoption: true
   adapter_style: thin_repository_adapter
   conformance_tests: required

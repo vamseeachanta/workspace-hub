@@ -307,9 +307,7 @@ reports, Hugging Face datasets, credentials, or any child issue's implementation
 - [ ] The issue DAG will contain all nine child issues, keep each child at its own approval
       gate, and state that parent approval cannot authorize child implementation.
 - [ ] `uv run pytest tests/architecture/test_algorithm_run_dataset_contract.py -v` will pass.
-- [ ] `scripts/enforcement/check-no-abs-paths.sh tests/architecture/test_algorithm_run_dataset_contract.py`
-      will pass using the checker's positional-path interface; the retired `--added`
-      argument will not be used.
+- [ ] `scripts/enforcement/check-no-abs-paths.sh` will pass on the changed files.
 - [ ] `scripts/legal/legal-sanity-scan.sh --diff-only` will pass after intent-to-add staging
       exposes new files to the scanner.
 - [ ] The HTML parity test will assert unique required anchors, balanced

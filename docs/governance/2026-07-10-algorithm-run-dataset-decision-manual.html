@@ -78,7 +78,7 @@
   <table>
     <thead><tr><th>ID</th><th>Decision</th><th>Consequence</th></tr></thead>
     <tbody>
-      <tr><td>D-01</td><td>One dataset per owning repository</td><td>Targets are <code>aceengineer/digitalmodel-runs</code> and <code>aceengineer/worldenergydata-runs</code>; authenticated namespace ownership remains a publication preflight.</td></tr>
+      <tr><td>D-01</td><td>One dataset per owning repository</td><td>Targets are <code>{hf_org}/digitalmodel-runs</code> and <code>{hf_org}/worldenergydata-runs</code>. <code>aceengineer</code> is a non-normative candidate; the publisher gate settles the authenticated namespace.</td></tr>
       <tr><td>D-02</td><td>Strict public reproducibility</td><td>Restricted, pointer-only, ambiguous-license, or incomplete inputs cannot enter the public projection.</td></tr>
       <tr><td>D-03</td><td>Composite algorithm version</td><td>A semantic label alone is insufficient; a dirty source checkout fails public promotion.</td></tr>
       <tr><td>D-04</td><td>Deterministic run identifier</td><td>An exact repeat collapses to one run. There are no attempt IDs in the public model.</td></tr>
@@ -174,13 +174,18 @@ output_set_id = sha256(sorted(role, native_schema_version, equality_digest))</pr
   <pre>{
   "record_type": "input",
   "input_record_id": "input:sha256:&lt;64-hex&gt;",
-  "run_id": "run:sha256:&lt;64-hex&gt;",
   "role": "environment_profile",
   "schema_ref": "source-repo@&lt;commit&gt;:schemas/environment-v1.json",
   "artifact": {"sha256": "&lt;64-hex&gt;", "media_type": "application/json"},
   "replay_critical": true,
   "public_retrieval": {"kind": "hf-object", "path": "objects/sha256/ab/&lt;digest&gt;"},
   "license_basis": "declared-and-validated"
+}</pre>
+  <pre>{
+  "record_type": "run_input_membership",
+  "run_id": "run:sha256:&lt;64-hex&gt;",
+  "input_record_id": "input:sha256:&lt;64-hex&gt;",
+  "role": "environment_profile"
 }</pre>
   <p class="small">Parquet is the default normalized-table format. JSONL remains suitable for nested records and
     small append-only fixtures. Domain-native JSON, CSV, Parquet, images, or binary artifacts remain objects
@@ -211,7 +216,7 @@ objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native
 
 <section id="report">
   <h2>6. Standard Rolling HTML Report</h2>
-  <p>Each algorithm will have one stable report path, recommended as
+  <p>Each algorithm will have one stable report path at
      <code>reports/algorithms/&lt;algorithm-id&gt;/index.html</code>. The current file changes in place; Git history
      preserves earlier renderings. Every rendering names its source-repository commit and exact Hugging Face
      revision, never only a moving default branch.</p>
@@ -233,6 +238,8 @@ objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native
 
 <section id="promotion">
   <h2>7. Promotion and Acceptance</h2>
+  <p><strong>Contract states:</strong> Emitted, Validated, Replayed, Draft Rendered, Reviewed, HF Candidate,
+     Report Pinned, Accepted, and Rejected.</p>
   <ol>
     <li><strong>Emit locally:</strong> create a closed run bundle outside the public dataset.</li>
     <li><strong>Validate:</strong> enforce schemas, canonicalization, hashes, licenses, public input completeness, clean source, and secret/legal scans.</li>
@@ -249,6 +256,8 @@ objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native
     metrics, insights, and decisions until the final cross-system verification succeeds. Run records never
     mutate from candidate to accepted; a later append-only Publication record carries acceptance and can be
     superseded only by another explicit disposition record.</div>
+  <p>The publisher owns orphan-candidate recovery. It resumes from <strong>HF Candidate</strong> when the
+     report pin can be completed; otherwise it appends a rejected disposition without mutating run records.</p>
   <p><span class="state">Accepted:</span> validated, replayed, reviewed, HF-committed, report-pinned, and verified.
      <span class="reject">Rejected:</span> dirty source, missing input, uncertain rights, invalid schema, bad hash,
      nondeterministic replay, incomplete review, broken pin, or failed post-publication verification.</p>
