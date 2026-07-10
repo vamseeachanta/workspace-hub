@@ -1,5 +1,6 @@
 <!-- MANAGED by curate_readback_slice.py — do not hand-edit; regenerate via bridge-hermes-claude.sh -->
 
+- [Devakrishna passport renewal (DS-11)](project_devakrishna_passport_renewal.md) — 2026-07-06: State Dept expiry notice; under-16 = in-person DS-11, both-parent consent, ~$135 routine. BLOCKED awaiting child/parent details + ZIP to pre-fill DS-11 & find acceptance facility
 - [Riser stack-up registry expansion](project_riser_stackup_registry_expansion.md) — 2026-07-07 ✅ COMPLETE: registry 9→84, 5 waves/7 PRs merged, **EPIC #1279 CLOSED**; remainder → lane:codex #1468/#1469/#1470 (handoff-ready). ✅ SESSION CLOSED — NEXT (human): launch Codex on `/tmp/handoff-1468-codex.md`; durable artifacts at wshub `coordination/riser-stackup/`; KEEP worktree wt-llmwiki-rsu (= LLM_WIKI_PATH for dm in-context tests)
 - [Completion D&C reconcile vs WO Article](project_completion_dc_reconciliation_wo_article.md) — 2026-07-07 **V50 PROMOTION DONE** (PRs #889+#891 merged/live): Roy's V50 script run + V50-vs-wed reconciliation (D&C=wed to the day; JSM gap −$3.1B = discount-convention + $103M tax). Handover `/mnt/local-analysis/HANDOVER_codex_fdas_v50.md`; detail+open-tasks in topic file
 - [RUNSPEC Monte Carlo UQ ingest](project_runspec_monte_carlo_uq_ingest.md) — 2026-07-06: llm-wiki #822 ✅ DONE (PR #827 MERGED after rescuing the ingest from auto-sync-clobbered PR #824). NEXT: plan dm #1427 (MC UQ engine); wed #833 also open
@@ -34,6 +35,4 @@
 - [EPIC dm #1080 tubular/structural](project_dm_1080_tubular_structural_epic.md) — 2026-06-28: PRs #1098/#1099 merged; #1094 → lane:codex needs-plan
 - [FFS decision-layer epic (dm #1057)](project_ffs_decision_layer_epic.md) — COMPLETE 10/10 (2026-06-27), ~145 tests; spawned #1080
 - [Howard Day GT-R CFD (NDA)](project_howard_day_cfd_landspeed_study.md) — 2026-06-27: drag&lift analytically FIRST; authorize L1 only; HD waiting since May 11
-- [Contact directory collation](project_contact_directory_collation.md) — 2026-06-28: master_contacts.csv (2,690 deduped). UNCOMMITTED
-- [ACMA Noble warm-window notes](project_acma_noble_warm_window_call_2026_06_26.md) — 2026-06-26: Noble #38 time-sensitive; 4 files UNCOMMITTED
-_[118 entries omitted: oversize/over-cap]_
+_[120 entries omitted: oversize/over-cap]_

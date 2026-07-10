@@ -129,3 +129,5 @@ shown:
     tips: [cc-context, eco-reflect]
   - date: 2026-07-09
     tips: [bp-settings-not-claude-md, eco-repo-sync]
+  - date: 2026-07-10
+    tips: [bp-scrap-restart, cc-agents]

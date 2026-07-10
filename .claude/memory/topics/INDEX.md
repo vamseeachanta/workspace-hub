@@ -236,3 +236,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 ## Other (1)
 
 - [shell-git-patterns](shell-git-patterns.md)
+
+## Project-Memory (1)
+
+- [cfd-execution-box](cfd-execution-box.md) — Current dedicated CFD execution node and routing evidence

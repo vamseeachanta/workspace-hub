@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-10T05:23:15.574442Z",
+  "generated_at": "2026-07-10T09:22:24.041380Z",
   "current_week": "2026-W28",
   "report_weeks": 8,
   "subscriptions": {
@@ -125,7 +125,7 @@
         "provider": "hermes",
         "week": "2026-W21",
         "sessions": 1264,
-        "post_records": 843720,
+        "post_records": 878875,
         "activity_utilization_pct": 56.0,
         "quota_utilization_pct": null,
         "reported_utilization_pct": 56.0,
@@ -136,23 +136,23 @@
         "top_tools": [
           {
             "tool": "Read",
-            "count": 350688
+            "count": 365300
           },
           {
             "tool": "Bash",
-            "count": 281976
+            "count": 293725
           },
           {
             "tool": "Grep",
-            "count": 102744
+            "count": 107025
           },
           {
             "tool": "Write",
-            "count": 40248
+            "count": 41925
           },
           {
             "tool": "Browser",
-            "count": 31416
+            "count": 32725
           }
         ],
         "first_ts": "2026-05-18T03:37:47.975757Z",
@@ -799,23 +799,23 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W28",
-        "sessions": 15,
-        "post_records": 1767,
-        "activity_utilization_pct": 4.3,
+        "sessions": 17,
+        "post_records": 1817,
+        "activity_utilization_pct": 4.5,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 4.3,
+        "reported_utilization_pct": 4.5,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-07-10T05:20:10Z",
+        "quota_snapshot_ts": "2026-07-10T09:20:04Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 842
+            "count": 856
           },
           {
             "tool": "unknown",
-            "count": 523
+            "count": 556
           },
           {
             "tool": "Edit",
@@ -823,7 +823,7 @@
           },
           {
             "tool": "Read",
-            "count": 149
+            "count": 152
           },
           {
             "tool": "Write",
@@ -831,46 +831,46 @@
           }
         ],
         "first_ts": "2026-07-06T00:42:10Z",
-        "last_ts": "2026-07-10T04:10:52Z",
+        "last_ts": "2026-07-10T09:20:02Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
         "provider": "codex",
         "week": "2026-W28",
-        "sessions": 133,
-        "post_records": 14522,
-        "activity_utilization_pct": 37.4,
-        "quota_utilization_pct": 35.0,
-        "reported_utilization_pct": 35.0,
+        "sessions": 164,
+        "post_records": 16833,
+        "activity_utilization_pct": 43.4,
+        "quota_utilization_pct": 46.0,
+        "reported_utilization_pct": 46.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
-        "quota_source": "local-session-rate-limits",
-        "quota_snapshot_ts": "2026-07-10T05:20:10Z",
+        "quota_source": "app-server-live",
+        "quota_snapshot_ts": "2026-07-10T09:20:04Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 14035
+            "count": 15832
+          },
+          {
+            "tool": "wait",
+            "count": 440
           },
           {
             "tool": "wait_agent",
-            "count": 151
+            "count": 169
           },
           {
             "tool": "spawn_agent",
-            "count": 107
+            "count": 118
           },
           {
             "tool": "close_agent",
-            "count": 98
-          },
-          {
-            "tool": "update_plan",
-            "count": 90
+            "count": 99
           }
         ],
         "first_ts": "2026-07-06T00:42:40.225000Z",
-        "last_ts": "2026-07-09T07:05:12.886000Z",
-        "note": "week_pct from local-session-rate-limits"
+        "last_ts": "2026-07-10T05:41:42.353000Z",
+        "note": "week_pct from app-server-live"
       },
       "gemini": {
         "provider": "gemini",
@@ -883,7 +883,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "manual-snapshot",
-        "quota_snapshot_ts": "2026-07-10T05:20:10Z",
+        "quota_snapshot_ts": "2026-07-10T09:20:04Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -911,9 +911,9 @@
   "underutilization_alerts": [
     {
       "provider": "claude",
-      "reported_utilization_pct": 4.3,
+      "reported_utilization_pct": 4.5,
       "basis": "activity_vs_recent_peak",
-      "message": "claude at 4.3% (activity_vs_recent_peak)"
+      "message": "claude at 4.5% (activity_vs_recent_peak)"
     },
     {
       "provider": "gemini",

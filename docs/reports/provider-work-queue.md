@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-07-10T05:23:22.452434Z
+Generated: 2026-07-10T09:22:26.176729Z
 Current week: 2026-W28
 Recommended provider order: gemini, claude, codex
 
@@ -9,25 +9,25 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 57
-- Total routed candidates: 179
+- Execution-ready candidates: 54
+- Total routed candidates: 182
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2751 Cross-platform harness setup: integrate AI-provider bootstrap, auth orchestration, macOS+PowerShell, per-machine status registry | yes | strategy/workflow/architecture language | priority:high, cat:harness, domain:machine-setup, machine:dev-primary, status:plan-approved, dispatch:ready |
-| #2754 throughput(workstations): activate ace-linux-1 provider/machine lane | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:operations, machine:ace-linux-1, status:plan-approved |
-| #2755 throughput(workstations): activate ace-linux-2 provider/machine lane | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:operations, status:working, machine:ace-linux-2 |
-| #2760 revise(naval-arch): B1528 SIROCCO force calculation review updates | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering-calculations, domain:naval-architecture, machine:dev-primary, status:plan-approved |
 | #2778 feat(architecture): codify retrieval-time wiki-sibling routing rule + planning/citation/frontmatter plumbing | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, cat:harness, machine:dev-primary, status:plan-approved |
 | #2815 feat(workstations): Windows Task Scheduler reads schedule-tasks.yaml + EqualityReport live-validation [#2801 family] | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, machine:ace-win-1, status:plan-review, status:plan-approved |
 | #2816 feat(workstations): collect-equality.ps1 — accurate Windows compute + restore RAM floor [#2801 family] | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, status:plan-review, status:plan-approved, gate:completeness |
 | #3063 uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging) | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, domain:workflow-standardization, status:plan-approved, dispatch:ready |
+| #3064 uv-workflow(worldenergydata): clean-clone verify all 9 + offline fixtures for data loaders | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, domain:workflow-standardization, status:plan-approved, dispatch:ready |
+| #3065 uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, domain:workflow-standardization, status:plan-approved, dispatch:ready |
+| #3282 wf-api(assetutilities): ResultEnvelope + run_workflow() + registry request/response schema [FOUNDATIONAL] | yes | strategy/workflow/architecture language | enhancement, priority:high, domain:workflow-standardization, status:plan-approved, gate:completeness, lane:claude |
+| #3283 wf-api(ecosystem): determinism harness — provenance stamp + result hash + golden-baseline template | yes | strategy/workflow/architecture language | enhancement, priority:high, domain:workflow-standardization, status:plan-approved, gate:completeness, lane:codex |
 
 ## codex
 
 - Routing priority: high
 - Execution-ready candidates: 4
-- Total routed candidates: 19
+- Total routed candidates: 16
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -37,8 +37,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3239 Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone) | yes | implementation/test/fix language | enhancement, domain:reporting, domain:gtm, status:plan-approved, gate:completeness, lane:codex |
 | #2880 feat(codex): make yolo-equivalent permission defaults travel across machines | no | existing codex agent label | enhancement, priority:high, cat:harness, domain:ai-config, machine:multi, agent:codex |
 | #3026 ace-linux-2: gnome-shell crash recovery (2026-06-10) + /dev/sda end-of-life replacement plan | no | implementation/test/fix language | priority:high, lane:claude |
-| #2750 Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay | no | implementation/test/fix language | priority:medium, cat:harness, machine:dev-primary, dispatch:ready, gate:completeness, domain:harness |
-| #2763 plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent | no | implementation/test/fix language | enhancement, priority:medium, cat:ai-orchestration, cat:operations, cat:harness, domain:automation |
+| #3430 standard: replayable public input and source snapshot contract | no | implementation/test/fix language | enhancement, priority:high, cat:data-pipeline, domain:audit-trail, type:follow-up, status:needs-plan |
+| #2765 feat(operations): add scheduler parity report for system cron and Hermes Gateway cron | no | implementation/test/fix language | enhancement, priority:medium, cat:ai-orchestration, cat:operations, cat:harness, domain:automation |
 
 ## gemini
 

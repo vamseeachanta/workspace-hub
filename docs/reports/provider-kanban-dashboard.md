@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-10T05:23:29Z
+Generated: 2026-07-10T09:22:29Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,20 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3440 | Harden generated HTML against JSON script-tag breakout | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3439 | Audit descriptor-relative readers for FIFO blocking before fstat | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3438 | Require complete module provenance in installed-wheel smoke tests | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3437 | standard: require SHA-pinned cross-repository plan evidence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3436 | bug: make new-branch pre-push checks worktree-aware | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3435 | bug: make hook installation worktree-aware | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3434 | feature: algorithm-scoped cross-run insights and decision briefs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3433 | feature: per-repository Hugging Face projection and staged promotion | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3432 | standard: algorithm-specific metric definition and observation contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3431 | standard: curated output and rolling algorithm report contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3430 | standard: replayable public input and source snapshot contract | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3429 | standard: content-addressed artifact and Hugging Face residency contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3428 | standard: deterministic run identity and algorithm version contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3427 | epic: repository-linked algorithm run datasets and decision intelligence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3426 | feat(governance): deploy completeness closeout contract to worldenergydata | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3424 | [skills] Add transactional metadata-only folder-note publication workflow | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3423 | feat(landman-desk): route work to landmen or trainees and close the guided-training feedback loop | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -53,7 +67,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3418 | feat(landman-desk): turn project intake into an assigned tract work package | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3417 | security(landman-desk): enforce private records, role access, retention, and audit boundaries | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3416 | chore(landman-desk): establish the private application repository and public/private data boundary | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3415 | research(landman-desk): validate broker workflow and lock a federal-acreage-aware pilot | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3415 | research(landman-desk): validate broker workflow and lock a federal-acreage-aware pilot | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3414 | epic(landman-project-desk): broker workflow, QA, and federal-acreage diligence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3408 | Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3404 | Explore direct SSH path to gpu-claw without WireGuard dependency | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -229,20 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2772 | decision(workstations): choose tier-1 repo placement for licensed-win-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2768 | epic(ocimf): close out MEG3/MEG4 coefficient ingestion and reference gaps | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2765 | feat(operations): add scheduler parity report for system cron and Hermes Gateway cron | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2764 | fix(operations): harden Hermes session exporter for undated session files | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2763 | plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2762 | plan(operations): define Hermes-vs-system cron scheduler routing contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2761 | Explore 3-night Broken Bow-style family getaway alternatives near west Houston | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2760 | revise(naval-arch): B1528 SIROCCO force calculation review updates | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2758 | Clarify agent/runtime folder architecture to reduce human and agent confusion | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2757 | throughput(workstations): activate licensed-win-2 provider/machine lane | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2756 | throughput(workstations): activate licensed-win-1 provider/machine lane | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2755 | throughput(workstations): activate ace-linux-2 provider/machine lane | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2754 | throughput(workstations): activate ace-linux-1 provider/machine lane | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2753 | Operational tracker: fresh-machine setup runs (evergreen — do not close) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2751 | Cross-platform harness setup: integrate AI-provider bootstrap, auth orchestration, macOS+PowerShell, per-machine status registry | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2750 | Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2749 | Compliance alert: W21 — 50% (medium) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
