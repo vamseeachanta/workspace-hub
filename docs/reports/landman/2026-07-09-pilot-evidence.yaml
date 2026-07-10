@@ -1,5 +1,5 @@
 schema_version: "1.0"
-decision_timestamp: "2026-07-09T23:15:20Z"
+decision_timestamp: "2026-07-10T10:28:48Z"
 renderer_version: "1.0"
 weights:
   broker_workflow_value: 25
@@ -32,14 +32,14 @@ candidates:
       - county: Midland
         official_source: Midland County Clerk
         source_url: https://www.co.midland.tx.us/27/County-Government
-        observed_at: "2026-07-09T23:15:20Z"
-        access_state: official access path identified
-        fee_account: unknown
-        index: unknown
-        images: unknown
+        observed_at: "2026-07-10T10:28:48Z"
+        access_state: official office identified; packaged synthetic workflow fixture verified
+        fee_account: no paid portal or account used for fixture
+        index: not tested
+        images: not tested
         confidence: verified
-        limitation: Official county page identifies the office but does not prove a reproducible public fixture.
-        readiness: conditional
+        limitation: Ready only for synthetic fixture workflow validation; no live Midland record, index, image, title search, or title opinion was tested.
+        readiness: ready
       - county: Reeves
         official_source: Reeves County Clerk
         source_url: https://www.reevescounty.org/departments/county-clerk
@@ -88,12 +88,13 @@ candidates:
         limitation: This is not title evidence or a title opinion.
       - id: tx-fixture
         criterion: fixture_reproducibility
-        source_url: https://www.reevescounty.org/departments/county-clerk
-        observed_at: "2026-07-09T23:15:20Z"
-        access_state: unknown
-        confidence: unknown
-        reproducible: false
-        limitation: No public-safe fixture was assembled; no paid portal or account was used.
+        source_url: https://raw.githubusercontent.com/vamseeachanta/worldenergydata/2b1fb4e67ed0a13e229f14cc59a65d80c0f4b7ab/packages/worldenergydata-landman/src/worldenergydata/landman/fixtures/county_records_v1.json
+        observed_at: "2026-07-10T10:28:48Z"
+        access_state: packaged synthetic fixture verified from immutable commit
+        confidence: verified
+        reproducible: true
+        artifact_sha256: 43f11bd5ff3afadd8ae5c660569eb3d0ec5f5170d97f2898eb73db641c6623c7
+        limitation: Synthetic workflow evidence only; not derived from live county records and not title evidence.
       - id: tx-delivery
         criterion: delivery_exception_learning
         source_url: https://github.com/vamseeachanta/llm-wiki/pull/745
@@ -106,15 +107,15 @@ candidates:
       broker_workflow_value: {score: 3, anchor: 3, evidence_ids: [tx-workflow]}
       public_source_readiness: {score: 2, anchor: 2, evidence_ids: [tx-public]}
       county_title_feasibility: {score: 2, anchor: 2, evidence_ids: [tx-county]}
-      fixture_reproducibility: {score: 1, anchor: 1, evidence_ids: [tx-fixture]}
+      fixture_reproducibility: {score: 4, anchor: 4, evidence_ids: [tx-fixture]}
       delivery_exception_learning: {score: 3, anchor: 3, evidence_ids: [tx-delivery]}
     hard_gates:
       complete_evidence: true
-      public_safe_fixture: unknown
-      paid_or_account_required: unknown
+      public_safe_fixture: true
+      paid_or_account_required: false
       separate_evidence_classes: true
       research_assistance_only: true
-      primary_county_ready: false
+      primary_county_ready: true
   - id: oklahoma_scoop_stack
     jurisdiction: Oklahoma
     county_cluster: [Grady, Canadian]

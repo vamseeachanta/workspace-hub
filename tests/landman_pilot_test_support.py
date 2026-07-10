@@ -137,7 +137,7 @@ def synthetic_evidence() -> dict:
 
 def score_candidates(evidence: dict, values: tuple[int, int, int]) -> None:
     for candidate, value in zip(evidence["candidates"], values, strict=True):
-        for score in candidate["scores"].values():
+        for criterion, score in candidate["scores"].items():
             score["score"] = score["anchor"] = value
             if value >= 4:
                 row = next(
@@ -146,6 +146,16 @@ def score_candidates(evidence: dict, values: tuple[int, int, int]) -> None:
                     if row["id"] in score["evidence_ids"]
                 )
                 row.update({"confidence": "verified", "reproducible": True})
+                if criterion == "fixture_reproducibility":
+                    row.update(
+                        {
+                            "source_url": (
+                                "https://raw.githubusercontent.com/example/repo/"
+                                f"{'a' * 40}/fixture.json"
+                            ),
+                            "artifact_sha256": "b" * 64,
+                        }
+                    )
 
 
 def ranked_candidate(decision: dict, evidence: dict, index: int = 0) -> dict:

@@ -25,6 +25,13 @@ from tests.landman_pilot_test_support import (
 ROOT = Path(__file__).parents[2]
 BUILDER_PATH = ROOT / "scripts/research/build_landman_pilot_decision.py"
 EVIDENCE_PATH = ROOT / "docs/reports/landman/2026-07-09-pilot-evidence.yaml"
+WED_COMMIT = "2b1fb4e67ed0a13e229f14cc59a65d80c0f4b7ab"
+FIXTURE_SHA256 = "43f11bd5ff3afadd8ae5c660569eb3d0ec5f5170d97f2898eb73db641c6623c7"
+FIXTURE_URL = (
+    "https://raw.githubusercontent.com/vamseeachanta/worldenergydata/"
+    f"{WED_COMMIT}/packages/worldenergydata-landman/src/worldenergydata/"
+    "landman/fixtures/county_records_v1.json"
+)
 
 
 def load_builder():
@@ -39,7 +46,7 @@ def load_builder():
 builder = load_builder()
 
 
-def test_schema_clusters_and_public_blocker_contract():
+def test_schema_clusters_and_selected_fixture_contract():
     evidence = yaml.safe_load(EVIDENCE_PATH.read_text())
     decision = builder.build_decision(evidence)
     assert decision["schema_version"] == "1.0"
@@ -47,8 +54,42 @@ def test_schema_clusters_and_public_blocker_contract():
         (item["jurisdiction"], tuple(item["county_cluster"]))
         for item in evidence["candidates"]
     ] == list(CLUSTERS)
-    assert decision["decision_status"] == "owner_decision_required"
-    assert decision["selection"] is None and decision["closeout_ready"] is False
+    assert decision["decision_status"] == "selected"
+    assert decision["decision_reason"] == "selected"
+    assert decision["selection"]["candidate_id"] == "texas_permian"
+    assert decision["closeout_ready"] is True
+    assert "federal_deferred" in decision["success_criteria"]
+
+
+def test_selected_fixture_is_immutable_and_preserves_title_boundary():
+    evidence = yaml.safe_load(EVIDENCE_PATH.read_text())
+    texas = evidence["candidates"][0]
+    fixture = next(row for row in texas["evidence_rows"] if row["id"] == "tx-fixture")
+    county = next(row for row in texas["county_evidence"] if row["county"] == "Midland")
+    decision = builder.build_decision(evidence)
+    assert fixture["source_url"] == FIXTURE_URL
+    assert fixture["artifact_sha256"] == FIXTURE_SHA256
+    assert fixture["confidence"] == "verified" and fixture["reproducible"] is True
+    assert county["readiness"] == "ready"
+    assert "synthetic" in county["limitation"].lower()
+    assert "no live" in county["limitation"].lower()
+    assert "synthetic" in decision["evidence_boundaries"]["county_readiness"].lower()
+    assert "title" in decision["evidence_boundaries"]["county_readiness"].lower()
+
+
+def test_high_fixture_score_requires_immutable_url_and_sha256():
+    evidence = synthetic_evidence()
+    candidate = evidence["candidates"][0]
+    score = candidate["scores"]["fixture_reproducibility"]
+    row = next(
+        item
+        for item in candidate["evidence_rows"]
+        if item["criterion"] == "fixture_reproducibility"
+    )
+    score.update({"score": 4, "anchor": 4})
+    row.update({"confidence": "verified", "reproducible": True})
+    with pytest.raises(ValueError, match="fixture provenance"):
+        builder.build_decision(evidence)
 
 
 def test_decimal_scores_preserve_integral_hundreds_and_rank_without_strings():

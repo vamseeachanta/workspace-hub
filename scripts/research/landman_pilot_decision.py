@@ -262,6 +262,10 @@ def build_decision(
             "federal": "BLM/MLRS lease and case evidence, not ownership.",
             "regulator": "State regulator evidence, separate from federal and title.",
             "county_title": "County access and manual research evidence, not a title opinion.",
+            "county_readiness": (
+                "Ready means synthetic pilot-workflow readiness; it does not assert "
+                "live county index/image access, title completeness, or a title opinion."
+            ),
         },
         "fixture_boundary": "Only public-safe fixtures without paid portal use or account creation are eligible.",
         "legal_boundary": "Research assistance only; no legal advice and no title opinion.",

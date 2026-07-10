@@ -239,6 +239,19 @@ def _validate_score(criterion: str, score: dict, rows: dict[str, dict]) -> None:
             for row_id in ids
         )
         require(reproducible, "high scores require verified reproducible evidence")
+    if criterion == "fixture_reproducibility" and isinstance(value, int) and value >= 4:
+        immutable_url = re.compile(
+            r"^https://(?:raw\.githubusercontent\.com/[^/]+/[^/]+|"
+            r"github\.com/[^/]+/[^/]+/blob)/[0-9a-f]{40}/"
+        )
+        provenance = all(
+            immutable_url.match(str(rows[row_id]["source_url"]))
+            and re.fullmatch(
+                r"[0-9a-f]{64}", str(rows[row_id].get("artifact_sha256", ""))
+            )
+            for row_id in ids
+        )
+        require(provenance, "fixture provenance must include immutable URL and SHA-256")
 
 
 def validate_candidate(candidate: dict, weights: dict) -> None:
