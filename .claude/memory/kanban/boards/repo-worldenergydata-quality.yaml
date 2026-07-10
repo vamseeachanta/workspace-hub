@@ -843,6 +843,23 @@ cards:
       - bug
       - priority:high
       - cat:data
+      - status:plan-review
+      - status:plan-approved
+      - domain:quality
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#926
+    title: 'perf(cli): lazy-load command families before root subcommand dispatch'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/926
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:engineering
       - domain:quality
       - lane:codex
       - status:needs-plan

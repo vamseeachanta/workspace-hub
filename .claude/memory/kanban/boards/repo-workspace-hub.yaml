@@ -22352,7 +22352,9 @@ cards:
       - priority:high
       - cat:research
       - domain:labor-market
-      - status:needs-plan
+      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
       - lane:claude
     initial_status: triage
     priority: 1
@@ -22469,5 +22471,21 @@ cards:
       - lane:claude
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3426
+    title: 'feat(governance): deploy completeness closeout contract to worldenergydata'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3426
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow-gates
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
