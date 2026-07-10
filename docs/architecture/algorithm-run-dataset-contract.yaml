@@ -74,13 +74,25 @@ identity:
   algorithm_version_id:
     required_components: [algorithm_id, semantic_version, clean_git_commit,
       input_schema_version, output_schema_version, environment_digest]
+  input_record_id:
+    required_components: [role, native_schema_version, source_snapshot, transformation_id,
+      artifact_sha256, redistribution_rights, complete_replay_location]
+    forbidden_components: [run_id, algorithm_version_id, output_set_id, attempt_id,
+      retry_count, publication_state, tenant_id, customer_id, request_id, session_id, user_id]
+    independent_of_run_id: true
   input_set_id:
     required_components: [sorted_role, input_record_id]
     independent_of_run_id: true
   run_id:
     required_components: [algorithm_version_id, input_set_id, execution_parameters, seed]
     forbidden_components: [output_set_id, attempt_id, retry_count, publication_state,
-      tenant_id, customer_id, request_id, session_id, user_id]
+      tenant_id, customer_id, request_id, api_request_id, session_id, user_id]
+  run_input_membership:
+    owner: dedicated_hf_dataset
+    residency: dedicated_hf_dataset
+    dataset_table: run_input_memberships
+    identity: membership_id
+    required_components: [run_id, role, input_record_id]
   output_equality:
     default: raw_bytes_sha256
     mismatch_action: reject_without_mutation
@@ -132,56 +144,67 @@ records:
   algorithm_version:
     owner: source_repository
     residency: source_descriptor_and_pinned_hf_reference
+    dataset_table: algorithm_versions
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3428
     identity: algorithm_version_id
   run:
     owner: dedicated_hf_dataset
     residency: dedicated_hf_dataset
+    dataset_table: runs
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3428
     identity: run_id
   input:
     owner: dedicated_hf_dataset
     residency: hf_object_or_immutable_public_uri
+    dataset_table: inputs
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3430
     identity: input_record_id
   output:
     owner: dedicated_hf_dataset
     residency: hf_object_and_normalized_record
+    dataset_table: outputs
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3431
     identity: output_record_id
   metric_definition:
     owner: source_repository
     residency: source_definition_and_pinned_hf_reference
+    dataset_table: metric_definitions
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3432
     identity: metric_definition_id
   metric_observation:
     owner: dedicated_hf_dataset
     residency: dedicated_hf_dataset
+    dataset_table: metric_observations
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3432
     identity: metric_observation_id
   artifact:
     owner: dedicated_hf_dataset
     residency: content_addressed_hf_object_or_explicit_exclusion
+    dataset_table: artifacts
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3429
     identity: content_digest
   failure:
     owner: dedicated_hf_dataset
     residency: dedicated_hf_dataset
+    dataset_table: failures
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3431
     identity: failure_id
   publication:
     owner: workspace-hub
     residency: hf_record_and_source_report_cross_reference
+    dataset_table: publications
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3433
     identity: promotion_id
   insight:
     owner: source_repository
     residency: hf_machine_record_and_source_report_rendering
+    dataset_table: insights
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3434
     identity: insight_id
   decision_brief:
     owner: source_repository
     residency: hf_machine_record_and_source_report_rendering
+    dataset_table: decision_briefs
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3434
     identity: decision_brief_id
 
@@ -220,7 +243,11 @@ promotion:
       requires: [schema, hashes, provenance, license, legal, sanitization, clean_source]
     - from: validated
       to: replayed
-      requires: [clean_environment_replay, output_equality]
+      requires:
+        all_of: [clean_environment_replay]
+        one_of:
+          succeeded: [output_equality]
+          reproducible_failure: [failure_signature_equality, curated_diagnostic_equality]
     - from: replayed
       to: draft_rendered
       requires: [mandatory_report_sections, exact_candidate_run_set]
@@ -288,6 +315,14 @@ ecosystem_propagation:
   shared_schema_authority: workspace-hub
   discovery_manifest: docs/registry/workflow-manifest.json
   observed_registered_repositories: [assetutilities, digitalmodel, worldenergydata, assethold]
+  manifest_observation_2026_07_10:
+    resolver_mode: explicit_tier1_repos_base
+    resolved: [assetutilities, digitalmodel, worldenergydata, assethold]
+    drifted: [assetutilities, worldenergydata]
+    unchanged: [digitalmodel, assethold]
+    missing: []
+    nested_worktree_default_resolution: missing_registry
+    follow_up: https://github.com/vamseeachanta/workspace-hub/issues/3450
   fresh_manifest_required_before_adoption: true
   adapter_style: thin_repository_adapter
   conformance_tests: required
@@ -345,6 +380,10 @@ issue_graph:
 
 exclusions:
   - source_repository_algorithm_code_changes
+  - workflow_registry_changes
+  - source_repository_report_changes
+  - hugging_face_dataset_changes
+  - hugging_face_resource_changes
   - child_issue_implementation
   - customer_api_implementation
   - credentials_or_tokens

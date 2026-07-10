@@ -29,7 +29,7 @@
   .meta { color:var(--muted); }
   .notice { margin:18px 0 0; padding:12px 14px; border-left:4px solid var(--amber); background:#fff8e6; }
   .summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:18px 0; }
-  .summary section { min-height:112px; padding:13px; border:1px solid var(--line); border-radius:6px; background:var(--wash); }
+  .summary article { min-height:112px; padding:13px; border:1px solid var(--line); border-radius:6px; background:var(--wash); }
   .summary strong { display:block; margin-bottom:4px; font-size:13px; color:var(--muted); }
   .flow { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; margin:18px 0; }
   .flow div { position:relative; min-height:92px; padding:11px; border:1px solid var(--line); border-top:4px solid var(--blue); border-radius:6px; background:#fff; }
@@ -68,12 +68,12 @@
 <section id="decisions">
   <h2>1. Locked Decisions</h2>
   <div class="summary">
-    <section><strong>Dataset ownership</strong>One dedicated Hugging Face dataset per source-code repository. A global catalog indexes datasets; it does not merge their domain records.</section>
-    <section><strong>Public admission</strong>Every replay-critical input is redistributable, schema-valid, snapshot-pinned, content-hashed, and included or stable-public-retrievable.</section>
-    <section><strong>Repository fidelity</strong>Source repositories retain code, workflow descriptors, schemas, and one stable rolling HTML report per algorithm.</section>
-    <section><strong>Run identity</strong>Algorithm semantic version, clean Git commit, schema versions, environment digest, canonical inputs, seed, and execution parameters determine identity.</section>
-    <section><strong>Native outputs</strong>Curated machine-readable outputs preserve domain-native meaning. Caches, transient logs, and large regenerable dumps stay out.</section>
-    <section><strong>Decision use</strong>Metrics remain algorithm-specific. Insights and briefs trace to eligible runs and exact dataset revisions.</section>
+    <article><strong>Dataset ownership</strong>One dedicated Hugging Face dataset per source-code repository. A global catalog indexes datasets; it does not merge their domain records.</article>
+    <article><strong>Public admission</strong>Every replay-critical input is redistributable, schema-valid, snapshot-pinned, content-hashed, and included or stable-public-retrievable.</article>
+    <article><strong>Repository fidelity</strong>Source repositories retain code, workflow descriptors, schemas, and one stable rolling HTML report per algorithm.</article>
+    <article><strong>Run identity</strong>Algorithm semantic version, clean Git commit, schema versions, environment digest, canonical inputs, seed, and execution parameters determine identity.</article>
+    <article><strong>Native outputs</strong>Curated machine-readable outputs preserve domain-native meaning. Caches, transient logs, and large regenerable dumps stay out.</article>
+    <article><strong>Decision use</strong>Metrics remain algorithm-specific. Insights and briefs trace to eligible runs and exact dataset revisions.</article>
   </div>
   <table>
     <thead><tr><th>ID</th><th>Decision</th><th>Consequence</th></tr></thead>
@@ -122,6 +122,11 @@
   input_schema_version + output_schema_version + environment_digest
 )
 
+input_record_id = sha256(
+  role + native_schema_version + source_snapshot + transformation_id +
+  artifact_sha256 + redistribution_rights + complete_replay_location
+)
+
 input_set_id = sha256(sorted(role, input_record_id))
 
 run_id = sha256(
@@ -146,16 +151,17 @@ output_set_id = sha256(sorted(role, native_schema_version, equality_digest))</pr
   <table>
     <thead><tr><th>Record</th><th>Required identity and evidence</th><th>Residency</th></tr></thead>
     <tbody>
-      <tr><td>Algorithm Version</td><td>Algorithm ID, semantic version, clean commit, schema versions, environment digest</td><td>Descriptor/schema in source repo; pinned references in HF</td></tr>
-      <tr><td>Run</td><td>Run ID, algorithm version ID, input set ID, seed, execution parameters, status, output/failure link</td><td>HF normalized table</td></tr>
-      <tr><td>Input</td><td>Role, schema, content hash, source snapshot, license basis, replay location, transformation/query</td><td>HF object or stable public URI plus immutable digest</td></tr>
-      <tr><td>Output</td><td>Role, native schema, media type, byte hash, equality digest, curation decision</td><td>HF object and normalized record</td></tr>
-      <tr><td>Metric Definition</td><td>Algorithm scope, definition version, unit/dimension, derivation, applicability, quality rule</td><td>Canonical definition in source repo; pinned reference in HF</td></tr>
-      <tr><td>Metric Observation</td><td>Run ID, definition version, value, quality, derivation evidence, uncertainty when supplied</td><td>HF normalized table; successful eligible runs only</td></tr>
-      <tr><td>Artifact</td><td>Content digest, media type, byte size, role, curation state, producing record</td><td>HF content-addressed object or excluded with reason</td></tr>
-      <tr><td>Failure</td><td>Run ID, deterministic failure phase/code/signature, normalized diagnostics, replay evidence</td><td>HF normalized table; never a metric population member</td></tr>
-      <tr><td>Publication</td><td>Promotion ID, reviewer, gate evidence, HF revision, source report commit, verification result</td><td>HF and source-repo cross-reference</td></tr>
-      <tr><td>Insight / Decision Brief</td><td>Compared runs, derivation, claims, assumptions, confidence, reviewer state, exact revisions</td><td>Machine record in HF; rendered in source report</td></tr>
+      <tr data-record="algorithm_version"><td>Algorithm Version</td><td>Algorithm ID, semantic version, clean commit, schema versions, environment digest</td><td>Descriptor/schema in source repo; pinned references in HF</td></tr>
+      <tr data-record="run"><td>Run</td><td>Run ID, algorithm version ID, input set ID, seed, execution parameters, status, output/failure link</td><td>HF normalized table</td></tr>
+      <tr data-record="input"><td>Input</td><td>Role, schema, content hash, source snapshot, license basis, replay location, transformation/query</td><td>HF object or stable public URI plus immutable digest</td></tr>
+      <tr data-record="output"><td>Output</td><td>Role, native schema, media type, byte hash, equality digest, curation decision</td><td>HF object and normalized record</td></tr>
+      <tr data-record="metric_definition"><td>Metric Definition</td><td>Algorithm scope, definition version, unit/dimension, derivation, applicability, quality rule</td><td>Canonical definition in source repo; pinned reference in HF</td></tr>
+      <tr data-record="metric_observation"><td>Metric Observation</td><td>Run ID, definition version, value, quality, derivation evidence, uncertainty when supplied</td><td>HF normalized table; successful eligible runs only</td></tr>
+      <tr data-record="artifact"><td>Artifact</td><td>Content digest, media type, byte size, role, curation state, producing record</td><td>HF content-addressed object or excluded with reason</td></tr>
+      <tr data-record="failure"><td>Failure</td><td>Run ID, deterministic failure phase/code/signature, normalized diagnostics, replay evidence</td><td>HF normalized table; never a metric population member</td></tr>
+      <tr data-record="publication"><td>Publication</td><td>Promotion ID, reviewer, gate evidence, HF revision, source report commit, verification result</td><td>HF and source-repo cross-reference</td></tr>
+      <tr data-record="insight"><td>Insight</td><td>Compared runs, derivation, claims, assumptions, confidence, exact revisions</td><td>Machine record in HF; rendered in source report</td></tr>
+      <tr data-record="decision_brief"><td>Decision Brief</td><td>Question, alternatives, constraints, recommendation or no-decision, reviewer state</td><td>Machine record in HF; rendered in source report</td></tr>
     </tbody>
   </table>
   <h3>Illustrative JSON envelope</h3>
@@ -175,13 +181,15 @@ output_set_id = sha256(sorted(role, native_schema_version, equality_digest))</pr
   "record_type": "input",
   "input_record_id": "input:sha256:&lt;64-hex&gt;",
   "role": "environment_profile",
-  "schema_ref": "source-repo@&lt;commit&gt;:schemas/environment-v1.json",
+  "native_schema_version": "environment-v1",
+  "source_snapshot": "source:sha256:&lt;64-hex&gt;",
+  "transformation_id": "transform:sha256:&lt;64-hex&gt;",
   "artifact": {"sha256": "&lt;64-hex&gt;", "media_type": "application/json"},
   "replay_critical": true,
   "public_retrieval": {"kind": "hf-object", "path": "objects/sha256/ab/&lt;digest&gt;"},
   "license_basis": "declared-and-validated"
 }</pre>
-  <pre>{
+  <pre data-relationship="run_input_membership">{
   "record_type": "run_input_membership",
   "run_id": "run:sha256:&lt;64-hex&gt;",
   "input_record_id": "input:sha256:&lt;64-hex&gt;",
@@ -196,15 +204,18 @@ output_set_id = sha256(sorted(role, native_schema_version, equality_digest))</pr
   <h2>5. Dedicated Hugging Face Dataset</h2>
   <pre>README.md                         # dataset card, sources, license, limits, loading
 data/
-  runs/promotion=&lt;id&gt;/part-000.parquet
-  inputs/promotion=&lt;id&gt;/part-000.parquet
-  outputs/promotion=&lt;id&gt;/part-000.parquet
-  artifacts/promotion=&lt;id&gt;/part-000.parquet
-  metric_definitions/promotion=&lt;id&gt;/part-000.parquet
-  metric_observations/promotion=&lt;id&gt;/part-000.parquet
-  failures/promotion=&lt;id&gt;/part-000.parquet
-  publications/promotion=&lt;id&gt;/part-000.parquet
-  insights/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="algorithm_versions">algorithm_versions</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="runs">runs</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="inputs">inputs</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="run_input_memberships">run_input_memberships</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="outputs">outputs</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="artifacts">artifacts</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="metric_definitions">metric_definitions</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="metric_observations">metric_observations</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="failures">failures</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="publications">publications</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="insights">insights</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="decision_briefs">decision_briefs</span>/promotion=&lt;id&gt;/part-000.parquet
 objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native outputs</pre>
   <ul>
     <li>Promotion shards are append-only by record identity. Compaction, if later needed, creates a new revision and preserves old pinned revisions.</li>
@@ -238,12 +249,16 @@ objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native
 
 <section id="promotion">
   <h2>7. Promotion and Acceptance</h2>
-  <p><strong>Contract states:</strong> Emitted, Validated, Replayed, Draft Rendered, Reviewed, HF Candidate,
-     Report Pinned, Accepted, and Rejected.</p>
+  <p><strong>Contract states:</strong>
+     <span data-state="emitted">Emitted</span>, <span data-state="validated">Validated</span>,
+     <span data-state="replayed">Replayed</span>, <span data-state="draft_rendered">Draft Rendered</span>,
+     <span data-state="reviewed">Reviewed</span>, <span data-state="hf_candidate">HF Candidate</span>,
+     <span data-state="report_pinned">Report Pinned</span>, <span data-state="accepted">Accepted</span>, and
+     <span data-state="rejected">Rejected</span>.</p>
   <ol>
     <li><strong>Emit locally:</strong> create a closed run bundle outside the public dataset.</li>
     <li><strong>Validate:</strong> enforce schemas, canonicalization, hashes, licenses, public input completeness, clean source, and secret/legal scans.</li>
-    <li><strong>Reproduce:</strong> rerun from the public candidate inputs in a clean environment and compare the output equality digest.</li>
+    <li><strong>Reproduce:</strong> rerun from public candidate inputs in a clean environment. Successful runs compare output equality; reproducible failures compare normalized failure signatures and curated diagnostic digests.</li>
     <li><strong>Draft-render:</strong> render the rolling report against the candidate run set without presenting it as accepted.</li>
     <li><strong>Review:</strong> record explicit human promotion approval and adversarial artifact review.</li>
     <li><strong>Commit to HF:</strong> preupload large blobs when needed, then create one candidate commit containing complete records and references.</li>
@@ -276,7 +291,7 @@ objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native
     <tbody>
       <tr><td><code>ResultEnvelope</code> from <a href="https://github.com/vamseeachanta/workspace-hub/issues/3282">issue 3282</a></td><td>Status, result payload, provenance, determinism evidence, confidence, warnings</td><td>Its input hash may omit replay-critical configuration; its code version may be missing and does not prove a clean tree. Carry it as evidence, then derive strict IDs from validated records.</td></tr>
       <tr><td>Determinism harness from <a href="https://github.com/vamseeachanta/workspace-hub/issues/3283">issue 3283</a></td><td>Golden comparisons, explicit volatile-key policy, provenance stamps</td><td>Public promotion requires a measured exact replay and versioned output equality policy, not an unchecked or inferred flag.</td></tr>
-      <tr><td>Workflow manifest from <a href="https://github.com/vamseeachanta/workspace-hub/issues/3284">issue 3284</a></td><td><code>repo:id@version</code>, registry hash, invocation, input/output descriptors, discovery</td><td>Fail closed when stale. The 2026-07-10 check reports drift in all four registered repositories.</td></tr>
+      <tr><td>Workflow manifest from <a href="https://github.com/vamseeachanta/workspace-hub/issues/3284">issue 3284</a></td><td><code>repo:id@version</code>, registry hash, invocation, input/output descriptors, discovery</td><td>Fail closed when stale. With explicit tier-1 base resolution on 2026-07-10, all four repositories resolved: assetutilities and worldenergydata drifted; digitalmodel and assethold matched. Nested-worktree default resolution incorrectly reported missing registries and is tracked by <a href="https://github.com/vamseeachanta/workspace-hub/issues/3450">issue 3450</a>.</td></tr>
       <tr><td><code>digitalmodel.workflow_api</code> at <code>origin/main@529c4ba13d90</code></td><td>Repository runner, provenance adapter, golden harness, and four workflow goldens</td><td>Carry the measured envelope and golden evidence, then derive strict public input, version, environment, and output-set identities under the new contracts.</td></tr>
       <tr><td>Execution manifest</td><td>Commands, replay, environment, checksums, tests, legal evidence, promotion gates</td><td>Add algorithm version, canonical input set, output equality set, HF revision, and public acceptance state.</td></tr>
       <tr><td>Report evidence bundle</td><td>Audience, derivation chain, claims, source bindings, review and legal evidence</td><td>Add the standard algorithm report section contract and exact run/dataset revision bindings.</td></tr>
@@ -317,6 +332,21 @@ objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native
 
 <section id="sources">
   <h2>10. Sources and Deferred Detail</h2>
+  <h3>Parent implementation exclusions</h3>
+  <ul id="parent-exclusions">
+    <li data-exclusion="source_repository_algorithm_code_changes">Source-repository algorithm code changes</li>
+    <li data-exclusion="workflow_registry_changes">Workflow registry changes</li>
+    <li data-exclusion="source_repository_report_changes">Source-repository report changes</li>
+    <li data-exclusion="hugging_face_dataset_changes">Hugging Face dataset changes</li>
+    <li data-exclusion="hugging_face_resource_changes">Hugging Face resource changes</li>
+    <li data-exclusion="credentials_or_tokens">Credentials or tokens</li>
+    <li data-exclusion="child_issue_implementation">Child issue implementation</li>
+    <li data-exclusion="customer_api_implementation">Customer API implementation</li>
+    <li data-exclusion="private_or_restricted_run_projection">Private or restricted run projection</li>
+    <li data-exclusion="combined_cross_repository_domain_run_table">Combined cross-repository domain run table</li>
+    <li data-exclusion="per_run_html_reports">Per-run HTML reports</li>
+  </ul>
+  <h3>References</h3>
   <ul>
     <li><a href="../architecture/algorithm-run-dataset-contract.yaml">Algorithm run dataset contract 1.0.0</a></li>
     <li><a href="../architecture/execution-manifest.schema.yaml">Execution manifest schema</a> and <a href="../architecture/report-evidence-bundle.schema.yaml">report evidence bundle schema</a></li>

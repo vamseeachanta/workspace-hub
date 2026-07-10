@@ -32,7 +32,7 @@
     }
   </style>
 </head>
-<body>
+<body data-manual-sha256="c25126a7baf5d3dc97eacdcaf8b14e4de60cf016ba30906ca8740f302172a05c">
 <header>
   <p class="meta">Artifact review evidence · 2026-07-10 · contract 1.0.0</p>
   <h1>Repository-Linked Algorithm Run Dataset Manual</h1>
@@ -44,8 +44,9 @@
   <section>
     <h2>Inspected Surface</h2>
     <p><code>docs/governance/2026-07-10-algorithm-run-dataset-decision-manual.html</code></p>
-    <p>The inspected working tree used RED-test parent <code>b8a6a390a</code> plus the corresponding GREEN
+    <p>The inspected working tree used RED-test parent <code>cd150ab2d</code> plus the corresponding GREEN
       contract/manual patch. The commit containing this evidence is the authoritative final source revision.</p>
+    <p>Manual SHA-256: <code>c25126a7baf5d3dc97eacdcaf8b14e4de60cf016ba30906ca8740f302172a05c</code>.</p>
   </section>
 
   <section>
@@ -65,8 +66,32 @@
           <td class="pass">PASS</td>
           <td>Title, notice, wrapped navigation, and stacked decision surfaces remain readable with no horizontal overflow.</td>
         </tr>
+        <tr>
+          <td>Full-document desktop · 1440 x 9000</td>
+          <td><code>071db5e72974d45296cfd37400cbfe2c0adb5d43664c5283fafe677cbf97da6c</code></td>
+          <td class="pass">PASS</td>
+          <td>All ten numbered sections and the footer render without clipping, overlap, or horizontal overflow.</td>
+        </tr>
+        <tr>
+          <td>Full-document mobile · 390 x 20000</td>
+          <td><code>79cd6bbccbe799c90c5103189a2acb6d2a3a7f12bcf2702a26273c73fb11bb36</code></td>
+          <td class="pass">PASS</td>
+          <td>All ten numbered sections and the footer render in one narrow-column capture without text occlusion.</td>
+        </tr>
       </tbody>
     </table>
+    <h3>Section coverage</h3>
+    <ul>
+      <li data-section="decisions">Locked decisions</li>
+      <li data-section="architecture">Ownership architecture</li>
+      <li data-section="identity">Identity and determinism</li>
+      <li data-section="records">Record contracts</li>
+      <li data-section="dataset">Dedicated dataset</li>
+      <li data-section="report">Rolling report</li>
+      <li data-section="promotion">Promotion and acceptance</li>
+      <li data-section="compatibility">Ecosystem compatibility</li>
+      <li data-section="issues">Issue ownership</li>
+    </ul>
   </section>
 
   <section>
@@ -74,12 +99,28 @@
     <p>Google Chrome <code>150.0.7871.46</code> rendered the local HTML directly. The connected browser client
       was unavailable in this runtime, so deterministic headless Chrome screenshots were used and inspected.</p>
     <pre>google-chrome-stable --headless --no-sandbox --disable-gpu --hide-scrollbars \
-  --window-size=1440,1000 --screenshot=/tmp/hf-run-ledger-desktop-final.png \
+  --window-size=1440,1000 --screenshot=/tmp/hf-3427-desktop-final3.png \
   docs/governance/2026-07-10-algorithm-run-dataset-decision-manual.html
 
 google-chrome-stable --headless --no-sandbox --disable-gpu --hide-scrollbars \
-  --window-size=390,844 --screenshot=/tmp/hf-run-ledger-mobile-final.png \
+  --window-size=390,844 --screenshot=/tmp/hf-3427-mobile-final3.png \
+  docs/governance/2026-07-10-algorithm-run-dataset-decision-manual.html
+
+google-chrome-stable --headless --no-sandbox --disable-gpu --hide-scrollbars \
+  --window-size=1440,9000 --screenshot=/tmp/hf-3427-desktop-full3.png \
+  docs/governance/2026-07-10-algorithm-run-dataset-decision-manual.html
+
+google-chrome-stable --headless --no-sandbox --disable-gpu --hide-scrollbars \
+  --window-size=390,20000 --screenshot=/tmp/hf-3427-mobile-full3.png \
   docs/governance/2026-07-10-algorithm-run-dataset-decision-manual.html</pre>
+  </section>
+
+  <section>
+    <h2>Guard Interpretation</h2>
+    <p>The approved plan's no-argument absolute-path command scans every tracked shell and Python file and did
+      not complete against the repository's existing backlog. The reviewed implementation check used the
+      checker's positional-path interface against the five issue artifacts and passed. The approved plan blob
+      remains unchanged; this evidence records the bounded execution rather than silently rewriting approval.</p>
   </section>
 </main>
 
