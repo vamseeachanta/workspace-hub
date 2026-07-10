@@ -843,7 +843,7 @@ cards:
       - bug
       - priority:high
       - cat:data
-      - status:plan-approved
+      - status:blocked
       - domain:quality
       - lane:codex
     initial_status: triage
