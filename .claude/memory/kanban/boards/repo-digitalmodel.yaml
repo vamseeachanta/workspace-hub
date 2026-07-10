@@ -7275,7 +7275,7 @@ cards:
     title: 'TRACER: onshore demo field end-to-end (DEM + YAML layout + 2D plot + screening calc + Blender clip + API call)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1508
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:high
       - cat:engineering-models
@@ -7340,6 +7340,16 @@ cards:
     gh_labels:
       - cat:engineering-models
       - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1517
+    title: 'fix(cfd): harden attested snapshots and fail-closed solver evidence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1517
+    gh_state: open
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []

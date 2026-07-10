@@ -811,6 +811,7 @@ cards:
       - documentation
       - priority:high
       - cat:data
+      - status:plan-approved
       - domain:quality
       - lane:claude
       - status:needs-plan

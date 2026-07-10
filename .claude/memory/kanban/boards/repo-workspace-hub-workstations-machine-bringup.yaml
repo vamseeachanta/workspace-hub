@@ -586,3 +586,19 @@ cards:
       **Status:** done | **Priority:** low | **Category:** harness | **Subcategory:** onboarding
 
       **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3455
+    title: 'bug(workstations): reconcile ace-win-1 with the live RDS-002 mapping'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3455
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:operations
+      - machine:multi
+      - status:needs-plan
+      - domain:workstations-machine-bringup
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

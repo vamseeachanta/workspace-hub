@@ -3242,7 +3242,7 @@ cards:
     title: 'Terrain & bathymetry public sources: verify + catalog (GEBCO, NOAA, BOEM; USGS 3DEP for onshore)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/930
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:high
       - cat:data

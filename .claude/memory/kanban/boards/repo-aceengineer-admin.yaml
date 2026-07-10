@@ -406,3 +406,17 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-admin#37
+    title: 'ops(local-analysis): preserve exact interactive cleanup ledger and verification evidence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/37
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - machine:dev-primary
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

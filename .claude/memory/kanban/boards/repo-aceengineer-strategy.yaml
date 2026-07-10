@@ -1289,7 +1289,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - status:scoping
+      - status:plan-approved
       - domain:product
       - lane:codex
     initial_status: triage
