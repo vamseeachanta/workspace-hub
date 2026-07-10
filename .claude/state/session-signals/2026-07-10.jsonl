@@ -2,3 +2,5 @@
 {"ts":"2026-07-10T11:12:08Z","event":"stop_signal_captured","session_id":"b8022ac9-2fc5-52aa-97ca-3f612fac08c9"}
 {"ts":"2026-07-10T12:24:46Z","event":"stop_signal_captured","session_id":"9613af07-979f-57a1-aabc-8b3a374ab031"}
 {"ts":"2026-07-10T12:24:46Z","event":"session_tool_summary","session_id":"9613af07-979f-57a1-aabc-8b3a374ab031","wrk":"none","tool_calls":1,"edits":0,"reads":2}
+{"ts":"2026-07-10T14:12:58Z","event":"session_tool_summary","session_id":"83a0a2bf-ae64-5200-adc7-050060236aae","wrk":"none","tool_calls":15,"edits":2,"reads":0}
+{"ts":"2026-07-10T14:12:58Z","event":"stop_signal_captured","session_id":"83a0a2bf-ae64-5200-adc7-050060236aae"}
