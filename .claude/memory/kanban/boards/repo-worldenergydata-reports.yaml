@@ -1350,3 +1350,20 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#927
+    title: 'feat: publish a public BSEE algorithm-run pilot to Hugging Face'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/927
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - cat:automation
+      - domain:reports
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

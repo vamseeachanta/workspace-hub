@@ -472,6 +472,7 @@ cards:
       - feature
       - priority:low
       - cat:engineering
+      - status:plan-approved
       - domain:hydro-vessel-motions
       - lane:codex
     initial_status: triage

@@ -989,3 +989,19 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1505
+    title: 'feature: publish a public synthetic algorithm-run pilot to Hugging Face'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1505
+    gh_state: open
+    gh_labels:
+      - feature
+      - priority:high
+      - cat:data
+      - domain:core
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

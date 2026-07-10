@@ -611,3 +611,18 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3442
+    title: Track Codex CLI 0.144 stdin regression in cross-review harness
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3442
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:ai-orchestration
+      - domain:tooling
+      - domain:cross-review
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

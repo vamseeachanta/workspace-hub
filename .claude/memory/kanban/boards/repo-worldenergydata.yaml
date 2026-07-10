@@ -3211,3 +3211,18 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#928
+    title: Align Landman freshness scorecard with packaged fixture catalog
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/928
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:data
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

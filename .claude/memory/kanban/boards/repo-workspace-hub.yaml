@@ -22352,7 +22352,6 @@ cards:
       - priority:high
       - cat:research
       - domain:labor-market
-      - status:plan-review
       - status:plan-approved
       - gate:completeness
       - lane:claude
@@ -22487,5 +22486,285 @@ cards:
       - lane:claude
     initial_status: triage
     priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3427
+    title: 'epic: repository-linked algorithm run datasets and decision intelligence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3427
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - domain:audit-trail
+      - status:plan-approved
+      - tracker
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3428
+    title: 'standard: deterministic run identity and algorithm version contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3428
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - domain:audit-trail
+      - type:follow-up
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3429
+    title: 'standard: content-addressed artifact and Hugging Face residency contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3429
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - domain:audit-trail
+      - type:follow-up
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3430
+    title: 'standard: replayable public input and source snapshot contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3430
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - domain:audit-trail
+      - type:follow-up
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3431
+    title: 'standard: curated output and rolling algorithm report contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3431
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - domain:audit-trail
+      - type:follow-up
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3432
+    title: 'standard: algorithm-specific metric definition and observation contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3432
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - domain:audit-trail
+      - type:follow-up
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3433
+    title: 'feature: per-repository Hugging Face projection and staged promotion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3433
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - domain:audit-trail
+      - type:follow-up
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3434
+    title: 'feature: algorithm-scoped cross-run insights and decision briefs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3434
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - domain:audit-trail
+      - type:follow-up
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3435
+    title: 'bug: make hook installation worktree-aware'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3435
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:harness
+      - cat:automation
+      - domain:git-hygiene
+      - type:follow-up
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3436
+    title: 'bug: make new-branch pre-push checks worktree-aware'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3436
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:harness
+      - cat:automation
+      - domain:git-hygiene
+      - type:follow-up
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3437
+    title: 'standard: require SHA-pinned cross-repository plan evidence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3437
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - cat:automation
+      - domain:audit-trail
+      - type:follow-up
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3438
+    title: Require complete module provenance in installed-wheel smoke tests
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3438
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:ci
+      - domain:testing
+      - domain:environment-parity
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3439
+    title: Audit descriptor-relative readers for FIFO blocking before fstat
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3439
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:harness
+      - domain:security
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3440
+    title: Harden generated HTML against JSON script-tag breakout
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3440
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:harness
+      - domain:workflow-html
+      - domain:security
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3445
+    title: Require status and readiness checks to validate the same source contract as execution
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3445
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:harness
+      - domain:quality
+      - domain:api-contracts
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3446
+    title: Audit bounded JSON parsers for uncaught depth and resource exceptions
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3446
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:harness
+      - domain:testing
+      - domain:security
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3447
+    title: Add cross-format CLI behavior parity tests for option-bearing commands
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3447
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:tooling
+      - domain:cli-ux
+      - domain:test-coverage
+    initial_status: triage
+    priority: 0
     gh_assignees: []
     body_excerpt: ''

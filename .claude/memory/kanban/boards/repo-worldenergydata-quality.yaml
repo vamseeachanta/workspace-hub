@@ -843,7 +843,6 @@ cards:
       - bug
       - priority:high
       - cat:data
-      - status:plan-review
       - status:plan-approved
       - domain:quality
       - lane:codex
