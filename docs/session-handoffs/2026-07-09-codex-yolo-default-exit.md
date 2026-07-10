@@ -55,6 +55,7 @@ Official behavior references:
 - The two operational artifacts are user-level files outside every repository.
 - The shared `workspace-hub` checkout was not used for implementation. Preflight found it on `main`, dirty from unrelated state, and diverged from `origin/main`; none of that state was altered or swept into this closeout.
 - This handoff is the sole change on branch `chore/codex-yolo-exit-20260709`, based on the then-current `origin/main`.
+- The first normal branch push was blocked before network publication by the known isolated-worktree pre-push topology defect: sibling tier-1 repos could not be resolved. After targeted validation passed, the branch was published with the repository-documented, hook-logged `GIT_PRE_PUSH_SKIP=1` path. No branch-content test or review failed, and no PR was opened.
 
 ## Cleanup / Preserved State
 
