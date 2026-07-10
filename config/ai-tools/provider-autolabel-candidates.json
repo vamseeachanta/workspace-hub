@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-10T01:21:42.006258Z",
+  "generated_at": "2026-07-10T05:23:25.256292Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 7,
+  "eligible_count": 9,
   "applied": [],
   "candidates": [
     {
@@ -216,6 +216,77 @@
       "provider_status": "underused",
       "work_type": [
         "implementation"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2816,
+      "title": "feat(workstations): collect-equality.ps1 \u2014 accurate Windows compute + restore RAM floor [#2801 family]",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2816",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:harness",
+        "status:plan-review",
+        "status:plan-approved",
+        "gate:completeness",
+        "domain:workstations-windows-readiness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-06-10T16:30:16Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 3063,
+      "title": "uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3063",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:engineering",
+        "domain:workflow-standardization",
+        "status:plan-approved",
+        "dispatch:ready",
+        "gate:completeness",
+        "lane:codex",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-07-06T18:35:45Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
       ],
       "target_label": "agent:claude",
       "confidence": 0.9,

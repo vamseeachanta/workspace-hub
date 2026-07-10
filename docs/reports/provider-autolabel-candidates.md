@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-07-10T01:21:42.006258Z
+Generated: 2026-07-10T05:23:25.256292Z
 Apply mode: False
 Threshold: 0.9
 
@@ -12,6 +12,8 @@ Threshold: 0.9
 | #2760 revise(naval-arch): B1528 SIROCCO force calculation review updates | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2778 feat(architecture): codify retrieval-time wiki-sibling routing rule + planning/citation/frontmatter plumbing | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2815 feat(workstations): Windows Task Scheduler reads schedule-tasks.yaml + EqualityReport live-validation [#2801 family] | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2816 feat(workstations): collect-equality.ps1 — accurate Windows compute + restore RAM floor [#2801 family] | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #3063 uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging) | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3385 Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links) | agent:codex | 0.90 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-high-priority |
 | #3030 Dispatch-time codex weekly-quota gate: suspend lane:codex routing when available <10% | agent:codex | 0.75 | no | execution-ready, strong-codex-language-match, provider-high-priority |
 | #3143 bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session | agent:codex | 0.75 | no | execution-ready, strong-codex-language-match, provider-high-priority |

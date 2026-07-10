@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-10T01:21:44Z
+Generated: 2026-07-10T05:23:29Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,18 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3426 | feat(governance): deploy completeness closeout contract to worldenergydata | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3424 | [skills] Add transactional metadata-only folder-note publication workflow | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3423 | feat(landman-desk): route work to landmen or trainees and close the guided-training feedback loop | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3422 | feat(landman-desk): connect pilot county and federal-acreage sources to the evidence workflow | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3421 | feat(landman-desk): export a broker-ready reviewed diligence packet | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3420 | feat(landman-desk): add reviewer QA, exception disposition, and signoff | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3419 | feat(landman-desk): build the tract evidence ledger and exception queue | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3418 | feat(landman-desk): turn project intake into an assigned tract work package | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3417 | security(landman-desk): enforce private records, role access, retention, and audit boundaries | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3416 | chore(landman-desk): establish the private application repository and public/private data boundary | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3415 | research(landman-desk): validate broker workflow and lock a federal-acreage-aware pilot | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3414 | epic(landman-project-desk): broker workflow, QA, and federal-acreage diligence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3408 | Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3404 | Explore direct SSH path to gpu-claw without WireGuard dependency | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3403 | Repair Linux voice dictation rollout and VNC consistency contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
@@ -51,7 +63,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3398 | chore(harness): add legal-sanity precommit entries for assetutilities and worldenergydata | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3397 | bug(readiness): R-HOOKS false-missing on Windows CRLF paths | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3392 | Compliance alert: W28 — 11% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3389 | Completeness gate reopens PR-merge-closed plan-approved issues (workflow friction, not a config bug) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3389 | Completeness gate reopens PR-merge-closed plan-approved issues (workflow friction, not a config bug) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3387 | Bridge step-5 snapshot is non-monotonic — compacted live index can overwrite a richer committed memory snapshot (child of #3384) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3385 | Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3382 | chore(dev-workflow): standardize + roll formatting pre-commit (black/isort/flake8) across Python repos | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
@@ -231,18 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2751 | Cross-platform harness setup: integrate AI-provider bootstrap, auth orchestration, macOS+PowerShell, per-machine status registry | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2750 | Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2749 | Compliance alert: W21 — 50% (medium) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2741 | test(deckhand): validate Telegram dispatch smoke tests and destructive-action canary | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2739 | feat(hermes): promote ace-linux-2 as first Telegram/Hermes dispatch worker | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2738 | feat(hermes): harden ace-linux-1 Telegram gateway as dispatch coordinator | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2737 | feat(hermes): enable Telegram/Hermes control-surface dispatch across approved machines | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2736 | design: migration plan from per-provider memory stores (Claude / Codex / Gemini local state) into Hermes canonical memory | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #2735 | design: memory write/read API for non-Hermes providers (Claude / Codex / Gemini) → Hermes canonical memory | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #2733 | epic: make Hermes agent memory canonical across all AI providers | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #2732 | feat(data-governance): canonical first/second-level mount and folder taxonomy for repo ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2731 | feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2730 | fix(gemini): remove unsupported permissionMode keys from agent definitions | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2723 | chore(enforcement): clean up dead code in .git/hooks/pre-commit (deferred from #2722) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2721 | fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts — retrofit with `script -qc` | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

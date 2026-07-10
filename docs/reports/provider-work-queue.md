@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-07-10T01:21:41.845824Z
+Generated: 2026-07-10T05:23:22.452434Z
 Current week: 2026-W28
 Recommended provider order: gemini, claude, codex
 
@@ -9,19 +9,19 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 60
-- Total routed candidates: 178
+- Execution-ready candidates: 57
+- Total routed candidates: 179
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2738 feat(hermes): harden ace-linux-1 Telegram gateway as dispatch coordinator | yes | existing claude agent label | enhancement, priority:high, cat:ai-orchestration, cat:operations, machine:ace-linux-1, agent:claude |
-| #2739 feat(hermes): promote ace-linux-2 as first Telegram/Hermes dispatch worker | yes | existing claude agent label | enhancement, priority:high, cat:ai-orchestration, cat:operations, machine:ace-linux-2, agent:claude |
 | #2751 Cross-platform harness setup: integrate AI-provider bootstrap, auth orchestration, macOS+PowerShell, per-machine status registry | yes | strategy/workflow/architecture language | priority:high, cat:harness, domain:machine-setup, machine:dev-primary, status:plan-approved, dispatch:ready |
 | #2754 throughput(workstations): activate ace-linux-1 provider/machine lane | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:operations, machine:ace-linux-1, status:plan-approved |
 | #2755 throughput(workstations): activate ace-linux-2 provider/machine lane | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:operations, status:working, machine:ace-linux-2 |
 | #2760 revise(naval-arch): B1528 SIROCCO force calculation review updates | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering-calculations, domain:naval-architecture, machine:dev-primary, status:plan-approved |
 | #2778 feat(architecture): codify retrieval-time wiki-sibling routing rule + planning/citation/frontmatter plumbing | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, cat:harness, machine:dev-primary, status:plan-approved |
 | #2815 feat(workstations): Windows Task Scheduler reads schedule-tasks.yaml + EqualityReport live-validation [#2801 family] | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, machine:ace-win-1, status:plan-review, status:plan-approved |
+| #2816 feat(workstations): collect-equality.ps1 — accurate Windows compute + restore RAM floor [#2801 family] | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, status:plan-review, status:plan-approved, gate:completeness |
+| #3063 uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging) | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, domain:workflow-standardization, status:plan-approved, dispatch:ready |
 
 ## codex
 
@@ -43,12 +43,11 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## gemini
 
 - Routing priority: highest
-- Execution-ready candidates: 1
-- Total routed candidates: 3
+- Execution-ready candidates: 0
+- Total routed candidates: 2
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2733 epic: make Hermes agent memory canonical across all AI providers | yes | existing gemini agent label | priority:high, cat:ai-orchestration, machine:dev-primary, agent:gemini, agent:claude, agent:codex |
 | #2854 gap(memory): Hermes read-back leg missing — consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex) | no | research/triage/audit language | priority:medium, cat:ai-orchestration, domain:knowledge-management-platform, lane:claude |
 | #3031 triage: backfill placeholder bodies on gh-next-id.sh / backfill-github-refs.sh created issues | no | research/triage/audit language | priority:medium, domain:work-queue |
 
