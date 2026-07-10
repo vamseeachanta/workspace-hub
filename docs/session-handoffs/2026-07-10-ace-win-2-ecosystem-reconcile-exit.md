@@ -44,17 +44,17 @@ parallel work, publish verified evidence, and prepare an executable ace-win-1 ha
 - Before staging this exit handoff, `workspace-hub` was clean and synchronized with
   `origin/main` at `ed4e181f8`. The final handoff commit/push SHA must be reported in
   the session's final status rather than embedded self-referentially here.
-- `workspace-hub` linked worktree: issue
-  [#3424](https://github.com/vamseeachanta/workspace-hub/issues/3424), preserved as
+- `workspace-hub` linked worktrees: issues
+  [#3424](https://github.com/vamseeachanta/workspace-hub/issues/3424) and
+  [#3443](https://github.com/vamseeachanta/workspace-hub/issues/3443), preserved as
   active parallel work.
-- `deckhand`: the earlier issue-529 stash is no longer present, but
-  `scripts/deckhand/licensed-run-agent/run-agent.cmd` became dirty during closeout.
-  This session did not create or alter that change; ownership is not yet traced.
+- `deckhand`: clean `main`; the earlier issue-529 stash is no longer present. A
+  transient edit to `scripts/deckhand/licensed-run-agent/run-agent.cmd` appeared during
+  adversarial review and was resolved by its external owner before the final audit.
 - `llm-wiki-acma`: clean `chore/issue-215-it-tooling-plan`; linked worktrees for
-  issues 214 and 216 are preserved as active parallel work. The issue-214 worktree
-  contains four untracked `scripts/review/results/2026-07-10-plan-214-*.md` artifacts,
-  classified as expected in-progress plan-review output; no `.err` artifact was present
-  on local re-verification.
+  issues 214 and 216 are preserved as active parallel work. The issue-214 worktree is
+  clean; four plan-review result files observed during adversarial review were
+  dispositioned by its external owner before the final audit.
 - No in-repo `*.partial` or `*.tmp` files were found.
 - No `C:\ws\.cleanup-lock`, `C:\ws\.cleanup-trash`, or abandoned equality-publish
   worktree was found.
@@ -94,15 +94,11 @@ collection will not clear all of these because several are measurement or policy
 
 ## Remaining action items — recommended order
 
-1. **Disposition the unexpected deckhand edit without trampling it.** Identify the
-   owner/session for `scripts/deckhand/licensed-run-agent/run-agent.cmd`; then commit,
-   preserve, or revert it only under that task's authority. Do not sweep it into a
-   workspace-hub cleanup commit.
-2. **Run ace-win-1 reconciliation.** Use
+1. **Run ace-win-1 reconciliation.** Use
    `docs/session-handoffs/2026-07-09-ace-win-1-ecosystem-reconcile-entry-prompt.md`.
    Preserve its PII boundary: never publish the raw OS hostname. Stop if the collector
    or scheduler cannot honor the PII-safe `ace-win-1` label.
-3. **Plan a PII-safe Windows equality fix.** Create/use a GitHub issue for:
+2. **Plan a PII-safe Windows equality fix.** Create/use a GitHub issue for:
    - native Task Scheduler enumeration in Windows evidence;
    - a real machine-label/host-redaction override across collector, curation, scheduler,
      and equality publication;
@@ -112,24 +108,24 @@ collection will not clear all of these because several are measurement or policy
    - a Windows-safe publisher lock instead of the missing Git Bash `flock` command.
    This is implementation work: issue → plan → adversarial review → explicit user
    approval → TDD → code review. Never self-approve the plan.
-4. **Plan the curation UTF-8 fix.** `curate-session-memory.ps1` should set
+3. **Plan the curation UTF-8 fix.** `curate-session-memory.ps1` should set
    `PYTHONUTF8=1` before invoking its Python engine, as `equality-report.ps1` already
    does. Until then, keep the environment workaround in operator prompts.
-5. **Plan Windows runtime-install semantics.** Decide whether the installer should use
+4. **Plan Windows runtime-install semantics.** Decide whether the installer should use
    an NTFS symlink, hard link, or verified copy when `core.symlinks=false`; it must not
    report `LINK` for an ordinary file without stating the actual object type.
-6. **Decide whether Hermes is required on licensed Windows hosts.** If yes, define and
+5. **Decide whether Hermes is required on licensed Windows hosts.** If yes, define and
    install the supported Windows home/config/memory path. If no, grade the absent Hermes
    surfaces as expected divergence rather than perpetual failure.
-7. **Run the solver licence follow-up** when the licensed application can be opened and
+6. **Run the solver licence follow-up** when the licensed application can be opened and
    checked interactively.
-8. **Prune worktrees only after their issues finish.** Recheck ownership/activity for
-   workspace-hub issue 3424 and llm-wiki-acma issues 214/216 before any guarded removal.
+7. **Prune worktrees only after their issues finish.** Recheck ownership/activity for
+   workspace-hub issues 3424/3443 and llm-wiki-acma issues 214/216 before any guarded
+   removal.
 
 ## Expected residue
 
 - Active issue worktrees named above.
-- Four untracked issue-214 plan-review result files in its active worktree.
 - Two generated memory files from the 04:30 `MemoryBridgeSync` run:
   `.claude/memory/agents.md` and `.claude/memory/topics/INDEX.md`. They remain
   uncommitted and must be validated through the memory-bridge workflow before landing.
@@ -138,15 +134,14 @@ collection will not clear all of these because several are measurement or policy
 - Ambient Windows/Outlook/Adobe temp logs under `%TEMP%`; none were created as requested
   deliverables and none were deleted.
 
-## Unexpected residue / exit blocker
+## Cleanup verdict
 
-- `C:\ws\deckhand\scripts\deckhand\licensed-run-agent\run-agent.cmd` is modified with
-  no traced owner. Preserve it untouched and route it to the deckhand task owner. Do not
-  report a fully clean machine until it is dispositioned.
+`EXPECTED` — only the named active worktrees, scheduled-memory outputs, runtime backup,
+and ambient operating-system temp files remain. No unexpected task residue remained at
+the final audit.
 
 ## Exact next checkpoint
 
-First identify the owner/disposition of the deckhand edit. Then open a new session on
-ace-win-1 with the committed entry prompt, run its startup and report-only
-reconciliation, and stop at the first PII/identity or approval-gated blocker. Return
-evidence to the Windows equality follow-up issue before changing code.
+Open a new session on ace-win-1 with the committed entry prompt, run its startup and
+report-only reconciliation, and stop at the first PII/identity or approval-gated
+blocker. Return evidence to the Windows equality follow-up issue before changing code.
