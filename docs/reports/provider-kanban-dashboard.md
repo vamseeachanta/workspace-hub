@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-10T09:22:29Z
+Generated: 2026-07-10T17:25:49Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,13 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3448 | chore(ecosystem): audit repository detection for linked worktree compatibility | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3447 | Add cross-format CLI behavior parity tests for option-bearing commands | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3446 | Audit bounded JSON parsers for uncaught depth and resource exceptions | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3445 | Require status and readiness checks to validate the same source contract as execution | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3444 | infra: route Python environments off fuseblk worktrees | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3443 | governance(legal): define repo-posture scanner profiles and replace private-repo scan skips | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3442 | Track Codex CLI 0.144 stdin regression in cross-review harness | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3440 | Harden generated HTML against JSON script-tag breakout | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3439 | Audit descriptor-relative readers for FIFO blocking before fstat | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3438 | Require complete module provenance in installed-wheel smoke tests | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -56,7 +63,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3430 | standard: replayable public input and source snapshot contract | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3429 | standard: content-addressed artifact and Hugging Face residency contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3428 | standard: deterministic run identity and algorithm version contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3427 | epic: repository-linked algorithm run datasets and decision intelligence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3427 | epic: repository-linked algorithm run datasets and decision intelligence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3426 | feat(governance): deploy completeness closeout contract to worldenergydata | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3424 | [skills] Add transactional metadata-only folder-note publication workflow | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3423 | feat(landman-desk): route work to landmen or trainees and close the guided-training feedback loop | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -236,13 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2782 | Bug: hardcoded /mnt/github paths silently no-op (env-var refactor) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2781 | Security: workspace-wide yaml.Loader/pickle/eval/exec + SQLi sweep | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2780 | Bug: gate_pass_review.sh subshell counter always REJECTS (2 repos) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2779 | Security: shell=True + f-string injection in git_manager.py (4 repos) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2778 | feat(architecture): codify retrieval-time wiki-sibling routing rule + planning/citation/frontmatter plumbing | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2776 | Cross-wiki linking discipline — supersede stale governance + add enforcement script | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2773 | decision(workstations): choose tier-1 repo placement for licensed-win-2 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2772 | decision(workstations): choose tier-1 repo placement for licensed-win-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2768 | epic(ocimf): close out MEG3/MEG4 coefficient ingestion and reference gaps | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2765 | feat(operations): add scheduler parity report for system cron and Hermes Gateway cron | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 
 ## Lane: blocked (0)
 

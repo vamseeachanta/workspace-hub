@@ -1,48 +1,10 @@
 {
-  "generated_at": "2026-07-10T09:22:26.631673Z",
+  "generated_at": "2026-07-10T17:25:28.167258Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 9,
   "applied": [],
   "candidates": [
-    {
-      "number": 2778,
-      "title": "feat(architecture): codify retrieval-time wiki-sibling routing rule + planning/citation/frontmatter plumbing",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2778",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:data-pipeline",
-        "cat:harness",
-        "machine:dev-primary",
-        "status:plan-approved",
-        "dispatch:ready",
-        "gate:completeness",
-        "domain:repo-organization-structure",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-06-10T16:29:33Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
     {
       "number": 2815,
       "title": "feat(workstations): Windows Task Scheduler reads schedule-tasks.yaml + EqualityReport live-validation [#2801 family]",
@@ -290,6 +252,39 @@
       "eligible": true
     },
     {
+      "number": 3285,
+      "title": "wf-api(digitalmodel): adopt ResultEnvelope + schemas + goldens (FFS, buckling, mooring, wall-thickness)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3285",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "domain:workflow-standardization",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:codex"
+      ],
+      "updatedAt": "2026-06-29T11:47:36Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
       "number": 3385,
       "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
@@ -511,7 +506,7 @@
         "status:needs-plan",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-10T07:54:45Z",
+      "updatedAt": "2026-07-10T09:25:20Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -532,23 +527,15 @@
       "eligible": false
     },
     {
-      "number": 2765,
-      "title": "feat(operations): add scheduler parity report for system cron and Hermes Gateway cron",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2765",
+      "number": 2920,
+      "title": "Roll out update-harness-tools.sh across machine ecosystem",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2920",
       "labels": [
-        "enhancement",
         "priority:medium",
-        "cat:ai-orchestration",
-        "cat:operations",
-        "cat:harness",
-        "domain:automation",
-        "machine:dev-primary",
-        "status:needs-plan",
-        "dispatch:ready",
-        "gate:completeness",
+        "domain:machine-setup",
         "lane:claude"
       ],
-      "updatedAt": "2026-06-10T16:29:29Z",
+      "updatedAt": "2026-06-10T16:10:47Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
@@ -556,7 +543,6 @@
       "provider_priority": "high",
       "provider_status": "needs_cleanup",
       "work_type": [
-        "research",
         "implementation"
       ],
       "target_label": "agent:codex",

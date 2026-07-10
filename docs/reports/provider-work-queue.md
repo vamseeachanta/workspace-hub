@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-07-10T09:22:26.176729Z
+Generated: 2026-07-10T17:25:08.735786Z
 Current week: 2026-W28
 Recommended provider order: gemini, claude, codex
 
@@ -9,12 +9,11 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 54
-- Total routed candidates: 182
+- Execution-ready candidates: 53
+- Total routed candidates: 183
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2778 feat(architecture): codify retrieval-time wiki-sibling routing rule + planning/citation/frontmatter plumbing | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, cat:harness, machine:dev-primary, status:plan-approved |
 | #2815 feat(workstations): Windows Task Scheduler reads schedule-tasks.yaml + EqualityReport live-validation [#2801 family] | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, machine:ace-win-1, status:plan-review, status:plan-approved |
 | #2816 feat(workstations): collect-equality.ps1 — accurate Windows compute + restore RAM floor [#2801 family] | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, status:plan-review, status:plan-approved, gate:completeness |
 | #3063 uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging) | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, domain:workflow-standardization, status:plan-approved, dispatch:ready |
@@ -22,12 +21,13 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3065 uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, domain:workflow-standardization, status:plan-approved, dispatch:ready |
 | #3282 wf-api(assetutilities): ResultEnvelope + run_workflow() + registry request/response schema [FOUNDATIONAL] | yes | strategy/workflow/architecture language | enhancement, priority:high, domain:workflow-standardization, status:plan-approved, gate:completeness, lane:claude |
 | #3283 wf-api(ecosystem): determinism harness — provenance stamp + result hash + golden-baseline template | yes | strategy/workflow/architecture language | enhancement, priority:high, domain:workflow-standardization, status:plan-approved, gate:completeness, lane:codex |
+| #3285 wf-api(digitalmodel): adopt ResultEnvelope + schemas + goldens (FFS, buckling, mooring, wall-thickness) | yes | strategy/workflow/architecture language | enhancement, priority:high, domain:workflow-standardization, status:plan-approved, gate:completeness, lane:codex |
 
 ## codex
 
 - Routing priority: high
 - Execution-ready candidates: 4
-- Total routed candidates: 16
+- Total routed candidates: 15
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -38,7 +38,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #2880 feat(codex): make yolo-equivalent permission defaults travel across machines | no | existing codex agent label | enhancement, priority:high, cat:harness, domain:ai-config, machine:multi, agent:codex |
 | #3026 ace-linux-2: gnome-shell crash recovery (2026-06-10) + /dev/sda end-of-life replacement plan | no | implementation/test/fix language | priority:high, lane:claude |
 | #3430 standard: replayable public input and source snapshot contract | no | implementation/test/fix language | enhancement, priority:high, cat:data-pipeline, domain:audit-trail, type:follow-up, status:needs-plan |
-| #2765 feat(operations): add scheduler parity report for system cron and Hermes Gateway cron | no | implementation/test/fix language | enhancement, priority:medium, cat:ai-orchestration, cat:operations, cat:harness, domain:automation |
+| #2920 Roll out update-harness-tools.sh across machine ecosystem | no | implementation/test/fix language | priority:medium, domain:machine-setup, lane:claude |
 
 ## gemini
 
