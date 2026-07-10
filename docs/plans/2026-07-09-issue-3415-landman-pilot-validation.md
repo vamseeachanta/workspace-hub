@@ -1,6 +1,6 @@
 # Plan for [#3415](https://github.com/vamseeachanta/workspace-hub/issues/3415): validate the broker workflow and lock a federal-acreage-aware pilot
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-07-09
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3415
