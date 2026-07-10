@@ -78,6 +78,7 @@ tasks:
       cd /mnt/local-analysis/deckhand-ops &&
       git pull --ff-only -q ;
       python3 scripts/deckhand/licensed-run-ops.py alarm --no-telegram
+      --expect-host ace-win-1
       >> $HOME/.deckhand/licensed-run-alarm.log 2>&1
     log: ~/.deckhand/licensed-run-alarm.log
     is_claude_task: false
@@ -89,6 +90,8 @@ tasks:
       so its fetch+reset never clobbers an operator's shared checkout. Runs --no-telegram
       (log-only) until the owner wires DECKHAND_LICENSED_RUN_TELEGRAM_BOT_TOKEN +
       DECKHAND_LICENSED_RUNS_CHANNEL_ID in ~/.deckhand/licensed-run.env, then drop the flag.
+      --expect-host ace-win-1 (deckhand#529/#532): flags a stale/missing ace-win-1
+      heartbeat explicitly — expected to trip log-only until the host activates.
 
   - id: drive-index-refresh-dde
     label: DDE drive-index refresh (#3336)
