@@ -1,11 +1,11 @@
-generated_at: "2026-07-04T20:00:10"
+generated_at: "2026-07-10T02:51:03"
 schema_version: 4
 machine: "dev-secondary"
 host: "ace-linux-2"
 os: linux
 status: active
 provenance:
-  checkout_sha: "e1af285c3"
+  checkout_sha: "b80831601"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA T400 4GB"}
-    headroom: {ram_avail_mib: 24908, disk_avail_gb: 810}
+    headroom: {ram_avail_mib: 24793, disk_avail_gb: 745}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -30,11 +30,11 @@ dimensions:
     python_cmd: uv-run
     readiness_ref: harness-readiness-ace-linux-2.yaml
     readiness_overall: fail
-  skills: {repo_skill_count: 419}
+  skills: {repo_skill_count: 420}
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-07-04T19:59:17"
+    context_md_mtime: "2026-07-09T04:35:01"
   provider_harness:
     schema_version: 1
     providers:
@@ -68,7 +68,7 @@ dimensions:
   scheduler:
     has_repo_sync: true
     has_parity_review: false
-    job_count: 24
+    job_count: 26
   session_curation:
     last_curated_at: "2026-07-04T23:47:01+00:00"
     sessions_24h: 9
