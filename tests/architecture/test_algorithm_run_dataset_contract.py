@@ -257,6 +257,21 @@ def test_result_envelope_crosswalk_does_not_alias_identity() -> None:
     }
 
 
+def test_ecosystem_propagation_uses_shared_contract_and_thin_adapters() -> None:
+    propagation = load_contract()["ecosystem_propagation"]
+    manifest = yaml.safe_load(
+        (ROOT / "docs/registry/workflow-manifest.json").read_text(encoding="utf-8")
+    )
+    registered = {row["repo"] for row in manifest["repos"]}
+
+    assert set(propagation["observed_registered_repositories"]) == registered
+    assert propagation["shared_schema_authority"] == "workspace-hub"
+    assert propagation["adapter_style"] == "thin_repository_adapter"
+    assert propagation["conformance_tests"] == "required"
+    assert propagation["repository_contract_redefinition"] is False
+    assert propagation["fresh_manifest_required_before_adoption"] is True
+
+
 def test_issue_graph_is_complete_acyclic_and_independently_gated() -> None:
     issues = load_contract()["issue_graph"]
 
@@ -264,6 +279,10 @@ def test_issue_graph_is_complete_acyclic_and_independently_gated() -> None:
     assert {key: value["url"] for key, value in issues.items()} == CHILDREN
     assert all(value["own_approval_gate"] is True for value in issues.values())
     assert all(value["parent_approval_inherited"] is False for value in issues.values())
+    assert all(
+        record["issue_owner"] in CHILDREN.values()
+        for record in load_contract()["records"].values()
+    )
     assert_acyclic(issues)
 
 
