@@ -107,6 +107,7 @@ def test_contract_has_locked_decisions_and_records() -> None:
     assert set(contract["decisions"]) == DECISIONS
     assert set(contract["records"]) == RECORDS
     assert all(record["owner"] for record in contract["records"].values())
+    assert all(record["residency"] for record in contract["records"].values())
 
 
 def test_dataset_ownership_is_per_repository() -> None:
