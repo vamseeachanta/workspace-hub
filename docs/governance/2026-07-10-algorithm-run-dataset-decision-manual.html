@@ -47,17 +47,17 @@
   @media (max-width:560px) { header, main, footer { width:min(100% - 24px,1120px); } h1 { font-size:27px; } .summary { grid-template-columns:1fr; } table { display:block; overflow-x:auto; } }
 </style>
 </head>
-<body>
+<body data-contract-version="1.0.0">
 <header>
-  <p class="meta">Architecture decision manual &middot; 2026-07-10 &middot; workspace-hub</p>
+  <p class="meta">Architecture decision manual &middot; contract 1.0.0 &middot; 2026-07-10 &middot; workspace-hub</p>
   <h1>Repository-Linked Algorithm Run Datasets</h1>
   <p>Durable, replayable algorithm inputs and outputs from <code>digitalmodel</code> and
      <code>worldenergydata</code>, published as repository-specific Hugging Face datasets and rendered through
      one rolling HTML report per algorithm in the owning source repository.</p>
-  <div class="notice"><strong>Ungated draft planning artifact.</strong> This manual records user-selected architecture decisions for
-    <a href="https://github.com/vamseeachanta/workspace-hub/issues/3427">workspace-hub issue 3427</a>.
-    Its full contents remain under adversarial review. It is not a normative implementation contract and does
-    not authorize implementation of the parent or any child issue.</div>
+  <div class="notice"><strong>Approved parent architecture contract.</strong> This manual is the human-readable
+    view of contract 1.0.0 for <a href="https://github.com/vamseeachanta/workspace-hub/issues/3427">workspace-hub
+    issue 3427</a>. It fixes the shared invariants only. Every child issue retains its own plan, review, owner
+    approval, TDD, and artifact-review gates.</div>
   <nav aria-label="Document sections">
     <a href="#decisions">Decisions</a><a href="#architecture">Architecture</a><a href="#identity">Identity</a>
     <a href="#records">Records</a><a href="#dataset">Dataset</a><a href="#report">Report</a>
@@ -78,7 +78,7 @@
   <table>
     <thead><tr><th>ID</th><th>Decision</th><th>Consequence</th></tr></thead>
     <tbody>
-      <tr><td>D-01</td><td>One dataset per owning repository</td><td>Proposed targets are <code>&lt;hf-org&gt;/digitalmodel-runs</code> and <code>&lt;hf-org&gt;/worldenergydata-runs</code>; namespace ownership is a publication preflight.</td></tr>
+      <tr><td>D-01</td><td>One dataset per owning repository</td><td>Targets are <code>aceengineer/digitalmodel-runs</code> and <code>aceengineer/worldenergydata-runs</code>; authenticated namespace ownership remains a publication preflight.</td></tr>
       <tr><td>D-02</td><td>Strict public reproducibility</td><td>Restricted, pointer-only, ambiguous-license, or incomplete inputs cannot enter the public projection.</td></tr>
       <tr><td>D-03</td><td>Composite algorithm version</td><td>A semantic label alone is insufficient; a dirty source checkout fails public promotion.</td></tr>
       <tr><td>D-04</td><td>Deterministic run identifier</td><td>An exact repeat collapses to one run. There are no attempt IDs in the public model.</td></tr>
@@ -257,6 +257,11 @@ objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native
 <section id="compatibility">
   <h2>8. Existing Ecosystem Compatibility</h2>
   <p>The run ledger extends the existing execution and report contracts; it does not replace them.</p>
+  <p>Propagation across the repository ecosystem uses the shared workspace-hub schema, the fresh workflow
+     discovery manifest, thin repository adapters, and common conformance tests. A repository may add native
+     input, output, metric, and artifact schemas but may not redefine the shared envelope or promotion gates.
+     Phase 1 publishes only the two named domain datasets; other registered repositories adopt the contract
+     through their own independently approved issues when a public-run use case exists.</p>
   <table>
     <thead><tr><th>Existing surface</th><th>Reuse</th><th>Public-ledger hardening</th></tr></thead>
     <tbody>
@@ -266,6 +271,7 @@ objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native
       <tr><td><code>digitalmodel.workflow_api</code> at <code>origin/main@529c4ba13d90</code></td><td>Repository runner, provenance adapter, golden harness, and four workflow goldens</td><td>Carry the measured envelope and golden evidence, then derive strict public input, version, environment, and output-set identities under the new contracts.</td></tr>
       <tr><td>Execution manifest</td><td>Commands, replay, environment, checksums, tests, legal evidence, promotion gates</td><td>Add algorithm version, canonical input set, output equality set, HF revision, and public acceptance state.</td></tr>
       <tr><td>Report evidence bundle</td><td>Audience, derivation chain, claims, source bindings, review and legal evidence</td><td>Add the standard algorithm report section contract and exact run/dataset revision bindings.</td></tr>
+      <tr><td>Customer API from <a href="https://github.com/vamseeachanta/workspace-hub/issues/3289">issue 3289</a></td><td>Private request validation and workflow execution</td><td>Retain a separate approval gate and never expose or alias private execution identity as the deterministic public <code>run_id</code>.</td></tr>
     </tbody>
   </table>
   <p>An existing registry <code>workflow_id</code> uses <code>repo:id@integer-version</code>. The run ledger will
@@ -303,6 +309,7 @@ objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native
 <section id="sources">
   <h2>10. Sources and Deferred Detail</h2>
   <ul>
+    <li><a href="../architecture/algorithm-run-dataset-contract.yaml">Algorithm run dataset contract 1.0.0</a></li>
     <li><a href="../architecture/execution-manifest.schema.yaml">Execution manifest schema</a> and <a href="../architecture/report-evidence-bundle.schema.yaml">report evidence bundle schema</a></li>
     <li><code>digitalmodel/docs/registry/workflows.yaml</code> and existing parametric result manifests</li>
     <li><code>worldenergydata/data/source-refresh-acceptance-contract.json</code> and BSEE product manifests</li>
@@ -315,7 +322,7 @@ objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native
      details may tighten this contract but may not weaken its public replay, immutability, or review gates.</p>
 </section>
 </main>
-<footer>Draft decision manual for workspace-hub issue 3427. Source repositories remain authoritative for
+<footer>Approved parent decision manual for workspace-hub issue 3427. Source repositories remain authoritative for
 algorithm code and schemas; exact Hugging Face revisions remain authoritative for accepted public run records.</footer>
 </body>
 </html>
