@@ -174,46 +174,57 @@ metrics:
 records:
   algorithm_version:
     owner: source_repository
+    residency: source_descriptor_and_pinned_hf_reference
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3428
     identity: algorithm_version_id
   run:
     owner: dedicated_hf_dataset
+    residency: dedicated_hf_dataset
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3428
     identity: run_id
   input:
     owner: dedicated_hf_dataset
+    residency: hf_object_or_immutable_public_uri
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3430
     identity: input_record_id
   output:
     owner: dedicated_hf_dataset
+    residency: hf_object_and_normalized_record
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3431
     identity: output_record_id
   metric_definition:
     owner: source_repository
+    residency: source_definition_and_pinned_hf_reference
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3432
     identity: metric_definition_id
   metric_observation:
     owner: dedicated_hf_dataset
+    residency: dedicated_hf_dataset
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3432
     identity: metric_observation_id
   artifact:
     owner: dedicated_hf_dataset
+    residency: content_addressed_hf_object_or_explicit_exclusion
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3429
     identity: content_digest
   failure:
     owner: dedicated_hf_dataset
+    residency: dedicated_hf_dataset
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3431
     identity: failure_id
   publication:
     owner: workspace-hub
+    residency: hf_record_and_source_report_cross_reference
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3433
     identity: promotion_id
   insight:
     owner: source_repository
+    residency: hf_machine_record_and_source_report_rendering
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3434
     identity: insight_id
   decision_brief:
     owner: source_repository
+    residency: hf_machine_record_and_source_report_rendering
     issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3434
     identity: decision_brief_id
 
