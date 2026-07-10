@@ -3226,3 +3226,96 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#929
+    title: 'EPIC: Field-development data foundation — terrain/bathymetry sources + past-projects registry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/929
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#930
+    title: 'Terrain & bathymetry public sources: verify + catalog (GEBCO, NOAA, BOEM; USGS 3DEP for onshore)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/930
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#931
+    title: 'Past-projects registry: historical field developments as selectable lists (GoM first)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/931
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#932
+    title: 'Analogs query layer: region / water-depth / asset-type filters over past projects'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/932
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#933
+    title: 'Data source: USGS 3DEP DEMs (onshore US terrain) — dynamic image service + staged tiles'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/933
+    gh_state: open
+    gh_labels:
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#934
+    title: 'Data source: GEBCO global bathymetry grid (15 arc-second netCDF)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/934
+    gh_state: open
+    gh_labels:
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#935
+    title: 'Data source: NOAA NCEI Coastal Relief Model (3 arc-second, THREDDS)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/935
+    gh_state: open
+    gh_labels:
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#936
+    title: 'Data source: BOEM northern GoM deepwater bathymetry grid (40-ft GeoTIFF)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/936
+    gh_state: open
+    gh_labels:
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

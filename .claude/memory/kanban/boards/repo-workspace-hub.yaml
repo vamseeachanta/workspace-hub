@@ -22768,3 +22768,47 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3448
+    title: 'chore(ecosystem): audit repository detection for linked worktree compatibility'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3448
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3449
+    title: 'Client-wiki factory: support metadata-only bootstrap without invented raw bucket'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3449
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3450
+    title: 'fix(workflow-manifest): distinguish nested-worktree resolution failures from registry drift'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3450
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3451
+    title: 'Legal sanity scan: make empty diff-only runs explicit and fail-closed when evidence is required'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3451
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

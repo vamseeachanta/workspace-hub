@@ -7258,3 +7258,89 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1507
+    title: 'EPIC: Field-development layout, screening & visualization capability'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1507
+    gh_state: open
+    gh_labels:
+      - project
+      - priority:high
+      - cat:engineering-models
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1508
+    title: 'TRACER: onshore demo field end-to-end (DEM + YAML layout + 2D plot + screening calc + Blender clip + API call)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1508
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering-models
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1509
+    title: 'Field-layout model: YAML asset schema + layout engine over terrain/bathymetry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1509
+    gh_state: open
+    gh_labels:
+      - cat:engineering-models
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1510
+    title: 'Visualization & animation: 2D plots, 3D scene export, Blender movies'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1510
+    gh_state: open
+    gh_labels:
+      - cat:engineering-models
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1511
+    title: 'Engineering screening layer: sizing correlations + reuse of existing modules + screening report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1511
+    gh_state: open
+    gh_labels:
+      - cat:engineering-calculations
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1512
+    title: 'Representative API: layout / screen / visualize / analogs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1512
+    gh_state: open
+    gh_labels:
+      - cat:engineering-models
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1513
+    title: 'Renewables extension: wind assets in the field-layout schema'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1513
+    gh_state: open
+    gh_labels:
+      - cat:engineering-models
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
