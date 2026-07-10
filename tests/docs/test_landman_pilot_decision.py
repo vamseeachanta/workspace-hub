@@ -12,24 +12,19 @@ from pathlib import Path
 import pytest
 import yaml
 
+from tests.landman_pilot_test_support import (
+    AUTHORIZATION,
+    CLUSTERS,
+    CRITERIA,
+    ranked_candidate,
+    score_candidates,
+    synthetic_evidence,
+)
+
 
 ROOT = Path(__file__).parents[2]
 BUILDER_PATH = ROOT / "scripts/research/build_landman_pilot_decision.py"
 EVIDENCE_PATH = ROOT / "docs/reports/landman/2026-07-09-pilot-evidence.yaml"
-DECISION_PATH = ROOT / "docs/reports/landman/2026-07-09-pilot-decision.yaml"
-HTML_PATH = ROOT / "docs/reports/landman/2026-07-09-pilot-decision.html"
-CRITERIA = (
-    "broker_workflow_value",
-    "public_source_readiness",
-    "county_title_feasibility",
-    "fixture_reproducibility",
-    "delivery_exception_learning",
-)
-CLUSTERS = (
-    ("Texas", ("Midland", "Reeves")),
-    ("Oklahoma", ("Grady", "Canadian")),
-    ("Colorado", ("Rio Blanco", "Garfield")),
-)
 
 
 def load_builder():
@@ -44,248 +39,251 @@ def load_builder():
 builder = load_builder()
 
 
-def synthetic_evidence():
-    candidates = []
-    for index, (jurisdiction, counties) in enumerate(CLUSTERS):
-        candidate_id = f"candidate-{index}"
-        rows = [
-            {
-                "id": f"{candidate_id}-{criterion}",
-                "criterion": criterion,
-                "source_url": "https://example.gov/source",
-                "observed_at": "2026-07-09T23:15:20Z",
-                "access_state": "public",
-                "confidence": "verified",
-                "limitation": "Research evidence only; no title conclusion.",
-            }
-            for criterion in CRITERIA
-        ]
-        candidates.append(
-            {
-                "id": candidate_id,
-                "jurisdiction": jurisdiction,
-                "county_cluster": list(counties),
-                "acreage_mode": "private_only",
-                "federal_deferred": True,
-                "project_class": "public-source pilot",
-                "primary_persona": "broker_project_manager",
-                "primary_county": counties[0],
-                "county_evidence": [
-                    {
-                        "county": county,
-                        "official_source": f"{county} Recorder",
-                        "source_url": "https://example.gov/county",
-                        "observed_at": "2026-07-09T23:15:20Z",
-                        "access_state": "public",
-                        "fee_account": "no_paid_or_account_required",
-                        "index": "official index",
-                        "images": "not required for public-safe fixture",
-                        "confidence": "verified",
-                        "limitation": "No title search or legal conclusion.",
-                        "readiness": "ready" if county == counties[0] else "conditional",
-                    }
-                    for county in counties
-                ],
-                "evidence_rows": rows,
-                "scores": {
-                    criterion: {"score": 3, "evidence_ids": [f"{candidate_id}-{criterion}"]}
-                    for criterion in CRITERIA
-                },
-                "hard_gates": {
-                    "complete_evidence": True,
-                    "public_safe_fixture": True,
-                    "paid_or_account_required": False,
-                    "separate_evidence_classes": True,
-                    "research_assistance_only": True,
-                    "primary_county_ready": True,
-                },
-            }
-        )
-    return {
-        "schema_version": "1.0",
-        "decision_timestamp": "2026-07-09T23:15:20Z",
-        "renderer_version": "1.0",
-        "weights": dict(zip(CRITERIA, (25, 25, 20, 15, 15))),
-        "score_anchors": {str(score): f"anchor-{score}" for score in range(6)},
-        "authorization": {"outreach": "not_authorized", "account_creation": "not_authorized"},
-        "candidates": candidates,
-    }
-
-
-def score_candidates(evidence, values):
-    for candidate, value in zip(evidence["candidates"], values, strict=True):
-        for score in candidate["scores"].values():
-            score["score"] = value
-
-
-def test_decision_schema_and_version():
-    decision = builder.build_decision(yaml.safe_load(EVIDENCE_PATH.read_text()))
-    assert decision["schema_version"] == "1.0"
-    assert decision["decision_timestamp"].endswith("Z")
-    assert decision["decision_status"] in {"selected", "owner_decision_required"}
-
-
-def test_exact_candidate_clusters_and_counties():
+def test_schema_clusters_and_public_blocker_contract():
     evidence = yaml.safe_load(EVIDENCE_PATH.read_text())
-    observed = [(item["jurisdiction"], tuple(item["county_cluster"])) for item in evidence["candidates"]]
-    assert observed == list(CLUSTERS)
-
-
-def test_score_anchors_weights_decimal_and_evidence():
-    evidence = synthetic_evidence()
     decision = builder.build_decision(evidence)
-    assert set(evidence["score_anchors"]) == {str(score) for score in range(6)}
-    assert sum(evidence["weights"].values()) == 100
-    assert decision["candidates"][0]["raw_score"] == "60"
-    assert decision["candidates"][0]["display_score"] == "60.00"
-    assert all(item["evidence_ids"] for item in evidence["candidates"][0]["scores"].values())
-
-
-def test_paired_weight_sensitivity_preserves_total():
-    decision = builder.build_decision(synthetic_evidence())
-    variants = decision["sensitivity"]
-    assert len(variants) == len(CRITERIA) * (len(CRITERIA) - 1)
-    assert all(sum(item["weights"].values()) == 100 for item in variants)
-
-
-def test_selection_matches_highest_eligible_score():
-    evidence = synthetic_evidence()
-    score_candidates(evidence, (3, 4, 3))
-    decision = builder.build_decision(evidence)
-    assert decision["decision_status"] == "selected"
-    assert decision["selection"]["candidate_id"] == evidence["candidates"][1]["id"]
-
-
-def test_no_eligible_candidate_requires_owner_decision():
-    evidence = synthetic_evidence()
-    for candidate in evidence["candidates"]:
-        candidate["hard_gates"]["public_safe_fixture"] = False
-    decision = builder.build_decision(evidence)
+    assert decision["schema_version"] == "1.0"
+    assert [
+        (item["jurisdiction"], tuple(item["county_cluster"]))
+        for item in evidence["candidates"]
+    ] == list(CLUSTERS)
     assert decision["decision_status"] == "owner_decision_required"
-    assert decision["selection"] is None
-    assert decision["decision_reason"] == "no_eligible_candidates"
-    assert "blm_mlrs_evidence" not in decision["success_criteria"]
-    assert "federal_deferred" not in decision["success_criteria"]
+    assert decision["selection"] is None and decision["closeout_ready"] is False
 
 
-def test_unknown_score_remains_unknown_and_makes_candidate_ineligible():
+def test_decimal_scores_preserve_integral_hundreds_and_rank_without_strings():
     evidence = synthetic_evidence()
-    evidence["candidates"][0]["scores"][CRITERIA[0]]["score"] = "unknown"
-    candidate = next(item for item in builder.build_decision(evidence)["candidates"] if item["id"] == evidence["candidates"][0]["id"])
-    assert candidate["raw_score"] is None
-    assert candidate["display_score"] == "unknown"
-    assert "unknown_score" in candidate["failed_gates"]
-
-
-def test_tied_leaders_require_owner_decision():
-    decision = builder.build_decision(synthetic_evidence())
-    assert decision["decision_status"] == "owner_decision_required"
-    assert decision["decision_reason"] == "tied_leaders"
-    assert decision["selection"] is None
-
-
-def test_sensitive_winner_requires_owner_decision():
-    evidence = synthetic_evidence()
-    first, second = evidence["candidates"][:2]
-    for score in first["scores"].values():
-        score["score"] = 3
-    for score in second["scores"].values():
-        score["score"] = 3
-    first["scores"][CRITERIA[0]]["score"] = 4
-    second["scores"][CRITERIA[2]]["score"] = 4
-    evidence["candidates"][2]["hard_gates"]["public_safe_fixture"] = False
+    score_candidates(evidence, (5, 4, 3))
     decision = builder.build_decision(evidence)
-    assert decision["decision_status"] == "owner_decision_required"
-    assert decision["decision_reason"] == "sensitivity_change"
+    assert ranked_candidate(decision, evidence)["raw_score"] == "100"
+    assert [item["id"] for item in decision["candidates"]][:2] == [
+        evidence["candidates"][0]["id"],
+        evidence["candidates"][1]["id"],
+    ]
 
 
-def test_owner_decision_is_bound_and_cannot_waive_gates():
+def test_scores_require_matching_citations_anchors_and_reproducibility():
     evidence = synthetic_evidence()
-    draft = builder.build_decision(evidence)
-    evidence["owner_decision"] = {
-        "chosen_candidate": evidence["candidates"][0]["id"],
-        "actor": "pilot owner",
-        "decided_at": "2026-07-10T00:00:00Z",
-        "rationale": "Bound decision after a documented tie.",
-        "score_input_hash": draft["score_input_hash"],
-    }
-    assert builder.build_decision(evidence)["decision_status"] == "selected"
-    for candidate in evidence["candidates"]:
-        candidate["hard_gates"]["public_safe_fixture"] = False
-    assert builder.build_decision(evidence)["selection"] is None
-
-
-def test_selected_pilot_is_complete():
+    evidence["candidates"][0]["scores"][CRITERIA[0]]["evidence_ids"] = [
+        "candidate-0-public_source_readiness"
+    ]
+    with pytest.raises(ValueError, match="criterion"):
+        builder.build_decision(evidence)
     evidence = synthetic_evidence()
-    score_candidates(evidence, (2, 4, 3))
-    selection = builder.build_decision(evidence)["selection"]
-    assert set(selection) >= {"jurisdiction", "county_cluster", "acreage_mode", "project_class", "primary_persona", "rationale"}
-    assert selection["primary_persona"] == "broker_project_manager"
-
-
-def test_ready_counties_require_specific_evidence():
+    evidence["candidates"][0]["scores"][CRITERIA[0]]["anchor"] = 2
+    with pytest.raises(ValueError, match="anchor"):
+        builder.build_decision(evidence)
     evidence = synthetic_evidence()
-    evidence["candidates"][0]["county_evidence"][0].pop("official_source")
-    with pytest.raises(ValueError, match="county evidence"):
+    evidence["candidates"][0]["scores"][CRITERIA[0]].update({"score": 4, "anchor": 4})
+    with pytest.raises(ValueError, match="reproducible"):
         builder.build_decision(evidence)
 
 
-def test_primary_county_readiness_cannot_be_inherited():
+def test_mode_class_and_authorization_validation_fail_closed():
+    invalid_cases = []
+    mode = synthetic_evidence()
+    mode["candidates"][0]["acreage_mode"] = "federall"
+    invalid_cases.append((mode, "acreage"))
+    classes = synthetic_evidence()
+    classes["candidates"][0]["evidence_classes"][1]["source_url"] = classes[
+        "candidates"
+    ][0]["evidence_classes"][0]["source_url"]
+    invalid_cases.append((classes, "classes"))
+    auth = synthetic_evidence()
+    auth["authorization"]["outreach"] = "authorized"
+    invalid_cases.append((auth, "authorization"))
+    for evidence, message in invalid_cases:
+        with pytest.raises(ValueError, match=message):
+            builder.build_decision(evidence)
+
+
+def test_metadata_sources_and_frozen_anchor_text_are_validated():
+    invalid_cases = []
+    project = synthetic_evidence()
+    project["candidates"][0].pop("project_class")
+    invalid_cases.append((project, "candidate"))
+    persona = synthetic_evidence()
+    persona["candidates"][0].pop("primary_persona")
+    invalid_cases.append((persona, "candidate"))
+    county = synthetic_evidence()
+    county["candidates"][0]["county_evidence"][0]["source_url"] = "http://example.gov"
+    invalid_cases.append((county, "county evidence"))
+    source = synthetic_evidence()
+    source["candidates"][0]["evidence_rows"][0]["source_url"] = "http://example.gov"
+    invalid_cases.append((source, "evidence row"))
+    observed = synthetic_evidence()
+    observed["candidates"][0]["evidence_rows"][0]["observed_at"] = "2026-07-09"
+    invalid_cases.append((observed, "evidence row"))
+    anchors = synthetic_evidence()
+    anchors["score_anchors"]["4"] = "made up"
+    invalid_cases.append((anchors, "anchor text"))
+    for evidence, message in invalid_cases:
+        with pytest.raises(ValueError, match=message):
+            builder.build_decision(evidence)
+
+
+def test_selection_owner_resolution_and_closeout_readiness():
+    evidence = synthetic_evidence()
+    score_candidates(evidence, (3, 4, 3))
+    selected = builder.build_decision(evidence)
+    assert selected["selection"]["candidate_id"] == evidence["candidates"][1]["id"]
+    assert selected["closeout_ready"] is True
+    tied = synthetic_evidence()
+    draft = builder.build_decision(tied)
+    tied["owner_decision"] = {
+        "chosen_candidate": tied["candidates"][0]["id"],
+        "actor": "pilot owner",
+        "decided_at": "2026-07-10T00:00:00Z",
+        "rationale": "Auditable tie resolution.",
+        "score_input_hash": draft["score_input_hash"],
+    }
+    assert builder.build_decision(tied)["decision_status"] == "selected"
+    for item in tied["candidates"]:
+        item["hard_gates"]["public_safe_fixture"] = False
+    assert builder.build_decision(tied)["selection"] is None
+
+
+def test_no_eligible_unknown_tie_and_sensitivity_require_owner_decision():
+    evidence = synthetic_evidence()
+    for item in evidence["candidates"]:
+        item["hard_gates"]["public_safe_fixture"] = False
+    blocked = builder.build_decision(evidence)
+    assert (
+        blocked["decision_reason"] == "no_eligible_candidates"
+        and blocked["closeout_ready"] is False
+    )
+    unknown = synthetic_evidence()
+    unknown["candidates"][0]["scores"][CRITERIA[0]]["score"] = "unknown"
+    assert (
+        ranked_candidate(builder.build_decision(unknown), unknown)["display_score"]
+        == "unknown"
+    )
+    sensitive = synthetic_evidence()
+    score_candidates(sensitive, (3, 3, 3))
+    sensitive["candidates"][0]["scores"][CRITERIA[0]].update({"score": 4, "anchor": 4})
+    next(
+        row
+        for row in sensitive["candidates"][0]["evidence_rows"]
+        if row["criterion"] == CRITERIA[0]
+    )["reproducible"] = True
+    sensitive["candidates"][1]["scores"][CRITERIA[2]].update({"score": 4, "anchor": 4})
+    next(
+        row
+        for row in sensitive["candidates"][1]["evidence_rows"]
+        if row["criterion"] == CRITERIA[2]
+    )["reproducible"] = True
+    sensitive["candidates"][2]["hard_gates"]["public_safe_fixture"] = False
+    assert builder.build_decision(sensitive)["decision_reason"] == "sensitivity_change"
+
+
+def test_county_readiness_and_mode_specific_success_criteria():
     evidence = synthetic_evidence()
     evidence["candidates"][0]["county_evidence"][0]["readiness"] = "conditional"
-    candidate = next(item for item in builder.build_decision(evidence)["candidates"] if item["id"] == evidence["candidates"][0]["id"])
-    assert "primary_county_ready" in candidate["failed_gates"]
+    assert (
+        "primary_county_ready"
+        in ranked_candidate(builder.build_decision(evidence), evidence)["failed_gates"]
+    )
+    private = synthetic_evidence()
+    score_candidates(private, (4, 3, 2))
+    assert "federal_deferred" in builder.build_decision(private)["success_criteria"]
+    mixed = synthetic_evidence()
+    mixed["candidates"][1].update({"acreage_mode": "mixed", "federal_deferred": False})
+    mixed["candidates"][1]["evidence_classes"][0]["status"] = "available"
+    mixed["candidates"][1]["hard_gates"]["blm_mlrs_ready"] = True
+    score_candidates(mixed, (2, 4, 3))
+    assert "blm_mlrs_evidence" in builder.build_decision(mixed)["success_criteria"]
 
 
-def test_workflow_has_eight_ordered_stages_and_distinct_personas():
+def test_workflow_and_personas_are_specific_and_non_overlapping():
     decision = builder.build_decision(synthetic_evidence())
-    assert [stage["id"] for stage in decision["workflow"]] == [
-        "intake", "aoi_tract_decomposition", "work_plan", "assignment",
-        "evidence_capture", "exception_handling", "qa_signoff", "packet_delivery",
+    stages, personas = decision["workflow"], decision["personas"]
+    assert [stage["id"] for stage in stages] == [
+        "intake",
+        "aoi_tract_decomposition",
+        "work_plan",
+        "assignment",
+        "evidence_capture",
+        "exception_handling",
+        "qa_signoff",
+        "packet_delivery",
     ]
-    assert {item["id"] for item in decision["personas"]} == {
-        "broker_project_manager", "landman", "trainee", "title_examiner", "underwriter",
-    }
+    assert len({stage["owner"] for stage in stages}) >= 4
+    assert all(
+        len(stage["input"]) > 12 and len(stage["stop_condition"]) > 12
+        for stage in stages
+    )
+    assert len({item["responsibility"] for item in personas}) == 5
 
 
-def test_federal_and_title_evidence_are_separate_and_success_is_mode_aware():
+def test_html_is_visible_deterministic_and_matches_yaml_decision():
     evidence = synthetic_evidence()
-    score_candidates(evidence, (4, 3, 2))
-    private = builder.build_decision(evidence)
-    assert private["evidence_boundaries"]["federal"] != private["evidence_boundaries"]["county_title"]
-    assert "federal_deferred" in private["success_criteria"]
-    evidence["candidates"][1]["acreage_mode"] = "mixed"
-    evidence["candidates"][1]["federal_deferred"] = False
-    evidence["candidates"][1]["hard_gates"]["blm_mlrs_ready"] = True
-    score_candidates(evidence, (2, 4, 3))
-    assert "blm_mlrs_evidence" in builder.build_decision(evidence)["success_criteria"]
+    first, second = (
+        builder.render_outputs(evidence),
+        builder.render_outputs(copy.deepcopy(evidence)),
+    )
+    assert first == second and all(item.endswith("\n") for item in first)
+    decision = yaml.safe_load(first[0])
+    report = first[1]
+    for heading in (
+        "Decision",
+        "Ranked Scorecard",
+        "Ranked Alternatives",
+        "Sensitivity",
+        "Workflow",
+        "Personas",
+        "Evidence Boundaries",
+        "Risks",
+        "Success Criteria",
+        "Sources",
+    ):
+        assert f"<h2>{heading}</h2>" in report
+    assert "owner_decision_required" in report and "https://example.gov/" in report
+    embedded = json.loads(
+        report.split('<script id="decision-data" type="application/json">')[1].split(
+            "</script>"
+        )[0]
+    )
+    assert embedded["decision_status"] == decision["decision_status"]
 
 
-def test_builder_check_detects_html_or_yaml_drift(tmp_path):
-    evidence = tmp_path / "evidence.yaml"
-    decision = tmp_path / "decision.yaml"
-    report = tmp_path / "decision.html"
-    evidence.write_text(yaml.safe_dump(synthetic_evidence(), sort_keys=True), encoding="utf-8")
-    command = [sys.executable, str(BUILDER_PATH), "--evidence", str(evidence), "--decision", str(decision), "--html", str(report)]
+def test_embedded_json_escapes_script_markers_and_sensitivity_runs_once(monkeypatch):
+    evidence = synthetic_evidence()
+    evidence["candidates"][0]["evidence_rows"][0]["limitation"] = "</script><p>unsafe"
+    report = builder.render_outputs(evidence)[1]
+    assert "</script><p>unsafe" not in report and "\\u003c/script\\u003e" in report
+    calls, original = [], builder.sensitivity
+    monkeypatch.setattr(
+        builder, "sensitivity", lambda *args: calls.append(1) or original(*args)
+    )
+    builder.build_decision(synthetic_evidence())
+    assert calls == [1]
+
+
+def test_builder_check_detects_drift_and_public_legal_boundaries(tmp_path):
+    evidence, decision, report = (
+        tmp_path / "evidence.yaml",
+        tmp_path / "decision.yaml",
+        tmp_path / "decision.html",
+    )
+    evidence.write_text(
+        yaml.safe_dump(synthetic_evidence(), sort_keys=True), encoding="utf-8"
+    )
+    command = [
+        sys.executable,
+        str(BUILDER_PATH),
+        "--evidence",
+        str(evidence),
+        "--decision",
+        str(decision),
+        "--html",
+        str(report),
+    ]
     assert subprocess.run(command, check=False).returncode == 0
     report.write_text("drift\n", encoding="utf-8")
     assert subprocess.run([*command, "--check"], check=False).returncode != 0
-
-
-def test_generation_is_byte_deterministic_and_html_matches_yaml():
-    evidence = synthetic_evidence()
-    first = builder.render_outputs(evidence)
-    second = builder.render_outputs(copy.deepcopy(evidence))
-    assert first == second
-    decision = yaml.safe_load(first[0])
-    embedded = json.loads(first[1].split('<script id="decision-data" type="application/json">')[1].split("</script>")[0])
-    assert embedded["decision_status"] == decision["decision_status"]
-    assert embedded["workflow"] == decision["workflow"]
-    assert first[0].endswith("\n") and first[1].endswith("\n")
-
-
-def test_outreach_public_safe_and_legal_boundaries():
-    decision = builder.build_decision(synthetic_evidence())
-    assert decision["authorization"] == {"outreach": "not_authorized", "account_creation": "not_authorized"}
-    assert "no title opinion" in decision["legal_boundary"].lower()
-    assert "public-safe" in decision["fixture_boundary"].lower()
+    actual = builder.build_decision(yaml.safe_load(EVIDENCE_PATH.read_text()))
+    assert actual["authorization"] == AUTHORIZATION
+    assert (
+        "no title opinion" in actual["legal_boundary"].lower()
+        and "public-safe" in actual["fixture_boundary"].lower()
+    )

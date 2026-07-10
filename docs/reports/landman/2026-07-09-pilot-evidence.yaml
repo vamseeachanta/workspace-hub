@@ -8,12 +8,12 @@ weights:
   fixture_reproducibility: 15
   delivery_exception_learning: 15
 score_anchors:
-  "0": Official evidence contradicts readiness or pilot fit.
-  "1": Conceptual relevance only; no verified access or reproducible evidence.
-  "2": Official source is accessible but material limitations remain untested or manual.
-  "3": Access and pilot relevance are verified with disclosed limitations.
-  "4": Verified and reproducible with a public-safe fixture path.
-  "5": Verified, reproducible, and fully fits the declared broker workflow and pilot boundary.
+  "0": Official evidence contradicts readiness or pilot fit
+  "1": Conceptual relevance only; no verified access or reproducible evidence
+  "2": Official source is accessible but material limitations remain untested or manual
+  "3": Access and pilot relevance are verified with disclosed limitations
+  "4": Verified and reproducible with a public-safe fixture path
+  "5": Verified, reproducible, and fully fits the declared broker workflow and pilot boundary
 authorization:
   outreach: not_authorized
   account_creation: not_authorized
@@ -51,6 +51,16 @@ candidates:
         confidence: verified
         limitation: Official access path is not a title conclusion or fixture-reproducibility proof.
         readiness: conditional
+    evidence_classes:
+      - class: federal
+        source_url: https://reports.blm.gov/reports/MLRS
+        status: deferred
+      - class: state_regulator
+        source_url: https://www.rrc.texas.gov/oil-and-gas/
+        status: available
+      - class: county_title
+        source_url: https://www.co.midland.tx.us/27/County-Government
+        status: manual
     evidence_rows:
       - id: tx-workflow
         criterion: broker_workflow_value
@@ -58,6 +68,7 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: practitioner workflow signal
         confidence: contextual
+        reproducible: false
         limitation: Practitioner signal; not labor-market validation.
       - id: tx-public
         criterion: public_source_readiness
@@ -65,6 +76,7 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: official recording-office access path
         confidence: verified
+        reproducible: false
         limitation: Portal feasibility and public-safe fixture reproducibility remain untested.
       - id: tx-county
         criterion: county_title_feasibility
@@ -72,6 +84,7 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: official county office identified
         confidence: verified
+        reproducible: false
         limitation: This is not title evidence or a title opinion.
       - id: tx-fixture
         criterion: fixture_reproducibility
@@ -79,6 +92,7 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: unknown
         confidence: unknown
+        reproducible: false
         limitation: No public-safe fixture was assembled; no paid portal or account was used.
       - id: tx-delivery
         criterion: delivery_exception_learning
@@ -86,13 +100,14 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: workflow pattern available
         confidence: contextual
+        reproducible: false
         limitation: Delivery learning remains a proposed pilot measure.
     scores:
-      broker_workflow_value: {score: 3, evidence_ids: [tx-workflow]}
-      public_source_readiness: {score: 2, evidence_ids: [tx-public]}
-      county_title_feasibility: {score: 2, evidence_ids: [tx-county]}
-      fixture_reproducibility: {score: 1, evidence_ids: [tx-fixture]}
-      delivery_exception_learning: {score: 3, evidence_ids: [tx-delivery]}
+      broker_workflow_value: {score: 3, anchor: 3, evidence_ids: [tx-workflow]}
+      public_source_readiness: {score: 2, anchor: 2, evidence_ids: [tx-public]}
+      county_title_feasibility: {score: 2, anchor: 2, evidence_ids: [tx-county]}
+      fixture_reproducibility: {score: 1, anchor: 1, evidence_ids: [tx-fixture]}
+      delivery_exception_learning: {score: 3, anchor: 3, evidence_ids: [tx-delivery]}
     hard_gates:
       complete_evidence: true
       public_safe_fixture: unknown
@@ -131,6 +146,16 @@ candidates:
         confidence: verified
         limitation: No account will be created for this pilot validation.
         readiness: conditional
+    evidence_classes:
+      - class: federal
+        source_url: https://reports.blm.gov/reports/MLRS
+        status: deferred
+      - class: state_regulator
+        source_url: https://oklahoma.gov/occ.html
+        status: available
+      - class: county_title
+        source_url: https://www.gradycountyok.com/195/County-Clerk
+        status: manual
     evidence_rows:
       - id: ok-workflow
         criterion: broker_workflow_value
@@ -138,6 +163,7 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: practitioner workflow signal
         confidence: contextual
+        reproducible: false
         limitation: Practitioner signal; not labor-market validation.
       - id: ok-public
         criterion: public_source_readiness
@@ -145,6 +171,7 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: login required for images
         confidence: verified
+        reproducible: false
         limitation: Account creation is not authorized.
       - id: ok-county
         criterion: county_title_feasibility
@@ -152,6 +179,7 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: county clerk records identified
         confidence: verified
+        reproducible: false
         limitation: Online fees can apply; no title conclusion is available.
       - id: ok-fixture
         criterion: fixture_reproducibility
@@ -159,6 +187,7 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: login dependency
         confidence: verified
+        reproducible: false
         limitation: A public-safe fixture cannot depend on a login.
       - id: ok-delivery
         criterion: delivery_exception_learning
@@ -166,13 +195,14 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: workflow pattern available
         confidence: contextual
+        reproducible: false
         limitation: Delivery learning remains a proposed pilot measure.
     scores:
-      broker_workflow_value: {score: 3, evidence_ids: [ok-workflow]}
-      public_source_readiness: {score: 1, evidence_ids: [ok-public]}
-      county_title_feasibility: {score: 2, evidence_ids: [ok-county]}
-      fixture_reproducibility: {score: 0, evidence_ids: [ok-fixture]}
-      delivery_exception_learning: {score: 3, evidence_ids: [ok-delivery]}
+      broker_workflow_value: {score: 3, anchor: 3, evidence_ids: [ok-workflow]}
+      public_source_readiness: {score: 1, anchor: 1, evidence_ids: [ok-public]}
+      county_title_feasibility: {score: 2, anchor: 2, evidence_ids: [ok-county]}
+      fixture_reproducibility: {score: 0, anchor: 0, evidence_ids: [ok-fixture]}
+      delivery_exception_learning: {score: 3, anchor: 3, evidence_ids: [ok-delivery]}
     hard_gates:
       complete_evidence: true
       public_safe_fixture: false
@@ -211,6 +241,16 @@ candidates:
         confidence: verified
         limitation: The county does not perform title searches; county-specific fixture feasibility is unproven.
         readiness: conditional
+    evidence_classes:
+      - class: federal
+        source_url: https://gis.blm.gov/nlsdb/rest/services/HUB/BLM_Natl_MLRS_Oil_and_Gas_Leases/FeatureServer/0
+        status: available
+      - class: state_regulator
+        source_url: https://ecmc.state.co.us/
+        status: available
+      - class: county_title
+        source_url: https://www.rbc.us/181/Recorder
+        status: manual
     evidence_rows:
       - id: co-workflow
         criterion: broker_workflow_value
@@ -218,6 +258,7 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: practitioner workflow signal
         confidence: contextual
+        reproducible: false
         limitation: Practitioner signal; not labor-market validation.
       - id: co-public
         criterion: public_source_readiness
@@ -225,6 +266,7 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: public federal lease layer
         confidence: verified
+        reproducible: false
         limitation: Mapped-feature counts are directional, not acreage or unique-lease totals.
       - id: co-county
         criterion: county_title_feasibility
@@ -232,6 +274,7 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: public manual inspection
         confidence: verified
+        reproducible: false
         limitation: County/title evidence remains separate from federal lease evidence.
       - id: co-fixture
         criterion: fixture_reproducibility
@@ -239,6 +282,7 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: unknown
         confidence: unknown
+        reproducible: false
         limitation: No reproducible public-safe fixture has been assembled without manual review.
       - id: co-delivery
         criterion: delivery_exception_learning
@@ -246,13 +290,14 @@ candidates:
         observed_at: "2026-07-09T23:15:20Z"
         access_state: public leasing context
         confidence: verified
+        reproducible: false
         limitation: Lease-sale totals are not pilot acreage and do not establish ownership.
     scores:
-      broker_workflow_value: {score: 4, evidence_ids: [co-workflow]}
-      public_source_readiness: {score: 3, evidence_ids: [co-public]}
-      county_title_feasibility: {score: 2, evidence_ids: [co-county]}
-      fixture_reproducibility: {score: 1, evidence_ids: [co-fixture]}
-      delivery_exception_learning: {score: 4, evidence_ids: [co-delivery]}
+      broker_workflow_value: {score: 3, anchor: 3, evidence_ids: [co-workflow]}
+      public_source_readiness: {score: 3, anchor: 3, evidence_ids: [co-public]}
+      county_title_feasibility: {score: 2, anchor: 2, evidence_ids: [co-county]}
+      fixture_reproducibility: {score: 1, anchor: 1, evidence_ids: [co-fixture]}
+      delivery_exception_learning: {score: 3, anchor: 3, evidence_ids: [co-delivery]}
     hard_gates:
       complete_evidence: true
       public_safe_fixture: unknown
