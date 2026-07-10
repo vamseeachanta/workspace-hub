@@ -67,6 +67,13 @@ jobs:
             echo "No stage prompt drift report produced." >> $GITHUB_STEP_SUMMARY
           fi
 
+      - name: Check brand token drift (#3402)
+        run: |
+          echo "## Brand-Token Drift Guard (#3402)" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          uv run python scripts/enforcement/check-brand-token-drift.py | tee -a $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
   review-evidence:
     name: Review Evidence Check
     runs-on: ubuntu-latest
