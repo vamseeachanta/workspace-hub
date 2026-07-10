@@ -1,6 +1,6 @@
 # Plan for [#3427](https://github.com/vamseeachanta/workspace-hub/issues/3427): Repository-Linked Algorithm Run Datasets
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T3
 > **Date:** 2026-07-10
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3427
@@ -60,6 +60,7 @@
 | Durable architecture ownership | binding | `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` |
 | Control-plane discovery | applicable | `docs/standards/CONTROL_PLANE_CONTRACT.md` |
 | Legal/public-egress scan | binding | `scripts/legal/legal-sanity-scan.sh`, `.legal-deny-list.yaml` |
+| Completeness before closure | binding because the parent carries `gate:completeness` | `.claude/rules/completeness-before-close.md` |
 | Hugging Face dataset repository history and formats | applicable external platform contract | <https://huggingface.co/docs/hub/datasets-adding> |
 | Hugging Face dataset card metadata | applicable external platform contract | <https://huggingface.co/docs/hub/datasets-cards> |
 | Hugging Face commit and preupload behavior | applicable external platform contract | <https://huggingface.co/docs/huggingface_hub/guides/upload> |
@@ -133,7 +134,7 @@ plans will retain their existing calculation citation obligations.
 
 | Issue | State | Planning state / relationship |
 |---|---|---|
-| [#3427](https://github.com/vamseeachanta/workspace-hub/issues/3427) | OPEN | `status:needs-plan`, parent |
+| [#3427](https://github.com/vamseeachanta/workspace-hub/issues/3427) | OPEN | `status:needs-plan`, `gate:completeness`, parent |
 | [#3428](https://github.com/vamseeachanta/workspace-hub/issues/3428) through [#3432](https://github.com/vamseeachanta/workspace-hub/issues/3432) | OPEN | `status:needs-plan`, shared contract children |
 | [#3433](https://github.com/vamseeachanta/workspace-hub/issues/3433) | OPEN | `status:needs-plan`, publication child |
 | [digitalmodel #1505](https://github.com/vamseeachanta/digitalmodel/issues/1505) | OPEN | `status:needs-plan`, public synthetic pilot |
@@ -229,7 +230,8 @@ assert algorithm version requires semantic version, clean commit, schema version
 assert run identity requires canonical input set, explicit seed, and execution parameters
 assert run identity excludes outputs; exact replay compares a versioned output equality digest
 assert input binding IDs are independent of run IDs and publication state is append-only
-assert public input policy rejects restricted, pointer-only, unlicensed, unhashed, or incomplete inputs
+assert public input policy rejects restricted, pointer-only, unlicensed, schema-invalid,
+       unhashed, unpinned, or incomplete inputs
 assert failed runs cannot contribute metric observations, insights, or decisions
 assert every metric definition is owned by one algorithm and cannot imply cross-algorithm equivalence
 assert report contract always includes Inputs and Outputs and pins an exact HF revision
@@ -253,6 +255,7 @@ verify manual sections, decisions, issue links, and contract version agree with 
 | Create | `tests/architecture/test_algorithm_run_dataset_contract.py` | TDD guard using stdlib `html.parser` plus existing PyYAML; no dependency change |
 | Update | `docs/README.md` | expose the approved durable architecture from the documentation entry point |
 | Update | `docs/plans/README.md` | keep the plan index status and review summary current |
+| Create at closeout | `docs/reports/<completion-date>-3427-completeness.html` | required score evidence for the opted-in completeness gate before issue closure |
 
 The parent implementation will not modify source code, workflow registries, source-repository
 reports, Hugging Face datasets, credentials, or any child issue's implementation paths.
@@ -267,14 +270,14 @@ reports, Hugging Face datasets, credentials, or any child issue's implementation
 | `test_dataset_ownership_is_per_repository` | dedicated dataset mapping and catalog-only aggregation | repository map | two distinct targets, no combined run table |
 | `test_algorithm_and_run_identity_fail_closed` | clean commit/version/schema/environment/input/seed requirements | invalid and valid identity fixtures | invalid rejected; valid accepted |
 | `test_output_equality_policy_is_versioned` | raw byte default and explicit semantic canonicalizer exception | output policies | ambiguous normalization rejected |
-| `test_public_input_admission_is_strict` | restricted, pointer-only, missing-license, unpinned, or unhashed inputs fail | input policy cases | each unsafe case rejected |
+| `test_public_input_admission_is_strict` | restricted, pointer-only, missing-license, schema-invalid, unpinned, unhashed, or incomplete inputs fail | input policy cases | each unsafe case rejected |
 | `test_failed_runs_are_analysis_ineligible` | failures remain visible but cannot feed metrics/insights/decisions | status eligibility map | failure edges absent |
 | `test_metrics_are_algorithm_scoped` | metric definitions cannot imply cross-algorithm equivalence | metric ownership and comparison edges | each metric has one algorithm owner; cross-algorithm inference absent |
 | `test_promotion_state_machine_has_no_gate_bypass` | accepted state requires every gate and defines candidate recovery | transition graph | no shortcut path |
 | `test_report_contract_has_mandatory_sections_and_exact_revision` | Inputs/Outputs always render and moving references fail | report contract | mandatory sections and immutable pin |
 | `test_result_envelope_crosswalk_does_not_alias_identity` | envelope plus digitalmodel runner/provenance/golden surfaces remain evidence only | compatibility map | all landed surfaces mapped; no identity alias to input/result hashes |
 | `test_issue_graph_is_complete_acyclic_and_independently_gated` | all nine children, exact URLs, dependencies, own approval | issue graph | complete DAG, no parent authorization inheritance |
-| `test_html_manual_matches_contract` | manual anchors, decisions, records, states, links, and version match YAML | YAML plus HTML | parity passes |
+| `test_html_manual_matches_contract` | unique required anchors, balanced `main`/`section`/`body` structure, decisions, records, states, links, and version match YAML | YAML plus HTML | structure and parity pass |
 | `test_legal_scan_passes` | no restricted identifiers, secrets, or machine paths enter artifacts | changed paths | scanner exit 0 |
 
 ---
@@ -307,7 +310,9 @@ reports, Hugging Face datasets, credentials, or any child issue's implementation
 - [ ] `scripts/enforcement/check-no-abs-paths.sh` will pass on the changed files.
 - [ ] `scripts/legal/legal-sanity-scan.sh --diff-only` will pass after intent-to-add staging
       exposes new files to the scanner.
-- [ ] The HTML will parse without errors and will pass desktop/mobile visual inspection.
+- [ ] The HTML parity test will assert unique required anchors, balanced
+      `main`/`section`/`body` tags, mandatory sections, all child links, and contract-version
+      parity; the rendered document will also pass desktop/mobile visual inspection.
 - [ ] HTML/YAML parity tests will use Python stdlib `html.parser` and the repository's
       existing PyYAML dependency; this parent will add no package or lockfile dependency.
 - [ ] Final Claude and Codex artifacts will contain substantive reviews with no unresolved
@@ -315,6 +320,12 @@ reports, Hugging Face datasets, credentials, or any child issue's implementation
       authentication as unavailability, not approval or outage; the user approval packet
       will disclose that T3 review depth degraded to T2 and will require explicit owner
       acceptance of that reduction.
+- [ ] After implementation cross-review and before closure, the `gate:completeness` flow
+      will compute the issue-bound score with `scripts/workflow/completeness_score.py`,
+      persist it to kanban metadata and the issue-body `completeness` block, render
+      `docs/reports/<completion-date>-3427-completeness.html`, pass the derived-class
+      threshold, and stop for owner-only `status:completeness-verified`; the agent will
+      neither self-verify nor close the issue before that gate passes.
 - [ ] No source-repository algorithm code, report, dataset, or HF resource will change
       under this parent issue.
 
@@ -326,9 +337,11 @@ reports, Hugging Face datasets, credentials, or any child issue's implementation
 |---|---|---|---|---|---|
 | r1 | `b8a26550f5badab9913c55ba6d2be8b47c6203ee` | **MAJOR**: stale local checkout caused false `digitalmodel` evidence; refs, draft status, and parser dependency also needed correction | **UNAVAILABLE**: canonical dispatcher timed out waiting for stdin | **UNAVAILABLE**: no noninteractive credentials | Blocked; all Claude findings were corrected in `45c2be63bbed8487b5e02f7d1fde090249e711ac` and preserved in `-r1` snapshots. |
 | r2 | `45c2be63bbed8487b5e02f7d1fde090249e711ac` | **MAJOR**: review history, provider-failure semantics, metric-scoping test, and round naming needed correction; all substantive architecture and r1 evidence fixes verified | **UNAVAILABLE**: corrected pseudo-TTY invocation reached the provider but produced no artifact before its 700-second bound | **UNAVAILABLE**: auth preflight remained unchanged, so no review was dispatched | Blocked; this revision will address all four Claude findings before a focused r3. |
-| r3 | next pushed revision | PENDING | PENDING | **UNAVAILABLE**: no noninteractive credentials | Claude and Codex will both need substantive no-MAJOR verdicts. The approval packet will disclose the T3-to-T2 review reduction for explicit owner acceptance. |
+| r3 | `dea0b580f70494005b2f98eaf0ed77f91dd81acc` | **MINOR**: all r2 findings were remediated; five bounded closeout findings remained and no blocker was reported | **APPROVE**: all r2 fixes and the bounded core-architecture regression set verified | **UNAVAILABLE**: a fresh auth preflight found no noninteractive credentials; `-gemini-r3.md` records the exact revision and cause | No MAJOR remains. Findings 1, 2, 4, and 5 were applied in the final evidence commit; finding 3 was resolved by the completed Codex review. The approval packet will disclose the T3-to-T2 reduction for explicit owner acceptance. |
 
-**Overall result:** BLOCKED pending focused r3 Claude and Codex reviews.
+**Overall result:** NO MAJOR - ready for user review at `status:plan-review` with
+the T3-to-T2 review reduction disclosed. Implementation remains blocked until the user
+explicitly accepts that reduction and approves the plan.
 
 No unavailable provider result will be interpreted as approval. The canonical unsuffixed
 artifacts will be replaced only by a completed latest review or a truthful unavailability
@@ -366,5 +379,8 @@ owned by the named children and cannot weaken the parent invariants.
 
 **T3** - this is a systemic, cross-repository data/publication architecture with legal,
 identity, determinism, reporting, external-platform, and child-governance consequences.
-It requires a three-provider adversarial plan review even though the parent implementation
-will remain documentation and contract-test scoped.
+It targets a three-provider adversarial plan review even though the parent implementation
+will remain documentation and contract-test scoped. Claude and Codex supplied substantive
+r3 reviews; Gemini was unavailable because this machine lacks noninteractive credentials.
+The approval packet will therefore require explicit owner acceptance of the reduced T2
+review depth.
