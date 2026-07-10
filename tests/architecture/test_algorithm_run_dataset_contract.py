@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+import subprocess
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -10,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 CONTRACT_PATH = ROOT / "docs/architecture/algorithm-run-dataset-contract.yaml"
 MANUAL_PATH = ROOT / "docs/governance/2026-07-10-algorithm-run-dataset-decision-manual.html"
 DOCS_INDEX = ROOT / "docs/README.md"
+VISUAL_EVIDENCE_PATH = ROOT / "docs/reports/2026-07-10-3427-implementation-evidence.html"
 DECISIONS = {f"D-{number:02d}" for number in range(1, 11)}
 RECORDS = {
     "algorithm_version",
@@ -44,8 +47,10 @@ class ManualParser(HTMLParser):
         self.ids: list[str] = []
         self.links: list[str] = []
         self.contract_versions: list[str] = []
-        self.open_tags = {"body": 0, "main": 0, "section": 0}
-        self.close_tags = {"body": 0, "main": 0, "section": 0}
+        self.tag_stack: list[str] = []
+        self.structure_errors: list[str] = []
+        self.pre_blocks: list[str] = []
+        self._pre_text: list[str] | None = None
         self.text: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
@@ -56,15 +61,25 @@ class ManualParser(HTMLParser):
             self.links.append(values["href"] or "")
         if values.get("data-contract-version"):
             self.contract_versions.append(values["data-contract-version"] or "")
-        if tag in self.open_tags:
-            self.open_tags[tag] += 1
+        if tag in {"body", "main", "section"}:
+            self.tag_stack.append(tag)
+        if tag == "pre":
+            self._pre_text = []
 
     def handle_endtag(self, tag: str) -> None:
-        if tag in self.close_tags:
-            self.close_tags[tag] += 1
+        if tag in {"body", "main", "section"}:
+            if not self.tag_stack or self.tag_stack[-1] != tag:
+                self.structure_errors.append(f"unexpected closing tag: {tag}")
+            else:
+                self.tag_stack.pop()
+        if tag == "pre" and self._pre_text is not None:
+            self.pre_blocks.append("".join(self._pre_text))
+            self._pre_text = None
 
     def handle_data(self, data: str) -> None:
         self.text.append(data)
+        if self._pre_text is not None:
+            self._pre_text.append(data)
 
 
 def load_contract() -> dict:
@@ -77,6 +92,7 @@ def load_contract() -> dict:
 def parse_manual() -> ManualParser:
     parser = ManualParser()
     parser.feed(MANUAL_PATH.read_text(encoding="utf-8"))
+    parser.close()
     return parser
 
 
@@ -108,23 +124,41 @@ def test_contract_has_locked_decisions_and_records() -> None:
     assert set(contract["records"]) == RECORDS
     assert all(record["owner"] for record in contract["records"].values())
     assert all(record["residency"] for record in contract["records"].values())
+    assert set(contract["exclusions"]) == {
+        "source_repository_algorithm_code_changes",
+        "child_issue_implementation",
+        "customer_api_implementation",
+        "credentials_or_tokens",
+        "private_or_restricted_run_projection",
+        "combined_cross_repository_domain_run_table",
+        "per_run_html_reports",
+    }
 
 
 def test_dataset_ownership_is_per_repository() -> None:
     datasets = load_contract()["dataset_ownership"]
-
     assert set(datasets["repositories"]) == {"digitalmodel", "worldenergydata"}
-    assert datasets["repositories"]["digitalmodel"]["dataset"] == "aceengineer/digitalmodel-runs"
-    assert datasets["repositories"]["worldenergydata"]["dataset"] == "aceengineer/worldenergydata-runs"
+    assert datasets["namespace"] == {
+        "candidate": "aceengineer",
+        "normatively_locked": False,
+        "authenticated_namespace_preflight_required": True,
+        "settled_by": "publisher",
+    }
+    targets = [item["dataset_template"] for item in datasets["repositories"].values()]
+    assert targets == ["{hf_org}/digitalmodel-runs", "{hf_org}/worldenergydata-runs"]
+    assert all(not item["contains_source_repository"] for item in datasets["repositories"].values())
     assert datasets["catalog"]["contains_domain_run_records"] is False
-    assert len({item["dataset"] for item in datasets["repositories"].values()}) == 2
+    assert set(datasets["catalog"]["fields"]) == {
+        "repository", "dataset", "supported_contract_versions",
+        "last_verified_revision", "report_index",
+    }
+    assert len(set(targets)) == 2
 
 
 def test_algorithm_and_run_identity_fail_closed() -> None:
     identity = load_contract()["identity"]
     algorithm = set(identity["algorithm_version_id"]["required_components"])
     run = set(identity["run_id"]["required_components"])
-
     assert identity["digest"] == "sha256"
     assert {
         "algorithm_id",
@@ -135,12 +169,24 @@ def test_algorithm_and_run_identity_fail_closed() -> None:
         "environment_digest",
     } == algorithm
     assert {"algorithm_version_id", "input_set_id", "execution_parameters", "seed"} == run
-    assert {"output_set_id", "attempt_id", "retry_count", "publication_state"} <= set(
+    assert {
+        "output_set_id", "attempt_id", "retry_count", "publication_state",
+        "tenant_id", "customer_id", "request_id", "session_id", "user_id",
+    } <= set(
         identity["run_id"]["forbidden_components"]
     )
-    assert identity["eligibility"]["dirty_source"] == "reject"
-    assert identity["eligibility"]["unknown_revision"] == "reject"
-    assert identity["eligibility"]["unpinned_schema"] == "reject"
+    eligibility = identity["eligibility"]
+    assert set(eligibility) == {
+        "dirty_source", "unknown_revision", "unpinned_schema",
+        "missing_environment_digest", "implicit_seed", "implicit_execution_default",
+    }
+    assert set(eligibility.values()) == {"reject"}
+    valid_fixture = {condition: False for condition in eligibility}
+    assert not any(valid_fixture)
+    for condition in eligibility:
+        invalid_fixture = valid_fixture | {condition: True}
+        assert eligibility[condition] == "reject"
+        assert [name for name, active in invalid_fixture.items() if active] == [condition]
 
 
 def test_output_equality_policy_is_versioned() -> None:
@@ -182,7 +228,6 @@ def test_public_input_admission_is_strict() -> None:
 
 def test_failed_runs_are_analysis_ineligible() -> None:
     failures = load_contract()["failure_policy"]
-
     assert failures["reproducible_failures_may_publish"] is True
     assert failures["transient_infrastructure_failures_may_publish"] is False
     assert set(failures["eligible_surfaces"]) == {"run_health", "diagnostics"}
@@ -191,11 +236,14 @@ def test_failed_runs_are_analysis_ineligible() -> None:
         "insights",
         "decision_briefs",
     }
+    assert set(failures["normalization_requires"]) == {
+        "failure_phase", "failure_code", "failure_signature",
+        "curated_diagnostic_digests", "replay_evidence",
+    }
 
 
 def test_metrics_are_algorithm_scoped() -> None:
     metrics = load_contract()["metrics"]
-
     assert metrics["scope"] == "single_algorithm"
     assert metrics["definition_owner_cardinality"] == 1
     assert metrics["cross_algorithm_equivalence"] == "forbidden_in_phase_1"
@@ -205,7 +253,6 @@ def test_metrics_are_algorithm_scoped() -> None:
 def test_promotion_state_machine_has_no_gate_bypass() -> None:
     promotion = load_contract()["promotion"]
     transitions = {(edge["from"], edge["to"]): edge for edge in promotion["transitions"]}
-
     expected = [
         ("emitted", "validated"),
         ("validated", "replayed"),
@@ -216,6 +263,10 @@ def test_promotion_state_machine_has_no_gate_bypass() -> None:
         ("report_pinned", "accepted"),
     ]
     assert list(transitions) == expected
+    assert promotion["states"] == [
+        "emitted", "validated", "replayed", "draft_rendered", "reviewed",
+        "hf_candidate", "report_pinned", "accepted", "rejected",
+    ]
     assert set(transitions[("report_pinned", "accepted")]["requires"]) == {
         "verified_hf_revision",
         "verified_report_commit",
@@ -223,12 +274,17 @@ def test_promotion_state_machine_has_no_gate_bypass() -> None:
     }
     assert promotion["run_records_mutate_on_acceptance"] is False
     assert promotion["acceptance_record"] == "append_only_publication"
-    assert promotion["orphan_candidate_recovery"] in {"resume", "append_rejected_disposition"}
+    assert promotion["rejection_from_any_nonterminal_state"] is True
+    assert promotion["orphan_candidate_recovery"] == {
+        "action": "resume",
+        "owner": "publisher",
+        "resume_from": "hf_candidate",
+        "rejection_disposition": "append_rejected_disposition",
+    }
 
 
 def test_report_contract_has_mandatory_sections_and_exact_revision() -> None:
     report = load_contract()["report"]
-
     assert set(report["mandatory_sections"]) == MANDATORY_SECTIONS
     assert report["format"] == "html"
     assert report["cardinality"] == "one_rolling_report_per_algorithm"
@@ -241,7 +297,6 @@ def test_result_envelope_crosswalk_does_not_alias_identity() -> None:
     compatibility = load_contract()["compatibility"]
     envelope = compatibility["result_envelope"]
     digitalmodel = compatibility["digitalmodel"]
-
     assert envelope["role"] == "execution_evidence_input"
     assert envelope["strict_identity_alias"] is False
     assert envelope["input_hash_alias"] is False
@@ -251,16 +306,18 @@ def test_result_envelope_crosswalk_does_not_alias_identity() -> None:
         "runner",
         "provenance_adapter",
         "golden_harness",
-        "golden_fixture_1",
-        "golden_fixture_2",
-        "golden_fixture_3",
-        "golden_fixture_4",
+        "tests/workflow_api/goldens/buckling_parametric.json",
+        "tests/workflow_api/goldens/ffs_metal_loss.json",
+        "tests/workflow_api/goldens/mooring_mbl.json",
+        "tests/workflow_api/goldens/wall_thickness.json",
     }
+    assert compatibility["customer_api"]["separate_approval_gate"] is True
+    assert compatibility["customer_api"]["private_identity_must_not_alias_public_run_id"] is True
 
 
 def test_ecosystem_propagation_uses_shared_contract_and_thin_adapters() -> None:
     propagation = load_contract()["ecosystem_propagation"]
-    manifest = yaml.safe_load(
+    manifest = json.loads(
         (ROOT / "docs/registry/workflow-manifest.json").read_text(encoding="utf-8")
     )
     registered = {row["repo"] for row in manifest["repos"]}
@@ -275,7 +332,6 @@ def test_ecosystem_propagation_uses_shared_contract_and_thin_adapters() -> None:
 
 def test_issue_graph_is_complete_acyclic_and_independently_gated() -> None:
     issues = load_contract()["issue_graph"]
-
     assert set(issues) == set(CHILDREN)
     assert {key: value["url"] for key, value in issues.items()} == CHILDREN
     assert all(value["own_approval_gate"] is True for value in issues.values())
@@ -292,7 +348,8 @@ def test_html_manual_matches_contract() -> None:
     parser = parse_manual()
     text = " ".join(parser.text)
 
-    assert parser.open_tags == parser.close_tags
+    assert parser.structure_errors == []
+    assert parser.tag_stack == []
     assert len(parser.ids) == len(set(parser.ids))
     assert {"decisions", "architecture", "identity", "records", "dataset", "report", "promotion", "compatibility", "issues"} <= set(parser.ids)
     assert parser.contract_versions == [contract["contract_version"]]
@@ -300,8 +357,39 @@ def test_html_manual_matches_contract() -> None:
     assert "Ungated draft planning artifact" not in text
     for decision in DECISIONS:
         assert decision in text
+    for record in RECORDS:
+        assert record.replace("_", " ").title() in text
+    for state in contract["promotion"]["states"]:
+        assert state.replace("_", " ").title() in text
+    assert "Inputs" in text and "Inputs Mandatory section" in text
+    assert "Outputs" in text and "Outputs Mandatory section" in text
+    input_example = next(block for block in parser.pre_blocks if '"record_type": "input"' in block)
+    assert '"run_id"' not in input_example
+    assert any('"record_type": "run_input_membership"' in block for block in parser.pre_blocks)
+    assert "{hf_org}/digitalmodel-runs" in text
+    assert "aceengineer" in text and "non-normative" in text
     for url in CHILDREN.values():
         assert url in parser.links
+
+
+def test_legal_scan_passes() -> None:
+    completed = subprocess.run(
+        [str(ROOT / "scripts/legal/legal-sanity-scan.sh"), "--diff-only", "--quiet"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+
+
+def test_visual_inspection_evidence_is_durable() -> None:
+    evidence = VISUAL_EVIDENCE_PATH.read_text(encoding="utf-8")
+    assert "1440 x 1000" in evidence
+    assert "390 x 844" in evidence
+    assert "9e84189867cf33fa64132ac0f3703e9976919f85a623826b5df817ebc8715bc2" in evidence
+    assert "9507c8fefcc3902d693d90d6fa5689f3df33deb59d59135c23b4667f6a86543f" in evidence
+    assert "PASS" in evidence
 
 
 def test_documentation_index_links_contract_and_manual() -> None:
