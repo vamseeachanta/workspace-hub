@@ -18,7 +18,7 @@ outputs, metrics, artifacts, reports, and decision insights from `digitalmodel` 
 - Preserved all three review rounds. Final r3 verdicts are Claude MINOR with no blockers, Codex APPROVE, and Gemini UNAVAILABLE because this machine has no noninteractive credentials.
 - Applied every r3 closeout finding: schema-invalid input rejection, the opted-in completeness closure gate, stronger HTML structural assertions, and an exact-r3 Gemini unavailability record.
 - Posted the immutable [approval packet](https://github.com/vamseeachanta/workspace-hub/issues/3427#issuecomment-4933908497).
-- Moved the parent from `status:needs-plan` to `status:plan-review`. It retains exactly one lane label, `lane:claude`, and no `status:plan-approved` label.
+- Moved the parent from `status:needs-plan` to `status:plan-review`; the owner subsequently applied `status:plan-approved` after the review-depth disclosure.
 - Added parent-contract crosswalk comments to [#3428](https://github.com/vamseeachanta/workspace-hub/issues/3428), [#3429](https://github.com/vamseeachanta/workspace-hub/issues/3429), [#3430](https://github.com/vamseeachanta/workspace-hub/issues/3430), [#3431](https://github.com/vamseeachanta/workspace-hub/issues/3431), [#3432](https://github.com/vamseeachanta/workspace-hub/issues/3432), [#3433](https://github.com/vamseeachanta/workspace-hub/issues/3433), [#3434](https://github.com/vamseeachanta/workspace-hub/issues/3434), [#3284](https://github.com/vamseeachanta/workspace-hub/issues/3284), [digitalmodel #1505](https://github.com/vamseeachanta/digitalmodel/issues/1505), and [worldenergydata #927](https://github.com/vamseeachanta/worldenergydata/issues/927).
 - Filed general harness follow-ups [#3435](https://github.com/vamseeachanta/workspace-hub/issues/3435), [#3436](https://github.com/vamseeachanta/workspace-hub/issues/3436), and [#3437](https://github.com/vamseeachanta/workspace-hub/issues/3437).
 
@@ -37,26 +37,22 @@ outputs, metrics, artifacts, reports, and decision insights from `digitalmodel` 
 - No source-repository rolling report was created or changed.
 - No Hugging Face repository, dataset revision, namespace, credential, or token was created or modified.
 - No parent or child implementation began.
-- No approval marker or `status:plan-approved` label was created.
+- No parent implementation began; the owner-applied approval is recorded separately from implementation evidence.
 
 ## Gate and blocker
 
 Gemini could not provide a substantive r3 review because noninteractive authentication is
-not configured. The packet therefore has substantive T2 review depth rather than T3. The
-owner must explicitly accept that reduction while approving the plan. A sufficient
-statement is:
-
-> I approve workspace-hub issue 3427 and explicitly accept the T3-to-T2 review reduction caused by Gemini noninteractive authentication unavailability.
-
-Until that owner action, implementation remains blocked. Parent approval will not
-authorize any child issue.
+not configured. The owner applied `status:plan-approved` after that T3-to-T2 reduction was
+disclosed, so the parent contract implementation is authorized. Parent approval does not
+authorize any child issue. The tenant-neutral customer API requirement is routed to
+[workspace-hub issue 3289](https://github.com/vamseeachanta/workspace-hub/issues/3289) and
+remains separately plan/review/approval gated.
 
 ## Exact next checkpoint
 
-1. Owner reviews the pinned plan/manual/review packet and supplies the explicit approval statement above.
-2. Record the owner action with the approval marker and move only [#3427](https://github.com/vamseeachanta/workspace-hub/issues/3427) to `status:plan-approved`; never infer or self-apply approval.
-3. Implement the parent YAML contract and contract tests through TDD, then run code/artifact cross-review and the opted-in completeness gate before close.
-4. Route each child through its own issue-plan-review-approval lifecycle. Recommended dependency order is identity, artifacts, inputs/outputs, metrics, publication, source pilots, then insights.
+1. Implement the parent YAML contract and contract tests through TDD, then run code/artifact cross-review and the opted-in completeness gate before close.
+2. Keep the API/customer requirement in [#3289](https://github.com/vamseeachanta/workspace-hub/issues/3289); plan its thin gateway, tenant isolation, deterministic identity, and ecosystem conformance independently.
+3. Route each run-ledger child through its own issue-plan-review-approval lifecycle. Recommended dependency order is identity, artifacts, inputs/outputs, metrics, publication, source pilots, then insights.
 
 ## Preserved state
 
