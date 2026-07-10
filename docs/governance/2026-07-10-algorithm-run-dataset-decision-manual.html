@@ -54,9 +54,10 @@
   <p>Durable, replayable algorithm inputs and outputs from <code>digitalmodel</code> and
      <code>worldenergydata</code>, published as repository-specific Hugging Face datasets and rendered through
      one rolling HTML report per algorithm in the owning source repository.</p>
-  <div class="notice"><strong>Planning artifact.</strong> This manual records approved architecture direction for
+  <div class="notice"><strong>Ungated draft planning artifact.</strong> This manual records user-selected architecture decisions for
     <a href="https://github.com/vamseeachanta/workspace-hub/issues/3427">workspace-hub issue 3427</a>.
-    It does not authorize implementation of the parent or any child issue.</div>
+    Its full contents remain under adversarial review. It is not a normative implementation contract and does
+    not authorize implementation of the parent or any child issue.</div>
   <nav aria-label="Document sections">
     <a href="#decisions">Decisions</a><a href="#architecture">Architecture</a><a href="#identity">Identity</a>
     <a href="#records">Records</a><a href="#dataset">Dataset</a><a href="#report">Report</a>
@@ -262,6 +263,7 @@ objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native
       <tr><td><code>ResultEnvelope</code> from <a href="https://github.com/vamseeachanta/workspace-hub/issues/3282">issue 3282</a></td><td>Status, result payload, provenance, determinism evidence, confidence, warnings</td><td>Its input hash may omit replay-critical configuration; its code version may be missing and does not prove a clean tree. Carry it as evidence, then derive strict IDs from validated records.</td></tr>
       <tr><td>Determinism harness from <a href="https://github.com/vamseeachanta/workspace-hub/issues/3283">issue 3283</a></td><td>Golden comparisons, explicit volatile-key policy, provenance stamps</td><td>Public promotion requires a measured exact replay and versioned output equality policy, not an unchecked or inferred flag.</td></tr>
       <tr><td>Workflow manifest from <a href="https://github.com/vamseeachanta/workspace-hub/issues/3284">issue 3284</a></td><td><code>repo:id@version</code>, registry hash, invocation, input/output descriptors, discovery</td><td>Fail closed when stale. The 2026-07-10 check reports drift in all four registered repositories.</td></tr>
+      <tr><td><code>digitalmodel.workflow_api</code> at <code>origin/main@529c4ba13d90</code></td><td>Repository runner, provenance adapter, golden harness, and four workflow goldens</td><td>Carry the measured envelope and golden evidence, then derive strict public input, version, environment, and output-set identities under the new contracts.</td></tr>
       <tr><td>Execution manifest</td><td>Commands, replay, environment, checksums, tests, legal evidence, promotion gates</td><td>Add algorithm version, canonical input set, output equality set, HF revision, and public acceptance state.</td></tr>
       <tr><td>Report evidence bundle</td><td>Audience, derivation chain, claims, source bindings, review and legal evidence</td><td>Add the standard algorithm report section contract and exact run/dataset revision bindings.</td></tr>
     </tbody>
@@ -270,10 +272,11 @@ objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native
      preserve that execution reference but will not infer a semantic algorithm version from the integer. A
      source-repository algorithm descriptor will declare the semantic version and map it to the exact workflow
      registry row, source commit, schemas, and environment.</p>
-  <p>The current <code>worldenergydata</code> adapter demonstrates reusable envelope integration but stamps a
-     runtime timestamp where public replay needs a source-data snapshot. The current <code>digitalmodel</code>
-     checkout has workflow registry metadata but no repository runner adapter. Both pilot issues will verify the
-     live state again before implementation.</p>
+  <p>Fetched remote evidence is authoritative over mutable local feature checkouts. At
+     <code>digitalmodel origin/main@529c4ba13d90</code>, the repository runner, provenance adapter, golden harness,
+     and four goldens are present. At <code>worldenergydata origin/main@0c5393b18590</code>, the adapter demonstrates
+     reusable envelope integration but stamps a runtime timestamp where public replay needs a source-data
+     snapshot. Both pilot issues will fetch and verify their remote baseline again before implementation.</p>
 </section>
 
 <section id="issues">

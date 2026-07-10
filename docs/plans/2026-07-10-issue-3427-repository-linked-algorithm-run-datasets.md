@@ -22,24 +22,31 @@
   source bindings, published claims, legal evidence, and review state. It does not
   define the standard rolling algorithm report, mandatory Inputs/Outputs sections, or
   run/metric revision bindings.
-- `docs/registry/workflow-manifest.json` supplies `repo:id@version` workflow discovery,
+- `docs/registry/workflow-manifest.json` at workspace-hub
+  `origin/main@0a08c27aaaf1` supplies `repo:id@version` workflow discovery,
   registry hashes, invocation metadata, and structured descriptor slots. Its live
   `--check` currently fails for every registered repository, so future publication will
   consume it only after a freshness check passes.
-- `assetutilities/src/assetutilities/workflow_api/envelope.py` supplies the shared
+- `assetutilities/src/assetutilities/workflow_api/envelope.py` at
+  `origin/main@82888f1b6e09` supplies the shared
   `ResultEnvelope`, code-version evidence, input/result hashes, confidence, warnings,
   and measured reproducibility. Its input hash intentionally removes volatile top-level
   configuration and its code version does not prove a clean tree; the public ledger will
   retain these values as execution evidence rather than reuse them as strict identity.
-- `worldenergydata/src/worldenergydata/workflow_api/runner.py` consumes the shared
+- `worldenergydata/src/worldenergydata/workflow_api/runner.py` at
+  `origin/main@0c5393b18590` consumes the shared
   envelope and normalizes container hashes, but its current provenance timestamp is a
   run timestamp rather than a pinned source-data snapshot. The public input contract
   will require the latter.
-- `digitalmodel/docs/registry/workflows.yaml` defines versioned workflow routing,
-  invocation, output declarations, and parametric metadata. The current checkout has no
-  `digitalmodel.workflow_api` runner, and its sample result manifest uses a label-like
-  run ID, a Git SHA, and a machine-local source path rather than a strict public run ID.
-- `worldenergydata/data/source-refresh-acceptance-contract.json` defines source
+- `digitalmodel/docs/registry/workflows.yaml` and
+  `src/digitalmodel/workflow_api/{runner,provenance,golden}.py` at
+  `origin/main@529c4ba13d90` define versioned workflow routing, a repository runner,
+  provenance adaptation, a golden harness, and four workflow goldens. The public ledger
+  will crosswalk each surface rather than create a competing runner. The sample result
+  manifest at the same ref still uses a label-like run ID, a Git SHA, and a machine-local
+  source path rather than a strict public run ID.
+- `worldenergydata/data/source-refresh-acceptance-contract.json` at
+  `origin/main@0c5393b18590` defines source
   authority, public URL, freshness, completeness, and refresh evidence. Existing BSEE
   product manifests carry file hashes and review gates but no complete algorithm
   version, canonical input snapshot, or environment identity.
@@ -82,6 +89,10 @@ plans will retain their existing calculation citation obligations.
   [#3284](https://github.com/vamseeachanta/workspace-hub/issues/3284) define the
   execution envelope, determinism harness, and workflow discovery manifest. The parent
   contract will add an explicit compatibility crosswalk and stricter public identity.
+- Plan-approved [#3285](https://github.com/vamseeachanta/workspace-hub/issues/3285)
+  owns digitalmodel adoption. Fetched `digitalmodel origin/main@529c4ba13d90`
+  contains its runner, provenance adapter, golden harness, and four golden fixtures even
+  though the issue remains open; the public contract will consume that live substrate.
 - Open [#2975](https://github.com/vamseeachanta/workspace-hub/issues/2975) and
   [#3013](https://github.com/vamseeachanta/workspace-hub/issues/3013) own related
   provenance/routing and public-egress controls. Publication will consume their controls
@@ -105,6 +116,8 @@ plans will retain their existing calculation citation obligations.
 - No machine-readable decision contract ties the locked decisions, record categories,
   repository ownership, state machine, failure rules, and issue dependency graph together.
 - No explicit crosswalk separates execution-envelope hashes from strict public identity.
+- No crosswalk enumerates the landed digitalmodel runner, provenance adapter, golden
+  harness, and golden fixtures as execution evidence inputs to the public ledger.
 - No explicit mapping distinguishes the existing integer workflow registry version from
   the required semantic algorithm version; inferring one from the other would be unsafe.
 - No shared contract states that cross-system atomicity applies to acceptance rather than
@@ -126,19 +139,22 @@ plans will retain their existing calculation citation obligations.
 | [digitalmodel #1505](https://github.com/vamseeachanta/digitalmodel/issues/1505) | OPEN | `status:needs-plan`, public synthetic pilot |
 | [worldenergydata #927](https://github.com/vamseeachanta/worldenergydata/issues/927) | OPEN | `status:needs-plan`, public BSEE pilot |
 | [#3434](https://github.com/vamseeachanta/workspace-hub/issues/3434) | OPEN | `status:needs-plan`, insights child |
-| [#3282](https://github.com/vamseeachanta/workspace-hub/issues/3282), [#3283](https://github.com/vamseeachanta/workspace-hub/issues/3283), [#3284](https://github.com/vamseeachanta/workspace-hub/issues/3284), [#3285](https://github.com/vamseeachanta/workspace-hub/issues/3285) | OPEN | `status:plan-approved`, compatibility inputs; live implementation is partial |
+| [#3282](https://github.com/vamseeachanta/workspace-hub/issues/3282), [#3283](https://github.com/vamseeachanta/workspace-hub/issues/3283), [#3284](https://github.com/vamseeachanta/workspace-hub/issues/3284), [#3285](https://github.com/vamseeachanta/workspace-hub/issues/3285) | OPEN | `status:plan-approved`; substantial envelope, manifest, digitalmodel runner/provenance/golden, and worldenergydata runner artifacts are on remote main while issue closure remains pending |
 | [#2975](https://github.com/vamseeachanta/workspace-hub/issues/2975), [#3013](https://github.com/vamseeachanta/workspace-hub/issues/3013) | OPEN | related provenance/public-egress work |
 
-**File existence** (`2026-07-10T08:11Z`):
+**File existence** (fetched remote refs verified `2026-07-10T08:42:11Z`):
 
 ```text
 EXISTS docs/architecture/execution-manifest.schema.yaml
 EXISTS docs/architecture/report-evidence-bundle.schema.yaml
 EXISTS docs/registry/workflow-manifest.json
 EXISTS docs/governance/2026-07-10-algorithm-run-dataset-decision-manual.html (draft)
-EXISTS assetutilities/src/assetutilities/workflow_api/envelope.py
-EXISTS worldenergydata/src/worldenergydata/workflow_api/runner.py
-MISSING digitalmodel/src/digitalmodel/workflow_api/runner.py
+EXISTS assetutilities origin/main@82888f1b6e09:src/assetutilities/workflow_api/envelope.py
+EXISTS worldenergydata origin/main@0c5393b18590:src/worldenergydata/workflow_api/runner.py
+EXISTS digitalmodel origin/main@529c4ba13d90:src/digitalmodel/workflow_api/runner.py
+EXISTS digitalmodel origin/main@529c4ba13d90:src/digitalmodel/workflow_api/provenance.py
+EXISTS digitalmodel origin/main@529c4ba13d90:src/digitalmodel/workflow_api/golden.py
+EXISTS digitalmodel origin/main@529c4ba13d90:tests/workflow_api/goldens/{4 fixtures}
 MISSING docs/architecture/algorithm-run-dataset-contract.yaml (planned)
 MISSING tests/architecture/test_algorithm_run_dataset_contract.py (planned)
 ```
@@ -192,6 +208,10 @@ will define repository-specific public run datasets, strict identity and replay 
 record ownership, promotion/acceptance states, report rules, compatibility with the existing
 workflow envelope, and the independently gated child issue graph.
 
+The committed HTML file is an ungated design companion whose complete contents will
+remain in plan-review scope. It will become normative only after this plan receives user
+approval and the future YAML contract plus parity tests land through TDD.
+
 ---
 
 ## Pseudocode
@@ -210,8 +230,10 @@ assert report contract always includes Inputs and Outputs and pins an exact HF r
 assert publication graph reaches accepted only through validation, replay, review, HF commit,
        report pin, and cross-system verification
 assert ResultEnvelope and workflow-manifest fields are evidence inputs, not strict identity aliases
+assert digitalmodel runner, provenance, golden harness, and golden fixtures have crosswalk entries
 assert every child issue has an exact URL, owner repository, dependency, and independent approval gate
-parse HTML manual and verify its sections, decisions, issue links, and contract version agree with YAML
+parse HTML with Python stdlib html.parser; load YAML with the existing PyYAML dependency
+verify manual sections, decisions, issue links, and contract version agree with YAML
 ```
 
 ---
@@ -222,7 +244,7 @@ parse HTML manual and verify its sections, decisions, issue links, and contract 
 |---|---|---|
 | Create | `docs/architecture/algorithm-run-dataset-contract.yaml` | machine-readable source for decisions, ownership, records, states, compatibility, and issue DAG |
 | Update | `docs/governance/2026-07-10-algorithm-run-dataset-decision-manual.html` | incorporate review changes and bind the human view to the contract version |
-| Create | `tests/architecture/test_algorithm_run_dataset_contract.py` | TDD guard for architecture and HTML/YAML parity |
+| Create | `tests/architecture/test_algorithm_run_dataset_contract.py` | TDD guard using stdlib `html.parser` plus existing PyYAML; no dependency change |
 | Update | `docs/README.md` | expose the approved durable architecture from the documentation entry point |
 | Update | `docs/plans/README.md` | keep the plan index status and review summary current |
 
@@ -243,7 +265,7 @@ reports, Hugging Face datasets, credentials, or any child issue's implementation
 | `test_failed_runs_are_analysis_ineligible` | failures remain visible but cannot feed metrics/insights/decisions | status eligibility map | failure edges absent |
 | `test_promotion_state_machine_has_no_gate_bypass` | accepted state requires every gate and defines candidate recovery | transition graph | no shortcut path |
 | `test_report_contract_has_mandatory_sections_and_exact_revision` | Inputs/Outputs always render and moving references fail | report contract | mandatory sections and immutable pin |
-| `test_result_envelope_crosswalk_does_not_alias_identity` | weaker envelope fields remain evidence only | compatibility map | no identity alias to input/result hashes |
+| `test_result_envelope_crosswalk_does_not_alias_identity` | envelope plus digitalmodel runner/provenance/golden surfaces remain evidence only | compatibility map | all landed surfaces mapped; no identity alias to input/result hashes |
 | `test_issue_graph_is_complete_acyclic_and_independently_gated` | all nine children, exact URLs, dependencies, own approval | issue graph | complete DAG, no parent authorization inheritance |
 | `test_html_manual_matches_contract` | manual anchors, decisions, records, states, links, and version match YAML | YAML plus HTML | parity passes |
 | `test_legal_scan_passes` | no restricted identifiers, secrets, or machine paths enter artifacts | changed paths | scanner exit 0 |
@@ -263,6 +285,8 @@ reports, Hugging Face datasets, credentials, or any child issue's implementation
       commit without a verified report pin; Run records will not mutate on acceptance.
 - [ ] The existing `ResultEnvelope`, determinism harness, and workflow manifest will map
       into execution evidence without becoming aliases for strict public run identity.
+- [ ] The compatibility crosswalk will enumerate the landed digitalmodel runner,
+      provenance adapter, golden harness, and four golden fixtures at a fetched remote ref.
 - [ ] Integer workflow registry versions will remain execution references and will map
       explicitly, never implicitly, to semantic algorithm versions.
 - [ ] The HTML manual will contain mandatory Inputs/Outputs reporting rules, optional
@@ -275,6 +299,8 @@ reports, Hugging Face datasets, credentials, or any child issue's implementation
 - [ ] `scripts/legal/legal-sanity-scan.sh --diff-only` will pass after intent-to-add staging
       exposes new files to the scanner.
 - [ ] The HTML will parse without errors and will pass desktop/mobile visual inspection.
+- [ ] HTML/YAML parity tests will use Python stdlib `html.parser` and the repository's
+      existing PyYAML dependency; this parent will add no package or lockfile dependency.
 - [ ] Claude, Codex, and Gemini review artifacts will be non-empty or will record an
       explicit provider outage; no unresolved MAJOR finding will remain.
 - [ ] No source-repository algorithm code, report, dataset, or HF resource will change
@@ -301,9 +327,10 @@ Review revisions will be recorded here after the T3 wave.
 - **Cross-system transaction risk:** GitHub and Hugging Face cannot commit atomically.
   The contract will make candidate visibility non-authoritative and will gate acceptance
   on verified HF records plus a pinned source-repository report.
-- **Existing-envelope drift:** plan-approved workflow work is only partially reflected in
-  live checkouts, and the committed discovery manifest is stale. Implementation will
-  re-run discovery and will fail closed instead of trusting labels or snapshots.
+- **Existing-envelope drift:** mutable local feature checkouts lag fetched remote main,
+  while the committed discovery manifest is stale. Implementation will fetch and pin
+  sibling refs, re-run discovery, and fail closed instead of trusting local branches,
+  labels, or old snapshots.
 - **Canonicalization risk:** removing volatile fields can remove real inputs, while raw
   office/archive bytes can contain irrelevant timestamps. Child contracts will require
   algorithm-owned input schemas and versioned semantic canonicalizers with raw hashes.
