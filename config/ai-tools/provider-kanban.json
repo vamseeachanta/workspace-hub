@@ -27,6 +27,8 @@
   "cards": [
     {
       "approval_blockers": [
+        "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
@@ -37,7 +39,7 @@
         "labels": [
           "cat:harness",
           "machine:multi",
-          "status:plan-review",
+          "status:plan-approved",
           "gate:completeness",
           "domain:harness",
           "lane:claude"
@@ -64,6 +66,8 @@
       "title": "Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3408",
       "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
         "missing_review"
       ]
     },
@@ -8380,7 +8384,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-07-09T17:21:20Z",
+  "generated_at": "2026-07-09T21:21:14Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8388,6 +8392,8 @@
     "planning_feedstock": [
       {
         "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
@@ -8398,7 +8404,7 @@
           "labels": [
             "cat:harness",
             "machine:multi",
-            "status:plan-review",
+            "status:plan-approved",
             "gate:completeness",
             "domain:harness",
             "lane:claude"
@@ -8425,6 +8431,8 @@
         "title": "Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3408",
         "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
           "missing_review"
         ]
       },
@@ -16746,15 +16754,15 @@
   },
   "recommended_provider_order": [
     "gemini",
-    "codex",
-    "claude"
+    "claude",
+    "codex"
   ],
-  "scorecard_generated_at": "2026-07-09T17:21:16.095413Z",
+  "scorecard_generated_at": "2026-07-09T21:21:10.408157Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-09T17:21:15.934904Z",
+  "utilization_generated_at": "2026-07-09T21:21:10.262171Z",
   "warning_summary": {
-    "approved_no_marker": 54,
-    "approved_no_plan": 28,
+    "approved_no_marker": 55,
+    "approved_no_plan": 29,
     "dual_status_labels": 11,
     "legacy_review_no_sha": 2,
     "major_review": 2,

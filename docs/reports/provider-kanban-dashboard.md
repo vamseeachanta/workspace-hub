@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-09T17:21:20Z
+Generated: 2026-07-09T21:21:14Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,7 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #3408 | Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3408 | Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3404 | Explore direct SSH path to gpu-claw without WireGuard dependency | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3403 | Repair Linux voice dictation rollout and VNC consistency contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #3402 | [#3401] Brand consolidation: workspace-hub (per-repo canonical + standards) — PLAN | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
