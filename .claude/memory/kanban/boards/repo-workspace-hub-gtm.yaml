@@ -644,8 +644,10 @@ cards:
       - cat:harness
       - domain:gtm
       - machine:dev-primary
+      - status:plan-approved
       - dispatch:ready
       - gate:completeness
+      - lane:codex
       - lane:claude
     gh_assignees: []
     initial_status: triage

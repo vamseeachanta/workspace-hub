@@ -958,7 +958,9 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - status:plan-approved
       - domain:core
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

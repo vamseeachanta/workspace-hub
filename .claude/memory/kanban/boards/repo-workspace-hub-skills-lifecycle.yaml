@@ -587,3 +587,19 @@ cards:
       **Status:** pending | **Priority:** medium | **Category:** harness | **Subcategory:** training
 
       **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3424
+    title: '[skills] Add transactional metadata-only folder-note publication workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3424
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:skills-improvement
+      - status:needs-plan
+      - gate:completeness
+      - domain:skills-lifecycle
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

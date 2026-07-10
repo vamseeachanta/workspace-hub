@@ -447,6 +447,7 @@ cards:
       - cat:engineering
       - cat:research
       - machine:dev-primary
+      - status:plan-approved
       - dispatch:ready
       - gate:completeness
       - domain:marine-orcaflex

@@ -3136,7 +3136,10 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/875
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3148,6 +3151,8 @@ cards:
     gh_state: open
     gh_labels:
       - cat:data
+      - status:plan-approved
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3192,6 +3197,16 @@ cards:
     gh_state: open
     gh_labels:
       - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#922
+    title: '[brand] Dark marketing infographics need a brand-accent design pass (not a token swap)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/922
+    gh_state: open
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []

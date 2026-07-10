@@ -191,6 +191,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - status:plan-approved
       - domain:structural
       - lane:codex
     initial_status: triage

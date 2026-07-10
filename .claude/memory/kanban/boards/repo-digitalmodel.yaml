@@ -4241,6 +4241,8 @@ cards:
     gh_labels:
       - enhancement
       - domain:naval-architecture
+      - status:plan-approved
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -5420,7 +5422,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1147
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-approved
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -5430,7 +5434,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1148
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-approved
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -5453,6 +5459,9 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -6360,7 +6369,10 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1274
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

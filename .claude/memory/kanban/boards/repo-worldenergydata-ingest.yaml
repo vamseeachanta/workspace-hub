@@ -842,7 +842,9 @@ cards:
       - priority:high
       - cat:engineering
       - cat:data
+      - status:plan-approved
       - domain:ingest
+      - lane:codex
       - status:needs-plan
     initial_status: triage
     priority: 1

@@ -548,6 +548,7 @@ cards:
       - priority:high
       - cat:engineering
       - cat:data
+      - status:plan-approved
       - domain:quality
       - lane:claude
     initial_status: triage
@@ -831,5 +832,21 @@ cards:
       - status:needs-plan
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#924
+    title: 'fix(landman): make provider routing executable and prove the CLI smoke path'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/924
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:data
+      - domain:quality
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

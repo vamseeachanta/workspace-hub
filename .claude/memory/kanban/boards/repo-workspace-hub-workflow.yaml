@@ -887,3 +887,19 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3418
+    title: 'feat(landman-desk): turn project intake into an assigned tract work package'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3418
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:workflow
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

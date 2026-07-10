@@ -111,6 +111,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/885
     gh_state: open
     gh_labels:
+      - status:plan-approved
       - domain:solver
       - lane:claude
     initial_status: triage

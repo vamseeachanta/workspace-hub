@@ -1093,6 +1093,7 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
+      - status:plan-approved
       - domain:reports
       - lane:claude
       - status:needs-plan
@@ -1157,6 +1158,7 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
+      - status:plan-approved
       - domain:reports
       - lane:claude
       - status:needs-plan
@@ -1293,6 +1295,7 @@ cards:
       - cat:data
       - domain:reports
       - lane:codex
+      - lane:claude
       - status:needs-plan
     initial_status: triage
     priority: 0
@@ -1329,5 +1332,21 @@ cards:
       - status:needs-plan
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#925
+    title: 'feat(federal-acreage): generate a pilot BLM lease-position and acreage evidence slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/925
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:reports
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

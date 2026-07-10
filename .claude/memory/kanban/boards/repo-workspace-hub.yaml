@@ -22215,7 +22215,10 @@ cards:
     gh_labels:
       - cat:bugfix
       - domain:tooling
+      - status:plan-approved
       - status:needs-plan
+      - gate:completeness
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -22319,6 +22322,151 @@ cards:
       - priority:medium
       - cat:operations
       - domain:machine-setup
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3414
+    title: 'epic(landman-project-desk): broker workflow, QA, and federal-acreage diligence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3414
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:project-management
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3415
+    title: 'research(landman-desk): validate broker workflow and lock a federal-acreage-aware pilot'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3415
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:research
+      - domain:labor-market
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3416
+    title: 'chore(landman-desk): establish the private application repository and public/private data boundary'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3416
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:platform
+      - domain:repo-organization
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3417
+    title: 'security(landman-desk): enforce private records, role access, retention, and audit boundaries'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3417
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:platform
+      - domain:security
+      - security
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3419
+    title: 'feat(landman-desk): build the tract evidence ledger and exception queue'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3419
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:audit-trail
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3420
+    title: 'feat(landman-desk): add reviewer QA, exception disposition, and signoff'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3420
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:quality
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3421
+    title: 'feat(landman-desk): export a broker-ready reviewed diligence packet'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3421
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:reporting
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3422
+    title: 'feat(landman-desk): connect pilot county and federal-acreage sources to the evidence workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3422
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:integrations
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3423
+    title: 'feat(landman-desk): route work to landmen or trainees and close the guided-training feedback loop'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3423
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:training
+      - status:needs-plan
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
