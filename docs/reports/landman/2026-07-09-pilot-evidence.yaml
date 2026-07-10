@@ -1,0 +1,263 @@
+schema_version: "1.0"
+decision_timestamp: "2026-07-09T23:15:20Z"
+renderer_version: "1.0"
+weights:
+  broker_workflow_value: 25
+  public_source_readiness: 25
+  county_title_feasibility: 20
+  fixture_reproducibility: 15
+  delivery_exception_learning: 15
+score_anchors:
+  "0": Official evidence contradicts readiness or pilot fit.
+  "1": Conceptual relevance only; no verified access or reproducible evidence.
+  "2": Official source is accessible but material limitations remain untested or manual.
+  "3": Access and pilot relevance are verified with disclosed limitations.
+  "4": Verified and reproducible with a public-safe fixture path.
+  "5": Verified, reproducible, and fully fits the declared broker workflow and pilot boundary.
+authorization:
+  outreach: not_authorized
+  account_creation: not_authorized
+  paid_portals: not_authorized
+  representation_of_a_and_ce: not_authorized
+candidates:
+  - id: texas_permian
+    jurisdiction: Texas
+    county_cluster: [Midland, Reeves]
+    acreage_mode: private_only
+    federal_deferred: true
+    project_class: private-records workflow validation
+    primary_persona: broker_project_manager
+    primary_county: Midland
+    county_evidence:
+      - county: Midland
+        official_source: Midland County Clerk
+        source_url: https://www.co.midland.tx.us/27/County-Government
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: official access path identified
+        fee_account: unknown
+        index: unknown
+        images: unknown
+        confidence: verified
+        limitation: Official county page identifies the office but does not prove a reproducible public fixture.
+        readiness: conditional
+      - county: Reeves
+        official_source: Reeves County Clerk
+        source_url: https://www.reevescounty.org/departments/county-clerk
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: online land records identified
+        fee_account: unknown
+        index: unknown
+        images: unknown
+        confidence: verified
+        limitation: Official access path is not a title conclusion or fixture-reproducibility proof.
+        readiness: conditional
+    evidence_rows:
+      - id: tx-workflow
+        criterion: broker_workflow_value
+        source_url: https://github.com/vamseeachanta/llm-wiki/pull/745
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: practitioner workflow signal
+        confidence: contextual
+        limitation: Practitioner signal; not labor-market validation.
+      - id: tx-public
+        criterion: public_source_readiness
+        source_url: https://www.reevescounty.org/departments/county-clerk
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: official recording-office access path
+        confidence: verified
+        limitation: Portal feasibility and public-safe fixture reproducibility remain untested.
+      - id: tx-county
+        criterion: county_title_feasibility
+        source_url: https://www.co.midland.tx.us/27/County-Government
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: official county office identified
+        confidence: verified
+        limitation: This is not title evidence or a title opinion.
+      - id: tx-fixture
+        criterion: fixture_reproducibility
+        source_url: https://www.reevescounty.org/departments/county-clerk
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: unknown
+        confidence: unknown
+        limitation: No public-safe fixture was assembled; no paid portal or account was used.
+      - id: tx-delivery
+        criterion: delivery_exception_learning
+        source_url: https://github.com/vamseeachanta/llm-wiki/pull/745
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: workflow pattern available
+        confidence: contextual
+        limitation: Delivery learning remains a proposed pilot measure.
+    scores:
+      broker_workflow_value: {score: 3, evidence_ids: [tx-workflow]}
+      public_source_readiness: {score: 2, evidence_ids: [tx-public]}
+      county_title_feasibility: {score: 2, evidence_ids: [tx-county]}
+      fixture_reproducibility: {score: 1, evidence_ids: [tx-fixture]}
+      delivery_exception_learning: {score: 3, evidence_ids: [tx-delivery]}
+    hard_gates:
+      complete_evidence: true
+      public_safe_fixture: unknown
+      paid_or_account_required: unknown
+      separate_evidence_classes: true
+      research_assistance_only: true
+      primary_county_ready: false
+  - id: oklahoma_scoop_stack
+    jurisdiction: Oklahoma
+    county_cluster: [Grady, Canadian]
+    acreage_mode: private_only
+    federal_deferred: true
+    project_class: private-records workflow validation
+    primary_persona: broker_project_manager
+    primary_county: Grady
+    county_evidence:
+      - county: Grady
+        official_source: Grady County Clerk
+        source_url: https://www.gradycountyok.com/195/County-Clerk
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: official office and records identified
+        fee_account: online fees may apply
+        index: unknown
+        images: unknown
+        confidence: verified
+        limitation: Fee possibility prevents assuming a public-safe fixture path.
+        readiness: conditional
+      - county: Canadian
+        official_source: Canadian County Land Records
+        source_url: https://canadiancounty.org/885/Land-Record-Searches
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: land-record search identified
+        fee_account: login required for images
+        index: official search surface
+        images: login required
+        confidence: verified
+        limitation: No account will be created for this pilot validation.
+        readiness: conditional
+    evidence_rows:
+      - id: ok-workflow
+        criterion: broker_workflow_value
+        source_url: https://github.com/vamseeachanta/llm-wiki/pull/745
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: practitioner workflow signal
+        confidence: contextual
+        limitation: Practitioner signal; not labor-market validation.
+      - id: ok-public
+        criterion: public_source_readiness
+        source_url: https://canadiancounty.org/885/Land-Record-Searches
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: login required for images
+        confidence: verified
+        limitation: Account creation is not authorized.
+      - id: ok-county
+        criterion: county_title_feasibility
+        source_url: https://www.gradycountyok.com/195/County-Clerk
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: county clerk records identified
+        confidence: verified
+        limitation: Online fees can apply; no title conclusion is available.
+      - id: ok-fixture
+        criterion: fixture_reproducibility
+        source_url: https://canadiancounty.org/885/Land-Record-Searches
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: login dependency
+        confidence: verified
+        limitation: A public-safe fixture cannot depend on a login.
+      - id: ok-delivery
+        criterion: delivery_exception_learning
+        source_url: https://github.com/vamseeachanta/llm-wiki/pull/745
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: workflow pattern available
+        confidence: contextual
+        limitation: Delivery learning remains a proposed pilot measure.
+    scores:
+      broker_workflow_value: {score: 3, evidence_ids: [ok-workflow]}
+      public_source_readiness: {score: 1, evidence_ids: [ok-public]}
+      county_title_feasibility: {score: 2, evidence_ids: [ok-county]}
+      fixture_reproducibility: {score: 0, evidence_ids: [ok-fixture]}
+      delivery_exception_learning: {score: 3, evidence_ids: [ok-delivery]}
+    hard_gates:
+      complete_evidence: true
+      public_safe_fixture: false
+      paid_or_account_required: true
+      separate_evidence_classes: true
+      research_assistance_only: true
+      primary_county_ready: false
+  - id: colorado_piceance
+    jurisdiction: Colorado
+    county_cluster: [Rio Blanco, Garfield]
+    acreage_mode: mixed
+    federal_deferred: false
+    project_class: federal-aware mixed-acreage workflow validation
+    primary_persona: broker_project_manager
+    primary_county: Rio Blanco
+    county_evidence:
+      - county: Rio Blanco
+        official_source: Rio Blanco County Recorder
+        source_url: https://www.rbc.us/181/Recorder
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: public and free to inspect
+        fee_account: no account identified for inspection
+        index: grantor grantee index
+        images: unknown
+        confidence: verified
+        limitation: The recorder does not perform searches; this does not establish title.
+        readiness: conditional
+      - county: Garfield
+        official_source: Garfield County Recording Department
+        source_url: https://www.garfieldcountyco.gov/clerk-recorder/recording-department/
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: official index available
+        fee_account: unknown
+        index: official index back to 1883
+        images: not in index
+        confidence: verified
+        limitation: The county does not perform title searches; county-specific fixture feasibility is unproven.
+        readiness: conditional
+    evidence_rows:
+      - id: co-workflow
+        criterion: broker_workflow_value
+        source_url: https://github.com/vamseeachanta/llm-wiki/pull/745
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: practitioner workflow signal
+        confidence: contextual
+        limitation: Practitioner signal; not labor-market validation.
+      - id: co-public
+        criterion: public_source_readiness
+        source_url: https://gis.blm.gov/nlsdb/rest/services/HUB/BLM_Natl_MLRS_Oil_and_Gas_Leases/FeatureServer/0
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: public federal lease layer
+        confidence: verified
+        limitation: Mapped-feature counts are directional, not acreage or unique-lease totals.
+      - id: co-county
+        criterion: county_title_feasibility
+        source_url: https://www.rbc.us/181/Recorder
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: public manual inspection
+        confidence: verified
+        limitation: County/title evidence remains separate from federal lease evidence.
+      - id: co-fixture
+        criterion: fixture_reproducibility
+        source_url: https://www.garfieldcountyco.gov/clerk-recorder/recording-department/
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: unknown
+        confidence: unknown
+        limitation: No reproducible public-safe fixture has been assembled without manual review.
+      - id: co-delivery
+        criterion: delivery_exception_learning
+        source_url: https://www.blm.gov/programs/energy-and-minerals/oil-and-gas/leasing/regional-lease-sales/colorado
+        observed_at: "2026-07-09T23:15:20Z"
+        access_state: public leasing context
+        confidence: verified
+        limitation: Lease-sale totals are not pilot acreage and do not establish ownership.
+    scores:
+      broker_workflow_value: {score: 4, evidence_ids: [co-workflow]}
+      public_source_readiness: {score: 3, evidence_ids: [co-public]}
+      county_title_feasibility: {score: 2, evidence_ids: [co-county]}
+      fixture_reproducibility: {score: 1, evidence_ids: [co-fixture]}
+      delivery_exception_learning: {score: 4, evidence_ids: [co-delivery]}
+    hard_gates:
+      complete_evidence: true
+      public_safe_fixture: unknown
+      paid_or_account_required: false
+      separate_evidence_classes: true
+      research_assistance_only: true
+      primary_county_ready: false
+      blm_mlrs_ready: true
