@@ -199,6 +199,11 @@ families; document-intelligence maps; drive-index probe; three official Hugging 
 | Plan review - Codex | `scripts/review/results/2026-07-10-plan-3427-codex.md` |
 | Plan review - Gemini | `scripts/review/results/2026-07-10-plan-3427-gemini.md` |
 
+The unsuffixed provider paths will contain the latest review used for the live gate.
+Immutable round snapshots will use `-<provider>-rN.md`; every snapshot will name the exact
+revision reviewed. The disagreement report will be derived evidence and will not count as
+an independent provider review.
+
 ---
 
 ## Deliverable
@@ -226,6 +231,7 @@ assert run identity excludes outputs; exact replay compares a versioned output e
 assert input binding IDs are independent of run IDs and publication state is append-only
 assert public input policy rejects restricted, pointer-only, unlicensed, unhashed, or incomplete inputs
 assert failed runs cannot contribute metric observations, insights, or decisions
+assert every metric definition is owned by one algorithm and cannot imply cross-algorithm equivalence
 assert report contract always includes Inputs and Outputs and pins an exact HF revision
 assert publication graph reaches accepted only through validation, replay, review, HF commit,
        report pin, and cross-system verification
@@ -263,6 +269,7 @@ reports, Hugging Face datasets, credentials, or any child issue's implementation
 | `test_output_equality_policy_is_versioned` | raw byte default and explicit semantic canonicalizer exception | output policies | ambiguous normalization rejected |
 | `test_public_input_admission_is_strict` | restricted, pointer-only, missing-license, unpinned, or unhashed inputs fail | input policy cases | each unsafe case rejected |
 | `test_failed_runs_are_analysis_ineligible` | failures remain visible but cannot feed metrics/insights/decisions | status eligibility map | failure edges absent |
+| `test_metrics_are_algorithm_scoped` | metric definitions cannot imply cross-algorithm equivalence | metric ownership and comparison edges | each metric has one algorithm owner; cross-algorithm inference absent |
 | `test_promotion_state_machine_has_no_gate_bypass` | accepted state requires every gate and defines candidate recovery | transition graph | no shortcut path |
 | `test_report_contract_has_mandatory_sections_and_exact_revision` | Inputs/Outputs always render and moving references fail | report contract | mandatory sections and immutable pin |
 | `test_result_envelope_crosswalk_does_not_alias_identity` | envelope plus digitalmodel runner/provenance/golden surfaces remain evidence only | compatibility map | all landed surfaces mapped; no identity alias to input/result hashes |
@@ -289,6 +296,8 @@ reports, Hugging Face datasets, credentials, or any child issue's implementation
       provenance adapter, golden harness, and four golden fixtures at a fetched remote ref.
 - [ ] Integer workflow registry versions will remain execution references and will map
       explicitly, never implicitly, to semantic algorithm versions.
+- [ ] Every phase-one metric definition will belong to exactly one algorithm; the contract
+      will expose no cross-algorithm equivalence or comparison edge.
 - [ ] The HTML manual will contain mandatory Inputs/Outputs reporting rules, optional
       section activation, dataset layout, JSON examples, issue ownership, and exact
       Hugging Face/source-repository revision rules.
@@ -301,8 +310,11 @@ reports, Hugging Face datasets, credentials, or any child issue's implementation
 - [ ] The HTML will parse without errors and will pass desktop/mobile visual inspection.
 - [ ] HTML/YAML parity tests will use Python stdlib `html.parser` and the repository's
       existing PyYAML dependency; this parent will add no package or lockfile dependency.
-- [ ] Claude, Codex, and Gemini review artifacts will be non-empty or will record an
-      explicit provider outage; no unresolved MAJOR finding will remain.
+- [ ] Final Claude and Codex artifacts will contain substantive reviews with no unresolved
+      MAJOR finding. The Gemini artifact will record the verified lack of noninteractive
+      authentication as unavailability, not approval or outage; the user approval packet
+      will disclose that T3 review depth degraded to T2 and will require explicit owner
+      acceptance of that reduction.
 - [ ] No source-repository algorithm code, report, dataset, or HF resource will change
       under this parent issue.
 
@@ -310,15 +322,17 @@ reports, Hugging Face datasets, credentials, or any child issue's implementation
 
 ## Adversarial Review Summary
 
-| Provider | Verdict | Key findings |
-|---|---|---|
-| Claude | PENDING | adversarial plan review will run after the exact plan commit is pushed |
-| Codex | PENDING | adversarial plan review will run after the exact plan commit is pushed |
-| Gemini | PENDING | adversarial plan review will run after the exact plan commit is pushed |
+| Round | Revision | Claude | Codex | Gemini | Result |
+|---|---|---|---|---|---|
+| r1 | `b8a26550f5badab9913c55ba6d2be8b47c6203ee` | **MAJOR**: stale local checkout caused false `digitalmodel` evidence; refs, draft status, and parser dependency also needed correction | **UNAVAILABLE**: canonical dispatcher timed out waiting for stdin | **UNAVAILABLE**: no noninteractive credentials | Blocked; all Claude findings were corrected in `45c2be63bbed8487b5e02f7d1fde090249e711ac` and preserved in `-r1` snapshots. |
+| r2 | `45c2be63bbed8487b5e02f7d1fde090249e711ac` | **MAJOR**: review history, provider-failure semantics, metric-scoping test, and round naming needed correction; all substantive architecture and r1 evidence fixes verified | **UNAVAILABLE**: corrected pseudo-TTY invocation reached the provider but produced no artifact before its 700-second bound | **UNAVAILABLE**: auth preflight remained unchanged, so no review was dispatched | Blocked; this revision will address all four Claude findings before a focused r3. |
+| r3 | next pushed revision | PENDING | PENDING | **UNAVAILABLE**: no noninteractive credentials | Claude and Codex will both need substantive no-MAJOR verdicts. The approval packet will disclose the T3-to-T2 review reduction for explicit owner acceptance. |
 
-**Overall result:** PENDING
+**Overall result:** BLOCKED pending focused r3 Claude and Codex reviews.
 
-Review revisions will be recorded here after the T3 wave.
+No unavailable provider result will be interpreted as approval. The canonical unsuffixed
+artifacts will be replaced only by a completed latest review or a truthful unavailability
+record; immutable prior rounds will remain available for audit.
 
 ---
 
