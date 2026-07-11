@@ -153,7 +153,7 @@ def test_execute_render_exposes_no_template_or_destination_override():
         )
 
 
-def test_failed_final_origin_validation_cleans_created_tree(tmp_path, monkeypatch):
+def test_failed_final_origin_validation_preserves_created_tree(tmp_path, monkeypatch):
     workspace = _workspace(tmp_path)
     registry = _registry_file(tmp_path)
     target = workspace.parent / "llm-wiki-example-co"
@@ -172,10 +172,12 @@ def test_failed_final_origin_validation_cleans_created_tree(tmp_path, monkeypatc
         return real_render(clone, template, tokens, **kwargs)
 
     monkeypatch.setattr(bootstrap_contract, "render_committed_template", mutate_before_final_validation)
-    with pytest.raises(BootstrapContractError, match="origin"):
+    with pytest.raises(BootstrapContractError, match="origin") as raised:
         execute_render(registry, "example-co", runner=RecordingRunner())
 
-    assert sorted(path.name for path in target.iterdir()) == [".git"]
+    assert raised.value.residue is not None
+    assert raised.value.residue.failure_stage == "final_validation"
+    assert (target / "README.md").is_file()
 
 
 def test_final_validation_rejects_post_bind_git_directory_swap(tmp_path, monkeypatch):
@@ -202,7 +204,7 @@ def test_final_validation_rejects_post_bind_git_directory_swap(tmp_path, monkeyp
     with pytest.raises(BootstrapContractError, match=".git identity"):
         execute_render(registry, "example-co", runner=RecordingRunner())
 
-    assert not (target / "README.md").exists()
+    assert (target / "README.md").exists()
     assert (target / ".git").is_dir() and (target / ".git-held").is_dir()
 
 
@@ -255,3 +257,16 @@ def test_cli_render_emits_manifest_without_destination_authority(tmp_path, monke
     assert result == 0
     assert manifest["template_commit"] == _git(workspace, "rev-parse", "HEAD")
     assert (target / ".gitignore").is_file()
+
+
+@pytest.mark.parametrize("option", ["--failpoint", "--callback"])
+def test_public_cli_rejects_injection_authority(option):
+    with pytest.raises(SystemExit):
+        bootstrap_contract.main(
+            ["render", "--registry", "registry.yml", "--short-name", "example-co", option, "write"]
+        )
+
+
+def test_execute_render_rejects_failpoint_authority():
+    with pytest.raises(TypeError):
+        execute_render(Path("registry.yml"), "example-co", failpoint="write")

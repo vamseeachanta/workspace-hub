@@ -121,6 +121,16 @@ def test_render_consumes_exact_snapshot_without_archive(tmp_path, monkeypatch):
     assert not any("archive" in command for command in commands)
 
 
+def test_render_has_no_rehearsal_or_staging_tree(tmp_path):
+    repo = _template_repo(tmp_path)
+    clone = _empty_clone(tmp_path)
+
+    _render(repo, clone)
+
+    assert not hasattr(bootstrap_renderer, "_bound_stage")
+    assert not list(tmp_path.glob(".client-wiki-stage-*"))
+
+
 def test_template_snapshot_ignores_hostile_ambient_git_environment(tmp_path, monkeypatch):
     repo = _template_repo(tmp_path)
     clone = _empty_clone(tmp_path)
@@ -214,165 +224,42 @@ def test_privacy_firewall_requires_regular_non_executable_blobs(tmp_path, requir
     assert sorted(path.name for path in clone.iterdir()) == [".git"]
 
 
-def test_post_bind_clone_replacement_cannot_redirect_writes(tmp_path):
+@pytest.mark.parametrize("stage", ["create", "bind", "record", "write", "chmod", "final_validation"])
+def test_failure_preserves_bounded_structured_residue(tmp_path, monkeypatch, stage):
     repo = _template_repo(tmp_path)
     clone = _empty_clone(tmp_path)
-    held_clone = tmp_path / "held-clone"
+    forbidden = ("unlink", "rmdir", "rename", "truncate", "ftruncate")
+    for name in forbidden:
+        monkeypatch.setattr(bootstrap_renderer.os, name, lambda *_a, _name=name, **_k: pytest.fail(_name))
 
-    def replace_clone(event, _relative_path, _fd):
-        if event != "clone_bound":
-            return
-        clone.rename(held_clone)
-        (clone / ".git").mkdir(parents=True)
-        (clone / ".git" / "victim").write_text("untouched\n", encoding="utf-8")
+    with pytest.raises(BootstrapRenderError) as raised:
+        _render(repo, clone, stage)
 
-    with pytest.raises(BootstrapRenderError, match="identity"):
-        _render(repo, clone, replace_clone)
-
-    assert (clone / ".git" / "victim").read_text() == "untouched\n"
-    assert sorted(path.name for path in clone.iterdir()) == [".git"]
-    assert sorted(path.name for path in held_clone.iterdir()) == [".git"]
-
-
-def test_forced_failure_removes_only_matching_created_entries(tmp_path):
-    repo = _template_repo(tmp_path)
-    clone = _empty_clone(tmp_path)
-    bound_count = 0
-
-    def fail_after_two(event, _relative_path, _fd):
-        nonlocal bound_count
-        if event == "target_member_bound":
-            bound_count += 1
-            if bound_count == 2:
-                raise RuntimeError("injected install failure")
-
-    with pytest.raises(BootstrapRenderError, match="injected install failure"):
-        _render(repo, clone, fail_after_two)
-
-    assert sorted(path.name for path in clone.iterdir()) == [".git"]
-
-
-def test_stage_bound_failure_removes_the_bound_stage(tmp_path):
-    repo = _template_repo(tmp_path)
-    clone = _empty_clone(tmp_path)
-
-    def fail_stage(event, _relative_path, _fd):
-        if event == "stage_bound":
-            raise RuntimeError("stage bind failure")
-
-    with pytest.raises(BootstrapRenderError, match="stage bind failure"):
-        _render(repo, clone, fail_stage)
-
-    assert sorted(path.name for path in clone.iterdir()) == [".git"]
-    assert not list(tmp_path.glob(".client-wiki-stage-*"))
-
-
-def test_partial_write_failure_is_removed_from_the_ledger(tmp_path, monkeypatch):
-    repo = _template_repo(tmp_path)
-    clone = _empty_clone(tmp_path)
-
-    def fail_after_partial_write(descriptor, data):
-        os.write(descriptor, data[:1])
-        raise OSError("simulated disk full")
-
-    monkeypatch.setattr(bootstrap_renderer, "_write_all", fail_after_partial_write)
-    with pytest.raises(BootstrapRenderError, match="simulated disk full"):
+    residue = raised.value.residue
+    assert residue is not None
+    assert (residue.clone_device, residue.clone_inode) == (clone.stat().st_dev, clone.stat().st_ino)
+    assert len(residue.completed_members) <= 128
+    assert residue.failure_stage == stage
+    assert "Do not retry" in residue.instruction
+    assert sorted(path.name for path in clone.iterdir()) != [".git"]
+    with pytest.raises(BootstrapRenderError, match="only a real .git"):
         _render(repo, clone)
 
-    assert sorted(path.name for path in clone.iterdir()) == [".git"]
-    assert not list(tmp_path.glob(".client-wiki-stage-*"))
 
-
-def test_directory_chmod_failure_is_removed_from_the_ledger(tmp_path, monkeypatch):
+@pytest.mark.parametrize("signal", [KeyboardInterrupt(), SystemExit(9)])
+def test_base_exception_preserves_residue(tmp_path, monkeypatch, signal):
     repo = _template_repo(tmp_path)
     clone = _empty_clone(tmp_path)
-    real_fchmod = os.fchmod
-    failed = False
 
-    def fail_first_directory(descriptor, mode):
-        nonlocal failed
-        if not failed and stat.S_ISDIR(os.fstat(descriptor).st_mode):
-            failed = True
-            raise OSError("simulated chmod failure")
-        real_fchmod(descriptor, mode)
+    def interrupt(_descriptor, _mode):
+        raise signal
 
-    monkeypatch.setattr(bootstrap_renderer.os, "fchmod", fail_first_directory)
-    with pytest.raises(BootstrapRenderError, match="simulated chmod failure"):
+    monkeypatch.setattr(bootstrap_renderer.os, "fchmod", interrupt)
+    with pytest.raises(BootstrapRenderError) as raised:
         _render(repo, clone)
-
-    assert sorted(path.name for path in clone.iterdir()) == [".git"]
-    assert not list(tmp_path.glob(".client-wiki-stage-*"))
-
-
-def test_stage_interference_aborts_before_target_install(tmp_path):
-    repo = _template_repo(tmp_path)
-    clone = _empty_clone(tmp_path)
-
-    def add_foreign_stage_child(event, relative_path, descriptor):
-        if event != "stage_member_bound" or relative_path != "docs":
-            return
-        child = os.open("foreign", os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600, dir_fd=descriptor)
-        os.close(child)
-
-    with pytest.raises(BootstrapRenderError, match="stage cleanup"):
-        _render(repo, clone, add_foreign_stage_child)
-
-    assert sorted(path.name for path in clone.iterdir()) == [".git"]
-    residue = list(tmp_path.glob(".client-wiki-stage-*"))
-    assert len(residue) == 1
-    assert (residue[0] / "docs" / "foreign").exists()
-
-
-def test_replaced_bound_file_and_victim_are_never_deleted(tmp_path):
-    repo = _template_repo(tmp_path)
-    clone = _empty_clone(tmp_path)
-    moved = clone / "rendered-readme-moved"
-
-    def replace_file(event, relative_path, _fd):
-        if event != "target_member_bound" or relative_path != "README.md":
-            return
-        (clone / "README.md").rename(moved)
-        (clone / "README.md").write_text("victim sentinel\n", encoding="utf-8")
-        raise RuntimeError("replace bound file")
-
-    with pytest.raises(BootstrapRenderError, match="replace bound file"):
-        _render(repo, clone, replace_file)
-
-    assert (clone / "README.md").read_text() == "victim sentinel\n"
-    assert moved.read_text().startswith("# example-co")
-    assert (clone / ".git" / "sentinel").read_text() == "git metadata\n"
-
-
-def test_nonempty_created_directory_is_left_as_bounded_residue(tmp_path):
-    repo = _template_repo(tmp_path)
-    clone = _empty_clone(tmp_path)
-
-    def make_nonempty(event, relative_path, _fd):
-        if event != "target_member_bound" or relative_path != "docs":
-            return
-        (clone / "docs" / "intruder").write_text("foreign\n", encoding="utf-8")
-        raise RuntimeError("foreign child")
-
-    with pytest.raises(BootstrapRenderError, match="foreign child"):
-        _render(repo, clone, make_nonempty)
-
-    assert (clone / "docs" / "intruder").read_text() == "foreign\n"
-    assert (clone / ".git" / "sentinel").read_text() == "git metadata\n"
-
-
-def test_unexpected_post_bind_member_causes_final_inventory_failure(tmp_path):
-    repo = _template_repo(tmp_path)
-    clone = _empty_clone(tmp_path)
-
-    def add_unexpected(event, _relative_path, _fd):
-        if event == "before_final_revalidation":
-            (clone / "unexpected").write_text("foreign\n", encoding="utf-8")
-
-    with pytest.raises(BootstrapRenderError, match="inventory"):
-        _render(repo, clone, add_unexpected)
-
-    assert (clone / "unexpected").read_text() == "foreign\n"
-    assert (clone / ".git" / "sentinel").read_text() == "git metadata\n"
+    assert raised.value.residue is not None
+    assert raised.value.residue.uncertain_member
+    assert sorted(path.name for path in clone.iterdir()) != [".git"]
 
 
 def test_directory_modes_are_normalized_despite_umask(tmp_path):

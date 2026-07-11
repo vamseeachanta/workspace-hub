@@ -33,6 +33,10 @@ from .bootstrap_schema import (
 class BootstrapContractError(RuntimeError):
     """Live repository or clone state denies bootstrap."""
 
+    def __init__(self, message: str, *, residue=None):
+        super().__init__(message)
+        self.residue = residue
+
 
 @dataclass(frozen=True, slots=True)
 class WorkspaceLayout:
@@ -218,7 +222,7 @@ def verify_unborn_clone(target: Path, repo_slug: str) -> None:
         with bind_empty_clone(target) as clone:
             _verify_bound_clone(clone, repo_slug)
     except BootstrapRenderError as exc:
-        raise BootstrapContractError(str(exc)) from exc
+        raise BootstrapContractError(str(exc), residue=exc.residue) from exc
 
 
 def _load_planned_entry(registry_path: Path, short_name: str):
@@ -268,7 +272,7 @@ def execute_render(
                 _final_validator=lambda bound: _verify_bound_clone(bound, entry.repo, require_empty=False),
             )
     except BootstrapRenderError as exc:
-        raise BootstrapContractError(str(exc)) from exc
+        raise BootstrapContractError(str(exc), residue=exc.residue) from exc
 
 
 def _validate_command(args: argparse.Namespace) -> int:
@@ -343,7 +347,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         return int(args.handler(args))
     except (BootstrapSchemaError, BootstrapRenderError, BootstrapContractError) as exc:
-        print(f"FAIL: {exc}", file=sys.stderr)
+        residue = getattr(exc, "residue", None)
+        if residue is not None:
+            print(json.dumps({"error": str(exc), "residue": asdict(residue)}, sort_keys=True), file=sys.stderr)
+        else:
+            print(f"FAIL: {exc}", file=sys.stderr)
         return 1
 
 
