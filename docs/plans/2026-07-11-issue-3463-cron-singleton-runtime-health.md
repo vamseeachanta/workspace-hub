@@ -1,13 +1,13 @@
 # Plan for #3463: Cron singleton enforcement and bounded runtime health
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T3
 > **Date:** 2026-07-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3463
 > **Client:** N/A
 > **Lane:** lane:claude
 > **Execution mode:** parallel-readonly for planning/review; single-lane for implementation because runtime state, schedule metadata, and health classification share one contract
-> **Review artifacts:** `scripts/review/results/2026-07-11-plan-3463-claude.md` | `scripts/review/results/2026-07-11-plan-3463-codex.md` | `scripts/review/results/2026-07-11-plan-3463-gemini.md`
+> **Review artifacts:** `scripts/review/results/2026-07-11-plan-3463-{claude,codex,gemini}-r1.md` | `scripts/review/results/2026-07-11-plan-3463-{claude,codex}-r2.md`
 > **Human-facing companion:** `docs/reports/2026-07-11-issue-3463-cron-singleton-runtime-health-plan.html`
 
 ---
@@ -89,6 +89,17 @@ $ pgrep -afi 'import[-_ ]timing|importtime|python.*-X[[:space:]]+importtime'
 - The probe also demonstrates why unguarded `pgrep -f` will be rejected as the primary health mechanism: it matches its own shell command.
 - No process will be signaled during planning or implementation without a separate, fresh user-approved operational action.
 
+**Pre-existing test baseline** (verified 2026-07-11T11:08Z):
+
+```text
+$ uv run pytest scripts/cron/tests/test_validate_schedule.py -q
+19 passed, 1 failed
+FAILED test_setup_cron_dry_run_expands_workspace_hub_and_log
+literal $WORKSPACE_HUB appears in mkdir -p inserted after placeholder expansion
+```
+
+- Task 3 will convert this known renderer-order failure from RED to GREEN before adding repository-sync-specific rendering assertions. It will not be treated as a regression introduced by runtime work.
+
 ### Gaps identified
 
 - No task-owned runtime evidence contract exists.
@@ -130,7 +141,7 @@ Rejected alternatives:
 | Renderer/apply tests | `tests/cron/test_cron_render.py`, `tests/cron/test_cron_apply.py`, `tests/cron/test_cron_transaction.py` |
 | Operator inventory | `docs/ops/scheduled-tasks.md` |
 | Safe response runbook | `docs/ops/cron-process-response.md` |
-| Review artifacts | `scripts/review/results/2026-07-11-plan-3463-{claude,codex,gemini}.md` |
+| Review artifacts | `scripts/review/results/2026-07-11-plan-3463-*-r1.md`, `scripts/review/results/2026-07-11-plan-3463-*-r2.md` |
 
 ---
 
@@ -164,10 +175,12 @@ run(task_id, argv, cwd, log_path, schedule):
     if contention:
         atomically replace contention.json without modifying active.json
         exit with a documented non-success contention code
-    atomically write active.json with pid, pgid, sid, /proc start token, and UTC start time
-    open the validated log path and spawn argv directly in cwd without a shell
+    open the validated log path and spawn argv directly in cwd in a new process group
+    atomically write active.json with supervisor identity plus child pid, child pgid,
+        child /proc start token, and UTC start time
     on TERM/INT/HUP, forward the signal to the child process group
-    wait for the complete child process group while retaining the lock
+    reap the direct child and poll only the recorded child PGID until it no longer exists,
+        while retaining the lock
     atomically write last-result.json with success/failure/signal result
     remove active.json only after the child group exits
     release the lock last
@@ -179,8 +192,8 @@ run(task_id, argv, cwd, log_path, schedule):
 inspect(state_dir, now):
     validate active.json, contention.json, and last-result.json independently
     if active.json exists:
-        read only its recorded PID's /proc start token, stat, and wchan
-        if PID is absent or start token differs: return stale_or_reused_pid
+        read only its recorded child PID/PGID's /proc start token, stat, and wchan
+        if child PID is absent or start token differs: return stale_or_reused_pid
         if contention is newer than active start: return overlap
         if stat/wchan matches configured filesystem-wait evidence: return filesystem_wait
         if elapsed > max_seconds: return excessive_runtime
@@ -208,7 +221,7 @@ for each machine-applicable task:
     emit both log_status and runtime_status in JSON
 ```
 
-The existing top-level `status` field will remain for compatibility and will use documented precedence; new `log_status`, `runtime_status`, `active_pid`, `pgid`, `sid`, `process_state`, `wait_channel`, `elapsed_seconds`, and `evidence_timestamp` fields will provide non-lossy detail. `filesystem_wait` will require either process state `D` or an exact configured wait-channel token; the report will preserve the raw bounded state/wchan evidence so an operator can distinguish a configured match from inference. No environment variables or full command lines will enter the JSON report.
+The existing top-level `status` field will remain for compatibility and will use documented precedence; new `log_status`, `runtime_status`, `supervisor_pid`, `child_pid`, `child_pgid`, `sid`, `process_state`, `wait_channel`, `elapsed_seconds`, and `evidence_timestamp` fields will provide non-lossy detail. `filesystem_wait` will inspect the recorded mutating child, not the waiting supervisor, and will require either process state `D` or an exact configured wait-channel token. The report will preserve the raw bounded state/wchan evidence so an operator can distinguish a configured match from inference. No environment variables or full command lines will enter the JSON report.
 
 ---
 
@@ -217,7 +230,7 @@ The existing top-level `status` field will remain for compatibility and will use
 ### Task 1: Lock the runtime contract with RED tests
 
 - Add `tests/cron/test_cron_runtime.py` fixtures using temporary directories and short-lived child processes.
-- Add failing tests for one successful lock owner, second-run contention, lock release after success/error/signal only after the child group exits, forwarded signals, stale PID, PID start-token mismatch, completed success/failure, never-started evidence, filesystem wait, controlled state paths, separate atomic evidence files, and unsupported `/proc` behavior.
+- Add failing tests for one successful lock owner, second-run contention, child rather than supervisor identity, lock release after success/error/signal only after the recorded child PGID disappears, forwarded signals, stale PID, PID start-token mismatch, completed success/failure, never-started evidence, filesystem wait, controlled state paths, separate atomic evidence files, and unsupported `/proc` behavior.
 - Extend `scripts/cron/tests/test_validate_schedule.py` with failing schema/security tests before adding YAML runtime fields.
 - Run the focused tests and retain the expected RED output in the implementation issue comment.
 
@@ -226,13 +239,14 @@ The existing top-level `status` field will remain for compatibility and will use
 - Create `scripts/cron/cron_runtime.py` with separate pure parsing/inspection functions and a CLI execution boundary.
 - Keep the file below 400 lines and every function below 50 lines.
 - Accept `--task-id`, `--cwd`, `--log`, and an argv tail after `--`; reject a compound shell string. Use argv-preserving subprocess execution without `eval`, `shell=True`, or command-string interpolation.
-- Spawn the child in a dedicated process group, forward TERM/INT/HUP, wait for the entire group to exit, and retain the singleton lock until that wait completes. No automatic KILL escalation will occur.
+- Spawn the child in a dedicated process group, record the child PID/PGID/start token after spawn, forward TERM/INT/HUP, reap the direct child, and poll only the recorded PGID until it disappears while retaining the singleton lock. No automatic KILL escalation will occur. Repository-sync descendants will be required to remain in that PGID; daemonizing or calling `setsid()` will be a contract violation covered by a negative fixture and documented as unsupported.
 - Keep `active.json`, `contention.json`, and `last-result.json` separate. Make each write atomic through same-directory temporary files and rename so a contender cannot overwrite owner identity or completion evidence.
 - Re-run Task 1 tests to GREEN, then run `bash -n scripts/cron-repository-sync.sh`.
 
 ### Task 3: Enforce repository-sync singleton and correct its log contract
 
-- First extend renderer and validation tests so the repository-sync rendered redirection family equals its declared `log:` family and contains the runtime runner invocation.
+- Preserve the existing failing `test_setup_cron_dry_run_expands_workspace_hub_and_log` as the first RED fixture. Correct renderer ordering so `_ensure_log_dir()` runs before placeholder expansion (or re-expand the inserted prefix), then prove no generated line contains literal `$WORKSPACE_HUB`.
+- Extend renderer and validation tests so the repository-sync rendered redirection family equals its declared `log:` family and contains the runtime wrapper invocation.
 - Update the repository-sync catalog command and wrapper integration only after those tests fail. `scripts/cron-repository-sync.sh` will be the enforced cron/manual wrapper boundary and will call the runner with structured argv equivalent to `scripts/repository_sync`; the catalog will continue to invoke that wrapper rather than pass a compound command into the runner.
 - Preserve the wrapper's dated `logs/repository-sync-*.log` as the canonical execution log; remove reliance on the machine-global `$LOG` for this task.
 - Add a hermetic two-invocation test proving only one mutation stub executes and contention produces durable evidence. Add a bypass test proving two direct wrapper invocations cannot overlap; direct invocation of the lower-level `scripts/repository_sync` tool will remain explicitly outside the scheduled-wrapper contract.
@@ -246,8 +260,9 @@ The existing top-level `status` field will remain for compatibility and will use
 
 ### Task 5: Reconcile installed schedule drift safely
 
-- Add transactional fixtures containing the stale same-schedule Hermes command without `--commit`, an old-schedule bridge entry, exact duplicate catalog-attributable entries, preserved external entries, and uncataloged entries.
-- Prove `cron_apply.py` will replace entries attributable through the existing exact catalog script key, report but preserve genuinely external duplicates, and fail closed on unknown ownership. Detection will not imply reconciliation when ownership is unknown.
+- Add explicit `installed_fingerprint` metadata for catalog-owned tasks using the existing all-fields-match vocabulary (`script_basename`, `cwd_contains`, and `owner_repo` where applicable). The transaction will not treat a bare substring as ownership evidence.
+- Add transactional fixtures containing the stale same-schedule Hermes command without `--commit`, an old-schedule bridge entry, exact duplicate catalog-attributable entries, an external line that merely contains the same script substring, preserved external entries, and uncataloged entries.
+- Prove `cron_apply.py` will replace entries attributable only through the complete explicit fingerprint, report but preserve genuinely external duplicates, and fail closed on unknown ownership. Detection will not imply reconciliation when ownership is unknown.
 - Assert 04:25 remains the expected `ace-linux-1` bridge schedule and the rendered command contains `--commit` exactly once.
 - Do not mutate live crontab during automated tests. Any later live apply will require a dry-run diff and explicit operator approval.
 
@@ -266,6 +281,8 @@ The existing top-level `status` field will remain for compatibility and will use
 |---|---|
 | `test_second_runner_reports_contention_without_running_command` | one mutator executes; second invocation emits durable overlap evidence and non-success status |
 | `test_signal_is_forwarded_and_lock_is_held_until_child_group_exits` | no live mutator survives lock release; next invocation cannot start early |
+| `test_runtime_inspects_child_not_waiting_supervisor` | filesystem wait and PID identity come from the recorded mutating child |
+| `test_lock_is_held_until_recorded_pgid_disappears` | direct-child exit alone cannot release the singleton while an in-group descendant remains |
 | `test_owner_and_contention_evidence_cannot_overwrite_each_other` | separate atomic files preserve owner, contention, and result evidence |
 | `test_completed_success_failure_and_never_started_are_distinct` | absent live PID does not turn a normal completed run into stale-PID failure |
 | `test_runtime_state_rejects_pid_start_token_mismatch` | PID reuse classifies as `stale_or_reused_pid` |
@@ -279,6 +296,7 @@ The existing top-level `status` field will remain for compatibility and will use
 | `test_runtime_probe_does_not_match_itself_or_ancestors` | probe/monitor shell never becomes task evidence |
 | `test_ace_linux_1_bridge_renders_0425_with_commit` | intentional stagger remains and installed-command drift becomes detectable |
 | `test_transaction_reconciles_catalog_duplicates_but_preserves_external` | exact ownership policy governs replacement/preservation/fail-closed behavior |
+| `test_catalog_ownership_never_uses_bare_substring_match` | an external command containing the same script text is preserved or blocks, never silently dropped |
 | `test_runbook_never_uses_cron_daemon_group_or_automatic_sigkill` | documentation safety invariants remain enforced |
 
 ---
@@ -288,6 +306,7 @@ The existing top-level `status` field will remain for compatibility and will use
 - [ ] Repository sync cannot execute a second mutating invocation while the first owns its singleton lock.
 - [ ] Never-started, active, completed-success, completed-failure, contention, filesystem-wait, excessive-runtime, stale/reused-PID, orphan-contention, and probe-unavailable states produce distinct bounded machine-readable evidence.
 - [ ] TERM/INT/HUP is forwarded to the child group and the singleton lock remains held until every mutating child exits; the runner never performs automatic KILL escalation.
+- [ ] Runtime health records and inspects the mutating child PID/PGID/start token rather than the waiting supervisor.
 - [ ] Cron health reports log and runtime dimensions independently and preserves backward-compatible top-level status semantics.
 - [ ] Runtime inspection reads only declared state and a recorded PID identity; it performs no broad FUSE, repo-tree, or process substring scan.
 - [ ] The repository-sync declared log family equals the rendered and wrapper-emitted log family.
@@ -310,11 +329,11 @@ The existing top-level `status` field will remain for compatibility and will use
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | UNAVAILABLE (r1) | temporary checkout trust gate prevented a usable review; retry will use pushed branch evidence from a trusted checkout |
-| Codex | MAJOR (r1), re-review pending | r1 requires a structured argv/cwd/log interface, signal forwarding with lock retention, complete lifecycle states, lossless contention evidence, named lock boundary, filesystem-wait classification, safe duplicate ownership, and a fixed runtime bound; the revision incorporates all eight findings |
+| Claude | UNAVAILABLE (r1/r2) | r1 hit a temporary-checkout trust gate; r2 from the trusted checkout did not complete before the bounded review window |
+| Codex | MAJOR (r1/r2), r3 patched inline | r1 findings are incorporated. r2 requires child rather than supervisor evidence, exact-PGID lock retention, explicit catalog fingerprints instead of substring ownership, durable review paths, and disclosure/fix of the pre-existing renderer-order failure; the inline r3 revision incorporates these findings under the mandated loop-break rule |
 | Gemini | UNAVAILABLE (r1) | no non-interactive Gemini credentials are configured on this machine |
 
-**Overall result:** revision in progress — the plan will remain `draft` until a fresh available-provider review contains no MAJOR findings. Provider outages will be documented rather than treated as consensus.
+**Overall result:** plan-review candidate with minority-provider risk surfaced — two Codex rounds return MAJOR with non-overlapping defects, both revision waves are incorporated, and the workspace r3 loop-break rule forbids another automatic dispatch. Claude and Gemini are unavailable, so there is no provider consensus. The user approval checkpoint will explicitly carry this residual review-diversity risk.
 
 ---
 
