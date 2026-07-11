@@ -14,6 +14,7 @@ See issue #2969 — "F2: role-tagged cron catalog + safe cutover".
 from __future__ import annotations
 
 import re
+import shlex
 import sys
 from pathlib import Path
 
@@ -38,10 +39,10 @@ _ENV_LINE_RE = re.compile(r"^[A-Z_]+=")
 _SCRIPT_PATH_RE = re.compile(r"scripts/[\w./-]+\.(?:sh|py)")
 _FINGERPRINT_KEYS = {
     "command_contains",
+    "command_tokens",
     "cwd_contains",
     "cwd_basename",
     "script_basename",
-    "owner_repo",
 }
 
 
@@ -143,7 +144,6 @@ def match_fingerprint(line: str, fp: dict) -> bool:
       command_contains: str | list[str]  every item must be a substring of line
       cwd_contains: str                   substring of line
       script_basename: str                substring of line
-      owner_repo: str | list[str]         treated like command_contains
     An empty fingerprint never matches (returns False).
     """
     if not fp:
@@ -159,9 +159,15 @@ def match_fingerprint(line: str, fp: dict) -> bool:
         checked_any = True
         if not _all_substrings(fp["command_contains"]):
             return False
-    if "owner_repo" in fp:
+    if "command_tokens" in fp:
         checked_any = True
-        if not _all_substrings(fp["owner_repo"]):
+        wanted = fp["command_tokens"]
+        try:
+            tokens = shlex.split(line)
+        except ValueError:
+            return False
+        width = len(wanted)
+        if width == 0 or not any(tokens[i : i + width] == wanted for i in range(len(tokens) - width + 1)):
             return False
     if "cwd_contains" in fp:
         checked_any = True

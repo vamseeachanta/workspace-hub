@@ -77,6 +77,31 @@ def _load_valid_roles() -> set[str]:
 VALID_ROLES = _load_valid_roles()
 
 
+def validate_installed_fingerprint(tid: str, value: object) -> list[str]:
+    """Validate a conjunctive catalog ownership identity."""
+    if value is None:
+        return []
+    if not isinstance(value, dict) or not value:
+        return [f"{tid}: installed_fingerprint must be a non-empty mapping"]
+    allowed = {
+        "command_contains", "command_tokens", "cwd_contains", "cwd_basename",
+        "script_basename",
+    }
+    errors: list[str] = []
+    unknown = set(value) - allowed
+    if unknown:
+        errors.append(f"{tid}: installed_fingerprint has unknown fields {sorted(unknown)}")
+    for key, item in value.items():
+        items = item if isinstance(item, list) else [item]
+        if not items or any(not isinstance(part, str) or not part.strip() for part in items):
+            errors.append(f"{tid}: installed_fingerprint.{key} must contain non-empty strings")
+    command_keys = {"command_contains", "command_tokens", "script_basename"}
+    cwd_keys = {"cwd_contains", "cwd_basename"}
+    if not (set(value) & command_keys and set(value) & cwd_keys):
+        errors.append(f"{tid}: installed_fingerprint requires command and cwd identity")
+    return errors
+
+
 def validate_log_path(tid: str, value: object) -> list[str]:
     """Require a repo-relative glob that shell iteration cannot split."""
     if value is None:
@@ -210,6 +235,7 @@ def main() -> int:
             errors.append(f"{tid}: runtime metadata is supported only for cron tasks")
         errors.extend(validate_runtime_contract(tid, task.get("runtime"), state_dirs))
         errors.extend(validate_log_path(tid, task.get("log")))
+        errors.extend(validate_installed_fingerprint(tid, task.get("installed_fingerprint")))
 
         # Check if command invokes claude CLI (not just .claude/ paths)
         import re

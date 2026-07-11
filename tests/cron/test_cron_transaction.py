@@ -110,6 +110,18 @@ def test_match_fingerprint_command_contains_str():
     assert not ct.match_fingerprint(line, {"command_contains": "nope"})
 
 
+def test_match_fingerprint_command_tokens_require_adjacent_shell_tokens():
+    token = ".claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py"
+    line = f"0 5 * * 0 uv run python {token} >> logs/out.log"
+
+    fingerprint = {"command_tokens": ["python", token]}
+    assert ct.match_fingerprint(line, fingerprint)
+    assert not ct.match_fingerprint(line.replace(token, f"prefix{token}"), fingerprint)
+    assert not ct.match_fingerprint(line.replace(token, f"{token}.bak"), fingerprint)
+    assert not ct.match_fingerprint(f"0 * * * * echo --input={token}", fingerprint)
+    assert not ct.match_fingerprint(f"0 * * * * printf x > {token}", fingerprint)
+
+
 def test_match_fingerprint_cwd_and_basename():
     line = "30 7 * * * cd /mnt/x/deckhand && python3 scripts/member-audit-cron.py"
     assert ct.match_fingerprint(line, {"cwd_contains": "/deckhand"})
@@ -130,11 +142,10 @@ def test_match_fingerprint_partial_mismatch_is_false():
     )
 
 
-def test_match_fingerprint_owner_repo_like_command_contains():
+def test_match_fingerprint_rejects_descriptive_owner_repo_field():
     line = "0 1 * * * cd /mnt/local-analysis/deckhand && run"
-    assert ct.match_fingerprint(line, {"owner_repo": "deckhand"})
-    assert ct.match_fingerprint(line, {"owner_repo": ["deckhand", "run"]})
-    assert not ct.match_fingerprint(line, {"owner_repo": ["deckhand", "absent"]})
+
+    assert not ct.match_fingerprint(line, {"owner_repo": "deckhand"})
 
 
 # --- classify_line ---------------------------------------------------------

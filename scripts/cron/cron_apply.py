@@ -28,10 +28,14 @@ import contextlib
 import fcntl
 import importlib.util
 import json
+import os
+import re
+import secrets
 import socket
 import subprocess
 import sys
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -39,7 +43,7 @@ CATALOG = REPO / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 STATE_CLASSES = REPO / "config" / "workstations" / "harness-state-classes.yaml"
 REGISTRY = REPO / "config" / "workstations" / "registry.yaml"
 LOCKFILE = Path.home() / ".cron-reconcile.lock"
-BACKUP_DIR = REPO / "logs" / "cron-backups"
+BACKUP_DIR = Path(os.environ.get("CRON_BACKUP_DIR", REPO / "logs" / "cron-backups"))
 
 # load the pure core by file path (kebab-safe; module name has underscores)
 _render_spec = importlib.util.spec_from_file_location(
@@ -96,6 +100,22 @@ def read_crontab(_run=subprocess.run) -> str:
 
 def write_crontab(text: str, _run=subprocess.run) -> None:
     _run(["crontab", "-"], input=text, text=True, check=True)
+
+
+def create_backup(machine_id: str, tag: str | None, text: str) -> Path:
+    """Atomically create backup content without overwriting recovery evidence."""
+    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+    if tag is None:
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+        tag = f"{stamp}-{os.getpid()}-{secrets.token_hex(3)}"
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+", tag):
+        raise ValueError("backup tag contains unsafe characters")
+    path = BACKUP_DIR / f"{machine_id}-{tag}.crontab"
+    with path.open("x", encoding="utf-8") as handle:
+        handle.write(text)
+        handle.flush()
+        os.fsync(handle.fileno())
+    return path
 
 
 def detect_comms_daemons(pgrep_fn=None) -> list[str]:
@@ -184,7 +204,7 @@ def external_fingerprints(state_classes: dict) -> list[dict]:
 
 
 # ── the transaction ──────────────────────────────────────────────────────────
-def run_cutover(machine_id: str, apply: bool, ts: str,
+def run_cutover(machine_id: str, apply: bool, ts: str | None,
                 _read=read_crontab, _write=write_crontab,
                 _daemons=None, allow_live_reload: bool = False) -> dict:
     catalog = _load(CATALOG)
@@ -234,9 +254,6 @@ def run_cutover(machine_id: str, apply: bool, ts: str,
     if daemons and not allow_live_reload:
         return {"status": "abort", "reason": f"live comms daemons {daemons} — pass --allow-live-reload"}
 
-    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
-    backup = BACKUP_DIR / f"{canonical_id}-{ts}.crontab"
-
     # Hold an exclusive process lock across the read→write critical section so a concurrent
     # cron-apply / setup-cron cannot interleave (#2969 code-review MAJOR #2). A writer that
     # does NOT honor the lock (e.g. deckhand) is still caught by the compare-and-swap below.
@@ -245,7 +262,7 @@ def run_cutover(machine_id: str, apply: bool, ts: str,
         if current != A:                          # changed since we planned → plan is stale
             return {"status": "abort",
                     "reason": "crontab changed during cutover (CAS) — re-run", "backup": None}
-        backup.write_text(A)                       # A is verified-intact (read succeeded)
+        backup = create_backup(canonical_id, ts, A)
         _write(plan["new_text"])
         after = _read()
 
@@ -264,7 +281,14 @@ def run_cutover(machine_id: str, apply: bool, ts: str,
     for line, n in need.items():
         if after_counts[line] < n:
             with _flock(LOCKFILE):
-                _write(A)                          # rollback to verified-intact A
+                current = _read()
+                if current != after:
+                    return {
+                        "status": "rollback-aborted",
+                        "reason": "concurrent crontab change detected; refusing stale rollback",
+                        "backup": str(backup),
+                    }
+                _write(A)                          # CAS-verified rollback to intact A
             return {"status": "rolled-back", "reason": f"preserved line lost: {line!r}",
                     "backup": str(backup)}
     result["status"] = "applied"
@@ -277,12 +301,22 @@ def main(argv=None) -> int:
     ap.add_argument("--apply", action="store_true", help="commit (default: dry-run)")
     ap.add_argument("--allow-live-reload", action="store_true")
     ap.add_argument("--machine", default=None)
-    ap.add_argument("--ts", default="manual", help="backup timestamp tag (caller supplies)")
+    ap.add_argument("--ts", default=None, help="optional unique backup tag")
     ap.add_argument("--json", action="store_true")
     args = ap.parse_args(argv)
     host = args.machine or socket.gethostname().split(".")[0]
     registry = _load(REGISTRY)
     mid = cr.build_context(host, registry=registry)["machine_id"]
+    physical_host = socket.gethostname().split(".")[0]
+    physical_mid = cr.build_context(physical_host, registry=registry)["machine_id"]
+    if mid != physical_mid:
+        res = {
+            "status": "abort",
+            "reason": f"refusing local crontab reconciliation for remote machine {mid}",
+            "machine": mid,
+        }
+        print(json.dumps(res, indent=2) if args.json else f"cron-apply {mid}: abort — {res['reason']}")
+        return 2
     res = run_cutover(mid, args.apply, args.ts, allow_live_reload=args.allow_live_reload)
     if args.json:
         print(json.dumps(res, indent=2))

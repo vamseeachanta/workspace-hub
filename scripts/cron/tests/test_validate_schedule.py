@@ -201,6 +201,39 @@ def test_hermes_bridge_has_explicit_installed_fingerprint(tasks):
     }
 
 
+def test_deckhand_presence_sync_has_exact_installed_fingerprint(tasks):
+    task = next(t for t in tasks if t["id"] == "deckhand-api-presence-sync")
+
+    assert task["installed_fingerprint"] == {
+        "command_tokens": [
+            "python",
+            ".claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py",
+        ],
+        "cwd_basename": "workspace-hub",
+    }
+
+
+def test_installed_fingerprint_schema_rejects_broad_or_malformed_values():
+    validator = _load_module("validate_schedule_fingerprint", VALIDATOR)
+
+    invalid = [
+        {},
+        {"command_contains": "deckhand"},
+        {"command_token": "x.py", "cwd_basename": "workspace-hub"},
+        {"command_tokens": ["python", "x.py"]},
+        {"command_tokens": [], "cwd_basename": "workspace-hub"},
+        {"command_tokens": ["python", "x.py"], "cwd_basename": ""},
+        {"command_tokens": ["python", "x.py"], "owner_repo": "workspace-hub"},
+        {"command_tokens": ["python", "x.py"], "cwd_basename": "workspace-hub", "unknown": "x"},
+    ]
+    for fingerprint in invalid:
+        assert validator.validate_installed_fingerprint("task-a", fingerprint)
+
+    assert validator.validate_installed_fingerprint(
+        "task-a", {"command_tokens": ["python", "x.py"], "cwd_basename": "workspace-hub"}
+    ) == []
+
+
 @pytest.mark.parametrize("max_seconds", [59, 604801, 0, "10800"])
 def test_runtime_max_seconds_must_be_integer_in_fixed_range(max_seconds):
     validator = _load_module("validate_schedule_runtime", VALIDATOR)
@@ -265,6 +298,7 @@ def test_repo_ecosystem_hygiene_task_contract(tasks):
 
 
 def test_setup_cron_installs_audit_and_health_for_hostname_alias(tmp_path):
+    _install_empty_crontab_shim(tmp_path)
     hostname_shim = tmp_path / "hostname"
     hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'vamsee-linux1\\n'\n")
     hostname_shim.chmod(0o755)
@@ -292,9 +326,20 @@ def _load_module(name: str, path: Path):
     return module
 
 
+def _install_empty_crontab_shim(tmp_path: Path) -> None:
+    shim = tmp_path / "crontab"
+    shim.write_text(
+        "#!/usr/bin/env bash\n"
+        "if [[ \"${1:-}\" == \"-l\" ]]; then echo 'no crontab for test' >&2; exit 1; fi\n"
+        "exit 2\n"
+    )
+    shim.chmod(0o755)
+
+
 def test_setup_cron_and_cron_apply_use_shared_renderer_for_same_task(tmp_path):
+    _install_empty_crontab_shim(tmp_path)
     hostname_shim = tmp_path / "hostname"
-    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-2\\n'\n")
+    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-1\\n'\n")
     hostname_shim.chmod(0o755)
     env = os.environ.copy()
     env["PATH"] = f"{tmp_path}:{env['PATH']}"
@@ -315,9 +360,9 @@ def test_setup_cron_and_cron_apply_use_shared_renderer_for_same_task(tmp_path):
     catalog = yaml.safe_load(SCHEDULE_FILE.read_text(encoding="utf-8"))
     registry = yaml.safe_load(REGISTRY_FILE.read_text(encoding="utf-8"))
     repo_sync = next(task for task in catalog["tasks"] if task["id"] == "repository-sync")
-    context = render.build_context("ace-linux-2", registry=registry, workspace_hub=REPO_ROOT)
+    context = render.build_context("ace-linux-1", registry=registry, workspace_hub=REPO_ROOT)
     expected_line = render.render_task(repo_sync, context)["line"]
-    apply_plan = cron_apply.run_cutover("ace-linux-2", apply=False, ts="t", _read=lambda: "")
+    apply_plan = cron_apply.run_cutover("ace-linux-1", apply=False, ts="t", _read=lambda: "")
 
     assert expected_line in result.stdout
     assert expected_line in apply_plan["new_text"]
@@ -331,8 +376,9 @@ def test_setup_cron_delegates_placeholder_rendering_to_shared_renderer():
 
 
 def test_setup_cron_dry_run_expands_workspace_hub_and_log(tmp_path):
+    _install_empty_crontab_shim(tmp_path)
     hostname_shim = tmp_path / "hostname"
-    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-2\\n'\n")
+    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-1\\n'\n")
     hostname_shim.chmod(0o755)
     env = os.environ.copy()
     env["PATH"] = f"{tmp_path}:{env['PATH']}"
