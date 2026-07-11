@@ -112,7 +112,8 @@ def _read_config(bound: BoundCloneLayout) -> list[tuple[str, str]]:
 
 def _value_contract(origins: frozenset[str]) -> dict[str, frozenset[str]]:
     return {
-        "core.repositoryformatversion": frozenset({"0"}),
+        "core.repositoryformatversion": frozenset({"0", "1"}),
+        "extensions.objectformat": frozenset({"sha256"}),
         "core.bare": frozenset({"false"}),
         "core.filemode": frozenset({"true", "false"}),
         "core.logallrefupdates": frozenset({"true"}),
@@ -141,6 +142,11 @@ def _validate_records(records: list[tuple[str, str]], repo_slug: str) -> dict[st
     }
     if not required <= parsed.keys():
         raise BootstrapGitError("clone config is missing a required key")
+    sha256 = parsed.get("extensions.objectformat") == "sha256"
+    if sha256 and parsed["core.repositoryformatversion"] != "1":
+        raise BootstrapGitError("clone config key is forbidden for repository format")
+    if not sha256 and parsed["core.repositoryformatversion"] != "0":
+        raise BootstrapGitError("clone config value is forbidden for repository format")
     return parsed
 
 

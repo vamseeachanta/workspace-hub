@@ -21,6 +21,7 @@ from .bootstrap_bound_manifest import (
     validate_bound_context,
 )
 from .bootstrap_objects import expected_tree
+from .bootstrap_finalizer_ops import ATTESTED_OPERATIONS, attested, zero_oid
 from .bootstrap_remote import remote_state as _remote
 from .bootstrap_renderer import RenderTokens, _render_member
 from .bootstrap_schema import get_entry, load_registry, validate_root_disjointness
@@ -34,10 +35,8 @@ _EMAIL = re.compile(
     r"(?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?"
     r"(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+"
 )
-_ATTESTED_OPERATIONS = frozenset({
-    "hash_object", "mktree", "commit_tree", "cas", "read_tree",
-    "push", "api_query", "final_return",
-})
+_ATTESTED_OPERATIONS = ATTESTED_OPERATIONS
+_zero_oid = zero_oid
 @dataclass(frozen=True, slots=True)
 class FinalizeResidue:
     kind: str
@@ -107,13 +106,10 @@ def _independent_attestation(context: BoundValidationContext) -> None:
 
 def _with_attestation(context, operation: str, callback):
     """Private named seam bracketing one external or mutating operation."""
-    if operation not in _ATTESTED_OPERATIONS:
-        raise BootstrapFinalizerError("unnamed attested operation")
-    _independent_attestation(context)
     try:
-        return callback()
-    finally:
-        _independent_attestation(context)
+        return attested(context, operation, callback, _independent_attestation)
+    except ValueError as exc:
+        raise BootstrapFinalizerError("unnamed attested operation") from exc
 def _reject_git_surfaces(bound: BoundCloneLayout) -> None:
     paths = (
         "objects/info/alternates", "objects/info/http-alternates", "info/grafts", "shallow",
@@ -178,8 +174,13 @@ def _build_tree(context: BoundValidationContext, members: tuple[TemplateMember, 
     return (*created, tree)
 
 
-def _expected_tree(bound: BoundCloneLayout, members: tuple[TemplateMember, ...]) -> str:
-    algorithm = _git(bound, "rev-parse", "--show-object-format").strip().decode()
+def _expected_tree(context: BoundValidationContext,
+                   members: tuple[TemplateMember, ...]) -> str:
+    bound = context.clone
+    algorithm = _with_attestation(
+        context, "object_format",
+        lambda: _git(bound, "rev-parse", "--show-object-format"),
+    ).strip().decode()
     try:
         return expected_tree(algorithm, members)
     except ValueError as exc:
@@ -208,23 +209,24 @@ def _mktree(context: BoundValidationContext, blobs: dict[str, tuple[int, str]], 
     return oid
 
 
-def _head(bound: BoundCloneLayout) -> str | None:
+def _head(context: BoundValidationContext) -> str | None:
+    bound = context.clone
     try:
         head_info = os.stat("HEAD", dir_fd=bound.git_fd, follow_symlinks=False)
     except OSError as exc:
         raise BootstrapFinalizerError("HEAD is unavailable") from exc
     if not stat.S_ISREG(head_info.st_mode):
         raise BootstrapFinalizerError("HEAD must be a regular file")
-    symbolic = _run(
+    symbolic = _with_attestation(context, "symbolic_head", lambda: _run(
         mutation_command(bound.git_fd, "symbolic-ref", "-q", "HEAD"),
         env=isolated_env(), fds=(bound.git_fd,),
-    )
+    ))
     if symbolic.returncode or symbolic.stdout != b"refs/heads/main\n":
         raise BootstrapFinalizerError("HEAD must symbolically name refs/heads/main")
-    result = _run(
+    result = _with_attestation(context, "resolve_head", lambda: _run(
         mutation_command(bound.git_fd, "rev-parse", "--verify", "HEAD^{commit}"),
         env=isolated_env(), fds=(bound.git_fd,),
-    )
+    ))
     if result.returncode:
         return None
     oid = result.stdout.strip().decode()
@@ -233,9 +235,11 @@ def _head(bound: BoundCloneLayout) -> str | None:
     return oid
 
 
-def _validate_commit(bound: BoundCloneLayout, oid: str, tree: str,
+def _validate_commit(context: BoundValidationContext, oid: str, tree: str,
                      identity: tuple[str, str]) -> None:
-    raw = _git(bound, "cat-file", "commit", oid)
+    raw = _with_attestation(
+        context, "commit_read", lambda: _git(context.clone, "cat-file", "commit", oid),
+    )
     if b"\0" in raw or b"\r" in raw:
         raise BootstrapFinalizerError("root commit grammar is invalid")
     lines = raw.split(b"\n")
@@ -265,9 +269,12 @@ def _person(line: bytes, prefix: bytes, expected: str) -> tuple[str, str]:
     return match.group(1), match.group(2) + " " + zone
 
 
-def _index_exact(bound: BoundCloneLayout, tree: str) -> bool:
-    result = _run(mutation_command(bound.git_fd, "write-tree"), env=isolated_env(),
-                  fds=(bound.git_fd,))
+def _index_exact(context: BoundValidationContext, tree: str) -> bool:
+    bound = context.clone
+    result = _with_attestation(context, "index_tree", lambda: _run(
+        mutation_command(bound.git_fd, "write-tree"), env=isolated_env(),
+        fds=(bound.git_fd,),
+    ))
     return result.returncode == 0 and result.stdout.strip().decode() == tree
 
 
@@ -289,7 +296,9 @@ def _initial_commit(context: BoundValidationContext,
     bound = context.clone
     if _remote_attested(context, entry.repo, None)[0] != "absent":
         raise BootstrapFinalizerError("remote main is not authoritatively absent")
-    if _git(bound, "ls-files", "-z"):
+    if _with_attestation(
+        context, "index_list", lambda: _git(bound, "ls-files", "-z"),
+    ):
         raise BootstrapFinalizerError("unborn clone index is not empty")
     objects = _build_tree(context, members)
     if objects[-1] != tree:
@@ -313,34 +322,30 @@ def _initial_commit(context: BoundValidationContext,
     return commit, objects
 
 
-def _zero_oid(oid: str) -> str:
-    if _OID.fullmatch(oid) is None:
-        raise BootstrapFinalizerError("CAS object ID is malformed")
-    return "0" * len(oid)
-
-
 def _recover_commit(context: BoundValidationContext, head: str, tree: str,
                     identity: tuple[str, str]) -> str:
     bound = context.clone
-    raw_tree = _git(bound, "show", "-s", "--format=%T", head).strip().decode()
+    raw_tree = _with_attestation(
+        context, "recovery_tree",
+        lambda: _git(bound, "show", "-s", "--format=%T", head),
+    ).strip().decode()
     if raw_tree != tree:
         raise BootstrapFinalizerError("local commit tree differs")
-    _validate_commit(bound, head, tree, identity)
-    if not _index_exact(bound, tree):
+    _validate_commit(context, head, tree, identity)
+    if not _index_exact(context, tree):
         _with_attestation(context, "read_tree", lambda: _git(bound, "read-tree", tree))
     return head
 
 
 def _transport(context: BoundValidationContext,
                entry, snapshot, commit: str, tree: str) -> None:
-    bound = context.clone
     _independent_attestation(context)
-    if _head(bound) != commit:
+    if _head(context) != commit:
         raise BootstrapFinalizerError("HEAD changed before transport")
     state, _ = _remote_attested(context, entry.repo, commit)
     if state == "absent":
         _with_attestation(context, "push", lambda: _push(context, entry.repo, commit))
-    if _head(bound) != commit:
+    if _head(context) != commit:
         raise BootstrapFinalizerError("HEAD changed during transport")
     state, _observed = _remote_attested(context, entry.repo, commit)
     if state != "equal":
@@ -372,8 +377,8 @@ def finalize_scaffold(registry_path: Path, short_name: str,
                 bound, Path(manifest_path), entry.repo, snapshot.commit_oid,
                 snapshot.tree_oid, members,
             ) as context:
-                head = _head(bound)
-                tree = _expected_tree(bound, members)
+                head = _head(context)
+                tree = _expected_tree(context, members)
                 if head is None:
                     commit, _objects = _initial_commit(context, entry, snapshot, members, tree)
                 else:

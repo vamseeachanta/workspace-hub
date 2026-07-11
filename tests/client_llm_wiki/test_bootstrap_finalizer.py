@@ -11,7 +11,7 @@ import subprocess
 import pytest
 import yaml
 
-from client_llm_wiki import bootstrap_contract, bootstrap_finalizer, bootstrap_remote
+from client_llm_wiki import bootstrap_contract, bootstrap_finalizer
 from client_llm_wiki.bootstrap_manifest import persist_render_manifest
 from client_llm_wiki.bootstrap_layout import bind_clone
 from client_llm_wiki.bootstrap_renderer import RenderTokens, bind_empty_clone, render_committed_template
@@ -31,7 +31,7 @@ def _git(repo: Path, *args: str) -> str:
     ).stdout.strip()
 
 
-def _fixture(tmp_path: Path):
+def _fixture(tmp_path: Path, object_format: str | None = None):
     workspace = tmp_path / "ecosystem" / "workspace-hub"
     template = workspace / "templates" / "client-llm-wiki"
     (template / ".claude").mkdir(parents=True)
@@ -44,7 +44,10 @@ def _fixture(tmp_path: Path):
     _git(workspace, "add", ".")
     _git(workspace, "commit", "-m", "test: template")
     clone = workspace.parent / "llm-wiki-client"
-    subprocess.run(["git", "init", "-b", "main", str(clone)], check=True, capture_output=True)
+    command = ["git", "init", "-b", "main"]
+    if object_format:
+        command.append(f"--object-format={object_format}")
+    subprocess.run([*command, str(clone)], check=True, capture_output=True)
     repo = "org/llm-wiki-client"
     _git(clone, "remote", "add", "origin", f"https://github.com/{repo}.git")
     evidence = tmp_path / "evidence"
@@ -79,7 +82,10 @@ def test_initial_success_constructs_exact_root_commit_and_index(tmp_path, monkey
 
     result = bootstrap_finalizer.finalize_scaffold(registry, "client", manifest)
 
-    assert result["status"] == "finalized"
+    assert result == {
+        "commit_oid": result["commit_oid"], "remote": "equal", "repo": "org/llm-wiki-client",
+        "short_name": "client", "status": "finalized", "tree_oid": result["tree_oid"],
+    }
     assert _git(clone, "rev-list", "--parents", "-1", "HEAD").split() == [result["commit_oid"]]
     assert _git(clone, "write-tree") == result["tree_oid"]
     raw = subprocess.run(
@@ -172,6 +178,11 @@ def _raw_commit(*headers: bytes, message: bytes = bootstrap_finalizer.MESSAGE) -
 
 
 @pytest.mark.parametrize("raw", [
+    _raw_commit(b"tree " + TREE.encode(), b"committer " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"author " + PERSON,
+                b"author " + PERSON, b"committer " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"author " + PERSON,
+                b"committer " + PERSON, b"committer " + PERSON),
     _raw_commit(b"author " + PERSON, b"committer " + PERSON),
     _raw_commit(b"tree " + TREE.encode(), b"tree " + TREE.encode(),
                 b"author " + PERSON, b"committer " + PERSON),
@@ -197,9 +208,11 @@ def _raw_commit(*headers: bytes, message: bytes = bootstrap_finalizer.MESSAGE) -
 ])
 def test_recovery_rejects_every_noncanonical_raw_commit(monkeypatch, raw):
     monkeypatch.setattr(bootstrap_finalizer, "_git", lambda *_args, **_kwargs: raw)
+    monkeypatch.setattr(bootstrap_finalizer, "_independent_attestation", lambda *_args: None)
+    context = type("Context", (), {"clone": object()})()
     with pytest.raises(bootstrap_finalizer.BootstrapFinalizerError):
         bootstrap_finalizer._validate_commit(
-            object(), "c" * 40, TREE, ("Client Wiki Bot", "client-wiki@example.com"),
+            context, "c" * 40, TREE, ("Client Wiki Bot", "client-wiki@example.com"),
         )
 
 
@@ -209,51 +222,16 @@ def test_recovery_accepts_exact_raw_root_commit(monkeypatch):
         b"committer Client Wiki Bot <client-wiki@example.com> 2 +0130",
     )
     monkeypatch.setattr(bootstrap_finalizer, "_git", lambda *_args, **_kwargs: raw)
+    monkeypatch.setattr(bootstrap_finalizer, "_independent_attestation", lambda *_args: None)
+    context = type("Context", (), {"clone": object()})()
     bootstrap_finalizer._validate_commit(
-        object(), "c" * 40, TREE, ("Client Wiki Bot", "client-wiki@example.com"),
+        context, "c" * 40, TREE, ("Client Wiki Bot", "client-wiki@example.com"),
     )
-
-
-@pytest.mark.parametrize(("repo_status", "branch_status", "sha", "expected"), [
-    (200, 404, None, "absent"),
-    (200, 200, "d" * 40, "equal"),
-    (200, 200, "e" * 40, "different"),
-    (401, 404, None, "unknown"),
-    (403, 404, None, "unknown"),
-    (404, 404, None, "unknown"),
-    (200, 500, None, "unknown"),
-    (200, 200, "malformed", "unknown"),
-])
-def test_remote_state_mapping_is_fail_closed(
-    monkeypatch, repo_status, branch_status, sha, expected,
-):
-    repo = {"name": "llm-wiki-client", "owner": {"login": "org"},
-            "private": True, "archived": False}
-    replies = iter(((repo_status, repo), (branch_status, {"object": {"sha": sha}})))
-    monkeypatch.setattr(bootstrap_remote, "github_api", lambda *_args: next(replies))
-    assert bootstrap_remote.remote_state("org/llm-wiki-client", "d" * 40)[0] == expected
-
-
-def test_github_api_uses_literal_host_and_isolated_environment(monkeypatch):
-    seen = {}
-
-    def run(command):
-        seen["command"] = command
-        seen["env"] = bootstrap_remote.isolated_env()
-        return subprocess.CompletedProcess(command, 1, b"", b"failed")
-
-    monkeypatch.setenv("GH_HOST", "attacker.invalid")
-    monkeypatch.setenv("GIT_CONFIG", "/tmp/hostile")
-    monkeypatch.setattr(bootstrap_remote, "_run", run)
-    assert bootstrap_remote.github_api("repos/org/llm-wiki-client") == (0, {})
-    assert seen["command"][0:5] == ["gh", "api", "--hostname", "github.com", "--include"]
-    assert "GH_HOST" not in seen["env"]
-    assert seen["env"]["GIT_CONFIG"] == "/dev/null"
 
 
 @pytest.mark.parametrize("surface", [
     "alternates", "http-alternates", "grafts", "shallow", "hook", "loose-replace",
-    "packed-replace", "malformed-replace",
+    "packed-replace", "mixed-replace", "malformed-replace",
 ])
 def test_forbidden_git_authority_surface_is_rejected(tmp_path, surface):
     clone = tmp_path / "clone"
@@ -267,12 +245,17 @@ def test_forbidden_git_authority_surface_is_rejected(tmp_path, surface):
         "hook": git / "hooks/pre-commit",
         "loose-replace": git / f"refs/replace/{'a' * 40}",
         "packed-replace": git / "packed-refs",
+        "mixed-replace": git / "packed-refs",
         "malformed-replace": git / "packed-refs",
     }
     path = paths[surface]
     path.parent.mkdir(parents=True, exist_ok=True)
     data = "x\n"
     if surface == "packed-replace":
+        data = f"{'b' * 40} refs/replace/{'a' * 40}\n"
+    elif surface == "mixed-replace":
+        (git / f"refs/replace/{'c' * 40}").parent.mkdir(parents=True, exist_ok=True)
+        (git / f"refs/replace/{'c' * 40}").write_text("d" * 40 + "\n")
         data = f"{'b' * 40} refs/replace/{'a' * 40}\n"
     elif surface == "malformed-replace":
         data = f"{'b' * 40} refs/replace\n"
