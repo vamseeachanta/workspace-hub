@@ -2,19 +2,16 @@
 
 from __future__ import annotations
 
-import io
 import os
 from pathlib import Path
 import stat
 import subprocess
-import tarfile
 
 import pytest
 from client_llm_wiki import bootstrap_renderer
 from client_llm_wiki.bootstrap_renderer import (
     BootstrapRenderError,
     RenderTokens,
-    _validated_archive_members,
     bind_empty_clone,
     render_committed_template,
 )
@@ -84,16 +81,6 @@ def _render(repo: Path, clone: Path, failpoint=None):
         )
 
 
-def _tar_bytes(members: list[tarfile.TarInfo]) -> bytes:
-    stream = io.BytesIO()
-    with tarfile.open(fileobj=stream, mode="w") as archive:
-        for member in members:
-            payload = b"x" if member.isreg() else b""
-            member.size = len(payload)
-            archive.addfile(member, io.BytesIO(payload) if payload else None)
-    return stream.getvalue()
-
-
 def test_render_uses_committed_head_and_normalizes_modes(tmp_path):
     repo = _template_repo(tmp_path)
     clone = _empty_clone(tmp_path)
@@ -110,6 +97,28 @@ def test_render_uses_committed_head_and_normalizes_modes(tmp_path):
     assert stat.S_IMODE((clone / "README.md").stat().st_mode) == 0o644
     assert stat.S_IMODE((clone / "verify.sh").stat().st_mode) == 0o755
     assert (clone / ".git" / "sentinel").read_text() == "git metadata\n"
+
+
+def test_render_consumes_exact_snapshot_without_archive(tmp_path, monkeypatch):
+    repo = _template_repo(tmp_path)
+    clone = _empty_clone(tmp_path)
+    dotfile = repo / "templates/client-llm-wiki/.hidden"
+    dotfile.write_bytes(b"committed dotfile\n")
+    _git(repo, "add", str(dotfile.relative_to(repo)))
+    _git(repo, "commit", "-m", "test: add dotfile")
+    dotfile.write_bytes(b"dirty dotfile\n")
+    commands: list[tuple[str, ...]] = []
+    original = subprocess.run
+
+    def record(command, *args, **kwargs):
+        commands.append(tuple(str(part) for part in command))
+        return original(command, *args, **kwargs)
+
+    monkeypatch.setattr(subprocess, "run", record)
+    _render(repo, clone)
+
+    assert (clone / ".hidden").read_bytes() == b"committed dotfile\n"
+    assert not any("archive" in command for command in commands)
 
 
 def test_template_snapshot_ignores_hostile_ambient_git_environment(tmp_path, monkeypatch):
@@ -180,35 +189,6 @@ def test_missing_privacy_firewall_is_rejected_before_clone_writes(tmp_path):
         _render(repo, clone)
 
     assert sorted(path.name for path in clone.iterdir()) == [".git"]
-
-
-@pytest.mark.parametrize(
-    ("name", "member_type"),
-    [
-        ("../escape", tarfile.REGTYPE),
-        ("/absolute", tarfile.REGTYPE),
-        ("unsafe-link", tarfile.SYMTYPE),
-        ("unsafe-fifo", tarfile.FIFOTYPE),
-        ("unsafe-device", tarfile.CHRTYPE),
-    ],
-)
-def test_archive_parser_rejects_traversal_links_and_special_files(name, member_type):
-    member = tarfile.TarInfo(name)
-    member.type = member_type
-
-    with pytest.raises(BootstrapRenderError):
-        _validated_archive_members(_tar_bytes([member]), {name: 0o100644})
-
-
-def test_archive_parser_rejects_duplicate_members():
-    first = tarfile.TarInfo("README.md")
-    second = tarfile.TarInfo("README.md")
-
-    with pytest.raises(BootstrapRenderError, match="duplicate"):
-        _validated_archive_members(
-            _tar_bytes([first, second]),
-            {"README.md": 0o100644},
-        )
 
 
 def test_post_bind_clone_replacement_cannot_redirect_writes(tmp_path):

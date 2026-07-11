@@ -3,15 +3,18 @@
 from __future__ import annotations
 from contextlib import contextmanager
 from dataclasses import dataclass
-import io
 import os
 from pathlib import Path, PurePosixPath
 import re
 import stat
-import subprocess
-import tarfile
 import tempfile
 from typing import Callable, Iterator, Mapping
+
+from .bootstrap_snapshot import (
+    BootstrapSnapshotError,
+    TemplateMember as _TemplateMember,
+    load_committed_snapshot,
+)
 
 
 class BootstrapRenderError(RuntimeError):
@@ -49,16 +52,6 @@ class RenderManifest:
     created_paths: tuple[str, ...]
 
 @dataclass(frozen=True, slots=True)
-class _TemplateMember:
-    path: str
-    data: bytes | None
-    mode: int
-
-    @property
-    def is_directory(self) -> bool:
-        return self.data is None
-
-@dataclass(frozen=True, slots=True)
 class _CreatedArtifact:
     relative_path: str
     parent_fd: int
@@ -73,11 +66,6 @@ _DIR_FLAGS = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
 
 def _no_failpoint(_event: str, _path: str | None, _fd: int | None) -> None:
     pass
-
-def _git_env() -> dict[str, str]:
-    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
-    env.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull)
-    return env
 
 def _identity(info: os.stat_result) -> FileIdentity:
     return FileIdentity(info.st_dev, info.st_ino, stat.S_IFMT(info.st_mode))
@@ -122,108 +110,6 @@ def bind_empty_clone(target: Path) -> Iterator[BoundClone]:
                 os.close(descriptor)
 
 
-def _run_git(repo_fd: int, *args: str, text: bool = False) -> bytes | str:
-    result = subprocess.run(["git", "-C", f"/proc/self/fd/{repo_fd}", *args], check=False, capture_output=True, text=text, pass_fds=(repo_fd,), env=_git_env())
-    if result.returncode != 0:
-        stderr = result.stderr if text else result.stderr.decode(errors="replace")
-        raise BootstrapRenderError(f"Git template snapshot failed: {stderr.strip()}")
-    return result.stdout
-
-
-def _expected_tree(repo_fd: int, commit: str) -> dict[str, int]:
-    output = _run_git(repo_fd, "ls-tree", "-rz", f"{commit}:templates/client-llm-wiki")
-    expected: dict[str, int] = {}
-    for record in output.split(b"\0"):
-        if not record:
-            continue
-        header, raw_path = record.split(b"\t", 1)
-        mode_text, object_type, _object_id = header.split(b" ", 2)
-        mode = int(mode_text, 8)
-        if object_type != b"blob" or mode not in {0o100644, 0o100755}:
-            path = raw_path.decode(errors="replace")
-            raise BootstrapRenderError(f"unsupported Git mode for {path}: {mode_text.decode()}")
-        expected[raw_path.decode("utf-8")] = mode
-    if not expected:
-        raise BootstrapRenderError("committed template is empty")
-    firewall = {".gitignore", ".claude/CLAUDE.md"}
-    if not firewall.issubset(expected):
-        raise BootstrapRenderError("committed template is missing the privacy firewall")
-    return expected
-
-
-def _member_path(name: str) -> str:
-    normalized = name.rstrip("/")
-    path = PurePosixPath(normalized)
-    unsafe_part = any(part in {"", ".", "..", ".git"} for part in path.parts)
-    if not normalized or normalized.startswith("/") or "\\" in normalized or str(path) != normalized or unsafe_part:
-        raise BootstrapRenderError(f"unsafe archive member path: {name}")
-    return normalized
-
-
-def _expected_directories(expected: Mapping[str, int]) -> set[str]:
-    directories: set[str] = set()
-    for name in expected:
-        _member_path(name)
-        parent = PurePosixPath(name).parent
-        while str(parent) not in {".", "/"}:
-            directories.add(str(parent))
-            parent = parent.parent
-    return directories
-
-
-def _archive_member(archive: tarfile.TarFile, info: tarfile.TarInfo, expected: Mapping[str, int], directories: set[str]) -> _TemplateMember:
-    name = _member_path(info.name)
-    if info.isdir():
-        if name not in directories:
-            raise BootstrapRenderError(f"unexpected archive directory: {name}")
-        return _TemplateMember(name, None, 0o755)
-    if not info.isreg() or name not in expected:
-        raise BootstrapRenderError(f"unsupported archive member: {name}")
-    stream = archive.extractfile(info)
-    if stream is None:
-        raise BootstrapRenderError(f"archive file has no payload: {name}")
-    mode = 0o755 if expected[name] == 0o100755 else 0o644
-    return _TemplateMember(name, stream.read(), mode)
-
-
-def _validated_archive_members(archive_bytes: bytes, expected: Mapping[str, int]) -> tuple[_TemplateMember, ...]:
-    directories = _expected_directories(expected)
-    members: list[_TemplateMember] = []
-    seen: set[str] = set()
-    try:
-        with tarfile.open(fileobj=io.BytesIO(archive_bytes), mode="r:") as archive:
-            for info in archive:
-                name = _member_path(info.name)
-                if name in seen:
-                    raise BootstrapRenderError(f"duplicate archive member: {name}")
-                seen.add(name)
-                members.append(_archive_member(archive, info, expected, directories))
-    except (tarfile.TarError, UnicodeError) as exc:
-        raise BootstrapRenderError(f"invalid template archive: {exc}") from exc
-    files = {member.path for member in members if not member.is_directory}
-    if files != set(expected):
-        raise BootstrapRenderError("archive and committed tree do not match")
-    present_dirs = {member.path for member in members if member.is_directory}
-    for directory in sorted(directories - present_dirs):
-        members.append(_TemplateMember(directory, None, 0o755))
-    return tuple(members)
-
-
-def _snapshot(template_worktree: Path) -> tuple[str, tuple[_TemplateMember, ...]]:
-    repo_fd = -1
-    try:
-        repo_fd = os.open(template_worktree, _DIR_FLAGS)
-        commit = str(_run_git(repo_fd, "rev-parse", "HEAD^{commit}", text=True)).strip()
-        expected = _expected_tree(repo_fd, commit)
-        archive = _run_git(repo_fd, "-c", "tar.umask=0022", "archive", "--format=tar", f"{commit}:templates/client-llm-wiki")
-        return commit, _validated_archive_members(archive, expected)
-    except OSError as exc:
-        raise BootstrapRenderError(f"template worktree bind failed: {exc}") from exc
-    finally:
-        if repo_fd >= 0:
-            os.close(repo_fd)
-
-
 def _render_member(member: _TemplateMember, tokens: RenderTokens) -> _TemplateMember:
     if member.is_directory:
         return member
@@ -244,7 +130,9 @@ def _render_member(member: _TemplateMember, tokens: RenderTokens) -> _TemplateMe
     if unresolved or "<RAW_SOURCE_STATUS>" in text or "<INGESTION_ENABLED>" in text:
         token = unresolved.group(0) if unresolved else "raw-state placeholder"
         raise BootstrapRenderError(f"unresolved placeholder {token} in {member.path}")
-    return _TemplateMember(member.path, text.encode("utf-8"), member.mode)
+    return _TemplateMember(
+        member.path, text.encode("utf-8"), member.mode, member.object_oid,
+    )
 
 
 def _write_all(descriptor: int, data: bytes) -> None:
@@ -375,8 +263,11 @@ def render_committed_template(
     target_fds: list[int] = []
     try:
         failpoint("clone_bound", None, clone.root_fd)
-        commit, snapshot = _snapshot(Path(template_worktree))
-        rendered = tuple(_render_member(member, tokens) for member in snapshot)
+        snapshot = load_committed_snapshot(Path(template_worktree))
+        paths = {member.path for member in snapshot.members}
+        if not {".gitignore", ".claude/CLAUDE.md"} <= paths:
+            raise BootstrapRenderError("committed template is missing the privacy firewall")
+        rendered = tuple(_render_member(member, tokens) for member in snapshot.members)
         with _bound_stage(clone, failpoint) as stage_fd:
             stage_ledger, stage_fds = _materialize(stage_fd, rendered, "stage_member_bound", failpoint)
             stage_clean = _cleanup_created(stage_ledger, failpoint)
@@ -389,11 +280,13 @@ def render_committed_template(
         _revalidate_clone(clone, ledger, target_fds)
         if _final_validator is not None:
             _final_validator(clone)
-        return RenderManifest(commit, clone.root_id.device, clone.root_id.inode, tuple(artifact.relative_path for artifact in ledger))
+        return RenderManifest(snapshot.commit_oid, clone.root_id.device, clone.root_id.inode, tuple(artifact.relative_path for artifact in ledger))
     except Exception as exc:
         _cleanup_created(ledger, failpoint)
         if isinstance(exc, BootstrapRenderError):
             raise
+        if isinstance(exc, BootstrapSnapshotError):
+            raise BootstrapRenderError(str(exc)) from exc
         raise BootstrapRenderError(str(exc)) from exc
     finally:
         for descriptor in reversed(target_fds):
