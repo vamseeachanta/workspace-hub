@@ -269,7 +269,7 @@ def execute_render(
             manifest = render_committed_template(clone, template, tokens)
             try:
                 _verify_bound_clone(clone, entry.repo, require_empty=False)
-            except BootstrapContractError as exc:
+            except BaseException as exc:
                 residue = RenderResidue(
                     manifest.template_commit,
                     manifest.clone_device,
@@ -278,7 +278,9 @@ def execute_render(
                     None,
                     "final_validation",
                 )
-                raise BootstrapContractError(str(exc), residue=residue) from exc
+                raise BootstrapContractError(
+                    "render final validation failed", residue=residue,
+                ) from exc
             return manifest
     except BootstrapRenderError as exc:
         raise BootstrapContractError(str(exc), residue=exc.residue) from exc

@@ -167,12 +167,59 @@ def test_failed_final_origin_validation_preserves_created_tree(tmp_path, monkeyp
         return manifest
 
     monkeypatch.setattr(bootstrap_contract, "render_committed_template", mutate_before_final_validation)
-    with pytest.raises(BootstrapContractError, match="origin") as raised:
+    with pytest.raises(BootstrapContractError, match="render final validation failed") as raised:
         execute_render(registry, "example-co", runner=RecordingRunner())
 
     assert raised.value.residue is not None
     assert raised.value.residue.failure_stage == "final_validation"
     assert (target / "README.md").is_file()
+
+
+@pytest.mark.parametrize(
+    "failure",
+    [
+        KeyboardInterrupt("secret-ish\x00\n" + "x" * 10_000),
+        SystemExit("secret-ish\x00\n" + "x" * 10_000),
+        OSError("secret-ish\x00\n" + "x" * 10_000),
+        BootstrapContractError("secret-ish\x00\n" + "x" * 10_000),
+    ],
+)
+def test_final_validation_base_exception_has_fixed_complete_residue(
+    tmp_path, monkeypatch, failure,
+):
+    workspace = _workspace(tmp_path)
+    registry = _registry_file(tmp_path)
+    target = workspace.parent / "llm-wiki-example-co"
+    _init_target(target, f"https://github.com/{REPO_SLUG}.git")
+    monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
+    real_verify = bootstrap_contract._verify_bound_clone
+    calls = 0
+    descriptors: tuple[int, ...] = ()
+
+    def fail_second_verify(clone, repo_slug, **kwargs):
+        nonlocal calls, descriptors
+        calls += 1
+        if calls == 2:
+            descriptors = (clone.parent_fd, clone.root_fd, clone.git_fd)
+            raise failure
+        return real_verify(clone, repo_slug, **kwargs)
+
+    monkeypatch.setattr(bootstrap_contract, "_verify_bound_clone", fail_second_verify)
+    with pytest.raises(BootstrapContractError) as raised:
+        execute_render(registry, "example-co", runner=RecordingRunner())
+
+    residue = raised.value.residue
+    expected = {".claude", ".claude/CLAUDE.md", ".gitignore", "README.md"}
+    assert str(raised.value) == "render final validation failed"
+    assert "secret-ish" not in str(raised.value)
+    assert residue.template_commit == _git(workspace, "rev-parse", "HEAD")
+    assert residue.residue_policy == "preserved"
+    assert set(residue.completed_members) == expected
+    assert residue.uncertain_member is None
+    assert residue.failure_stage == "final_validation"
+    for descriptor in descriptors:
+        with pytest.raises(OSError):
+            os.fstat(descriptor)
 
 
 def test_final_validation_rejects_post_bind_git_directory_swap(tmp_path, monkeypatch):
@@ -191,7 +238,7 @@ def test_final_validation_rejects_post_bind_git_directory_swap(tmp_path, monkeyp
         return manifest
 
     monkeypatch.setattr(bootstrap_contract, "render_committed_template", swap_before_final_validation)
-    with pytest.raises(BootstrapContractError, match=".git identity"):
+    with pytest.raises(BootstrapContractError, match="render final validation failed"):
         execute_render(registry, "example-co", runner=RecordingRunner())
 
     assert (target / "README.md").exists()
