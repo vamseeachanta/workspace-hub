@@ -58,7 +58,7 @@ Surveyed all 38 top-level git repos under `/mnt/local-analysis`. **Nothing was a
 
 - **CLEAN:** all sync targets at `0 0`; equality column fresh + published; no `/tmp` scratch beyond the session scratchpad; no locks left (killed a wedged pull, `index.lock` released — see §5); all §7 preservation pushes verified origin==local.
 - **EXPECTED (named, preserved):** bridge-owned auto-memory `M` files; 2 autostashes (now also archived as branches, §7); untracked orphan session HTMLs; sibling-repo scratch/viz assets listed in §3.
-- **UNEXPECTED:** none. One item is **PENDING your decision** — achantas-data `2024` (§7), not a residue but a deliberate hold on an LFS/PII push.
+- **UNEXPECTED:** none. The previously-pending achantas-data `2024` item is now **RESOLVED** — assessed, backed up (2 local + 1 off-box, all verified), branch deleted, disk reclaimed (§7).
 
 ## 5. Operational finding — workspace-hub git ops are very slow
 
@@ -78,15 +78,20 @@ Genuine local-only WIP was preserved via 5 parallel agents (each new branch, no 
 | sabithaandkrishnaestates | `family-dollar-deal-documentation` (+21) | pushed to origin |
 | teamresumes | `sub-agents-enhancement` (+12) | pushed to origin |
 | investments | `202506` (+85), `buffet-negotiation-agent` (+88) | pushed to origin (HTTPS via gh token; SSH hung on silent enumerate) |
-| **achantas-data** | `2024` (+172) | **HELD — not pushed** |
+| **achantas-data** | `2024` (+172) | **backed up (local + off-box) → branch deleted** |
 
-**achantas-data hold (needs your decision):** origin is SSH + the repo uses **Git LFS** (HTTPS basic-auth endpoint). The non-interactive push blocks on LFS object auth, and forcing it would upload a large LFS payload for a **PII financial repo** against the ecosystem's $0 LFS budget — a quota/cost call that is yours, not mine. The branch is **intact and safe on local disk** (`f53b00ac`). To back it up yourself: `git -C /mnt/local-analysis/achantas-data push origin 2024` (mind the LFS quota).
+**achantas-data `2024` — RESOLVED (2026-07-10).** The owner-attempted push failed on GitHub's 2 GiB pack limit — the branch is a **2.9 GiB orphan branch** (no shared history with `main`) of personal documents/media committed directly to git (not LFS pointers), unpushable to GitHub. `main` itself is fully safe on origin (`0 0`); this was a separate archive living only in local git objects. Owner chose *extract → verify → delete*. Preserved in three verified copies:
+- `/mnt/local-analysis/achantas-data-2024-archive/achantas-2024-full-history.bundle` (2.5 G; `git bundle verify` OK, complete history, tip `f53b00ac`)
+- `/mnt/local-analysis/achantas-data-2024-archive/files/` (2990 plain files = exact git-tree count, 2.4 G)
+- **off-box** `/mnt/remote/ace-linux-1/ace/achantas-data/2024-archive/…bundle` (byte-exact copy, re-verified on the destination)
+
+Branch then deleted (`git branch -D 2024`) and `.git` disk reclaimed via `gc --prune=now`. Restore anytime: `git clone <bundle>` or `git fetch <bundle> refs/heads/2024:refs/heads/2024`.
 
 The remaining ~60 local-only branches across the ecosystem are squash-merge false-orphans or intentional `stash-archive/*` backups — expected, not touched.
 
 ## 8. Next steps
 
-- **achantas-data `2024`** — push it yourself if you want it remote (§7), or leave it local (already safe).
+- **achantas-data `2024`** — DONE (§7). Optional: also copy the browsable `files/` folder off-box, and/or move the archive to true cold storage (currently on this box + ace-linux-1 NFS, both owner-controlled machines).
 - (Optional) Drop the 2 wh autostashes / `stash-archive/*` branches once confirmed unwanted.
 - Other machine columns clear their STALE/MISSING matrix cells when they re-collect (not actionable from here).
 - `deckhand-live` local `main` is 216 behind — let the live bot reconcile it; do not force from an interactive session.
