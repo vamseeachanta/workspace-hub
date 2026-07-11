@@ -2052,3 +2052,21 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#834
+    title: 'docs(ingest): capture PID2Graph benchmark, Boglodite v0.1.0, and Canadian confidential-well signal'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/834
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge-management
+      - llm-wiki
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

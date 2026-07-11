@@ -1417,3 +1417,65 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#941
+    title: 'epic(global-spine): global canonical field registry, play backfill, regional ingest ladder'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/941
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#947
+    title: 'feat(global-spine): wave 1 — global roster federation into Explorer feed + GoM play backfill'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/947
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#950
+    title: 'feat(lenses): landman offshore — BSEE lease panel on the field view'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/950
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:business
+      - domain:ingest
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#951
+    title: 'feat(lenses): landman onshore — TX RRC lease/county ingest (blocker #709)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/951
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

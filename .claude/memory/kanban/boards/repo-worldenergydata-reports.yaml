@@ -1367,3 +1367,126 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#939
+    title: 'epic(explorer): World Energy Field Explorer — one-page global drill-down for clients'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/939
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:reports
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#940
+    title: 'epic(explorer-shell): rebuild /field-atlas/ in place as the one-page loaded drill-down'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/940
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - domain:reports
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#942
+    title: 'epic(field-planes): field detail planes — lifecycle, architecture drawing, per-well stages, assets'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/942
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:reports
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#943
+    title: 'epic(lenses): commercial lenses — economic analysis, underwriting, landman over one spine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/943
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:business
+      - domain:reports
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#945
+    title: 'epic(client-layer): client presentation — provenance, PDF export, guided demo path'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/945
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:reports
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#946
+    title: 'feat(explorer-shell): tracer — Jack/St Malo + Big Foot end-to-end in the one-page shell'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/946
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#948
+    title: 'feat(field-planes): roll per-well timelines from Big Foot to all rich LT fields'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/948
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#949
+    title: 'feat(lenses): underwriting pilot — per-field risk badges (P&A, under-pressure, HPHT)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/949
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:business
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

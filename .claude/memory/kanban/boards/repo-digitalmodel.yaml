@@ -7288,7 +7288,7 @@ cards:
     title: 'Field-layout model: YAML asset schema + layout engine over terrain/bathymetry'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1509
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering-models
       - status:pending
@@ -7300,7 +7300,7 @@ cards:
     title: 'Visualization & animation: 2D plots, 3D scene export, Blender movies'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1510
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering-models
       - status:pending
@@ -7312,7 +7312,7 @@ cards:
     title: 'Engineering screening layer: sizing correlations + reuse of existing modules + screening report'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1511
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering-calculations
       - status:pending
@@ -7352,5 +7352,21 @@ cards:
     gh_labels: []
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1523
+    title: 'epic(explorer-bridge): engineering feeds for the wed World Energy Field Explorer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1523
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

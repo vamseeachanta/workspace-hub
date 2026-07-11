@@ -3255,7 +3255,7 @@ cards:
     title: 'Past-projects registry: historical field developments as selectable lists (GoM first)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/931
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:data
       - status:pending
@@ -3267,7 +3267,7 @@ cards:
     title: 'Analogs query layer: region / water-depth / asset-type filters over past projects'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/932
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:data
       - status:pending
@@ -3315,6 +3315,32 @@ cards:
     gh_state: open
     gh_labels:
       - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#910
+    title: 'docs(data): inventory /mnt/ace ecosystem data roots for underwriting readiness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/910
+    gh_state: open
+    gh_labels:
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#944
+    title: 'epic(eng-plane): engineering plane — dm capability chips + live grounded cards across assets'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/944
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - epic
+      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []

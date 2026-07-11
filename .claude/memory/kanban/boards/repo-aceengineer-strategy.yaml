@@ -1286,10 +1286,9 @@ cards:
     title: '[Sun Manufacturing] Register sun-mfg in private client-wiki registry'
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/160
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
-      - status:plan-approved
       - domain:product
       - lane:codex
     initial_status: triage
