@@ -63,7 +63,9 @@ elif name == "uv":
     elif command == "render":
         destination = pathlib.Path(args[args.index("--manifest") + 1])
         if os.environ.get("FAIL_STAGE") == "manifest-persistence": raise SystemExit(24)
-        backing = destination.parent / ("." + destination.name + ".backing-fake")
+        if os.environ.get("RENDER_OUTCOME") == "absent": raise SystemExit(0)
+        if os.environ.get("RENDER_OUTCOME") == "empty": destination.touch(); raise SystemExit(0)
+        backing = destination.parent / ("." + destination.name + ".backing-123-0123456789abcdef")
         descriptor = os.open(backing, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
         os.write(descriptor, b'{"version":1}\n'); os.fsync(descriptor); os.close(descriptor)
         os.link(backing, destination)
@@ -90,7 +92,14 @@ def _fake_tools(tmp_path: Path) -> tuple[Path, Path, Path]:
     return workspace, bin_dir, tmp_path / "calls.jsonl"
 
 
-def _run(tmp_path: Path, *, fail_stage: str = "", omit: str = ""):
+def _run(
+    tmp_path: Path,
+    *,
+    fail_stage: str = "",
+    omit: str = "",
+    precondition: str = "",
+    render_outcome: str = "",
+):
     workspace, bin_dir, log = _fake_tools(tmp_path)
     evidence = tmp_path / "evidence"
     evidence.mkdir()
@@ -100,6 +109,7 @@ def _run(tmp_path: Path, *, fail_stage: str = "", omit: str = ""):
         PATH=f"{bin_dir}:{env['PATH']}",
         CALL_LOG=str(log),
         FAIL_STAGE=fail_stage,
+        RENDER_OUTCOME=render_outcome,
         FAKE_WORKSPACE=str(workspace),
         EXPECTED_REPO=REPO,
         EXPECTED_TARGET=str(target),
@@ -112,6 +122,16 @@ def _run(tmp_path: Path, *, fail_stage: str = "", omit: str = ""):
     )
     if omit:
         env.pop(omit)
+    if precondition == "manifest-missing":
+        evidence.rmdir()
+    elif precondition == "manifest-file":
+        evidence.rmdir()
+        evidence.write_text("not a directory")
+    elif precondition == "manifest-symlink":
+        evidence.rmdir()
+        evidence.symlink_to(tmp_path)
+    elif precondition == "updater-nonexec":
+        (bin_dir / "registry-update").chmod(0o644)
     result = subprocess.run(
         ["bash", "-c", _workflow()], env=env, capture_output=True, text=True
     )
@@ -187,6 +207,42 @@ def test_complete_factory_workflow_propagates_authority_and_order(tmp_path):
         "--local-working-clone",
         str(tmp_path / "llm-wiki-example"),
     ]
+    manifests = list((tmp_path / "evidence").glob("client-wiki-render.*.json"))
+    assert len(manifests) == 1
+    final = manifests[0]
+    reported = json.loads(result.stdout.splitlines()[-1])
+    backing = final.parent / reported["backing_name"]
+    expected = b'{"version":1}\n'
+    assert final.parent == tmp_path / "evidence"
+    assert final.read_bytes() == backing.read_bytes() == expected
+    assert reported["manifest"] == str(final)
+    assert (final.stat().st_dev, final.stat().st_ino) == (
+        backing.stat().st_dev,
+        backing.stat().st_ino,
+    )
+    assert final.stat().st_nlink == backing.stat().st_nlink == 2
+    assert final.stat().st_mode & 0o777 == backing.stat().st_mode & 0o777 == 0o600
+    assert backing.exists()
+
+
+@pytest.mark.parametrize(
+    "precondition",
+    ["manifest-missing", "manifest-file", "manifest-symlink", "updater-nonexec"],
+)
+def test_factory_precondition_failure_stops_before_validation(tmp_path, precondition):
+    result, calls = _run(tmp_path, precondition=precondition)
+
+    assert result.returncode != 0
+    assert [call["stage"] for call in calls] == ["workspace"]
+
+
+@pytest.mark.parametrize("outcome", ["absent", "empty"])
+def test_render_zero_without_complete_manifest_stops_before_finalize(tmp_path, outcome):
+    result, calls = _run(tmp_path, render_outcome=outcome)
+
+    assert result.returncode != 0
+    assert calls[-1]["stage"] == "render"
+    assert all(call["stage"] != "registry-update" for call in calls)
 
 
 @pytest.mark.parametrize(

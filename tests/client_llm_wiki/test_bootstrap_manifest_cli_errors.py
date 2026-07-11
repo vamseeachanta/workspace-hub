@@ -60,7 +60,16 @@ def test_occupied_manifest_returns_fixed_bounded_json(tmp_path, monkeypatch, cap
 
 @pytest.mark.parametrize(
     ("backing", "expected"),
-    [(".render.json.backing-safe", ".render.json.backing-safe"), ("x" * 1000, None)],
+    [
+        (
+            ".render.json.backing-123-0123456789abcdef",
+            ".render.json.backing-123-0123456789abcdef",
+        ),
+        ("../secret", None),
+        ("secret/control\n", None),
+        (".other.json.backing-123-0123456789abcdef", None),
+        ("x" * 1000, None),
+    ],
 )
 def test_injected_failure_never_exposes_exception(
     tmp_path, monkeypatch, capsys, backing, expected

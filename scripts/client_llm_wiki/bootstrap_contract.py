@@ -6,6 +6,7 @@ from dataclasses import dataclass
 import json
 import os
 from pathlib import Path
+import re
 import stat
 import subprocess
 from typing import Callable, Sequence
@@ -42,13 +43,19 @@ class BootstrapContractError(RuntimeError):
         self.residue = residue
 
 
+def sanitize_backing_name(final_name: str, candidate: object) -> str | None:
+    """Accept only the manifest publisher's exact final-name-bound grammar."""
+    if not isinstance(candidate, str):
+        return None
+    pattern = rf"\.{re.escape(final_name)}\.backing-[1-9][0-9]*-[0-9a-f]{{16}}"
+    return candidate if re.fullmatch(pattern, candidate) else None
+
+
 class ManifestPersistenceError(BootstrapContractError):
     """Manifest publication failed without exposing raw exception text."""
 
-    def __init__(self, backing_name: str | None):
-        safe = backing_name
-        if not isinstance(safe, str) or len(safe.encode("utf-8")) > 255:
-            safe = None
+    def __init__(self, final_name: str, backing_name: str | None):
+        safe = sanitize_backing_name(final_name, backing_name)
         super().__init__("manifest persistence failed")
         self.backing_name = safe
 
@@ -354,7 +361,8 @@ def execute_render(
                 return manifest, _persist_render(clone, _manifest_path, entry, manifest)
             return manifest
     except BootstrapManifestError as exc:
-        raise ManifestPersistenceError(exc.backing_name) from exc
+        final_name = _manifest_path.name if _manifest_path is not None else ""
+        raise ManifestPersistenceError(final_name, exc.backing_name) from exc
     except BootstrapRenderError as exc:
         raise BootstrapContractError(str(exc), residue=exc.residue) from exc
 

@@ -121,7 +121,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     except BootstrapFinalizerError as exc:
         print(residue_json(exc), file=sys.stderr)
     except (contract.ManifestPersistenceError, BootstrapManifestError) as exc:
-        backing = getattr(exc, "backing_name", None)
+        backing = contract.sanitize_backing_name(
+            args.manifest.name,
+            getattr(exc, "backing_name", None),
+        )
         payload = {
             "error": "manifest_persistence_failed",
             "residue": {"backing_name": backing, "residue_policy": "preserved"},
