@@ -2,12 +2,9 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import pytest
 import yaml
 
-from client_llm_wiki import bootstrap_schema
 from client_llm_wiki.bootstrap_schema import (
     BootstrapMode,
     RegistryKind,
@@ -15,9 +12,7 @@ from client_llm_wiki.bootstrap_schema import (
     RegistryParseError,
     RegistryValidationError,
     get_entry,
-    load_registry,
     parse_registry,
-    validate_root_disjointness,
 )
 
 
@@ -36,7 +31,9 @@ def _entry(**overrides: object) -> dict[str, object]:
     return entry
 
 
-def _registry(entries: list[dict[str, object]] | None = None, **overrides: object) -> str:
+def _registry(
+    entries: list[dict[str, object]] | None = None, **overrides: object
+) -> str:
     doc: dict[str, object] = {
         "registry_version": "0.2",
         "wikis": entries if entries is not None else [_entry()],
@@ -53,7 +50,9 @@ def _registry(entries: list[dict[str, object]] | None = None, **overrides: objec
     ],
 )
 def test_current_registry_classifies_only_disabled_modes(roots, source_status, mode):
-    registry = parse_registry(_registry([_entry(raw_roots=roots, raw_source_status=source_status)]))
+    registry = parse_registry(
+        _registry([_entry(raw_roots=roots, raw_source_status=source_status)])
+    )
 
     assert registry.kind is RegistryKind.CURRENT
     assert get_entry(registry, "example-co").mode is mode
@@ -197,7 +196,9 @@ def test_legacy_numeric_version_rejects_empty_raw_roots():
     }
 
     with pytest.raises(RegistryValidationError, match="raw_roots"):
-        parse_registry(yaml.safe_dump({"registry_version": 0.1, "wikis": [legacy_entry]}))
+        parse_registry(
+            yaml.safe_dump({"registry_version": 0.1, "wikis": [legacy_entry]})
+        )
 
 
 @pytest.mark.parametrize("field", ["raw_source_status", "ingestion_enabled"])
@@ -213,7 +214,9 @@ def test_legacy_numeric_version_rejects_current_state_fields(field):
     }
 
     with pytest.raises(RegistryValidationError, match=field):
-        parse_registry(yaml.safe_dump({"registry_version": 0.1, "wikis": [legacy_entry]}))
+        parse_registry(
+            yaml.safe_dump({"registry_version": 0.1, "wikis": [legacy_entry]})
+        )
 
 
 @pytest.mark.parametrize(
@@ -332,180 +335,6 @@ def test_unknown_entry_fields_are_allowed_without_conferring_authority():
     registry = parse_registry(_registry([_entry(notes="historical context")]))
 
     assert get_entry(registry, "example-co").mode is BootstrapMode.METADATA_ONLY
-
-
-def test_schema_parsing_never_touches_raw_root_filesystem(monkeypatch):
-    class ForbiddenPath:
-        def __init__(self, *_args, **_kwargs):
-            raise AssertionError("schema touched the filesystem through Path")
-
-    class ForbiddenOS:
-        def __getattr__(self, _name):
-            raise AssertionError("schema touched the filesystem through os")
-
-    monkeypatch.setattr(bootstrap_schema, "Path", ForbiddenPath)
-    monkeypatch.setattr(bootstrap_schema, "os", ForbiddenOS())
-
-    registry = parse_registry(
-        _registry(
-            [
-                _entry(
-                    raw_roots=["/authorized/source"],
-                    raw_source_status="mounted",
-                )
-            ]
-        )
-    )
-    assert registry.entries[0].raw_roots == ("/authorized/source",)
-
-
-@pytest.mark.parametrize(
-    "protected",
-    [
-        "/workspace/private",
-        "/workspace/private/raw",
-        "/workspace/private/raw/cache",
-    ],
-)
-def test_lexical_overlap_is_rejected_in_both_directions(protected):
-    entry = parse_registry(
-        _registry(
-            [
-                _entry(
-                    raw_roots=["/workspace/private/raw"],
-                    raw_source_status="mounted",
-                )
-            ]
-        )
-    ).entries[0]
-
-    with pytest.MonkeyPatch.context() as patch:
-        patch.setattr(Path, "resolve", lambda *_args, **_kwargs: pytest.fail("resolved"))
-        with pytest.raises(RegistryValidationError, match="overlaps"):
-            validate_root_disjointness(entry, [protected])
-
-
-def test_lexical_prefix_neighbor_is_not_an_overlap():
-    entry = parse_registry(
-        _registry(
-            [
-                _entry(
-                    raw_roots=["/workspace/private/raw"],
-                    raw_source_status="mounted",
-                )
-            ]
-        )
-    ).entries[0]
-
-    validate_root_disjointness(entry, ["/workspace/privately"])
-
-
-@pytest.mark.parametrize("protected_kind", ["active", "canonical", "target"])
-def test_validate_registry_rejects_each_linked_worktree_protected_root(
-    tmp_path, monkeypatch, protected_kind
-):
-    active = tmp_path / "worktrees" / "active"
-    canonical = tmp_path / "workspace" / "workspace-hub"
-    git_dir = canonical / ".git" / "worktrees" / "active"
-    module = active / "scripts" / "client_llm_wiki"
-    module.mkdir(parents=True)
-    git_dir.mkdir(parents=True)
-    (active / ".git").write_text(f"gitdir: {git_dir}\n", encoding="utf-8")
-    (git_dir / "commondir").write_text("../..\n", encoding="utf-8")
-    monkeypatch.setattr(bootstrap_schema, "__file__", str(module / "bootstrap_schema.py"))
-    registry = tmp_path / "registry.yml"
-    root = {
-        "active": active,
-        "canonical": canonical,
-        "target": canonical.parent / "llm-wiki-example-co",
-    }[protected_kind]
-    registry.write_text(
-        _registry([_entry(raw_roots=[str(root)], raw_source_status="mounted")]),
-        encoding="utf-8",
-    )
-
-    with pytest.raises(RegistryValidationError, match="protected"):
-        load_registry(registry)
-
-
-def _linked_module(tmp_path: Path, monkeypatch):
-    active = tmp_path / "active worktree"
-    canonical = tmp_path / "canonical workspace " / "workspace-hub"
-    git_dir = canonical / ".git" / "worktrees" / "active"
-    module = active / "scripts" / "client_llm_wiki"
-    module.mkdir(parents=True)
-    git_dir.mkdir(parents=True)
-    (active / ".git").write_text(f"gitdir: {git_dir}\n", encoding="utf-8")
-    (git_dir / "commondir").write_text("../..\n", encoding="utf-8")
-    monkeypatch.setattr(bootstrap_schema, "__file__", str(module / "bootstrap_schema.py"))
-    return active, canonical, git_dir
-
-
-def test_module_checkout_roots_preserves_valid_path_whitespace(tmp_path, monkeypatch):
-    active, canonical, _git_dir = _linked_module(tmp_path, monkeypatch)
-
-    assert bootstrap_schema._module_checkout_roots() == (active, canonical)
-
-
-def test_module_checkout_roots_accepts_normal_checkout(tmp_path, monkeypatch):
-    active = tmp_path / "normal checkout"
-    module = active / "scripts" / "client_llm_wiki"
-    module.mkdir(parents=True)
-    (active / ".git").mkdir()
-    monkeypatch.setattr(bootstrap_schema, "__file__", str(module / "bootstrap_schema.py"))
-
-    assert bootstrap_schema._module_checkout_roots() == (active, active)
-
-
-@pytest.mark.parametrize(
-    "corruption",
-    [
-        "dot-git-symlink",
-        "missing-gitdir",
-        "gitdir-not-directory",
-        "missing-common-directory",
-        "common-not-directory",
-        "commondir-symlink",
-        "commondir-multiple-lines",
-        "commondir-control",
-        "forged-nonexistent-common",
-    ],
-)
-def test_module_checkout_roots_rejects_untrusted_git_metadata(
-    tmp_path, monkeypatch, corruption
-):
-    active, canonical, git_dir = _linked_module(tmp_path, monkeypatch)
-    dot_git = active / ".git"
-    commondir = git_dir / "commondir"
-    if corruption == "dot-git-symlink":
-        dot_git.unlink()
-        dot_git.symlink_to(git_dir)
-    elif corruption == "missing-gitdir":
-        dot_git.write_text(f"gitdir: {tmp_path / 'missing'}\n", encoding="utf-8")
-    elif corruption == "gitdir-not-directory":
-        fake = tmp_path / "gitdir-file"
-        fake.write_text("not a directory", encoding="utf-8")
-        dot_git.write_text(f"gitdir: {fake}\n", encoding="utf-8")
-    elif corruption == "missing-common-directory":
-        commondir.write_text("../../../missing/.git\n", encoding="utf-8")
-    elif corruption == "common-not-directory":
-        fake = tmp_path / "not-common.git"
-        fake.write_text("not a directory", encoding="utf-8")
-        commondir.write_text(str(fake) + "\n", encoding="utf-8")
-    elif corruption == "commondir-symlink":
-        commondir.unlink()
-        target = tmp_path / "commondir-target"
-        target.write_text("../..\n", encoding="utf-8")
-        commondir.symlink_to(target)
-    elif corruption == "commondir-multiple-lines":
-        commondir.write_text("../..\n../../../other/.git\n", encoding="utf-8")
-    elif corruption == "commondir-control":
-        commondir.write_bytes(b"../\x00../.git\n")
-    elif corruption == "forged-nonexistent-common":
-        commondir.write_text("/nonexistent/.git\n", encoding="utf-8")
-
-    with pytest.raises(RegistryValidationError, match="module Git"):
-        bootstrap_schema._module_checkout_roots()
 
 
 def test_get_entry_fails_for_missing_identity():

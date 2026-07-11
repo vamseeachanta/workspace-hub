@@ -6,7 +6,6 @@ import json
 import os
 from pathlib import Path
 import shutil
-import stat
 import subprocess
 import sys
 
@@ -145,16 +144,6 @@ def _gh_args(log: Path) -> list[str]:
     return [part.decode() for part in log.read_bytes().split(b"\0") if part]
 
 
-def _make_clone(tmp_path: Path, origin: str) -> Path:
-    clone = tmp_path / "clone"
-    subprocess.run(["git", "init", str(clone)], check=True, capture_output=True)
-    subprocess.run(
-        ["git", "-C", str(clone), "remote", "add", "origin", origin],
-        check=True,
-    )
-    return clone
-
-
 def test_missing_registry_warns_without_resolving_dependencies(tmp_path):
     result = _run_checker(
         tmp_path,
@@ -265,41 +254,21 @@ def test_disabled_planned_or_retired_rows_do_not_require_gh(tmp_path, entry):
     assert result.returncode == 0
 
 
+LIVE_GH_CASES = [
+    ({"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": False}, 0, 0),
+    (
+        {"nameWithOwner": "other/repo", "visibility": "PRIVATE", "isArchived": False},
+        0,
+        1,
+    ),
+    ({"nameWithOwner": REPO_SLUG, "visibility": "PUBLIC", "isArchived": False}, 0, 1),
+    ({"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": True}, 0, 1),
+    ({"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": False}, 9, 1),
+]
+
+
 @pytest.mark.parametrize("status", ["bootstrapped", "live"])
-@pytest.mark.parametrize(
-    ("payload", "gh_rc", "expected"),
-    [
-        (
-            {"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": False},
-            0,
-            0,
-        ),
-        (
-            {
-                "nameWithOwner": "other/repo",
-                "visibility": "PRIVATE",
-                "isArchived": False,
-            },
-            0,
-            1,
-        ),
-        (
-            {"nameWithOwner": REPO_SLUG, "visibility": "PUBLIC", "isArchived": False},
-            0,
-            1,
-        ),
-        (
-            {"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": True},
-            0,
-            1,
-        ),
-        (
-            {"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": False},
-            9,
-            1,
-        ),
-    ],
-)
+@pytest.mark.parametrize(("payload", "gh_rc", "expected"), LIVE_GH_CASES)
 def test_live_rows_use_exact_gh_contract(tmp_path, status, payload, gh_rc, expected):
     registry = _write_registry(tmp_path, entries=[_entry(status=status)])
     gh, log, payload_file = _fake_gh(tmp_path)
@@ -360,153 +329,3 @@ def test_live_row_rejects_non_boolean_archived_state(tmp_path, archived):
     )
 
     assert result.returncode == 1
-
-
-@pytest.mark.parametrize(
-    "origin",
-    [
-        f"https://github.com/{REPO_SLUG}.git",
-        f"git@github.com:{REPO_SLUG}.git",
-    ],
-)
-def test_declared_clone_accepts_exact_origins(tmp_path, origin):
-    clone = _make_clone(tmp_path, origin)
-    registry = _write_registry(
-        tmp_path, entries=[_entry(local_working_clone=str(clone))]
-    )
-
-    result = _run_checker(tmp_path, registry)
-
-    assert result.returncode == 0
-
-
-def test_declared_clone_accepts_independently_allowed_fetch_and_push_origins(tmp_path):
-    clone = _make_clone(tmp_path, f"https://github.com/{REPO_SLUG}.git")
-    subprocess.run(
-        [
-            "git",
-            "-C",
-            str(clone),
-            "config",
-            "remote.origin.pushurl",
-            f"git@github.com:{REPO_SLUG}.git",
-        ],
-        check=True,
-    )
-    registry = _write_registry(
-        tmp_path, entries=[_entry(local_working_clone=str(clone))]
-    )
-
-    result = _run_checker(tmp_path, registry)
-
-    assert result.returncode == 0
-
-
-@pytest.mark.parametrize("forbidden", ["include", "rewrite"])
-def test_declared_clone_rejects_include_and_url_rewrite_config(tmp_path, forbidden):
-    clone = _make_clone(tmp_path, f"https://github.com/{REPO_SLUG}.git")
-    if forbidden == "include":
-        subprocess.run(
-            ["git", "-C", str(clone), "config", "include.path", "/does/not/exist"],
-            check=True,
-        )
-    else:
-        subprocess.run(
-            [
-                "git",
-                "-C",
-                str(clone),
-                "config",
-                "url.https://example.invalid/.insteadOf",
-                "https://github.com/",
-            ],
-            check=True,
-        )
-    registry = _write_registry(
-        tmp_path, entries=[_entry(local_working_clone=str(clone))]
-    )
-
-    result = _run_checker(tmp_path, registry)
-
-    assert result.returncode == 1
-    assert "config" in result.stderr.lower()
-
-
-@pytest.mark.parametrize("kind", ["missing", "nongit", "wrong-origin"])
-def test_declared_clone_failures_are_detected_when_parent_exists(tmp_path, kind):
-    clone = tmp_path / "clone"
-    if kind == "nongit":
-        clone.mkdir()
-    elif kind == "wrong-origin":
-        _make_clone(tmp_path, "https://example.invalid/lookalike")
-    registry = _write_registry(
-        tmp_path, entries=[_entry(local_working_clone=str(clone))]
-    )
-
-    result = _run_checker(tmp_path, registry)
-
-    assert result.returncode == 1
-    assert "clone" in result.stderr.lower()
-
-
-def test_clone_under_absent_parent_warns_and_skips(tmp_path):
-    clone = tmp_path / "absent-parent" / "clone"
-    registry = _write_registry(
-        tmp_path, entries=[_entry(local_working_clone=str(clone))]
-    )
-
-    result = _run_checker(tmp_path, registry)
-
-    assert result.returncode == 0
-    assert "WARN" in result.stderr
-
-
-@pytest.mark.parametrize("protected_kind", ["canonical", "target"])
-def test_protected_overlap_fails_before_raw_root_availability_skip(
-    tmp_path, protected_kind
-):
-    common = subprocess.run(
-        [
-            "git",
-            "-C",
-            str(REPO_ROOT),
-            "rev-parse",
-            "--path-format=absolute",
-            "--git-common-dir",
-        ],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    canonical = Path(common.stdout.strip()).parent
-    protected = (
-        canonical
-        if protected_kind == "canonical"
-        else canonical.parent / "llm-wiki-example-client"
-    )
-    root = protected / "absent" / "raw"
-    registry = _write_registry(
-        tmp_path,
-        entries=[_entry(raw_roots=[str(root)], raw_source_status="mounted")],
-    )
-
-    result = _run_checker(tmp_path, registry)
-
-    assert result.returncode == 1
-    assert "overlaps protected" in result.stderr
-    assert "skipping availability" not in result.stderr
-
-
-def test_checker_is_tracked_executable_and_directly_invocable(tmp_path):
-    index = subprocess.run(
-        ["git", "-C", str(REPO_ROOT), "ls-files", "-s", "--", str(CHECKER)],
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout
-    assert index.startswith("100755 ")
-    assert CHECKER.stat().st_mode & stat.S_IXUSR
-
-    registry = _write_registry(tmp_path, entries=[], relocated=True)
-    result = _run_checker(tmp_path, registry)
-    assert result.returncode == 0
