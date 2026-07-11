@@ -98,7 +98,7 @@
       <thead><tr><th>Concern</th><th>Required control</th><th>Verification</th></tr></thead>
       <tbody>
         <tr><td>Config</td><td><code>GIT_CONFIG=/dev/null</code>, system/global disabled, caller Git variables dropped</td><td>Malicious local/global controls cannot affect behavior</td></tr>
-        <tr><td>Clone config</td><td>Pass held <code>.git/config</code> fd into child; parse via <code>/proc/self/fd</code> and <code>--no-includes</code></td><td>Reject includes, rewrites, duplicates, corrupt HEAD</td></tr>
+        <tr><td>Clone config</td><td>Pass held <code>.git/config</code> fd into child; apply a closed key allowlist and null hooks path</td><td>Reject all execution-bearing config, hooks, alternates, grafts, and shallow state</td></tr>
         <tr><td>Objects</td><td><code>GIT_NO_REPLACE_OBJECTS=1</code>; exact committed tree/blob IDs</td><td>Active replacement ref and dirty worktree are ignored</td></tr>
         <tr><td>Author</td><td>Require <code>CLIENT_WIKI_GIT_AUTHOR_NAME</code> and <code>..._EMAIL</code></td><td>Ambient Git config cannot supply identity</td></tr>
         <tr><td>Credentials</td><td>Fixed command-scoped <code>gh auth git-credential</code></td><td>Unavailable credentials fail before registry mutation</td></tr>
@@ -114,7 +114,7 @@
       <tbody>
         <tr><td>Symbolic unborn HEAD + independently reconstructed exact render</td><td>Stage expected files, commit, retain OID, push literal OID, re-attest</td></tr>
         <tr><td>Exact parentless local root commit + remote absent</td><td>Retain and push its literal OID, then re-attest</td></tr>
-        <tr><td>Exact expected local commit + equal remote main</td><td>Return idempotent success after re-attestation</td></tr>
+        <tr><td>Exact expected local commit + equal remote main</td><td>Verify through the GitHub API and return idempotent success</td></tr>
         <tr><td>Any identity, origin, index, worktree, commit, or SHA mismatch</td><td>Fail without mutation; preserve and report residue</td></tr>
       </tbody>
     </table>
