@@ -18,7 +18,7 @@
 - `scripts/cron/cron_apply.py` and `scripts/cron/cron_transaction.py` already provide the target transaction: strict managed-block parsing, explicit external/catalog fingerprints, duplicate convergence, `flock`, compare-and-swap, backup, post-write preservation verification, and rollback.
 - `scripts/cron/cron_render.py` already supplies shared machine selection and rendering. The implementation will not create a third renderer or fingerprint vocabulary.
 - `config/workstations/harness-state-classes.yaml` already identifies duplicated `notification-purge` lines as catalog-owned when that task is selected. `deckhand-api-presence-sync` has no equivalent explicit installed fingerprint, so the current transactional preview fails closed on its two live duplicates.
-- `tests/cron/test_a1_preserved.py` already proves transactional notification-purge deduplication. It also contains a stale unrelated count assertion (`preserved_external == 4` while the live baseline has 8); #3347 will not rewrite that historical assertion unless a test directly touched by this issue requires a narrowly scoped correction.
+- `tests/cron/test_a1_preserved.py` already proves transactional notification-purge deduplication, but its real-catalog check hard-codes four `preserved_external` rows while the live catalog has eight. Because #3347 changes ownership metadata, the implementation will replace that brittle count with semantic owner/task assertions and will keep the whole real-catalog file in the acceptance suite.
 
 ### Standards
 
@@ -41,7 +41,10 @@ No relevant wiki pages. No wiki content will change.
 - Linux setup still has two write-capable implementations with different safety and idempotence rules.
 - `setup-cron.sh --dry-run` lists desired entries but does not compare them transactionally against the live crontab, so it hides ownership blockers and duplicate-removal effects.
 - `deckhand-api-presence-sync` lacks an explicit installed fingerprint suitable for its `.claude/skills/.../catalog_delta.py` command.
+- The current fingerprint vocabulary has substring-based `command_contains`; it cannot assert a shell-token boundary for the presence-sync script. A new validated `command_token` predicate will be required rather than describing metadata the matcher cannot enforce.
+- `cron_apply.py` defaults backup tags to `manual`, so a compatibility wrapper that delegates repeated applies without a unique tag would overwrite the previous recovery artifact.
 - No regression test invokes the setup compatibility entrypoint twice against an injectable crontab and proves the second plan is byte-identical with zero duplicate additions.
+- The wrapper does not parse `--machine`; physical-host variant selection currently occurs before delegation, so explicit Windows-target behavior needs a defined ordering and regression coverage.
 - Operator docs do not yet state that live apply will require a separate reviewed preview and explicit approval after implementation.
 
 ### Evidence (embedded verification)
@@ -115,12 +118,13 @@ Execution mode for implementation will be **single-lane** because wrapper behavi
 
 ```text
 setup_cron(args):
-    resolve workspace and machine through the existing registry
-    if Windows/contribute-minimal: print Task Scheduler guidance and exit
+    parse --machine, --dry-run, --replace, and --allow-live-reload strictly
+    resolve the requested machine (or physical hostname) through cron_render context
+    if the resolved target is Windows/contribute-minimal: print Task Scheduler guidance and exit
     if --replace: reject as unsafe
     translate --dry-run to cron_apply default preview
     translate normal invocation to cron_apply --apply
-    pass through --machine and explicit --allow-live-reload only when supplied
+    pass the resolved canonical --machine and explicit --allow-live-reload only when supplied
     exec cron_apply so its exit status and fail-closed reason remain authoritative
 
 transactional_preview(live_crontab, selected_catalog):
@@ -131,9 +135,14 @@ transactional_preview(live_crontab, selected_catalog):
     return deterministic new_text without writing
 
 catalog_ownership(deckhand_presence_sync):
-    require exact command token for catalog_delta.py
+    require a command_token predicate with shell-token boundaries for catalog_delta.py
     require workspace-hub cwd basename
     reject merely similar commands or repository names
+
+unique_backup_tag():
+    if caller supplied --ts: validate and use it
+    otherwise generate UTC timestamp with subsecond/process uniqueness
+    create the backup with exclusive semantics; never overwrite an existing recovery point
 ```
 
 ---
@@ -143,11 +152,14 @@ catalog_ownership(deckhand_presence_sync):
 | Action | Path | Reason |
 |---|---|---|
 | Modify | `scripts/cron/setup-cron.sh` | Remove the append-only fingerprint loop and delegate Linux preview/apply to `cron_apply.py` while preserving safe CLI compatibility. |
+| Modify | `scripts/cron/cron_apply.py` | Generate collision-resistant default backup tags and refuse backup overwrite. |
+| Modify | `scripts/cron/cron_transaction.py` | Add enforceable token-boundary matching for `command_token`. |
 | Modify | `config/scheduled-tasks/schedule-tasks.yaml` | Add an exact installed fingerprint for `deckhand-api-presence-sync`. |
-| Modify | `scripts/cron/validate-schedule.py` | Validate the installed-fingerprint vocabulary and reject empty/unsafe ownership metadata if current validation does not already cover it. |
+| Modify | `scripts/cron/validate-schedule.py` | Validate field names/types/non-empty values and require a conjunctive command-plus-cwd installed identity. |
 | Create | `tests/cron/test_setup_cron.py` | Test compatibility routing, no direct crontab writes, exit propagation, and dry-run/apply argument mapping. |
 | Modify | `tests/cron/test_cron_apply.py` | Prove duplicate equality, notification, and Deckhand entries converge transactionally and a second plan is byte-identical. |
 | Modify | `tests/cron/test_cron_transaction.py` | Prove exact ownership does not absorb similar external commands or repository names. |
+| Modify | `tests/cron/test_a1_preserved.py` | Replace the stale ownership-row count with semantic real-catalog assertions and retain the suite as a required gate. |
 | Modify | `scripts/cron/tests/test_validate_schedule.py` | Cover valid and invalid installed fingerprints. |
 | Modify | `docs/ops/scheduled-tasks.md` | Document one authoritative transactional install path and the separate live-apply approval gate. |
 | Modify | `docs/plans/README.md` | Index this plan and reconcile the closed #3463 row. |
@@ -158,17 +170,23 @@ catalog_ownership(deckhand_presence_sync):
 
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| `test_setup_cron_dry_run_delegates_to_transaction_preview` | compatibility preview exposes ownership blockers and changes | wrapper `--dry-run` with stubbed transaction | `cron_apply.py` invoked without `--apply`; exit code propagated |
-| `test_setup_cron_default_delegates_to_transaction_apply` | normal Linux setup uses the safe writer | wrapper with no args | `cron_apply.py --apply`; no shell `crontab -` write path |
+| `test_setup_cron_dry_run_delegates_to_transaction_preview` | compatibility preview exposes ownership blockers and changes | subprocess wrapper `--dry-run` with stubbed `uv`/transaction | `cron_apply.py` invoked without `--apply`; exit code propagated |
+| `test_setup_cron_default_delegates_to_transaction_apply` | normal Linux setup uses the safe writer | subprocess wrapper with no args | `cron_apply.py --apply`; no shell `crontab -` write path |
+| `test_setup_cron_entrypoint_twice_is_idempotent` | actual wrapper argument/env behavior cannot re-add entries | invoke wrapper twice using a temp fake `crontab` command and real transaction modules | second installed text byte-identical; no duplicate growth |
 | `test_setup_cron_replace_remains_disabled` | destructive replace stays blocked | `--replace` | nonzero exit; no transaction apply |
 | `test_setup_cron_passes_live_reload_only_explicitly` | comms protection is not bypassed implicitly | with/without flag | flag forwarded only when operator supplied it |
+| `test_setup_cron_machine_windows_exits_before_linux_transaction` | explicit target controls scheduler branch | `--machine licensed-win-1` | Task Scheduler guidance; transaction not invoked |
+| `test_setup_cron_machine_linux_passes_canonical_id` | aliases resolve before delegation | `--machine ace-linux-1` | transaction receives `--machine dev-primary` |
 | `test_deckhand_presence_fingerprint_matches_exact_owned_line` | remaining live duplicates become catalog-attributable | current exact command and cwd | catalog-owned classification |
 | `test_deckhand_presence_fingerprint_rejects_similar_external_line` | ownership remains fail-closed | similar basename/repository | uncataloged or preserved external, never catalog-owned |
+| `test_command_token_requires_shell_token_boundaries` | suffix/prefix/path-lookalikes cannot satisfy ownership | exact token and mutated neighboring characters | exact matches; lookalikes reject |
 | `test_cutover_converges_all_known_duplicate_families` | equality/manual repair, notification ×2, Deckhand ×2 converge | bounded live-shape fixture | one rendered entry per selected task; comments/external lines preserved |
 | `test_second_cutover_plan_is_byte_identical` | repeated setup cannot ADD again | first plan output as second input | identical `new_text`; zero duplicate growth |
 | `test_unknown_line_still_aborts` | convergence does not weaken external safety | fixture plus unknown cron | abort, no write |
-| `test_installed_fingerprint_schema_rejects_unknown_or_empty_fields` | catalog cannot declare a meaningless ownership claim | malformed YAML task | validator error |
+| `test_installed_fingerprint_schema_is_fail_closed` | catalog cannot declare a broad or malformed ownership claim | unknown fields, wrong types, empty lists/members, one-field broad substring | validator error; valid command-token-plus-cwd passes |
 | `test_equality_tasks_with_shared_wrapper_both_render_once` | shared script paths no longer cause cross-schedule false-SKIP | weekly and six-hourly tasks | both schedules present exactly once |
+| `test_default_backup_tags_are_unique_and_exclusive` | repeated applies retain separate recovery points | two applies without `--ts`, forced collision fixture | distinct backups or explicit abort; earlier backup unchanged |
+| `test_real_catalog_ownership_semantics_without_brittle_count` | real ownership catalog remains parseable as it grows | live state-class YAML | required owners/task IDs present; no hard-coded total |
 
 ---
 
@@ -180,8 +198,10 @@ catalog_ownership(deckhand_presence_sync):
 - [ ] The current bounded live-shape fixture will converge equality, notification, and Deckhand duplicates to one canonical entry each while preserving unrelated lines.
 - [ ] A second transaction over the first output will be byte-identical.
 - [ ] Unknown or ambiguous ownership will continue to abort without writes.
-- [ ] `uv run pytest tests/cron/test_setup_cron.py tests/cron/test_cron_apply.py tests/cron/test_cron_transaction.py scripts/cron/tests/test_validate_schedule.py -q` will pass.
-- [ ] `bash -n scripts/cron/setup-cron.sh`, ShellCheck, schedule validation, `git diff --check`, and `scripts/legal/legal-sanity-scan.sh --diff-only` will pass.
+- [ ] Repeated default applies will create distinct, non-overwritten backup artifacts or fail explicitly on a forced collision.
+- [ ] `uv run pytest tests/cron/test_setup_cron.py tests/cron/test_cron_apply.py tests/cron/test_cron_transaction.py tests/cron/test_a1_preserved.py scripts/cron/tests/test_validate_schedule.py -q` will pass.
+- [ ] The broader issue-scoped cron suite `uv run pytest tests/cron scripts/cron/tests -q` will pass without excluding the real-catalog test.
+- [ ] `bash -n scripts/cron/setup-cron.sh`, `shellcheck scripts/cron/setup-cron.sh`, schedule validation, `git diff --check`, and `scripts/legal/legal-sanity-scan.sh --diff-only` will pass.
 - [ ] Code/artifact adversarial review will complete with no unresolved MAJOR findings.
 - [ ] Implementation evidence will be posted to #3347 before closure.
 - [ ] Live crontab mutation will remain a separate operator-approved step after a fresh bounded preview; this implementation issue will not silently apply the cutover.
@@ -193,10 +213,20 @@ catalog_ownership(deckhand_presence_sync):
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | PENDING | — |
-| Codex | PENDING | — |
-| Gemini | PENDING | — |
+| Codex | MAJOR (r1) | Required enforceable token matching, unique backups, twice-invoked wrapper integration, pre-branch machine routing, fail-closed schema validation, and inclusion of the failing real-catalog test. |
+| Gemini | UNAVAILABLE (r1) | No configured non-interactive authentication. |
 
 **Overall result:** PENDING
+
+Revisions made after r1:
+
+- Added `cron_transaction.py` token-boundary matcher work and negative tests.
+- Added `cron_apply.py` unique/exclusive backup behavior and collision tests.
+- Added a real twice-invoked setup entrypoint integration test using a fake crontab seam.
+- Defined `--machine` parsing before Windows/Linux branching and added both target tests.
+- Expanded fingerprint schema validation to types, non-empty members, allowed fields, and conjunctive identity.
+- Brought `test_a1_preserved.py` into scope for a narrow semantic repair and the required suite.
+- Replaced the vague ShellCheck gate with an exact command.
 
 ---
 
