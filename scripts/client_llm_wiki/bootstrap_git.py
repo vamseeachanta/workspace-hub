@@ -71,7 +71,7 @@ def mutation_command(git_fd: int, *args: str) -> list[str]:
 
 def push_command(git_fd: int, repo_slug: str, object_id: str) -> list[str]:
     """Build the only authorized push transport command."""
-    if re.fullmatch(r"[0-9a-f]{40,64}", object_id) is None:
+    if re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", object_id) is None:
         raise BootstrapGitError("push object ID is invalid")
     canonical = f"https://github.com/{repo_slug}.git"
     if canonical not in accepted_origins(repo_slug):
@@ -89,10 +89,13 @@ def _read_config(bound: BoundCloneLayout) -> list[tuple[str, str]]:
         "git", "config", "--file", f"/proc/self/fd/{bound.config_fd}",
         "--null", "--list", "--no-includes",
     ]
-    result = subprocess.run(
-        command, check=False, capture_output=True, pass_fds=(bound.config_fd,),
-        env=isolated_env(),
-    )
+    try:
+        result = subprocess.run(
+            command, check=False, capture_output=True, pass_fds=(bound.config_fd,),
+            env=isolated_env(), timeout=5,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise BootstrapGitError("held clone config parse timed out") from exc
     if result.returncode != 0:
         raise BootstrapGitError("held clone config cannot be parsed")
     records: list[tuple[str, str]] = []
@@ -149,6 +152,16 @@ def _validate_head(bound: BoundCloneLayout) -> None:
     )
     if result.returncode != 0 or result.stdout != "refs/heads/main\n":
         raise BootstrapGitError("clone HEAD must be the symbolic main branch")
+    branch = subprocess.run(
+        [
+            "git", f"--git-dir=/proc/self/fd/{bound.git_fd}",
+            "show-ref", "--verify", "--quiet", "refs/heads/main",
+        ],
+        check=False, capture_output=True, pass_fds=(bound.git_fd,),
+        env=isolated_env(),
+    )
+    if branch.returncode != 1:
+        raise BootstrapGitError("clone HEAD main branch must be truly unborn")
 
 
 def validate_clone_git(bound: BoundCloneLayout, repo_slug: str) -> dict[str, str]:

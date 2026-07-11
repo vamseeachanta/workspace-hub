@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import errno
 from pathlib import Path
 import subprocess
 
@@ -59,18 +60,23 @@ def _clone(tmp_path: Path, fetch: str | None = None, push: str | None = None) ->
     return repo
 
 
-def test_bound_config_accepts_independent_exact_origin_spellings(tmp_path):
-    clone = _clone(
-        tmp_path,
-        "https://github.com/owner/llm-wiki-slug.git",
-        "git@github.com:owner/llm-wiki-slug.git",
-    )
+@pytest.mark.parametrize(
+    ("fetch", "push"),
+    [
+        ("https://github.com/owner/llm-wiki-slug.git", "git@github.com:owner/llm-wiki-slug.git"),
+        ("git@github.com:owner/llm-wiki-slug.git", "https://github.com/owner/llm-wiki-slug.git"),
+        ("https://github.com/owner/llm-wiki-slug.git", None),
+        ("git@github.com:owner/llm-wiki-slug.git", None),
+    ],
+)
+def test_bound_config_accepts_independent_exact_origin_spellings(tmp_path, fetch, push):
+    clone = _clone(tmp_path, fetch, push)
 
     with bind_clone(clone) as bound:
         config = validate_clone_git(bound, REPO)
 
-    assert config["remote.origin.url"] == "https://github.com/owner/llm-wiki-slug.git"
-    assert config["remote.origin.pushurl"] == "git@github.com:owner/llm-wiki-slug.git"
+    assert config["remote.origin.url"] == fetch
+    assert config.get("remote.origin.pushurl") == push
 
 
 @pytest.mark.parametrize(
@@ -97,6 +103,32 @@ def test_config_rejects_every_forbidden_control_without_applying_include(tmp_pat
         validate_clone_git(bound, REPO)
 
 
+def test_no_includes_never_opens_existing_fifo_target(tmp_path):
+    clone = _clone(tmp_path, "https://github.com/owner/llm-wiki-slug.git")
+    fifo = tmp_path / "hostile-config"
+    os.mkfifo(fifo)
+    _git(clone, "config", "include.path", str(fifo))
+
+    with bind_clone(clone) as bound, pytest.raises(BootstrapGitError, match="key"):
+        validate_clone_git(bound, REPO)
+
+    with pytest.raises(OSError) as caught:
+        os.open(fifo, os.O_WRONLY | os.O_NONBLOCK)
+    assert caught.value.errno == errno.ENXIO
+
+
+def test_config_parse_timeout_fails_closed(tmp_path, monkeypatch):
+    clone = _clone(tmp_path, "https://github.com/owner/llm-wiki-slug.git")
+
+    def timeout(*args, **kwargs):
+        assert kwargs["timeout"] == 5
+        raise subprocess.TimeoutExpired(args[0], kwargs["timeout"])
+
+    monkeypatch.setattr("client_llm_wiki.bootstrap_git.subprocess.run", timeout)
+    with bind_clone(clone) as bound, pytest.raises(BootstrapGitError, match="timed out"):
+        validate_clone_git(bound, REPO)
+
+
 @pytest.mark.parametrize(
     ("key", "value"),
     [
@@ -105,6 +137,7 @@ def test_config_rejects_every_forbidden_control_without_applying_include(tmp_pat
         ("core.filemode", "yes"),
         ("core.logallrefupdates", "false"),
         ("remote.origin.url", "https://github.com/owner/llm-wiki-slug"),
+        ("remote.origin.pushurl", "git@github.com:owner/other.git"),
         ("remote.origin.fetch", "+refs/heads/main:refs/remotes/origin/main"),
         ("branch.main.remote", "upstream"),
         ("branch.main.merge", " refs/heads/main"),
@@ -117,10 +150,38 @@ def test_config_rejects_wrong_literal_values(tmp_path, key, value):
         validate_clone_git(bound, REPO)
 
 
-def test_config_rejects_duplicate_scalar_and_preserves_whitespace(tmp_path):
+@pytest.mark.parametrize(
+    "key",
+    [
+        "core.repositoryformatversion", "core.bare", "core.filemode",
+        "core.logallrefupdates", "remote.origin.url", "remote.origin.pushurl",
+        "remote.origin.fetch", "branch.main.remote", "branch.main.merge",
+    ],
+)
+def test_config_rejects_duplicate_every_scalar_family(tmp_path, key):
     clone = _clone(tmp_path, "https://github.com/owner/llm-wiki-slug.git")
-    _git(clone, "config", "--add", "remote.origin.url", " https://github.com/owner/llm-wiki-slug.git")
+    optional_values = {
+        "core.filemode": "true",
+        "core.logallrefupdates": "true",
+        "remote.origin.pushurl": "git@github.com:owner/llm-wiki-slug.git",
+        "branch.main.remote": "origin",
+        "branch.main.merge": "refs/heads/main",
+    }
+    if key in optional_values:
+        _git(clone, "config", key, optional_values[key])
+    value = subprocess.run(
+        ["git", "-C", str(clone), "config", "--get", key],
+        check=True, capture_output=True, text=True,
+    ).stdout.rstrip("\n")
+    _git(clone, "config", "--add", key, value)
     with bind_clone(clone) as bound, pytest.raises(BootstrapGitError, match="duplicate"):
+        validate_clone_git(bound, REPO)
+
+
+def test_config_preserves_origin_whitespace_instead_of_normalizing(tmp_path):
+    clone = _clone(tmp_path, "https://github.com/owner/llm-wiki-slug.git")
+    _git(clone, "config", "--replace-all", "remote.origin.url", " https://github.com/owner/llm-wiki-slug.git")
+    with bind_clone(clone) as bound, pytest.raises(BootstrapGitError, match="value"):
         validate_clone_git(bound, REPO)
 
 
@@ -129,6 +190,27 @@ def test_clone_rejects_dangling_or_corrupt_symbolic_head(tmp_path, head):
     clone = _clone(tmp_path, "https://github.com/owner/llm-wiki-slug.git")
     (clone / ".git" / "HEAD").write_text(f"ref: {head}\n", encoding="utf-8")
     with bind_clone(clone) as bound, pytest.raises(BootstrapGitError, match="HEAD"):
+        validate_clone_git(bound, REPO)
+
+
+def test_clone_accepts_authorized_unborn_main(tmp_path):
+    clone = _clone(tmp_path, "https://github.com/owner/llm-wiki-slug.git")
+    with bind_clone(clone) as bound:
+        validate_clone_git(bound, REPO)
+
+
+@pytest.mark.parametrize("ref_text", ["a" * 40 + "\n", "not-an-object-id\n"])
+def test_clone_rejects_present_dangling_or_corrupt_main_ref(tmp_path, ref_text):
+    clone = _clone(tmp_path, "https://github.com/owner/llm-wiki-slug.git")
+    (clone / ".git" / "refs" / "heads" / "main").write_text(ref_text, encoding="ascii")
+    with bind_clone(clone) as bound, pytest.raises(BootstrapGitError, match="HEAD"):
+        validate_clone_git(bound, REPO)
+
+
+def test_clone_rejects_valid_born_main(tmp_path):
+    clone = _clone(tmp_path, "https://github.com/owner/llm-wiki-slug.git")
+    _git(clone, "-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "--allow-empty", "-m", "born")
+    with bind_clone(clone) as bound, pytest.raises(BootstrapGitError, match="unborn"):
         validate_clone_git(bound, REPO)
 
 
@@ -155,3 +237,17 @@ def test_mutation_and_push_commands_fix_hooks_credentials_and_https_target():
         "push", "https://github.com/owner/llm-wiki-slug.git",
         f"{'a' * 40}:refs/heads/main",
     ]
+
+
+@pytest.mark.parametrize(
+    "object_id",
+    ["a" * 39, "a" * 41, "a" * 63, "a" * 65, "A" * 40, "g" * 40],
+)
+def test_push_rejects_non_exact_or_non_lowercase_object_ids(object_id):
+    with pytest.raises(BootstrapGitError, match="object ID"):
+        push_command(9, REPO, object_id)
+
+
+@pytest.mark.parametrize("width", [40, 64])
+def test_push_accepts_exact_lowercase_object_id_widths(width):
+    assert push_command(9, REPO, "a" * width)[-1] == f"{'a' * width}:refs/heads/main"
