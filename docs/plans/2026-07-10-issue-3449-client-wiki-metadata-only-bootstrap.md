@@ -190,6 +190,8 @@ The template worktree will be anchored from the installed module path, never the
 
 The renderer will hold an `O_DIRECTORY|O_NOFOLLOW` descriptor for that verified clone and compare `fstat` device/inode to the path's `lstat` before and after installation. It will create adjacent mode-`0700` staging with an exclusive standard-library temporary-directory primitive, immediately bind it by descriptor/device/inode, and manually materialize validated archive members through staging directory descriptors—never `extractall()`. All target traversal and file creation will likewise be relative to held directory descriptors; directories use exclusive `mkdir`, and regular files use `O_CREAT|O_EXCL|O_NOFOLLOW`. A created-artifact ledger will record relative path, type, device, and inode. Failure cleanup will walk only that ledger in reverse through held descriptors, remove an artifact only when its type/device/inode still match, and will never contain the clone root or `.git`; staging cleanup will require its original device/inode. The renderer is Linux-only, matching the existing factory's mount/layout prerequisites. If required descriptor/no-follow primitives are unavailable, render will fail closed before writing.
 
+The path-substitution guarantee begins only after each newly created directory has been successfully opened and descriptor-bound. Python's `mkdirat`-equivalent does not return a descriptor, so a same-UID process could replace a real directory during the microscopic `mkdir` → no-follow `open` interval; this residual risk is accepted for the Python-native implementation and will not be obscured by an FFI or `renameat2` claim. Deterministic race tests will inject substitutions only at post-bind failpoints. Cleanup is bounded and non-destructive, not residue-free: moved, replaced, identity-mismatched, or unexpectedly nonempty ledger entries will be left untouched rather than deleted by pathname.
+
 ---
 
 ## Pseudocode
@@ -296,8 +298,8 @@ Each Python implementation file will remain below 400 lines and each function be
 | clone precondition tests | missing/symlink/non-Git/non-unborn/dirty clone, extra top-level entry, or mismatched origin fails before template writes |
 | pinned Git snapshot tests | dirty/untracked template files never render; output records exact commit |
 | archive-member tests | link, traversal, FIFO/socket, and synthetic device modes fail |
-| fd-anchored no-overwrite tests | rename/substitution races after clone-open cannot redirect writes; exclusive creates leave victim sentinels and `.git` unchanged |
-| created-ledger cleanup tests | forced failure removes only still-matching recorded template artifacts; mismatched/replaced paths, clone root, and `.git` survive |
+| fd-anchored no-overwrite tests | rename/substitution races injected after each directory is descriptor-bound cannot redirect writes; exclusive creates leave victim sentinels and `.git` unchanged |
+| created-ledger cleanup tests | forced failure removes only still-matching recorded template artifacts; mismatched/replaced/nonempty paths, clone root, and `.git` survive, with hostile residue explicitly permitted |
 | path-neutral render tests | metadata and source-registered-disabled output contain no configured root or CLIENT_RAW_ROOT token |
 | placeholder-scope test | CLIENT/raw-state tokens resolve; PROJECT_SHORT_NAME remains |
 | firewall/ledger tests | privacy dotfiles survive; structural example with `source_path: null` remains structure-valid |
@@ -334,7 +336,7 @@ Generated fixtures will use generic identifiers and temporary paths. Tests will 
 - [ ] Renderer verifies actual PRIVATE/unarchived state before installing files; factory reruns verifier before first push.
 - [ ] From both a main checkout and linked worktree, renderer derives the same target from the absolute Git common-dir owner's parent + registered repo basename; cwd changes do not affect it and no caller destination/invented base is accepted.
 - [ ] Renderer reads a pinned Git-object template, ignores dirty/untracked content, rejects unsafe members/protected overlap, and installs through held no-follow directory descriptors with exclusive creates.
-- [ ] Injected rename/substitution/install-failure tests leave victim sentinels, the clone root, and `.git` unchanged; cleanup removes only still-matching entries in the created-artifact ledger.
+- [ ] Injected post-bind rename/substitution/install-failure tests leave victim sentinels, the clone root, and `.git` unchanged; cleanup removes only still-matching entries in the created-artifact ledger and safely permits mismatched or moved residue.
 - [ ] Privacy dotfiles remain mandatory; `rg --hidden -n '<CLIENT_RAW_ROOT>' templates/client-llm-wiki .claude/skills/coordination/client-llm-wiki-factory` returns no matches.
 - [ ] Raw sentinel path/inode/hash remain unchanged; schema/classify/render never stat/open/enumerate raw roots; checker performs at most parent/root metadata checks and never opens/enumerates contents; no sentinel payload appears in output.
 - [ ] Public stub remains empty and can audit-skip without `uv` or `gh`; a non-empty registry missing the Python contract exits dependency-error `2`.
@@ -374,6 +376,7 @@ Revisions after r1:
 - Invented `raw_root_bases`/`working_clone_base` inputs are removed; schema validation never touches raw roots, and the clone target derives worktree-safely from the Git common-dir owner's parent plus the validated registered repo basename.
 - The renderer now composes with the real factory sequence by requiring its existing clean, unborn, matching clone instead of creating an unversioned destination.
 - Held no-follow directory descriptors, exclusive creation, and an inode-bound created-artifact ledger prevent path-substitution writes and constrain cleanup away from the clone root and `.git`.
+- The user selected the Python-native boundary on 2026-07-11: race protection begins after descriptor binding; the same-UID `mkdir` → `open` interval remains a named residual risk, and cleanup is non-destructive rather than residue-free.
 
 ---
 
@@ -382,13 +385,13 @@ Revisions after r1:
 - **Partial consumer coverage:** only 25% of registered wiki checkouts were inspectable and eight real raw-access surfaces were found. Schema `0.2` rejects enablement; a future private integration issue must establish complete per-repo coverage.
 - **Legacy compatibility:** schema-`0.1` entries remain audit warnings only. New operations require exact `"0.2"`.
 - **Public-stub ambiguity:** the checker may skip the empty public stub, but render never treats that as authority and non-empty dependency failures return `2`.
-- **Renderer cleanup:** the install is not an atomic whole-tree operation. The renderer will stage/validate first, hold the verified clone by no-follow directory descriptors, use exclusive child creation, and clean only still-matching created-ledger entries. It will never delete the clone or `.git`, and will never claim whole-tree atomicity.
+- **Renderer binding and cleanup:** the install is not an atomic whole-tree operation. Protection from substitution starts after each directory is descriptor-bound; a same-UID process winning the `mkdir` → `open` interval remains an accepted residual risk. The renderer will stage/validate first, hold the verified clone by no-follow directory descriptors, use exclusive child creation, and clean only still-matching created-ledger entries. It will never delete the clone or `.git`, claim whole-tree atomicity, or promise residue-free rollback.
 - **Clone lifecycle:** rendering requires the factory-created clean unborn clone with matching origin. Partial runs with unexpected content fail before writes; successful bootstrap records `local_working_clone` only after the first push.
 - **Pinned template:** rendering intentionally uses committed HEAD, so template edits require the candidate-commit step before pinned integration verification.
 - **Schema migration:** the private registry remains `0.1`; its separately approved migration is a downstream prerequisite, not part of this public issue.
 - **Provider availability:** Claude supplied r1 signal but timed out in r2; Gemini was unavailable. Native Codex r2 found the clone-composition defects, which are resolved inline and preserved in the review artifacts.
 - **Rollback:** reverting the workspace-hub implementation commit restores prior factory/checker/templates. No raw data is moved or deleted.
-- **Open question for approval:** none. The conservative `true`-is-invalid rule is the recommended scope until private readers can be inventoried and guarded.
+- **Open question for approval:** none. The user approved the plan and selected the Python-native post-bind race boundary; the conservative `true`-is-invalid rule remains in force until private readers can be inventoried and guarded.
 
 ---
 

@@ -285,15 +285,17 @@
           <span class="pill">Client: N/A</span>
           <span class="pill">Lane: Codex</span>
           <span class="pill">Plan date: 2026-07-10</span>
+          <span class="pill">Approved: 2026-07-10</span>
           <span class="pill">No raw-data mutation</span>
         </div>
       </div>
       <aside class="gate-card">
         <div class="label">Current gate</div>
-        <strong>Plan review complete · approval required</strong>
+        <strong>Plan approved · implementation in progress</strong>
         <p>
           Claude r1 and native Codex r2 found separate MAJOR defects. All are resolved
-          in the inline revision. Implementation remains blocked on explicit user approval.
+          in the inline revision. The user approved the plan and selected the Python-native
+          post-bind race boundary.
         </p>
         <a href="https://github.com/vamseeachanta/workspace-hub/issues/3449">Open issue #3449</a>
       </aside>
@@ -376,7 +378,8 @@
             <li>Split Python schema and CLI modules will recognize only metadata-only and source-registered-disabled states.</li>
             <li>A bounded renderer will use a pinned Git template snapshot and install only into the factory-created clean, unborn clone with a matching origin.</li>
             <li>Git common-directory derivation will produce the same canonical sibling target from the main checkout or a linked worktree.</li>
-            <li>No-follow directory descriptors, exclusive creates, and an inode-bound created-artifact ledger will preserve <code>.git</code> and unrelated paths.</li>
+            <li>After each directory is descriptor-bound, no-follow descriptors, exclusive creates, and an inode-bound created-artifact ledger will preserve <code>.git</code> and unrelated paths.</li>
+            <li>The same-UID <code>mkdir</code> → <code>open</code> interval remains an explicit residual risk; cleanup is bounded and non-destructive, not residue-free.</li>
             <li>The shell checker will consume the contract while retaining private visibility, clone, and firewall checks.</li>
             <li>Generated pytest fixtures will replace static fixtures tied to live repository and clone state.</li>
           </ul>
@@ -436,7 +439,8 @@
       </div>
       <p class="small" style="margin-top: 18px;">
         All available MAJOR findings are resolved through the required inline loop-break pattern.
-        The issue now stops at the user approval gate; no approval marker or implementation action is automatic.
+        User approval is recorded; implementation remains subject to TDD, pinned-HEAD verification,
+        and the independent code/artifact review gate.
       </p>
     </section>
 
