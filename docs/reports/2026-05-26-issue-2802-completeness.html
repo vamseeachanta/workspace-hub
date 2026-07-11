@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Issue #2802 completeness</title></head>
+<body>
+<h1>Issue #2802 — GitHub-to-kanban reconciler</h1>
+<p><strong>Completeness: 86% — PASS</strong> (historical report, generated 2026-05-26).</p>
+<p>The implementation merged through <a href="https://github.com/vamseeachanta/workspace-hub/pull/2820">PR #2820</a> at <code>ff5f9650d2d17cb7c4c2590c69453aad16037319</code>. The Codex-under-Claude route merged through <a href="https://github.com/vamseeachanta/workspace-hub/pull/2809">PR #2809</a>.</p>
+<h2>Verified</h2>
+<ul>
+<li>Reconciler implementation and TDD RED→GREEN trace.</li>
+<li>Cross-tree identity, state handling, truncation protection, and empty-fetch fail-closed behavior.</li>
+<li>Scheduled workflow concurrency and bounded retry behavior.</li>
+<li>Three-provider T3 review findings resolved before merge.</li>
+</ul>
+<h2>Deferred phases</h2>
+<p>GitHub App cross-repository credentials, low-latency dispatch, and per-machine Hermes loading remained future phases at report time.</p>
+<p>This report is sanitized and historical; the issue and merged PR are authoritative.</p>
+</body>
+</html>
