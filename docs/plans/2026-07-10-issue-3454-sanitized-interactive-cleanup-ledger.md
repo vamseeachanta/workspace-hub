@@ -9,7 +9,7 @@
 > **Lane:** lane:claude
 > **Execution mode:** planning/review `parallel-readonly`; implementation `single-lane`
 > **Schemas:** `local-analysis-cleanup/public-projection/v1`; `local-analysis-cleanup/permission-edit-authority/v1`
-> **Review artifacts:** `scripts/review/results/2026-07-10-plan-3454-{claude,codex,gemini,disagreement}.md`; `...-codex-inline-r{1,2}.md`
+> **Review artifacts:** `scripts/review/results/2026-07-10-plan-3454-{claude,codex,gemini,disagreement}.md`; `...-codex-inline-r{1,2,3}.md`
 
 ---
 
@@ -54,7 +54,7 @@ workspace-hub origin/main = 83eba19e7c445597208660acf6abe814371fe00e
 aceengineer-admin origin/main = 1b14a3fae186362acf6a2364e84754e7d404ba74
 ```
 
-Immediately before review dispatch and push, a separate attestation will require the plan branch parent and fetched `origin/main` to equal the then-live remote SHA. Later unrelated `main` movement will be reported as drift rather than rewriting this historical snapshot silently.
+Immediately before review dispatch/push, a separate attestation will record the reviewed tip, GitHub-fetched `main`, merge-base, ahead/behind counts, overlap paths, and observed remote branch head. Dispatch requires `merge-base(tip, main) == main` and behind=0; upstream overlap requires rebase and re-review, while later non-overlap drift will be recorded and re-attested. Immediate-parent equality applies only if the branch is intentionally squashed.
 
 **Issue state** (verified 2026-07-10): #3454 is OPEN at `status:needs-plan`; #37 is OPEN without plan-lifecycle labels; #2572 remains OPEN; #3453, #3456, and #3458 are OPEN at `status:needs-plan`.
 
@@ -103,7 +103,7 @@ Public approval requires user-created `status:plan-approved` plus `.planning/pla
 
 Public #3454 will own `local-analysis-cleanup/public-projection/v1` and `local-analysis-cleanup/permission-edit-authority/v1`. Their schema blobs and implementing tool blobs will be independently pinned by private #37.
 
-Canonical JSON bytes will be UTF-8/NFC with sorted keys, separators `,`/`:`, no NaN, and one trailing newline. SHA-256 inputs will be `ASCII-domain-tag + NUL + payload`. Frozen tags will be `projection-document-v1`, `permission-authority-document-v1`, `target-value-v1`, `non-allow-subtree-v1`, `retained-allow-sequence-v1`, and `target-set-v1`. Document/subtree/sequence/set payloads will be canonical JSON; a target-value payload will be the NFC UTF-8 value bytes. Cross-domain substitution will reject.
+Canonical document JSON will use UTF-8, sorted keys, separators `,`/`:`, `ensure_ascii=false`, standard JSON quote/control/backslash escaping, no NaN, and one trailing newline; projection text fields will be NFC where its schema says so. SHA-256 inputs will be `ASCII-domain-tag + NUL + payload` with tags `projection-document-v1`, `permission-authority-document-v1`, `target-value-v1`, `non-allow-subtree-v1`, `retained-allow-sequence-v1`, and `target-set-v1`. Opaque target payloads will be the exact UTF-8 bytes of the JSON-decoded scalar without normalization; target-set payloads will contain two distinct raw 32-byte commitments sorted lexicographically; retained sequences will preserve order. Cross-domain, duplicate-target, and NFC/NFD substitution will reject.
 
 | Field | Contract |
 |---|---|
@@ -111,17 +111,17 @@ Canonical JSON bytes will be UTF-8/NFC with sorted keys, separators `,`/`:`, no 
 | `alias` | `la1_` + 20 random base32 chars; run-scoped, collision-checked, tombstoned, never reused |
 | `class` | `canonical_repo|linked_worktree|standalone_clone|runtime_config|system_managed|preservation|data|cache|scratch|unknown` |
 | `disposition` | `keep|delete|relocate|archive|defer`; independent of transaction outcome |
-| `transaction_state` | `discovered|evidence_ready|decision_recorded|preflight_verified|wal_pushed|executing|verified|deferred|failed|rollback_pending|rolled_back` |
+| `transaction_state` | `discovered|evidence_ready|decision_recorded|preflight_verified|wal_pushed|executing|verified|deferred|failed_no_effect|rollback_pending|rolled_back|rollback_failed` |
 | `reason_code` | `canonical_active|active_worktree|system_managed|machine_runtime|unique_evidence|redundant_verified|reconstructible|relocate_by_contract|insufficient_evidence|user_directive|other_private` |
 | `size_bucket` | `empty|lt_1m|m1_99|m100_999|g1_9|gte_10g|unknown` |
 | `age_bucket` | `lt_1d|d1_7|d8_30|d31_90|gt_90d|unknown` |
 | `repo_state` | `not_git|clean_synced|clean_diverged|dirty|unmerged|unverified` |
 
-The permission-authority schema will require its schema ID/version, algorithm version, raw before-file SHA-256, exactly two domain-separated target commitments, unchanged non-allow-subtree digest, ordered retained-allow-sequence digest, target-set digest, `adjacent_temp_exposure_decision: reject|accept`, reviewed plan commit, user approval reference/timestamp, exact issuance/expiry timestamps, and expected target absence/registration state. It will forbid raw target values and unknown fields. Missing D1 data will have effective value `reject`; `accept` will require an explicit user record that binds the reviewed plan commit.
+The permission-authority schema will require schema ID/version, algorithm version, raw before-file SHA-256, exactly two distinct domain-separated target commitments, unchanged non-allow-subtree digest, ordered retained-allow-sequence digest, cardinality-two target-set digest, reviewed plan commit, approval-record digest/approver identity/reference/timestamp, exact issuance/expiry timestamps, and expected target absence/registration state. Optional `adjacent_temp_exposure_decision: reject|accept` defaults to `reject`; `accept` requires an explicit matching user record. Raw targets/unknown fields are forbidden.
 
 The folder audit predicate will be immediate entries for which `is_dir(follow_symlinks=False)` is true. Files, symlinks, broken symlinks, permission errors, and timeouts will be recorded as root anomalies but excluded from the folder count. Inode data on FUSE will be advisory; mount identity/remount ambiguity will defer private remapping.
 
-Allowed transaction transitions will be frozen and revision-monotonic: `discovered→evidence_ready|deferred|failed`; `evidence_ready→decision_recorded|deferred|failed`; `decision_recorded→preflight_verified|deferred|failed`; `preflight_verified→wal_pushed|deferred|failed`; `wal_pushed→executing|deferred|failed`; `executing→verified|failed|rollback_pending`; `failed→rollback_pending|deferred`; `rollback_pending→rolled_back|failed`; `rolled_back→evidence_ready|deferred`; `deferred→evidence_ready`; and `verified` terminal. `decision_recorded` will require action-specific approval, `preflight_verified` fresh evidence, `wal_pushed` a verified remote OID, and `executing` a live claim/freshness proof. Any skipped edge, reused revision, or mutation from terminal state will reject.
+Allowed revision-monotonic edges are `discovered→evidence_ready|deferred|failed_no_effect`; `evidence_ready→decision_recorded|deferred|failed_no_effect`; `decision_recorded→preflight_verified|deferred|failed_no_effect`; `preflight_verified→wal_pushed|deferred|failed_no_effect`; `wal_pushed→executing|deferred|failed_no_effect`; `executing→verified|failed_no_effect|rollback_pending`; `rollback_pending→rolled_back|rollback_failed`; `failed_no_effect→evidence_ready|deferred`; `rolled_back→evidence_ready|deferred`; and `deferred→evidence_ready`; `verified`/`rollback_failed` are terminal. Post-execution `failed_no_effect` requires machine-verifiable no-side-effect proof; observed/unknown effects must enter `rollback_pending`, and `rollback_failed` blocks all later actions pending separately approved human resolution. Edge evidence, skipped-edge, revision-reuse, and terminal-mutation rules will be schema-enforced.
 
 Public timestamps will be date-level or milestone ordinals. Public hashes will cover projection/prepared/verification bytes only—never names or paths. Exact sizes, timestamps, branches, remotes, and free text stay private.
 
@@ -196,6 +196,8 @@ Rollback in `/run/user/<uid>` will cover process failure only. Crash safety will
 
 **Decision D1 — adjacent raw-temp exposure.** Recommended/default: **REJECT** and defer the permission change until [#3456](https://github.com/vamseeachanta/workspace-hub/issues/3456) resolves the mount posture. Generic plan approval without an explicit D1 choice is allowed only on this safe REJECT route. Alternative **ACCEPT** requires a separate explicit user record bound to the reviewed plan commit plus green same-mount probes. No unspecified editor is a fallback because editors may create adjacent swap/temp files.
 
+D1 REJECT/defer will not satisfy #3454's permission-removal acceptance criterion, completeness gate, or closure. The issue will remain open until #3456 enables a safe route or the user explicitly accepts D1 and the verified postcondition proves both stale rules absent.
+
 ---
 
 ## Files to Change
@@ -221,17 +223,17 @@ Tests will be written first with synthetic-only private values:
 | Test | Verification |
 |---|---|
 | `test_public_schema_contract` | Both schema IDs/versions, digest domains/byte grammars, cross-domain substitution, enums, authority/D1 shape, duplicate/reused aliases, count drift, and blob mismatch reject. |
-| `test_transaction_graph` | Skipped edges, missing edge evidence, revision reuse, retry/terminal violations, and verified-state mutation reject. |
+| `test_transaction_graph` | Partial/unknown-effect failure cannot defer or start another action; missing edge proof, revision reuse, retry, and terminal mutation reject. |
 | `test_public_round_trip` | Bundle/Markdown/HTML share canonical bytes/digest; markup escapes; no network assets. |
 | `test_token_policy` | Confidential/common/public tokens, boundaries, substrings, comments, attributes, filenames, Unicode, and encodings behave without value logs. |
 | `test_permission_authority` | Missing/reject D1 defers; accept requires a bound user record, reviewed plan, exactly two targets, fresh authority, absent targets, fd/path identity, and quiescence. |
-| `test_fuse_guarded_replace` | Explicit synthetic root must match the settings mount; rename, file/parent fsync, residue cleanup, pre-replace race, and interruption boundaries fail rather than skip. |
+| `test_fuse_guarded_replace` | Hostile/symlink/shared/repo roots reject; a unique child on the exact settings mount tests fsync/races and only that child is cleaned. |
 | `test_permission_value_withholding` | Six unrelated values/non-allow subtree remain; stdout/stderr/attestations/repo/comments contain no raw value. |
 | `test_publication_recovery` | A→B→C, remote mismatch, push failures, state crashes, partial comments, concurrent retry, and reconciliation recover. |
 | `test_visibility_routing` | Exact sidecars require a private sink; #3458 retains arbitrary-name format ownership. |
 | `test_pages_output` | Pages builds/scans only the sanitized report. |
 | `test_private_pin_gate` | Private schema/commit/blob mismatch blocks rendering. |
-| `test_validation_attestation` | Nonzero subject-file blobs verify; the attestation excludes itself, and private C records public B's pushed identity. |
+| `test_validation_attestation` | Unique-run nonce/tree/tool/check-set-bound results reject replay/tamper/concurrency; attestation excludes itself and C binds B. |
 | `test_staged_snapshot_boundary` | Staged leak/clean working file, staged clean/leaking working file, missing working file, and concurrent rewrite cannot change index-snapshot results. |
 
 ---
@@ -255,70 +257,90 @@ Tests will be written first with synthetic-only private values:
 set -euo pipefail
 : "${LEGAL_CLIENT_MAP:?must point to a readable private client map}"
 : "${LOCAL_ANALYSIS_FUSE_TEST_ROOT:?must name an owned synthetic test root on the settings mount}"
+: "${LOCAL_ANALYSIS_SETTINGS_PROBE_FD:?must be an open metadata-only fd for the settings target}"
 test -f pyproject.toml
 test -f scripts/legal/check-client-pii.py
 test -f scripts/build_pages.py
 test -f scripts/enforcement/check-no-abs-paths.sh
 test -r "$LEGAL_CLIENT_MAP"
 test -d "$LOCAL_ANALYSIS_FUSE_TEST_ROOT"
+test -r "/proc/self/fd/$LOCAL_ANALYSIS_SETTINGS_PROBE_FD"
 
 RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
-test -d "$RUNTIME_DIR"
-SUBJECT_SNAPSHOT="$RUNTIME_DIR/issue-3454-subject-snapshot"
-FINAL_SNAPSHOT="$RUNTIME_DIR/issue-3454-final-snapshot"
-SUBJECT_RESULTS="$RUNTIME_DIR/issue-3454-subject-results.json"
-FINAL_RESULTS="$RUNTIME_DIR/issue-3454-final-results.json"
-EXPECTED_PUBLIC_SUBJECT_MANIFEST="$RUNTIME_DIR/issue-3454-expected-subject.nul"
-EXPECTED_PUBLIC_FINAL_MANIFEST="$RUNTIME_DIR/issue-3454-expected-final.nul"
-ACTUAL_PUBLIC_MANIFEST="$RUNTIME_DIR/issue-3454-actual.nul"
-trap 'rm -rf -- "$SUBJECT_SNAPSHOT" "$FINAL_SNAPSHOT" "$SUBJECT_RESULTS" "$FINAL_RESULTS" "$EXPECTED_PUBLIC_SUBJECT_MANIFEST" "$EXPECTED_PUBLIC_FINAL_MANIFEST" "$ACTUAL_PUBLIC_MANIFEST"' EXIT
+test -d "$RUNTIME_DIR" && test ! -L "$RUNTIME_DIR"
+test "$(stat -c %u "$RUNTIME_DIR")" = "$(id -u)" && test "$(stat -c %a "$RUNTIME_DIR")" = 700
+umask 077
+VERIFY_LOCK="$RUNTIME_DIR/issue-3454.verify.lock"
+test ! -L "$VERIFY_LOCK"
+exec 9>>"$VERIFY_LOCK"
+flock -n 9
+RUN_TMP="$(mktemp -d "$RUNTIME_DIR/issue-3454.XXXXXX")"
+RUN_NONCE="${RUN_TMP##*.}"
+SUBJECT_SNAPSHOT="$RUN_TMP/subject"; FINAL_SNAPSHOT="$RUN_TMP/final"
+SUBJECT_RESULTS="$RUN_TMP/subject-results.json"; FINAL_RESULTS="$RUN_TMP/final-results.json"
+EXPECTED_PUBLIC_SUBJECT_MANIFEST="$RUN_TMP/expected-subject.nul"
+EXPECTED_PUBLIC_FINAL_MANIFEST="$RUN_TMP/expected-final.nul"; ACTUAL_PUBLIC_MANIFEST="$RUN_TMP/actual.nul"
+trap 'rm -rf --one-file-system "$RUN_TMP"' EXIT
 
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 SUBJECT_TREE="$(git write-tree)"
-mkdir -p "$SUBJECT_SNAPSHOT"
+mkdir -m 700 "$SUBJECT_SNAPSHOT"
 timeout 300 git archive --format=tar "$SUBJECT_TREE" | timeout 300 tar -xf - -C "$SUBJECT_SNAPSHOT"
 (
   cd "$SUBJECT_SNAPSHOT"
   timeout 1200 uv run --frozen python -m scripts.operations.local_analysis_cleanup.cli verify-subject \
     --run-date 2026-07-10 \
     --fuse-test-root "$LOCAL_ANALYSIS_FUSE_TEST_ROOT" \
+    --settings-probe-fd "$LOCAL_ANALYSIS_SETTINGS_PROBE_FD" \
     --legal-client-map "$LEGAL_CLIENT_MAP" \
     --subject-manifest "$EXPECTED_PUBLIC_SUBJECT_MANIFEST" \
     --final-manifest "$EXPECTED_PUBLIC_FINAL_MANIFEST" \
-    --results "$SUBJECT_RESULTS"
+    --run-nonce "$RUN_NONCE" --results "$SUBJECT_RESULTS"
+  test -s "$SUBJECT_RESULTS"
+  timeout 180 uv run --frozen python -m scripts.operations.local_analysis_cleanup.cli validate-results \
+    --kind subject --run-nonce "$RUN_NONCE" --tree "$SUBJECT_TREE" --check-set issue-3454-v1 --results "$SUBJECT_RESULTS"
 )
 test "$(git write-tree)" = "$SUBJECT_TREE"
-timeout 180 uv run python -m scripts.operations.local_analysis_cleanup.cli write-validation-attestation \
-  --subject-tree "$SUBJECT_TREE" \
-  --subject-manifest "$EXPECTED_PUBLIC_SUBJECT_MANIFEST" \
-  --subject-results "$SUBJECT_RESULTS" \
-  --output docs/reports/2026-07-10-local-analysis-cleanup-verification.json
+(
+  cd "$SUBJECT_SNAPSHOT"
+  timeout 180 uv run --frozen python -m scripts.operations.local_analysis_cleanup.cli write-validation-attestation \
+    --repo-root "$REPO_ROOT" --run-nonce "$RUN_NONCE" --subject-tree "$SUBJECT_TREE" \
+    --subject-manifest "$EXPECTED_PUBLIC_SUBJECT_MANIFEST" --subject-results "$SUBJECT_RESULTS" \
+    --output "$REPO_ROOT/docs/reports/2026-07-10-local-analysis-cleanup-verification.json"
+)
 timeout 180 git add -- docs/reports/2026-07-10-local-analysis-cleanup-verification.json
 timeout 180 git diff --cached --name-only --diff-filter=ACMR -z | sort -z > "$ACTUAL_PUBLIC_MANIFEST"
 cmp "$EXPECTED_PUBLIC_FINAL_MANIFEST" "$ACTUAL_PUBLIC_MANIFEST"
-timeout 180 uv run python -m scripts.operations.local_analysis_cleanup.cli verify-validation-attestation \
-  --index docs/reports/2026-07-10-local-analysis-cleanup-verification.json \
-  --subject-manifest "$EXPECTED_PUBLIC_SUBJECT_MANIFEST" \
-  --subject-results "$SUBJECT_RESULTS"
+(
+  cd "$SUBJECT_SNAPSHOT"
+  timeout 180 uv run --frozen python -m scripts.operations.local_analysis_cleanup.cli verify-validation-attestation \
+    --repo-root "$REPO_ROOT" --run-nonce "$RUN_NONCE" \
+    --index "$REPO_ROOT/docs/reports/2026-07-10-local-analysis-cleanup-verification.json" \
+    --subject-manifest "$EXPECTED_PUBLIC_SUBJECT_MANIFEST" --subject-results "$SUBJECT_RESULTS"
+)
 test -s "$EXPECTED_PUBLIC_SUBJECT_MANIFEST"
 FINAL_TREE="$(git write-tree)"
-mkdir -p "$FINAL_SNAPSHOT"
+mkdir -m 700 "$FINAL_SNAPSHOT"
 timeout 300 git archive --format=tar "$FINAL_TREE" | timeout 300 tar -xf - -C "$FINAL_SNAPSHOT"
 (
   cd "$FINAL_SNAPSHOT"
   timeout 900 uv run --frozen python -m scripts.operations.local_analysis_cleanup.cli verify-final-package \
     --final-manifest "$EXPECTED_PUBLIC_FINAL_MANIFEST" \
     --legal-client-map "$LEGAL_CLIENT_MAP" \
-    --results "$FINAL_RESULTS"
+    --run-nonce "$RUN_NONCE" --results "$FINAL_RESULTS"
+  test -s "$FINAL_RESULTS"
+  timeout 180 uv run --frozen python -m scripts.operations.local_analysis_cleanup.cli validate-results \
+    --kind final --run-nonce "$RUN_NONCE" --tree "$FINAL_TREE" --check-set issue-3454-v1 --results "$FINAL_RESULTS"
 )
 test "$(git write-tree)" = "$FINAL_TREE"
 timeout 180 git diff --cached --check
 ```
 
-Verification will run only from a current-base full checkout containing every named path. Every bounded command will fail closed, including timeout exit 124. `verify-subject` will run the new focused tests plus `scripts/legal/tests/test_check_client_pii.py`, `tests/workflow/test_render_completeness_html.py`, `tests/workflow/test_session_review_sanitize.py`, and the existing Pages suites. It will assert the synthetic root shares the settings mount, use only synthetic bytes, and fail rather than skip on mount/durability gaps.
+Verification will run only from a current-base full checkout containing every named path. Every bounded command will fail closed, including timeout exit 124. `verify-subject` will run the focused tests plus `scripts/legal/tests/test_check_client_pii.py`, `tests/workflow/test_render_completeness_html.py`, `tests/workflow/test_session_review_sanitize.py`, and the three existing `test_build_pages_*` suites. It will `lstat` the synthetic parent, require current-user ownership/no symlink, reject the mount root/settings parent/repos/worktrees/shared roots, match device and mount source through the metadata-only settings FD, create one unique empty child, and delete only that child.
 
 All tests, PII checks, Pages builds, and output scans will read the immutable `git write-tree` snapshot, never ambient working files. For `legal-sanity-scan.sh --diff-only`, the verifier will construct a private synthetic Git sandbox whose only changed paths are the exact staged manifest entries plus the scanner/deny-list support paths. Blob maps/tree OIDs will be checked before and after every scan. Tests will cover staged/working divergence, missing working paths, and concurrent rewrites.
 
-The validation attestation will record only completed `subject_results`, the nonzero subject path/blob map, subject tree/base SHA, scanner blobs, and exit codes. It will exclude itself and will not claim its own blob/tree/commit identity. The final package—including that attestation—will then receive a second scan; `FINAL_RESULTS` will stay outside the attestation and will be persisted later in private receipt C and the sanitized publication comment. Private C will also record public package B's commit/tree/verified remote OIDs.
+The exclusive lock and random mode-700 run root will isolate concurrent/stale runs; SIGKILL residue can never be overlaid. Result files will use `O_EXCL|O_NOFOLLOW` and validated schemas binding run nonce, tree, tool blobs, check set, and output digests, so replay or swapping rejects. The attestation will contain completed subject results but not its own identity. The final package will receive a second scan; final results stay outside the attestation and later enter private C/publication evidence with B's commit/tree/remote OIDs.
 
 ---
 
@@ -328,7 +350,7 @@ The validation attestation will record only completed `subject_results`, the non
 - [ ] Public code will never read the private ledger; only private code will export the sanitized runtime bundle and invoke live mutation.
 - [ ] A fresh folder-only `baseline_v1` and root anomalies will replace any claim of reconstructing the 124→128 history.
 - [ ] Plan approval, disposition, permission authority, and destructive-action authority will remain separate.
-- [ ] D1 missing/REJECT will prevent guarded apply and defer to #3456; explicit ACCEPT alone will enable FD-bound authority and same-mount guarded probes while preserving unrelated data and disclosing residual TOCTOU.
+- [ ] D1 missing/REJECT will defer without satisfying permission removal or closure; explicit ACCEPT alone can enable guarded probes and a verified two-rule-absent postcondition.
 - [ ] Every live mutation will have a validated, pushed pre-action WAL and a pushed post-action result; push failure will block mutation.
 - [ ] Private A → public B → private C and partial-comment recovery will verify without circular hashes or force push.
 - [ ] Public reconciliation code will remain pure/stateless; private #37 alone will persist state and perform authorized remote/comment actions.
@@ -349,8 +371,9 @@ The validation attestation will record only completed `subject_results`, the non
 | Gemini CLI | UNAVAILABLE | no non-interactive auth |
 | Codex inline r1 | MAJOR | 10 blockers; ownership/schema/CAS/WAL/publication/scan defects revised in v2 |
 | Codex inline r2 | MAJOR | D1/state/digest/same-mount and immutable-snapshot attestation defects revised in v3 |
+| Codex inline r3 | MAJOR | Rollback/runtime/root/base/closure defects revised in v4 |
 
-**Overall result:** FAIL — draft remains blocked pending public push and fresh adversarial review of v3. Provider unavailability is not consensus.
+**Overall result:** FAIL — draft remains blocked pending public push and fresh adversarial review of v4. Provider unavailability is not consensus.
 
 ---
 
