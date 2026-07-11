@@ -125,6 +125,9 @@ def _string(mapping: Mapping[str, Any], field: str, label: str) -> str:
 
 
 def _validate_legacy_row(mapping: Mapping[str, Any], label: str) -> str:
+    for field in ("raw_source_status", "ingestion_enabled"):
+        if field in mapping:
+            raise RegistryValidationError(f"{label}.{field} is invalid for a legacy registry")
     short_name = _string(mapping, "short_name", label)
     _string(mapping, "repo", label)
     visibility = _string(mapping, "visibility", label)
@@ -133,8 +136,12 @@ def _validate_legacy_row(mapping: Mapping[str, Any], label: str) -> str:
     roots = mapping.get("raw_roots")
     if visibility != "PRIVATE" or posture != "client-private" or status not in _STATUSES:
         raise RegistryValidationError(f"{label} has invalid historical posture/state")
-    if not isinstance(roots, list) or any(not isinstance(root, str) or not root for root in roots):
-        raise RegistryValidationError(f"{label}.raw_roots must be a string sequence")
+    if (
+        not isinstance(roots, list)
+        or not roots
+        or any(not isinstance(root, str) or not root for root in roots)
+    ):
+        raise RegistryValidationError(f"{label}.raw_roots must be a non-empty string sequence")
     return short_name
 
 
@@ -271,7 +278,15 @@ def load_registry(path: str | os.PathLike[str]) -> Registry:
         text = source.read_text(encoding="utf-8")
     except (OSError, UnicodeError) as exc:
         raise RegistryParseError(f"cannot read registry: {source}") from exc
-    return parse_registry(text, source=str(source))
+    registry = parse_registry(text, source=str(source))
+    if registry.kind is RegistryKind.CURRENT:
+        template = Path(__file__).absolute().parents[2]
+        for entry in registry.entries:
+            validate_root_disjointness(
+                entry,
+                (str(template), str(template.parent / f"llm-wiki-{entry.short_name}")),
+            )
+    return registry
 
 
 def classify_entry(entry: WikiEntry) -> BootstrapMode:

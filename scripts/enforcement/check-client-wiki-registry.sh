@@ -126,7 +126,7 @@ GH_PATH=""
 PUBLIC_WIKI_PATTERN='/llm-wiki(/|$)'
 
 check_live_repo() {
-  local short="$1" repo="$2" status="$3" json identity visibility archived
+  local short="$1" repo="$2" status="$3" json identity visibility archived archived_tag
   if [[ "$status" != "bootstrapped" && "$status" != "live" ]]; then
     return 0
   fi
@@ -143,7 +143,8 @@ check_live_repo() {
   fi
   if ! identity="$(printf '%s' "$json" | "$YQ_PATH" -r '.nameWithOwner' - 2>/dev/null)" \
     || ! visibility="$(printf '%s' "$json" | "$YQ_PATH" -r '.visibility' - 2>/dev/null)" \
-    || ! archived="$(printf '%s' "$json" | "$YQ_PATH" -r '.isArchived' - 2>/dev/null)"; then
+    || ! archived="$(printf '%s' "$json" | "$YQ_PATH" -r '.isArchived' - 2>/dev/null)" \
+    || ! archived_tag="$(printf '%s' "$json" | "$YQ_PATH" -r '.isArchived | tag' - 2>/dev/null)"; then
     echo >&2 "FAIL: yq could not parse the live repository response"
     return 2
   fi
@@ -154,7 +155,7 @@ check_live_repo() {
     echo >&2 "FAIL: $short posture=client-private but visibility=$visibility"
     return 1
   fi
-  if [[ "$archived" != "false" ]]; then
+  if [[ "$archived_tag" != "!!bool" || "$archived" != "false" ]]; then
     echo >&2 "FAIL: $short status=$status but repo is archived or malformed"
     return 1
   fi

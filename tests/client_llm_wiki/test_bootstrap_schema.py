@@ -15,6 +15,7 @@ from client_llm_wiki.bootstrap_schema import (
     RegistryParseError,
     RegistryValidationError,
     get_entry,
+    load_registry,
     parse_registry,
     validate_root_disjointness,
 )
@@ -183,6 +184,36 @@ def test_legacy_numeric_version_is_audit_only():
     assert registry.warnings
     with pytest.raises(RegistryOperationError):
         get_entry(registry, "example-co")
+
+
+def test_legacy_numeric_version_rejects_empty_raw_roots():
+    legacy_entry = {
+        "short_name": "example-co",
+        "repo": "example-org/llm-wiki-example-co",
+        "visibility": "PRIVATE",
+        "posture": "client-private",
+        "status": "planned",
+        "raw_roots": [],
+    }
+
+    with pytest.raises(RegistryValidationError, match="raw_roots"):
+        parse_registry(yaml.safe_dump({"registry_version": 0.1, "wikis": [legacy_entry]}))
+
+
+@pytest.mark.parametrize("field", ["raw_source_status", "ingestion_enabled"])
+def test_legacy_numeric_version_rejects_current_state_fields(field):
+    legacy_entry = {
+        "short_name": "example-co",
+        "repo": "example-org/llm-wiki-example-co",
+        "visibility": "PRIVATE",
+        "posture": "client-private",
+        "status": "planned",
+        "raw_roots": ["/authorized/legacy-source/"],
+        field: "not-mounted" if field == "raw_source_status" else False,
+    }
+
+    with pytest.raises(RegistryValidationError, match=field):
+        parse_registry(yaml.safe_dump({"registry_version": 0.1, "wikis": [legacy_entry]}))
 
 
 @pytest.mark.parametrize(
@@ -367,6 +398,28 @@ def test_lexical_prefix_neighbor_is_not_an_overlap():
     ).entries[0]
 
     validate_root_disjointness(entry, ["/workspace/privately"])
+
+
+@pytest.mark.parametrize(
+    "protected",
+    [
+        "/module/workspace-hub",
+        "/module/llm-wiki-example-co",
+    ],
+)
+def test_validate_registry_rejects_each_module_anchored_protected_root(tmp_path, monkeypatch, protected):
+    module = tmp_path / "module" / "workspace-hub" / "scripts" / "client_llm_wiki"
+    module.mkdir(parents=True)
+    monkeypatch.setattr(bootstrap_schema, "__file__", str(module / "bootstrap_schema.py"))
+    registry = tmp_path / "registry.yml"
+    root = protected.replace("/module", str(tmp_path / "module"), 1)
+    registry.write_text(
+        _registry([_entry(raw_roots=[root], raw_source_status="mounted")]),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(RegistryValidationError, match="protected"):
+        load_registry(registry)
 
 
 def test_get_entry_fails_for_missing_identity():

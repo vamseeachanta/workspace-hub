@@ -241,7 +241,7 @@ def test_legacy_registry_warns_and_planned_row_avoids_gh(tmp_path):
         "visibility": "PRIVATE",
         "posture": "client-private",
         "status": "planned",
-        "raw_roots": [],
+        "raw_roots": ["/unmounted/legacy-source/"],
     }
     registry = _write_registry(tmp_path, entries=[legacy], version=0.1)
 
@@ -336,6 +336,34 @@ def test_live_row_missing_gh_is_dependency_exit_two(tmp_path):
     assert result.returncode == 2
 
 
+@pytest.mark.parametrize("archived", ["false", 0, None])
+def test_live_row_rejects_non_boolean_archived_state(tmp_path, archived):
+    registry = _write_registry(tmp_path, entries=[_entry(status="live")])
+    gh, _log, payload_file = _fake_gh(tmp_path)
+    payload_file.write_text(
+        json.dumps(
+            {
+                "nameWithOwner": REPO_SLUG,
+                "visibility": "PRIVATE",
+                "isArchived": archived,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = _run_checker(
+        tmp_path,
+        registry,
+        gh_bin=gh,
+        extra_env={
+            "FAKE_GH_LOG": str(tmp_path / "gh.calls"),
+            "FAKE_GH_PAYLOAD": str(payload_file),
+        },
+    )
+
+    assert result.returncode == 1
+
+
 @pytest.mark.parametrize(
     "origin",
     [
@@ -376,6 +404,20 @@ def test_clone_under_absent_parent_warns_and_skips(tmp_path):
 
     assert result.returncode == 0
     assert "WARN" in result.stderr
+
+
+def test_protected_overlap_fails_before_raw_root_availability_skip(tmp_path):
+    root = REPO_ROOT / "absent-protected-parent" / "raw"
+    registry = _write_registry(
+        tmp_path,
+        entries=[_entry(raw_roots=[str(root)], raw_source_status="mounted")],
+    )
+
+    result = _run_checker(tmp_path, registry)
+
+    assert result.returncode == 1
+    assert "overlaps protected" in result.stderr
+    assert "skipping availability" not in result.stderr
 
 
 def test_checker_is_tracked_executable_and_directly_invocable(tmp_path):
