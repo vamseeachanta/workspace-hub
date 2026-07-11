@@ -163,7 +163,7 @@ A tested schema-`0.2` metadata-only bootstrap will install a path-neutral scaffo
 
 The private/local registry remains authoritative. Schema version is the exact YAML string `registry_version: "0.2"`. A non-empty authoritative registry will require `wikis` as a sequence and will reject `relocated: true`; the public stub remains exactly an empty, relocated, audit-only document. Each `0.2` entry will require `short_name`, `repo`, `visibility`, `posture`, `status`, `raw_roots`, `raw_source_status`, and boolean `ingestion_enabled`. Optional historical fields remain allowed, but they confer no permission.
 
-`short_name` will be a lowercase hyphenated slug. `repo` will be exactly two GitHub-safe path components whose basename is `llm-wiki-<short_name>`. `visibility` will be exact `PRIVATE`, `posture` exact `client-private`, and `status` one of `planned`, `bootstrapped`, `live`, or `retired`; rendering will require `planned`. These constraints make the registered repo slug—not a caller path—the naming authority.
+`short_name` will be a lowercase hyphenated slug. `repo` will be exactly `owner/llm-wiki-<short_name>`; the owner will be 1–39 ASCII alphanumeric/hyphen characters with no leading, trailing, or doubled hyphen. `visibility` will be exact `PRIVATE`, `posture` exact `client-private`, and `status` one of `planned`, `bootstrapped`, `live`, or `retired`; rendering will require `planned`. These constraints make the registered repo slug—not a caller path—the naming authority.
 
 `ingestion_enabled` means raw-source ingestion only; it does not prohibit owner notes, authorized public research, or metadata authoring. `raw_source_status: not-mounted` means no authorized raw root is registered; transient host availability is checked separately.
 
@@ -186,9 +186,9 @@ This is the load-bearing fail-closed rule: schema `0.2` has no enabled-ingestion
 
 For non-empty `raw_roots`, validation will reject non-strings, relative paths, dot-segment/non-normalized spellings, duplicates, and overlap with the public workspace/template or derived checkout. The private registry entry is the authorization record; no nonexistent `raw_root_bases` field will be invented. Schema/classification/render will never stat, resolve, enumerate, or open a raw root. The checker will add the separate host-aware audit: when a root's immediate parent directory exists, the root must be an existing non-symlink directory; when that parent is absent on the host, the checker will emit a warning and skip availability without granting ingestion.
 
-The template worktree will be anchored from the installed module path, never the caller's current directory. The canonical workspace checkout owner will be derived with `git rev-parse --path-format=absolute --git-common-dir`; the command must resolve to a `.git` directory whose parent is the canonical workspace checkout. The checkout parent will be that canonical checkout's parent, and the target clone will be `checkout_parent / registered_repo_basename`. This remains stable when #3449 runs from a linked `/tmp` worktree and introduces no destination argument or environment override. Both the active template worktree and canonical checkout will be protected from overlap. `local_working_clone` is intentionally absent on planned rows and will continue to be recorded only after bootstrap. Before rendering, the target must already be a non-symlink Git working tree created by the factory: its toplevel must equal the derived target, its normalized `origin` must match one of the registered repo's exact HTTPS/SSH forms, its HEAD must be unborn, its porcelain status must be empty, and its only top-level entry must be a real `.git` directory.
+The template worktree will be anchored from the installed module path, never the caller's current directory. Every Git subprocess will discard ambient `GIT_*` authority and disable global/system configuration. The canonical workspace checkout owner will be derived with `git rev-parse --path-format=absolute --git-common-dir`; the command must resolve to a real non-symlink `.git` directory whose parent is the canonical workspace checkout. The checkout parent will be that canonical checkout's parent, and the target clone will be `checkout_parent / registered_repo_basename`. This remains stable when #3449 runs from a linked `/tmp` worktree and introduces no destination argument or environment override. Both the active template worktree and canonical checkout will be protected from overlap. `local_working_clone` is intentionally absent on planned rows and will continue to be recorded only after bootstrap. Before rendering, the target must already be a non-symlink Git working tree created by the factory: its toplevel must equal the derived target; its single effective fetch and push origins must each match one of the registered repo's exact HTTPS/SSH forms; its HEAD must be a valid symbolic unborn branch; its porcelain status must be empty; and its only top-level entry must be a real `.git` directory. Live verification will query `github.com/<registered-slug>` for `nameWithOwner,visibility,isArchived` and require exact identity, `PRIVATE`, and unarchived state.
 
-The renderer will hold an `O_DIRECTORY|O_NOFOLLOW` descriptor for that verified clone and compare `fstat` device/inode to the path's `lstat` before and after installation. It will create adjacent mode-`0700` staging with an exclusive standard-library temporary-directory primitive, immediately bind it by descriptor/device/inode, and manually materialize validated archive members through staging directory descriptors—never `extractall()`. All target traversal and file creation will likewise be relative to held directory descriptors; directories use exclusive `mkdir`, and regular files use `O_CREAT|O_EXCL|O_NOFOLLOW`. A created-artifact ledger will record relative path, type, device, and inode. Failure cleanup will walk only that ledger in reverse through held descriptors, remove an artifact only when its type/device/inode still match, and will never contain the clone root or `.git`; staging cleanup will require its original device/inode. The renderer is Linux-only, matching the existing factory's mount/layout prerequisites. If required descriptor/no-follow primitives are unavailable, render will fail closed before writing.
+The renderer will hold `O_DIRECTORY|O_NOFOLLOW` descriptors for that verified clone and its `.git` directory, comparing their device/inode identities to named entries before and after installation. It will create adjacent mode-`0700` staging with an exclusive standard-library temporary-directory primitive, immediately bind it by descriptor/device/inode, and manually materialize validated archive members through staging directory descriptors—never `extractall()`. All target traversal and file creation will likewise be relative to held directory descriptors; directories use exclusive `mkdir`, and regular files use `O_CREAT|O_EXCL|O_NOFOLLOW`. A created-artifact ledger will record relative path, type, device, and inode immediately after each new object is descriptor-bound, before write or mode normalization. Failure cleanup will walk only that ledger in reverse through held descriptors, remove an artifact only when its type/device/inode still match, and will never contain the clone root or `.git`; staging cleanup will require its original device/inode. Final Git/origin validation will run while the ledger and descriptors remain live, so a rejected post-render state can still trigger bounded cleanup. The renderer is Linux-only, matching the existing factory's mount/layout prerequisites. If required descriptor/no-follow primitives are unavailable, render will fail closed before writing.
 
 The path-substitution guarantee begins only after each newly created directory has been successfully opened and descriptor-bound. Python's `mkdirat`-equivalent does not return a descriptor, so a same-UID process could replace a real directory during the microscopic `mkdir` → no-follow `open` interval; this residual risk is accepted for the Python-native implementation and will not be obscured by an FFI or `renameat2` claim. Deterministic race tests will inject substitutions only at post-bind failpoints. Cleanup is bounded and non-destructive, not residue-free: moved, replaced, identity-mismatched, or unexpectedly nonempty ledger entries will be left untouched rather than deleted by pathname.
 
@@ -224,8 +224,8 @@ function authorize_render(registry_path, short_name):
     derive canonical workspace checkout from absolute git common-dir owner
     derive destination from canonical_workspace.parent + registered repo basename
     reject destination overlap with raw roots, template worktree, or canonical checkout
-    verify live repository is PRIVATE and not archived
-    require destination is a clean, unborn Git clone with matching origin and only .git
+    verify exact github.com repository identity is PRIVATE and not archived
+    require destination is a clean, symbolic-unborn Git clone with matching effective fetch/push origins and only .git
     return immutable render inputs and verified clone identity
 
 function render(registry_path, short_name):
@@ -238,7 +238,7 @@ function render(registry_path, short_name):
     preserve PROJECT_SHORT_NAME; validate firewall and final manifest
     open verified clone with O_DIRECTORY + O_NOFOLLOW and recheck device/inode
     install validated directories/files through held dir_fds with exclusive creates
-    record each created relative path/type/device/inode; never record .git or root
+    record each created relative path/type/device/inode before write/chmod; never record .git or root
     on failure, remove only still-matching recorded artifacts through held dir_fds
     recheck clone identity, origin, firewall, and .git before success
     return manifest with pinned template SHA, clone identity, and created paths
@@ -246,7 +246,7 @@ function render(registry_path, short_name):
 
 CLI subcommands will be `validate-registry`, `classify`, `render`, and `verify-private-repo`. There will be no raw-read or check-only ingestion command in schema `0.2`.
 
-The shell checker will first use existing `yq` logic to detect the empty public relocation stub. Only a non-empty provisioned registry will invoke:
+The shell checker will create a mode-`0600` immutable-per-run registry snapshot, then use that same snapshot for both `yq` inspection and Python validation. It will first use `yq` logic to detect the empty public relocation stub. Only a non-empty provisioned registry will invoke:
 
 ```bash
 PYTHONPATH="$REPO_ROOT/scripts" \
@@ -293,9 +293,9 @@ Each Python implementation file will remain below 400 lines and each function be
 | enabled-state matrix test | every `ingestion_enabled: true` row exits non-zero regardless of other fields |
 | legacy audit-vs-operation test | schema-`0.1` row warns in audit and cannot render |
 | planned/private render authorization tests | wrong status/posture/declared visibility fail |
-| live PRIVATE verifier tests | fake `gh` PRIVATE/unarchived passes; public/archived/error fails |
+| live PRIVATE verifier tests | exact `github.com/<slug>` + `nameWithOwner` + PRIVATE/unarchived passes; wrong identity/public/archived/error fails |
 | destination derivation/disjointness tests | main checkout and linked worktree both derive the common-dir owner's parent + validated repo basename; cwd changes do not matter; no caller destination/invented base; raw/template/workspace overlap fails |
-| clone precondition tests | missing/symlink/non-Git/non-unborn/dirty clone, extra top-level entry, or mismatched origin fails before template writes |
+| clone precondition tests | missing/symlink/non-Git/non-symbolic-unborn/dirty clone, extra top-level entry, mismatched effective fetch/push origin, or ambient Git override fails before template writes |
 | pinned Git snapshot tests | dirty/untracked template files never render; output records exact commit |
 | archive-member tests | link, traversal, FIFO/socket, and synthetic device modes fail |
 | fd-anchored no-overwrite tests | rename/substitution races injected after each directory is descriptor-bound cannot redirect writes; exclusive creates leave victim sentinels and `.git` unchanged |
@@ -305,7 +305,7 @@ Each Python implementation file will remain below 400 lines and each function be
 | firewall/ledger tests | privacy dotfiles survive; structural example with `source_path: null` remains structure-valid |
 | raw sentinel test | raw sentinel path, inode, hash, and output inventory remain unchanged |
 | checker executable-mode test | Git index records `100755` and fresh-checkout direct invocation works |
-| checker dependency tests | public stub skips without `uv`/`gh`; non-empty registry missing `uv`/module exits `2` |
+| checker dependency/snapshot tests | public stub skips without `uv`/`gh`; non-empty registry missing `uv`/module or late `yq` failure exits `2`; source replacement after snapshot cannot change the audited state |
 | checker planned/live tests | planned audit avoids `gh`; render and bootstrapped/live operations use fake `gh` and temp clone |
 | checker firewall/visibility/root tests | existing privacy gates remain; availability performs at most root/parent metadata checks and never opens or enumerates root contents |
 | empty-clone end-to-end test | temp committed workspace template + temp unborn clone + matching fake origin render successfully through the CLI; output stays a Git worktree |
@@ -330,7 +330,7 @@ Generated fixtures will use generic identifiers and temporary paths. Tests will 
 
 ## Acceptance Criteria
 
-- [ ] `uv run --frozen pytest tests/client_llm_wiki/test_bootstrap_schema.py tests/client_llm_wiki/test_bootstrap_renderer.py tests/client_llm_wiki/test_bootstrap_contract.py tests/client_llm_wiki/test_promotion_ledger.py tests/enforcement/test_client_wiki_registry.py -q` passes.
+- [ ] `uv run --frozen pytest tests/client_llm_wiki/test_bootstrap_schema.py tests/client_llm_wiki/test_bootstrap_renderer.py tests/client_llm_wiki/test_bootstrap_contract.py tests/client_llm_wiki/test_bootstrap_contract_security.py tests/client_llm_wiki/test_bootstrap_artifacts.py tests/client_llm_wiki/test_promotion_ledger.py tests/enforcement/test_client_wiki_registry.py tests/enforcement/test_client_wiki_registry_security.py tests/enforcement/test_check_wiki_sibling_frontmatter.py -q` passes.
 - [ ] Every schema-`0.2` `ingestion_enabled: true` fixture fails validation; no raw-read/check CLI exists.
 - [ ] Metadata-only render succeeds without a raw bucket inside a verified empty matching Git clone; source-registered-disabled render also remains path-neutral and never touches a raw root.
 - [ ] Renderer verifies actual PRIVATE/unarchived state before installing files; factory reruns verifier before first push.
@@ -362,7 +362,7 @@ Generated fixtures will use generic identifiers and temporary paths. Tests will 
 | r2 Gemini | UNAVAILABLE | No non-interactive authentication |
 | r3 main-session resolution | RESOLVED | Uses real registry fields, verified empty clone, fd-anchored exclusive install, and ledger-bounded cleanup |
 
-**Overall result:** PASS for user review. Claude r1 and native Codex r2 supplied independent adversarial signal. Every MAJOR is resolved in the plan; the required r3 inline loop-break pattern was used instead of redispatching a third review cycle. Claude/Gemini r2 unavailability remains explicit. Implementation is still blocked on user approval.
+**Overall result:** PASS and user-approved. Claude r1 and native Codex r2 supplied independent adversarial signal. Every MAJOR is resolved in the plan; the required r3 inline loop-break pattern was used instead of redispatching a third review cycle. Claude/Gemini r2 unavailability remains explicit. Implementation proceeds under the recorded approval marker and the 2026-07-11 Python-native boundary decision.
 
 Revisions after r1:
 

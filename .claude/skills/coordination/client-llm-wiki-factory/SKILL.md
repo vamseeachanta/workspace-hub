@@ -1,266 +1,189 @@
 ---
 name: client-llm-wiki-factory
-description: Operator checklist for instantiating a new per-client private llm-wiki
-  repo under workspace-hub [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746)
-  + [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4 (amended)
-  naming convention `llm-wiki-<client>`.
-version: 1.0.0
+description: Bootstrap a registered private client wiki from the committed generic template.
+version: 2.0.0
 category: coordination
 tags:
 - client-wiki
 - factory
-- instantiation
 - privacy-firewall
-- llm-wiki
-- governance
+- metadata-only
 ---
 
-# Client LLM-Wiki Factory — Operator Checklist
+# Client LLM-Wiki Factory
 
 ## Use when
-- You need to instantiate a new private per-client llm-wiki under the canonical `vamseeachanta/llm-wiki-<short_name>` naming convention.
-- The target client appears in `config/client-wikis.yml` with `status: planned` and you have approval to bootstrap.
-- You are setting up the privacy firewall layer (`.gitignore` + per-client `.claude/CLAUDE.md`) for a brand-new client repo.
 
-## Do not use when
-- A `vamseeachanta/llm-wiki-<short_name>` repo already exists with `status: bootstrapped` or `status: live` in the registry — this is a one-time bootstrap; ongoing operations live in `coordination/llm-wiki-roadmap-integration` and the per-client repo's `DATA-CYCLE.md`.
-- You are adding a new entry to `config/client-wikis.yml` (registry edit only) — no factory work is needed until status flips to `planned` and is approved for bootstrap.
-- You are renaming or relocating an existing client wiki — out of scope; route to a dedicated migration plan.
+- An approved issue authorizes one new private client-wiki bootstrap.
+- The authoritative private registry has an exact schema-`0.2` row with
+  `status: planned`, `visibility: PRIVATE`, `posture: client-private`, and
+  `ingestion_enabled: false`.
+- The row is either metadata-only or source-registered-disabled.
 
-## Prerequisites
-- Workspace-hub checked out at `/mnt/local-analysis/workspace-hub` (or `$WORKSPACE_HUB` env var).
-- Templates present under `workspace-hub/templates/client-llm-wiki/` (T1 deliverable from [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746)).
-- Registry present at `config/client-wikis.yml` (T2 deliverable from [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746)).
-- Checker present at `scripts/enforcement/check-client-wiki-registry.sh` (T3/T4 deliverable from [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746)).
-- `gh` CLI authenticated and authorized to create private repos under `vamseeachanta`.
-- Target client's raw-source bucket present under `/mnt/ace/<bucket>/` per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D3 (raw-root canonical).
+Do not use this factory for an existing bootstrapped/live wiki, a migration, raw
+ingestion enablement, project setup, or client-specific content. The public
+relocated registry stub never grants bootstrap authority.
 
-## Template placeholders
-
-The template tree contains four placeholders. The operator MUST set all four shell variables before running step 6. Substitution is single-pass via `find ... -exec sed -i`; verification uses a `grep` that must return 0 hits.
-
-| Placeholder | Substitute for `mkt-a` | Notes |
-|---|---|---|
-| `<CLIENT_SHORT_NAME>` | `mkt-a` | Lowercase, hyphenated short-name; matches repo-name suffix in `llm-wiki-<short_name>`. |
-| `<CLIENT_SHORT_NAME_UPPER>` | `mkt-a` | Uppercase variant; used as ledger source-ID prefix (e.g., `mkt-a-SOURCE-0001`) in `ledgers/promotion-ledger.example.yml`. |
-| `<CLIENT_PRIVATE_REPO>` | `vamseeachanta/llm-wiki-mkt-a` | Full GH `org/repo` slug; used in `DATA-CYCLE.md` and any cross-link prose. |
-| `<CLIENT_RAW_ROOT>` | `mkt-a` | Bucket name under `/mnt/ace/`. Often differs from `<short_name>` — see edge cases below. |
-
-### Per-client invocations (5 remaining wikis)
-
-Examples for the other planned clients in `config/client-wikis.yml`. Note the bucket-name edge cases per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D5 (`client-c` is underscore-separated, not hyphen) and [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D6 (`client-a` is one word, no hyphen).
-
-| `<short_name>` | `<CLIENT_RAW_ROOT>` | `<CLIENT_PRIVATE_REPO>` |
-|---|---|---|
-| `client-b` | `client-b` | `vamseeachanta/llm-wiki-client-b` |
-| `client-c` | `client-c` (underscore per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D5) | `vamseeachanta/llm-wiki-client-c` |
-| `lng-a` | `lng-a` | `vamseeachanta/llm-wiki-lng-a` |
-| `client-a` | `client-a` (no hyphen per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D6) | `vamseeachanta/llm-wiki-client-a` |
-| `client-d` | `client-d` | `vamseeachanta/llm-wiki-client-d` |
-
-## Step 0 + 13-step checklist
-
-Run these in order. Step 0 sets the shell variables referenced throughout; steps 9 and 12 are commit steps and use the **pathspec form** per `feedback_multi_agent_commit_serialization` to avoid sweeping parallel-session staged changes.
-
-### 0. Set variables
-
-Set these once at the start — referenced throughout the checklist. `RAW` differs from `$SHORT` for `mkt-a` (`mkt-a`) and `client-c` (`client-c`, underscore per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D5); see Step 2 + per-client table above for edge cases.
+## Required environment
 
 ```bash
-# Set these once at the start — referenced throughout the checklist.
-SHORT="mkt-a"                                    # lowercase short_name (replace with your client)
-UPPER=$(echo "$SHORT" | tr '[:lower:]' '[:upper:]')   # e.g., mkt-a
-PRIV="vamseeachanta/llm-wiki-$SHORT"            # full GH slug
-RAW="mkt-a"                             # bucket name under /mnt/ace/ — see Step 2 for edge cases (D5/D6)
+set -euo pipefail
+while IFS='=' read -r name _; do
+  [[ "$name" == GIT_* ]] && unset "$name"
+done < <(env)
+export GIT_CONFIG_NOSYSTEM=1
+export GIT_CONFIG_GLOBAL=/dev/null
+WORKSPACE_HUB="$(git rev-parse --show-toplevel)"
+REGISTRY="${WIKI_SIBLING_REGISTRY_PATH:?set the authoritative private registry path}"
+SHORT="${CLIENT_WIKI_SHORT_NAME:?set the approved registry short_name}"
+export PYTHONPATH="$WORKSPACE_HUB/scripts${PYTHONPATH:+:$PYTHONPATH}"
 ```
 
-### 1. Pre-flight: confirm registry entry
+The registry path must point to the owning private repository or its approved
+provisioned copy. Raw-root availability is not a bootstrap prerequisite, and no
+raw path is accepted as a command-line argument.
+
+## Bootstrap sequence
+
+Run the steps in this order. Stop on every failed command.
+
+### 1. Validate and classify registered state
 
 ```bash
-grep -A6 "short_name: $SHORT" config/client-wikis.yml
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract validate-registry --registry "$REGISTRY"
+PREFLIGHT="$(uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract classify --registry "$REGISTRY" --short-name "$SHORT")"
+REPO="$(yq -r '.repo' <<<"$PREFLIGHT")"
+TARGET="$(yq -r '.target' <<<"$PREFLIGHT")"
+MODE="$(yq -r '.mode' <<<"$PREFLIGHT")"
+STATUS="$(yq -r '.status' <<<"$PREFLIGHT")"
+test "$STATUS" = "planned"
+printf 'mode=%s status=%s repo=%s target=%s\n' "$MODE" "$STATUS" "$REPO" "$TARGET"
 ```
 
-Confirm the target client appears with `status: planned`. If `status: bootstrapped` or `status: live`, STOP — this is a one-time bootstrap; the wiki already exists.
+`classify` is the single target-derivation authority. Do not reconstruct the
+checkout path in shell, pass a destination override, or edit the public stub.
 
-### 2. Confirm raw-source bucket exists
+### 2. Create the remote as private
 
 ```bash
-ls -ld /mnt/ace/$RAW/
+gh repo create "$REPO" --private --description "Private client knowledge wiki"
 ```
 
-Per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D3 (raw-root canonical) the bucket must exist on `/mnt/ace/` before instantiation; the new private wiki's `DATA-CYCLE.md` will reference it. If missing, route to the raw-source onboarding step first.
-
-### 3. Create the private GitHub repo
+Immediately attest the live state:
 
 ```bash
-gh repo create "$PRIV" \
-  --private \
-  --description "Private client llm-wiki for $SHORT"
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract verify-private-repo --repo "$REPO"
 ```
 
-Private is mandatory — these wikis carry client-derived material and MUST NOT be public.
-
-### 4. Clone to local working tree
+### 3. Clone the registered repository into the derived target
 
 ```bash
-git clone "https://github.com/$PRIV.git" \
-  /mnt/local-analysis/llm-wiki-$SHORT/
+git clone "https://github.com/$REPO.git" "$TARGET"
 ```
 
-Use `/mnt/local-analysis/` as the working-clone root (per the established workspace layout — distinct from `/mnt/ace/` raw-source bucket).
+The remote must be empty, so the clone has an unborn HEAD, an empty worktree,
+the registered origin, and only a real `.git` directory at top level. The
+renderer will reject any mismatch before writing.
 
-### 5. Copy the template tree — `cp -a SRC/. DEST/` form
+### 4. Render the pinned committed template
+
+Capture `.git` identity before rendering, then invoke the contract with only
+the authoritative registry and short name:
 
 ```bash
-cp -a /mnt/local-analysis/workspace-hub/templates/client-llm-wiki/. \
-      /mnt/local-analysis/llm-wiki-$SHORT/
+GIT_ID_BEFORE="$(stat -Lc '%d:%i' "$TARGET/.git")"
+MANIFEST_TMP="$(mktemp)"
+trap 'rm -f "$MANIFEST_TMP"' EXIT
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract render --registry "$REGISTRY" --short-name "$SHORT" | tee "$MANIFEST_TMP"
+TEMPLATE_COMMIT="$(yq -r '.template_commit' "$MANIFEST_TMP")"
+test "$GIT_ID_BEFORE" = "$(stat -Lc '%d:%i' "$TARGET/.git")"
 ```
 
-**Critical**: use the trailing-dot form (`SRC/.`), NOT `SRC/*`. Plain `cp -r SRC/* DEST/` SKIPS dotfiles, omitting `.gitignore` and `.claude/CLAUDE.md` from the new repo — a **privacy-firewall failure**. The `-a` flag also preserves attributes and is recursive.
+The renderer reads `templates/client-llm-wiki` from the pinned workspace Git
+object, ignores dirty/untracked template files, preserves
+`<PROJECT_SHORT_NAME>`, and refuses unknown client placeholders.
 
-The template tree as of #2778 includes the project-folder skeleton at `templates/client-llm-wiki/projects/_template-project/` (`README.md` + `raw/` + `extracted/` + `methodology/` + `results/`). Step 5b below instantiates per-project copies of this skeleton.
-
-### 5b. Instantiate per-project folders (per #2778)
-
-For each project currently active under this client, copy the `_template-project/` skeleton into a project-named folder and substitute the project placeholder:
+### 5. Verify the rendered privacy boundary
 
 ```bash
-# Per-project loop — repeat for each PROJECT in this client's roster:
-PROJECT="proj-a"   # example project slug; substitute per actual engagement
-
-cp -a /mnt/local-analysis/workspace-hub/templates/client-llm-wiki/projects/_template-project/. \
-      /mnt/local-analysis/llm-wiki-$SHORT/projects/$PROJECT/
-
-# Substitute project placeholder in the new project tree:
-find /mnt/local-analysis/llm-wiki-$SHORT/projects/$PROJECT -type f -exec sed -i \
-  -e "s|<PROJECT_SHORT_NAME>|$PROJECT|g" \
-  {} +
-
-# Verify no placeholder remains:
-grep -rE '<PROJECT_SHORT_NAME>' /mnt/local-analysis/llm-wiki-$SHORT/projects/$PROJECT \
-  && { echo "ABORT: PROJECT_SHORT_NAME placeholder not substituted"; exit 1; } \
-  || true
+test -f "$TARGET/.gitignore"
+test -f "$TARGET/.claude/CLAUDE.md"
+test -s "$MANIFEST_TMP"
+if rg --hidden -n '<CLIENT_[A-Z0-9_]+>|<RAW_SOURCE_STATUS>|<INGESTION_ENABLED>' "$TARGET" --glob '!.git/**'; then
+  echo >&2 "ABORT: unresolved bootstrap placeholder"
+  exit 1
+fi
 ```
 
-After instantiating, **add the project slug to the client's `projects:` list in `config/client-wikis.yml`** (workspace-hub) so the `check-wiki-sibling-frontmatter.py` enforcement script's Rule E recognizes the project as registered. If the `projects:` list is absent, Rule E degrades to warn-only (forward-compatible), but explicit listing is strongly recommended.
+No project folders or client-specific rules are added in this initial commit.
+The structural ledger example deliberately keeps `source_path: null`.
 
-### 6. Substitute all 4 placeholders
-
-Variables `SHORT` / `UPPER` / `PRIV` / `RAW` were set in Step 0 — re-shown here for context. Run the multi-expression sed:
+### 6. Re-attest PRIVATE state before first push
 
 ```bash
-# Already set in Step 0 — re-shown here for context:
-#   SHORT="mkt-a"
-#   UPPER="mkt-a"
-#   PRIV="vamseeachanta/llm-wiki-$SHORT"
-#   RAW="mkt-a"
-
-find /mnt/local-analysis/llm-wiki-$SHORT -type f -exec sed -i \
-  -e "s|<CLIENT_SHORT_NAME>|$SHORT|g" \
-  -e "s|<CLIENT_SHORT_NAME_UPPER>|$UPPER|g" \
-  -e "s|<CLIENT_PRIVATE_REPO>|$PRIV|g" \
-  -e "s|<CLIENT_RAW_ROOT>|$RAW|g" \
-  {} +
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract verify-private-repo --repo "$REPO"
 ```
 
-**Verify**: every placeholder must be substituted; this grep MUST return 0 hits:
+### 7. Commit and push the scaffold
 
 ```bash
-grep -rE '<CLIENT_(SHORT_NAME|SHORT_NAME_UPPER|PRIVATE_REPO|RAW_ROOT)>' \
-  /mnt/local-analysis/llm-wiki-$SHORT
+git -C "$TARGET" add --all
+git -C "$TARGET" commit -m "feat: bootstrap private client knowledge wiki" --signoff
+git -C "$TARGET" push origin HEAD:main
+SCAFFOLD_SHA="$(git -C "$TARGET" rev-parse HEAD)"
 ```
 
-If any hits remain, the substitution failed — re-run with the missing variable populated.
+This is the first commit in a verified empty repository. Confirm the pushed
+remote remains private before updating registry lifecycle state.
 
-### 7. Optional: customize `REDACTION-POSTURE.md`
+### 8. Update the authoritative private registry
 
-Open `/mnt/local-analysis/llm-wiki-$SHORT/REDACTION-POSTURE.md`. The template ships with 6 default redaction rules; add client-specific rules only if the client has a known PII / confidentiality pattern beyond the defaults (e.g., a specific project codename, a named vessel, a named field). The defaults stand if no customization is needed.
-
-### 8. Verify dotfile firewall — ABORT gate
-
-This is the defense against a silent `cp` failure in step 5. Both files MUST exist; if either is missing, the privacy firewall is broken — STOP, do not commit, re-run step 5 with the trailing-dot form.
-
-```bash
-[[ -f /mnt/local-analysis/llm-wiki-$SHORT/.gitignore \
-   && -f /mnt/local-analysis/llm-wiki-$SHORT/.claude/CLAUDE.md ]] \
-  || { echo "ABORT: privacy-firewall dotfiles missing"; exit 1; }
-```
-
-### 9. Initial commit + push in the new client wiki
-
-```bash
-cd /mnt/local-analysis/llm-wiki-$SHORT
-git add .
-git commit -m "feat: bootstrap private client llm-wiki for $SHORT" --signoff
-git push origin main
-```
-
-Pathspec form (`-- <file>`) is not used here because this is the FIRST commit in a fresh repo with no parallel-agent activity — `git add .` over a clean tree is safe. Pathspec form IS used in step 12 (workspace-hub) where parallel agents are active.
-
-Capture the commit SHA — it goes in the closing-comment payload (step 13).
-
-### 10. Switch back to workspace-hub
-
-```bash
-cd /mnt/local-analysis/workspace-hub    # or: cd $WORKSPACE_HUB
-```
-
-### 11. Edit the registry — flip status and record instantiation
-
-Edit `config/client-wikis.yml` and update the target entry:
+Only after the scaffold push succeeds, update the same authoritative row:
 
 - `status: planned` → `status: bootstrapped`
-- add `instantiated_at: YYYY-MM-DD` (today's date)
-- add `local_working_clone: /mnt/local-analysis/llm-wiki-<short_name>/`
+- add the approved bootstrap date
+- add `local_working_clone` with the exact derived `$TARGET`
+- retain `ingestion_enabled: false`
+- retain the classified raw-source state unchanged
 
-### 12. Commit + push the registry edit (pathspec form)
+Commit and push that single registry path in its owning private repository with
+pathspec form. Refresh any provisioned local copy only after the authoritative
+commit succeeds.
 
-```bash
-git commit -m "chore(client-wiki-factory): mark <short_name> bootstrapped" \
-  -- config/client-wikis.yml
-git push
-```
-
-Pathspec form per `feedback_multi_agent_commit_serialization` — workspace-hub has frequent parallel-agent activity, and bare `git commit` would sweep any unrelated staged files from concurrent sessions.
-
-### 13. Run the registry checker + post closeout comment
+### 9. Audit and report evidence
 
 ```bash
-scripts/enforcement/check-client-wiki-registry.sh
+REGISTRY_PATH="$REGISTRY" "$WORKSPACE_HUB/scripts/enforcement/check-client-wiki-registry.sh"
 ```
 
-Must exit 0. If it fails, fix the registry entry and re-commit before declaring complete.
+First verify that the implementation issue itself is private. Only a verified
+private issue may receive the private repository URL, `$SCAFFOLD_SHA`, registry
+commit, or private path evidence. A public issue receives only a redacted
+attestation: bootstrap succeeded, PRIVATE/unarchived checks passed, the checker
+passed, and raw ingestion remains disabled. Never paste registry rows or client
+identity-bearing repository slugs into a public issue.
 
-Then post a comment on the parent client-wiki tracking issue (or [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) if no per-client child issue exists) containing:
+## Post-bootstrap work
 
-- New private repo URL: `https://github.com/vamseeachanta/llm-wiki-<short_name>`
-- Scaffold commit SHA from step 9
-- Diff of the registry entry from step 12 (one-paragraph summary or `git show -- config/client-wikis.yml`)
+Treat project-folder instantiation and redaction customization as separately
+reviewed work after the generic scaffold is committed and the registry status
+is bootstrapped. Those operations must preserve the privacy firewall and must
+not create, copy, enumerate, or ingest raw-source content without a separately
+approved private integration contract.
 
-## Pitfalls (record verified hazards)
+## Abort conditions
 
-- **`cp -r SRC/*` skips dotfiles** — silently omits `.gitignore` and `.claude/CLAUDE.md`. Always use `cp -a SRC/.`. Step 8 is the catch.
-- **Missing placeholder substitution** — if a variable is unset, sed substitutes nothing and leaves `<CLIENT_…>` in the file. The step-6 verify-grep is the catch; do not skip it.
-- **Public repo creation** — `gh repo create` defaults vary by org. Always pass `--private` explicitly.
-- **Bucket-name drift** — `<CLIENT_RAW_ROOT>` is NOT always equal to `<CLIENT_SHORT_NAME>`. See per-client table above; [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D5 (`client-c`, underscore) and D6 (`client-a`, no hyphen) are the documented edge cases.
-- **Cross-repo commit semantics** — steps 9 and 12 commit to DIFFERENT repositories (new client wiki vs workspace-hub). The `cd` in step 10 is load-bearing; without it, step 12 commits to the wrong repo.
-- **Parallel-agent sweep on workspace-hub commit** — step 12 uses pathspec form for this reason. If you forget, you may sweep an unrelated agent's staged work into the registry commit.
-
-## Verification summary
-
-A successful run produces:
-
-- one new private GitHub repo `vamseeachanta/llm-wiki-<short_name>`
-- one initial commit in that new repo (scaffold + 4-placeholder substitution + dotfile firewall)
-- one commit in workspace-hub touching only `config/client-wikis.yml` (status flip)
-- registry checker exits 0
-- one closeout comment on the tracking issue with repo URL, SHA, and registry diff
+- Registry validation/classification fails or identifies a non-planned row.
+- Live repository is public, archived, missing, or does not match the row.
+- Derived target already exists outside the expected empty clone lifecycle.
+- Clone origin, HEAD, status, top-level inventory, `.git`, or firewall differs.
+- Renderer manifest is absent or a bootstrap placeholder remains.
+- Either private-state attestation fails.
+- Any step would enable ingestion or expose private registry data publicly.
 
 ## References
 
-- Plan: `docs/plans/2026-05-20-issue-2746-llm-wiki-mkt-a.md`
-- Naming convention: workspace-hub [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4 (amended); raw-root canonical D3; bucket-name edge cases D5, D6
-- Privacy firewall pattern: `feedback_per_repo_metadata_is_firewall`
-- Commit serialization: `feedback_multi_agent_commit_serialization`
-- Sibling skill (post-bootstrap operations): `coordination/llm-wiki-roadmap-integration`
-- Sibling skill (legal scan before push): `coordination/legal-sanity-scan`
+- [Issue #3449](https://github.com/vamseeachanta/workspace-hub/issues/3449)
+- `scripts/client_llm_wiki/bootstrap_contract.py`
+- `scripts/enforcement/check-client-wiki-registry.sh`
+- `.claude/rules/wiki-sibling-routing.md`

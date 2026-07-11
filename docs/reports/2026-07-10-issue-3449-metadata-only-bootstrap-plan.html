@@ -376,11 +376,11 @@
         <div>
           <ul>
             <li>Split Python schema and CLI modules will recognize only metadata-only and source-registered-disabled states.</li>
-            <li>A bounded renderer will use a pinned Git template snapshot and install only into the factory-created clean, unborn clone with a matching origin.</li>
+            <li>A bounded renderer will use a pinned Git template snapshot and install only into the factory-created clean, symbolic-unborn clone whose effective fetch and push origins both match.</li>
             <li>Git common-directory derivation will produce the same canonical sibling target from the main checkout or a linked worktree.</li>
-            <li>After each directory is descriptor-bound, no-follow descriptors, exclusive creates, and an inode-bound created-artifact ledger will preserve <code>.git</code> and unrelated paths.</li>
+            <li>After each directory is descriptor-bound, no-follow descriptors, exclusive creates, and an inode-bound ledger recorded before write/chmod will preserve <code>.git</code> and unrelated paths.</li>
             <li>The same-UID <code>mkdir</code> → <code>open</code> interval remains an explicit residual risk; cleanup is bounded and non-destructive, not residue-free.</li>
-            <li>The shell checker will consume the contract while retaining private visibility, clone, and firewall checks.</li>
+            <li>The shell checker will validate and audit one mode-0600 registry snapshot, ignore ambient Git authority, and retain exact identity, visibility, effective-origin, clone, and firewall checks.</li>
             <li>Generated pytest fixtures will replace static fixtures tied to live repository and clone state.</li>
           </ul>
         </div>
@@ -412,7 +412,7 @@
         </div>
         <div>
           <h3>No privacy regression</h3>
-          <p class="small">Actual PRIVATE/unarchived state is verified before render and before first push; the matching clone, <code>.git</code>, and both privacy-firewall dotfiles remain abort gates.</p>
+          <p class="small">Exact <code>github.com</code> identity plus PRIVATE/unarchived state is verified before render and before first push; the matching fetch/push destinations, held <code>.git</code>, and both privacy-firewall dotfiles remain abort gates.</p>
         </div>
         <div>
           <h3>No false-green tests</h3>
