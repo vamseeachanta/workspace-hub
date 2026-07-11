@@ -161,12 +161,18 @@ def catalog_commands(
     machine_id: str | None = None,
 ) -> list[str]:
     if registry is None or machine_id is None:
-        return ct.catalog_command_keys(catalog.get("tasks", []) or [])
+        return ct.catalog_command_keys(
+            catalog.get("tasks", []) or [], include_fingerprinted=False
+        )
     selection = _selection_context(catalog, registry, machine_id)
     return _combine_keys(
-        ct.catalog_command_keys(selection["selected_raw"]),
-        ct.catalog_command_keys(selection["selected"]),
+        ct.catalog_command_keys(selection["selected_raw"], include_fingerprinted=False),
+        ct.catalog_command_keys(selection["selected"], include_fingerprinted=False),
     )
+
+
+def catalog_fingerprints(tasks: list[dict]) -> list[dict]:
+    return ct.catalog_owned_fingerprints(tasks)
 
 
 def external_fingerprints(state_classes: dict) -> list[dict]:
@@ -194,9 +200,10 @@ def run_cutover(machine_id: str, apply: bool, ts: str,
         return {"status": "skip", "reason": f"{canonical_id} has no harness_profile.roles or machine-pinned cron tasks"}
 
     cat_cmds = _combine_keys(
-        ct.catalog_command_keys(selection["selected_raw"]),
-        ct.catalog_command_keys(selected),
+        ct.catalog_command_keys(selection["selected_raw"], include_fingerprinted=False),
+        ct.catalog_command_keys(selected, include_fingerprinted=False),
     )
+    cat_fps = catalog_fingerprints(selection["selected_raw"])
     ext_fps = external_fingerprints(classes)
 
     A = _read()
@@ -207,6 +214,7 @@ def run_cutover(machine_id: str, apply: bool, ts: str,
         cat_cmds,
         ext_fps,
         selected_task_ids=selected_ids,
+        catalog_fingerprints=cat_fps,
     )
     if plan.get("abort_reason"):
         return {"status": "abort", "reason": plan["abort_reason"],
@@ -251,6 +259,7 @@ def run_cutover(machine_id: str, apply: bool, ts: str,
                        cat_cmds,
                        ext_fps,
                        selected_task_ids=selected_ids,
+                       catalog_fingerprints=cat_fps,
                    )["class"] in ("preserved_external", "ignore"))
     for line, n in need.items():
         if after_counts[line] < n:

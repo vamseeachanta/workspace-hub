@@ -178,6 +178,75 @@ def test_repo_sync_on_all_linux(tasks):
     assert "dev-secondary" in machines
 
 
+def test_repository_sync_runtime_contract_is_bounded_and_singleton(tasks):
+    task = next(t for t in tasks if t["id"] == "repository-sync")
+    runtime = task["runtime"]
+    assert runtime == {
+        "singleton": True,
+        "max_seconds": 10800,
+        "state_dir": ".claude/state/cron-runtime/repository-sync",
+        "filesystem_wait_wchans": ["request_wait_answer"],
+    }
+    assert task["installed_fingerprint"] == {
+        "command_contains": "scripts/cron-repository-sync.sh",
+        "cwd_basename": "workspace-hub",
+    }
+
+
+def test_hermes_bridge_has_explicit_installed_fingerprint(tasks):
+    task = next(t for t in tasks if t["id"] == "hermes-claude-bridge")
+    assert task["installed_fingerprint"] == {
+        "command_contains": "scripts/memory/bridge-hermes-claude.sh",
+        "cwd_basename": "workspace-hub",
+    }
+
+
+@pytest.mark.parametrize("max_seconds", [59, 604801, 0, "10800"])
+def test_runtime_max_seconds_must_be_integer_in_fixed_range(max_seconds):
+    validator = _load_module("validate_schedule_runtime", VALIDATOR)
+    errors = validator.validate_runtime_contract(
+        "task-a",
+        {
+            "singleton": True,
+            "max_seconds": max_seconds,
+            "state_dir": ".claude/state/cron-runtime/task-a",
+        },
+        set(),
+    )
+    assert any("max_seconds" in error for error in errors)
+
+
+@pytest.mark.parametrize("state_dir", ["/tmp/state", "../state", ".state/../escape"])
+def test_runtime_state_dir_rejects_absolute_and_traversal(state_dir):
+    validator = _load_module("validate_schedule_runtime_path", VALIDATOR)
+    errors = validator.validate_runtime_contract(
+        "task-a",
+        {"singleton": True, "max_seconds": 60, "state_dir": state_dir},
+        set(),
+    )
+    assert any("state_dir" in error for error in errors)
+
+
+@pytest.mark.parametrize(
+    "log_path",
+    [
+        "logs/bad path.log", "../logs/x.log", "/tmp/x.log", "logs/{a,b}.log",
+        "logs/foo?.log", "logs/foo;bar.log", "logs/foo$(date).log",
+    ],
+)
+def test_log_path_rejects_shell_splitting_and_unsafe_globs(log_path):
+    validator = _load_module("validate_schedule_log_path", VALIDATOR)
+
+    assert validator.validate_log_path("task-a", log_path)
+
+
+@pytest.mark.parametrize("log_path", ["logs/research/*.log", "~/.deckhand/alarm.log"])
+def test_log_path_accepts_controlled_workspace_and_home_patterns(log_path):
+    validator = _load_module("validate_schedule_valid_log_path", VALIDATOR)
+
+    assert validator.validate_log_path("task-a", log_path) == []
+
+
 def test_repo_ecosystem_hygiene_task_contract(tasks):
     task = next((t for t in tasks if t["id"] == "repo-ecosystem-hygiene"), None)
     assert task is not None, "repo-ecosystem-hygiene task not found"
@@ -281,7 +350,8 @@ def test_setup_cron_dry_run_expands_workspace_hub_and_log(tmp_path):
     assert "$WORKSPACE_HUB" not in result.stdout
     assert "$LOG" not in result.stdout
     assert str(REPO_ROOT) in result.stdout
-    assert "/tmp/workspace-hub-cron.log" in result.stdout
+    assert "scripts/cron-repository-sync.sh" in result.stdout
+    assert "/tmp/workspace-hub-cron.log" not in result.stdout
 
 
 def test_setup_cron_renderer_failure_aborts_before_crontab_write(tmp_path):

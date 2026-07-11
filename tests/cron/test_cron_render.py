@@ -74,6 +74,31 @@ def test_render_task_keeps_current_ace_linux_1_bridge_schedule_values(monkeypatc
 
     assert provider["schedule"] == "5 4 * * *"
     assert hermes["schedule"] == "25 4 * * *"
+    assert "bridge-hermes-claude.sh --commit" in hermes["line"]
+
+
+def test_repository_sync_render_uses_wrapper_owned_log_contract(monkeypatch):
+    monkeypatch.setenv("WORKSPACE_HUB", str(REPO))
+    render = _load_renderer()
+    catalog = yaml.safe_load(SCHEDULE_PATH.read_text(encoding="utf-8"))
+    registry = yaml.safe_load(REGISTRY_PATH.read_text(encoding="utf-8"))
+    task = next(item for item in catalog["tasks"] if item["id"] == "repository-sync")
+    context = render.build_context("ace-linux-1", registry=registry)
+
+    rendered = render.render_task(task, context)
+
+    assert task["log"] == "logs/repository-sync-*.log"
+    assert "scripts/cron-repository-sync.sh" in rendered["line"]
+    assert "$LOG" not in rendered["line"]
+    assert "logs/quality/cron-wrapper.log" not in rendered["line"]
+
+
+def test_repository_sync_wrapper_delegates_mutation_through_runtime():
+    wrapper = (REPO / "scripts" / "cron-repository-sync.sh").read_text(encoding="utf-8")
+    assert "cron_runtime.py" in wrapper
+    assert "run" in wrapper
+    assert '"$WORKSPACE_ROOT/scripts/repository_sync"' in wrapper
+    assert '\n"$WORKSPACE_ROOT/scripts/repository_sync" >>' not in wrapper
 
 
 def test_render_task_cross_machine_preview_uses_requested_machine_schedule(monkeypatch):

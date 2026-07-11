@@ -28,19 +28,46 @@
 | 04:00 Mon | skills-curation | Weekly skills curation v2: duplicate names, leaf collisions, wrapper pairs, and filesystem-only active skill loss-risk inventory (local-only JSON + Markdown artifacts) | `logs/maintenance/skills-curation-*.log` |
 | 04:30 Mon | weekly-hermes-parity-review | Hermes cross-machine parity review | `logs/weekly-parity/cron-*.log` |
 | 04:30 daily | notification-purge | Delete notification JSONL > 7 days | — |
+| 04:25 daily | hermes-claude-bridge | Hermes → Claude repo-memory bridge; staggered on ace-linux-1 and invoked as `bridge-hermes-claude.sh --commit` | `logs/orchestrator/memory-bridge/hermes-claude-*.log` |
 | 05:00 daily | claude-memory-backup | rsync memory to dev-secondary | `/tmp/claude-memory-backup.log` |
 | 05:35 daily | repo-ecosystem-hygiene | Read-only repo ecosystem hygiene audit; writes ignored local Markdown/JSON state | `logs/quality/repo-ecosystem-hygiene-*.log` |
 | 05:45 daily | cron-health | Scheduled-task log freshness/error scan | `logs/quality/cron-health-*.log` |
 | 05:57 daily | email-queue-attention-notify | PII-safe email attention route notification writer | `logs/email/queue-attention-notify-*.log` |
 | 06:00 daily | daily-today | Daily productivity summary | `logs/daily/cron.log` |
-| */4h | repository-sync | Pull/push all repos | `.claude/state/learning-reports/cron.log` |
+| */4h | repository-sync | Pull/push all repos through the singleton runtime wrapper | `logs/repository-sync-*.log` |
 
 ## Task Schedule (ace-linux-2 / dev-secondary — contribute variant)
 
 | Time | ID | Description | Log |
 |------|-----|-------------|-----|
 | 01:45 daily | harness-update | AI harness tools update (GStack, Hermes, Superpowers, GSD) | `logs/maintenance/harness-update-*.log` |
-| */4h | repository-sync | Pull/push all repos | `.claude/state/learning-reports/cron.log` |
+| */4h | repository-sync | Pull/push all repos through the singleton runtime wrapper | `logs/repository-sync-*.log` |
+
+## Runtime Health Contract
+
+Tasks may opt in through a `runtime:` mapping in
+`config/scheduled-tasks/schedule-tasks.yaml`. `repository-sync` is the first
+enforced singleton and uses a 10,800-second budget, which is below its four-hour
+cadence. Its local state lives under
+`.claude/state/cron-runtime/repository-sync/`.
+
+Cron health keeps log and runtime evidence independent. Runtime status values
+are:
+
+- `never_started` — no lifecycle evidence exists;
+- `active_within_budget` — the recorded child identity is live and within its budget;
+- `completed_success` — the latest completed invocation exits zero;
+- `completed_failure` — the latest completed invocation exits nonzero or by signal;
+- `overlap` — a second invocation encounters the singleton owner;
+- `filesystem_wait` — the recorded child reports process state `D` or an explicitly configured wait channel;
+- `excessive_runtime` — the live child exceeds `max_seconds`;
+- `stale_or_reused_pid` — the recorded child is absent or its start token differs;
+- `orphan_contention`, `invalid_state`, and `unknown` — evidence is inconsistent or inspection cannot complete safely.
+
+The runner stores `active.json`, `contention.json`, and `last-result.json`
+separately so contention cannot overwrite owner or completion evidence. It
+records the mutating child PID/PGID rather than treating the waiting supervisor
+as the workload.
 
 ## Task Schedule (licensed-win-1 / licensed-win-2 - Windows Task Scheduler)
 
@@ -108,6 +135,9 @@ bash scripts/cron/setup-cron.sh --dry-run
 
 # Install/update crontab
 bash scripts/cron/setup-cron.sh
+
+# Preview fail-closed transactional reconciliation
+uv run --script scripts/cron/cron_apply.py --machine ace-linux-1 --json
 
 # Check current crontab
 crontab -l

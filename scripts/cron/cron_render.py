@@ -163,8 +163,8 @@ def _ensure_log_dir(command: str, log: Any) -> str:
 
 def render_task(task: dict[str, Any], context: dict[str, Any]) -> dict[str, Any]:
     schedule = effective_schedule(task, context)
-    command = expand_command(task.get("command", ""), context)
-    command = _ensure_log_dir(command, task.get("log"))
+    command = _ensure_log_dir(task.get("command", ""), task.get("log"))
+    command = expand_command(command, context)
     rendered = dict(task)
     rendered["schedule"] = schedule
     rendered["command"] = command

@@ -144,14 +144,14 @@ def load_catalog_commands(
     tasks = data.get("tasks", []) or []
     ct = load_cron_transaction()
     if machine_id is None:
-        return ct.catalog_command_keys(tasks)
+        return ct.catalog_command_keys(tasks, include_fingerprinted=False)
 
     registry_file = registry_path or (REPO_ROOT / "config" / "workstations" / "registry.yaml")
     registry = yaml.safe_load(registry_file.read_text(encoding="utf-8")) if registry_file.exists() else {}
     selected = _selected_for_machine(data, registry or {}, machine_id)
     return _combine_keys(
-        ct.catalog_command_keys(selected["selected_raw"]),
-        ct.catalog_command_keys(selected["selected"]),
+        ct.catalog_command_keys(selected["selected_raw"], include_fingerprinted=False),
+        ct.catalog_command_keys(selected["selected"], include_fingerprinted=False),
     )
 
 
@@ -213,6 +213,7 @@ def audit_crontab(
     external_fingerprints: list[dict],
     classify_line,
     selected_task_ids: set[str] | None = None,
+    catalog_fingerprints: list[dict] | None = None,
 ) -> dict:
     """Classify every line; return a structured result."""
     results: list[dict] = []
@@ -229,6 +230,7 @@ def audit_crontab(
                 catalog_commands,
                 external_fingerprints,
                 selected_task_ids=selected_task_ids,
+                catalog_fingerprints=catalog_fingerprints,
             )
             if isinstance(detail, str):
                 detail = {"line": line, "class": detail}
@@ -262,14 +264,15 @@ def build_audit_context(machine_id: str | None = None) -> dict:
     selected = _selected_for_machine(catalog or {}, registry or {}, target_machine)
     ct = load_cron_transaction()
     catalog_commands = _combine_keys(
-        ct.catalog_command_keys(selected["selected_raw"]),
-        ct.catalog_command_keys(selected["selected"]),
+        ct.catalog_command_keys(selected["selected_raw"], include_fingerprinted=False),
+        ct.catalog_command_keys(selected["selected"], include_fingerprinted=False),
     )
     selected_task_ids = selected["selected_task_ids"]
     machine = selected["context"]["machine_id"]
     return {
         "machine": machine,
         "catalog_commands": catalog_commands,
+        "catalog_fingerprints": ct.catalog_owned_fingerprints(selected["selected_raw"]),
         "external_fingerprints": load_external_fingerprints(),
         "selected_task_ids": selected_task_ids,
     }
@@ -336,6 +339,7 @@ def main(argv: list[str] | None = None) -> int:
         context["external_fingerprints"],
         ct.classify_line_detail,
         selected_task_ids=context["selected_task_ids"],
+        catalog_fingerprints=context.get("catalog_fingerprints", []),
     )
 
     if args.json:

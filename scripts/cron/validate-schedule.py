@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Validate schedule-tasks.yaml — parse, check required fields, cron expressions."""
 
+import re
 import sys
 from pathlib import Path
 
@@ -13,6 +14,8 @@ ROLES_FILE = REPO_ROOT / "config" / "workstations" / "harness-roles.yaml"
 
 REQUIRED_FIELDS = {"id", "label", "schedule", "machines", "command", "description"}
 VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
+MIN_RUNTIME_SECONDS = 60
+MAX_RUNTIME_SECONDS = 604_800
 
 
 def _load_valid_machines() -> set[str]:
@@ -74,6 +77,46 @@ def _load_valid_roles() -> set[str]:
 VALID_ROLES = _load_valid_roles()
 
 
+def validate_log_path(tid: str, value: object) -> list[str]:
+    """Require a repo-relative glob that shell iteration cannot split."""
+    if value is None:
+        return []
+    if not isinstance(value, str):
+        return [f"{tid}: log must be a string or null"]
+    path = Path(value)
+    controlled = re.fullmatch(r"(?:logs/|~/|\.claude/state/)[A-Za-z0-9_./*-]+", value)
+    if not controlled or path.is_absolute() or ".." in path.parts:
+        return [f"{tid}: log must be a controlled logs/, .claude/state/, or ~/ glob using only '*' wildcards"]
+    return []
+
+
+def validate_runtime_contract(tid: str, runtime: object, state_dirs: set[str]) -> list[str]:
+    """Validate the optional bounded runtime-health contract."""
+    if runtime is None:
+        return []
+    if not isinstance(runtime, dict):
+        return [f"{tid}: runtime must be a mapping"]
+    errors: list[str] = []
+    singleton = runtime.get("singleton")
+    maximum = runtime.get("max_seconds")
+    state_dir = runtime.get("state_dir")
+    if not isinstance(singleton, bool):
+        errors.append(f"{tid}: runtime.singleton must be boolean")
+    if not isinstance(maximum, int) or isinstance(maximum, bool) or not MIN_RUNTIME_SECONDS <= maximum <= MAX_RUNTIME_SECONDS:
+        errors.append(f"{tid}: runtime.max_seconds must be an integer from 60 to 604800")
+    path = Path(state_dir) if isinstance(state_dir, str) else None
+    if not path or path.is_absolute() or ".." in path.parts or not path.parts:
+        errors.append(f"{tid}: runtime.state_dir must be controlled and repo-relative")
+    elif state_dir in state_dirs:
+        errors.append(f"{tid}: duplicate runtime.state_dir '{state_dir}'")
+    else:
+        state_dirs.add(state_dir)
+    channels = runtime.get("filesystem_wait_wchans", [])
+    if not isinstance(channels, list) or any(not isinstance(item, str) or not item.replace("_", "").isalnum() for item in channels):
+        errors.append(f"{tid}: runtime.filesystem_wait_wchans contains an invalid token")
+    return errors
+
+
 def validate_cron_field(value: str) -> bool:
     """Check that a cron field has valid structure (not full semantic validation)."""
     parts = value.split(",")
@@ -126,6 +169,7 @@ def main() -> int:
     tasks = data["tasks"]
     errors = []
     ids_seen = set()
+    state_dirs: set[str] = set()
 
     for i, task in enumerate(tasks):
         tid = task.get("id", f"<index-{i}>")
@@ -161,6 +205,11 @@ def main() -> int:
 
         if not task.get("command", "").strip():
             errors.append(f"{tid}: empty command")
+
+        if scheduler != "cron" and task.get("runtime") is not None:
+            errors.append(f"{tid}: runtime metadata is supported only for cron tasks")
+        errors.extend(validate_runtime_contract(tid, task.get("runtime"), state_dirs))
+        errors.extend(validate_log_path(tid, task.get("log")))
 
         # Check if command invokes claude CLI (not just .claude/ paths)
         import re
