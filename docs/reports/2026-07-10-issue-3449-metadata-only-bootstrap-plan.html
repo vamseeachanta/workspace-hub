@@ -258,8 +258,8 @@
         <h1>Bootstrap the wiki before the raw corpus exists.</h1>
         <p class="lede">
           The reusable factory will gain a metadata-only mode that creates a private,
-          path-neutral scaffold from explicit schema 0.2 registry state. Governed raw reads
-          will remain blocked until lifecycle, privacy, root, host, and exact-source checks pass.
+          path-neutral scaffold from explicit schema 0.2 registry state. Every enabled raw-ingestion
+          state will remain invalid until private reader coverage is separately planned and verified.
         </p>
         <div class="meta">
           <span class="pill">Client: N/A</span>
@@ -270,10 +270,10 @@
       </div>
       <aside class="gate-card">
         <div class="label">Current gate</div>
-        <strong>Draft · review in progress</strong>
+        <strong>R1 MAJOR · revision in r2</strong>
         <p>
-          Implementation is blocked. The issue can move to plan review only after
-          adversarial provider results are persisted with no unresolved MAJOR finding.
+          Implementation is blocked. R1 removed an over-broad raw-read boundary from scope;
+          the revised plan now awaits fresh Claude + native Codex review.
         </p>
         <a href="https://github.com/vamseeachanta/workspace-hub/issues/3449">Open issue #3449</a>
       </aside>
@@ -296,7 +296,7 @@
         <article class="card deny">
           <div class="label">Raw ingestion</div>
           <h3>Fail closed by default</h3>
-          <p>Enablement first requires verified private reader-integration evidence; governed file consumers then receive only an exact descriptor-contained stream.</p>
+          <p>Schema 0.2 rejects every <code>ingestion_enabled: true</code> row. Enablement belongs to a later private reader-integration contract.</p>
         </article>
       </div>
     </section>
@@ -330,18 +330,18 @@
             <td>Bootstrap yes · ingest no</td>
           </tr>
           <tr>
-            <td>Source enabled</td>
+            <td>Any enabled state</td>
             <td>Non-empty</td>
             <td><code>mounted</code></td>
             <td><code>true</code></td>
-            <td>Denied until private reader integration is verified</td>
+            <td>Invalid in schema 0.2</td>
           </tr>
           <tr>
             <td>Legacy / inconsistent</td>
             <td>Any</td>
             <td>Missing or mismatched</td>
             <td>Missing or mismatched</td>
-            <td>Schema 0.1 audit warning · bootstrap/read denial</td>
+            <td>Schema 0.1 audit warning · render denied</td>
           </tr>
         </tbody>
       </table>
@@ -353,8 +353,8 @@
       <div class="two-col">
         <div>
           <ul>
-            <li>A small Linux/Python contract will classify schema 0.2 entries and yield an already-open, descriptor-contained raw-source stream.</li>
-            <li>A bounded renderer will use a pinned Git template snapshot, derive a protected-tree-disjoint destination, preserve dotfiles, and install atomically without replacement.</li>
+            <li>Split Python schema and CLI modules will recognize only metadata-only and source-registered-disabled states.</li>
+            <li>A bounded renderer will use a pinned Git template snapshot, derive a protected-tree-disjoint destination, preserve dotfiles, never overwrite, and clean only its own partial output.</li>
             <li>The shell checker will consume the contract while retaining private visibility, clone, and firewall checks.</li>
             <li>Generated pytest fixtures will replace static fixtures tied to live repository and clone state.</li>
           </ul>
@@ -364,7 +364,7 @@
     +-- contract + CLI
     |      +-- classify
     |      +-- render
-    |      `-- openat2 guarded stream
+    |      `-- reject enabled ingestion
     |
     +-- registry checker
     +-- path-neutral template
@@ -404,13 +404,13 @@
       <div class="label">Adversarial review</div>
       <h2>Provider gate</h2>
       <div class="review-row">
-        <strong>Claude</strong><span class="pending">PENDING</span><span class="small">Independent plan defect review</span>
+        <strong>Claude</strong><span class="pending">MAJOR r1</span><span class="small">FFI scope, module sizing, dependency contract; revision applied</span>
       </div>
       <div class="review-row">
-        <strong>Codex</strong><span class="pending">PENDING</span><span class="small">Implementation-feasibility and threat review</span>
+        <strong>Codex</strong><span class="pending">UNAVAILABLE r1</span><span class="small">CLI timed out; native r2 review pending</span>
       </div>
       <div class="review-row">
-        <strong>Gemini</strong><span class="pending">PENDING</span><span class="small">Architecture and scope review</span>
+        <strong>Gemini</strong><span class="pending">UNAVAILABLE</span><span class="small">No non-interactive authentication</span>
       </div>
       <p class="small" style="margin-top: 18px;">
         After no-MAJOR convergence, the issue will stop at the user approval gate.
