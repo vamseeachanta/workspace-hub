@@ -22846,3 +22846,15 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3462
+    title: Fix Windows plan-review fanout argument overflow and auth diagnostics
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3462
+    gh_state: open
+    gh_labels:
+      - bug
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

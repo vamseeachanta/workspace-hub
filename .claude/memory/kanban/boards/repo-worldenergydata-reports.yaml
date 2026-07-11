@@ -1468,12 +1468,12 @@ cards:
     title: 'feat(field-planes): roll per-well timelines from Big Foot to all rich LT fields'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/948
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
+      - status:plan-approved
       - domain:reports
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
