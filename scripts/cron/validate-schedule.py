@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Validate schedule-tasks.yaml — parse, check required fields, cron expressions."""
 
+import re
 import sys
 from pathlib import Path
 
@@ -83,9 +84,9 @@ def validate_log_path(tid: str, value: object) -> list[str]:
     if not isinstance(value, str):
         return [f"{tid}: log must be a string or null"]
     path = Path(value)
-    unsafe = any(char.isspace() or char in "{}[]" for char in value)
-    if not value or path.is_absolute() or ".." in path.parts or unsafe:
-        return [f"{tid}: log must be a controlled repo-relative glob without whitespace or brace/class expansion"]
+    controlled = re.fullmatch(r"(?:logs/|~/|\.claude/state/)[A-Za-z0-9_./*-]+", value)
+    if not controlled or path.is_absolute() or ".." in path.parts:
+        return [f"{tid}: log must be a controlled logs/, .claude/state/, or ~/ glob using only '*' wildcards"]
     return []
 
 

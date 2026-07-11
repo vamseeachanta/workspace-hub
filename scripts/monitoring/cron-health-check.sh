@@ -168,8 +168,8 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler _i
 
     TOTAL_TASKS=$((TOTAL_TASKS + 1))
 
-    # ── Resolve log path (may be a glob) ────────────────────────────────────
     local_log_pattern="${WS_HUB}/${log_pattern}"
+    [[ "${log_pattern:0:2}" == \~/ ]] && local_log_pattern="${HOME}/${log_pattern#~/}"
     # Find the most recent matching file
     NEWEST_LOG=""
     NEWEST_MTIME=0

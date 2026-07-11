@@ -39,6 +39,7 @@ _SCRIPT_PATH_RE = re.compile(r"scripts/[\w./-]+\.(?:sh|py)")
 _FINGERPRINT_KEYS = {
     "command_contains",
     "cwd_contains",
+    "cwd_basename",
     "script_basename",
     "owner_repo",
 }
@@ -165,6 +166,13 @@ def match_fingerprint(line: str, fp: dict) -> bool:
     if "cwd_contains" in fp:
         checked_any = True
         if fp["cwd_contains"] not in line:
+            return False
+    if "cwd_basename" in fp:
+        checked_any = True
+        match = re.search(r"(?:^|\s)cd\s+([^;&\s]+)", line)
+        token = match.group(1).strip("'\"") if match else ""
+        expected = fp["cwd_basename"]
+        if token not in ("$WORKSPACE_HUB", "${WORKSPACE_HUB}") and Path(token).name != expected:
             return False
     if "script_basename" in fp:
         checked_any = True

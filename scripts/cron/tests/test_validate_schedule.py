@@ -189,7 +189,7 @@ def test_repository_sync_runtime_contract_is_bounded_and_singleton(tasks):
     }
     assert task["installed_fingerprint"] == {
         "command_contains": "scripts/cron-repository-sync.sh",
-        "cwd_contains": "workspace-hub",
+        "cwd_basename": "workspace-hub",
     }
 
 
@@ -197,7 +197,7 @@ def test_hermes_bridge_has_explicit_installed_fingerprint(tasks):
     task = next(t for t in tasks if t["id"] == "hermes-claude-bridge")
     assert task["installed_fingerprint"] == {
         "command_contains": "scripts/memory/bridge-hermes-claude.sh",
-        "cwd_contains": "workspace-hub",
+        "cwd_basename": "workspace-hub",
     }
 
 
@@ -227,11 +227,24 @@ def test_runtime_state_dir_rejects_absolute_and_traversal(state_dir):
     assert any("state_dir" in error for error in errors)
 
 
-@pytest.mark.parametrize("log_path", ["logs/bad path.log", "../logs/x.log", "/tmp/x.log", "logs/{a,b}.log"])
+@pytest.mark.parametrize(
+    "log_path",
+    [
+        "logs/bad path.log", "../logs/x.log", "/tmp/x.log", "logs/{a,b}.log",
+        "logs/foo?.log", "logs/foo;bar.log", "logs/foo$(date).log",
+    ],
+)
 def test_log_path_rejects_shell_splitting_and_unsafe_globs(log_path):
     validator = _load_module("validate_schedule_log_path", VALIDATOR)
 
     assert validator.validate_log_path("task-a", log_path)
+
+
+@pytest.mark.parametrize("log_path", ["logs/research/*.log", "~/.deckhand/alarm.log"])
+def test_log_path_accepts_controlled_workspace_and_home_patterns(log_path):
+    validator = _load_module("validate_schedule_valid_log_path", VALIDATOR)
+
+    assert validator.validate_log_path("task-a", log_path) == []
 
 
 def test_repo_ecosystem_hygiene_task_contract(tasks):

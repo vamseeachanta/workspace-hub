@@ -178,6 +178,21 @@ def test_catalog_fingerprint_requires_all_fields_not_bare_script_substring():
     assert external_detail["class"] == "uncataloged"
 
 
+def test_catalog_cwd_regex_does_not_claim_similar_repo_name():
+    fingerprint = [{
+        "catalog_task_id": "repository-sync",
+        "fingerprint": {
+            "command_contains": "scripts/cron-repository-sync.sh",
+            "cwd_basename": "workspace-hub",
+        },
+    }]
+    owned = "0 * * * * cd /srv/workspace-hub && bash scripts/cron-repository-sync.sh"
+    unrelated = "0 * * * * cd /tmp/not-workspace-hub && bash scripts/cron-repository-sync.sh"
+
+    assert ct.classify_line_detail(owned, [], [], catalog_fingerprints=fingerprint)["class"] == "cataloged"
+    assert ct.classify_line_detail(unrelated, [], [], catalog_fingerprints=fingerprint)["class"] == "uncataloged"
+
+
 def test_plan_cutover_drops_only_explicitly_owned_stale_duplicate():
     fingerprint = [{
         "catalog_task_id": "hermes-claude-bridge",
