@@ -22517,8 +22517,9 @@ cards:
       - priority:high
       - cat:data-pipeline
       - domain:audit-trail
+      - status:plan-approved
       - type:follow-up
-      - status:needs-plan
+      - gate:completeness
       - lane:claude
     initial_status: triage
     priority: 1
@@ -22534,8 +22535,9 @@ cards:
       - priority:high
       - cat:data-pipeline
       - domain:audit-trail
+      - status:plan-approved
       - type:follow-up
-      - status:needs-plan
+      - gate:completeness
       - lane:claude
     initial_status: triage
     priority: 1
@@ -22551,8 +22553,9 @@ cards:
       - priority:high
       - cat:data-pipeline
       - domain:audit-trail
+      - status:plan-approved
       - type:follow-up
-      - status:needs-plan
+      - gate:completeness
       - lane:claude
     initial_status: triage
     priority: 1
@@ -22568,8 +22571,9 @@ cards:
       - priority:high
       - cat:data-pipeline
       - domain:audit-trail
+      - status:plan-approved
       - type:follow-up
-      - status:needs-plan
+      - gate:completeness
       - lane:claude
     initial_status: triage
     priority: 1
@@ -22585,8 +22589,9 @@ cards:
       - priority:high
       - cat:data-pipeline
       - domain:audit-trail
+      - status:plan-approved
       - type:follow-up
-      - status:needs-plan
+      - gate:completeness
       - lane:claude
     initial_status: triage
     priority: 1
@@ -22870,7 +22875,7 @@ cards:
       - priority:high
       - cat:operations
       - domain:infrastructure
-      - status:plan-approved
+      - status:done
       - gate:completeness
       - status:completeness-verified
       - lane:claude
