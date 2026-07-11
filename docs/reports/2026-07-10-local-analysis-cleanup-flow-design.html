@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local-analysis cleanup flow — approved design</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17212b;
+      --muted: #5c6b78;
+      --paper: #f6f2e9;
+      --panel: #fffdf8;
+      --line: #d8d0c2;
+      --public: #176b87;
+      --private: #7a3e65;
+      --local: #7a5a12;
+      --ok: #236b3a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main { width: min(1080px, calc(100% - 40px)); margin: 0 auto; padding: 56px 0 80px; }
+    header { border-bottom: 3px solid var(--ink); padding-bottom: 24px; margin-bottom: 32px; }
+    h1, h2, h3 { line-height: 1.15; }
+    h1 { max-width: 850px; margin: 0 0 14px; font-size: clamp(2.2rem, 6vw, 4.8rem); letter-spacing: -0.055em; }
+    h2 { margin: 42px 0 16px; font-size: 1.55rem; }
+    h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    p { max-width: 850px; }
+    a { color: var(--public); text-underline-offset: 3px; }
+    code { background: #ece7dc; border-radius: 4px; padding: 0.1em 0.35em; }
+    .eyebrow { color: var(--muted); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+    .lede { max-width: 780px; font-size: 1.18rem; }
+    .status { display: inline-block; border: 1px solid var(--ok); color: var(--ok); padding: 4px 10px; border-radius: 999px; font-weight: 750; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-top-width: 5px; padding: 20px; }
+    .card.local { border-top-color: var(--local); }
+    .card.public { border-top-color: var(--public); }
+    .card.private { border-top-color: var(--private); }
+    .card p, .card ul { margin-bottom: 0; }
+    .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 20px 0; }
+    .flow div { background: var(--ink); color: white; padding: 12px; text-align: center; font-weight: 700; }
+    .flow div::after { content: " →"; color: #d7c69d; }
+    .flow div:last-child::after { content: ""; }
+    table { width: 100%; border-collapse: collapse; background: var(--panel); }
+    th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #ece7dc; }
+    .callout { border-left: 5px solid var(--private); background: var(--panel); padding: 14px 18px; }
+    .compact li { margin: 5px 0; }
+    footer { margin-top: 52px; border-top: 1px solid var(--line); padding-top: 18px; color: var(--muted); }
+    @media (max-width: 760px) {
+      .grid, .flow { grid-template-columns: 1fr; }
+      .flow div { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Approved design · 2026-07-10</p>
+    <h1>Interactive ecosystem cleanup with a public/private evidence boundary</h1>
+    <p class="lede">The cleanup will review every top-level folder interactively, preserve explicit user authority for every disposition, and route evidence to the correct repository surface without publishing private project identifiers.</p>
+    <p><span class="status">Design approved by user</span></p>
+  </header>
+
+  <section>
+    <h2>Outcome</h2>
+    <p>The machine-local root will be reduced only through explicit, folder-level decisions. Local Claude permissions will remain local and untracked. The exact cleanup ledger will live in a private control-plane repository; the public workspace will receive a sanitized transactional record and human-facing report.</p>
+  </section>
+
+  <section>
+    <h2>Three evidence surfaces</h2>
+    <div class="grid">
+      <article class="card local">
+        <h3>Machine-local</h3>
+        <p><code>.claude/settings.local.json</code> remains untracked. Exactly two stale one-off worktree-removal rules will be removed; all other permissions will be preserved.</p>
+      </article>
+      <article class="card public">
+        <h3>Public control plane</h3>
+        <p>Sanitized counts, classifications, aliases, hashes, decisions, and milestones will flow to workspace-hub issue <a href="https://github.com/vamseeachanta/workspace-hub/issues/3454">#3454</a> and persistent watcher <a href="https://github.com/vamseeachanta/workspace-hub/issues/2572">#2572</a>.</p>
+      </article>
+      <article class="card private">
+        <h3>Private evidence plane</h3>
+        <p>Exact folder names, paths, relocation destinations, manifests, and verification sidecars will flow to an opaque private evidence authority whose repository and issue identifiers stay outside public artifacts.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Decision lifecycle</h2>
+    <div class="flow" aria-label="Decision lifecycle">
+      <div>Discover</div>
+      <div>Classify</div>
+      <div>Present</div>
+      <div>User decides</div>
+      <div>Verify and execute</div>
+    </div>
+    <p>Every folder will finish in one of five explicit states: <strong>keep</strong>, <strong>delete</strong>, <strong>relocate</strong>, <strong>archive</strong>, or <strong>defer</strong>. Age alone will never authorize deletion.</p>
+  </section>
+
+  <section>
+    <h2>Ledger contract</h2>
+    <table>
+      <thead>
+        <tr><th>Field</th><th>Public record</th><th>Private record</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Entry identity</td><td>Stable alias and class</td><td>Exact folder name and path</td></tr>
+        <tr><td>Inventory evidence</td><td>Sanitized size, age, repository state, and counts</td><td>Full command evidence and content classification</td></tr>
+        <tr><td>User authority</td><td>Decision and timestamp</td><td>Decision, exact target, and approval context</td></tr>
+        <tr><td>Execution</td><td>Outcome, hashes, and verification reference</td><td>Commands, manifests, checksums, residue buckets, and sidecars</td></tr>
+        <tr><td>Sensitivity</td><td>No private identifiers or raw paths</td><td>Explicit classification and approved private residency</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Artifacts</h2>
+    <ul class="compact">
+      <li>Public transactional handoff: <code>docs/sessions/2026-07-10-mnt-analysis-cleanup.md</code>.</li>
+      <li>Public sanitized report: <code>docs/reports/sessions/2026-07-10-mnt-analysis-cleanup.html</code>.</li>
+      <li>Private exact ledger: <code>docs/operations/local-analysis-cleanup/2026-07-10-ledger.json</code>.</li>
+      <li>Private human view: <code>docs/operations/local-analysis-cleanup/2026-07-10-ledger.html</code>.</li>
+      <li>Private verification sidecars: <code>docs/operations/local-analysis-cleanup/archives/</code>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Safety and failure handling</h2>
+    <ul class="compact">
+      <li>Deletion requires live origin/dirty/stash checks where Git is involved, residue classification, an explicit user decision, and fresh race checks.</li>
+      <li>Any incomplete check produces <strong>defer</strong>, not a guessed safe-delete classification.</li>
+      <li>Machine-local permission cleanup will use a red/green assertion: the two stale rules must be demonstrated before mutation, then JSON validity and exact retained permissions must pass afterward.</li>
+      <li>Public artifacts will fail closed on private identifiers, raw private paths, or sensitive manifests.</li>
+      <li>Temporary isolated worktrees will be verified and removed at closeout.</li>
+      <li>The unsafe scheduled-cleanup behavior discovered during reconnaissance is excluded from this implementation and tracked separately in <a href="https://github.com/vamseeachanta/workspace-hub/issues/3453">#3453</a>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Verification plan</h2>
+    <ol class="compact">
+      <li>Assert the stale local rules exist and make the pre-change test fail.</li>
+      <li>Remove only those rules; parse the JSON and compare the retained permission set exactly.</li>
+      <li>Enforce one-to-one parity between the complete private ledger and public aliases/counts.</li>
+      <li>Scan public artifacts for private identifiers, absolute private paths, secrets, and legal deny-list matches.</li>
+      <li>Validate HTML structure and links; run the repository legal sanity scan.</li>
+      <li>For every executed action, verify target state, cleanup-lock absence, and sidecar integrity before recording completion.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Scope boundary</h2>
+    <div class="callout">
+      <p><strong>Not included:</strong> automatic batch deletion, a generator for root Claude settings, public storage of machine-specific permissions, or repair of the scheduled cleanup script. Implementation remains blocked until the issue plan is adversarially reviewed and the user approves it.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Public design authority: workspace-hub #3454. Private evidence authority: opaque, with repository and issue identifiers withheld. Operational milestone sink: workspace-hub #2572.</p>
+  </footer>
+</main>
+</body>
+</html>
