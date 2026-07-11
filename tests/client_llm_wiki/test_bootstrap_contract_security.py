@@ -114,7 +114,9 @@ def test_layout_ignores_cwd_and_hostile_git_environment(tmp_path, monkeypatch):
 
     assert layout.target == workspace.parent / "llm-wiki-example-co"
     with pytest.raises(SystemExit):
-        bootstrap_contract.main(["classify", "--registry", "unused", "--destination", "/tmp/elsewhere"])
+        bootstrap_contract.main(
+            ["classify", "--registry", "unused", "--destination", "/tmp/elsewhere"]
+        )
 
 
 def test_layout_rejects_symlinked_common_git_directory(tmp_path):
@@ -166,8 +168,12 @@ def test_failed_final_origin_validation_preserves_created_tree(tmp_path, monkeyp
         _git(target, "remote", "set-url", "origin", "https://example.invalid/other")
         return manifest
 
-    monkeypatch.setattr(bootstrap_contract, "render_committed_template", mutate_before_final_validation)
-    with pytest.raises(BootstrapContractError, match="render final validation failed") as raised:
+    monkeypatch.setattr(
+        bootstrap_contract, "render_committed_template", mutate_before_final_validation
+    )
+    with pytest.raises(
+        BootstrapContractError, match="render final validation failed"
+    ) as raised:
         execute_render(registry, "example-co", runner=RecordingRunner())
 
     assert raised.value.residue is not None
@@ -185,7 +191,9 @@ def test_failed_final_origin_validation_preserves_created_tree(tmp_path, monkeyp
     ],
 )
 def test_final_validation_base_exception_has_fixed_complete_residue(
-    tmp_path, monkeypatch, failure,
+    tmp_path,
+    monkeypatch,
+    failure,
 ):
     workspace = _workspace(tmp_path)
     registry = _registry_file(tmp_path)
@@ -237,7 +245,9 @@ def test_final_validation_rejects_post_bind_git_directory_swap(tmp_path, monkeyp
         _git(target, "remote", "add", "origin", f"https://github.com/{REPO_SLUG}.git")
         return manifest
 
-    monkeypatch.setattr(bootstrap_contract, "render_committed_template", swap_before_final_validation)
+    monkeypatch.setattr(
+        bootstrap_contract, "render_committed_template", swap_before_final_validation
+    )
     with pytest.raises(BootstrapContractError, match="render final validation failed"):
         execute_render(registry, "example-co", runner=RecordingRunner())
 
@@ -245,7 +255,9 @@ def test_final_validation_rejects_post_bind_git_directory_swap(tmp_path, monkeyp
     assert (target / ".git").is_dir() and (target / ".git-held").is_dir()
 
 
-def test_source_registered_render_never_touches_raw_root_contents(tmp_path, monkeypatch):
+def test_source_registered_render_never_touches_raw_root_contents(
+    tmp_path, monkeypatch
+):
     workspace = _workspace(tmp_path)
     monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
     raw_root = tmp_path / "authorized-raw"
@@ -272,7 +284,9 @@ def test_source_registered_render_never_touches_raw_root_contents(tmp_path, monk
         return wrapper
 
     with pytest.MonkeyPatch.context() as guard:
-        for name, original in zip(("open", "stat", "lstat", "scandir"), originals, strict=True):
+        for name, original in zip(
+            ("open", "stat", "lstat", "scandir"), originals, strict=True
+        ):
             guard.setattr(os, name, guarded(original))
         execute_render(registry, "example-co", runner=RecordingRunner())
 
@@ -280,19 +294,39 @@ def test_source_registered_render_never_touches_raw_root_contents(tmp_path, monk
     assert after == before
 
 
-def test_cli_render_emits_manifest_without_destination_authority(tmp_path, monkeypatch, capsys):
+def test_cli_render_persists_explicit_external_manifest(tmp_path, monkeypatch, capsys):
     workspace = _workspace(tmp_path)
     registry = _registry_file(tmp_path)
     target = workspace.parent / "llm-wiki-example-co"
     _init_target(target, f"https://github.com/{REPO_SLUG}.git")
+    _git(target, "config", "--unset", "core.hooksPath")
+    _git(target, "symbolic-ref", "HEAD", "refs/heads/main")
+    evidence = tmp_path / "evidence"
+    evidence.mkdir()
+    manifest_path = evidence / "render.json"
     monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
-    monkeypatch.setattr(bootstrap_contract, "verify_private_repo", lambda *_a, **_k: None)
+    monkeypatch.setattr(
+        bootstrap_contract, "verify_private_repo", lambda *_a, **_k: None
+    )
 
-    result = bootstrap_contract.main(["render", "--registry", str(registry), "--short-name", "example-co"])
+    result = bootstrap_contract.main(
+        [
+            "render",
+            "--registry",
+            str(registry),
+            "--short-name",
+            "example-co",
+            "--manifest",
+            str(manifest_path),
+        ]
+    )
 
-    manifest = json.loads(capsys.readouterr().out.splitlines()[-1])
+    evidence_json = json.loads(capsys.readouterr().out.splitlines()[-1])
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assert result == 0
-    assert manifest["template_commit"] == _git(workspace, "rev-parse", "HEAD")
+    assert manifest["template"]["commit"] == _git(workspace, "rev-parse", "HEAD")
+    assert evidence_json["manifest"] == str(manifest_path)
+    assert evidence_json["backing_name"] == manifest["backing_name"]
     assert (target / ".gitignore").is_file()
 
 
@@ -300,7 +334,17 @@ def test_cli_render_emits_manifest_without_destination_authority(tmp_path, monke
 def test_public_cli_rejects_injection_authority(option):
     with pytest.raises(SystemExit):
         bootstrap_contract.main(
-            ["render", "--registry", "registry.yml", "--short-name", "example-co", option, "write"]
+            [
+                "render",
+                "--registry",
+                "registry.yml",
+                "--short-name",
+                "example-co",
+                "--manifest",
+                "manifest.json",
+                option,
+                "write",
+            ]
         )
 
 
@@ -311,7 +355,12 @@ def test_execute_render_rejects_failpoint_authority():
 
 def test_cli_residue_json_uses_fixed_error_and_policy(monkeypatch, capsys):
     residue = bootstrap_contract.RenderResidue(
-        "a" * 40, 1, 2, ("README.md",), None, "write",
+        "a" * 40,
+        1,
+        2,
+        ("README.md",),
+        None,
+        "write",
     )
 
     def fail_execute(*_args, **_kwargs):
@@ -319,7 +368,15 @@ def test_cli_residue_json_uses_fixed_error_and_policy(monkeypatch, capsys):
 
     monkeypatch.setattr(bootstrap_contract, "execute_render", fail_execute)
     result = bootstrap_contract.main(
-        ["render", "--registry", "registry.yml", "--short-name", "example-co"]
+        [
+            "render",
+            "--registry",
+            "registry.yml",
+            "--short-name",
+            "example-co",
+            "--manifest",
+            "manifest.json",
+        ]
     )
     payload = json.loads(capsys.readouterr().err)
 

@@ -148,8 +148,6 @@ def _gh_args(log: Path) -> list[str]:
 def _make_clone(tmp_path: Path, origin: str) -> Path:
     clone = tmp_path / "clone"
     subprocess.run(["git", "init", str(clone)], check=True, capture_output=True)
-    command = ["git", "-C", str(clone), "config", "core.hooksPath", "/dev/null"]
-    subprocess.run(command, check=True)
     subprocess.run(
         ["git", "-C", str(clone), "remote", "add", "origin", origin],
         check=True,
@@ -367,18 +365,71 @@ def test_live_row_rejects_non_boolean_archived_state(tmp_path, archived):
 @pytest.mark.parametrize(
     "origin",
     [
-        f"https://github.com/{REPO_SLUG}",
         f"https://github.com/{REPO_SLUG}.git",
         f"git@github.com:{REPO_SLUG}.git",
     ],
 )
 def test_declared_clone_accepts_exact_origins(tmp_path, origin):
     clone = _make_clone(tmp_path, origin)
-    registry = _write_registry(tmp_path, entries=[_entry(local_working_clone=str(clone))])
+    registry = _write_registry(
+        tmp_path, entries=[_entry(local_working_clone=str(clone))]
+    )
 
     result = _run_checker(tmp_path, registry)
 
     assert result.returncode == 0
+
+
+def test_declared_clone_accepts_independently_allowed_fetch_and_push_origins(tmp_path):
+    clone = _make_clone(tmp_path, f"https://github.com/{REPO_SLUG}.git")
+    subprocess.run(
+        [
+            "git",
+            "-C",
+            str(clone),
+            "config",
+            "remote.origin.pushurl",
+            f"git@github.com:{REPO_SLUG}.git",
+        ],
+        check=True,
+    )
+    registry = _write_registry(
+        tmp_path, entries=[_entry(local_working_clone=str(clone))]
+    )
+
+    result = _run_checker(tmp_path, registry)
+
+    assert result.returncode == 0
+
+
+@pytest.mark.parametrize("forbidden", ["include", "rewrite"])
+def test_declared_clone_rejects_include_and_url_rewrite_config(tmp_path, forbidden):
+    clone = _make_clone(tmp_path, f"https://github.com/{REPO_SLUG}.git")
+    if forbidden == "include":
+        subprocess.run(
+            ["git", "-C", str(clone), "config", "include.path", "/does/not/exist"],
+            check=True,
+        )
+    else:
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(clone),
+                "config",
+                "url.https://example.invalid/.insteadOf",
+                "https://github.com/",
+            ],
+            check=True,
+        )
+    registry = _write_registry(
+        tmp_path, entries=[_entry(local_working_clone=str(clone))]
+    )
+
+    result = _run_checker(tmp_path, registry)
+
+    assert result.returncode == 1
+    assert "config" in result.stderr.lower()
 
 
 @pytest.mark.parametrize("kind", ["missing", "nongit", "wrong-origin"])
@@ -388,7 +439,9 @@ def test_declared_clone_failures_are_detected_when_parent_exists(tmp_path, kind)
         clone.mkdir()
     elif kind == "wrong-origin":
         _make_clone(tmp_path, "https://example.invalid/lookalike")
-    registry = _write_registry(tmp_path, entries=[_entry(local_working_clone=str(clone))])
+    registry = _write_registry(
+        tmp_path, entries=[_entry(local_working_clone=str(clone))]
+    )
 
     result = _run_checker(tmp_path, registry)
 
@@ -398,7 +451,9 @@ def test_declared_clone_failures_are_detected_when_parent_exists(tmp_path, kind)
 
 def test_clone_under_absent_parent_warns_and_skips(tmp_path):
     clone = tmp_path / "absent-parent" / "clone"
-    registry = _write_registry(tmp_path, entries=[_entry(local_working_clone=str(clone))])
+    registry = _write_registry(
+        tmp_path, entries=[_entry(local_working_clone=str(clone))]
+    )
 
     result = _run_checker(tmp_path, registry)
 
@@ -407,15 +462,28 @@ def test_clone_under_absent_parent_warns_and_skips(tmp_path):
 
 
 @pytest.mark.parametrize("protected_kind", ["canonical", "target"])
-def test_protected_overlap_fails_before_raw_root_availability_skip(tmp_path, protected_kind):
+def test_protected_overlap_fails_before_raw_root_availability_skip(
+    tmp_path, protected_kind
+):
     common = subprocess.run(
-        ["git", "-C", str(REPO_ROOT), "rev-parse", "--path-format=absolute", "--git-common-dir"],
+        [
+            "git",
+            "-C",
+            str(REPO_ROOT),
+            "rev-parse",
+            "--path-format=absolute",
+            "--git-common-dir",
+        ],
         check=True,
         capture_output=True,
         text=True,
     )
     canonical = Path(common.stdout.strip()).parent
-    protected = canonical if protected_kind == "canonical" else canonical.parent / "llm-wiki-example-client"
+    protected = (
+        canonical
+        if protected_kind == "canonical"
+        else canonical.parent / "llm-wiki-example-client"
+    )
     root = protected / "absent" / "raw"
     registry = _write_registry(
         tmp_path,

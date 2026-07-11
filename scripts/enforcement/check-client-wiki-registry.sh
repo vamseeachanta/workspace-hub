@@ -163,7 +163,7 @@ check_live_repo() {
 }
 
 check_clone() {
-  local short="$1" repo="$2" clone="$3" parent fetch push expected
+  local short="$1" repo="$2" clone="$3" parent output rc
   [[ -n "$clone" && "$clone" != "null" ]] || return 0
   parent="$(dirname "$clone")"
   if [[ ! -d "$parent" ]]; then
@@ -174,23 +174,29 @@ check_clone() {
     echo >&2 "FAIL: $short clone $clone missing or not a real Git working tree"
     return 1
   fi
-  if ! fetch="$(git -C "$clone" remote get-url --all origin 2>/dev/null)" \
-    || ! push="$(git -C "$clone" remote get-url --push --all origin 2>/dev/null)"; then
-    echo >&2 "FAIL: $short clone origin is unavailable"
+  set +e
+  output="$($UV_PATH run --directory "$REPO_ROOT" --frozen python -c '
+from pathlib import Path
+import sys
+from client_llm_wiki.bootstrap_git import BootstrapGitError, validate_clone_config
+from client_llm_wiki.bootstrap_layout import bind_clone
+try:
+    with bind_clone(Path(sys.argv[1])) as bound:
+        validate_clone_config(bound, sys.argv[2])
+except (BootstrapGitError, OSError) as exc:
+    print(f"FAIL: clone config/origin semantics are invalid: {exc}", file=sys.stderr)
+    raise SystemExit(1)
+' "$clone" "$repo" 2>&1)"
+  rc=$?
+  set -e
+  [[ -z "$output" ]] || printf '%s\n' "$output" >&2
+  if [[ $rc -eq 0 ]]; then
+    return 0
+  elif [[ $rc -eq 1 ]]; then
     return 1
   fi
-  if [[ "$fetch" == *$'\n'* || "$push" == *$'\n'* ]]; then
-    echo >&2 "FAIL: $short clone has multiple effective origin destinations"
-    return 1
-  fi
-  for expected in \
-    "https://github.com/$repo" \
-    "https://github.com/$repo.git" \
-    "git@github.com:$repo.git"; do
-    [[ "$fetch" == "$expected" && "$push" == "$expected" ]] && return 0
-  done
-  echo >&2 "FAIL: $short clone origin does not match $repo"
-  return 1
+  echo >&2 "FAIL: bootstrap contract dependency error (exit $rc)"
+  return 2
 }
 
 check_raw_root() {
@@ -239,7 +245,13 @@ while IFS= read -r index; do
   elif [[ $LIVE_RC -ne 0 ]]; then
     FAILED=1
   fi
-  if ! check_clone "$SHORT" "$REPO" "$CLONE"; then
+  set +e
+  check_clone "$SHORT" "$REPO" "$CLONE"
+  CLONE_RC=$?
+  set -e
+  if [[ $CLONE_RC -eq 2 ]]; then
+    exit 2
+  elif [[ $CLONE_RC -ne 0 ]]; then
     FAILED=1
   fi
   if ! ROOTS="$(yq_value ".wikis[$index].raw_roots[]")"; then
