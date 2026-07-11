@@ -148,9 +148,8 @@ def _group_exists(pgid: int) -> bool:
         return True
 
 
-def _wait_for_group(pgid: int, timeout: float = 30.0) -> None:
-    deadline = time.monotonic() + timeout
-    while _group_exists(pgid) and time.monotonic() < deadline:
+def _wait_for_group(pgid: int) -> None:
+    while _group_exists(pgid):
         time.sleep(0.05)
 
 

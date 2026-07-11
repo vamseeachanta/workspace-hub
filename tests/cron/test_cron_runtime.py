@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import inspect
 import subprocess
 import sys
 import time
@@ -205,6 +206,12 @@ def test_signal_keeps_lock_until_child_exits(tmp_path):
     assert contender.returncode == 75
     first.wait(timeout=4)
     assert not active.exists()
+
+
+def test_group_wait_has_no_timeout_that_can_release_live_mutator():
+    runtime = _load_runtime()
+    signature = inspect.signature(runtime._wait_for_group)
+    assert "timeout" not in signature.parameters
 
 
 @pytest.mark.parametrize("path", ["/tmp/state", "../state", ".state/../escape"])
