@@ -1,36 +1,24 @@
 """No-replace publication and independent attestation of render evidence."""
 from __future__ import annotations
 from dataclasses import dataclass
-import hashlib
 import json
 import os
-from pathlib import Path, PurePosixPath
+from pathlib import Path
 import re
 import stat
 from typing import Any
+from . import bootstrap_attestation as attestation
+from .bootstrap_attestation import (
+    BootstrapManifestError, FIREWALL as _FIREWALL,
+    ManifestIdentity, identity as _identity, stable_digest as _stable_digest,
+)
 from .bootstrap_git import BootstrapGitError, accepted_origins, validate_clone_git
 from .bootstrap_layout import BoundCloneLayout
 from .bootstrap_renderer import BoundClone, FileIdentity
-class BootstrapManifestError(RuntimeError):
-    def __init__(self, message: str, *, backing_name: str | None = None):
-        super().__init__(message)
-        self.backing_name = backing_name
-@dataclass(frozen=True, slots=True)
-class ManifestIdentity:
-    device: int
-    inode: int
-    file_type: int
 @dataclass(frozen=True, slots=True)
 class PersistedRenderManifest:
     bytes: bytes
-    identities: dict[str, ManifestIdentity]
-    final_identity: ManifestIdentity
     backing_name: str
-    metadata: dict[str, Any]
-@dataclass(slots=True)
-class _Budget:
-    members: int = 0
-    path_bytes: int = 0
 @dataclass(frozen=True, slots=True)
 class _ExpectedRender:
     identities: dict[str, ManifestIdentity]
@@ -42,122 +30,11 @@ _DIR_FLAGS = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
 _FILE_FLAGS = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC
 _CREATE_FLAGS = os.O_RDWR | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC
 _MAX_MANIFEST_BYTES = 8 * 1024 * 1024
-_MAX_RENDER_BYTES = 64 * 1024 * 1024
-_MAX_MEMBERS = 8192
-_MAX_PATH_BYTES = 1024 * 1024
-_MAX_DEPTH = 32
-_FIREWALL = (".claude/CLAUDE.md", ".gitignore")
 _OID = re.compile(r"(?:[0-9a-f]{40}|[0-9a-f]{64})")
-def _identity(info: os.stat_result) -> ManifestIdentity:
-    return ManifestIdentity(info.st_dev, info.st_ino, stat.S_IFMT(info.st_mode))
 def _identity_json(value: ManifestIdentity) -> dict[str, int]:
     return {"device": value.device, "inode": value.inode, "type": value.file_type}
-def _read_digest(descriptor: int, limit: int) -> tuple[int, str, bytes]:
-    os.lseek(descriptor, 0, os.SEEK_SET)
-    digest = hashlib.sha256()
-    chunks: list[bytes] = []
-    size = 0
-    while True:
-        chunk = os.read(descriptor, min(65536, limit + 1 - size))
-        if not chunk:
-            return size, digest.hexdigest(), b"".join(chunks)
-        size += len(chunk)
-        if size > limit:
-            raise BootstrapManifestError("bounded file read exceeded")
-        digest.update(chunk)
-        chunks.append(chunk)
-def _stable_digest(descriptor: int, before: os.stat_result, limit: int) -> tuple[int, str, bytes]:
-    size, digest, data = _read_digest(descriptor, limit)
-    after = os.fstat(descriptor)
-    stable = (
-        _identity(after) == _identity(before)
-        and stat.S_IMODE(after.st_mode) == stat.S_IMODE(before.st_mode)
-        and after.st_size == before.st_size == size
-    )
-    if not stable:
-        raise BootstrapManifestError("file changed while being attested")
-    return size, digest, data
-def _claim_name(relative: str, name: str, budget: _Budget) -> str:
-    if not name or name in {".", ".."} or "/" in name or "\0" in name:
-        raise BootstrapManifestError("rendered member name is unsafe")
-    path = str(PurePosixPath(relative) / name) if relative else name
-    budget.members += 1
-    budget.path_bytes += len(path.encode("utf-8"))
-    if budget.members > _MAX_MEMBERS:
-        raise BootstrapManifestError("rendered tree exceeds member limit")
-    if budget.path_bytes > _MAX_PATH_BYTES:
-        raise BootstrapManifestError("rendered tree exceeds path limit")
-    return path
-def _stream_names(descriptor: int, relative: str, budget: _Budget, *, claim: bool) -> list[str]:
-    names: list[str] = []
-    with os.scandir(descriptor) as entries:
-        for entry in entries:
-            if claim and not (relative == "" and entry.name == ".git"):
-                _claim_name(relative, entry.name, budget)
-            names.append(entry.name)
-            if len(names) > _MAX_MEMBERS + 1:
-                raise BootstrapManifestError("directory membership exceeds limit")
-    return sorted(names)
-def _open_member(parent_fd: int, name: str) -> tuple[int, bool]:
-    try:
-        return os.open(name, _DIR_FLAGS, dir_fd=parent_fd), True
-    except NotADirectoryError:
-        try:
-            return os.open(name, _FILE_FLAGS, dir_fd=parent_fd), False
-        except OSError as exc:
-            raise BootstrapManifestError("rendered member cannot be opened no-follow") from exc
-    except OSError as exc:
-        raise BootstrapManifestError("rendered member cannot be opened no-follow") from exc
-def _scan_member(
-    parent_fd: int, name: str, path: str, members: dict[str, Any],
-    memberships: dict[str, list[str]], budget: _Budget, depth: int,
-) -> None:
-    descriptor, is_directory = _open_member(parent_fd, name)
-    try:
-        before = os.fstat(descriptor)
-        mode = stat.S_IMODE(before.st_mode)
-        if is_directory:
-            members[path] = {"type": "directory", "mode": mode, "size": 0, "sha256": None}
-            _scan_directory(descriptor, path, members, memberships, budget, depth + 1)
-        else:
-            if not stat.S_ISREG(before.st_mode):
-                raise BootstrapManifestError("rendered member has unsupported type")
-            size, digest, _ = _stable_digest(descriptor, before, _MAX_RENDER_BYTES)
-            members[path] = {"type": "file", "mode": mode, "size": size, "sha256": digest}
-        after = os.fstat(descriptor)
-        stable = (
-            _identity(after) == _identity(before)
-            and stat.S_IMODE(after.st_mode) == stat.S_IMODE(before.st_mode)
-            and after.st_size == before.st_size
-        )
-        if not stable:
-            raise BootstrapManifestError("rendered member identity/mode/size changed")
-    finally:
-        os.close(descriptor)
-def _scan_directory(
-    descriptor: int, relative: str, members: dict[str, Any],
-    memberships: dict[str, list[str]], budget: _Budget, depth: int,
-) -> None:
-    if depth > _MAX_DEPTH:
-        raise BootstrapManifestError("rendered tree exceeds depth limit")
-    names = _stream_names(descriptor, relative, budget, claim=True)
-    memberships[relative] = names
-    for name in names:
-        if relative == "" and name == ".git":
-            continue
-        path = str(PurePosixPath(relative) / name) if relative else name
-        _scan_member(descriptor, name, path, members, memberships, budget, depth)
-    if _stream_names(descriptor, relative, budget, claim=False) != names:
-        raise BootstrapManifestError("directory membership changed during enumeration")
 def _snapshot_clone(clone: BoundClone) -> tuple[dict[str, Any], dict[str, list[str]]]:
-    members: dict[str, Any] = {}
-    memberships: dict[str, list[str]] = {}
-    _scan_directory(clone.root_fd, "", members, memberships, _Budget(), 0)
-    for path in _FIREWALL:
-        record = members.get(path)
-        if record is None or record["type"] != "file" or record["mode"] != 0o644:
-            raise BootstrapManifestError("privacy firewall is missing or invalid")
-    return members, memberships
+    return attestation.snapshot_clone(clone.root_fd)
 def _open_config(clone: BoundClone) -> int:
     descriptor = os.open("config", _FILE_FLAGS, dir_fd=clone.git_fd)
     if not stat.S_ISREG(os.fstat(descriptor).st_mode):
@@ -185,7 +62,9 @@ def _clone_identities(
         "parent": parent, "root": root, "git": git,
         "config": _identity(os.fstat(config_fd)), "manifest_parent": manifest_parent,
     }
-def _metadata(repo: str, origins: tuple[str, ...], commit: str, tree: str) -> dict[str, Any]:
+def _metadata(
+    repo: str, origins: tuple[str, ...], commit: str, tree: str, backing: str,
+) -> dict[str, Any]:
     try:
         canonical = tuple(sorted(accepted_origins(repo)))
     except BootstrapGitError as exc:
@@ -195,6 +74,7 @@ def _metadata(repo: str, origins: tuple[str, ...], commit: str, tree: str) -> di
     return {
         "registered_repo": repo, "allowed_origins": list(canonical),
         "template": {"commit": commit, "tree": tree}, "firewall": list(_FIREWALL),
+        "backing_name": backing,
     }
 def _document(expected: _ExpectedRender) -> bytes:
     payload = {
@@ -217,6 +97,8 @@ def _after_operation(_stage: str) -> None:
     """Private fixed-stage test seam."""
 def _before_return() -> None:
     """Private final-boundary test seam."""
+def _after_link_read(_index: int) -> None:
+    """Private hard-link read-race test seam."""
 def _open_parent(destination: Path) -> tuple[int, ManifestIdentity]:
     try:
         descriptor = os.open(destination.parent, _DIR_FLAGS)
@@ -265,12 +147,20 @@ def _verify_links(
     try:
         for name in (final, backing):
             descriptors.append(os.open(name, _FILE_FLAGS, dir_fd=parent_fd))
+        before = [os.fstat(fd) for fd in descriptors]
+        contents: list[bytes] = []
+        for index, descriptor in enumerate(descriptors):
+            contents.append(_stable_digest(descriptor, before[index], _MAX_MANIFEST_BYTES)[2])
+            _after_link_read(index)
         infos = [os.fstat(fd) for fd in descriptors]
         identities = [_identity(info) for info in infos]
         valid = (
             identities[0] == identities[1] and infos[0].st_nlink == infos[1].st_nlink == 2
             and all(stat.S_IMODE(info.st_mode) == 0o600 for info in infos)
-            and all(_read_digest(fd, _MAX_MANIFEST_BYTES)[2] == data for fd in descriptors)
+            and all(info.st_size == len(data) for info in infos)
+            and all(content == data for content in contents)
+            and all(info.st_mtime_ns == old.st_mtime_ns and info.st_ctime_ns == old.st_ctime_ns
+                    for info, old in zip(infos, before, strict=True))
         )
         if not valid:
             raise BootstrapManifestError("manifest hard-link publication is invalid")
@@ -293,9 +183,9 @@ def _sync_backing(
         os.close(descriptor)
 
 def _publish(
-    clone: BoundClone, parent_fd: int, final: str, data: bytes, expected: _ExpectedRender,
+    clone: BoundClone, parent_fd: int, final: str, backing: str,
+    data: bytes, expected: _ExpectedRender,
 ) -> tuple[ManifestIdentity, str]:
-    backing = f".{final}.backing-{os.getpid()}-{os.urandom(8).hex()}"
     try:
         _sync_backing(clone, parent_fd, backing, data, expected)
         os.link(backing, final, src_dir_fd=parent_fd, dst_dir_fd=parent_fd, follow_symlinks=False)
@@ -320,17 +210,25 @@ def persist_render_manifest(
         _reject_inside(parent_fd, clone)
         _require_absent(parent_fd, destination.name)
         config_fd = _open_config(clone)
-        metadata = _metadata(registered_repo, allowed_origins, template_commit, template_tree)
+        backing = f".{destination.name}.backing-{os.getpid()}-{os.urandom(8).hex()}"
+        metadata = _metadata(
+            registered_repo, allowed_origins, template_commit, template_tree, backing,
+        )
         expected = _ExpectedRender(
             _clone_identities(clone, config_fd, parent_id),
             _config_evidence(clone, config_fd, registered_repo),
             *_snapshot_clone(clone), metadata,
         )
         data = _document(expected)
-        final_id, backing = _publish(clone, parent_fd, destination.name, data, expected)
-        result = PersistedRenderManifest(data, expected.identities, final_id, backing, metadata)
+        _final_id, backing = _publish(
+            clone, parent_fd, destination.name, backing, data, expected,
+        )
+        result = PersistedRenderManifest(data, backing)
         _before_return()
-        _validate_bound(clone, parent_fd, destination.name, result)
+        _validate_bound(
+            clone, parent_fd, destination.name, registered_repo, allowed_origins,
+            template_commit, template_tree,
+        )
         return result
     except BootstrapManifestError:
         raise
@@ -340,31 +238,69 @@ def persist_render_manifest(
         for descriptor in (config_fd, parent_fd):
             if descriptor >= 0:
                 os.close(descriptor)
-def _expected_from_result(result: PersistedRenderManifest) -> _ExpectedRender:
-    payload = json.loads(result.bytes)
-    return _ExpectedRender(
-        result.identities, payload["config"], payload["members"],
-        payload["memberships"], result.metadata,
-    )
+def _strict_json(data: bytes) -> dict[str, Any]:
+    def pairs(items):
+        result: dict[str, Any] = {}
+        for key, value in items:
+            if key in result:
+                raise BootstrapManifestError("manifest contains duplicate keys")
+            result[key] = value
+        return result
+    payload = json.loads(data, object_pairs_hook=pairs)
+    if not isinstance(payload, dict):
+        raise BootstrapManifestError("manifest JSON must be an object")
+    return payload
+def _read_claims(parent_fd: int, final: str) -> tuple[dict[str, Any], bytes]:
+    descriptor = os.open(final, _FILE_FLAGS, dir_fd=parent_fd)
+    try:
+        before = os.fstat(descriptor)
+        if not stat.S_ISREG(before.st_mode) or stat.S_IMODE(before.st_mode) != 0o600:
+            raise BootstrapManifestError("manifest final entry is unsafe")
+        data = _stable_digest(descriptor, before, _MAX_MANIFEST_BYTES)[2]
+        return _strict_json(data), data
+    finally:
+        os.close(descriptor)
+def _trusted_expected(
+    clone: BoundClone, parent_fd: int, repo: str, origins: tuple[str, ...],
+    commit: str, tree: str, backing: str,
+) -> _ExpectedRender:
+    config_fd = _open_config(clone)
+    try:
+        return _ExpectedRender(
+            _clone_identities(clone, config_fd, _identity(os.fstat(parent_fd))),
+            _config_evidence(clone, config_fd, repo), *_snapshot_clone(clone),
+            _metadata(repo, origins, commit, tree, backing),
+        )
+    finally:
+        os.close(config_fd)
 def _validate_bound(
-    clone: BoundClone, parent_fd: int, final: str, result: PersistedRenderManifest,
+    clone: BoundClone, parent_fd: int, final: str, repo: str, origins: tuple[str, ...],
+    commit: str, tree: str,
 ) -> None:
-    expected = _expected_from_result(result)
-    if _document(expected) != result.bytes:
-        raise BootstrapManifestError("manifest metadata or bytes differ")
+    claims, data = _read_claims(parent_fd, final)
+    backing = claims.get("backing_name")
+    prefix = f".{final}.backing-"
+    pattern = re.escape(prefix) + r"[0-9]+-[0-9a-f]{16}"
+    if not isinstance(backing, str) or re.fullmatch(pattern, backing) is None:
+        raise BootstrapManifestError("manifest backing claim is invalid")
+    expected = _trusted_expected(clone, parent_fd, repo, origins, commit, tree, backing)
+    if claims != _strict_json(_document(expected)) or data != _document(expected):
+        raise BootstrapManifestError("untrusted manifest claims differ")
+    _verify_links(parent_fd, final, backing, data)
     _validate_state(clone, parent_fd, expected)
-    identity = _verify_links(parent_fd, final, result.backing_name, result.bytes)
-    if identity != result.final_identity:
-        raise BootstrapManifestError("manifest final identity differs")
 def validate_render_manifest(
-    target: Path, destination: Path, expected: PersistedRenderManifest,
+    target: Path, destination: Path, registered_repo: str, allowed_origins: tuple[str, ...],
+    template_commit: str, template_tree: str,
 ) -> None:
     parent_fd = -1
     try:
         parent_fd, _ = _open_parent(Path(destination).absolute())
         with _bind_populated_clone(Path(target)) as clone:
             _reject_inside(parent_fd, clone)
-            _validate_bound(clone, parent_fd, Path(destination).name, expected)
+            _validate_bound(
+                clone, parent_fd, Path(destination).name, registered_repo,
+                allowed_origins, template_commit, template_tree,
+            )
     except (OSError, ValueError, KeyError, json.JSONDecodeError, BootstrapGitError) as exc:
         raise BootstrapManifestError("manifest validation failed") from exc
     finally:
