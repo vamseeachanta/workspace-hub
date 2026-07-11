@@ -2961,6 +2961,8 @@ cards:
     gh_labels:
       - enhancement
       - cat:data
+      - status:plan-approved
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3354,6 +3356,8 @@ cards:
       - bug
       - priority:medium
       - cat:ci
+      - status:plan-approved
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []

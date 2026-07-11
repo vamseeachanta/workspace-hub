@@ -1190,9 +1190,9 @@ cards:
     gh_labels:
       - enhancement
       - cat:engineering
+      - status:plan-approved
       - domain:ingest
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1468,6 +1468,21 @@ cards:
     title: 'feat(lenses): landman onshore — TX RRC lease/county ingest (blocker #709)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/951
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - status:plan-approved
+      - domain:ingest
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#955
+    title: 'data(bsee): Atlas of GoA Gas & Oil Sands — field play/chronozone ingest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/955
     gh_state: open
     gh_labels:
       - enhancement
@@ -1479,10 +1494,25 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#955
-    title: 'data(bsee): Atlas of GoA Gas & Oil Sands — field play/chronozone ingest'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#959
+    title: 'data(bsee): Lease & Lease-Owner ingest — status/dates/block/WI for the landman panel'
     source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/955
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/959
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#960
+    title: 'data(bsee): per-field well-plugging P&A — borehole→field join (deferred from #949)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/960
     gh_state: open
     gh_labels:
       - enhancement

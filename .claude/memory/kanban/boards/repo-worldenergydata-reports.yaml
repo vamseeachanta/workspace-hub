@@ -1482,13 +1482,13 @@ cards:
     title: 'feat(lenses): underwriting pilot — per-field risk badges (P&A, under-pressure, HPHT)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/949
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:business
+      - status:plan-approved
       - domain:reports
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
