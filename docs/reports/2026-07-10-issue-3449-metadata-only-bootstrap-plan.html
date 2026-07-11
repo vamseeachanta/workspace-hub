@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>#3449 · Metadata-only client-wiki bootstrap plan</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17211d;
+      --muted: #5f6e66;
+      --paper: #f4f0e7;
+      --panel: #fffdf8;
+      --line: #d5ccba;
+      --accent: #0c6b58;
+      --accent-soft: #d9eee7;
+      --warn: #a64b22;
+      --warn-soft: #f8e5d9;
+      --deny: #832f39;
+      --deny-soft: #f5dde0;
+      --shadow: 0 18px 50px rgba(36, 42, 37, 0.09);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(12, 107, 88, 0.12), transparent 28rem),
+        linear-gradient(180deg, #faf8f2 0%, var(--paper) 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 36px auto 72px;
+    }
+
+    .eyebrow,
+    .label {
+      color: var(--accent);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1.7fr 0.8fr;
+      gap: 28px;
+      padding: clamp(28px, 5vw, 58px);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: rgba(255, 253, 248, 0.91);
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      max-width: 800px;
+      margin: 10px 0 16px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.35rem, 6vw, 5rem);
+      font-weight: 500;
+      letter-spacing: -0.045em;
+      line-height: 0.98;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.65rem, 3vw, 2.35rem);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+    }
+
+    p { margin: 0 0 14px; }
+
+    a { color: var(--accent); }
+
+    .lede {
+      max-width: 760px;
+      color: #33433b;
+      font-size: 1.12rem;
+    }
+
+    .gate-card {
+      align-self: stretch;
+      padding: 22px;
+      border: 1px solid #e5b99f;
+      border-radius: 20px;
+      background: var(--warn-soft);
+    }
+
+    .gate-card strong {
+      display: block;
+      margin: 6px 0 10px;
+      font-size: 1.35rem;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 22px;
+    }
+
+    .pill {
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: #3e4a44;
+      font-size: 0.83rem;
+      font-weight: 650;
+    }
+
+    section {
+      margin-top: 26px;
+      padding: clamp(24px, 4vw, 42px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--panel);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      min-height: 172px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .card h3 {
+      margin: 8px 0 8px;
+      font-size: 1.03rem;
+    }
+
+    .card p,
+    .small { color: var(--muted); font-size: 0.93rem; }
+
+    .allow { border-top: 5px solid var(--accent); }
+    .stage { border-top: 5px solid #b47b24; }
+    .deny { border-top: 5px solid var(--deny); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      font-size: 0.94rem;
+    }
+
+    th,
+    td {
+      padding: 13px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 0.76rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    code,
+    pre {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    code {
+      padding: 0.12em 0.34em;
+      border-radius: 5px;
+      background: #efece4;
+      font-size: 0.9em;
+    }
+
+    pre {
+      overflow-x: auto;
+      margin: 0;
+      padding: 20px;
+      border-radius: 16px;
+      background: #17211d;
+      color: #e8f2ed;
+      line-height: 1.5;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    ul { margin: 8px 0 0; padding-left: 20px; }
+    li + li { margin-top: 7px; }
+
+    .review-row {
+      display: grid;
+      grid-template-columns: 100px 112px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .review-row:last-child { border-bottom: 0; }
+
+    .pending {
+      width: fit-content;
+      padding: 5px 9px;
+      border-radius: 8px;
+      background: var(--warn-soft);
+      color: var(--warn);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    footer {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      text-align: center;
+    }
+
+    @media (max-width: 800px) {
+      header,
+      .grid,
+      .two-col { grid-template-columns: 1fr; }
+      .review-row { grid-template-columns: 90px 100px 1fr; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      main { width: 100%; margin: 0; }
+      header,
+      section { box-shadow: none; break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <div class="eyebrow">Workspace-hub · Issue #3449 · T3</div>
+        <h1>Bootstrap the wiki before the raw corpus exists.</h1>
+        <p class="lede">
+          The reusable factory will gain a metadata-only mode that creates a private,
+          path-neutral scaffold from explicit schema 0.2 registry state. Governed raw reads
+          will remain blocked until lifecycle, privacy, root, host, and exact-source checks pass.
+        </p>
+        <div class="meta">
+          <span class="pill">Client: N/A</span>
+          <span class="pill">Lane: Codex</span>
+          <span class="pill">Plan date: 2026-07-10</span>
+          <span class="pill">No raw-data mutation</span>
+        </div>
+      </div>
+      <aside class="gate-card">
+        <div class="label">Current gate</div>
+        <strong>Draft · review in progress</strong>
+        <p>
+          Implementation is blocked. The issue can move to plan review only after
+          adversarial provider results are persisted with no unresolved MAJOR finding.
+        </p>
+        <a href="https://github.com/vamseeachanta/workspace-hub/issues/3449">Open issue #3449</a>
+      </aside>
+    </header>
+
+    <section>
+      <div class="label">Outcome</div>
+      <h2>One contract, three safe states</h2>
+      <div class="grid">
+        <article class="card allow">
+          <div class="label">Metadata-only</div>
+          <h3>Scaffold allowed</h3>
+          <p><code>raw_roots: []</code>, source not mounted, ingestion explicitly false. No path is invented or embedded.</p>
+        </article>
+        <article class="card stage">
+          <div class="label">Root registered</div>
+          <h3>Verification stage</h3>
+          <p>Authorized roots can be recorded while ingestion stays false. Checker and host validation run before enablement.</p>
+        </article>
+        <article class="card deny">
+          <div class="label">Raw ingestion</div>
+          <h3>Fail closed by default</h3>
+          <p>Enablement first requires verified private reader-integration evidence; governed file consumers then receive only an exact descriptor-contained stream.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="label">State matrix</div>
+      <h2>The registry will encode permission, not convention</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>State</th>
+            <th>Roots</th>
+            <th>Source status</th>
+            <th>Ingestion</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Metadata-only</td>
+            <td>Empty</td>
+            <td><code>not-mounted</code></td>
+            <td><code>false</code></td>
+            <td>Bootstrap yes · ingest no</td>
+          </tr>
+          <tr>
+            <td>Source staged</td>
+            <td>Non-empty</td>
+            <td><code>mounted</code></td>
+            <td><code>false</code></td>
+            <td>Bootstrap yes · ingest no</td>
+          </tr>
+          <tr>
+            <td>Source enabled</td>
+            <td>Non-empty</td>
+            <td><code>mounted</code></td>
+            <td><code>true</code></td>
+            <td>Denied until private reader integration is verified</td>
+          </tr>
+          <tr>
+            <td>Legacy / inconsistent</td>
+            <td>Any</td>
+            <td>Missing or mismatched</td>
+            <td>Missing or mismatched</td>
+            <td>Schema 0.1 audit warning · bootstrap/read denial</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="label">Execution shape</div>
+      <h2>The narrow implementation</h2>
+      <div class="two-col">
+        <div>
+          <ul>
+            <li>A small Linux/Python contract will classify schema 0.2 entries and yield an already-open, descriptor-contained raw-source stream.</li>
+            <li>A bounded renderer will use a pinned Git template snapshot, derive a protected-tree-disjoint destination, preserve dotfiles, and install atomically without replacement.</li>
+            <li>The shell checker will consume the contract while retaining private visibility, clone, and firewall checks.</li>
+            <li>Generated pytest fixtures will replace static fixtures tied to live repository and clone state.</li>
+          </ul>
+        </div>
+        <pre>issue #3449
+    |
+    +-- contract + CLI
+    |      +-- classify
+    |      +-- render
+    |      `-- openat2 guarded stream
+    |
+    +-- registry checker
+    +-- path-neutral template
+    +-- factory skill
+    `-- hermetic tests</pre>
+      </div>
+    </section>
+
+    <section>
+      <div class="label">Safety envelope</div>
+      <h2>Explicit non-goals</h2>
+      <div class="two-col">
+        <div>
+          <h3>No client implementation</h3>
+          <p class="small">No private registry row, client wiki, source directory, document, quotation, drawing, or client-specific workflow will change under this issue.</p>
+        </div>
+        <div>
+          <h3>No raw-data operation</h3>
+          <p class="small">The transition changes registry permission only. It will never create, move, copy, rename, delete, or dereference a raw corpus.</p>
+        </div>
+        <div>
+          <h3>No privacy regression</h3>
+          <p class="small">Actual PRIVATE/unarchived state is verified after repository creation and before first push; both privacy-firewall dotfiles remain abort gates.</p>
+        </div>
+        <div>
+          <h3>No false-green tests</h3>
+          <p class="small">Subprocess exit codes, stub calls, temporary clones, and mount-state fixtures will replace skips and live environmental dependencies.</p>
+        </div>
+        <div>
+          <h3>No coverage overclaim</h3>
+          <p class="small">Only 2 of 8 registered wiki checkouts are present; one has eight raw-access surfaces. Schema 0.2 blocks enablement until a separate approved private integration verifies its complete reader set.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="label">Adversarial review</div>
+      <h2>Provider gate</h2>
+      <div class="review-row">
+        <strong>Claude</strong><span class="pending">PENDING</span><span class="small">Independent plan defect review</span>
+      </div>
+      <div class="review-row">
+        <strong>Codex</strong><span class="pending">PENDING</span><span class="small">Implementation-feasibility and threat review</span>
+      </div>
+      <div class="review-row">
+        <strong>Gemini</strong><span class="pending">PENDING</span><span class="small">Architecture and scope review</span>
+      </div>
+      <p class="small" style="margin-top: 18px;">
+        After no-MAJOR convergence, the issue will stop at the user approval gate.
+        No approval marker or implementation action will be created automatically.
+      </p>
+    </section>
+
+    <footer>
+      Canonical lifecycle source: <a href="../plans/2026-07-10-issue-3449-client-wiki-metadata-only-bootstrap.md">Markdown issue plan</a>.
+      This HTML file is the human review companion.
+    </footer>
+  </main>
+</body>
+</html>
