@@ -6,7 +6,7 @@ entries:
   - source_id: <CLIENT_SHORT_NAME_UPPER>-SOURCE-0001
     # source_doc_key is the stable identifier shared with #2389 doc-intel surface.
     source_doc_key: <CLIENT_SHORT_NAME_UPPER>-DOC-0001
-    source_path: /mnt/ace/<CLIENT_RAW_ROOT>/<project>/<source-file>
+    source_path: null                            # structural example; set only from an authorized registered root
     source_class: raw-data                      # raw-data | readable-raw-data | private-wiki | public-derivative
     input_residency: private-client             # private-client | private-internal | public-eligible
     output_residency: private-wiki              # readable-local | private-wiki | public-llm-wiki

@@ -5,7 +5,7 @@ Use this folder for source manifests and readable-source pointers, not bulk raw 
 Each source manifest should include:
 
 - source_id
-- source_path, usually under `/mnt/ace/<CLIENT_RAW_ROOT>/`
+- source_path, an authorized absolute path only after the private registry records a raw root; otherwise absent
 - source_class: raw-data | readable-raw-data | private-wiki | public-derivative
 - client/project identifier
 - extraction method
@@ -13,4 +13,4 @@ Each source manifest should include:
 - citation fields
 - current promotion status
 
-Large binaries, solver archives, PDFs, spreadsheets, and client files remain in the local raw-data root unless explicitly approved for private repo storage.
+Large binaries, solver archives, PDFs, spreadsheets, and client files remain in authorized external storage unless explicitly approved for private repo storage.

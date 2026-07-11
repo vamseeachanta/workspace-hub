@@ -1,29 +1,20 @@
 #!/usr/bin/env bash
-# Validates config/client-wikis.yml against on-disk + GitHub reality.
-# Exit non-zero on any failure. Machine-aware: skip mount checks when not present.
-#
-# Implements §Pseudocode of docs/plans/2026-05-20-issue-2746-llm-wiki-mkt-a.md
-# with three carry-forward fixes from T2/T3 adversarial reviews:
-#   Fix 1 — Firewall-grep errexit hazard: use `if grep -qE ... then ... fi`
-#           instead of `grep -E ... && { ...; FAILED=1; }` which crashes under
-#           `set -e` on the happy (no-match) path.
-#   Fix 2 — `local_working_clone` null-guard: yq returns literal "null" when the
-#           field is absent; `dirname null` → `.` → `[[ -d . ]]` is TRUE and the
-#           clone branch fires spuriously. Guard against null/empty first.
-#   Fix 3 — `posture` null-guard: posture is required by the firewall invariant;
-#           skipping it silently when missing defeats privacy enforcement. Emit
-#           an explicit FAIL and continue to next entry.
+# Audit the private client-wiki registry without reading raw-source contents.
 
 set -euo pipefail
 
-# Anchor REPO_ROOT to the script's own location (not the caller's cwd) so the
-# env-override path works even when invoked from outside the repo (e.g., /tmp).
+while IFS='=' read -r name _; do
+  [[ "$name" == GIT_* ]] && unset "$name"
+done < <(env)
+export GIT_CONFIG_NOSYSTEM=1
+export GIT_CONFIG_GLOBAL=/dev/null
+
 SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(git -C "$SELF_DIR" rev-parse --show-toplevel 2>/dev/null || echo "$SELF_DIR")"
-# Registry path is overridable for tests. The real registry is PRIVATE (#3098);
-# resolution: $REGISTRY_PATH → $WIKI_SIBLING_REGISTRY_PATH → local private copy
-# → public stub (which is intentionally empty and triggers degrade-open below).
+REPO_ROOT="$(cd "$SELF_DIR/../.." && pwd -P)"
 REGISTRY="${REGISTRY_PATH:-${WIKI_SIBLING_REGISTRY_PATH:-}}"
+YQ_BIN="${YQ_BIN:-yq}"
+UV_BIN="${UV_BIN:-uv}"
+
 if [[ -z "$REGISTRY" ]]; then
   if [[ -f "${REPO_ROOT}/config/.client-wikis.local.yml" ]]; then
     REGISTRY="${REPO_ROOT}/config/.client-wikis.local.yml"
@@ -32,155 +23,228 @@ if [[ -z "$REGISTRY" ]]; then
   fi
 fi
 
-# Precheck dependencies before doing any work.
-command -v yq >/dev/null || { echo >&2 "FAIL: yq v4+ required (https://github.com/mikefarah/yq)"; exit 1; }
-command -v gh >/dev/null || { echo >&2 "FAIL: gh CLI required"; exit 1; }
-
-# 1. Registry file exists (degrade-open: real registry is private; #3098)
-[[ -f "$REGISTRY" ]] || { echo >&2 "WARN: registry not found at $REGISTRY — skipping (real registry is private, #3098)"; exit 0; }
-
-# 1b. Relocated public stub (relocated:true / empty wikis) → degrade-open: the
-#     real entries live private and aren't provisioned in this environment.
-RELOCATED=$(yq '.relocated // false' "$REGISTRY" 2>/dev/null || echo "false")
-WIKIS_LEN=$(yq '.wikis | length' "$REGISTRY" 2>/dev/null || echo "0")
-if [[ "$RELOCATED" == "true" || "$WIKIS_LEN" == "0" ]]; then
-  echo "INFO: registry at $REGISTRY is the relocated public stub (no entries) — skipping validation (#3098)."
+if [[ ! -f "$REGISTRY" ]]; then
+  echo >&2 "WARN: registry not found at $REGISTRY — skipping (private authority not provisioned)"
   exit 0
 fi
 
-# 2. Schema validation: `wikis` must be a list and parse cleanly.
-WIKIS_TYPE=$(yq '.wikis | tag' "$REGISTRY" 2>/dev/null || echo "")
-if [[ "$WIKIS_TYPE" != "!!seq" ]]; then
-  echo >&2 "FAIL: registry $REGISTRY missing or malformed top-level 'wikis' list (got tag=$WIKIS_TYPE)"
+REGISTRY_SOURCE="$REGISTRY"
+REGISTRY_SNAPSHOT="$(mktemp)"
+trap 'rm -f "$REGISTRY_SNAPSHOT"' EXIT
+if ! cp -- "$REGISTRY_SOURCE" "$REGISTRY_SNAPSHOT"; then
+  echo >&2 "FAIL: registry snapshot could not be created"
+  exit 1
+fi
+chmod 600 "$REGISTRY_SNAPSHOT"
+REGISTRY="$REGISTRY_SNAPSHOT"
+
+resolve_tool() {
+  local requested="$1" resolved
+  if [[ "$requested" == */* ]]; then
+    [[ -x "$requested" ]] || return 1
+    printf '%s\n' "$requested"
+    return 0
+  fi
+  resolved="$(command -v "$requested" 2>/dev/null || true)"
+  [[ -n "$resolved" ]] || return 1
+  printf '%s\n' "$resolved"
+}
+
+YQ_PATH="$(resolve_tool "$YQ_BIN" || true)"
+if [[ -z "$YQ_PATH" ]]; then
+  echo >&2 "FAIL: yq v4+ is required"
+  exit 2
+fi
+YQ_VERSION="$($YQ_PATH --version 2>/dev/null || true)"
+if [[ ! "$YQ_VERSION" =~ version[[:space:]]+v?4\. ]]; then
+  echo >&2 "FAIL: yq major version 4 is required"
+  exit 2
+fi
+
+yq_value() {
+  "$YQ_PATH" -r "$1" "$REGISTRY"
+}
+
+if ! VERSION_TAG="$(yq_value '.registry_version | tag')" \
+  || ! VERSION="$(yq_value '.registry_version')" \
+  || ! RELOCATED_TAG="$(yq_value '.relocated | tag')" \
+  || ! RELOCATED="$(yq_value '.relocated // false')" \
+  || ! WIKIS_TAG="$(yq_value '.wikis | tag')" \
+  || ! WIKIS_LEN="$(yq_value '.wikis | length')" \
+  || ! TOP_KEYS="$($YQ_PATH -o=json -I=0 'keys | sort' "$REGISTRY")"; then
+  echo >&2 "FAIL: registry is malformed YAML"
   exit 1
 fi
 
-FAILED=0
-
-# Collect short_names for later uniqueness check.
-SHORT_NAMES=$(yq '.wikis[].short_name' "$REGISTRY")
-
-# ----- Pass A: required-field validation per entry -----
-# Determine which entries have all required fields; only those advance to Pass B.
-INDICES=$(yq '.wikis | keys | .[]' "$REGISTRY")
-
-declare -a VALID_INDICES=()
-for i in $INDICES; do
-  SHORT=$(yq ".wikis[$i].short_name" "$REGISTRY")
-  REPO=$(yq ".wikis[$i].repo" "$REGISTRY")
-  VIS=$(yq ".wikis[$i].visibility" "$REGISTRY")
-  RAW_ROOTS_TAG=$(yq ".wikis[$i].raw_roots | tag" "$REGISTRY" 2>/dev/null || echo "")
-  POSTURE=$(yq ".wikis[$i].posture" "$REGISTRY")
-  STATUS=$(yq ".wikis[$i].status" "$REGISTRY")
-
-  ENTRY_LABEL="$SHORT"
-  [[ -z "$ENTRY_LABEL" || "$ENTRY_LABEL" == "null" ]] && ENTRY_LABEL="index=$i"
-
-  ENTRY_OK=1
-
-  if [[ -z "$SHORT" || "$SHORT" == "null" ]]; then
-    echo >&2 "FAIL: entry index=$i missing required 'short_name' field"
-    FAILED=1
-    ENTRY_OK=0
-  fi
-  if [[ -z "$REPO" || "$REPO" == "null" ]]; then
-    echo >&2 "FAIL: $ENTRY_LABEL missing required 'repo' field"
-    FAILED=1
-    ENTRY_OK=0
-  fi
-  if [[ -z "$VIS" || "$VIS" == "null" ]]; then
-    echo >&2 "FAIL: $ENTRY_LABEL missing required 'visibility' field"
-    FAILED=1
-    ENTRY_OK=0
-  fi
-  if [[ "$RAW_ROOTS_TAG" != "!!seq" ]]; then
-    echo >&2 "FAIL: $ENTRY_LABEL missing required 'raw_roots' list (got tag=$RAW_ROOTS_TAG)"
-    FAILED=1
-    ENTRY_OK=0
-  fi
-  # Fix 3: posture null-guard (required for firewall enforcement).
-  if [[ -z "$POSTURE" || "$POSTURE" == "null" ]]; then
-    echo >&2 "FAIL: $ENTRY_LABEL missing required 'posture' field"
-    FAILED=1
-    ENTRY_OK=0
-  fi
-  if [[ -z "$STATUS" || "$STATUS" == "null" ]]; then
-    echo >&2 "FAIL: $ENTRY_LABEL missing required 'status' field"
-    FAILED=1
-    ENTRY_OK=0
-  fi
-
-  if [[ $ENTRY_OK -eq 1 ]]; then
-    VALID_INDICES+=("$i")
-  fi
-done
-
-# ----- Cross-entry: uniqueness of short_name -----
-DUPES=$(echo "$SHORT_NAMES" | grep -v '^null$' | sort | uniq -d)
-if [[ -n "$DUPES" ]]; then
-  echo >&2 "FAIL: duplicate short_name: $DUPES"
-  FAILED=1
+EXACT_STUB=0
+if [[ "$VERSION_TAG" == "!!str" && "$VERSION" == "0.2" \
+  && "$RELOCATED_TAG" == "!!bool" && "$RELOCATED" == "true" \
+  && "$WIKIS_TAG" == "!!seq" && "$WIKIS_LEN" == "0" \
+  && "$TOP_KEYS" == '["registry_version","relocated","wikis"]' ]]; then
+  EXACT_STUB=1
+fi
+if [[ $EXACT_STUB -eq 1 ]]; then
+  echo "INFO: registry at $REGISTRY_SOURCE is the exact relocated public stub — skipping validation."
+  exit 0
+fi
+if [[ "$RELOCATED" == "true" || "$WIKIS_TAG" != "!!seq" || "$WIKIS_LEN" == "0" ]]; then
+  echo >&2 "FAIL: malformed public stub or empty authoritative registry"
+  exit 1
 fi
 
-# ----- Pass B: live-state checks per fully-formed entry -----
-for i in "${VALID_INDICES[@]}"; do
-  SHORT=$(yq ".wikis[$i].short_name" "$REGISTRY")
-  REPO=$(yq ".wikis[$i].repo" "$REGISTRY")
-  POSTURE=$(yq ".wikis[$i].posture" "$REGISTRY")
-  STATUS=$(yq ".wikis[$i].status" "$REGISTRY")
+UV_PATH="$(resolve_tool "$UV_BIN" || true)"
+if [[ -z "$UV_PATH" ]]; then
+  echo >&2 "FAIL: uv is required for non-empty registry validation"
+  exit 2
+fi
 
-  # Only check repo existence + archived for bootstrapped/live (not planned/retired).
-  if [[ "$STATUS" =~ ^(bootstrapped|live)$ ]]; then
-    REPO_JSON=$(gh repo view "$REPO" --json visibility,isArchived 2>/dev/null || echo "")
-    if [[ -z "$REPO_JSON" ]]; then
-      echo >&2 "FAIL: $SHORT repo $REPO not found on GH"
-      FAILED=1
-    else
-      VIS=$(echo "$REPO_JSON" | yq -r '.visibility')
-      ARCHIVED=$(echo "$REPO_JSON" | yq -r '.isArchived')
-      if [[ "$POSTURE" == "client-private" && "$VIS" != "PRIVATE" ]]; then
-        echo >&2 "FAIL: $SHORT posture=client-private but visibility=$VIS"
-        FAILED=1
-      fi
-      # Governance spec §4.3: isArchived=false required for non-retired entries.
-      if [[ "$ARCHIVED" == "true" && "$STATUS" != "retired" ]]; then
-        echo >&2 "FAIL: $SHORT status=$STATUS but GH repo isArchived=true"
-        FAILED=1
-      fi
-    fi
+export PYTHONPATH="${REPO_ROOT}/scripts${PYTHONPATH:+:${PYTHONPATH}}"
+if ! "$UV_PATH" run --directory "$REPO_ROOT" --frozen python -c \
+  'import client_llm_wiki.bootstrap_contract' >/dev/null 2>&1; then
+  echo >&2 "FAIL: locked Python bootstrap contract environment is unavailable"
+  exit 2
+fi
+
+set +e
+VALIDATION_OUTPUT="$($UV_PATH run --directory "$REPO_ROOT" --frozen python -m \
+  client_llm_wiki.bootstrap_contract validate-registry --registry "$REGISTRY" 2>&1)"
+VALIDATION_RC=$?
+set -e
+if [[ -n "$VALIDATION_OUTPUT" ]]; then
+  printf '%s\n' "$VALIDATION_OUTPUT" >&2
+fi
+if [[ $VALIDATION_RC -eq 1 ]]; then
+  exit 1
+elif [[ $VALIDATION_RC -ne 0 ]]; then
+  echo >&2 "FAIL: bootstrap contract dependency error (exit $VALIDATION_RC)"
+  exit 2
+fi
+
+FAILED=0
+PUBLIC_WIKI_PATTERN='/llm-wiki(/|$)'
+
+check_live_repo() {
+  local short="$1" repo="$2" status="$3" output rc
+  if [[ "$status" != "bootstrapped" && "$status" != "live" ]]; then
+    return 0
   fi
-
-  # Fix 2: local_working_clone null-guard (field may be absent for planned rows).
-  CLONE=$(yq ".wikis[$i].local_working_clone" "$REGISTRY")
-  if [[ -n "$CLONE" && "$CLONE" != "null" ]] && [[ -d "$(dirname "$CLONE")" ]]; then
-    if [[ ! -d "$CLONE/.git" ]]; then
-      echo >&2 "FAIL: $SHORT clone $CLONE missing or not a git repo"
-      FAILED=1
-    else
-      # Governance spec §4.3: clone's remote must match `repo`.
-      CLONE_REMOTE=$(git -C "$CLONE" config --get remote.origin.url 2>/dev/null || echo "")
-      EXPECTED=("https://github.com/$REPO" "https://github.com/$REPO.git" "git@github.com:$REPO.git")
-      MATCH=0
-      for u in "${EXPECTED[@]}"; do
-        if [[ "$CLONE_REMOTE" == "$u" ]]; then MATCH=1; break; fi
-      done
-      if [[ $MATCH -ne 1 ]]; then
-        echo >&2 "FAIL: $SHORT clone $CLONE remote=$CLONE_REMOTE doesn't match expected $REPO"
-        FAILED=1
-      fi
-    fi
+  set +e
+  output="$($UV_PATH run --directory "$REPO_ROOT" --frozen python -m \
+    client_llm_wiki.bootstrap_contract verify-private-repo --repo "$repo" 2>&1)"
+  rc=$?
+  set -e
+  [[ -z "$output" ]] || printf '%s\n' "$output" >&2
+  if [[ $rc -eq 0 ]]; then return 0; fi
+  if [[ $rc -eq 1 ]]; then
+    echo >&2 "FAIL: $short repo $repo is not the required private live repository"
+    return 1
   fi
+  echo >&2 "FAIL: bootstrap contract dependency error (exit $rc)"
+  return 2
+}
 
-  # Fix 1: Firewall guard via `if grep -qE ... then`. Client-private raw_roots
-  # must not match a public llm-wiki path. The bare `grep && ...` form crashes
-  # under `set -e` on the happy (no-match) path because grep returns non-zero.
-  if [[ "$POSTURE" == "client-private" ]]; then
-    RAW_ROOTS=$(yq ".wikis[$i].raw_roots[]" "$REGISTRY")
-    if echo "$RAW_ROOTS" | grep -qE '/llm-wiki/?$|/llm-wiki/[^/]'; then
-      echo >&2 "FAIL: $SHORT client-private raw_roots overlaps public llm-wiki path (firewall violation)"
+check_clone() {
+  local short="$1" repo="$2" clone="$3" parent output rc
+  [[ -n "$clone" && "$clone" != "null" ]] || return 0
+  parent="$(dirname "$clone")"
+  if [[ ! -d "$parent" ]]; then
+    echo >&2 "WARN: $short clone parent unavailable on this host — skipping availability"
+    return 0
+  fi
+  if [[ ! -d "$clone/.git" || -L "$clone" || -L "$clone/.git" ]]; then
+    echo >&2 "FAIL: $short clone $clone missing or not a real Git working tree"
+    return 1
+  fi
+  set +e
+  output="$($UV_PATH run --directory "$REPO_ROOT" --frozen python -c '
+from pathlib import Path
+import sys
+from client_llm_wiki.bootstrap_git import BootstrapGitError, validate_clone_config
+from client_llm_wiki.bootstrap_layout import bind_clone
+try:
+    with bind_clone(Path(sys.argv[1])) as bound:
+        validate_clone_config(bound, sys.argv[2])
+except (BootstrapGitError, OSError) as exc:
+    print(f"FAIL: clone config/origin semantics are invalid: {exc}", file=sys.stderr)
+    raise SystemExit(1)
+' "$clone" "$repo" 2>&1)"
+  rc=$?
+  set -e
+  [[ -z "$output" ]] || printf '%s\n' "$output" >&2
+  if [[ $rc -eq 0 ]]; then
+    return 0
+  elif [[ $rc -eq 1 ]]; then
+    return 1
+  fi
+  echo >&2 "FAIL: bootstrap contract dependency error (exit $rc)"
+  return 2
+}
+
+check_raw_root() {
+  local short="$1" root="$2" parent
+  if [[ "$root" =~ $PUBLIC_WIKI_PATTERN ]]; then
+    echo >&2 "FAIL: $short raw_roots overlaps public llm-wiki (firewall violation)"
+    return 1
+  fi
+  parent="$(dirname "$root")"
+  if [[ ! -d "$parent" ]]; then
+    echo >&2 "WARN: $short raw-root parent unavailable on this host — skipping availability"
+    return 0
+  fi
+  if [[ ! -d "$root" || -L "$root" ]]; then
+    echo >&2 "FAIL: $short raw root must be an existing non-symlink directory"
+    return 1
+  fi
+  return 0
+}
+
+if ! INDICES="$(yq_value '.wikis | keys | .[]')"; then
+  echo >&2 "FAIL: yq failed while reading validated registry entries"
+  exit 2
+fi
+while IFS= read -r index; do
+  [[ -n "$index" ]] || continue
+  if ! SHORT="$(yq_value ".wikis[$index].short_name // \"\"")" \
+    || ! REPO="$(yq_value ".wikis[$index].repo // \"\"")" \
+    || ! POSTURE="$(yq_value ".wikis[$index].posture // \"\"")" \
+    || ! STATUS="$(yq_value ".wikis[$index].status // \"\"")" \
+    || ! CLONE="$(yq_value ".wikis[$index].local_working_clone // \"\"")"; then
+    echo >&2 "FAIL: yq failed while reading validated registry fields"
+    exit 2
+  fi
+  if [[ -z "$SHORT" || -z "$REPO" || "$POSTURE" != "client-private" || -z "$STATUS" ]]; then
+    echo >&2 "FAIL: entry index=$index missing required identity/posture/status"
+    FAILED=1
+    continue
+  fi
+  set +e
+  check_live_repo "$SHORT" "$REPO" "$STATUS"
+  LIVE_RC=$?
+  set -e
+  if [[ $LIVE_RC -eq 2 ]]; then
+    exit 2
+  elif [[ $LIVE_RC -ne 0 ]]; then
+    FAILED=1
+  fi
+  set +e
+  check_clone "$SHORT" "$REPO" "$CLONE"
+  CLONE_RC=$?
+  set -e
+  if [[ $CLONE_RC -eq 2 ]]; then
+    exit 2
+  elif [[ $CLONE_RC -ne 0 ]]; then
+    FAILED=1
+  fi
+  if ! ROOTS="$(yq_value ".wikis[$index].raw_roots[]")"; then
+    echo >&2 "FAIL: yq failed while reading validated raw roots"
+    exit 2
+  fi
+  while IFS= read -r root; do
+    [[ -n "$root" ]] || continue
+    if ! check_raw_root "$SHORT" "$root"; then
       FAILED=1
     fi
-  fi
-done
+  done <<< "$ROOTS"
+done <<< "$INDICES"
 
-exit $FAILED
+exit "$FAILED"

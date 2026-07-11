@@ -1,5 +1,10 @@
-"""Client llm-wiki promotion-ledger helpers (issue #2747)."""
+"""Client-wiki ledger and metadata-bootstrap helpers."""
 
 from . import promotion_ledger
 
-__all__ = ["promotion_ledger"]
+__all__ = [
+    "bootstrap_contract",
+    "bootstrap_renderer",
+    "bootstrap_schema",
+    "promotion_ledger",
+]

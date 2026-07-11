@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Issue 3449 — Python-Native Residue and Finalizer Design</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17232d;
+      --muted: #536471;
+      --paper: #f7f3ea;
+      --panel: #fffdf8;
+      --line: #cfc6b8;
+      --accent: #0b6670;
+      --warn: #9b4d18;
+      --safe: #23643b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+    main { max-width: 1020px; margin: 0 auto; padding: 48px 28px 72px; }
+    h1, h2, h3 { line-height: 1.16; }
+    h1 { font-size: clamp(2rem, 5vw, 3.8rem); margin: 0 0 14px; }
+    h2 { margin-top: 44px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    h3 { margin-top: 28px; color: var(--accent); }
+    code, pre { font-family: "SFMono-Regular", Consolas, monospace; }
+    code { font-size: .9em; }
+    pre {
+      overflow-x: auto;
+      padding: 18px;
+      background: #14242b;
+      color: #eef7f4;
+      border-radius: 8px;
+      line-height: 1.4;
+    }
+    table { width: 100%; border-collapse: collapse; margin: 18px 0; }
+    th, td { border: 1px solid var(--line); padding: 10px; vertical-align: top; }
+    th { text-align: left; background: #e8e1d4; }
+    .lede { font-size: 1.2rem; max-width: 780px; color: var(--muted); }
+    .meta, .callout {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--accent);
+      padding: 16px 20px;
+      margin: 22px 0;
+    }
+    .warning { border-left-color: var(--warn); }
+    .safe { border-left-color: var(--safe); }
+    li { margin: 7px 0; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+<main>
+  <p class="meta"><strong>Decision:</strong> User selected Option 1 on 2026-07-11. This document defines the amended design only. It does not authorize implementation or restore <code>status:plan-approved</code>.</p>
+
+  <h1>Python-Native Residue and Bound Finalizer</h1>
+  <p class="lede">A fail-closed client-wiki bootstrap design that never deletes a pathname after rendering begins, never allows Git to follow repository-local configuration authority, and retains descriptor authority through the first private push and remote-SHA attestation.</p>
+
+  <section>
+    <h2>1. Goal and scope</h2>
+    <p>The design will preserve the metadata-only bootstrap outcome from issue 3449 while replacing two invalidated guarantees: identity-conditional pathname cleanup and pathname-based final commit/push. The implementation will remain Python standard-library plus existing Git, GitHub CLI, <code>uv</code>, and <code>yq</code> dependencies. It will introduce no FFI, compiled helper, raw-source reader, client-specific data, or private-registry mutation.</p>
+    <div class="callout warning">
+      <strong>Load-bearing policy change:</strong> after the renderer creates its first target object, no automatic cleanup will delete or move any rendered pathname. A failure will preserve bounded residue and report it. Manual cleanup will require a separate operator decision after inspecting identities and repository state.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Security invariants</h2>
+    <ol>
+      <li>Schema <code>0.2</code> will continue to deny every <code>ingestion_enabled: true</code> state.</li>
+      <li>Legacy numeric <code>0.1</code> will remain audit-only, require its historical non-empty source-backed shape, and reject all <code>0.2</code> state fields.</li>
+      <li>Schema, classification, rendering, finalization, and checker execution will never stat, open, resolve, enumerate, or indirectly include a registered raw root.</li>
+      <li>Git subprocesses will ignore ambient, system, global, and repository-local configuration. Local config will be parsed only from a held no-follow descriptor with include and URL-rewrite authority denied.</li>
+      <li>Template object reads will ignore replacement refs and will consume exact committed blob object IDs.</li>
+      <li>Target writes will remain relative to held no-follow directory descriptors and use exclusive creation.</li>
+      <li>Final attestation will cover absolute binding identities, complete inventory, bytes, sizes, and modes.</li>
+      <li>The factory will not use pathname-based Git add/commit/push after rendering. A bound finalizer will own those operations.</li>
+      <li>The first push will name the exact registered HTTPS URL, and the remote <code>main</code> SHA will have to equal the local committed SHA before registry lifecycle update.</li>
+      <li>No public issue, public stub, or generic template will receive a private client identifier or private repository/path evidence.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>3. Architecture</h2>
+    <pre>authoritative private registry
+          |
+          v
+  validate + classify
+          |
+          v
+ exact PRIVATE repo attestation
+          |
+          v
+ verified empty clone binding
+          |
+          v
+ replacement-free blob snapshot
+          |
+          v
+ direct exclusive render
+  (no stage, no deletion)
+          |
+          +---- failure ----> residue report + STOP
+          |
+          v
+ descriptor-bound finalizer
+  add -> commit -> explicit push
+          |
+          v
+ remote SHA + PRIVATE attestation
+          |
+          v
+ authoritative registry update</pre>
+
+    <h3>3.1 Registry contract</h3>
+    <p>The schema module will centralize exact identity rules. Current entries will retain the exact <code>owner/llm-wiki-&lt;short-name&gt;</code> relationship. Legacy rows will require non-empty historical roots and will reject <code>raw_source_status</code> and <code>ingestion_enabled</code> rather than ignoring them. The contract's validate command will apply protected-root disjointness for every current entry using module-anchored workspace, template, and derived-target paths without touching a raw root.</p>
+
+    <h3>3.2 Git authority isolation</h3>
+    <p>Every Git subprocess will receive a fresh environment containing <code>GIT_CONFIG=/dev/null</code>, <code>GIT_CONFIG_NOSYSTEM=1</code>, <code>GIT_CONFIG_GLOBAL=/dev/null</code>, and <code>GIT_NO_REPLACE_OBJECTS=1</code>. No caller-provided <code>GIT_*</code> variable will survive.</p>
+    <p>The clone's <code>.git/config</code> will be opened as a real no-follow regular file and retained by descriptor. A dedicated parser call will use <code>git config --file /proc/self/fd/N --no-includes --null</code> with that descriptor passed explicitly. The parser will:</p>
+    <ul>
+      <li>reject every <code>include.*</code> and <code>includeIf.*</code> key;</li>
+      <li>reject every <code>url.*.insteadOf</code> and <code>url.*.pushInsteadOf</code> key;</li>
+      <li>preserve leading and trailing bytes rather than applying <code>strip()</code>;</li>
+      <li>require exactly one fetch URL and zero or one push URL;</li>
+      <li>require each present URL independently to equal an approved exact spelling.</li>
+    </ul>
+    <p>Bound repository commands will use explicit <code>--git-dir=/proc/self/fd/GIT_FD</code> and <code>--work-tree=/proc/self/fd/ROOT_FD</code> while repository-local config remains disabled. They will never use <code>git remote get-url</code>.</p>
+
+    <h3>3.3 Replacement-free template snapshot</h3>
+    <p>The renderer will replace tar archive consumption with a blob inventory. It will resolve one commit under replacement-disabled Git, enumerate the template subtree recursively with exact modes and blob IDs, and read each blob by object ID. Python will derive directory entries from the validated paths. This removes archive extraction and prevents a replacement ref from changing bytes behind a reported commit.</p>
+
+    <h3>3.4 Direct render with residue-on-failure</h3>
+    <p>The rehearsal staging directory and all cleanup deletion code will be removed. The renderer will materialize the in-memory blob inventory directly into the bound empty clone. Directories will use exclusive <code>mkdir</code> followed immediately by no-follow descriptor binding. Files will use <code>O_CREAT|O_EXCL|O_NOFOLLOW</code>.</p>
+    <p>The renderer will maintain a bounded attempted/confirmed path ledger. If any operation fails, it will close descriptors but will not unlink, rmdir, rename, truncate, or overwrite any created pathname. The CLI will emit a structured failure record to stderr containing the pinned template commit, target identity, confirmed created paths, attempted path, and <code>residue_policy: preserved</code>.</p>
+    <div class="callout safe">
+      <strong>Recovery rule:</strong> a failed render is never retried into the same non-empty clone. The operator will inspect the residue record and either preserve the clone for forensics or remove the entire disposable clone through a separately authorized cleanup action before starting again.
+    </div>
+
+    <h3>3.5 Byte-, mode-, and path-complete attestation</h3>
+    <p>The successful render manifest will record root, <code>.git</code>, and config device/inode identities plus every created path's type, normalized mode, byte length, and SHA-256 digest. Final validation will reopen each named member through held parent descriptors, reject symlinks and unexpected members, and compare all recorded facts. Privacy-firewall files will be checked as ordinary manifest members and by required-path policy. Validation will run after every callback and immediately before returning the manifest.</p>
+    <p>The manifest will also record the derived target path. A later finalizer will have to rebind that path and match all root/<code>.git</code>/config identities. A rename or parent replacement after render can therefore produce residue, but it cannot authorize commit or push.</p>
+
+    <h3>3.6 Descriptor-bound finalizer</h3>
+    <p>The command will be <code>finalize-scaffold --registry PATH --short-name SLUG --manifest PATH</code>. The manifest path will resolve outside the target and name a mode-<code>0600</code> regular non-symlink file. The command will re-attest the exact private repository, rebind the target and Git/config identities, and revalidate the complete rendered manifest before mutating Git state.</p>
+    <p>The finalizer will require <code>CLIENT_WIKI_GIT_AUTHOR_NAME</code> and <code>CLIENT_WIKI_GIT_AUTHOR_EMAIL</code>. Git author configuration will be command-scoped; no global or local author setting will be trusted. Authentication will use a fixed command-scoped <code>gh auth git-credential</code> helper without storing a token.</p>
+    <p>It will stage only the attested manifest paths, create the fixed signed-off bootstrap commit, and push to <code>https://github.com/&lt;registered-repo&gt;.git</code> rather than the mutable <code>origin</code> name. It will then query that same explicit URL for <code>refs/heads/main</code>, require the remote SHA to equal local HEAD, and re-attest exact GitHub identity, PRIVATE visibility, and unarchived state. Success output will be JSON with exact <code>status</code>, <code>scaffold_sha</code>, <code>remote_sha</code>, and <code>template_commit</code> fields.</p>
+
+    <h3>3.7 Recoverable finalizer states</h3>
+    <table>
+      <thead><tr><th>Observed state</th><th>Allowed action</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>Unborn HEAD; exact untracked manifest</td><td>Stage, commit, push, attest</td><td>Normal success</td></tr>
+        <tr><td>Expected local bootstrap commit; remote branch absent</td><td>Push and attest only</td><td>Recovery after transport failure</td></tr>
+        <tr><td>Expected local commit; remote SHA equal</td><td>Attest only</td><td>Idempotent success</td></tr>
+        <tr><td>Any different HEAD, tree, index, worktree, identity, URL, or remote SHA</td><td>No mutation</td><td>Structured failure</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.8 Checker and factory</h3>
+    <p>The checker will delegate registered-clone inspection to the Python contract rather than invoke config-aware shell Git. It will retain exact public-stub and dependency exit semantics. GitHub JSON types will be checked, mixed independently allowed fetch/push spellings will pass, and protected-root overlap will fail before host-availability metadata checks.</p>
+    <p>The factory will require explicit author environment variables, create and clone the exact private repository with a fixed <code>gh</code> credential helper, render to an external manifest, and call the bound finalizer. It will contain no pathname-based add/commit/push commands. Registry update will remain after remote-SHA and PRIVATE attestation. Project guidance will reference only the authoritative private registry; the public relocation stub will remain exact and empty.</p>
+  </section>
+
+  <section>
+    <h2>4. Failure semantics</h2>
+    <table>
+      <thead><tr><th>Phase</th><th>Failure behavior</th><th>Automatic deletion?</th></tr></thead>
+      <tbody>
+        <tr><td>Before first render create</td><td>Fail with no target change</td><td>No</td></tr>
+        <tr><td>During render</td><td>Close descriptors; report bounded residue</td><td>No</td></tr>
+        <tr><td>Final render attestation</td><td>Report residue and exact mismatch</td><td>No</td></tr>
+        <tr><td>Before local commit</td><td>Leave rendered untracked tree</td><td>No</td></tr>
+        <tr><td>After local commit, before remote attestation</td><td>Preserve commit; permit only exact recovery state</td><td>No</td></tr>
+        <tr><td>Remote SHA/private mismatch</td><td>Stop registry update and report incident state</td><td>No</td></tr>
+      </tbody>
+    </table>
+    <p>No exception class, including <code>KeyboardInterrupt</code> or <code>SystemExit</code>, will trigger pathname cleanup. Descriptor closure will remain in <code>finally</code> blocks.</p>
+  </section>
+
+  <section>
+    <h2>5. Test strategy</h2>
+    <ul>
+      <li>Legacy downgrade tests will reject empty roots and all added <code>0.2</code> state fields.</li>
+      <li>Protected workspace, template, canonical checkout, and derived-target roots will fail checker validation.</li>
+      <li>Local include/includeIf and URL rewrite config will be present but will not affect any Git result; the parser will reject the authority without opening the referenced target.</li>
+      <li>Actual replacement refs will be installed in a temporary template repository; rendered bytes and reported commit will remain the unreplaced committed objects.</li>
+      <li>Whitespace-bearing, multiple, mixed-valid, and malformed origin values will exercise exact NUL-record parsing.</li>
+      <li>File creation, <code>fstat</code>, ledger insertion, write, chmod, final validation, <code>KeyboardInterrupt</code>, and <code>SystemExit</code> failures will assert that no cleanup deletion function is called and that residue is reported.</li>
+      <li>In-place byte, size, mode, firewall, directory membership, target, parent, <code>.git</code>, and config substitutions will fail final attestation.</li>
+      <li>Dangling and corrupt symbolic HEAD states will be distinguished from a genuinely unborn branch.</li>
+      <li>Finalizer tests will cover initial success, commit-before-push recovery, idempotent remote success, target/config/origin swaps, wrong remote SHA, missing author identity, and unavailable credentials.</li>
+      <li>A temporary repository with global/system config disabled will create its first commit using only explicit author values.</li>
+      <li>Factory behavior tests will execute the command sequence against fake <code>gh</code>/Git transport boundaries rather than rely on substring order alone.</li>
+      <li>Committed-HEAD mode tests will use <code>git ls-tree HEAD</code>, not the mutable index.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>6. Non-goals</h2>
+    <ul>
+      <li>No automatic residue cleanup or whole-clone deletion.</li>
+      <li>No raw-source ingestion, extraction, enumeration, or content validation.</li>
+      <li>No private registry migration or client-wiki creation under issue 3449 tests.</li>
+      <li>No native syscall wrapper, FFI, container sandbox, or privilege boundary.</li>
+      <li>No claim that a same-UID process cannot rename created paths; the guarantee is that such substitution cannot authorize deletion, commit, or push.</li>
+      <li>No support for arbitrary remote URL spellings beyond the explicitly approved exact set.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>7. Acceptance boundary</h2>
+    <p>The design will be ready for implementation planning only after the user approves this written specification. The revised issue plan will then receive its own adversarial plan review and return to <code>status:plan-review</code>. Only a later explicit user approval may restore <code>status:plan-approved</code>.</p>
+  </section>
+</main>
+</body>
+</html>
