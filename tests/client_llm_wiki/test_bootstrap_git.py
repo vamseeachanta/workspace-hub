@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import errno
 from pathlib import Path
+import pwd
 import subprocess
 import time
 
@@ -20,6 +21,17 @@ from client_llm_wiki.bootstrap_git import (
     validate_clone_git,
 )
 from client_llm_wiki.bootstrap_layout import bind_clone
+
+
+def test_trusted_executable_never_uses_home_local_bin(tmp_path, monkeypatch):
+    from client_llm_wiki import bootstrap_git
+
+    hostile = Path(pwd.getpwuid(os.getuid()).pw_dir) / ".local" / "bin" / "git"
+    monkeypatch.setattr(Path, "is_file", lambda path: path == hostile)
+    monkeypatch.setattr(bootstrap_git.os, "access", lambda path, _mode: path == hostile)
+
+    with pytest.raises(BootstrapGitError, match="unavailable"):
+        bootstrap_git.trusted_executable("git")
 
 
 REPO = "owner/llm-wiki-slug"

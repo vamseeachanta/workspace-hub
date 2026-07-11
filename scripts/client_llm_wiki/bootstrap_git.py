@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-import pwd
 import re
 import subprocess
 from typing import Mapping
@@ -41,8 +40,7 @@ def trusted_executable(name: str) -> str:
     """Resolve a fixed operational tool without consulting ambient PATH/HOME."""
     if name not in {"gh", "git"}:
         raise BootstrapGitError("operational executable is not allowlisted")
-    home = Path(pwd.getpwuid(os.getuid()).pw_dir)
-    candidates = (Path("/usr/local/bin"), Path("/usr/bin"), Path("/bin"), home / ".local/bin")
+    candidates = (Path("/usr/local/bin"), Path("/usr/bin"), Path("/bin"))
     for directory in candidates:
         candidate = directory / name
         if candidate.is_file() and os.access(candidate, os.X_OK):
@@ -197,3 +195,27 @@ def validate_clone_git(bound: BoundCloneLayout, repo_slug: str) -> dict[str, str
 def validate_clone_config(bound: BoundCloneLayout, repo_slug: str) -> dict[str, str]:
     """Validate only the held config; callers classify HEAD separately."""
     return _validate_records(_read_config(bound), repo_slug)
+
+
+def validate_clone_config_for_head_binding(
+    bound: BoundCloneLayout, repo_slug: str, head_ref: str,
+) -> dict[str, str]:
+    """Validate clone config allowing only its exact transient unborn branch."""
+    match = re.fullmatch(r"refs/heads/([A-Za-z0-9._-]+)", head_ref)
+    if match is None:
+        raise BootstrapGitError("transient clone HEAD is invalid")
+    branch = match.group(1)
+    records = _read_config(bound)
+    transient = {
+        f"branch.{branch}.remote": "origin",
+        f"branch.{branch}.merge": head_ref,
+    }
+    base_records = [(key, value) for key, value in records if key not in transient]
+    parsed = _validate_records(base_records, repo_slug)
+    seen = {key: value for key, value in records if key in transient}
+    if any(value != transient[key] for key, value in seen.items()):
+        raise BootstrapGitError("transient clone branch config is forbidden")
+    if len(seen) != sum(key in transient for key, _value in records):
+        raise BootstrapGitError("duplicate transient clone branch config")
+    parsed.update(seen)
+    return parsed

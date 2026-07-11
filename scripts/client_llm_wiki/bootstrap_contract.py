@@ -12,6 +12,7 @@ import subprocess
 from typing import Callable, Sequence
 
 from .bootstrap_attestation import BootstrapManifestError
+from .bootstrap_clone_setup import bind_clone_to_main
 from .bootstrap_finalizer import finalize_scaffold as finalize_scaffold
 from .bootstrap_git import (
     BootstrapGitError, accepted_origins, isolated_env, trusted_executable,
@@ -206,6 +207,10 @@ def clone_private_repo(
     _operational_run(
         "git", ["clone", f"https://github.com/{repo_slug}.git", str(target)], runner,
     )
+    try:
+        bind_clone_to_main(target, repo_slug)
+    except (BootstrapGitError, BootstrapRenderError, OSError) as exc:
+        raise BootstrapContractError("cloned repository setup failed") from exc
 
 
 def _run_bound_git(clone: BoundClone, *args: str) -> subprocess.CompletedProcess[str]:

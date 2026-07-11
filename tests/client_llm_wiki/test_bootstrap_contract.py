@@ -24,6 +24,10 @@ def test_operational_children_use_fixed_host_and_isolated_environment(tmp_path, 
     calls = []
     def runner(args, **kwargs):
         calls.append((args, kwargs))
+        if args[1] == "clone":
+            target = Path(args[-1])
+            subprocess.run(["git", "init", str(target)], check=True, capture_output=True)
+            _git(target, "remote", "add", "origin", args[2])
         return subprocess.CompletedProcess(args, 0, "", "")
     bootstrap_contract.create_private_repo("org/llm-wiki-client", runner=runner)
     bootstrap_contract.clone_private_repo(
@@ -35,6 +39,30 @@ def test_operational_children_use_fixed_host_and_isolated_environment(tmp_path, 
         assert kwargs["env"]["PATH"] == "/usr/local/bin:/usr/bin:/bin"
         assert "LD_PRELOAD" not in kwargs["env"]
         assert "GH_CONFIG_DIR" not in kwargs["env"]
+
+
+def test_empty_remote_clone_is_rebound_to_main_before_success(tmp_path):
+    remote = tmp_path / "empty.git"
+    subprocess.run(
+        ["git", "init", "--bare", "--initial-branch=master", str(remote)],
+        check=True,
+        capture_output=True,
+    )
+    target = tmp_path / "clone"
+
+    def local_remote_runner(args, **kwargs):
+        translated = [args[0], "clone", str(remote), args[-1]]
+        result = subprocess.run(translated, **kwargs)
+        if result.returncode == 0:
+            _git(target, "remote", "set-url", "origin", args[2])
+        return result
+
+    bootstrap_contract.clone_private_repo(
+        "org/llm-wiki-client", target, runner=local_remote_runner,
+    )
+
+    assert _git(target, "symbolic-ref", "HEAD") == "refs/heads/main"
+    bootstrap_contract.verify_unborn_clone(target, "org/llm-wiki-client")
 
 
 REPO_SLUG = "example-org/llm-wiki-example-co"
