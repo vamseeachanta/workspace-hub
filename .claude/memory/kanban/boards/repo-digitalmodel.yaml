@@ -4602,7 +4602,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/942
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -7252,6 +7254,239 @@ cards:
     title: Onboard dedicated CFD compute box + offload CFD from ace-linux-2
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1495
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1507
+    title: 'EPIC: Field-development layout, screening & visualization capability'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1507
+    gh_state: closed
+    gh_labels:
+      - project
+      - priority:high
+      - cat:engineering-models
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1508
+    title: 'TRACER: onshore demo field end-to-end (DEM + YAML layout + 2D plot + screening calc + Blender clip + API call)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1508
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:engineering-models
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1509
+    title: 'Field-layout model: YAML asset schema + layout engine over terrain/bathymetry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1509
+    gh_state: closed
+    gh_labels:
+      - cat:engineering-models
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1510
+    title: 'Visualization & animation: 2D plots, 3D scene export, Blender movies'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1510
+    gh_state: closed
+    gh_labels:
+      - cat:engineering-models
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1511
+    title: 'Engineering screening layer: sizing correlations + reuse of existing modules + screening report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1511
+    gh_state: closed
+    gh_labels:
+      - cat:engineering-calculations
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1512
+    title: 'Representative API: layout / screen / visualize / analogs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1512
+    gh_state: closed
+    gh_labels:
+      - cat:engineering-models
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1513
+    title: 'Renewables extension: wind assets in the field-layout schema'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1513
+    gh_state: closed
+    gh_labels:
+      - cat:engineering-models
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1517
+    title: 'fix(cfd): harden attested snapshots and fail-closed solver evidence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1517
+    gh_state: open
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1523
+    title: 'epic(explorer-bridge): engineering feeds for the wed World Energy Field Explorer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1523
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1528
+    title: 'feat(cfd): coupled sloshing tank fill/drain over roll cycles with engineering report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1528
+    gh_state: open
+    gh_labels:
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1530
+    title: 'EPIC: Field-development hardening — real data, native screening, electrical wiring, riser fidelity'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1530
+    gh_state: open
+    gh_labels:
+      - project
+      - priority:medium
+      - cat:engineering-models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1531
+    title: Layout surfaces from real DEM files (wed fetch_dem consumer path)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1531
+    gh_state: open
+    gh_labels:
+      - cat:engineering-models
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1532
+    title: Screening consumes the generalized layout model natively
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1532
+    gh_state: open
+    gh_labels:
+      - cat:engineering-calculations
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1533
+    title: Wire electrical cable screening into screen() for array/export cables
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1533
+    gh_state: open
+    gh_labels:
+      - cat:engineering-calculations
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1534
+    title: Floating-host riser shape via existing catenary modules
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1534
+    gh_state: open
+    gh_labels:
+      - cat:engineering-models
+      - status:plan-approved
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1535
+    title: 'Flaky CI: test_sustained_load response-time variance fails on shared runners'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1535
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:ci
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1537
+    title: 'diffraction: emit the standardized per-run HTML report from the solve/postprocess pipeline (not just benchmarks)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1537
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1538
+    title: 'installation_pamphlet: BokaLift actual RAO basis (T3 ship_proxy → actual) + roll-damping sensitivity band in §3'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1538
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1540
+    title: 'Unify the Hugging Face run-manifest schema across #1528 (CFD) and the #3427/#3433/#1505 canonical chain'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1540
     gh_state: open
     gh_labels: []
     initial_status: triage

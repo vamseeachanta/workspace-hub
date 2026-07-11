@@ -1,11 +1,11 @@
-generated_at: "2026-07-10T02:51:03"
+generated_at: "2026-07-10T04:12:38"
 schema_version: 4
 machine: "dev-secondary"
 host: "ace-linux-2"
 os: linux
 status: active
 provenance:
-  checkout_sha: "b80831601"
+  checkout_sha: "ed4e181f8"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA T400 4GB"}
-    headroom: {ram_avail_mib: 24793, disk_avail_gb: 745}
+    headroom: {ram_avail_mib: 24999, disk_avail_gb: 745}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -88,8 +88,8 @@ dimensions:
     worst_age_hours: 75.323
     freshness: "MEMORY-EXPIRED"
   skill_link_health:
-    audited_at: "2026-07-04T23:47:07+00:00"
-    repos_total: 18
-    healthy: 34
+    audited_at: "2026-07-10T09:12:14+00:00"
+    repos_total: 19
+    healthy: 36
     repairable: 0
     worst_state: "MODIFIED-REAL-DIR"

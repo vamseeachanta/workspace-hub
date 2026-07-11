@@ -1497,7 +1497,9 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - status:plan-approved
       - domain:knowledge-management
+      - lane:codex
       - lane:claude
     initial_status: triage
     priority: 0
@@ -1560,7 +1562,9 @@ cards:
     gh_labels:
       - priority:medium
       - cat:engineering-methodology
+      - status:plan-approved
       - domain:knowledge-management
+      - lane:codex
       - lane:claude
     initial_status: triage
     priority: 0
@@ -2048,6 +2052,24 @@ cards:
     gh_state: open
     gh_labels:
       - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#834
+    title: 'docs(ingest): capture PID2Graph benchmark, Boglodite v0.1.0, and Canadian confidential-well signal'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/834
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:medium
+      - status:plan-review
+      - cat:documentation
+      - domain:knowledge-management
+      - llm-wiki
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []

@@ -2961,6 +2961,8 @@ cards:
     gh_labels:
       - enhancement
       - cat:data
+      - status:plan-approved
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3207,6 +3209,155 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/922
     gh_state: open
     gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#928
+    title: Align Landman freshness scorecard with packaged fixture catalog
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/928
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:data
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#929
+    title: 'EPIC: Field-development data foundation — terrain/bathymetry sources + past-projects registry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/929
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:data
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#930
+    title: 'Terrain & bathymetry public sources: verify + catalog (GEBCO, NOAA, BOEM; USGS 3DEP for onshore)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/930
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:data
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#931
+    title: 'Past-projects registry: historical field developments as selectable lists (GoM first)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/931
+    gh_state: closed
+    gh_labels:
+      - cat:data
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#932
+    title: 'Analogs query layer: region / water-depth / asset-type filters over past projects'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/932
+    gh_state: closed
+    gh_labels:
+      - cat:data
+      - status:pending
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#933
+    title: 'Data source: USGS 3DEP DEMs (onshore US terrain) — dynamic image service + staged tiles'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/933
+    gh_state: open
+    gh_labels:
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#934
+    title: 'Data source: GEBCO global bathymetry grid (15 arc-second netCDF)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/934
+    gh_state: open
+    gh_labels:
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#935
+    title: 'Data source: NOAA NCEI Coastal Relief Model (3 arc-second, THREDDS)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/935
+    gh_state: open
+    gh_labels:
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#936
+    title: 'Data source: BOEM northern GoM deepwater bathymetry grid (40-ft GeoTIFF)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/936
+    gh_state: open
+    gh_labels:
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#910
+    title: 'docs(data): inventory /mnt/ace ecosystem data roots for underwriting readiness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/910
+    gh_state: open
+    gh_labels:
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#944
+    title: 'epic(eng-plane): engineering plane — dm capability chips + live grounded cards across assets'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/944
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#954
+    title: "Flaky CI: performance tracker sqlite 'database is locked' under pytest-xdist"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/954
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:ci
+      - status:plan-approved
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []

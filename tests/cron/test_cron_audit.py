@@ -94,6 +94,19 @@ def test_random_line_is_uncataloged(audit, ct):
     assert ct.classify_line(line, cmds, fps) == "uncataloged"
 
 
+def test_audit_context_uses_explicit_fingerprints_for_sensitive_tasks(audit):
+    context = audit.build_audit_context("ace-linux-1")
+    keys = context["catalog_commands"]
+    fingerprints = context["catalog_fingerprints"]
+
+    assert "scripts/memory/bridge-hermes-claude.sh" not in keys
+    assert "scripts/cron-repository-sync.sh" not in keys
+    assert {entry["catalog_task_id"] for entry in fingerprints} >= {
+        "hermes-claude-bridge",
+        "repository-sync",
+    }
+
+
 def test_audit_crontab_fails_closed_on_uncataloged(audit, ct):
     cmds = audit.load_catalog_commands()
     fps = audit.load_external_fingerprints()

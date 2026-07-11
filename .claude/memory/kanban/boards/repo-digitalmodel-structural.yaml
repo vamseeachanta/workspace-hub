@@ -198,3 +198,33 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1524
+    title: 'bug(ansys): detect versioned ansysNNN launchers and require positive MAPDL completion evidence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1524
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - priority:high
+      - domain:structural
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1525
+    title: 'feat(ansys): register canonical licensed workflow and integrity manifests for MAPDL examples'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1525
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:high
+      - domain:structural
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

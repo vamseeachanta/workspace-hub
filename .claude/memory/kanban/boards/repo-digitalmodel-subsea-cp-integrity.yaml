@@ -255,6 +255,7 @@ cards:
       - enhancement
       - priority:high
       - cat:business
+      - status:plan-approved
       - domain:subsea-cp-integrity
       - lane:codex
     initial_status: triage

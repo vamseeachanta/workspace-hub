@@ -357,7 +357,10 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - status:plan-approved
       - domain:reports
+      - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1008,7 +1011,7 @@ cards:
     title: 'feat(hub): concept/development as a hub subsection (FDP portfolio via crosswalk)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/759
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
@@ -1343,10 +1346,209 @@ cards:
       - enhancement
       - priority:high
       - cat:data
+      - status:plan-approved
+      - domain:reports
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#927
+    title: 'feat: publish a public BSEE algorithm-run pilot to Hugging Face'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/927
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - cat:automation
       - domain:reports
       - lane:codex
       - status:needs-plan
     initial_status: triage
     priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#939
+    title: 'epic(explorer): World Energy Field Explorer — one-page global drill-down for clients'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/939
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:reports
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#940
+    title: 'epic(explorer-shell): rebuild /field-atlas/ in place as the one-page loaded drill-down'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/940
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - domain:reports
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#942
+    title: 'epic(field-planes): field detail planes — lifecycle, architecture drawing, per-well stages, assets'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/942
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:reports
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#943
+    title: 'epic(lenses): commercial lenses — economic analysis, underwriting, landman over one spine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/943
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:business
+      - domain:reports
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#945
+    title: 'epic(client-layer): client presentation — provenance, PDF export, guided demo path'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/945
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - status:plan-approved
+      - domain:reports
+      - lane:claude
+      - epic
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#946
+    title: 'feat(explorer-shell): tracer — Jack/St Malo + Big Foot end-to-end in the one-page shell'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/946
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:plan-approved
+      - domain:reports
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#948
+    title: 'feat(field-planes): roll per-well timelines from Big Foot to all rich LT fields'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/948
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - status:plan-approved
+      - domain:reports
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#949
+    title: 'feat(lenses): underwriting pilot — per-field risk badges (P&A, under-pressure, HPHT)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/949
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:business
+      - status:plan-approved
+      - domain:reports
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#962
+    title: 'docs(fdp): author FDP portfolio pages for the 7 remaining LT fields'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/962
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#965
+    title: 'feat(explorer): export Field Explorer results as HF-consumable dataset projection'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/965
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#966
+    title: 'feat(explorer): render Explorer visualizations via a Hugging Face API call'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/966
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:automation
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#969
+    title: 'feat(explorer): field architecture-drawing panel (plan-view SVG)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/969
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+      - domain:reports
+      - lane:claude
+    initial_status: triage
+    priority: 0
     gh_assignees: []
     body_excerpt: ''

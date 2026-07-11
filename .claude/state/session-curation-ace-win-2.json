@@ -1,13 +1,13 @@
 {
   "machine": "ace-win-2",
-  "last_curated_at": "2026-07-07T02:18:00+00:00",
+  "last_curated_at": "2026-07-10T07:56:23+00:00",
   "providers": {
-    "claude": 145,
-    "codex": 18,
+    "claude": 180,
+    "codex": 85,
     "gemini": 0,
     "hermes": 0
   },
-  "sessions_24h": 7,
+  "sessions_24h": 58,
   "providers_active": [
     "claude",
     "codex"

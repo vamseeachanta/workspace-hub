@@ -758,3 +758,102 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3444
+    title: 'infra: route Python environments off fuseblk worktrees'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3444
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:infrastructure
+      - domain:automation
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3453
+    title: 'bug(cleanup): daily cleanup assumes nested repos and purges unverified staged evidence by age'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3453
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - domain:automation
+      - machine:dev-primary
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3454
+    title: 'chore(local-analysis): publish sanitized interactive cleanup ledger and prune stale local permission residue'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3454
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:automation
+      - machine:dev-primary
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3456
+    title: 'security(local-analysis): make parent runtime-config permissions enforceable on fuseblk'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3456
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - domain:automation
+      - machine:dev-primary
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3458
+    title: 'bug(cleanup): make archive manifests safe for tabs, newlines, and arbitrary names'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3458
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - domain:automation
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3461
+    title: 'bug(validation): make staged evidence handshakes resumable and snapshot-closed'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3461
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - domain:automation
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

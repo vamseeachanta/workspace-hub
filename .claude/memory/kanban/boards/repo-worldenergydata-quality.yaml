@@ -802,22 +802,6 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#910
-    title: 'docs(data): inventory /mnt/ace ecosystem data roots for underwriting readiness'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/910
-    gh_state: open
-    gh_labels:
-      - documentation
-      - priority:high
-      - cat:data
-      - domain:quality
-      - lane:claude
-      - status:needs-plan
-    initial_status: triage
-    priority: 1
-    gh_assignees: []
-    body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#917
     title: 'chore(data): reconcile international source-refresh contract with completed country chains'
     source: github_issue
@@ -843,8 +827,7 @@ cards:
       - bug
       - priority:high
       - cat:data
-      - status:plan-review
-      - status:plan-approved
+      - status:blocked
       - domain:quality
       - lane:codex
     initial_status: triage
@@ -860,9 +843,9 @@ cards:
       - bug
       - priority:high
       - cat:engineering
+      - status:plan-approved
       - domain:quality
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []

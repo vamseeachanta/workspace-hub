@@ -1260,8 +1260,80 @@ cards:
     gh_labels:
       - bug
       - priority:P2
-      - status:scoping
+      - status:plan-approved
       - domain:operations-governance
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#159
+    title: '[Sun Manufacturing] Bootstrap private client wiki and pre-outreach knowledge pack'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/159
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:gtm
+      - domain:product
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#160
+    title: '[Sun Manufacturing] Register sun-mfg in private client-wiki registry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/160
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:product
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#161
+    title: '[Sun Manufacturing] Bootstrap private llm-wiki-sun-mfg repository'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/161
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:product
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#162
+    title: '[Sun Manufacturing] Seed public-source knowledge pack and two pre-outreach reviews'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/162
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:gtm
+      - domain:product
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#163
+    title: '[Client-wiki registry] Reconcile HDIC local clone claim on this host'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/163
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:product
       - lane:codex
     initial_status: triage
     priority: 0

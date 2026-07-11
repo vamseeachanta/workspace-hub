@@ -467,11 +467,12 @@ cards:
     title: 'feat(openfoam): gmsh -> OpenFOAM polyMesh bridge (Phase B / 3D)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/662
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
       - priority:low
       - cat:engineering
+      - status:plan-approved
       - domain:hydro-vessel-motions
       - lane:codex
     initial_status: triage
