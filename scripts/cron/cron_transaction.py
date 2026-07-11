@@ -217,6 +217,7 @@ def classify_line_detail(
     catalog_commands: list[str],
     external_fingerprints: list[dict],
     selected_task_ids: set[str] | None = None,
+    catalog_fingerprints: list[dict] | None = None,
 ) -> dict:
     """Classify a crontab line with metadata for audit/cutover callers."""
     if _is_ignore_line(line):
@@ -242,6 +243,15 @@ def classify_line_detail(
                 "preserved_entry": entry,
             }
 
+    for entry in normalize_preserved_entries(catalog_fingerprints):
+        if match_fingerprint(line, entry.get("fingerprint", {})):
+            return {
+                "line": line,
+                "class": "cataloged",
+                "reason": "catalog-fingerprint",
+                "catalog_task_id": entry.get("catalog_task_id"),
+            }
+
     for cmd in catalog_commands or []:
         if cmd and cmd in line:
             return {
@@ -257,6 +267,7 @@ def classify_line(
     line: str,
     catalog_commands: list[str],
     external_fingerprints: list[dict],
+    catalog_fingerprints: list[dict] | None = None,
 ) -> str:
     """Classify a single crontab line.
 
@@ -271,7 +282,12 @@ def classify_line(
     contain a catalog script-path substring must still be PRESERVED, never pulled into the
     managed block and dropped. Ownership (fingerprint) dominates substring coincidence.
     """
-    return classify_line_detail(line, catalog_commands, external_fingerprints)["class"]
+    return classify_line_detail(
+        line,
+        catalog_commands,
+        external_fingerprints,
+        catalog_fingerprints=catalog_fingerprints,
+    )["class"]
 
 
 # --- Task selection --------------------------------------------------------
@@ -353,6 +369,7 @@ def _normalize_command(command: str) -> str:
 def catalog_command_keys(
     tasks: list[dict],
     fallback_mode: str = "full-command",
+    include_fingerprinted: bool = True,
 ) -> list[str]:
     """Return stable catalog keys for matching live cron lines.
 
@@ -363,6 +380,8 @@ def catalog_command_keys(
     keys: list[str] = []
     seen: set[str] = set()
     for task in tasks or []:
+        if task.get("installed_fingerprint") and not include_fingerprinted:
+            continue
         command = _normalize_command(task.get("command", ""))
         if not command:
             continue
@@ -372,6 +391,19 @@ def catalog_command_keys(
             keys.append(key)
             seen.add(key)
     return keys
+
+
+def catalog_owned_fingerprints(tasks: list[dict]) -> list[dict]:
+    """Return explicit all-fields-match ownership records for catalog tasks."""
+    records = []
+    for task in tasks or []:
+        fingerprint = task.get("installed_fingerprint")
+        if fingerprint:
+            records.append({
+                "catalog_task_id": task.get("id"),
+                "fingerprint": dict(fingerprint),
+            })
+    return normalize_preserved_entries(records)
 
 
 # --- Rendering -------------------------------------------------------------
@@ -401,6 +433,7 @@ def plan_cutover(
     catalog_commands: list[str],
     external_fingerprints: list[dict],
     selected_task_ids: set[str] | None = None,
+    catalog_fingerprints: list[dict] | None = None,
 ) -> dict:
     """Plan a fail-closed crontab cutover.
 
@@ -449,6 +482,7 @@ def plan_cutover(
             catalog_commands,
             external_fingerprints,
             selected_task_ids=selected_task_ids,
+            catalog_fingerprints=catalog_fingerprints,
         )["class"]
         if cls == "ignore":
             preserved.append(line)
@@ -482,6 +516,7 @@ def plan_cutover(
                 catalog_commands,
                 external_fingerprints,
                 selected_task_ids=selected_task_ids,
+                catalog_fingerprints=catalog_fingerprints,
             )["class"]
             if cls == "cataloged":
                 continue

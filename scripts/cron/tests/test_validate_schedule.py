@@ -187,6 +187,18 @@ def test_repository_sync_runtime_contract_is_bounded_and_singleton(tasks):
         "state_dir": ".claude/state/cron-runtime/repository-sync",
         "filesystem_wait_wchans": ["request_wait_answer"],
     }
+    assert task["installed_fingerprint"] == {
+        "command_contains": "scripts/cron-repository-sync.sh",
+        "cwd_contains": "workspace-hub",
+    }
+
+
+def test_hermes_bridge_has_explicit_installed_fingerprint(tasks):
+    task = next(t for t in tasks if t["id"] == "hermes-claude-bridge")
+    assert task["installed_fingerprint"] == {
+        "command_contains": "scripts/memory/bridge-hermes-claude.sh",
+        "cwd_contains": "workspace-hub",
+    }
 
 
 @pytest.mark.parametrize("max_seconds", [59, 604801, 0, "10800"])

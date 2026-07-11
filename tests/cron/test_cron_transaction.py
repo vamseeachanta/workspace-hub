@@ -155,6 +155,58 @@ def test_classify_uncataloged():
     assert ct.classify_line(line, ["run-task.sh"], []) == "uncataloged"
 
 
+def test_catalog_fingerprint_requires_all_fields_not_bare_script_substring():
+    fingerprint = [{
+        "catalog_task_id": "repository-sync",
+        "fingerprint": {
+            "command_contains": "scripts/cron-repository-sync.sh",
+            "cwd_contains": "/workspace-hub",
+        },
+    }]
+    owned = "0 */4 * * * cd /srv/workspace-hub && bash scripts/cron-repository-sync.sh"
+    external = "0 */4 * * * cd /srv/external && echo scripts/cron-repository-sync.sh"
+
+    owned_detail = ct.classify_line_detail(
+        owned, [], [], catalog_fingerprints=fingerprint
+    )
+    external_detail = ct.classify_line_detail(
+        external, [], [], catalog_fingerprints=fingerprint
+    )
+
+    assert owned_detail["class"] == "cataloged"
+    assert owned_detail["catalog_task_id"] == "repository-sync"
+    assert external_detail["class"] == "uncataloged"
+
+
+def test_plan_cutover_drops_only_explicitly_owned_stale_duplicate():
+    fingerprint = [{
+        "catalog_task_id": "hermes-claude-bridge",
+        "fingerprint": {
+            "command_contains": "scripts/memory/bridge-hermes-claude.sh",
+            "cwd_contains": "/workspace-hub",
+        },
+    }]
+    stale = "25 4 * * * cd /srv/workspace-hub && bash scripts/memory/bridge-hermes-claude.sh"
+    task = {
+        "id": "hermes-claude-bridge",
+        "schedule": "25 4 * * *",
+        "command": "cd /srv/workspace-hub && bash scripts/memory/bridge-hermes-claude.sh --commit",
+    }
+
+    plan = ct.plan_cutover(
+        stale + "\n",
+        [task],
+        ["control-plane"],
+        catalog_commands=[],
+        external_fingerprints=[],
+        catalog_fingerprints=fingerprint,
+    )
+
+    assert plan["abort_reason"] is None
+    assert stale not in plan["new_text"].splitlines()
+    assert "--commit" in plan["new_text"]
+
+
 def test_classify_ignore_comment_blank_env():
     assert ct.classify_line("# comment", [], []) == "ignore"
     assert ct.classify_line("", [], []) == "ignore"

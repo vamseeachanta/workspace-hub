@@ -654,6 +654,9 @@ tasks:
     machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
     roles: [control-plane]
     requires: [bash, git]
+    installed_fingerprint:
+      command_contains: scripts/memory/bridge-hermes-claude.sh
+      cwd_contains: workspace-hub
     prefer: dev-primary
     command: >-
       cd $WORKSPACE_HUB &&
@@ -844,6 +847,9 @@ tasks:
     machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
     roles: [control-plane, comms-dispatch, sim-worker]
     requires: [bash, git, uv, python3]
+    installed_fingerprint:
+      command_contains: scripts/cron-repository-sync.sh
+      cwd_contains: workspace-hub
     runtime:
       singleton: true
       max_seconds: 10800
