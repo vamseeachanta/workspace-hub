@@ -102,6 +102,7 @@ def test_render_uses_committed_head_and_normalizes_modes(tmp_path):
     manifest = _render(repo, clone)
 
     assert manifest.template_commit == commit
+    assert manifest.template_tree == _git(repo, "rev-parse", "HEAD:templates/client-llm-wiki")
     assert (clone / "README.md").read_text() == ("# example-co\nexample-org/llm-wiki-example-co\n")
     assert not (clone / "untracked.txt").exists()
     assert stat.S_IMODE((clone / "README.md").stat().st_mode) == 0o644

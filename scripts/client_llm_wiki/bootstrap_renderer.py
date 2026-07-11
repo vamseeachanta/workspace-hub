@@ -60,6 +60,7 @@ class RenderTokens:
 @dataclass(frozen=True, slots=True)
 class RenderManifest:
     template_commit: str
+    template_tree: str
     clone_device: int
     clone_inode: int
     created_paths: tuple[str, ...]
@@ -277,7 +278,10 @@ def _render_committed_template(
         _set_stage(progress, "final_validation")
         _inject(failpoint, "final_validation")
         _revalidate_clone(clone, ledger, [fd for path, fd in directory_fds.items() if path])
-        return RenderManifest(snapshot.commit_oid, clone.root_id.device, clone.root_id.inode, tuple(artifact.relative_path for artifact in ledger))
+        return RenderManifest(
+            snapshot.commit_oid, snapshot.tree_oid, clone.root_id.device,
+            clone.root_id.inode, tuple(artifact.relative_path for artifact in ledger),
+        )
     except BaseException as exc:
         if "snapshot" not in locals() or progress.stage == "snapshot_or_validation":
             if isinstance(exc, BootstrapRenderError):
