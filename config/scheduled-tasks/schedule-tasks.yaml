@@ -1186,6 +1186,9 @@ tasks:
     roles: [control-plane]
     requires: [python3, uv, git]
     prefer: dev-primary
+    installed_fingerprint:
+      command_token: .claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py
+      cwd_basename: workspace-hub
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       mkdir -p $WORKSPACE_HUB/logs/marketing;

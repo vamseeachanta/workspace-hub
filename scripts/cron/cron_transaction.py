@@ -38,6 +38,7 @@ _ENV_LINE_RE = re.compile(r"^[A-Z_]+=")
 _SCRIPT_PATH_RE = re.compile(r"scripts/[\w./-]+\.(?:sh|py)")
 _FINGERPRINT_KEYS = {
     "command_contains",
+    "command_token",
     "cwd_contains",
     "cwd_basename",
     "script_basename",
@@ -158,6 +159,12 @@ def match_fingerprint(line: str, fp: dict) -> bool:
     if "command_contains" in fp:
         checked_any = True
         if not _all_substrings(fp["command_contains"]):
+            return False
+    if "command_token" in fp:
+        checked_any = True
+        token = fp["command_token"]
+        pattern = rf"(?<![\w./-]){re.escape(token)}(?![\w./-])"
+        if not re.search(pattern, line):
             return False
     if "owner_repo" in fp:
         checked_any = True

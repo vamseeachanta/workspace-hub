@@ -1,7 +1,7 @@
 # Scheduled Tasks Inventory
 
 > Source of truth: `config/scheduled-tasks/schedule-tasks.yaml`
-> Installer: `scripts/cron/setup-cron.sh`
+> Installer: `scripts/cron/setup-cron.sh` (compatibility wrapper over the transactional `cron_apply.py` engine)
 > Validator: `scripts/cron/validate-schedule.py`
 
 ## Machine Roles
@@ -130,11 +130,11 @@ The `comprehensive-learning` cron entry runs `comprehensive-learning-nightly.sh`
 # Validate YAML
 uv run --no-project python scripts/cron/validate-schedule.py
 
-# Preview what would be installed
-bash scripts/cron/setup-cron.sh --dry-run
+# Preview the fail-closed transaction against this user's live crontab
+bash scripts/cron/setup-cron.sh --dry-run --machine ace-linux-1
 
-# Install/update crontab
-bash scripts/cron/setup-cron.sh
+# Install/update through backup + lock + compare-and-swap + rollback checks
+bash scripts/cron/setup-cron.sh --machine ace-linux-1
 
 # Preview fail-closed transactional reconciliation
 uv run --script scripts/cron/cron_apply.py --machine ace-linux-1 --json
@@ -142,6 +142,18 @@ uv run --script scripts/cron/cron_apply.py --machine ace-linux-1 --json
 # Check current crontab
 crontab -l
 ```
+
+`setup-cron.sh` no longer has an independent append/fingerprint algorithm. Both
+entrypoints use the same renderer, ownership classification, managed block, and
+transaction. Preview may fail on an unknown live line; classify that ownership
+instead of bypassing the abort. Applying while a communications daemon is live
+also fails unless the operator explicitly supplies `--allow-live-reload` after
+reviewing the preview.
+
+`--machine` selects catalog/registry behavior but never targets another host's
+crontab. Run the command on the machine whose local crontab is being reconciled.
+Windows `contribute-minimal` targets print Task Scheduler guidance and do not
+invoke Linux cron reconciliation.
 
 ## Audit Notes (2026-04-01)
 

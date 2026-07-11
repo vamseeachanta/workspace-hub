@@ -9,6 +9,8 @@ import importlib.util
 import sys
 from pathlib import Path
 
+import pytest
+
 REPO = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location("cron_apply", REPO / "scripts" / "cron" / "cron_apply.py")
 ca = importlib.util.module_from_spec(spec)
@@ -214,6 +216,19 @@ def test_cron_apply_alias_apply_uses_canonical_backup_name(monkeypatch, tmp_path
     assert res["status"] == "applied"
     assert res["machine"] == "dev-primary"
     assert res["backup"].endswith("dev-primary-alias.crontab")
+
+
+def test_backup_paths_are_unique_and_exclusive(monkeypatch, tmp_path):
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path)
+
+    first = ca.reserve_backup_path("dev-primary", None)
+    first.write_text("original", encoding="utf-8")
+    second = ca.reserve_backup_path("dev-primary", None)
+
+    assert second != first
+    assert first.read_text(encoding="utf-8") == "original"
+    with pytest.raises(FileExistsError):
+        ca.reserve_backup_path("dev-primary", first.stem.removeprefix("dev-primary-"))
 
 
 def test_cron_apply_selects_machine_pinned_tasks_for_hostname_tokens(monkeypatch):

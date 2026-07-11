@@ -110,6 +110,15 @@ def test_match_fingerprint_command_contains_str():
     assert not ct.match_fingerprint(line, {"command_contains": "nope"})
 
 
+def test_match_fingerprint_command_token_requires_boundaries():
+    token = ".claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py"
+    line = f"0 5 * * 0 uv run python {token} >> logs/out.log"
+
+    assert ct.match_fingerprint(line, {"command_token": token})
+    assert not ct.match_fingerprint(line.replace(token, f"prefix{token}"), {"command_token": token})
+    assert not ct.match_fingerprint(line.replace(token, f"{token}.bak"), {"command_token": token})
+
+
 def test_match_fingerprint_cwd_and_basename():
     line = "30 7 * * * cd /mnt/x/deckhand && python3 scripts/member-audit-cron.py"
     assert ct.match_fingerprint(line, {"cwd_contains": "/deckhand"})
