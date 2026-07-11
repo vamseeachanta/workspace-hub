@@ -1552,3 +1552,17 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#971
+    title: 'fix(economics): LT field NPV/breakeven implausible — all-negative NPV, $79–380 breakevens'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/971
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - domain:reports
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

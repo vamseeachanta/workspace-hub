@@ -857,3 +857,19 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3472
+    title: 'feat(operations): add pressure-aware daily OS maintenance cleanup'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3472
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:operations
+      - domain:automation
+      - domain:repo-health
+      - machine:dev-primary
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
